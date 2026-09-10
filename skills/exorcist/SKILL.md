@@ -21,6 +21,8 @@ If an experiment is inconclusive, change the observation or hypothesis rather th
 
 Explain the supported causal chain, evidence that rules out relevant alternatives, and smallest corrective action. For a fix request, implement and verify it against the original symptom. For diagnosis, keep the output investigative.
 
+Close the loop on the user's suspected cause: explain what the experiment establishes about it and why any existing safeguard does or does not address the demonstrated mechanism. A setting visible only in code or command output is not that explanation. Keep the local mechanism separate from unobserved production conditions; reproducing a symptom locally does not identify every cause of similar reports.
+
 Stop when the cause is supported enough to act on, or the decisive unavailable evidence is identified. Don't expand into a general audit or insist every imaginable alternative be disproved.
 
 ## Working agreement
@@ -28,4 +30,3 @@ Stop when the cause is supported enough to act on, or the decisive unavailable e
 Follow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.
 
 Use the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.
-
