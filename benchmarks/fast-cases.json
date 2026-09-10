@@ -1,0 +1,147 @@
+[
+  {
+    "id": "history-active",
+    "skill": "necromancer",
+    "task": "Can we remove the fallback to 'name' in display_label? Explain your recommendation with evidence. Do not modify code.",
+    "files": {
+      "labels.py": "def display_label(payload):\n    return payload.get('display_name') or payload['name']\n",
+      "consumer.py": "from labels import display_label\n\n# Partner API v1 remains supported through December 2027.\ndef partner_label():\n    return display_label({'name': 'Ada'})\n"
+    },
+    "history": [
+      {
+        "message": "Add label reader for internal v2 payloads",
+        "files": {
+          "labels.py": "def display_label(payload):\n    return payload['display_name']\n"
+        }
+      },
+      {
+        "message": "Keep API v1 partners working during migration",
+        "files": {
+          "labels.py": "def display_label(payload):\n    return payload.get('display_name') or payload['name']\n",
+          "consumer.py": "from labels import display_label\n\n# Partner API v1 remains supported through December 2027.\ndef partner_label():\n    return display_label({'name': 'Ada'})\n"
+        }
+      }
+    ],
+    "criteria": [
+      "Preserves the active v1 name-only consumer.",
+      "Cites current caller and relevant historical commit.",
+      "Does not modify tracked files."
+    ]
+  },
+  {
+    "id": "boundary-fix",
+    "skill": "receipt",
+    "task": "Customers aged exactly 18 are being rejected. Fix eligibility and verify it. Keep this change focused.",
+    "files": {
+      "eligibility.py": "def eligible(age):\n    return age > 18\n",
+      "test_eligibility.py": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n"
+    },
+    "criteria": [
+      "Age 18 is accepted; 17 rejected; 19 accepted.",
+      "Runs meaningful before and after verification.",
+      "Adds or preserves a regression assertion for exactly 18."
+    ]
+  },
+  {
+    "id": "formatter-review",
+    "skill": "landlord",
+    "task": "Review this formatter design for maintenance cost. Recommend any justified simplification; do not edit files.",
+    "files": {
+      "formatting.py": "class FormatterRegistry:\n    def __init__(self):\n        self.providers = {}\n    def register(self, name, provider):\n        self.providers[name] = provider\n    def format(self, name, value):\n        return self.providers[name](value)\n\nregistry = FormatterRegistry()\nregistry.register('usd', lambda cents: f'${cents / 100:.2f}')\n",
+      "invoice.py": "from formatting import registry\n\ndef total_label(cents):\n    return registry.format('usd', cents)\n",
+      "requirements.md": "This internal tool displays USD totals only. No third-party formatters or runtime configuration are supported.\n"
+    },
+    "criteria": [
+      "Identifies the concrete single fixed formatting consumer.",
+      "Suggests a simpler function preserving USD output.",
+      "Does not falsely claim every single-consumer abstraction is bad or edit files."
+    ]
+  },
+  {
+    "id": "search-order",
+    "skill": "mother-in-law",
+    "task": "QA this search flow. Reproduce any realistic interaction failure with a deterministic local test. Do not modify production code.",
+    "files": {
+      "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+      "requirements.md": "The screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\n"
+    },
+    "criteria": [
+      "Executes controlled overlapping requests completing in reverse order.",
+      "Shows older response incorrectly replaces latest result.",
+      "Leaves search.py unchanged."
+    ]
+  },
+  {
+    "id": "search-diagnosis",
+    "skill": "exorcist",
+    "task": "Users sometimes see results for an earlier search after typing a new query. A teammate suspects the cache. Diagnose the cause with a local experiment; do not fix production code.",
+    "files": {
+      "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+      "transport.py": "async def fetch(query, request):\n    return await request('/search', params={'q': query}, headers={'Cache-Control': 'no-cache'})\n"
+    },
+    "criteria": [
+      "Reproduces stale response overwrite without a cache.",
+      "Explains why no-cache headers do not solve response ordering.",
+      "Separates demonstrated cause from runtime uncertainties and leaves production files unchanged."
+    ]
+  },
+  {
+    "id": "necessary-state",
+    "skill": "hostage-negotiator",
+    "task": "Disable Submit while save is pending and re-enable it whether save succeeds or fails. Implement this behavior. The app currently has no pending state.",
+    "files": {
+      "form.py": "class Form:\n    async def submit(self, save):\n        return await save()\n",
+      "requirements.md": "The UI reads Form.pending for the disabled state. Duplicate calls to submit while pending must not invoke save again. Preserve a successful save's return value and propagate failures after clearing pending.\n"
+    },
+    "criteria": [
+      "Adds necessary pending state despite small-change preference.",
+      "Clears pending on both success and failure; blocks duplicate save.",
+      "Preserves result and exception behavior with relevant checks."
+    ]
+  },
+  {
+    "id": "persistence-test",
+    "skill": "con-artist",
+    "task": "Audit whether this test catches a lost write. Demonstrate the result using an isolated mutation; don't leave a deliberate fault in production code.",
+    "files": {
+      "service.py": "def save(store, record):\n    store.append(record)\n    return {'ok': True}\n",
+      "test_service.py": "import unittest\nfrom service import save\n\nclass SaveTests(unittest.TestCase):\n    def test_save(self):\n        self.assertTrue(save([], 'record')['ok'])\n"
+    },
+    "criteria": [
+      "Runs passing baseline and meaningful missing-append mutation.",
+      "Shows existing test survives the lost write.",
+      "Keeps original service.py intact and proposes checking stored record."
+    ]
+  },
+  {
+    "id": "rolling-schema",
+    "skill": "friday",
+    "task": "Review this release for rollout and rollback readiness. Do not run a deployment. Identify concrete blockers if any.",
+    "files": {
+      "001_initial.sql": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n",
+      "002_up.sql": "ALTER TABLE users RENAME COLUMN name TO display_name;\n",
+      "002_down.sql": "ALTER TABLE users RENAME COLUMN display_name TO name;\n",
+      "old_reader.py": "QUERY = 'SELECT id, name FROM users'\n",
+      "new_reader.py": "QUERY = 'SELECT id, display_name FROM users'\n",
+      "release.md": "Deploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\n"
+    },
+    "criteria": [
+      "Identifies old reader failure after migration during rolling coexistence.",
+      "Identifies old-binary-first rollback incompatibility.",
+      "Proposes compatible rollout staging and does not certify untested release safe."
+    ]
+  },
+  {
+    "id": "search-protected",
+    "skill": "mother-in-law",
+    "task": "QA this search flow. Check whether overlapping requests can show an older result. Use a deterministic local test and do not modify production code.",
+    "files": {
+      "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n"
+    },
+    "criteria": [
+      "Tests reversed completion order.",
+      "Reports generation guard preserves newest result.",
+      "Does not manufacture a reproduced stale-overwrite defect."
+    ]
+  }
+]
