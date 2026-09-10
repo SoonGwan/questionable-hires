@@ -1,5 +1,7 @@
 <p align="center"><img src="assets/team.svg" alt="Questionable Hires — 이상한데 아직 회사 다님" width="100%"></p>
 
+<p align="center"><img src="assets/team-characters.png" alt="하찮은 낙서 캐릭터로 그린 Questionable Hires 8명." width="100%"></p>
+
 # Questionable Hires
 
 **이걸 뽑네. 근데 일을 하네.**

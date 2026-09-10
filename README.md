@@ -1,5 +1,7 @@
 <p align="center"><img src="assets/team.svg" alt="Questionable Hires — Weird, but employed. Unfortunately, essential." width="100%"></p>
 
+<p align="center"><img src="assets/team-characters.png" alt="Eight Questionable Hires as tiny, deadpan doodle characters." width="100%"></p>
+
 <p align="center"><a href="docs/INSTALL.md">Hire the team</a> · <a href="examples/README.md">See them work</a> · <a href="benchmarks/REPORT.md">Read the evidence</a> · <a href="README.ko.md">한국어</a></p>
 
 # Questionable Hires
