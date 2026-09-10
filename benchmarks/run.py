@@ -57,11 +57,12 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled):
     base = prepare(case, workspace)
     prompt = case["task"] + "\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate."
     skill_hash = None
-    if arm == "skill":
+    if arm in {"skill", "auto"}:
         source = ROOT / "skills" / case["skill"]
         shutil.copytree(source, workspace / ".agents/skills" / case["skill"])
         skill_hash = hashlib.sha256((source / "SKILL.md").read_bytes()).hexdigest()
-        prompt = f"Use ${case['skill']} at .agents/skills/{case['skill']}/SKILL.md.\n\n" + prompt
+        if arm == "skill":
+            prompt = f"Use ${case['skill']} at .agents/skills/{case['skill']}/SKILL.md.\n\n" + prompt
     elif arm == "control":
         prompt += "\n\n" + CONTROL
     config = "skills.config=[" + ",".join("{path=" + json.dumps(str(p)) + ",enabled=false}" for p in disabled) + "]"
@@ -110,7 +111,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True, help="New output directory; contains logs requiring review before publication")
     parser.add_argument("--case", action="append")
     parser.add_argument("--suite", choices=["main", "clean"], default="main")
-    parser.add_argument("--arms", nargs="+", choices=["baseline", "control", "skill"], default=["baseline", "control", "skill"])
+    parser.add_argument("--arms", nargs="+", choices=["baseline", "control", "skill", "auto"], default=["baseline", "control", "skill"])
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--timeout", type=int, default=240)
