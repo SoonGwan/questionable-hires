@@ -9,22 +9,16 @@ description: Audit whether tests detect broken behavior by tracing assertions an
 
 ## Check what the test actually buys
 
-Start with the user-selected tests or changed behavior. Use the repository's documented test command, or the runner already evidenced by its test imports/configuration; don't guess a different framework or install one. Run that baseline and trace important assertions through implementation and mocks to identify the protected contract.
+Trace the selected assertions through implementation and mocks to the contract they actually protect. Use the documented test command or evidenced runner, not a new framework. Reuse a valid baseline; a failing baseline is not a mutation result.
 
-Choose a fault at the boundary the assertion could miss: acknowledged versus persisted, closed flag versus resource cleanup, latest request versus latest completion, full consumption versus early exit. A syntax error is not behavioral sensitivity. Establish a reachable input where the fault violates the contract; equivalent mutations prove nothing.
+Choose a reachable fault at an unobserved boundary: acknowledgment versus persistence, closed flag versus cleanup, latest request versus completion, full consumption versus early exit. Syntax errors and behaviorally equivalent mutations do not establish sensitivity to the intended fault.
 
-Match the experiment to the task size. For a small local audit, one disposable copy and a short inline command are enough; don't build an audit framework, standalone runner, or JSON report merely to record a few checks. Retain a reusable harness when the user needs one or the workflow actually repeats. Verify imports resolve to the copied implementation, and reuse a valid baseline rather than rerunning it unchanged.
+For a small audit, use one disposable copy and a short inline experiment; retain a harness only when needed for reuse or delivery. Verify imports resolve to that copy. Preserve the user's original files, test configuration and explicit scope; vary one behavior at a time. Keep test exit statuses identifiable independently of log printing.
 
-Keep test configuration unchanged and vary one behavior at a time. Capture the test exit status separately from log-display commands. A killed mutant protects that fault, not every lifecycle path. Investigate another fault only when a distinct untested boundary matters to the requested contract; stop fishing for survivors.
-
-If isolation or execution isn't available, report a static concern and proposed experiment, not a demonstrated survivor. Keep a failing baseline separate from mutation results.
+If the original test survives, check the meaningful effect—not merely success or container size that could hide repeated writes. Run the same stronger assertion against correct and faulty implementations: it must pass the former and fail the latter for the intended reason. If the mutant is killed, identify the detecting assertion or warning policy; this protects that fault, not all lifecycle paths.
 
 ## Deliver and stop
 
-For a survivor, assert the externally meaningful effect, not just a returned success flag or final container size that could hide repeated writes. Confirm the same proposed regression passes correct code and fails the fault. For a killed mutant, explain the detecting assertion or warning policy. The decisive commands/results and proposed assertion in the answer can be the complete receipt; separate files are optional. Apply test improvements only when requested, never the deliberate fault.
+Give decisive commands/results, the coverage gap or detecting check, and the proposed assertion. No separate report files are required. Without isolation or execution, label the concern static, not a demonstrated survivor. Apply test improvements only when requested, never the deliberate fault; an audit does not authorize publication.
 
-Stop after the scoped coverage claims have been assessed and any requested improvement verified. Don't chase a global mutation score or demand every mock be removed.
-
-## Working agreement
-
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Locate relevant files from supplied paths or the actual repository file list before guessing framework-specific paths. Reuse existing artifacts; report decisive evidence without duplicating logs. Separate observation from inference; keep humor optional.
+Stop when the scoped claim is assessed and requested improvements are verified. Try another fault only for a distinct boundary material to that claim; don't fish for survivors, chase a global mutation score, or remove every mock.
