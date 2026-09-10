@@ -25,4 +25,4 @@ Stop when the requested decision is supported, or when the missing evidence is s
 
 ## Working agreement
 
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.
+Preserve user changes and explicit requirements. Review is not permission to implement or publish. Locate relevant files from supplied paths or the actual repository file list before guessing framework-specific paths. Reuse existing artifacts; report decisive evidence without duplicating logs. Separate observation from inference; keep humor optional.
