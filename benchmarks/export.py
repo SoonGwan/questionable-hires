@@ -52,6 +52,14 @@ def export(source, target):
                 return f"[{label}](project/{path}#L{line})"
             return label
         answer = re.sub(r"\[([^\]]+)\]\(([^)]+?):(\d+)\)", link, answer)
+        def plain_link(match):
+            label, path = match.groups()
+            if path.startswith("<WORKSPACE>/"):
+                path = path[len("<WORKSPACE>/"):]
+            if (project / path).is_file():
+                return f"[{label}](project/{path})"
+            return match.group(0)
+        answer = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", plain_link, answer)
         (dest / "answer.md").write_text(answer)
         (dest / "changes.diff").write_text(redact((cell / "changes.diff").read_text()))
         (dest / "commands.json").write_text(redact(json.dumps(commands, indent=2)) + "\n")
