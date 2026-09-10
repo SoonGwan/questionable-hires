@@ -56,10 +56,17 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled):
     workspace = Path(tempfile.mkdtemp(prefix="qh-eval-")) / "project"
     base = prepare(case, workspace)
     prompt = case["task"] + "\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate."
+    if arm == "auto":
+        prompt = case["task"] + "\n\nWork only inside this synthetic project. Do not use external services. Do not delegate."
     skill_hash = None
     if arm in {"skill", "auto"}:
         source = ROOT / "skills" / case["skill"]
-        shutil.copytree(source, workspace / ".agents/skills" / case["skill"])
+        if arm == "auto":
+            for hire in (ROOT / "skills").iterdir():
+                if (hire / "SKILL.md").is_file():
+                    shutil.copytree(hire, workspace / ".agents/skills" / hire.name)
+        else:
+            shutil.copytree(source, workspace / ".agents/skills" / case["skill"])
         skill_hash = hashlib.sha256((source / "SKILL.md").read_bytes()).hexdigest()
         if arm == "skill":
             prompt = f"Use ${case['skill']} at .agents/skills/{case['skill']}/SKILL.md.\n\n" + prompt
