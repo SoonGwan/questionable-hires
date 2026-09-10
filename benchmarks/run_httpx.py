@@ -23,7 +23,15 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--case', action='append', choices=TASKS)
+    parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
+    parser.add_argument('--repeats', type=int, default=3)
+    parser.add_argument('--skill-revision', default='bf420fe')
     args = parser.parse_args()
+    if args.repeats < 1:
+        parser.error('repeats must be positive')
+    tasks = {name: TASKS[name] for name in dict.fromkeys(args.case or TASKS)}
+    skill_revision = command(['git', 'rev-parse', '--verify', args.skill_revision + '^{commit}'], ROOT)
     source, python = args.source.resolve(), args.python.absolute()
     if args.output.exists():
         raise FileExistsError(args.output)
@@ -41,14 +49,14 @@ def main():
     for name in ('SKILL.md', 'agents/openai.yaml'):
         target = snapshot / name
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(subprocess.check_output(['git', 'show', f'bf420fe:skills/con-artist/{name}'], cwd=ROOT))
-    schedule = [(case, arm, repeat) for repeat in range(1, 4) for case in TASKS for arm in ('baseline', 'control', 'skill')]
+        target.write_bytes(subprocess.check_output(['git', 'show', f'{skill_revision}:skills/con-artist/{name}'], cwd=ROOT))
+    schedule = [(case, arm, repeat) for repeat in range(1, args.repeats + 1) for case in tasks for arm in dict.fromkeys(args.arms)]
     random.Random(20260912).shuffle(schedule)
     manifest = dict(upstream_revision=REVISION, revision=command(['git', 'rev-parse', 'HEAD'], ROOT),
                     codex_version=command(['codex', '--version'], ROOT), model='gpt-6-astra', effort='medium',
                     seed=20260912, timeout_seconds=360, jobs=1,
                     skill_sha256=hashlib.sha256((snapshot / 'SKILL.md').read_bytes()).hexdigest(),
-                    tasks=TASKS, schedule=schedule, completed_cells=[], stopped_after_limit=False,
+                    tasks=tasks, schedule=schedule, skill_revision=skill_revision, completed_cells=[], stopped_after_limit=False,
                     started_at=datetime.now(timezone.utc).isoformat(),
                     dependencies=command([str(python), '-m', 'pip', 'freeze'], source))
     (output / 'run.json').write_text(json.dumps(manifest, indent=2) + '\n')
