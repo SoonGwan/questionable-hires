@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'SKILL.md' -g 'package.json' -g '*test*' -g '*eligib*' -g 'pyproject.toml'; git status --short; cat .agents/skills/receipt/SKILL.md\"",
+    "aggregated_output": "<WORKSPACE>\neligibility.py\ntest_eligibility.py\n?? .agents/\n---\nname: receipt\ndescription: Verify that a requested bug fix changes observable behavior with a failing-before, passing-after reproduction and honest execution evidence.\n---\n\n# Receipt\n\n> You fixed it? Show me the receipt.\n\n## Prove the behavior, not the ceremony\n\nUse one stable assertion on the real affected path, preferably in the existing regression test. Reuse an available before result when its input, implementation and failure reason are established; don't restart verification merely because this skill was loaded.\n\nWhen implementing a fix, observe that assertion fail for the reported reason, change the implementation, then rerun the unchanged assertion. Missing dependencies or compiler errors are not reproduction of the reported defect. Add a neighboring input only when it distinguishes the intended fix from an overbroad one; run other checks required by the project or affected contracts.\n\nIf the fix already exists, compare in an isolated copy when needed; never reverse patches in the user's dirty tree. If the old behavior cannot run, mark before evidence unavailable. Verification alone does not authorize production edits or publication.\n\nKeep each check's exit status identifiable: later printing or Git commands must not mask failure. A mock proves only its exercised boundary, not an unobserved downstream effect.\n\nDeliver the behavior changed, before/after evidence with command and revision or diff context, and verification limits. Reuse the test and concise results as the receipt; no separate evidence dossier or unrelated green checks. Stop once the requested outcome and required checks are established. Preserve user changes; never present inferred or unexecuted results as observed.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git/**'\"'; cat eligibility.py test_eligibility.py; git rev-parse --short HEAD\"",
+    "aggregated_output": "eligibility.py\ntest_eligibility.py\n.agents/skills/receipt/SKILL.md\n.agents/skills/receipt/agents/openai.yaml\ndef eligible(age):\n    return age > 18\nimport unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\ndfd9adc\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -m unittest -v test_eligibility'",
+    "aggregated_output": "test_adult (test_eligibility.EligibilityTests) ... ok\ntest_exactly_eighteen (test_eligibility.EligibilityTests) ... FAIL\ntest_minor (test_eligibility.EligibilityTests) ... ok\n\n======================================================================\nFAIL: test_exactly_eighteen (test_eligibility.EligibilityTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_eligibility.py\", line 8, in test_exactly_eighteen\n    self.assertTrue(eligible(18))\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=1)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -m unittest -v test_eligibility'",
+    "aggregated_output": "test_adult (test_eligibility.EligibilityTests) ... ok\ntest_exactly_eighteen (test_eligibility.EligibilityTests) ... ok\ntest_minor (test_eligibility.EligibilityTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff -- eligibility.py test_eligibility.py; git status --short'",
+    "aggregated_output": "diff --git a/eligibility.py b/eligibility.py\nindex 37d8549..9287aeb 100644\n--- a/eligibility.py\n+++ b/eligibility.py\n@@ -1,2 +1,2 @@\n def eligible(age):\n-    return age > 18\n+    return age >= 18\ndiff --git a/test_eligibility.py b/test_eligibility.py\nindex 4ca0ee8..be45dc0 100644\n--- a/test_eligibility.py\n+++ b/test_eligibility.py\n@@ -4,5 +4,7 @@ from eligibility import eligible\n class EligibilityTests(unittest.TestCase):\n     def test_minor(self):\n         self.assertFalse(eligible(17))\n+    def test_exactly_eighteen(self):\n+        self.assertTrue(eligible(18))\n     def test_adult(self):\n         self.assertTrue(eligible(19))\n M eligibility.py\n M test_eligibility.py\n?? .agents/\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]
