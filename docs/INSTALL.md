@@ -39,7 +39,25 @@ To uninstall, move only the installed hire folders you selected out of `.agents/
 
 ## Plugin package
 
-The repository includes a validated `.codex-plugin/plugin.json` for the eight skills. Local standalone installation above is the supported onboarding path during private development. Marketplace publishing and an end-to-end marketplace installation test are not yet completed; no marketplace install command is claimed to work.
+The repository includes a validated `.codex-plugin/plugin.json`. A local marketplace bundle has also passed an actual CLI install/list/cache-comparison/remove cycle; see the [installation record](INSTALLATION-TEST.md).
+
+To build a new bundle:
+
+```sh
+python3 scripts/build.py --output dist/bundle
+codex plugin marketplace list --json
+```
+
+If no marketplace named `personal` is already registered, install this local bundle:
+
+```sh
+codex plugin marketplace add /absolute/path/to/questionable-hires/dist/bundle
+codex plugin add questionable-hires@personal
+```
+
+Replace the absolute path. If `personal` already belongs to another source, use the standalone installer above; do not replace your existing marketplace. The bundle directory must stay available while its local marketplace is registered. Build into a new output directory when `dist/bundle` already exists.
+
+To remove this test installation, use `codex plugin remove questionable-hires@personal`. Remove the `personal` marketplace registration only if you created it for this bundle and it has no unrelated use. Public-directory publishing and remote Git marketplace installation are not claimed as tested.
 
 ## Developer checks
 

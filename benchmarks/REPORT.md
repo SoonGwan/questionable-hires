@@ -67,13 +67,21 @@ The separate skill-only cases showed the expected central behaviors:
 
 These eight cases have no baseline/control repetitions, so they support only a limited behavioral smoke check, not a comparison.
 
+## Automatic routing with the whole team
+
+Eight further sessions installed all eight hires and supplied the task without naming a skill. The expected skill file was read in all eight observed sessions. The eligibility task also selected Hostage Negotiator alongside Receipt; selection need not be exclusive.
+
+See [routing answers and command evidence](results/astra-routing-2026-09-10/summary.json). This is one task per expected hire, not a measured false-positive rate or a guarantee of future routing. The first routing pilot installed only one hire and used ambiguous wording about other installed skills. Its [eight records](results/routing-pilot-2026-09-10/summary.json) are retained but excluded from the whole-team routing conclusion.
+
+Local plugin installation was separately checked through a real CLI install/list/cache-comparison/remove cycle. See the [installation record](../docs/INSTALLATION-TEST.md).
+
 ## What remains unproven
 
 - Repeatability across independent samples, harder tasks, larger repositories, languages, and tool environments.
-- Automatic skill selection: these runs explicitly invoke the target skill.
+- Routing repeatability and false positives across broader unrelated requests.
 - Actual browser interactions: search cases exercise Python state boundaries, not a rendered UI.
 - Production database behavior or deployed rollback procedures.
-- Marketplace installation and other hosts.
+- Remote Git marketplace installation, public directory submission, and other hosts.
 - Complete absence of hidden runtime context contamination.
 
 Reproduce the main suite with the commands in [the runner guide](README.md). To run the additional skill-only cases:

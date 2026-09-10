@@ -80,7 +80,9 @@ The hires performed their central jobs in these examples, including leaving a ju
 
 [Full results and limitations](benchmarks/REPORT.md) · [Reproduce the comparison](benchmarks/README.md) · [Eight worked examples](examples/README.md)
 
-These are instruction-based workflows, not guarantees. Actual tool access, model behavior, project complexity, and user instructions determine the outcome. Automatic discovery and marketplace installation are not established by the explicit-invocation tests.
+Eight additional whole-team routing checks selected the expected skill files. A local plugin bundle also passed an actual CLI installation and removal test. See [routing evidence](benchmarks/REPORT.md#automatic-routing-with-the-whole-team) and the [installation record](docs/INSTALLATION-TEST.md).
+
+These are instruction-based workflows, not guarantees. Actual tool access, model behavior, project complexity, and user instructions determine the outcome. Other hosts and remote marketplace distribution remain unverified.
 
 ## Why Astra?
 

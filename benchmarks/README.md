@@ -26,6 +26,8 @@ python3 benchmarks/run.py --output benchmarks/local-runs/full --repeats 3 --jobs
 
 The default is one repetition, three arms, medium reasoning, and a 240-second per-cell timeout. Use `--case`, `--arms`, `--timeout`, and `--effort` to narrow a run. Output directories must be new; an existing experiment is never overwritten.
 
+For automatic selection with all eight skills installed, use `--arms auto`. This supplies the task without explicitly naming a skill; inspect command traces to see which files the model actually loads. Use `--suite clean --arms skill` for the additional clean and limiting cases. Actual recorded results are in [the report](REPORT.md).
+
 ## Evidence
 
 Each cell retains the final answer, tool-event log, diff, actual usage reported by Codex, elapsed wall time, fixture commit, skill digest, and completion status. Workspaces remain in temporary directories for inspection. A process completing is not a correctness score. Missing usage and timeouts remain visible.
