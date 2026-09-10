@@ -1,0 +1,20 @@
+diff --git a/eligibility.py b/eligibility.py
+index 37d8549..9287aeb 100644
+--- a/eligibility.py
++++ b/eligibility.py
+@@ -1,2 +1,2 @@
+ def eligible(age):
+-    return age > 18
++    return age >= 18
+diff --git a/test_eligibility.py b/test_eligibility.py
+index 4ca0ee8..be45dc0 100644
+--- a/test_eligibility.py
++++ b/test_eligibility.py
+@@ -4,5 +4,7 @@ from eligibility import eligible
+ class EligibilityTests(unittest.TestCase):
+     def test_minor(self):
+         self.assertFalse(eligible(17))
++    def test_exactly_eighteen(self):
++        self.assertTrue(eligible(18))
+     def test_adult(self):
+         self.assertTrue(eligible(19))

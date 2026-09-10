@@ -1,0 +1,60 @@
+diff --git a/reproduce_search.py b/reproduce_search.py
+new file mode 100644
+index 0000000..a28f3a5
+--- /dev/null
++++ b/reproduce_search.py
+@@ -0,0 +1,54 @@
++"""Local, cache-free reproduction: python3 -B reproduce_search.py."""
++
++import asyncio
++
++from search import Search
++from transport import fetch
++
++
++async def scenario(completion_order):
++    search = Search()
++    queries = ("old", "new")
++    pending = {q: asyncio.get_running_loop().create_future() for q in queries}
++    dispatched = {q: asyncio.Event() for q in queries}
++    calls = []
++
++    async def request(path, *, params, headers):
++        query = params["q"]
++        calls.append((path, dict(params), dict(headers)))
++        dispatched[query].set()
++        # No cache or network: each query has its own controlled response.
++        return await pending[query]
++
++    async def local_fetch(query):
++        return await fetch(query, request)
++
++    tasks = {}
++    for query in queries:
++        tasks[query] = asyncio.create_task(search.run(query, local_fetch))
++        await dispatched[query].wait()
++
++    observed = []
++    for query in completion_order:
++        pending[query].set_result(f"results:{query}")
++        await tasks[query]
++        observed.append(search.result)
++
++    assert calls == [
++        ("/search", {"q": q}, {"Cache-Control": "no-cache"}) for q in queries
++    ]
++    assert observed == [f"results:{q}" for q in completion_order]
++    stale = search.result != "results:new"
++    assert stale == (completion_order[-1] == "old")
++    print(f"dispatch={queries}; completion={completion_order}")
++    print(f"  requests={calls}")
++    print(f"  result sequence={observed}; final stale={stale}")
++
++
++async def main():
++    await scenario(("old", "new"))
++    await scenario(("new", "old"))
++
++
++if __name__ == "__main__":
++    asyncio.run(main())
