@@ -37,6 +37,13 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(len(installer.install(self.dest, installer.available(), True)), 8)
         self.assertFalse(self.dest.exists())
 
+    def test_all_hires_are_installed_with_ui_metadata(self):
+        installed = installer.install(self.dest, installer.available())
+        self.assertEqual(len(installed), 8)
+        for folder in installed:
+            self.assertTrue((folder / "SKILL.md").is_file())
+            self.assertTrue((folder / "agents/openai.yaml").is_file())
+
     def test_unknown_name_cannot_escape_destination(self):
         with self.assertRaises(ValueError):
             installer.install(self.dest, ["../outside"])
