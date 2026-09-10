@@ -74,11 +74,16 @@ Normal automatic selection is enabled. No lifecycle hooks, telemetry, background
 
 ## Does it actually work?
 
-We ran **24 three-arm comparison sessions** and **eight additional skill-only cases**, plus an earlier three-run pilot, using GPT-6 Astra at medium reasoning. Every session used a fresh synthetic Git repository. Evidence includes actual answers, commands, diffs, source snapshots, and reported token usage.
+We completed **72 fresh GPT-6 Astra sessions** at medium reasoning: eight small synthetic tasks × three arms × three repetitions. Baseline = 100%; generic control used **111.9% tokens / 125.1% time**, and the corresponding skill used **111.5% tokens / 117.6% time**. Implementation line churn was identical. Neither arm saved resources in this experiment.
 
-The hires performed their central jobs in these examples, including leaving a justified adapter alone, accepting obsolete-code removal, and acknowledging missing evidence. Most central answers matched the baseline. Some skill runs produced more explicit evidence or relevant test coverage; they were often slower. One sample per condition cannot establish reliability or superiority.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="benchmarks/results/astra-repeat-2026-09-11/analysis/comparison-dark.svg">
+  <img src="benchmarks/results/astra-repeat-2026-09-11/analysis/comparison-light.svg" alt="Baseline/control/skill: tokens 100/111.9/111.5%, time 100/125.1/117.6%, implementation LOC 100/100/100%. Strict success 19/24, 16/24, 18/24." width="100%">
+</picture>
 
-[Full results and limitations](benchmarks/REPORT.md) · [Reproduce the comparison](benchmarks/README.md) · [Eight worked examples](examples/README.md)
+Strict evidence-and-scope success was **19/24 baseline, 16/24 control, 18/24 skill**. Central fixes and diagnoses generally agreed. Four skill sessions have unresolved rejected-patch records; three control audits changed existing tests. These are unblinded author judgments on tiny synthetic tasks, not proof of superiority or a general safety ranking. No session timed out; no dollar cost is inferred from subscription usage.
+
+[New report, methods and raw evidence](benchmarks/REPORT-2026-09-11.md) · [Reproduce the comparison](benchmarks/README.md) · [Earlier n=1 smoke results](benchmarks/REPORT.md) · [Eight worked examples](examples/README.md)
 
 Eight additional whole-team routing checks selected the expected skill files. A local plugin bundle also passed an actual CLI installation and removal test. See [routing evidence](benchmarks/REPORT.md#automatic-routing-with-the-whole-team) and the [installation record](docs/INSTALLATION-TEST.md).
 

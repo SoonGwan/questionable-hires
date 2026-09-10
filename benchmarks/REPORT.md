@@ -1,3 +1,5 @@
+> **New repeated measurement:** [September 11 report — 72 fresh sessions, n=3](REPORT-2026-09-11.md). The September 10 smoke evidence below is unchanged and excluded from that comparison.
+
 # Astra smoke evaluation — 2026-09-10
 
 Eight hires were exercised on real Codex sessions, with actual file inspection and command execution. The main matrix contains **24 runs: eight tasks × three arms × one repetition**. A separate set contains **eight skill-only clean, limiting, or necessary-change cases**. An earlier three-run eligibility pilot is retained separately and excluded from the main matrix.
