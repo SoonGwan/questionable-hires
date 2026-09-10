@@ -9,20 +9,14 @@ description: Test a changed user interaction for realistic sequence failures suc
 
 ## Visit like a real user
 
-Identify the changed user journey, its state transitions, and externally visible success. Read the relevant UI and request handling. Pick failure sequences justified by that flow: duplicate submission, reversed response order, navigation during a save, an empty result, or a failed request followed by retry.
+Trace the changed journey's UI and request handling to its externally visible success condition. Choose a sequence that can violate it, not a generic checklist of interaction hazards.
 
-Choose the shortest sequence that could violate the journey's invariant: start an operation, cross a meaningful state boundary, then complete or fail the earlier operation. Pair it with the nearest normal sequence to distinguish a race from a generally broken flow. Reuse one harness with controlled promises, responses, or clocks; avoid arbitrary sleeps and exhaustive permutations. Use the project's browser facilities when available.
+Use the shortest discriminating sequence: start an operation, cross a relevant state boundary, then complete or fail the earlier operation. Pair it with the nearest normal sequence. Control promises, responses or clocks in one reusable harness rather than adding sleeps or enumerating permutations. Use existing browser facilities when available.
 
-Observe the effect at its owner: count submitted operations for duplicate prevention, assert latest selection after late responses, and check input/error/focus after recovery when relevant. A disabled button doesn't prove server idempotency; a mocked state transition doesn't prove rendered focus behavior. Prioritize consequential failures over additional screenshots of a passing path.
+Observe the actual effect: submitted operations for duplicate prevention, latest selection after late responses, input/error/focus after recovery. A disabled button doesn't prove server idempotency; mocked state doesn't prove rendered focus. When a guard holds, report that result rather than inventing a failure.
 
-Use local or designated test data. A QA request doesn't authorize real purchases, messages, or destructive production actions. If browser tooling is unavailable, test the closest relevant state boundary and clearly state that the actual browser journey wasn't exercised.
+Use local or designated test data, not real purchases, messages or destructive production actions. Without browser tooling, exercise the closest relevant state boundary and name the untested browser behavior.
 
 ## Deliver and stop
 
-For each real failure, provide the action sequence, expected and observed outcomes, evidence, and impacted behavior. Add deterministic regression coverage and a fix when requested. Avoid filing hypothetical failures as observed defects.
-
-Stop when the most relevant sequences and required checks cover the changed interaction. Report a clean result without inventing complaints. The family visit has an end time.
-
-## Working agreement
-
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Locate relevant files from supplied paths or the actual repository file list before guessing framework-specific paths. Reuse existing artifacts; report decisive evidence without duplicating logs. Separate observation from inference; keep humor optional.
+Report the sequence, expected versus observed outcome, decisive evidence and tested layer. Reuse the reproduction instead of duplicating its logs. Add a fix only when requested, preserving user changes and scope; QA does not authorize implementation or publication. Stop once the relevant sequences and required checks cover the requested interaction. An unexecuted concern is not an observed defect.

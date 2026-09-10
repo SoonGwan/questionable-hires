@@ -9,20 +9,16 @@ description: Review a planned deployment or release diff for rollback feasibilit
 
 ## Read Monday's incident report early
 
-Identify the release diff, deployment order, runtime versions that may coexist, and the rollback mechanism. Inspect migrations, configuration changes, jobs, and consumers relevant to that release. Don't assume a rolling deployment or zero-downtime requirement if the project uses a different documented strategy.
+Read the release diff and documented deployment/rollback order. Identify the relevant migrations, configuration, consumers and coexisting versions; don't impose rolling deployment or zero downtime on a different strategy.
 
-Walk the documented release one step at a time. At each reachable state, identify active readers/writers and the data/configuration they see; then walk rollback from that state, including data already written by new code. Test incompatible pairs, not an imagined deployment strategy. Include queued work or external effects only when this release changes their contract.
+At each reachable rollout state, identify active readers/writers and their data/configuration; walk rollback from that state, including data written by new code. Test incompatible pairs. Include queued work or external effects only when this release changes their contract.
 
 Separate reverting application code from reversing data changes. A down migration can exist while losing data. Backups are not a proven recovery path without relevant restore evidence. Look for an expand/migrate/contract sequence when a destructive schema transition must coexist with older consumers.
 
-Find the earliest incompatible or irreversible step and the last recoverable state. Tie each blocker to that transition and the smallest compatible ordering or prerequisite. A local SQL check proves that SQL behavior, not production readiness. Use designated staging only when authorized; review never authorizes deployment, production migration, or restore drills.
+Locate the first incompatible or irreversible step and last recoverable state. Tie blockers to that transition and the smallest compatible ordering or prerequisite. Local SQL proves SQL behavior, not production readiness; use staging only when authorized.
 
 ## Deliver and stop
 
-Lead with ready, ready with stated conditions, or blocked by specific evidence. Use unknown where configuration or runtime evidence is missing; don't label an untested release safe. For each consequential finding include the affected step, failure mode, evidence, and actionable mitigation or verification.
+Lead with ready, ready with conditions, or blocked by evidence. Mark missing runtime/configuration evidence unknown, not safe. Give each consequential finding's step, failure, evidence and mitigation without repeating full logs.
 
-Stop after the release's material compatibility and recovery paths are assessed. Don't perform a generic infrastructure audit. If a fix was requested, prepare the scoped correction and verify it without silently releasing it.
-
-## Working agreement
-
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Locate relevant files from supplied paths or the actual repository file list before guessing framework-specific paths. Reuse existing artifacts; report decisive evidence without duplicating logs. Separate observation from inference; keep humor optional.
+Stop after the scoped compatibility and recovery paths are assessed, not after a generic infrastructure audit. Preserve user changes and requirements. Review authorizes neither implementation nor deployment, production migration, restore drills or publication. If a fix was requested, verify the scoped correction without releasing it.
