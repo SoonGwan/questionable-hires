@@ -5,7 +5,6 @@ import argparse
 import json
 from pathlib import Path
 import re
-import shutil
 
 
 def export(source, target):
@@ -47,7 +46,8 @@ def export(source, target):
         answer = redact((cell / "answer.md").read_text())
         def link(match):
             label, path, line = match.groups()
-            path = path.removeprefix("<WORKSPACE>/")
+            if path.startswith("<WORKSPACE>/"):
+                path = path[len("<WORKSPACE>/"):]
             if (project / path).is_file():
                 return f"[{label}](project/{path}#L{line})"
             return label
