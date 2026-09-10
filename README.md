@@ -1,80 +1,103 @@
-<div align="center">
+<p align="center"><img src="assets/team.svg" alt="Questionable Hires — Weird, but employed. Unfortunately, essential." width="100%"></p>
 
-# questionable-hires
+<p align="center"><a href="docs/INSTALL.md">Hire the team</a> · <a href="examples/README.md">See them work</a> · <a href="benchmarks/REPORT.md">Read the evidence</a> · <a href="README.ko.md">한국어</a></p>
 
-**Weird, but employed. Unfortunately, essential.**
+# Questionable Hires
 
-A suspiciously effective engineering team for your AI agent.
+Eight suspiciously effective engineering coworkers for your AI agent.
 
-One demands receipts. One charges your abstractions rent.<br>
-One talks to developers who left in 2019.<br>
-Hiring was a mistake. Firing them would be worse.
+One demands receipts. One charges your abstractions rent. One talks to developers who left in 2019. Hiring was a mistake. Firing them would be worse.
 
-</div>
+Each character carries one engineering habit: trace the reason, prove the fix, test the awkward sequence, or keep the release reversible. Built with GPT-6 Astra in mind, using portable skill files.
 
----
+**Development preview.** All eight hires have been exercised on small synthetic tasks. The baseline usually reached the same central answer. We show actual comparisons and limitations rather than claim a universal improvement.
 
-## Meet your coworkers
+## The test passed. The record disappeared.
 
-Eight instruction-based skills are implemented. Install the whole team or choose a hire. Behavioral evaluation is in progress; there are no performance claims yet.
+This test looks reassuring:
 
-| Hire | What they say | What they actually do |
+```python
+self.assertTrue(save([], 'record')['ok'])
+```
+
+Ask `$con-artist` whether it catches a lost write. In an actual run, it removed the write in a disposable copy:
+
+| Check | Real write | Write removed |
 | --- | --- | --- |
-| **Necromancer** | “The previous developer left. Their reasons didn't.” | Reconstruct why strange code exists from history, callers, and tests before you change it. |
-| **Receipt** | “You fixed it? Show me the receipt.” | Connect a bug reproduction to a failing-before, passing-after check. |
-| **Landlord** | “Who's paying rent on this abstraction?” | Check whether new abstractions and dependencies earn their maintenance cost. |
-| **Mother-in-law** | “And what happens if I click it twice?” | Exercise realistic user behavior: retries, navigation, stale responses, and empty states. |
-| **Exorcist** | “You keep saying cache. Let's test that belief.” | Turn debugging guesses into experiments that distinguish competing causes. |
-| **Hostage Negotiator** | “Release the button. The architecture stays.” | Keep a small requested change from becoming an unrelated refactor. |
-| **Con Artist** | “Your mock is very impressed with itself.” | Find tests that still pass when the behavior they claim to protect is broken. |
-| **Friday** | “Can Monday-you undo this?” | Examine deployment changes for rollback, compatibility, and configuration traps. |
+| Existing `ok` assertion | Pass | Pass |
+| Assertion on stored record | Pass | Fail |
 
-## First hire: Necromancer
+The smallest useful improvement:
 
-**Illustrative interaction — not an executed result:**
-
-```text
-You: Can we delete this setTimeout?
-
-Necromancer:
-This delay was added after navigation started racing the save request.
-The current caller still doesn't await the save.
-
-Replace the timing assumption with explicit completion before removing it.
-Evidence: introducing commit, current caller, reproduction.
-
-The haunting is asynchronous.
+```python
+store = []
+self.assertTrue(save(store, 'record')['ok'])
+self.assertEqual(store, ['record'])
 ```
 
-The joke should explain the engineering instinct. The output should earn your trust with evidence.
+Production code stayed intact. The no-skill baseline also found this flaw. [Compare all three runs →](examples/con-artist.md)
 
-## Built with Astra in mind
+## Meet the team
 
-Our target is GPT-6 Astra. That's a development target, not a benchmark claim.
+| Hire | Unfortunate personality | Useful engineering instinct |
+| --- | --- | --- |
+| [Necromancer](examples/necromancer.md) | “Their reasons didn't leave with them.” | Trace legacy behavior through callers and history. |
+| [Receipt](examples/receipt.md) | “You fixed it? Show me the receipt.” | Verify a fix with a real before/after reproduction. |
+| [Landlord](examples/landlord.md) | “Who's paying rent on this abstraction?” | Make abstractions earn their maintenance cost. |
+| [Mother-in-law](examples/mother-in-law.md) | “And if I click it twice?” | Reproduce realistic interaction and timing failures. |
+| [Exorcist](examples/exorcist.md) | “Let's test your belief in the cache.” | Distinguish debugging hypotheses with experiments. |
+| [Hostage Negotiator](examples/hostage-negotiator.md) | “Release the button. The architecture stays.” | Deliver focused changes without optional scope creep. |
+| [Con Artist](examples/con-artist.md) | “Your mock is impressed with itself.” | Find tests that let broken behavior pass. |
+| [Friday](examples/friday.md) | “Can Monday-you undo this?” | Review version compatibility and recovery paths. |
 
-Each skill defines a narrow job, the evidence it needs, and a clear stopping condition. Ordinary implementation decisions follow project context. User intent takes precedence over the character. Humor stays brief; findings stay concrete. See the [Astra design notes](docs/ASTRA.md).
+## Hire one. Or make eight questionable decisions.
 
-We'll compare skills against the same model without the skill, on the same task and starting code. We'll track correctness, useful findings, unnecessary changes, and task cost where measurable. No performance numbers until there are reproducible results.
+Requires Python 3.8+, Git, and access to this currently private repository:
 
-## Hiring status
-
-**Private development preview. Eight skills, a local installer, and a validated plugin manifest.**
-
-Start with [onboarding](docs/INSTALL.md), then invoke a hire:
-
-```text
-$necromancer Can this workaround be removed?
-$receipt Show that this fix actually changes the behavior.
-$mother-in-law Try the awkward sequences in this checkout flow.
+```sh
+git clone https://github.com/SoonGwan/questionable-hires.git
+cd questionable-hires
+python3 scripts/install.py --dest /path/to/your-project/.agents/skills --skill necromancer
 ```
 
-No lifecycle hooks. No background workers. No model configuration changes.
+Replace the project path. Omit `--skill necromancer` to install all eight; add `--dry-run` to preview. Existing skill folders are never overwritten.
 
-- [Hiring plan](docs/ROADMAP.md)
-- [How we hire](CONTRIBUTING.md)
-- [Skills directory](skills/README.md)
-- [Performance review plan](docs/EVALUATION.md)
+In a new Codex CLI or IDE thread:
+
+```text
+$necromancer Can we remove this workaround?
+$receipt Verify that this fix actually prevents duplicate submissions.
+$friday Review this release's rollout and rollback plan.
+```
+
+Normal automatic selection is enabled. No lifecycle hooks, telemetry, background services, or model-setting changes. [Installation, updates, and removal →](docs/INSTALL.md)
+
+## Does it actually work?
+
+We ran **24 three-arm comparison sessions** and **eight additional skill-only cases**, plus an earlier three-run pilot, using GPT-6 Astra at medium reasoning. Every session used a fresh synthetic Git repository. Evidence includes actual answers, commands, diffs, source snapshots, and reported token usage.
+
+The hires performed their central jobs in these examples, including leaving a justified adapter alone, accepting obsolete-code removal, and acknowledging missing evidence. Most central answers matched the baseline. Some skill runs produced more explicit evidence or relevant test coverage; they were often slower. One sample per condition cannot establish reliability or superiority.
+
+[Full results and limitations](benchmarks/REPORT.md) · [Reproduce the comparison](benchmarks/README.md) · [Eight worked examples](examples/README.md)
+
+These are instruction-based workflows, not guarantees. Actual tool access, model behavior, project complexity, and user instructions determine the outcome. Automatic discovery and marketplace installation are not established by the explicit-invocation tests.
+
+## Why Astra?
+
+The skills give Astra focused jobs and explicit stopping conditions. User intent takes precedence over the character; routine choices use project context; technical claims need evidence. Humor stays brief. [Design rationale →](docs/ASTRA.md)
+
+## We're unfortunately hiring
+
+A new hire needs a distinct engineering job, a realistic example, and a case where it should leave things alone. Start with [the contribution guide](CONTRIBUTING.md). Use synthetic or public data in reports; see [security reporting](SECURITY.md).
+
+```sh
+python3 -m pip install -r requirements-dev.txt
+python3 scripts/validate.py
+python3 -m unittest discover -s tests -v
+```
+
+[Roadmap](docs/ROADMAP.md) · [Changelog](CHANGELOG.md) · [MIT license](LICENSE)
 
 ## Inspiration
 
-[Ponytail](https://github.com/dietrichgebert/ponytail) showed how a memorable character can carry a concrete engineering habit. This project explores a whole team of those habits with original skill instructions.
+[Ponytail](https://github.com/DietrichGebert/ponytail) showed how a memorable character can carry a concrete engineering habit. Our team, skill instructions, and evaluation fixtures are original. We also learned from its published benchmark corrections: use a real agent baseline, isolate the arms, and keep the ties.
