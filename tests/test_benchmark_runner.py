@@ -12,6 +12,19 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_upstream_copy_preserves_history_without_sharing_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / 'source'
+            copied = Path(directory) / 'copy'
+            case = dict(files={'module.py': 'VALUE = 1\n', 'LICENSE': 'upstream license\n'})
+            original = runner.prepare(case, source)
+            self.assertEqual(runner.prepare_repository(source, copied), original)
+            self.assertEqual((copied / 'LICENSE').read_text(), 'upstream license\n')
+            (copied / 'module.py').write_text('VALUE = 2\n')
+            self.assertEqual((source / 'module.py').read_text(), 'VALUE = 1\n')
+            self.assertNotEqual((source / '.git/config').stat().st_ino, (copied / '.git/config').stat().st_ino)
+            self.assertEqual(runner.command(['git', 'status', '--porcelain'], source), '')
+
     def test_custom_case_ids_rejected_before_output_creation(self):
         for identity in ('../escape', '/tmp/escape', ''):
             with tempfile.TemporaryDirectory() as directory:

@@ -59,15 +59,30 @@ def disabled_skills():
     return sorted(paths)
 
 
-def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills_root=None):
+def prepare_repository(source, workspace):
+    """Copy a clean upstream checkout, including its history, without shared Git files."""
+    if command(["git", "status", "--porcelain"], source):
+        raise ValueError("Upstream source must be clean")
+    if not (source / ".git").is_dir():
+        raise ValueError("Source must be a standalone clone, not a linked worktree")
+    shutil.copytree(source, workspace, ignore=shutil.ignore_patterns('__pycache__', '.pytest_cache'))
+    hooks = workspace / '.git/qh-no-hooks'
+    hooks.mkdir(exist_ok=True)
+    command(['git', 'config', 'core.hooksPath', str(hooks)], workspace)
+    command(['git', 'config', 'commit.gpgsign', 'false'], workspace)
+    return command(['git', 'rev-parse', 'HEAD'], workspace)
+
+
+def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills_root=None, project_source=None):
     skills_root = skills_root or ROOT / "skills"
     cell = output / f"{case['id']}--{arm}--{repeat}"
     cell.mkdir()
     workspace = Path(tempfile.mkdtemp(prefix="qh-eval-")) / "project"
-    base = prepare(case, workspace)
-    prompt = case["task"] + "\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate."
+    base = prepare_repository(project_source, workspace) if project_source else prepare(case, workspace)
+    project_kind = "local repository" if project_source else "synthetic project"
+    prompt = case["task"] + f"\n\nWork only inside this {project_kind}. Do not use external services or other installed skills. Do not delegate."
     if arm == "auto":
-        prompt = case["task"] + "\n\nWork only inside this synthetic project. Do not use external services. Do not delegate."
+        prompt = case["task"] + f"\n\nWork only inside this {project_kind}. Do not use external services. Do not delegate."
     skill_hash = None
     if arm in {"skill", "auto"}:
         source = skills_root / case["skill"]
