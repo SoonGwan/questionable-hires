@@ -13,7 +13,7 @@ Snapshot reviewed after `28a0453`. The objective remains better developer outcom
 | Con Artist | `b7a768d` | Survivor/killed controls; actual HTTPX early-close gap found | Stable comparative efficiency; HTTPX ancestor-file inspection violates literal project-only read scope |
 | Friday | `b347792` | Actual local rollout/rollback incompatibilities demonstrated | Non-rolling plans, compatible controls and representative runtime context |
 
-The nine-case regression screen in [FAST-REGRESSION-01](FAST-REGRESSION-01.md) predates later compression changes. Do not advertise it as a full screen of this exact combined candidate. Later targeted checks cover only their named paths.
+The current combined instruction set now passes all nine fixed development criteria in [FAST-REGRESSION-02](FAST-REGRESSION-02.md), with matching skill hashes. Total token/time costs are essentially unchanged from the earlier screen. This closes the combined regression-screen gap, not the performance objective or each skill's untested branches. The Receipt documented-runner correction is present, but the specific missing-runtime case has not been rerun to isolate its effect.
 
 ## What the evidence permits
 
