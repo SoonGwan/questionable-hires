@@ -14,9 +14,9 @@ Hiring was a mistake. Firing them would be worse.
 
 ---
 
-## Meet your future coworkers
+## Meet your coworkers
 
-These are planned hires, not shipped skills. We're building and evaluating them one at a time, starting with **Necromancer**.
+Eight instruction-based skills are implemented. Install the whole team or choose a hire. Behavioral evaluation is in progress; there are no performance claims yet.
 
 | Hire | What they say | What they actually do |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ These are planned hires, not shipped skills. We're building and evaluating them 
 
 ## First hire: Necromancer
 
-**Planned interaction — illustrative, not an executed result:**
+**Illustrative interaction — not an executed result:**
 
 ```text
 You: Can we delete this setTimeout?
@@ -52,17 +52,28 @@ The joke should explain the engineering instinct. The output should earn your tr
 
 Our target is GPT-6 Astra. That's a development target, not a benchmark claim.
 
-Each skill will define a narrow job, the evidence it needs, and a clear stopping condition. Ordinary implementation decisions should follow project context. User intent takes precedence over the character. Humor stays brief; findings stay concrete.
+Each skill defines a narrow job, the evidence it needs, and a clear stopping condition. Ordinary implementation decisions follow project context. User intent takes precedence over the character. Humor stays brief; findings stay concrete. See the [Astra design notes](docs/ASTRA.md).
 
 We'll compare skills against the same model without the skill, on the same task and starting code. We'll track correctness, useful findings, unnecessary changes, and task cost where measurable. No performance numbers until there are reproducible results.
 
 ## Hiring status
 
-**Private setup stage. No installable skills yet.**
+**Private development preview. Eight skills, a local installer, and a validated plugin manifest.**
+
+Start with [onboarding](docs/INSTALL.md), then invoke a hire:
+
+```text
+$necromancer Can this workaround be removed?
+$receipt Show that this fix actually changes the behavior.
+$mother-in-law Try the awkward sequences in this checkout flow.
+```
+
+No lifecycle hooks. No background workers. No model configuration changes.
 
 - [Hiring plan](docs/ROADMAP.md)
 - [How we hire](CONTRIBUTING.md)
 - [Skills directory](skills/README.md)
+- [Performance review plan](docs/EVALUATION.md)
 
 ## Inspiration
 
