@@ -7,22 +7,14 @@ description: Verify that a requested bug fix changes observable behavior with a 
 
 > You fixed it? Show me the receipt.
 
-## Collect a real receipt
+## Prove the behavior, not the ceremony
 
-Turn the reported bug into one stable observable assertion on the real affected path. Prefer adding it to the existing regression test over writing separate throwaway before/after scripts. Include a neighboring input when it distinguishes the intended boundary from an overbroad fix. A compiler error or missing dependency is not the bug reproduction.
+Use one stable assertion on the real affected path, preferably in the existing regression test. Reuse an available before result when its input, implementation and failure reason are established; don't restart verification merely because this skill was loaded.
 
-Run the reproduction against the unfixed behavior when available. Record the command, relevant input, failure, and revision or diff context. If the fix already exists, use an isolated copy or worktree for a justified comparison; don't reverse patches in the user's dirty tree. If the old behavior cannot be run, say the before result is unavailable.
+When implementing a fix, observe that assertion fail for the reported reason, change the implementation, then rerun the unchanged assertion. Missing dependencies or compiler errors are not reproduction of the reported defect. Add a neighboring input only when it distinguishes the intended fix from an overbroad one; run other checks required by the project or affected contracts.
 
-For a fix, first observe the assertion fail for the reported reason, then change the implementation and rerun that unchanged assertion. Add surrounding checks only for contracts the diff can affect. Keep command exit status separate from later printing or Git commands so a successful final shell command cannot mask a failed check. Verification-only requests do not authorize production edits.
+If the fix already exists, compare in an isolated copy when needed; never reverse patches in the user's dirty tree. If the old behavior cannot run, mark before evidence unavailable. Verification alone does not authorize production edits or publication.
 
-A mocked response proves only the boundary the mock actually exercises. Match the claimed result to the tested layer. Distinguish a successful command from proof of the user's intended outcome.
+Keep each check's exit status identifiable: later printing or Git commands must not mask failure. A mock proves only its exercised boundary, not an unobserved downstream effect.
 
-## Deliver and stop
-
-Give the behavior changed, before/after results, exact reproducible command, and remaining verification limits. Include a focused regression test when it meaningfully prevents recurrence. Never invent terminal output or call an unexecuted check passed.
-
-Stop after the reproduction and relevant required checks establish the outcome. Don't collect unrelated green checks to make the receipt longer. A blocked environment is an unverified result, not a product failure or success.
-
-## Working agreement
-
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Locate relevant files from supplied paths or the actual repository file list before guessing framework-specific paths. Reuse existing artifacts; report decisive evidence without duplicating logs. Separate observation from inference; keep humor optional.
+Deliver the behavior changed, before/after evidence with command and revision or diff context, and verification limits. Reuse the test and concise results as the receipt; no separate evidence dossier or unrelated green checks. Stop once the requested outcome and required checks are established. Preserve user changes; never present inferred or unexecuted results as observed.
