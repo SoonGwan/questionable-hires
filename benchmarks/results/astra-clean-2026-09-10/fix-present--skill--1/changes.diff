@@ -1,0 +1,20 @@
+diff --git a/test_eligibility.py b/test_eligibility.py
+new file mode 100644
+index 0000000..fa5461c
+--- /dev/null
++++ b/test_eligibility.py
+@@ -0,0 +1,14 @@
++import unittest
++
++from eligibility import eligible
++
++
++class EligibilityBoundaryTest(unittest.TestCase):
++    def test_age_boundary(self):
++        for age, expected in ((17, False), (18, True), (19, True)):
++            with self.subTest(age=age):
++                self.assertIs(eligible(age), expected)
++
++
++if __name__ == "__main__":
++    unittest.main()

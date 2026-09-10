@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!dist'\"' -g '\"'!build'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"'\"",
+    "aggregated_output": "<WORKSPACE>\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la; rg --files --hidden -g '\"'!.git'\"'\"",
+    "aggregated_output": "total 48\ndrwxr-xr-x@  9 admin  staff  288 Sep 10 23:47 .\ndrwx------@  3 admin  staff   96 Sep 10 23:47 ..\ndrwxr-xr-x@ 12 admin  staff  384 Sep 10 23:47 .git\n-rw-r--r--@  1 admin  staff   65 Sep 10 23:47 001_initial.sql\n-rw-r--r--@  1 admin  staff   54 Sep 10 23:47 002_down.sql\n-rw-r--r--@  1 admin  staff   54 Sep 10 23:47 002_up.sql\n-rw-r--r--@  1 admin  staff   45 Sep 10 23:47 new_reader.py\n-rw-r--r--@  1 admin  staff   37 Sep 10 23:47 old_reader.py\n-rw-r--r--@  1 admin  staff  240 Sep 10 23:47 release.md\nold_reader.py\n002_up.sql\n001_initial.sql\nnew_reader.py\n002_down.sql\nrelease.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; for f in release.md 001_initial.sql 002_up.sql 002_down.sql old_reader.py new_reader.py; do cat -n \"$f\"; done'",
+    "aggregated_output": "     1\tDeploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\n     1\tCREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n     1\tALTER TABLE users RENAME COLUMN name TO display_name;\n     1\tALTER TABLE users RENAME COLUMN display_name TO name;\n     1\tQUERY = 'SELECT id, name FROM users'\n     1\tQUERY = 'SELECT id, display_name FROM users'\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nimport sqlite3\nfrom pathlib import Path\nimport runpy\nold = runpy.run_path('old_reader.py')['QUERY']\nnew = runpy.run_path('new_reader.py')['QUERY']\ndb = sqlite3.connect(':memory:')\ndb.executescript(Path('001_initial.sql').read_text())\ndb.execute('INSERT INTO users (id, name) VALUES (?, ?)', (1, 'Example'))\ndef check(label, query, should_work):\n    try:\n        rows = db.execute(query).fetchall()\n        assert rows == [(1, 'Example')], rows\n        works = True\n        detail = repr(rows)\n    except sqlite3.OperationalError as exc:\n        works = False\n        detail = str(exc)\n    assert works == should_work, (label, works, should_work)\n    print(f'{label}: {\\\"OK\\\" if works else \\\"FAIL\\\"} \u2014 {detail}')\ncheck('Initial schema / old reader', old, True)\ncheck('Initial schema / new reader', new, False)\ndb.executescript(Path('002_up.sql').read_text())\ncheck('After up / old instances during rollout', old, False)\ncheck('After up / new instances during rollout', new, True)\ncheck('Rollback old binary before down', old, False)\ndb.executescript(Path('002_down.sql').read_text())\ncheck('After down / old reader', old, True)\ncheck('After down / any remaining new reader', new, False)\nprint('All compatibility expectations verified; round-trip data preserved.')\nPY\"",
+    "aggregated_output": "Initial schema / old reader: OK \u2014 [(1, 'Example')]\nInitial schema / new reader: FAIL \u2014 no such column: display_name\nAfter up / old instances during rollout: FAIL \u2014 no such column: name\nAfter up / new instances during rollout: OK \u2014 [(1, 'Example')]\nRollback old binary before down: FAIL \u2014 no such column: name\nAfter down / old reader: OK \u2014 [(1, 'Example')]\nAfter down / any remaining new reader: FAIL \u2014 no such column: display_name\nAll compatibility expectations verified; round-trip data preserved.\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

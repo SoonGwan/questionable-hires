@@ -1,0 +1,72 @@
+diff --git a/diagnose_search.py b/diagnose_search.py
+new file mode 100644
+index 0000000..213fc4a
+--- /dev/null
++++ b/diagnose_search.py
+@@ -0,0 +1,66 @@
++"""Local experiment: control response order without a network or cache.
++
++Run with: python3 -B diagnose_search.py
++"""
++
++import asyncio
++
++from search import Search
++from transport import fetch
++
++
++async def experiment(completion_order):
++    queries = ("old query", "new query")
++    started = {query: asyncio.Event() for query in queries}
++    release = {query: asyncio.Event() for query in queries}
++    calls = []
++    search = Search()
++
++    async def request(path, *, params, headers):
++        query = params["q"]
++        calls.append((path, params.copy(), headers.copy()))
++        started[query].set()
++        await release[query].wait()
++        # A fresh response for every request; no cache exists in this fake.
++        return {"query": query, "items": [f"result for {query}"]}
++
++    async def local_fetch(query):
++        return await fetch(query, request)
++
++    tasks = {}
++    try:
++        for query in queries:
++            tasks[query] = asyncio.create_task(search.run(query, local_fetch))
++            await started[query].wait()
++
++        observed = []
++        for query in completion_order:
++            release[query].set()
++            await tasks[query]
++            observed.append(search.result["query"])
++
++        assert [call[1]["q"] for call in calls] == list(queries)
++        assert all(call[0] == "/search" for call in calls)
++        assert all(call[2] == {"Cache-Control": "no-cache"} for call in calls)
++        assert observed == list(completion_order)
++        return observed
++    finally:
++        for task in tasks.values():
++            if not task.done():
++                task.cancel()
++        await asyncio.gather(*tasks.values(), return_exceptions=True)
++
++
++async def main():
++    in_order = await experiment(("old query", "new query"))
++    out_of_order = await experiment(("new query", "old query"))
++    assert in_order[-1] == "new query"
++    assert out_of_order[-1] == "old query"
++    print("Both cases: old query submitted first, then new query; no cache or network.")
++    print(f"In-order completions: displayed results = {in_order}")
++    print(f"Out-of-order completions: displayed results = {out_of_order}")
++    print("PASS: a late old response overwrites the newer result without any cache.")
++
++
++if __name__ == "__main__":
++    asyncio.run(asyncio.wait_for(main(), timeout=5))

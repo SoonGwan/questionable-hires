@@ -1,0 +1,1 @@
+Apply the additive migration first, then roll out new readers. Writers keep populating name. Old and new readers may coexist. Rollback restores old readers and retains the additive column. No column deletion is planned. Staging execution evidence is unavailable; this request is a compatibility review, not deployment approval.

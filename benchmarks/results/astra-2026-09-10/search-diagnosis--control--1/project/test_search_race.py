@@ -1,0 +1,69 @@
+"""Local diagnostic: characterize overlapping searches without network or cache."""
+
+import asyncio
+import unittest
+
+from search import Search
+from transport import fetch
+
+
+class SearchCompletionOrderExperiment(unittest.IsolatedAsyncioTestCase):
+    async def observe(self, completion_order):
+        search = Search()
+        queries = ("older query", "newer query")
+        started = {query: asyncio.Event() for query in queries}
+        responses = {
+            query: asyncio.get_running_loop().create_future() for query in queries
+        }
+        calls = []
+
+        async def request(path, *, params, headers):
+            # Each query has its own response; there is no cache or external I/O.
+            query = params["q"]
+            calls.append((path, params.copy(), headers.copy()))
+            started[query].set()
+            return await responses[query]
+
+        async def local_fetch(query):
+            return await fetch(query, request)
+
+        tasks = {}
+        observed = []
+        try:
+            for query in queries:
+                tasks[query] = asyncio.create_task(search.run(query, local_fetch))
+                await asyncio.wait_for(started[query].wait(), timeout=1)
+
+            self.assertIsNone(search.result)
+            self.assertTrue(all(not task.done() for task in tasks.values()))
+            for query in completion_order:
+                responses[query].set_result("results for " + query)
+                await asyncio.wait_for(tasks[query], timeout=1)
+                observed.append(search.result)
+
+            self.assertEqual(calls, [
+                ("/search", {"q": query}, {"Cache-Control": "no-cache"})
+                for query in queries
+            ])
+            return observed
+        finally:
+            for task in tasks.values():
+                task.cancel()
+            await asyncio.gather(*tasks.values(), return_exceptions=True)
+
+    async def test_in_order_completion_leaves_newer_results(self):
+        self.assertEqual(
+            await self.observe(("older query", "newer query")),
+            ["results for older query", "results for newer query"],
+        )
+
+    async def test_older_response_overwrites_newer_results_without_cache(self):
+        # This assertion captures the current bug, not the desired behavior.
+        self.assertEqual(
+            await self.observe(("newer query", "older query")),
+            ["results for newer query", "results for older query"],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

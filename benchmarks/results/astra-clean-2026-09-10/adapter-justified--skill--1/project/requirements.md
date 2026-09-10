@@ -1,0 +1,1 @@
+The external provider supports v1 name and v2 displayName payloads. Both versions remain in production. Provider migration is independent of invoice releases. Keep provider schema handling at the adapter boundary.

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"'\"",
+    "aggregated_output": "<WORKSPACE>\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la; rg --files --hidden -g '\"'!.git'\"'\"",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 10 23:45 .\ndrwx------@  3 admin  staff   96 Sep 10 23:45 ..\ndrwxr-xr-x@ 12 admin  staff  384 Sep 10 23:45 .git\n-rw-r--r--@  1 admin  staff   74 Sep 10 23:45 service.py\n-rw-r--r--@  1 admin  staff  153 Sep 10 23:45 test_service.py\ntest_service.py\nservice.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat service.py test_service.py; git status --short'",
+    "aggregated_output": "def save(store, record):\n    store.append(record)\n    return {'ok': True}\nimport unittest\nfrom service import save\n\nclass SaveTests(unittest.TestCase):\n    def test_save(self):\n        self.assertTrue(save([], 'record')['ok'])\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport os\nimport subprocess\nimport sys\nimport tempfile\n\nroot = Path.cwd()\noriginal = {name: (root / name).read_bytes() for name in ('service.py', 'test_service.py')}\nsource = original['service.py'].decode()\nassert source.count('    store.append(record)\\\\n') == 1\nmutant = source.replace('    store.append(record)\\\\n', '', 1)\nenv = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')\nprobe = \\\"from service import save; store = []; record = 'record'; result = save(store, record); assert result['ok']; assert store == [record], f'Lost write: {store\"'!r}'\"'\\\"\nwith tempfile.TemporaryDirectory(prefix='.lost-write-audit-', dir=root) as tmp:\n    for label, implementation in [('baseline', source), ('lost-write mutation', mutant)]:\n        folder = Path(tmp) / ('baseline' if label == 'baseline' else 'mutant')\n        folder.mkdir()\n        (folder / 'service.py').write_text(implementation)\n        (folder / 'test_service.py').write_bytes(original['test_service.py'])\n        for check, args, expected in [\n            ('existing test', ['-m', 'unittest', '-v', 'test_service'], 0),\n            ('store contents probe', ['-c', probe], 0 if label == 'baseline' else 1),\n        ]:\n            result = subprocess.run([sys.executable, '-B', *args], cwd=folder, env=env, capture_output=True, text=True)\n            print(f'{label} / {check}: exit {result.returncode}', flush=True)\n            print(result.stdout + result.stderr, end='', flush=True)\n            assert result.returncode == expected\nassert all((root / name).read_bytes() == contents for name, contents in original.items())\nprint('Original files unchanged; temporary copies removed.')\nPY\n git status --short\"",
+    "aggregated_output": "lost-write mutation / existing test: exit 0\ntest_save (test_service.SaveTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\nlost-write mutation / store contents probe: exit 1\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nAssertionError: Lost write: []\nOriginal files unchanged; temporary copies removed.\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

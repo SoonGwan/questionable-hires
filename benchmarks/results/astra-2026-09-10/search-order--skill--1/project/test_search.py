@@ -1,0 +1,76 @@
+import asyncio
+import unittest
+
+from search import Search
+
+
+class SearchInteractionTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.search = Search()
+        self.responses = {}
+        self.started = {}
+        self.tasks = []
+
+    async def asyncTearDown(self):
+        for task in self.tasks:
+            if not task.done():
+                task.cancel()
+        await asyncio.gather(*self.tasks, return_exceptions=True)
+
+    async def fetch(self, query):
+        self.started[query].set()
+        return await self.responses[query]
+
+    async def type_query(self, query):
+        self.responses[query] = asyncio.get_running_loop().create_future()
+        self.started[query] = asyncio.Event()
+        task = asyncio.create_task(self.search.run(query, self.fetch))
+        self.tasks.append(task)
+        await self.started[query].wait()
+        return task
+
+    async def test_latest_result_survives_older_response_finishing_last(self):
+        older = await self.type_query("ca")
+        latest = await self.type_query("cat")
+
+        self.responses["cat"].set_result(["cat"])
+        await latest
+        self.assertEqual(self.search.result, ["cat"])
+
+        self.responses["ca"].set_result(["car", "cat"])
+        await older
+        self.assertEqual(
+            self.search.result,
+            ["cat"],
+            "An older query must not replace the latest query's displayed result",
+        )
+
+    async def test_responses_finishing_in_order_show_latest_result(self):
+        older = await self.type_query("ca")
+        latest = await self.type_query("cat")
+
+        self.responses["ca"].set_result(["car", "cat"])
+        await older
+        self.responses["cat"].set_result(["cat"])
+        await latest
+        self.assertEqual(self.search.result, ["cat"])
+
+    async def test_latest_empty_result_survives_older_response(self):
+        older = await self.type_query("cat")
+        latest = await self.type_query("catzz")
+
+        self.responses["catzz"].set_result([])
+        await latest
+        self.assertEqual(self.search.result, [])
+
+        self.responses["cat"].set_result(["cat"])
+        await older
+        self.assertEqual(
+            self.search.result,
+            [],
+            "An older response must not repopulate the latest empty search",
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

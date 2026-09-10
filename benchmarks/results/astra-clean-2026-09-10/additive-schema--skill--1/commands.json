@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"' -g '\"'!pnpm-lock.yaml'\"' -g '\"'!'\"\\\\.git'\"",
+    "aggregated_output": "<WORKSPACE>\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat .agents/skills/friday/SKILL.md; git status --short; git log -5 --oneline'",
+    "aggregated_output": "---\nname: friday\ndescription: Review a planned deployment or release diff for rollback feasibility, mixed-version compatibility, migrations, and configuration readiness without deploying it.\n---\n\n# Friday\n\n> Can Monday-you undo this?\n\n## Read Monday's incident report early\n\nIdentify the release diff, deployment order, runtime versions that may coexist, and the rollback mechanism. Inspect migrations, configuration changes, jobs, and consumers relevant to that release. Don't assume a rolling deployment or zero-downtime requirement if the project uses a different documented strategy.\n\nFollow compatibility in both directions: can old code read data written by new code, and can new code tolerate old data and missing new configuration during rollout? Examine renames, drops, backfills, queue payloads, and irreversible external effects when present.\n\nSeparate reverting application code from reversing data changes. A down migration can exist while losing data. Backups are not a proven recovery path without relevant restore evidence. Look for an expand/migrate/contract sequence when a destructive schema transition must coexist with older consumers.\n\nCheck observable readiness and a concrete rollback trigger against the documented operating context. Use local or designated staging checks when authorized. Reviewing a release does not authorize deployment, production migration, or a restore drill.\n\n## Deliver and stop\n\nLead with ready, ready with stated conditions, or blocked by specific evidence. Use unknown where configuration or runtime evidence is missing; don't label an untested release safe. For each consequential finding include the affected step, failure mode, evidence, and actionable mitigation or verification.\n\nStop after the release's material compatibility and recovery paths are assessed. Don't perform a generic infrastructure audit. If a fix was requested, prepare the scoped correction and verify it without silently releasing it.\n\n## Working agreement\n\nFollow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.\n\nUse the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.\n\n?? .agents/\n4b49d46 Initial application\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git'\"' -g '\"'!.agents'\"'\"",
+    "aggregated_output": "old_reader.py\n002_up.sql\n001_initial.sql\nnew_reader.py\nrelease.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'nl -ba release.md; nl -ba 001_initial.sql; nl -ba 002_up.sql; nl -ba old_reader.py; nl -ba new_reader.py; git show --stat HEAD'",
+    "aggregated_output": "     1\tApply the additive migration first, then roll out new readers. Writers keep populating name. Old and new readers may coexist. Rollback restores old readers and retains the additive column. No column deletion is planned. Staging execution evidence is unavailable; this request is a compatibility review, not deployment approval.\n     1\tCREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n     1\tALTER TABLE users ADD COLUMN display_name TEXT;\n     1\tQUERY = 'SELECT id, name FROM users'\n     1\tQUERY = 'SELECT id, COALESCE(display_name, name) FROM users'\ncommit 4b49d460dd6205900afdfe423ee78fb681bb628e\nAuthor: Fixture Author <fixture@example.invalid>\nDate:   Thu Jan 1 12:00:00 2026 +0000\n\n    Initial application\n\n 001_initial.sql | 1 +\n 002_up.sql      | 1 +\n new_reader.py   | 1 +\n old_reader.py   | 1 +\n release.md      | 1 +\n 5 files changed, 5 insertions(+)\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nimport sqlite3\nfrom pathlib import Path\nimport ast\n\ndef query(path):\n    return ast.literal_eval(ast.parse(Path(path).read_text()).body[0].value)\nold, new = query('old_reader.py'), query('new_reader.py')\ndb = sqlite3.connect(':memory:')\ndb.executescript(Path('001_initial.sql').read_text())\ndb.execute(\\\"INSERT INTO users (id, name) VALUES (1, 'Legacy')\\\")\ndb.executescript(Path('002_up.sql').read_text())\nassert db.execute(old).fetchall() == [(1, 'Legacy')]\nassert db.execute(new).fetchall() == [(1, 'Legacy')]\ndb.execute(\\\"INSERT INTO users (id, name) VALUES (2, 'New write')\\\")\nassert db.execute(new).fetchall() == [(1, 'Legacy'), (2, 'New write')]\ndb.execute(\\\"UPDATE users SET display_name = 'Display' WHERE id = 2\\\")\nassert db.execute(new).fetchall() == [(1, 'Legacy'), (2, 'Display')]\nassert db.execute(old).fetchall() == [(1, 'Legacy'), (2, 'New write')]\nassert 'display_name' in [r[1] for r in db.execute('PRAGMA table_info(users)')]\nprint('PASS: in-memory SQLite check of legacy data, name-only writes, mixed readers, and old-reader rollback with the additive column retained. Target database/runtime is unspecified; this is not staging evidence.')\nPY\"",
+    "aggregated_output": "PASS: in-memory SQLite check of legacy data, name-only writes, mixed readers, and old-reader rollback with the additive column retained. Target database/runtime is unspecified; this is not staging evidence.\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

@@ -1,0 +1,12 @@
+diff --git a/test_service.py b/test_service.py
+index 73568b0..eaa6ea2 100644
+--- a/test_service.py
++++ b/test_service.py
+@@ -3,4 +3,6 @@ from service import save
+ 
+ class SaveTests(unittest.TestCase):
+     def test_save(self):
+-        self.assertTrue(save([], 'record')['ok'])
++        store = []
++        self.assertTrue(save(store, 'record')['ok'])
++        self.assertEqual(store, ['record'])

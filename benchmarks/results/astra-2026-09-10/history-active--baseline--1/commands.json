@@ -1,0 +1,26 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"'; rg -n \\\"display_label\\\" .\"",
+    "aggregated_output": "<WORKSPACE>\n./consumer.py:1:from labels import display_label\n./consumer.py:5:    return display_label({'name': 'Ada'})\n./labels.py:1:def display_label(payload):\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git'\"'; cat labels.py consumer.py; git status --short; rg -n --hidden -g '\"'!.git'\"' 'label|name|test|schema' .\"",
+    "aggregated_output": "consumer.py\nlabels.py\ndef display_label(payload):\n    return payload.get('display_name') or payload['name']\nfrom labels import display_label\n\n# Partner API v1 remains supported through December 2027.\ndef partner_label():\n    return display_label({'name': 'Ada'})\n./consumer.py:1:from labels import display_label\n./consumer.py:4:def partner_label():\n./consumer.py:5:    return display_label({'name': 'Ada'})\n./labels.py:1:def display_label(payload):\n./labels.py:2:    return payload.get('display_name') or payload['name']\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'\nfrom consumer import partner_label\nfrom labels import display_label\nprint('partner_label():', repr(partner_label()))\nfor payload in ({'name': 'Ada'}, {'display_name': '', 'name': 'Ada'}, {'display_name': None, 'name': 'Ada'}, {'display_name': 'Countess', 'name': 'Ada'}):\n    print(repr(payload), 'current:', repr(display_label(payload)), 'without fallback (.get):', repr(payload.get('display_name')))\nPY\"",
+    "aggregated_output": "partner_label(): 'Ada'\n{'name': 'Ada'} current: 'Ada' without fallback (.get): None\n{'display_name': '', 'name': 'Ada'} current: 'Ada' without fallback (.get): ''\n{'display_name': None, 'name': 'Ada'} current: 'Ada' without fallback (.get): None\n{'display_name': 'Countess', 'name': 'Ada'} current: 'Countess' without fallback (.get): 'Countess'\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

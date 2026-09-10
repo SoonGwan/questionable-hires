@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files --hidden -g '\"'!'\"\\\\.git/**' -g '\"'!.git/**'\"'\"",
+    "aggregated_output": "<WORKSPACE>\nold_reader.py\n002_up.sql\n001_initial.sql\nnew_reader.py\n002_down.sql\nrelease.md\n.agents/skills/friday/SKILL.md\n.agents/skills/friday/agents/openai.yaml\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat .agents/skills/friday/SKILL.md; git status --short; git log -5 --oneline'",
+    "aggregated_output": "---\nname: friday\ndescription: Review a planned deployment or release diff for rollback feasibility, mixed-version compatibility, migrations, and configuration readiness without deploying it.\n---\n\n# Friday\n\n> Can Monday-you undo this?\n\n## Read Monday's incident report early\n\nIdentify the release diff, deployment order, runtime versions that may coexist, and the rollback mechanism. Inspect migrations, configuration changes, jobs, and consumers relevant to that release. Don't assume a rolling deployment or zero-downtime requirement if the project uses a different documented strategy.\n\nFollow compatibility in both directions: can old code read data written by new code, and can new code tolerate old data and missing new configuration during rollout? Examine renames, drops, backfills, queue payloads, and irreversible external effects when present.\n\nSeparate reverting application code from reversing data changes. A down migration can exist while losing data. Backups are not a proven recovery path without relevant restore evidence. Look for an expand/migrate/contract sequence when a destructive schema transition must coexist with older consumers.\n\nCheck observable readiness and a concrete rollback trigger against the documented operating context. Use local or designated staging checks when authorized. Reviewing a release does not authorize deployment, production migration, or a restore drill.\n\n## Deliver and stop\n\nLead with ready, ready with stated conditions, or blocked by specific evidence. Use unknown where configuration or runtime evidence is missing; don't label an untested release safe. For each consequential finding include the affected step, failure mode, evidence, and actionable mitigation or verification.\n\nStop after the release's material compatibility and recovery paths are assessed. Don't perform a generic infrastructure audit. If a fix was requested, prepare the scoped correction and verify it without silently releasing it.\n\n## Working agreement\n\nFollow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.\n\nUse the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.\n\n?? .agents/\n7b0b5fe Initial application\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'for f in release.md 001_initial.sql 002_up.sql 002_down.sql old_reader.py new_reader.py; do nl -ba \"$f\"; done; git diff; git ls-files'",
+    "aggregated_output": "     1\tDeploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\n     1\tCREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n     1\tALTER TABLE users RENAME COLUMN name TO display_name;\n     1\tALTER TABLE users RENAME COLUMN display_name TO name;\n     1\tQUERY = 'SELECT id, name FROM users'\n     1\tQUERY = 'SELECT id, display_name FROM users'\n001_initial.sql\n002_down.sql\n002_up.sql\nnew_reader.py\nold_reader.py\nrelease.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nimport sqlite3\nfrom pathlib import Path\n\ndef query_from(path):\n    scope = {}\n    exec(Path(path).read_text(), scope)\n    return scope['QUERY']\n\nold = query_from('old_reader.py')\nnew = query_from('new_reader.py')\ndb = sqlite3.connect(':memory:')\ndb.executescript(Path('001_initial.sql').read_text())\ndb.execute('INSERT INTO users VALUES (?, ?)', (1, 'Before release'))\n\ndef check(stage):\n    for label, query in [('old', old), ('new', new)]:\n        try:\n            print(stage, label, 'OK', db.execute(query).fetchall())\n        except sqlite3.Error as error:\n            print(stage, label, 'FAIL', str(error))\n\ncheck('initial schema')\ndb.executescript(Path('002_up.sql').read_text())\ncheck('after up / rollback before down')\ndb.execute('INSERT INTO users (id, display_name) VALUES (?, ?)', (2, 'During release'))\ndb.executescript(Path('002_down.sql').read_text())\ncheck('after down')\nprint('SQLite version:', sqlite3.sqlite_version)\nPY\"",
+    "aggregated_output": "initial schema old OK [(1, 'Before release')]\ninitial schema new FAIL no such column: display_name\nafter up / rollback before down old FAIL no such column: name\nafter up / rollback before down new OK [(1, 'Before release')]\nafter down old OK [(1, 'Before release'), (2, 'During release')]\nafter down new FAIL no such column: display_name\nSQLite version: 3.51.0\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]
