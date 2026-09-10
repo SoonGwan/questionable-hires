@@ -12,6 +12,35 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_custom_case_ids_rejected_before_output_creation(self):
+        for identity in ('../escape', '/tmp/escape', ''):
+            with tempfile.TemporaryDirectory() as directory:
+                source = Path(directory) / 'cases.json'
+                source.write_text(json.dumps([dict(id=identity, skill='exorcist')]))
+                output = Path(directory) / 'output'
+                with patch.object(sys, 'argv', ['run.py', '--output', str(output), '--cases-file', str(source)]):
+                    with self.assertRaises(SystemExit):
+                        runner.main()
+                self.assertFalse(output.exists())
+
+    def test_custom_suite_passes_snapshot_without_touching_live_skills(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'cases.json'
+            source.write_text(json.dumps([dict(id='new-domain', skill='exorcist', task='Diagnose', files={})]))
+            snapshot = root / 'snapshot'
+            (snapshot / 'exorcist').mkdir(parents=True)
+            (snapshot / 'exorcist/SKILL.md').write_text('Frozen candidate')
+            output = root / 'output'
+            argv = ['run.py', '--output', str(output), '--cases-file', str(source), '--skills-root', str(snapshot), '--arms', 'skill']
+            with patch.object(sys, 'argv', argv), patch.object(runner, 'run_cell', return_value=dict(completed=True)) as run, patch.object(runner, 'command', return_value='test'), patch.object(runner, 'disabled_skills', return_value=[]):
+                runner.main()
+            self.assertEqual(run.call_args.args[-1], snapshot.resolve())
+            manifest = json.loads((output / 'run.json').read_text())
+            self.assertEqual(manifest['suite'], 'custom')
+            self.assertEqual(manifest['case_ids'], ['new-domain'])
+            self.assertEqual(manifest['skill_snapshot_sha256']['exorcist'], runner.hashlib.sha256(b'Frozen candidate').hexdigest())
+
     def test_jobs_above_three_rejected_without_launch(self):
         with patch.object(sys, 'argv', ['run.py', '--output', '/tmp/unused', '--jobs', '4']):
             with self.assertRaises(SystemExit) as raised:

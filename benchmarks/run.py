@@ -59,7 +59,8 @@ def disabled_skills():
     return sorted(paths)
 
 
-def run_cell(case, arm, repeat, output, model, effort, timeout, disabled):
+def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills_root=None):
+    skills_root = skills_root or ROOT / "skills"
     cell = output / f"{case['id']}--{arm}--{repeat}"
     cell.mkdir()
     workspace = Path(tempfile.mkdtemp(prefix="qh-eval-")) / "project"
@@ -69,9 +70,9 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled):
         prompt = case["task"] + "\n\nWork only inside this synthetic project. Do not use external services. Do not delegate."
     skill_hash = None
     if arm in {"skill", "auto"}:
-        source = ROOT / "skills" / case["skill"]
+        source = skills_root / case["skill"]
         if arm == "auto":
-            for hire in (ROOT / "skills").iterdir():
+            for hire in skills_root.iterdir():
                 if (hire / "SKILL.md").is_file():
                     shutil.copytree(hire, workspace / ".agents/skills" / hire.name)
         else:
@@ -133,6 +134,8 @@ def main():
     parser.add_argument("--output", type=Path, required=True, help="New output directory; contains logs requiring review before publication")
     parser.add_argument("--case", action="append")
     parser.add_argument("--suite", choices=["main", "clean"], default="main")
+    parser.add_argument("--cases-file", type=Path, help="Separate preregistered task set; overrides --suite")
+    parser.add_argument("--skills-root", type=Path, default=ROOT / "skills", help="Skill snapshot to evaluate without modifying installed or working skills")
     parser.add_argument("--arms", nargs="+", choices=["baseline", "control", "skill", "auto"], default=["baseline", "control", "skill"])
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--jobs", type=int, default=1)
@@ -145,13 +148,29 @@ def main():
         parser.error("repeats, jobs, and timeout must be positive")
     if args.jobs > 3:
         parser.error("jobs must not exceed 3")
-    cases_path = ROOT / "benchmarks" / ("cases.json" if args.suite == "main" else "clean-cases.json")
+    cases_path = args.cases_file or ROOT / "benchmarks" / ("cases.json" if args.suite == "main" else "clean-cases.json")
     cases = json.loads(cases_path.read_text())
+    seen = set()
+    for case in cases:
+        for field in ("id", "skill"):
+            value = case.get(field, "")
+            if not value or any(c not in "abcdefghijklmnopqrstuvwxyz0123456789-" for c in value):
+                parser.error(f"Invalid case {field}: {value!r}")
+        if case["id"] in seen:
+            parser.error(f"Duplicate case: {case['id']}")
+        seen.add(case["id"])
     if args.case:
         unknown = set(args.case) - {c["id"] for c in cases}
         if unknown:
             parser.error(f"Unknown cases: {sorted(unknown)}")
         cases = [c for c in cases if c["id"] in args.case]
+    if not cases:
+        parser.error("Task set must not be empty")
+    skills_root = args.skills_root.resolve()
+    if set(args.arms) & {"skill", "auto"}:
+        for case in cases:
+            if not (skills_root / case["skill"] / "SKILL.md").is_file():
+                parser.error(f"Missing skill: {case['skill']}")
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     schedule = [(case, arm, repeat) for repeat in range(1, args.repeats + 1)
@@ -161,7 +180,8 @@ def main():
                 "schedule": [f"{c['id']}--{a}--{r}" for c, a, r in schedule],"started_at": datetime.now(timezone.utc).isoformat(), "revision": command(["git", "rev-parse", "HEAD"], ROOT),
                 "codex_version": command(["codex", "--version"], ROOT), "model": args.model, "effort": args.effort,
                 "arms": args.arms, "repeats": args.repeats, "case_ids": [c["id"] for c in cases],
-                "suite": args.suite, "cases_sha256": hashlib.sha256(cases_path.read_bytes()).hexdigest(),
+                "suite": "custom" if args.cases_file else args.suite, "cases_sha256": hashlib.sha256(cases_path.read_bytes()).hexdigest(),
+                "skill_snapshot_sha256": {p.parent.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(skills_root.glob("*/SKILL.md"))},
                 "limitation": "Synthetic tasks; runtime system instructions remain. Personal skills disabled where discovered; review traces for contamination."}
     (output / "run.json").write_text(json.dumps(manifest, indent=2) + "\n")
     disabled = disabled_skills()
@@ -174,7 +194,7 @@ def main():
             item = next(pending, None)
             if item is not None:
                 case, arm, repeat = item
-                running[pool.submit(run_cell, case, arm, repeat, output, args.model, args.effort, args.timeout, disabled)] = item
+                running[pool.submit(run_cell, case, arm, repeat, output, args.model, args.effort, args.timeout, disabled, skills_root)] = item
         for _ in range(args.jobs):
             submit()
         while running:

@@ -26,6 +26,8 @@ python3 benchmarks/run.py --output benchmarks/local-runs/full --repeats 3 --jobs
 
 The default is one repetition, three arms, medium reasoning, and a 240-second per-cell timeout. Use `--case`, `--arms`, `--timeout`, and `--effort` to narrow a run. Output directories must be new; an existing experiment is never overwritten.
 
+For a separately preregistered task set, pass `--cases-file path/to/cases.json` (the same schema as `cases.json`). For version comparisons, `--skills-root path/to/frozen/skills` evaluates a separate skill snapshot without replacing working or installed skills. The manifest records the task-file digest and skill entrypoint digests; each skill cell also records the entrypoint actually copied. Snapshot digests cover `SKILL.md`, not supporting resources. Use distinct output directories, keep model/effort/tasks fixed, and interleave version runs in a predeclared order to reduce time-of-run confounding. These options do not themselves implement a paired-version experiment or prove behavioral improvement.
+
 For automatic selection with all eight skills installed, use `--arms auto`. This supplies the task without explicitly naming a skill; inspect command traces to see which files the model actually loads. Use `--suite clean --arms skill` for the additional clean and limiting cases. Actual recorded results are in [the report](REPORT.md).
 
 ## Evidence
