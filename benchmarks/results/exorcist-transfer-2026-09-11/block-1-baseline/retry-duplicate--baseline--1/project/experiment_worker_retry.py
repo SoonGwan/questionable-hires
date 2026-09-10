@@ -1,0 +1,78 @@
+"""Deterministic, local-only experiments; no threads, sleeps, or real email."""
+
+import unittest
+
+from worker import Worker
+
+
+class WorkerExperiment(unittest.TestCase):
+    def test_acknowledgement_failure_then_sequential_retry(self):
+        worker = Worker()
+        job = "order-123"
+        deliveries = []
+        events = []
+        attempts = 0
+
+        def send(job):
+            # Delivery succeeds while the worker's lock is held.
+            self.assertTrue(worker.lock.locked())
+            deliveries.append(job)
+            events.append("email delivered")
+
+        def acknowledge(job):
+            nonlocal attempts
+            self.assertTrue(worker.lock.locked())
+            attempts += 1
+            if attempts == 1:
+                events.append("acknowledgement raises")
+                raise RuntimeError("injected acknowledgement failure")
+            events.append("acknowledgement succeeds")
+
+        with self.assertRaisesRegex(RuntimeError, "injected"):
+            worker.process(job, send, acknowledge)
+
+        self.assertEqual(deliveries, [job])
+        self.assertNotIn(job, worker.completed)
+        self.assertFalse(worker.lock.locked())
+        events.append("first call exited; job incomplete; lock released")
+
+        # Emulate the specified queue retry only after the first call exits.
+        worker.process(job, send, acknowledge)
+        self.assertEqual(deliveries, [job, job])
+        self.assertEqual(attempts, 2)
+        self.assertIn(job, worker.completed)
+        self.assertFalse(worker.lock.locked())
+        events.append("retry exited; job complete")
+
+        self.assertEqual(events, [
+            "email delivered",
+            "acknowledgement raises",
+            "first call exited; job incomplete; lock released",
+            "email delivered",
+            "acknowledgement succeeds",
+            "retry exited; job complete",
+        ])
+        print("\nSequential retry trace: " + " -> ".join(events))
+
+    def test_successful_completion_suppresses_same_instance_repeat(self):
+        worker = Worker()
+        deliveries, acknowledgements = [], []
+        worker.process("order-123", deliveries.append, acknowledgements.append)
+        worker.process("order-123", deliveries.append, acknowledgements.append)
+        self.assertEqual(deliveries, ["order-123"])
+        self.assertEqual(acknowledgements, ["order-123"])
+
+    def test_separate_instances_have_separate_locks_and_completion_state(self):
+        first, second = Worker(), Worker()
+        self.assertIsNot(first.lock, second.lock)
+        self.assertIsNot(first.completed, second.completed)
+        deliveries, acknowledgements = [], []
+        # Even sequential calls to distinct instances deliver twice.
+        first.process("order-123", deliveries.append, acknowledgements.append)
+        second.process("order-123", deliveries.append, acknowledgements.append)
+        self.assertEqual(deliveries, ["order-123", "order-123"])
+        self.assertEqual(acknowledgements, ["order-123", "order-123"])
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

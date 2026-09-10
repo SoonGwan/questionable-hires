@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"'\"",
+    "aggregated_output": "<WORKSPACE>\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la\nrg --files --hidden -g '\"'!.git'\"'\"",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 11 00:55 .\ndrwx------@  3 admin  staff   96 Sep 11 00:55 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:55 .git\n-rw-r--r--@  1 admin  staff  162 Sep 11 00:55 requirements.md\n-rw-r--r--@  1 admin  staff  344 Sep 11 00:55 worker.py\nrequirements.md\nworker.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat requirements.md worker.py\ngit status --short'",
+    "aggregated_output": "The queue retries when acknowledge raises. Email delivery is external to acknowledgement. No production logs or mail-provider idempotency contract are available.\nfrom threading import Lock\n\nclass Worker:\n    def __init__(self):\n        self.lock = Lock()\n        self.completed = set()\n\n    def process(self, job, send, acknowledge):\n        with self.lock:\n            if job in self.completed:\n                return\n            send(job)\n            acknowledge(job)\n            self.completed.add(job)\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'PYTHONDONTWRITEBYTECODE=1 python3 experiment_worker_retry.py\ngit diff --exit-code -- worker.py requirements.md\ngit status --short'",
+    "aggregated_output": "test_acknowledgement_failure_then_sequential_retry (__main__.WorkerExperiment) ... ok\ntest_separate_instances_have_separate_locks_and_completion_state (__main__.WorkerExperiment) ... ok\ntest_successful_completion_suppresses_same_instance_repeat (__main__.WorkerExperiment) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n\nSequential retry trace: email delivered -> acknowledgement raises -> first call exited; job incomplete; lock released -> email delivered -> acknowledgement succeeds -> retry exited; job complete\n?? experiment_worker_retry.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

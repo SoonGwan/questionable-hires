@@ -1,0 +1,61 @@
+diff --git a/diagnose_retry.py b/diagnose_retry.py
+new file mode 100644
+index 0000000..5188d4f
+--- /dev/null
++++ b/diagnose_retry.py
+@@ -0,0 +1,55 @@
++"""Deterministic, local-only experiment; no email or queue services used."""
++
++from worker import Worker
++
++
++def run_case(fail_first_ack):
++    worker = Worker()
++    job = "confirmation-123"
++    deliveries = []
++    acknowledgements = []
++    events = []
++
++    def send(value):
++        assert worker.lock.locked()
++        deliveries.append(value)
++        events.append("send accepted")
++
++    def acknowledge(value):
++        assert worker.lock.locked()
++        acknowledgements.append(value)
++        if fail_first_ack and len(acknowledgements) == 1:
++            events.append("acknowledge raised")
++            raise RuntimeError("injected acknowledgement failure")
++        events.append("acknowledge succeeded")
++
++    # Both calls use the same worker and job on this single thread.
++    for attempt in (1, 2):
++        events.append(f"attempt {attempt} start")
++        try:
++            worker.process(job, send, acknowledge)
++        except RuntimeError as exc:
++            assert str(exc) == "injected acknowledgement failure"
++            assert fail_first_ack and attempt == 1
++        assert not worker.lock.locked()
++        completed = job in worker.completed
++        assert completed == (not fail_first_ack or attempt == 2)
++        events.append(
++            f"attempt {attempt} end: deliveries={len(deliveries)}, "
++            f"completed={completed}, lock released=True"
++        )
++
++    expected = 2 if fail_first_ack else 1
++    assert deliveries == [job] * expected
++    assert acknowledgements == [job] * expected
++    assert worker.completed == {job}
++    name = "first acknowledgement fails" if fail_first_ack else "control"
++    print(f"{name}: single thread, same Worker, two sequential calls")
++    for event in events:
++        print(f"  {event}")
++
++
++if __name__ == "__main__":
++    run_case(False)
++    run_case(True)
++    print("PASS: duplicates reproduced without overlapping workers")

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'package.json' -g '*test*' -g '*worker*' -g '*README*' -g '*lock*' -g 'pyproject.toml' -g 'requirements*'\"",
+    "aggregated_output": "<WORKSPACE>\nrequirements.md\nworker.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git/**'\"'\"",
+    "aggregated_output": "provider.py\nrequirements.md\nworker.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat requirements.md worker.py provider.py'",
+    "aggregated_output": "A retried logical job retains its identifier. Provider is the local model of the documented idempotency contract. There are no production logs or provider traces.\nclass Worker:\n    def process(self, job, provider, acknowledge):\n        provider.send(job, idempotency_key=job)\n        acknowledge(job)\nclass Provider:\n    def __init__(self):\n        self.delivered = {}\n    def send(self, body, idempotency_key):\n        if idempotency_key not in self.delivered:\n            self.delivered[idempotency_key] = body\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nfrom worker import Worker\nfrom provider import Provider\n\nclass ObservedProvider(Provider):\n    def __init__(self):\n        super().__init__()\n        self.attempts = 0\n        self.raise_after_send = False\n    def send(self, body, idempotency_key):\n        self.attempts += 1\n        super().send(body, idempotency_key)\n        if self.raise_after_send:\n            self.raise_after_send = False\n            raise TimeoutError('delivery accepted, response lost')\n\njob = 'confirmation-123'\nprovider = ObservedProvider()\nacks = []\ndef failed_ack(job):\n    raise RuntimeError('acknowledgement failed')\ntry:\n    Worker().process(job, provider, failed_ack)\nexcept RuntimeError:\n    pass\nassert provider.delivered == {job: job}\nassert acks == []\nWorker().process(job, provider, acks.append)\nassert provider.attempts == 2\nassert provider.delivered == {job: job}\nassert acks == [job]\nprint('PASS acknowledgement failure + fresh worker retry: 2 send attempts, 1 modeled delivery, 1 successful acknowledgement')\n\nprovider = ObservedProvider()\nprovider.raise_after_send = True\nacks = []\ntry:\n    Worker().process(job, provider, acks.append)\nexcept TimeoutError:\n    pass\nassert provider.delivered == {job: job}\nassert acks == []\nWorker().process(job, provider, acks.append)\nassert provider.attempts == 2\nassert provider.delivered == {job: job}\nassert acks == [job]\nprint('PASS accepted delivery + lost response + retry: 2 send attempts, 1 modeled delivery, acknowledgement only on successful retry')\n\nfor _ in range(100):\n    Worker().process(job, provider, acks.append)\nassert len(provider.delivered) == 1\nprint('PASS 100 additional retries with the same identifier: still 1 modeled delivery')\n\nprovider = Provider()\nWorker().process('confirmation-123', provider, lambda _: None)\nWorker().process('confirmation-456', provider, lambda _: None)\nassert len(provider.delivered) == 2\nprint('CONTROL different identifiers: 2 modeled deliveries (outside the stable-identifier retry requirement)')\n\nfirst, second = Provider(), Provider()\nWorker().process(job, first, lambda _: None)\nWorker().process(job, second, lambda _: None)\nassert len(first.delivered) + len(second.delivered) == 2\nprint('CONTROL fresh provider state between attempts: 2 modeled deliveries across instances (state-loss boundary, not the same-provider retry case)')\nPY\"",
+    "aggregated_output": "PASS acknowledgement failure + fresh worker retry: 2 send attempts, 1 modeled delivery, 1 successful acknowledgement\nPASS accepted delivery + lost response + retry: 2 send attempts, 1 modeled delivery, acknowledgement only on successful retry\nPASS 100 additional retries with the same identifier: still 1 modeled delivery\nCONTROL different identifiers: 2 modeled deliveries (outside the stable-identifier retry requirement)\nCONTROL fresh provider state between attempts: 2 modeled deliveries across instances (state-loss boundary, not the same-provider retry case)\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

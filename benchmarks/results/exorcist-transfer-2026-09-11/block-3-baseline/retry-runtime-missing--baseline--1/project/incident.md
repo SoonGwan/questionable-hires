@@ -1,0 +1,1 @@
+Two users reported receiving two emails. The worker implementation, job identifiers, request traces, deployed configuration, and provider idempotency-key settings have not been supplied. The provider SDK exposes an optional idempotency_key argument.

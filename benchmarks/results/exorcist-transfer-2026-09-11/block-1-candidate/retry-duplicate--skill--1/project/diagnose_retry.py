@@ -1,0 +1,75 @@
+"""Deterministic, local-only experiment; no real email or queue access."""
+
+import json
+
+from worker import Worker
+
+
+def run_case(fail_first_ack):
+    worker = Worker()
+    job = "confirmation-123"
+    events = []
+    deliveries = []
+    ack_calls = 0
+    active = 0
+    max_active = 0
+
+    def send(current_job):
+        # Check the actual lock while the side effect is performed.
+        assert worker.lock.locked()
+        deliveries.append(current_job)
+        events.append("send: lock held")
+
+    def acknowledge(current_job):
+        nonlocal ack_calls
+        assert current_job == job
+        ack_calls += 1
+        if fail_first_ack and ack_calls == 1:
+            events.append("acknowledge: raised")
+            raise RuntimeError("injected acknowledgement failure")
+        events.append("acknowledge: succeeded")
+
+    def attempt():
+        nonlocal active, max_active
+        active += 1
+        max_active = max(max_active, active)
+        try:
+            worker.process(job, send, acknowledge)
+        finally:
+            active -= 1
+
+    try:
+        attempt()
+    except RuntimeError as error:
+        assert str(error) == "injected acknowledgement failure"
+        assert deliveries == [job]
+        assert job not in worker.completed
+        assert not worker.lock.locked()
+        assert active == 0
+        events.append("after failure: delivered, incomplete, lock released")
+        # Queue retry starts only after the first call has fully exited.
+        attempt()
+
+    assert job in worker.completed
+    assert not worker.lock.locked()
+    expected = 2 if fail_first_ack else 1
+    assert len(deliveries) == expected
+    assert max_active == 1
+
+    # Once completion is recorded, replaying the job does not send again.
+    attempt()
+    assert len(deliveries) == expected
+    assert ack_calls == expected
+    events.append("replay after completion: no additional send or acknowledgement")
+    return {
+        "case": "first acknowledgement fails" if fail_first_ack else "baseline",
+        "worker_instances": 1,
+        "max_active_calls": max_active,
+        "deliveries": len(deliveries),
+        "events": events,
+    }
+
+
+if __name__ == "__main__":
+    for fail_first_ack in (False, True):
+        print(json.dumps(run_case(fail_first_ack), indent=2))

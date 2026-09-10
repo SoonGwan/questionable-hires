@@ -1,0 +1,65 @@
+diff --git a/diagnostics/retry_experiment.py b/diagnostics/retry_experiment.py
+new file mode 100644
+index 0000000..0219116
+--- /dev/null
++++ b/diagnostics/retry_experiment.py
+@@ -0,0 +1,59 @@
++"""Local retry experiment; callbacks record effects without external services."""
++
++import sys
++from pathlib import Path
++
++sys.dont_write_bytecode = True
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++
++from worker import Worker
++
++
++def run(fail_first_ack):
++    worker = Worker()
++    job = "confirmation-123"
++    deliveries = []
++    events = []
++    ack_calls = 0
++
++    def send(job):
++        deliveries.append(job)
++        events.append("email delivered")
++
++    def acknowledge(job):
++        nonlocal ack_calls
++        ack_calls += 1
++        if fail_first_ack and ack_calls == 1:
++            events.append("acknowledgement raised")
++            raise RuntimeError("injected acknowledgement failure")
++        events.append("acknowledgement succeeded")
++
++    # One thread, one Worker, and no scheduling or timing dependencies.
++    # The queue retries only after the failed call has exited.
++    try:
++        worker.process(job, send, acknowledge)
++    except RuntimeError as error:
++        assert str(error) == "injected acknowledgement failure"
++        assert not worker.completed
++        assert not worker.lock.locked()
++        events.append("first call exited; completed empty; lock released")
++        worker.process(job, send, acknowledge)
++
++    assert worker.completed == {job}
++    expected = 2 if fail_first_ack else 1
++    assert len(deliveries) == expected
++
++    # Once completion is recorded, the same instance suppresses reprocessing.
++    worker.process(job, send, acknowledge)
++    assert len(deliveries) == expected
++    assert ack_calls == expected
++    events.append("replay after completion suppressed")
++    print("ACK FAILS ONCE" if fail_first_ack else "ACK SUCCEEDS")
++    for event in events:
++        print(f"  {event}")
++    print(f"  deliveries={len(deliveries)}, ack_calls={ack_calls}")
++
++
++if __name__ == "__main__":
++    run(fail_first_ack=False)
++    run(fail_first_ack=True)

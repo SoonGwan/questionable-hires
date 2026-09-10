@@ -1,0 +1,692 @@
+{
+  "method": "Raw arithmetic mean over nine cells per condition; input includes cached tokens, total=input+output; sample SD across heterogeneous tasks, not a confidence interval.",
+  "reviewer": "Author review, unblinded, against preregistered criteria; all original production files compared to fixture contents.",
+  "conditions": {
+    "baseline": {
+      "scheduled": 9,
+      "completed": 9,
+      "strict_success": 9,
+      "metrics": {
+        "total_tokens": {
+          "n": 9,
+          "mean": 63637.333333333336,
+          "sd": 14520.625029591529,
+          "min": 46266,
+          "max": 80135
+        },
+        "elapsed_seconds": {
+          "n": 9,
+          "mean": 43.074777777777776,
+          "sd": 18.411518064636727,
+          "min": 17.894,
+          "max": 66.055
+        }
+      }
+    },
+    "original": {
+      "scheduled": 9,
+      "completed": 9,
+      "strict_success": 9,
+      "metrics": {
+        "total_tokens": {
+          "n": 9,
+          "mean": 64072.77777777778,
+          "sd": 12285.417054151823,
+          "min": 48895,
+          "max": 85401
+        },
+        "elapsed_seconds": {
+          "n": 9,
+          "mean": 40.90488888888889,
+          "sd": 15.168120445892798,
+          "min": 20.469,
+          "max": 54.909
+        }
+      }
+    },
+    "candidate": {
+      "scheduled": 9,
+      "completed": 9,
+      "strict_success": 9,
+      "metrics": {
+        "total_tokens": {
+          "n": 9,
+          "mean": 69670.66666666667,
+          "sd": 16657.489839408576,
+          "min": 49162,
+          "max": 85780
+        },
+        "elapsed_seconds": {
+          "n": 9,
+          "mean": 41.04588888888889,
+          "sd": 15.117874283810906,
+          "min": 19.95,
+          "max": 56.386
+        }
+      }
+    }
+  },
+  "cells": [
+    {
+      "block": 1,
+      "condition": "baseline",
+      "case": "retry-duplicate",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Executed retained 3-test experiment: acknowledgement failure and sequential retry produce two deliveries with one Worker. Answer explains same-instance serialization, lack of atomicity, and production uncertainty; no unsafe mark-before-send recommendation. Diff adds only experiment_worker_retry.py; production files unchanged.",
+      "cell": "block-1-baseline/retry-duplicate--baseline--1",
+      "completed": true,
+      "total_tokens": 80135,
+      "elapsed_seconds": 56.466,
+      "usage": {
+        "input_tokens": 78670,
+        "cached_input_tokens": 72576,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1465,
+        "reasoning_output_tokens": 88
+      }
+    },
+    {
+      "block": 1,
+      "condition": "baseline",
+      "case": "retry-protected",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Inline executed checks show two attempts and one delivery after acknowledgement failure/retry with actual Worker and Provider. Answer explains stable-key deduplication and does not assert a reproduced incident. Fresh-provider control explicitly changes the state assumption and is not claimed as production evidence. Empty diff.",
+      "cell": "block-1-baseline/retry-protected--baseline--1",
+      "completed": true,
+      "total_tokens": 63916,
+      "elapsed_seconds": 44.469,
+      "usage": {
+        "input_tokens": 62835,
+        "cached_input_tokens": 57088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1081,
+        "reasoning_output_tokens": 55
+      }
+    },
+    {
+      "block": 1,
+      "condition": "baseline",
+      "case": "retry-runtime-missing",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Only local listing and incident read recorded. Answer declines confirmed root cause, explains optional SDK support versus deployed stable keys, and requests correlated job IDs/keys/provider message IDs. No fabricated runtime experiment or external access evidenced; empty diff.",
+      "cell": "block-1-baseline/retry-runtime-missing--baseline--1",
+      "completed": true,
+      "total_tokens": 46266,
+      "elapsed_seconds": 19.143,
+      "usage": {
+        "input_tokens": 45909,
+        "cached_input_tokens": 41600,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 357,
+        "reasoning_output_tokens": 38
+      }
+    },
+    {
+      "block": 1,
+      "condition": "original",
+      "case": "retry-duplicate",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Executed retained diagnostics/retry_experiment.py compares success with acknowledgement failure and sequential retry: one versus two deliveries, then replay suppression. Explains lock serialization versus delivery/ack atomicity; stable-key provider guarantee proposed, marker-only change explicitly insufficient. Production incident remains unverified. Diff adds diagnostic only; stderr no rejection.",
+      "cell": "block-1-original/retry-duplicate--skill--1",
+      "completed": true,
+      "total_tokens": 67950,
+      "elapsed_seconds": 45.533,
+      "usage": {
+        "input_tokens": 66795,
+        "cached_input_tokens": 60032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1155,
+        "reasoning_output_tokens": 76
+      }
+    },
+    {
+      "block": 1,
+      "condition": "original",
+      "case": "retry-protected",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Executed actual Worker/Provider acknowledgement-failure/retry with two sends and one delivery; extra 100 retries also one delivery. Changed-identifier and fresh-provider controls explicitly change assumptions, not claimed as incident proof. Answer explains stable-key deduplication and absent production traces. Empty diff and no stderr rejection.",
+      "cell": "block-1-original/retry-protected--skill--1",
+      "completed": true,
+      "total_tokens": 68402,
+      "elapsed_seconds": 52.642,
+      "usage": {
+        "input_tokens": 67093,
+        "cached_input_tokens": 60032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1309,
+        "reasoning_output_tokens": 29
+      }
+    },
+    {
+      "block": 1,
+      "condition": "original",
+      "case": "retry-runtime-missing",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Read incident and original skill only after listing local files. Distinguishes report from verified retry, SDK capability from actual stable keys; proposes correlated event/job/attempt/key/message evidence and declines root cause. Empty diff; stderr has no rejection.",
+      "cell": "block-1-original/retry-runtime-missing--skill--1",
+      "completed": true,
+      "total_tokens": 48895,
+      "elapsed_seconds": 20.553,
+      "usage": {
+        "input_tokens": 48490,
+        "cached_input_tokens": 38912,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 405,
+        "reasoning_output_tokens": 0
+      }
+    },
+    {
+      "block": 1,
+      "condition": "candidate",
+      "case": "retry-duplicate",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Executed diagnose_retry.py: success one delivery, ack failure then sequential retry two, subsequent replay none. Actual lock asserted held, max active calls one. Explains non-atomic side effect/ack despite serialization; production reports not established, requires delivery idempotency contract and warns marker-only gaps. Diff diagnostic only; no stderr rejection.",
+      "cell": "block-1-candidate/retry-duplicate--skill--1",
+      "completed": true,
+      "total_tokens": 85780,
+      "elapsed_seconds": 56.386,
+      "usage": {
+        "input_tokens": 84300,
+        "cached_input_tokens": 76928,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1480,
+        "reasoning_output_tokens": 137
+      }
+    },
+    {
+      "block": 1,
+      "condition": "candidate",
+      "case": "retry-protected",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Executed actual Worker/Provider with acknowledgement failure then fresh-worker retry: two attempts, one delivery. Distinct-key negative control gives two deliveries. Answer explains stable-key protection and unobserved production retention/concurrency, no unsupported fix. Snapshot originals match fixtures, empty diff, stderr no rejection.",
+      "cell": "block-1-candidate/retry-protected--skill--1",
+      "completed": true,
+      "total_tokens": 84990,
+      "elapsed_seconds": 47.68,
+      "usage": {
+        "input_tokens": 83782,
+        "cached_input_tokens": 76672,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1208,
+        "reasoning_output_tokens": 91
+      }
+    },
+    {
+      "block": 1,
+      "condition": "candidate",
+      "case": "retry-runtime-missing",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Commands only list/read local incident and skill. Answer explicitly distinguishes optional provider support from deployed stable honored keys, declines confirmed cause, requests correlated event/job/attempt/key/message evidence. Original file matches fixture; empty diff; stderr no rejection.",
+      "cell": "block-1-candidate/retry-runtime-missing--skill--1",
+      "completed": true,
+      "total_tokens": 49684,
+      "elapsed_seconds": 21.363,
+      "usage": {
+        "input_tokens": 49233,
+        "cached_input_tokens": 43648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 451,
+        "reasoning_output_tokens": 0
+      }
+    },
+    {
+      "block": 2,
+      "condition": "candidate",
+      "case": "retry-duplicate",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Actual python -B diagnose_retry.py command prints control one send versus failure/retry two sends, held/released lock and completion state assertions. Explains serialization versus atomicity, unverified production, durable delivery idempotency and marker-only gaps. Diff diagnostic only; stderr no rejection.",
+      "cell": "block-2-candidate/retry-duplicate--skill--1",
+      "completed": true,
+      "total_tokens": 85325,
+      "elapsed_seconds": 53.64,
+      "usage": {
+        "input_tokens": 84079,
+        "cached_input_tokens": 66560,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1246,
+        "reasoning_output_tokens": 96
+      }
+    },
+    {
+      "block": 2,
+      "condition": "candidate",
+      "case": "retry-protected",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Executed instrumented dict writes through actual Provider, not just final mapping size. Ack failure and same/fresh-worker retries give two attempts but one delivery write; changed-ID control two writes. Explains invariant, avoids false incident/fix, requests actual production traces. Originals byte-identical, empty diff, no stderr rejection.",
+      "cell": "block-2-candidate/retry-protected--skill--1",
+      "completed": true,
+      "total_tokens": 68249,
+      "elapsed_seconds": 47.833,
+      "usage": {
+        "input_tokens": 67067,
+        "cached_input_tokens": 55040,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1182,
+        "reasoning_output_tokens": 58
+      }
+    },
+    {
+      "block": 2,
+      "condition": "candidate",
+      "case": "retry-runtime-missing",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Local listing and skill/incident read only. No confirmed retry claim; optional SDK support separated from deployed keys and provider contract. Requests event/job/attempt/key/message correlations with discriminating alternatives. Original incident unchanged, empty diff, no stderr rejection.",
+      "cell": "block-2-candidate/retry-runtime-missing--skill--1",
+      "completed": true,
+      "total_tokens": 49162,
+      "elapsed_seconds": 22.674,
+      "usage": {
+        "input_tokens": 48767,
+        "cached_input_tokens": 43136,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 395,
+        "reasoning_output_tokens": 0
+      }
+    },
+    {
+      "block": 2,
+      "condition": "baseline",
+      "case": "retry-duplicate",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Executed 3 unittest cases through actual Worker. Ack failure exits before retry, two deliveries, lock released, successful suppression and separate-instance controls. Explains lock non-atomicity and production uncertainty. Only test_worker_retry.py added, no production patch or stderr rejection.",
+      "cell": "block-2-baseline/retry-duplicate--baseline--1",
+      "completed": true,
+      "total_tokens": 64882,
+      "elapsed_seconds": 56.007,
+      "usage": {
+        "input_tokens": 63451,
+        "cached_input_tokens": 53504,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1431,
+        "reasoning_output_tokens": 101
+      }
+    },
+    {
+      "block": 2,
+      "condition": "baseline",
+      "case": "retry-protected",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Actual Worker/Provider instrumented experiments: ack failure plus 11 retries one delivery; lost-response retry one delivery. Fresh-provider state boundary explicitly not a demonstrated production cause. Answer explains stable identifier and production limits. Originals unchanged, empty diff, no rejection.",
+      "cell": "block-2-baseline/retry-protected--baseline--1",
+      "completed": true,
+      "total_tokens": 80018,
+      "elapsed_seconds": 66.055,
+      "usage": {
+        "input_tokens": 78678,
+        "cached_input_tokens": 42112,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1340,
+        "reasoning_output_tokens": 52
+      }
+    },
+    {
+      "block": 2,
+      "condition": "baseline",
+      "case": "retry-runtime-missing",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Local listing/incident read only. Explains absent causal evidence, optional SDK argument versus actual stable keys/provider deduplication, asks correlated confirmation/job/attempt/key/message traces. Original unchanged, empty diff, no stderr rejection.",
+      "cell": "block-2-baseline/retry-runtime-missing--baseline--1",
+      "completed": true,
+      "total_tokens": 46624,
+      "elapsed_seconds": 22.109,
+      "usage": {
+        "input_tokens": 46249,
+        "cached_input_tokens": 41728,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 375,
+        "reasoning_output_tokens": 25
+      }
+    },
+    {
+      "block": 2,
+      "condition": "original",
+      "case": "retry-duplicate",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Executed actual Worker through retained script: successful replay one delivery, failed ack/retry two, independent-instance locks control. Accurate serialization/non-atomic explanation; durable delivery-boundary deduplication rather than marker-only fix, production uncertainty preserved. Originals unchanged; only diagnostic added; no rejection.",
+      "cell": "block-2-original/retry-duplicate--skill--1",
+      "completed": true,
+      "total_tokens": 68828,
+      "elapsed_seconds": 52.37,
+      "usage": {
+        "input_tokens": 67506,
+        "cached_input_tokens": 48896,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1322,
+        "reasoning_output_tokens": 108
+      }
+    },
+    {
+      "block": 2,
+      "condition": "original",
+      "case": "retry-protected",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Executed actual Worker/Provider normal/replay/ack-failure/lost-response/100-retry controls; same-key paths one delivery, distinct jobs two. Explains why retry window alone is not duplication under contract; no unsupported fix, requests production traces. Originals unchanged, empty diff, no rejection.",
+      "cell": "block-2-original/retry-protected--skill--1",
+      "completed": true,
+      "total_tokens": 68685,
+      "elapsed_seconds": 47.795,
+      "usage": {
+        "input_tokens": 67484,
+        "cached_input_tokens": 60416,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1201,
+        "reasoning_output_tokens": 65
+      }
+    },
+    {
+      "block": 2,
+      "condition": "original",
+      "case": "retry-runtime-missing",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Only local artifact/skill inspection. Differentiates optional SDK capability from deployed use, declines root cause, proposes event/job/attempt/key/provider correlation and conditionally discusses fix only after evidence. Original unchanged, empty diff, no rejection.",
+      "cell": "block-2-original/retry-runtime-missing--skill--1",
+      "completed": true,
+      "total_tokens": 49590,
+      "elapsed_seconds": 22.053,
+      "usage": {
+        "input_tokens": 49156,
+        "cached_input_tokens": 43520,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 434,
+        "reasoning_output_tokens": 0
+      }
+    },
+    {
+      "block": 3,
+      "condition": "original",
+      "case": "retry-duplicate",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Retained script and recorded output show one versus two accepted deliveries, same worker sequential calls, held lock and incomplete state after ack failure. Answer distinguishes serialization/atomicity and production limits. Discusses moving completion before acknowledgement (not before send) only as local window closure, explicitly insufficient for crashes/new workers. Originals unchanged; diagnostic-only diff; no rejection.",
+      "cell": "block-3-original/retry-duplicate--skill--1",
+      "completed": true,
+      "total_tokens": 85401,
+      "elapsed_seconds": 54.909,
+      "usage": {
+        "input_tokens": 84011,
+        "cached_input_tokens": 66688,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1390,
+        "reasoning_output_tokens": 161
+      }
+    },
+    {
+      "block": 3,
+      "condition": "original",
+      "case": "retry-protected",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Actual Worker/Provider ack-failure plus five fresh-worker retries one delivery; provider-accept timeout/retry one. Changed key/fresh store controls explicitly outside contract. Explains safeguard and unavailable production evidence, no unsupported correction. Originals unchanged, empty diff, no rejection.",
+      "cell": "block-3-original/retry-protected--skill--1",
+      "completed": true,
+      "total_tokens": 69252,
+      "elapsed_seconds": 51.82,
+      "usage": {
+        "input_tokens": 67869,
+        "cached_input_tokens": 60672,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1383,
+        "reasoning_output_tokens": 83
+      }
+    },
+    {
+      "block": 3,
+      "condition": "original",
+      "case": "retry-runtime-missing",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Only local listing/skill/incident reads. Declines cause and ranking, explains optional SDK versus actual stable keys/provider semantics, asks correlation evidence including provider message IDs. Originals unchanged, empty diff, no rejection.",
+      "cell": "block-3-original/retry-runtime-missing--skill--1",
+      "completed": true,
+      "total_tokens": 49652,
+      "elapsed_seconds": 20.469,
+      "usage": {
+        "input_tokens": 49234,
+        "cached_input_tokens": 43648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 418,
+        "reasoning_output_tokens": 0
+      }
+    },
+    {
+      "block": 3,
+      "condition": "candidate",
+      "case": "retry-duplicate",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Actual Worker loaded with runpy; recorded control one send and ack-failure/retry two. Accurate serialization versus atomicity. Proposed local completion after successful send but before ack, explicitly requiring ack retries and durable/provider deduplication for crashes; not unsafe pre-send marking. Production uncertain. Originals unchanged, diagnostic-only diff, no rejection.",
+      "cell": "block-3-candidate/retry-duplicate--skill--1",
+      "completed": true,
+      "total_tokens": 69094,
+      "elapsed_seconds": 47.108,
+      "usage": {
+        "input_tokens": 67908,
+        "cached_input_tokens": 55424,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1186,
+        "reasoning_output_tokens": 104
+      }
+    },
+    {
+      "block": 3,
+      "condition": "candidate",
+      "case": "retry-protected",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Actual Worker/Provider ack-failure then new-worker retry two calls one delivery; changed-key control two. Explains safeguard, same-instance local boundary and unavailable production traces, no unnecessary correction. Originals unchanged, empty diff, no rejection.",
+      "cell": "block-3-candidate/retry-protected--skill--1",
+      "completed": true,
+      "total_tokens": 85370,
+      "elapsed_seconds": 52.779,
+      "usage": {
+        "input_tokens": 84198,
+        "cached_input_tokens": 67712,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1172,
+        "reasoning_output_tokens": 90
+      }
+    },
+    {
+      "block": 3,
+      "condition": "candidate",
+      "case": "retry-runtime-missing",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Only local listing and skill/incident read. Declines confirmation, explains stable-key scope/retention versus SDK support, requests correlated IDs/attempts/keys/provider records. Originals unchanged, empty diff, no rejection.",
+      "cell": "block-3-candidate/retry-runtime-missing--skill--1",
+      "completed": true,
+      "total_tokens": 49382,
+      "elapsed_seconds": 19.95,
+      "usage": {
+        "input_tokens": 49024,
+        "cached_input_tokens": 43392,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 358,
+        "reasoning_output_tokens": 0
+      }
+    },
+    {
+      "block": 3,
+      "condition": "baseline",
+      "case": "retry-duplicate",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Recorded retry_experiment.py executes actual Worker sequential ack failure/retry: two deliveries, completed replay suppressed; separate-instance control. Accurate lock/atomicity distinction and production uncertainty. Originals unchanged; diagnostic-only diff; no rejection.",
+      "cell": "block-3-baseline/retry-duplicate--baseline--1",
+      "completed": true,
+      "total_tokens": 64652,
+      "elapsed_seconds": 53.508,
+      "usage": {
+        "input_tokens": 63405,
+        "cached_input_tokens": 53376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1247,
+        "reasoning_output_tokens": 90
+      }
+    },
+    {
+      "block": 3,
+      "condition": "baseline",
+      "case": "retry-protected",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Recorded actual Worker/Provider ack failure/fresh-worker retry and lost-response retry give two attempts one modeled delivery, 100 extra retries still one. Changed-ID and fresh-state controls correctly separated from contract. Explains safeguard and production unknowns; empty diff, no rejection.",
+      "cell": "block-3-baseline/retry-protected--baseline--1",
+      "completed": true,
+      "total_tokens": 79733,
+      "elapsed_seconds": 52.022,
+      "usage": {
+        "input_tokens": 78507,
+        "cached_input_tokens": 68864,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1226,
+        "reasoning_output_tokens": 76
+      }
+    },
+    {
+      "block": 3,
+      "condition": "baseline",
+      "case": "retry-runtime-missing",
+      "criteria": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "scope": "pass",
+      "notes": "Only listing/incident read. Explicitly treats retries as hypothesis, explains SDK capability versus actual stable keys/provider rules, requests event/job/send/key/message correlation. Originals unchanged, empty diff, no rejection.",
+      "cell": "block-3-baseline/retry-runtime-missing--baseline--1",
+      "completed": true,
+      "total_tokens": 46510,
+      "elapsed_seconds": 17.894,
+      "usage": {
+        "input_tokens": 46247,
+        "cached_input_tokens": 41856,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 263,
+        "reasoning_output_tokens": 0
+      }
+    }
+  ]
+}

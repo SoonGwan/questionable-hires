@@ -1,0 +1,26 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!'\"\\\\.git' -g '*'\"",
+    "aggregated_output": "<WORKSPACE>\n.git/COMMIT_EDITMSG\n.git/index\n.git/refs/heads/main\n.git/logs/refs/heads/main\n.git/logs/HEAD\n.git/HEAD\n.git/objects/ff/97c5268b403063a94f65e51474cd2cc1af968f\n.git/objects/cc/f90906cbe59c974c1a6d3e786861cbc6033aed\n.git/objects/07/f0fe3922ca4365dee5ad5a53e424b4eec59702\n.git/objects/75/49066416d586daedce39c82ed38339f86992ce\n.git/objects/ee/d4fef0b5f4e100b00f87e2a38c5bf63d5f6c79\n.git/config\nprovider.py\nrequirements.md\nworker.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; cat requirements.md worker.py provider.py'",
+    "aggregated_output": "A retried logical job retains its identifier. Provider is the local model of the documented idempotency contract. There are no production logs or provider traces.\nclass Worker:\n    def process(self, job, provider, acknowledge):\n        provider.send(job, idempotency_key=job)\n        acknowledge(job)\nclass Provider:\n    def __init__(self):\n        self.delivered = {}\n    def send(self, body, idempotency_key):\n        if idempotency_key not in self.delivered:\n            self.delivered[idempotency_key] = body\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'\nfrom worker import Worker\nfrom provider import Provider\n\nclass ObservedProvider(Provider):\n    def __init__(self, fail_after_delivery=False):\n        super().__init__()\n        self.attempts = 0\n        self.fail_after_delivery = fail_after_delivery\n    def send(self, body, idempotency_key):\n        self.attempts += 1\n        super().send(body, idempotency_key)\n        if self.fail_after_delivery and self.attempts == 1:\n            raise RuntimeError('simulated response loss after delivery')\n\nworker = Worker()\njob = 'confirmation-123'\n\nprovider = ObservedProvider()\nfor _ in range(3):\n    worker.process(job, provider, lambda job: None)\nassert provider.attempts == 3 and provider.delivered == {job: job}\nprint('Repeated logical job: 3 send attempts, 1 modeled delivery')\n\nprovider = ObservedProvider()\nacks = []\ndef fail_ack(job):\n    raise RuntimeError('simulated acknowledgment failure')\ntry:\n    worker.process(job, provider, fail_ack)\nexcept RuntimeError:\n    pass\nassert provider.delivered == {job: job}\nworker.process(job, provider, acks.append)\nassert provider.attempts == 2 and provider.delivered == {job: job} and acks == [job]\nprint('Acknowledgment failure after delivery, then retry: 2 send attempts, 1 modeled delivery')\n\nprovider = ObservedProvider(fail_after_delivery=True)\nacks = []\ntry:\n    worker.process(job, provider, acks.append)\nexcept RuntimeError:\n    pass\nassert provider.delivered == {job: job} and acks == []\nworker.process(job, provider, acks.append)\nassert provider.attempts == 2 and provider.delivered == {job: job} and acks == [job]\nprint('Provider response loss after delivery, then retry: 2 send attempts, 1 modeled delivery')\n\nfirst, restarted = Provider(), Provider()\nworker.process(job, first, lambda job: None)\nworker.process(job, restarted, lambda job: None)\nassert sum(len(p.delivered) for p in (first, restarted)) == 2\nprint('Boundary control, fresh provider state on retry: 2 modeled deliveries across separate instances')\nPY\nnl -ba worker.py\nnl -ba provider.py\nnl -ba requirements.md\ngit status --short\"",
+    "aggregated_output": "Repeated logical job: 3 send attempts, 1 modeled delivery\nAcknowledgment failure after delivery, then retry: 2 send attempts, 1 modeled delivery\nProvider response loss after delivery, then retry: 2 send attempts, 1 modeled delivery\nBoundary control, fresh provider state on retry: 2 modeled deliveries across separate instances\n     1\tclass Worker:\n     2\t    def process(self, job, provider, acknowledge):\n     3\t        provider.send(job, idempotency_key=job)\n     4\t        acknowledge(job)\n     1\tclass Provider:\n     2\t    def __init__(self):\n     3\t        self.delivered = {}\n     4\t    def send(self, body, idempotency_key):\n     5\t        if idempotency_key not in self.delivered:\n     6\t            self.delivered[idempotency_key] = body\n     1\tA retried logical job retains its identifier. Provider is the local model of the documented idempotency contract. There are no production logs or provider traces.\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

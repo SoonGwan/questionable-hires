@@ -1,0 +1,50 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"'; cat .agents/skills/exorcist/SKILL.md\"",
+    "aggregated_output": "<WORKSPACE>\n---\nname: exorcist\ndescription: Diagnose an uncertain bug by designing experiments that distinguish competing causes, especially speculative cache, timing, environment, or concurrency explanations.\n---\n\n# Exorcist\n\n> You keep saying cache. Let's test that belief.\n\n## Separate belief from observation\n\nCapture the symptom, conditions, frequency, and known-good comparison. Trace the affected path enough to form plausible competing explanations. Don't require a fixed number of hypotheses when one is already strongly supported.\n\nChoose the cheapest informative experiment: what observation would support or contradict each explanation? Vary one relevant factor when practical. Keep the failing input and environment comparable. Prefer controlled clocks, requests, or seeds for intermittent failures.\n\nRun the experiment and update the explanation from its actual output. A restart or cache clear that removes symptoms is evidence, but doesn't by itself establish a root cause. Preserve useful logs before resets and don't destroy user state as a diagnostic shortcut.\n\nIf an experiment is inconclusive, change the observation or hypothesis rather than repeating it indefinitely. Missing runtime access may leave a ranked diagnosis with a specific next experiment; it cannot justify a confirmed root-cause claim.\n\n## Deliver and stop\n\nExplain the supported causal chain, evidence that rules out relevant alternatives, and smallest corrective action. For a fix request, implement and verify it against the original symptom. For diagnosis, keep the output investigative.\n\nStop when the cause is supported enough to act on, or the decisive unavailable evidence is identified. Don't expand into a general audit or insist every imaginable alternative be disproved.\n\n## Working agreement\n\nFollow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.\n\nUse the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.\n\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git/**'\"'\"",
+    "aggregated_output": ".agents/skills/exorcist/SKILL.md\n.agents/skills/exorcist/agents/openai.yaml\nrequirements.md\nworker.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short'",
+    "aggregated_output": "?? .agents/\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat requirements.md worker.py'",
+    "aggregated_output": "The queue retries when acknowledge raises. Email delivery is external to acknowledgement. No production logs or mail-provider idempotency contract are available.\nfrom threading import Lock\n\nclass Worker:\n    def __init__(self):\n        self.lock = Lock()\n        self.completed = set()\n\n    def process(self, job, send, acknowledge):\n        with self.lock:\n            if job in self.completed:\n                return\n            send(job)\n            acknowledge(job)\n            self.completed.add(job)\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'PYTHONDONTWRITEBYTECODE=1 python3 diagnose_retry.py'",
+    "aggregated_output": "SUCCESS + REPLAY\n  attempt 1 begin\n  send accepted (lock held)\n  acknowledge succeeded (lock held)\n  attempt 1 returned\n  completed=True; lock released\n  attempt 2 begin\n  attempt 2 returned\n  completed=True; lock released\n  accepted deliveries: 1\n\nACK FAILURE + RETRY\n  attempt 1 begin\n  send accepted (lock held)\n  acknowledge raised (lock held)\n  attempt 1 raised\n  completed=False; lock released\n  attempt 2 begin\n  send accepted (lock held)\n  acknowledge succeeded (lock held)\n  attempt 2 returned\n  completed=True; lock released\n  accepted deliveries: 2\n\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_8",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --exit-code -- worker.py requirements.md; git status --short; nl -ba worker.py'",
+    "aggregated_output": "?? .agents/\n?? diagnose_retry.py\n     1\tfrom threading import Lock\n     2\t\n     3\tclass Worker:\n     4\t    def __init__(self):\n     5\t        self.lock = Lock()\n     6\t        self.completed = set()\n     7\t\n     8\t    def process(self, job, send, acknowledge):\n     9\t        with self.lock:\n    10\t            if job in self.completed:\n    11\t                return\n    12\t            send(job)\n    13\t            acknowledge(job)\n    14\t            self.completed.add(job)\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

@@ -1,5 +1,7 @@
 # Same ticket. Three coworkers.
 
+Latest skill revision check: [Exorcist transfer comparison — 27 sessions, all conditions 9/9](REPORT-EXORCIST-TRANSFER.md). No comparative quality gain was observed.
+
 This suite runs actual Codex sessions in fresh synthetic Git repositories. The model can inspect files, run commands, and implement changes when the task asks for them. It is not a single-shot code-generation comparison.
 
 ## Arms

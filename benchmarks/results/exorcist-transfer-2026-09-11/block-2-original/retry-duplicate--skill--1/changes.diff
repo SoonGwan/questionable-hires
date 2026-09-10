@@ -1,0 +1,69 @@
+diff --git a/diagnose_retry.py b/diagnose_retry.py
+new file mode 100644
+index 0000000..17d02ec
+--- /dev/null
++++ b/diagnose_retry.py
+@@ -0,0 +1,63 @@
++"""Deterministic, local-only experiment; run with python3 -B diagnose_retry.py."""
++
++from worker import Worker
++
++
++def run_case(fail_first_ack):
++    worker = Worker()
++    job = "confirmation-1"
++    deliveries = []
++    events = []
++    ack_calls = 0
++
++    def send(job):
++        assert worker.lock.locked()
++        deliveries.append(job)
++        events.append("send: delivered (lock held)")
++
++    def acknowledge(job):
++        nonlocal ack_calls
++        assert worker.lock.locked()
++        ack_calls += 1
++        if fail_first_ack and ack_calls == 1:
++            events.append("ack: raises (lock held)")
++            raise RuntimeError("injected acknowledgement failure")
++        events.append("ack: succeeds (lock held)")
++
++    # No threads, sleeps, network calls, or queue service: the first call has
++    # fully exited before the second begins. Both use the same Worker and job.
++    for attempt in (1, 2):
++        events.append(f"attempt {attempt}: enter")
++        try:
++            worker.process(job, send, acknowledge)
++        except RuntimeError as exc:
++            assert str(exc) == "injected acknowledgement failure"
++            assert fail_first_ack and attempt == 1
++            events.append("process: raised")
++        assert not worker.lock.locked()
++        completed = job in worker.completed
++        assert completed == (not fail_first_ack or attempt == 2)
++        events.append(
++            f"attempt {attempt}: exited; lock released; completed={completed}"
++        )
++
++    assert deliveries == [job] * (2 if fail_first_ack else 1)
++    assert ack_calls == (2 if fail_first_ack else 1)
++    print("ACK FAILURE + RETRY" if fail_first_ack else "SUCCESS + REDELIVERY")
++    print("\n".join(events))
++    print(f"deliveries={len(deliveries)}\n")
++
++
++if __name__ == "__main__":
++    run_case(fail_first_ack=False)
++    run_case(fail_first_ack=True)
++
++    first, second = Worker(), Worker()
++    assert first.lock is not second.lock
++    assert first.completed is not second.completed
++    with first.lock:
++        acquired = second.lock.acquire(blocking=False)
++        assert acquired
++        second.lock.release()
++    print("INSTANCE SCOPE: separate workers have independent locks and completion sets")
++    print("PASS: both instance locks can be held at once")
