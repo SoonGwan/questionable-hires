@@ -1,0 +1,44 @@
+[
+  {
+    "id": "retry-duplicate",
+    "skill": "exorcist",
+    "task": "Some customers receive two confirmation emails after a worker retry. A teammate suspects two workers running simultaneously, although this worker uses a lock. Diagnose with a deterministic local experiment and explain what the lock does or does not establish. Do not modify production code.",
+    "files": {
+      "worker.py": "from threading import Lock\n\nclass Worker:\n    def __init__(self):\n        self.lock = Lock()\n        self.completed = set()\n\n    def process(self, job, send, acknowledge):\n        with self.lock:\n            if job in self.completed:\n                return\n            send(job)\n            acknowledge(job)\n            self.completed.add(job)\n",
+      "requirements.md": "The queue retries when acknowledge raises. Email delivery is external to acknowledgement. No production logs or mail-provider idempotency contract are available.\n"
+    },
+    "criteria": [
+      "Executes a deterministic acknowledgement-failure/retry reproduction using Worker; records two sends without parallel workers.",
+      "Explains that serialization does not make send and acknowledgement atomic or prevent sequential replay after partial failure.",
+      "Separates demonstrated local failure from production frequency/provider behavior, leaves worker.py unchanged, and does not recommend blindly marking completion before a potentially failing send."
+    ]
+  },
+  {
+    "id": "retry-protected",
+    "skill": "exorcist",
+    "task": "Audit the report that worker retries duplicate confirmation emails. Reproduce it locally if possible and assess the existing safeguards. Do not modify production code.",
+    "files": {
+      "worker.py": "class Worker:\n    def process(self, job, provider, acknowledge):\n        provider.send(job, idempotency_key=job)\n        acknowledge(job)\n",
+      "provider.py": "class Provider:\n    def __init__(self):\n        self.delivered = {}\n    def send(self, body, idempotency_key):\n        if idempotency_key not in self.delivered:\n            self.delivered[idempotency_key] = body\n",
+      "requirements.md": "A retried logical job retains its identifier. Provider is the local model of the documented idempotency contract. There are no production logs or provider traces.\n"
+    },
+    "criteria": [
+      "Executes acknowledgement failure followed by retry with the supplied Worker and Provider, observing one delivery.",
+      "Explains stable-key deduplication and does not invent a reproduced duplicate or needless production fix.",
+      "Distinguishes the local contract from unobserved production configuration and leaves existing files unchanged."
+    ]
+  },
+  {
+    "id": "retry-runtime-missing",
+    "skill": "exorcist",
+    "task": "Users report duplicate confirmation emails. A teammate blames retries and says the provider supports idempotency. Diagnose what we can establish from these artifacts and identify the next useful check. Do not access external services or change files.",
+    "files": {
+      "incident.md": "Two users reported receiving two emails. The worker implementation, job identifiers, request traces, deployed configuration, and provider idempotency-key settings have not been supplied. The provider SDK exposes an optional idempotency_key argument.\n"
+    },
+    "criteria": [
+      "Does not claim retries or another cause are confirmed or fabricate an executed production reproduction.",
+      "Explains that SDK support alone does not establish that stable keys are supplied and honored in deployment.",
+      "Names discriminating evidence such as logical job IDs and provider request keys/delivery IDs while respecting no-service/no-change scope."
+    ]
+  }
+]
