@@ -63,21 +63,18 @@ def export(source, target):
         answer_path = cell / "answer.md"
         answer = redact(answer_path.read_text()) if answer_path.exists() else ""
         def link(match):
-            label, path, line = match.groups()
+            label, target = match.groups()
+            if target.startswith("<") and target.endswith(">"):
+                target = target[1:-1]
+            location = re.fullmatch(r"(.+?):(\d+)", target)
+            path, line = location.groups() if location else (target, None)
             if path.startswith("<WORKSPACE>/"):
                 path = path[len("<WORKSPACE>/"):]
             if (project / path).is_file():
-                return f"[{label}](project/{path}#L{line})"
-            return label
-        answer = re.sub(r"\[([^\]]+)\]\(([^)]+?):(\d+)\)", link, answer)
-        def plain_link(match):
-            label, path = match.groups()
-            if path.startswith("<WORKSPACE>/"):
-                path = path[len("<WORKSPACE>/"):]
-            if (project / path).is_file():
-                return f"[{label}](project/{path})"
-            return match.group(0)
-        answer = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", plain_link, answer)
+                suffix = f"#L{line}" if line else ""
+                return f"[{label}](project/{path}{suffix})"
+            return label if location else match.group(0)
+        answer = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", link, answer)
         (dest / "answer.md").write_text(answer)
         diff_path = cell / "changes.diff"
         (dest / "changes.diff").write_text(redact(diff_path.read_text()) if diff_path.exists() else "")

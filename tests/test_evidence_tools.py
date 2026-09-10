@@ -33,12 +33,12 @@ class EvidenceTests(unittest.TestCase):
             (source / "run.json").write_text('{}')
             (cell / "metadata.json").write_text(json.dumps({"workspace": str(workspace), "completed": True}))
             (cell / "events.jsonl").write_text(json.dumps({"type": "item.completed", "item": {"type": "command_execution", "command": "pwd", "aggregated_output": str(workspace), "exit_code": 0}}) + '\n')
-            (cell / "answer.md").write_text(f"See [code]({workspace}/app.py:1).")
+            (cell / "answer.md").write_text(f"See [code]({workspace}/app.py:1) and [angled](<{workspace}/app.py:1>).")
             (cell / "changes.diff").write_text("diff evidence\n")
             target = root / "export"
             self.assertEqual(exporter.export(source, target), 1)
             output = target / cell.name
-            self.assertIn("(project/app.py#L1)", (output / "answer.md").read_text())
+            self.assertIn("[code](project/app.py#L1) and [angled](project/app.py#L1)", (output / "answer.md").read_text())
             self.assertNotIn(str(workspace), (output / "commands.json").read_text())
             self.assertNotIn("workspace", json.loads((output / "metadata.json").read_text()))
             self.assertFalse((output / "project/.git").exists())

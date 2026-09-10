@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
+import sys
 
 spec = importlib.util.spec_from_file_location("runner", Path(__file__).resolve().parents[1] / "benchmarks/run.py")
 runner = importlib.util.module_from_spec(spec)
@@ -10,6 +12,33 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_jobs_above_three_rejected_without_launch(self):
+        with patch.object(sys, 'argv', ['run.py', '--output', '/tmp/unused', '--jobs', '4']):
+            with self.assertRaises(SystemExit) as raised:
+                runner.main()
+            self.assertEqual(raised.exception.code, 2)
+
+    def test_account_limit_records_remaining_schedule_without_retry(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / 'run'
+            def limited(case, arm, repeat, out, *args):
+                cell = out / f"{case['id']}--{arm}--{repeat}"
+                cell.mkdir()
+                meta = dict(case=case['id'], arm=arm, repeat=repeat, completed=False, limit_detected=True)
+                (cell / 'metadata.json').write_text(json.dumps(meta))
+                return meta
+            argv = ['run.py', '--output', str(output), '--jobs', '1', '--repeats', '3']
+            with patch.object(sys, 'argv', argv), patch.object(runner, 'run_cell', side_effect=limited) as run, patch.object(runner, 'command', return_value='test'), patch.object(runner, 'disabled_skills', return_value=[]):
+                with self.assertRaises(SystemExit):
+                    runner.main()
+            self.assertEqual(run.call_count, 1)
+            rows = [json.loads(p.read_text()) for p in output.glob('*--*/metadata.json')]
+            self.assertEqual(len(rows), 72)
+            self.assertEqual(sum(r.get('attempted') is False for r in rows), 71)
+            manifest = json.loads((output / 'run.json').read_text())
+            self.assertTrue(manifest['stopped_after_limit'])
+            self.assertEqual(len(set(manifest['schedule'])), 72)
+
     def test_fixture_paths_cannot_escape_workspace(self):
         for name in ("../escape.py", "/tmp/escape.py", ".git/config"):
             with tempfile.TemporaryDirectory() as directory:

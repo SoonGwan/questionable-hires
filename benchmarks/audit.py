@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import re
 from pathlib import Path
 import subprocess
 import shutil
@@ -52,6 +53,15 @@ def audit(directory):
                 checks.append({"name": "persisted tests reject original boundary", "passed": result.returncode != 0
                                and "FAIL:" in result.stderr and "eligible(18)" in result.stderr,
                                "output": (result.stdout + result.stderr).replace(temp, "<SCORING_TEMP>")})
+        if meta["case"] in {"search-order", "search-diagnosis"}:
+            for name in added:
+                if not name.endswith(".py"):
+                    continue
+                result = subprocess.run(["python3", "-B", name], cwd=cell / "project", capture_output=True, text=True, timeout=10)
+                expected = result.returncode == 0 if meta["case"] == "search-diagnosis" else (
+                    result.returncode == 1 and "FAIL:" in result.stderr and "AssertionError" in result.stderr and "ERROR:" not in result.stderr)
+                checks.append({"name": "independent replay: " + name, "passed": expected, "exit_code": result.returncode,
+                               "output": (result.stdout + result.stderr).replace(str(directory.resolve()), "<EVIDENCE>")})
         if meta["case"] == "label-change":
             expected = case["files"]["checkout.html"].replace(">Buy<", ">Place order<")
             checks.append({"name": "only requested label changes", "passed": (cell / "project/checkout.html").read_text() == expected})
@@ -63,8 +73,24 @@ def audit(directory):
     return rows
 
 
+def audit_traces(directory):
+    rows = []
+    for cell in sorted(directory.glob('*--*')):
+        meta = json.loads((cell / 'metadata.json').read_text())
+        commands = json.loads((cell / 'commands.json').read_text())
+        text = '\n'.join(c['command'] for c in commands)
+        skills = sorted(set(re.findall(r'\.agents/skills/([\w-]+)/SKILL\.md', text)))
+        rows.append({'cell': cell.name, 'skill_paths_referenced': skills,
+                     'unexpected_skill_paths': [s for s in skills if meta['arm'] != 'skill' or s != meta['skill']],
+                     'external_command_candidates': [c['id'] for c in commands if re.search(r'\b(?:curl|wget|ssh|scp|gh)\b|https?://', c['command'])],
+                     'parent_instruction_search': [c['id'] for c in commands if 'find ..' in c['command']],
+                     'rejected_patch': 'patch rejected' in (cell / 'stderr.txt').read_text()})
+    return rows
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
+    parser.add_argument("--traces", action="store_true", help="Inspect skill references and flagged command patterns")
     args = parser.parse_args()
-    print(json.dumps(audit(args.directory), indent=2))
+    print(json.dumps(audit_traces(args.directory) if args.traces else audit(args.directory), indent=2))

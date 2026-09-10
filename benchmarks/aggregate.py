@@ -138,7 +138,7 @@ def svg_chart(summary, theme):
         ybottom, height = 448, 235
         text(x0, 155, label, 19)
         text(x0, 180, sub, 12)
-        for tick in range(0, int(ceiling) + 1, int(ceiling // 3) or 1):
+        for tick in range(0, int(ceiling) + 1, max(50, int(math.ceil(ceiling / 5 / 50) * 50))):
             y = ybottom - tick / ceiling * height
             parts.append(f'<path d="M{x0+35} {y}h300" stroke="{neutral}" stroke-opacity="0.18"/>')
             text(x0+30, y+4, f'{tick}%', 11, 'end')
@@ -169,11 +169,47 @@ def svg_chart(summary, theme):
         q = quality.get(arm, {})
         text(x, 605, f"{arm}: completed {e['completed']}/{e['scheduled']} · timeout {e['timeouts']}", 16)
         text(x, 631, f"Task success {q.get('success', 'pending')}/{e['scheduled']} · scope {q.get('scope_pass', 'pending')}/{e['scheduled']}", 15)
-        text(x, 655, f"Observed regressions: {q.get('regressions', 'pending')} · unknown: {q.get('regression_unknown', 'pending')}", 14)
+        text(x, 655, f"Regressions: {q.get('regressions', 'pending')} · scope unknown: {q.get('scope_unknown', 'pending')}", 14)
     text(44, 701, 'Bars: mean of task mean ratios. Whiskers: task-ratio min–max, not confidence intervals.', 15)
     text(44, 727, 'n=3 per task/arm. Shared host/cache. No dollar estimate. See report for raw values and criterion evidence.', 15)
     parts.append('</g></svg>')
     return '\n'.join(parts) + '\n'
+
+
+def markdown_tables(summary):
+    lines = ['# Generated descriptive tables', '', 'Rebuilt by `benchmarks/aggregate.py`. All raw values are in `aggregate.json`. No confidence intervals or dollar billing estimates.', '',
+             '## Normalized resource metrics', '', 'Equal-weight mean of task mean ratios. Brackets show task-ratio min–max, not confidence intervals.', '',
+             '| Metric | Baseline | Control | Skill | Tasks / complete blocks |', '| --- | ---: | ---: | ---: | ---: |']
+    for metric, data in summary['normalized'].items():
+        values = []
+        for arm in ARMS:
+            v = data['arms'][arm]
+            values.append('N/A' if v['mean'] is None else f"{v['mean']:.1f}% [{v['min']:.1f}, {v['max']:.1f}]")
+        lines.append('| ' + ' | '.join([metric] + values + [f"{data['included_cases']} / {data['eligible_blocks']}"]) + ' |')
+    lines += ['', '## Raw values by task and arm', '', 'Arithmetic mean ± sample SD over n=3; all observed values, including any censored termination times. LOC is implementation-only churn.', '',
+              '| Task | Arm | Total tokens | Wall seconds | Production / test changed LOC (mean) |', '| --- | --- | ---: | ---: | ---: |']
+    for case, arms in summary['per_case_raw'].items():
+        for arm, data in arms.items():
+            def value(metric):
+                v = data[metric]
+                if v['mean'] is None:
+                    return 'N/A'
+                sd = f"{v['sd']:.2f}" if v['sd'] is not None else 'N/A'
+                return f"{v['mean']:.2f} ± {sd} (n={v['n']})"
+            loc = 'N/A'
+            if case in IMPLEMENTATION:
+                rows = [r for r in summary['cells'] if r['case'] == case and r['arm'] == arm and r['loc_by_type'] is not None]
+                if rows:
+                    loc = ' / '.join(f"{statistics.mean(r['loc_by_type'][k] for r in rows):.2f}" for k in ('production', 'tests'))
+            lines.append(f"| {case} | {arm} | {value('total_tokens')} | {value('elapsed_seconds')} | {loc} |")
+    if 'quality' in summary:
+        lines += ['', '## Absolute quality and execution', '', 'Strict success requires completed execution, all three case criteria, and scope pass. Unknown is not success.', '',
+                  '| Arm | Strict success | Scope pass | Scope fail / unknown | Observed regressions | Completed / timeout |', '| --- | ---: | ---: | ---: | ---: | ---: |']
+        for arm in ARMS:
+            q, e = summary['quality'][arm], summary['execution'][arm]
+            n = e['scheduled']
+            lines.append(f"| {arm} | {q['success']}/{n} ({100*q['success']/n:.1f}%) | {q['scope_pass']}/{n} | {q['scope_fail']} / {q['scope_unknown']} | {q['regressions']} | {e['completed']} / {e['timeouts']} |")
+    return '\n'.join(lines) + '\n'
 
 
 def main():
@@ -191,18 +227,28 @@ def main():
         indexed = {r['cell']: r for r in reviews}
         if len(indexed) != len(reviews) or set(indexed) != {r['cell'] for r in summary['cells']}:
             raise ValueError('Review coverage mismatch')
+        for review in reviews:
+            if len(review.get('criteria', [])) != 3 or any(v not in {'pass', 'fail', 'unknown'} for v in review['criteria']):
+                raise ValueError('Each review needs three explicit criterion verdicts')
+            if review.get('scope') not in {'pass', 'fail', 'unknown'} or review.get('regression') not in {'observed', 'none_observed', 'unknown'}:
+                raise ValueError('Invalid scope or regression verdict')
+            if not review.get('evidence'):
+                raise ValueError('Review must cite evidence')
         quality = {}
         for arm in ARMS:
             cells = [r for r in summary['cells'] if r['arm'] == arm]
             rr = [indexed[r['cell']] for r in cells]
             quality[arm] = {'success': sum(bool(r.get('completed')) and all(v == 'pass' for v in q['criteria']) and q['scope'] == 'pass' for r, q in zip(cells, rr)),
                             'scope_pass': sum(q['scope'] == 'pass' for q in rr),
+                            'scope_fail': sum(q['scope'] == 'fail' for q in rr),
+                            'scope_unknown': sum(q['scope'] == 'unknown' for q in rr),
                             'regressions': sum(q['regression'] == 'observed' for q in rr),
                             'regression_unknown': sum(q['regression'] == 'unknown' for q in rr),
                             'criteria_pass': [sum(q['criteria'][i] == 'pass' for q in rr) for i in range(3)]}
         summary['quality'] = quality
     args.output.mkdir(parents=True, exist_ok=True)
     (args.output / 'aggregate.json').write_text(json.dumps(summary, indent=2) + '\n')
+    (args.output / 'tables.md').write_text(markdown_tables(summary))
     for theme in ('light', 'dark'):
         (args.output / f'comparison-{theme}.svg').write_text(svg_chart(summary, theme))
 
