@@ -13,6 +13,12 @@ Audited against committed evidence at `be9d038`. This is a development audit, no
 
 The report additionally records a boundary-fix scope unknown, history-evidence omissions, and control-arm test edits during audit. These require separate trace review; this audit does not claim to have independently adjudicated all 72 cells or verified the aggregator.
 
+## Independent arithmetic check
+
+After the initial audit, a separate direct calculation from all 72 committed `metadata.json` files (without importing `aggregate.py`) reproduced the chart: equal-weight means of per-task arm/baseline means yield total tokens **100.0 / 111.9 / 111.5%** and elapsed time **100.0 / 125.1 / 117.6%** for baseline/control/skill. Total tokens used input plus output, not input plus cached plus output. All 72 metadata records report completion.
+
+A separate count of the committed `reviews.json` reproduced strict success **19 / 16 / 18 out of 24**, with scope unknown **0 / 0 / 4**. This validates arithmetic against recorded inputs, not the correctness of every underlying review judgment, raw CLI token accounting, or statistical superiority. The unfavorable chart is not explained by a simple token double-counting or normalization error.
+
 ## Candidate revision and validation boundary
 
 The Exorcist change is a candidate, not a measured improvement. It asks for a causal explanation of the suspected cause and existing safeguard, without prescribing this fixture's answer or an output template. The skill-creator guidance favors a demonstrated, narrow correction over adding universal procedures.
