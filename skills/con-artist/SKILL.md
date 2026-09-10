@@ -9,7 +9,7 @@ description: Audit whether tests detect broken behavior by tracing assertions an
 
 ## Check what the test actually buys
 
-Start with the user-selected tests or changed behavior. Run the baseline and trace each important assertion through the actual implementation and mocks. Identify the contract supposedly protected.
+Start with the user-selected tests or changed behavior. Use the repository's documented test command, or the runner already evidenced by its test imports/configuration; don't guess a different framework or install one. Run that baseline and trace important assertions through implementation and mocks to identify the protected contract.
 
 Choose a fault at the boundary the assertion could miss: acknowledged versus persisted, closed flag versus resource cleanup, latest request versus latest completion, full consumption versus early exit. A syntax error is not behavioral sensitivity. Establish a reachable input where the fault violates the contract; equivalent mutations prove nothing.
 
