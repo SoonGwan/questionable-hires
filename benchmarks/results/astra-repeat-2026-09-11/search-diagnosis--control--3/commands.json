@@ -1,0 +1,26 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!.git'\"'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\ntransport.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat search.py transport.py; git status --short; find .. -name AGENTS.md -print'",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 11 00:28 .\ndrwx------@  3 admin  staff   96 Sep 11 00:28 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:28 .git\n-rw-r--r--@  1 admin  staff  145 Sep 11 00:28 search.py\n-rw-r--r--@  1 admin  staff  129 Sep 11 00:28 transport.py\nclass Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\nasync def fetch(query, request):\n    return await request('/search', params={'q': query}, headers={'Cache-Control': 'no-cache'})\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v experiment_search_order; git diff --exit-code -- search.py transport.py; git diff --check; git status --short'",
+    "aggregated_output": "test_in_order_completion_leaves_new_result (experiment_search_order.SearchCompletionOrderExperiment) ... ok\ntest_reverse_completion_overwrites_new_result_with_old (experiment_search_order.SearchCompletionOrderExperiment) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nOK\n?? experiment_search_order.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

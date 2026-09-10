@@ -1,0 +1,26 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '*test*' -g '*spec*' -g 'pyproject.toml' -g 'package.json'; rg -n \\\"display_label\\\" .\"",
+    "aggregated_output": "<WORKSPACE>\n./consumer.py:1:from labels import display_label\n./consumer.py:5:    return display_label({'name': 'Ada'})\n./labels.py:1:def display_label(payload):\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git/**'\"'; cat labels.py consumer.py; git status --short\"",
+    "aggregated_output": "consumer.py\nlabels.py\ndef display_label(payload):\n    return payload.get('display_name') or payload['name']\nfrom labels import display_label\n\n# Partner API v1 remains supported through December 2027.\ndef partner_label():\n    return display_label({'name': 'Ada'})\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nfrom labels import display_label\nfrom consumer import partner_label\n\nassert partner_label() == 'Ada'\nprint(\\\"Existing partner_label(): 'Ada'\\\")\nfor payload in (\n    {'name': 'Ada'},\n    {'display_name': 'Countess', 'name': 'Ada'},\n    {'display_name': '', 'name': 'Ada'},\n    {'display_name': None, 'name': 'Ada'},\n):\n    actual = display_label(payload)\n    without_fallback = payload.get('display_name')\n    print(f'{payload\"'!r}: current={actual!r}, without fallback={without_fallback!r}'\"')\n    assert actual == (payload.get('display_name') or payload['name'])\ntry:\n    {'name': 'Ada'}['display_name']\nexcept KeyError:\n    print('Required display_name access raises KeyError for the existing partner payload')\nelse:\n    raise AssertionError('Expected KeyError')\nPY\n git status --short\"",
+    "aggregated_output": "Existing partner_label(): 'Ada'\n{'name': 'Ada'}: current='Ada', without fallback=None\n{'display_name': 'Countess', 'name': 'Ada'}: current='Countess', without fallback='Countess'\n{'display_name': '', 'name': 'Ada'}: current='Ada', without fallback=''\n{'display_name': None, 'name': 'Ada'}: current='Ada', without fallback=None\nRequired display_name access raises KeyError for the existing partner payload\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

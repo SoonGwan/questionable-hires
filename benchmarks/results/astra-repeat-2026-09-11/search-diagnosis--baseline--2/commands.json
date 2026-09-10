@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'package.json' -g '*search*' -g '*cache*' -g 'README*' -g '*test*'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la; rg --files --hidden -g '\"'!.git/**'\"'; cat search.py\"",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 11 00:33 .\ndrwx------@  3 admin  staff   96 Sep 11 00:33 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:33 .git\n-rw-r--r--@  1 admin  staff  145 Sep 11 00:33 search.py\n-rw-r--r--@  1 admin  staff  129 Sep 11 00:33 transport.py\nsearch.py\ntransport.py\nclass Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat transport.py; git status --short; git ls-files'",
+    "aggregated_output": "async def fetch(query, request):\n    return await request('/search', params={'q': query}, headers={'Cache-Control': 'no-cache'})\nsearch.py\ntransport.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'PYTHONDONTWRITEBYTECODE=1 python3 experiment_search_order.py; git diff -- search.py transport.py; git status --short'",
+    "aggregated_output": "Completion order: old query -> new query\nObserved results: old query -> new query\nFinal result matches latest query: True\nCompletion order: new query -> old query\nObserved results: new query -> old query\nFinal result matches latest query: False\nPASS: stale results reproduced without a cache; completion order controls the result.\n?? experiment_search_order.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

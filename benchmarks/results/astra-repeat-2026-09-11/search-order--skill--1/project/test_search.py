@@ -1,0 +1,51 @@
+import asyncio
+import unittest
+
+from search import Search
+
+
+class SearchInteractionTests(unittest.IsolatedAsyncioTestCase):
+    async def check_response_order(self, completion_order):
+        search = Search()
+        loop = asyncio.get_running_loop()
+        queries = ("ca", "cat")
+        responses = {query: loop.create_future() for query in queries}
+        started = {query: asyncio.Event() for query in queries}
+
+        async def fetch(query):
+            started[query].set()
+            return await responses[query]
+
+        tasks = {}
+        try:
+            # The user types "ca", then "cat" while "ca" is still pending.
+            for query in queries:
+                tasks[query] = asyncio.create_task(search.run(query, fetch))
+                await started[query].wait()
+
+            for query in completion_order:
+                responses[query].set_result([f"Result for {query}"])
+                await tasks[query]
+                if query == "cat":
+                    self.assertEqual(search.result, ["Result for cat"])
+
+            self.assertEqual(
+                search.result,
+                ["Result for cat"],
+                "The displayed result must still belong to the latest typed query",
+            )
+        finally:
+            for task in tasks.values():
+                if not task.done():
+                    task.cancel()
+            await asyncio.gather(*tasks.values(), return_exceptions=True)
+
+    async def test_latest_query_remains_visible_with_in_order_responses(self):
+        await self.check_response_order(("ca", "cat"))
+
+    async def test_latest_query_remains_visible_with_reversed_responses(self):
+        await self.check_response_order(("cat", "ca"))
+
+
+if __name__ == "__main__":
+    unittest.main()

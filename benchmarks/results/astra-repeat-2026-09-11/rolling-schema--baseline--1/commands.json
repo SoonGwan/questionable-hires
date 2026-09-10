@@ -1,0 +1,50 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!dist'\"' -g '\"'!build'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"'\"",
+    "aggregated_output": "<WORKSPACE>\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la'",
+    "aggregated_output": "total 48\ndrwxr-xr-x@  9 admin  staff  288 Sep 11 00:24 .\ndrwx------@  3 admin  staff   96 Sep 11 00:24 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:24 .git\n-rw-r--r--@  1 admin  staff   65 Sep 11 00:24 001_initial.sql\n-rw-r--r--@  1 admin  staff   54 Sep 11 00:24 002_down.sql\n-rw-r--r--@  1 admin  staff   54 Sep 11 00:24 002_up.sql\n-rw-r--r--@  1 admin  staff   45 Sep 11 00:24 new_reader.py\n-rw-r--r--@  1 admin  staff   37 Sep 11 00:24 old_reader.py\n-rw-r--r--@  1 admin  staff  240 Sep 11 00:24 release.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git/**'\"'\"",
+    "aggregated_output": "old_reader.py\n002_up.sql\n001_initial.sql\nnew_reader.py\n002_down.sql\nrelease.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"for f in release.md 001_initial.sql 002_up.sql 002_down.sql old_reader.py new_reader.py; do rg -n '\"'^'\"' \\\"\"'$f\"; done'",
+    "aggregated_output": "1:Deploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\n1:CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n1:ALTER TABLE users RENAME COLUMN name TO display_name;\n1:ALTER TABLE users RENAME COLUMN display_name TO name;\n1:QUERY = 'SELECT id, name FROM users'\n1:QUERY = 'SELECT id, display_name FROM users'\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; git log -5 --oneline; git diff'",
+    "aggregated_output": "7b0b5fe Initial application\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 - <<'PY'\nimport ast\nimport pathlib\nimport sqlite3\n\nqueries = {}\nfor version in ('old', 'new'):\n    tree = ast.parse(pathlib.Path(f'{version}_reader.py').read_text())\n    queries[version] = ast.literal_eval(tree.body[0].value)\n\ndb = sqlite3.connect(':memory:')\ndb.executescript(pathlib.Path('001_initial.sql').read_text())\ndb.execute('INSERT INTO users (id, name) VALUES (?, ?)', (1, 'Example'))\n\ndef check(stage):\n    print(stage)\n    for version, query in queries.items():\n        try:\n            print(f'  {version}: OK {db.execute(query).fetchall()}')\n        except sqlite3.Error as exc:\n            print(f'  {version}: FAIL {exc}')\n\ncheck('Initial schema')\ndb.executescript(pathlib.Path('002_up.sql').read_text())\ncheck('After migration / mixed rollout / old binary restarted before rollback migration')\ndb.executescript(pathlib.Path('002_down.sql').read_text())\ncheck('After rollback migration / any remaining new instances')\nPY\"",
+    "aggregated_output": "Initial schema\n  old: OK [(1, 'Example')]\n  new: FAIL no such column: display_name\nAfter migration / mixed rollout / old binary restarted before rollback migration\n  old: FAIL no such column: name\n  new: OK [(1, 'Example')]\nAfter rollback migration / any remaining new instances\n  old: OK [(1, 'Example')]\n  new: FAIL no such column: display_name\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

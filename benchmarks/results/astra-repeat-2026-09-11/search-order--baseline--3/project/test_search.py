@@ -1,0 +1,44 @@
+import asyncio
+import unittest
+
+from search import Search
+
+
+class SearchInteractionTests(unittest.IsolatedAsyncioTestCase):
+    async def test_latest_query_stays_visible_when_older_response_arrives_last(self):
+        search = Search()
+        older_started = asyncio.Event()
+        release_older = asyncio.Event()
+
+        async def fetch(query):
+            if query == "ca":
+                older_started.set()
+                await release_older.wait()
+                return ["cat", "car"]
+            if query == "cat":
+                return ["cat"]
+            raise AssertionError(f"Unexpected query: {query!r}")
+
+        # The user types "ca", then "cat" while the first request is pending.
+        older_request = asyncio.create_task(search.run("ca", fetch))
+        try:
+            await older_started.wait()
+            await search.run("cat", fetch)
+            self.assertEqual(search.result, ["cat"])
+
+            # The slower, older response arrives after the latest result is shown.
+            release_older.set()
+            await older_request
+            self.assertEqual(
+                search.result,
+                ["cat"],
+                "An older response must not overwrite the latest query's result",
+            )
+        finally:
+            if not older_request.done():
+                older_request.cancel()
+            await asyncio.gather(older_request, return_exceptions=True)
+
+
+if __name__ == "__main__":
+    unittest.main()

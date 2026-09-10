@@ -1,0 +1,47 @@
+diff --git a/test_search.py b/test_search.py
+new file mode 100644
+index 0000000..61b4346
+--- /dev/null
++++ b/test_search.py
+@@ -0,0 +1,41 @@
++import asyncio
++import unittest
++
++from search import Search
++
++
++class SearchInteractionTests(unittest.IsolatedAsyncioTestCase):
++    async def test_older_response_cannot_replace_latest_query_result(self):
++        search = Search()
++        older_started = asyncio.Event()
++        release_older = asyncio.Event()
++
++        async def fetch(query):
++            if query == "ca":
++                older_started.set()
++                await release_older.wait()
++                return "Results for ca"
++            if query == "cat":
++                return "Results for cat"
++            raise AssertionError(f"Unexpected query: {query}")
++
++        # The user types again while the first request is still pending.
++        older_request = asyncio.create_task(search.run("ca", fetch))
++        try:
++            await asyncio.wait_for(older_started.wait(), timeout=1)
++            await search.run("cat", fetch)
++            self.assertEqual(search.result, "Results for cat")
++        finally:
++            # Complete the older request only after the newer result is visible.
++            release_older.set()
++            await asyncio.wait_for(older_request, timeout=1)
++
++        self.assertEqual(
++            search.result,
++            "Results for cat",
++            "An older response must not overwrite the latest query's result",
++        )
++
++
++if __name__ == "__main__":
++    unittest.main()

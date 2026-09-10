@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!*lock*'\"' -g '\"'!node_modules'\"' -g '\"'!'\"\\\\.git'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat search.py requirements.md'",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 11 00:34 .\ndrwx------@  3 admin  staff   96 Sep 11 00:34 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:34 .git\n-rw-r--r--@  1 admin  staff  146 Sep 11 00:34 requirements.md\n-rw-r--r--@  1 admin  staff  145 Sep 11 00:34 search.py\nclass Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\nThe screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v test_search.py'",
+    "aggregated_output": "test_latest_query_stays_visible_when_older_response_arrives_last (test_search.SearchInteractionTests) ... FAIL\n\n======================================================================\nFAIL: test_latest_query_stays_visible_when_older_response_arrives_last (test_search.SearchInteractionTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<WORKSPACE>/test_search.py\", line 32, in test_latest_query_stays_visible_when_older_response_arrives_last\n    self.assertEqual(\nAssertionError: Lists differ: ['cat', 'car'] != ['cat']\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\n'car'\n\n- ['cat', 'car']\n+ ['cat'] : An older response must not overwrite the latest query's result\n\n----------------------------------------------------------------------\nRan 1 test in 0.006s\n\nFAILED (failures=1)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; git diff -- search.py requirements.md'",
+    "aggregated_output": "?? test_search.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

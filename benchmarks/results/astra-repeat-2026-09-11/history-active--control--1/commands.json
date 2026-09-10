@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '*test*' -g '*.py' -g '*.ts' -g '*.js' -g 'README*' -g 'pyproject.toml' -g 'package.json'\"",
+    "aggregated_output": "<WORKSPACE>\nconsumer.py\nlabels.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la; rg -n --hidden --glob '\"'!.git/**'\"' 'display_label|name|label' .\"",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 11 00:34 .\ndrwx------@  3 admin  staff   96 Sep 11 00:34 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:34 .git\n-rw-r--r--@  1 admin  staff  155 Sep 11 00:34 consumer.py\n-rw-r--r--@  1 admin  staff   86 Sep 11 00:34 labels.py\n./consumer.py:1:from labels import display_label\n./consumer.py:4:def partner_label():\n./consumer.py:5:    return display_label({'name': 'Ada'})\n./labels.py:1:def display_label(payload):\n./labels.py:2:    return payload.get('display_name') or payload['name']\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; git ls-files; nl -ba labels.py; nl -ba consumer.py; git log -5 --oneline'",
+    "aggregated_output": "consumer.py\nlabels.py\n     1\tdef display_label(payload):\n     2\t    return payload.get('display_name') or payload['name']\n     1\tfrom labels import display_label\n     2\t\n     3\t# Partner API v1 remains supported through December 2027.\n     4\tdef partner_label():\n     5\t    return display_label({'name': 'Ada'})\nd5fc972 Keep API v1 partners working during migration\n9e7cfdb Add label reader for internal v2 payloads\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"git log -p -- labels.py consumer.py; PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'\nfrom labels import display_label\nfrom consumer import partner_label\nassert partner_label() == 'Ada'\ncases = [\n    ({'display_name': 'Ada v2', 'name': 'Ada'}, 'Ada v2'),\n    ({'name': 'Ada'}, 'Ada'),\n    ({'display_name': '', 'name': 'Ada'}, 'Ada'),\n    ({'display_name': None, 'name': 'Ada'}, 'Ada'),\n]\nfor payload, expected in cases:\n    actual = display_label(payload)\n    assert actual == expected\n    print(f'{payload\"'!r}: current={actual!r}, without fallback={payload.get(\"display_name\")!r}'\"')\ntry:\n    {'name': 'Ada'}['display_name']\nexcept KeyError as error:\n    print(f'Direct indexing without fallback raises {type(error).__name__}: {error}')\nprint('PASS: partner caller and all four current-behavior checks')\nPY\n git status --short\"",
+    "aggregated_output": "commit d5fc9729e83eca829c17b3981abfb70be9df1f24\nAuthor: Fixture Author <fixture@example.invalid>\nDate:   Fri Jan 2 12:00:00 2026 +0000\n\n    Keep API v1 partners working during migration\n\ndiff --git a/consumer.py b/consumer.py\nnew file mode 100644\nindex 0000000..5ef9f50\n--- /dev/null\n+++ b/consumer.py\n@@ -0,0 +1,5 @@\n+from labels import display_label\n+\n+# Partner API v1 remains supported through December 2027.\n+def partner_label():\n+    return display_label({'name': 'Ada'})\ndiff --git a/labels.py b/labels.py\nindex 253183c..6116bc3 100644\n--- a/labels.py\n+++ b/labels.py\n@@ -1,2 +1,2 @@\n def display_label(payload):\n-    return payload['display_name']\n+    return payload.get('display_name') or payload['name']\n\ncommit 9e7cfdbc8f0030e053e4ff3eac6a40d0ec8042be\nAuthor: Fixture Author <fixture@example.invalid>\nDate:   Thu Jan 1 12:00:00 2026 +0000\n\n    Add label reader for internal v2 payloads\n\ndiff --git a/labels.py b/labels.py\nnew file mode 100644\nindex 0000000..253183c\n--- /dev/null\n+++ b/labels.py\n@@ -0,0 +1,2 @@\n+def display_label(payload):\n+    return payload['display_name']\n{'display_name': 'Ada v2', 'name': 'Ada'}: current='Ada v2', without fallback='Ada v2'\n{'name': 'Ada'}: current='Ada', without fallback=None\n{'display_name': '', 'name': 'Ada'}: current='Ada', without fallback=''\n{'display_name': None, 'name': 'Ada'}: current='Ada', without fallback=None\nDirect indexing without fallback raises KeyError: 'display_name'\nPASS: partner caller and all four current-behavior checks\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

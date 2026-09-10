@@ -1,0 +1,51 @@
+import asyncio
+import unittest
+
+from search import Search
+
+
+class SearchInteractionTests(unittest.IsolatedAsyncioTestCase):
+    async def test_older_response_cannot_replace_latest_query_result(self):
+        search = Search()
+        loop = asyncio.get_running_loop()
+        queries = ("ca", "cat")
+        responses = {query: loop.create_future() for query in queries}
+        started = {query: asyncio.Event() for query in queries}
+
+        async def fetch(query):
+            started[query].set()
+            return await responses[query]
+
+        tasks = []
+        try:
+            # The user types again while the first request is still pending.
+            older = asyncio.create_task(search.run("ca", fetch))
+            tasks.append(older)
+            await started["ca"].wait()
+            newer = asyncio.create_task(search.run("cat", fetch))
+            tasks.append(newer)
+            await started["cat"].wait()
+
+            # The latest request finishes first and is displayed correctly.
+            responses["cat"].set_result(["cat result"])
+            await newer
+            self.assertEqual(search.result, ["cat result"])
+            self.assertFalse(older.done())
+
+            # A slower response for the previous query must not replace it.
+            responses["ca"].set_result(["ca result"])
+            await older
+            self.assertEqual(
+                search.result,
+                ["cat result"],
+                "The older query response overwrote the latest query's result",
+            )
+        finally:
+            for task in tasks:
+                if not task.done():
+                    task.cancel()
+            await asyncio.gather(*tasks, return_exceptions=True)
+
+
+if __name__ == "__main__":
+    unittest.main()

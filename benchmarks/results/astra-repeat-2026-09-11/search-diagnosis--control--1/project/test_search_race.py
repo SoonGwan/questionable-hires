@@ -1,0 +1,74 @@
+"""Local diagnostic: control response order without a network or cache.
+
+These tests document current behavior, including the stale-result race;
+they are not assertions of the desired production behavior.
+Run with: python3 -m unittest -v test_search_race
+"""
+
+import asyncio
+import unittest
+
+from search import Search
+from transport import fetch
+
+
+class SearchRaceExperiment(unittest.IsolatedAsyncioTestCase):
+    async def exercise_order(self, completion_order):
+        search = Search()
+        queries = ("earlier", "newer")
+        started = {query: asyncio.Event() for query in queries}
+        release = {query: asyncio.Event() for query in queries}
+        calls = []
+        tasks = {}
+
+        async def request(path, *, params, headers):
+            query = params["q"]
+            calls.append((path, params.copy(), headers.copy()))
+            started[query].set()
+            await release[query].wait()
+            return f"fresh response for {query}"
+
+        async def local_fetch(query):
+            return await fetch(query, request)
+
+        try:
+            # Start the earlier query first, then start the newer query while
+            # the earlier request is still pending. Events avoid timing guesses.
+            for query in queries:
+                tasks[query] = asyncio.create_task(search.run(query, local_fetch))
+                await asyncio.wait_for(started[query].wait(), timeout=2)
+            self.assertIsNone(search.result)
+            self.assertTrue(all(not task.done() for task in tasks.values()))
+
+            observed = []
+            for query in completion_order:
+                release[query].set()
+                await asyncio.wait_for(tasks[query], timeout=2)
+                observed.append(search.result)
+
+            self.assertEqual(calls, [
+                ("/search", {"q": query}, {"Cache-Control": "no-cache"})
+                for query in queries
+            ])
+            return observed
+        finally:
+            for task in tasks.values():
+                if not task.done():
+                    task.cancel()
+            await asyncio.gather(*tasks.values(), return_exceptions=True)
+
+    async def test_in_order_responses_leave_newer_result(self):
+        self.assertEqual(
+            await self.exercise_order(("earlier", "newer")),
+            ["fresh response for earlier", "fresh response for newer"],
+        )
+
+    async def test_late_earlier_response_overwrites_newer_result(self):
+        self.assertEqual(
+            await self.exercise_order(("newer", "earlier")),
+            ["fresh response for newer", "fresh response for earlier"],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

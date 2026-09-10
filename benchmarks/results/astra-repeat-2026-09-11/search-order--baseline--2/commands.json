@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"' -g '\"'!pnpm-lock.yaml'\"' -g '\"'!.git'\"'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat search.py requirements.md'",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 11 00:24 .\ndrwx------@  3 admin  staff   96 Sep 11 00:24 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:24 .git\n-rw-r--r--@  1 admin  staff  146 Sep 11 00:24 requirements.md\n-rw-r--r--@  1 admin  staff  145 Sep 11 00:24 search.py\nclass Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\nThe screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; git ls-files; python3 --version'",
+    "aggregated_output": "requirements.md\nsearch.py\nPython 3.9.6\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v test_search'",
+    "aggregated_output": "test_older_response_cannot_replace_latest_query_result (test_search.SearchInteractionTests) ... FAIL\n\n======================================================================\nFAIL: test_older_response_cannot_replace_latest_query_result (test_search.SearchInteractionTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<WORKSPACE>/test_search.py\", line 33, in test_older_response_cannot_replace_latest_query_result\n    self.assertEqual(\nAssertionError: 'Results for ca' != 'Results for cat'\n- Results for ca\n+ Results for cat\n?               +\n : An older response must not overwrite the latest query's result\n\n----------------------------------------------------------------------\nRan 1 test in 0.008s\n\nFAILED (failures=1)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --exit-code -- search.py requirements.md; git status --short'",
+    "aggregated_output": "?? test_search.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

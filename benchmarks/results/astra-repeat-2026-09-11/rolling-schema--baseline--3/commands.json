@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!'\"\\\\.git' -g '*'\"",
+    "aggregated_output": "<WORKSPACE>\n.git/COMMIT_EDITMSG\n.git/index\n.git/refs/heads/main\n.git/logs/refs/heads/main\n.git/logs/HEAD\n.git/HEAD\n.git/objects/82/ed59d2b25e5568f9ffb9c41bac662631482658\n.git/objects/15/400af86fe5a18185371d07e1ceae4aade14a82\n.git/objects/5e/eb9038fcffd21855b2cc746e36d81be9d31016\n.git/objects/26/b30ce64056e325461b911b8b0f178715db5803\n.git/objects/7b/0b5fe325b91a084d61b5f1ddeebdbc2a797850\n.git/objects/7c/1f97382ebd1bfaf338e441dfc26ee3137f26d8\n.git/objects/7d/c69791649b1391f18d6299f1a9355d633555dc\n.git/objects/df/100e8f8e9f0aaffa5b8ad5e0996f8875c81297\n.git/config\nold_reader.py\n002_up.sql\n001_initial.sql\nnew_reader.py\n002_down.sql\nrelease.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'for f in release.md 001_initial.sql 002_up.sql 002_down.sql old_reader.py new_reader.py; do nl -ba \"$f\"; done'",
+    "aggregated_output": "     1\tDeploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\n     1\tCREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n     1\tALTER TABLE users RENAME COLUMN name TO display_name;\n     1\tALTER TABLE users RENAME COLUMN display_name TO name;\n     1\tQUERY = 'SELECT id, name FROM users'\n     1\tQUERY = 'SELECT id, display_name FROM users'\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; git log -3 --oneline'",
+    "aggregated_output": "7b0b5fe Initial application\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 - <<'PY'\nimport ast\nimport sqlite3\nfrom pathlib import Path\n\nqueries = {version: ast.literal_eval(ast.parse(Path(f'{version}_reader.py').read_text()).body[0].value) for version in ('old', 'new')}\ndb = sqlite3.connect(':memory:')\ndb.executescript(Path('001_initial.sql').read_text())\ndef check(stage):\n    for version, query in queries.items():\n        try:\n            db.execute(query).fetchall()\n            print(f'{stage}: {version} reader OK')\n        except sqlite3.OperationalError as error:\n            print(f'{stage}: {version} reader FAIL: {error}')\ncheck('initial schema')\ndb.executescript(Path('002_up.sql').read_text())\ncheck('after up / before rollback down')\ndb.executescript(Path('002_down.sql').read_text())\ncheck('after down')\nPY\"",
+    "aggregated_output": "initial schema: old reader OK\ninitial schema: new reader FAIL: no such column: display_name\nafter up / before rollback down: old reader FAIL: no such column: name\nafter up / before rollback down: new reader OK\nafter down: old reader OK\nafter down: new reader FAIL: no such column: display_name\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

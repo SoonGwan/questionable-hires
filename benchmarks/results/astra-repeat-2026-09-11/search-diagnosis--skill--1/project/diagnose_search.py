@@ -1,0 +1,58 @@
+"""Local diagnostic: python3 -B diagnose_search.py (no network or cache)."""
+
+import asyncio
+
+from search import Search
+from transport import fetch
+
+
+async def experiment(completion_order):
+    search = Search()
+    queries = ("earlier", "newer")
+    loop = asyncio.get_running_loop()
+    responses = {query: loop.create_future() for query in queries}
+    started = {query: asyncio.Event() for query in queries}
+    calls = []
+
+    async def request(path, *, params, headers):
+        query = params["q"]
+        calls.append((path, dict(params), dict(headers)))
+        started[query].set()
+        # No cache: each query gets its own explicitly released response.
+        return await responses[query]
+
+    async def local_fetch(query):
+        return await fetch(query, request)
+
+    tasks = {}
+    for query in queries:
+        tasks[query] = asyncio.create_task(search.run(query, local_fetch))
+        await started[query].wait()
+
+    print(f"\nStarted: {queries}; completion order: {completion_order}")
+    print(f"Requests: {calls}")
+    assert calls == [
+        ("/search", {"q": query}, {"Cache-Control": "no-cache"})
+        for query in queries
+    ]
+    observed = []
+    for query in completion_order:
+        responses[query].set_result(f"fresh results for {query}")
+        await tasks[query]
+        observed.append(search.result)
+        print(f"Completed {query}: Search.result = {search.result!r}")
+
+    assert observed == [f"fresh results for {query}" for query in completion_order]
+    stale = search.result != "fresh results for newer"
+    print(f"Final result is stale for latest query: {stale}")
+    return stale
+
+
+async def main():
+    assert not await experiment(("earlier", "newer"))
+    assert await experiment(("newer", "earlier"))
+    print("\nConfirmed: reversing response completion order reproduces stale results without a cache.")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

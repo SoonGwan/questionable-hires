@@ -1,0 +1,54 @@
+"""Local, deterministic search race experiment; no network or cache involved."""
+
+import asyncio
+
+from search import Search
+from transport import fetch
+
+
+async def scenario(completion_order):
+    search = Search()
+    queries = ("old query", "new query")
+    pending = {q: asyncio.get_running_loop().create_future() for q in queries}
+    started = {q: asyncio.Event() for q in queries}
+    calls = []
+
+    async def request(path, *, params, headers):
+        # Every call has its own response. There is no cache or external I/O.
+        query = params["q"]
+        calls.append((path, dict(params), dict(headers)))
+        started[query].set()
+        return await pending[query]
+
+    async def local_fetch(query):
+        return await fetch(query, request)
+
+    tasks = {}
+    for query in queries:
+        tasks[query] = asyncio.create_task(search.run(query, local_fetch))
+        await started[query].wait()
+
+    print(f"Started in order: {queries}")
+    for query in completion_order:
+        pending[query].set_result(f"results for {query}")
+        await tasks[query]
+        print(f"Completed {query!r}: Search.result = {search.result!r}")
+
+    assert calls == [
+        ("/search", {"q": query}, {"Cache-Control": "no-cache"})
+        for query in queries
+    ]
+    assert search.result == f"results for {completion_order[-1]}"
+    return search.result
+
+
+async def main():
+    print("CONTROL: responses complete in query order")
+    assert await scenario(("old query", "new query")) == "results for new query"
+    print("\nRACE: older response completes last")
+    assert await scenario(("new query", "old query")) == "results for old query"
+    print("\nPASS: stale results reproduced with no cache; completion order determines the result.")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

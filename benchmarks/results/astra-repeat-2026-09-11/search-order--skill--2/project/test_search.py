@@ -1,0 +1,54 @@
+import asyncio
+import unittest
+
+from search import Search
+
+
+class SearchInteractionTests(unittest.IsolatedAsyncioTestCase):
+    async def exercise_queries(self, completion_order):
+        search = Search()
+        queries = ("ca", "cat")
+        responses = {
+            query: asyncio.get_running_loop().create_future() for query in queries
+        }
+        started = {query: asyncio.Event() for query in queries}
+
+        async def fetch(query):
+            started[query].set()
+            return await responses[query]
+
+        tasks = {}
+        try:
+            # Start each request before typing the next query, without sleeps.
+            for query in queries:
+                tasks[query] = asyncio.create_task(search.run(query, fetch))
+                await started[query].wait()
+
+            snapshots = []
+            for query in completion_order:
+                responses[query].set_result([query + " result"])
+                await tasks[query]
+                snapshots.append(search.result)
+            return snapshots
+        finally:
+            for task in tasks.values():
+                if not task.done():
+                    task.cancel()
+            await asyncio.gather(*tasks.values(), return_exceptions=True)
+
+    async def test_in_order_responses_leave_latest_result_visible(self):
+        snapshots = await self.exercise_queries(("ca", "cat"))
+        self.assertEqual(snapshots[-1], ["cat result"])
+
+    async def test_older_response_cannot_replace_latest_result(self):
+        snapshots = await self.exercise_queries(("cat", "ca"))
+        self.assertEqual(snapshots[0], ["cat result"])
+        self.assertEqual(
+            snapshots[1],
+            ["cat result"],
+            "The older 'ca' response replaced the latest 'cat' results",
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

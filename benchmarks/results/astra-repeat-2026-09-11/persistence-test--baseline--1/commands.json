@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!*lock*'\"' -g 'AGENTS.md' -g '*test*' -g '*.py' -g '*.json' -g '*.md' -g '*.ts' -g '*.js'\"",
+    "aggregated_output": "<WORKSPACE>\ntest_service.py\nservice.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat service.py test_service.py'",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 11 00:26 .\ndrwx------@  3 admin  staff   96 Sep 11 00:26 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:26 .git\n-rw-r--r--@  1 admin  staff   74 Sep 11 00:26 service.py\n-rw-r--r--@  1 admin  staff  153 Sep 11 00:26 test_service.py\ndef save(store, record):\n    store.append(record)\n    return {'ok': True}\nimport unittest\nfrom service import save\n\nclass SaveTests(unittest.TestCase):\n    def test_save(self):\n        self.assertTrue(save([], 'record')['ok'])\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; python3 -B -m unittest -v'",
+    "aggregated_output": "test_save (test_service.SaveTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport tempfile\n\nroot = Path.cwd()\noriginal = (root / 'service.py').read_bytes()\nsource = original.decode()\nneedle = '    store.append(record)\\\\n'\nassert source.count(needle) == 1\nwith tempfile.TemporaryDirectory(prefix='.lost-write-audit-', dir=root) as directory:\n    isolated = Path(directory)\n    (isolated / 'test_service.py').write_bytes((root / 'test_service.py').read_bytes())\n    (isolated / 'service.py').write_text(source.replace(needle, '', 1))\n    print('ISOLATED MUTATION: remove store.append(record); retain success response', flush=True)\n    result = subprocess.run([sys.executable, '-B', '-m', 'unittest', '-v'], cwd=isolated)\n    assert result.returncode == 0, 'Expected original test to miss the lost write'\n    print('WRITE POSTCONDITION PROBE (expected failure):', flush=True)\n    probe = subprocess.run([sys.executable, '-B', '-c', \\\"from service import save; store = []; result = save(store, 'record'); print({'result': result, 'store': store}, flush=True); assert store == ['record'], 'Lost write: record was not appended'\\\"], cwd=isolated)\n    assert probe.returncode == 1\nassert (root / 'service.py').read_bytes() == original\nprint('Mutation directory removed; production service.py unchanged.', flush=True)\nPY\"",
+    "aggregated_output": "ISOLATED MUTATION: remove store.append(record); retain success response\ntest_save (test_service.SaveTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\nWRITE POSTCONDITION PROBE (expected failure):\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n{'result': {'ok': True}, 'store': []}\nAssertionError: Lost write: record was not appended\nMutation directory removed; production service.py unchanged.\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

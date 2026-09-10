@@ -1,0 +1,18 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!*lock*'\"' -g 'AGENTS.md' -g '*.md' -g '*format*' -g '*.py' -g '*.ts' -g '*.js' -g '*.json'\"",
+    "aggregated_output": "<WORKSPACE>\ninvoice.py\nformatting.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat requirements.md formatting.py invoice.py'",
+    "aggregated_output": "total 24\ndrwxr-xr-x@  6 admin  staff  192 Sep 11 00:24 .\ndrwx------@  3 admin  staff   96 Sep 11 00:24 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:24 .git\n-rw-r--r--@  1 admin  staff  329 Sep 11 00:24 formatting.py\n-rw-r--r--@  1 admin  staff   98 Sep 11 00:24 invoice.py\n-rw-r--r--@  1 admin  staff  111 Sep 11 00:24 requirements.md\nThis internal tool displays USD totals only. No third-party formatters or runtime configuration are supported.\nclass FormatterRegistry:\n    def __init__(self):\n        self.providers = {}\n    def register(self, name, provider):\n        self.providers[name] = provider\n    def format(self, name, value):\n        return self.providers[name](value)\n\nregistry = FormatterRegistry()\nregistry.register('usd', lambda cents: f'${cents / 100:.2f}')\nfrom formatting import registry\n\ndef total_label(cents):\n    return registry.format('usd', cents)\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

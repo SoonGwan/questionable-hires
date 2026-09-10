@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'package.json' -g '*search*' -g '*cache*' -g '*test*' -g 'README*' -g 'tsconfig*'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat search.py; rg --files --hidden'",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 11 00:21 .\ndrwx------@  3 admin  staff   96 Sep 11 00:21 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:21 .git\n-rw-r--r--@  1 admin  staff  145 Sep 11 00:21 search.py\n-rw-r--r--@  1 admin  staff  129 Sep 11 00:21 transport.py\nclass Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\ntransport.py\nsearch.py\n.git/COMMIT_EDITMSG\n.git/index\n.git/refs/heads/main\n.git/objects/40/910047a3f0065be6a019869e502a180311f2f0\n.git/logs/refs/heads/main\n.git/objects/4a/cb46e9ea90914f7479b1b9ba1c0ed311480f0b\n.git/objects/7b/0fed21776201f3405943b8e867b1641b31fa14\n.git/objects/fb/44018c7d4a05a0ada675a370f949c6017a7c90\n.git/config\n.git/HEAD\n.git/logs/HEAD\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat transport.py; git status --short; git ls-files'",
+    "aggregated_output": "search.py\ntransport.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B experiment_search_race.py; git diff --exit-code -- search.py transport.py; git status --short'",
+    "aggregated_output": "Started: ('old', 'new'); completed: ('old', 'new')\n  Visible result after each completion: ['old', 'new']\n  Final result matches latest query: True\nStarted: ('old', 'new'); completed: ('new', 'old')\n  Visible result after each completion: ['new', 'old']\n  Final result matches latest query: False\nConfirmed: a late older response overwrites the newer result without caching.\n?? experiment_search_race.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

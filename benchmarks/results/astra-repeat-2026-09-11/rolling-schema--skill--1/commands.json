@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '*release*' -g '*deploy*' -g '*rollback*' -g 'SKILL.md' -g 'README*' -g 'package.json' -g '*migration*' -g '*compose*' -g '*requirements*' -g 'pyproject.toml' -g 'Makefile' -g '*plan*' -g '*runbook*' -g '*config*' -g '*test*' -g '*check*' -g '*evidence*' -g '*lock*' -g '\"'!node_modules'\"' -g '\"'!.git'\"'; git status --short; cat .agents/skills/friday/SKILL.md\"",
+    "aggregated_output": "<WORKSPACE>\nrelease.md\n?? .agents/\n---\nname: friday\ndescription: Review a planned deployment or release diff for rollback feasibility, mixed-version compatibility, migrations, and configuration readiness without deploying it.\n---\n\n# Friday\n\n> Can Monday-you undo this?\n\n## Read Monday's incident report early\n\nIdentify the release diff, deployment order, runtime versions that may coexist, and the rollback mechanism. Inspect migrations, configuration changes, jobs, and consumers relevant to that release. Don't assume a rolling deployment or zero-downtime requirement if the project uses a different documented strategy.\n\nFollow compatibility in both directions: can old code read data written by new code, and can new code tolerate old data and missing new configuration during rollout? Examine renames, drops, backfills, queue payloads, and irreversible external effects when present.\n\nSeparate reverting application code from reversing data changes. A down migration can exist while losing data. Backups are not a proven recovery path without relevant restore evidence. Look for an expand/migrate/contract sequence when a destructive schema transition must coexist with older consumers.\n\nCheck observable readiness and a concrete rollback trigger against the documented operating context. Use local or designated staging checks when authorized. Reviewing a release does not authorize deployment, production migration, or a restore drill.\n\n## Deliver and stop\n\nLead with ready, ready with stated conditions, or blocked by specific evidence. Use unknown where configuration or runtime evidence is missing; don't label an untested release safe. For each consequential finding include the affected step, failure mode, evidence, and actionable mitigation or verification.\n\nStop after the release's material compatibility and recovery paths are assessed. Don't perform a generic infrastructure audit. If a fix was requested, prepare the scoped correction and verify it without silently releasing it.\n\n## Working agreement\n\nFollow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.\n\nUse the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.\n\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git'\"'; git log -5 --oneline; git diff; cat release.md\"",
+    "aggregated_output": "old_reader.py\n002_up.sql\n001_initial.sql\nnew_reader.py\n002_down.sql\nrelease.md\n.agents/skills/friday/SKILL.md\n.agents/skills/friday/agents/openai.yaml\n7b0b5fe Initial application\nDeploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git show --stat HEAD; nl -ba 001_initial.sql; nl -ba 002_up.sql; nl -ba 002_down.sql; nl -ba old_reader.py; nl -ba new_reader.py; nl -ba release.md'",
+    "aggregated_output": "commit 7b0b5fe325b91a084d61b5f1ddeebdbc2a797850\nAuthor: Fixture Author <fixture@example.invalid>\nDate:   Thu Jan 1 12:00:00 2026 +0000\n\n    Initial application\n\n 001_initial.sql | 1 +\n 002_down.sql    | 1 +\n 002_up.sql      | 1 +\n new_reader.py   | 1 +\n old_reader.py   | 1 +\n release.md      | 1 +\n 6 files changed, 6 insertions(+)\n     1\tCREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n     1\tALTER TABLE users RENAME COLUMN name TO display_name;\n     1\tALTER TABLE users RENAME COLUMN display_name TO name;\n     1\tQUERY = 'SELECT id, name FROM users'\n     1\tQUERY = 'SELECT id, display_name FROM users'\n     1\tDeploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nimport ast\nimport pathlib\nimport sqlite3\nroot = pathlib.Path('.')\nqueries = {name: ast.literal_eval(ast.parse((root / (name + '_reader.py')).read_text()).body[0].value) for name in ('old', 'new')}\ndb = sqlite3.connect(':memory:')\ndb.executescript((root / '001_initial.sql').read_text())\ndb.execute('INSERT INTO users (id, name) VALUES (?, ?)', (1, 'Before migration'))\ndef check(stage):\n    for version, query in queries.items():\n        try:\n            print(stage, version, 'OK', db.execute(query).fetchall())\n        except sqlite3.OperationalError as exc:\n            print(stage, version, 'FAIL', str(exc))\ncheck('initial')\ndb.executescript((root / '002_up.sql').read_text())\ndb.execute('INSERT INTO users (id, display_name) VALUES (?, ?)', (2, 'After migration'))\ncheck('after up / before rollback down')\ndb.executescript((root / '002_down.sql').read_text())\ncheck('after down')\nPY\"",
+    "aggregated_output": "initial old OK [(1, 'Before migration')]\ninitial new FAIL no such column: display_name\nafter up / before rollback down old FAIL no such column: name\nafter up / before rollback down new OK [(1, 'Before migration'), (2, 'After migration')]\nafter down old OK [(1, 'Before migration'), (2, 'After migration')]\nafter down new FAIL no such column: display_name\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

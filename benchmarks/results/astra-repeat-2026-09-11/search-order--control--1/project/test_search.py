@@ -1,0 +1,40 @@
+import asyncio
+import unittest
+
+from search import Search
+
+
+class SearchInteractionTests(unittest.IsolatedAsyncioTestCase):
+    async def test_latest_query_result_survives_older_request_finishing_last(self):
+        search = Search()
+        older_started = asyncio.Event()
+        release_older = asyncio.Event()
+
+        async def fetch(query):
+            if query == "ca":
+                older_started.set()
+                await release_older.wait()
+            return f"Results for {query}"
+
+        # The user types "ca", then "cat" while the first request is pending.
+        older_request = asyncio.create_task(search.run("ca", fetch))
+        try:
+            await older_started.wait()
+            await search.run("cat", fetch)
+            self.assertEqual(search.result, "Results for cat")
+
+            # A slower response to the previous query must not replace "cat".
+            release_older.set()
+            await older_request
+            self.assertEqual(
+                search.result,
+                "Results for cat",
+                "An older response overwrote the latest query's visible result",
+            )
+        finally:
+            older_request.cancel()
+            await asyncio.gather(older_request, return_exceptions=True)
+
+
+if __name__ == "__main__":
+    unittest.main()

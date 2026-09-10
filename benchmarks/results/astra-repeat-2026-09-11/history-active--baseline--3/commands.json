@@ -1,0 +1,26 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '*'; rg -n \\\"display_label\\\" .\"",
+    "aggregated_output": "<WORKSPACE>\n.git/COMMIT_EDITMSG\n.git/index\n.git/refs/heads/main\n.git/logs/refs/heads/main\n.git/logs/HEAD\n.git/HEAD\n.git/objects/25/3183cf726c0c23d0e25cf160ee6167c9db5928\n.git/objects/d5/fc9729e83eca829c17b3981abfb70be9df1f24\n.git/objects/0f/4d82301416c5d4d8084ec519c8a7fdac1901e2\n.git/objects/5e/f9f504018ce9c404e575928e666054db3c656e\n.git/objects/62/b137da7a0766bb82ed714885919db6b7547d69\n.git/objects/9e/7cfdbc8f0030e053e4ff3eac6a40d0ec8042be\n.git/objects/61/16bc3e58f091ad53fdc156f225e57d7a9ed82a\n.git/config\nconsumer.py\nlabels.py\n./consumer.py:1:from labels import display_label\n./consumer.py:5:    return display_label({'name': 'Ada'})\n./labels.py:1:def display_label(payload):\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"nl -ba labels.py\nnl -ba consumer.py\ngit status --short\ngit log -5 --oneline\nrg --files --hidden -g '\"'!.git/**'\"'\"",
+    "aggregated_output": "     1\tdef display_label(payload):\n     2\t    return payload.get('display_name') or payload['name']\n     1\tfrom labels import display_label\n     2\t\n     3\t# Partner API v1 remains supported through December 2027.\n     4\tdef partner_label():\n     5\t    return display_label({'name': 'Ada'})\nd5fc972 Keep API v1 partners working during migration\n9e7cfdb Add label reader for internal v2 payloads\nconsumer.py\nlabels.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"git log -p -- labels.py consumer.py\npython3 -B - <<'PY'\nfrom consumer import partner_label\nfrom labels import display_label\nprint('partner_label():', repr(partner_label()))\nfor payload in ({'name': 'Ada'}, {'display_name': 'Ada v2', 'name': 'Ada'}, {'display_name': '', 'name': 'Ada'}, {'display_name': None, 'name': 'Ada'}):\n    print(repr(payload), 'current:', repr(display_label(payload)), 'without fallback (.get):', repr(payload.get('display_name')))\nPY\"",
+    "aggregated_output": "commit d5fc9729e83eca829c17b3981abfb70be9df1f24\nAuthor: Fixture Author <fixture@example.invalid>\nDate:   Fri Jan 2 12:00:00 2026 +0000\n\n    Keep API v1 partners working during migration\n\ndiff --git a/consumer.py b/consumer.py\nnew file mode 100644\nindex 0000000..5ef9f50\n--- /dev/null\n+++ b/consumer.py\n@@ -0,0 +1,5 @@\n+from labels import display_label\n+\n+# Partner API v1 remains supported through December 2027.\n+def partner_label():\n+    return display_label({'name': 'Ada'})\ndiff --git a/labels.py b/labels.py\nindex 253183c..6116bc3 100644\n--- a/labels.py\n+++ b/labels.py\n@@ -1,2 +1,2 @@\n def display_label(payload):\n-    return payload['display_name']\n+    return payload.get('display_name') or payload['name']\n\ncommit 9e7cfdbc8f0030e053e4ff3eac6a40d0ec8042be\nAuthor: Fixture Author <fixture@example.invalid>\nDate:   Thu Jan 1 12:00:00 2026 +0000\n\n    Add label reader for internal v2 payloads\n\ndiff --git a/labels.py b/labels.py\nnew file mode 100644\nindex 0000000..253183c\n--- /dev/null\n+++ b/labels.py\n@@ -0,0 +1,2 @@\n+def display_label(payload):\n+    return payload['display_name']\npartner_label(): 'Ada'\n{'name': 'Ada'} current: 'Ada' without fallback (.get): None\n{'display_name': 'Ada v2', 'name': 'Ada'} current: 'Ada v2' without fallback (.get): 'Ada v2'\n{'display_name': '', 'name': 'Ada'} current: 'Ada' without fallback (.get): ''\n{'display_name': None, 'name': 'Ada'} current: 'Ada' without fallback (.get): None\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

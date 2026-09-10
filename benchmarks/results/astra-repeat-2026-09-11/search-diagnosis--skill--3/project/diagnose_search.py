@@ -1,0 +1,57 @@
+"""Local diagnostic: vary response order without a cache or network."""
+
+import asyncio
+import json
+
+from search import Search
+from transport import fetch
+
+
+async def trial(completion_order):
+    search = Search()
+    queries = ("earlier", "newer")
+    loop = asyncio.get_running_loop()
+    responses = {query: loop.create_future() for query in queries}
+    started = {query: asyncio.Event() for query in queries}
+    requests = []
+
+    async def request(path, *, params, headers):
+        query = params["q"]
+        requests.append({"path": path, "params": params, "headers": headers})
+        started[query].set()
+        # Each query has its own controlled response; no cache is involved.
+        return await responses[query]
+
+    async def local_fetch(query):
+        return await fetch(query, request)
+
+    tasks = {}
+    for query in queries:
+        tasks[query] = asyncio.create_task(search.run(query, local_fetch))
+        await started[query].wait()
+
+    observations = []
+    for query in completion_order:
+        responses[query].set_result(f"results for {query}")
+        await tasks[query]
+        observations.append({"completed": query, "displayed": search.result})
+
+    return {
+        "requests": requests,
+        "completion_order": completion_order,
+        "observations": observations,
+        "stale_final_result": search.result != "results for newer",
+    }
+
+
+async def main():
+    in_order = await trial(("earlier", "newer"))
+    reversed_order = await trial(("newer", "earlier"))
+    assert in_order["requests"] == reversed_order["requests"]
+    assert not in_order["stale_final_result"]
+    assert reversed_order["stale_final_result"]
+    print(json.dumps([in_order, reversed_order], indent=2))
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

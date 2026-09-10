@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!dist'\"' -g '\"'!build'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"'\"",
+    "aggregated_output": "<WORKSPACE>\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la; rg --files --hidden -g '\"'!.git'\"'\"",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 11 00:30 .\ndrwx------@  3 admin  staff   96 Sep 11 00:30 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 11 00:30 .git\n-rw-r--r--@  1 admin  staff  145 Sep 11 00:30 search.py\n-rw-r--r--@  1 admin  staff  129 Sep 11 00:30 transport.py\nsearch.py\ntransport.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat search.py transport.py'",
+    "aggregated_output": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\nasync def fetch(query, request):\n    return await request('/search', params={'q': query}, headers={'Cache-Control': 'no-cache'})\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; git log -5 --oneline; git ls-files'",
+    "aggregated_output": "fb44018 Initial application\nsearch.py\ntransport.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest -v test_search_race.py; git diff --exit-code -- search.py transport.py; git diff --check; git status --short'",
+    "aggregated_output": "test_in_order_responses_leave_newer_result (test_search_race.SearchResponseOrderExperiment) ... ok\ntest_late_older_response_overwrites_newer_result_without_cache (test_search_race.SearchResponseOrderExperiment) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.011s\n\nOK\n?? test_search_race.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]
