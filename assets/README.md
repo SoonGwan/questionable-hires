@@ -2,6 +2,8 @@
 
 Use restrained typography, generous spacing, and one blue accent. The team name and its original tagline carry the personality; avoid decorative badges and extra slogans.
 
+This is the default for all future banners, comparison charts, and other project visuals, not just `team.svg`. Use primary blue for emphasis and neutral tones for comparison series, axes, and grid lines. Use labels, markers, or line styles as well as color to distinguish series. If more colors are needed, choose them from Montage's semantic tokens rather than inventing a separate palette.
+
 Colors follow [Montage's semantic palette](https://montage.wanted.co.kr/docs/foundations/base-material/colors/semantic), checked against the [official token definitions](https://github.com/wanteddev/montage-web/blob/main/packages/wds-theme/src/theme/semantic/index.ts) on 2026-09-11.
 
 | Role | Light | Dark |
