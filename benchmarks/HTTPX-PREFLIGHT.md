@@ -25,3 +25,17 @@ Next protocol should freeze neutral requests for test-sensitivity audits of WSGI
 Compare no-skill, generic control, and Con Artist with equal environment and task information. Preserve complete repository context, not a few copied functions presented as real-repository evaluation. Keep mutation oracles and expected findings outside evaluated contexts; report model familiarity with this public version as an unavoidable limitation. Freeze the final requests, scoring, resource limits, and run order before starting those sessions.
 
 No upstream issues, PRs, deployments, or external messages are authorized by this experiment. HTTPX is BSD-3-Clause; retain its license and notices with any redistributed source artifacts. The repository stays outside our source tree for preflight; do not accidentally relicense third-party snapshots under our MIT license.
+
+## Independent behavioral oracle, after task freeze
+
+After committing the [task protocol](PLAN-HTTPX.md), `httpx_oracle.py` tested three faults in separate disposable full-source copies. The original checkout stayed unchanged. Each additional witness passed on correct code and failed with the intended assertion on its faulty copy, with import-path checks confirming the copied source was exercised.
+
+| Targeted fault | Existing suite on correct / faulty code | Independent witness |
+| --- | --- | --- |
+| Omit WSGI iterable close | 12 pass / 2 fail, 10 pass | Actual client response no longer calls application iterable close |
+| Append ASGI HEAD body | 24 pass / 24 pass | GET retains payload in both; HEAD exposes payload only in faulty code |
+| Swallow default ASGI app exception | 24 pass / 4 fail, 20 pass | Caller no longer receives application RuntimeError |
+
+WSGI protection comes through `wsgiref.validate` iterator finalization and pytest's unraisable-exception warning policy, not an explicit close assertion. That mechanism is part of the tested environment and may be runtime-sensitive. Preserve it when assessing whether a model accurately explains the result.
+
+These are deliberate local mutations, **not evidence that HTTPX currently ships these defects**. The HEAD observation establishes a targeted coverage gap at this pinned revision; it does not measure the overall quality of HTTPX's test suite. Oracle source and results must not be included in evaluated projects. Original logs remain in ignored local run storage.
