@@ -10,6 +10,14 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_fixture_paths_cannot_escape_workspace(self):
+        for name in ("../escape.py", "/tmp/escape.py", ".git/config"):
+            with tempfile.TemporaryDirectory() as directory:
+                workspace = Path(directory) / "project"
+                with self.assertRaises(ValueError):
+                    runner.prepare({"files": {name: "bad"}}, workspace)
+                self.assertFalse(workspace.exists())
+
     def test_every_hire_has_a_neutral_task(self):
         cases = json.loads((runner.ROOT / "benchmarks/cases.json").read_text())
         actual = {c["skill"] for c in cases}

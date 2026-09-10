@@ -23,11 +23,19 @@ def command(args, cwd, **kwargs):
 
 
 def prepare(case, workspace):
+    commits = case.get("history") or [{"message": "Initial application", "files": case["files"]}]
+    for commit in commits:
+        for name in commit["files"]:
+            path = Path(name)
+            if path.is_absolute() or ".." in path.parts or ".git" in path.parts:
+                raise ValueError(f"Unsafe fixture path: {name}")
     workspace.mkdir(parents=True)
-    command(["git", "init", "-q"], workspace)
+    command(["git", "init", "-q", "--template="], workspace)
     command(["git", "config", "user.name", "Fixture Author"], workspace)
     command(["git", "config", "user.email", "fixture@example.invalid"], workspace)
-    commits = case.get("history") or [{"message": "Initial application", "files": case["files"]}]
+    command(["git", "config", "commit.gpgsign", "false"], workspace)
+    (workspace / ".git/no-hooks").mkdir()
+    command(["git", "config", "core.hooksPath", str(workspace / ".git/no-hooks")], workspace)
     for index, commit in enumerate(commits):
         for name, contents in commit["files"].items():
             target = workspace / name
@@ -143,12 +151,16 @@ def main():
                 "limitation": "Synthetic tasks; runtime system instructions remain. Personal skills disabled where discovered; review traces for contamination."}
     (output / "run.json").write_text(json.dumps(manifest, indent=2) + "\n")
     disabled = disabled_skills()
+    incomplete = False
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
         futures = [pool.submit(run_cell, case, arm, repeat, output, args.model, args.effort, args.timeout, disabled)
                    for repeat in range(1, args.repeats + 1) for case in cases for arm in dict.fromkeys(args.arms)]
         for future in as_completed(futures):
             result = future.result()
+            incomplete = incomplete or not result["completed"]
             print(f"{result['case']} {result['arm']} #{result['repeat']}: {'completed' if result['completed'] else 'incomplete'} ({result['elapsed_seconds']}s)", flush=True)
+    if incomplete:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
