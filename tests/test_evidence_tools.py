@@ -46,6 +46,41 @@ class EvidenceTests(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 exporter.export(source, target)
 
+    def test_export_uses_retained_snapshot_and_preserves_failure_logs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "run"
+            cell = source / "case--skill--1"
+            (cell / "project").mkdir(parents=True)
+            (cell / "project/app.py").write_text("snapshot = True\n")
+            (source / "run.json").write_text('{}')
+            (cell / "metadata.json").write_text(json.dumps({"workspace": str(root / "gone"), "completed": False}))
+            (cell / "events.jsonl").write_text('{"type":"error","message":"rate limit"}\n')
+            (cell / "stderr.txt").write_text(str(Path.home()) + '/private-path: timeout')
+            (cell / "stdout.original.jsonl").write_text('private original')
+            target = root / "export"
+            exporter.export(source, target)
+            dest = target / cell.name
+            self.assertEqual((dest / "project/app.py").read_text(), "snapshot = True\n")
+            self.assertIn("rate limit", (dest / "events.jsonl").read_text())
+            self.assertNotIn(str(Path.home()), (dest / "stderr.txt").read_text())
+            self.assertFalse((dest / "stdout.original.jsonl").exists())
+            self.assertIn('stdout.original.jsonl', json.loads((dest / 'source-sha256.json').read_text()))
+            self.assertEqual((cell / "stdout.original.jsonl").read_text(), 'private original')
+
+    def test_audit_flags_added_files_on_read_only_review(self):
+        case = next(c for c in json.loads((ROOT / "benchmarks/cases.json").read_text()) if c["id"] == "formatter-review")
+        with tempfile.TemporaryDirectory() as directory:
+            cell = Path(directory) / "formatter-review--baseline--1"
+            project = cell / "project"
+            project.mkdir(parents=True)
+            for name, contents in case["files"].items():
+                (project / name).write_text(contents)
+            (project / "unrequested.md").write_text("extra")
+            (cell / "metadata.json").write_text(json.dumps({"case": "formatter-review", "completed": True}))
+            (cell / "commands.json").write_text('[]')
+            self.assertEqual(auditor.audit(Path(directory))[0]["changes_requiring_scope_review"], ["unrequested.md"])
+
     def test_audit_flags_unrequested_source_edit(self):
         case = next(c for c in json.loads((ROOT / "benchmarks/cases.json").read_text()) if c["id"] == "label-change")
         with tempfile.TemporaryDirectory() as directory:
