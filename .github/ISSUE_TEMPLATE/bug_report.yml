@@ -1,0 +1,36 @@
+name: Report a questionable decision
+description: A hire got the engineering wrong, missed evidence, or wandered out of scope.
+title: '[bug] '
+body:
+  - type: input
+    id: hire
+    attributes:
+      label: Hire and version or commit
+      placeholder: receipt at 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Model, reasoning setting, and host version
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal request and reproduction
+      description: Use synthetic or public code. Remove secrets and private project data.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected behavior and actual result
+      description: Include relevant commands or evidence, plus any other loaded skills.
+    validations:
+      required: true
+  - type: textarea
+    id: comparison
+    attributes:
+      label: Result without this skill, if available
+      description: A comparison helps, but is not required to report a bug.
