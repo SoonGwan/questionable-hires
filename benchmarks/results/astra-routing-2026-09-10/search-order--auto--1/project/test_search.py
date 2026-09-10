@@ -1,0 +1,52 @@
+import asyncio
+import unittest
+
+from search import Search
+
+
+class SearchInteractionTests(unittest.IsolatedAsyncioTestCase):
+    async def exercise_response_order(self, completion_order):
+        search = Search()
+        started = asyncio.Queue()
+        responses = {
+            query: asyncio.get_running_loop().create_future()
+            for query in ("ca", "cat")
+        }
+
+        async def fetch(query):
+            started.put_nowait(query)
+            return await responses[query]
+
+        tasks = {}
+        try:
+            # The user types another character while the first request is pending.
+            for query in ("ca", "cat"):
+                tasks[query] = asyncio.create_task(search.run(query, fetch))
+                self.assertEqual(await started.get(), query)
+
+            for query in completion_order:
+                responses[query].set_result(f"results for {query}")
+                await tasks[query]
+                if query == "cat":
+                    self.assertEqual(search.result, "results for cat")
+
+            self.assertEqual(
+                search.result,
+                "results for cat",
+                "An older response must not replace the latest query's results",
+            )
+        finally:
+            for task in tasks.values():
+                if not task.done():
+                    task.cancel()
+            await asyncio.gather(*tasks.values(), return_exceptions=True)
+
+    async def test_responses_in_query_order_keep_latest_result(self):
+        await self.exercise_response_order(("ca", "cat"))
+
+    async def test_older_response_cannot_overwrite_latest_result(self):
+        await self.exercise_response_order(("cat", "ca"))
+
+
+if __name__ == "__main__":
+    unittest.main()

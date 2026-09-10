@@ -1,0 +1,1 @@
+Deploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.
