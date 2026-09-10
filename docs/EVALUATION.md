@@ -25,4 +25,4 @@ Score correctness and scope separately. A correct diagnosis accompanied by unaut
 
 ## Current evidence
 
-The automated suite checks the installer and catalog structure. No comparative Astra benchmark has been run yet. Executable engineering fixtures and independent model evaluations remain part of the active development work, not completed claims.
+The automated suite checks the installer and catalog structure. Five executable engineering cases establish known boundary, ordering, persistence, and schema behaviors; see the [interview room](../evals/README.md). The local suite has 11 passing tests. No comparative Astra benchmark has been run yet. Full neutral fixture coverage and independent model evaluations remain active work, not completed claims.

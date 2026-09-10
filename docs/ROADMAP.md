@@ -2,6 +2,23 @@
 
 Build one useful skill, establish the evaluation pattern, then expand the team.
 
+## Current status
+
+All eight skill instructions and UI entries are implemented. Local installation, plugin manifest validation, catalog checks, and 11 deterministic installer/fixture tests pass. The items below describe the remaining behavioral evaluation and distribution work, not a claim that all milestones are complete.
+
+GitHub Actions is configured, but the initial run could not start because GitHub reported failed account payments or an insufficient spending limit. Account billing must be resolved for hosted CI; local checks remain available.
+
+- [x] Eight focused skill implementations.
+- [x] Non-overwriting local installer and failure recovery tests.
+- [x] Validated Codex plugin manifest.
+- [x] Installation guide and Astra design notes.
+- [x] Executable baseline fixtures for five engineering failures.
+- [ ] Complete neutral evaluation fixtures, including historical, multi-file, and clean cases.
+- [ ] Execute and record behavioral evaluations for every hire.
+- [ ] Run controlled Astra baseline comparisons before making performance claims.
+- [ ] Verify marketplace installation end to end.
+- [ ] Obtain a passing hosted CI run after the account billing issue is resolved.
+
 ## 0. Open the office
 
 - [x] Establish the project name and voice.
