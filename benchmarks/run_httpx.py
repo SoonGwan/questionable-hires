@@ -18,6 +18,15 @@ TASKS = {
 }
 
 
+def make_schedule(tasks, arms, repeats):
+    if repeats < 1:
+        raise ValueError('repeats must be positive')
+    schedule = [(case, arm, repeat) for repeat in range(1, repeats + 1)
+                for case in tasks for arm in dict.fromkeys(arms)]
+    random.Random(20260912).shuffle(schedule)
+    return schedule
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, required=True)
@@ -50,8 +59,7 @@ def main():
         target = snapshot / name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(subprocess.check_output(['git', 'show', f'{skill_revision}:skills/con-artist/{name}'], cwd=ROOT))
-    schedule = [(case, arm, repeat) for repeat in range(1, args.repeats + 1) for case in tasks for arm in dict.fromkeys(args.arms)]
-    random.Random(20260912).shuffle(schedule)
+    schedule = make_schedule(tasks, args.arms, args.repeats)
     manifest = dict(upstream_revision=REVISION, revision=command(['git', 'rev-parse', 'HEAD'], ROOT),
                     codex_version=command(['codex', '--version'], ROOT), model='gpt-6-astra', effort='medium',
                     seed=20260912, timeout_seconds=360, jobs=1,
