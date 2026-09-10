@@ -50,7 +50,10 @@ def validate(root):
     except (OSError, ValueError, KeyError, TypeError) as error:
         errors.append(f"plugin: {error}")
     # Validate repository-relative Markdown links, excluding anchors and URLs.
-    for file in [root / "README.md", root / "CONTRIBUTING.md", *root.glob("docs/*.md"), *skills.rglob("*.md")]:
+    documents = {root / "README.md", root / "CONTRIBUTING.md", *root.glob("*.md"),
+                 *root.glob("docs/*.md"), *root.glob("examples/*.md"), *root.glob("evals/*.md"),
+                 *root.glob("benchmarks/*.md"), *root.glob("benchmarks/results/*/*/answer.md"), *skills.rglob("*.md")}
+    for file in sorted(documents):
         if not file.exists():
             errors.append(f"Missing document: {file.relative_to(root)}")
             continue

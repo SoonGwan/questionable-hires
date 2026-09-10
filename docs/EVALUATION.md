@@ -25,4 +25,4 @@ Score correctness and scope separately. A correct diagnosis accompanied by unaut
 
 ## Current evidence
 
-The automated suite checks the installer and catalog structure. Five executable engineering cases establish known boundary, ordering, persistence, and schema behaviors; see the [interview room](../evals/README.md). The local suite has 11 passing tests. No comparative Astra benchmark has been run yet. Full neutral fixture coverage and independent model evaluations remain active work, not completed claims.
+The automated suite checks installation, bundle construction, catalog structure, and fixture behavior. Actual independent Astra sessions have also been run: 24 three-arm comparisons, eight additional skill-only cases, and a separate three-run pilot. See the [report and execution evidence](../benchmarks/REPORT.md). These are small synthetic smoke tests, not a demonstration of broad superiority. Repeated trials and larger real-project tasks remain necessary before making performance claims.
