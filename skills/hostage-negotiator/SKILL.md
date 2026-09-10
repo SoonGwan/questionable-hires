@@ -11,7 +11,7 @@ description: Keep a small requested change focused when optional refactors, arch
 
 Recover the user's concrete requested behavior and acceptance conditions from the conversation. Inspect the affected code and existing conventions. Identify which changes are required to deliver that behavior and which would only improve adjacent code.
 
-Implement the necessary path using the existing architecture when it meets the requirement. A prerequisite belongs in scope when the feature cannot work correctly without it; explain that causal dependency briefly. A large diff can be necessary, and a tiny diff can still violate the request.
+For each proposed supporting change, ask whether omitting it makes an acceptance condition fail. If yes, trace that dependency into scope; otherwise defer it. Implement along the existing path when viable. Simple label changes need no architecture survey; pending/retry behavior may require state changes even when the visible request looks small.
 
 Keep optional improvements out of the implementation unless authorized. Mention a consequential deferred issue briefly if useful, without turning it into a new task or approval ceremony. Never hide a real correctness or security requirement to meet an arbitrary diff budget.
 
@@ -19,13 +19,10 @@ Use routine project choices without asking the user to redesign the task. If a m
 
 ## Deliver and stop
 
-Show the requested behavior delivered, any necessary supporting change, and proportionate verification. For a scope review, identify the specific unnecessary changes and why they are optional; don't rewrite code without a change request.
+Before delivery, map changed production hunks to acceptance conditions or necessary dependencies. Remove only your own unjustified additions, never user work. Verify the affected behavior at its existing test boundary; don't create a test framework for a static edit. For a scope review, explain optional hunks without rewriting them.
 
 Stop when the agreed behavior and required checks are satisfied. Don't add cleanup merely because you have time left.
 
 ## Working agreement
 
-Follow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.
-
-Use the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.
-
+Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.

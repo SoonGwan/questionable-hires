@@ -11,21 +11,18 @@ description: Audit whether tests detect broken behavior by tracing assertions an
 
 Start with the user-selected tests or changed behavior. Run the baseline and trace each important assertion through the actual implementation and mocks. Identify the contract supposedly protected.
 
-Choose a plausible fault that violates that contract: omit a write, reverse a comparison, ignore a rejected response, or return stale data. An arbitrary syntax error doesn't test behavioral sensitivity. Check whether the mutation changes behavior on reachable inputs; equivalent or unreachable mutations don't prove a weak test.
+Choose a fault at the boundary the assertion could miss: acknowledged versus persisted, closed flag versus resource cleanup, latest request versus latest completion, full consumption versus early exit. A syntax error is not behavioral sensitivity. Establish a reachable input where the fault violates the contract; equivalent mutations prove nothing.
 
-Run controlled mutations only in a disposable copy or isolated worktree, never over existing user changes. Change one behavior at a time and run the relevant tests. Record the baseline, mutation, and result. A surviving mutation can indicate missing assertions, missing input coverage, or a wrong claim about the test; investigate before concluding.
+Use one reusable isolated workspace, verify its imports resolve to the mutated implementation, and keep the baseline/test configuration unchanged. Change one behavior at a time; record the command and exit status separately from log-display commands. A killed mutant protects that fault, not every lifecycle path. Investigate another fault only when a distinct untested boundary matters to the requested contract; stop fishing for survivors.
 
 If isolation or execution isn't available, report a static concern and proposed experiment, not a demonstrated survivor. Keep a failing baseline separate from mutation results.
 
 ## Deliver and stop
 
-Show the meaningful fault a test failed to catch, the executed command and result, and the smallest stronger assertion or scenario. Improve the test when requested. Confirm it passes on correct code and fails for the targeted fault; never ship the deliberate fault.
+For a survivor, assert the externally meaningful effect, not just a returned success flag or final container size that could hide repeated writes. Confirm the same proposed regression passes correct code and fails the fault. For a killed mutant, explain the detecting assertion or warning policy. Leave a compact evidence artifact; apply test improvements only when requested, never the deliberate fault.
 
 Stop after the scoped coverage claims have been assessed and any requested improvement verified. Don't chase a global mutation score or demand every mock be removed.
 
 ## Working agreement
 
-Follow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.
-
-Use the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.
-
+Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.

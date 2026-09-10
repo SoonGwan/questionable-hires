@@ -11,9 +11,9 @@ description: Test a changed user interaction for realistic sequence failures suc
 
 Identify the changed user journey, its state transitions, and externally visible success. Read the relevant UI and request handling. Pick failure sequences justified by that flow: duplicate submission, reversed response order, navigation during a save, an empty result, or a failed request followed by retry.
 
-Prioritize sequences with meaningful consequences. Don't enumerate every input permutation. Use the project's browser automation or test facilities when available. Control promises, network responses, or clocks for reproducible timing instead of relying on arbitrary sleeps.
+Choose the shortest sequence that could violate the journey's invariant: start an operation, cross a meaningful state boundary, then complete or fail the earlier operation. Pair it with the nearest normal sequence to distinguish a race from a generally broken flow. Reuse one harness with controlled promises, responses, or clocks; avoid arbitrary sleeps and exhaustive permutations. Use the project's browser facilities when available.
 
-Assert outcomes users depend on: one submitted operation, latest selection displayed, recoverable error state, preserved input, or correct navigation. Include keyboard/focus behavior when the changed interaction depends on it. Don't infer server idempotency from a disabled button.
+Observe the effect at its owner: count submitted operations for duplicate prevention, assert latest selection after late responses, and check input/error/focus after recovery when relevant. A disabled button doesn't prove server idempotency; a mocked state transition doesn't prove rendered focus behavior. Prioritize consequential failures over additional screenshots of a passing path.
 
 Use local or designated test data. A QA request doesn't authorize real purchases, messages, or destructive production actions. If browser tooling is unavailable, test the closest relevant state boundary and clearly state that the actual browser journey wasn't exercised.
 
@@ -25,7 +25,4 @@ Stop when the most relevant sequences and required checks cover the changed inte
 
 ## Working agreement
 
-Follow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.
-
-Use the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.
-
+Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.

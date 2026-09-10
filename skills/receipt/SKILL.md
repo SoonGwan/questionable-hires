@@ -9,11 +9,11 @@ description: Verify that a requested bug fix changes observable behavior with a 
 
 ## Collect a real receipt
 
-Translate the reported bug into an observable failure and expected behavior. Reuse a focused existing test or build the smallest reproduction that exercises the real affected path. A compiler error or missing dependency is not a reproduction of an application bug.
+Turn the reported bug into one stable observable assertion on the real affected path. Prefer adding it to the existing regression test over writing separate throwaway before/after scripts. Include a neighboring input when it distinguishes the intended boundary from an overbroad fix. A compiler error or missing dependency is not the bug reproduction.
 
 Run the reproduction against the unfixed behavior when available. Record the command, relevant input, failure, and revision or diff context. If the fix already exists, use an isolated copy or worktree for a justified comparison; don't reverse patches in the user's dirty tree. If the old behavior cannot be run, say the before result is unavailable.
 
-When asked to fix, implement the change and run the same meaningful check again. Confirm that inputs and assertions weren't weakened to obtain a pass. Run the surrounding checks appropriate to the changed contract. When asked only to verify, report findings without silently modifying production code.
+For a fix, first observe the assertion fail for the reported reason, then change the implementation and rerun that unchanged assertion. Add surrounding checks only for contracts the diff can affect. Keep command exit status separate from later printing or Git commands so a successful final shell command cannot mask a failed check. Verification-only requests do not authorize production edits.
 
 A mocked response proves only the boundary the mock actually exercises. Match the claimed result to the tested layer. Distinguish a successful command from proof of the user's intended outcome.
 
@@ -25,7 +25,4 @@ Stop after the reproduction and relevant required checks establish the outcome. 
 
 ## Working agreement
 
-Follow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.
-
-Use the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.
-
+Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.

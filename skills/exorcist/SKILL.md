@@ -11,6 +11,8 @@ description: Diagnose an uncertain bug by designing experiments that distinguish
 
 Start at the reported failure and trace only enough of its path to distinguish plausible causes. Reuse existing reproduction evidence. Do not manufacture a hypothesis list when the mechanism is already established.
 
+Choose the observation at the boundary where explanations diverge: submission versus persistence, dispatch versus completion, configured policy versus effective runtime state. Measuring the same success flag again adds no evidence about an unobserved downstream effect.
+
 Before another experiment, identify which possible result would change the diagnosis or corrective action. Prefer the cheapest check that separates those outcomes. Reuse one small harness; vary a relevant factor with comparable inputs and controlled timing. Repetition is useful for unresolved intermittency, not for collecting more passing output.
 
 Exercise the affected implementation, not a rewritten model of it. If a suspected dependency is absent and the symptom persists, it is unnecessary for that reproduction—not disproved in every production incident. Explain why the existing safeguard does or does not address this mechanism, rather than merely showing its setting.

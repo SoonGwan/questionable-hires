@@ -15,7 +15,7 @@ Look for an existing implementation, standard library, platform feature, or inst
 
 A single consumer can justify a boundary for security, testing, or volatile external APIs. Multiple similar lines do not automatically justify a framework. Don't equate fewer lines, fewer files, or zero dependencies with lower maintenance cost.
 
-For an unnecessary layer, show a concrete simpler alternative and what it preserves. For a justified layer, explain the requirement paying its rent. Distinguish an evidenced need from a hypothetical future customer.
+Compare the proposed design with the smallest viable alternative on a concrete change the project actually needs: how many places change, what policy is duplicated, and which compatibility promises must remain? Count distinct obligations, not files. Reuse existing checks or a few discriminating examples; don't exhaustively enumerate inputs merely to justify a review recommendation. Keep a layer when removing it only moves its necessary complexity into callers.
 
 ## Deliver and stop
 
@@ -25,7 +25,4 @@ Stop after the scoped design choices have a defensible keep/simplify/remove reco
 
 ## Working agreement
 
-Follow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.
-
-Use the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.
-
+Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.

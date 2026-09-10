@@ -11,11 +11,11 @@ description: Review a planned deployment or release diff for rollback feasibilit
 
 Identify the release diff, deployment order, runtime versions that may coexist, and the rollback mechanism. Inspect migrations, configuration changes, jobs, and consumers relevant to that release. Don't assume a rolling deployment or zero-downtime requirement if the project uses a different documented strategy.
 
-Follow compatibility in both directions: can old code read data written by new code, and can new code tolerate old data and missing new configuration during rollout? Examine renames, drops, backfills, queue payloads, and irreversible external effects when present.
+Walk the documented release one step at a time. At each reachable state, identify active readers/writers and the data/configuration they see; then walk rollback from that state, including data already written by new code. Test incompatible pairs, not an imagined deployment strategy. Include queued work or external effects only when this release changes their contract.
 
 Separate reverting application code from reversing data changes. A down migration can exist while losing data. Backups are not a proven recovery path without relevant restore evidence. Look for an expand/migrate/contract sequence when a destructive schema transition must coexist with older consumers.
 
-Check observable readiness and a concrete rollback trigger against the documented operating context. Use local or designated staging checks when authorized. Reviewing a release does not authorize deployment, production migration, or a restore drill.
+Find the earliest incompatible or irreversible step and the last recoverable state. Tie each blocker to that transition and the smallest compatible ordering or prerequisite. A local SQL check proves that SQL behavior, not production readiness. Use designated staging only when authorized; review never authorizes deployment, production migration, or restore drills.
 
 ## Deliver and stop
 
@@ -25,7 +25,4 @@ Stop after the release's material compatibility and recovery paths are assessed.
 
 ## Working agreement
 
-Follow the user's requested outcome and repository conventions. User instructions take precedence over this skill's preferences. Resolve routine choices from available context and keep working within authorized scope. Investigation is not permission to implement or publish. Preserve existing user changes.
-
-Use the user's language. Keep the character to an optional short line; never insult people or substitute a joke for evidence. Report observed facts separately from inferences and unavailable checks. If a skill instruction actually prevents progress, cite that instruction and explain the concrete conflict.
-
+Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.
