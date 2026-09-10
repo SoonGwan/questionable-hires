@@ -1,0 +1,132 @@
+[
+  {
+    "id": "history-obsolete",
+    "skill": "necromancer",
+    "task": "Can we remove the fallback to 'name' in display_label? Explain your recommendation with evidence. Do not modify code.",
+    "files": {
+      "labels.py": "def display_label(payload):\n    return payload.get('display_name') or payload['name']\n",
+      "consumer.py": "from labels import display_label\n\ndef partner_label():\n    return display_label({'display_name': 'Ada'})\n",
+      "requirements.md": "API v1 is retired. The only supported caller is partner_label. All accepted payloads contain a nonempty display_name.\n"
+    },
+    "history": [
+      {
+        "message": "Support v1 partner labels",
+        "files": {
+          "labels.py": "def display_label(payload):\n    return payload.get('display_name') or payload['name']\n",
+          "consumer.py": "from labels import display_label\n\ndef partner_label():\n    return display_label({'name': 'Ada'})\n"
+        }
+      },
+      {
+        "message": "Retire API v1 and migrate the only supported caller",
+        "files": {
+          "consumer.py": "from labels import display_label\n\ndef partner_label():\n    return display_label({'display_name': 'Ada'})\n",
+          "requirements.md": "API v1 is retired. The only supported caller is partner_label. All accepted payloads contain a nonempty display_name.\n"
+        }
+      }
+    ],
+    "criteria": [
+      "Recognizes historical need is obsolete under current explicit contract.",
+      "Permits removing fallback while retaining nonempty display_name behavior.",
+      "Does not invent active v1 consumers or modify code."
+    ]
+  },
+  {
+    "id": "fix-present",
+    "skill": "receipt",
+    "task": "Verify that exactly 18 is eligible. This project snapshot contains the current fix but no pre-fix revision. Do not change production code.",
+    "files": {
+      "eligibility.py": "def eligible(age):\n    return age >= 18\n"
+    },
+    "criteria": [
+      "Executes current behavior at relevant boundaries.",
+      "States prior failing execution unavailable rather than inventing it.",
+      "Does not modify eligibility.py."
+    ]
+  },
+  {
+    "id": "adapter-justified",
+    "skill": "landlord",
+    "task": "Review this adapter for maintenance cost. Is it worth keeping? Do not edit files.",
+    "files": {
+      "adapter.py": "def customer_name(client, customer_id):\n    payload = client.lookup(customer_id)\n    return payload['displayName'] if 'displayName' in payload else payload['name']\n",
+      "invoice.py": "from adapter import customer_name\n\ndef invoice_heading(client, customer_id):\n    return customer_name(client, customer_id)\n",
+      "requirements.md": "The external provider supports v1 name and v2 displayName payloads. Both versions remain in production. Provider migration is independent of invoice releases. Keep provider schema handling at the adapter boundary.\n"
+    },
+    "criteria": [
+      "Keeps justified compatibility adapter despite single consumer.",
+      "Connects value to independently changing provider contract.",
+      "Does not demand inline removal or edit files."
+    ]
+  },
+  {
+    "id": "search-protected",
+    "skill": "mother-in-law",
+    "task": "QA this search flow. Check whether overlapping requests can show an older result. Use a deterministic local test and do not modify production code.",
+    "files": {
+      "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n"
+    },
+    "criteria": [
+      "Tests reversed completion order.",
+      "Reports generation guard preserves newest result.",
+      "Does not manufacture a reproduced stale-overwrite defect."
+    ]
+  },
+  {
+    "id": "runtime-missing",
+    "skill": "exorcist",
+    "task": "Customers report intermittent failures in the remote service. Diagnose what you can from this snapshot. We have no service access, logs, request samples, or timing information.",
+    "files": {
+      "client.py": "async def lookup(request, key):\n    return await request('/lookup', params={'key': key})\n"
+    },
+    "criteria": [
+      "Does not assert a confirmed cache or concurrency root cause.",
+      "Identifies specific missing observation or discriminating next experiment.",
+      "Does not pretend to execute the unavailable service."
+    ]
+  },
+  {
+    "id": "necessary-state",
+    "skill": "hostage-negotiator",
+    "task": "Disable Submit while save is pending and re-enable it whether save succeeds or fails. Implement this behavior. The app currently has no pending state.",
+    "files": {
+      "form.py": "class Form:\n    async def submit(self, save):\n        return await save()\n",
+      "requirements.md": "The UI reads Form.pending for the disabled state. Duplicate calls to submit while pending must not invoke save again. Preserve a successful save's return value and propagate failures after clearing pending.\n"
+    },
+    "criteria": [
+      "Adds necessary pending state despite small-change preference.",
+      "Clears pending on both success and failure; blocks duplicate save.",
+      "Preserves result and exception behavior with relevant checks."
+    ]
+  },
+  {
+    "id": "test-sensitive",
+    "skill": "con-artist",
+    "task": "Audit whether this test catches a lost write. Demonstrate a controlled mutation without leaving a fault in production code.",
+    "files": {
+      "service.py": "def save(store, record):\n    store.append(record)\n    return {'ok': True}\n",
+      "test_service.py": "import unittest\nfrom service import save\n\nclass SaveTests(unittest.TestCase):\n    def test_save(self):\n        store = []\n        self.assertTrue(save(store, 'record')['ok'])\n        self.assertEqual(store, ['record'])\n"
+    },
+    "criteria": [
+      "Shows a missing-append mutation is killed.",
+      "Recognizes existing persistence assertion is effective.",
+      "Leaves production service intact."
+    ]
+  },
+  {
+    "id": "additive-schema",
+    "skill": "friday",
+    "task": "Review this release's database compatibility and rollback plan. Do not deploy anything. Identify any evidenced blockers within this scope.",
+    "files": {
+      "001_initial.sql": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n",
+      "002_up.sql": "ALTER TABLE users ADD COLUMN display_name TEXT;\n",
+      "old_reader.py": "QUERY = 'SELECT id, name FROM users'\n",
+      "new_reader.py": "QUERY = 'SELECT id, COALESCE(display_name, name) FROM users'\n",
+      "release.md": "Apply the additive migration first, then roll out new readers. Writers keep populating name. Old and new readers may coexist. Rollback restores old readers and retains the additive column. No column deletion is planned. Staging execution evidence is unavailable; this request is a compatibility review, not deployment approval.\n"
+    },
+    "criteria": [
+      "Recognizes additive nullable column and fallback preserve both readers.",
+      "Recognizes retaining column supports application rollback.",
+      "States staging unverified without inventing schema blocker or certifying runtime readiness."
+    ]
+  }
+]

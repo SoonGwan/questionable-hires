@@ -109,6 +109,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True, help="New output directory; contains logs requiring review before publication")
     parser.add_argument("--case", action="append")
+    parser.add_argument("--suite", choices=["main", "clean"], default="main")
     parser.add_argument("--arms", nargs="+", choices=["baseline", "control", "skill"], default=["baseline", "control", "skill"])
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--jobs", type=int, default=1)
@@ -118,7 +119,8 @@ def main():
     args = parser.parse_args()
     if min(args.repeats, args.jobs, args.timeout) < 1:
         parser.error("repeats, jobs, and timeout must be positive")
-    cases = json.loads((ROOT / "benchmarks/cases.json").read_text())
+    cases_path = ROOT / "benchmarks" / ("cases.json" if args.suite == "main" else "clean-cases.json")
+    cases = json.loads(cases_path.read_text())
     if args.case:
         unknown = set(args.case) - {c["id"] for c in cases}
         if unknown:
@@ -129,6 +131,7 @@ def main():
     manifest = {"started_at": datetime.now(timezone.utc).isoformat(), "revision": command(["git", "rev-parse", "HEAD"], ROOT),
                 "codex_version": command(["codex", "--version"], ROOT), "model": args.model, "effort": args.effort,
                 "arms": args.arms, "repeats": args.repeats, "case_ids": [c["id"] for c in cases],
+                "suite": args.suite, "cases_sha256": hashlib.sha256(cases_path.read_bytes()).hexdigest(),
                 "limitation": "Synthetic tasks; runtime system instructions remain. Personal skills disabled where discovered; review traces for contamination."}
     (output / "run.json").write_text(json.dumps(manifest, indent=2) + "\n")
     disabled = disabled_skills()
