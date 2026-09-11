@@ -7,6 +7,10 @@ serial, 240-second limit, no retries/exclusions. Local originals:
 `local-runs/landlord-compact-01/`. Both arms explicitly load Landlord; neither
 is a no-skill baseline.
 
+[Inspectable exported evidence](results/landlord-compact-01/README.md) includes
+both command/output traces, answers, metadata and synthetic final projects.
+Private original logs remain local; exported local paths are redacted.
+
 | Version | Input + output tokens | Seconds | Shell calls |
 | --- | ---: | ---: | ---: |
 | Previous | 68,427 | 34.981 | 5 |

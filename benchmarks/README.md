@@ -1,6 +1,7 @@
 # Same ticket. Three coworkers.
 
-Latest skill revision check: [Exorcist transfer comparison — 27 sessions, all conditions 9/9](REPORT-EXORCIST-TRANSFER.md). No comparative quality gain was observed.
+Current status: [all eight candidates and unresolved performance gaps](CURRENT-CANDIDATE-STATUS.md).
+The historical [Exorcist transfer comparison — 27 sessions, all conditions 9/9](REPORT-EXORCIST-TRANSFER.md) showed no comparative quality gain; it is not the latest bundle validation.
 
 This suite runs actual Codex sessions in fresh synthetic Git repositories. The model can inspect files, run commands, and implement changes when the task asks for them. It is not a single-shot code-generation comparison.
 
@@ -33,6 +34,8 @@ For a separately preregistered task set, pass `--cases-file path/to/cases.json` 
 For automatic selection with all eight skills installed, use `--arms auto`. This supplies the task without explicitly naming a skill; inspect command traces to see which files the model actually loads. Use `--suite clean --arms skill` for the additional clean and limiting cases. Actual recorded results are in [the report](REPORT.md).
 
 ## Evidence
+
+For a compact inspectable example, open the [Landlord version comparison](results/landlord-compact-01/README.md): actual commands/outputs, model answers, usage and fixture files for both versions. The result is adverse, and both arms use a skill—not a no-skill baseline.
 
 Each cell retains the final answer, tool-event log, diff, actual usage reported by Codex, elapsed wall time, fixture commit, skill digest, and completion status. Workspaces remain in temporary directories for inspection. A process completing is not a correctness score. Missing usage and timeouts remain visible.
 
