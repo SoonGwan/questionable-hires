@@ -35,3 +35,25 @@ not establish this arithmetic's correctness.
 All 166 repository tests pass in 21.173 seconds, including 21 history-helper tests;
 skill/repository validators and diff checks pass. No model benchmark was run for
 this helper change, and the broad eight-skill efficiency objective remains unmet.
+
+## Whole collector follow-up
+
+Existing benchmark_history_collector.py against 0e3c790 uses actual disposable Git
+history, a 1,100,000-byte current file and lines 50000:50099. Complete JSON is
+identical for all six processes. Baseline seconds: 0.327659083, 0.327986833,
+0.328813584; candidate: 0.335589125, 0.327824750, 0.326768083. Medians are 0.327987
+and 0.327825: essentially unchanged. This contiguous-target fixture does not support
+extending the distant-target microbenchmark gain to complete collector performance.
+Input SHA-256 remains cde29c379cb2b3421e49058685ffe928852332f3852c49a99c31a558e4a4f4d5.
+
+A separate seeded (20260911) comparison generated 100 mixed insertion/deletion/
+context patches with Unicode and varying line lengths. Seven budgets, each with
+valid and malformed-tail variants, yielded 1,400 exact matches against 0e3c790.
+This supplements, not replaces, the committed full-render budget oracle.
+
+Profiling a single-target 100,000-row patch shows 100,001 re.fullmatch calls and
+100,001 regex-cache lookup calls, despite almost every row being patch data rather
+than a hunk header. Under cProfile these account for 0.048 cumulative seconds of
+0.122 total; profiler overhead prevents treating that fraction as a speedup promise.
+Next inspect a header-prefix gate while retaining malformed-header/tail rejection.
+No additional implementation change was made during this follow-up.
