@@ -8,6 +8,13 @@ from pathlib import Path
 import signal
 import subprocess
 import tempfile
+import sys
+
+
+class IncompleteCheck(RuntimeError):
+    def __init__(self, message, observations):
+        super().__init__(message)
+        self.observations = list(observations)
 
 
 class ReceiptParser(HTMLParser):
@@ -64,17 +71,22 @@ def check(browser):
                     def byte_count(value):
                         return len(value.encode('utf-8') if isinstance(value, str) else value or b'')
                     # Keep raw browser logs private; retain enough information
-                    # to distinguish absent output from a shutdown delay.
-                    raise RuntimeError(
+                    # to identify whether any output arrived before timeout.
+                    raise IncompleteCheck(
                         'Browser timed out in guard=' + mode + '; check incomplete; '
                         f'captured stdout bytes={byte_count(error.output)}, '
-                        f'stderr bytes={byte_count(error.stderr)}') from error
+                        f'stderr bytes={byte_count(error.stderr)}', observations) from error
                 raise
             if process.returncode:
-                raise RuntimeError('Browser failed: ' + stderr[-2000:])
+                raise IncompleteCheck('Browser exited with status ' + str(process.returncode), observations)
             parser = ReceiptParser()
             parser.feed(stdout)
-            observed = json.loads(''.join(parser.parts))
+            try:
+                observed = json.loads(''.join(parser.parts))
+            except ValueError as error:
+                raise IncompleteCheck('Browser did not return a JSON receipt', observations) from error
+            if not isinstance(observed, dict):
+                raise IncompleteCheck('Browser receipt is not an object', observations)
             if observed.get('submitted') != ['old', 'new', 'normal']:
                 raise AssertionError('Browser did not execute the input sequence')
             expected = 'old result' if mode == 'off' else 'new result'
@@ -90,4 +102,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--browser', type=Path, required=True)
     args = parser.parse_args()
-    print(json.dumps(check(args.browser.resolve(strict=True)), indent=2))
+    try:
+        print(json.dumps(check(args.browser.resolve(strict=True)), indent=2))
+    except IncompleteCheck as error:
+        print(json.dumps(dict(complete=False, error=str(error),
+                              completed_variants=error.observations), indent=2))
+        sys.exit(1)

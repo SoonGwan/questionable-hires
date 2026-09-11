@@ -1,4 +1,5 @@
 import importlib.util
+import json
 from pathlib import Path
 import signal
 import subprocess
@@ -12,6 +13,21 @@ spec.loader.exec_module(runner)
 
 
 class BrowserRunnerTests(unittest.TestCase):
+    def test_second_variant_timeout_preserves_only_completed_observation(self):
+        observed = dict(guarded=False, submitted=['old', 'new', 'normal'],
+                        afterNew='new result', afterOld='old result',
+                        normal='normal result', focusPreserved=True, passed=False)
+        first = Mock(returncode=0)
+        first.communicate.return_value = ('<pre id="receipt">' + json.dumps(observed) + '</pre>', '')
+        second = Mock(pid=12345)
+        second.communicate.side_effect = [subprocess.TimeoutExpired('chrome', 30), ('', '')]
+        with patch.object(runner.subprocess, 'Popen', side_effect=[first, second]), \
+                patch.object(runner.os, 'killpg'):
+            with self.assertRaises(runner.IncompleteCheck) as caught:
+                runner.check(Path('/unused-browser'))
+        self.assertEqual(caught.exception.observations, [observed])
+        self.assertIn('guard=on', str(caught.exception))
+
     def test_timeout_and_cancellation_terminate_owned_group(self):
         for error in (subprocess.TimeoutExpired('chrome', 30), KeyboardInterrupt()):
             with self.subTest(error=type(error)):
