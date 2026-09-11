@@ -21,7 +21,10 @@ Receipt now also includes an optional frozen-test Python history comparison help
 Seven local behavioral checks cover current dirty assertions, original preservation,
 CLI observations, invalid inputs, missing history, import provenance, timeout cleanup
 and bounded output. This replaces repeatedly authored snapshot plumbing when appropriate;
-it has no model token/time measurement yet and is outside the combined snapshot above.
+Its [first model check](RECEIPT-HELPER-01.md) uses the helper correctly and preserves
+both original files: 86,814 tokens / 32.841 seconds, versus the previous routed
+sample's 68,978 / 65.039. This mixed single-sample result is not a token-efficiency
+win and is outside the combined snapshot above.
 
 ## What the evidence permits
 

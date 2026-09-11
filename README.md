@@ -81,7 +81,7 @@ The installer includes four optional, locally executed helpers. They require **P
 - **Con Artist:** disposable Python mutation audits with copied-import checks, separate test/probe exit statuses, bounded log memory and timeouts. [Usage and limits](skills/con-artist/references/python-audit.md). Run trusted tests only: this is not a sandbox.
 - **Necromancer:** focused current-line attribution and historical patches, including dirty/shallow-history limits. [Usage and limits](skills/necromancer/references/focused-history.md). It collects evidence; it does not decide whether old behavior is still needed.
 - **Friday:** reusable in-memory SQLite reader checks across migration and rollback states. [Usage and limits](skills/friday/references/sqlite-matrix.md). Query success is not production readiness; other database engines require their own evidence.
-- **Receipt:** frozen current assertions against two committed Python implementations, with independent outputs and revision IDs. [Usage and limits](skills/receipt/references/existing-fix.md). Locally tested mechanics; model efficiency is not yet measured.
+- **Receipt:** frozen current assertions against two committed Python implementations, with independent outputs and revision IDs. [Usage and limits](skills/receipt/references/existing-fix.md). The [first model check](benchmarks/RECEIPT-HELPER-01.md) is faster but uses more tokens than its preceding sample; no efficiency win is established.
 
 Use the normal skill prompts above; the agent can choose the helper when it saves repeated work. A small task or an already-established result may be cheaper to handle directly. Installing the team does not imply every task should use all eight hires.
 
