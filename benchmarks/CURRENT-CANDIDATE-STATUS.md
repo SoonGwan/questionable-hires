@@ -10,10 +10,10 @@ Snapshot reviewed after `28a0453`. The objective remains better developer outcom
 | Mother-in-law | `b347792` | Broken and protected search cases distinguished | Mixed token results; rendered browser interactions and recovery |
 | Exorcist | `1c16bc8` | Cache-free race and safeguard explanation demonstrated | No stable cost advantage; distinct production diagnosis workloads |
 | Hostage Negotiator | `1c16bc8` | Necessary pending state and recovery implemented | Broader scope tradeoffs and paired cost comparison |
-| Con Artist | `b7a768d` | Survivor/killed controls; actual HTTPX early-close gap found | Stable comparative efficiency; HTTPX ancestor-file inspection violates literal project-only read scope |
+| Con Artist | Instructions `1c4c41a`, helper `8c56744` | Prior audit controls plus two actual helper-based survivor checks and 12 helper tests | Helper adoption currently adds total context cost; larger/repeated use and complete scope compliance remain unproven |
 | Friday | `b347792` | Actual local rollout/rollback incompatibilities demonstrated | Non-rolling plans, compatible controls and representative runtime context |
 
-The current combined instruction set now passes all nine fixed development criteria in [FAST-REGRESSION-02](FAST-REGRESSION-02.md), with matching skill hashes. Total token/time costs are essentially unchanged from the earlier screen. This closes the combined regression-screen gap, not the performance objective or each skill's untested branches. The Receipt documented-runner correction is present, but the specific missing-runtime case has not been rerun to isolate its effect.
+The pre-helper combined instruction set passes all nine fixed development criteria in [FAST-REGRESSION-02](FAST-REGRESSION-02.md), with matching skill hashes. Total token/time costs are essentially unchanged from the earlier screen. Later Con Artist helper changes have targeted checks in [CON-ARTIST-TOOL-01](CON-ARTIST-TOOL-01.md), not another combined screen. The Receipt documented-runner correction is present, but the specific missing-runtime case has not been rerun to isolate its effect.
 
 ## What the evidence permits
 
@@ -23,10 +23,14 @@ The current combined instruction set now passes all nine fixed development crite
 - [HTTPX check](HTTPX-COMPRESSED-01.md) demonstrates a real coverage gap and original-file preservation, not a baseline win or complete scope compliance.
 - Local validation establishes package/fixture mechanics; it does not measure skill quality. No new superiority chart or broad performance claim is warranted.
 
-## Next decision before more tuning
+## Resumed direction: preserve the concept, own workload selection
+
+The user resumed the objective and explicitly asked the agent to improve performance while preserving the concept. Representative-workload selection is no longer treated as a prerequisite for progress: start with the already scoped Python audits and pinned HTTPX repository, clearly label their coverage limits, and do not imply they represent all eight skills. Keep all character names, taglines and visual identity. The first structural change is an optional tested audit helper, not another mandatory checklist or a new character.
+
+## Workload and acceptance discipline
 
 The current small fixtures expose correctness branches but do not establish which real development workload should drive optimization. Continuing to tune solely on their repeated outputs risks overfitting and spending more than the skills could save.
 
-Select a representative user-approved repository/workload and concrete recent tickets before expanding task content. Keep the development set below ten tasks, freeze acceptance criteria and resource priorities before model execution, and retain successful, adverse and incomplete outcomes. Do not replace easy or unfavorable tasks solely to improve a score. Distinguish the fixed regression screen from new workload evidence.
+Use representative in-scope repository work before expanding task content. Keep the development set below ten tasks, freeze acceptance criteria and resource priorities before model execution, and retain successful, adverse and incomplete outcomes. Do not replace easy or unfavorable tasks solely to improve a score. Distinguish the fixed regression screen from new workload evidence.
 
 No numerical definition of "huge improvement" has been agreed. A target must name the relevant workload and outcome/cost tradeoff; the existing request rules out selling higher token cost as improvement without justification. Until those choices and stronger evidence exist, this is an experimental candidate collection, not a completed performance-upgrade claim.
