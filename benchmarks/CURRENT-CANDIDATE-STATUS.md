@@ -1,5 +1,12 @@
 # Current candidate: completion is not established
 
+Latest combined snapshot: `c11103c`, [FAST-REGRESSION-05](FAST-REGRESSION-05.md).
+All nine task criteria pass; 628,256 tokens / 337.371 seconds, down 8.1% / 8.8%
+from screen 04 and 9.3% / 4.4% from screen 02. No rejected patches. Most skills
+are unchanged, verification depth varies, and the diagnosis artifact loses its
+local timeout; these are not causal or broad improvement claims. The historical
+snapshot discussion below remains evidence history, not the latest gate.
+
 Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRESSION-04.md). All nine task-specific criteria pass; the previous parent-directory search does not recur, but two rejected patches retain attempted-scope uncertainty. Total tokens fall 6.8% and time 8.3% versus screen 03; versus screen 02 tokens fall 1.3% while time rises 4.8%. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
 
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
