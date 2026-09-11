@@ -18,11 +18,19 @@ They are not necessarily the snapshot used by every linked historical report.
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [paired 02](FAST-PAIRED-02.md) | Current diagnosis uses process containment but reads full helper source and costs more; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
-| Con Artist | `1f8b8b6`; helper `54328b1`; references `4bbac5a` | [Counter regression](HTTPX-COUNTER-01.md), [paired 02](FAST-PAIRED-02.md), [batch reuse](CON-ARTIST-BATCH-01.md) | Native copies avoid helper reads in persistence case with fewer tokens but more time; broader context-routing and batch adoption unverified |
+| Con Artist | `1f8b8b6`; helper/references `6fc0c48` | [Output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md), [paired 02](FAST-PAIRED-02.md) | Repeated batch logs now reference one observation; author long-log response saves 11,187 bytes with unchanged checks; model interpretation and overall efficiency unmeasured |
 | Friday | `9cae27c`; helper/reference `e79b208` | [Interior branch](FRIDAY-BRANCH-01.md), [changed state](FRIDAY-STATE-01.md) | Interior coverage correct; compatible skill uses 50 assertions versus 8,035 baseline, yet pair totals +8.0% tokens / +12.6% time; no efficiency acceptance |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Con Artist's [batch output correction](CON-ARTIST-OUTPUT-01.md) removes repeated
+serialization of the same successful baseline log. Reused checks retain status
+and point to the full earlier observation in the same JSON response. Single-audit
+output, fresh-copy checks and cache identity requirements remain unchanged. Batch
+consumers must resolve the documented reference. Author tests verify lossless
+evidence lookup and correct references after a refreshed baseline; this is an
+actual output-size reduction, not measured end-to-end model improvement.
 
 Friday's [changed-data transfer](FRIDAY-STATE-01.md) now completes: all arms
 distinguish actual whole/fractional compatibility and retained-data rollback.
