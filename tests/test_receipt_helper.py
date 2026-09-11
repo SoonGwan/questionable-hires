@@ -81,6 +81,19 @@ class ReceiptHelperTests(unittest.TestCase):
         self.assertEqual(accessed, ['test_rule.py', 'large-a.bin'])
         self.assertFalse(list(self.root.glob('.receipt-*')))
 
+    def test_permission_only_original_change_is_reported_without_restoring(self):
+        original = self.root / 'rule.py'
+        original.chmod(0o644)
+        content = original.read_bytes()
+        (self.root / 'test_rule.py').write_text(
+            'from pathlib import Path\n'
+            f'Path({str(original)!r}).chmod(0o755)\n' + self.tests)
+        with self.assertRaisesRegex(RuntimeError, 'Selected originals changed; not restored: rule.py'):
+            helper.compare(self.root, self.recipe)
+        self.assertEqual(original.read_bytes(), content)
+        self.assertEqual(original.stat().st_mode & 0o777, 0o755)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
     def test_cli_reuses_launch_interpreter_and_resolves_revision_expressions(self):
         # Exercise the documented stdin recipe, not an in-process default argument.
         assertions = (self.tests + '\n    def test_interpreter(self):\n'

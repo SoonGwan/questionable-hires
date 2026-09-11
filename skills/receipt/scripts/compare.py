@@ -183,7 +183,8 @@ def compare(root, recipe, python=sys.executable, timeout=30):
         return result
     finally:
         changed = [name for name, content in originals.items() if (root/name).is_symlink()
-                   or not (root/name).is_file() or (root/name).read_bytes() != content]
+                   or not (root/name).is_file() or (root/name).read_bytes() != content
+                   or (root/name).stat().st_mode & 0o777 != modes[name]]
         if changed:
             raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))
 

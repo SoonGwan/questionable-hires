@@ -31,7 +31,8 @@ only an example, not a rule for selecting the correct before implementation.
 
 Python 3.9+, POSIX; 20 MB snapshot budget, 30 seconds/check (`--timeout` up to 300),
 last 12,000 output characters. Project-local copies are cleaned; selected original
-contents are checked, not every side effect. Trusted tests only, **not a sandbox**.
+contents and permission bits are checked, not every side effect. Detected original
+changes are reported, never silently restored. Trusted tests only, **not a sandbox**.
 The working-file total is checked before each read, so a known-over-budget file
 is rejected without reading it or starting comparisons. This is a snapshot-byte
 budget, not a total process-memory bound or protection against concurrent writes.
