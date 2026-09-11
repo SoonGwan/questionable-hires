@@ -1,13 +1,12 @@
-# Python audit without rewriting isolation plumbing
+# Python audit: bring the fault, not the plumbing
 
-Use `scripts/audit.py` for a small Python unittest/pytest audit with one exact text mutation. The helper uses only the standard library; pytest must already exist in the chosen interpreter. For another language, an existing project mutation tool, non-text mutations, or inputs above 20 MB, keep the normal isolated workflow. Do not install a framework to use this helper.
+Use the project's existing interpreter and actual installed skill path. Pass JSON on stdin: no recipe file or wrapper script is needed. This CLI is the normal interface; inspect implementation when review or troubleshooting requires it. Choose the actual task files and fault, not the example blindly.
 
-Write a short JSON recipe locally. Paths below are illustrative; choose the actual task files, import names and fault. Never copy the example fault blindly.
-
-```json
+```sh
+/path/to/project/python /path/to/con-artist/scripts/audit.py --spec - <<'JSON'
 {
   "files": ["service.py", "test_service.py"],
-  "imports": ["service"],
+  "imports": ["service", "test_service"],
   "target": "service.py",
   "old": "    store.append(record)\n",
   "new": "",
@@ -15,20 +14,11 @@ Write a short JSON recipe locally. Paths below are illustrative; choose the actu
   "tests": ["-v", "test_service"],
   "probe": "from service import save\ns = ['existing']\nsave(s, 'record')\nassert s == ['existing', 'record']\n"
 }
+JSON
 ```
 
-From the project directory, use the skill's actual installed path:
+`files` selects relative files/directories including needed configuration. `imports` must include the affected implementation and resolve inside each copy. `old` must match `target` exactly once. `tests` supplies arguments for unittest or already-installed pytest. Optional `probe` is the same stronger assertion code for correct/faulty versions, not a replacement implementation. Omit it when only checking existing protection.
 
-```sh
-python3 /path/to/con-artist/scripts/audit.py --spec audit-recipe.json --python /path/to/project/python
-```
+Each check gets a fresh project-local disposable copy with verified imports. Correct-code failure or timeout stops the audit. Selected original bytes are checked and generated copies removed. Exit 0 means observations collected, **not** adequate coverage: inspect failure reasons and each check's status. Exit 2 means invalid/incomplete evidence. Output is capped at 12,000 characters per check with truncation marked. Timeout defaults to 30 seconds per check; `--timeout` allows at most 300.
 
-- `files`: explicit project-relative files/directories needed for imports, tests and configuration. Symlinks, parent traversal and Git internals are rejected. Include package/configuration files the test runner actually needs; no automatic repository sweep occurs.
-- `imports`: production module names that must resolve inside each disposable copy. Include the affected implementation. Namespace packages without `__file__` are unsupported. This check is not a proof that every dependency or runtime path stays local.
-- `old` must occur exactly once in the selected `target`; identical replacements are rejected. Tests/configuration are otherwise copied unchanged.
-- `runner`: `unittest` (default) or existing `pytest`; `tests` are its argument list. Do not pass flags that authorize external side effects or unsafe writes.
-- `probe`: optional Python assertion code; use it for the stronger behavioral check, not a replacement implementation. The same code runs on correct and faulty versions. Omit it when only checking an existing assertion. Do not rerun an already valid baseline just to adopt this helper mid-audit.
-
-Each check starts in a fresh disposable copy inside the source project. Imports are checked in the same interpreter process as the test/probe. Correct-code failure stops the audit; timeouts stop the audit and terminate its process group. Output contains separate exit codes, timeout flags and the last 12,000 output characters per check, with truncation marked. Nonzero mutant exit is **not** automatically scored as a killed fault: inspect whether the intended assertion failed rather than import/configuration errors.
-
-Exit 0 means observations were collected, not that coverage is adequate. Exit 2 means invalid/incomplete evidence. The helper checks selected original file bytes after execution and never restores or overwrites user files. It removes only its generated temporary copies. It is **not a security sandbox**: tests remain arbitrary trusted project code and may access external paths/services. Preserve the user's authorization boundary, use local data, and don't use it on untrusted tests. Original files outside `files` are not integrity-checked. The current process cleanup requires POSIX and Python 3.9+.
+Limits: POSIX, Python 3.9+, 20 MB selected inputs; no symlinks/Git internals/path traversal or namespace-package import checks. No dependency installation. This is **not a sandbox**: use trusted tests, local data and authorized actions only. Files outside the selection are not integrity-checked or restored. Use normal project facilities for other languages or unsupported layouts; don't repeat a valid baseline merely to adopt this helper mid-audit.

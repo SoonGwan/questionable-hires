@@ -90,6 +90,8 @@ def execute(python, directory, spec, probe, timeout):
 
 def audit(root, spec, python=sys.executable, timeout=30):
     root = Path(root).resolve()
+    if not isinstance(spec, dict):
+        raise ValueError('Audit recipe must be a JSON object')
     if os.name != 'posix':
         raise ValueError('This helper currently supports POSIX process cleanup only')
     if not 0 < timeout <= 300:
@@ -144,13 +146,14 @@ def audit(root, spec, python=sys.executable, timeout=30):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--spec', type=Path, required=True, help='JSON audit recipe; see references/python-audit.md')
+    parser.add_argument('--spec', type=Path, required=True, help='JSON recipe file, or - for stdin; see references/python-audit.md')
     parser.add_argument('--source', type=Path, default=Path.cwd())
     parser.add_argument('--python', default=sys.executable, help='Existing project interpreter; no dependency installation')
     parser.add_argument('--timeout', type=float, default=30, help='Seconds per check, at most 300')
     args = parser.parse_args()
     try:
-        result = audit(args.source, json.loads(args.spec.read_text()), args.python, args.timeout)
+        recipe = sys.stdin.read() if args.spec == Path('-') else args.spec.read_text()
+        result = audit(args.source, json.loads(recipe), args.python, args.timeout)
     except (ValueError, KeyError, OSError, RuntimeError) as error:
         parser.exit(2, 'Audit not established: ' + str(error) + '\n')
     print(json.dumps(result, indent=2))

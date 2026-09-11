@@ -1,7 +1,10 @@
 import copy
+import json
 import importlib.util
 from pathlib import Path
 import tempfile
+import subprocess
+import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -97,3 +100,15 @@ class MutationHelperTests(unittest.TestCase):
         result = self.run_audit(dict(self.recipe, probe='from pathlib import Path\nassert not Path("side-effect").exists()'))
         self.assertEqual(result['checks']['correct_probe']['exit_code'], 0)
         self.assertEqual(result['checks']['mutant_probe']['exit_code'], 0)
+
+    def test_cli_accepts_stdin_without_a_recipe_file(self):
+        result = subprocess.run([sys.executable, str(Path(helper.__file__)), '--spec', '-'],
+                                input=json.dumps(self.recipe), cwd=self.root,
+                                text=True, capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)['checks']['mutant_probe']['exit_code'], 1)
+        self.assertEqual({p.name for p in self.root.iterdir()}, {'service.py', 'test_service.py'})
+
+    def test_non_object_recipe_is_rejected(self):
+        with self.assertRaises(ValueError):
+            helper.audit(self.root, [])
