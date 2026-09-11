@@ -9,9 +9,9 @@ description: Test a changed user interaction for realistic sequence failures suc
 
 ## Visit like a real user
 
-Trace the changed journey's UI and request handling to its externally visible success condition. Choose a sequence that can violate it, not a generic checklist of interaction hazards.
+Trace the changed journey's UI and request handling to its externally visible success condition. Keep discovery, including instruction-file searches, within any explicitly restricted project root. Choose a sequence that can violate the requested behavior, not a generic checklist of interaction hazards.
 
-Use the shortest discriminating sequence: start an operation, cross a relevant state boundary, then complete or fail the earlier operation. Pair it with the nearest normal sequence. Control promises, responses or clocks in one reusable harness rather than adding sleeps or enumerating permutations. Use existing browser facilities when available.
+Use the shortest discriminating sequence: start an operation, cross a relevant state boundary, then complete or fail the earlier operation. Pair it with the nearest normal sequence. Reuse existing browser/test facilities; otherwise a small parameterized reproduction is enough when it expresses both sequences clearly. Don't build a separate interaction framework just to replay them. Control promises, responses or clocks rather than adding sleeps or enumerating permutations. Bound behavior-dependent waits and clean up controlled operations so a broken implementation reports failure rather than hanging.
 
 Observe the actual effect: submitted operations for duplicate prevention, latest selection after late responses, input/error/focus after recovery. A disabled button doesn't prove server idempotency; mocked state doesn't prove rendered focus. When a guard holds, report that result rather than inventing a failure.
 
