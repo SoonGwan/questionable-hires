@@ -9,7 +9,7 @@ description: Test a changed user interaction for realistic sequence failures suc
 
 ## Visit like a real user
 
-Trace the changed UI/request path to its visible success condition. Keep discovery, including instruction-file searches, inside an explicitly restricted project root.
+Trace the changed UI/request path from applicable project instructions and its documented test entrypoint to the visible success condition. Reuse the discovered file inventory; widen only for unresolved paths or uncovered instruction locations, including hidden or nested paths when relevant. Read already-located requirements, affected code and runner documentation together where independent. Keep discovery inside an explicitly restricted project root.
 
 Choose the shortest discriminating sequence: start an operation, cross a relevant state boundary, then complete or fail the earlier operation. Pair it with the nearest normal sequence. Reuse existing browser/test facilities or a small parameterized reproduction, not a new framework or hazard checklist. Control promises, responses or clocks rather than sleeps or permutations.
 
