@@ -17,6 +17,7 @@ The historical pre-helper screen [FAST-REGRESSION-02](FAST-REGRESSION-02.md) had
 
 ## What the evidence permits
 
+- [Capture investigation](CAPTURE-DIAGNOSTICS.md) adds per-run evidence diagnostics and a subprocess-backed preservation test. Known missing output is already absent in the CLI stream; rejected-patch root cause remains unknown. These runner checks neither establish a skill speedup nor invalidate adverse costs.
 - [Paired development checks](FAST-PAIRED-01.md) showed higher skill token/time costs before the latest compression. These adverse results remain part of the record.
 - [Con Artist follow-ups](FAST-ITERATION-01.md) include a favorable latest-baseline comparison, but a less favorable earlier-baseline comparison. They are temporally separated single samples.
 - [State-review checks](FAST-STATE-REVIEWS-01.md) show mixed efficiency, not a universal compression benefit.
