@@ -69,6 +69,13 @@ selection precision/recall, or disabling implicit invocation.
 
 ## Next work and acceptance discipline
 
+[Screen 06 cost audit](SCREEN-06-COST-AUDIT.md) separates interaction counts,
+cached/uncached input and generated output for the three largest increases.
+The unchanged pending-state skill grows cost despite fewer shell calls and has
+a rejected patch. Diagnosis and SQL review add rounds but use less uncached input.
+These observations reject a universal call-count explanation; do not change the
+total-token objective or add a generic batching checklist on this evidence alone.
+
 Friday `5f1dc34` routes real writer/transaction/connection evidence before optional
 SQL tools. Its [one-case check](FRIDAY-ROUTING-01.md) skips the unused reference,
 preserves the required gap findings and uses separate committed connections.
