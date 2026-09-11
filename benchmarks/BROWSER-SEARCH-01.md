@@ -33,3 +33,17 @@ no screenshot, assistive-technology check, navigation/recovery test or network
 request cancellation is covered. This supplies actual DOM-layer evidence for one
 sequence, not Mother-in-law model quality or completion of the browser release
 gate. No skill instructions, automatic routing or benchmark scores changed.
+
+## Subsequent lifecycle regression
+
+The runner now terminates its owned process group on cancellation as well as
+timeout, tolerates an already-exited group, and bounds cleanup pipe draining and
+root-process waiting. Two browser-free mechanics tests exercise those paths;
+they are mocks of process lifecycle, not evidence of rendered behavior.
+
+A subsequent actual Chrome run again timed out in `guard=on`, despite the startup
+flags above. It exited with an explicit incomplete error, and post-run process
+inspection found no dedicated-profile processes. The earlier successful pair is
+preserved but does not establish reliable startup/termination. Investigate this
+runtime instability before adding browser checks to required CI or claiming the
+browser release gate is satisfied. No favorable retry followed this observation.
