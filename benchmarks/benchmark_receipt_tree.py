@@ -19,6 +19,7 @@ SCRIPT = 'skills/receipt/scripts/compare.py'
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--baseline-revision', required=True, help='Trusted local commit to execute')
+    parser.add_argument('--distinct-blobs', action='store_true', help='Use different content for every selected file')
     args = parser.parse_args()
     revision = subprocess.check_output(['git', 'rev-parse', '--verify', args.baseline_revision + '^{commit}'], cwd=ROOT, text=True).strip()
     baseline = types.ModuleType('receipt_baseline')
@@ -38,11 +39,12 @@ def main():
             git('config', 'core.hooksPath', str(root / 'no-hooks'))
             names = [f'config_{i}.txt' for i in range(count)]
             (root / 'implementation.py').write_text('from pathlib import Path\ndef values():\n    return [int(Path(name).read_text()) for name in ' + repr(names) + ']\n')
-            (root / 'test_values.py').write_text('import unittest\nfrom implementation import values\nclass Values(unittest.TestCase):\n    def test_values(self):\n        self.assertEqual(values(), ' + repr([1] * count) + ')\n')
+            expected = [100 + i for i in range(count)] if args.distinct_blobs else [1] * count
+            (root / 'test_values.py').write_text('import unittest\nfrom implementation import values\nclass Values(unittest.TestCase):\n    def test_values(self):\n        self.assertEqual(values(), ' + repr(expected) + ')\n')
             revisions = []
             for value in ('0', '1'):
-                for name in names:
-                    (root / name).write_text(value)
+                for index, name in enumerate(names):
+                    (root / name).write_text(str(int(value) * 100 + index) if args.distinct_blobs else value)
                 git('add', '.')
                 git('commit', '-qm', 'configuration ' + value)
                 revisions.append(git('rev-parse', 'HEAD'))
@@ -82,7 +84,7 @@ def main():
                     calls[label].append(dict(total=len(counter), tree=counter.count('ls-tree')))
             assert all((root / name).read_bytes() == value for name, value in originals.items())
             assert not git('status', '--porcelain')
-            print(json.dumps(dict(files=count, baseline_revision=revision,
+            print(json.dumps(dict(files=count, distinct_blobs=args.distinct_blobs, baseline_revision=revision,
                                   candidate_sha256=hashlib.sha256((ROOT / SCRIPT).read_bytes()).hexdigest(),
                                   seconds=times, medians={k: statistics.median(v) for k, v in times.items()},
                                   git_calls=calls, checks='Actual before assertion fails; after passes; originals preserved',
