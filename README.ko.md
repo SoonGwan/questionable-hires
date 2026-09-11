@@ -74,7 +74,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 - **Necromancer:** 선택한 코드 줄의 현재 상태와 Git 이력을 모으고, 미커밋 변경·얕은 이력의 한계를 표시합니다. [사용법과 한계](skills/necromancer/references/focused-history.md). 과거 코드를 지금도 유지해야 하는지는 별도로 판단합니다.
 - **Friday:** 메모리 SQLite에서 마이그레이션·롤백 단계별 읽기 쿼리 검사를 재사용합니다. [사용법과 한계](skills/friday/references/sqlite-matrix.md). 쿼리 성공이 배포 준비 완료를 뜻하지 않으며, 다른 DB 엔진의 동작은 별도로 확인해야 합니다.
 - **Receipt:** 현재 테스트를 고정한 채 두 커밋의 Python 구현을 비교하고, 각각의 출력과 커밋 ID를 남깁니다. [사용법과 한계](skills/receipt/references/existing-fix.md). [첫 모델 검사](benchmarks/RECEIPT-HELPER-01.md)는 직전 표본보다 빠르지만 토큰은 늘었습니다. 비용 개선이 입증된 것은 아닙니다.
-- **Exorcist:** 진단 명령의 프로세스 실행 시간과 수집 로그 크기를 제한합니다. [사용법과 한계](skills/exorcist/references/bounded-probe.md). 도구 동작은 로컬 검증했으며 모델의 비용 절감은 아직 측정하지 않았습니다.
+- **Exorcist:** 진단 명령의 프로세스 실행 시간과 수집 로그 크기를 제한합니다. [사용법과 한계](skills/exorcist/references/bounded-probe.md). [첫 모델 검사](benchmarks/EXORCIST-PROBE-RUNNER-01.md)에서 도구는 정상 사용했지만 비용은 줄지 않았습니다.
 
 위의 스킬 요청을 그대로 사용하면 필요한 경우 도구를 선택할 수 있습니다. 작은 작업이나 이미 증거를 확보한 작업은 직접 처리하는 편이 더 저렴할 수 있습니다. 전원 설치가 모든 작업에 8명을 전부 투입하라는 뜻은 아닙니다.
 

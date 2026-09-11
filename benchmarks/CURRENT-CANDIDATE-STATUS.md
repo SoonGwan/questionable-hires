@@ -22,6 +22,10 @@ to the actual unbounded screen-05 probe returns normally on the original behavio
 and terminates missing dispatch at the configured 0.5-second deadline (0.507 seconds,
 CLI 124, child -9). No model session covers this new helper or routing yet. The
 helper's local termination evidence is not evidence of token/time improvement.
+Its [first model adoption check](EXORCIST-PROBE-RUNNER-01.md) now records correct
+wrapper usage but full-source reading and an extra result artifact: 89,674 tokens /
+52.353 seconds, 4.2% more tokens and essentially unchanged time versus the preceding
+bounded-instruction sample. No helper efficiency win is established.
 
 Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRESSION-04.md). All nine task-specific criteria pass; the previous parent-directory search does not recur, but two rejected patches retain attempted-scope uncertainty. Total tokens fall 6.8% and time 8.3% versus screen 03; versus screen 02 tokens fall 1.3% while time rises 4.8%. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
 

@@ -82,7 +82,7 @@ The installer includes five optional, locally executed helpers. They require **P
 - **Necromancer:** focused current-line attribution and historical patches, including dirty/shallow-history limits. [Usage and limits](skills/necromancer/references/focused-history.md). It collects evidence; it does not decide whether old behavior is still needed.
 - **Friday:** reusable in-memory SQLite reader checks across migration and rollback states. [Usage and limits](skills/friday/references/sqlite-matrix.md). Query success is not production readiness; other database engines require their own evidence.
 - **Receipt:** frozen current assertions against two committed Python implementations, with independent outputs and revision IDs. [Usage and limits](skills/receipt/references/existing-fix.md). The [first model check](benchmarks/RECEIPT-HELPER-01.md) is faster but uses more tokens than its preceding sample; no efficiency win is established.
-- **Exorcist:** bounded foreground probe execution with independent process deadlines and bounded captured logs. [Usage and limits](skills/exorcist/references/bounded-probe.md). Locally tested; model efficiency is not yet measured.
+- **Exorcist:** bounded foreground probe execution with independent process deadlines and bounded captured logs. [Usage and limits](skills/exorcist/references/bounded-probe.md). The [first model check](benchmarks/EXORCIST-PROBE-RUNNER-01.md) uses the helper correctly but does not save resources.
 
 Use the normal skill prompts above; the agent can choose the helper when it saves repeated work. A small task or an already-established result may be cheaper to handle directly. Installing the team does not imply every task should use all eight hires.
 
