@@ -17,7 +17,9 @@ Observe actual submitted operations, latest selection, or recovered input/error/
 
 Bound behavior-dependent waits and clean up owned operations. Prefer the existing runner's timeout when it covers the test and cleanup; don't add a self-spawning wrapper solely to duplicate that boundary. Cancellation isn't termination: when tested operations can ignore it, use a process deadline covering cleanup. Preserve that deadline in the reproducible command and report timeout as incomplete, not a reproduced defect.
 
-Use local/designated test data, not real purchases, messages or destructive production actions. Without browser tooling, test the closest relevant state boundary and name untested browser behavior.
+Treat browser launch as a shared prerequisite when cases use the same runtime: establish it in suite setup or the first relevant check, not a separate duplicate smoke run. If that prerequisite fails before page interaction, retain the diagnostic and mark dependent cases unrun instead of repeating an unchanged launch per case. Retry only after a relevant change or evidence of a transient cause; do not treat a test-specific assertion failure as environment failure. Keep per-case state isolated when launch succeeds.
+
+Use local/designated test data, not real purchases, messages or destructive production actions. If browser execution is unavailable, keep browser QA incomplete. A focused lower-layer check can resolve a remaining question, but a parallel substitute suite does not establish rendered behavior.
 
 ## Deliver and stop
 
