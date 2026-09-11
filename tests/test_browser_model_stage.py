@@ -38,6 +38,9 @@ class BrowserModelStageTests(unittest.TestCase):
                 manifest = json.loads((output / 'run.json').read_text())
                 self.assertEqual(model.call_count, count)
                 self.assertEqual(len(manifest['cells']), count)
+                self.assertEqual(manifest['runtime']['codex'], 'frozen-revision')
+                self.assertEqual(manifest['runtime']['node'], 'frozen-revision')
+                self.assertEqual(manifest['runtime']['python'], runner.platform.python_version())
                 self.assertEqual('finished_at' in manifest, scenario != 'limit')
                 self.assertEqual(bool(manifest.get('stopped_after_limit')), scenario == 'limit')
 

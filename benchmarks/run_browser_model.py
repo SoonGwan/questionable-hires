@@ -4,6 +4,7 @@ import argparse
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+import platform
 import shutil
 
 from run import ROOT, command, disabled_skills, prepare, resource_manifest, run_cell
@@ -49,6 +50,11 @@ def main():
                     task=TASK, model='gpt-6-astra', effort='medium',
                     order=['baseline', 'skill'], timeout=240,
                     started_at=datetime.now(timezone.utc).isoformat(),
+                    runtime=dict(codex=command(['codex', '--version'], ROOT, timeout=10),
+                                 node=command(['node', '--version'], ROOT, timeout=10),
+                                 python=platform.python_version(),
+                                 os=platform.system(), release=platform.release(),
+                                 machine=platform.machine()),
                     dependency=inventory,
                     fixture=resource_manifest(ROOT / 'benchmarks/browser/model-project'),
                     staged_only=args.stage_only, cells=[])
