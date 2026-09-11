@@ -4,13 +4,16 @@
 This is a test runner, not a security sandbox. Run only trusted local tests.
 """
 import argparse
+import codecs
 import json
 import os
 from pathlib import Path
 import signal
+import selectors
 import subprocess
 import sys
 import tempfile
+import time
 
 
 BOOTSTRAP = '''import importlib, json, pathlib, runpy, sys
@@ -76,16 +79,45 @@ def execute(python, directory, spec, probe, timeout):
                    tests=spec['tests'], probe=probe)
     process = subprocess.Popen([python, '-B', '-c', BOOTSTRAP, json.dumps(payload)],
                                cwd=directory, env=env, stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT, text=True, start_new_session=True)
+                               stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
+                               start_new_session=True)
     timed_out = False
+    output, characters = '', 0
+    decoder = codecs.getincrementaldecoder('utf-8')(errors='replace')
+    deadline = time.monotonic() + timeout
+    def append(chunk, final=False):
+        nonlocal output, characters
+        decoded = decoder.decode(chunk, final=final)
+        characters += len(decoded)
+        output = (output + decoded)[-12000:]
+
     try:
-        output, _ = process.communicate(timeout=timeout)
+        with selectors.DefaultSelector() as selector:
+            selector.register(process.stdout, selectors.EVENT_READ)
+            while selector.get_map():
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise subprocess.TimeoutExpired(process.args, timeout)
+                for key, _ in selector.select(remaining):
+                    chunk = os.read(key.fileobj.fileno(), 4096)
+                    if not chunk:
+                        append(b'', final=True)
+                        selector.unregister(key.fileobj)
+                    else:
+                        append(chunk)
+            process.wait(timeout=max(0, deadline - time.monotonic()))
     except subprocess.TimeoutExpired:
         timed_out = True
-        os.killpg(process.pid, signal.SIGKILL)
-        output, _ = process.communicate()
+    finally:
+        if timed_out or process.poll() is None:
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+        process.stdout.close()
+        process.wait()
     return dict(exit_code=process.returncode, timed_out=timed_out,
-                output=output[-12000:], output_truncated=len(output) > 12000)
+                output=output, output_truncated=characters > 12000)
 
 
 def audit(root, spec, python=sys.executable, timeout=30):

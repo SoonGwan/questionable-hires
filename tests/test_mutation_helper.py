@@ -5,6 +5,7 @@ from pathlib import Path
 import tempfile
 import subprocess
 import sys
+import tracemalloc
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -124,3 +125,44 @@ class MutationHelperTests(unittest.TestCase):
         self.assertEqual(result['status'], 'observed')
         self.assertEqual(result['checks']['correct_tests']['exit_code'], 0)
         self.assertEqual(script.stat().st_mode & 0o777, 0o755)
+
+    def test_large_output_keeps_tail_without_buffering_entire_log(self):
+        probe = "import sys\nsys.stdout.write('x' * 8_000_000 + '\\nFINAL RESULT\\n')"
+        tracemalloc.start()
+        try:
+            result = helper.execute(sys.executable, self.root, self.recipe, probe, 5)
+            _, peak = tracemalloc.get_traced_memory()
+        finally:
+            tracemalloc.stop()
+        self.assertEqual(result['exit_code'], 0)
+        self.assertTrue(result['output_truncated'])
+        self.assertEqual(len(result['output']), 12000)
+        self.assertTrue(result['output'].endswith('\nFINAL RESULT\n'))
+        self.assertLess(peak, 2_000_000, 'Parent captured the entire child log')
+
+    def test_non_utf8_output_does_not_lose_exit_status(self):
+        result = helper.execute(sys.executable, self.root, self.recipe,
+                                "import os\nos.write(1, b'bad \\xff byte\\n')\nraise SystemExit(7)", 5)
+        self.assertEqual(result['exit_code'], 7)
+        self.assertIn('bad \ufffd byte', result['output'])
+
+    def test_continuous_output_still_obeys_deadline(self):
+        result = helper.execute(sys.executable, self.root, self.recipe,
+                                "import os\nwhile True: os.write(1, b'x' * 4096)", 0.2)
+        self.assertTrue(result['timed_out'])
+        self.assertTrue(result['output_truncated'])
+        self.assertLessEqual(len(result['output']), 12000)
+
+    def test_multibyte_output_survives_chunk_boundaries(self):
+        result = helper.execute(sys.executable, self.root, self.recipe,
+                                "import os\nos.write(1, ('한' * 9000).encode('utf-8'))", 5)
+        self.assertEqual(result['exit_code'], 0)
+        self.assertTrue(result['output'].endswith('한' * 9000))
+        self.assertNotIn('\ufffd', result['output'])
+        self.assertFalse(result['output_truncated'])
+
+    def test_closed_output_does_not_bypass_process_deadline(self):
+        result = helper.execute(sys.executable, self.root, self.recipe,
+                                "import os, time\nos.close(1)\nos.close(2)\ntime.sleep(10)", 0.2)
+        self.assertTrue(result['timed_out'])
+        self.assertLess(result['exit_code'], 0)
