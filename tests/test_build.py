@@ -5,6 +5,7 @@ import tempfile
 import unittest
 import subprocess
 import sys
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location("builder", Path(__file__).resolve().parents[1] / "scripts/build.py")
 builder = importlib.util.module_from_spec(spec)
@@ -12,6 +13,52 @@ spec.loader.exec_module(builder)
 
 
 class BuildTests(unittest.TestCase):
+    def test_failed_build_cleans_owned_output_and_allows_retry(self):
+        for error_type in (OSError, RuntimeError, KeyboardInterrupt):
+            with self.subTest(error_type=error_type), tempfile.TemporaryDirectory() as directory:
+                destination = Path(directory).resolve() / 'bundle'
+                failure = error_type('catalog failed')
+                copy = builder.shutil.copy2
+                def fail_catalog(source, target, *args, **kwargs):
+                    result = copy(source, target, *args, **kwargs)
+                    if Path(source) == builder.ROOT / 'packaging/marketplace.json':
+                        raise failure
+                    return result
+                with patch.object(builder.shutil, 'copy2', side_effect=fail_catalog):
+                    with self.assertRaises(error_type) as caught:
+                        builder.build(destination)
+                self.assertIs(caught.exception, failure)
+                self.assertFalse(destination.exists())
+                self.assertEqual(builder.build(destination), destination / 'plugins/questionable-hires')
+                self.assertTrue((destination / '.agents/plugins/marketplace.json').is_file())
+
+    def test_cleanup_failure_does_not_replace_original_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory).resolve() / 'bundle'
+            failure = OSError('original failure')
+            with patch.object(builder.shutil, 'copytree', side_effect=failure), \
+                    patch.object(builder.shutil, 'rmtree', side_effect=PermissionError('cleanup denied')):
+                with self.assertRaises(OSError) as caught:
+                    builder.build(destination)
+            self.assertIs(caught.exception, failure)
+
+    def test_existing_file_directory_and_symlink_are_preserved(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            existing = root / 'existing'
+            existing.mkdir()
+            sentinel = existing / 'keep.txt'
+            sentinel.write_bytes(b'keep')
+            link = root / 'link'
+            link.symlink_to(existing, target_is_directory=True)
+            for target in (existing, sentinel, link):
+                with self.subTest(target=target), patch.object(builder.shutil, 'rmtree') as cleanup:
+                    with self.assertRaises(FileExistsError):
+                        builder.build(target)
+                    cleanup.assert_not_called()
+                    self.assertEqual(sentinel.read_bytes(), b'keep')
+                    self.assertTrue(link.is_symlink())
+
     def test_bundled_receipt_executes_real_before_after_checks(self):
         with tempfile.TemporaryDirectory() as directory:
             scratch = Path(directory)
