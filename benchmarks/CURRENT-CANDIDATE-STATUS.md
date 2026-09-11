@@ -12,7 +12,7 @@ They are not necessarily the snapshot used by every linked historical report.
 
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
-| Necromancer | `8454059`; collector/reference `ae99bac` | [First-load regression](NECROMANCER-FIRST-LOAD-RESULT.md), [region-first HTTPX](HTTPX-HISTORY-REGION-01.md) | Native path preserves current/historical evidence; +8.0% tokens / +3.2% time versus baseline without history; collector path unverified |
+| Necromancer | `8454059`; collector/reference `a16e57d` | [Excerpt memory](NECROMANCER-EXCERPT-MEMORY-01.md), [first-load regression](NECROMANCER-FIRST-LOAD-RESULT.md) | Excerpt allocation lower with unchanged local evidence; not whole-process or model savings; native pair still +8.0% tokens / +3.2% time |
 | Receipt | `abb4b93`; helper `048fb21`, reference `48ec1c3` | [Independent checks](RECEIPT-INDEPENDENT-01.md), [changed paths 03](CHANGED-PATHS-03.md) | All required checks continue correctly; +6.7% tokens / -13.8% time with stronger red/green evidence, but combined collection is not adopted |
 | Landlord | `c66db8f` | [Check scope](LANDLORD-CHECK-SCOPE-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Appropriate test scope in both arms; +6.2% tokens / +12.9% time with equal shell counts; efficiency unproven |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
@@ -23,6 +23,12 @@ They are not necessarily the snapshot used by every linked historical report.
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Necromancer collector `a16e57d` avoids materializing an entire numbered diff when
+only selected windows can be returned. The [allocation check](NECROMANCER-EXCERPT-MEMORY-01.md)
+shows identical evidence and lower function peak allocation on a large hunk. Full
+Git capture remains; model adoption and end-to-end costs are not measured by this
+local optimization. Complete-tail validation and fallback behavior remain tested.
 
 Necromancer's [first-load regression](NECROMANCER-FIRST-LOAD-RESULT.md) now completes.
 Native Git and live behavior support the decision without optional resource reads,
