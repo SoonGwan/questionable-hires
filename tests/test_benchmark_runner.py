@@ -12,6 +12,61 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_resource_manifest_covers_references_scripts_modes_and_symlinks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'references').mkdir()
+            (root / 'SKILL.md').write_text('entrypoint')
+            (root / 'references/check.py').write_text('print(1)')
+            (root / 'outside').symlink_to('/does-not-exist')
+            first = runner.resource_manifest(root)
+            self.assertEqual(first['outside'], dict(kind='symlink', target='/does-not-exist'))
+            (root / 'references/check.py').write_text('print(2)')
+            (root / 'references/check.py').chmod(0o755)
+            second = runner.resource_manifest(root)
+            self.assertEqual(first['SKILL.md'], second['SKILL.md'])
+            self.assertNotEqual(first['references/check.py']['sha256'], second['references/check.py']['sha256'])
+            self.assertEqual(second['references/check.py']['mode'], 0o755)
+
+    def test_resource_manifest_does_not_follow_replaced_install_root(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outside = root / 'outside'
+            outside.mkdir()
+            (outside / 'secret').write_text('not inventoried')
+            linked = root / 'linked'
+            linked.symlink_to(outside, target_is_directory=True)
+            self.assertEqual(set(runner.resource_manifest(linked)), {'.'})
+            self.assertEqual(set(runner.resource_manifest(linked / 'skills')), {'.'})
+
+    def test_cell_records_installed_resource_mutation_without_changing_completion(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'skills/exorcist'
+            source.mkdir(parents=True)
+            (source / 'SKILL.md').write_text('frozen skill')
+            (source / 'helper.py').write_text('original')
+            output = root / 'results'
+            output.mkdir()
+            temporary = root / 'temp'
+            temporary.mkdir()
+            original_popen = runner.subprocess.Popen
+            def launch(args, **kwargs):
+                target = temporary / 'project/.agents/skills/exorcist/helper.py'
+                target.write_text('changed during execution')
+                event = json.dumps(dict(type='turn.completed', usage=dict(input_tokens=1, output_tokens=1)))
+                return original_popen([sys.executable, '-c', 'print(' + repr(event) + ')'], **kwargs)
+            # Fixture preparation also uses Popen; only intercept the model command.
+            def dispatch(args, **kwargs):
+                return launch(args, **kwargs) if args[0] == 'codex' else original_popen(args, **kwargs)
+            with patch.object(runner.tempfile, 'mkdtemp', return_value=str(temporary)), patch.object(runner.subprocess, 'Popen', side_effect=dispatch):
+                meta = runner.run_cell(dict(id='resources', skill='exorcist', task='Fixture', files={'source.py': 'VALUE=1'}),
+                                       'skill', 1, output, 'gpt-6-astra', 'medium', 10, [], root / 'skills')
+            self.assertTrue(meta['completed'])
+            self.assertEqual(meta['resource_diagnostics']['changed_paths'], ['exorcist/helper.py'])
+            self.assertEqual(meta['installed_resources_before']['exorcist/helper.py']['sha256'], runner.hashlib.sha256(b'original').hexdigest())
+            self.assertEqual((source / 'helper.py').read_text(), 'original')
+
     def test_capture_diagnostics_do_not_conflate_empty_output_and_failure(self):
         rows = [dict(type='item.completed', item=dict(type='command_execution', id='empty',
                                                     aggregated_output='', exit_code=0)),

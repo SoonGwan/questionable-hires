@@ -105,6 +105,22 @@ def prepare_repository(source, workspace):
     return command(['git', 'rev-parse', 'HEAD'], workspace)
 
 
+def resource_manifest(root):
+    """Inventory installed bytes/modes without following symlink targets."""
+    for candidate in (root.parent, root):
+        if candidate.is_symlink():
+            return {'.': dict(kind='symlink-root', target=os.readlink(candidate))}
+    manifest = {}
+    for path in sorted(root.rglob('*')):
+        name = path.relative_to(root).as_posix()
+        if path.is_symlink():
+            manifest[name] = dict(kind='symlink', target=os.readlink(path))
+        elif path.is_file():
+            manifest[name] = dict(kind='file', sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                                  mode=path.stat().st_mode & 0o777)
+    return manifest
+
+
 def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills_root=None, project_source=None):
     skills_root = skills_root or ROOT / "skills"
     cell = output / f"{case['id']}--{arm}--{repeat}"
@@ -124,11 +140,13 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
                     shutil.copytree(hire, workspace / ".agents/skills" / hire.name)
         else:
             shutil.copytree(source, workspace / ".agents/skills" / case["skill"])
-        skill_hash = hashlib.sha256((source / "SKILL.md").read_bytes()).hexdigest()
+        skill_hash = hashlib.sha256((workspace / '.agents/skills' / case['skill'] / 'SKILL.md').read_bytes()).hexdigest()
         if arm == "skill":
             prompt = f"Use ${case['skill']} at .agents/skills/{case['skill']}/SKILL.md.\n\n" + prompt
     elif arm == "control":
         prompt += "\n\n" + CONTROL
+    installed_root = workspace / '.agents/skills'
+    installed_before = resource_manifest(installed_root)
     config = "skills.config=[" + ",".join("{path=" + json.dumps(str(p)) + ",enabled=false}" for p in disabled) + "]"
     args = ["codex", "exec", "--ignore-user-config", "--ignore-rules", "--ephemeral", "--sandbox", "workspace-write", "--model", model,
             "-c", f'model_reasoning_effort="{effort}"', "-c", config, "--json", "-C", str(workspace), prompt]
@@ -146,6 +164,14 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
             os.killpg(process.pid, signal.SIGKILL)
             stdout, stderr = process.communicate()
     duration = round(time.monotonic() - started, 3)
+    try:
+        installed_after = resource_manifest(installed_root)
+        resource_diagnostics = dict(changed_paths=sorted(
+            name for name in installed_before.keys() | installed_after.keys()
+            if installed_before.get(name) != installed_after.get(name)))
+    except OSError as error:
+        installed_after = None
+        resource_diagnostics = dict(error=type(error).__name__)
     events, capture_diagnostics = inspect_capture(stdout, stderr)
     messages = [e["item"]["text"] for e in events if e.get("type") == "item.completed" and e.get("item", {}).get("type") == "agent_message"]
     usage = next((e.get("usage") for e in reversed(events) if e.get("type") == "turn.completed"), None)
@@ -167,7 +193,10 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
             "base_commit": base, "skill_sha256": skill_hash, "elapsed_seconds": duration, "exit_code": process.returncode,
             "timed_out": timed_out, "usage": usage, "completed": usage is not None and process.returncode == 0 and not timed_out,
             "workspace": str(workspace), "prompt": prompt, "disabled_personal_skills": len(disabled),
-            "capture_diagnostics": capture_diagnostics}
+            "capture_diagnostics": capture_diagnostics,
+            "installed_resources_before": installed_before,
+            "installed_resources_after": installed_after,
+            "resource_diagnostics": resource_diagnostics}
     (cell / "metadata.json").write_text(json.dumps(meta, indent=2) + "\n")
     return meta
 
