@@ -9,7 +9,7 @@ description: Review a planned deployment or release diff for rollback feasibilit
 
 ## Read Monday's incident report early
 
-Read the release diff and documented deployment/rollback order. Identify the relevant migrations, configuration, consumers and coexisting versions; don't impose rolling deployment or zero downtime on a different strategy.
+Start from the supplied release diff and documented deployment/rollback order. Resolve the actual old/new artifacts needed for the reachable states; use Git history when a version, changed contract or migration sequence is unresolved, not to collect commit metadata after those artifacts are already established. Identify relevant configuration and consumers without imposing rolling deployment or zero downtime on a different strategy.
 
 At each reachable rollout state, identify active readers/writers and their data/configuration; walk rollback from that state, including data written by new code. Test incompatible pairs. Include queued work or external effects only when this release changes their contract.
 
