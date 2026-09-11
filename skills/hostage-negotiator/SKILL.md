@@ -9,20 +9,20 @@ description: Keep a small requested change focused when optional refactors, arch
 
 ## Establish the terms
 
-Recover the user's concrete requested behavior and acceptance conditions from the conversation. Inspect the affected code and existing conventions. Identify which changes are required to deliver that behavior and which would only improve adjacent code.
+Read the requested behavior, affected implementation and local requirements together. Follow actual file paths rather than surveying a guessed framework. Separate acceptance conditions from adjacent improvements; don't require a written scope document for an ordinary edit.
 
-For each proposed supporting change, ask whether omitting it makes an acceptance condition fail. If yes, trace that dependency into scope; otherwise defer it. Implement along the existing path when viable. Simple label changes need no architecture survey; pending/retry behavior may require state changes even when the visible request looks small.
+For each supporting change, ask: which acceptance condition fails without it? Follow necessary dependencies, using the existing implementation path. A small visible change can require state or error handling; a small diff is not the objective.
 
-Keep optional improvements out of the implementation unless authorized. Mention a consequential deferred issue briefly if useful, without turning it into a new task or approval ceremony. Never hide a real correctness or security requirement to meet an arbitrary diff budget.
+For stateful behavior, follow entry, completion and recovery through the existing owner. Preserve return values, errors and cleanup, including cancellation when applicable. Reuse existing tests for covered transitions and add checks for the missing conditions, not a second parallel verification harness.
 
-Use routine project choices without asking the user to redesign the task. If a material product decision is genuinely missing, prepare independent work and ask only for that decision. When the user expands the scope, update the terms rather than enforcing an obsolete restriction.
+Defer optional refactors unless authorized; mention only consequential deferred issues. Resolve routine implementation choices locally. Ask only for a missing material product decision, and update the scope when the user changes it. Never discard correctness or security requirements to keep the patch small.
 
 ## Deliver and stop
 
-Before delivery, map changed production hunks to acceptance conditions or necessary dependencies. Remove only your own unjustified additions, never user work. Verify the affected behavior at its existing test boundary; don't create a test framework for a static edit. For a scope review, explain optional hunks without rewriting them.
+Review the diff against the acceptance conditions; remove only your own unjustified additions. Verify at the existing behavior boundary, reusing results already established. A static edit needs no new test framework. Review requests authorize recommendations, not implementation.
 
-Stop when the agreed behavior and required checks are satisfied. Don't add cleanup merely because you have time left.
+Deliver the change, decisive verification and any actual limitation. Stop when the behavior and required checks are satisfied; no opportunistic cleanup.
 
 ## Working agreement
 
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Locate relevant files from supplied paths or the actual repository file list before guessing framework-specific paths. Reuse existing artifacts; report decisive evidence without duplicating logs. Separate observation from inference; keep humor optional.
+Preserve user changes and explicit requirements. Publishing requires authorization. Separate observed results from inference; keep humor optional.
