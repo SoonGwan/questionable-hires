@@ -13,13 +13,13 @@ They are not necessarily the snapshot used by every linked historical report.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `18a2070`; collector/reference `ae99bac` | [Region-first HTTPX](HTTPX-HISTORY-REGION-01.md), [large hunk](NECROMANCER-LARGE-HUNK-01.md), paired 02 | Favorable HTTPX pair has unequal work and baseline repair; combined history task costs more; collector adoption unverified |
-| Receipt | `e00c751`; helper `048fb21`, reference `48ec1c3` | [Package pair](RECEIPT-PACKAGE-01.md), screen 05 | Favorable one-pair costs, unequal verification scope; no broad history/fix efficiency result |
+| Receipt | `8a08ecf`; helper `048fb21`, reference `48ec1c3` | [Current-fix collection](RECEIPT-COLLECTION-01.md), [package pair](RECEIPT-PACKAGE-01.md) | Collection pair costs +38.1% tokens / +33.9% time; duplicate after checks, parent search and rejected patch remain |
 | Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [paired 02](FAST-PAIRED-02.md) | Current diagnosis uses process containment but reads full helper source and costs more; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
 | Con Artist | `1f8b8b6`; helper `54328b1`; references `4bbac5a` | [Counter regression](HTTPX-COUNTER-01.md), [paired 02](FAST-PAIRED-02.md), [batch reuse](CON-ARTIST-BATCH-01.md) | Native copies avoid helper reads in persistence case with fewer tokens but more time; broader context-routing and batch adoption unverified |
-| Friday | `5f1dc34`; helper/reference `e79b208` | [Control with scope failure](FRIDAY-ROUTING-CONTROL-01.md), [runtime routing](FRIDAY-ROUTING-01.md), [mixed writers](FRIDAY-WRITERS-01.md) | Both current paths skip unused reference; control searches parent directory and remains costlier than earlier baseline; production runtime unknown |
+| Friday | `4362342`; helper/reference `e79b208` | [Necessary history](FRIDAY-HISTORY-01.md), [mixed writers](FRIDAY-WRITERS-01.md) | History transfer is correct but costs more; unchanged-pair reuse has author-only proof, not measured model gains; changed-state transfer remains pending |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
