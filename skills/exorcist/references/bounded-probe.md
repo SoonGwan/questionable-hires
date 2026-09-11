@@ -22,6 +22,12 @@ JSON retains the actual `exit_code`, `timed_out`, elapsed seconds and last 12,00
 combined-output characters with a truncation flag. CLI status: 0 successful child,
 1 unsuccessful child, 124 wrapper deadline, 2 invalid invocation. A child exiting
 124 is still CLI 1; inspect JSON. Default deadline 10 seconds, maximum 300.
+After killing the group, child-exit confirmation has a separate 5-second limit.
+If that expires, `cleanup_complete` is false, `exit_code` may be null, and CLI
+125 takes precedence over 124. Do not treat this as a completed cleanup or retry
+automatically while the previous process may remain. A true value confirms only
+the direct child's exit, not every descendant's; this is not an OS-level deadline
+guarantee. An interruption still propagates if this cleanup wait expires.
 Timeout or truncated decisive output is missing evidence, not the suspected bug.
 Keep task cleanup and useful assertions in the probe; this replaces process-level
 deadline plumbing, not experiment design.

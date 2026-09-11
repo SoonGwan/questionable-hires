@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 SCRIPT = Path(__file__).resolve().parents[1] / 'skills/exorcist/scripts/run_probe.py'
 spec = importlib.util.spec_from_file_location('probe_runner', SCRIPT)
@@ -15,6 +16,35 @@ spec.loader.exec_module(helper)
 
 @unittest.skipUnless(os.name == 'posix', 'POSIX process groups')
 class ProbeRunnerTests(unittest.TestCase):
+    def test_cleanup_wait_is_bounded_and_incomplete_is_explicit(self):
+        process = mock.Mock(returncode=None)
+        process.wait.side_effect = subprocess.TimeoutExpired(['probe'], 5)
+        with mock.patch.object(helper.subprocess, 'Popen', return_value=process), \
+                mock.patch.object(helper.selectors, 'DefaultSelector', side_effect=subprocess.TimeoutExpired(['probe'], 1)), \
+                mock.patch.object(helper.os, 'killpg'):
+            result = helper.run(['probe'], 1)
+        process.wait.assert_called_once_with(timeout=5)
+        process.stdout.close.assert_called_once()
+        self.assertTrue(result['timed_out'])
+        self.assertFalse(result['cleanup_complete'])
+        self.assertIsNone(result['exit_code'])
+
+    def test_cleanup_timeout_preserves_interruption(self):
+        process = mock.Mock(returncode=None)
+        process.wait.side_effect = subprocess.TimeoutExpired(['probe'], 5)
+        with mock.patch.object(helper.subprocess, 'Popen', return_value=process), \
+                mock.patch.object(helper.selectors, 'DefaultSelector', side_effect=KeyboardInterrupt), \
+                mock.patch.object(helper.os, 'killpg'), self.assertRaises(KeyboardInterrupt):
+            helper.run(['probe'], 1)
+        process.wait.assert_called_once_with(timeout=5)
+
+    def test_cli_reports_incomplete_cleanup_as_distinct_failure(self):
+        result = dict(exit_code=None, timed_out=True, cleanup_complete=False)
+        with mock.patch.object(sys, 'argv', ['run_probe.py', '--', 'probe']), \
+                mock.patch.object(helper, 'run', return_value=result), \
+                mock.patch('builtins.print'):
+            self.assertEqual(helper.main(), 125)
+
     def run_code(self, code, timeout=2):
         return helper.run([sys.executable, '-B', '-c', code], timeout)
 

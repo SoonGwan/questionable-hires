@@ -23,6 +23,7 @@ def run(command, timeout=10, cwd=None):
     deadline = started + timeout
     decoder = codecs.getincrementaldecoder('utf-8')(errors='replace')
     output, size, timed_out = '', 0, False
+    cleanup_complete = True
     try:
         with selectors.DefaultSelector() as selector:
             selector.register(process.stdout, selectors.EVENT_READ)
@@ -48,8 +49,13 @@ def run(command, timeout=10, cwd=None):
         except ProcessLookupError:
             pass
         process.stdout.close()
-        process.wait()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            # Do not replace an in-flight interruption with a cleanup timeout.
+            cleanup_complete = False
     return dict(exit_code=process.returncode, timed_out=timed_out,
+                cleanup_complete=cleanup_complete,
                 elapsed_seconds=round(time.monotonic() - started, 3),
                 output=output, output_truncated=size > 12000)
 
@@ -65,8 +71,10 @@ members are killed even after normal completion. Escaped process groups are not
 contained. Requires Python 3.9+ and POSIX. Reuse existing deadlines when available.
 
 JSON stdout: actual exit_code, timed_out, elapsed_seconds, output (last 12,000
-combined-output characters), output_truncated. No result file is required.
+combined-output characters), output_truncated, cleanup_complete. No result file is required.
 CLI status: 0 child success; 1 child failure; 124 wrapper timeout; 2 invalid input.
+125 means child exit could not be confirmed within 5 seconds after group kill;
+it takes precedence over 124. This is not an OS-level containment guarantee.
 A child exiting 124 maps to CLI 1. Timeout/truncated evidence is not causal proof.
 Keep assertions and task cleanup in the probe; this supplies a process deadline.''')
     parser.add_argument('--timeout', type=float, default=10,
@@ -82,6 +90,8 @@ Keep assertions and task cleanup in the probe; this supplies a process deadline.
     print(json.dumps(result, indent=2))
     # Preserve the actual status in JSON. CLI 124 uniquely means our timeout;
     # other unsuccessful commands map to 1 (including a child exiting 124).
+    if not result['cleanup_complete']:
+        return 125
     return 124 if result['timed_out'] else (0 if result['exit_code'] == 0 else 1)
 
 
