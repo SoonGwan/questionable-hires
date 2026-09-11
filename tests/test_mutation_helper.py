@@ -44,6 +44,27 @@ class MutationHelperTests(unittest.TestCase):
                          dict(correct_tests=0, correct_probe=0, mutant_tests=0, mutant_probe=1))
         self.assertIn('AssertionError', result['checks']['mutant_probe']['output'])
 
+    def test_module_copy_preserves_future_annotations_and_closure_context(self):
+        (self.root / 'service.py').write_text(
+            'from __future__ import annotations\n'
+            'def configured(prefix):\n'
+            '    def save(store: list[Item], value: Item):\n'
+            '        store.append(prefix + value)\n'
+            '        return True\n'
+            '    return save\n'
+            'save = configured("prefix:")\n')
+        recipe = dict(self.recipe,
+                      old='        store.append(prefix + value)\n',
+                      probe='from service import save\ns = ["kept"]\n'
+                            'save(s, "item")\nassert s == ["kept", "prefix:item"]\n')
+        result = self.run_audit(recipe)
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual({k: v['exit_code'] for k, v in result['checks'].items()},
+                         dict(correct_tests=0, correct_probe=0, mutant_tests=0, mutant_probe=1))
+        self.assertIn('AssertionError', result['checks']['mutant_probe']['output'])
+        for check in result['checks'].values():
+            self.assertNotIn('NameError', check['output'])
+
     def batch_recipe(self):
         common = {k: self.recipe[k] for k in ('files', 'imports', 'tests')}
         fault = {k: self.recipe[k] for k in ('target', 'old', 'new', 'probe')}
