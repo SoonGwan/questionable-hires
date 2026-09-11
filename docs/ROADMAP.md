@@ -13,7 +13,7 @@
 - [x] Eight additional clean, missing-evidence, or necessary-change skill sessions.
 - [x] Eight automatic-selection sessions with the whole team installed.
 - [x] Published answers, command evidence, diffs, metadata, and final snapshots.
-- [x] 192 local infrastructure, helper, packaging and fixture tests (current local run).
+- [x] 194 local infrastructure, helper, packaging and fixture tests (current local run).
 - [x] All-eight installed resource bytes/permissions and standalone/bundle parity.
 - [x] Failed package build cleanup, retry and existing-destination preservation.
 

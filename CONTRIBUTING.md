@@ -49,6 +49,11 @@ model performance. The full suite also exercises helpers and evaluator mechanics
 Run it before submitting executable changes; for prose-only edits, catalog/link
 validation and a focused manual review are normally sufficient.
 
+The repository validator also checks basic consistency of the maintained bug and
+new-hire issue forms: required text, body structure, unique input IDs, labels and
+boolean validation flags. This is not a full GitHub schema validator or a hosted
+form-rendering test.
+
 ## Behavioral evaluation is separate
 
 Commands in `benchmarks/run.py` launch authenticated model sessions and consume

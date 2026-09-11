@@ -27,6 +27,11 @@ self-copy rejection regressions. Contributor instructions distinguish these loca
 checks from model-usage evaluations; issue forms parse as YAML with unique field
 IDs. No hosted workflow or model benchmark was run for this documentation update.
 
+Issue-form validation follow-up at `292bd62`: 194 local tests pass (32.713
+seconds). Malformed/missing forms, duplicate IDs, missing types, blank labels and
+string-valued required flags produce diagnostics. This validates the maintained
+forms' local consistency, not GitHub's complete schema or rendered UI.
+
 | Area | Evidence | State / next required check |
 | --- | --- | --- |
 | Local mechanics | 183 tests pass in 26.312 seconds after build recovery changes; catalog/link validation and diff checks pass | Passed locally; does not establish other platforms or model quality |
