@@ -102,6 +102,45 @@ class HistoryHelperTests(unittest.TestCase):
         combined = '+++ b/a.py\n@@@ -1 -1 +1 @@@\n++new\n'
         self.assertEqual(helper.focused_patch(combined, 'a.py', [1]), (combined, 0))
 
+    def test_single_large_hunk_retains_selected_historical_line_within_budget(self):
+        path = self.root / 'legacy.py'
+        noise = ['# unrelated ' + 'x' * 100 + '\n'] * 160
+        path.write_text(''.join(noise) + 'VALUE = "before"\n')
+        self.commit('Prepare contiguous change')
+        path.write_text(''.join(s.replace('xxx', 'yyy') for s in noise) + 'VALUE = "after"\n')
+        self.commit('Contiguous rewrite')
+        raw = self.git('show', '--format=fuller', '--unified=3', 'HEAD', '--', 'legacy.py')
+        self.assertGreater(raw.index('+VALUE = "after"'), 12000)
+        self.assertEqual(raw.count('\n@@ '), 1)
+        result = helper.trace(self.root, 'legacy.py', 161, 161)
+        item = result['commits'][0]
+        self.assertTrue(item['truncated'])
+        self.assertNotIn('+VALUE = "after"', item['evidence'])
+        self.assertIn('old:- new:161 +VALUE = "after"', item['selected_patch_excerpt'])
+        self.assertIn('[omitted patch rows]', item['selected_patch_excerpt'])
+        self.assertLessEqual(len(item['evidence']) + len(item['selected_patch_excerpt']), 12000)
+        self.assertEqual(item['omitted_hunks'], 0)
+
+    def test_excerpt_numbers_deletions_context_and_multiple_selected_lines(self):
+        text = ('+++ b/a.py\n@@ -10,3 +20,3 @@\n-old\n+new\n context\n-last\n+final\n'
+                '\\ No newline at end of file\n')
+        excerpt = helper.selected_patch_excerpt(text, 'a.py', [20, 22])
+        self.assertIn('old:10 new:- -old', excerpt)
+        self.assertIn('old:- new:20 +new', excerpt)
+        self.assertIn('old:11 new:21  context', excerpt)
+        self.assertIn('old:- new:22 +final', excerpt)
+        self.assertIn('No newline', excerpt)
+
+    def test_excerpt_does_not_guess_ambiguous_or_over_budget_evidence(self):
+        text = '+++ b/a.py\n@@ -1 +1 @@\n-old\n+new\n'
+        for source, path, lines in ((text, 'a.py', [99]), (text, 'a.py', [1, 99]),
+                                    (text.replace('-1 +1', '-1,2 +1'), 'a.py', [1]),
+                                    (text + text, 'a.py', [1]),
+                                    ('+++ b/a.py\n@@@ -1 -1 +1 @@@\n++new\n', 'a.py', [1])):
+            with self.subTest(source=source, lines=lines):
+                self.assertIsNone(helper.selected_patch_excerpt(source, path, lines))
+        self.assertIsNone(helper.selected_patch_excerpt(text, 'a.py', [1], budget=3))
+
     def test_focused_patch_keeps_multiple_selected_hunks(self):
         text = ('commit evidence\n+++ b/a.py\n@@ -1 +1 @@\n-a\n+b\n'
                 '@@ -20 +20 @@\n-c\n+d\n@@ -40 +40 @@\n-e\n+f\n')

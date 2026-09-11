@@ -59,6 +59,67 @@ def focused_patch(output, historical_path, line_numbers):
     return header + marker + ''.join(kept), omitted
 
 
+def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
+    """Numbered evidence, not an applyable diff or inferred old/new pairing."""
+    marker = '+++ b/' + historical_path + '\n'
+    if output.count(marker) != 1 or any(c in historical_path for c in '\n\r\t"'):
+        return None
+    body = output.split(marker, 1)[1]
+    if 'diff --git ' in body or '@@@' in body:
+        return None
+    rows, selected, covered = [], [], set()
+    old = new = old_left = new_left = None
+    for line in body.splitlines():
+        match = re.fullmatch(r'@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@.*', line)
+        if match:
+            if old_left not in (None, 0) or new_left not in (None, 0):
+                return None
+            old, old_left, new, new_left = (int(match[1]), int(match[2] or 1),
+                                           int(match[3]), int(match[4] or 1))
+            rows.append(line)
+            continue
+        if line == '\\ No newline at end of file':
+            rows.append(line)
+            continue
+        if old is None or not line or line[0] not in ' +-':
+            return None
+        has_old, has_new = line[0] != '+', line[0] != '-'
+        if has_new and new in line_numbers:
+            selected.append(len(rows))
+            covered.add(new)
+        rows.append(f'old:{old if has_old else "-"} new:{new if has_new else "-"} {line}')
+        old += has_old
+        new += has_new
+        old_left -= has_old
+        new_left -= has_new
+        if old_left < 0 or new_left < 0:
+            return None
+    if old_left != 0 or new_left != 0 or not selected or covered != set(line_numbers):
+        return None
+    # Target rows first: distant context cannot consume the target's allowance.
+    indices = set(selected)
+    def render(ids):
+        ordered = sorted(ids)
+        result = []
+        for pos, index in enumerate(ordered):
+            if pos == 0 and index > 0 or pos > 0 and index != ordered[pos - 1] + 1:
+                result.append('[omitted patch rows]')
+            result.append(rows[index])
+        if ordered[-1] < len(rows) - 1:
+            result.append('[omitted patch rows]')
+        return '\n'.join(result)
+    if len(render(indices)) > budget:
+        return None
+    for distance in range(1, 4):
+        for target in selected:
+            for index in (target - distance, target + distance):
+                if 0 <= index < len(rows):
+                    trial = indices | {index}
+                    if len(render(trial)) <= budget:
+                        indices = trial
+    return render(indices)
+
+
 def trace(repo, filename, start, end, max_commits=3):
     repo = Path(repo).resolve()
     path = Path(filename)
@@ -123,6 +184,15 @@ def trace(repo, filename, start, end, max_commits=3):
                                        evidence=patch_text[:12000], truncated=len(patch_text) > 12000,
                                        omitted_hunks=omitted_hunks,
                                        error=shown.stderr[:1000]))
+        if shown.returncode == 0 and len(paths) == 1 and len(patch_text) > 12000:
+            excerpt = selected_patch_excerpt(patch_text, next(iter(paths)),
+                [row['original_line'] for row in rows if row['commit'] == commit])
+            if excerpt is not None:
+                item = evidence['commits'][-1]
+                item['evidence'] = patch_text[:4000]
+                item['selected_patch_excerpt'] = excerpt
+                item['excerpt_limitation'] = ('Numbered patch rows near attributed lines, not an applyable diff. '
+                    'Omitted rows may include removals; adjacency does not establish an old/new replacement pair.')
         if cutoff:
             evidence['commits'][-1]['patch_unavailable'] = 'Shallow boundary: parent history is missing; whole-file additions would not establish origin.'
     evidence['limitation'] = ('Blame attributes lines, not intent or current necessity. Boundary commits may reflect '
