@@ -24,6 +24,13 @@ They are not necessarily the snapshot used by every linked historical report.
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
 
+[Current automatic positive selection](CURRENT-SELECTION-01.md) observes Landlord
+and Receipt selected for two appropriate requests, but both consume more tokens
+than no-skill arms: Store +5.68% tokens/+22.33% time, assembly +3.48%/−38.96%.
+Actual work differs. Store's broad caller search also reads a Con Artist reference
+example incidentally; this is not an explicit second invocation, and influence is
+unknown. Two cases do not establish recall or efficiency across all eight hires.
+
 Whole-repository follow-up at `d09128c`: all 203 local tests pass in 28.106
 seconds. All eight entrypoint revisions were checked against Git; the table now
 reflects the current Necromancer rather than its older region-first version.

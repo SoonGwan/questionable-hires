@@ -16,6 +16,20 @@ def load(name, relative):
 
 
 class ReceiptEqualWorkFixtureTests(unittest.TestCase):
+    def test_assembly_writer_matches_documented_lf_bytes(self):
+        fixture = load('assembly_lf', 'benchmarks/receipt_assembly_cases.py').cases()[0]
+        old, current = {}, {}
+        exec(fixture['history'][0]['files']['assembly/writer.py'], old)
+        exec(fixture['files']['assembly/writer.py'], current)
+        for variant in (old, current):
+            self.assertEqual(variant['render'](['one', 'two'], '|').encode(), b'one|two\n')
+        self.assertEqual(old['render']([], '|').encode(), b'\n')
+        self.assertEqual(current['render']([], '|').encode(), b'')
+        mutant = {}
+        exec(fixture['files']['assembly/writer.py'].replace('\\n', '\\\\n'), mutant)
+        self.assertEqual(mutant['render'](['one', 'two'], '|').encode(), b'one|two\\n')
+        self.assertNotEqual(mutant['render'](['one', 'two'], '|').encode(), b'one|two\n')
+
     def test_assembly_requires_both_historical_implementations(self):
         fixture = load('assembly_history', 'benchmarks/receipt_assembly_cases.py')
         runner = load('assembly_runner', 'benchmarks/run.py')
