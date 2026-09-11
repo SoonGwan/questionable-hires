@@ -603,13 +603,16 @@ substitute reliability-only improvements or a smaller easy task for that objecti
 
 ## Retained targeted history
 
-Necromancer now has an **unmeasured decision-gate candidate** beyond the recorded
+Necromancer now has a **narrowly screened decision-gate candidate** beyond the recorded
 history runs: a removal-only decision settled by a demonstrated required current
 caller break need not collect origin history. Explicit historical questions and
 unresolved compatibility/regression decisions still require it. The
 [two-request screening protocol](NECROMANCER-DECISION-GATE-PROTOCOL.md) compares
 predecessor and candidate and includes a history-required countercase. Structural
-validation is not behavioral acceptance; no performance improvement is claimed.
+validation is not behavioral acceptance. The [four-session result](NECROMANCER-DECISION-GATE-01.md)
+shows gate adoption: removal tokens/time −19.62%/−34.36%, historical explanation
++1.00%/−1.08%, with required evidence retained in both. One sample per condition,
+exposed shared fixture and unequal work do not establish general efficiency.
 
 Historical steps remain in their individual reports, including unfavorable results:
 
