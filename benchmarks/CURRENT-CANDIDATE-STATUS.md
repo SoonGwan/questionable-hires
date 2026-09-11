@@ -19,7 +19,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Exorcist | `3ededb6`; helper `34aedd4`, reference `3ededb6` | [Setup control](EXORCIST-CONDITIONAL-01.md), [async path](CONDITIONAL-PATHS-01.md) | Conditional helper selection is mixed; current async artifact lacks hard cancellation containment; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
 | Con Artist | `5c697e5`; helper `54328b1`; references `4bbac5a` | [Progressive check](HTTPX-PROGRESSIVE-01.md), [adverse pair](HTTPX-BATCH-TRANSFER-01.md), [batch reuse](CON-ARTIST-BATCH-01.md) | Advanced reference skipped, but full source read and seven commands; still costlier than earlier baseline; batch adoption unmeasured |
-| Friday | `4ac4ffe`; helper/reference `e79b208` | [Mixed writers](FRIDAY-WRITERS-01.md), [matrix](FRIDAY-MATRIX-01.md), screen 05 | Actual fixture writers checked; two-case aggregate +8.1% tokens / +4.7% time with unequal depth; production runtime unknown |
+| Friday | `5f1dc34`; helper/reference `e79b208` | [Runtime routing](FRIDAY-ROUTING-01.md), [mixed writers](FRIDAY-WRITERS-01.md), screen 05 | Current gap skips unused reference with mixed costs; compatible control not rechecked; production runtime unknown |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
@@ -32,7 +32,7 @@ time; compared with screen 02: -9.3% / -4.4%. No contemporaneous baseline.
 Most skills were unchanged, execution depth varied, and the diagnosis artifact
 had unbounded waits. Do not interpret those differences as causal improvements.
 
-Current Mother-in-law, Exorcist and Con Artist revisions postdate that combined snapshot.
+Current Mother-in-law, Exorcist, Con Artist, Necromancer helper and Friday revisions postdate that combined snapshot.
 Their targeted checks are linked above; no later complete nine-case gate exists.
 Receipt's current resources are included in screen 05, but its history helper is
 tested by the separate package pair, not that screen's ordinary age-boundary fix.
@@ -72,6 +72,13 @@ selection precision/recall, or disabling implicit invocation.
 - No new superiority chart, price claim or all-skill performance claim is supported.
 
 ## Next work and acceptance discipline
+
+Friday `5f1dc34` routes real writer/transaction/connection evidence before optional
+SQL tools. Its [one-case check](FRIDAY-ROUTING-01.md) skips the unused reference,
+preserves the required gap findings and uses separate committed connections.
+Tokens/time are slightly lower than the preceding skill, but runtime depth differs
+and time remains above the earlier baseline. Five shell calls remain. The current
+compatible-control path is unmeasured; no broad efficiency gain is established.
 
 The [mixed-writer pair](FRIDAY-WRITERS-01.md) demonstrates both local fixtures but
 not an overall efficiency gain. Both models preserve the compatible post-migration
