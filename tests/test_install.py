@@ -40,11 +40,14 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(list(self.dest.rglob('__pycache__')), [])
 
     def test_installed_helper_entrypoints_execute_without_repo_imports(self):
-        installer.install(self.dest, ['necromancer', 'con-artist'])
-        for name, script in [('necromancer', 'trace.py'), ('con-artist', 'audit.py')]:
+        helpers = [('necromancer', 'trace.py'), ('con-artist', 'audit.py'),
+                   ('receipt', 'compare.py'), ('exorcist', 'run_probe.py'),
+                   ('friday', 'sqlite_matrix.py')]
+        installer.install(self.dest, [name for name, _ in helpers])
+        for name, script in helpers:
             with self.subTest(skill=name):
                 result = subprocess.run(
-                    [sys.executable, '-B', str(self.dest / name / 'scripts' / script), '--help'],
+                    [sys.executable, '-I', '-B', str(self.dest / name / 'scripts' / script), '--help'],
                     cwd=self.dest, capture_output=True, text=True, timeout=5)
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertIn('usage:', result.stdout)
@@ -69,6 +72,30 @@ class InstallTests(unittest.TestCase):
         for folder in installed:
             self.assertTrue((folder / "SKILL.md").is_file())
             self.assertTrue((folder / "agents/openai.yaml").is_file())
+            source = installer.ROOT / 'skills' / folder.name
+            expected = {p.relative_to(source) for p in source.rglob('*')
+                        if p.is_file() and '__pycache__' not in p.parts and p.suffix != '.pyc'}
+            actual = {p.relative_to(folder) for p in folder.rglob('*') if p.is_file()}
+            self.assertEqual(actual, expected, folder.name)
+            for relative in expected:
+                with self.subTest(skill=folder.name, resource=relative):
+                    original, copied = source / relative, folder / relative
+                    self.assertEqual(copied.read_bytes(), original.read_bytes())
+                    self.assertEqual(copied.stat().st_mode & 0o777, original.stat().st_mode & 0o777)
+
+    def test_standalone_and_marketplace_deliver_identical_skill_resources(self):
+        builder_spec = importlib.util.spec_from_file_location(
+            'package_builder', installer.ROOT / 'scripts/build.py')
+        builder = importlib.util.module_from_spec(builder_spec)
+        builder_spec.loader.exec_module(builder)
+        installer.install(self.dest, installer.available())
+        plugin = builder.build(Path(self.temp.name) / 'bundle')
+        packaged = plugin / 'skills'
+        installed = {p.relative_to(self.dest): (p.read_bytes(), p.stat().st_mode & 0o777)
+                     for p in self.dest.rglob('*') if p.is_file()}
+        bundled = {p.relative_to(packaged): (p.read_bytes(), p.stat().st_mode & 0o777)
+                   for p in packaged.rglob('*') if p.is_file()}
+        self.assertEqual(installed, bundled)
 
     def test_unknown_name_cannot_escape_destination(self):
         with self.assertRaises(ValueError):
