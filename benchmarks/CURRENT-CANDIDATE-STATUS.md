@@ -19,10 +19,20 @@ They are not necessarily the snapshot used by every linked historical report.
 | Exorcist | `ca2e179`; helper `34aedd4`, reference `ca2e179` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Bounded duplicate-fault detection retained; historical tokens lower/time higher, not causal efficiency improvement |
 | Con Artist | `1f8b8b6`; helper/references `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
-| Friday | `9cae27c`; helper/reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regression verified; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
+| Friday | `9cae27c`; helper `64dd877`, reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regressions verified for checks and migration chunks; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Friday `64dd877` extends the deadline boundary to migration chunks. A controlled
+clock with real SQLite tracing reproduces a CREATE finishing at budget exhaustion:
+the old helper still executes the next INSERT, while the candidate omits it,
+all reader checks and the later phase. The source SQL remains unchanged and the
+matrix reports incomplete/time budget exhausted. All 11 matrix tests pass, plus
+skill/catalog validation and diff checks. The most recent full suite was 178/178
+before this additional regression. This bounds starting subsequent chunks, not
+SQL parsing time or individual statements inside one executescript call; no
+normal-path/model efficiency claim is made.
 
 Friday helper `ea48fde` checks the shared deadline before starting each reader.
 The existing real recursive-query timeout regression now includes a following
