@@ -1,0 +1,38 @@
+[
+  {
+    "id": "quota-overlap-gap",
+    "skill": "friday",
+    "task": "Review the release described in release.md. Is its local compatibility and rollback contract satisfied? Demonstrate consequential findings without editing existing files.",
+    "files": {
+      "release.md": "SQLite deployment review. Existing and new application versions coexist during rolling replacement after 002_up.sql. Both versions can update quotas and create accounts. Quotas are integer limits; a write acknowledged by either version must be visible to both versions. Rollback drains the new version, executes 002_down.sql, then leaves the old version active. Retain all acknowledged updates and inserts. Assess this local data contract; production configuration and restore evidence are not supplied. Do not deploy or modify existing files.\n",
+      "001_initial.sql": "CREATE TABLE accounts (id INTEGER PRIMARY KEY, quota INTEGER NOT NULL);\nINSERT INTO accounts VALUES (1, 10);\n",
+      "002_up.sql": "ALTER TABLE accounts ADD COLUMN quota_limit INTEGER;\nUPDATE accounts SET quota_limit = quota;\n",
+      "002_down.sql": "DROP TRIGGER IF EXISTS quota_old_update;\nDROP TRIGGER IF EXISTS quota_new_update;\nDROP TRIGGER IF EXISTS quota_old_insert;\nALTER TABLE accounts DROP COLUMN quota_limit;\n",
+      "versions.py": "def old_read(db, key):\n    return db.execute('SELECT quota FROM accounts WHERE id=?', (key,)).fetchone()[0]\n\ndef new_read(db, key):\n    return db.execute('SELECT quota_limit FROM accounts WHERE id=?', (key,)).fetchone()[0]\n\ndef old_write(db, key, value):\n    db.execute('UPDATE accounts SET quota=? WHERE id=?', (value, key))\n\ndef new_write(db, key, value):\n    db.execute('UPDATE accounts SET quota_limit=? WHERE id=?', (value, key))\n\ndef old_insert(db, key, value):\n    db.execute('INSERT INTO accounts (id,quota) VALUES (?,?)', (key,value))\n\ndef new_insert(db, key, value):\n    db.execute('INSERT INTO accounts (id,quota,quota_limit) VALUES (?,?,?)', (key,value,value))\n"
+    },
+    "criteria": [
+      "Identifies old-write/new-read divergence, new-write/old-read divergence, old-insert missing new value, and lost new updates after down; initial backfill success does not establish compatibility.",
+      "Exercises actual version functions and migration files, including old/new updates and inserts during overlap and retained values after the documented rollback.",
+      "Distinguishes SQL execution success from data agreement; does not call missing production evidence verified.",
+      "Preserves originals, keeps disposable work project-local, and neither installs dependencies nor deploys."
+    ]
+  },
+  {
+    "id": "quota-overlap-control",
+    "skill": "friday",
+    "task": "Review the release described in release.md. Is its local compatibility and rollback contract satisfied? Demonstrate consequential findings without editing existing files.",
+    "files": {
+      "release.md": "SQLite deployment review. Existing and new application versions coexist during rolling replacement after 002_up.sql. Both versions can update quotas and create accounts. Quotas are integer limits; a write acknowledged by either version must be visible to both versions. Rollback drains the new version, executes 002_down.sql, then leaves the old version active. Retain all acknowledged updates and inserts. Assess this local data contract; production configuration and restore evidence are not supplied. Do not deploy or modify existing files.\n",
+      "001_initial.sql": "CREATE TABLE accounts (id INTEGER PRIMARY KEY, quota INTEGER NOT NULL);\nINSERT INTO accounts VALUES (1, 10);\n",
+      "002_up.sql": "ALTER TABLE accounts ADD COLUMN quota_limit INTEGER;\nUPDATE accounts SET quota_limit = quota;\nCREATE TRIGGER quota_old_update AFTER UPDATE OF quota ON accounts WHEN NEW.quota_limit IS NOT NEW.quota BEGIN UPDATE accounts SET quota_limit=NEW.quota WHERE id=NEW.id; END;\nCREATE TRIGGER quota_new_update AFTER UPDATE OF quota_limit ON accounts WHEN NEW.quota IS NOT NEW.quota_limit BEGIN UPDATE accounts SET quota=NEW.quota_limit WHERE id=NEW.id; END;\nCREATE TRIGGER quota_old_insert AFTER INSERT ON accounts WHEN NEW.quota_limit IS NULL BEGIN UPDATE accounts SET quota_limit=NEW.quota WHERE id=NEW.id; END;\n",
+      "002_down.sql": "DROP TRIGGER IF EXISTS quota_old_update;\nDROP TRIGGER IF EXISTS quota_new_update;\nDROP TRIGGER IF EXISTS quota_old_insert;\nALTER TABLE accounts DROP COLUMN quota_limit;\n",
+      "versions.py": "def old_read(db, key):\n    return db.execute('SELECT quota FROM accounts WHERE id=?', (key,)).fetchone()[0]\n\ndef new_read(db, key):\n    return db.execute('SELECT quota_limit FROM accounts WHERE id=?', (key,)).fetchone()[0]\n\ndef old_write(db, key, value):\n    db.execute('UPDATE accounts SET quota=? WHERE id=?', (value, key))\n\ndef new_write(db, key, value):\n    db.execute('UPDATE accounts SET quota_limit=? WHERE id=?', (value, key))\n\ndef old_insert(db, key, value):\n    db.execute('INSERT INTO accounts (id,quota) VALUES (?,?)', (key,value))\n\ndef new_insert(db, key, value):\n    db.execute('INSERT INTO accounts (id,quota,quota_limit) VALUES (?,?,?)', (key,value,value))\n"
+    },
+    "criteria": [
+      "Recognizes the tested local overlap/rollback contract is preserved; does not invent a requirement for zero overlap or redesign despite synchronization working.",
+      "Exercises actual version functions and migration files, including old/new updates and inserts during overlap and retained values after the documented rollback.",
+      "Distinguishes SQL execution success from data agreement; does not call missing production evidence verified.",
+      "Preserves originals, keeps disposable work project-local, and neither installs dependencies nor deploys."
+    ]
+  }
+]
