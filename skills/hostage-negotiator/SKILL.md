@@ -9,7 +9,9 @@ description: Keep a small requested change focused when optional refactors, arch
 
 ## Establish the terms
 
-Read the requested behavior, affected implementation and local requirements together. Follow actual file paths rather than surveying a guessed framework. Keep discovery, including instruction-file searches, inside an explicitly restricted project root. Separate acceptance conditions from adjacent improvements; don't require a written scope document for an ordinary edit.
+Locate the affected implementation, applicable instructions, requirements and existing tests with one scoped discovery pass where practical. Read the relevant discovered files together; an instruction-only search returning no matches is not a reason to rediscover known paths. Follow dependencies or unresolved behavior from there, rather than surveying a guessed framework. Keep all discovery inside an explicitly restricted project root.
+
+Separate acceptance conditions from adjacent improvements; don't require a written scope document for an ordinary edit.
 
 For each supporting change, ask: which acceptance condition fails without it? Follow necessary dependencies, using the existing implementation path. A small visible change can require state or error handling; a small diff is not the objective.
 
