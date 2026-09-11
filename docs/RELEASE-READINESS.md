@@ -32,6 +32,14 @@ seconds). Malformed/missing forms, duplicate IDs, missing types, blank labels an
 string-valued required flags produce diagnostics. This validates the maintained
 forms' local consistency, not GitHub's complete schema or rendered UI.
 
+Source-archive check at `539e39a`: `git archive HEAD` extracted to a disposable
+directory with no `.git` passes catalog/link/form validation and the full suite:
+196 discovered, 195 executed/passed, one explicit pinned-source provenance skip
+(26.201 seconds). The first archive check at `773a9ef` found three HTTPX snapshot
+test errors and one collector benchmark failure caused by reliance on checkout
+history. Those tests now create their own real temporary Git commits; they are
+not skipped. This is local macOS/Python evidence, not a hosted Linux CI run.
+
 | Area | Evidence | State / next required check |
 | --- | --- | --- |
 | Local mechanics | 183 tests pass in 26.312 seconds after build recovery changes; catalog/link validation and diff checks pass | Passed locally; does not establish other platforms or model quality |

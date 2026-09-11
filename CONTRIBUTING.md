@@ -59,6 +59,10 @@ runs without historical Git objects. A separate generator-equality test skips
 explicitly when the pinned commit is unavailable (for example in a shallow
 checkout). That skip means provenance was not rechecked, not that the regression
 was skipped; use a checkout containing the pinned commit to verify both.
+Snapshot and history-collector mechanics tests create disposable Git repositories
+instead of relying on this checkout's commit history. Git must still be installed.
+The full suite also runs from a source archive, with only the pinned historical
+provenance comparison skipped when those original Git objects are unavailable.
 
 ## Behavioral evaluation is separate
 
