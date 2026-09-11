@@ -13,6 +13,16 @@ and cancellation stalls in author fault checks. Its single model sample costs
 26.1% more tokens and 24.6% more time than screen 05's diagnosis case. This is an
 explicit reliability/cost tradeoff, not completion of the efficiency objective.
 
+An optional Exorcist foreground probe runner now factors out repeatedly generated
+process-deadline plumbing. It reuses existing bounded runners when available and
+is not a sandbox. Eight subprocess-backed tests cover statuses, deadlines after
+closed output, inherited descendant pipes, large Unicode logs, argument handling
+and CLI timeout distinctions; the full suite passes 116 tests. Author application
+to the actual unbounded screen-05 probe returns normally on the original behavior
+and terminates missing dispatch at the configured 0.5-second deadline (0.507 seconds,
+CLI 124, child -9). No model session covers this new helper or routing yet. The
+helper's local termination evidence is not evidence of token/time improvement.
+
 Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRESSION-04.md). All nine task-specific criteria pass; the previous parent-directory search does not recur, but two rejected patches retain attempted-scope uncertainty. Total tokens fall 6.8% and time 8.3% versus screen 03; versus screen 02 tokens fall 1.3% while time rises 4.8%. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
 
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
