@@ -21,6 +21,46 @@ def code_module(source):
 
 
 class FridayHistoryFixtureTests(unittest.TestCase):
+    def test_stateless_pair_reuse_preserves_every_phase_observation(self):
+        fixture = load('friday_history_reuse', 'benchmarks/friday_history_cases.py')
+        case = next(c for c in fixture.cases() if c['id'].endswith('compatible'))
+        versions = {'old': case['history'][0]['files'], 'new': case['files']}
+        producers = {v: code_module(files['producer.py']).enqueue for v, files in versions.items()}
+        workers = {v: code_module(files['worker.py']).consume for v, files in versions.items()}
+        titles = ['x', 'queued before rollout', '  spaces  ', '한글 🚀', 'line\nbreak', 'title', 'name']
+        observations = []
+
+        def enqueue_checks(label, jobs, active_workers):
+            for worker in active_workers:
+                for expected, payload in jobs:
+                    observations.append((label, worker, expected, dict(payload)))
+
+        for producer in producers:
+            enqueue_checks('pair', [(t, producers[producer](t)) for t in titles], workers)
+        states = [('baseline', ['old'], ['old']), ('first worker', ['old'], ['old', 'new']),
+                  ('producer switch', ['old', 'new'], ['old', 'new']),
+                  ('all workers', ['old', 'new'], ['new'])]
+        for label, queued, active in states:
+            jobs = [(t, producers[p](t)) for p in queued for t in titles]
+            enqueue_checks(label, jobs, active)
+            jobs += [(t, producers['old'](t)) for t in titles]
+            for rollback_workers in (active, sorted(set(active + ['old'])), ['old']):
+                enqueue_checks(label + ' rollback', jobs, rollback_workers)
+
+        # This is author-only evidence for these pure fixture functions, not a
+        # general memoizer for stateful writers, queues, migrations or services.
+        cache, full, reused = {}, [], []
+        for label, worker, expected, payload in observations:
+            full.append(workers[worker](dict(payload)))
+            key = (worker, tuple(sorted(payload.items())))
+            if key not in cache:
+                cache[key] = workers[worker](dict(payload))
+            reused.append(cache[key])
+            self.assertEqual(reused[-1], expected, label)
+        self.assertEqual(full, reused)
+        self.assertEqual(len(full), 392)
+        self.assertEqual(len(cache), 28)
+
     def test_identical_current_files_require_different_historical_conclusions(self):
         fixture = load('friday_history', 'benchmarks/friday_history_cases.py')
         runner = load('history_fixture_runner', 'benchmarks/run.py')
