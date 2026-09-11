@@ -1,6 +1,6 @@
 # Current candidate: completion is not established
 
-Snapshot reviewed after `28a0453`. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
+Latest combined snapshot reviewed: `9683528`, in [FAST-REGRESSION-03](FAST-REGRESSION-03.md). All nine task-specific criteria pass, but search QA violates the project boundary; total tokens rise 5.9% and elapsed time 14.3% versus the previous single screen. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
 
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
 | --- | --- | --- | --- |
