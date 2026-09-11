@@ -12,7 +12,8 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 - [Interaction runner reuse candidate](INTERACTION-RUNNER-REUSE-CANDIDATE.md):
   Mother-in-law now prefers an existing sufficient runner deadline over a
-  redundant self-spawning wrapper. This is an unmeasured candidate, not a win.
+  redundant self-spawning wrapper. [One-task screen](INTERACTION-RUNNER-01-REVIEW.md)
+  observes reuse by both arms: −13.21% skill tokens / +22.57% time. Not a broad win.
 
 - [Current nine-task combined gate](BUNDLE-CURRENT-02-REVIEW.md): all 18 sessions
   finished and reviewed; **+10.33% total tokens / +23.08% summed process time**.
