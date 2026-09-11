@@ -35,3 +35,21 @@ browser stability. No model benchmark or skill modification occurred.
 Implementation follows the [Playwright browser launch API](https://playwright.dev/docs/api/class-browsertype#browser-type-launch).
 That API cautions that arbitrary installed browser versions are not guaranteed
 compatible. This report establishes only the versions actually executed above.
+
+## Keyboard-path expansion
+
+The runner subsequently executes four independent contexts: fill/keyboard ×
+unguarded/guarded. Keyboard mode clicks the input, uses `ControlOrMeta+A` to
+select its contents, and presses `o`, then replaces it with `n`, then `r`.
+Those single-character queries stand for old/new/normal requests; the controlled
+response sequence is unchanged. The fixture records keydown events separately
+from submitted input events.
+
+On the same Chrome version, the actual output contains Meta, A and each requested
+character with `trusted: true`; submitted values are exactly o/n/r, also trusted.
+All four contexts produce the expected broken/guarded stale-response difference,
+normal result and preserved focus, with no page errors. Fill mode produces no
+recorded keydown events, which is why its earlier evidence was not a keyboard
+test. The command exits 0 with four observations. No physical keyboard, IME,
+multi-character composition, navigation or error recovery is claimed. The missing
+outer close deadline and original dump-DOM instability remain open.

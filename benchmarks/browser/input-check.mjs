@@ -6,7 +6,7 @@ if (!executablePath) throw new Error('Supply the path to an installed Chrome exe
 const observations = [];
 const browser = await chromium.launch({executablePath, headless: true, timeout: 15000});
 try {
-  for (const guarded of [false, true]) {
+  for (const [driver, guarded] of [['fill', false], ['fill', true], ['keyboard', false], ['keyboard', true]]) {
     const context = await browser.newContext();
     try {
       const page = await context.newPage();
@@ -20,24 +20,36 @@ try {
       await page.goto(url.href);
       const input = page.locator('#query');
       const result = page.locator('#results');
-      await input.fill('old');
-      await input.fill('new');
+      const inputs = driver === 'keyboard' ? ['o', 'n', 'r'] : ['old', 'new', 'normal'];
+      async function enter(value) {
+        if (driver === 'fill') return input.fill(value);
+        await input.click();
+        await input.press('ControlOrMeta+A');
+        await input.press(value);
+      }
+      await enter(inputs[0]);
+      await enter(inputs[1]);
       await page.evaluate(() => window.fixture.complete(1, 'new result'));
       const afterNew = await result.textContent();
       await page.evaluate(() => window.fixture.complete(0, 'old result'));
       const afterOld = await result.textContent();
-      await input.fill('normal');
+      await enter(inputs[2]);
       await page.evaluate(() => window.fixture.complete(2, 'normal result'));
       const normal = await result.textContent();
       const submitted = await page.evaluate(() => window.fixture.submitted());
       const focused = await input.evaluate(element => element === document.activeElement);
-      assert.deepEqual(submitted, ['old', 'new', 'normal'].map(value => ({value, trusted: true})));
+      assert.deepEqual(submitted, inputs.map(value => ({value, trusted: true})));
+      const keys = await page.evaluate(() => window.fixture.keys());
+      if (driver === 'keyboard') {
+        assert.deepEqual(keys.filter(event => inputs.includes(event.key)).map(event => event.key), inputs);
+        assert.ok(keys.every(event => event.trusted));
+      }
       assert.equal(afterNew, 'new result');
       assert.equal(afterOld, guarded ? 'new result' : 'old result');
       assert.equal(normal, 'normal result');
       assert.equal(focused, true);
       assert.deepEqual(errors, []);
-      observations.push({guarded, submitted, afterNew, afterOld, normal, focused});
+      observations.push({driver, guarded, submitted, keys, afterNew, afterOld, normal, focused});
     } finally {
       await context.close();
     }

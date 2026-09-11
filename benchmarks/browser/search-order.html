@@ -12,6 +12,8 @@ const results = document.querySelector('#results');
 const receipt = document.querySelector('#receipt');
 const guarded = new URLSearchParams(location.search).get('guard') !== 'off';
 const pending = [];
+const keys = [];
+query.addEventListener('keydown', event => keys.push({key: event.key, trusted: event.isTrusted}));
 let latest = 0;
 query.addEventListener('input', async (event) => {
   const request = ++latest;
@@ -27,7 +29,8 @@ async function complete(index, text) {
   pending[index].resolve(text);
   await Promise.resolve();
 }
-window.fixture = {complete, submitted: () => pending.map(({value, trusted}) => ({value, trusted}))};
+window.fixture = {complete, keys: () => keys,
+  submitted: () => pending.map(({value, trusted}) => ({value, trusted}))};
 if (!new URLSearchParams(location.search).has('manual')) (async () => {
   query.focus();
   type('old');
