@@ -26,6 +26,12 @@ The five optional helpers do not constitute a claim that every task should use o
 
 ## Latest combined screen
 
+The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
+promoted: four cases / eight fresh sessions use 10.4% more total tokens and 10.6%
+less time than shipped instructions, with unequal state-test depth and a rejected
+patch in each variant. Both simplification controls behave correctly, but shorter
+instructions do not establish an improved tradeoff. Shipped resources are unchanged.
+
 [Screen 06](FAST-REGRESSION-06.md), snapshot `49d7bf8`, includes all current skill
 resources as of that snapshot; Exorcist `4df3eff` now postdates it. Nine task criteria are met, but one rejected patch has an unknown target,
 async cancellation containment remains incomplete, and total cost is 665,624 tokens /
