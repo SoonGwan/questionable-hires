@@ -9,7 +9,7 @@ description: Keep a small requested change focused when optional refactors, arch
 
 ## Establish the terms
 
-Read the requested behavior, affected implementation and local requirements together. Follow actual file paths rather than surveying a guessed framework. Separate acceptance conditions from adjacent improvements; don't require a written scope document for an ordinary edit.
+Read the requested behavior, affected implementation and local requirements together. Follow actual file paths rather than surveying a guessed framework. Keep discovery, including instruction-file searches, inside an explicitly restricted project root. Separate acceptance conditions from adjacent improvements; don't require a written scope document for an ordinary edit.
 
 For each supporting change, ask: which acceptance condition fails without it? Follow necessary dependencies, using the existing implementation path. A small visible change can require state or error handling; a small diff is not the objective.
 
