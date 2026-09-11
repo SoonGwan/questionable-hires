@@ -13,16 +13,26 @@ They are not necessarily the snapshot used by every linked historical report.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `18a2070`; collector/reference `ae99bac` | [Region-first HTTPX](HTTPX-HISTORY-REGION-01.md), [large hunk](NECROMANCER-LARGE-HUNK-01.md), paired 02 | Favorable HTTPX pair has unequal work and baseline repair; combined history task costs more; collector adoption unverified |
-| Receipt | `7056153`; helper `048fb21`, reference `48ec1c3` | [Executed/skip profile transfer](RECEIPT-PROFILE-01.md), [collection](RECEIPT-COLLECTION-01.md) | Suite-evidence reuse adopted, but +35.6% tokens / +37.7% time; both skill sessions have unknown-target rejected patches; no efficiency acceptance |
+| Receipt | `7056153`; helper `048fb21`, reference `48ec1c3` | [Changed paths 03](CHANGED-PATHS-03.md), [executed/skip profile](RECEIPT-PROFILE-01.md) | Suite reuse holds but boundary remains costlier; repeated whitespace computation has lost first-command status; no efficiency acceptance |
 | Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [paired 02](FAST-PAIRED-02.md) | Current diagnosis uses process containment but reads full helper source and costs more; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
 | Con Artist | `1f8b8b6`; helper/references `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
-| Friday | `9cae27c`; helper/reference `e79b208` | [Interior branch](FRIDAY-BRANCH-01.md), [changed state](FRIDAY-STATE-01.md) | Interior coverage correct; compatible skill uses 50 assertions versus 8,035 baseline, yet pair totals +8.0% tokens / +12.6% time; no efficiency acceptance |
+| Friday | `9cae27c`; helper/reference `e79b208` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | Rolling-schema pair uses 13.4% fewer tokens with near-equal time and extra retained-data check; branch transfer still costlier; broad efficiency unproven |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+The [two changed-path regression](CHANGED-PATHS-03.md) preserves correct boundary
+and migration behavior, but combined skill costs +7.9% tokens / +32.4% time.
+Friday's isolated token result improves versus its contemporary baseline; Receipt
+still has repeated final computation and extra preparation despite suite reuse.
+The first grouped whitespace check lacks its own captured status, so retaining
+statuses is a concrete next mechanism rather than simply deleting the later check.
+Neither the favorable Friday cell nor a successful canonical-path patch establishes
+causal improvement or whole-bundle acceptance. No unchanged Con Artist fast-path
+pair was added just to expand the run.
 
 Con Artist's [batch output correction](CON-ARTIST-OUTPUT-01.md) removes repeated
 serialization of the same successful baseline log. Reused checks retain status
