@@ -59,6 +59,33 @@ repairs a SyntaxError and executes deeper instrumentation plus one extra control
 No collector use. Preserve the promising -37.6% token / -28.3% time observation
 without attributing it causally or claiming broad performance acceptance.
 
+## Con Artist: isolation-cost routing candidate
+
+The next entrypoint no longer prefers a helper for every new supported small
+Python audit. A single fault can use a small disposable native experiment,
+including fresh-process in-memory substitution when the real caller resolves it.
+Actual implementation binding, real assertions, test configuration, original
+preservation and each runner's exit status remain required. The optional helper
+is selected for substantial copy/import/process-control machinery or several
+justified faults sharing a baseline; its implementation and references are intact.
+Character, description and automatic invocation remain unchanged.
+
+This changes execution-path selection, not merely instruction length. Motivation:
+[exception transfer](HTTPX-BATCH-TRANSFER-01.md) used fewer helper child processes
+but 90.9% more total tokens than baseline; [progressive disclosure](HTTPX-PROGRESSIVE-01.md)
+still read the full helper source and remained 58.9% above the earlier baseline.
+Those observations are confounded and do not prove native experiments always win;
+the [isolation pair](HTTPX-ISOLATION-01.md) also retains favorable helper evidence.
+Do not remove the helper or impose a universal minimum-command rule.
+
+The changed default is an unmeasured candidate. Its risk is renewed ad-hoc harness
+errors or incorrect substitutions; native in-memory work must not become a fake
+implementation, an unobserved wrong binding, or an excuse to skip test sensitivity.
+The next transfer should compare real runner evidence and cost on an unmeasured
+target, not repeat the ASGI exception case to chase numbers. Existing helper (31),
+installation (9), packaging (1), repository and skill validation checks pass.
+These 41 tests establish compatibility, not model efficiency or adoption.
+
 ## Latest combined screen
 
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
