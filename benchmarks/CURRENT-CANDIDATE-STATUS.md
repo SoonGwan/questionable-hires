@@ -614,6 +614,13 @@ shows gate adoption: removal tokens/time −19.62%/−34.36%, historical explana
 +1.00%/−1.08%, with required evidence retained in both. One sample per condition,
 exposed shared fixture and unequal work do not establish general efficiency.
 
+The [actual packaging review transfer](NECROMANCER-PACKAGING-REVIEW-01.md) does
+not confirm overall savings: candidate versus predecessor is +4.83% tokens /
+−4.88% time; versus no installed skill, +9.31% / +8.25%. All three verify the
+required cleanup behavior. Candidate skips unavailable history but broad package
+search, unequal probes and shared-host variation remain. The earlier favorable
+screen is not evidence of broad superiority.
+
 Historical steps remain in their individual reports, including unfavorable results:
 
 - Receipt: [routing](RECEIPT-ROUTING-01.md), [helper adoption](RECEIPT-HELPER-01.md).
