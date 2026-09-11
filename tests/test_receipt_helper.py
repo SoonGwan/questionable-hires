@@ -6,7 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / 'skills/receipt/scripts/compare.py'
@@ -16,6 +16,27 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_unconfirmed_child_exit_is_bounded_and_not_a_comparison(self):
+        process = Mock(returncode=None)
+        process.wait.side_effect = subprocess.TimeoutExpired('probe', 5)
+        with patch.object(helper.subprocess, 'Popen', return_value=process), \
+                patch.object(helper.selectors, 'DefaultSelector', side_effect=subprocess.TimeoutExpired('probe', 1)), \
+                patch.object(helper.os, 'killpg'), \
+                self.assertRaisesRegex(RuntimeError, 'Child exit unconfirmed'):
+            helper.run_check(sys.executable, self.root, self.recipe, 1)
+        process.wait.assert_called_once_with(timeout=5)
+        process.stdout.close.assert_called_once()
+
+    def test_cleanup_timeout_does_not_replace_user_interruption(self):
+        process = Mock(returncode=None)
+        process.poll.return_value = None
+        process.wait.side_effect = subprocess.TimeoutExpired('probe', 5)
+        with patch.object(helper.subprocess, 'Popen', return_value=process), \
+                patch.object(helper.selectors, 'DefaultSelector', side_effect=KeyboardInterrupt), \
+                patch.object(helper.os, 'killpg'), self.assertRaises(KeyboardInterrupt):
+            helper.run_check(sys.executable, self.root, self.recipe, 1)
+        process.wait.assert_called_once_with(timeout=5)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

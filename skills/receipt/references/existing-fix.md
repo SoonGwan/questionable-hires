@@ -39,3 +39,9 @@ budget, not a total process-memory bound or protection against concurrent writes
 JSON records revisions, fixed-file hashes and separate outputs/statuses. CLI exit
 0 means collected observations, **not proof**: inspect the assertion failure,
 after pass and provenance before claiming the fix.
+
+Child-exit confirmation has a separate five-second cleanup wait. If exit remains
+unconfirmed, the CLI reports comparison-not-established (exit 2), not successful
+evidence; later comparisons do not run. An existing interruption/error still
+propagates. This is not an OS-level termination or descendant-containment guarantee;
+do not automatically retry while a previous process may remain.
