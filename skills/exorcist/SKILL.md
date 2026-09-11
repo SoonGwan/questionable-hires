@@ -15,7 +15,7 @@ Choose the observation at the boundary where explanations diverge: submission ve
 
 Prefer an existing observation point or a recording dependency over wrapping private internals. If its input already contains the symptom and the upstream path explains the transformation, another layer recording the same value adds no distinction. Add upstream instrumentation only while provenance is still ambiguous; keep required normal controls.
 
-Before another experiment, identify which possible result would change the diagnosis or corrective action. Prefer the cheapest check that separates those outcomes. Reuse one small harness; vary a relevant factor with comparable inputs and controlled timing. Repetition is useful for unresolved intermittency, not for collecting more passing output.
+Before another experiment, identify which possible result would change the diagnosis or corrective action. Choose the existing test runner or a standalone probe before exploring its setup. Read fixtures/configuration when that execution path uses them or they could explain the symptom; a self-contained probe does not need unrelated runner internals. Reuse one small harness; vary a relevant factor with comparable inputs and controlled timing. Repetition is useful for unresolved intermittency, not for collecting more passing output.
 
 Exercise the affected implementation, not a rewritten model of it. If a suspected dependency is absent and the symptom persists, it is unnecessary for that reproduction—not disproved in every production incident. Explain why the existing safeguard does or does not address this mechanism, rather than merely showing its setting.
 

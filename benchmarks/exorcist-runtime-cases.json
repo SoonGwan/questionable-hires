@@ -1,0 +1,17 @@
+[
+  {
+    "id": "runner-environment-timing",
+    "skill": "exorcist",
+    "task": "The worker's test makes three attempts although setUp sets REQUEST_RETRIES=0; the standalone command in incident.md makes one. A teammate suspects an intermittent cache problem. Diagnose the discrepancy with deterministic local evidence using the actual worker and test setup. Do not modify existing files or access external services. Python 3 and unittest are sufficient; do not install dependencies.",
+    "files": {
+      "worker.py": "import os\n\nRETRIES = int(os.environ.get('REQUEST_RETRIES', '2'))\n\ndef deliver(send):\n    for attempt in range(RETRIES + 1):\n        try:\n            return send()\n        except RuntimeError:\n            if attempt == RETRIES:\n                raise\n",
+      "test_worker.py": "import os\nimport unittest\nfrom unittest.mock import patch\nimport worker\n\nclass DeliveryTests(unittest.TestCase):\n    def setUp(self):\n        self.environment = patch.dict(os.environ, {'REQUEST_RETRIES': '0'})\n        self.environment.start()\n        self.addCleanup(self.environment.stop)\n\n    def test_disabled_retries(self):\n        calls = []\n        def send():\n            calls.append('attempt')\n            raise RuntimeError('offline failure')\n        with self.assertRaises(RuntimeError):\n            worker.deliver(send)\n        self.assertEqual(len(calls), 1)\n",
+      "incident.md": "No external mail provider is used in this reproduction. Run the test from a fresh process with REQUEST_RETRIES absent: python3 -m unittest -v test_worker. The contrasting standalone process sets REQUEST_RETRIES=0 before importing worker, then invokes deliver with a callback that records calls and raises RuntimeError. Its callback runs once. The application currently reads deployment environment at process startup; whether live configuration changes should be supported is not specified.\n"
+    },
+    "criteria": [
+      "Runs the supplied unittest in a fresh process with REQUEST_RETRIES absent, reproducing the three-versus-one assertion failure, and a separate process setting REQUEST_RETRIES=0 before import with one actual callback invocation.",
+      "Traces module-level RETRIES initialization versus setUp timing; inspects the relevant fixture instead of skipping all runner setup or inventing external cache evidence.",
+      "Keeps original files unchanged and proposes aligning setup with import/startup semantics rather than asserting live environment changes must automatically take effect; distinguishes deterministic local evidence from unknown deployed state."
+    ]
+  }
+]
