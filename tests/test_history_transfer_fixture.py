@@ -15,6 +15,36 @@ def load(name, path):
 
 
 class HistoryTransferFixtureTests(unittest.TestCase):
+    def test_three_decisions_have_distinct_current_contract_effects(self):
+        fixture = load('history_regions', 'benchmarks/history_region_cases.py')
+        runner = load('region_runner', 'benchmarks/run.py')
+        case = fixture.cases()[0]
+        variants = [('', '', 0),
+                    ("record.get('code') or 'unknown'", "record['code']", 1),
+                    ("record.get('display_name') or record['name']", "record['display_name']", 0),
+                    ("    if amount < 0:\n        raise ValueError('negative amount')\n", '', 1)]
+        with tempfile.TemporaryDirectory() as temporary:
+            project = Path(temporary) / 'project'
+            runner.prepare(case, project)
+            for old, new, expected in variants:
+                source = case['files']['summary.py']
+                if old:
+                    self.assertEqual(source.count(old), 1)
+                    source = source.replace(old, new)
+                probe = ('import consumer, unittest\nnamespace = {}\n'
+                         f'exec({source!r}, namespace)\n'
+                         "consumer.summarize = namespace['summarize']\n"
+                         'result = unittest.TextTestRunner().run(unittest.defaultTestLoader.discover("."))\n'
+                         'raise SystemExit(not result.wasSuccessful())\n')
+                result = subprocess.run(['python3', '-B', '-c', probe], cwd=project,
+                                        capture_output=True, text=True, timeout=5)
+                self.assertEqual(result.returncode, expected, result.stderr)
+                self.assertIn('Ran 4 tests', result.stderr)
+            for offset, text in [(3, "record.get('code')"), (2, "record.get('display_name')"), (1, 'if amount < 0')]:
+                shown = runner.command(['git', 'show', f'HEAD~{offset}', '--', 'summary.py'], project)
+                self.assertIn(text, shown)
+            self.assertEqual(runner.command(['git', 'status', '--porcelain'], project), '')
+
     def test_contract_and_contiguous_history(self):
         fixture = load('history_transfer', 'benchmarks/history_transfer_cases.py')
         runner = load('history_runner', 'benchmarks/run.py')
