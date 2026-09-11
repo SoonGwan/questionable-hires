@@ -38,3 +38,33 @@ Metadata has no malformed-event, patch-rejection or empty-output flags. This doe
 not make diagnostics a proof of completeness; decisive commands and displayed
 outputs were also inspected. Remaining cells and all nine pair comparisons still
 require review.
+
+## Receipt and Exorcist reviewed cells
+
+**Boundary fix / skill:** age-18 regression is added before implementation change.
+Captured three-test suite fails exactly that assertion while ages 17/19 pass;
+after `>` becomes `>=`, the unchanged suite passes all three. Final suite, diff
+check and focused diff share a fail-fast command; no redundant standalone after
+probe. Changes stay in the two intended files. Six shell commands, 84,997 total
+tokens, 33.159 seconds. A separate directory listing adds a discovery round;
+no helper/reference is read or required for this current-code fix.
+
+**Search diagnosis / skill:** actual Search and transport functions execute with
+a recording request dependency. Two overlapping requests complete in both orders;
+actual no-cache headers are asserted and printed. Reversed completion visibly
+overwrites the newer result with the older result, while normal completion keeps
+the newer result. Final answer correctly limits the cache conclusion to this
+reproduction. Production files remain byte-identical; only rerunnable
+`experiments/probe.py` is added. Five shell commands, 87,083 total tokens,
+52.768 seconds. No optional helper/reference is loaded.
+
+The probe bounds dispatch signals and task completion with asyncio timeouts,
+but its final cancellation/gather has no explicit deadline and no additional
+process wrapper. The exercised controlled-future fixture does not suppress
+cancellation; do not generalize this to hard termination of arbitrary async code.
+
+Both skill cells' installed resource hashes match frozen `e02c9bb` and their
+before/after inventories agree. Original and redacted events match under intended
+path replacement, with no metadata capture flags or rejected patches. Inspected
+commands remain project-scoped. These are per-cell observations, not yet paired
+cost findings or whole-bundle acceptance.
