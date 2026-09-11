@@ -1,12 +1,52 @@
-# Current bundle 02: review in progress
+# Current bundle 02: efficiency objective not met
 
 [Frozen protocol](BUNDLE-CURRENT-02-PROTOCOL.md), run revision `417bdac`, unchanged
 nine-case fixture SHA-256
 `b2a90b0bec8b3f3d8c288ea540e33d9120072f0ca9b8d00ae4b0ba280c63f6ef`.
 Original evidence: `benchmarks/local-runs/bundle-current-02/`.
-The serial 18-session run is not yet fully reviewed. No overall success or cost
-comparison follows from the partial observations below. No candidate edits,
-restarts, author replay or changed criteria were used.
+All 18 serial sessions completed and their commands, outputs and final changes
+were reviewed. No candidate edits, restarts, exclusions, author replay or changed
+criteria were used. Sections below retain the incremental review history; earlier
+references to pending cells describe that stage, not the final status.
+
+## Final cost accounting
+
+All attempts retained, including scope exceptions, missing before evidence and
+unknown failure output. Tokens are input plus output, with cached input already
+included; reasoning output is not added twice. Times are model-process wall time,
+not author review or summed child time. No timeouts, account stops or missing usage.
+
+| Task | Baseline tokens | Skill tokens | Baseline seconds | Skill seconds |
+| --- | ---: | ---: | ---: | ---: |
+| history-active | 64,047 | 68,396 | 25.832 | 25.635 |
+| boundary-fix | 63,038 | 84,997 | 24.556 | 33.159 |
+| formatter-review | 62,488 | 66,532 | 26.816 | 29.519 |
+| search-order | 80,931 | 68,017 | 45.276 | 59.551 |
+| search-diagnosis | 80,129 | 87,083 | 47.768 | 52.768 |
+| necessary-state | 63,205 | 68,270 | 33.678 | 52.953 |
+| persistence-test | 63,577 | 69,548 | 34.967 | 49.612 |
+| rolling-schema | 63,959 | 87,918 | 30.926 | 39.562 |
+| search-protected | 64,406 | 67,573 | 48.673 | 49.256 |
+| **Sum** | **605,780** | **668,334** | **318.492** | **392.015** |
+
+Skill totals are **10.33% more tokens / 23.09% more time**. These are ratios of
+sums, not the original chart's equal-task mean-ratio statistic. Eight of nine
+skill cells use more tokens and eight take longer. The token-favorable broken
+search cell has missing decisive output; the marginally faster history cell
+omits a frozen criterion. Neither is promoted as an equivalent-work efficiency win.
+
+Baseline omits before-fix verification on boundary-fix and searches outside the
+project during persistence audit. Skill omits the historical commit criterion
+on history-active; broken-search reproduction is execution-evidence unknown.
+Protected-search skill has missing printed outcomes but a zero worker status
+propagated by its inspected assertion-bearing runner. All limits remain explicit
+below rather than collapsed into an unqualified success percentage.
+
+No broad efficiency acceptance follows. This exposed single-repeat gate has
+unequal verification depth and capture limitations; it is not held-out or causal
+evidence. Preserve the adverse result and do not repeat the unchanged gate for
+a better score. Future changes need demonstrated end-to-end work removal and
+independent transfer evidence, not more reliability tests as a proxy for speed.
 
 ## Reviewed baseline cells
 
@@ -218,3 +258,37 @@ empty. Installed resource hashes match frozen `e02c9bb`; before/after inventorie
 and redacted/original events agree. Capture diagnostics have no flags and decisive
 outputs were inspected. No model restart, external operation or scope expansion
 appears. The history criterion failure remains in the eventual all-case accounting.
+
+## Final three cells and integrity closeout
+
+**Rolling schema / baseline:** three shell commands, 30.926 seconds. Executes
+both real reader queries on initial/up/down SQLite states, captures incompatible
+columns and correctly blocks both documented rollout and rollback order. No new
+schema writes are tested, unlike Friday's insert/update witness. No release files
+change or unsupported staging success is claimed.
+
+**History / baseline:** three shell commands, 25.832 seconds. Reads actual commit
+`d5fc972` and its patch introducing the fallback and supported partner caller.
+Runtime output covers name-only, empty, None and populated display-name inputs,
+plus get-only and required-key alternatives. The answer cites the introducing
+commit and retains the active caller; all original files remain unchanged.
+
+**Necessary state / skill:** six shell commands, 52.953 seconds. Adds pending
+state and finally cleanup with duplicate prevention and preserved return/error
+semantics. Three retained unittest tests actually pass: success/duplicate,
+failure/retry and cancellation. They assert successful and exception object
+identity and use bounded dispatch/active-task waits. Cleanup gather and some
+direct immediate calls are not independently deadline-bounded. Only form.py and
+test_form.py change; the requirements file remains unchanged. The final answer's
+UI wording is supported at the documented pending-state boundary, not by browser
+execution. Extra cancellation coverage and retained tests differ from baseline's
+inline probe; no causal efficiency inference follows.
+
+All 18 cells have matching original/redacted events under intended substitutions
+and unchanged installed inventories, whose file hashes match frozen `e02c9bb`.
+Final changes and original source preservation were reviewed per cell above.
+No rejected patches appear. Two skill QA commands have empty output; persistence
+skill has a partial prefix despite no diagnostic flag. These limits are retained.
+The runner exited 0 and recorded finish at 2026-09-11 14:53:52 UTC. No active
+model session remains for this experiment, and no additional model run was made
+to repair its scores or missing evidence.

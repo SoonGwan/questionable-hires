@@ -10,6 +10,12 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Current nine-task combined gate](BUNDLE-CURRENT-02-REVIEW.md): all 18 sessions
+  finished and reviewed; **+10.33% total tokens / +23.09% summed process time**.
+  Missing before evidence, a scope exception, an omitted history criterion and
+  missing QA output remain in accounting. Eight of nine skill cells use more
+  tokens and eight take longer. Current broad efficiency is not accepted.
+
 - [Automatic two-fault audit](PROBE-ADOPTION-01.md): Con Artist selected, helper
   unused; **+24.92% tokens / −5.97% time**. Native harnesses already shared the
   correct stronger-test observation. Unequal work and partial output prefixes
