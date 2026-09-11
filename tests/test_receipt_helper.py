@@ -91,6 +91,39 @@ class ReceiptHelperTests(unittest.TestCase):
             helper.compare(self.root, dict(self.recipe, vary=['rule.py', 'new.txt']))
         execute.assert_not_called()
 
+    def test_batched_tree_rejects_historical_symlink_before_checks(self):
+        alias = self.root / 'historical.py'
+        alias.symlink_to('rule.py')
+        before = self.commit()
+        alias.unlink()
+        alias.write_text('VALUE = 1\n')
+        after = self.commit()
+        recipe = dict(self.recipe, before=before, after=after,
+                      vary=['rule.py', 'historical.py'])
+        status = self.git('status', '--porcelain')
+        with patch.object(helper, 'run_check') as execute, self.assertRaisesRegex(ValueError, 'regular Git file'):
+            helper.compare(self.root, recipe)
+        execute.assert_not_called()
+        self.assertEqual(alias.read_text(), 'VALUE = 1\n')
+        self.assertFalse(alias.is_symlink())
+        self.assertEqual(self.git('status', '--porcelain'), status)
+
+    def test_batched_tree_rejects_historical_directory_before_checks(self):
+        target = self.root / 'historical.py'
+        target.mkdir()
+        child = target / 'inside.txt'
+        child.write_text('historical data')
+        before = self.commit()
+        child.unlink()
+        target.rmdir()
+        target.write_text('VALUE = 2\n')
+        after = self.commit()
+        with patch.object(helper, 'run_check') as execute, self.assertRaisesRegex(ValueError, 'regular Git file'):
+            helper.compare(self.root, dict(self.recipe, before=before, after=after,
+                                           vary=['rule.py', 'historical.py']))
+        execute.assert_not_called()
+        self.assertEqual(target.read_text(), 'VALUE = 2\n')
+
     def test_cli_reports_observations_not_automatic_proof(self):
         process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--spec', '-',
                                   '--source', str(self.root)], input=json.dumps(self.recipe),

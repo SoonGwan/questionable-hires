@@ -47,3 +47,16 @@ to be byte-identical; actual assertion/status/revision checks are compared inste
 The fixed-hash and copied-import assertions were made explicit in the benchmark
 after the tabulated run, without changing fixture or helper. No model performance
 claim follows from this tool-only comparison.
+
+## Historical type and benchmark integrity follow-up
+
+Two additional actual-Git regressions select a currently regular file which was
+previously a symlink or directory, alongside another valid file. Both reject the
+historical non-regular entry before any test child is started and preserve current
+contents. All 13 Receipt-helper tests pass (4.219 seconds); repository validation
+and diff checks pass. The full repository suite was not rerun in this follow-up.
+
+The benchmark's subsequently explicit fixed-hash and copied-import assertions were
+also executed for 1/3/10 files, three repetitions per side, using HEAD as baseline
+so both sides contained the current helper. All assertions pass. This is a benchmark
+integrity check, not an additional optimization comparison or replacement timing.
