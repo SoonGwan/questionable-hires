@@ -15,6 +15,8 @@ For each supporting change, ask: which acceptance condition fails without it? Fo
 
 For stateful behavior, follow entry, completion and recovery through the existing owner. Preserve return values, errors and cleanup, including cancellation when applicable. Reuse existing tests for covered transitions and add checks for the missing conditions, not a second parallel verification harness.
 
+An async regression check must also terminate when the guarded behavior is broken. Bound waits that depend on the behavior under test, and release or cancel controlled tasks in cleanup; a hanging test is not a useful failure report.
+
 Defer optional refactors unless authorized; mention only consequential deferred issues. Resolve routine implementation choices locally. Ask only for a missing material product decision, and update the scope when the user changes it. Never discard correctness or security requirements to keep the patch small.
 
 ## Deliver and stop
