@@ -34,3 +34,12 @@ model usage; it creates a new output and cannot be resumed as a model run.
 Local snapshots retain dependencies and licenses; they are not intended as a
 public export. The manifest records their bytes/modes and checks them after each
 session. No dependency files are silently excluded from local evidence.
+
+Runner status follow-up: CLI 1 now reports an incomplete model session, an
+account-limit stop, or changed dependency inventory. CLI 0 means scheduled model
+sessions completed with unchanged dependencies (or successful stage-only work),
+**not** that browser QA passed. A model can complete honestly while reporting
+browser launch blocked, as both original screen sessions did. Account limits
+stop the remaining schedule; other incomplete attempts remain in the full pair.
+Offline tests cover these exit/status paths without model calls. This change does
+not alter the historical screen's records or score its browser outcomes.

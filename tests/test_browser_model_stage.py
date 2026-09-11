@@ -17,6 +17,30 @@ finally:
 
 
 class BrowserModelStageTests(unittest.TestCase):
+    def test_runner_exit_distinguishes_completion_limit_and_integrity(self):
+        for scenario, expected, count in [('complete', 0, 2), ('incomplete', 1, 2),
+                                          ('limit', 1, 1), ('changed', 1, 2)]:
+            with self.subTest(scenario=scenario), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory) / 'run'
+                def cell(*args, **kwargs):
+                    return dict(completed=scenario != 'incomplete',
+                                limit_detected=scenario == 'limit', elapsed_seconds=1)
+                def inventory(path):
+                    return {'changed': {}} if scenario == 'changed' and 'project' in path.parts else {}
+                with mock.patch.object(sys, 'argv', ['run_browser_model.py', '--output', str(output)]), \
+                        mock.patch.object(runner, 'stage', return_value={}), \
+                        mock.patch.object(runner, 'command', return_value='frozen-revision'), \
+                        mock.patch.object(runner, 'resource_manifest', side_effect=inventory), \
+                        mock.patch.object(runner, 'disabled_skills', return_value=[]), \
+                        mock.patch.object(runner, 'run_cell', side_effect=cell) as model, \
+                        mock.patch('builtins.print'):
+                    self.assertEqual(runner.main(), expected)
+                manifest = json.loads((output / 'run.json').read_text())
+                self.assertEqual(model.call_count, count)
+                self.assertEqual(len(manifest['cells']), count)
+                self.assertEqual('finished_at' in manifest, scenario != 'limit')
+                self.assertEqual(bool(manifest.get('stopped_after_limit')), scenario == 'limit')
+
     def fixture(self, root):
         source = root / 'benchmarks/browser/model-project'
         dependency = root / 'benchmarks/browser/node_modules/playwright-core'

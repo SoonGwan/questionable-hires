@@ -58,7 +58,7 @@ def main():
     save()
     if args.stage_only:
         print('Prepared verified local dependency copy; no model session')
-        return
+        return 0
     disabled = disabled_skills()
     for arm in manifest['order']:
         result = run_cell(dict(id='browser-catalog', skill='mother-in-law', task=TASK),
@@ -73,10 +73,12 @@ def main():
         if result['limit_detected']:
             manifest['stopped_after_limit'] = True
             save()
-            return
+            return 1
     manifest['finished_at'] = datetime.now(timezone.utc).isoformat()
     save()
+    return 0 if all(cell['completed'] and cell['dependency_unchanged']
+                    for cell in manifest['cells']) else 1
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())
