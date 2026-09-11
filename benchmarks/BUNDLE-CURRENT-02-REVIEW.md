@@ -36,7 +36,7 @@ not author review or summed child time. No timeouts, account stops or missing us
 | search-protected | 64,406 | 67,573 | 48.673 | 49.256 |
 | **Sum** | **605,780** | **668,334** | **318.492** | **392.015** |
 
-Skill totals are **10.33% more tokens / 23.09% more time**. These are ratios of
+Skill totals are **10.33% more tokens / 23.08% more time**. These are ratios of
 sums, not the original chart's equal-task mean-ratio statistic. Eight of nine
 skill cells use more tokens and eight take longer. The token-favorable broken
 search cell has missing decisive output; the marginally faster history cell

@@ -95,7 +95,7 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 
 **Latest combined check: the efficiency goal is not met.** The current
 [nine-task gate](benchmarks/BUNDLE-CURRENT-02-REVIEW.md), 18 fresh sessions at
-resource snapshot `e02c9bb`, used **10.33% more total tokens and 23.09% more summed
+resource snapshot `e02c9bb`, used **10.33% more total tokens and 23.08% more summed
 process time** with skills. Eight of nine skill cells used more tokens and eight
 took longer. Some verification was stronger, but missing before evidence, a scope
 exception, an omitted history criterion and missing QA output remain in the
