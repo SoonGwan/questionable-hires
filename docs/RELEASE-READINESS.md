@@ -82,6 +82,17 @@ archive result. Temporary extraction directories were removed after execution.
 
 ## Latest source archive
 
+Python-version follow-up on 2026-09-12 KST: local macOS Python 3.11.16 initially
+failed because PyYAML was absent and one Receipt test matched Python 3.9's exact
+unittest name formatting. The regression now checks an explicit marker emitted
+only after the child asserts its interpreter identity; before/after statuses and
+test counts remain checked. In a new temporary 3.11 virtual environment with the
+declared dependency (PyYAML 6.0.3), validation and all 237 tests pass (35.715 seconds).
+The 23 Receipt tests also pass on Python 3.9.6 (7.235 seconds). The temporary
+environment was removed; no host package installation or model run was performed.
+This is macOS compatibility evidence, not Linux hosted-CI success or a skill
+performance improvement. Historical archive counts below remain snapshot-specific.
+
 Current distribution follow-up: the built Con Artist CLI executes a real two-fault
 batch from an unrelated working directory under isolated Python (`-I`). Removing
 the write and duplicating the write both survive the existing weak test; the same

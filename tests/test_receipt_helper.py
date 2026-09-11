@@ -143,7 +143,8 @@ class ReceiptHelperTests(unittest.TestCase):
         # Exercise the documented stdin recipe, not an in-process default argument.
         assertions = (self.tests + '\n    def test_interpreter(self):\n'
                       '        import sys\n'
-                      f'        self.assertEqual(sys.executable, {sys.executable!r})\n')
+                      f'        self.assertEqual(sys.executable, {sys.executable!r})\n'
+                      '        print("INTERPRETER_OK", sys.executable, flush=True)\n')
         (self.root / 'test_rule.py').write_text(assertions)
         status = self.git('status', '--porcelain')
         result = subprocess.run(
@@ -156,7 +157,7 @@ class ReceiptHelperTests(unittest.TestCase):
         self.assertEqual(observed['checks']['before']['exit_code'], 1)
         self.assertEqual(observed['checks']['after']['exit_code'], 0)
         for check in observed['checks'].values():
-            self.assertIn('test_interpreter (test_rule.Boundary) ... ok', check['output'])
+            self.assertIn('INTERPRETER_OK ' + sys.executable, check['output'])
             self.assertIn('Ran 2 tests', check['output'])
             self.assertIn('Verified copied import: rule', check['output'])
         self.assertIn('AssertionError', observed['checks']['before']['output'])
