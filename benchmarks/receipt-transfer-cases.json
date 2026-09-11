@@ -31,6 +31,36 @@
     ]
   },
   {
+    "id": "receipt-changed-tests",
+    "skill": "receipt",
+    "task": "The minimum-total fix is committed. Verify that it corrects rejection of exactly 5000 cents using the repository evidence. Do not modify existing project files.",
+    "files": {
+      "totals.py": "def accepts_total(cents):\n    return cents >= 5000\n",
+      "test_totals.py": "import unittest\nfrom totals import accepts_total\n\nclass TotalTests(unittest.TestCase):\n    def test_neighbors(self):\n        self.assertFalse(accepts_total(4999))\n        self.assertTrue(accepts_total(5001))\n    def test_minimum(self):\n        self.assertTrue(accepts_total(5000))\n"
+    },
+    "history": [
+      {
+        "message": "Add minimum order validation",
+        "files": {
+          "totals.py": "def accepts_total(cents):\n    return cents > 5000\n",
+          "test_totals.py": "import unittest\nfrom totals import accepts_total\n\nclass TotalTests(unittest.TestCase):\n    def test_neighbors(self):\n        self.assertFalse(accepts_total(4999))\n        self.assertTrue(accepts_total(5001))\n"
+        }
+      },
+      {
+        "message": "Accept exactly the minimum total and cover the boundary",
+        "files": {
+          "totals.py": "def accepts_total(cents):\n    return cents >= 5000\n",
+          "test_totals.py": "import unittest\nfrom totals import accepts_total\n\nclass TotalTests(unittest.TestCase):\n    def test_neighbors(self):\n        self.assertFalse(accepts_total(4999))\n        self.assertTrue(accepts_total(5001))\n    def test_minimum(self):\n        self.assertTrue(accepts_total(5000))\n"
+        }
+      }
+    ],
+    "criteria": [
+      "Executes the same exact-minimum assertion against old and current implementation, failing before for the assertion and passing after.",
+      "Does not substitute passing historical tests for a before reproduction or compare different assertions as equivalent evidence.",
+      "Preserves every original project file and identifies the implementation versions compared."
+    ]
+  },
+  {
     "id": "receipt-unavailable-runtime",
     "skill": "receipt",
     "task": "Check whether this patch fixes the ledger rounding defect. Do not edit project files, install dependencies, fabricate replacement dependencies, or use external services. Tell me what is actually verified.",

@@ -13,7 +13,7 @@ Use one stable assertion on the real affected path, preferably in the existing r
 
 When implementing a fix, observe that assertion fail for the reported reason, change the implementation, then rerun the unchanged assertion. Missing dependencies or compiler errors are not reproduction of the reported defect. Add a neighboring input only when it distinguishes the intended fix from an overbroad one; run other checks required by the project or affected contracts.
 
-If the fix already exists, compare in an isolated copy when needed; never reverse patches in the user's dirty tree. If the old behavior cannot run, mark before evidence unavailable. Verification alone does not authorize production edits or publication.
+If the fix already exists, compare in isolated copies when needed; never reverse patches in the user's dirty tree. Freeze the regression assertion and inputs across both versions, varying the affected implementation—not each revision's historical test suite. If the test cannot run unchanged on the old interface, state that limit rather than calling two different checks before/after proof. Verification alone does not authorize production edits or publication.
 
 Keep each check's exit status identifiable: later printing or Git commands must not mask failure. A mock proves only its exercised boundary, not an unobserved downstream effect.
 
