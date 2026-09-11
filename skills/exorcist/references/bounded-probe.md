@@ -1,7 +1,9 @@
 # Optional deadline for a local probe
 
-Use only when the existing runner lacks a process deadline. Invoke the installed
-helper without reading its implementation unless adaptation is needed:
+Use for an unbounded asynchronous wait or cancellation path that the existing
+runner does not contain. Already bounded child experiments do not need another
+wrapper. Invoke the installed helper without reading its implementation unless
+adaptation is needed:
 
 ```sh
 python3 /path/to/exorcist/scripts/run_probe.py --timeout 10 -- python3 -B experiments/probe.py
