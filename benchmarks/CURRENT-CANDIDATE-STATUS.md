@@ -12,7 +12,7 @@ They are not necessarily the snapshot used by every linked historical report.
 
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
-| Necromancer | `8454059`; collector `e9d2476`, reference `a16e57d` | [Incremental budgeting](NECROMANCER-INCREMENTAL-BUDGET-01.md), [first-load regression](NECROMANCER-FIRST-LOAD-RESULT.md) | Distant-target function gains; contiguous-target complete collector unchanged; no model savings established |
+| Necromancer | `8454059`; collector `6318b91`, reference `a16e57d` | [Header gate](NECROMANCER-HEADER-GATE-01.md), [incremental budgeting](NECROMANCER-INCREMENTAL-BUDGET-01.md) | Header gate lowers complete local collector time about 15.8% with identical JSON; no model savings established |
 | Receipt | `abb4b93`; helper `048fb21`, reference `48ec1c3` | [Independent checks](RECEIPT-INDEPENDENT-01.md), [changed paths 03](CHANGED-PATHS-03.md) | All required checks continue correctly; +6.7% tokens / -13.8% time with stronger red/green evidence, but combined collection is not adopted |
 | Landlord | `c66db8f` | [Check scope](LANDLORD-CHECK-SCOPE-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Appropriate test scope in both arms; +6.2% tokens / +12.9% time with equal shell counts; efficiency unproven |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
