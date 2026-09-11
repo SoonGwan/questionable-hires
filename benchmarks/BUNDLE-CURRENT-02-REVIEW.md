@@ -108,3 +108,32 @@ These three cells' original files match fixtures, installed inventories are
 unchanged and match frozen Git hashes, and original/redacted events agree. No
 new resource edits or model retries are introduced. Full paired accounting and
 remaining trace reviews are still pending.
+
+## Broken-search capture gap and Landlord review
+
+**Broken search / skill:** adds only `test_search_qa.py` with actual Search and
+controlled responses, normal/reversed completion tests, local dispatch/completion
+timeouts and a parent five-second subprocess deadline. Source and requirements
+hashes remain unchanged. Five shell commands, 59.551 seconds.
+
+The only QA invocation returns exit 1 with **empty output in the original events**.
+The final answer claims one passing test and one intended stale-result failure,
+but no captured traceback or per-test outcome establishes that interpretation.
+Exit 1 could also result from a setup or other assertion failure. Retained source
+supports static plausibility, not proof of which failure occurred. Treat the
+claimed behavioral reproduction and normal-control pass as execution-evidence
+unknown, not verified success. No author replay is credited or substituted.
+The empty-output metadata flag is retained; redaction did not cause the omission.
+
+**Formatter / skill:** all three source/contract files remain unchanged. Three
+shell commands identify the single USD caller and no extensibility requirement;
+the answer recommends a plain function while retaining centralized formatting
+policy, the caller interface and the exact formatting expression. It explicitly
+states that no tests ran. Caller content searches exclude installed resources,
+though file discovery lists the two installed skill resources. 29.519 seconds;
+no fabricated runtime claim or observed scope expansion.
+
+Both cells' original files equal frozen fixture bytes, installed resource hashes
+match `e02c9bb` and before/after inventories agree, and redacted events match the
+documented substitutions on originals. The broken-search missing evidence stays
+in task accounting and resource totals; it is not excluded to improve the score.
