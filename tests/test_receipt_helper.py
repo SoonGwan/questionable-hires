@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import io
 import json
 from pathlib import Path
 import subprocess
@@ -16,6 +17,29 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_cleanup_failure_stops_comparison_and_cli_reports_no_evidence(self):
+        failure = RuntimeError('Child exit unconfirmed after 5-second cleanup wait; comparison not established')
+        before = {name: (self.root/name).read_bytes() for name in self.recipe['fixed'] + self.recipe['vary']}
+        with patch.object(helper, 'run_check', side_effect=failure) as check, \
+                self.assertRaisesRegex(RuntimeError, 'Child exit unconfirmed'):
+            helper.compare(self.root, self.recipe)
+        self.assertEqual(check.call_count, 1)  # After implementation was not run.
+        self.assertEqual(list(self.root.glob('.receipt-*')), [])
+        self.assertEqual(before, {name: (self.root/name).read_bytes() for name in before})
+        stdout, stderr = io.StringIO(), io.StringIO()
+        with patch.object(sys, 'argv', ['compare.py', '--source', str(self.root), '--spec', '-']), \
+                patch.object(sys, 'stdin', io.StringIO(json.dumps(self.recipe))), \
+                patch.object(sys, 'stdout', stdout), patch.object(sys, 'stderr', stderr), \
+                patch.object(helper, 'run_check', side_effect=failure) as check, \
+                self.assertRaises(SystemExit) as stopped:
+            helper.main()
+        self.assertEqual(stopped.exception.code, 2)
+        self.assertEqual(check.call_count, 1)
+        self.assertEqual(stdout.getvalue(), '')
+        self.assertIn('Comparison not established: Child exit unconfirmed', stderr.getvalue())
+        self.assertNotIn('Traceback', stderr.getvalue())
+        self.assertEqual(list(self.root.glob('.receipt-*')), [])
+
     def test_unconfirmed_child_exit_is_bounded_and_not_a_comparison(self):
         process = Mock(returncode=None)
         process.wait.side_effect = subprocess.TimeoutExpired('probe', 5)
