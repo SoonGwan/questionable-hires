@@ -22,3 +22,28 @@ All 172 repository tests pass in 22.095 seconds; the 11 Receipt-helper tests pas
 Skill/repository validators and diff checks pass. Character, main instructions and
 optional routing are unchanged. No model run or measured time improvement is claimed
 for this change; the broad eight-skill efficiency objective remains unmet.
+
+## Actual comparison timing follow-up
+
+benchmark_receipt_tree.py creates disposable real Git histories with one, three or
+ten varying configuration files. Both versions construct independent copies and
+execute the actual unittest check: original zero values fail the expected-one list,
+after values pass. Three alternating-order compare calls per version/case; source
+bytes and Git status are preserved. Baseline 048fb21, candidate helper SHA-256
+e61b1326afa3c4fe5002861688b9efdb84b21b20fb471507b9f854b46d274a80.
+
+| Varying files | Old median seconds | New median seconds | Total Git calls old/new |
+| --- | ---: | ---: | ---: |
+| 1 | 0.185994 | 0.183173 | 9 / 9 |
+| 3 | 0.315095 | 0.271481 | 21 / 17 |
+| 10 | 0.780654 | 0.589893 | 63 / 45 |
+
+The three-file case is about 13.8% faster and ten-file case 24.4%; one-file is
+approximately unchanged. Full timing arrays were returned by the script; it can
+be rerun against the trusted local baseline revision. This measures compare()
+including real Git and child tests, not a fresh parent-process startup or model
+session. Failure trace temporary paths and unittest timing strings are not expected
+to be byte-identical; actual assertion/status/revision checks are compared instead.
+The fixed-hash and copied-import assertions were made explicit in the benchmark
+after the tabulated run, without changing fixture or helper. No model performance
+claim follows from this tool-only comparison.
