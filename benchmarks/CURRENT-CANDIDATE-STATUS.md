@@ -24,6 +24,13 @@ They are not necessarily the snapshot used by every linked historical report.
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
 
+Necromancer's subsequent [large-hunk selection](NECROMANCER-LARGE-HUNK-01.md)
+recovers attributed patch lines otherwise lost beyond the output cap. One actual
+Git fixture returns 4,435 rather than 12,000 patch-text characters with the target
+addition present; the distant removed value remains omitted. All 137 local tests
+pass. This is helper evidence selection, not a model-token/time result; model
+adoption and equivalent-quality work reduction remain unverified.
+
 ## Latest combined screen
 
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
