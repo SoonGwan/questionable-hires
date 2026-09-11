@@ -99,10 +99,14 @@ Python; project bytes, including Git files for the history check, stay unchanged
 All eleven build tests pass; no model performance or host-registration claim
 follows from these local package executions.
 
-Source archive rechecked at `eb8a0e2`: `git archive` extraction without `.git`
-passes validation and discovers 216 tests; 214 execute/pass and the two pinned
-Git-provenance comparisons skip explicitly (31.498 seconds). This includes
-current bundled Exorcist/Receipt execution and shipped Landlord evidence checks.
+Source archive rechecked at `05a9fce`: `git archive` extraction without `.git`
+passes validation and discovers 235 tests; 233 execute/pass and the two pinned
+Git-provenance comparisons skip explicitly (35.925 seconds). This includes all
+five bundled helper execution checks, current mutation-probe reuse regressions,
+the executable two-fault example and shipped Landlord evidence checks. The
+documented example CLI also executes separately from the extraction: both weak
+tests miss their faults, both stronger probes capture the intended AssertionError,
+and the second audit references the first correct-code observations.
 The extraction has no ignored local-run logs or installed browser dependencies;
 the optional browser workflow and fresh model evaluations are not part of this
 Python test result. The owned extraction is removed after execution. This updates
