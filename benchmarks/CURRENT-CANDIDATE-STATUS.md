@@ -16,13 +16,19 @@ They are not necessarily the snapshot used by every linked historical report.
 | Receipt | `abb4b93`; helper `048fb21`, reference `48ec1c3` | [Independent checks](RECEIPT-INDEPENDENT-01.md), [changed paths 03](CHANGED-PATHS-03.md) | All required checks continue correctly; +6.7% tokens / -13.8% time with stronger red/green evidence, but combined collection is not adopted |
 | Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
-| Exorcist | `4a2eeb7`; helper `34aedd4`, reference `3ededb6` | [Required provenance](EXORCIST-PROVENANCE-01.md), [direct invocation](EXORCIST-DIRECT-01.md) | Required trace preserved; +69.0% tokens / +20.4% time; unnecessary wrapper and full trace console duplication remain |
+| Exorcist | `ca2e179`; helper `34aedd4`, reference `ca2e179` | [Routing candidate](EXORCIST-ROUTING-CANDIDATE.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Prior candidate costs +69.0% tokens / +20.4% time; explicit containment gate and single detailed-output destination are unmeasured |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
 | Con Artist | `1f8b8b6`; helper/references `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
 | Friday | `9cae27c`; helper/reference `e79b208` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | Rolling-schema pair uses 13.4% fewer tokens with near-equal time and extra retained-data check; branch transfer still costlier; broad efficiency unproven |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Exorcist `ca2e179` now selects extra containment by an identified hang risk, not
+as the default probe command, and separates retained detailed traces from compact
+console observations. Synchronous blocking remains eligible; cancellation safety,
+requested artifacts and necessary provenance remain. The [routing correction](EXORCIST-ROUTING-CANDIDATE.md)
+has passed existing mechanics and structural checks, not fresh model evaluation.
 
 The [required-provenance transfer](EXORCIST-PROVENANCE-01.md) now completes. Both
 arms retain correct source-linked evidence and diagnosis, but skill costs more
