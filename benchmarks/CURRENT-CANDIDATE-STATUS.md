@@ -18,11 +18,18 @@ They are not necessarily the snapshot used by every linked historical report.
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
-| Con Artist | `1f8b8b6`; helper/references `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
+| Con Artist | `1f8b8b6`; helper/common reference `a60723f`, advanced reference `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
 | Friday | `9cae27c`; helper `64dd877`, reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regressions verified for checks and migration chunks; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Con Artist `a60723f` detects changes to selected originals' permission bits as
+well as bytes. A real child probe changing an owned temporary original from 0644
+to 0755 was silently accepted before the fix; afterward it raises an explicit
+original-change error, preserves the detected mode rather than restoring it, and
+removes disposable copies. All 35 helper tests pass (5.090 seconds). This is an
+integrity correction, not a model-token or normal-path speed improvement.
 
 Landlord's [configured-consumer transfer](LANDLORD-CONFIGURED-01.md) follows and
 executes an application provider under examples instead of treating it as inert
