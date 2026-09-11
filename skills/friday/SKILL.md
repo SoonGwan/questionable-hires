@@ -17,7 +17,7 @@ Separate reverting application code from reversing data changes. A down migratio
 
 Locate the first incompatible or irreversible step and last recoverable state. Tie blockers to that transition and the smallest compatible ordering or prerequisite. Local SQL proves SQL behavior, not production readiness; use staging only when authorized.
 
-For repeated SQLite reader checks across migration states, optionally use the [in-memory matrix interface](references/sqlite-matrix.md) instead of rewriting a harness. Read that interface, not the helper source, for ordinary use; inspect implementation when trust, adaptation or troubleshooting requires it. Keep simple checks on the existing runner; don't translate another database's migrations to SQLite.
+Choose the execution path from the contract before opening tool references. If the evidence depends on application writer functions, transaction boundaries or multiple connections, exercise those actual functions and runtime facilities; the SQL reader matrix cannot substitute for them. For repeated SQL-only SQLite reader checks across migration states, the optional [in-memory matrix interface](references/sqlite-matrix.md) avoids rewriting the loop. Read it only for that path; source inspection is for trust, adaptation or troubleshooting. Keep simple checks on the existing runner; don't translate another engine's migrations to SQLite.
 
 ## Deliver and stop
 
