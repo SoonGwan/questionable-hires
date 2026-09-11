@@ -86,6 +86,14 @@ target, not repeat the ASGI exception case to chase numbers. Existing helper (31
 installation (9), packaging (1), repository and skill validation checks pass.
 These 41 tests establish compatibility, not model efficiency or adoption.
 
+The subsequent [real counter audit](HTTPX-COUNTER-01.md) adopts in-memory native
+isolation without reading helper resources, but costs +33.3% tokens / +11.4% time.
+Both arms kill the same fault with the real assertion. Skill first loses module
+future-annotations semantics while extracting a method, then repairs the experiment;
+baseline copies files and runs five tests versus skill's two. This is adverse
+evidence, not routing acceptance. The prepared response-test environment now
+includes upstream-pinned chardet 5.2.0; earlier environment reports are unchanged.
+
 ## Latest combined screen
 
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
