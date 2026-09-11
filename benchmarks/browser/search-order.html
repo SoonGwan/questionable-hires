@@ -1,6 +1,8 @@
 <!doctype html>
 <meta charset="utf-8">
 <title>Local stale-response regression</title>
+<nav><button id="settings">Settings</button><button id="search">Search</button></nav>
+<h1 id="view" tabindex="-1">Search</h1>
 <label for="query">Search</label>
 <input id="query" autocomplete="off">
 <p id="results" aria-live="polite"></p>
@@ -17,6 +19,18 @@ const pending = [];
 const keys = [];
 query.addEventListener('keydown', event => keys.push({key: event.key, trusted: event.isTrusted}));
 let latest = 0;
+function navigate(name) {
+  // Same-document view transition: pending requests survive, ownership does not.
+  ++latest;
+  query.hidden = name !== 'Search';
+  document.querySelector('label').hidden = query.hidden;
+  document.querySelector('#view').textContent = name;
+  results.textContent = name === 'Settings' ? 'Settings panel' : '';
+  errorMessage.textContent = '';
+  (query.hidden ? document.querySelector('#view') : query).focus();
+}
+document.querySelector('#settings').addEventListener('click', () => navigate('Settings'));
+document.querySelector('#search').addEventListener('click', () => navigate('Search'));
 query.addEventListener('input', async (event) => {
   const request = ++latest;
   const value = query.value;

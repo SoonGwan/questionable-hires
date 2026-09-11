@@ -94,3 +94,22 @@ The watchdog is an in-process Node timer, not an independent OS supervisor: a
 blocked event loop can delay it. Force-kill cleanup failure may leave temporary
 files; no fault-injected hung-close test or cross-platform termination guarantee
 is claimed. The older dump-DOM timeout diagnosis is still unresolved.
+
+## Same-document view disposal
+
+The fixture now includes Search/Settings buttons. Leaving Search invalidates
+pending request ownership, hides the search control, clears the old error and
+focuses the Settings heading. Returning restores the search control and focus.
+Promises deliberately continue running: this tests stale UI writes, not transport
+cancellation. The unguarded variant ignores ownership and remains a negative control.
+
+Chrome 152.0.7977.83 completed all four fill/keyboard × guarded/unguarded contexts
+with `complete: true` and exit 0. After leaving with a pending request, late success
+overwrites Settings only without the guard; a separate late failure adds the
+search error only without the guard. Both variants successfully search after
+returning, and heading/input focus assertions pass. Existing request-order and
+error-retry checks remain in the same execution. No uncaught page errors occurred.
+
+This is same-document synthetic view switching, not URL routing, full-document
+navigation, back/forward cache, component destruction or a model-driven QA session.
+The skill itself is unchanged; no token/time or comparative model claim follows.

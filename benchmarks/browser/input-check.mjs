@@ -93,8 +93,35 @@ try {
       assert.equal(recovery.focusedAfterSuccess, true);
       recovery.submitted = await page.evaluate(() => window.fixture.submitted());
       assert.deepEqual(recovery.submitted, [...inputs, inputs[0], inputs[2]].map(value => ({value, trusted: true})));
+      // Same-document route disposal: even the latest request loses ownership
+      // when the user leaves, including late failures, not just stale successes.
+      await enter(inputs[0]);
+      await page.locator('#settings').click();
+      assert.equal(await input.isVisible(), false);
+      await page.evaluate(() => window.fixture.complete(5, 'abandoned search result'));
+      const navigation = {
+        afterLateSuccess: await result.textContent(),
+        heading: await page.locator('#view').textContent(),
+        focusOnHeading: await page.locator('#view').evaluate(element => element === document.activeElement),
+      };
+      assert.equal(navigation.afterLateSuccess, guarded ? 'Settings panel' : 'abandoned search result');
+      assert.equal(navigation.heading, 'Settings');
+      assert.equal(navigation.focusOnHeading, true);
+      await page.locator('#search').click();
+      assert.equal(await input.isVisible(), true);
+      assert.equal(await input.evaluate(element => element === document.activeElement), true);
+      await enter(inputs[2]);
+      await page.evaluate(() => window.fixture.complete(6, 'returned search result'));
+      navigation.afterReturn = await result.textContent();
+      assert.equal(navigation.afterReturn, 'returned search result');
+      await enter(inputs[0]);
+      await page.locator('#settings').click();
+      await page.evaluate(() => window.fixture.fail(7));
+      navigation.afterLateFailure = await page.locator('#error').textContent();
+      assert.equal(navigation.afterLateFailure, guarded ? '' : 'Search failed. Try again.');
+      assert.equal(await result.textContent(), 'Settings panel');
       assert.deepEqual(errors, []);
-      observations.push({driver, guarded, submitted, keys, afterNew, afterOld, normal, focused, recovery});
+      observations.push({driver, guarded, submitted, keys, afterNew, afterOld, normal, focused, recovery, navigation});
     } finally {
       await context.close();
     }
