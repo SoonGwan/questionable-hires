@@ -189,3 +189,32 @@ Both cells have empty skill inventories and matching original/redacted events;
 metadata records no capture flags or rejected patches. Final changes were inspected
 against the frozen requirements. Missing before evidence remains a criterion
 failure, not an inferred observation from the original `>` expression.
+
+## History and schema skill cells
+
+**History / skill:** retains the fallback based on a live caller experiment:
+current partner_label returns Ada; an in-memory no-fallback replacement returns
+None. The answer distinguishes the supported-through-2027 comment from the
+executable dependency. It deliberately does not inspect history, following the
+current removal-decision gate. Four shell commands, 25.635 seconds; originals
+unchanged, no helper/reference read. This supports the removal recommendation,
+but the frozen criterion requiring a relevant historical commit is **not met**.
+Do not change that criterion after observing the candidate's choice. The user
+task asks a removal decision rather than explicitly demanding historical origin;
+that task/criterion tension is a limitation to disclose, not permission to rescore.
+
+**Rolling schema / skill:** reads the matrix interface and invokes its public
+API without reading helper implementation. Actual supplied queries run against
+initial schema, up migration, representative new-schema insert/update, then down
+migration. Output includes the expected missing-column errors and preserved
+changed/new rows after down. Correctly identifies migration-first rollout failure,
+old-binary-first rollback failure, need for compatible coexistence or controlled
+maintenance ordering, and missing staging/runtime/writer evidence. Four shell
+commands, 39.562 seconds; all release files unchanged. Complete matrix execution
+is not reported as rollout safety, and no application writer is fabricated.
+
+For both cells, all original file bytes match frozen fixtures and diffs are
+empty. Installed resource hashes match frozen `e02c9bb`; before/after inventories
+and redacted/original events agree. Capture diagnostics have no flags and decisive
+outputs were inspected. No model restart, external operation or scope expansion
+appears. The history criterion failure remains in the eventual all-case accounting.
