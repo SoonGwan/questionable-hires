@@ -4,6 +4,22 @@ Checked 2026-09-11 against local commit `dd10633` and read-only GitHub API
 responses. This is a release gate, not a claim of perfection or authorization to
 publish. Preserve the eight coworker identities and report adverse evaluations.
 
+Latest full local run at the `fb5b9a0` content snapshot: 215 tests pass in
+31.909 seconds, including the exported Landlord evidence audit. That evidence
+audit also passes in a disposable directory containing no Git history or private
+logs. Model efficiency remains unmet; inspect the current candidate link below.
+
+Latest distribution follow-up adds real bundled Exorcist execution outside the
+checkout under isolated Python (`-I`): success, child exit 124 mapping to CLI 1,
+and a SIGTERM-ignoring child killed on deadline with output retained and direct
+child cleanup confirmed. The unrelated project's sentinel remains unchanged.
+Eight build, fourteen install and two distribution-CLI tests pass separately
+(24 total), along with repository validation. The build tests also execute the
+current Receipt helper on real before/after Git revisions and compare all eight
+shipped resource trees against source bytes/modes. This is disposable local
+distribution evidence, not owner-host registration, descendant containment,
+remote installation or current hosted CI.
+
 Local follow-up at `67a6e35`: 186 tests pass in 26.506 seconds after installer
 rollback improvements and expanded distribution tests. All eight installed skill
 trees match source resource sets, bytes and permission bits; standalone and
@@ -53,7 +69,7 @@ archive result. Temporary extraction directories were removed after execution.
 
 | Area | Evidence | State / next required check |
 | --- | --- | --- |
-| Local mechanics | 203 tests pass in 28.106 seconds at `d09128c`; catalog/link validation and diff checks pass | Passed locally; does not establish other platforms or model quality; archive and host-install evidence above are older snapshots |
+| Local mechanics | 215 tests pass in 31.909 seconds at `fb5b9a0` content; latest 24 targeted distribution tests and catalog/link validation pass | Passed locally; does not establish other platforms or model quality; full archive and host-install evidence above are older snapshots |
 | Build recovery | Actual before-failure / after-pass tests for copy failure, cancellation, retry, original-error identity and existing destinations | Passed; cleanup can itself fail, leaving output |
 | Standalone installation | Installer and rollback tests in the local suite | Current host discovery and other supported runtimes need separate evidence |
 | Plugin installation | [Recorded local cycle](INSTALLATION-TEST.md), CLI 0.153.4, 2026-09-10 UTC | Historical snapshot only; no claim that the latest bundle was installed |
