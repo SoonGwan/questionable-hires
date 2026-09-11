@@ -16,6 +16,19 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_original_permission_changes_are_reported_not_restored(self):
+        original = self.root / 'service.py'
+        original.chmod(0o644)
+        contents = original.read_bytes()
+        recipe = dict(self.recipe, probe=(
+            'from pathlib import Path\n'
+            f'Path({str(original.resolve())!r}).chmod(0o755)\n'))
+        with self.assertRaisesRegex(RuntimeError, 'Selected originals changed.*service.py'):
+            helper.audit(self.root, recipe)
+        self.assertEqual(original.read_bytes(), contents)
+        self.assertEqual(original.stat().st_mode & 0o777, 0o755)
+        self.assertEqual(list(self.root.glob('.con-artist-*')), [])
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

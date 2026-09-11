@@ -197,7 +197,8 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None):
     finally:
         changed = [name for name, content in files.items()
                    if not (root / name).is_file() or (root / name).is_symlink()
-                   or (root / name).read_bytes() != content]
+                   or (root / name).read_bytes() != content
+                   or (root / name).stat().st_mode & 0o777 != modes[name]]
         if changed:
             raise RuntimeError('Selected originals changed during audit; not restored: ' + ', '.join(changed))
 
