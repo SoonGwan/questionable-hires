@@ -29,8 +29,8 @@ clock with real SQLite tracing reproduces a CREATE finishing at budget exhaustio
 the old helper still executes the next INSERT, while the candidate omits it,
 all reader checks and the later phase. The source SQL remains unchanged and the
 matrix reports incomplete/time budget exhausted. All 11 matrix tests pass, plus
-skill/catalog validation and diff checks. The most recent full suite was 178/178
-before this additional regression. This bounds starting subsequent chunks, not
+skill/catalog validation and diff checks. The full suite subsequently passed
+179/179 (23.776 seconds), including this regression. This bounds starting subsequent chunks, not
 SQL parsing time or individual statements inside one executescript call; no
 normal-path/model efficiency claim is made.
 
