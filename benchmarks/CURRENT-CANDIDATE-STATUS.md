@@ -5,7 +5,7 @@ Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRE
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | Instructions `8346bc7`, collector `fa3fab7` | [Collector review](NECROMANCER-TOOL-01.md) plus native-Git active compatibility pass in FAST-REGRESSION-03 | No repeatable collector efficiency advantage; obsolete/public-contract coverage remains limited |
-| Receipt | `4d9b380` | Boundary/existing-fix evidence plus [changed-test history check](RECEIPT-FROZEN-01.md) using frozen assertions | Dirty-tree and old-interface limits unverified; no paired cost evidence for latest change; missing-runtime runner correction not specifically retested |
+| Receipt | `e00c751` | [Mode routing](RECEIPT-ROUTING-01.md): common fix skips history reference; historical comparison freezes current assertions | Two samples use fewer tokens but more aggregate time than prior samples; dirty-tree/old-interface transfer and latest full-team gate remain open |
 | Landlord | `925758f` | [HTTPX follow-up](HTTPX-DESIGN-02.md) preserves contracts/findings without repeated nonexistent-path reads | Lower cost than previous skill, still 3.0% more tokens than earlier baseline; differing test depth and single samples limit conclusions |
 | Mother-in-law | `8312d1f` | [Focused follow-up](MOTHER-FOCUSED-01.md): broken/protected flows distinguished, bounded waits and in-scope discovery observed | Combined cost not improved; rendered browser interactions and recovery unverified |
 | Exorcist | `a060148` | [Conditional setup follow-up](EXORCIST-RUNNER-01.md): skips unused pytest setup but inspects meaningful unittest environment timing | Latest HTTPX cost rises about 20.0% tokens / 51.9% time versus preceding skill, with rejected-patch confound; broad/repeatable efficiency unproven |
@@ -14,6 +14,8 @@ Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRE
 | Friday | Helper `580ac16`, routing `4ac4ffe`; subsequent local byte-budget/temp-storage correction | [Matrix follow-up](FRIDAY-MATRIX-01.md): rollout/rollback and post-up data checks; tested optional SQLite mechanics | Both new samples cost more than baseline; follow-up uses native SQL, not helper; non-rolling plans and representative runtime context unverified |
 
 The historical pre-helper screen [FAST-REGRESSION-02](FAST-REGRESSION-02.md) had essentially unchanged aggregate costs. [FAST-REGRESSION-03](FAST-REGRESSION-03.md) records adverse aggregate costs and a scope violation. [FAST-REGRESSION-04](FAST-REGRESSION-04.md) now covers the subsequent instruction/helper changes together, including the conditional mutation probe and SQLite matrix routes. All skill resources match their frozen snapshot. These single screens have no contemporaneous baseline. The specific Receipt missing-runtime case has not been rerun to isolate its documented-runner correction.
+
+Receipt's later `e00c751` mode-routing revision has two targeted checks only; it is not part of the `d54da1d` combined snapshot above.
 
 ## What the evidence permits
 
