@@ -55,9 +55,24 @@ def run(command, timeout=10, cwd=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--timeout', type=float, default=10)
-    parser.add_argument('command', nargs=argparse.REMAINDER)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog='''Example: run_probe.py --timeout 10 -- python3 -B experiments/probe.py
+
+Use the project's actual command. No shell, dependency installation or copies;
+inherits working directory/environment. Foreground commands only: remaining group
+members are killed even after normal completion. Escaped process groups are not
+contained. Requires Python 3.9+ and POSIX. Reuse existing deadlines when available.
+
+JSON stdout: actual exit_code, timed_out, elapsed_seconds, output (last 12,000
+combined-output characters), output_truncated. No result file is required.
+CLI status: 0 child success; 1 child failure; 124 wrapper timeout; 2 invalid input.
+A child exiting 124 maps to CLI 1. Timeout/truncated evidence is not causal proof.
+Keep assertions and task cleanup in the probe; this supplies a process deadline.''')
+    parser.add_argument('--timeout', type=float, default=10,
+                        help='finite seconds in (0, 300], default 10')
+    parser.add_argument('command', nargs=argparse.REMAINDER,
+                        help='after --, the executable and its arguments')
     args = parser.parse_args()
     command = args.command[1:] if args.command[:1] == ['--'] else args.command
     try:
