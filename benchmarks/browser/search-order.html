@@ -1,0 +1,48 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Local stale-response regression</title>
+<label for="query">Search</label>
+<input id="query" autocomplete="off">
+<p id="results" aria-live="polite"></p>
+<pre id="receipt">RUNNING</pre>
+<script>
+// Synthetic browser fixture, not an application backend or model evaluation.
+const query = document.querySelector('#query');
+const results = document.querySelector('#results');
+const receipt = document.querySelector('#receipt');
+const guarded = new URLSearchParams(location.search).get('guard') !== 'off';
+const pending = [];
+let latest = 0;
+query.addEventListener('input', async () => {
+  const request = ++latest;
+  const value = query.value;
+  const response = await new Promise(resolve => pending.push({value, resolve}));
+  if (!guarded || request === latest) results.textContent = response;
+});
+function type(value) {
+  query.value = value;
+  query.dispatchEvent(new Event('input', {bubbles: true}));
+}
+async function complete(index, text) {
+  pending[index].resolve(text);
+  await Promise.resolve();
+}
+(async () => {
+  query.focus();
+  type('old');
+  type('new');
+  await complete(1, 'new result');
+  const afterNew = results.textContent;
+  await complete(0, 'old result');
+  const afterOld = results.textContent;
+  const focusPreserved = document.activeElement === query;
+  type('normal');
+  await complete(2, 'normal result');
+  const normal = results.textContent;
+  const observed = {guarded, submitted: pending.map(p => p.value), afterNew,
+    afterOld, normal, focusPreserved};
+  observed.passed = afterNew === 'new result' && afterOld === 'new result'
+    && normal === 'normal result' && focusPreserved;
+  receipt.textContent = JSON.stringify(observed);
+})().catch(error => { receipt.textContent = JSON.stringify({error: String(error)}); });
+</script>
