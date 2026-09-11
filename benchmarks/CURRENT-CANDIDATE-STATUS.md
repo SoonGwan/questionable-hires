@@ -137,6 +137,15 @@ unmeasured routing correction, not established work or token savings. A future
 transfer must retain a case requiring historical artifacts; do not rerun the
 exposed rename fixture merely for a favorable cost.
 
+[Necessary-history transfer](FRIDAY-HISTORY-01.md) now verifies that routing on two
+identical-current-file cases with different deployed workers. All four runs use
+actual historical functions and correctly distinguish the incompatibility from
+the working control, without using the SQL helper. Skill sum costs +7.2% tokens /
++8.9% time. The compatible skill run repeats 364 phase/rollback deliveries beyond
+28 pair checks, many with identical state-independent inputs. Reusing established
+pair evidence while retaining state-dependent checks is the next concrete
+opportunity; necessary-history correctness is not performance acceptance.
+
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
 promoted: four cases / eight fresh sessions use 10.4% more total tokens and 10.6%
 less time than shipped instructions, with unequal state-test depth and a rejected
