@@ -1,165 +1,103 @@
-# Current candidate: completion is not established
+# Current candidate: performance objective remains unmet
 
-[Small-edit automatic routing](AUTO-LABEL-01.md) now distinguishes an explicit
-optional-redesign cue from plain label replacement. Auto selects Hostage Negotiator
-only with the cue; no skill-body activation is observed for the plain edit. All
-four cells make identical focused edits, but auto is costlier, and the plain auto
-cell has a rejected-patch confound. This supports contextual routing, not efficiency
-or a reason to disable implicit skill selection.
+Audited against repository snapshot `de1f49b`. The objective is better developer
+outcomes with similar or lower token/time cost across all eight skills, preserving
+the coworker concept. Neither passing fixtures, more safeguards, shorter instructions
+nor a favorable single sample establishes that objective.
 
-Actual installation-path check: [AUTO-AUDIT-01](AUTO-AUDIT-01.md) installs all eight
-without naming a skill; the model selects only Con Artist's entrypoint for a
-mutation audit. Auto costs 6.1% more tokens / 10.0% more time than no-skill baseline,
-with extra import checks and better observed discovery scope. Both original output
-streams are partial and require separately labeled author replay. Automatic
-selection is demonstrated on one positive case, not general efficiency or routing.
+## Current resources and evidence
 
-Latest targeted check: [CONDITIONAL-PATHS-01](CONDITIONAL-PATHS-01.md), two remaining
-paths at `5167077`, totals 137,178 tokens / 104.822 seconds (+1.2% / +25.3% versus
-the same screen-05 cases). Task artifacts behave correctly; Exorcist lacks a
-cancellation-resistant process deadline, while protected-search output requires
-separate author replay. All six installed resources match and remain unchanged.
-This is not a combined gate or broad efficiency win.
+Revisions below are each file group's last modifying commit, verified with Git.
+They are not necessarily the snapshot used by every linked historical report.
 
-Mother-in-law now clarifies cancellation-resistant cleanup after an [author fault
-check](INTERACTION-CLEANUP-01.md) of the retained screen-05 test. The test hangs
-despite a bounded dispatch wait; a process deadline contains it. This instruction
-revision has no new model measurement and adds no cross-skill helper dependency.
-
-Its [model follow-up](INTERACTION-CLEANUP-02.md) now uses a five-second process
-deadline and correctly reports protected search. Author cancellation-resistant
-fault injection terminates as INCOMPLETE. Costs rise 1.5% tokens / 10.3% time versus
-screen 05; the deadline resides in the command, not the retained test file. This
-is a scoped robustness observation, not broad efficiency completion.
-
-The following Mother-in-law revision consolidates overlapping guidance (349 to
-278 whitespace-delimited words including metadata), preserving the discriminating
-sequence/control, observed layer, bounded cleanup and user scope. It adds an exact
-reproduction-command handoff requirement so external deadlines are not lost when
-only a test-file link is delivered. Metadata/link validation passes; no model
-sample yet covers this consolidated candidate. Word reduction is not token savings.
-
-Its [broken-search follow-up](INTERACTION-COMPACT-01.md) now retains a runnable
-parent deadline: 68,328 tokens / 54.530 seconds, -19.0% tokens but +16.7% time versus
-screen 05. Original test-command output is empty despite exit 1; separate author
-replay verifies one normal pass and one meaningful failure, and adversarial replay
-verifies deadline handoff. Do not attribute that replay detail to the original
-model capture or claim a combined efficiency win.
-
-Latest combined snapshot: `c11103c`, [FAST-REGRESSION-05](FAST-REGRESSION-05.md).
-All nine task criteria pass; 628,256 tokens / 337.371 seconds, down 8.1% / 8.8%
-from screen 04 and 9.3% / 4.4% from screen 02. No rejected patches. Most skills
-are unchanged, verification depth varies, and the diagnosis artifact loses its
-local timeout; these are not causal or broad improvement claims. The historical
-snapshot discussion below remains evidence history, not the latest gate.
-
-Subsequent Exorcist revision `8ec7a57` has a [targeted termination check](EXORCIST-BOUNDED-01.md),
-not a combined screen: the model's retained probe now terminates on missing dispatch
-and cancellation stalls in author fault checks. Its single model sample costs
-26.1% more tokens and 24.6% more time than screen 05's diagnosis case. This is an
-explicit reliability/cost tradeoff, not completion of the efficiency objective.
-
-An optional Exorcist foreground probe runner now factors out repeatedly generated
-process-deadline plumbing. It reuses existing bounded runners when available and
-is not a sandbox. Eight subprocess-backed tests cover statuses, deadlines after
-closed output, inherited descendant pipes, large Unicode logs, argument handling
-and CLI timeout distinctions; the full suite passes 116 tests. Author application
-to the actual unbounded screen-05 probe returns normally on the original behavior
-and terminates missing dispatch at the configured 0.5-second deadline (0.507 seconds,
-CLI 124, child -9). No model session covers this new helper or routing yet. The
-helper's local termination evidence is not evidence of token/time improvement.
-Its [first model adoption check](EXORCIST-PROBE-RUNNER-01.md) now records correct
-wrapper usage but full-source reading and an extra result artifact: 89,674 tokens /
-52.353 seconds, 4.2% more tokens and essentially unchanged time versus the preceding
-bounded-instruction sample. No helper efficiency win is established.
-
-The subsequent Exorcist entrypoint exposes the minimal optional runner invocation
-directly and makes a separate result file unnecessary. `--help` now documents
-statuses, output limits and process-group effects without source inspection.
-Detailed reference and inspection remain available; execution semantics are
-unchanged and all eight runner checks pass. This interface revision has no model
-measurement yet; fewer discovery steps are a hypothesis, not a claimed saving.
-
-That interface's [runtime-setup transfer check](EXORCIST-INTERFACE-TRANSFER-01.md)
-now records 116,325 tokens / 90.214 seconds, up 67.4% / 68.3% against the earlier
-same-case sample. The diagnosis is correct, but the model reads full runner source,
-wraps already bounded child experiments, and repairs an initially misplaced runtime
-observation. These costs are retained; direct invocation guidance alone has not
-established cheaper tool selection.
-
-The next Exorcist revision removes the universal direct-runner suggestion and
-routes to its interface only for an uncovered asynchronous wait/cancellation
-path. Already bounded experiment children are explicitly excluded from redundant
-wrapping. Helper behavior and diagnostic evidence requirements are unchanged.
-This is a routing candidate motivated by the adverse transfer trace, not measured
-efficiency recovery; no additional model run has evaluated this revision yet.
-
-Its subsequent [conditional-route check](EXORCIST-CONDITIONAL-01.md) avoids helper
-source/reference reads and redundant wrapping while preserving the setup diagnosis:
-88,482 tokens / 61.371 seconds. This is lower than the latest adverse sample but
-still 27.3% more tokens / 14.5% more time than the earlier setup-routing sample.
-No stable efficiency recovery or new combined gate is established.
-
-Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRESSION-04.md). All nine task-specific criteria pass; the previous parent-directory search does not recur, but two rejected patches retain attempted-scope uncertainty. Total tokens fall 6.8% and time 8.3% versus screen 03; versus screen 02 tokens fall 1.3% while time rises 4.8%. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
-
-| Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
+| Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
-| Necromancer | Instructions `8346bc7`, collector `fa3fab7` | [Collector review](NECROMANCER-TOOL-01.md) plus native-Git active compatibility pass in FAST-REGRESSION-03 | No repeatable collector efficiency advantage; obsolete/public-contract coverage remains limited |
-| Receipt | `e00c751` | [Mode routing](RECEIPT-ROUTING-01.md): common fix skips history reference; historical comparison freezes current assertions | Two samples use fewer tokens but more aggregate time than prior samples; dirty-tree/old-interface transfer and latest full-team gate remain open |
-| Landlord | `925758f` | [HTTPX follow-up](HTTPX-DESIGN-02.md) preserves contracts/findings without repeated nonexistent-path reads | Lower cost than previous skill, still 3.0% more tokens than earlier baseline; differing test depth and single samples limit conclusions |
-| Mother-in-law | `8312d1f` | [Focused follow-up](MOTHER-FOCUSED-01.md): broken/protected flows distinguished, bounded waits and in-scope discovery observed | Combined cost not improved; rendered browser interactions and recovery unverified |
-| Exorcist | `a060148` | [Conditional setup follow-up](EXORCIST-RUNNER-01.md): skips unused pytest setup but inspects meaningful unittest environment timing | Latest HTTPX cost rises about 20.0% tokens / 51.9% time versus preceding skill, with rejected-patch confound; broad/repeatable efficiency unproven |
-| Hostage Negotiator | `4c327a9` | [Transfer](HOSTAGE-TRANSFER-01.md) and [bounded-wait follow-up](HOSTAGE-TRANSFER-02.md): preserved tests, scoped discovery and terminating duplicate-fault regression | Latest tokens lower but time higher; one authored workload does not establish efficiency or broader scope handling |
-| Con Artist | Instructions `a772b0d`, helper/reference `941ea50` | Local bounded-memory checks, real HTTPX compatibility, [routing follow-up](HTTPX-ROUTING-01.md) and [conditional probe mechanics](CON-ARTIST-CONDITIONAL.md) | Conditional scheduling and directory-selection guidance lack model efficiency evidence; prior routing costs more; no broad claim |
-| Friday | Helper `580ac16`, routing `4ac4ffe`; subsequent local byte-budget/temp-storage correction | [Matrix follow-up](FRIDAY-MATRIX-01.md): rollout/rollback and post-up data checks; tested optional SQLite mechanics | Both new samples cost more than baseline; follow-up uses native SQL, not helper; non-rolling plans and representative runtime context unverified |
+| Necromancer | `8346bc7`; collector/reference `fa3fab7` | [Whole-team screen 05](FAST-REGRESSION-05.md), [collector](NECROMANCER-TOOL-01.md) | No repeatable collector efficiency advantage; limited obsolete/public-contract transfer |
+| Receipt | `e00c751`; helper `048fb21`, reference `48ec1c3` | [Package pair](RECEIPT-PACKAGE-01.md), screen 05 | Favorable one-pair costs, unequal verification scope; no broad history/fix efficiency result |
+| Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
+| Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
+| Exorcist | `3ededb6`; helper `34aedd4`, reference `3ededb6` | [Setup control](EXORCIST-CONDITIONAL-01.md), [async path](CONDITIONAL-PATHS-01.md) | Conditional helper selection is mixed; current async artifact lacks hard cancellation containment; efficiency unproven |
+| Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
+| Con Artist | `a772b0d`; helper/reference `941ea50` | [HTTPX transfer](HTTPX-TOOL-TRANSFER-01.md), [conditional probes](CON-ARTIST-CONDITIONAL.md), [auto selection](AUTO-AUDIT-01.md) | Real gaps found, but mixed costs; auto uses inline audit rather than helper |
+| Friday | `4ac4ffe`; helper/reference `e79b208` | [Matrix](FRIDAY-MATRIX-01.md), screen 05 | Correct SQLite compatibility checks, no cost advantage; actual writers/production runtime remain unknown |
 
-The historical pre-helper screen [FAST-REGRESSION-02](FAST-REGRESSION-02.md) had essentially unchanged aggregate costs. [FAST-REGRESSION-03](FAST-REGRESSION-03.md) records adverse aggregate costs and a scope violation. [FAST-REGRESSION-04](FAST-REGRESSION-04.md) now covers the subsequent instruction/helper changes together, including the conditional mutation probe and SQLite matrix routes. All skill resources match their frozen snapshot. These single screens have no contemporaneous baseline. The specific Receipt missing-runtime case has not been rerun to isolate its documented-runner correction.
+UI metadata and character identities remain intact. Automatic selection stays enabled.
+The five optional helpers do not constitute a claim that every task should use one.
 
-Receipt's later `e00c751` mode-routing revision has two targeted checks only; it is not part of the `d54da1d` combined snapshot above.
+## Latest combined screen is not the current full candidate
 
-Receipt now also includes an optional frozen-test Python history comparison helper.
-Seven local behavioral checks cover current dirty assertions, original preservation,
-CLI observations, invalid inputs, missing history, import provenance, timeout cleanup
-and bounded output. This replaces repeatedly authored snapshot plumbing when appropriate;
-Its [first model check](RECEIPT-HELPER-01.md) uses the helper correctly and preserves
-both original files: 86,814 tokens / 32.841 seconds, versus the previous routed
-sample's 68,978 / 65.039. This mixed single-sample result is not a token-efficiency
-win and is outside the combined snapshot above.
+[Screen 05](FAST-REGRESSION-05.md), snapshot `c11103c`: nine task criteria pass,
+628,256 tokens / 337.371 seconds. Compared with screen 04: -8.1% tokens / -8.8%
+time; compared with screen 02: -9.3% / -4.4%. No contemporaneous baseline.
+Most skills were unchanged, execution depth varied, and the diagnosis artifact
+had unbounded waits. Do not interpret those differences as causal improvements.
 
-After that measurement, Receipt's historical reference was reduced from 389 to
-232 whitespace-delimited words by removing entrypoint duplication, retaining
-frozen assertions, comparable dependencies, actual revisions, native-runner fallback
-and helper evidence limits. Its recipe no longer repeats the measured fixture's
-filenames. No model efficiency measurement covers this reference revision yet.
-Two additional local checks exercise package-relative imports with fixed data and
-distinguish incompatible-interface errors from assertion failures; the complete
-local suite passes 107 tests. These are mechanics checks, not unseen model transfer.
+Current Mother-in-law and Exorcist revisions postdate that combined snapshot.
+Their targeted checks are linked above; no later complete nine-case gate exists.
+Receipt's current resources are included in screen 05, but its history helper is
+tested by the separate package pair, not that screen's ordinary age-boundary fix.
 
-The compact reference subsequently received one [package/data development pair](RECEIPT-PACKAGE-01.md):
-Receipt 68,515 tokens / 28.750 seconds versus baseline 80,126 / 31.064, with actual
-old/current execution only in the Receipt arm. Both verify current behavior;
-baseline adds other current-input checks. This favorable single pair has unequal
-verification scope and does not establish a general speedup or isolate compression.
-All seven original files are preserved in both arms. Local suite now passes 108 tests.
+Earlier [screen 02](FAST-REGRESSION-02.md), [03](FAST-REGRESSION-03.md) and
+[04](FAST-REGRESSION-04.md), including adverse costs and scope issues, remain valid
+historical records. They have not been replaced or reclassified.
 
-## What the evidence permits
+## Actual installation path
 
-- [Capture investigation](CAPTURE-DIAGNOSTICS.md) adds per-run evidence diagnostics and a subprocess-backed preservation test. Known missing output is already absent in the CLI stream; rejected-patch root cause remains unknown. These runner checks neither establish a skill speedup nor invalidate adverse costs.
-- [Paired development checks](FAST-PAIRED-01.md) showed higher skill token/time costs before the latest compression. These adverse results remain part of the record.
-- [Con Artist follow-ups](FAST-ITERATION-01.md) include a favorable latest-baseline comparison, but a less favorable earlier-baseline comparison. They are temporally separated single samples.
-- [State-review checks](FAST-STATE-REVIEWS-01.md) show mixed efficiency, not a universal compression benefit.
-- [HTTPX check](HTTPX-COMPRESSED-01.md) demonstrates a real coverage gap and original-file preservation, not a baseline win or complete scope compliance.
-- [Tool-backed HTTPX comparison](HTTPX-TOOL-01.md) and [two further tasks](HTTPX-TOOL-TRANSFER-01.md) show lower observed wall time in all three single pairs, with a token regression on exception propagation and scope/coverage-depth caveats. They do not establish all-skill superiority.
-- Local validation establishes package/fixture mechanics; it does not measure skill quality. No new superiority chart or broad performance claim is warranted.
+[Automatic audit pair](AUTO-AUDIT-01.md): all eight installed, no named skill.
+Only Con Artist's entrypoint is selected; auto costs +6.1% tokens / +10.0% time.
+It performs extra import checks; baseline searches outside its project boundary.
+Both captures are partial, with separately labeled author replay.
 
-## Resumed direction: preserve the concept, own workload selection
+[Small-edit controls](AUTO-LABEL-01.md): with an optional-redesign cue, auto chooses
+Hostage Negotiator; without the cue, no skill body is read. All four edits are
+equally focused. Auto remains costlier; the plain-auto cell has a rejected-patch
+confound. These observations support contextual routing, not general efficiency,
+selection precision/recall, or disabling implicit invocation.
 
-The user resumed the objective and explicitly asked the agent to improve performance while preserving the concept. Representative-workload selection is no longer treated as a prerequisite for progress: start with the already scoped Python audits and pinned HTTPX repository, clearly label their coverage limits, and do not imply they represent all eight skills. Keep all character names, taglines and visual identity. The first structural change is an optional tested audit helper, not another mandatory checklist or a new character.
+## Interpretation and integrity
 
-## Workload and acceptance discipline
+- Current local suite: 119 tests pass after the complete-resource snapshot correction.
+  These validate mechanics, not model performance.
+- [Capture diagnostics](CAPTURE-DIAGNOSTICS.md) records stream flags and installed
+  resource identities. A clean flag does not prove complete output. Hash equality
+  does not prove which files were read or detect restored transient changes.
+- Author replay is separate evidence. Missing original output is not reconstructed
+  from the final answer, an expected outcome or a later successful run.
+- Rejected patch targets remain uncertain where the capture does not identify them.
+  A successful final diff does not establish every attempted action stayed in scope.
+- Tokens include cached input plus output. Different test depth, invocation paths,
+  patch failures and run order confound single-sample comparisons.
+- No new superiority chart, price claim or all-skill performance claim is supported.
 
-The current small fixtures expose correctness branches but do not establish which real development workload should drive optimization. Continuing to tune solely on their repeated outputs risks overfitting and spending more than the skills could save.
+## Next work and acceptance discipline
 
-Use representative in-scope repository work before expanding task content. Keep the development set below ten tasks, freeze acceptance criteria and resource priorities before model execution, and retain successful, adverse and incomplete outcomes. Do not replace easy or unfavorable tasks solely to improve a score. Distinguish the fixed regression screen from new workload evidence.
+Recent micro-edits and helper-routing changes have not produced stable efficiency
+gains. Do not keep cycling the same exposed tasks for a favorable result. Use the
+existing fixed nine-case set for regression, not as an optimization target; keep
+new development batches below ten tasks and freeze criteria before execution.
 
-No numerical definition of "huge improvement" has been agreed. A target must name the relevant workload and outcome/cost tradeoff; the existing request rules out selling higher token cost as improvement without justification. Until those choices and stronger evidence exist, this is an experimental candidate collection, not a completed performance-upgrade claim.
+The next substantive candidate should remove demonstrated developer work on a
+representative repository task, not merely shorten text or add another safety rule.
+Use the already scoped local repositories and actual installation path; workload
+selection is not a prerequisite to ask the user to solve. Preserve correctness,
+scope, original evidence and the character concept. Compare against a contemporary
+baseline at equivalent requested outcomes, retaining failures and extra work.
+
+A separate confirmation set and current combined gate are still needed before
+accepting broad gains. No numerical definition of “huge” is agreed; no evidence
+currently supports completion under the user's qualitative standard. Do not
+substitute reliability-only improvements or a smaller easy task for that objective.
+
+## Retained targeted history
+
+Historical steps remain in their individual reports, including unfavorable results:
+
+- Receipt: [routing](RECEIPT-ROUTING-01.md), [helper adoption](RECEIPT-HELPER-01.md).
+- Exorcist: [original setup routing](EXORCIST-RUNNER-01.md),
+  [bounded instruction](EXORCIST-BOUNDED-01.md),
+  [helper adoption](EXORCIST-PROBE-RUNNER-01.md),
+  [adverse interface transfer](EXORCIST-INTERFACE-TRANSFER-01.md).
+- Interaction QA: [cleanup fault](INTERACTION-CLEANUP-01.md),
+  [initial bounded follow-up](INTERACTION-CLEANUP-02.md).
+- Earlier cross-skill evidence: [paired development](FAST-PAIRED-01.md),
+  [state reviews](FAST-STATE-REVIEWS-01.md), [HTTPX tool pair](HTTPX-TOOL-01.md).
