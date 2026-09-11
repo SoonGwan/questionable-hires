@@ -54,6 +54,12 @@ new-hire issue forms: required text, body structure, unique input IDs, labels an
 boolean validation flags. This is not a full GitHub schema validator or a hosted
 form-rendering test.
 
+The real packaging regression uses its checked-in source snapshot, so it also
+runs without historical Git objects. A separate generator-equality test skips
+explicitly when the pinned commit is unavailable (for example in a shallow
+checkout). That skip means provenance was not rechecked, not that the regression
+was skipped; use a checkout containing the pinned commit to verify both.
+
 ## Behavioral evaluation is separate
 
 Commands in `benchmarks/run.py` launch authenticated model sessions and consume

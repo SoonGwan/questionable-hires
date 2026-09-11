@@ -21,3 +21,9 @@ execution. Inspect actual model tests, cleanup ownership, original exception,
 successful bundle compatibility and scope before judging efficiency. Include all
 input+output tokens (cached input once), wall time, unequal work and capture gaps.
 One exposed development transfer is not a whole-bundle or causal result.
+
+Maintenance note: the archived regression is now executed directly from the
+checked-in case JSON. A separate test compares it with the pinned generator when
+history is available; missing history explicitly skips only that comparison.
+A disposable archive with no Git history verifies that the actual defect test
+still runs. This does not change the frozen model task or original results.
