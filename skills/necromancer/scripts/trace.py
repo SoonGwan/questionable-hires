@@ -69,6 +69,7 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
     if 'diff --git ' in body or '@@@' in body:
         return None
     rows, selected, covered = {}, [], set()
+    targets = set(line_numbers)
     recent = deque(maxlen=3)
     row_count = 0
 
@@ -98,7 +99,7 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
         if old is None or not line or line[0] not in ' +-':
             return None
         has_old, has_new = line[0] != '+', line[0] != '-'
-        wanted = has_new and new in line_numbers
+        wanted = has_new and new in targets
         if wanted:
             covered.add(new)
         remember((old if has_old else '-', new if has_new else '-', line), wanted)
@@ -108,7 +109,7 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
         new_left -= has_new
         if old_left < 0 or new_left < 0:
             return None
-    if old_left != 0 or new_left != 0 or not selected or covered != set(line_numbers):
+    if old_left != 0 or new_left != 0 or not selected or covered != targets:
         return None
     # Target rows first: distant context cannot consume the target's allowance.
     indices = set(selected)
@@ -128,7 +129,7 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
     for distance in range(1, 4):
         for target in selected:
             for index in (target - distance, target + distance):
-                if index in rows:
+                if index in rows and index not in indices:
                     trial = indices | {index}
                     if len(render(trial)) <= budget:
                         indices = trial

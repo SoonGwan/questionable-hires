@@ -14,6 +14,18 @@ spec.loader.exec_module(helper)
 
 
 class HistoryHelperTests(unittest.TestCase):
+    def test_excerpt_overlapping_windows_and_duplicate_targets(self):
+        text = ('diff --git a/a.py b/a.py\n--- a/a.py\n+++ b/a.py\n'
+                '@@ -1,150 +1,150 @@\n' +
+                ''.join(f' row_{i}\n' for i in range(1, 151)))
+        targets = list(range(20, 120))
+        excerpt = helper.selected_patch_excerpt(text, 'a.py', targets)
+        self.assertEqual(excerpt, helper.selected_patch_excerpt(
+            text, 'a.py', list(reversed(targets)) + targets[:10]))
+        numbered = [line for line in excerpt.splitlines() if line.startswith('old:')]
+        self.assertEqual(numbered, [f'old:{i} new:{i}  row_{i}' for i in range(17, 123)])
+        self.assertIsNone(helper.selected_patch_excerpt(text, 'a.py', targets, budget=100))
+
     def test_excerpt_keeps_distant_windows_and_validates_unselected_tail(self):
         text = ('diff --git a/a.py b/a.py\n--- a/a.py\n+++ b/a.py\n'
                 '@@ -1,20000 +1,20000 @@\n' +
