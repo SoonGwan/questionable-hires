@@ -35,6 +35,13 @@ Two additional local checks exercise package-relative imports with fixed data an
 distinguish incompatible-interface errors from assertion failures; the complete
 local suite passes 107 tests. These are mechanics checks, not unseen model transfer.
 
+The compact reference subsequently received one [package/data development pair](RECEIPT-PACKAGE-01.md):
+Receipt 68,515 tokens / 28.750 seconds versus baseline 80,126 / 31.064, with actual
+old/current execution only in the Receipt arm. Both verify current behavior;
+baseline adds other current-input checks. This favorable single pair has unequal
+verification scope and does not establish a general speedup or isolate compression.
+All seven original files are preserved in both arms. Local suite now passes 108 tests.
+
 ## What the evidence permits
 
 - [Capture investigation](CAPTURE-DIAGNOSTICS.md) adds per-run evidence diagnostics and a subprocess-backed preservation test. Known missing output is already absent in the CLI stream; rejected-patch root cause remains unknown. These runner checks neither establish a skill speedup nor invalidate adverse costs.
