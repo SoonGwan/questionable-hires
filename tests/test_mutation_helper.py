@@ -53,6 +53,32 @@ class MutationHelperTests(unittest.TestCase):
         self.assertEqual(set(result['checks']), {'correct_tests', 'mutant_tests'})
         self.assertEqual(result['checks']['mutant_tests']['exit_code'], 1)
 
+    def test_probe_can_run_generated_test_with_real_runner_exit(self):
+        test_source = (
+            'import unittest\nfrom service import save\n'
+            'class Effect(unittest.TestCase):\n'
+            '    def setUp(self):\n        self.store = ["kept"]\n'
+            '    def test_effect(self):\n'
+            '        save(self.store, "item")\n'
+            '        self.assertEqual(self.store, ["kept", "item"])\n')
+        probe = (
+            'import pathlib, sys, unittest\n'
+            'assert __name__ == "__main__"\n'
+            'assert "service" in sys.modules\n'
+            'p = pathlib.Path("test_effect.py")\n'
+            'assert not p.exists()\n'
+            f'p.write_text({test_source!r})\n'
+            'unittest.main(module="test_effect", argv=["test_effect"])\n')
+        result = self.run_audit(dict(self.recipe, probe=probe))
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual(result['checks']['correct_probe']['exit_code'], 0)
+        self.assertEqual(result['checks']['mutant_probe']['exit_code'], 1)
+        self.assertIn('AssertionError', result['checks']['mutant_probe']['output'])
+        self.assertFalse((self.root / 'test_effect.py').exists())
+        for check in result['checks'].values():
+            self.assertEqual(set(check), {'exit_code', 'timed_out', 'output', 'output_truncated'})
+            self.assertFalse(check['timed_out'])
+
     def test_conditional_probe_skips_two_processes_when_tests_detect_fault(self):
         p = self.root / 'test_service.py'
         p.write_text(p.read_text().replace('self.assertTrue(save([], "item"))',
