@@ -48,7 +48,7 @@ not skipped. This is local macOS/Python evidence, not a hosted Linux CI run.
 | Plugin installation | [Recorded local cycle](INSTALLATION-TEST.md), CLI 0.153.4, 2026-09-10 UTC | Historical snapshot only; no claim that the latest bundle was installed |
 | Model efficiency | [Current candidate evidence](../benchmarks/CURRENT-CANDIDATE-STATUS.md) | Unmet across all eight skills; a favorable packaging pair is not sufficient |
 | Automatic selection | [Original evaluation](../benchmarks/REPORT.md) | Broader unrelated prompts and current-resource selection remain to be checked |
-| Browser interaction | Roadmap requires rendered interaction flows | Missing release-level evidence |
+| Browser interaction | [Local rendered search-order check](../benchmarks/BROWSER-SEARCH-01.md) distinguishes broken/guarded DOM behavior and preserves normal results/focus | Partial: script-dispatched input only; intermittent Chrome timeout unresolved; actual browser input, navigation/recovery and model QA evidence still missing |
 | Hosted CI | Latest retrieved run is [34503302864](https://github.com/SoonGwan/questionable-hires/actions/runs/34503302864), source `e441eb7`, created 2026-09-10 16:38:06 UTC | Failed before steps started; not a test failure and not a check of local `dd10633` |
 | Remote distribution | No verified remote Git marketplace install | Do not advertise as tested |
 | Publication | GitHub API reports `isPrivate: true` | Owner approval required for visibility change and release publication |

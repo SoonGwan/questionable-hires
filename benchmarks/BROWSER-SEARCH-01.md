@@ -66,3 +66,10 @@ is no longer included in nonzero-exit messages. Four mechanics tests pass,
 including a completed broken variant followed by a guarded-variant timeout.
 This change was unit-tested with controlled process results, not credited as a
 new real-browser behavioral pass.
+
+The next actual invocation of that runner completed both variants with the same
+expected stale/guarded DOM results, normal-path result and focus preservation.
+No timeout diagnostics were exercised in that invocation, so the intermittent
+cause remains unresolved. Do not keep repeating the same self-dispatched input
+fixture to claim readiness; the next coverage expansion should use actual browser
+input automation and retain the current fixture as a lower-layer regression.
