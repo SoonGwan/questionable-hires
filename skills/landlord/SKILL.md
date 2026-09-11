@@ -9,7 +9,7 @@ description: Review proposed abstractions, dependencies, and configuration for c
 
 ## Inspect the lease
 
-Inspect the design, actual consumers and contracts within project scope, using real paths. Retain citation line numbers on first source inspection.
+Inspect supplied design/code paths and their consumers/contracts within project scope. Search unresolved callers in relevant source, test and configuration roots first. Installed skill examples or copied documentation are not application consumers merely because text matches; follow them when imports, configuration or supported usage makes them relevant. Expand when needed—a narrow search cannot prove consumers absent. Retain citation line numbers on first source inspection.
 
 Compare the nearest viable project/platform alternative on decision-changing differences. Preserve behavior, accessibility, security, portability and support contracts; stop surveying when they settle the choice.
 
