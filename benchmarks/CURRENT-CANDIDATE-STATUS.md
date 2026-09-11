@@ -1,6 +1,6 @@
 # Current candidate: performance objective remains unmet
 
-Resource table includes the subsequent Necromancer repository-query optimization. The objective is better developer
+Resource table updated through `c84379c`. The objective is better developer
 outcomes with similar or lower token/time cost across all eight skills, preserving
 the coworker concept. Neither passing fixtures, more safeguards, shorter instructions
 nor a favorable single sample establishes that objective.
@@ -12,7 +12,7 @@ They are not necessarily the snapshot used by every linked historical report.
 
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
-| Necromancer | `8346bc7`; collector combines repository identity queries; reference `fa3fab7` | [Whole-team screen 05](FAST-REGRESSION-05.md), [collector](NECROMANCER-TOOL-01.md), local check below | One fewer Git process with equal HTTPX evidence; model efficiency and obsolete/public-contract transfer remain unproven |
+| Necromancer | `8346bc7`; collector/reference `c84379c` | [Focused patches](NECROMANCER-FOCUSED-PATCH-01.md), [whole-team screen 05](FAST-REGRESSION-05.md), local query check below | Local fixture exposes relevant patch with smaller output; omitted-context tradeoff and model efficiency unverified |
 | Receipt | `e00c751`; helper `048fb21`, reference `48ec1c3` | [Package pair](RECEIPT-PACKAGE-01.md), screen 05 | Favorable one-pair costs, unequal verification scope; no broad history/fix efficiency result |
 | Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
@@ -56,8 +56,8 @@ selection precision/recall, or disabling implicit invocation.
 
 ## Interpretation and integrity
 
-- Current local suite: 128 tests pass including the repository-query optimization via
-  `python3 -B -m unittest discover -s tests` (11.902 seconds).
+- Current local suite: 131 tests pass including focused-patch collection via
+  `python3 -B -m unittest discover -s tests` (12.401 seconds).
   `python3 -B scripts/validate.py` also passes for all eight skills, UI metadata,
   plugin references and local links. These validate mechanics, not model performance.
 - [Capture diagnostics](CAPTURE-DIAGNOSTICS.md) records stream flags and installed
@@ -72,6 +72,12 @@ selection precision/recall, or disabling implicit invocation.
 - No new superiority chart, price claim or all-skill performance claim is supported.
 
 ## Next work and acceptance discipline
+
+Necromancer's later [focused-patch candidate](NECROMANCER-FOCUSED-PATCH-01.md)
+retains attributed hunks before the output cap and reports omitted hunks. In a
+synthetic separated-hunk regression, 332 characters expose evidence missing from
+the previous 12,000-character prefix. This intentionally omits surrounding context;
+single large hunks can still truncate. No model efficiency is established.
 
 Necromancer now requests worktree root and shallow status in a single read-only
 Git invocation. Author comparison of old/new collectors on local HTTPX
