@@ -17,12 +17,25 @@ They are not necessarily the snapshot used by every linked historical report.
 | Landlord | `c66db8f` | [Check scope](LANDLORD-CHECK-SCOPE-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Appropriate test scope in both arms; +6.2% tokens / +12.9% time with equal shell counts; efficiency unproven |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `ca2e179`; helper `34aedd4`, reference `ca2e179` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
-| Hostage Negotiator | `91c33c8` | [Current bundle](BUNDLE-CURRENT-01-REVIEW.md), [bounded transfer](HOSTAGE-TRANSFER-02.md) | Post-run scoped discovery consolidation unmeasured; frozen state pair has higher costs and fragmented discovery |
+| Hostage Negotiator | `1afcc46` | [Discovery regression](HOSTAGE-DISCOVERY-01.md), [current bundle](BUNDLE-CURRENT-01-REVIEW.md) | Discovery candidate costs +31.3% tokens / +4.7% time; dependency-aware replacement unmeasured |
 | Con Artist | `1f8b8b6`; helper/references `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
 | Friday | `9cae27c`; helper/reference `e79b208` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | Rolling-schema pair uses 13.4% fewer tokens with near-equal time and extra retained-data check; branch transfer still costlier; broad efficiency unproven |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Hostage's [discovery regression](HOSTAGE-DISCOVERY-01.md) is complete and does not
+show the intended savings. Both arms separate requirements from implementation/test
+reads; skill also guesses an unavailable test command in the same call that first
+reads the documented invocation. Its bounded generated tests do terminate for the
+removed duplicate guard in a separate author fault check, unlike baseline's timeout.
+Candidate `1afcc46` therefore replaces the one-pass wording with dependency-aware
+batching: combine independent reads, consume their results before choosing dependent
+commands. This is not a Python-specific command mandate, permission to skip tests,
+or a claim that the previous wording caused the mistake. Character, routing, scope
+and async safeguards remain unchanged. Skill/repository validators and diff checks
+pass; no fresh model result or additional full mechanics test run is claimed for
+this instruction-only replacement.
 
 The [current nine-case bundle regression](BUNDLE-CURRENT-01-REVIEW.md) has finished
 all 18 sessions without retries: skill totals are 648,318 tokens / 378.550 seconds
