@@ -1,5 +1,12 @@
 # Current candidate: completion is not established
 
+Actual installation-path check: [AUTO-AUDIT-01](AUTO-AUDIT-01.md) installs all eight
+without naming a skill; the model selects only Con Artist's entrypoint for a
+mutation audit. Auto costs 6.1% more tokens / 10.0% more time than no-skill baseline,
+with extra import checks and better observed discovery scope. Both original output
+streams are partial and require separately labeled author replay. Automatic
+selection is demonstrated on one positive case, not general efficiency or routing.
+
 Latest targeted check: [CONDITIONAL-PATHS-01](CONDITIONAL-PATHS-01.md), two remaining
 paths at `5167077`, totals 137,178 tokens / 104.822 seconds (+1.2% / +25.3% versus
 the same screen-05 cases). Task artifacts behave correctly; Exorcist lacks a
