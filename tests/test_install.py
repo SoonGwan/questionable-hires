@@ -2,6 +2,8 @@ import importlib.util
 from pathlib import Path
 import tempfile
 import unittest
+import subprocess
+import sys
 from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location("installer", Path(__file__).resolve().parents[1] / "scripts/install.py")
@@ -19,9 +21,33 @@ class InstallTests(unittest.TestCase):
         installer.install(self.dest, ["necromancer"])
         source = installer.ROOT / "skills/necromancer"
         for file in source.rglob("*"):
-            if file.is_file():
+            if file.is_file() and '__pycache__' not in file.parts and file.suffix != '.pyc':
                 self.assertEqual(file.read_bytes(), (self.dest / "necromancer" / file.relative_to(source)).read_bytes())
         self.assertEqual([p.name for p in self.dest.iterdir()], ["necromancer"])
+
+    def test_development_bytecode_is_not_installed(self):
+        root = Path(self.temp.name) / 'fixture-repo'
+        skill = root / 'skills/fixture'
+        (skill / 'scripts/__pycache__').mkdir(parents=True)
+        (skill / 'SKILL.md').write_text('fixture')
+        (skill / 'scripts/tool.py').write_text('print("source")')
+        (skill / 'scripts/tool.pyc').write_bytes(b'compiled')
+        (skill / 'scripts/__pycache__/tool.cpython-39.pyc').write_bytes(b'compiled')
+        with patch.object(installer, 'ROOT', root):
+            installer.install(self.dest, ['fixture'])
+        self.assertTrue((self.dest / 'fixture/scripts/tool.py').is_file())
+        self.assertEqual(list(self.dest.rglob('*.pyc')), [])
+        self.assertEqual(list(self.dest.rglob('__pycache__')), [])
+
+    def test_installed_helper_entrypoints_execute_without_repo_imports(self):
+        installer.install(self.dest, ['necromancer', 'con-artist'])
+        for name, script in [('necromancer', 'trace.py'), ('con-artist', 'audit.py')]:
+            with self.subTest(skill=name):
+                result = subprocess.run(
+                    [sys.executable, '-B', str(self.dest / name / 'scripts' / script), '--help'],
+                    cwd=self.dest, capture_output=True, text=True, timeout=5)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertIn('usage:', result.stdout)
 
     def test_conflict_prevents_partial_install(self):
         existing = self.dest / "receipt"

@@ -21,6 +21,17 @@ class BuildTests(unittest.TestCase):
             self.assertEqual(len(files), 8)
             for file in files:
                 self.assertEqual(file.read_bytes(), (builder.ROOT / file.relative_to(plugin)).read_bytes())
+            source_files = {file.relative_to(builder.ROOT / 'skills')
+                            for entrypoint in (builder.ROOT / 'skills').glob('*/SKILL.md')
+                            for file in entrypoint.parent.rglob('*')
+                            if file.is_file() and '__pycache__' not in file.parts and file.suffix != '.pyc'}
+            bundled_files = {file.relative_to(plugin / 'skills') for file in
+                             (plugin / 'skills').rglob('*') if file.is_file()}
+            self.assertEqual(bundled_files, source_files)
+            for relative in source_files:
+                original, bundled = builder.ROOT / 'skills' / relative, plugin / 'skills' / relative
+                self.assertEqual(original.read_bytes(), bundled.read_bytes())
+                self.assertEqual(original.stat().st_mode & 0o777, bundled.stat().st_mode & 0o777)
             self.assertTrue((plugin / "LICENSE").is_file())
             for name in ('scripts/audit.py', 'references/python-audit.md'):
                 relative = Path('skills/con-artist') / name

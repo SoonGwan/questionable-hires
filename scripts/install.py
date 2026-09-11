@@ -32,7 +32,8 @@ def install(destination, names, dry_run=False):
             target = destination / name
             target.mkdir()
             installed.append(target)
-            shutil.copytree(ROOT / "skills" / name, target, dirs_exist_ok=True)
+            shutil.copytree(ROOT / "skills" / name, target, dirs_exist_ok=True,
+                            ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
     except Exception:
         # Only directories created by this invocation are eligible for rollback.
         for target in reversed(installed):
