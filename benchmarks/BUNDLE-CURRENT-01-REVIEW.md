@@ -68,3 +68,30 @@ skill checks deeper store identity/import/deadline behavior and baseline has the
 initial output omission noted above. This is neither equal-work causal measurement
 nor whole-bundle acceptance. Search diagnosis skill is 71,216 tokens / 52.128s;
 formatter baseline is 62,296 / 22.229s; their partners still require review.
+
+## Two search QA skill cells
+
+- Protected search: five shell commands; only qa_search.py is added. The retained
+  probe executes actual Search with sequential and reversed-overlap scenarios,
+  submitted-query assertions, cooperative waits and a five-second parent process
+  deadline covering cleanup. However, the original command executing the probe
+  has exit 0 and **empty captured output**, despite the probe's explicit flushed
+  PASS prints. Record this capture limitation, not independently observed scenario
+  output. No author replay is credited. Production diff is empty. Metadata reports
+  that empty item, no patch rejection and unchanged installed resources. Cost is
+  67,822 tokens / 48.219s versus baseline 63,822 / 40.442s; this pair is not a win.
+  Baseline checks two overlap orders whereas skill checks sequential and reversed
+  overlap with a process deadline: the work is not identical.
+- Broken search: five shell commands; only test_search_qa.py is added. Actual
+  controlled futures exercise in-order and reversed completion after both requests
+  start. Captured unittest output records two tests and one exact stale-result
+  assertion failure; the subprocess wrapper exits 1 for that failure, not timeout.
+  The answer correctly treats it as a reproduced defect, supplies the five-second
+  external deadline command, and limits the claim to Python state, not browser UI.
+  Original production/requirements diff is empty. No capture flags or rejected
+  patches, and installed resources unchanged according to metadata. Cost is
+  85,260 tokens / 57.670s. Baseline partner still needs trace review.
+
+These reviewed commands stay inside their allocated projects. Retained probe
+design, successful command exit, and directly captured assertion output are
+different evidence levels and must not be collapsed into an unconditional pass.
