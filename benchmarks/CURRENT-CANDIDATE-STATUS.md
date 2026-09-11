@@ -12,7 +12,7 @@ They are not necessarily the snapshot used by every linked historical report.
 
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
-| Necromancer | `18a2070`; collector/reference `ae99bac` | [Region-first HTTPX](HTTPX-HISTORY-REGION-01.md), [large hunk](NECROMANCER-LARGE-HUNK-01.md), paired 02 | Favorable HTTPX pair has unequal work and baseline repair; combined history task costs more; collector adoption unverified |
+| Necromancer | `8454059`; collector/reference `ae99bac` | [First-load candidate](NECROMANCER-FIRST-LOAD-01.md), [region-first HTTPX](HTTPX-HISTORY-REGION-01.md) | Entry instructions reduced without changing collector; current candidate unmeasured; earlier favorable pair has unequal work and baseline repair |
 | Receipt | `abb4b93`; helper `048fb21`, reference `48ec1c3` | [Independent checks](RECEIPT-INDEPENDENT-01.md), [changed paths 03](CHANGED-PATHS-03.md) | All required checks continue correctly; +6.7% tokens / -13.8% time with stronger red/green evidence, but combined collection is not adopted |
 | Landlord | `c66db8f` | [Check scope](LANDLORD-CHECK-SCOPE-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Appropriate test scope in both arms; +6.2% tokens / +12.9% time with equal shell counts; efficiency unproven |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
@@ -23,6 +23,11 @@ They are not necessarily the snapshot used by every linked historical report.
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Necromancer `8454059` reduces repeated first-load instructions and leaves optional
+collector details in the existing conditional reference. The [candidate record](NECROMANCER-FIRST-LOAD-01.md)
+preserves the ordinary Git path and evidence constraints. Eighteen helper tests
+and structural validators pass; initial word reduction is not a performance claim.
 
 Landlord's [check-scope pair](LANDLORD-CHECK-SCOPE-01.md) now completes: both arms
 execute the relevant group and direct-call comparison while preserving unavailable
