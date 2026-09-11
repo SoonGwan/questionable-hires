@@ -15,6 +15,38 @@ def load(name, path):
 
 
 class HistoryTransferFixtureTests(unittest.TestCase):
+    def test_decision_gate_requests_share_verified_behavior_and_origin(self):
+        fixture = load('decision_gate', 'benchmarks/decision_gate_cases.py')
+        runner = load('gate_runner', 'benchmarks/run.py')
+        removal, origin = fixture.cases()
+        self.assertEqual(removal['files'], origin['files'])
+        self.assertEqual(removal['history'], origin['history'])
+        self.assertNotEqual(removal['task'], origin['task'])
+        with tempfile.TemporaryDirectory() as temporary:
+            project = Path(temporary) / 'project'
+            runner.prepare(removal, project)
+            original = removal['files']['summary.py']
+            changed = original.replace("record.get('code') or 'unknown'", "record['code']")
+            for source, expected in [(original, 0), (changed, 1)]:
+                probe = ('import consumer, unittest\nnamespace = {}\n'
+                         f'exec({source!r}, namespace)\n'
+                         "consumer.summarize = namespace['summarize']\n"
+                         'result = unittest.TextTestRunner().run(unittest.defaultTestLoader.discover("."))\n'
+                         'raise SystemExit(not result.wasSuccessful())\n')
+                completed = subprocess.run(['python3', '-B', '-c', probe], cwd=project,
+                                           capture_output=True, text=True, timeout=5)
+                self.assertEqual(completed.returncode, expected, completed.stderr)
+                self.assertIn('Ran 4 tests', completed.stderr)
+                if expected:
+                    self.assertIn("KeyError: 'code'", completed.stderr)
+                    self.assertIn('failures=1, errors=2', completed.stderr)
+            patch = runner.command(['git', 'show', 'HEAD~3', '--', 'summary.py'], project)
+            self.assertIn("-    code = record['code']", patch)
+            self.assertIn("+    code = record.get('code') or 'unknown'", patch)
+            self.assertEqual(runner.command(['git', 'status', '--porcelain'], project), '')
+            for path, contents in removal['files'].items():
+                self.assertEqual((project / path).read_text(), contents)
+
     def test_three_decisions_have_distinct_current_contract_effects(self):
         fixture = load('history_regions', 'benchmarks/history_region_cases.py')
         runner = load('region_runner', 'benchmarks/run.py')
