@@ -17,12 +17,28 @@ They are not necessarily the snapshot used by every linked historical report.
 | Landlord | `c66db8f` | [Check scope](LANDLORD-CHECK-SCOPE-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Appropriate test scope in both arms; +6.2% tokens / +12.9% time with equal shell counts; efficiency unproven |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `ca2e179`; helper `34aedd4`, reference `ca2e179` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
-| Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
+| Hostage Negotiator | `91c33c8` | [Current bundle](BUNDLE-CURRENT-01-REVIEW.md), [bounded transfer](HOSTAGE-TRANSFER-02.md) | Post-run scoped discovery consolidation unmeasured; frozen state pair has higher costs and fragmented discovery |
 | Con Artist | `1f8b8b6`; helper/references `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
 | Friday | `9cae27c`; helper/reference `e79b208` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | Rolling-schema pair uses 13.4% fewer tokens with near-equal time and extra retained-data check; branch transfer still costlier; broad efficiency unproven |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+The [current nine-case bundle regression](BUNDLE-CURRENT-01-REVIEW.md) has finished
+all 18 sessions without retries: skill totals are 648,318 tokens / 378.550 seconds
+versus baseline 634,745 / 306.975, or +2.14% tokens / +23.32% time. All nine skill
+sessions take longer in this single sample. Three use fewer tokens. Unequal checks
+and original output gaps remain documented; the efficiency objective is unmet.
+
+Hostage Negotiator's post-run discovery revision replaces vague read-together
+guidance with a scoped combined discovery/read path. The observed state-task skill
+used seven shell commands versus four baseline, including repeated discovery after
+an empty instruction-only search. The revision retains instruction discovery,
+dependency follow-up, durable regression checks, return/error identity and async
+cleanup; it does not cap necessary reads or remove checks. All 164 repository tests
+pass (20.594 seconds), as do the skill and repository structural validators. These
+validate packaging/mechanics, not model adoption or savings. This revision has not
+yet been model-evaluated; no favorable rerun replaces the frozen bundle evidence.
 
 The [complete collector comparison](NECROMANCER-COLLECTOR-TIME-01.md) now measures
 Necromancer 0e3c790 against a16e57d in real temporary Git history: identical complete
