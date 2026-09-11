@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / 'skills/receipt/scripts/compare.py'
@@ -59,6 +60,36 @@ class ReceiptHelperTests(unittest.TestCase):
         self.assertEqual((self.root / 'test_rule.py').read_text(), self.tests)
         self.assertEqual(self.git('status', '--porcelain'), status)
         self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_multiple_literal_files_share_tree_query_and_preserve_modes(self):
+        names = ['z space.txt', 'a[1].txt', 'nested/tab\tname.txt']
+        for name in names:
+            target = self.root / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text('before')
+        (self.root / names[0]).chmod(0o755)
+        before = self.commit()
+        for name in names:
+            (self.root / name).write_text('after')
+        after = self.commit()
+        recipe = dict(self.recipe, before=before, after=after, vary=names)
+        seen = []
+        def check(python, root, recipe, timeout):
+            seen.append([(name, (root/name).read_text(), (root/name).stat().st_mode & 0o777)
+                         for name in names])
+            return dict(exit_code=0, timed_out=False, output='', output_truncated=False)
+        with patch.object(helper, 'git', wraps=helper.git) as calls, patch.object(helper, 'run_check', side_effect=check):
+            helper.compare(self.root, recipe)
+        self.assertEqual(sum(call.args[1] == 'ls-tree' for call in calls.call_args_list), 2)
+        for index, value in enumerate(('before', 'after')):
+            self.assertEqual(seen[index], [(name, value, 0o755 if name == names[0] else 0o644)
+                                          for name in names])
+
+    def test_batched_tree_rejects_one_missing_historical_member(self):
+        (self.root / 'new.txt').write_text('not in history')
+        with patch.object(helper, 'run_check') as execute, self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, vary=['rule.py', 'new.txt']))
+        execute.assert_not_called()
 
     def test_cli_reports_observations_not_automatic_proof(self):
         process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--spec', '-',

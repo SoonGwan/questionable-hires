@@ -120,6 +120,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     if total > 20_000_000:
         raise ValueError('Inputs exceed 20 MB')
     variants, revisions = {}, {}
+    varying_names = set(recipe['vary'])
     for label in ('before', 'after'):
         ref = recipe[label]
         if not isinstance(ref, str) or not ref or ref.startswith('-') or '\n' in ref:
@@ -128,14 +129,22 @@ def compare(root, recipe, python=sys.executable, timeout=30):
         revisions[label] = sha
         files = dict(originals)
         variant_modes = dict(modes)
-        for name in recipe['vary']:
-            # Literal pathspec prevents filenames being treated as globs.
-            entry = git(root, 'ls-tree', '-z', sha, '--', name).rstrip(b'\0')
+        # One literal-path tree query per revision, not one process per file.
+        tree = git(root, 'ls-tree', '-z', sha, '--', *recipe['vary'])
+        entries = {}
+        for entry in tree.split(b'\0'):
             if not entry:
-                raise ValueError('Implementation missing at requested revision')
+                continue
             metadata, recorded_name = entry.split(b'\t', 1)
-            mode, kind, oid = metadata.split()
-            if kind != b'blob' or mode not in (b'100644', b'100755') or recorded_name.decode() != name:
+            name = recorded_name.decode()
+            if name in entries or name not in varying_names:
+                raise ValueError('Ambiguous historical file selection')
+            entries[name] = metadata.split()
+        for name in recipe['vary']:
+            if name not in entries:
+                raise ValueError('Implementation missing at requested revision')
+            mode, kind, oid = entries[name]
+            if kind != b'blob' or mode not in (b'100644', b'100755'):
                 raise ValueError('Implementation must be a regular Git file')
             length = int(git(root, 'cat-file', '-s', oid.decode()))
             total += length
