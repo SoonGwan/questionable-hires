@@ -24,6 +24,12 @@ They are not necessarily the snapshot used by every linked historical report.
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
 
+Landlord's [check-scope transfer](LANDLORD-CHECK-SCOPE-PROTOCOL.md) is prepared at
+`84be5b5`, not yet model-executed. Its real local fixture distinguishes cheap contract
+tests from an unavailable staging receipt and demonstrates the two behavioral
+changes from directly removing Store. All 158 repository tests pass (18.136 seconds).
+This validates the evaluation inputs, not the c66db8f candidate's decisions or cost.
+
 Landlord's [real auth-design transfer](HTTPX-AUTH-DESIGN-01.md) preserves required
 extension contracts and demonstrates streaming responsibilities but costs more.
 Candidate `c66db8f` now weighs test-selection work against known execution cost,
