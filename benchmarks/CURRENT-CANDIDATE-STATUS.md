@@ -34,6 +34,13 @@ Detailed reference and inspection remain available; execution semantics are
 unchanged and all eight runner checks pass. This interface revision has no model
 measurement yet; fewer discovery steps are a hypothesis, not a claimed saving.
 
+That interface's [runtime-setup transfer check](EXORCIST-INTERFACE-TRANSFER-01.md)
+now records 116,325 tokens / 90.214 seconds, up 67.4% / 68.3% against the earlier
+same-case sample. The diagnosis is correct, but the model reads full runner source,
+wraps already bounded child experiments, and repairs an initially misplaced runtime
+observation. These costs are retained; direct invocation guidance alone has not
+established cheaper tool selection.
+
 Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRESSION-04.md). All nine task-specific criteria pass; the previous parent-directory search does not recur, but two rejected patches retain attempted-scope uncertainty. Total tokens fall 6.8% and time 8.3% versus screen 03; versus screen 02 tokens fall 1.3% while time rises 4.8%. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
 
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
