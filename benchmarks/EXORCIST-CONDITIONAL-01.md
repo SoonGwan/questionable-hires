@@ -32,7 +32,12 @@ Author inspection confirms all three original files and four installed skill
 resources match fixture inputs and committed blobs. A separate direct replay of
 the retained harness passes its assertions. No rejected patch, timeout or capture
 diagnostic. These checks support behavior and preservation, not broad scope or
-performance guarantees.
+performance guarantees. The captured harness output omits its initial absent-
+environment child's two print lines, despite a successful final status. The
+separately captured original unittest does show `3 != 1`; the author replay
+supplies the full setup-observation output. Do not retroactively attribute that
+replayed output to the model capture. A clean diagnostic flag is not proof of a
+complete stream, as this case again demonstrates.
 
 Disposition: retain the conditional route as successful avoidance of redundant
 tool use in this sample, not a proven efficiency win. The async branch after this
