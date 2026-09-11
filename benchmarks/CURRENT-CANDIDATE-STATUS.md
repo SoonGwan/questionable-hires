@@ -10,6 +10,10 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Browser model screen](BROWSER-MODEL-01-REVIEW.md): both browser launches abort;
+  no browser interaction verified. Skill +34.17% tokens / −1.55% time with extra
+  handler-only fallback work; baseline has a project-scope exception. Not a win.
+
 - [Nested discovery screen](INTERACTION-NESTED-01-REVIEW.md): required nested
   instructions and tests followed, skill −16.68% tokens / −11.46% time; additional
   sequence coverage differs. One exposed pair is not broad efficiency evidence.
