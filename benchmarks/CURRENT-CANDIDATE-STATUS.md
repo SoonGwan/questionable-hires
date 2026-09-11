@@ -44,6 +44,13 @@ malformed/truncated batch responses stop before test execution. This is reduced
 subprocess startup work, not a measured end-to-end time or model-token gain.
 All 214 repository tests pass in 31.997 seconds, plus skill/catalog validators.
 
+The subsequent [helper-only paired screen](RECEIPT-BATCH-HELPER-01.md) executes
+two existing cases three times per version. Assembly comparison mean falls
+.217542 → .178692 seconds (−17.86%, roughly 39 ms), with Git processes 11 → 7;
+the single-module parser is near-flat (−1.56%, still seven processes). All twelve
+comparisons preserve the required before/after observations and originals.
+This is local helper timing, not a new model run or whole-task/token improvement.
+
 Exorcist `cb10067` bounds post-kill direct-child exit confirmation to five seconds.
 Unconfirmed exit reports `cleanup_complete: false` and CLI 125; interruption is
 preserved. Twelve helper tests include mocked cleanup timeout and real subprocess
