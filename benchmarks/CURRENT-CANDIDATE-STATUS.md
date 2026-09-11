@@ -24,6 +24,13 @@ They are not necessarily the snapshot used by every linked historical report.
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
 
+Runner `fd8d578` now uses a canonical physical temporary workspace for every arm
+and retains its allocated spelling in metadata. The [workspace identity audit](WORKSPACE-IDENTITY-01.md)
+proves the previous /var versus /private/var mismatch and verifies corrected
+launch-path plumbing without widening sandbox roots. The rejected patch targets
+remain unavailable; neither their cause nor runtime acceptance or token savings
+is established. Skill resources and all historical results remain unchanged.
+
 Receipt `7056153` replaces the ineffective collection-step prescription with
 coverage-based after evidence: a required suite that actually executes the same
 regression under relevant inputs/runtime already provides the after result.
