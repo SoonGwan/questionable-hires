@@ -34,6 +34,31 @@ def parse_blame(output):
     return rows
 
 
+def focused_patch(output, historical_path, line_numbers):
+    """Keep whole hunks touching attributed lines; retain full output if ambiguous."""
+    marker = '+++ b/' + historical_path + '\n'
+    if output.count(marker) != 1 or any(c in historical_path for c in '\n\r\t"'):
+        return output, 0
+    header, body = output.split(marker, 1)
+    if 'diff --git ' in body or '@@@' in body:
+        return output, 0
+    parts = re.split(r'(?m)(^@@ -\d+(?:,\d+)? \+\d+(?:,\d+)? @@[^\n]*\n)', body)
+    if len(parts) < 3 or parts[0].strip():
+        return output, 0
+    kept, omitted = [], 0
+    for index in range(1, len(parts), 2):
+        hunk = parts[index]
+        match = re.match(r'@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@', hunk)
+        start, count = int(match[1]), int(match[2] or 1)
+        if any(start <= line < start + count for line in line_numbers):
+            kept.append(hunk + parts[index + 1])
+        else:
+            omitted += 1
+    if not kept:
+        return output, 0
+    return header + marker + ''.join(kept), omitted
+
+
 def trace(repo, filename, start, end, max_commits=3):
     repo = Path(repo).resolve()
     path = Path(filename)
@@ -89,8 +114,13 @@ def trace(repo, filename, start, end, max_commits=3):
     for commit, paths in list(grouped.items())[:max_commits]:
         shown = git(repo, 'show', '--no-ext-diff', '--no-textconv', '--format=commit %H%nDate: %cI%n%n%B',
                     '--unified=3', commit, '--', *sorted(paths))
+        patch_text, omitted_hunks = shown.stdout, 0
+        if shown.returncode == 0 and len(paths) == 1:
+            patch_text, omitted_hunks = focused_patch(shown.stdout, next(iter(paths)),
+                [row['original_line'] for row in rows if row['commit'] == commit])
         evidence['commits'].append(dict(commit=commit, paths=sorted(paths), exit_code=shown.returncode,
-                                       evidence=shown.stdout[:12000], truncated=len(shown.stdout) > 12000,
+                                       evidence=patch_text[:12000], truncated=len(patch_text) > 12000,
+                                       omitted_hunks=omitted_hunks,
                                        error=shown.stderr[:1000]))
     evidence['limitation'] = ('Blame attributes lines, not intent or current necessity. Boundary commits may reflect '
                               'a root or shallow cutoff. Uncommitted lines have no historical commit. '

@@ -77,6 +77,40 @@ class HistoryHelperTests(unittest.TestCase):
         self.assertEqual(result['commits'], [])
         self.assertIn('legacy.py', result['working_status'])
 
+    def test_unrelated_large_hunk_does_not_hide_selected_change(self):
+        path = self.root / 'legacy.py'
+        noise = ['# unrelated ' + 'x' * 100 + '\n'] * 160
+        gap = [f'SEPARATOR_{index} = {index}\n' for index in range(20)]
+        path.write_text(''.join(noise + gap) + 'VALUE = "before"\n')
+        self.commit('Prepare separated changes')
+        path.write_text(''.join([s.replace('xxx', 'yyy') for s in noise] + gap) + 'VALUE = "after"\n')
+        commit = self.commit('Two independent edits')
+        raw = self.git('show', '--format=fuller', '--unified=3', commit, '--', 'legacy.py')
+        self.assertGreater(raw.index('+VALUE = "after"'), 12000)
+        result = helper.trace(self.root, 'legacy.py', 181, 181)
+        evidence = result['commits'][0]
+        self.assertIn('+VALUE = "after"', evidence['evidence'])
+        self.assertIn('-VALUE = "before"', evidence['evidence'])
+        self.assertIn('Two independent edits', evidence['evidence'])
+        self.assertEqual(evidence['omitted_hunks'], 1)
+        self.assertFalse(evidence['truncated'])
+        self.assertLess(len(evidence['evidence']), 1500)
+
+    def test_focused_patch_falls_back_when_no_hunk_matches(self):
+        text = '+++ b/a.py\n@@ -1 +1 @@\n-old\n+new\n'
+        self.assertEqual(helper.focused_patch(text, 'a.py', [99]), (text, 0))
+        combined = '+++ b/a.py\n@@@ -1 -1 +1 @@@\n++new\n'
+        self.assertEqual(helper.focused_patch(combined, 'a.py', [1]), (combined, 0))
+
+    def test_focused_patch_keeps_multiple_selected_hunks(self):
+        text = ('commit evidence\n+++ b/a.py\n@@ -1 +1 @@\n-a\n+b\n'
+                '@@ -20 +20 @@\n-c\n+d\n@@ -40 +40 @@\n-e\n+f\n')
+        result, omitted = helper.focused_patch(text, 'a.py', [1, 40])
+        self.assertEqual(omitted, 1)
+        self.assertIn('+b', result)
+        self.assertIn('+f', result)
+        self.assertNotIn('+d', result)
+
     def test_rename_uses_historical_filename_for_patch(self):
         self.git('mv', 'legacy.py', 'renamed module.py')
         self.commit('Rename module')
