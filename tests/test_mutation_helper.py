@@ -256,6 +256,39 @@ class MutationHelperTests(unittest.TestCase):
         self.assertNotIn('correct_probe_reused', result)
         self.assertIn('output', result['checks']['correct_probe'])
 
+    def test_correct_probe_cache_invalidates_changed_permission_bits(self):
+        baseline, probe = {}, {}
+        helper.audit(self.root, self.recipe, _baseline=baseline, _probe_baseline=probe)
+        source = self.root / 'service.py'
+        source.chmod((source.stat().st_mode & 0o777) ^ 0o100)
+        before = source.read_bytes(), source.stat().st_mode & 0o777
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit(self.root, self.recipe, _baseline=baseline, _probe_baseline=probe)
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual(execute.call_count, 4)
+        self.assertNotIn('correct_probe_reused', result)
+        self.assertEqual(before, (source.read_bytes(), source.stat().st_mode & 0o777))
+
+    def test_reused_correct_probe_does_not_hide_mutant_timeout(self):
+        recipe = self.batch_recipe()
+        probe = ('from service import save\nimport time\ns = []\nsave(s, "item")\n'
+                 'if len(s) == 2: time.sleep(20)\nassert s == ["item"]\n')
+        for fault in recipe['mutations']:
+            fault['probe'] = probe
+        recipe['mutations'].append(dict(recipe['mutations'][0]))
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit_batch(self.root, recipe, timeout=0.5)
+        self.assertEqual(execute.call_count, 6)
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(len(result['audits']), 2)  # Third fault remains unrun.
+        second = result['audits'][1]
+        self.assertTrue(second['correct_probe_reused'])
+        self.assertEqual(second['checks']['correct_probe']['observation_ref'],
+                         '#/audits/0/checks/correct_probe')
+        self.assertTrue(second['checks']['mutant_probe']['timed_out'])
+        self.assertNotEqual(second['checks']['mutant_probe']['exit_code'], 0)
+        self.assertEqual(list(self.root.glob('.con-artist-*')), [])
+
     def test_batch_cli_collects_observations(self):
         result = subprocess.run([sys.executable, '-B', str(ROOT / 'skills/con-artist/scripts/audit.py'),
                                  '--source', str(self.root), '--spec', '-'],

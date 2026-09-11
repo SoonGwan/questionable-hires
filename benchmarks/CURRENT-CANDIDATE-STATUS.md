@@ -13,9 +13,11 @@ with both independent mutant assertion failures retained. The new regression
 fails against predecessor `5f68ac7` at the observed count (`7 != 6`). Reused probe
 results point directly to the original observation; changed probe text, selected
 bytes or environment triggers execution, and conditional skips remain unrun.
-All 41 mutation-helper tests and 11 built-package tests pass. The full suite
-passed 230 tests before the final conditional-skip test was added; that test
-subsequently passed with the helper suite. Skill/catalog validators also pass.
+All 43 mutation-helper tests and the full 233-test suite pass (36.070 seconds),
+including 11 built-package tests. Follow-up checks verify that changed permission
+bits invalidate reuse and a real second-mutant probe timeout remains incomplete,
+preserves the direct reused-observation reference, cleans copies and leaves the
+third fault unrun. Skill/catalog validators also pass.
 No fresh model run or end-to-end token/time improvement is claimed; deterministic
 batch suitability and adoption still need workload-level evidence. This changes
 the helper and its interface documentation, not the skill entrypoint or routing.
