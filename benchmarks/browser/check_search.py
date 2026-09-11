@@ -61,7 +61,14 @@ def check(browser):
                     process.stderr.close()
                     process.wait(timeout=5)
                 if isinstance(error, subprocess.TimeoutExpired):
-                    raise RuntimeError('Browser timed out in guard=' + mode + '; check incomplete') from error
+                    def byte_count(value):
+                        return len(value.encode('utf-8') if isinstance(value, str) else value or b'')
+                    # Keep raw browser logs private; retain enough information
+                    # to distinguish absent output from a shutdown delay.
+                    raise RuntimeError(
+                        'Browser timed out in guard=' + mode + '; check incomplete; '
+                        f'captured stdout bytes={byte_count(error.output)}, '
+                        f'stderr bytes={byte_count(error.stderr)}') from error
                 raise
             if process.returncode:
                 raise RuntimeError('Browser failed: ' + stderr[-2000:])

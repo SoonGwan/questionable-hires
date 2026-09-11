@@ -40,3 +40,15 @@ class BrowserRunnerTests(unittest.TestCase):
         process.stdout.close.assert_called_once()
         process.stderr.close.assert_called_once()
         process.wait.assert_called_once_with(timeout=5)
+
+    def test_timeout_diagnostics_report_sizes_without_raw_browser_output(self):
+        process = Mock(pid=12345)
+        error = subprocess.TimeoutExpired('chrome', 30, output='한', stderr=b'private-detail')
+        process.communicate.side_effect = [error, ('', '')]
+        with patch.object(runner.subprocess, 'Popen', return_value=process), \
+                patch.object(runner.os, 'killpg'):
+            with self.assertRaises(RuntimeError) as caught:
+                runner.check(Path('/unused-browser'))
+        self.assertIn('stdout bytes=3', str(caught.exception))
+        self.assertIn('stderr bytes=14', str(caught.exception))
+        self.assertNotIn('private-detail', str(caught.exception))
