@@ -51,6 +51,14 @@ Do not repeat the bulk-history pair for a favorable score; the next behavioral
 check needs transfer evidence, including a case where surrounding dependencies
 make a narrow symbol excerpt insufficient.
 
+That [HTTPX surrounding-state transfer](HTTPX-HISTORY-REGION-01.md) now completes:
+both arms correctly retain a guard made necessary by internal CR transformation,
+verify real sync/async Response behavior and label shallow history unknown. Skill
+uses 104,842 tokens / 70.738 seconds versus baseline 167,956 / 98.700, but baseline
+repairs a SyntaxError and executes deeper instrumentation plus one extra control.
+No collector use. Preserve the promising -37.6% token / -28.3% time observation
+without attributing it causally or claiming broad performance acceptance.
+
 ## Latest combined screen
 
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
