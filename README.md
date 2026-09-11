@@ -93,6 +93,16 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 
 ## Does it actually work?
 
+**Latest combined check: the efficiency goal is not met.** The current
+[nine-task gate](benchmarks/BUNDLE-CURRENT-02-REVIEW.md), 18 fresh sessions at
+resource snapshot `e02c9bb`, used **10.33% more total tokens and 23.09% more summed
+process time** with skills. Eight of nine skill cells used more tokens and eight
+took longer. Some verification was stronger, but missing before evidence, a scope
+exception, an omitted history criterion and missing QA output remain in the
+accounting. This is an exposed single-repeat regression with unequal work, not
+proof of universal harm or benefit. These ratios of sums are not directly
+comparable to the original chart's equal-task mean ratios.
+
 **The chart below is the original experiment, not a measurement of today's files.** Later candidates have targeted checks, real HTTPX audits/design reviews, and this project's packaging repair recorded in [current candidate status](benchmarks/CURRENT-CANDIDATE-STATUS.md). Results are mixed: local helper gains do not automatically reduce model-session cost, and some comparisons perform unequal verification. Broad performance improvement remains unproven. Historical runs, including [nine-task screen 05](benchmarks/FAST-REGRESSION-05.md), remain available rather than being replaced by a favorable sample.
 
 We completed **72 fresh GPT-6 Astra sessions** at medium reasoning: eight small synthetic tasks × three arms × three repetitions. Baseline = 100%; generic control used **111.9% tokens / 125.1% time**, and the corresponding skill used **111.5% tokens / 117.6% time**. Implementation line churn was identical. Neither arm saved resources in this experiment.
@@ -109,6 +119,12 @@ Strict evidence-and-scope success was **19/24 baseline, 16/24 control, 18/24 ski
 Historical whole-team routing checks selected the expected skill files in eight sessions. A historical local bundle also passed CLI installation and removal. See [routing evidence](benchmarks/REPORT.md#automatic-routing-with-the-whole-team) and the dated [installation record](docs/INSTALLATION-TEST.md); these are not checks of every later revision.
 
 Recent evidence, kept separate from the chart:
+
+- [Inspect a recent automatic audit](benchmarks/results/probe-adoption-01/README.md):
+  both arms' commands, captured output, answers and usage, including higher token
+  cost and no helper adoption. Redactions and missing output are documented.
+- [Try a two-fault audit without model usage](examples/con-artist.md#try-the-helper-without-model-usage):
+  a runnable helper example, not evidence that the model is faster with the skill.
 
 - [Automatic selection versus no skill](benchmarks/CURRENT-SELECTION-01.md): two appropriate selections, but more tokens in both tasks and mixed elapsed time; actual work differs.
 - [Unrelated requests](benchmarks/ROUTING-NEGATIVE-01.md) and [a configured consumer under examples](benchmarks/LANDLORD-CONFIGURED-01.md): narrow routing checks, not general accuracy or efficiency scores.
