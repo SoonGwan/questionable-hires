@@ -13,7 +13,8 @@
 - [x] Eight additional clean, missing-evidence, or necessary-change skill sessions.
 - [x] Eight automatic-selection sessions with the whole team installed.
 - [x] Published answers, command evidence, diffs, metadata, and final snapshots.
-- [x] 183 local infrastructure, helper, packaging and fixture tests (current local run).
+- [x] 186 local infrastructure, helper, packaging and fixture tests (current local run).
+- [x] All-eight installed resource bytes/permissions and standalone/bundle parity.
 - [x] Failed package build cleanup, retry and existing-destination preservation.
 
 See the [evaluation report](../benchmarks/REPORT.md) and [installation record](INSTALLATION-TEST.md) for exactly what those checks establish. An earlier eligibility pilot and an excluded single-hire routing pilot are also retained. Passing these smoke checks does not make every future engineering decision correct.

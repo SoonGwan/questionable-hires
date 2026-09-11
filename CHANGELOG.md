@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Expanded installation checks to all eight complete resource trees, permission
+  preservation, standalone/marketplace parity and isolated startup of all five
+  helper CLIs. The full local suite now passes 186 tests.
 - Standalone installation now attempts rollback on cancellation and continues
   cleaning its other new targets when one cleanup fails, preserving the original
   install error. Two real-copy regressions reproduce the previous failures and

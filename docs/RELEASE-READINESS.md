@@ -4,6 +4,14 @@ Checked 2026-09-11 against local commit `dd10633` and read-only GitHub API
 responses. This is a release gate, not a claim of perfection or authorization to
 publish. Preserve the eight coworker identities and report adverse evaluations.
 
+Local follow-up at `67a6e35`: 186 tests pass in 26.506 seconds after installer
+rollback improvements and expanded distribution tests. All eight installed skill
+trees match source resource sets, bytes and permission bits; standalone and
+marketplace skill trees match each other. All five installed helper entrypoints
+run `--help` under isolated Python (`-I`) outside the source checkout. These are
+temporary-directory tests, not a host installation, full helper execution or a
+new remote CI result. The dated remote audit below remains unchanged.
+
 | Area | Evidence | State / next required check |
 | --- | --- | --- |
 | Local mechanics | 183 tests pass in 26.312 seconds after build recovery changes; catalog/link validation and diff checks pass | Passed locally; does not establish other platforms or model quality |
