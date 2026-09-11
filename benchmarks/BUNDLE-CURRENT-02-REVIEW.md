@@ -11,6 +11,13 @@ references to pending cells describe that stage, not the final status.
 
 ## Final cost accounting
 
+The [machine-readable cost export](results/bundle-current-02-costs.json) retains
+all 18 usage records, their original terminal-event usage, elapsed times and source
+artifact hashes. It contains no commands or full behavioral traces and must not
+be used as a replacement for the review below. The reconciliation test checks
+complete case/arm coverage and recomputes the exact sums without cached-token or
+reasoning-token double counting; it does not certify task success.
+
 All attempts retained, including scope exceptions, missing before evidence and
 unknown failure output. Tokens are input plus output, with cached input already
 included; reasoning output is not added twice. Times are model-process wall time,
