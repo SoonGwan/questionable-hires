@@ -28,3 +28,30 @@ identical repository identity/status and commit-patch retrieval. Inspect existin
 collector interfaces and real repeated-use costs before adding a batch API; do not
 add a new resource or mandatory workflow solely on speculation. The current
 single-region helper remains valid, optional, and unchanged in this review.
+
+## Repeated-region inspection on the actual repository
+
+At e68272d with a clean worktree, imported current trace.py and instrumented only
+its Git wrapper in memory. Queried trace.py ranges 91:102, 108:115 and 118:128,
+all within selected_patch_excerpt. Each reports available history and two commits.
+Fifteen Git calls comprise eight distinct argument tuples: rev-parse and status
+three times each, three different blames, and six show calls for three distinct
+commit/path requests. Repeated show outputs have the same lengths (4,535 three
+times and 3,602 twice). Summed observed Git-call wall time is 0.224984 seconds.
+No source edits or state cache were introduced.
+
+The existing range interface queried 91:128 in six Git calls: identity, status,
+one blame and three shows. It returned 38 current lines, three commits, zero omitted
+commits, 22,783 serialized JSON characters and 0.085400 summed Git seconds. The
+comparison used max_commits=5 for this combined query versus default three per
+separate query; only three commits were actually returned. These are one-off local
+observations, not a balanced benchmark or equivalent output: the combined request
+adds seven intervening current lines and may include additional patch context.
+
+This demonstrates repeated work but does not yet justify a new batch API or stale-
+state cache. Nearby regions in the same behavior can already fit the 100-line
+interface. Widely separated regions, irrelevant intervening code or excessive
+attributed commits may invalidate that approach. Assess output and behavioral
+context before combining; never widen a range just to reduce the command counter.
+No model token benefit or adoption is measured. Next improve/evaluate use of the
+existing range mechanism where context is genuinely shared, not mandatory batching.
