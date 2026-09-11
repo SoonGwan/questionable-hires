@@ -22,6 +22,13 @@ def install(destination, names, dry_run=False):
     conflicts = [name for name in names if (destination / name).exists() or (destination / name).is_symlink()]
     if conflicts:
         raise ValueError("Existing skills left untouched: " + ", ".join(conflicts))
+    # Refuse linked source resources instead of silently copying their referents.
+    # Check every selected skill before creating any destination folders.
+    for name in names:
+        source = ROOT / 'skills' / name
+        if (ROOT / 'skills').is_symlink() or source.is_symlink() or any(
+                path.is_symlink() for path in source.rglob('*')):
+            raise ValueError('Source symlinks are unsupported: ' + name)
     if dry_run:
         return [destination / name for name in names]
     destination.mkdir(parents=True, exist_ok=True)

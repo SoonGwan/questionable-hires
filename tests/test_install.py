@@ -39,6 +39,32 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(list(self.dest.rglob('*.pyc')), [])
         self.assertEqual(list(self.dest.rglob('__pycache__')), [])
 
+    def test_source_symlinks_are_rejected_before_any_install(self):
+        for kind in ('file', 'directory', 'skill'):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                source = root / 'repo/skills'
+                (source / 'good').mkdir(parents=True)
+                (source / 'good/SKILL.md').write_text('good')
+                outside = root / 'outside'
+                outside.mkdir()
+                (outside / 'SKILL.md').write_text('external fixture')
+                bad = source / 'bad'
+                if kind == 'skill':
+                    bad.symlink_to(outside, target_is_directory=True)
+                else:
+                    bad.mkdir()
+                    (bad / 'SKILL.md').write_text('bad')
+                    (bad / 'linked').symlink_to(
+                        outside if kind == 'directory' else outside / 'SKILL.md',
+                        target_is_directory=kind == 'directory')
+                destination = root / 'installed'
+                with patch.object(installer, 'ROOT', root / 'repo'):
+                    with self.assertRaisesRegex(ValueError, 'symlink'):
+                        installer.install(destination, ['good', 'bad'])
+                self.assertFalse(destination.exists())
+                self.assertEqual((outside / 'SKILL.md').read_text(), 'external fixture')
+
     def test_installed_helper_entrypoints_execute_without_repo_imports(self):
         helpers = [('necromancer', 'trace.py'), ('con-artist', 'audit.py'),
                    ('receipt', 'compare.py'), ('exorcist', 'run_probe.py'),
