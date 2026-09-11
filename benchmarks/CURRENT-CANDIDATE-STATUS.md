@@ -126,6 +126,17 @@ verification into more interactions; Friday inspects unrelated history while als
 doing extra useful data checks. No universal call-count/source-reading rule or new
 benchmark was added. Investigate those mechanisms without weakening verification.
 
+Friday `debf188` subsequently targets redundant history collection: begin from
+supplied release artifacts and order; inspect Git history when a version, contract
+change or migration sequence remains unresolved. It does not ban history or assume
+current files represent old binaries. Reachable-state, actual writer/runtime,
+new-data rollback and production-uncertainty requirements are unchanged, as are
+helper, character and invocation metadata. Ten matrix tests, the actual-writer
+fixture and ten installation/packaging tests pass, plus validators. This is an
+unmeasured routing correction, not established work or token savings. A future
+transfer must retain a case requiring historical artifacts; do not rerun the
+exposed rename fixture merely for a favorable cost.
+
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
 promoted: four cases / eight fresh sessions use 10.4% more total tokens and 10.6%
 less time than shipped instructions, with unequal state-test depth and a rejected
