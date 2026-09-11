@@ -14,7 +14,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | --- | --- | --- | --- |
 | Necromancer | `18a2070`; collector/reference `ae99bac` | [Region-first HTTPX](HTTPX-HISTORY-REGION-01.md), [large hunk](NECROMANCER-LARGE-HUNK-01.md), paired 02 | Favorable HTTPX pair has unequal work and baseline repair; combined history task costs more; collector adoption unverified |
 | Receipt | `abb4b93`; helper `048fb21`, reference `48ec1c3` | [Independent checks](RECEIPT-INDEPENDENT-01.md), [changed paths 03](CHANGED-PATHS-03.md) | All required checks continue correctly; +6.7% tokens / -13.8% time with stronger red/green evidence, but combined collection is not adopted |
-| Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
+| Landlord | `c66db8f` | [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md), [transport design](HTTPX-DESIGN-02.md) | Prior candidate +7.8% tokens / +25.9% time on auth; cost-aware test selection is unmeasured |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `ca2e179`; helper `34aedd4`, reference `ca2e179` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
@@ -23,6 +23,12 @@ They are not necessarily the snapshot used by every linked historical report.
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Landlord's [real auth-design transfer](HTTPX-AUTH-DESIGN-01.md) preserves required
+extension contracts and demonstrates streaming responsibilities but costs more.
+Candidate `c66db8f` now weighs test-selection work against known execution cost,
+without replacing relevant behavioral probes or authorizing unrelated broad tests.
+The measured run uses the prior entrypoint; post-run selection guidance is unmeasured.
 
 The [synchronous-signal transfer](EXORCIST-SIGNAL-01.md) now completes with correct
 diagnosis in all four sessions. Lost-signal skill uses one contained observation
