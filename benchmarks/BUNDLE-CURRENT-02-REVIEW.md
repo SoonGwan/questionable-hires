@@ -163,3 +163,29 @@ and original/redacted events agree. No capture flags or rejected patches appear;
 decisive outputs were inspected directly. Baseline and skill differ in normal
 control coverage, deadlines and capture quality; do not treat all four sessions
 as interchangeable successful executions on the strength of their final answers.
+
+## Remaining implementation baselines
+
+**Boundary fix / baseline:** applies the same one-line `>=` change and age-18
+regression as the skill arm, then captures all three tests passing and a clean
+diff check. Three shell commands, 24.556 seconds. It does **not** execute a
+before-fix failure. Therefore the existing before/after verification criterion
+is not met, even though the final implementation and regression are correct.
+The final answer accurately claims only after verification. Identical final
+diffs do not make the arms' verification work equivalent.
+
+**Necessary state / baseline:** adds per-instance pending state, guards duplicate
+calls and clears state in finally while preserving the successful return value
+and propagated exception. Its actual inline assertions check initial/active state,
+independent instances, one save during overlap, returned object identity, exception
+identity, cleared state and retry. The captured final Passed message follows all
+assertions. Only `form.py` changes; no unrelated redesign or retained test harness.
+Three shell commands, 33.678 seconds. Waits and cleanup are not locally bounded;
+cancellation is not separately exercised. The trailing diff check uses a newline,
+not a fail-fast chain, but the probe's explicit completion output supports the
+assertions rather than relying on the shell's final exit alone.
+
+Both cells have empty skill inventories and matching original/redacted events;
+metadata records no capture flags or rejected patches. Final changes were inspected
+against the frozen requirements. Missing before evidence remains a criterion
+failure, not an inferred observation from the original `>` expression.
