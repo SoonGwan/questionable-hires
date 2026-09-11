@@ -16,6 +16,31 @@ def load(name, relative):
 
 
 class ReceiptEqualWorkFixtureTests(unittest.TestCase):
+    def test_assembly_requires_both_historical_implementations(self):
+        fixture = load('assembly_history', 'benchmarks/receipt_assembly_cases.py')
+        runner = load('assembly_runner', 'benchmarks/run.py')
+        helper = load('assembly_receipt', 'skills/receipt/scripts/compare.py')
+        case = fixture.cases()[0]
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory) / 'project'
+            runner.prepare(case, project)
+            both = ['assembly/reader.py', 'assembly/writer.py']
+            for varying in (both, both[:1], both[1:]):
+                result = helper.compare(project, dict(
+                    fixed=[name for name in case['files'] if name not in varying],
+                    vary=varying, before='HEAD^', after='HEAD',
+                    imports=['assembly.service', 'assembly.reader', 'assembly.writer'],
+                    runner='unittest', tests=['-v', 'test_assembly']))
+                before = result['checks']['before']
+                self.assertEqual(before['exit_code'], 1)
+                expected = 2 if varying == both else 1
+                self.assertIn(f'FAILED (failures={expected})', before['output'])
+                self.assertEqual(result['checks']['after']['exit_code'], 0)
+                self.assertIn('Ran 2 tests', result['checks']['after']['output'])
+            for name, source in case['files'].items():
+                self.assertEqual((project / name).read_text(), source)
+            self.assertEqual(runner.command(['git', 'status', '--porcelain'], project), '')
+
     def test_current_inputs_distinguish_revisions_while_old_inputs_do_not(self):
         fixture = load('equal_work', 'benchmarks/receipt_equal_work_cases.py')
         runner = load('equal_runner', 'benchmarks/run.py')
