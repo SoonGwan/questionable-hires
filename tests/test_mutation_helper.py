@@ -112,3 +112,15 @@ class MutationHelperTests(unittest.TestCase):
     def test_non_object_recipe_is_rejected(self):
         with self.assertRaises(ValueError):
             helper.audit(self.root, [])
+
+    def test_selected_executable_keeps_its_mode_in_copies(self):
+        script = self.root / 'fixture.sh'
+        script.write_text('#!/bin/sh\nexit 0\n')
+        script.chmod(0o755)
+        test = self.root / 'test_service.py'
+        test.write_text('import subprocess\nsubprocess.run(["./fixture.sh"], check=True)\n' + test.read_text())
+        recipe = dict(self.recipe, files=self.recipe['files'] + ['fixture.sh'])
+        result = self.run_audit(recipe)
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual(result['checks']['correct_tests']['exit_code'], 0)
+        self.assertEqual(script.stat().st_mode & 0o777, 0o755)

@@ -109,6 +109,7 @@ def audit(root, spec, python=sys.executable, timeout=30):
     if not isinstance(old, str) or not old or not isinstance(new, str) or old == new:
         raise ValueError('Mutation must replace nonempty text with different text')
     files = snapshot(root, spec['files'])
+    modes = {name: (root / name).stat().st_mode & 0o777 for name in files}
     if target not in files:
         raise ValueError('Mutation target must be among selected input files')
     original = files[target].decode('utf-8')
@@ -129,6 +130,7 @@ def audit(root, spec, python=sys.executable, timeout=30):
                         dest = directory / name
                         dest.parent.mkdir(parents=True, exist_ok=True)
                         dest.write_bytes(faulty if variant == 'mutant' and name == target else content)
+                        dest.chmod(modes[name])
                     result = execute(str(python), directory, spec,
                                      spec.get('probe') if check == 'probe' else None, timeout)
                     results[variant + '_' + check] = result
