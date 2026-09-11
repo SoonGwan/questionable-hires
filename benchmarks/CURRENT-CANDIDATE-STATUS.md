@@ -5,7 +5,7 @@ Latest combined snapshot reviewed: `9683528`, in [FAST-REGRESSION-03](FAST-REGRE
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | Collector `fa3fab7`, followed by interface/line-selection guidance | Local history mechanics and active compatibility sample; see [collector review](NECROMANCER-TOOL-01.md) | Latest routing is unmeasured; observed token increase and missing captured helper output; obsolete/public-contract cases |
-| Receipt | `3cbbecf` | Compressed predecessor passes boundary, existing-fix and missing-runtime cases | Latest documented-runner correction not retested; before-evidence reuse and dirty-tree verification |
+| Receipt | `4d9b380` | Boundary/existing-fix evidence plus [changed-test history check](RECEIPT-FROZEN-01.md) using frozen assertions | Dirty-tree and old-interface limits unverified; no paired cost evidence for latest change; missing-runtime runner correction not specifically retested |
 | Landlord | `cb43845` | [Contract-focused checks](LANDLORD-FOCUSED-01.md): keeps justified adapter and simplifies fixed formatter without edits | Favorable single adapter pair is not repeatability; static formatter comparison has different verification depth; representative workloads missing |
 | Mother-in-law | `8312d1f` | [Focused follow-up](MOTHER-FOCUSED-01.md): broken/protected flows distinguished, bounded waits and in-scope discovery observed | Combined cost not improved; rendered browser interactions and recovery unverified |
 | Exorcist | `1c16bc8` | Cache-free race and safeguard explanation demonstrated | No stable cost advantage; distinct production diagnosis workloads |
