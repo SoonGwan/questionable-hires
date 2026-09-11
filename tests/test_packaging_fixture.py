@@ -1,5 +1,7 @@
 import importlib.util
+import json
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -11,8 +13,19 @@ spec.loader.exec_module(fixture)
 
 
 class PackagingFixtureTests(unittest.TestCase):
+    def test_archived_case_matches_pinned_generator_when_history_is_available(self):
+        available = subprocess.run(
+            ['git', 'cat-file', '-e', fixture.SNAPSHOT + '^{commit}'],
+            cwd=ROOT, capture_output=True)
+        if available.returncode:
+            self.skipTest('Pinned source history unavailable; archived fixture tests still run')
+        archived = json.loads((ROOT / 'benchmarks/packaging-cases.json').read_text())
+        self.assertEqual(archived, fixture.cases())
+
     def test_pinned_real_build_has_retry_fault_and_preserves_existing_output(self):
-        case = fixture.cases()[0]
+        # Archives and shallow CI clones can exercise the regression without
+        # fetching history or requiring the generator's historical commit.
+        case = json.loads((ROOT / 'benchmarks/packaging-cases.json').read_text())[0]
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             for name, content in case['files'].items():
