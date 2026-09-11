@@ -19,6 +19,8 @@ A single consumer can justify a security, testing or external-API boundary. Repe
 
 Use a concrete needed change to compare distinct obligations: what policy must change, where does it live, and which compatibility promises survive? Keep a layer when removing it merely moves necessary complexity into callers. Reuse existing evidence; execute a discriminating check when equivalence or a consequential behavior is unresolved, not a broad suite merely to decorate a review.
 
+When execution is needed, prefer an existing relevant test group known to be lightweight over repeatedly inspecting tests to construct a smaller selection. Narrow further when runtime, setup, side effects or isolation justify that selection work. Test count alone is not the cost; keep any distinct probe needed to resolve the recommendation.
+
 ## Deliver and stop
 
 Lead with keep, simplify or remove, supported by actionable costs and file/design references. A clean review is valid. Implement only when requested, preserving user changes, validation and behavior; review does not authorize edits or publication.
