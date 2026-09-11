@@ -11,6 +11,17 @@ references to pending cells describe that stage, not the final status.
 
 ## Final cost accounting
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="results/bundle-current-02-dark.svg">
+  <img src="results/bundle-current-02-light.svg" alt="Nine-task cost comparison: skill uses more tokens in eight tasks and more time in eight tasks. Total tokens rise 10.33%; total process time rises 23.08%. Outcomes differ; this is not evidence of superiority.">
+</picture>
+
+Regenerate both Montage-palette SVGs with
+`python3 benchmarks/render_bundle_costs.py` from the frozen cost export below.
+Every case remains visible, including missing verification evidence. This
+single-repeat chart has no uncertainty intervals and does not replace the
+original 72-session chart or use its aggregation method.
+
 The [machine-readable cost export](results/bundle-current-02-costs.json) retains
 all 18 usage records, their original terminal-event usage, elapsed times and source
 artifact hashes. It contains no commands or full behavioral traces and must not
