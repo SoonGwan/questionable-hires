@@ -55,6 +55,22 @@ class ProbeRunnerTests(unittest.TestCase):
         self.assertEqual(result['output'], 'output\nerror\n')
         self.assertEqual(self.run_code('print("ok")')['exit_code'], 0)
 
+    def test_nested_worker_output_and_forwarded_status_are_captured(self):
+        for status in (0, 1):
+            with self.subTest(status=status):
+                worker = ('import sys\nprint("normal sequence passed", flush=True)\n'
+                          'print("worker diagnostic", file=sys.stderr, flush=True)\n'
+                          f'raise SystemExit({status})\n')
+                parent = ('import subprocess,sys\n'
+                          f'p = subprocess.run([sys.executable, "-B", "-c", {worker!r}], timeout=2)\n'
+                          'raise SystemExit(p.returncode)\n')
+                result = self.run_code(parent, timeout=4)
+                self.assertEqual(result['exit_code'], status)
+                self.assertFalse(result['timed_out'])
+                self.assertTrue(result['cleanup_complete'])
+                self.assertFalse(result['output_truncated'])
+                self.assertEqual(result['output'], 'normal sequence passed\nworker diagnostic\n')
+
     def test_deadline_ignores_cooperative_cancellation(self):
         result = self.run_code('import signal, time; signal.signal(signal.SIGTERM, signal.SIG_IGN); print("ready", flush=True); time.sleep(20)', 0.2)
         self.assertTrue(result['timed_out'])

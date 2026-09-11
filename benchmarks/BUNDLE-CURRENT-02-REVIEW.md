@@ -292,3 +292,26 @@ skill has a partial prefix despite no diagnostic flag. These limits are retained
 The runner exited 0 and recorded finish at 2026-09-11 14:53:52 UTC. No active
 model session remains for this experiment, and no additional model run was made
 to repair its scores or missing evidence.
+
+## Separate author capture diagnostic after the frozen review
+
+No new model session was run. Each retained QA project was copied into an owned
+temporary directory and run through the existing Exorcist output-collecting
+process wrapper, with an eight-second outer deadline. Original retained files
+were byte-checked before/after and remained unchanged; temporary copies were
+removed. This is **author replay**, not original benchmark evidence or timing.
+
+- Broken search: exit 1, normal test passes, reversed-order test has the actual
+  `results for cat` versus `results for cats` AssertionError; both test outcomes
+  and the traceback are captured. No timeout/truncation; cleanup confirmed.
+- Protected search: exit 0, both expected PASS lines captured; no timeout or
+  truncation and cleanup confirmed.
+
+This establishes behavior in that separate execution and shows that inherited
+worker output can be collected through the existing wrapper. It does not identify
+which upstream capture component lost the original output or establish that this
+wrapper would repair capture in model sessions. The frozen unknown outcome and
+all original scores/costs remain unchanged. Do not mandate additional wrappers
+solely from this diagnostic. A real nested-worker regression now verifies stdout,
+stderr and forwarded success/failure status through the existing collector,
+without a model account or new output-handling framework.
