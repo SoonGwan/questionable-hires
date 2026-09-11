@@ -17,6 +17,18 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_auth_design_is_a_single_isolated_transfer(self):
+        skill, tasks = runner.select_profile('auth-design')
+        self.assertEqual(skill, 'landlord')
+        self.assertEqual(list(tasks), ['auth-flow-design'])
+        self.assertEqual(set(runner.make_schedule(tasks, ['baseline', 'skill'], 1)),
+                         {('auth-flow-design', 'baseline', 1), ('auth-flow-design', 'skill', 1)})
+        self.assertEqual(list(runner.select_profile('design')[1]), ['transport-design'])
+        with self.assertRaises(ValueError):
+            runner.select_profile('auth-design', ['transport-design'])
+        with self.assertRaises(ValueError):
+            runner.select_profile('design', ['auth-flow-design'])
+
     def test_diagnosis_profile_is_one_separate_exorcist_case(self):
         skill, tasks = runner.select_profile('diagnosis')
         self.assertEqual(skill, 'exorcist')

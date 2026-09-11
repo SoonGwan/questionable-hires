@@ -19,6 +19,9 @@ TASKS = {
 DESIGN_TASKS = {
     'transport-design': 'Review httpx/_transports/base.py and httpx/_transports/mock.py for maintenance cost. Recommend whether any simplification is justified by actual consumers and supported contracts in this checkout. Do not edit existing files or perform a general repository audit.',
 }
+AUTH_DESIGN_TASKS = {
+    'auth-flow-design': 'Review Auth.auth_flow, Auth.sync_auth_flow and Auth.async_auth_flow in httpx/_auth.py for maintenance cost. A proposal suggests replacing these similar-looking entrypoints with one universal authentication callback. Recommend whether that simplification is justified by actual consumers and supported contracts in this checkout. Do not edit existing files or perform a general repository audit.',
+}
 DIAGNOSIS_TASKS = {
     'redirect-auth': 'Diagnose this report against the HTTPX checkout: a GET with an explicit Authorization header follows a 302 from http://example.org/start to https://example.org:8443/end, but the redirected request has no Authorization. The reporter suspects a transport or cache issue because redirecting instead to https://example.org/end keeps it. Reproduce both outcomes locally without network access, identify the responsible mechanism, and recommend a safe next action. Include a same-origin normal control. Do not edit original source/tests, install dependencies, or globally disable credential protections.',
 }
@@ -26,7 +29,8 @@ DIAGNOSIS_TASKS = {
 
 def select_profile(profile, requested=None):
     profiles = {'audit': ('con-artist', TASKS), 'design': ('landlord', DESIGN_TASKS),
-                'diagnosis': ('exorcist', DIAGNOSIS_TASKS)}
+                'diagnosis': ('exorcist', DIAGNOSIS_TASKS),
+                'auth-design': ('landlord', AUTH_DESIGN_TASKS)}
     if profile not in profiles:
         raise ValueError('Unknown profile')
     skill, available = profiles[profile]
@@ -82,7 +86,7 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis'), default='audit')
+    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design'), default='audit')
     parser.add_argument('--case', action='append')
     parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
     parser.add_argument('--repeats', type=int, default=3)
@@ -109,6 +113,11 @@ def main():
     if args.profile == 'diagnosis':
         checks = ['tests/client/test_redirects.py::test_cross_domain_redirect_with_auth_header',
                   'tests/client/test_redirects.py::test_same_domain_https_redirect_with_auth_header']
+    if args.profile == 'auth-design':
+        checks = ['tests/client/test_auth.py::test_sync_auth_reads_response_body',
+                  'tests/client/test_auth.py::test_async_auth_reads_response_body',
+                  'tests/client/test_auth.py::test_sync_auth',
+                  'tests/client/test_auth.py::test_async_auth']
     subprocess.run([str(python), '-B', '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
                     *checks], cwd=source, check=True, timeout=60)
     output = args.output.resolve()
