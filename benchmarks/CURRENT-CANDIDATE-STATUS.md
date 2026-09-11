@@ -7,6 +7,13 @@ nor a favorable single sample establishes that objective.
 
 ## Current resources and evidence
 
+Latest [automatic two-fault audit](PROBE-ADOPTION-01.md): Con Artist is selected
+but its helper is not used. Both native harnesses already share the correct
+stronger-test observation. Auto costs +24.92% tokens / −5.97% time with extra
+import processes and less input-case coverage; original output prefixes are
+partial. Required fault demonstrations and scope are supported, but the helper
+optimization does not explain this result and overall efficiency remains unmet.
+
 Con Artist `91fdde3` removes one demonstrated duplicate correct-code probe in a
 deterministic two-fault batch: six actual child executions instead of seven,
 with both independent mutant assertion failures retained. The new regression
