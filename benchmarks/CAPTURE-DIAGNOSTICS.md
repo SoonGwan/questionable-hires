@@ -56,3 +56,24 @@ evidence separately, as already done for the runtime control. Do not fill gaps
 from expected answers or erase rejected attempts. Further CLI root-cause work
 requires a bounded reproducible tool-capture/patch failure, not more unchanged
 developer benchmark repetitions.
+
+## Installed resource identity
+
+New cells also record `installed_resources_before` and `installed_resources_after`:
+every installed regular file's SHA256 and permission bits, including references
+and scripts. Symlinks are recorded as links rather than reading their targets;
+a replaced installation root is flagged without traversing it. `resource_diagnostics`
+lists added, removed or changed paths, or a post-run inventory error. The legacy
+`skill_sha256` now hashes the installed entrypoint rather than rereading the source.
+Auto-selection cells inventory all installed skills, not just the expected hire.
+
+These snapshots do not prove which resources were read, detect transient changes
+that were restored, certify source-revision identity, or repair missing command
+output. They do not alter model completion or quality scores. Author review still
+compares the recorded installation with the intended frozen revision. Old results
+remain untouched and must not be claimed to contain these new fields.
+
+Subprocess-backed tests verify a helper mutation during a completed cell is
+recorded while the source stays unchanged. Separate checks cover mode/content
+changes and symlink-root handling. No paid model run is required to verify this
+recording machinery; it does not establish a skill efficiency gain.
