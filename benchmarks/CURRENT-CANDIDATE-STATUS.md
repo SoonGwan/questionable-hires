@@ -603,6 +603,14 @@ substitute reliability-only improvements or a smaller easy task for that objecti
 
 ## Retained targeted history
 
+Necromancer now has an **unmeasured decision-gate candidate** beyond the recorded
+history runs: a removal-only decision settled by a demonstrated required current
+caller break need not collect origin history. Explicit historical questions and
+unresolved compatibility/regression decisions still require it. The
+[two-request screening protocol](NECROMANCER-DECISION-GATE-PROTOCOL.md) compares
+predecessor and candidate and includes a history-required countercase. Structural
+validation is not behavioral acceptance; no performance improvement is claimed.
+
 Historical steps remain in their individual reports, including unfavorable results:
 
 - Receipt: [routing](RECEIPT-ROUTING-01.md), [helper adoption](RECEIPT-HELPER-01.md).
