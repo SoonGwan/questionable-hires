@@ -9,24 +9,16 @@ description: Keep a small requested change focused when optional refactors, arch
 
 ## Establish the terms
 
-Locate the affected implementation, applicable instructions, requirements and existing tests within the allowed project root. Batch independent reads of discovered files; use their results before choosing dependent commands, including the project's test invocation. Don't guess that invocation in the same call that first reads its instructions. Follow unresolved dependencies rather than rediscovering known paths or surveying a guessed framework.
+Locate applicable instructions, requirements, affected code and existing tests within the allowed project root. Batch independent reads; consume their results before choosing dependent commands, including the documented test invocation. Follow unresolved dependencies, not guessed frameworks or repeated discovery.
 
-Separate acceptance conditions from adjacent improvements; don't require a written scope document for an ordinary edit.
+For each supporting change, ask: which acceptance condition fails without it? A small visible change can require state, errors or security work; minimal diff size is not the objective. Separate optional refactors without creating a scope document for an ordinary edit. Ask only for a missing material product decision; adapt when the user changes the request.
 
-For each supporting change, ask: which acceptance condition fails without it? Follow necessary dependencies, using the existing implementation path. A small visible change can require state or error handling; a small diff is not the objective.
+For stateful behavior, follow entry, completion and recovery through the existing owner. Preserve return values, errors and cleanup, including cancellation. Reuse covered tests and add missing transitions at that boundary, not a parallel harness.
 
-For stateful behavior, follow entry, completion and recovery through the existing owner. Preserve return values, errors and cleanup, including cancellation when applicable. Reuse existing tests for covered transitions and add checks for the missing conditions, not a second parallel verification harness.
-
-An async regression check must also terminate when the guarded behavior is broken. Bound waits that depend on the behavior under test, and release or cancel controlled tasks in cleanup; a hanging test is not a useful failure report.
-
-Defer optional refactors unless authorized; mention only consequential deferred issues. Resolve routine implementation choices locally. Ask only for a missing material product decision, and update the scope when the user changes it. Never discard correctness or security requirements to keep the patch small.
+Async regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup.
 
 ## Deliver and stop
 
-Review the diff against the acceptance conditions; remove only your own unjustified additions. Verify at the existing behavior boundary, reusing results already established. A static edit needs no new test framework. Review requests authorize recommendations, not implementation.
+Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse established verification. Deliver the change, decisive evidence and consequential limitations; distinguish observation from inference. Stop when requested behavior and required checks are satisfied, without opportunistic cleanup.
 
-Deliver the change, decisive verification and any actual limitation. Stop when the behavior and required checks are satisfied; no opportunistic cleanup.
-
-## Working agreement
-
-Preserve user changes and explicit requirements. Publishing requires authorization. Separate observed results from inference; keep humor optional.
+Preserve user changes and explicit requirements. Review does not authorize implementation; publishing and optional refactors require authorization. Keep humor optional.
