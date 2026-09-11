@@ -15,13 +15,13 @@ python3 scripts/install.py --dest /absolute/path/to/your-project/.agents/skills
 
 Replace the example project path with your project's actual path. To install just one hire, add `--skill necromancer`; repeat `--skill` for several hires. The installer refuses to overwrite any existing target. On a copy error or cancellation it attempts to remove every skill folder created by that invocation, preserving the original error even if cleanup fails. If filesystem permissions prevent cleanup, partial folders can remain: inspect the reported destination before retrying, and preserve unrelated or pre-existing files.
 
-For all your projects, choose your user skill directory instead:
-
 Source skill folders must contain regular local resources, not symbolic links.
 The installer checks all selected skills before writing, including during dry
 runs, and rejects linked files/directories rather than copying external targets.
 Use a trusted checkout that is not being modified concurrently; this preflight
 is not a sandbox or a defense against concurrent source replacement.
+
+For all your projects, choose your user skill directory instead:
 
 ```sh
 python3 scripts/install.py --dest "$HOME/.agents/skills" --skill necromancer
@@ -48,6 +48,11 @@ To uninstall, move only the installed hire folders you selected out of `.agents/
 The repository includes a validated `.codex-plugin/plugin.json`. A local marketplace bundle has also passed an actual CLI install/list/cache-comparison/remove cycle; see the [installation record](INSTALLATION-TEST.md).
 
 To build a new bundle:
+
+The builder rejects symbolic links in the skill tree, plugin metadata, license
+and marketplace source before creating output. It does not follow links to
+external resources. Build from a trusted checkout without concurrent source
+changes; this check is not a security sandbox.
 
 ```sh
 python3 scripts/build.py --output dist/bundle
