@@ -80,7 +80,7 @@ archive result. Temporary extraction directories were removed after execution.
 | Remote distribution | No verified remote Git marketplace install | Do not advertise as tested |
 | Publication | GitHub API reports `isPrivate: true` | Owner approval required for visibility change and release publication |
 
-## Hosted CI evidence
+## Latest source archive
 
 Source archive rechecked at `eb8a0e2`: `git archive` extraction without `.git`
 passes validation and discovers 216 tests; 214 execute/pass and the two pinned
@@ -90,6 +90,8 @@ The extraction has no ignored local-run logs or installed browser dependencies;
 the optional browser workflow and fresh model evaluations are not part of this
 Python test result. The owned extraction is removed after execution. This updates
 the local archive evidence, not the historical hosted-CI result below.
+
+## Hosted CI evidence
 
 The latest run's job `102959131919` has no executed steps and no assigned runner.
 Its check annotation reports failed recent payments or a spending limit requiring
