@@ -61,6 +61,31 @@ class ReceiptHelperTests(unittest.TestCase):
         self.assertEqual(self.git('status', '--porcelain'), status)
         self.assertFalse(list(self.root.glob('.receipt-*')))
 
+    def test_cli_reuses_launch_interpreter_and_resolves_revision_expressions(self):
+        # Exercise the documented stdin recipe, not an in-process default argument.
+        assertions = (self.tests + '\n    def test_interpreter(self):\n'
+                      '        import sys\n'
+                      f'        self.assertEqual(sys.executable, {sys.executable!r})\n')
+        (self.root / 'test_rule.py').write_text(assertions)
+        status = self.git('status', '--porcelain')
+        result = subprocess.run(
+            [sys.executable, '-B', str(SCRIPT), '--source', str(self.root), '--spec', '-'],
+            input=json.dumps(dict(self.recipe, before='HEAD^', after='HEAD')),
+            text=True, capture_output=True, timeout=20)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        observed = json.loads(result.stdout)
+        self.assertEqual(observed['revisions'], dict(before=self.before, after=self.after))
+        self.assertEqual(observed['checks']['before']['exit_code'], 1)
+        self.assertEqual(observed['checks']['after']['exit_code'], 0)
+        for check in observed['checks'].values():
+            self.assertIn('test_interpreter (test_rule.Boundary) ... ok', check['output'])
+            self.assertIn('Ran 2 tests', check['output'])
+            self.assertIn('Verified copied import: rule', check['output'])
+        self.assertIn('AssertionError', observed['checks']['before']['output'])
+        self.assertEqual((self.root / 'test_rule.py').read_text(), assertions)
+        self.assertEqual(self.git('status', '--porcelain'), status)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
     def test_multiple_literal_files_share_tree_query_and_preserve_modes(self):
         names = ['z space.txt', 'a[1].txt', 'nested/tab\tname.txt']
         for name in names:
