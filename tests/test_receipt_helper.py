@@ -61,6 +61,26 @@ class ReceiptHelperTests(unittest.TestCase):
         self.assertEqual(self.git('status', '--porcelain'), status)
         self.assertFalse(list(self.root.glob('.receipt-*')))
 
+    def test_working_input_budget_rejects_before_reading_overflow_file(self):
+        for name in ('large-a.bin', 'large-b.bin'):
+            with (self.root / name).open('wb') as stream:
+                stream.truncate(10_000_000)
+        recipe = dict(self.recipe, fixed=['test_rule.py', 'large-a.bin', 'large-b.bin'])
+        read = Path.read_bytes
+        accessed = []
+        def checked_read(path):
+            accessed.append(path.name)
+            if path.name == 'large-b.bin':
+                raise AssertionError('Read started after the working-input budget was exhausted')
+            return read(path)
+        with patch.object(Path, 'read_bytes', checked_read), \
+                patch.object(helper, 'run_check') as execute:
+            with self.assertRaisesRegex(ValueError, 'Inputs exceed 20 MB'):
+                helper.compare(self.root, recipe)
+        execute.assert_not_called()
+        self.assertEqual(accessed, ['test_rule.py', 'large-a.bin'])
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
     def test_cli_reuses_launch_interpreter_and_resolves_revision_expressions(self):
         # Exercise the documented stdin recipe, not an in-process default argument.
         assertions = (self.tests + '\n    def test_interpreter(self):\n'

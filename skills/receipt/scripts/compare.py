@@ -108,17 +108,23 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     if Path(git(root, 'rev-parse', '--show-toplevel').decode().strip()).resolve() != root:
         raise ValueError('source must be the repository root')
     originals, modes = {}, {}
+    total = 0
     for name in names:
         path = root / checked_path(name)
         if any(p.is_symlink() for p in [path, *path.parents] if root in p.parents):
             raise ValueError('Symlink inputs are unsupported')
-        if not path.is_file() or path.stat().st_size > 20_000_000:
+        if not path.is_file():
             raise ValueError('Input missing or exceeds 20 MB')
+        length = path.stat().st_size
+        if length > 20_000_000:
+            raise ValueError('Input missing or exceeds 20 MB')
+        if total + length > 20_000_000:
+            raise ValueError('Inputs exceed 20 MB')
         originals[name] = path.read_bytes()
+        total += len(originals[name])
+        if total > 20_000_000:
+            raise ValueError('Inputs exceed 20 MB')
         modes[name] = path.stat().st_mode & 0o777
-    total = sum(map(len, originals.values()))
-    if total > 20_000_000:
-        raise ValueError('Inputs exceed 20 MB')
     variants, revisions = {}, {}
     varying_names = set(recipe['vary'])
     blobs = {}  # Immutable object content; never reuse mutable working inputs.
