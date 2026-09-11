@@ -1,6 +1,6 @@
 # Current candidate: performance objective remains unmet
 
-Resource table updated through `5c697e5`. The objective is better developer
+Resource table includes the post-HTTPX interface documentation update. The objective is better developer
 outcomes with similar or lower token/time cost across all eight skills, preserving
 the coworker concept. Neither passing fixtures, more safeguards, shorter instructions
 nor a favorable single sample establishes that objective.
@@ -18,7 +18,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `3ededb6`; helper `34aedd4`, reference `3ededb6` | [Setup control](EXORCIST-CONDITIONAL-01.md), [async path](CONDITIONAL-PATHS-01.md) | Conditional helper selection is mixed; current async artifact lacks hard cancellation containment; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
-| Con Artist | `5c697e5`; helper/reference `941ea50` | [HTTPX isolation pair](HTTPX-ISOLATION-01.md), [conditional probes](CON-ARTIST-CONDITIONAL.md), [earlier auto selection](AUTO-AUDIT-01.md) | Helper adopted with lower single-pair costs, but different faults/verification depths; automatic-path improvement untested |
+| Con Artist | `5c697e5`; helper `941ea50`, reference updated after HTTPX pair | [HTTPX isolation pair](HTTPX-ISOLATION-01.md), [conditional probes](CON-ARTIST-CONDITIONAL.md), [earlier auto selection](AUTO-AUDIT-01.md) | Helper adopted with lower single-pair costs, but different faults/verification depths; expanded interface documentation and automatic-path improvement untested |
 | Friday | `4ac4ffe`; helper/reference `e79b208` | [Matrix](FRIDAY-MATRIX-01.md), screen 05 | Correct SQLite compatibility checks, no cost advantage; actual writers/production runtime remain unknown |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
@@ -79,6 +79,14 @@ when the helper would not fit or would duplicate work. The helper code is unchan
 rewrite bookkeeping. The [HTTPX pair](HTTPX-ISOLATION-01.md) observes helper adoption
 and -4.5% tokens / -32.4% time, but different faults and verification/delivery
 depths prevent an equivalent-work efficiency claim. Full helper source is still read.
+
+The subsequent reference update exposes result fields, copied working-directory
+and import semantics, and propagation of a nested test runner's exit status.
+This addresses information absent from the public interface without forbidding
+source review. The actual reason for the earlier source read is unknown. A new
+behavioral test verifies generated-test execution and failure propagation;
+25 helper tests pass. No model efficiency result exists for this documentation
+change, and the earlier 119-test full-suite result predates its new test.
 
 Recent micro-edits and helper-routing changes have not produced stable efficiency
 gains. Do not keep cycling the same exposed tasks for a favorable result. Use the
