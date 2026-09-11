@@ -9,7 +9,7 @@ Snapshot reviewed after `28a0453`. The objective remains better developer outcom
 | Landlord | `1c16bc8` | Fixed formatter review passes without edits | Justified abstraction controls and representative maintenance-cost comparison |
 | Mother-in-law | `b347792` | Broken and protected search cases distinguished | Mixed token results; rendered browser interactions and recovery |
 | Exorcist | `1c16bc8` | Cache-free race and safeguard explanation demonstrated | No stable cost advantage; distinct production diagnosis workloads |
-| Hostage Negotiator | `6bd153a`, followed by bounded async-check correction | [State sample](HOSTAGE-TRANSITIONS-01.md) and [existing-suite transfer](HOSTAGE-TRANSFER-01.md); reuse and in-scope discovery observed on transfer | Transfer costs higher; generated mutant test hangs; latest bounded-wait guidance unmeasured |
+| Hostage Negotiator | `4c327a9` | [Transfer](HOSTAGE-TRANSFER-01.md) and [bounded-wait follow-up](HOSTAGE-TRANSFER-02.md): preserved tests, scoped discovery and terminating duplicate-fault regression | Latest tokens lower but time higher; one authored workload does not establish efficiency or broader scope handling |
 | Con Artist | Instructions `1c4c41a`, helper `99dbf23` | Synthetic helper checks, 13 helper tests, and three real HTTPX task comparisons on helper `8c56744` | HTTPX results are mixed in tokens and vary in coverage depth; HEAD parent-directory listing violates literal scope; latest mode fix has local checks only |
 | Friday | `b347792` | Actual local rollout/rollback incompatibilities demonstrated | Non-rolling plans, compatible controls and representative runtime context |
 
