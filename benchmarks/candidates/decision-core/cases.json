@@ -1,0 +1,60 @@
+[
+  {
+    "id": "formatter-review",
+    "skill": "landlord",
+    "task": "Review this formatter design for maintenance cost. Recommend any justified simplification; do not edit files.",
+    "files": {
+      "formatting.py": "class FormatterRegistry:\n    def __init__(self):\n        self.providers = {}\n    def register(self, name, provider):\n        self.providers[name] = provider\n    def format(self, name, value):\n        return self.providers[name](value)\n\nregistry = FormatterRegistry()\nregistry.register('usd', lambda cents: f'${cents / 100:.2f}')\n",
+      "invoice.py": "from formatting import registry\n\ndef total_label(cents):\n    return registry.format('usd', cents)\n",
+      "requirements.md": "This internal tool displays USD totals only. No third-party formatters or runtime configuration are supported.\n"
+    },
+    "criteria": [
+      "Identifies the concrete single fixed formatting consumer.",
+      "Suggests a simpler function preserving USD output.",
+      "Does not falsely claim every single-consumer abstraction is bad or edit files."
+    ]
+  },
+  {
+    "id": "adapter-justified",
+    "skill": "landlord",
+    "task": "Review this adapter for maintenance cost. Is it worth keeping? Do not edit files.",
+    "files": {
+      "adapter.py": "def customer_name(client, customer_id):\n    payload = client.lookup(customer_id)\n    return payload['displayName'] if 'displayName' in payload else payload['name']\n",
+      "invoice.py": "from adapter import customer_name\n\ndef invoice_heading(client, customer_id):\n    return customer_name(client, customer_id)\n",
+      "requirements.md": "The external provider supports v1 name and v2 displayName payloads. Both versions remain in production. Provider migration is independent of invoice releases. Keep provider schema handling at the adapter boundary.\n"
+    },
+    "criteria": [
+      "Keeps justified compatibility adapter despite single consumer.",
+      "Connects value to independently changing provider contract.",
+      "Does not demand inline removal or edit files."
+    ]
+  },
+  {
+    "id": "label-change",
+    "skill": "hostage-negotiator",
+    "task": "Change the checkout submit button label from Buy to Place order. A teammate also suggested replacing the component state system, but that is optional and not part of this request.",
+    "files": {
+      "checkout.html": "<!doctype html>\n<html lang=\"en\"><title>Checkout</title><form><button type=\"submit\">Buy</button></form></html>\n",
+      "state.js": "export function checkoutState() { return { pending: false }; }\n"
+    },
+    "criteria": [
+      "Changes only the requested label.",
+      "Does not replace the optional state system.",
+      "Does not invent unrelated implementation requirements."
+    ]
+  },
+  {
+    "id": "necessary-state",
+    "skill": "hostage-negotiator",
+    "task": "Disable Submit while save is pending and re-enable it whether save succeeds or fails. Implement this behavior. The app currently has no pending state.",
+    "files": {
+      "form.py": "class Form:\n    async def submit(self, save):\n        return await save()\n",
+      "requirements.md": "The UI reads Form.pending for the disabled state. Duplicate calls to submit while pending must not invoke save again. Preserve a successful save's return value and propagate failures after clearing pending.\n"
+    },
+    "criteria": [
+      "Adds necessary pending state despite small-change preference.",
+      "Clears pending on both success and failure; blocks duplicate save.",
+      "Preserves result and exception behavior with relevant checks."
+    ]
+  }
+]
