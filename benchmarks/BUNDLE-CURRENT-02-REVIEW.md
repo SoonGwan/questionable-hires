@@ -137,3 +137,29 @@ Both cells' original files equal frozen fixture bytes, installed resource hashes
 match `e02c9bb` and before/after inventories agree, and redacted events match the
 documented substitutions on originals. The broken-search missing evidence stays
 in task accounting and resource totals; it is not excluded to improve the score.
+
+## Search baseline counterparts
+
+**Broken search / baseline:** five shell commands, 45.276 seconds. One deterministic
+test drives actual Search with controlled futures and captures the intended
+stale-result AssertionError: the newer `['cat']` result is replaced by older
+`['car', 'cafe']`. Only `test_search.py` is added. It checks the newer result before
+releasing the old response, but does not run a separate normal completion-order
+control. Queue waits, completion and cancellation/gather have no local deadline.
+The initial file listing includes Git internals while remaining project-scoped.
+Unlike the skill counterpart, the original log contains the decisive traceback.
+
+**Search diagnosis / baseline:** five shell commands, 47.768 seconds. The actual
+transport and Search run in normal and reversed completion order with a recording
+request dependency. Assertions and printed output establish dispatched queries,
+no-cache headers and the resulting stale overwrite without cache. Only
+`experiment_search_race.py` is added; source/transport remain unchanged. The
+script has no explicit local wait deadlines or task-cleanup finally block.
+The answer supports a local no-cache reproduction; this does not establish that
+every production incident has the same cause.
+
+Both baseline cells' original files match fixtures, skill inventories are empty,
+and original/redacted events agree. No capture flags or rejected patches appear;
+decisive outputs were inspected directly. Baseline and skill differ in normal
+control coverage, deadlines and capture quality; do not treat all four sessions
+as interchangeable successful executions on the strength of their final answers.
