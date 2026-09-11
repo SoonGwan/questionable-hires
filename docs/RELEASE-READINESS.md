@@ -21,6 +21,12 @@ existing bytes and external fixture contents. These fixtures do not validate
 marketplace schema or host registration; those remain separate checks. Source
 links are now rejected by both standalone installation and bundle building.
 
+Latest local full run after source/output separation (`132fa49` executable
+snapshot): 192 tests pass in 32.564 seconds, including the CLI tests and both
+self-copy rejection regressions. Contributor instructions distinguish these local
+checks from model-usage evaluations; issue forms parse as YAML with unique field
+IDs. No hosted workflow or model benchmark was run for this documentation update.
+
 | Area | Evidence | State / next required check |
 | --- | --- | --- |
 | Local mechanics | 183 tests pass in 26.312 seconds after build recovery changes; catalog/link validation and diff checks pass | Passed locally; does not establish other platforms or model quality |
