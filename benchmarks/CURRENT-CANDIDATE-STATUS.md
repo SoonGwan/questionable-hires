@@ -10,6 +10,10 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Interaction runner reuse candidate](INTERACTION-RUNNER-REUSE-CANDIDATE.md):
+  Mother-in-law now prefers an existing sufficient runner deadline over a
+  redundant self-spawning wrapper. This is an unmeasured candidate, not a win.
+
 - [Current nine-task combined gate](BUNDLE-CURRENT-02-REVIEW.md): all 18 sessions
   finished and reviewed; **+10.33% total tokens / +23.08% summed process time**.
   Missing before evidence, a scope exception, an omitted history criterion and
@@ -42,7 +46,7 @@ The five optional helpers are not mandatory for every task.
 | Necromancer | `51ce19e`; collector `6318b91`, reference `3157ee2` | [Scoped discovery](NECROMANCER-DISCOVERY-01.md), [adverse packaging transfer](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md) | Configured consumer preserved with near-identical cost; favorable packaging discovery pair has unequal work and capture limits; earlier transfer adverse; broad savings unproven |
 | Receipt | `abb4b93`; helper/reference `4a29990` | [Two-module transfer](RECEIPT-ASSEMBLY-01.md), [equal explicit requirements](RECEIPT-EQUAL-REQUIREMENTS-01.md), [earlier adverse package](RECEIPT-CURRENT-PACKAGE-01.md) | Two-module transfer +26.0% tokens / −31.1% time despite correct before/after checks; earlier parser pair favorable; combined efficiency unmet |
 | Landlord | `26a310d` | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Caller search excludes installed example content but still lists resource paths; 68,509 tokens/39.233s in nonpaired regression, no causal efficiency claim; earlier comparisons adverse |
-| Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
+| Mother-in-law | `e0c1b62` | [Runner reuse candidate](INTERACTION-RUNNER-REUSE-CANDIDATE.md), [compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Runner reuse unmeasured; deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
 | Con Artist | `8b61ed8`; helper/common/advanced references `91fdde3` | [Automatic audit and subsequent candidate](PROBE-ADOPTION-01.md), [report interpretation](CON-ARTIST-REPORT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Auto audit +24.92% tokens / −5.97% time; helper unused. Same-process provenance instruction is newer and has no model result |
