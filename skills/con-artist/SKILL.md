@@ -15,6 +15,8 @@ Choose a reachable fault at an unobserved boundary: acknowledgment versus persis
 
 For a small audit, use one disposable copy and a short inline experiment; retain a harness only when needed for reuse or delivery. Verify imports resolve to that copy. Preserve the user's original files, test configuration and explicit scope; vary one behavior at a time. Keep test exit statuses identifiable independently of log printing.
 
+For small Python unittest/pytest audits, [the optional audit helper](references/python-audit.md) handles copies, exact mutation, import checks and separate test/probe outcomes. Read that reference when using it instead of rewriting the isolation plumbing. Keep the existing workflow when a helper would add setup or repeat already collected evidence.
+
 If the original test survives, check the meaningful effect—not merely success or container size that could hide repeated writes. Run the same stronger assertion against correct and faulty implementations: it must pass the former and fail the latter for the intended reason. If the mutant is killed, identify the detecting assertion or warning policy; this protects that fault, not all lifecycle paths.
 
 ## Deliver and stop

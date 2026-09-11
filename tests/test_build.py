@@ -22,6 +22,9 @@ class BuildTests(unittest.TestCase):
             for file in files:
                 self.assertEqual(file.read_bytes(), (builder.ROOT / file.relative_to(plugin)).read_bytes())
             self.assertTrue((plugin / "LICENSE").is_file())
+            for name in ('scripts/audit.py', 'references/python-audit.md'):
+                relative = Path('skills/con-artist') / name
+                self.assertEqual((plugin / relative).read_bytes(), (builder.ROOT / relative).read_bytes())
             with self.assertRaises(FileExistsError):
                 builder.build(root)
 
