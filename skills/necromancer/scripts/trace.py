@@ -2,6 +2,7 @@
 """Collect bounded, read-only Git evidence for a selected current line range."""
 import argparse
 import ast
+from collections import deque
 import json
 from pathlib import Path
 import re
@@ -67,7 +68,20 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
     body = output.split(marker, 1)[1]
     if 'diff --git ' in body or '@@@' in body:
         return None
-    rows, selected, covered = [], [], set()
+    rows, selected, covered = {}, [], set()
+    recent = deque(maxlen=3)
+    row_count = 0
+
+    def remember(text, wanted=False):
+        nonlocal row_count
+        if wanted:
+            selected.append(row_count)
+            rows.update(recent)
+        if wanted or selected and row_count <= selected[-1] + 3:
+            rows[row_count] = text
+        recent.append((row_count, text))
+        row_count += 1
+
     old = new = old_left = new_left = None
     for line in body.splitlines():
         match = re.fullmatch(r'@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@.*', line)
@@ -76,18 +90,18 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
                 return None
             old, old_left, new, new_left = (int(match[1]), int(match[2] or 1),
                                            int(match[3]), int(match[4] or 1))
-            rows.append(line)
+            remember(line)
             continue
         if line == '\\ No newline at end of file':
-            rows.append(line)
+            remember(line)
             continue
         if old is None or not line or line[0] not in ' +-':
             return None
         has_old, has_new = line[0] != '+', line[0] != '-'
-        if has_new and new in line_numbers:
-            selected.append(len(rows))
+        wanted = has_new and new in line_numbers
+        if wanted:
             covered.add(new)
-        rows.append(f'old:{old if has_old else "-"} new:{new if has_new else "-"} {line}')
+        remember((old if has_old else '-', new if has_new else '-', line), wanted)
         old += has_old
         new += has_new
         old_left -= has_old
@@ -104,8 +118,9 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
         for pos, index in enumerate(ordered):
             if pos == 0 and index > 0 or pos > 0 and index != ordered[pos - 1] + 1:
                 result.append('[omitted patch rows]')
-            result.append(rows[index])
-        if ordered[-1] < len(rows) - 1:
+            row = rows[index]
+            result.append(f'old:{row[0]} new:{row[1]} {row[2]}' if isinstance(row, tuple) else row)
+        if ordered[-1] < row_count - 1:
             result.append('[omitted patch rows]')
         return '\n'.join(result)
     if len(render(indices)) > budget:
@@ -113,7 +128,7 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
     for distance in range(1, 4):
         for target in selected:
             for index in (target - distance, target + distance):
-                if 0 <= index < len(rows):
+                if index in rows:
                     trial = indices | {index}
                     if len(render(trial)) <= budget:
                         indices = trial

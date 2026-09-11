@@ -14,6 +14,19 @@ spec.loader.exec_module(helper)
 
 
 class HistoryHelperTests(unittest.TestCase):
+    def test_excerpt_keeps_distant_windows_and_validates_unselected_tail(self):
+        text = ('diff --git a/a.py b/a.py\n--- a/a.py\n+++ b/a.py\n'
+                '@@ -1,20000 +1,20000 @@\n' +
+                ''.join(f' row_{i}\n' for i in range(1, 20001)))
+        excerpt = helper.selected_patch_excerpt(text, 'a.py', [1, 10000, 20000])
+        for number in (1, 2, 9997, 10000, 10003, 19997, 20000):
+            self.assertIn(f'old:{number} new:{number}  row_{number}', excerpt)
+        self.assertNotIn(' row_5000\n', excerpt)
+        self.assertIn('[omitted patch rows]', excerpt)
+        self.assertLessEqual(len(excerpt), 8000)
+        # A selected early window does not excuse malformed later content.
+        self.assertIsNone(helper.selected_patch_excerpt(text + '+unexpected\n', 'a.py', [1]))
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
