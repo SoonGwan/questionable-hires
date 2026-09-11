@@ -13,7 +13,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `18a2070`; collector/reference `ae99bac` | [Region-first HTTPX](HTTPX-HISTORY-REGION-01.md), [large hunk](NECROMANCER-LARGE-HUNK-01.md), paired 02 | Favorable HTTPX pair has unequal work and baseline repair; combined history task costs more; collector adoption unverified |
-| Receipt | `7056153`; helper `048fb21`, reference `48ec1c3` | [Changed paths 03](CHANGED-PATHS-03.md), [executed/skip profile](RECEIPT-PROFILE-01.md) | Suite reuse holds but boundary remains costlier; repeated whitespace computation has lost first-command status; no efficiency acceptance |
+| Receipt | `abb4b93`; helper `048fb21`, reference `48ec1c3` | [Changed paths 03](CHANGED-PATHS-03.md), [executed/skip profile](RECEIPT-PROFILE-01.md) | Predecessor remains costlier; current status-preserving collection is locally verified but model adoption and savings unmeasured |
 | Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [paired 02](FAST-PAIRED-02.md) | Current diagnosis uses process containment but reads full helper source and costs more; efficiency unproven |
@@ -23,6 +23,20 @@ They are not necessarily the snapshot used by every linked historical report.
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Receipt `abb4b93` responds to the lost-status/repeated-check observation in changed
+paths 03 with an execution mechanism: when final checks need no intervening
+decision, collect them using fail-fast `&&` in supporting shells, or explicit
+per-command status capture when every check must execute. Skipped later commands
+remain unrun, not passed. Established results are reused only until relevant
+inputs change. No new helper, required artifact, interpreter dependency or broader
+authority is introduced; the character, suite evidence and historical procedure
+remain intact. Three author tests execute actual shell status propagation and a
+real Git whitespace failure: first/middle/last failures survive collection, later
+checks do not execute after a fail-fast stop, and independent collection retains
+an early failure despite later success. These validate mechanics, not model choice,
+fewer tool calls or lower token/time costs. Current candidate remains unmeasured;
+do not rerun the exposed age-18 case merely to chase a favorable result.
 
 The [two changed-path regression](CHANGED-PATHS-03.md) preserves correct boundary
 and migration behavior, but combined skill costs +7.9% tokens / +32.4% time.
