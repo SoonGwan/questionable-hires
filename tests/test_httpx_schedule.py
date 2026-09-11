@@ -5,6 +5,8 @@ import unittest
 import tempfile
 import hashlib
 import subprocess
+import shutil
+from unittest.mock import patch
 
 directory = Path(__file__).resolve().parents[1] / 'benchmarks'
 sys.path.insert(0, str(directory))
@@ -17,6 +19,24 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        temp = tempfile.TemporaryDirectory()
+        cls.addClassCleanup(temp.cleanup)
+        repository = Path(temp.name)
+        for name in ('exorcist', 'landlord', 'con-artist'):
+            shutil.copytree(runner.ROOT / 'skills' / name, repository / 'skills' / name,
+                            ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+        for args in (('init', '-q', '--template='), ('config', 'user.name', 'Snapshot Fixture'),
+                     ('config', 'user.email', 'fixture@example.invalid'),
+                     ('config', 'commit.gpgsign', 'false'),
+                     ('config', 'core.hooksPath', str(repository / 'no-hooks')),
+                     ('add', 'skills'), ('commit', '-qm', 'skill snapshot')):
+            runner.command(['git', *args], repository)
+        override = patch.object(runner, 'ROOT', repository)
+        override.start()
+        cls.addClassCleanup(override.stop)
+
     def test_auth_design_is_a_single_isolated_transfer(self):
         skill, tasks = runner.select_profile('auth-design')
         self.assertEqual(skill, 'landlord')
