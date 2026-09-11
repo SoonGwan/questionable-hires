@@ -55,3 +55,18 @@ attributed commits may invalidate that approach. Assess output and behavioral
 context before combining; never widen a range just to reduce the command counter.
 No model token benefit or adoption is measured. Next improve/evaluate use of the
 existing range mechanism where context is genuinely shared, not mandatory batching.
+
+Follow-up at 49ba7cc used default max_commits=3 for both separate and combined
+queries. All selected current-line records and complete blame rows match exactly;
+every separately returned commit ID is present in the combined result, with zero
+omitted commits. Serialized JSON characters total 35,059 separately versus 22,783
+combined (about 35% less). Patch excerpts are not asserted byte-identical: the wider
+query may include additional relevant hunks/context. These are characters, not
+model tokens. This remains a local single-function observation, not agent adoption.
+
+The optional collector reference now explains when nearby regions may share a
+bounded range, requiring relevant intervening context and inspection of omission/
+truncation. Distant/unrelated regions remain separate. The main entrypoint, helper,
+automatic routing and character are unchanged; no mandatory batching or new API.
+Repository validation and diff checks pass. No model rerun or new performance
+acceptance claim accompanies this conditional usage change.
