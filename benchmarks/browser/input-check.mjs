@@ -126,8 +126,33 @@ try {
       navigation.afterLateFailure = await page.locator('#error').textContent();
       assert.equal(navigation.afterLateFailure, guarded && invalidateOnLeave ? '' : 'Search failed. Try again.');
       assert.equal(await result.textContent(), 'Settings panel');
+      // Clearing is a real input transition, not a direct model-state mutation.
+      await page.locator('#search').click();
+      await enter(inputs[0]);
+      if (driver === 'fill') {
+        await input.fill('');
+      } else {
+        await input.press('ControlOrMeta+A');
+        await input.press('Backspace');
+      }
+      const cleared = {
+        submitted: (await page.evaluate(() => window.fixture.submitted())).slice(-2),
+        input: await input.inputValue(),
+      };
+      assert.deepEqual(cleared.submitted, [
+        {value: inputs[0], trusted: true}, {value: '', trusted: true},
+      ]);
+      assert.equal(cleared.input, '');
+      await page.evaluate(() => window.fixture.complete(9, ''));
+      cleared.afterEmpty = await result.textContent();
+      await page.evaluate(() => window.fixture.complete(8, 'pre-clear result'));
+      cleared.afterOld = await result.textContent();
+      cleared.focused = await input.evaluate(element => element === document.activeElement);
+      assert.equal(cleared.afterEmpty, '');
+      assert.equal(cleared.afterOld, guarded ? '' : 'pre-clear result');
+      assert.equal(cleared.focused, true);
       assert.deepEqual(errors, []);
-      observations.push({driver, guarded, invalidateOnLeave, submitted, keys, afterNew, afterOld, normal, focused, recovery, navigation});
+      observations.push({driver, guarded, invalidateOnLeave, submitted, keys, afterNew, afterOld, normal, focused, recovery, navigation, cleared});
     } finally {
       await context.close();
     }

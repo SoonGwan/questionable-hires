@@ -88,6 +88,12 @@ archive result. Temporary extraction directories were removed after execution.
 
 ## Latest source archive
 
+Browser follow-up: the [clearing regression](../benchmarks/BROWSER-CLEAR-01.md)
+executes actual fill and keyboard clearing in six Chrome contexts, distinguishing
+stale overwrite from a working request guard while retaining prior input,
+recovery and same-document disposal checks. This is author-side synthetic browser
+evidence, not model QA or full-document navigation coverage.
+
 Python-version follow-up on 2026-09-12 KST: local macOS Python 3.11.16 initially
 failed because PyYAML was absent and one Receipt test matched Python 3.9's exact
 unittest name formatting. The regression now checks an explicit marker emitted
