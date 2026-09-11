@@ -146,6 +146,19 @@ the working control, without using the SQL helper. Skill sum costs +7.2% tokens 
 pair evidence while retaining state-dependent checks is the next concrete
 opportunity; necessary-history correctness is not performance acceptance.
 
+Friday `4362342` now separates distinct compatibility evidence from the mapping
+of that evidence onto rollout/rollback states. Reuse requires unchanged code,
+inputs and relevant runtime state; changed data, configuration, side effects and
+ordering dependencies still require checks. Character, helpers and authorization
+boundaries remain unchanged. An author-only runtime regression reconstructs the
+compatible fixture's 392 observations and verifies all equal the results of its
+28 distinct worker/payload pairs. This relies on those pure fixture functions;
+no general stateful-result cache was added to the skill/helper. It is not a model
+token/time reduction, and cache-construction overhead is not measured as a gain.
+All 141 repository tests pass (14.645 seconds), including the data-changing writer
+and migration regressions. The next transfer must verify that the model rechecks
+genuinely changed state rather than incorrectly reusing earlier compatibility.
+
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
 promoted: four cases / eight fresh sessions use 10.4% more total tokens and 10.6%
 less time than shipped instructions, with unequal state-test depth and a rejected
