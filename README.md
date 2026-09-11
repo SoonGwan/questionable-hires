@@ -86,7 +86,7 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 
 ## Does it actually work?
 
-**The chart below is the original experiment, not a measurement of today's files.** Later candidates have targeted checks, real HTTPX audits/design reviews, and adverse results recorded in [current candidate status](benchmarks/CURRENT-CANDIDATE-STATUS.md). The latest completed whole-team screen at `9683528` used more tokens/time than its predecessor and included a scope violation; subsequent changes have only targeted checks. Broad performance improvement remains unproven.
+**The chart below is the original experiment, not a measurement of today's files.** Later candidates have targeted checks, real HTTPX audits/design reviews, and adverse results recorded in [current candidate status](benchmarks/CURRENT-CANDIDATE-STATUS.md). The latest nine-task screen at `d54da1d` used 6.8% fewer tokens and 8.3% less time than its predecessor, but remained slower than the screen before that and recorded two rejected patches. Broad performance improvement remains unproven.
 
 We completed **72 fresh GPT-6 Astra sessions** at medium reasoning: eight small synthetic tasks × three arms × three repetitions. Baseline = 100%; generic control used **111.9% tokens / 125.1% time**, and the corresponding skill used **111.5% tokens / 117.6% time**. Implementation line churn was identical. Neither arm saved resources in this experiment.
 

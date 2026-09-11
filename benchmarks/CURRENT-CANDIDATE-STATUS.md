@@ -1,6 +1,6 @@
 # Current candidate: completion is not established
 
-Latest combined snapshot reviewed: `9683528`, in [FAST-REGRESSION-03](FAST-REGRESSION-03.md). All nine task-specific criteria pass, but search QA violates the project boundary; total tokens rise 5.9% and elapsed time 14.3% versus the previous single screen. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
+Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRESSION-04.md). All nine task-specific criteria pass; the previous parent-directory search does not recur, but two rejected patches retain attempted-scope uncertainty. Total tokens fall 6.8% and time 8.3% versus screen 03; versus screen 02 tokens fall 1.3% while time rises 4.8%. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
 
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
 | --- | --- | --- | --- |
@@ -13,7 +13,7 @@ Latest combined snapshot reviewed: `9683528`, in [FAST-REGRESSION-03](FAST-REGRE
 | Con Artist | Instructions `a772b0d`, helper/reference `941ea50` | Local bounded-memory checks, real HTTPX compatibility, [routing follow-up](HTTPX-ROUTING-01.md) and [conditional probe mechanics](CON-ARTIST-CONDITIONAL.md) | Conditional scheduling and directory-selection guidance lack model efficiency evidence; prior routing costs more; no broad claim |
 | Friday | Helper `580ac16`, routing `4ac4ffe`; subsequent local byte-budget/temp-storage correction | [Matrix follow-up](FRIDAY-MATRIX-01.md): rollout/rollback and post-up data checks; tested optional SQLite mechanics | Both new samples cost more than baseline; follow-up uses native SQL, not helper; non-rolling plans and representative runtime context unverified |
 
-The historical pre-helper screen [FAST-REGRESSION-02](FAST-REGRESSION-02.md) had essentially unchanged aggregate costs. The later [FAST-REGRESSION-03](FAST-REGRESSION-03.md) includes the streaming audit helper and records adverse aggregate costs and a scope violation. Subsequent Receipt, Landlord, Mother-in-law and Con Artist instruction/reference changes have targeted evidence only, not another current-snapshot combined screen. The specific Receipt missing-runtime case has not been rerun to isolate its documented-runner correction.
+The historical pre-helper screen [FAST-REGRESSION-02](FAST-REGRESSION-02.md) had essentially unchanged aggregate costs. [FAST-REGRESSION-03](FAST-REGRESSION-03.md) records adverse aggregate costs and a scope violation. [FAST-REGRESSION-04](FAST-REGRESSION-04.md) now covers the subsequent instruction/helper changes together, including the conditional mutation probe and SQLite matrix routes. All skill resources match their frozen snapshot. These single screens have no contemporaneous baseline. The specific Receipt missing-runtime case has not been rerun to isolate its documented-runner correction.
 
 ## What the evidence permits
 
