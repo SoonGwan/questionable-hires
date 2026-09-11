@@ -42,7 +42,7 @@ not skipped. This is local macOS/Python evidence, not a hosted Linux CI run.
 
 | Area | Evidence | State / next required check |
 | --- | --- | --- |
-| Local mechanics | 183 tests pass in 26.312 seconds after build recovery changes; catalog/link validation and diff checks pass | Passed locally; does not establish other platforms or model quality |
+| Local mechanics | 203 tests pass in 28.106 seconds at `d09128c`; catalog/link validation and diff checks pass | Passed locally; does not establish other platforms or model quality; archive and host-install evidence above are older snapshots |
 | Build recovery | Actual before-failure / after-pass tests for copy failure, cancellation, retry, original-error identity and existing destinations | Passed; cleanup can itself fail, leaving output |
 | Standalone installation | Installer and rollback tests in the local suite | Current host discovery and other supported runtimes need separate evidence |
 | Plugin installation | [Recorded local cycle](INSTALLATION-TEST.md), CLI 0.153.4, 2026-09-10 UTC | Historical snapshot only; no claim that the latest bundle was installed |

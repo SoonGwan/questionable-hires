@@ -12,7 +12,7 @@ They are not necessarily the snapshot used by every linked historical report.
 
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
-| Necromancer | `8454059`; collector `6318b91`, reference `3157ee2` | [Nearby decisions](HISTORY-REGIONS-01.md), [header gate](NECROMANCER-HEADER-GATE-01.md) | Correct transfer but +30.1% tokens / +23.0% time; no helper adoption; local collector gain not model savings |
+| Necromancer | `51ce19e`; collector `6318b91`, reference `3157ee2` | [Scoped discovery](NECROMANCER-DISCOVERY-01.md), [adverse packaging transfer](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md) | Configured consumer preserved with near-identical cost; favorable packaging discovery pair has unequal work and capture limits; earlier transfer adverse; broad savings unproven |
 | Receipt | `abb4b93`; helper `302066c`, reference `168cfa0` | [Current package](RECEIPT-CURRENT-PACKAGE-01.md), [size queries](RECEIPT-TREE-SIZE-01.md), [blob reuse](RECEIPT-BLOB-REUSE-01.md) | Last package pair +69.0% tokens / +90.0% time with additional historical verification; simplified recipe not model-evaluated; efficiency unmet |
 | Landlord | `5f67c6e` | [Citation evaluation](LANDLORD-CITATION-01.md), [check scope](LANDLORD-CHECK-SCOPE-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | First-read citations adopted, same shell count; +30.4% tokens / +9.7% time in current pair; efficiency unmet |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
@@ -23,6 +23,19 @@ They are not necessarily the snapshot used by every linked historical report.
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Whole-repository follow-up at `d09128c`: all 203 local tests pass in 28.106
+seconds. All eight entrypoint revisions were checked against Git; the table now
+reflects the current Necromancer rather than its older region-first version.
+This is mechanics evidence, not current all-eight model acceptance.
+
+Next performance priority is Receipt's historical-comparison workflow: preserve
+frozen assertions, loaded-revision evidence and original files while investigating
+avoidable preparation/execution overhead. Its earlier no-skill arm did not execute
+historical code, so repeating that unequal pair cannot isolate efficiency at the
+same requested outcome. Establish equal historical-verification requirements
+before another comparison. Do not reduce required evidence to manufacture savings
+or keep tuning only Necromancer because its small fixtures are convenient.
 
 Friday `64dd877` extends the deadline boundary to migration chunks. A controlled
 clock with real SQLite tracing reproduces a CREATE finishing at budget exhaustion:
