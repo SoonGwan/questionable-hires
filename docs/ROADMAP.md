@@ -28,6 +28,7 @@ report is historical evidence, not the current candidate's performance score.
 
 - [ ] Repeat independent comparisons and add larger realistic project tasks before making performance claims.
 - [ ] Exercise broader unrelated prompts to measure automatic-selection false positives.
+  - [Two current-bundle negative requests](../benchmarks/ROUTING-NEGATIVE-01.md) showed no observed skill-body reads or scope expansion; ambiguous requests and positive recall remain unchecked by this screen.
 - [ ] Validate browser-facing skills against actual rendered interaction flows.
 - [ ] Verify remote Git marketplace distribution if it is offered as an installation path.
 - [ ] Obtain a passing hosted CI run.
