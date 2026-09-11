@@ -14,6 +14,40 @@ spec.loader.exec_module(helper)
 
 
 class HistoryHelperTests(unittest.TestCase):
+    def test_incremental_budget_matches_full_render_at_every_boundary(self):
+        header = '@@ -1,20 +1,20 @@'
+        body = [f' 한글_{i}' for i in range(1, 21)]
+        source = '--- a/a.py\n+++ b/a.py\n' + header + '\n' + '\n'.join(body) + '\n'
+        rows = [header] + [f'old:{i} new:{i} {line}' for i, line in enumerate(body, 1)]
+
+        def render(indices):
+            output = []
+            previous = -1
+            for index in sorted(indices):
+                if index > previous + 1:
+                    output.append('[omitted patch rows]')
+                output.append(rows[index])
+                previous = index
+            if previous < len(rows) - 1:
+                output.append('[omitted patch rows]')
+            return '\n'.join(output)
+
+        for targets in ([1], [20], [1, 20], [4, 8, 12], list(range(1, 21))):
+            for budget in range(0, len('\n'.join(rows)) + 2):
+                selected = set(targets)
+                expected = None
+                if len(render(selected)) <= budget:
+                    for distance in range(1, 4):
+                        for target in targets:
+                            for index in (target - distance, target + distance):
+                                if 0 <= index < len(rows):
+                                    trial = selected | {index}
+                                    if len(render(trial)) <= budget:
+                                        selected = trial
+                    expected = render(selected)
+                self.assertEqual(helper.selected_patch_excerpt(source, 'a.py', targets, budget),
+                                 expected, (targets, budget))
+
     def test_excerpt_overlapping_windows_and_duplicate_targets(self):
         text = ('diff --git a/a.py b/a.py\n--- a/a.py\n+++ b/a.py\n'
                 '@@ -1,150 +1,150 @@\n' +

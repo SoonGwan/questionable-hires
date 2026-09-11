@@ -2,6 +2,7 @@
 """Collect bounded, read-only Git evidence for a selected current line range."""
 import argparse
 import ast
+from bisect import bisect_left
 from collections import deque
 import json
 from pathlib import Path
@@ -124,15 +125,28 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
         if ordered[-1] < row_count - 1:
             result.append('[omitted patch rows]')
         return '\n'.join(result)
-    if len(render(indices)) > budget:
+    size = len(render(indices))
+    if size > budget:
         return None
+    ordered = sorted(indices)
+    marker_size = len('[omitted patch rows]') + 1
     for distance in range(1, 4):
         for target in selected:
             for index in (target - distance, target + distance):
                 if index in rows and index not in indices:
-                    trial = indices | {index}
-                    if len(render(trial)) <= budget:
-                        indices = trial
+                    position = bisect_left(ordered, index)
+                    left = ordered[position - 1] if position else -1
+                    right = ordered[position] if position < len(ordered) else row_count
+                    row = rows[index]
+                    text = f'old:{row[0]} new:{row[1]} {row[2]}' if isinstance(row, tuple) else row
+                    # Inserting a row replaces one gap with two. Each nonempty
+                    # gap contributes an omission marker plus its newline.
+                    delta = len(text) + 1 + marker_size * (
+                        (index - left > 1) + (right - index > 1) - (right - left > 1))
+                    if size + delta <= budget:
+                        indices.add(index)
+                        ordered.insert(position, index)
+                        size += delta
     return render(indices)
 
 
