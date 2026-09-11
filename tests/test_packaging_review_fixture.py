@@ -9,14 +9,21 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PackagingReviewFixtureTests(unittest.TestCase):
+    def test_archived_review_matches_pinned_source_when_available(self):
+        spec = importlib.util.spec_from_file_location(
+            'packaging_review_provenance', ROOT / 'benchmarks/packaging_review_cases.py')
+        fixture = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(fixture)
+        if subprocess.run(['git', 'cat-file', '-e', fixture.SNAPSHOT + '^{commit}'],
+                          cwd=ROOT, capture_output=True).returncode:
+            self.skipTest('Pinned packaging review provenance unavailable')
+        self.assertEqual(fixture.cases(), fixture.cases(historical=True))
+
     def test_actual_cleanup_removal_breaks_existing_regression(self):
         spec = importlib.util.spec_from_file_location(
             'packaging_review', ROOT / 'benchmarks/packaging_review_cases.py')
         fixture = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(fixture)
-        if subprocess.run(['git', 'cat-file', '-e', fixture.SNAPSHOT + '^{commit}'],
-                          cwd=ROOT, capture_output=True).returncode:
-            self.skipTest('Pinned packaging review source history unavailable')
         case = fixture.cases()[0]
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory)

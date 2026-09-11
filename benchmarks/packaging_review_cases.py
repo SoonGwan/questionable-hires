@@ -8,13 +8,19 @@ from pathlib import Path
 SNAPSHOT = '436e409'
 
 
-def cases():
-    spec = importlib.util.spec_from_file_location(
-        'packaging_export', Path(__file__).with_name('packaging_cases.py'))
-    exporter = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(exporter)
-    exporter.SNAPSHOT = SNAPSHOT
-    case = exporter.cases()[0]
+def cases(historical=False):
+    if historical:
+        spec = importlib.util.spec_from_file_location(
+            'packaging_export', Path(__file__).with_name('packaging_cases.py'))
+        exporter = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(exporter)
+        exporter.SNAPSHOT = SNAPSHOT
+        case = exporter.cases()[0]
+    else:
+        overlay = json.loads(Path(__file__).with_name('packaging-review-overlay.json').read_text())
+        case = json.loads(Path(__file__).with_name('packaging-cases.json').read_text())[0]
+        case['files'].update(overlay['files'])
+        case['files']['README.md'] = case['files']['README.md'].replace('a701093', SNAPSHOT)
     case.update(
         id='packaging-cleanup-review', skill='necromancer',
         task=('Review whether the exception handler around copying in '

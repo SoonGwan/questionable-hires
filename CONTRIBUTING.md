@@ -61,8 +61,11 @@ checkout). That skip means provenance was not rechecked, not that the regression
 was skipped; use a checkout containing the pinned commit to verify both.
 Snapshot and history-collector mechanics tests create disposable Git repositories
 instead of relying on this checkout's commit history. Git must still be installed.
-The full suite also runs from a source archive, with only the pinned historical
-provenance comparison skipped when those original Git objects are unavailable.
+The packaging review likewise uses the archived base plus a two-file source
+overlay. Its behavioral regression runs without history; a separate comparison
+checks that the reconstructed fixture exactly matches the pinned source when
+available. Source archives skip those two historical provenance comparisons,
+not the packaging behavior regressions.
 
 ## Behavioral evaluation is separate
 
