@@ -10,6 +10,10 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Nested discovery screen](INTERACTION-NESTED-01-REVIEW.md): required nested
+  instructions and tests followed, skill −16.68% tokens / −11.46% time; additional
+  sequence coverage differs. One exposed pair is not broad efficiency evidence.
+
 - [Interaction runner reuse candidate](INTERACTION-RUNNER-REUSE-CANDIDATE.md):
   Mother-in-law now prefers an existing sufficient runner deadline over a
   redundant self-spawning wrapper. [One-task screen](INTERACTION-RUNNER-01-REVIEW.md)
