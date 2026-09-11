@@ -24,6 +24,48 @@ Same synthetic task, GPT-6 Astra, medium reasoning, one run per arm:
 
 ## Reproduce
 
+### Try the helper without model usage
+
+The [two-fault recipe](con-artist-batch/recipe.json) audits a deliberately weak
+[test](con-artist-batch/test_service.py) against the real
+[service](con-artist-batch/service.py). It covers lost writes and duplicate writes;
+both matter because an acknowledgment alone proves neither persistence nor
+exactly one stored record. Run from this repository root with Python 3.9+ on POSIX:
+
+```sh
+python3 -B skills/con-artist/scripts/audit.py \
+  --source examples/con-artist-batch \
+  --spec examples/con-artist-batch/recipe.json
+```
+
+No model account, package installation or Git history is needed. The helper
+executes trusted local code in disposable copies, not a security sandbox, and
+does not apply either mutation or the stronger assertion to the original files.
+
+For **both** audits, inspect the observations:
+
+| Check | Expected exit | Meaning |
+| --- | --- | --- |
+| `correct_tests` | 0 | Existing test passes on original code |
+| `mutant_tests` | 0 | Existing test misses this fault |
+| `correct_probe` | 0 | Stronger assertion passes on original code |
+| `mutant_probe` | 1 | AssertionError exposes missing or duplicate record |
+
+The first failure shows `['existing']`; the second shows
+`['existing', 'new', 'new']`. Check the actual traceback, not just the exit code.
+The assertion protects existing data and exact contents, not only list length.
+
+In the second audit, `correct_tests_reused` and `correct_probe_reused` are true.
+Their `observation_ref` fields point to the first audit's complete checks; read
+the output there. Those are **one observation each**, not independent repeated
+successes. Both mutant tests and both mutant probes execute separately: six
+child checks instead of eight for independent audits, or seven with the previous
+test-baseline-only reuse. This execution-count reduction is not a model token
+or wall-time benchmark. Use separate audits for nondeterministic tests or when
+fresh baseline observations are required.
+
+### Run the historical model task
+
 From this repository, with authenticated Codex CLI access:
 
 ```sh
@@ -31,4 +73,3 @@ python3 benchmarks/run.py --output benchmarks/local-runs/persistence-test-exampl
 ```
 
 This consumes model usage. Results vary; a one-run synthetic example is not a reliability or superiority benchmark. See the [full report](../benchmarks/REPORT.md).
-

@@ -1,0 +1,20 @@
+{
+  "files": ["service.py", "test_service.py"],
+  "imports": ["service", "test_service"],
+  "runner": "unittest",
+  "tests": ["-v", "test_service"],
+  "mutations": [
+    {
+      "target": "service.py",
+      "old": "    store.append(record)\n",
+      "new": "",
+      "probe": "from service import save\nstore = ['existing']\nsave(store, 'new')\nassert store == ['existing', 'new'], store\n"
+    },
+    {
+      "target": "service.py",
+      "old": "    store.append(record)\n",
+      "new": "    store.extend([record, record])\n",
+      "probe": "from service import save\nstore = ['existing']\nsave(store, 'new')\nassert store == ['existing', 'new'], store\n"
+    }
+  ]
+}
