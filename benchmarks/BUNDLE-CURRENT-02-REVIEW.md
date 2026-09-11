@@ -68,3 +68,43 @@ before/after inventories agree. Original and redacted events match under intende
 path replacement, with no metadata capture flags or rejected patches. Inspected
 commands remain project-scoped. These are per-cell observations, not yet paired
 cost findings or whole-bundle acceptance.
+
+## Formatter baseline and further skill observations
+
+**Formatter / baseline:** reads the USD-only requirement and sole invoice caller,
+recommends a plain formatter retaining the exact expression, and does not invent
+runtime evidence. Three shell commands, 26.816 seconds; all three files unchanged.
+
+**Persistence / skill:** same-process provenance guidance is adopted in a native
+unittest runner: copied module paths and the test's actual save binding are checked
+inside each test process. Four child executions, each with a 30-second timeout;
+no separate import-only process and no optional helper/reference read. Correct
+and mutant existing-test statuses are asserted 0; stronger test passes correct
+code and fails missing append while preserving a pre-existing record. Four shell
+commands, 49.612 seconds. Original source/test unchanged; disposable copy removed.
+
+The original event output loses its initial correct-existing-test prefix. The
+remaining three results and final assertion of all four statuses are visible;
+do not reconstruct the missing raw output. Compared with baseline, scope is
+preserved and provenance/pre-existing-record coverage is stronger, but baseline
+uses in-memory binding substitution in one process. Different isolation and work
+mean this is not a causal test of the new instruction's cost effect.
+
+**Protected search / skill:** adds only `qa_search.py`, using actual Search,
+controlled futures and assertions for both completion orders. Unlike baseline's
+three-test suite, it does not check retention of a previously displayed result.
+Its parent launches one worker with a five-second subprocess deadline and forwards
+the worker's exit code, covering the worker's queue waits and coroutine cleanup.
+Five shell commands, 49.256 seconds; production Search remains unchanged.
+
+Important capture limit: `python3 -B qa_search.py` returns exit 0 but its output is
+empty in both original and redacted events. The expected PASS messages are not
+captured. The retained script and forwarded status support its assertion path,
+but are not direct visible per-sequence output; no author replay or final-answer
+text is substituted for that missing output. Metadata flags the empty command.
+The standard subprocess deadline is not an OS-level termination guarantee.
+
+These three cells' original files match fixtures, installed inventories are
+unchanged and match frozen Git hashes, and original/redacted events agree. No
+new resource edits or model retries are introduced. Full paired accounting and
+remaining trace reviews are still pending.
