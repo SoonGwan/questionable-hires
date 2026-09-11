@@ -13,7 +13,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `8454059`; collector `6318b91`, reference `3157ee2` | [Nearby decisions](HISTORY-REGIONS-01.md), [header gate](NECROMANCER-HEADER-GATE-01.md) | Correct transfer but +30.1% tokens / +23.0% time; no helper adoption; local collector gain not model savings |
-| Receipt | `abb4b93`; helper `048fb21`, reference `48ec1c3` | [Independent checks](RECEIPT-INDEPENDENT-01.md), [changed paths 03](CHANGED-PATHS-03.md) | All required checks continue correctly; +6.7% tokens / -13.8% time with stronger red/green evidence, but combined collection is not adopted |
+| Receipt | `abb4b93`; helper `0c1a4f5`, reference `48ec1c3` | [Blob reuse](RECEIPT-BLOB-REUSE-01.md), [tree batching](RECEIPT-TREE-BATCH-01.md), [independent checks](RECEIPT-INDEPENDENT-01.md) | Local multi-file comparison faster with repeated content; distinct blobs show no consistent further gain; model benefit unmeasured |
 | Landlord | `c66db8f` | [Check scope](LANDLORD-CHECK-SCOPE-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Appropriate test scope in both arms; +6.2% tokens / +12.9% time with equal shell counts; efficiency unproven |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `ca2e179`; helper `34aedd4`, reference `ca2e179` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
@@ -23,6 +23,16 @@ They are not necessarily the snapshot used by every linked historical report.
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Package verification now executes the built Receipt CLI from a disposable local
+marketplace bundle against real Git history and dirty current regression tests.
+The bundled script captures the actual before assertion failure and after pass,
+verifies copied imports, and preserves the test/source bytes and dirty status.
+The existing package test also checks every installed skill resource's bytes and
+permissions against source, with all eight entrypoints present. Both build tests
+pass (0.466 seconds). This checks shipped execution, not model performance or a
+published release; host configuration, installation and external publication are
+unchanged. Full repository tests last passed 176/176 before this added build test.
 
 The [nearby history decisions transfer](HISTORY-REGIONS-01.md) completes with all
 three recommendations correct in both arms and closely matched actual 27-case
