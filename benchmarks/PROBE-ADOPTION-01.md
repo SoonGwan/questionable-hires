@@ -71,3 +71,18 @@ do not mandate a helper merely to improve its adoption metric or rerun this
 exposed case until the numbers look favorable. A further candidate must remove
 demonstrated end-to-end work on a representative task, not just another helper
 microsecond or instruction-word reduction.
+
+## Subsequent candidate, not a new model result
+
+The entrypoint now replaces its generic copied-import instruction with guidance
+to check paths/bindings inside the actual test/probe process where practical,
+preserving runner semantics. A separate import-only process cannot establish
+the test process's loaded module. This targets the three extra provenance
+processes actually observed above, without mandating helper adoption.
+
+A real-process helper regression checks matching import/test/probe process IDs
+and all four expected correct/mutant outcomes using four executions, with no
+separate import-only process. All 44 helper tests pass. This verifies an available
+execution mechanism, not model adoption of the revised instruction or a new
+whole-task efficiency result. The original pair and its unfavorable token total
+remain unchanged; no score-seeking repeat follows this edit.
