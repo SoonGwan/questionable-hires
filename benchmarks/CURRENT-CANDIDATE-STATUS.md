@@ -10,7 +10,7 @@ Snapshot reviewed after `28a0453`. The objective remains better developer outcom
 | Mother-in-law | `b347792` | Broken and protected search cases distinguished | Mixed token results; rendered browser interactions and recovery |
 | Exorcist | `1c16bc8` | Cache-free race and safeguard explanation demonstrated | No stable cost advantage; distinct production diagnosis workloads |
 | Hostage Negotiator | `1c16bc8` | Necessary pending state and recovery implemented | Broader scope tradeoffs and paired cost comparison |
-| Con Artist | Instructions `1c4c41a`, helper `8c56744` | Prior audit controls plus two actual helper-based survivor checks and 12 helper tests | Helper adoption currently adds total context cost; larger/repeated use and complete scope compliance remain unproven |
+| Con Artist | Instructions `1c4c41a`, helper `99dbf23` | Synthetic helper checks, 13 helper tests, and three real HTTPX task comparisons on helper `8c56744` | HTTPX results are mixed in tokens and vary in coverage depth; HEAD parent-directory listing violates literal scope; latest mode fix has local checks only |
 | Friday | `b347792` | Actual local rollout/rollback incompatibilities demonstrated | Non-rolling plans, compatible controls and representative runtime context |
 
 The pre-helper combined instruction set passes all nine fixed development criteria in [FAST-REGRESSION-02](FAST-REGRESSION-02.md), with matching skill hashes. Total token/time costs are essentially unchanged from the earlier screen. Later Con Artist helper changes have targeted checks in [CON-ARTIST-TOOL-01](CON-ARTIST-TOOL-01.md), not another combined screen. The Receipt documented-runner correction is present, but the specific missing-runtime case has not been rerun to isolate its effect.
@@ -21,6 +21,7 @@ The pre-helper combined instruction set passes all nine fixed development criter
 - [Con Artist follow-ups](FAST-ITERATION-01.md) include a favorable latest-baseline comparison, but a less favorable earlier-baseline comparison. They are temporally separated single samples.
 - [State-review checks](FAST-STATE-REVIEWS-01.md) show mixed efficiency, not a universal compression benefit.
 - [HTTPX check](HTTPX-COMPRESSED-01.md) demonstrates a real coverage gap and original-file preservation, not a baseline win or complete scope compliance.
+- [Tool-backed HTTPX comparison](HTTPX-TOOL-01.md) and [two further tasks](HTTPX-TOOL-TRANSFER-01.md) show lower observed wall time in all three single pairs, with a token regression on exception propagation and scope/coverage-depth caveats. They do not establish all-skill superiority.
 - Local validation establishes package/fixture mechanics; it does not measure skill quality. No new superiority chart or broad performance claim is warranted.
 
 ## Resumed direction: preserve the concept, own workload selection
