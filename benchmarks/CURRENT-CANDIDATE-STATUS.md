@@ -119,6 +119,13 @@ replay. Original files and 29 installed resource instances were checked. This
 is adverse combined evidence, not acceptance. Do not keep rerunning this exposed
 set or substitute stronger safeguards for the requested performance improvement.
 
+The [work audit](PAIRED-02-WORK-AUDIT.md) counts 35 baseline versus 43 skill shell
+commands, but 18 discovery-containing commands on each side. Repeated discovery
+alone does not explain the observed overhead. Receipt separates equivalent final
+verification into more interactions; Friday inspects unrelated history while also
+doing extra useful data checks. No universal call-count/source-reading rule or new
+benchmark was added. Investigate those mechanisms without weakening verification.
+
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
 promoted: four cases / eight fresh sessions use 10.4% more total tokens and 10.6%
 less time than shipped instructions, with unequal state-test depth and a rejected
