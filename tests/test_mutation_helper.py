@@ -107,13 +107,17 @@ class MutationHelperTests(unittest.TestCase):
         fault = {k: self.recipe[k] for k in ('target', 'old', 'new', 'probe')}
         return dict(common, mutations=[fault, dict(fault, new='    store.extend([value, value])\n')])
 
-    def test_batch_saves_one_process_without_reusing_probes(self):
+    def test_batch_reuses_identical_correct_probe_but_executes_each_mutant(self):
         with patch.object(helper, 'execute', wraps=helper.execute) as execute:
             result = helper.audit_batch(self.root, self.batch_recipe())
-        self.assertEqual(execute.call_count, 7)  # Two independent four-check audits need eight.
+        self.assertEqual(execute.call_count, 6)  # Previously seven; independent audits need eight.
         self.assertEqual(result['status'], 'observed')
         self.assertNotIn('correct_tests_reused', result['audits'][0])
         self.assertTrue(result['audits'][1]['correct_tests_reused'])
+        self.assertTrue(result['audits'][1]['correct_probe_reused'])
+        self.assertEqual(result['audits'][1]['checks']['correct_probe']['observation_ref'],
+                         '#/audits/0/checks/correct_probe')
+        self.assertNotIn('output', result['audits'][1]['checks']['correct_probe'])
         for audit in result['audits']:
             self.assertEqual({k: v['exit_code'] for k, v in audit['checks'].items()},
                              dict(correct_tests=0, correct_probe=0, mutant_tests=0, mutant_probe=1))
@@ -128,12 +132,54 @@ class MutationHelperTests(unittest.TestCase):
         self.assertEqual(len(result['audits']), 1)
         self.assertEqual(execute.call_count, 2)
 
+    def test_batch_changed_probe_executes_and_stops_on_failure(self):
+        recipe = self.batch_recipe()
+        recipe['mutations'][1]['probe'] = 'assert False, "different assertion"'
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit_batch(self.root, recipe)
+        self.assertEqual(execute.call_count, 5)
+        self.assertEqual(result['status'], 'incomplete')
+        second = result['audits'][1]
+        self.assertNotIn('correct_probe_reused', second)
+        self.assertIn('different assertion', second['checks']['correct_probe']['output'])
+        self.assertNotIn('mutant_probe', second['checks'])
+
+    def test_batch_probe_reference_targets_first_execution_not_absent_check(self):
+        recipe = self.batch_recipe()
+        recipe['mutations'].append(dict(recipe['mutations'][1], new='    pass\n'))
+        recipe['mutations'][0].pop('probe')
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit_batch(self.root, recipe)
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual(execute.call_count, 7)
+        self.assertNotIn('correct_probe', result['audits'][0]['checks'])
+        self.assertIn('output', result['audits'][1]['checks']['correct_probe'])
+        self.assertEqual(result['audits'][2]['checks']['correct_probe']['observation_ref'],
+                         '#/audits/1/checks/correct_probe')
+
+    def test_cached_probe_does_not_bypass_conditional_skip(self):
+        recipe = self.batch_recipe()
+        recipe['mutations'][1].update(new='    raise RuntimeError("fault detected")\n',
+                                      probe_when='survives')
+        recipe['mutations'].append(dict(recipe['mutations'][0], new='    pass\n'))
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit_batch(self.root, recipe)
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual(execute.call_count, 7)
+        skipped = result['audits'][1]
+        self.assertIn('probe_skipped', skipped)
+        self.assertNotIn('correct_probe', skipped['checks'])
+        self.assertNotIn('correct_probe_reused', skipped)
+        self.assertIn('fault detected', skipped['checks']['mutant_tests']['output'])
+        self.assertEqual(result['audits'][2]['checks']['correct_probe']['observation_ref'],
+                         '#/audits/0/checks/correct_probe')
+
     def test_batch_keeps_one_complete_baseline_log_with_lossless_reference(self):
         test = self.root / 'test_service.py'
         test.write_text(test.read_text() + '\nprint("baseline-log:" + "x" * 11000)\n')
         with patch.object(helper, 'execute', wraps=helper.execute) as execute:
             result = helper.audit_batch(self.root, self.batch_recipe())
-        self.assertEqual(execute.call_count, 7)
+        self.assertEqual(execute.call_count, 6)
         first = result['audits'][0]['checks']['correct_tests']
         reused = result['audits'][1]['checks']['correct_tests']
         self.assertEqual(reused['observation_ref'], '#/audits/0/checks/correct_tests')
@@ -168,11 +214,14 @@ class MutationHelperTests(unittest.TestCase):
         with patch.dict(helper.os.environ, {'QH_BASELINE_REFERENCE_TEST': 'initial'}), \
              patch.object(helper, 'execute', side_effect=execute):
             result = helper.audit_batch(self.root, recipe)
-        self.assertEqual(calls, 11)
+        self.assertEqual(calls, 10)
         self.assertNotIn('correct_tests_reused', result['audits'][1])
         self.assertIn('output', result['audits'][1]['checks']['correct_tests'])
         self.assertEqual(result['audits'][2]['checks']['correct_tests']['observation_ref'],
                          '#/audits/1/checks/correct_tests')
+        self.assertNotIn('correct_probe_reused', result['audits'][1])
+        self.assertEqual(result['audits'][2]['checks']['correct_probe']['observation_ref'],
+                         '#/audits/1/checks/correct_probe')
 
     def test_batch_does_not_reuse_changed_inputs(self):
         cache = {}
@@ -194,6 +243,18 @@ class MutationHelperTests(unittest.TestCase):
                 result = helper.audit(self.root, self.recipe, _baseline=cache)
         self.assertNotIn('correct_tests_reused', result)
         self.assertEqual(execute.call_count, 4)
+
+    def test_correct_probe_cache_invalidates_changed_selected_bytes(self):
+        baseline, probe = {}, {}
+        helper.audit(self.root, self.recipe, _baseline=baseline, _probe_baseline=probe)
+        source = self.root / 'service.py'
+        source.write_text(source.read_text() + '\n# changed input\n')
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit(self.root, self.recipe, _baseline=baseline, _probe_baseline=probe)
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual(execute.call_count, 4)
+        self.assertNotIn('correct_probe_reused', result)
+        self.assertIn('output', result['checks']['correct_probe'])
 
     def test_batch_cli_collects_observations(self):
         result = subprocess.run([sys.executable, '-B', str(ROOT / 'skills/con-artist/scripts/audit.py'),

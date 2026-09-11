@@ -23,7 +23,7 @@ For a stronger assertion or conditional probe execution, read [probe execution](
 
 For small, permitted package/test directories, select those directories plus required configuration rather than reconstructing their import dependencies file by file merely to minimize copy size. Directory selection preserves fixtures and support modules. Narrow the selection when size, scope, sensitive data or incompatible contents require it; do not copy a repository root, environment or unrelated data indiscriminately. The helper enforces its 20 MB input limit before execution.
 
-Each check gets a fresh project-local disposable copy with verified imports and the copy as its working directory. Listed imports execute before the selected test runner.
+Each executed check gets a fresh project-local disposable copy with verified imports and the copy as its working directory. Batch mode can reuse successful correct-code observations as documented above. Listed imports execute before the selected test runner.
 
 The single-audit CLI emits JSON with `status` (`observed` or `incomplete`) and `checks`. Check keys are `correct_tests`, `mutant_tests` and, when run, `correct_probe`, `mutant_probe`. Each contains `exit_code`, `timed_out`, `output`, and `output_truncated`. Batch reuse references an earlier observation instead of duplicating its output, as described in batch mode. Inspect the actual failure in `output`; neither `observed` nor a nonzero mutant exit establishes coverage. `probe_skipped`, when present, explains unvalidated conditional probes; absent checks are not passes.
 

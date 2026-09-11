@@ -126,7 +126,7 @@ def execute(python, directory, spec, probe, timeout):
                 output=output, output_truncated=characters > 12000)
 
 
-def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None):
+def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _probe_baseline=None):
     root = Path(root).resolve()
     if not isinstance(spec, dict):
         raise ValueError('Audit recipe must be a JSON object')
@@ -160,6 +160,8 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None):
     identity = (files, modes, spec['imports'], spec['tests'],
                 spec.get('runner', 'unittest'), str(python), timeout, dict(os.environ))
     reused = _baseline is not None and _baseline.get('identity') == identity
+    probe_identity = (identity, spec.get('probe'))
+    probe_reused = False
     results = {}
     order = [('correct', 'tests'), ('correct', 'probe'), ('mutant', 'tests'), ('mutant', 'probe')]
     if probe_when == 'survives':
@@ -172,6 +174,11 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None):
                     continue
                 if variant == 'correct' and check == 'tests' and reused:
                     results['correct_tests'] = dict(_baseline['result'])
+                    continue
+                if variant == 'correct' and check == 'probe' and _probe_baseline is not None \
+                        and _probe_baseline.get('identity') == probe_identity:
+                    results['correct_probe'] = dict(_probe_baseline['result'])
+                    probe_reused = True
                     continue
                 # Each check starts from the same inputs, not prior test side effects.
                 directory = Path(scratch) / (variant + '-' + check)
@@ -188,9 +195,13 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None):
                     output = dict(status='incomplete', checks=results)
                     if reused:
                         output['correct_tests_reused'] = True
+                    if probe_reused:
+                        output['correct_probe_reused'] = True
                     return output
                 if variant == 'correct' and check == 'tests' and _baseline is not None:
                     _baseline.update(identity=identity, result=dict(result))
+                if variant == 'correct' and check == 'probe' and _probe_baseline is not None:
+                    _probe_baseline.update(identity=probe_identity, result=dict(result))
                 if probe_when == 'survives' and variant == 'mutant' and check == 'tests' and result['exit_code'] != 0:
                     skipped = 'Mutant tests exited nonzero; inspect their failure before any coverage claim. Proposed probe was not validated.'
         output = dict(status='observed', checks=results,
@@ -199,6 +210,8 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None):
             output['probe_skipped'] = skipped
         if reused:
             output['correct_tests_reused'] = True
+        if probe_reused:
+            output['correct_probe_reused'] = True
         return output
     finally:
         changed = [name for name, content in files.items()
@@ -220,19 +233,22 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
         if not isinstance(fault, dict) or set(fault) - fault_keys or not {'target', 'old', 'new'} <= set(fault):
             raise ValueError('Each mutation requires target/old/new and optional probe/probe_when')
     common = {key: value for key, value in spec.items() if key != 'mutations'}
-    baseline, observations = {}, []
-    baseline_index = None
+    baseline, probe_baseline, observations = {}, {}, []
+    baseline_indices = {}
     for fault in mutations:
-        result = audit(root, dict(common, **fault), python, timeout, _baseline=baseline)
-        if result.get('correct_tests_reused'):
-            # The complete observation is already in this response. Do not send
-            # the same potentially 12 KB log once per fault or imply fresh runs.
-            check = result['checks']['correct_tests']
-            result['checks']['correct_tests'] = dict(
-                exit_code=check['exit_code'], timed_out=check['timed_out'],
-                observation_ref=f'#/audits/{baseline_index}/checks/correct_tests')
-        else:
-            baseline_index = len(observations)
+        result = audit(root, dict(common, **fault), python, timeout,
+                       _baseline=baseline, _probe_baseline=probe_baseline)
+        for name in ('correct_tests', 'correct_probe'):
+            if name not in result['checks']:
+                continue
+            if result.get(name + '_reused'):
+                # Point directly to the execution, not another reused reference.
+                check = result['checks'][name]
+                result['checks'][name] = dict(
+                    exit_code=check['exit_code'], timed_out=check['timed_out'],
+                    observation_ref=f'#/audits/{baseline_indices[name]}/checks/{name}')
+            else:
+                baseline_indices[name] = len(observations)
         observations.append(result)
         if result['status'] != 'observed':
             break

@@ -129,6 +129,10 @@ class BuildTests(unittest.TestCase):
             self.assertEqual(second['checks']['correct_tests']['observation_ref'],
                              '#/audits/0/checks/correct_tests')
             self.assertNotIn('output', second['checks']['correct_tests'])
+            self.assertTrue(second['correct_probe_reused'])
+            self.assertEqual(second['checks']['correct_probe']['observation_ref'],
+                             '#/audits/0/checks/correct_probe')
+            self.assertNotIn('output', second['checks']['correct_probe'])
             self.assertEqual({p.name for p in project.iterdir()}, set(files))
             for name, source in files.items():
                 self.assertEqual((project / name).read_bytes(), source.encode())
