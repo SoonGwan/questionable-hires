@@ -37,6 +37,25 @@ class ProbeRunnerTests(unittest.TestCase):
         self.assertTrue(result['timed_out'])
         self.assertLess(result['elapsed_seconds'], 2)
 
+    def test_async_wait_for_is_not_a_process_deadline(self):
+        code = '''import asyncio
+async def stubborn():
+    print("task started", flush=True)
+    while True:
+        try:
+            await asyncio.sleep(20)
+        except asyncio.CancelledError:
+            print("cancellation suppressed", flush=True)
+async def main():
+    await asyncio.wait_for(stubborn(), timeout=0.02)
+asyncio.run(main())
+'''
+        result = self.run_code(code, timeout=0.3)
+        self.assertIn('cancellation suppressed', result['output'])
+        self.assertTrue(result['timed_out'])
+        self.assertEqual(result['exit_code'], -9)
+        self.assertLess(result['elapsed_seconds'], 2)
+
     def test_inherited_pipe_from_descendant_does_not_hang(self):
         result = self.run_code('import subprocess, sys; subprocess.Popen([sys.executable, "-c", "import time; time.sleep(20)"])', 0.2)
         self.assertTrue(result['timed_out'])
