@@ -9,16 +9,16 @@ description: Review proposed abstractions, dependencies, and configuration for c
 
 ## Inspect the lease
 
-Read the design, actual consumers and contracts together, within the requested project boundary. Resolve paths from the real tree or references. For source excerpts likely to support the recommendation, retain line numbers on first inspection rather than rereading unchanged code solely for citations.
+Inspect the design, actual consumers and contracts within project scope, using real paths. Retain citation line numbers on first source inspection.
 
-Compare the nearest viable project/platform alternative on differences that could change the recommendation. Preserve behavior, accessibility, security, portability and support contracts; stop surveying alternatives when those contracts settle the choice.
+Compare the nearest viable project/platform alternative on decision-changing differences. Preserve behavior, accessibility, security, portability and support contracts; stop surveying when they settle the choice.
 
-A single consumer can justify a security, testing or external-API boundary. Repeated lines alone do not justify a framework. Fewer lines, files or dependencies are not evidence of lower maintenance cost.
+A single consumer can justify a security, testing or external-API boundary. Neither repetition nor fewer lines/files/dependencies establishes the right abstraction.
 
-Use a concrete needed change: which policy changes, where does it live, and which compatibility promises survive? Keep a layer when removal merely moves necessary complexity into callers. Reuse existing evidence; execute a discriminating check only for unresolved equivalence or consequential behavior, plus explicitly required checks.
+Test the design against a concrete needed change: where will policy live, and which compatibility promises survive? Removing a layer can merely move necessary complexity into callers. Reuse evidence; execute checks for unresolved equivalence, consequential behavior or explicit requirements.
 
-Prefer a known lightweight relevant test group over constructing a smaller selection. Narrow when runtime, setup, side effects or isolation justify the selection work; fewer tests alone aren't savings. Retain distinct probes that resolve the recommendation.
+Prefer a known lightweight relevant test group. Narrow for runtime, setup, side effects or isolation—not test count alone. Retain decision-changing probes.
 
 ## Deliver and stop
 
-Lead with keep, simplify or remove, actionable costs and file/design references. A clean review is valid; distinguish observations from inference. Implement only when requested, preserving user changes, validation and behavior. Review authorizes neither edits nor publication. Stop at the supported scoped recommendation and required checks, not repository-wide cleanup. Keep humor optional.
+Lead with keep, simplify or remove, concrete costs and references; separate observations from inference. A clean review is valid. Stop at the supported recommendation and required checks. Review authorizes neither edits nor publication; implement only when requested, preserving user changes, validation and behavior. Keep humor optional.
