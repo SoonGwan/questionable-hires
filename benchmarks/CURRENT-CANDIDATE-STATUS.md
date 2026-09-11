@@ -17,6 +17,12 @@ The historical pre-helper screen [FAST-REGRESSION-02](FAST-REGRESSION-02.md) had
 
 Receipt's later `e00c751` mode-routing revision has two targeted checks only; it is not part of the `d54da1d` combined snapshot above.
 
+Receipt now also includes an optional frozen-test Python history comparison helper.
+Seven local behavioral checks cover current dirty assertions, original preservation,
+CLI observations, invalid inputs, missing history, import provenance, timeout cleanup
+and bounded output. This replaces repeatedly authored snapshot plumbing when appropriate;
+it has no model token/time measurement yet and is outside the combined snapshot above.
+
 ## What the evidence permits
 
 - [Capture investigation](CAPTURE-DIAGNOSTICS.md) adds per-run evidence diagnostics and a subprocess-backed preservation test. Known missing output is already absent in the CLI stream; rejected-patch root cause remains unknown. These runner checks neither establish a skill speedup nor invalidate adverse costs.
