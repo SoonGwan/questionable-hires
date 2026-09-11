@@ -18,6 +18,13 @@ reproduction-command handoff requirement so external deadlines are not lost when
 only a test-file link is delivered. Metadata/link validation passes; no model
 sample yet covers this consolidated candidate. Word reduction is not token savings.
 
+Its [broken-search follow-up](INTERACTION-COMPACT-01.md) now retains a runnable
+parent deadline: 68,328 tokens / 54.530 seconds, -19.0% tokens but +16.7% time versus
+screen 05. Original test-command output is empty despite exit 1; separate author
+replay verifies one normal pass and one meaningful failure, and adversarial replay
+verifies deadline handoff. Do not attribute that replay detail to the original
+model capture or claim a combined efficiency win.
+
 Latest combined snapshot: `c11103c`, [FAST-REGRESSION-05](FAST-REGRESSION-05.md).
 All nine task criteria pass; 628,256 tokens / 337.371 seconds, down 8.1% / 8.8%
 from screen 04 and 9.3% / 4.4% from screen 02. No rejected patches. Most skills
