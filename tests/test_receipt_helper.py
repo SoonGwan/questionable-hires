@@ -91,6 +91,35 @@ class ReceiptHelperTests(unittest.TestCase):
             helper.compare(self.root, dict(self.recipe, vary=['rule.py', 'new.txt']))
         execute.assert_not_called()
 
+    def test_identical_blobs_are_read_once_but_modes_stay_per_path(self):
+        for name in ('a.txt', 'b.txt'):
+            (self.root / name).write_text('shared content')
+        before = self.commit()
+        (self.root / 'b.txt').chmod(0o755)
+        after = self.commit()
+        observations = []
+        def check(python, root, recipe, timeout):
+            observations.append([(root/name).stat().st_mode & 0o777 for name in ('a.txt', 'b.txt')])
+            self.assertEqual((root/'a.txt').read_text(), 'shared content')
+            self.assertEqual((root/'b.txt').read_text(), 'shared content')
+            return dict(exit_code=0, timed_out=False, output='', output_truncated=False)
+        recipe = dict(self.recipe, before=before, after=after, vary=['a.txt', 'b.txt'])
+        with patch.object(helper, 'git', wraps=helper.git) as calls, patch.object(helper, 'run_check', side_effect=check):
+            helper.compare(self.root, recipe)
+            helper.compare(self.root, recipe)
+        self.assertEqual(sum(call.args[1] == 'cat-file' for call in calls.call_args_list), 4)
+        self.assertEqual(observations, [[0o644, 0o644], [0o644, 0o755]] * 2)
+
+    def test_reused_blob_still_counts_toward_each_snapshot_limit(self):
+        (self.root/'large.txt').write_bytes(b'x' * 10_000_001)
+        revision = self.commit()
+        (self.root/'large.txt').write_text('small current input')
+        recipe = dict(self.recipe, before=revision, after=revision, vary=['large.txt'])
+        with patch.object(helper, 'run_check') as execute, self.assertRaisesRegex(ValueError, 'snapshots exceed'):
+            helper.compare(self.root, recipe)
+        execute.assert_not_called()
+        self.assertEqual((self.root/'large.txt').read_text(), 'small current input')
+
     def test_batched_tree_rejects_historical_symlink_before_checks(self):
         alias = self.root / 'historical.py'
         alias.symlink_to('rule.py')

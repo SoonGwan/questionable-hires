@@ -121,6 +121,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
         raise ValueError('Inputs exceed 20 MB')
     variants, revisions = {}, {}
     varying_names = set(recipe['vary'])
+    blobs = {}  # Immutable object content; never reuse mutable working inputs.
     for label in ('before', 'after'):
         ref = recipe[label]
         if not isinstance(ref, str) or not ref or ref.startswith('-') or '\n' in ref:
@@ -146,11 +147,13 @@ def compare(root, recipe, python=sys.executable, timeout=30):
             mode, kind, oid = entries[name]
             if kind != b'blob' or mode not in (b'100644', b'100755'):
                 raise ValueError('Implementation must be a regular Git file')
-            length = int(git(root, 'cat-file', '-s', oid.decode()))
+            length = blobs[oid][0] if oid in blobs else int(git(root, 'cat-file', '-s', oid.decode()))
             total += length
             if total > 20_000_000:
                 raise ValueError('Comparison snapshots exceed 20 MB')
-            files[name] = git(root, 'cat-file', 'blob', oid.decode())
+            if oid not in blobs:
+                blobs[oid] = (length, git(root, 'cat-file', 'blob', oid.decode()))
+            files[name] = blobs[oid][1]
             variant_modes[name] = 0o755 if mode == b'100755' else 0o644
         variants[label] = (files, variant_modes)
     result = dict(status='observed', revisions=revisions, checks={},
