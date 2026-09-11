@@ -88,6 +88,17 @@ archive result. Temporary extraction directories were removed after execution.
 
 ## Latest source archive
 
+Source archive at `a61fec7`, checked 2026-09-12 KST: validation passes;
+243 tests discovered, **241 executed/passed and two explicit provenance-only
+skips**, in 36.940 seconds on local macOS/Python 3.9.6. The skipped comparisons
+are pinned packaging-review provenance and pinned source history; archived
+fixture behavior still runs. Extraction contains no `.git`, private local-run
+logs or browser node_modules. It includes current browser staging/status tests
+using synthetic dependencies and actual exported interaction replay. It does
+not launch a model or execute the optional Chrome workflow. The owned extraction
+was removed. This supersedes older archive counts below, not hosted-CI or model
+performance evidence.
+
 Browser follow-up: the [clearing regression](../benchmarks/BROWSER-CLEAR-01.md)
 executes actual fill and keyboard clearing in six Chrome contexts, distinguishing
 stale overwrite from a working request guard while retaining prior input,

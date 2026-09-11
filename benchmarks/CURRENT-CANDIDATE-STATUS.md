@@ -68,10 +68,10 @@ The five optional helpers are not mandatory for every task.
   separate temporary directories without private logs or Git. This is not a
   current archive, hosted-CI or model-efficiency result.
 
-- [Source archive](../docs/RELEASE-READINESS.md), snapshot `05a9fce`: 235 tests
-  discovered without Git history/private logs; 233 execute/pass, two pinned
-  history comparisons skip (35.925 seconds). The current two-fault example also
-  executes separately from that extraction.
+- [Source archive](../docs/RELEASE-READINESS.md), snapshot `a61fec7`: 243 tests
+  discovered without Git history/private logs/browser dependencies; 241 execute
+  and pass, two pinned-history comparisons skip (36.940 seconds). Browser staging
+  mechanics use synthetic dependencies; this does not execute model browser QA.
 - [Try the executable example](../examples/con-artist.md) without model usage.
   It demonstrates missed faults and stronger assertions, not model superiority.
 - [Inspectable Landlord comparison](results/landlord-compact-01/README.md):
