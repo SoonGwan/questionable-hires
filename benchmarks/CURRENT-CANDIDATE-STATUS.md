@@ -37,6 +37,20 @@ sessions. Sum costs are -3.8% tokens / -8.0% time, but the normalized control co
 13.7% more tokens. Neither skill session uses the collector; whole-file/history
 reads persist. No helper adoption or stable efficiency improvement is established.
 
+The next Necromancer entrypoint candidate replaces its two opening investigation
+paragraphs: locate a symbol before listing a large file; start attribution with
+line-range blame; use pickaxe only for unresolved origin; select the relevant
+patch region or parent function before emitting a bulk rewrite. Expansion for
+imports, dispatch, configuration and surrounding logic remains explicit, as do
+removed-line evidence and excerpt limitations. No universal command-count cap,
+forced helper, invocation-policy change or character change. This directly
+addresses the original bulk-history traces, but adds instruction text and is
+unmeasured by model. Installation (9), packaging (1) and history-helper (18) tests
+pass, along with repository/skill validation. These do not establish efficiency.
+Do not repeat the bulk-history pair for a favorable score; the next behavioral
+check needs transfer evidence, including a case where surrounding dependencies
+make a narrow symbol excerpt insufficient.
+
 ## Latest combined screen
 
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
