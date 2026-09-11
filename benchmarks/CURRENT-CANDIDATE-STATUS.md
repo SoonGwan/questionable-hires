@@ -59,6 +59,11 @@ The five optional helpers are not mandatory for every task.
 
 ## Reproducibility and release status
 
+- Full local checkout regression at `254e703`: 240 tests pass in 38.612 seconds
+  on macOS/Python 3.9.6. Both exported nested-interaction projects replay in
+  separate temporary directories without private logs or Git. This is not a
+  current archive, hosted-CI or model-efficiency result.
+
 - [Source archive](../docs/RELEASE-READINESS.md), snapshot `05a9fce`: 235 tests
   discovered without Git history/private logs; 233 execute/pass, two pinned
   history comparisons skip (35.925 seconds). The current two-fault example also

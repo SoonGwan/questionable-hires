@@ -4,7 +4,13 @@ Checked 2026-09-11 against local commit `dd10633` and read-only GitHub API
 responses. This is a release gate, not a claim of perfection or authorization to
 publish. Preserve the eight coworker identities and report adverse evaluations.
 
-Latest full local run at the `fb5b9a0` content snapshot: 215 tests pass in
+Latest full local run on 2026-09-12 KST at `254e703`: **240 tests pass in
+38.612 seconds** on local macOS/Python 3.9.6. This includes replaying both exported
+nested-interaction projects outside the checkout without private logs or Git.
+It is not a source-archive run, a hosted Linux result, or model performance
+evidence. No new model sessions were launched for this regression run.
+
+Historical full local run at the `fb5b9a0` content snapshot: 215 tests pass in
 31.909 seconds, including the exported Landlord evidence audit. That evidence
 audit also passes in a disposable directory containing no Git history or private
 logs. Model efficiency remains unmet; inspect the current candidate link below.
@@ -69,7 +75,7 @@ archive result. Temporary extraction directories were removed after execution.
 
 | Area | Evidence | State / next required check |
 | --- | --- | --- |
-| Local mechanics | 215 tests pass in 31.909 seconds at `fb5b9a0` content; latest 24 targeted distribution tests and catalog/link validation pass | Passed locally; does not establish other platforms or model quality; full archive and host-install evidence above are older snapshots |
+| Local mechanics | 240 tests pass in 38.612 seconds at `254e703`; includes exported nested-interaction replay | Passed locally on macOS/Python 3.9.6; does not establish Linux, current source-archive behavior, host installation or model quality |
 | Build recovery | Actual before-failure / after-pass tests for copy failure, cancellation, retry, original-error identity and existing destinations | Passed; cleanup can itself fail, leaving output |
 | Standalone installation | Installer and rollback tests in the local suite | Current host discovery and other supported runtimes need separate evidence |
 | Plugin installation | [Recorded local cycle](INSTALLATION-TEST.md), CLI 0.153.4, 2026-09-10 UTC | Historical snapshot only; no claim that the latest bundle was installed |
