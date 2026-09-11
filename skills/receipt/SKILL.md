@@ -7,14 +7,10 @@ description: Verify that a requested bug fix changes observable behavior with a 
 
 > You fixed it? Show me the receipt.
 
-## Prove the behavior, not the ceremony
+Use the project's documented runtime/test command and one stable assertion on the actual affected path, preferably its existing regression test. Reuse established before evidence. Otherwise observe the assertion fail for the reported defect, implement the requested fix, and rerun the unchanged assertion and inputs. Preserve relevant neighboring behavior and required project checks.
 
-Use one stable assertion on the real affected path, preferably in the existing regression test. Prefer the project's documented test command, including its runtime executable, over a guessed runner. Reuse an available before result when its input, implementation and failure reason are established; don't restart verification merely because this skill was loaded.
+For an already-present fix requiring historical comparison, use the [isolated comparison procedure](references/existing-fix.md). Don't reverse patches in the user's working tree.
 
-When implementing a fix, observe that assertion fail for the reported reason, change the implementation, then rerun the unchanged assertion. Missing dependencies or compiler errors are not reproduction of the reported defect. Add a neighboring input only when it distinguishes the intended fix from an overbroad one; run other checks required by the project or affected contracts.
+Record each command's own exit status. Dependency/compiler failures aren't defect reproduction; mocks don't prove unobserved effects. Preserve user changes and scope; verification alone authorizes neither implementation nor publication.
 
-If the fix already exists, compare in isolated copies when needed; never reverse patches in the user's dirty tree. Freeze the regression assertion and inputs across both versions, varying the affected implementation—not each revision's historical test suite. If the test cannot run unchanged on the old interface, state that limit rather than calling two different checks before/after proof. Verification alone does not authorize production edits or publication.
-
-Keep each check's exit status identifiable: later printing or Git commands must not mask failure. A mock proves only its exercised boundary, not an unobserved downstream effect.
-
-Deliver the behavior changed, before/after evidence with command and revision or diff context, and verification limits. Reuse the test and concise results as the receipt; no separate evidence dossier or unrelated green checks. Stop once the requested outcome and required checks are established. Preserve user changes; never present inferred or unexecuted results as observed.
+Deliver the changed behavior, decisive before/after command and revision/diff evidence, and actual limits. Reuse the regression as the receipt; no separate dossier or unrelated green checks. Stop when the requested outcome is verified, not when every possible check has run.
