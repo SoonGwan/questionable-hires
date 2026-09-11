@@ -40,6 +40,17 @@ test errors and one collector benchmark failure caused by reliance on checkout
 history. Those tests now create their own real temporary Git commits; they are
 not skipped. This is local macOS/Python evidence, not a hosted Linux CI run.
 
+Current source-archive follow-up at `71dbcae`: validation passes and 209 tests
+are discovered; 207 execute/pass and two provenance comparisons explicitly skip
+(30.491 seconds). Both packaging behavior regressions now execute without
+checkout history. The earlier `ed780b0` archive run discovered 207 tests with two
+skips, but one skip incorrectly covered the entire packaging-review regression.
+`30bf7bb` replaced that dependency with an archived two-file overlay; `71dbcae`
+adds a subprocess regression that omits both .git and the historical exporter.
+With history available, overlay reconstruction was separately verified against
+the actual `436e409` source. No hosted CI, browser or model run is included in this
+archive result. Temporary extraction directories were removed after execution.
+
 | Area | Evidence | State / next required check |
 | --- | --- | --- |
 | Local mechanics | 203 tests pass in 28.106 seconds at `d09128c`; catalog/link validation and diff checks pass | Passed locally; does not establish other platforms or model quality; archive and host-install evidence above are older snapshots |
