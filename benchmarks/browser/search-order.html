@@ -13,10 +13,10 @@ const receipt = document.querySelector('#receipt');
 const guarded = new URLSearchParams(location.search).get('guard') !== 'off';
 const pending = [];
 let latest = 0;
-query.addEventListener('input', async () => {
+query.addEventListener('input', async (event) => {
   const request = ++latest;
   const value = query.value;
-  const response = await new Promise(resolve => pending.push({value, resolve}));
+  const response = await new Promise(resolve => pending.push({value, resolve, trusted: event.isTrusted}));
   if (!guarded || request === latest) results.textContent = response;
 });
 function type(value) {
@@ -27,7 +27,8 @@ async function complete(index, text) {
   pending[index].resolve(text);
   await Promise.resolve();
 }
-(async () => {
+window.fixture = {complete, submitted: () => pending.map(({value, trusted}) => ({value, trusted}))};
+if (!new URLSearchParams(location.search).has('manual')) (async () => {
   query.focus();
   type('old');
   type('new');
