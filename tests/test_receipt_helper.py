@@ -1,0 +1,108 @@
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = ROOT / 'skills/receipt/scripts/compare.py'
+spec = importlib.util.spec_from_file_location('receipt_helper', SCRIPT)
+helper = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(helper)
+
+
+class ReceiptHelperTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.git('init', '-q', '--template=')
+        self.git('config', 'user.name', 'Fixture')
+        self.git('config', 'user.email', 'fixture@example.invalid')
+        self.git('config', 'commit.gpgsign', 'false')
+        self.git('config', 'core.hooksPath', str(self.root / 'no-hooks'))
+        (self.root / 'rule.py').write_text('def eligible(n): return n > 18\n')
+        (self.root / 'test_rule.py').write_text('import unittest\n')
+        self.before = self.commit()
+        (self.root / 'rule.py').write_text('def eligible(n): return n >= 18\n')
+        self.after = self.commit()
+        self.tests = ('import unittest\nfrom rule import eligible\n'
+                      'class Boundary(unittest.TestCase):\n'
+                      '    def test_boundary(self): self.assertTrue(eligible(18))\n')
+        (self.root / 'test_rule.py').write_text(self.tests)
+        self.recipe = dict(fixed=['test_rule.py'], vary=['rule.py'],
+                           before=self.before, after=self.after, imports=['rule'],
+                           runner='unittest', tests=['-v', 'test_rule'])
+
+    def git(self, *args):
+        return subprocess.check_output(['git', *args], cwd=self.root, text=True).strip()
+
+    def commit(self):
+        self.git('add', '.')
+        self.git('commit', '-qm', 'Fixture')
+        return self.git('rev-parse', 'HEAD')
+
+    def test_freezes_dirty_current_assertions_not_historical_tests(self):
+        original = (self.root / 'rule.py').read_bytes()
+        status = self.git('status', '--porcelain')
+        result = helper.compare(self.root, self.recipe)
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertIn('Ran 1 test', result['checks']['after']['output'])
+        self.assertEqual(result['revisions'], dict(before=self.before, after=self.after))
+        self.assertEqual(result['fixed_sha256']['test_rule.py'], hashlib.sha256(self.tests.encode()).hexdigest())
+        self.assertEqual((self.root / 'rule.py').read_bytes(), original)
+        self.assertEqual((self.root / 'test_rule.py').read_text(), self.tests)
+        self.assertEqual(self.git('status', '--porcelain'), status)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_cli_reports_observations_not_automatic_proof(self):
+        process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--spec', '-',
+                                  '--source', str(self.root)], input=json.dumps(self.recipe),
+                                 text=True, capture_output=True)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        self.assertEqual(json.loads(process.stdout)['status'], 'observed')
+
+    def test_rejects_aliases_traversal_overlap_and_symlinks(self):
+        for path in ('./test_rule.py', '../test_rule.py', '/tmp/test_rule.py', '.git/config', 'rule.py'):
+            with self.subTest(path=path), self.assertRaises(ValueError):
+                helper.compare(self.root, dict(self.recipe, fixed=[path]))
+        (self.root / 'alias.py').symlink_to('test_rule.py')
+        with self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, fixed=['alias.py']))
+
+    def test_missing_historical_file_fails_before_execution(self):
+        (self.root / 'new.py').write_text('x = 1\n')
+        with self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, vary=['new.py']))
+
+    def test_external_import_is_reported_as_setup_failure(self):
+        result = helper.compare(self.root, dict(self.recipe, imports=['json']))
+        for check in result['checks'].values():
+            self.assertNotEqual(check['exit_code'], 0)
+            self.assertIn('Import escaped comparison copy', check['output'])
+        self.assertEqual(result['status'], 'observed')
+
+    def test_timeout_stops_comparison_and_cleans_copies(self):
+        (self.root / 'test_rule.py').write_text('import time\ntime.sleep(20)\n')
+        result = helper.compare(self.root, self.recipe, timeout=0.2)
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertTrue(result['checks']['before']['timed_out'])
+        self.assertNotIn('after', result['checks'])
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_large_output_is_bounded_without_losing_exit_status(self):
+        (self.root / 'test_rule.py').write_text('print("x" * 100000)\n')
+        result = helper.compare(self.root, self.recipe)
+        for check in result['checks'].values():
+            self.assertEqual(check['exit_code'], 0)
+            self.assertTrue(check['output_truncated'])
+            self.assertLessEqual(len(check['output']), 12000)
+
+
+if __name__ == '__main__':
+    unittest.main()
