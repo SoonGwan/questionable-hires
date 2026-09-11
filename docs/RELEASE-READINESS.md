@@ -125,6 +125,15 @@ the local archive evidence, not the historical hosted-CI result below.
 
 ## Hosted CI evidence
 
+The validation workflow now schedules Python 3.9 and 3.11 separately with matrix
+fail-fast disabled, so a version-specific failure does not cancel the other
+version's evidence. This addresses the locally reproduced unittest-format issue;
+it is a configuration change, not two passing hosted runs. A 2026-09-12 KST local
+Linux feasibility check found no running Docker endpoint. No daemon was started,
+image pulled, host configuration changed or workflow rerun. Local Python 3.11
+coverage above remains macOS-only; both intended Linux jobs still need execution
+on the release revision after the external CI restriction is resolved.
+
 The latest run's job `102959131919` has no executed steps and no assigned runner.
 Its check annotation reports failed recent payments or a spending limit requiring
 increase. These are GitHub's alternatives, not a diagnosis of which account
