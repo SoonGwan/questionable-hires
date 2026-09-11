@@ -17,6 +17,12 @@ Replace the example project path with your project's actual path. To install jus
 
 For all your projects, choose your user skill directory instead:
 
+Source skill folders must contain regular local resources, not symbolic links.
+The installer checks all selected skills before writing, including during dry
+runs, and rejects linked files/directories rather than copying external targets.
+Use a trusted checkout that is not being modified concurrently; this preflight
+is not a sandbox or a defense against concurrent source replacement.
+
 ```sh
 python3 scripts/install.py --dest "$HOME/.agents/skills" --skill necromancer
 ```

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Standalone installation rejects symbolic links in selected skill sources before
+  creating destination folders, preventing accidental copying of linked external
+  resources. File, directory and whole-skill link regressions pass; this is not
+  protection against concurrent source mutation. Bundle-source handling is a
+  separate release-readiness check.
 - Expanded installation checks to all eight complete resource trees, permission
   preservation, standalone/marketplace parity and isolated startup of all five
   helper CLIs. The full local suite now passes 186 tests.
