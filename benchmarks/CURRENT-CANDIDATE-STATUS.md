@@ -19,7 +19,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Exorcist | `3ededb6`; helper `34aedd4`, reference `3ededb6` | [Setup control](EXORCIST-CONDITIONAL-01.md), [async path](CONDITIONAL-PATHS-01.md) | Conditional helper selection is mixed; current async artifact lacks hard cancellation containment; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
 | Con Artist | `5c697e5`; helper `54328b1`; references `4bbac5a` | [Progressive check](HTTPX-PROGRESSIVE-01.md), [adverse pair](HTTPX-BATCH-TRANSFER-01.md), [batch reuse](CON-ARTIST-BATCH-01.md) | Advanced reference skipped, but full source read and seven commands; still costlier than earlier baseline; batch adoption unmeasured |
-| Friday | `4ac4ffe`; helper/reference `e79b208` | [Matrix](FRIDAY-MATRIX-01.md), screen 05 | Correct SQLite compatibility checks, no cost advantage; actual writers/production runtime remain unknown |
+| Friday | `4ac4ffe`; helper/reference `e79b208` | [Mixed writers](FRIDAY-WRITERS-01.md), [matrix](FRIDAY-MATRIX-01.md), screen 05 | Actual fixture writers checked; two-case aggregate +8.1% tokens / +4.7% time with unequal depth; production runtime unknown |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
@@ -72,6 +72,13 @@ selection precision/recall, or disabling implicit invocation.
 - No new superiority chart, price claim or all-skill performance claim is supported.
 
 ## Next work and acceptance discipline
+
+The [mixed-writer pair](FRIDAY-WRITERS-01.md) demonstrates both local fixtures but
+not an overall efficiency gain. Both models preserve the compatible post-migration
+contract; Friday additionally checks an unspecified migration-execution boundary.
+Do not retroactively expand frozen criteria to penalize baseline. The unused
+reader-matrix reference and repeated discovery are concrete overhead candidates;
+retain meaningful transition checks rather than replacing review with fewer tests.
 
 The [six-range HTTPX check](NECROMANCER-SHALLOW-01.md) showed no focused-hunk
 benefit: this checkout has one shallow boundary commit and apparent whole-file
