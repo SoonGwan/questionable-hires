@@ -20,6 +20,8 @@ The installer checks all selected skills before writing, including during dry
 runs, and rejects linked files/directories rather than copying external targets.
 Use a trusted checkout that is not being modified concurrently; this preflight
 is not a sandbox or a defense against concurrent source replacement.
+The installation destination must be outside this checkout's `skills/` source
+tree; copying an installation into its own source is rejected, including dry runs.
 
 For all your projects, choose your user skill directory instead:
 
@@ -53,6 +55,8 @@ The builder rejects symbolic links in the skill tree, plugin metadata, license
 and marketplace source before creating output. It does not follow links to
 external resources. Build from a trusted checkout without concurrent source
 changes; this check is not a security sandbox.
+Keep bundle output outside the copied skill and plugin-metadata trees to avoid
+self-copying. The documented `dist/bundle` location is outside those trees.
 
 ```sh
 python3 scripts/build.py --output dist/bundle

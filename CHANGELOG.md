@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Reject installation/build outputs inside copied source trees before writing,
+  preventing accidental self-copying. Normal `dist/bundle` builds remain supported.
 - Standalone installation rejects symbolic links in selected skill sources before
   creating destination folders, preventing accidental copying of linked external
   resources. File, directory and whole-skill link regressions pass; this is not
