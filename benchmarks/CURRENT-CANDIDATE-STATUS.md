@@ -1,5 +1,12 @@
 # Current candidate: completion is not established
 
+[Small-edit automatic routing](AUTO-LABEL-01.md) now distinguishes an explicit
+optional-redesign cue from plain label replacement. Auto selects Hostage Negotiator
+only with the cue; no skill-body activation is observed for the plain edit. All
+four cells make identical focused edits, but auto is costlier, and the plain auto
+cell has a rejected-patch confound. This supports contextual routing, not efficiency
+or a reason to disable implicit skill selection.
+
 Actual installation-path check: [AUTO-AUDIT-01](AUTO-AUDIT-01.md) installs all eight
 without naming a skill; the model selects only Con Artist's entrypoint for a
 mutation audit. Auto costs 6.1% more tokens / 10.0% more time than no-skill baseline,
