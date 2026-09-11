@@ -12,6 +12,15 @@ run `--help` under isolated Python (`-I`) outside the source checkout. These are
 temporary-directory tests, not a host installation, full helper execution or a
 new remote CI result. The dated remote audit below remains unchanged.
 
+Distribution follow-up at `d3901da`: the existing full suite passes 188 tests
+(31.752 seconds), and two subsequently added CLI tests pass separately (0.810
+seconds). The shipped scripts are copied into disposable source trees and run
+under isolated Python: success, existing-target refusal, source-link rejection
+and installer dry-run rejection preserve expected exit codes, readable errors,
+existing bytes and external fixture contents. These fixtures do not validate
+marketplace schema or host registration; those remain separate checks. Source
+links are now rejected by both standalone installation and bundle building.
+
 | Area | Evidence | State / next required check |
 | --- | --- | --- |
 | Local mechanics | 183 tests pass in 26.312 seconds after build recovery changes; catalog/link validation and diff checks pass | Passed locally; does not establish other platforms or model quality |
