@@ -1,5 +1,12 @@
 # Current candidate: completion is not established
 
+Latest targeted check: [CONDITIONAL-PATHS-01](CONDITIONAL-PATHS-01.md), two remaining
+paths at `5167077`, totals 137,178 tokens / 104.822 seconds (+1.2% / +25.3% versus
+the same screen-05 cases). Task artifacts behave correctly; Exorcist lacks a
+cancellation-resistant process deadline, while protected-search output requires
+separate author replay. All six installed resources match and remain unchanged.
+This is not a combined gate or broad efficiency win.
+
 Mother-in-law now clarifies cancellation-resistant cleanup after an [author fault
 check](INTERACTION-CLEANUP-01.md) of the retained screen-05 test. The test hangs
 despite a bounded dispatch wait; a process deadline contains it. This instruction
