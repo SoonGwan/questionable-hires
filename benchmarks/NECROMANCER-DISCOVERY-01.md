@@ -76,3 +76,22 @@ single pair, but incomplete predecessor capture, unequal work, shared host/cache
 and exposed development fixtures limit acceptance. The requested whole-bundle
 token/time improvement is still unproven. Preserve all prior favorable and adverse
 results; do not rerun unchanged cells to select a better score.
+
+## Capture-location audit
+
+After the run, all four complete `events.jsonl` files were compared with their
+original stdout files after exactly the runner's workspace/home redaction. All
+four match; the reporting transformation did not drop additional content.
+For configured/predecessor command `item_4`, both original and redacted final
+events contain the same 178-character tail: the mutation failure message,
+restored application result and Git status. The original stream contains only
+`item.started` (empty output) and `item.completed` for that command; no intermediate
+output event is available to recover the missing initial app/unit output.
+
+This locates the absence at or before the original CLI event capture, not its
+underlying cause. It does not prove whether execution, tool aggregation or event
+serialization dropped those bytes. No live model rerun was performed for this
+audit. The 14 benchmark-runner tests pass, including a real subprocess producer
+whose multiline Unicode output is preserved through `run_cell`; this validates
+the recorder path, not arbitrary upstream tool-output completeness. The original
+unit-result evidence remains unknown, as described above.

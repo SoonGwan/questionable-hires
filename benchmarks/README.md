@@ -40,6 +40,27 @@ Review against each case's criteria in `cases.json`, which is never copied into 
 
 Raw logs stay in ignored `local-runs/`. Before promoting evidence into `results/` or `examples/`, inspect it for private paths, credentials, and unrelated data. The runner replaces its workspace and home prefix in text logs, but that is not a complete secrets scanner.
 
+### Missing command-output evidence
+
+A completed command event can contain only part of its output. Nonempty
+`aggregated_output`, an exit code of zero, and clear capture diagnostics do not
+prove that every command in a shell chain succeeded. Compare the original
+`stdout.original.jsonl` with `events.jsonl` after the documented path redaction
+before blaming the report pipeline. Inspect any intermediate events for the same
+item; do not concatenate repeated snapshots as though they were distinct chunks.
+
+If decisive output is absent from the original events too, mark that check's
+execution evidence unknown. A later successful assertion can prove only the
+conditions it actually checks; a final `git status` or `git diff` cannot establish
+an earlier test's exit status. Keep a missing-evidence case in the results and
+resource totals. Do not reconstruct missing output from the final answer or
+credit an author's later replay to the evaluated model. Any diagnostic rerun
+must be separate from the frozen comparison, with its additional usage retained.
+
+The [scoped-discovery review](NECROMANCER-DISCOVERY-01.md) contains an observed
+example and the source-versus-redaction audit. This is a known evidence limitation,
+not a claim that the runner can recover all model tool output.
+
 ## What this suite cannot establish
 
 These small synthetic tasks establish smoke-test behavior, not broad real-repository effectiveness. One repetition cannot establish reliability or statistical superiority. Include clean cases, missing-evidence cases, larger tasks, and repeated samples before drawing general conclusions. Cost is not inferred from token counts without a documented applicable pricing model.
