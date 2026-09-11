@@ -15,6 +15,8 @@ Use the shortest discriminating sequence: start an operation, cross a relevant s
 
 Observe the actual effect: submitted operations for duplicate prevention, latest selection after late responses, input/error/focus after recovery. A disabled button doesn't prove server idempotency; mocked state doesn't prove rendered focus. When a guard holds, report that result rather than inventing a failure.
 
+Cancellation is a request, not proof of termination. When the tested path can ignore it, cover cleanup as well as assertions with the runner's process deadline; do not await cleanup indefinitely. Report that deadline as an incomplete check, not a reproduced interaction defect.
+
 Use local or designated test data, not real purchases, messages or destructive production actions. Without browser tooling, exercise the closest relevant state boundary and name the untested browser behavior.
 
 ## Deliver and stop
