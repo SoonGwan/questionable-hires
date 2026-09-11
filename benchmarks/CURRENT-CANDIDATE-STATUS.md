@@ -7,6 +7,19 @@ nor a favorable single sample establishes that objective.
 
 ## Current resources and evidence
 
+Con Artist `91fdde3` removes one demonstrated duplicate correct-code probe in a
+deterministic two-fault batch: six actual child executions instead of seven,
+with both independent mutant assertion failures retained. The new regression
+fails against predecessor `5f68ac7` at the observed count (`7 != 6`). Reused probe
+results point directly to the original observation; changed probe text, selected
+bytes or environment triggers execution, and conditional skips remain unrun.
+All 41 mutation-helper tests and 11 built-package tests pass. The full suite
+passed 230 tests before the final conditional-skip test was added; that test
+subsequently passed with the helper suite. Skill/catalog validators also pass.
+No fresh model run or end-to-end token/time improvement is claimed; deterministic
+batch suitability and adoption still need workload-level evidence. This changes
+the helper and its interface documentation, not the skill entrypoint or routing.
+
 Revisions below are each file group's last modifying commit, verified with Git.
 They are not necessarily the snapshot used by every linked historical report.
 
@@ -18,7 +31,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
-| Con Artist | `1f8b8b6`; helper/common reference `b31ca9f`, advanced reference `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
+| Con Artist | `1f8b8b6`; helper/common/advanced references `91fdde3` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
 | Friday | `9cae27c`; helper `64dd877`, reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regressions verified for checks and migration chunks; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
