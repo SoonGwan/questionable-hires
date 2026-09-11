@@ -18,7 +18,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `3ededb6`; helper `34aedd4`, reference `3ededb6` | [Setup control](EXORCIST-CONDITIONAL-01.md), [async path](CONDITIONAL-PATHS-01.md) | Conditional helper selection is mixed; current async artifact lacks hard cancellation containment; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
-| Con Artist | `5c697e5`; helper/reference `54328b1` | [Batch reuse](CON-ARTIST-BATCH-01.md), [HTTPX isolation pair](HTTPX-ISOLATION-01.md), [earlier auto selection](AUTO-AUDIT-01.md) | Batch removes one repeated baseline in author replay; model adoption/net cost unmeasured; earlier pair has unequal verification depths |
+| Con Artist | `5c697e5`; helper/reference `54328b1` | [Adverse single-fault control](HTTPX-BATCH-TRANSFER-01.md), [batch reuse](CON-ARTIST-BATCH-01.md), [HTTPX isolation pair](HTTPX-ISOLATION-01.md) | Single-fault pair costs +90.9% tokens / -5.2% time; batch adoption/net cost unmeasured |
 | Friday | `4ac4ffe`; helper/reference `e79b208` | [Matrix](FRIDAY-MATRIX-01.md), screen 05 | Correct SQLite compatibility checks, no cost advantage; actual writers/production runtime remain unknown |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
@@ -96,6 +96,13 @@ duplicated normal-suite invocation in author replay of the two HTTPX recipes
 reused baseline evidence is marked, not counted as another observation. This is
 actual helper work removal, but model adoption, token/time effect and suitability
 for nondeterministic workloads are not established.
+
+The subsequent [single-fault control](HTTPX-BATCH-TRANSFER-01.md) uses the current
+helper without forcing batch mode. Both arms detect the same four propagation
+failures, but skill costs +90.9% tokens / -5.2% time. It reads the full reference
+and searches source across more interaction rounds despite fewer child processes.
+This is evidence against accepting current overall efficiency, not a causal
+attribution to the batch feature. Context and interaction overhead need attention.
 
 Recent micro-edits and helper-routing changes have not produced stable efficiency
 gains. Do not keep cycling the same exposed tasks for a favorable result. Use the
