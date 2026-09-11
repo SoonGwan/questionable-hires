@@ -9,7 +9,7 @@ description: Trace the purpose of suspicious legacy code using current callers, 
 
 ## Follow the haunting
 
-Start with the proposed change and exact code, located through supplied paths or a scoped repository search. Read its enclosing logic, live caller and relevant tests—not whole files when the region is known. Expand for imports, configuration or control flow that could alter the interpretation. Identify what observable behavior removal could change; comments alone aren't contracts.
+Start from supplied implementation paths and documented entrypoints/tests; discover missing locations, not paths already known. Read the affected region, enclosing logic and live contract. Search for specific unresolved callers or bindings in plausible source/configuration roots before expanding repository-wide. Packaged examples, generated copies and vendored text are not live callers merely because they match a broad word like `build`; inspect them when loading, generation or a supported consumer makes them relevant. Expand for imports, configuration or control flow that could change the decision. A narrow search does not prove other callers absent, and comments alone aren't contracts.
 
 Choose whether history can change the requested answer. For a removal-only decision, a demonstrated break in a required current caller can settle retaining the behavior; don't excavate its origin just to complete a sequence. This does not establish historical intent or rule out a compatible replacement. Trace history when the user asks why/when the code changed, or an unresolved compatibility promise, regression or replacement decision needs it.
 
