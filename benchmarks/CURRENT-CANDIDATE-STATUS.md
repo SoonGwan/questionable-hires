@@ -19,10 +19,23 @@ They are not necessarily the snapshot used by every linked historical report.
 | Exorcist | `ca2e179`; helper `34aedd4`, reference `ca2e179` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Bounded duplicate-fault detection retained; historical tokens lower/time higher, not causal efficiency improvement |
 | Con Artist | `1f8b8b6`; helper/references `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
-| Friday | `9cae27c`; helper/reference `e79b208` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | Rolling-schema pair uses 13.4% fewer tokens with near-equal time and extra retained-data check; branch transfer still costlier; broad efficiency unproven |
+| Friday | `9cae27c`; helper/reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regression verified; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Friday helper `ea48fde` checks the shared deadline before starting each reader.
+The existing real recursive-query timeout regression now includes a following
+short query and later phase. Before the fix the timed-out reader was followed by
+a successful `SELECT 1`; SQLite's progress callback need not run for such a short
+statement. After the fix that query is absent (unrun), the later phase is absent,
+and the matrix remains explicitly incomplete. All ten matrix tests pass, retaining
+normal migration/rollback, read-only enforcement, truncation and CLI behavior.
+This prevents post-budget work; it is not a normal-path speedup or a hard wall-time
+guarantee for SQL parsing/preparation. Skill character and routing are unchanged.
+The full repository suite passes 178/178 (23.806 seconds); skill/catalog validators
+and diff checks also pass. No new model benchmark was needed to establish this
+specific executable regression fix.
 
 Receipt reference `168cfa0` removes the example's redundant interpreter override
 and explains that revision expressions are resolved and reported by the helper.
