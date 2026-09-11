@@ -82,6 +82,15 @@ archive result. Temporary extraction directories were removed after execution.
 
 ## Latest source archive
 
+Current distribution follow-up: the built Con Artist CLI executes a real two-fault
+batch from an unrelated working directory under isolated Python (`-I`). Removing
+the write and duplicating the write both survive the existing weak test; the same
+stronger assertion passes on correct code and fails with AssertionError on each
+mutant. Copied-import evidence, nontruncated outputs and the second audit's direct
+baseline-observation reference are checked. Original file bytes remain unchanged
+and disposable copies are removed. All nine build tests pass; no model performance
+or host-registration claim follows from this local package execution.
+
 Source archive rechecked at `eb8a0e2`: `git archive` extraction without `.git`
 passes validation and discovers 216 tests; 214 execute/pass and the two pinned
 Git-provenance comparisons skip explicitly (31.498 seconds). This includes
