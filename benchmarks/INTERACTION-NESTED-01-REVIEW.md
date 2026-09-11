@@ -1,5 +1,7 @@
 # Nested discovery: favorable costs, different coverage
 
+[Inspect the exported commands, tests and answers](results/interaction-nested-01/README.md).
+
 [Frozen protocol](INTERACTION-NESTED-01-PROTOCOL.md), revision `c74cdf8`.
 Both sessions completed without outer timeout. No retries or exclusions. Private
 original traces: `benchmarks/local-runs/interaction-nested-01/`.
