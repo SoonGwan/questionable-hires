@@ -19,7 +19,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [paired 02](FAST-PAIRED-02.md) | Current diagnosis uses process containment but reads full helper source and costs more; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
 | Con Artist | `1f8b8b6`; helper `54328b1`; references `4bbac5a` | [Counter regression](HTTPX-COUNTER-01.md), [paired 02](FAST-PAIRED-02.md), [batch reuse](CON-ARTIST-BATCH-01.md) | Native copies avoid helper reads in persistence case with fewer tokens but more time; broader context-routing and batch adoption unverified |
-| Friday | `9cae27c`; helper/reference `e79b208` | [Changed state](FRIDAY-STATE-01.md), [necessary history](FRIDAY-HISTORY-01.md) | Changed-state predecessor correctly rechecks but costs +7.2% tokens / +8.4% time; witness-selection candidate unmeasured; compatible skill searches parent directory |
+| Friday | `9cae27c`; helper/reference `e79b208` | [Interior branch](FRIDAY-BRANCH-01.md), [changed state](FRIDAY-STATE-01.md) | Interior coverage correct; compatible skill uses 50 assertions versus 8,035 baseline, yet pair totals +8.0% tokens / +12.6% time; no efficiency acceptance |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
@@ -37,6 +37,16 @@ The test executes both sets to compare them; it does not show universal equivale
 coverage, model adoption or token/time savings. Fifteen Friday tests and skill
 validation pass. The next check must include code whose interior branch invalidates
 simple whole/fraction grouping, rather than repeat these exposed values for a score.
+
+That [interior-branch transfer](FRIDAY-BRANCH-01.md) now completes. All four
+sessions correctly distinguish interior truncation from compatible conversion.
+Compatible skill selects branch-aware witnesses and reports 50 reader assertions
+versus baseline's 8,035; both gap arms still enumerate their small finite domain.
+The skill remains higher in total tokens/time, despite the smaller compatible
+experiment. Captured commands stay scoped with no flags, but no patch is attempted.
+No further conversion-case tuning is justified by a desire for a favorable score;
+remaining optimization must address actual exploration/orchestration work rather
+than assume fewer inner-loop checks lower whole-session cost.
 
 Runner `fd8d578` now uses a canonical physical temporary workspace for every arm
 and retains its allocated spelling in metadata. The [workspace identity audit](WORKSPACE-IDENTITY-01.md)
