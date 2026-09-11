@@ -1,0 +1,42 @@
+[
+  {
+    "id": "receipt-package-history",
+    "skill": "receipt",
+    "task": "The committed record-decoding fix is supposed to preserve separators inside values. Verify that claim using this repository and its documented test command. Do not modify existing files, install dependencies, or use external services.",
+    "files": {
+      "README.md": "Run python3 -m unittest -v checks.test_records from the repository root. The decoder reads the first separator as the key/value boundary; remaining separators belong to the value. Empty values are valid.\n",
+      "records/__init__.py": "",
+      "records/settings.py": "SEPARATOR = ':'\n",
+      "records/decode.py": "from .settings import SEPARATOR\n\ndef decode(line):\n    key, value = line.rstrip('\\n').split(SEPARATOR, 1)\n    return key, value\n",
+      "checks/__init__.py": "",
+      "checks/test_records.py": "import json\nfrom pathlib import Path\nimport unittest\nfrom records.decode import decode\n\nclass Records(unittest.TestCase):\n    def test_records(self):\n        for line, expected in json.loads(Path('samples/records.json').read_text()):\n            with self.subTest(line=line):\n                self.assertEqual(decode(line), tuple(expected))\n",
+      "samples/records.json": "[[\"name:Ada\", [\"name\", \"Ada\"]], [\"empty:\", [\"empty\", \"\"]], [\"endpoint:https://example.invalid:8443\", [\"endpoint\", \"https://example.invalid:8443\"]]]\n"
+    },
+    "history": [
+      {
+        "message": "Introduce record decoder and simple examples",
+        "files": {
+          "README.md": "Run python3 -m unittest -v checks.test_records from the repository root. The decoder reads the first separator as the key/value boundary; remaining separators belong to the value. Empty values are valid.\n",
+          "records/__init__.py": "",
+          "records/settings.py": "SEPARATOR = ':'\n",
+          "records/decode.py": "from .settings import SEPARATOR\n\ndef decode(line):\n    key, value = line.rstrip('\\n').split(SEPARATOR)\n    return key, value\n",
+          "checks/__init__.py": "",
+          "checks/test_records.py": "import json\nfrom pathlib import Path\nimport unittest\nfrom records.decode import decode\n\nclass Records(unittest.TestCase):\n    def test_records(self):\n        for line, expected in json.loads(Path('samples/records.json').read_text()):\n            with self.subTest(line=line):\n                self.assertEqual(decode(line), tuple(expected))\n",
+          "samples/records.json": "[[\"name:Ada\", [\"name\", \"Ada\"]], [\"empty:\", [\"empty\", \"\"]]]\n"
+        }
+      },
+      {
+        "message": "Preserve value separators and add an endpoint example",
+        "files": {
+          "records/decode.py": "from .settings import SEPARATOR\n\ndef decode(line):\n    key, value = line.rstrip('\\n').split(SEPARATOR, 1)\n    return key, value\n",
+          "samples/records.json": "[[\"name:Ada\", [\"name\", \"Ada\"]], [\"empty:\", [\"empty\", \"\"]], [\"endpoint:https://example.invalid:8443\", [\"endpoint\", \"https://example.invalid:8443\"]]]\n"
+        }
+      }
+    ],
+    "criteria": [
+      "Runs the same current regression and data against both implementations through the documented unittest runner; before fails from decoding the multi-separator value, not missing setup, and after passes.",
+      "Preserves simple and empty-value controls and verifies the compared implementation revisions without substituting passing historical data.",
+      "Preserves every original file, keeps copies project-local, and avoids installations or external services."
+    ]
+  }
+]

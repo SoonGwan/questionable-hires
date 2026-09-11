@@ -3,9 +3,30 @@ from pathlib import Path
 import subprocess
 import sys
 import unittest
+import tempfile
 
 
 class ReceiptFixtureTests(unittest.TestCase):
+    def test_package_fixture_requires_current_data_on_both_versions(self):
+        root = Path(__file__).resolve().parents[1]
+        case = json.loads((root / 'benchmarks/receipt-package-cases.json').read_text())[0]
+        before = case['history'][0]['files']
+        after = dict(before, **case['history'][1]['files'])
+        self.assertEqual(after, case['files'])
+        for files, expected in ((before, 0), (after, 0),
+                                (dict(after, **{'records/decode.py': before['records/decode.py']}), 1)):
+            with self.subTest(expected=expected), tempfile.TemporaryDirectory() as scratch:
+                for name, content in files.items():
+                    target = Path(scratch) / name
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_text(content)
+                result = subprocess.run([sys.executable, '-B', '-m', 'unittest', '-v', 'checks.test_records'],
+                                        cwd=scratch, capture_output=True, text=True, timeout=5)
+                self.assertEqual(result.returncode, expected, result.stderr)
+                if expected:
+                    self.assertIn('ValueError: too many values to unpack', result.stderr)
+                    self.assertNotIn('ImportError', result.stderr)
+
     def test_changing_historical_suites_hides_missing_boundary_reproduction(self):
         root = Path(__file__).resolve().parents[1]
         cases = json.loads((root / 'benchmarks/receipt-transfer-cases.json').read_text())
