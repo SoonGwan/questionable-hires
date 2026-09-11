@@ -18,6 +18,36 @@ TASKS = {
 }
 
 
+def freeze_skill(repository, revision, destination):
+    """Export the whole committed skill, including optional scripts/references."""
+    prefix = 'skills/con-artist/'
+    entries = subprocess.check_output(['git', 'ls-tree', '-rz', revision, '--', prefix], cwd=repository)
+    selected = []
+    for entry in entries.split(b'\0'):
+        if not entry:
+            continue
+        metadata, name = entry.decode().split('\t', 1)
+        mode, kind, object_id = metadata.split()
+        path = Path(name.removeprefix(prefix))
+        if not name.startswith(prefix) or path.is_absolute() or '..' in path.parts:
+            raise ValueError('Unsafe skill tree entry')
+        if kind != 'blob' or mode not in ('100644', '100755'):
+            raise ValueError('Skill snapshot must contain regular files, not links/submodules')
+        selected.append((path, object_id, mode))
+    if Path('SKILL.md') not in [path for path, _, _ in selected]:
+        raise ValueError('Revision has no Con Artist skill')
+    destination.mkdir(parents=True, exist_ok=False)
+    hashes = {}
+    for path, object_id, mode in selected:
+        target = destination / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        content = subprocess.check_output(['git', 'cat-file', 'blob', object_id], cwd=repository)
+        target.write_bytes(content)
+        target.chmod(0o755 if mode == '100755' else 0o644)
+        hashes[path.as_posix()] = hashlib.sha256(content).hexdigest()
+    return hashes
+
+
 def make_schedule(tasks, arms, repeats):
     if repeats < 1:
         raise ValueError('repeats must be positive')
@@ -54,16 +84,13 @@ def main():
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     snapshot = output / 'skills/con-artist'
-    snapshot.mkdir(parents=True)
-    for name in ('SKILL.md', 'agents/openai.yaml'):
-        target = snapshot / name
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(subprocess.check_output(['git', 'show', f'{skill_revision}:skills/con-artist/{name}'], cwd=ROOT))
+    skill_files = freeze_skill(ROOT, skill_revision, snapshot)
     schedule = make_schedule(tasks, args.arms, args.repeats)
     manifest = dict(upstream_revision=REVISION, revision=command(['git', 'rev-parse', 'HEAD'], ROOT),
                     codex_version=command(['codex', '--version'], ROOT), model='gpt-6-astra', effort='medium',
                     seed=20260912, timeout_seconds=360, jobs=1,
                     skill_sha256=hashlib.sha256((snapshot / 'SKILL.md').read_bytes()).hexdigest(),
+                    skill_files_sha256=skill_files,
                     tasks=tasks, schedule=schedule, skill_revision=skill_revision, completed_cells=[], stopped_after_limit=False,
                     started_at=datetime.now(timezone.utc).isoformat(),
                     dependencies=command([str(python), '-m', 'pip', 'freeze'], source))

@@ -2,6 +2,8 @@ import importlib.util
 from pathlib import Path
 import sys
 import unittest
+import tempfile
+import hashlib
 
 directory = Path(__file__).resolve().parents[1] / 'benchmarks'
 sys.path.insert(0, str(directory))
@@ -14,6 +16,17 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_snapshot_contains_helpers_and_references_from_commit(self):
+        revision = runner.command(['git', 'rev-parse', 'HEAD'], runner.ROOT)
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / 'skill'
+            hashes = runner.freeze_skill(runner.ROOT, revision, destination)
+            for name in ('SKILL.md', 'agents/openai.yaml', 'scripts/audit.py', 'references/python-audit.md'):
+                self.assertIn(name, hashes)
+                self.assertEqual(hashes[name], hashlib.sha256((destination / name).read_bytes()).hexdigest())
+            with self.assertRaises(FileExistsError):
+                runner.freeze_skill(runner.ROOT, revision, destination)
+
     def test_bounded_check_does_not_schedule_other_tasks_or_arms(self):
         self.assertEqual(runner.make_schedule(['wsgi-cleanup'], ['skill', 'skill'], 1),
                          [('wsgi-cleanup', 'skill', 1)])
