@@ -4,6 +4,7 @@ import sys
 import unittest
 import tempfile
 import hashlib
+import subprocess
 
 directory = Path(__file__).resolve().parents[1] / 'benchmarks'
 sys.path.insert(0, str(directory))
@@ -31,9 +32,15 @@ class HTTPXScheduleTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             destination = Path(directory) / 'skill'
             hashes = runner.freeze_skill(runner.ROOT, revision, destination, 'exorcist')
-            self.assertEqual(set(hashes), {'SKILL.md', 'agents/openai.yaml'})
+            prefix = 'skills/exorcist/'
+            committed = subprocess.check_output(
+                ['git', 'ls-tree', '-r', '--name-only', revision, '--', prefix],
+                cwd=runner.ROOT, text=True).splitlines()
+            self.assertEqual(set(hashes), {name[len(prefix):] for name in committed})
             for name, digest in hashes.items():
-                self.assertEqual(digest, hashlib.sha256((destination / name).read_bytes()).hexdigest())
+                expected = subprocess.check_output(['git', 'show', revision + ':' + prefix + name], cwd=runner.ROOT)
+                self.assertEqual((destination / name).read_bytes(), expected)
+                self.assertEqual(digest, hashlib.sha256(expected).hexdigest())
 
     def test_design_profile_is_separate_from_original_audit_schedule(self):
         skill, tasks = runner.select_profile('design')
