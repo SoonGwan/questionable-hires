@@ -16,6 +16,12 @@ counter test now passes before scheduling; a narrow author-only assignment-for-
 accumulation mutation fails its actual assertion. Do not give this mutation or
 expected outcome to model sessions.
 
+Author preflight correction, before model sessions: the first extracted-function
+experiment failed on Python 3.9 union annotations, before any test ran. Preserving
+the module's future-annotations compilation setting fixes that experiment; the
+actual counter assertion then fails on the second chunk (`6 != 6 - 7`). This
+author setup failure is not model evidence or a detected behavioral fault.
+
 ## Identical task
 
 Audit whether `tests/models/test_responses.py` protects cumulative downloaded-byte
