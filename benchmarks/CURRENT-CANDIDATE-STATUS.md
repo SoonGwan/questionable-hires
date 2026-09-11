@@ -41,6 +41,13 @@ wraps already bounded child experiments, and repairs an initially misplaced runt
 observation. These costs are retained; direct invocation guidance alone has not
 established cheaper tool selection.
 
+The next Exorcist revision removes the universal direct-runner suggestion and
+routes to its interface only for an uncovered asynchronous wait/cancellation
+path. Already bounded experiment children are explicitly excluded from redundant
+wrapping. Helper behavior and diagnostic evidence requirements are unchanged.
+This is a routing candidate motivated by the adverse transfer trace, not measured
+efficiency recovery; no additional model run has evaluated this revision yet.
+
 Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRESSION-04.md). All nine task-specific criteria pass; the previous parent-directory search does not recur, but two rejected patches retain attempted-scope uncertainty. Total tokens fall 6.8% and time 8.3% versus screen 03; versus screen 02 tokens fall 1.3% while time rises 4.8%. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
 
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
