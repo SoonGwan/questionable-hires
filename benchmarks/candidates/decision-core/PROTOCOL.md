@@ -26,3 +26,21 @@ the choice between instruction variants, not model-versus-skill superiority.
 Do not promote based on aggregate savings if a required control or scope condition
 regresses. Inspect actual assertions and outcomes, not just completion messages.
 No new helper, framework, delivery artifact or universal call-count rule is added.
+
+## First scheduled comparison
+
+Freeze both variants at `bb6bd5c` (the two shipped skill files and the isolated
+candidate files). Eight sessions, four cases, one sample per variant; no no-skill
+arm in this instruction-variant check. Order is fixed before execution:
+
+1. formatter-review: shipped, candidate
+2. adapter-justified: candidate, shipped
+3. label-change: shipped, candidate
+4. necessary-state: candidate, shipped
+
+Use separate fresh `run.py` outputs for each case/variant, `--arms skill`, one
+repeat, one job, Astra medium, seed 20260911, timeout 240 seconds. Compare installed
+resources to frozen commit blobs afterward; do not edit either source tree during
+execution. Stop on account limits or incomplete runner execution; do not restart
+an observed failure to improve its score. This balanced order reduces one simple
+order confound but does not make one repeat statistically conclusive.
