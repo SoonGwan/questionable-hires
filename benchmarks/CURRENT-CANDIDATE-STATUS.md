@@ -621,17 +621,17 @@ required cleanup behavior. Candidate skips unavailable history but broad package
 search, unequal probes and shared-host variation remain. The earlier favorable
 screen is not evidence of broad superiority.
 
-A subsequent **unmeasured discovery candidate** replaces Necromancer's generic
+A subsequent **narrowly screened discovery candidate** replaces Necromancer's generic
 opening search advice with supplied-path reuse and unresolved-caller searches in
 plausible source/configuration roots. The packaging candidate's combined discovery
 output had 18,390 characters / 238 lines, including 15 packaged-skill match rows;
 those totals also contain useful source and tests, not exclusively waste. The
 change does not prohibit relevant packaged/generated consumers or treat a narrow
-search as proof of absence. No fresh model result or savings claim exists yet.
-Before acceptance, compare against `0143ef2` on both a noisy packaging case and a
-case whose real consumer is reached through configuration outside the initial
-source directory. Missing that consumer must reject the candidate regardless of
-lower cost. Keep tasks/resources/order frozen and the screen below ten tasks.
+search as proof of absence. The [four-session comparison](NECROMANCER-DISCOVERY-01.md)
+against `0143ef2` preserves the configured consumer: tokens/time −0.15%/+0.09%.
+Packaging is −21.73%/−7.25%, but unequal mutation-test scope, host cleanup and
+incomplete predecessor capture prevent a broad or causal efficiency claim.
+The whole-bundle objective remains unmet; retain the adverse earlier transfer.
 
 Historical steps remain in their individual reports, including unfavorable results:
 
