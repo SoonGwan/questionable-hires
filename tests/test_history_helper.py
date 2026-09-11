@@ -14,6 +14,17 @@ spec.loader.exec_module(helper)
 
 
 class HistoryHelperTests(unittest.TestCase):
+    def test_header_gate_preserves_data_and_rejects_malformed_headers(self):
+        prefix = '--- a/a.py\n+++ b/a.py\n'
+        data = '@@ -1,1 +1,1 @@\n @@ -not a header\n'
+        self.assertIn('old:1 new:1  @@ -not a header',
+                      helper.selected_patch_excerpt(prefix + data, 'a.py', [1]))
+        for header in ('@@ -x +1 @@', '@@ +1 -1 @@', '@@\t-1 +1 @@',
+                       '@@ -1 +1 @', ' @@ -1 +1 @@', '@@ -1,2 +1,1 @@'):
+            with self.subTest(header=header):
+                self.assertIsNone(helper.selected_patch_excerpt(
+                    prefix + header + '\n value\n', 'a.py', [1]))
+
     def test_incremental_budget_matches_full_render_at_every_boundary(self):
         header = '@@ -1,20 +1,20 @@'
         body = [f' 한글_{i}' for i in range(1, 21)]

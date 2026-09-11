@@ -86,7 +86,8 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
 
     old = new = old_left = new_left = None
     for line in body.splitlines():
-        match = re.fullmatch(r'@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@.*', line)
+        match = (re.fullmatch(r'@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@.*', line)
+                 if line.startswith('@@ -') else None)
         if match:
             if old_left not in (None, 0) or new_left not in (None, 0):
                 return None
