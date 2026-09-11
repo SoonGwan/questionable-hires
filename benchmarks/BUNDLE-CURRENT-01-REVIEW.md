@@ -34,3 +34,37 @@ match frozen Git and before/after manifests agree; baseline has no installed ski
 No patch rejections, malformed JSON, empty-output flags or event errors in metadata
 for these three cells, subject to the concrete missing-output limitation above.
 Remaining cells and paired cost comparisons still require review.
+
+## Next three reviewed cells
+
+- Search diagnosis skill: actual Search and transport execute sequential, overlapping
+  in-order and overlapping reversed scenarios through a recording dependency.
+  Captured output demonstrates stale overwrite without cache; final answer explains
+  why no-cache does not prevent ordering races and preserves production uncertainty.
+  Only a rerunnable probe is added. Async signal waits and cleanup have cooperative
+  timeouts; no separate process deadline or helper is added. The exercised fixture
+  has no cancellation-suppressing implementation. Six shell commands; no optional
+  reference/source read or separate result-file round trip. Initial broad listing
+  includes in-project .git names before loading the skill. Inputs/resources match.
+- Formatter baseline: source-grounded review recommends replacing the unused USD-only
+  registry with a plain formatter while preserving the formatting expression.
+  Three read commands, no runtime checks or changes, and no claim of executed tests.
+  The supplied requirements and actual consumer support the scoped recommendation.
+  All three original inputs match.
+- Persistence skill: two disposable module copies preserve compilation/import context;
+  actual imports are verified in each. Original tests pass on correct/mutant code;
+  the same stronger test passes correct code and fails missing append with the
+  expected exact-store assertion. It includes a preexisting record and distinct
+  object identities. Six child invocations each have a 15-second timeout. All child
+  outputs/statuses are captured, originals match and copies are removed. Four shell
+  commands; no helper/reference read. Claims about detecting other write faults
+  follow from the assertion, not additional executed mutations. Five frozen skill
+  resources match and before/after manifests agree.
+
+No capture flags or patch rejections in these three metadata records, and recorded
+commands stay scoped. Partial persistence pair: baseline 79,283 tokens / 43.468s;
+skill 69,285 / 43.480s. Tokens are about 12.6% lower, time essentially equal, but
+skill checks deeper store identity/import/deadline behavior and baseline has the
+initial output omission noted above. This is neither equal-work causal measurement
+nor whole-bundle acceptance. Search diagnosis skill is 71,216 tokens / 52.128s;
+formatter baseline is 62,296 / 22.229s; their partners still require review.
