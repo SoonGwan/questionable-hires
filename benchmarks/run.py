@@ -19,6 +19,38 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTROL = "Keep the change focused, investigate relevant evidence, and verify your conclusions with appropriate checks."
 
 
+def inspect_capture(stdout, stderr):
+    """Describe capture limitations without inventing lost output or scoring quality."""
+    events, invalid_lines, non_objects = [], [], []
+    for number, line in enumerate(stdout.splitlines(), 1):
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            invalid_lines.append(number)
+            continue
+        if not isinstance(event, dict):
+            non_objects.append(number)
+            continue
+        events.append(event)
+    empty_outputs, event_errors = [], []
+    for event in events:
+        if event.get('type') in ('error', 'turn.failed'):
+            event_errors.append(event.get('type'))
+        item = event.get('item')
+        if (event.get('type') == 'item.completed' and isinstance(item, dict)
+                and item.get('type') == 'command_execution'
+                and not item.get('aggregated_output')):
+            empty_outputs.append(item.get('id'))
+    return events, dict(
+        invalid_json_lines=invalid_lines, non_object_json_lines=non_objects,
+        empty_command_output_items=empty_outputs, error_event_types=event_errors,
+        patch_rejection_count=stderr.lower().count('patch rejected'),
+        limitation='Empty command output may be legitimate. Nonempty output may still be incomplete. '
+                   'These diagnostics neither prove full tool-output capture nor score task success.')
+
+
 def command(args, cwd, **kwargs):
     return subprocess.run(args, cwd=cwd, text=True, capture_output=True, check=True, **kwargs).stdout.strip()
 
@@ -114,12 +146,7 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
             os.killpg(process.pid, signal.SIGKILL)
             stdout, stderr = process.communicate()
     duration = round(time.monotonic() - started, 3)
-    events = []
-    for line in stdout.splitlines():
-        try:
-            events.append(json.loads(line))
-        except json.JSONDecodeError:
-            pass
+    events, capture_diagnostics = inspect_capture(stdout, stderr)
     messages = [e["item"]["text"] for e in events if e.get("type") == "item.completed" and e.get("item", {}).get("type") == "agent_message"]
     usage = next((e.get("usage") for e in reversed(events) if e.get("type") == "turn.completed"), None)
     command(["git", "add", "-N", "."], workspace)
@@ -139,7 +166,8 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
     meta = {"limit_detected": limited, "attempted": True, "case": case["id"], "skill": case["skill"], "arm": arm, "repeat": repeat, "model": model, "reasoning_effort": effort,
             "base_commit": base, "skill_sha256": skill_hash, "elapsed_seconds": duration, "exit_code": process.returncode,
             "timed_out": timed_out, "usage": usage, "completed": usage is not None and process.returncode == 0 and not timed_out,
-            "workspace": str(workspace), "prompt": prompt, "disabled_personal_skills": len(disabled)}
+            "workspace": str(workspace), "prompt": prompt, "disabled_personal_skills": len(disabled),
+            "capture_diagnostics": capture_diagnostics}
     (cell / "metadata.json").write_text(json.dumps(meta, indent=2) + "\n")
     return meta
 

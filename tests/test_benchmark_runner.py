@@ -12,6 +12,57 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_capture_diagnostics_do_not_conflate_empty_output_and_failure(self):
+        rows = [dict(type='item.completed', item=dict(type='command_execution', id='empty',
+                                                    aggregated_output='', exit_code=0)),
+                dict(type='item.completed', item=dict(type='command_execution', id='failure',
+                                                    aggregated_output='expected assertion', exit_code=1)),
+                dict(type='error', message='example')]
+        raw = '\n'.join(json.dumps(row) for row in rows) + '\nnot JSON\n[]\n'
+        events, diagnostics = runner.inspect_capture(raw, 'patch rejected: example')
+        self.assertEqual(events, rows)
+        self.assertEqual(diagnostics['invalid_json_lines'], [4])
+        self.assertEqual(diagnostics['non_object_json_lines'], [5])
+        self.assertEqual(diagnostics['empty_command_output_items'], ['empty'])
+        self.assertEqual(diagnostics['error_event_types'], ['error'])
+        self.assertEqual(diagnostics['patch_rejection_count'], 1)
+
+    def test_full_cell_preserves_cli_capture_and_multiline_command_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / 'results'
+            output.mkdir()
+            temporary = root / 'temporary'
+            temporary.mkdir()
+            workspace = temporary / 'project'
+            command_output = 'first failure section\n한글\nlast success section\n'
+            rows = [dict(type='item.completed', item=dict(type='command_execution',
+                    id='probe', aggregated_output=command_output, exit_code=0)),
+                    dict(type='turn.completed', usage=dict(input_tokens=5, output_tokens=2))]
+            stdout = '\n'.join(json.dumps(row, ensure_ascii=False) for row in rows) + '\n'
+            stderr = 'patch rejected: diagnostic fixture\n'
+            actual_popen = runner.subprocess.Popen
+            def launch(args, **kwargs):
+                if args[0] == 'codex':
+                    self.assertEqual(args[args.index('-C') + 1], str(workspace))
+                    producer = ('import sys; sys.stdout.write(' + repr(stdout) +
+                                '); sys.stderr.write(' + repr(stderr) + ')')
+                    return actual_popen([sys.executable, '-c', producer], **kwargs)
+                return actual_popen(args, **kwargs)
+            with patch.object(runner.tempfile, 'mkdtemp', return_value=str(temporary)), \
+                 patch.object(runner.subprocess, 'Popen', side_effect=launch):
+                meta = runner.run_cell(dict(id='capture', skill='exorcist', task='Fixture',
+                    files={'source.py': 'VALUE = 1\n'}), 'baseline', 1, output,
+                    'gpt-6-astra', 'medium', 10, [])
+            cell = output / 'capture--baseline--1'
+            self.assertEqual((cell / 'stdout.original.jsonl').read_text(), stdout)
+            self.assertEqual((cell / 'stderr.original.txt').read_text(), stderr)
+            emitted = [json.loads(line) for line in (cell / 'events.jsonl').read_text().splitlines()]
+            self.assertEqual(emitted[0]['item']['aggregated_output'], command_output)
+            self.assertEqual(meta['capture_diagnostics']['patch_rejection_count'], 1)
+            self.assertTrue(meta['completed'])  # completion is not a quality/capture score
+            self.assertEqual((cell / 'project/source.py').read_text(), 'VALUE = 1\n')
+
     def test_upstream_copy_preserves_history_without_sharing_files(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / 'source'
