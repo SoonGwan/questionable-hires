@@ -21,6 +21,8 @@ Exercise the affected implementation, not a rewritten model of it. If a suspecte
 
 For controlled asynchronous probes, bound waits for signals the implementation may never emit and clean up owned tasks on failure. Use a process deadline if cancellation can itself stall. A timeout is incomplete evidence, not confirmation of the suspected cause.
 
+Reuse an existing bounded runner; when none exists, the optional [probe runner](references/bounded-probe.md) avoids rewriting process-deadline machinery.
+
 When evidence is missing, identify the specific observation that would discriminate remaining causes. Don't replace unavailable runtime evidence with increasingly elaborate simulations. A restart that removes symptoms is not by itself causal proof; preserve logs and user state before any authorized reset.
 
 ## Finish at the evidence boundary
