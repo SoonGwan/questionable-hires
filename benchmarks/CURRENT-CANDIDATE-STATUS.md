@@ -13,7 +13,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `18a2070`; collector/reference `ae99bac` | [Region-first HTTPX](HTTPX-HISTORY-REGION-01.md), [large hunk](NECROMANCER-LARGE-HUNK-01.md), paired 02 | Favorable HTTPX pair has unequal work and baseline repair; combined history task costs more; collector adoption unverified |
-| Receipt | `8a08ecf`; helper `048fb21`, reference `48ec1c3` | [Current-fix collection](RECEIPT-COLLECTION-01.md), [package pair](RECEIPT-PACKAGE-01.md) | Collection pair costs +38.1% tokens / +33.9% time; duplicate after checks, parent search and rejected patch remain |
+| Receipt | `7056153`; helper `048fb21`, reference `48ec1c3` | [Current-fix collection](RECEIPT-COLLECTION-01.md), [package pair](RECEIPT-PACKAGE-01.md) | Predecessor costs +38.1% tokens / +33.9% time; new suite-evidence reuse unmeasured; observed parent search and rejected patch unresolved |
 | Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [paired 02](FAST-PAIRED-02.md) | Current diagnosis uses process containment but reads full helper source and costs more; efficiency unproven |
@@ -23,6 +23,20 @@ They are not necessarily the snapshot used by every linked historical report.
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Receipt `7056153` replaces the ineffective collection-step prescription with
+coverage-based after evidence: a required suite that actually executes the same
+regression under relevant inputs/runtime already provides the after result.
+Skipped, undiscovered or differently configured tests do not qualify; distinct
+required coverage and each check's own status remain necessary. Revision identities
+are requested for historical comparisons, not as a default live-fix artifact.
+This responds to both original collection traces, which repeat a targeted after
+test already present in the full suite. It adds no helper and preserves the
+character and historical comparison resources. Twelve Receipt tests, skill and
+repository validation pass; these are not model-efficiency evidence. The current
+candidate is unmeasured. Future transfer needs a runner-selection/skip countercase,
+not another favorable-score attempt on these exposed URL cases. Friday's separate
+changed-state transfer remains pending; this Receipt iteration does not resolve it.
 
 Necromancer's subsequent [large-hunk selection](NECROMANCER-LARGE-HUNK-01.md)
 recovers attributed patch lines otherwise lost beyond the output cap. One actual
