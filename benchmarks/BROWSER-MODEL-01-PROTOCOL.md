@@ -27,3 +27,10 @@ Author preflight is separate from sandboxed model execution. A sandbox launch
 failure must be retained and investigated without silently changing permissions.
 The model runner and dependency manifest must be in place before launching this
 screen; this protocol alone is not evidence of any completed model session.
+
+Runner: `python3 benchmarks/run_browser_model.py --output benchmarks/local-runs/browser-model-01`.
+Order is fixed baseline then skill. `--stage-only` verifies local copying without
+model usage; it creates a new output and cannot be resumed as a model run.
+Local snapshots retain dependencies and licenses; they are not intended as a
+public export. The manifest records their bytes/modes and checks them after each
+session. No dependency files are silently excluded from local evidence.
