@@ -107,7 +107,9 @@ class ReceiptHelperTests(unittest.TestCase):
         with patch.object(helper, 'git', wraps=helper.git) as calls, patch.object(helper, 'run_check', side_effect=check):
             helper.compare(self.root, recipe)
             helper.compare(self.root, recipe)
-        self.assertEqual(sum(call.args[1] == 'cat-file' for call in calls.call_args_list), 4)
+        self.assertEqual(sum(call.args[1] == 'cat-file' for call in calls.call_args_list), 2)
+        self.assertTrue(all(call.args[2] == 'blob' for call in calls.call_args_list
+                            if call.args[1] == 'cat-file'))
         self.assertEqual(observations, [[0o644, 0o644], [0o644, 0o755]] * 2)
 
     def test_reused_blob_still_counts_toward_each_snapshot_limit(self):

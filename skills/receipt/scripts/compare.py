@@ -131,7 +131,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
         files = dict(originals)
         variant_modes = dict(modes)
         # One literal-path tree query per revision, not one process per file.
-        tree = git(root, 'ls-tree', '-z', sha, '--', *recipe['vary'])
+        tree = git(root, 'ls-tree', '-l', '-z', sha, '--', *recipe['vary'])
         entries = {}
         for entry in tree.split(b'\0'):
             if not entry:
@@ -144,16 +144,16 @@ def compare(root, recipe, python=sys.executable, timeout=30):
         for name in recipe['vary']:
             if name not in entries:
                 raise ValueError('Implementation missing at requested revision')
-            mode, kind, oid = entries[name]
+            mode, kind, oid, size = entries[name]
             if kind != b'blob' or mode not in (b'100644', b'100755'):
                 raise ValueError('Implementation must be a regular Git file')
-            length = blobs[oid][0] if oid in blobs else int(git(root, 'cat-file', '-s', oid.decode()))
+            length = int(size)
             total += length
             if total > 20_000_000:
                 raise ValueError('Comparison snapshots exceed 20 MB')
             if oid not in blobs:
-                blobs[oid] = (length, git(root, 'cat-file', 'blob', oid.decode()))
-            files[name] = blobs[oid][1]
+                blobs[oid] = git(root, 'cat-file', 'blob', oid.decode())
+            files[name] = blobs[oid]
             variant_modes[name] = 0o755 if mode == b'100755' else 0o644
         variants[label] = (files, variant_modes)
     result = dict(status='observed', revisions=revisions, checks={},
