@@ -99,7 +99,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
             actual_popen = runner.subprocess.Popen
             def launch(args, **kwargs):
                 if args[0] == 'codex':
-                    self.assertEqual(args[args.index('-C') + 1], str(workspace))
+                    self.assertEqual(args[args.index('-C') + 1], str(workspace.resolve()))
                     producer = ('import sys; sys.stdout.write(' + repr(stdout) +
                                 '); sys.stderr.write(' + repr(stderr) + ')')
                     return actual_popen([sys.executable, '-c', producer], **kwargs)
@@ -117,6 +117,44 @@ class BenchmarkRunnerTests(unittest.TestCase):
             self.assertEqual(meta['capture_diagnostics']['patch_rejection_count'], 1)
             self.assertTrue(meta['completed'])  # completion is not a quality/capture score
             self.assertEqual((cell / 'project/source.py').read_text(), 'VALUE = 1\n')
+
+    def test_symlinked_temporary_root_has_one_physical_workspace_for_all_arms(self):
+        for arm in ('baseline', 'control', 'skill', 'auto'):
+            with self.subTest(arm=arm), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory).resolve()
+                physical = root / 'physical'
+                physical.mkdir()
+                alias = root / 'alias'
+                alias.symlink_to(physical, target_is_directory=True)
+                output = root / 'results'
+                output.mkdir()
+                source = root / 'skills/example'
+                source.mkdir(parents=True)
+                (source / 'SKILL.md').write_text('Example fixture skill')
+                actual_popen = runner.subprocess.Popen
+
+                def launch(args, **kwargs):
+                    if args[0] == 'codex':
+                        workspace = Path(args[args.index('-C') + 1])
+                        self.assertEqual(workspace, physical / 'project')
+                        self.assertEqual(workspace.resolve(), workspace)
+                        self.assertTrue(workspace.samefile(alias / 'project'))
+                        self.assertEqual(args[args.index('--sandbox') + 1], 'workspace-write')
+                        self.assertNotIn('--add-dir', args)
+                        event = json.dumps(dict(type='turn.completed', usage=dict(input_tokens=1, output_tokens=1)))
+                        return actual_popen([sys.executable, '-c', 'print(' + repr(event) + ')'], **kwargs)
+                    return actual_popen(args, **kwargs)
+
+                with patch.object(runner.tempfile, 'mkdtemp', return_value=str(alias)), \
+                     patch.object(runner.subprocess, 'Popen', side_effect=launch):
+                    meta = runner.run_cell(dict(id='canonical', skill='example', task='Fixture',
+                        files={'source.py': 'VALUE = 1\n'}), arm, 1, output,
+                        'gpt-6-astra', 'medium', 10, [], root / 'skills')
+                self.assertEqual(meta['workspace'], str(physical / 'project'))
+                self.assertEqual(meta['allocated_workspace'], str(alias / 'project'))
+                self.assertTrue(meta['completed'])
+                self.assertEqual(meta['installed_resources_before'], meta['installed_resources_after'])
+                self.assertEqual((output / ('canonical--' + arm + '--1') / 'project/source.py').read_text(), 'VALUE = 1\n')
 
     def test_upstream_copy_preserves_history_without_sharing_files(self):
         with tempfile.TemporaryDirectory() as directory:

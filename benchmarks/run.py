@@ -125,7 +125,11 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
     skills_root = skills_root or ROOT / "skills"
     cell = output / f"{case['id']}--{arm}--{repeat}"
     cell.mkdir()
-    workspace = Path(tempfile.mkdtemp(prefix="qh-eval-")) / "project"
+    allocated_workspace = Path(tempfile.mkdtemp(prefix="qh-eval-")) / "project"
+    # Use the same physical root for preparation, CLI -C, installed resources and
+    # evidence paths. macOS temporary directories may have /var and /private/var
+    # aliases; do not broaden writable roots to accommodate different spellings.
+    workspace = allocated_workspace.resolve()
     base = prepare_repository(project_source, workspace) if project_source else prepare(case, workspace)
     project_kind = "local repository" if project_source else "synthetic project"
     prompt = case["task"] + f"\n\nWork only inside this {project_kind}. Do not use external services or other installed skills. Do not delegate."
@@ -192,7 +196,8 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
     meta = {"limit_detected": limited, "attempted": True, "case": case["id"], "skill": case["skill"], "arm": arm, "repeat": repeat, "model": model, "reasoning_effort": effort,
             "base_commit": base, "skill_sha256": skill_hash, "elapsed_seconds": duration, "exit_code": process.returncode,
             "timed_out": timed_out, "usage": usage, "completed": usage is not None and process.returncode == 0 and not timed_out,
-            "workspace": str(workspace), "prompt": prompt, "disabled_personal_skills": len(disabled),
+            "workspace": str(workspace), "allocated_workspace": str(allocated_workspace),
+            "prompt": prompt, "disabled_personal_skills": len(disabled),
             "capture_diagnostics": capture_diagnostics,
             "installed_resources_before": installed_before,
             "installed_resources_after": installed_after,
