@@ -107,6 +107,29 @@ class MutationHelperTests(unittest.TestCase):
         fault = {k: self.recipe[k] for k in ('target', 'old', 'new', 'probe')}
         return dict(common, mutations=[fault, dict(fault, new='    store.extend([value, value])\n')])
 
+    def test_import_evidence_and_checks_share_each_execution_process(self):
+        source = self.root / 'service.py'
+        source.write_text('import os\nIMPORT_PID = os.getpid()\n'
+                          'print("import-pid:", IMPORT_PID, flush=True)\n' + source.read_text())
+        test = self.root / 'test_service.py'
+        test.write_text('import os, service\n'
+                        'assert service.IMPORT_PID == os.getpid()\n'
+                        'print("check-pid:", os.getpid(), flush=True)\n' + test.read_text())
+        recipe = dict(self.recipe, imports=['service', 'test_service'],
+                      probe='import os, service\nassert service.IMPORT_PID == os.getpid()\n'
+                            'print("probe-pid:", os.getpid(), flush=True)\n' + self.recipe['probe'])
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = self.run_audit(recipe)
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual(execute.call_count, 4)
+        for name, check in result['checks'].items():
+            self.assertEqual(check['exit_code'], 1 if name == 'mutant_probe' else 0)
+            pids = [line.split(':', 1)[1].strip() for line in check['output'].splitlines()
+                    if line.startswith(('import-pid:', 'check-pid:', 'probe-pid:'))]
+            self.assertEqual(len(pids), 3 if name.endswith('probe') else 2)
+            self.assertEqual(len(set(pids)), 1)
+            self.assertIn('Verified copied import: service', check['output'])
+
     def test_batch_reuses_identical_correct_probe_but_executes_each_mutant(self):
         with patch.object(helper, 'execute', wraps=helper.execute) as execute:
             result = helper.audit_batch(self.root, self.batch_recipe())
