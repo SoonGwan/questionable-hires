@@ -11,6 +11,13 @@ fault injection terminates as INCOMPLETE. Costs rise 1.5% tokens / 10.3% time ve
 screen 05; the deadline resides in the command, not the retained test file. This
 is a scoped robustness observation, not broad efficiency completion.
 
+The following Mother-in-law revision consolidates overlapping guidance (349 to
+278 whitespace-delimited words including metadata), preserving the discriminating
+sequence/control, observed layer, bounded cleanup and user scope. It adds an exact
+reproduction-command handoff requirement so external deadlines are not lost when
+only a test-file link is delivered. Metadata/link validation passes; no model
+sample yet covers this consolidated candidate. Word reduction is not token savings.
+
 Latest combined snapshot: `c11103c`, [FAST-REGRESSION-05](FAST-REGRESSION-05.md).
 All nine task criteria pass; 628,256 tokens / 337.371 seconds, down 8.1% / 8.8%
 from screen 04 and 9.3% / 4.4% from screen 02. No rejected patches. Most skills
