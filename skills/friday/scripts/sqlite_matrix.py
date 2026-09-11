@@ -80,6 +80,10 @@ def matrix(spec, root, timeout=5):
                 break  # Never label a partially applied migration as the next state.
             readonly = True
             for label, query in checks.items():
+                # SQLite's progress callback need not run for a short statement.
+                # Do not start another check after the shared budget is exhausted.
+                if time.monotonic() >= deadline:
+                    break
                 try:
                     cursor = db.execute(query)
                     rows = cursor.fetchmany(21)

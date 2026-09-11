@@ -73,11 +73,15 @@ class MatrixTests(unittest.TestCase):
         self.assertEqual(len(result["phases"]), 1)
 
     def test_recursive_query_times_out(self):
-        result = helper.matrix({"phases": [phase("before")], "checks": {"loop":
-            "WITH RECURSIVE t(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM t) SELECT sum(x) FROM t"}},
+        result = helper.matrix({"phases": [phase("before"), phase("unreachable")], "checks": {"loop":
+            "WITH RECURSIVE t(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM t) SELECT sum(x) FROM t",
+            "unrun": "SELECT 1"}},
             SCRIPT.parent, timeout=0.01)
         self.assertFalse(result["complete"])
         self.assertFalse(result["phases"][0]["checks"]["loop"]["ok"])
+        self.assertNotIn("unrun", result["phases"][0]["checks"])
+        self.assertEqual(len(result["phases"]), 1)
+        self.assertEqual(result["error"], "time budget exhausted")
 
     def test_rows_truncated_explicitly(self):
         result = helper.matrix({"phases": [phase("before")], "checks": {"rows":
