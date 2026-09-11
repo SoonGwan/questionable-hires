@@ -31,6 +31,12 @@ addition present; the distant removed value remains omitted. All 137 local tests
 pass. This is helper evidence selection, not a model-token/time result; model
 adoption and equivalent-quality work reduction remain unverified.
 
+The subsequent [bulk-history transfer pair](HISTORY-BULK-01.md) reaches the correct
+active/obsolete decisions with actual current/proposed renderer checks in all four
+sessions. Sum costs are -3.8% tokens / -8.0% time, but the normalized control costs
+13.7% more tokens. Neither skill session uses the collector; whole-file/history
+reads persist. No helper adoption or stable efficiency improvement is established.
+
 ## Latest combined screen
 
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
