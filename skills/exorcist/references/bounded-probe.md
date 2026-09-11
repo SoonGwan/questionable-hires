@@ -1,8 +1,9 @@
 # Optional deadline for a local probe
 
-Use for an unbounded asynchronous wait or cancellation path that the existing
-runner does not contain. Already bounded child experiments do not need another
-wrapper. Invoke the installed helper without reading its implementation unless
+Use for an identified hang risk, including blocking synchronous operations or
+cancellation suppression, that the existing runner's process deadline does not
+contain. Bounded local computation does not need this additional wrapper.
+Invoke the installed helper without reading its implementation unless
 adaptation is needed:
 
 ```sh

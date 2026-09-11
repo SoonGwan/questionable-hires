@@ -17,9 +17,11 @@ Choose the runner before inspecting setup: use existing tests when they exercise
 
 Before another experiment, ask which possible result changes the diagnosis or next action. If none, stop. A symptom without a suspected dependency shows that dependency is unnecessary for this reproduction, not every production incident. Explain why the existing safeguard does or doesn't address the observed mechanism.
 
-## Contain uncertain waits
+## Match containment to the exercised path
 
-Bound signals that may never arrive and clean up owned tasks. Asyncio timeouts can wait indefinitely for suppressed cancellation. If no existing process deadline contains that risk, the installed POSIX helper supplies one (replace paths/interpreter):
+Run a bounded local computation with the chosen interpreter or existing test runner. The optional helper is not the default probe command: use it for an identified hang risk that the runner's existing process deadline does not contain. Synchronous code can also block; choose from the actual operations, not the presence of `async` alone.
+
+For asynchronous probes, bound signals that may never arrive and clean up owned tasks. Asyncio timeouts can wait indefinitely for suppressed cancellation. When an additional process deadline is needed, the installed POSIX helper supplies one (replace paths/interpreter):
 
 ```sh
 python3 /path/to/exorcist/scripts/run_probe.py --timeout 10 -- python3 -B experiments/probe.py
@@ -29,7 +31,7 @@ Trusted local foreground commands only: this kills remaining process-group membe
 
 ## Finish at the evidence boundary
 
-Have the probe emit the distinguishing inputs, observed outcomes and assertion failures, not a full event trace unless ordering or provenance remains unresolved. Use captured command output directly; retain a separate result file when requested or needed for later analysis, not merely to read it back immediately. Keep the reproduction rerunnable.
+Choose one destination for detailed evidence. If a trace file is requested or needed for later analysis, write it and print its path plus distinguishing inputs/outcomes and failures; don't also print the entire trace unless needed to resolve the diagnosis. Otherwise use captured command output directly instead of a file round trip. Preserve necessary ordering/provenance and keep the reproduction rerunnable.
 
 Report the supported mechanism, decisive command/result, safeguard and uncertainty. Name the missing observation if blocked, rather than expanding simulations. Link the reproduction instead of repeating it. A restart alone isn't causal proof; preserve evidence and user state before an authorized reset.
 
