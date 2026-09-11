@@ -19,10 +19,24 @@ They are not necessarily the snapshot used by every linked historical report.
 | Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [paired 02](FAST-PAIRED-02.md) | Current diagnosis uses process containment but reads full helper source and costs more; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
 | Con Artist | `1f8b8b6`; helper `54328b1`; references `4bbac5a` | [Counter regression](HTTPX-COUNTER-01.md), [paired 02](FAST-PAIRED-02.md), [batch reuse](CON-ARTIST-BATCH-01.md) | Native copies avoid helper reads in persistence case with fewer tokens but more time; broader context-routing and batch adoption unverified |
-| Friday | `4362342`; helper/reference `e79b208` | [Necessary history](FRIDAY-HISTORY-01.md), [mixed writers](FRIDAY-WRITERS-01.md) | History transfer is correct but costs more; unchanged-pair reuse has author-only proof, not measured model gains; changed-state transfer remains pending |
+| Friday | `9cae27c`; helper/reference `e79b208` | [Changed state](FRIDAY-STATE-01.md), [necessary history](FRIDAY-HISTORY-01.md) | Changed-state predecessor correctly rechecks but costs +7.2% tokens / +8.4% time; witness-selection candidate unmeasured; compatible skill searches parent directory |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Friday's [changed-data transfer](FRIDAY-STATE-01.md) now completes: all arms
+distinguish actual whole/fractional compatibility and retained-data rollback.
+No stale pre-write result is accepted, but full-domain enumeration occurs in both
+arms and skills remain costlier. Candidate `9cae27c` selects witnesses from actual
+branches, representation boundaries and state-changing transitions, with expanded
+coverage for value-dependent behavior or requested assurance. It retains changed-
+state rechecks and unchanged-evidence reuse, not a generic test-count limit.
+An author-only real-SQLite comparison obtains the same outcome classes with nine
+selected writes as with 3,002 exhaustive writes for these inspected conversions.
+The test executes both sets to compare them; it does not show universal equivalent
+coverage, model adoption or token/time savings. Fifteen Friday tests and skill
+validation pass. The next check must include code whose interior branch invalidates
+simple whole/fraction grouping, rather than repeat these exposed values for a score.
 
 Runner `fd8d578` now uses a canonical physical temporary workspace for every arm
 and retains its allocated spelling in metadata. The [workspace identity audit](WORKSPACE-IDENTITY-01.md)
