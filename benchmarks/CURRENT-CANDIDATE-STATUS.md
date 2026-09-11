@@ -1,5 +1,10 @@
 # Current candidate: completion is not established
 
+Mother-in-law now clarifies cancellation-resistant cleanup after an [author fault
+check](INTERACTION-CLEANUP-01.md) of the retained screen-05 test. The test hangs
+despite a bounded dispatch wait; a process deadline contains it. This instruction
+revision has no new model measurement and adds no cross-skill helper dependency.
+
 Latest combined snapshot: `c11103c`, [FAST-REGRESSION-05](FAST-REGRESSION-05.md).
 All nine task criteria pass; 628,256 tokens / 337.371 seconds, down 8.1% / 8.8%
 from screen 04 and 9.3% / 4.4% from screen 02. No rejected patches. Most skills
