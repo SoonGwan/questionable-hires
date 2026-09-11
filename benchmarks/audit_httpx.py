@@ -46,6 +46,9 @@ def audit(source, run):
         raise ValueError('Source must be clean')
     names = subprocess.check_output(['git', 'ls-files', '-z'], cwd=source).decode().split('\0')[:-1]
     manifest = json.loads((run / 'run.json').read_text())
+    skill_name = manifest.get('skill_name', 'con-artist')
+    if skill_name not in ('con-artist', 'landlord'):
+        raise ValueError('Unsupported profile skill in manifest')
     results = []
     for case, arm, repeat in manifest['schedule']:
         cell = run / f'{case}--{arm}--{repeat}'
@@ -58,13 +61,13 @@ def audit(source, run):
         row['skill_digest_matches'] = meta.get('skill_sha256') == (manifest['skill_sha256'] if arm == 'skill' else None)
         if arm == 'skill':
             row['installed_skill_resources'] = check_resources(
-                Path(meta['workspace']) / '.agents/skills/con-artist',
+                Path(meta['workspace']) / '.agents/skills' / skill_name,
                 manifest.get('skill_files_sha256'))
         row['patch_rejection_recorded'] = 'patch rejected' in (cell / 'stderr.txt').read_text().lower()
         row['source_manifest_sha256'] = hashlib.sha256('\n'.join(names).encode()).hexdigest()
         results.append(row)
     return dict(upstream_revision=revision, tracked_file_count=len(names), cells=results,
-                frozen_skill_resources=check_resources(run / 'skills/con-artist', manifest.get('skill_files_sha256')),
+                frozen_skill_resources=check_resources(run / 'skills' / skill_name, manifest.get('skill_files_sha256')),
                 limitation='Final snapshots cannot prove no transient edits or outside writes. Review full command traces and behavioral claims separately. No completed record does not imply a stopped process.')
 
 

@@ -16,11 +16,26 @@ TASKS = {
     'asgi-head': 'Audit whether tests/test_asgi.py protects HEAD response-body handling. Demonstrate test sensitivity with a narrow isolated behavioral mutation. If coverage is missing, propose a focused test and verify it against correct and faulty behavior. Do not change the original source or tests.',
     'asgi-exceptions': 'Audit whether tests/test_asgi.py protects default application-exception propagation. Demonstrate test sensitivity with a narrow isolated behavioral mutation. If coverage is adequate for the targeted fault, report that without demanding a stronger test. Do not change the original source or tests.',
 }
+DESIGN_TASKS = {
+    'transport-design': 'Review httpx/_transports/base.py and httpx/_transports/mock.py for maintenance cost. Recommend whether any simplification is justified by actual consumers and supported contracts in this checkout. Do not edit existing files or perform a general repository audit.',
+}
 
 
-def freeze_skill(repository, revision, destination):
+def select_profile(profile, requested=None):
+    skill, available = ('landlord', DESIGN_TASKS) if profile == 'design' else ('con-artist', TASKS)
+    if profile not in ('audit', 'design'):
+        raise ValueError('Unknown profile')
+    names = list(dict.fromkeys(requested or available))
+    if any(name not in available for name in names):
+        raise ValueError('Case does not belong to selected profile')
+    return skill, {name: available[name] for name in names}
+
+
+def freeze_skill(repository, revision, destination, skill_name='con-artist'):
     """Export the whole committed skill, including optional scripts/references."""
-    prefix = 'skills/con-artist/'
+    if skill_name not in ('con-artist', 'landlord'):
+        raise ValueError('Unsupported HTTPX profile skill')
+    prefix = f'skills/{skill_name}/'
     entries = subprocess.check_output(['git', 'ls-tree', '-rz', revision, '--', prefix], cwd=repository)
     selected = []
     for entry in entries.split(b'\0'):
@@ -35,7 +50,7 @@ def freeze_skill(repository, revision, destination):
             raise ValueError('Skill snapshot must contain regular files, not links/submodules')
         selected.append((path, object_id, mode))
     if Path('SKILL.md') not in [path for path, _, _ in selected]:
-        raise ValueError('Revision has no Con Artist skill')
+        raise ValueError('Revision has no selected skill')
     destination.mkdir(parents=True, exist_ok=False)
     hashes = {}
     for path, object_id, mode in selected:
@@ -62,14 +77,18 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--case', action='append', choices=TASKS)
+    parser.add_argument('--profile', choices=('audit', 'design'), default='audit')
+    parser.add_argument('--case', action='append')
     parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
     parser.add_argument('--repeats', type=int, default=3)
     parser.add_argument('--skill-revision', default='bf420fe')
     args = parser.parse_args()
     if args.repeats < 1:
         parser.error('repeats must be positive')
-    tasks = {name: TASKS[name] for name in dict.fromkeys(args.case or TASKS)}
+    try:
+        skill_name, tasks = select_profile(args.profile, args.case)
+    except ValueError as error:
+        parser.error(str(error))
     skill_revision = command(['git', 'rev-parse', '--verify', args.skill_revision + '^{commit}'], ROOT)
     source, python = args.source.resolve(), args.python.absolute()
     if args.output.exists():
@@ -79,16 +98,20 @@ def main():
     if command(['git', 'status', '--porcelain'], source):
         raise ValueError('Upstream checkout must be clean')
     # Fail before scheduling if environment no longer passes upstream tests.
+    checks = (['tests/test_wsgi.py', 'tests/test_asgi.py'] if args.profile == 'audit' else
+              ['tests/client/test_client.py::test_context_managed_transport',
+               'tests/client/test_client.py::test_context_managed_transport_and_mount'])
     subprocess.run([str(python), '-B', '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
-                    'tests/test_wsgi.py', 'tests/test_asgi.py'], cwd=source, check=True, timeout=60)
+                    *checks], cwd=source, check=True, timeout=60)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
-    snapshot = output / 'skills/con-artist'
-    skill_files = freeze_skill(ROOT, skill_revision, snapshot)
+    snapshot = output / 'skills' / skill_name
+    skill_files = freeze_skill(ROOT, skill_revision, snapshot, skill_name)
     schedule = make_schedule(tasks, args.arms, args.repeats)
     manifest = dict(upstream_revision=REVISION, revision=command(['git', 'rev-parse', 'HEAD'], ROOT),
                     codex_version=command(['codex', '--version'], ROOT), model='gpt-6-astra', effort='medium',
                     seed=20260912, timeout_seconds=360, jobs=1,
+                    profile=args.profile, skill_name=skill_name, preflight_checks=checks,
                     skill_sha256=hashlib.sha256((snapshot / 'SKILL.md').read_bytes()).hexdigest(),
                     skill_files_sha256=skill_files,
                     tasks=tasks, schedule=schedule, skill_revision=skill_revision, completed_cells=[], stopped_after_limit=False,
@@ -98,7 +121,7 @@ def main():
     disabled = disabled_skills()
     for name, arm, repeat in schedule:
         instructions = f'\n\nUse the preinstalled interpreter {python} for all Python/pytest commands. Do not install dependencies. Keep disposable mutation copies and diagnostic artifacts inside this project, without modifying its existing files.'
-        case = dict(id=name, skill='con-artist', task=TASKS[name] + instructions)
+        case = dict(id=name, skill=skill_name, task=tasks[name] + instructions)
         try:
             result = run_cell(case, arm, repeat, output, 'gpt-6-astra', 'medium', 360, disabled, output / 'skills', source)
         except Exception as error:

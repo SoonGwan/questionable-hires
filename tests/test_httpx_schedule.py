@@ -16,6 +16,24 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_design_profile_is_separate_from_original_audit_schedule(self):
+        skill, tasks = runner.select_profile('design')
+        self.assertEqual(skill, 'landlord')
+        self.assertEqual(list(tasks), ['transport-design'])
+        self.assertEqual(runner.select_profile('audit'), ('con-artist', runner.TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('audit', ['transport-design'])
+        with self.assertRaises(ValueError):
+            runner.select_profile('design', ['wsgi-cleanup'])
+
+    def test_design_snapshot_contains_landlord_not_audit_helper(self):
+        revision = runner.command(['git', 'rev-parse', 'HEAD'], runner.ROOT)
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / 'skill'
+            hashes = runner.freeze_skill(runner.ROOT, revision, destination, 'landlord')
+            self.assertEqual(set(hashes), {'SKILL.md', 'agents/openai.yaml'})
+            self.assertIn('# Landlord', (destination / 'SKILL.md').read_text())
+
     def test_snapshot_contains_helpers_and_references_from_commit(self):
         revision = runner.command(['git', 'rev-parse', 'HEAD'], runner.ROOT)
         with tempfile.TemporaryDirectory() as directory:
