@@ -29,4 +29,6 @@ The single-audit CLI emits JSON with `status` (`observed` or `incomplete`) and `
 
 Correct-code failure or timeout stops as incomplete. CLI exit 0 means observations collected; exit 2 means invalid/incomplete evidence (invalid input may produce only stderr). Selected original bytes and permission bits are checked and copies removed; detected original changes are reported, never silently restored. Output retains a 12,000-character tail per check; invalid UTF-8 is replaced. Timeout defaults to 30 seconds per check; `--timeout` allows at most 300.
 
+Child-exit confirmation has a separate five-second cleanup wait. An unconfirmed exit stops the audit/batch and produces CLI exit 2 with an audit-not-established error, not collected evidence. Existing interruptions/errors propagate. This is not an OS termination or descendant-containment guarantee; do not automatically retry while the previous process may remain.
+
 Limits: POSIX, Python 3.9+, 20 MB selected inputs; no symlinks/Git internals/path traversal or namespace-package import checks. No dependency installation. This is **not a sandbox**: use trusted tests, local data and authorized actions only. Files outside the selection are not integrity-checked or restored. Use normal project facilities for other languages or unsupported layouts; don't repeat a valid baseline merely to adopt this helper mid-audit.

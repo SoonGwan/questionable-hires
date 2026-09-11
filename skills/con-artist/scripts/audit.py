@@ -109,13 +109,19 @@ def execute(python, directory, spec, probe, timeout):
     except subprocess.TimeoutExpired:
         timed_out = True
     finally:
+        pending_error = sys.exc_info()[0]
         if timed_out or process.poll() is None:
             try:
                 os.killpg(process.pid, signal.SIGKILL)
             except ProcessLookupError:
                 pass
         process.stdout.close()
-        process.wait()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired as error:
+            if pending_error is None:
+                raise RuntimeError('Child exit unconfirmed after 5-second cleanup wait; audit not established') from error
+            # Preserve an existing interruption/error; do not start another check.
     return dict(exit_code=process.returncode, timed_out=timed_out,
                 output=output, output_truncated=characters > 12000)
 

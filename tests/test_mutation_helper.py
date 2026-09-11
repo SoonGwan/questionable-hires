@@ -7,7 +7,7 @@ import subprocess
 import sys
 import tracemalloc
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('mutation_helper', ROOT / 'skills/con-artist/scripts/audit.py')
@@ -16,6 +16,30 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_cleanup_confirmation_is_bounded_and_preserves_interruption(self):
+        for interrupted in (False, True):
+            process = Mock(returncode=None)
+            process.poll.return_value = None
+            process.wait.side_effect = subprocess.TimeoutExpired('probe', 5)
+            trigger = KeyboardInterrupt if interrupted else subprocess.TimeoutExpired('probe', 1)
+            expected = KeyboardInterrupt if interrupted else RuntimeError
+            with self.subTest(interrupted=interrupted), \
+                    patch.object(helper.subprocess, 'Popen', return_value=process), \
+                    patch.object(helper.selectors, 'DefaultSelector', side_effect=trigger), \
+                    patch.object(helper.os, 'killpg'), self.assertRaises(expected):
+                helper.execute(sys.executable, self.root, self.recipe, None, 1)
+            process.wait.assert_called_once_with(timeout=5)
+            process.stdout.close.assert_called_once()
+
+    def test_unconfirmed_exit_stops_batch_and_cleans_copies(self):
+        original = {name: (self.root/name).read_bytes() for name in self.recipe['files']}
+        with patch.object(helper, 'execute', side_effect=RuntimeError('Child exit unconfirmed')) as execute, \
+                self.assertRaisesRegex(RuntimeError, 'Child exit unconfirmed'):
+            helper.audit_batch(self.root, self.batch_recipe())
+        self.assertEqual(execute.call_count, 1)
+        self.assertEqual(list(self.root.glob('.con-artist-*')), [])
+        self.assertEqual(original, {name: (self.root/name).read_bytes() for name in original})
+
     def test_original_permission_changes_are_reported_not_restored(self):
         original = self.root / 'service.py'
         original.chmod(0o644)
