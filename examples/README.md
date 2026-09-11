@@ -13,6 +13,11 @@ These examples link to actual independent Astra runs, including the no-skill and
 
 Every example includes the ticket, observed result, limitations, raw command evidence, and a reproduction command. Start with Necromancer for historical context, Mother-in-law for interaction failures, or Con Artist for tests that miss broken behavior.
 
+For a no-account first try, [replay the retained interaction test](mother-in-law.md#try-the-retained-test-without-model-usage)
+or [run the two-fault audit](con-artist.md). An expected failing regression
+demonstrates an application defect; a launch/setup failure does not. Both examples
+separate local replay from new model evaluation and its usage costs.
+
 ## Real repository follow-up
 
 [Clean up the failed build. Leave the company standing.](packaging-repair.md)
