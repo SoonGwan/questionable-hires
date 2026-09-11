@@ -11,7 +11,9 @@ For a current bug, start with the affected code and project's documented test co
 
 For an already-present fix requiring historical comparison, use the [isolated comparison procedure](references/existing-fix.md). Don't reverse patches in the user's working tree.
 
-Choose the after check before running it. If a required suite actually executes the unchanged regression with the relevant inputs and runtime, its result is the after evidence; don't also run that regression separately. A skipped, undiscovered or differently configured test does not qualify. Retain required checks with distinct coverage. Inspect the focused diff and each check's own output and exit status; a final command's success cannot stand in for earlier results.
+Choose the after check before running it. If a required suite actually executes the unchanged regression with the relevant inputs and runtime, its result is the after evidence; don't also run that regression separately. A skipped, undiscovered or differently configured test does not qualify. Retain required checks with distinct coverage and inspect the focused diff.
+
+Collect final checks together when no intermediate result changes the next action. In a shell supporting `&&`, a fail-fast chain preserves the failing exit; later checks are unrun, not passed. If every check must run, capture each exit explicitly. A semicolon chain's final exit does not establish earlier statuses. Reuse established check results until their relevant inputs change; don't discard a status and rerun just to recover it.
 
 Dependency/compiler failures aren't defect reproduction; mocks don't prove unobserved effects. Preserve user changes and scope; verification alone authorizes neither implementation nor publication.
 
