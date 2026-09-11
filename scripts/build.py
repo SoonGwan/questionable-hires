@@ -10,6 +10,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def build(destination):
     destination = Path(destination).resolve()
+    # Reject linked source trees before following them or reserving any output.
+    sources = (ROOT / 'skills', ROOT / '.codex-plugin', ROOT / 'LICENSE',
+               ROOT / 'packaging/marketplace.json')
+    for source in sources:
+        ancestors = [p for p in source.parents if p != ROOT and ROOT in p.parents]
+        if source.is_symlink() or any(p.is_symlink() for p in ancestors) or any(
+                p.is_symlink() for p in source.rglob('*')):
+            raise OSError('Source symlinks are unsupported: ' + str(source.relative_to(ROOT)))
     destination.mkdir(parents=True, exist_ok=False)
     try:
         plugin = destination / "plugins/questionable-hires"

@@ -13,6 +13,34 @@ spec.loader.exec_module(builder)
 
 
 class BuildTests(unittest.TestCase):
+    def test_linked_bundle_sources_are_rejected_before_output_creation(self):
+        paths = ('skills', 'skills/fixture', 'skills/fixture/SKILL.md',
+                 '.codex-plugin', '.codex-plugin/plugin.json', 'LICENSE',
+                 'packaging', 'packaging/marketplace.json')
+        for relative in paths:
+            with self.subTest(relative=relative), tempfile.TemporaryDirectory() as directory:
+                scratch = Path(directory).resolve()
+                root = scratch / 'source'
+                for name in ('skills/fixture/SKILL.md', '.codex-plugin/plugin.json',
+                             'LICENSE', 'packaging/marketplace.json'):
+                    file = root / name
+                    file.parent.mkdir(parents=True, exist_ok=True)
+                    file.write_text('fixture resource')
+                linked = root / relative
+                outside = scratch / 'external-resource'
+                linked.rename(outside)
+                linked.symlink_to(outside, target_is_directory=outside.is_dir())
+                destination = scratch / 'bundle'
+                with patch.object(builder, 'ROOT', root):
+                    with self.assertRaisesRegex(OSError, 'symlink'):
+                        builder.build(destination)
+                self.assertFalse(destination.exists())
+                self.assertTrue(linked.is_symlink())
+                originals = list(outside.rglob('*')) if outside.is_dir() else [outside]
+                for file in originals:
+                    if file.is_file():
+                        self.assertEqual(file.read_text(), 'fixture resource')
+
     def test_failed_build_cleans_owned_output_and_allows_retry(self):
         for error_type in (OSError, RuntimeError, KeyboardInterrupt):
             with self.subTest(error_type=error_type), tempfile.TemporaryDirectory() as directory:
