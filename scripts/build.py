@@ -18,6 +18,8 @@ def build(destination):
         if source.is_symlink() or any(p.is_symlink() for p in ancestors) or any(
                 p.is_symlink() for p in source.rglob('*')):
             raise OSError('Source symlinks are unsupported: ' + str(source.relative_to(ROOT)))
+        if source.is_dir() and (source.resolve() == destination or source.resolve() in destination.parents):
+            raise OSError('Build output must not be inside a copied source tree')
     destination.mkdir(parents=True, exist_ok=False)
     try:
         plugin = destination / "plugins/questionable-hires"

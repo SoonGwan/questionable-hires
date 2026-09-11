@@ -13,6 +13,22 @@ spec.loader.exec_module(builder)
 
 
 class BuildTests(unittest.TestCase):
+    def test_destination_inside_copied_tree_is_rejected_before_copy(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            for name in ('skills/fixture/SKILL.md', '.codex-plugin/plugin.json'):
+                file = root / name
+                file.parent.mkdir(parents=True, exist_ok=True)
+                file.write_text('fixture')
+            for relative in ('skills/fixture/generated', '.codex-plugin/generated'):
+                with self.subTest(relative=relative), patch.object(builder, 'ROOT', root), \
+                        patch.object(builder.shutil, 'copytree', side_effect=AssertionError('copy started')) as copy:
+                    destination = root / relative
+                    with self.assertRaisesRegex(OSError, 'inside.*source'):
+                        builder.build(destination)
+                    copy.assert_not_called()
+                    self.assertFalse(destination.exists())
+
     def test_linked_bundle_sources_are_rejected_before_output_creation(self):
         paths = ('skills', 'skills/fixture', 'skills/fixture/SKILL.md',
                  '.codex-plugin', '.codex-plugin/plugin.json', 'LICENSE',

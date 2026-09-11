@@ -22,6 +22,9 @@ def install(destination, names, dry_run=False):
     conflicts = [name for name in names if (destination / name).exists() or (destination / name).is_symlink()]
     if conflicts:
         raise ValueError("Existing skills left untouched: " + ", ".join(conflicts))
+    source_root = (ROOT / 'skills').resolve()
+    if destination == source_root or source_root in destination.parents:
+        raise ValueError('Installation destination must not be inside the source skill tree')
     # Refuse linked source resources instead of silently copying their referents.
     # Check every selected skill before creating any destination folders.
     for name in names:

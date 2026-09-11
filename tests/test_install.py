@@ -92,6 +92,21 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(len(installer.install(self.dest, installer.available(), True)), 8)
         self.assertFalse(self.dest.exists())
 
+    def test_destination_inside_source_is_rejected_before_copy(self):
+        root = Path(self.temp.name).resolve() / 'repo'
+        source = root / 'skills/fixture'
+        source.mkdir(parents=True)
+        (source / 'SKILL.md').write_text('fixture')
+        for dry_run in (False, True):
+            with self.subTest(dry_run=dry_run), patch.object(installer, 'ROOT', root), \
+                    patch.object(installer.shutil, 'copytree', side_effect=AssertionError('copy started')) as copy:
+                destination = source / 'generated'
+                with self.assertRaisesRegex(ValueError, 'inside.*source'):
+                    installer.install(destination, ['fixture'], dry_run=dry_run)
+                copy.assert_not_called()
+                self.assertFalse(destination.exists())
+        self.assertEqual((source / 'SKILL.md').read_text(), 'fixture')
+
     def test_all_hires_are_installed_with_ui_metadata(self):
         installed = installer.install(self.dest, installer.available())
         self.assertEqual(len(installed), 8)
