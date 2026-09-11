@@ -47,10 +47,22 @@ def check(browser):
                 start_new_session=True)
             try:
                 stdout, stderr = process.communicate(timeout=30)
-            except subprocess.TimeoutExpired:
-                os.killpg(process.pid, signal.SIGKILL)
-                process.communicate()
-                raise RuntimeError('Browser timed out in guard=' + mode + '; check incomplete')
+            except BaseException as error:
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass  # The dedicated process group already exited.
+                try:
+                    process.communicate(timeout=5)
+                except subprocess.TimeoutExpired:
+                    # An escaped descendant might retain a pipe; do not wait
+                    # indefinitely for EOF after killing the owned group.
+                    process.stdout.close()
+                    process.stderr.close()
+                    process.wait(timeout=5)
+                if isinstance(error, subprocess.TimeoutExpired):
+                    raise RuntimeError('Browser timed out in guard=' + mode + '; check incomplete') from error
+                raise
             if process.returncode:
                 raise RuntimeError('Browser failed: ' + stderr[-2000:])
             parser = ReceiptParser()
