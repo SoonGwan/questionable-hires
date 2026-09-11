@@ -25,7 +25,7 @@
 
 ## 진짜 작동하나요?
 
-**아래 그래프는 최초 실험이며 현재 파일의 측정값은 아닙니다.** 이후 수정본의 개별 검사, 실제 HTTPX 감사·설계 리뷰와 불리한 결과는 [현재 후보 상태](benchmarks/CURRENT-CANDIDATE-STATUS.md)에 기록했습니다. [9개 과제 검사 05](benchmarks/FAST-REGRESSION-05.md)는 검사 04보다 토큰 8.1%·시간 8.8%가 적었지만, 동시 측정한 기본 모델 비교군이 없고 검증 깊이도 달랐으며 일부 현재 스킬의 수정 전 결과입니다. 전반적인 성능 향상은 아직 입증되지 않았습니다.
+**아래 그래프는 최초 실험이며 현재 파일의 측정값은 아닙니다.** 이후 수정본의 개별 검사, 실제 HTTPX 감사·설계 리뷰와 이 레포의 패키징 수리 결과는 [현재 후보 상태](benchmarks/CURRENT-CANDIDATE-STATUS.md)에 기록했습니다. 결과는 혼재합니다. 로컬 보조 도구의 개선이 모델 세션의 비용 절감으로 바로 이어지지는 않으며, 일부 비교는 검증 범위도 다릅니다. 전반적인 성능 향상은 아직 입증되지 않았습니다. [9개 과제 검사 05](benchmarks/FAST-REGRESSION-05.md)를 포함한 과거 기록도 유리한 표본으로 대체하지 않고 보존합니다.
 
 현재는 **개발 프리뷰**입니다. GPT-6 Astra / medium으로 **신규 72회**를 측정했습니다. 작은 synthetic 과제 8개 × 스킬 없음·일반 지침·해당 스킬 3조건 × 3반복이며, 각 실행은 새로운 프로세스·대화·Git fixture를 사용했습니다. 기존 n=1 결과는 새 측정에 포함하지 않았습니다.
 
@@ -56,6 +56,11 @@ python3 scripts/install.py --dest /내/프로젝트/.agents/skills --skill necro
 
 실제 프로젝트 경로로 바꿔주세요. `--skill necromancer`를 빼면 8개 전부 설치합니다. `--dry-run`으로 미리 확인할 수 있으며 기존 스킬 폴더는 덮어쓰지 않습니다.
 
+신뢰할 수 있는 소스에서 설치하세요. 소스의 심볼릭 링크 파일·폴더는 쓰기 전에
+거부합니다. 실패하거나 취소하면 이번 실행이 만든 폴더만 정리를 시도합니다.
+정리도 실패할 수 있으므로 재시도 전에 남은 불완전한 폴더를 확인하고,
+기존 파일과 개인 수정본은 보존하세요.
+
 Codex CLI나 IDE의 새 대화에서:
 
 ```text
@@ -82,6 +87,6 @@ $friday 이 배포 롤백 가능한지 봐줘.
 
 웃긴 캐릭터마다 실제 개발 판단이 달라져야 합니다. 새로운 스킬에는 구체적인 문제, 출력할 근거, 종료 조건, 그리고 정상 코드를 건드리지 않아야 하는 사례가 필요합니다.
 
-[기여 가이드](CONTRIBUTING.md) · [평가 실행 방법](benchmarks/README.md) · [개발 현황](docs/ROADMAP.md) · [MIT 라이선스](LICENSE)
+[기여 가이드](CONTRIBUTING.md) · [평가 실행 방법](benchmarks/README.md) · [공개 준비와 남은 검증](docs/RELEASE-READINESS.md) · [개발 현황](docs/ROADMAP.md) · [MIT 라이선스](LICENSE)
 
 캐릭터와 실용적인 개발 습관을 연결하는 방식은 [Ponytail](https://github.com/DietrichGebert/ponytail)에서 영감을 받았습니다.

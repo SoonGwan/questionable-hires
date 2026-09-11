@@ -64,6 +64,11 @@ python3 scripts/install.py --dest /path/to/your-project/.agents/skills --skill n
 
 Replace the project path. Omit `--skill necromancer` to install all eight; add `--dry-run` to preview. Existing skill folders are never overwritten.
 
+Install from a trusted checkout: linked source files or directories are rejected
+before writing. On failure or cancellation, the installer attempts to remove
+only folders it created. Cleanup can fail too, so inspect any remaining partial
+folders before retrying; preserve existing files and personal edits.
+
 In a new Codex CLI or IDE thread:
 
 ```text
@@ -88,7 +93,7 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 
 ## Does it actually work?
 
-**The chart below is the original experiment, not a measurement of today's files.** Later candidates have targeted checks, real HTTPX audits/design reviews, and adverse results recorded in [current candidate status](benchmarks/CURRENT-CANDIDATE-STATUS.md). [Nine-task screen 05](benchmarks/FAST-REGRESSION-05.md) observed 8.1% fewer tokens and 8.8% less time than screen 04, but had no contemporaneous baseline, varied verification depth, and predates several current skill revisions. Broad performance improvement remains unproven.
+**The chart below is the original experiment, not a measurement of today's files.** Later candidates have targeted checks, real HTTPX audits/design reviews, and this project's packaging repair recorded in [current candidate status](benchmarks/CURRENT-CANDIDATE-STATUS.md). Results are mixed: local helper gains do not automatically reduce model-session cost, and some comparisons perform unequal verification. Broad performance improvement remains unproven. Historical runs, including [nine-task screen 05](benchmarks/FAST-REGRESSION-05.md), remain available rather than being replaced by a favorable sample.
 
 We completed **72 fresh GPT-6 Astra sessions** at medium reasoning: eight small synthetic tasks × three arms × three repetitions. Baseline = 100%; generic control used **111.9% tokens / 125.1% time**, and the corresponding skill used **111.5% tokens / 117.6% time**. Implementation line churn was identical. Neither arm saved resources in this experiment.
 
@@ -119,7 +124,7 @@ python3 scripts/validate.py
 python3 -m unittest discover -s tests -v
 ```
 
-[Roadmap](docs/ROADMAP.md) · [Changelog](CHANGELOG.md) · [MIT license](LICENSE)
+[Release readiness and remaining gates](docs/RELEASE-READINESS.md) · [Roadmap](docs/ROADMAP.md) · [Changelog](CHANGELOG.md) · [MIT license](LICENSE)
 
 ## Inspiration
 
