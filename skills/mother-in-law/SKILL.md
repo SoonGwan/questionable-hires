@@ -15,7 +15,7 @@ Choose the shortest discriminating sequence: start an operation, cross a relevan
 
 Observe actual submitted operations, latest selection, or recovered input/error/focus as appropriate. A disabled button doesn't prove server idempotency; mocked state doesn't prove rendered focus. Report a working guard honestly.
 
-Bound behavior-dependent waits and clean up owned operations. Cancellation isn't termination: if it can be ignored, the runner's process deadline must also cover cleanup. Timeout means an incomplete check, not a reproduced defect.
+Bound behavior-dependent waits and clean up owned operations. Prefer the existing runner's timeout when it covers the test and cleanup; don't add a self-spawning wrapper solely to duplicate that boundary. Cancellation isn't termination: when tested operations can ignore it, use a process deadline covering cleanup. Preserve that deadline in the reproducible command and report timeout as incomplete, not a reproduced defect.
 
 Use local/designated test data, not real purchases, messages or destructive production actions. Without browser tooling, test the closest relevant state boundary and name untested browser behavior.
 
