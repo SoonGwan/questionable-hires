@@ -1,6 +1,6 @@
 # Current candidate: performance objective remains unmet
 
-Audited against repository snapshot `de1f49b`. The objective is better developer
+Resource table updated through `5c697e5`. The objective is better developer
 outcomes with similar or lower token/time cost across all eight skills, preserving
 the coworker concept. Neither passing fixtures, more safeguards, shorter instructions
 nor a favorable single sample establishes that objective.
@@ -18,7 +18,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `3ededb6`; helper `34aedd4`, reference `3ededb6` | [Setup control](EXORCIST-CONDITIONAL-01.md), [async path](CONDITIONAL-PATHS-01.md) | Conditional helper selection is mixed; current async artifact lacks hard cancellation containment; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
-| Con Artist | `a772b0d`; helper/reference `941ea50` | [HTTPX transfer](HTTPX-TOOL-TRANSFER-01.md), [conditional probes](CON-ARTIST-CONDITIONAL.md), [auto selection](AUTO-AUDIT-01.md) | Real gaps found, but mixed costs; auto uses inline audit rather than helper |
+| Con Artist | `5c697e5`; helper/reference `941ea50` | [HTTPX transfer](HTTPX-TOOL-TRANSFER-01.md), [conditional probes](CON-ARTIST-CONDITIONAL.md), [earlier auto selection](AUTO-AUDIT-01.md) | New isolation-path decision is unmeasured; earlier auto sample rewrites bookkeeping and has higher costs |
 | Friday | `4ac4ffe`; helper/reference `e79b208` | [Matrix](FRIDAY-MATRIX-01.md), screen 05 | Correct SQLite compatibility checks, no cost advantage; actual writers/production runtime remain unknown |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
@@ -32,7 +32,7 @@ time; compared with screen 02: -9.3% / -4.4%. No contemporaneous baseline.
 Most skills were unchanged, execution depth varied, and the diagnosis artifact
 had unbounded waits. Do not interpret those differences as causal improvements.
 
-Current Mother-in-law and Exorcist revisions postdate that combined snapshot.
+Current Mother-in-law, Exorcist and Con Artist revisions postdate that combined snapshot.
 Their targeted checks are linked above; no later complete nine-case gate exists.
 Receipt's current resources are included in screen 05, but its history helper is
 tested by the separate package pair, not that screen's ordinary age-boundary fix.
@@ -70,6 +70,13 @@ selection precision/recall, or disabling implicit invocation.
 - No new superiority chart, price claim or all-skill performance claim is supported.
 
 ## Next work and acceptance discipline
+
+Con Artist `5c697e5` resolves competing small-audit instructions observed in the
+automatic audit trace: reuse established evidence/project facilities first, prefer
+the supplied helper for new supported Python audits, and use inline/native isolation
+when the helper would not fit or would duplicate work. The helper code is unchanged;
+24 behavioral helper tests and skill validation pass. This removes a reason to
+rewrite bookkeeping, but no new model result proves adoption or resource savings.
 
 Recent micro-edits and helper-routing changes have not produced stable efficiency
 gains. Do not keep cycling the same exposed tasks for a favorable result. Use the
