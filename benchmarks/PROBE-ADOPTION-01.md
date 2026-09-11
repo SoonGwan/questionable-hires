@@ -5,6 +5,9 @@ resources match `fc75257` (Con Artist helper `91fdde3`). Two fresh serial Astra
 medium sessions, CLI 0.153.4, seed 20260911, 240-second limits. Recorded order:
 baseline, then auto. Both completed; no retries, exclusions or account limits.
 Original local evidence: `benchmarks/local-runs/probe-adoption-01/`.
+The [reviewed export](results/probe-adoption-01/README.md) makes both arms'
+commands, captured output, answers, usage and final files inspectable without
+private logs. Its documented redactions preserve the original capture omissions.
 
 | Arm | Total tokens | Input / output | Cached input (included) | Seconds | Shell commands |
 | --- | ---: | --- | ---: | ---: | ---: |
