@@ -91,6 +91,52 @@ class MutationHelperTests(unittest.TestCase):
         self.assertEqual(len(result['audits']), 1)
         self.assertEqual(execute.call_count, 2)
 
+    def test_batch_keeps_one_complete_baseline_log_with_lossless_reference(self):
+        test = self.root / 'test_service.py'
+        test.write_text(test.read_text() + '\nprint("baseline-log:" + "x" * 11000)\n')
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit_batch(self.root, self.batch_recipe())
+        self.assertEqual(execute.call_count, 7)
+        first = result['audits'][0]['checks']['correct_tests']
+        reused = result['audits'][1]['checks']['correct_tests']
+        self.assertEqual(reused['observation_ref'], '#/audits/0/checks/correct_tests')
+        self.assertNotIn('output', reused)
+        self.assertIn('baseline-log:', first['output'])
+        self.assertFalse(first['output_truncated'])
+        resolved = result
+        for part in reused['observation_ref'][2:].split('/'):
+            resolved = resolved[int(part)] if isinstance(resolved, list) else resolved[part]
+        self.assertEqual(resolved, first)
+        self.assertEqual((reused['exit_code'], reused['timed_out']),
+                         (resolved['exit_code'], resolved['timed_out']))
+        expanded = copy.deepcopy(result)
+        expanded['audits'][1]['checks']['correct_tests'] = copy.deepcopy(resolved)
+        self.assertGreater(len(json.dumps(expanded)) - len(json.dumps(result)), 10000)
+        for audit in result['audits']:
+            self.assertIn('AssertionError', audit['checks']['mutant_probe']['output'])
+        self.assertEqual(list(self.root.glob('.con-artist-*')), [])
+
+    def test_batch_reference_tracks_refreshed_baseline_not_first_or_reference(self):
+        recipe = self.batch_recipe()
+        recipe['mutations'].append(dict(recipe['mutations'][0], new='    store.insert(0, value)\n'))
+        actual_execute = helper.execute
+        calls = 0
+        def execute(*args, **kwargs):
+            nonlocal calls
+            result = actual_execute(*args, **kwargs)
+            calls += 1
+            if calls == 4:
+                helper.os.environ['QH_BASELINE_REFERENCE_TEST'] = 'refreshed'
+            return result
+        with patch.dict(helper.os.environ, {'QH_BASELINE_REFERENCE_TEST': 'initial'}), \
+             patch.object(helper, 'execute', side_effect=execute):
+            result = helper.audit_batch(self.root, recipe)
+        self.assertEqual(calls, 11)
+        self.assertNotIn('correct_tests_reused', result['audits'][1])
+        self.assertIn('output', result['audits'][1]['checks']['correct_tests'])
+        self.assertEqual(result['audits'][2]['checks']['correct_tests']['observation_ref'],
+                         '#/audits/1/checks/correct_tests')
+
     def test_batch_does_not_reuse_changed_inputs(self):
         cache = {}
         helper.audit(self.root, self.recipe, _baseline=cache)

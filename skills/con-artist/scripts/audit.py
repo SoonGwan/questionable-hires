@@ -214,8 +214,18 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
             raise ValueError('Each mutation requires target/old/new and optional probe/probe_when')
     common = {key: value for key, value in spec.items() if key != 'mutations'}
     baseline, observations = {}, []
+    baseline_index = None
     for fault in mutations:
         result = audit(root, dict(common, **fault), python, timeout, _baseline=baseline)
+        if result.get('correct_tests_reused'):
+            # The complete observation is already in this response. Do not send
+            # the same potentially 12 KB log once per fault or imply fresh runs.
+            check = result['checks']['correct_tests']
+            result['checks']['correct_tests'] = dict(
+                exit_code=check['exit_code'], timed_out=check['timed_out'],
+                observation_ref=f'#/audits/{baseline_index}/checks/correct_tests')
+        else:
+            baseline_index = len(observations)
         observations.append(result)
         if result['status'] != 'observed':
             break

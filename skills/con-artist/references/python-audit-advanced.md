@@ -25,6 +25,11 @@ flaky tests are not controlled: use separate audits when a fresh baseline matter
 
 Batch JSON contains `status` and ordered `audits`, each with the single-audit
 structure above. `correct_tests_reused: true` explicitly marks a copied result,
-not another execution or independent observation. Incomplete evidence stops the
+not another execution or independent observation. Its `correct_tests` retains
+`exit_code` and `timed_out`; `observation_ref` is a JSON Pointer to the earlier
+complete check in the same response. Read that check's `output` and
+`output_truncated` instead of expecting a second copy of the log. References
+always point directly to an executed observation, never another reference.
+Incomplete evidence stops the
 batch; unrun entries are not passes. This saves repeated baseline execution,
 not the reasoning needed to select faults or interpret failures.
