@@ -34,10 +34,15 @@ def install(destination, names, dry_run=False):
             installed.append(target)
             shutil.copytree(ROOT / "skills" / name, target, dirs_exist_ok=True,
                             ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
-    except Exception:
+    except BaseException:
         # Only directories created by this invocation are eligible for rollback.
         for target in reversed(installed):
-            shutil.rmtree(target)
+            try:
+                shutil.rmtree(target)
+            except BaseException:
+                # Preserve the install error/cancellation and still attempt
+                # rollback of the other targets created by this invocation.
+                pass
         raise
     return installed
 

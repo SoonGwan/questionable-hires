@@ -92,6 +92,47 @@ class InstallTests(unittest.TestCase):
             installer.install(self.dest, ["receipt"])
         self.assertTrue(link.is_symlink())
 
+    def test_cancellation_cleans_all_new_targets_and_preserves_unrelated(self):
+        self.dest.mkdir()
+        marker = self.dest / 'user.txt'
+        marker.write_text('keep')
+        original = installer.shutil.copytree
+        cancellation = KeyboardInterrupt('cancelled')
+        def cancel_second(source, target, *args, **kwargs):
+            result = original(source, target, *args, **kwargs)
+            if Path(source) == installer.ROOT / 'skills/receipt':
+                raise cancellation
+            return result
+        with patch.object(installer.shutil, 'copytree', side_effect=cancel_second):
+            with self.assertRaises(KeyboardInterrupt) as caught:
+                installer.install(self.dest, ['necromancer', 'receipt'])
+        self.assertIs(caught.exception, cancellation)
+        self.assertEqual(list(self.dest.iterdir()), [marker])
+        self.assertEqual(marker.read_text(), 'keep')
+
+    def test_cleanup_failure_preserves_error_and_attempts_remaining_targets(self):
+        original_copy = installer.shutil.copytree
+        original_remove = installer.shutil.rmtree
+        failure = OSError('copy failed')
+        attempted = []
+        def fail_second(source, target, *args, **kwargs):
+            if Path(source) == installer.ROOT / 'skills/receipt':
+                raise failure
+            return original_copy(source, target, *args, **kwargs)
+        def fail_one_cleanup(target):
+            attempted.append(Path(target).name)
+            if Path(target).name == 'receipt':
+                raise PermissionError('cleanup denied')
+            return original_remove(target)
+        with patch.object(installer.shutil, 'copytree', side_effect=fail_second), \
+                patch.object(installer.shutil, 'rmtree', side_effect=fail_one_cleanup):
+            with self.assertRaises(OSError) as caught:
+                installer.install(self.dest, ['necromancer', 'receipt'])
+        self.assertIs(caught.exception, failure)
+        self.assertEqual(attempted, ['receipt', 'necromancer'])
+        self.assertFalse((self.dest / 'necromancer').exists())
+        self.assertTrue((self.dest / 'receipt').is_dir())
+
 
 if __name__ == "__main__":
     unittest.main()
