@@ -31,7 +31,11 @@ report is historical evidence, not the current candidate's performance score.
 - [ ] Obtain a passing hosted CI run.
 - [ ] Owner decides when to switch the repository from private to public and publish a release.
 
-Hosted GitHub Actions currently cannot start because GitHub reports failed account payments or an insufficient spending limit. The repository remains private. Neither billing changes nor public visibility changes have been performed.
+The latest hosted run retrieved on 2026-09-11 did not start its test steps:
+GitHub reports failed account payments or an insufficient spending limit. It
+checks an older remote commit, not the current local candidate. See the
+[release-readiness evidence](RELEASE-READINESS.md). The repository remains private;
+neither billing changes nor public visibility changes have been performed.
 
 ## Hiring policy
 

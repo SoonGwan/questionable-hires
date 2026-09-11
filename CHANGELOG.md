@@ -22,4 +22,4 @@
 - Verified a local plugin install/list/cache-comparison/remove cycle.
 - Added original project artwork, Korean onboarding, and an MIT license.
 
-This is a private development preview, not a stable release or a claim of universal correctness. Hosted CI is currently blocked by the GitHub account's billing or spending-limit state. Comparative results must be read with their sample size and limitations.
+This is a private development preview, not a stable release or a claim of universal correctness. The latest inspected hosted CI attempt was blocked before execution by GitHub's reported billing or spending-limit restriction; see the [dated release-readiness evidence](docs/RELEASE-READINESS.md). Comparative results must be read with their sample size and limitations.
