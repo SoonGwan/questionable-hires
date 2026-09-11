@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Failed local package builds now attempt to remove their newly created output,
+  allowing retry after successful cleanup. Existing destinations are never
+  eligible for cleanup. The original error or cancellation is preserved even
+  when cleanup itself fails; in that case partial output can remain.
+- Added regression coverage for late-copy failures, cancellation, retry,
+  cleanup failure and existing file/directory/symlink preservation. The full
+  local suite passes 183 tests; this is not hosted-CI or model-performance proof.
+
 ## 0.1.0 — development preview
 
 - Added eight focused developer skills with UI metadata.
