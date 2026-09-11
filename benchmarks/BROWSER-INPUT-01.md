@@ -113,3 +113,18 @@ error-retry checks remain in the same execution. No uncaught page errors occurre
 This is same-document synthetic view switching, not URL routing, full-document
 navigation, back/forward cache, component destruction or a model-driven QA session.
 The skill itself is unchanged; no token/time or comparative model claim follows.
+
+### Independent disposal mutation
+
+The runner additionally tests `guard=on&invalidate=off` with fill and keyboard:
+only the view-transition generation increment is removed, leaving request-order
+protection enabled. Chrome 152.0.7977.83 completed the six-context matrix and
+returned `complete: true`. Both surgical mutants preserve `new result` after the
+older response and pass normal/retry/focus controls, yet overwrite Settings with
+`abandoned search result` and display the late search error. The intact versions
+retain `Settings panel` and an empty error message.
+
+This demonstrates that the disposal checks detect a defect the existing ordering
+checks miss. “Complete” means the harness observed each expected intact or broken
+outcome, not that all six application variants are correct. The two mutations
+are authored browser fixtures, not model-generated patches or a skill score.

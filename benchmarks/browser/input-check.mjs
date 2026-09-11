@@ -29,7 +29,13 @@ try {
   server = await chromium.launchServer({executablePath, headless: true, timeout: 15000,
     host: '127.0.0.1'});
   browser = await chromium.connect(server.wsEndpoint(), {timeout: 5000});
-  for (const [driver, guarded] of [['fill', false], ['fill', true], ['keyboard', false], ['keyboard', true]]) {
+  const variants = [
+    ['fill', false, true], ['fill', true, true],
+    ['keyboard', false, true], ['keyboard', true, true],
+    // Surgical mutation: request ordering still works, view disposal does not.
+    ['fill', true, false], ['keyboard', true, false],
+  ];
+  for (const [driver, guarded, invalidateOnLeave] of variants) {
     const context = await browser.newContext();
     try {
       const page = await context.newPage();
@@ -39,7 +45,7 @@ try {
       // Only local file content is needed; block page-originated web requests.
       await context.route(/^https?:\/\//, route => route.abort());
       const url = new URL('./search-order.html', import.meta.url);
-      url.search = `manual=1&guard=${guarded ? 'on' : 'off'}`;
+      url.search = `manual=1&guard=${guarded ? 'on' : 'off'}&invalidate=${invalidateOnLeave ? 'on' : 'off'}`;
       await page.goto(url.href);
       const input = page.locator('#query');
       const result = page.locator('#results');
@@ -104,7 +110,7 @@ try {
         heading: await page.locator('#view').textContent(),
         focusOnHeading: await page.locator('#view').evaluate(element => element === document.activeElement),
       };
-      assert.equal(navigation.afterLateSuccess, guarded ? 'Settings panel' : 'abandoned search result');
+      assert.equal(navigation.afterLateSuccess, guarded && invalidateOnLeave ? 'Settings panel' : 'abandoned search result');
       assert.equal(navigation.heading, 'Settings');
       assert.equal(navigation.focusOnHeading, true);
       await page.locator('#search').click();
@@ -118,10 +124,10 @@ try {
       await page.locator('#settings').click();
       await page.evaluate(() => window.fixture.fail(7));
       navigation.afterLateFailure = await page.locator('#error').textContent();
-      assert.equal(navigation.afterLateFailure, guarded ? '' : 'Search failed. Try again.');
+      assert.equal(navigation.afterLateFailure, guarded && invalidateOnLeave ? '' : 'Search failed. Try again.');
       assert.equal(await result.textContent(), 'Settings panel');
       assert.deepEqual(errors, []);
-      observations.push({driver, guarded, submitted, keys, afterNew, afterOld, normal, focused, recovery, navigation});
+      observations.push({driver, guarded, invalidateOnLeave, submitted, keys, afterNew, afterOld, normal, focused, recovery, navigation});
     } finally {
       await context.close();
     }

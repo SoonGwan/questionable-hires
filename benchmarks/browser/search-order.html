@@ -15,13 +15,14 @@ const results = document.querySelector('#results');
 const errorMessage = document.querySelector('#error');
 const receipt = document.querySelector('#receipt');
 const guarded = new URLSearchParams(location.search).get('guard') !== 'off';
+const invalidateOnLeave = new URLSearchParams(location.search).get('invalidate') !== 'off';
 const pending = [];
 const keys = [];
 query.addEventListener('keydown', event => keys.push({key: event.key, trusted: event.isTrusted}));
 let latest = 0;
 function navigate(name) {
   // Same-document view transition: pending requests survive, ownership does not.
-  ++latest;
+  if (invalidateOnLeave) ++latest;
   query.hidden = name !== 'Search';
   document.querySelector('label').hidden = query.hidden;
   document.querySelector('#view').textContent = name;
