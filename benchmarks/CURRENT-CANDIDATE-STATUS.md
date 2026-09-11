@@ -13,7 +13,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `18a2070`; collector/reference `ae99bac` | [Region-first HTTPX](HTTPX-HISTORY-REGION-01.md), [large hunk](NECROMANCER-LARGE-HUNK-01.md), paired 02 | Favorable HTTPX pair has unequal work and baseline repair; combined history task costs more; collector adoption unverified |
-| Receipt | `abb4b93`; helper `048fb21`, reference `48ec1c3` | [Changed paths 03](CHANGED-PATHS-03.md), [executed/skip profile](RECEIPT-PROFILE-01.md) | Predecessor remains costlier; current status-preserving collection is locally verified but model adoption and savings unmeasured |
+| Receipt | `abb4b93`; helper `048fb21`, reference `48ec1c3` | [Independent checks](RECEIPT-INDEPENDENT-01.md), [changed paths 03](CHANGED-PATHS-03.md) | All required checks continue correctly; +6.7% tokens / -13.8% time with stronger red/green evidence, but combined collection is not adopted |
 | Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [paired 02](FAST-PAIRED-02.md) | Current diagnosis uses process containment but reads full helper source and costs more; efficiency unproven |
@@ -37,6 +37,14 @@ checks do not execute after a fail-fast stop, and independent collection retains
 an early failure despite later success. These validate mechanics, not model choice,
 fewer tool calls or lower token/time costs. Current candidate remains unmeasured;
 do not rerun the exposed age-18 case merely to chase a favorable result.
+
+The [independent-check transfer](RECEIPT-INDEPENDENT-01.md) now completes. Both
+arms retain a legitimate packaging failure and execute all required post-fix checks
+without expanding scope. Skill adds red/green evidence and a durable edge test;
+baseline omits before execution but checks an extra edge inline. Skill time is
+lower, tokens higher. Both keep the required check commands separate, so combined
+collection adoption and its causal efficiency remain unproven. This successful
+continuation boundary does not justify another wrapper rule or performance claim.
 
 The [two changed-path regression](CHANGED-PATHS-03.md) preserves correct boundary
 and migration behavior, but combined skill costs +7.9% tokens / +32.4% time.
