@@ -13,6 +13,39 @@ spec.loader.exec_module(builder)
 
 
 class BuildTests(unittest.TestCase):
+    def test_bundled_exorcist_runs_outside_checkout_with_real_deadlines(self):
+        with tempfile.TemporaryDirectory() as directory:
+            scratch = Path(directory).resolve()
+            plugin = builder.build(scratch / 'bundle')
+            work = scratch / 'unrelated-project'
+            work.mkdir()
+            sentinel = work / 'keep.txt'
+            sentinel.write_bytes(b'unchanged')
+            helper = plugin / 'skills/exorcist/scripts/run_probe.py'
+            cases = [
+                ('print("probe complete")', 2, 0, 0, False, 'probe complete'),
+                ('raise SystemExit(124)', 2, 1, 124, False, ''),
+                ('import signal,time; signal.signal(signal.SIGTERM, signal.SIG_IGN); '
+                 'print("ready", flush=True); time.sleep(20)', 0.3, 124, -9, True, 'ready'),
+            ]
+            for code, deadline, status, child_status, timed_out, output in cases:
+                with self.subTest(code=code):
+                    process = subprocess.run(
+                        [sys.executable, '-I', '-B', str(helper), '--timeout', str(deadline),
+                         '--', sys.executable, '-I', '-B', '-c', code],
+                        cwd=work, text=True, capture_output=True, timeout=8)
+                    self.assertEqual(process.returncode, status, process.stderr)
+                    self.assertEqual(process.stderr, '')
+                    result = json.loads(process.stdout)
+                    self.assertEqual(result['exit_code'], child_status)
+                    self.assertEqual(result['timed_out'], timed_out)
+                    self.assertTrue(result['cleanup_complete'])
+                    self.assertFalse(result['output_truncated'])
+                    self.assertEqual(result['output'].strip(), output)
+                    self.assertLess(result['elapsed_seconds'], 3)
+                    self.assertEqual(list(work.iterdir()), [sentinel])
+                    self.assertEqual(sentinel.read_bytes(), b'unchanged')
+
     def test_destination_inside_copied_tree_is_rejected_before_copy(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
