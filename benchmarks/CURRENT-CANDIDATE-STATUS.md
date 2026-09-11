@@ -24,22 +24,18 @@ They are not necessarily the snapshot used by every linked historical report.
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
 
-## Latest combined screen is not the current full candidate
+## Latest combined screen
 
-[Screen 05](FAST-REGRESSION-05.md), snapshot `c11103c`: nine task criteria pass,
-628,256 tokens / 337.371 seconds. Compared with screen 04: -8.1% tokens / -8.8%
-time; compared with screen 02: -9.3% / -4.4%. No contemporaneous baseline.
-Most skills were unchanged, execution depth varied, and the diagnosis artifact
-had unbounded waits. Do not interpret those differences as causal improvements.
+[Screen 06](FAST-REGRESSION-06.md), snapshot `49d7bf8`, includes all current skill
+resources. Nine task criteria are met, but one rejected patch has an unknown target,
+async cancellation containment remains incomplete, and total cost is 665,624 tokens /
+379.676 seconds: +5.9% tokens / +12.5% time versus screen 05. No contemporary baseline
+or automatic-selection arm. This is adverse developmental evidence, not acceptance.
 
-Current Mother-in-law, Exorcist, Con Artist, Necromancer helper and Friday revisions postdate that combined snapshot.
-Their targeted checks are linked above; no later complete nine-case gate exists.
-Receipt's current resources are included in screen 05, but its history helper is
-tested by the separate package pair, not that screen's ordinary age-boundary fix.
-
-Earlier [screen 02](FAST-REGRESSION-02.md), [03](FAST-REGRESSION-03.md) and
-[04](FAST-REGRESSION-04.md), including adverse costs and scope issues, remain valid
-historical records. They have not been replaced or reclassified.
+[Screen 05](FAST-REGRESSION-05.md) and earlier screens remain historical records.
+The combined set does not exercise every optional helper or realistic workload;
+Receipt history, Necromancer collector changes, Con Artist batches and Friday
+actual-writer paths require their separate evidence. No broad efficiency claim follows.
 
 ## Actual installation path
 
