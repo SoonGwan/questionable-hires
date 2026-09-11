@@ -74,7 +74,18 @@ $friday Review this release's rollout and rollback plan.
 
 Normal automatic selection is enabled. No lifecycle hooks, telemetry, background services, or model-setting changes. [Installation, updates, and removal →](docs/INSTALL.md)
 
+### Some coworkers brought tools
+
+The installer includes two optional, locally executed helpers. They require **Python 3.9+**; the Con Artist helper also requires POSIX. They do not install dependencies or run in the background.
+
+- **Con Artist:** disposable Python mutation audits with copied-import checks, separate test/probe exit statuses, bounded log memory and timeouts. [Usage and limits](skills/con-artist/references/python-audit.md). Run trusted tests only: this is not a sandbox.
+- **Necromancer:** focused current-line attribution and historical patches, including dirty/shallow-history limits. [Usage and limits](skills/necromancer/references/focused-history.md). It collects evidence; it does not decide whether old behavior is still needed.
+
+Use the normal skill prompts above; the agent can choose the helper when it saves repeated work. A small task or an already-established result may be cheaper to handle directly. Installing the team does not imply every task should use all eight hires.
+
 ## Does it actually work?
+
+**The chart below is the original experiment, not a measurement of today's files.** Later candidates have targeted checks, real HTTPX audits/design reviews, and adverse results recorded in [current candidate status](benchmarks/CURRENT-CANDIDATE-STATUS.md). The latest completed whole-team screen at `9683528` used more tokens/time than its predecessor and included a scope violation; subsequent changes have only targeted checks. Broad performance improvement remains unproven.
 
 We completed **72 fresh GPT-6 Astra sessions** at medium reasoning: eight small synthetic tasks × three arms × three repetitions. Baseline = 100%; generic control used **111.9% tokens / 125.1% time**, and the corresponding skill used **111.5% tokens / 117.6% time**. Implementation line churn was identical. Neither arm saved resources in this experiment.
 
@@ -89,7 +100,7 @@ Strict evidence-and-scope success was **19/24 baseline, 16/24 control, 18/24 ski
 
 Eight additional whole-team routing checks selected the expected skill files. A local plugin bundle also passed an actual CLI installation and removal test. See [routing evidence](benchmarks/REPORT.md#automatic-routing-with-the-whole-team) and the [installation record](docs/INSTALLATION-TEST.md).
 
-These are instruction-based workflows, not guarantees. Actual tool access, model behavior, project complexity, and user instructions determine the outcome. Other hosts and remote marketplace distribution remain unverified.
+These are skill-guided workflows, not guarantees. Actual tool access, model behavior, project complexity, and user instructions determine the outcome. Other hosts and remote marketplace distribution remain unverified.
 
 ## Why Astra?
 
