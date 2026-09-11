@@ -24,6 +24,11 @@ They are not necessarily the snapshot used by every linked historical report.
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
 
+Landlord's [configured-consumer transfer](LANDLORD-CONFIGURED-01.md) follows and
+executes an application provider under examples instead of treating it as inert
+documentation. Required checks and originals are preserved; eight commands,
+88,967 tokens and 47.300 seconds in one unpaired sample do not establish savings.
+
 [Current automatic positive selection](CURRENT-SELECTION-01.md) observes Landlord
 and Receipt selected for two appropriate requests, but both consume more tokens
 than no-skill arms: Store +5.68% tokens/+22.33% time, assembly +3.48%/−38.96%.

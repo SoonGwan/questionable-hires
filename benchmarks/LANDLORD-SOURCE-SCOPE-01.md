@@ -32,3 +32,7 @@ callers in this trace. It must not become a universal path exclusion: imported,
 configured or supported consumers can live elsewhere. That transfer and broader
 model efficiency remain unverified. No further wording change or same-cell rerun
 follows merely to reduce the remaining path-list output.
+
+The subsequent [configured-consumer transfer](LANDLORD-CONFIGURED-01.md) follows
+an examples-directory provider selected by application configuration and executes
+its real path. It addresses that specific coverage gap, not general efficiency.
