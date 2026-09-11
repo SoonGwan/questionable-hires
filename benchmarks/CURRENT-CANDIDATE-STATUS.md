@@ -16,7 +16,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Receipt | `e00c751`; helper `048fb21`, reference `48ec1c3` | [Package pair](RECEIPT-PACKAGE-01.md), screen 05 | Favorable one-pair costs, unequal verification scope; no broad history/fix efficiency result |
 | Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
-| Exorcist | `3ededb6`; helper `34aedd4`, reference `3ededb6` | [Setup control](EXORCIST-CONDITIONAL-01.md), [async path](CONDITIONAL-PATHS-01.md) | Conditional helper selection is mixed; current async artifact lacks hard cancellation containment; efficiency unproven |
+| Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [setup control](EXORCIST-CONDITIONAL-01.md), screen 06 | Author fault confirms containment gap; revised routing unmeasured by model; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
 | Con Artist | `5c697e5`; helper `54328b1`; references `4bbac5a` | [Progressive check](HTTPX-PROGRESSIVE-01.md), [adverse pair](HTTPX-BATCH-TRANSFER-01.md), [batch reuse](CON-ARTIST-BATCH-01.md) | Advanced reference skipped, but full source read and seven commands; still costlier than earlier baseline; batch adoption unmeasured |
 | Friday | `5f1dc34`; helper/reference `e79b208` | [Control with scope failure](FRIDAY-ROUTING-CONTROL-01.md), [runtime routing](FRIDAY-ROUTING-01.md), [mixed writers](FRIDAY-WRITERS-01.md) | Both current paths skip unused reference; control searches parent directory and remains costlier than earlier baseline; production runtime unknown |
@@ -27,7 +27,7 @@ The five optional helpers do not constitute a claim that every task should use o
 ## Latest combined screen
 
 [Screen 06](FAST-REGRESSION-06.md), snapshot `49d7bf8`, includes all current skill
-resources. Nine task criteria are met, but one rejected patch has an unknown target,
+resources as of that snapshot; Exorcist `4df3eff` now postdates it. Nine task criteria are met, but one rejected patch has an unknown target,
 async cancellation containment remains incomplete, and total cost is 665,624 tokens /
 379.676 seconds: +5.9% tokens / +12.5% time versus screen 05. No contemporary baseline
 or automatic-selection arm. This is adverse developmental evidence, not acceptance.
@@ -52,8 +52,8 @@ selection precision/recall, or disabling implicit invocation.
 
 ## Interpretation and integrity
 
-- Current local suite: 132 tests pass including shallow-boundary handling via
-  `python3 -B -m unittest discover -s tests` (12.647 seconds).
+- Current local suite: 134 tests pass including cancellation and writer fixtures via
+  `python3 -B -m unittest discover -s tests` (13.107 seconds).
   `python3 -B scripts/validate.py` also passes for all eight skills, UI metadata,
   plugin references and local links. These validate mechanics, not model performance.
 - [Capture diagnostics](CAPTURE-DIAGNOSTICS.md) records stream flags and installed
@@ -68,6 +68,12 @@ selection precision/recall, or disabling implicit invocation.
 - No new superiority chart, price claim or all-skill performance claim is supported.
 
 ## Next work and acceptance discipline
+
+Exorcist `4df3eff` distinguishes asyncio cancellation waits from hard process
+deadlines. [Author replay](EXORCIST-CANCELLATION-02.md) confirms the actual screen-06
+probe hangs on a non-dispatching cancellation-suppressing task unless contained
+by the existing process runner. New instructions are unmeasured; this bounded
+failure correction is not a substitute for the full efficiency objective.
 
 [Screen 06 cost audit](SCREEN-06-COST-AUDIT.md) separates interaction counts,
 cached/uncached input and generated output for the three largest increases.
