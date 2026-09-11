@@ -137,6 +137,17 @@ class HistoryHelperTests(unittest.TestCase):
             result = helper.trace(clone, 'legacy.py', 2, 2)
             self.assertTrue(result['shallow'])
             self.assertTrue(result['blame'][0]['boundary'])
+            self.assertIn('parent history is missing', result['commits'][0]['patch_unavailable'])
+            self.assertIn('Preserve partner compatibility', result['commits'][0]['evidence'])
+            self.assertNotIn('diff --git', result['commits'][0]['evidence'])
+            self.assertIn('return p.get', result['current_lines'][0]['text'])
+
+    def test_genuine_root_commit_keeps_patch(self):
+        result = helper.trace(self.root, 'legacy.py', 1, 1)
+        self.assertFalse(result['shallow'])
+        self.assertTrue(result['blame'][0]['boundary'])
+        self.assertNotIn('patch_unavailable', result['commits'][0])
+        self.assertIn('diff --git', result['commits'][0]['evidence'])
 
     def test_omitted_commits_and_invalid_ranges_are_explicit(self):
         result = helper.trace(self.root, 'legacy.py', 1, 2, max_commits=1)
