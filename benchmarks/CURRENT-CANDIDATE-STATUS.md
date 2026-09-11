@@ -24,6 +24,11 @@ They are not necessarily the snapshot used by every linked historical report.
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
 
+The [complete collector comparison](NECROMANCER-COLLECTOR-TIME-01.md) now measures
+Necromancer 0e3c790 against a16e57d in real temporary Git history: identical complete
+JSON evidence, median process time 0.427 to 0.335 seconds in one large-change fixture.
+This confirms a tool-process improvement, not end-to-end agent or token superiority.
+
 Necromancer collector `0e3c790` removes repeated target-list scans and renders of
 already-selected rows. The [five-case local comparison](NECROMANCER-EXCERPT-CPU-01.md)
 retains identical excerpts; multi-target cases are faster while the single-target
