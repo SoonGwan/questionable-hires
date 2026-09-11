@@ -56,3 +56,13 @@ remains unknown. This run is diagnostic, not a replacement for either failure.
 Runner `074c2e4` now reports captured stdout/stderr byte counts on future timeouts
 without including raw browser logs in the diagnostic message. Three mechanics
 tests pass, including UTF-8 byte counting and suppression of raw diagnostic text.
+
+Runner `9e40178` preserves completed variant observations when a later browser
+times out, exits nonzero, or returns no valid JSON receipt. The CLI emits
+`complete: false`, an error and `completed_variants`, with exit status 1. It does
+not synthesize a missing variant or reinterpret an incomplete run as success.
+Successful runs retain the existing two-observation list format. Browser stderr
+is no longer included in nonzero-exit messages. Four mechanics tests pass,
+including a completed broken variant followed by a guarded-variant timeout.
+This change was unit-tested with controlled process results, not credited as a
+new real-browser behavioral pass.
