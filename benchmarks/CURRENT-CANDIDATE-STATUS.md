@@ -13,7 +13,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `18a2070`; collector/reference `ae99bac` | [Region-first HTTPX](HTTPX-HISTORY-REGION-01.md), [large hunk](NECROMANCER-LARGE-HUNK-01.md), paired 02 | Favorable HTTPX pair has unequal work and baseline repair; combined history task costs more; collector adoption unverified |
-| Receipt | `7056153`; helper `048fb21`, reference `48ec1c3` | [Current-fix collection](RECEIPT-COLLECTION-01.md), [package pair](RECEIPT-PACKAGE-01.md) | Predecessor costs +38.1% tokens / +33.9% time; new suite-evidence reuse unmeasured; observed parent search and rejected patch unresolved |
+| Receipt | `7056153`; helper `048fb21`, reference `48ec1c3` | [Executed/skip profile transfer](RECEIPT-PROFILE-01.md), [collection](RECEIPT-COLLECTION-01.md) | Suite-evidence reuse adopted, but +35.6% tokens / +37.7% time; both skill sessions have unknown-target rejected patches; no efficiency acceptance |
 | Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [paired 02](FAST-PAIRED-02.md) | Current diagnosis uses process containment but reads full helper source and costs more; efficiency unproven |
@@ -37,6 +37,15 @@ repository validation pass; these are not model-efficiency evidence. The current
 candidate is unmeasured. Future transfer needs a runner-selection/skip countercase,
 not another favorable-score attempt on these exposed URL cases. Friday's separate
 changed-state transfer remains pending; this Receipt iteration does not resolve it.
+
+That [executed/skip transfer](RECEIPT-PROFILE-01.md) now completes on a new numeric
+file-assembly task pair. Both skill sessions use suite execution as after evidence
+without a redundant targeted rerun, and enable the required profile instead of
+counting skipped tests as proof. Baseline behaves equivalently. Skill remains
+35.6% higher in total tokens and 37.7% higher in time, with one rejected patch in
+each session. All four final diffs are the identical one-line correction. Adoption
+of the distinction is observed; broad efficiency and causal improvement are not.
+Do not add more test-reuse wording or repeat these fixes for favorable samples.
 
 Necromancer's subsequent [large-hunk selection](NECROMANCER-LARGE-HUNK-01.md)
 recovers attributed patch lines otherwise lost beyond the output cap. One actual
