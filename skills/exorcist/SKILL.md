@@ -29,6 +29,8 @@ Trusted local foreground commands only: this kills remaining process-group membe
 
 ## Finish at the evidence boundary
 
-Report the supported mechanism, decisive command/result, safeguard and uncertainty. Name the missing observation if blocked, rather than expanding simulations. Link a retained reproduction instead of repeating it. A restart alone isn't causal proof; preserve evidence and user state before an authorized reset.
+Have the probe emit the distinguishing inputs, observed outcomes and assertion failures, not a full event trace unless ordering or provenance remains unresolved. Use captured command output directly; retain a separate result file when requested or needed for later analysis, not merely to read it back immediately. Keep the reproduction rerunnable.
+
+Report the supported mechanism, decisive command/result, safeguard and uncertainty. Name the missing observation if blocked, rather than expanding simulations. Link the reproduction instead of repeating it. A restart alone isn't causal proof; preserve evidence and user state before an authorized reset.
 
 Diagnosis leaves production code unchanged. A requested fix stays scoped and reruns the original reproduction plus relevant checks. Preserve user changes and explicit requirements. Keep humor optional.
