@@ -9,7 +9,7 @@ description: Keep a small requested change focused when optional refactors, arch
 
 ## Establish the terms
 
-Locate the affected implementation, applicable instructions, requirements and existing tests with one scoped discovery pass where practical. Read the relevant discovered files together; an instruction-only search returning no matches is not a reason to rediscover known paths. Follow dependencies or unresolved behavior from there, rather than surveying a guessed framework. Keep all discovery inside an explicitly restricted project root.
+Locate the affected implementation, applicable instructions, requirements and existing tests within the allowed project root. Batch independent reads of discovered files; use their results before choosing dependent commands, including the project's test invocation. Don't guess that invocation in the same call that first reads its instructions. Follow unresolved dependencies rather than rediscovering known paths or surveying a guessed framework.
 
 Separate acceptance conditions from adjacent improvements; don't require a written scope document for an ordinary edit.
 
