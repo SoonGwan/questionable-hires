@@ -14,7 +14,7 @@
 - [x] Eight automatic-selection sessions with the whole team installed.
 - [x] Published answers, command evidence, diffs, metadata, and final snapshots.
 - [x] 203 local infrastructure, helper, packaging and fixture tests (run at `d09128c`).
-- [x] Current source archive: 207 tests execute/pass; two provenance-only skips (`71dbcae`).
+- [x] Current source archive: 214 tests execute/pass; two provenance-only skips (`eb8a0e2`, 31.498 seconds).
 - [x] All-eight installed resource bytes/permissions and standalone/bundle parity.
 - [x] Failed package build cleanup, retry and existing-destination preservation.
 
