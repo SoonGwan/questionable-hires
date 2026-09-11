@@ -47,7 +47,7 @@ def audit(source, run):
     names = subprocess.check_output(['git', 'ls-files', '-z'], cwd=source).decode().split('\0')[:-1]
     manifest = json.loads((run / 'run.json').read_text())
     skill_name = manifest.get('skill_name', 'con-artist')
-    if skill_name not in ('con-artist', 'landlord'):
+    if skill_name not in ('con-artist', 'landlord', 'exorcist'):
         raise ValueError('Unsupported profile skill in manifest')
     results = []
     for case, arm, repeat in manifest['schedule']:

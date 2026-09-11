@@ -19,12 +19,17 @@ TASKS = {
 DESIGN_TASKS = {
     'transport-design': 'Review httpx/_transports/base.py and httpx/_transports/mock.py for maintenance cost. Recommend whether any simplification is justified by actual consumers and supported contracts in this checkout. Do not edit existing files or perform a general repository audit.',
 }
+DIAGNOSIS_TASKS = {
+    'redirect-auth': 'Diagnose this report against the HTTPX checkout: a GET with an explicit Authorization header follows a 302 from http://example.org/start to https://example.org:8443/end, but the redirected request has no Authorization. The reporter suspects a transport or cache issue because redirecting instead to https://example.org/end keeps it. Reproduce both outcomes locally without network access, identify the responsible mechanism, and recommend a safe next action. Include a same-origin normal control. Do not edit original source/tests, install dependencies, or globally disable credential protections.',
+}
 
 
 def select_profile(profile, requested=None):
-    skill, available = ('landlord', DESIGN_TASKS) if profile == 'design' else ('con-artist', TASKS)
-    if profile not in ('audit', 'design'):
+    profiles = {'audit': ('con-artist', TASKS), 'design': ('landlord', DESIGN_TASKS),
+                'diagnosis': ('exorcist', DIAGNOSIS_TASKS)}
+    if profile not in profiles:
         raise ValueError('Unknown profile')
+    skill, available = profiles[profile]
     names = list(dict.fromkeys(requested or available))
     if any(name not in available for name in names):
         raise ValueError('Case does not belong to selected profile')
@@ -33,7 +38,7 @@ def select_profile(profile, requested=None):
 
 def freeze_skill(repository, revision, destination, skill_name='con-artist'):
     """Export the whole committed skill, including optional scripts/references."""
-    if skill_name not in ('con-artist', 'landlord'):
+    if skill_name not in ('con-artist', 'landlord', 'exorcist'):
         raise ValueError('Unsupported HTTPX profile skill')
     prefix = f'skills/{skill_name}/'
     entries = subprocess.check_output(['git', 'ls-tree', '-rz', revision, '--', prefix], cwd=repository)
@@ -77,7 +82,7 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--profile', choices=('audit', 'design'), default='audit')
+    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis'), default='audit')
     parser.add_argument('--case', action='append')
     parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
     parser.add_argument('--repeats', type=int, default=3)
@@ -101,6 +106,9 @@ def main():
     checks = (['tests/test_wsgi.py', 'tests/test_asgi.py'] if args.profile == 'audit' else
               ['tests/client/test_client.py::test_context_managed_transport',
                'tests/client/test_client.py::test_context_managed_transport_and_mount'])
+    if args.profile == 'diagnosis':
+        checks = ['tests/client/test_redirects.py::test_cross_domain_redirect_with_auth_header',
+                  'tests/client/test_redirects.py::test_same_domain_https_redirect_with_auth_header']
     subprocess.run([str(python), '-B', '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
                     *checks], cwd=source, check=True, timeout=60)
     output = args.output.resolve()

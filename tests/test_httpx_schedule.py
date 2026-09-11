@@ -16,6 +16,25 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_diagnosis_profile_is_one_separate_exorcist_case(self):
+        skill, tasks = runner.select_profile('diagnosis')
+        self.assertEqual(skill, 'exorcist')
+        self.assertEqual(list(tasks), ['redirect-auth'])
+        self.assertEqual(len(runner.make_schedule(tasks, ['baseline', 'skill'], 1)), 2)
+        with self.assertRaises(ValueError):
+            runner.select_profile('diagnosis', ['asgi-head'])
+        with self.assertRaises(ValueError):
+            runner.select_profile('audit', ['redirect-auth'])
+
+    def test_diagnosis_snapshot_contains_current_exorcist_resources(self):
+        revision = runner.command(['git', 'rev-parse', 'HEAD'], runner.ROOT)
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / 'skill'
+            hashes = runner.freeze_skill(runner.ROOT, revision, destination, 'exorcist')
+            self.assertEqual(set(hashes), {'SKILL.md', 'agents/openai.yaml'})
+            for name, digest in hashes.items():
+                self.assertEqual(digest, hashlib.sha256((destination / name).read_bytes()).hexdigest())
+
     def test_design_profile_is_separate_from_original_audit_schedule(self):
         skill, tasks = runner.select_profile('design')
         self.assertEqual(skill, 'landlord')
