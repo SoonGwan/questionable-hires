@@ -17,12 +17,23 @@ They are not necessarily the snapshot used by every linked historical report.
 | Landlord | `c66db8f` | [Check scope](LANDLORD-CHECK-SCOPE-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Appropriate test scope in both arms; +6.2% tokens / +12.9% time with equal shell counts; efficiency unproven |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `ca2e179`; helper `34aedd4`, reference `ca2e179` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
-| Hostage Negotiator | `1afcc46` | [Command transfer](HOSTAGE-COMMAND-01.md), [discovery regression](HOSTAGE-DISCOVERY-01.md) | Correct invocation in both arms; current transfer +36.7% tokens / +39.0% time, unequal before evidence and additional calls |
+| Hostage Negotiator | `6c5e452` | [Command transfer](HOSTAGE-COMMAND-01.md), [discovery regression](HOSTAGE-DISCOVERY-01.md) | Compact entrypoint unmeasured; previous transfer +36.7% tokens / +39.0% time, unequal before evidence and additional calls |
 | Con Artist | `1f8b8b6`; helper/references `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
 | Friday | `9cae27c`; helper/reference `e79b208` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | Rolling-schema pair uses 13.4% fewer tokens with near-equal time and extra retained-data check; branch transfer still costlier; broad efficiency unproven |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
+
+Hostage `6c5e452` consolidates repeated acceptance/scope, reporting and stop rules:
+354 to 252 whitespace-delimited words and 2,569 to 1,887 UTF-8 bytes relative to
+1afcc46. No new resource/router or mandatory helper is added. Discovery stays scoped
+and dependency-aware; necessary state/error/security work, return/error propagation,
+cancellation recovery, bounded regression waits, existing-test reuse, user changes,
+authorization and character identity remain explicit. This is an instruction-load
+reduction, not measured token/time savings or proof of behavioral equivalence.
+Skill/repository validators and diff checks pass; full mechanics tests were last
+165/165 before this prose-only edit. Next evaluation must inspect preserved behavior
+as well as first-load/command overhead, not reward shorter text by itself.
 
 The [command transfer](HOSTAGE-COMMAND-01.md) now completes: both arms choose the
 documented nonempty suite after reading its instructions and produce identical
