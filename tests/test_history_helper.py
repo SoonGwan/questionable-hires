@@ -1,6 +1,8 @@
 import importlib.util
 from pathlib import Path
 import subprocess
+import json
+import sys
 import tempfile
 import unittest
 
@@ -42,6 +44,16 @@ class HistoryHelperTests(unittest.TestCase):
         self.assertIn('+    return p.get', result['commits'][0]['evidence'])
         after = {str(p.relative_to(self.root)): p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
         self.assertEqual(before, after)
+
+    def test_cli_emits_parseable_evidence_for_only_selected_behavior(self):
+        completed = subprocess.run(
+            [sys.executable, '-B', str(ROOT / 'skills/necromancer/scripts/trace.py'),
+             '--path', 'legacy.py', '--lines', '2:2'],
+            cwd=self.root, text=True, capture_output=True, check=True)
+        result = json.loads(completed.stdout)
+        self.assertEqual(completed.stderr, '')
+        self.assertEqual([item['commit'] for item in result['commits']], [self.changed])
+        self.assertEqual([item['line'] for item in result['current_lines']], [2])
 
     def test_dirty_line_is_not_attributed_to_committed_intent(self):
         (self.root / 'legacy.py').write_text('def label(p):\n    return "uncommitted"\n')

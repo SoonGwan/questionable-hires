@@ -4,7 +4,7 @@ Snapshot reviewed after `28a0453`. The objective remains better developer outcom
 
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
 | --- | --- | --- | --- |
-| Necromancer | `1c16bc8` | Active historical compatibility case passes | Cost comparison and obsolete/public-contract cases |
+| Necromancer | Collector `fa3fab7`, followed by interface/line-selection guidance | Local history mechanics and active compatibility sample; see [collector review](NECROMANCER-TOOL-01.md) | Latest routing is unmeasured; observed token increase and missing captured helper output; obsolete/public-contract cases |
 | Receipt | `3cbbecf` | Compressed predecessor passes boundary, existing-fix and missing-runtime cases | Latest documented-runner correction not retested; before-evidence reuse and dirty-tree verification |
 | Landlord | `1c16bc8` | Fixed formatter review passes without edits | Justified abstraction controls and representative maintenance-cost comparison |
 | Mother-in-law | `b347792` | Broken and protected search cases distinguished | Mixed token results; rendered browser interactions and recovery |
