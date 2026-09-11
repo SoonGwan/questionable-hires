@@ -5,6 +5,7 @@ import json
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('history_helper', ROOT / 'skills/necromancer/scripts/trace.py')
@@ -54,6 +55,20 @@ class HistoryHelperTests(unittest.TestCase):
         self.assertEqual(completed.stderr, '')
         self.assertEqual([item['commit'] for item in result['commits']], [self.changed])
         self.assertEqual([item['line'] for item in result['current_lines']], [2])
+
+    def test_repository_facts_share_one_git_process(self):
+        with patch.object(helper, 'git', wraps=helper.git) as calls:
+            result = helper.trace(self.root, 'legacy.py', 2, 2)
+        self.assertEqual(calls.call_count, 4)
+        self.assertFalse(result['shallow'])
+        self.assertEqual(result['blame'][0]['commit'], self.changed)
+        self.assertIn('Preserve partner compatibility', result['commits'][0]['evidence'])
+
+    def test_incomplete_repository_identity_is_not_guessed(self):
+        response = subprocess.CompletedProcess([], 0, str(self.root) + '\n', '')
+        with patch.object(helper, 'git', return_value=response):
+            with self.assertRaisesRegex(ValueError, 'Incomplete repository identity'):
+                helper.trace(self.root, 'legacy.py', 2, 2)
 
     def test_dirty_line_is_not_attributed_to_committed_intent(self):
         (self.root / 'legacy.py').write_text('def label(p):\n    return "uncommitted"\n')

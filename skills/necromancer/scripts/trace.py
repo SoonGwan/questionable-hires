@@ -56,18 +56,20 @@ def trace(repo, filename, start, end, max_commits=3):
         raise ValueError('Line range exceeds current file')
     evidence = dict(path=path.as_posix(), current_lines=[dict(line=i + 1, text=lines[i])
                     for i in range(start - 1, end)], commits=[])
-    top = git(repo, 'rev-parse', '--show-toplevel')
+    top = git(repo, 'rev-parse', '--show-toplevel', '--is-shallow-repository')
     if top.returncode:
         evidence.update(history='unavailable', reason=top.stderr.strip())
         return evidence
-    if Path(top.stdout.strip()).resolve() != repo:
+    root_name, separator, shallow = top.stdout.rstrip('\n').rpartition('\n')
+    if not separator or shallow not in ('true', 'false'):
+        raise ValueError('Incomplete repository identity; use native Git evidence')
+    if Path(root_name).resolve() != repo:
         raise ValueError('--repo must be the worktree root, not a subdirectory')
     status = git(repo, 'status', '--porcelain=v1', '--', path.as_posix())
     if status.returncode:
         raise ValueError(status.stderr.strip())
     evidence['working_status'] = status.stdout.rstrip()
-    shallow = git(repo, 'rev-parse', '--is-shallow-repository')
-    evidence['shallow'] = shallow.stdout.strip() == 'true' if shallow.returncode == 0 else None
+    evidence['shallow'] = shallow == 'true'
     blame = git(repo, 'blame', '--no-textconv', '--line-porcelain', '-L', f'{start},{end}', '--', path.as_posix())
     if blame.returncode:
         evidence.update(history='unavailable', reason=blame.stderr.strip())
