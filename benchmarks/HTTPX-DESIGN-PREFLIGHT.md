@@ -1,5 +1,9 @@
 # Landlord on actual HTTPX transport contracts: prepared, not executed
 
+Update: the separate pinned environment now passes preflight and the first
+comparison is recorded in [HTTPX-DESIGN-01](HTTPX-DESIGN-01.md). The remainder
+records the original preparation and collection failure, not current status.
+
 `run_httpx.py --profile design` selects one neutral `transport-design` task
 for Landlord, separately from the original three Con Artist audit tasks. The
 original default audit schedule remains unchanged. Selected skill resources,
