@@ -26,6 +26,15 @@ both original files: 86,814 tokens / 32.841 seconds, versus the previous routed
 sample's 68,978 / 65.039. This mixed single-sample result is not a token-efficiency
 win and is outside the combined snapshot above.
 
+After that measurement, Receipt's historical reference was reduced from 389 to
+232 whitespace-delimited words by removing entrypoint duplication, retaining
+frozen assertions, comparable dependencies, actual revisions, native-runner fallback
+and helper evidence limits. Its recipe no longer repeats the measured fixture's
+filenames. No model efficiency measurement covers this reference revision yet.
+Two additional local checks exercise package-relative imports with fixed data and
+distinguish incompatible-interface errors from assertion failures; the complete
+local suite passes 107 tests. These are mechanics checks, not unseen model transfer.
+
 ## What the evidence permits
 
 - [Capture investigation](CAPTURE-DIAGNOSTICS.md) adds per-run evidence diagnostics and a subprocess-backed preservation test. Known missing output is already absent in the CLI stream; rejected-patch root cause remains unknown. These runner checks neither establish a skill speedup nor invalidate adverse costs.
