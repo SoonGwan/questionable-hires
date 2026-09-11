@@ -11,6 +11,8 @@ description: Review proposed abstractions, dependencies, and configuration for c
 
 Read the requested design, its actual consumers and project contracts together. Identify the behavior each material layer enables and the obligation it owns. Keep discovery inside any explicitly restricted project boundary.
 
+Resolve related files from the actual repository listing or references before opening guessed paths. Reuse discovered paths. If a file is absent, locate the relevant symbol or contract in the real tree rather than repeating that read or guessing neighboring filenames.
+
 Compare with the nearest viable alternative already available in the project or platform. Focus on differences that could change the recommendation; don't survey replacements once the current contract settles the choice. Preserve applicable behavior, accessibility, security, portability and support requirements.
 
 A single consumer can justify a security, testing or external-API boundary. Repeated lines alone do not justify a framework. Fewer lines, files or dependencies are not evidence of lower maintenance cost.
