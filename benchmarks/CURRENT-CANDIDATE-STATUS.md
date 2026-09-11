@@ -7,6 +7,12 @@ are unchanged, verification depth varies, and the diagnosis artifact loses its
 local timeout; these are not causal or broad improvement claims. The historical
 snapshot discussion below remains evidence history, not the latest gate.
 
+Subsequent Exorcist revision `8ec7a57` has a [targeted termination check](EXORCIST-BOUNDED-01.md),
+not a combined screen: the model's retained probe now terminates on missing dispatch
+and cancellation stalls in author fault checks. Its single model sample costs
+26.1% more tokens and 24.6% more time than screen 05's diagnosis case. This is an
+explicit reliability/cost tradeoff, not completion of the efficiency objective.
+
 Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRESSION-04.md). All nine task-specific criteria pass; the previous parent-directory search does not recur, but two rejected patches retain attempted-scope uncertainty. Total tokens fall 6.8% and time 8.3% versus screen 03; versus screen 02 tokens fall 1.3% while time rises 4.8%. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
 
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
