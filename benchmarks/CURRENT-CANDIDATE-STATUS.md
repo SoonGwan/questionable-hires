@@ -27,6 +27,13 @@ wrapper usage but full-source reading and an extra result artifact: 89,674 token
 52.353 seconds, 4.2% more tokens and essentially unchanged time versus the preceding
 bounded-instruction sample. No helper efficiency win is established.
 
+The subsequent Exorcist entrypoint exposes the minimal optional runner invocation
+directly and makes a separate result file unnecessary. `--help` now documents
+statuses, output limits and process-group effects without source inspection.
+Detailed reference and inspection remain available; execution semantics are
+unchanged and all eight runner checks pass. This interface revision has no model
+measurement yet; fewer discovery steps are a hypothesis, not a claimed saving.
+
 Latest combined snapshot reviewed: `d54da1d`, in [FAST-REGRESSION-04](FAST-REGRESSION-04.md). All nine task-specific criteria pass; the previous parent-directory search does not recur, but two rejected patches retain attempted-scope uncertainty. Total tokens fall 6.8% and time 8.3% versus screen 03; versus screen 02 tokens fall 1.3% while time rises 4.8%. The objective remains better developer outcomes with similar or lower token/time cost across the eight skills. Neither a short instruction file, a green synthetic task, nor a favorable individual sample establishes that objective.
 
 | Skill | Current instruction revision | Available behavioral evidence | Important remaining gap |
