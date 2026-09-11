@@ -1,6 +1,6 @@
 # Current candidate: performance objective remains unmet
 
-Resource table updated through `54328b1`. The objective is better developer
+Resource table includes the post-control progressive-reference candidate. The objective is better developer
 outcomes with similar or lower token/time cost across all eight skills, preserving
 the coworker concept. Neither passing fixtures, more safeguards, shorter instructions
 nor a favorable single sample establishes that objective.
@@ -18,7 +18,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `3ededb6`; helper `34aedd4`, reference `3ededb6` | [Setup control](EXORCIST-CONDITIONAL-01.md), [async path](CONDITIONAL-PATHS-01.md) | Conditional helper selection is mixed; current async artifact lacks hard cancellation containment; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
-| Con Artist | `5c697e5`; helper/reference `54328b1` | [Adverse single-fault control](HTTPX-BATCH-TRANSFER-01.md), [batch reuse](CON-ARTIST-BATCH-01.md), [HTTPX isolation pair](HTTPX-ISOLATION-01.md) | Single-fault pair costs +90.9% tokens / -5.2% time; batch adoption/net cost unmeasured |
+| Con Artist | `5c697e5`; helper `54328b1`; references split after single-fault control | [Adverse single-fault control](HTTPX-BATCH-TRANSFER-01.md), [batch reuse](CON-ARTIST-BATCH-01.md), [HTTPX isolation pair](HTTPX-ISOLATION-01.md) | Prior single-fault pair costs +90.9% tokens / -5.2% time; progressive-reference candidate and batch adoption/net cost unmeasured |
 | Friday | `4ac4ffe`; helper/reference `e79b208` | [Matrix](FRIDAY-MATRIX-01.md), screen 05 | Correct SQLite compatibility checks, no cost advantage; actual writers/production runtime remain unknown |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
@@ -103,6 +103,15 @@ failures, but skill costs +90.9% tokens / -5.2% time. It reads the full referenc
 and searches source across more interaction rounds despite fewer child processes.
 This is evidence against accepting current overall efficiency, not a causal
 attribution to the batch feature. Context and interaction overhead need attention.
+
+The next candidate moves stronger-probe and batch details into a conditionally
+linked advanced reference. Common reference length is 450 whitespace-delimited
+words versus 729 before; both references together are 816 words, so complex tasks
+may read more and incur another tool call. This is a narrower initial reading path,
+not measured token savings. Entrypoint, helper, identity and invocation policy are
+unchanged. All 126 tests pass (11.635 seconds), including resource installation
+and packaging checks; repository and skill validators pass. Model routing and
+net performance remain unmeasured for this split.
 
 Recent micro-edits and helper-routing changes have not produced stable efficiency
 gains. Do not keep cycling the same exposed tasks for a favorable result. Use the
