@@ -20,3 +20,10 @@ uses this project's actual packaging code. It includes the repair request,
 baseline/skill coverage differences and a current-source check command. Unlike
 the eight archived examples above, its original model logs remain local and are
 not published raw evidence. The task now has a real integrated fix.
+
+## A package-level Receipt
+
+The [Receipt follow-up](receipt.md#when-the-fix-spans-a-package) shows a two-module
+historical comparison and a local, no-model-usage reproduction. It also keeps the
+mixed cost result visible: less elapsed time, more tokens. Its follow-up report
+does not provide publicly archived raw model logs like the original example.
