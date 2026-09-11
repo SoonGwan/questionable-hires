@@ -103,6 +103,43 @@ class ReceiptHelperTests(unittest.TestCase):
             self.assertTrue(check['output_truncated'])
             self.assertLessEqual(len(check['output']), 12000)
 
+    def test_package_relative_imports_and_fixed_data_in_both_copies(self):
+        package = self.root / 'codec'
+        package.mkdir()
+        (package / '__init__.py').write_text('')
+        (package / 'config.py').write_text('SEPARATOR = ":"\n')
+        implementation = package / 'decode.py'
+        implementation.write_text('from .config import SEPARATOR\ndef decode(s): return s.split(SEPARATOR)\n')
+        before = self.commit()
+        implementation.write_text('from .config import SEPARATOR\ndef decode(s): return s.split(SEPARATOR, 1)\n')
+        after = self.commit()
+        (self.root / 'sample.txt').write_text('key:value:with:colons')
+        (self.root / 'test_codec.py').write_text(
+            'import unittest\nfrom pathlib import Path\nfrom codec.decode import decode\n'
+            'class Decode(unittest.TestCase):\n'
+            '    def test_value(self):\n'
+            '        self.assertEqual(decode(Path("sample.txt").read_text()), ["key", "value:with:colons"])\n')
+        recipe = dict(fixed=['codec/__init__.py', 'codec/config.py', 'sample.txt', 'test_codec.py'],
+                      vary=['codec/decode.py'], imports=['codec.decode', 'codec.config'],
+                      before=before, after=after, runner='unittest', tests=['-v', 'test_codec'])
+        status = self.git('status', '--porcelain')
+        result = helper.compare(self.root, recipe)
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertEqual(len(result['fixed_sha256']), 4)
+        self.assertEqual(status, self.git('status', '--porcelain'))
+
+    def test_incompatible_interface_is_not_an_assertion_failure(self):
+        (self.root / 'test_rule.py').write_text(
+            'import unittest\nfrom rule import unavailable_interface\n')
+        result = helper.compare(self.root, self.recipe)
+        for check in result['checks'].values():
+            self.assertNotEqual(check['exit_code'], 0)
+            self.assertIn('ImportError', check['output'])
+            self.assertNotIn('AssertionError', check['output'])
+        self.assertEqual(result['status'], 'observed')
+
 
 if __name__ == '__main__':
     unittest.main()
