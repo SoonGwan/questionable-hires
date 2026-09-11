@@ -48,8 +48,30 @@ try {
       assert.equal(afterOld, guarded ? 'new result' : 'old result');
       assert.equal(normal, 'normal result');
       assert.equal(focused, true);
+      await enter(inputs[0]);
+      await page.evaluate(() => window.fixture.fail(3));
+      const recovery = {
+        error: await page.locator('#error').textContent(),
+        retainedInput: await input.inputValue(),
+        focusedAfterFailure: await input.evaluate(element => element === document.activeElement),
+      };
+      assert.equal(recovery.error, 'Search failed. Try again.');
+      assert.equal(recovery.retainedInput, inputs[0]);
+      assert.equal(recovery.focusedAfterFailure, true);
+      await enter(inputs[2]);
+      recovery.errorOnRetry = await page.locator('#error').textContent();
+      await page.evaluate(() => window.fixture.complete(4, 'recovered result'));
+      recovery.result = await result.textContent();
+      recovery.errorAfterSuccess = await page.locator('#error').textContent();
+      recovery.focusedAfterSuccess = await input.evaluate(element => element === document.activeElement);
+      assert.equal(recovery.errorOnRetry, '');
+      assert.equal(recovery.result, 'recovered result');
+      assert.equal(recovery.errorAfterSuccess, '');
+      assert.equal(recovery.focusedAfterSuccess, true);
+      recovery.submitted = await page.evaluate(() => window.fixture.submitted());
+      assert.deepEqual(recovery.submitted, [...inputs, inputs[0], inputs[2]].map(value => ({value, trusted: true})));
       assert.deepEqual(errors, []);
-      observations.push({driver, guarded, submitted, keys, afterNew, afterOld, normal, focused});
+      observations.push({driver, guarded, submitted, keys, afterNew, afterOld, normal, focused, recovery});
     } finally {
       await context.close();
     }

@@ -53,3 +53,21 @@ recorded keydown events, which is why its earlier evidence was not a keyboard
 test. The command exits 0 with four observations. No physical keyboard, IME,
 multi-character composition, navigation or error recovery is claimed. The missing
 outer close deadline and original dump-DOM instability remain open.
+
+## Controlled error recovery
+
+The next expansion retains all four contexts and their stale-response checks.
+After normal completion, each context submits another query, rejects its
+controlled response promise, then submits a replacement query and completes it.
+Chrome 152.0.7977.83 executed all four paths successfully (exit 0,
+`complete: true`). Assertions check the exact error message, retained input and
+focus after failure, error clearing when retry starts, `recovered result` after
+success, cleared error and focus after success, all five trusted submitted
+values, and no uncaught page errors. Recovery details are included in each
+observation rather than inferred from command completion.
+
+This is synthetic promise rejection and retry, not a real backend outage or
+network cancellation. Both guarded and deliberately unguarded variants recover;
+this addition does not measure a skill advantage. Navigation, IME, model-driven
+QA, a separate outer close deadline and the original dump-DOM timeout diagnosis
+remain outside this evidence.
