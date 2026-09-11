@@ -13,7 +13,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `8454059`; collector `6318b91`, reference `3157ee2` | [Nearby decisions](HISTORY-REGIONS-01.md), [header gate](NECROMANCER-HEADER-GATE-01.md) | Correct transfer but +30.1% tokens / +23.0% time; no helper adoption; local collector gain not model savings |
-| Receipt | `abb4b93`; helper `0c1a4f5`, reference `48ec1c3` | [Blob reuse](RECEIPT-BLOB-REUSE-01.md), [tree batching](RECEIPT-TREE-BATCH-01.md), [independent checks](RECEIPT-INDEPENDENT-01.md) | Local multi-file comparison faster with repeated content; distinct blobs show no consistent further gain; model benefit unmeasured |
+| Receipt | `abb4b93`; helper `302066c`, reference `48ec1c3` | [Current package](RECEIPT-CURRENT-PACKAGE-01.md), [size queries](RECEIPT-TREE-SIZE-01.md), [blob reuse](RECEIPT-BLOB-REUSE-01.md) | Local helper faster; adopted in package task but session +69.0% tokens / +90.0% time with additional historical verification; efficiency unmet |
 | Landlord | `c66db8f` | [Check scope](LANDLORD-CHECK-SCOPE-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Appropriate test scope in both arms; +6.2% tokens / +12.9% time with equal shell counts; efficiency unproven |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
 | Exorcist | `ca2e179`; helper `34aedd4`, reference `ca2e179` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
@@ -32,7 +32,8 @@ The existing package test also checks every installed skill resource's bytes and
 permissions against source, with all eight entrypoints present. Both build tests
 pass (0.466 seconds). This checks shipped execution, not model performance or a
 published release; host configuration, installation and external publication are
-unchanged. Full repository tests last passed 176/176 before this added build test.
+unchanged. Full repository tests subsequently passed 177/177 (23.470 seconds),
+including this build test and the current Receipt size-query implementation.
 
 The [nearby history decisions transfer](HISTORY-REGIONS-01.md) completes with all
 three recommendations correct in both arms and closely matched actual 27-case
