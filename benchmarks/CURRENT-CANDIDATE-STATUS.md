@@ -22,6 +22,13 @@ No fresh model run or end-to-end token/time improvement is claimed; deterministi
 batch suitability and adoption still need workload-level evidence. This changes
 the helper and its interface documentation, not the skill entrypoint or routing.
 
+The [paired helper follow-up](CON-ARTIST-PROBE-REUSE-01.md) retains all twelve
+executions: identical-probe mean 0.261099 → 0.222975 seconds (about 38 ms less),
+seven → six children and 3102 → 3070 JSON bytes. Different probes correctly keep
+seven children and equal output size, with noisy timing. This is local work
+removal, not end-to-end/model-token evidence; the report discloses the small
+timing-boundary deviation and keeps the adverse control sample.
+
 Revisions below are each file group's last modifying commit, verified with Git.
 They are not necessarily the snapshot used by every linked historical report.
 
