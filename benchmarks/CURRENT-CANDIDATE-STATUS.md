@@ -13,10 +13,10 @@ They are not necessarily the snapshot used by every linked historical report.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `51ce19e`; collector `6318b91`, reference `3157ee2` | [Scoped discovery](NECROMANCER-DISCOVERY-01.md), [adverse packaging transfer](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md) | Configured consumer preserved with near-identical cost; favorable packaging discovery pair has unequal work and capture limits; earlier transfer adverse; broad savings unproven |
-| Receipt | `abb4b93`; helper/reference `aac3a92` | [Two-module transfer](RECEIPT-ASSEMBLY-01.md), [equal explicit requirements](RECEIPT-EQUAL-REQUIREMENTS-01.md), [earlier adverse package](RECEIPT-CURRENT-PACKAGE-01.md) | Two-module transfer +26.0% tokens / −31.1% time despite correct before/after checks; earlier parser pair favorable; combined efficiency unmet |
+| Receipt | `abb4b93`; helper `b8d5edc`, reference `aac3a92` | [Two-module transfer](RECEIPT-ASSEMBLY-01.md), [equal explicit requirements](RECEIPT-EQUAL-REQUIREMENTS-01.md), [earlier adverse package](RECEIPT-CURRENT-PACKAGE-01.md) | Two-module transfer +26.0% tokens / −31.1% time despite correct before/after checks; earlier parser pair favorable; combined efficiency unmet |
 | Landlord | `5f67c6e` | [Citation evaluation](LANDLORD-CITATION-01.md), [check scope](LANDLORD-CHECK-SCOPE-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | First-read citations adopted, same shell count; +30.4% tokens / +9.7% time in current pair; efficiency unmet |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
-| Exorcist | `ca2e179`; helper `34aedd4`, reference `ca2e179` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
+| Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
 | Con Artist | `1f8b8b6`; helper/references `6fc0c48` | [Report interpretation](CON-ARTIST-REPORT-01.md), [output references](CON-ARTIST-OUTPUT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Reference interpretation correct in one pair (-24.6% tokens / +6.6% time); precollected evidence, not end-to-end audit or causal output-format gain |
 | Friday | `9cae27c`; helper `64dd877`, reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regressions verified for checks and migration chunks; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
@@ -29,13 +29,26 @@ seconds. All eight entrypoint revisions were checked against Git; the table now
 reflects the current Necromancer rather than its older region-first version.
 This is mechanics evidence, not current all-eight model acceptance.
 
-Next performance priority is Receipt's historical-comparison workflow: preserve
-frozen assertions, loaded-revision evidence and original files while investigating
-avoidable preparation/execution overhead. Its earlier no-skill arm did not execute
-historical code, so repeating that unequal pair cannot isolate efficiency at the
-same requested outcome. Establish equal historical-verification requirements
-before another comparison. Do not reduce required evidence to manufacture savings
-or keep tuning only Necromancer because its small fixtures are convenient.
+The historical-comparison investigation retains frozen assertions, loaded-revision
+evidence and originals. Equal explicit requirements now have both a parser pair
+and a two-module transfer (linked above); the latter remains token-adverse.
+The next performance priority is avoidable preparation/execution overhead, not
+repeating the earlier unequal no-skill comparison for a favorable score.
+
+Receipt `b8d5edc` batches size-checked historical blob reads: at most one
+`git cat-file --batch` process per revision, reusing immutable blobs across both.
+A real-Git regression reads five distinct objects across two revisions with two
+processes instead of five, preserving empty/binary bytes and unusual filenames.
+Existing mode, snapshot-budget, frozen-test and loaded-copy checks still pass;
+malformed/truncated batch responses stop before test execution. This is reduced
+subprocess startup work, not a measured end-to-end time or model-token gain.
+All 214 repository tests pass in 31.997 seconds, plus skill/catalog validators.
+
+Exorcist `cb10067` bounds post-kill direct-child exit confirmation to five seconds.
+Unconfirmed exit reports `cleanup_complete: false` and CLI 125; interruption is
+preserved. Twelve helper tests include mocked cleanup timeout and real subprocess
+deadline cases. This does not establish descendant containment or normal-path
+performance. Neither helper update changes skill entrypoint instructions.
 
 Friday `64dd877` extends the deadline boundary to migration chunks. A controlled
 clock with real SQLite tracing reproduces a CREATE finishing at budget exhaustion:
