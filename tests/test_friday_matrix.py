@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "skills/friday/scripts/sqlite_matrix.py"
@@ -18,6 +19,37 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_deadline_between_migration_chunks_stops_before_next_sql(self):
+        now = [0.0]
+        executed = []
+        connect = helper.sqlite3.connect
+        def traced_connect(*args, **kwargs):
+            db = connect(*args, **kwargs)
+            def trace(sql):
+                executed.append(sql)
+                if sql == "CREATE TABLE t(x);":
+                    now[0] = 2.0
+            db.set_trace_callback(trace)
+            return db
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "schema.sql"
+            source.write_text("CREATE TABLE t(x);")
+            recipe = {"phases": [phase("partial", "INSERT INTO t VALUES(1);", ["schema.sql"]),
+                                 phase("unreachable", "DROP TABLE t;")],
+                      "checks": {"unrun": "SELECT * FROM t"}}
+            with patch.object(helper.sqlite3, "connect", side_effect=traced_connect), \
+                    patch.object(helper.time, "monotonic", side_effect=lambda: now[0]):
+                result = helper.matrix(recipe, directory, timeout=1)
+            self.assertEqual(source.read_text(), "CREATE TABLE t(x);")
+        self.assertIn("CREATE TABLE t(x);", executed)
+        self.assertNotIn("INSERT INTO t VALUES(1);", executed)
+        self.assertNotIn("DROP TABLE t;", executed)
+        self.assertNotIn("SELECT * FROM t", executed)
+        self.assertFalse(result["complete"])
+        self.assertEqual(len(result["phases"]), 1)
+        self.assertEqual(result["phases"][0]["checks"], {})
+        self.assertEqual(result["error"], "time budget exhausted")
+
     def test_sql_budget_counts_utf8_bytes(self):
         with self.assertRaises(ValueError):
             helper.matrix({"phases": [phase("oversized", "--" + "가" * 700000)],

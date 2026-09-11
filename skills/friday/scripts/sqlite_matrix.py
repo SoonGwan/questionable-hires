@@ -73,11 +73,17 @@ def matrix(spec, root, timeout=5):
             output["phases"].append(row)
             try:
                 for sql in chunks:
+                    if time.monotonic() >= deadline:
+                        output["complete"] = False
+                        output["error"] = "time budget exhausted"
+                        break
                     db.executescript(sql)
             except sqlite3.Error as error:
                 row["migration_error"] = str(error)
                 output["complete"] = False
                 break  # Never label a partially applied migration as the next state.
+            if not output["complete"]:
+                break
             readonly = True
             for label, query in checks.items():
                 # SQLite's progress callback need not run for a short statement.
