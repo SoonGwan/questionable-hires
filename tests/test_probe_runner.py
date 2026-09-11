@@ -107,6 +107,39 @@ asyncio.run(main())
         self.assertTrue(result['timed_out'])
         self.assertLess(result['elapsed_seconds'], 2)
 
+    def test_existing_deadline_covers_async_cleanup_without_self_spawn(self):
+        code = '''import asyncio
+async def operation():
+    try:
+        await asyncio.Event().wait()
+    finally:
+        print("cleanup entered", flush=True)
+        while STUBBORN:
+            try:
+                await asyncio.sleep(20)
+            except asyncio.CancelledError:
+                pass
+        print("cleanup finished", flush=True)
+async def main():
+    task = asyncio.create_task(operation())
+    await asyncio.sleep(0)
+    print("sequence checked", flush=True)
+    task.cancel()
+    await asyncio.gather(task, return_exceptions=True)
+asyncio.run(main())
+'''
+        for stubborn in (False, True):
+            with self.subTest(stubborn=stubborn):
+                result = self.run_code('STUBBORN = ' + repr(stubborn) + '\n' + code,
+                                       timeout=0.5)
+                self.assertIn('sequence checked\ncleanup entered\n', result['output'])
+                self.assertEqual(result['timed_out'], stubborn)
+                self.assertEqual(result['exit_code'], -9 if stubborn else 0)
+                self.assertEqual('cleanup finished' in result['output'], not stubborn)
+                self.assertTrue(result['cleanup_complete'])
+                self.assertFalse(result['output_truncated'])
+                self.assertLess(result['elapsed_seconds'], 2)
+
     def test_large_unicode_output_is_bounded(self):
         result = self.run_code('print("안녕" * 100000)')
         self.assertEqual(result['exit_code'], 0)
