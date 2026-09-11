@@ -24,7 +24,10 @@ def stage(destination):
     package = json.loads((dependency / 'package.json').read_text())
     if package['version'] != '1.63.0' or not (dependency / 'LICENSE').is_file():
         raise ValueError('Expected pinned Playwright 1.63.0 with license')
-    files = {p.name: p.read_text() for p in source.iterdir() if p.is_file()}
+    fixture_inventory = resource_manifest(source)
+    if not fixture_inventory or any(r['kind'] != 'file' for r in fixture_inventory.values()):
+        raise ValueError('Requires a regular-file browser fixture tree')
+    files = {name: (source / name).read_text() for name in fixture_inventory}
     files['.gitignore'] = 'node_modules/\n'
     prepare(dict(files=files), destination)
     shutil.copytree(dependency, destination / 'node_modules/playwright-core')
