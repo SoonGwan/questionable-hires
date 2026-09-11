@@ -8,7 +8,7 @@
 
 영수증 집착남, 코드 건물주, 레거시 무당까지. 채용 과정은 의문인데 맡기는 일은 분명한 개발자 스킬 8개입니다. GPT-6 Astra를 염두에 두고 만들었습니다.
 
-[English](README.md) · [실제 실행 예시](examples/README.md) · [비교 결과](benchmarks/REPORT.md) · [설치 가이드](docs/INSTALL.md)
+[English](README.md) · [실제 실행 예시](examples/README.md) · [현재 비교 근거](benchmarks/CURRENT-CANDIDATE-STATUS.md) · [설치 가이드](docs/INSTALL.md)
 
 ## 이런 일을 시킵니다
 
@@ -27,7 +27,7 @@
 
 **아래 그래프는 최초 실험이며 현재 파일의 측정값은 아닙니다.** 이후 수정본의 개별 검사, 실제 HTTPX 감사·설계 리뷰와 이 레포의 패키징 수리 결과는 [현재 후보 상태](benchmarks/CURRENT-CANDIDATE-STATUS.md)에 기록했습니다. 결과는 혼재합니다. 로컬 보조 도구의 개선이 모델 세션의 비용 절감으로 바로 이어지지는 않으며, 일부 비교는 검증 범위도 다릅니다. 전반적인 성능 향상은 아직 입증되지 않았습니다. [9개 과제 검사 05](benchmarks/FAST-REGRESSION-05.md)를 포함한 과거 기록도 유리한 표본으로 대체하지 않고 보존합니다.
 
-현재는 **개발 프리뷰**입니다. GPT-6 Astra / medium으로 **신규 72회**를 측정했습니다. 작은 synthetic 과제 8개 × 스킬 없음·일반 지침·해당 스킬 3조건 × 3반복이며, 각 실행은 새로운 프로세스·대화·Git fixture를 사용했습니다. 기존 n=1 결과는 새 측정에 포함하지 않았습니다.
+현재는 **개발 프리뷰**입니다. 최초 반복 실험은 GPT-6 Astra / medium으로 **72회**를 측정했습니다. 작은 synthetic 과제 8개 × 스킬 없음·일반 지침·해당 스킬 3조건 × 3반복이며, 각 실행은 새로운 프로세스·대화·Git fixture를 사용했습니다. 이전 n=1 결과는 이 반복 실험에 포함하지 않았습니다.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="benchmarks/results/astra-repeat-2026-09-11/analysis/comparison-dark.svg">
@@ -38,9 +38,15 @@
 
 엄격한 증거·범위 기준의 성공은 **스킬 없음 19/24, 일반 지침 16/24, 스킬 18/24**였습니다. 핵심 수정·진단은 대체로 같았습니다. 일반 지침 3회는 감사 중 기존 테스트를 수정했고, 스킬 4회는 거부된 패치의 대상이 로그에 없어 범위 준수를 확인할 수 없었습니다. 타임아웃은 없었습니다. 저자가 직접 채점한 소형 synthetic 실험이며, 우월성이나 일반적인 안전성을 증명하지 않습니다. 구독 사용량을 달러 청구로 환산하지 않았습니다.
 
-[신규 보고서·평가기준·원시 증거](benchmarks/REPORT-2026-09-11.md) · [재현 방법](benchmarks/README.md) · [기존 n=1 결과](benchmarks/REPORT.md)
+[최초 반복 실험·평가기준·원시 증거](benchmarks/REPORT-2026-09-11.md) · [재현 방법](benchmarks/README.md) · [기존 n=1 결과](benchmarks/REPORT.md)
 
-8개 스킬을 함께 설치한 자동 선택 시험도 8회 진행해 각 과제에 맞는 스킬 파일을 읽는 것을 확인했습니다. 로컬 플러그인의 실제 설치·캐시 비교·제거 시험도 통과했습니다. 자세한 범위는 [설치 검증 기록](docs/INSTALLATION-TEST.md)에 있습니다.
+과거 자동 선택 시험 8회에서는 과제에 맞는 스킬 파일을 읽는 것을 확인했습니다. 당시 로컬 플러그인의 설치·캐시 비교·제거 시험도 통과했습니다. 이는 이후 모든 수정본의 검증이 아닙니다. 자세한 범위와 날짜는 [설치 검증 기록](docs/INSTALLATION-TEST.md)에 있습니다.
+
+최근 근거는 위 그래프와 별도로 봐주세요.
+
+- [자동 선택과 스킬 없음 비교](benchmarks/CURRENT-SELECTION-01.md): 두 과제에서 적절한 스킬을 선택했지만 둘 다 토큰이 늘었고, 시간 결과는 혼재했습니다. 실제 수행한 작업량도 다릅니다.
+- [관련 없는 요청](benchmarks/ROUTING-NEGATIVE-01.md)과 [예제 폴더의 실제 소비자](benchmarks/LANDLORD-CONFIGURED-01.md): 좁은 선택 범위 검증이며 일반적인 정확도·효율 점수가 아닙니다.
+- [이전 버전·수정본의 실제 기록 열기](benchmarks/results/landlord-compact-01/README.md): 비공개 로그 없이 명령·출력·답변·사용량을 확인할 수 있습니다. 이 비교의 불리한 결과도 그대로 남겼습니다.
 
 예를 들어 `con-artist`는 저장을 제거한 복사본에서도 기존 테스트가 통과하는 것을 확인하고, 저장된 데이터 자체를 검사하면 실패한다는 것을 보여줬습니다. 기본 모델도 이 문제를 찾았습니다. [세 조건을 직접 비교하기 →](examples/con-artist.md)
 
