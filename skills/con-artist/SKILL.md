@@ -9,13 +9,13 @@ description: Audit whether tests detect broken behavior by tracing assertions an
 
 ## Check what the test actually buys
 
-Trace the selected assertions through implementation and mocks to the contract they actually protect. Use the documented test command or evidenced runner, not a new framework. Reuse a valid baseline; a failing baseline is not a mutation result.
+Trace the selected assertions through implementation and mocks to the contract they actually protect. Keep discovery, including instruction-file searches, inside an explicitly restricted project root. Use the documented test command or evidenced runner, not a new framework. Reuse a valid baseline; a failing baseline is not a mutation result.
 
 Choose a reachable fault at an unobserved boundary: acknowledgment versus persistence, closed flag versus cleanup, latest request versus completion, full consumption versus early exit. Syntax errors and behaviorally equivalent mutations do not establish sensitivity to the intended fault.
 
 For a small audit, use one disposable copy and a short inline experiment; retain a harness only when needed for reuse or delivery. Verify imports resolve to that copy. Preserve the user's original files, test configuration and explicit scope; vary one behavior at a time. Keep test exit statuses identifiable independently of log printing.
 
-For small Python unittest/pytest audits, [the optional audit helper](references/python-audit.md) handles copies, exact mutation, import checks and separate test/probe outcomes. Read that reference when using it instead of rewriting the isolation plumbing. Keep the existing workflow when a helper would add setup or repeat already collected evidence.
+For small Python unittest/pytest audits, [the optional audit helper](references/python-audit.md) handles copies, exact mutation, import checks and separate test/probe outcomes. Read its usage reference, then invoke the CLI; its full implementation is not normal task context. Inspect the source when trust review, adaptation or troubleshooting requires it. Keep the existing workflow when a helper would add setup or repeat already collected evidence.
 
 If the original test survives, check the meaningful effect—not merely success or container size that could hide repeated writes. Run the same stronger assertion against correct and faulty implementations: it must pass the former and fail the latter for the intended reason. If the mutant is killed, identify the detecting assertion or warning policy; this protects that fault, not all lifecycle paths.
 
