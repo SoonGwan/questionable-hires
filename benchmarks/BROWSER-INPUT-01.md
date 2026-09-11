@@ -71,3 +71,26 @@ network cancellation. Both guarded and deliberately unguarded variants recover;
 this addition does not measure a skill advantage. Navigation, IME, model-driven
 QA, a separate outer close deadline and the original dump-DOM timeout diagnosis
 remain outside this evidence.
+
+## Workflow deadline
+
+The command now defaults to a 60,000 ms watchdog covering launch, connection,
+interaction and cleanup. An optional third argument changes it (1–300,000 ms).
+It launches an owned browser server bound to `127.0.0.1`, connects locally, and
+emits success only after both connection and server close finish. On deadline it
+writes `complete: false` and the completed observations to stderr, calls the
+server's force-kill operation, and exits 1. A further five-second timer limits
+waiting for that kill operation. This follows the official
+[BrowserServer lifecycle API](https://playwright.dev/docs/api/class-browserserver).
+
+Actual Chrome 152.0.7977.83 execution with the default deadline passed all four
+contexts and exited 0. Running the same command with `1000` as the third argument
+timed out after two completed fill contexts, preserved those observations and
+exited 1 without a success receipt. A subsequent process listing found no runner
+or Playwright temporary-profile browser processes. This is a deliberately short
+deadline test, not an interaction defect or a model benchmark.
+
+The watchdog is an in-process Node timer, not an independent OS supervisor: a
+blocked event loop can delay it. Force-kill cleanup failure may leave temporary
+files; no fault-injected hung-close test or cross-platform termination guarantee
+is claimed. The older dump-DOM timeout diagnosis is still unresolved.

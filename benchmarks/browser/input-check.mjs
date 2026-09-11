@@ -1,11 +1,34 @@
 import assert from 'node:assert/strict';
+import { writeSync } from 'node:fs';
 import { chromium } from 'playwright-core';
 
 const executablePath = process.argv[2];
 if (!executablePath) throw new Error('Supply the path to an installed Chrome executable');
 const observations = [];
-const browser = await chromium.launch({executablePath, headless: true, timeout: 15000});
+const timeout = Number(process.argv[3] ?? 60000);
+if (!Number.isSafeInteger(timeout) || timeout < 1 || timeout > 300000)
+  throw new Error('Deadline must be an integer from 1 to 300000 milliseconds');
+let server;
+let timedOut = false;
+// Keep the watchdog active through context and server cleanup. Do not emit a
+// success receipt until those operations have actually finished.
+const watchdog = setTimeout(async () => {
+  timedOut = true;
+  writeSync(2, JSON.stringify({complete: false, error: 'Browser workflow deadline exceeded',
+    completed_variants: observations}) + '\n');
+  setTimeout(() => process.exit(1), 5000);
+  try {
+    if (server) await server.kill();
+  } finally {
+    process.exit(1);
+  }
+}, timeout);
+let browser;
 try {
+  // Bind the automation endpoint to loopback, never all network interfaces.
+  server = await chromium.launchServer({executablePath, headless: true, timeout: 15000,
+    host: '127.0.0.1'});
+  browser = await chromium.connect(server.wsEndpoint(), {timeout: 5000});
   for (const [driver, guarded] of [['fill', false], ['fill', true], ['keyboard', false], ['keyboard', true]]) {
     const context = await browser.newContext();
     try {
@@ -76,7 +99,13 @@ try {
       await context.close();
     }
   }
-  console.log(JSON.stringify({complete: true, browser: browser.version(), observations}, null, 2));
 } finally {
-  await browser.close();
+  try {
+    if (browser) await browser.close();
+  } finally {
+    if (server) await server.close();
+    clearTimeout(watchdog);
+  }
 }
+if (timedOut) process.exit(1);
+console.log(JSON.stringify({complete: true, browser: browser.version(), observations}, null, 2));
