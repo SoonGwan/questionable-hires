@@ -5,6 +5,12 @@ check](INTERACTION-CLEANUP-01.md) of the retained screen-05 test. The test hangs
 despite a bounded dispatch wait; a process deadline contains it. This instruction
 revision has no new model measurement and adds no cross-skill helper dependency.
 
+Its [model follow-up](INTERACTION-CLEANUP-02.md) now uses a five-second process
+deadline and correctly reports protected search. Author cancellation-resistant
+fault injection terminates as INCOMPLETE. Costs rise 1.5% tokens / 10.3% time versus
+screen 05; the deadline resides in the command, not the retained test file. This
+is a scoped robustness observation, not broad efficiency completion.
+
 Latest combined snapshot: `c11103c`, [FAST-REGRESSION-05](FAST-REGRESSION-05.md).
 All nine task criteria pass; 628,256 tokens / 337.371 seconds, down 8.1% / 8.8%
 from screen 04 and 9.3% / 4.4% from screen 02. No rejected patches. Most skills
