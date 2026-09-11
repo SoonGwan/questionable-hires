@@ -6,6 +6,7 @@ Trusted local tests only. This is not a security sandbox.
 import argparse
 import codecs
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -41,12 +42,12 @@ def checked_path(name):
     return path
 
 
-def git(root, *args):
+def git(root, *args, input=None):
     env = dict(os.environ, GIT_OPTIONAL_LOCKS='0')
     for key in ('GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_OBJECT_DIRECTORY', 'GIT_ALTERNATE_OBJECT_DIRECTORIES'):
         env.pop(key, None)
     result = subprocess.run(['git', '--no-pager', '--literal-pathspecs', '-c', 'core.fsmonitor=false', '-C', str(root), *args],
-                            env=env, capture_output=True, timeout=20)
+                            env=env, input=input, capture_output=True, timeout=20)
     if result.returncode:
         raise ValueError('Git could not resolve a requested local revision or file')
     return result.stdout
@@ -147,6 +148,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
             if name in entries or name not in varying_names:
                 raise ValueError('Ambiguous historical file selection')
             entries[name] = metadata.split()
+        missing = {}
         for name in recipe['vary']:
             if name not in entries:
                 raise ValueError('Implementation missing at requested revision')
@@ -158,7 +160,22 @@ def compare(root, recipe, python=sys.executable, timeout=30):
             if total > 20_000_000:
                 raise ValueError('Comparison snapshots exceed 20 MB')
             if oid not in blobs:
-                blobs[oid] = git(root, 'cat-file', 'blob', oid.decode())
+                missing[oid] = length
+        if missing:
+            # Request only size-checked immutable objects, not paths or revisions.
+            stream = io.BytesIO(git(root, 'cat-file', '--batch',
+                                   input=b''.join(oid + b'\n' for oid in missing)))
+            for oid, length in missing.items():
+                if stream.readline().split() != [oid, b'blob', str(length).encode()]:
+                    raise ValueError('Unexpected historical blob header')
+                content = stream.read(length)
+                if len(content) != length or stream.read(1) != b'\n':
+                    raise ValueError('Incomplete historical blob')
+                blobs[oid] = content
+            if stream.read(1):
+                raise ValueError('Unexpected historical blob data')
+        for name in recipe['vary']:
+            mode, kind, oid, size = entries[name]
             files[name] = blobs[oid]
             variant_modes[name] = 0o755 if mode == b'100755' else 0o644
         variants[label] = (files, variant_modes)

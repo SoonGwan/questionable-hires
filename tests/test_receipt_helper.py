@@ -166,9 +166,31 @@ class ReceiptHelperTests(unittest.TestCase):
             helper.compare(self.root, recipe)
             helper.compare(self.root, recipe)
         self.assertEqual(sum(call.args[1] == 'cat-file' for call in calls.call_args_list), 2)
-        self.assertTrue(all(call.args[2] == 'blob' for call in calls.call_args_list
+        self.assertTrue(all(call.args[2] == '--batch' for call in calls.call_args_list
                             if call.args[1] == 'cat-file'))
         self.assertEqual(observations, [[0o644, 0o644], [0o644, 0o755]] * 2)
+
+    def test_distinct_binary_blobs_use_one_read_process_per_revision(self):
+        names = ['empty.bin', 'space name.bin', 'tab\tname.bin']
+        old = [b'', b'\x00\xff\nheader blob 999\n', b'no trailing newline']
+        new = [b'new empty', old[1], b'changed\x00\n']
+        for name, content in zip(names, old):
+            (self.root/name).write_bytes(content)
+        before = self.commit()
+        for name, content in zip(names, new):
+            (self.root/name).write_bytes(content)
+        after = self.commit()
+        seen = []
+        def check(python, root, recipe, timeout):
+            seen.append([(root/name).read_bytes() for name in names])
+            return dict(exit_code=0, timed_out=False, output='', output_truncated=False)
+        with patch.object(helper, 'git', wraps=helper.git) as calls, patch.object(helper, 'run_check', side_effect=check):
+            helper.compare(self.root, dict(self.recipe, before=before, after=after, vary=names))
+        self.assertEqual(seen, [old, new])
+        reads = [call for call in calls.call_args_list if call.args[1] == 'cat-file']
+        self.assertEqual(len(reads), 2)
+        self.assertEqual([len(call.kwargs['input'].splitlines()) for call in reads], [3, 2])
+        self.assertEqual([(self.root/name).read_bytes() for name in names], new)
 
     def test_reused_blob_still_counts_toward_each_snapshot_limit(self):
         (self.root/'large.txt').write_bytes(b'x' * 10_000_001)
@@ -179,6 +201,21 @@ class ReceiptHelperTests(unittest.TestCase):
             helper.compare(self.root, recipe)
         execute.assert_not_called()
         self.assertEqual((self.root/'large.txt').read_text(), 'small current input')
+
+    def test_invalid_batch_response_never_runs_checks(self):
+        real_git = helper.git
+        for corrupt in (lambda data: data.replace(b' blob ', b' tree ', 1),
+                        lambda data: data.split(b'\n', 1)[0] + b'\n',
+                        lambda data: data[:-1] + b'x',
+                        lambda data: data + b'extra'):
+            def read(root, *args, **kwargs):
+                data = real_git(root, *args, **kwargs)
+                return corrupt(data) if args[:2] == ('cat-file', '--batch') else data
+            with self.subTest(corrupt=corrupt), patch.object(helper, 'git', side_effect=read), \
+                    patch.object(helper, 'run_check') as execute, self.assertRaises(ValueError):
+                helper.compare(self.root, self.recipe)
+            execute.assert_not_called()
+            self.assertEqual(list(self.root.glob('.receipt-*')), [])
 
     def test_batched_tree_rejects_historical_symlink_before_checks(self):
         alias = self.root / 'historical.py'
