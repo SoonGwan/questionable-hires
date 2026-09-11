@@ -13,6 +13,54 @@ spec.loader.exec_module(builder)
 
 
 class BuildTests(unittest.TestCase):
+    def test_bundled_con_artist_executes_batch_and_retains_fault_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            scratch = Path(directory).resolve()
+            plugin = builder.build(scratch / 'bundle')
+            project = scratch / 'project'
+            project.mkdir()
+            files = {
+                'service.py': 'def save(store, value):\n    store.append(value)\n    return True\n',
+                'test_service.py': ('import unittest\nfrom service import save\n'
+                                    'class Tests(unittest.TestCase):\n'
+                                    '    def test_ok(self): self.assertTrue(save([], "item"))\n'),
+            }
+            for name, source in files.items():
+                (project / name).write_text(source)
+            fault = dict(target='service.py', old='    store.append(value)\n', new='',
+                         probe='from service import save\ns = ["kept"]\nsave(s, "item")\nassert s == ["kept", "item"]\n')
+            recipe = dict(files=list(files), imports=['service'], tests=['-v', 'test_service'],
+                          mutations=[fault, dict(fault, new='    store.extend([value, value])\n')])
+            process = subprocess.run(
+                [sys.executable, '-I', '-B', str(plugin / 'skills/con-artist/scripts/audit.py'),
+                 '--source', str(project), '--spec', '-'], cwd=scratch,
+                input=json.dumps(recipe), text=True, capture_output=True, timeout=15)
+            self.assertEqual(process.returncode, 0, process.stderr)
+            result = json.loads(process.stdout)
+            self.assertEqual(result['status'], 'observed')
+            self.assertEqual(len(result['audits']), 2)
+            for audit in result['audits']:
+                checks = audit['checks']
+                self.assertEqual(checks['correct_tests']['exit_code'], 0)
+                self.assertEqual(checks['mutant_tests']['exit_code'], 0)
+                self.assertEqual(checks['correct_probe']['exit_code'], 0)
+                self.assertEqual(checks['mutant_probe']['exit_code'], 1)
+                self.assertIn('AssertionError', checks['mutant_probe']['output'])
+                for check in checks.values():
+                    self.assertFalse(check['timed_out'])
+                    if 'output' in check:
+                        self.assertFalse(check['output_truncated'])
+                        self.assertIn('Verified copied import: service', check['output'])
+            first, second = result['audits']
+            self.assertIn('Ran 1 test', first['checks']['correct_tests']['output'])
+            self.assertTrue(second['correct_tests_reused'])
+            self.assertEqual(second['checks']['correct_tests']['observation_ref'],
+                             '#/audits/0/checks/correct_tests')
+            self.assertNotIn('output', second['checks']['correct_tests'])
+            self.assertEqual({p.name for p in project.iterdir()}, set(files))
+            for name, source in files.items():
+                self.assertEqual((project / name).read_bytes(), source.encode())
+
     def test_bundled_exorcist_runs_outside_checkout_with_real_deadlines(self):
         with tempfile.TemporaryDirectory() as directory:
             scratch = Path(directory).resolve()
