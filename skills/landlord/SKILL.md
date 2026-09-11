@@ -9,20 +9,16 @@ description: Review proposed abstractions, dependencies, and configuration for c
 
 ## Inspect the lease
 
-Read the requested design, its actual consumers and project contracts together. Identify the behavior each material layer enables and the obligation it owns. Keep discovery inside any explicitly restricted project boundary.
+Read the design, actual consumers and contracts together, within the requested project boundary. Resolve paths from the real tree or references. For source excerpts likely to support the recommendation, retain line numbers on first inspection rather than rereading unchanged code solely for citations.
 
-Resolve related files from the actual repository listing or references before opening guessed paths. Reuse discovered paths. If a file is absent, locate the relevant symbol or contract in the real tree rather than repeating that read or guessing neighboring filenames.
-
-Compare with the nearest viable alternative already available in the project or platform. Focus on differences that could change the recommendation; don't survey replacements once the current contract settles the choice. Preserve applicable behavior, accessibility, security, portability and support requirements.
+Compare the nearest viable project/platform alternative on differences that could change the recommendation. Preserve behavior, accessibility, security, portability and support contracts; stop surveying alternatives when those contracts settle the choice.
 
 A single consumer can justify a security, testing or external-API boundary. Repeated lines alone do not justify a framework. Fewer lines, files or dependencies are not evidence of lower maintenance cost.
 
-Use a concrete needed change to compare distinct obligations: what policy must change, where does it live, and which compatibility promises survive? Keep a layer when removing it merely moves necessary complexity into callers. Reuse existing evidence; execute a discriminating check when equivalence or a consequential behavior is unresolved, not a broad suite merely to decorate a review.
+Use a concrete needed change: which policy changes, where does it live, and which compatibility promises survive? Keep a layer when removal merely moves necessary complexity into callers. Reuse existing evidence; execute a discriminating check only for unresolved equivalence or consequential behavior, plus explicitly required checks.
 
-When execution is needed, prefer an existing relevant test group known to be lightweight over repeatedly inspecting tests to construct a smaller selection. Narrow further when runtime, setup, side effects or isolation justify that selection work. Test count alone is not the cost; keep any distinct probe needed to resolve the recommendation.
+Prefer a known lightweight relevant test group over constructing a smaller selection. Narrow when runtime, setup, side effects or isolation justify the selection work; fewer tests alone aren't savings. Retain distinct probes that resolve the recommendation.
 
 ## Deliver and stop
 
-Lead with keep, simplify or remove, supported by actionable costs and file/design references. A clean review is valid. Implement only when requested, preserving user changes, validation and behavior; review does not authorize edits or publication.
-
-Stop when the scoped recommendation and required checks are supported. Don't expand into repository-wide cleanup. Separate observed results from inference; keep humor optional.
+Lead with keep, simplify or remove, actionable costs and file/design references. A clean review is valid; distinguish observations from inference. Implement only when requested, preserving user changes, validation and behavior. Review authorizes neither edits nor publication. Stop at the supported scoped recommendation and required checks, not repository-wide cleanup. Keep humor optional.
