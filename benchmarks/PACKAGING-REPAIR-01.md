@@ -44,3 +44,9 @@ The newly authorized self-selected target supplies useful real repository work.
 Keep this favorable result alongside adverse Hostage tasks; do not repeat it for a
 better score. Both arms' path-assertion repair is a concrete workflow issue to
 investigate, not justification for adding a benchmark-specific answer to the skill.
+
+Subsequent implementation note: `436e409` independently integrates the repair
+and focused regression tests into the repository. Later commits add source-link
+rejection. These author changes do not alter the frozen model artifacts or count
+as work performed by either measured session. A [worked follow-up](../examples/packaging-repair.md)
+distinguishes the old task from checking today's already-fixed source.

@@ -12,6 +12,9 @@ All three runs changed only the label and left the state module intact. The inde
 
 The separate necessary-state case checks the opposite risk: scope discipline must still allow state changes actually required by the feature.
 
+For a larger real-code task, see [the package builder repair](packaging-repair.md):
+both arms fix cleanup, with different test coverage and explicit cost limitations.
+
 ## Compare the evidence
 
 Same synthetic task, GPT-6 Astra, medium reasoning, one run per arm:
@@ -31,4 +34,3 @@ python3 benchmarks/run.py --output benchmarks/local-runs/label-change-example --
 ```
 
 This consumes model usage. Results vary; a one-run synthetic example is not a reliability or superiority benchmark. See the [full report](../benchmarks/REPORT.md).
-
