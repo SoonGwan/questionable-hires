@@ -151,8 +151,32 @@ try {
       assert.equal(cleared.afterEmpty, '');
       assert.equal(cleared.afterOld, guarded ? '' : 'pre-clear result');
       assert.equal(cleared.focused, true);
+      // A fresh-document return is distinct from SPA disposal or BFCache restore.
+      await enter(inputs[0]);
+      const documentNavigation = {
+        pendingSubmission: (await page.evaluate(() => window.fixture.submitted())).at(-1),
+      };
+      assert.deepEqual(documentNavigation.pendingSubmission, {value: inputs[0], trusted: true});
+      const oldDocument = await page.evaluateHandle(() => document);
+      await page.locator('#leave-document').click();
+      await page.waitForURL(new URL('./away.html', import.meta.url).href);
+      assert.equal(await page.locator('h1').textContent(), 'Another document');
+      assert.equal(await page.evaluate(() => typeof window.fixture), 'undefined');
+      await assert.rejects(() => oldDocument.evaluate(doc => doc.title));
+      await oldDocument.dispose();
+      await page.goto(url.href);
+      documentNavigation.submissionsOnReturn = await page.evaluate(() => window.fixture.submitted());
+      documentNavigation.resultOnReturn = await result.textContent();
+      assert.deepEqual(documentNavigation.submissionsOnReturn, []);
+      assert.equal(documentNavigation.resultOnReturn, '');
+      await enter(inputs[2]);
+      await page.evaluate(() => window.fixture.complete(0, 'fresh document result'));
+      documentNavigation.resultAfterNewRequest = await result.textContent();
+      assert.equal(documentNavigation.resultAfterNewRequest, 'fresh document result');
+      assert.deepEqual(await page.evaluate(() => window.fixture.submitted()),
+        [{value: inputs[2], trusted: true}]);
       assert.deepEqual(errors, []);
-      observations.push({driver, guarded, invalidateOnLeave, submitted, keys, afterNew, afterOld, normal, focused, recovery, navigation, cleared});
+      observations.push({driver, guarded, invalidateOnLeave, submitted, keys, afterNew, afterOld, normal, focused, recovery, navigation, cleared, documentNavigation});
     } finally {
       await context.close();
     }
