@@ -120,7 +120,7 @@ def execute(python, directory, spec, probe, timeout):
                 output=output, output_truncated=characters > 12000)
 
 
-def audit(root, spec, python=sys.executable, timeout=30):
+def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None):
     root = Path(root).resolve()
     if not isinstance(spec, dict):
         raise ValueError('Audit recipe must be a JSON object')
@@ -151,6 +151,9 @@ def audit(root, spec, python=sys.executable, timeout=30):
     if original.count(old) != 1:
         raise ValueError('Mutation text must match exactly once')
     faulty = original.replace(old, new, 1).encode('utf-8')
+    identity = (files, modes, spec['imports'], spec['tests'],
+                spec.get('runner', 'unittest'), str(python), timeout, dict(os.environ))
+    reused = _baseline is not None and _baseline.get('identity') == identity
     results = {}
     order = [('correct', 'tests'), ('correct', 'probe'), ('mutant', 'tests'), ('mutant', 'probe')]
     if probe_when == 'survives':
@@ -160,6 +163,9 @@ def audit(root, spec, python=sys.executable, timeout=30):
         with tempfile.TemporaryDirectory(prefix='.con-artist-', dir=root) as scratch:
             for variant, check in order:
                 if check == 'probe' and ('probe' not in spec or skipped is not None):
+                    continue
+                if variant == 'correct' and check == 'tests' and reused:
+                    results['correct_tests'] = dict(_baseline['result'])
                     continue
                 # Each check starts from the same inputs, not prior test side effects.
                 directory = Path(scratch) / (variant + '-' + check)
@@ -173,13 +179,20 @@ def audit(root, spec, python=sys.executable, timeout=30):
                                  spec.get('probe') if check == 'probe' else None, timeout)
                 results[variant + '_' + check] = result
                 if result['timed_out'] or (variant == 'correct' and result['exit_code'] != 0):
-                    return dict(status='incomplete', checks=results)
+                    output = dict(status='incomplete', checks=results)
+                    if reused:
+                        output['correct_tests_reused'] = True
+                    return output
+                if variant == 'correct' and check == 'tests' and _baseline is not None:
+                    _baseline.update(identity=identity, result=dict(result))
                 if probe_when == 'survives' and variant == 'mutant' and check == 'tests' and result['exit_code'] != 0:
                     skipped = 'Mutant tests exited nonzero; inspect their failure before any coverage claim. Proposed probe was not validated.'
         output = dict(status='observed', checks=results,
                       limitation='Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.')
         if skipped is not None:
             output['probe_skipped'] = skipped
+        if reused:
+            output['correct_tests_reused'] = True
         return output
     finally:
         changed = [name for name, content in files.items()
@@ -187,6 +200,27 @@ def audit(root, spec, python=sys.executable, timeout=30):
                    or (root / name).read_bytes() != content]
         if changed:
             raise RuntimeError('Selected originals changed during audit; not restored: ' + ', '.join(changed))
+
+
+def audit_batch(root, spec, python=sys.executable, timeout=30):
+    """Reuse a successful baseline only within this explicit local batch."""
+    common_keys = {'files', 'imports', 'runner', 'tests', 'mutations'}
+    fault_keys = {'target', 'old', 'new', 'probe', 'probe_when'}
+    mutations = spec.get('mutations')
+    if set(spec) - common_keys or not isinstance(mutations, list) or not 1 <= len(mutations) <= 8:
+        raise ValueError('Batch requires shared files/imports/runner/tests and 1–8 mutations')
+    for fault in mutations:
+        if not isinstance(fault, dict) or set(fault) - fault_keys or not {'target', 'old', 'new'} <= set(fault):
+            raise ValueError('Each mutation requires target/old/new and optional probe/probe_when')
+    common = {key: value for key, value in spec.items() if key != 'mutations'}
+    baseline, observations = {}, []
+    for fault in mutations:
+        result = audit(root, dict(common, **fault), python, timeout, _baseline=baseline)
+        observations.append(result)
+        if result['status'] != 'observed':
+            break
+    return dict(status=observations[-1]['status'], audits=observations,
+                limitation='Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled.')
 
 
 def main():
@@ -198,7 +232,9 @@ def main():
     args = parser.parse_args()
     try:
         recipe = sys.stdin.read() if args.spec == Path('-') else args.spec.read_text()
-        result = audit(args.source, json.loads(recipe), args.python, args.timeout)
+        spec = json.loads(recipe)
+        run = audit_batch if isinstance(spec, dict) and 'mutations' in spec else audit
+        result = run(args.source, spec, args.python, args.timeout)
     except (ValueError, KeyError, OSError, RuntimeError) as error:
         parser.exit(2, 'Audit not established: ' + str(error) + '\n')
     print(json.dumps(result, indent=2))

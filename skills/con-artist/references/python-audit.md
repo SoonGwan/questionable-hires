@@ -30,3 +30,24 @@ The CLI emits JSON with `status` (`observed` or `incomplete`) and `checks`. Chec
 Correct-code failure or timeout stops as incomplete. CLI exit 0 means observations collected; exit 2 means invalid/incomplete evidence (invalid input may produce only stderr). Selected original bytes are checked and copies removed. Output retains a 12,000-character tail per check; invalid UTF-8 is replaced. Timeout defaults to 30 seconds per check; `--timeout` allows at most 300.
 
 Limits: POSIX, Python 3.9+, 20 MB selected inputs; no symlinks/Git internals/path traversal or namespace-package import checks. No dependency installation. This is **not a sandbox**: use trusted tests, local data and authorized actions only. Files outside the selection are not integrity-checked or restored. Use normal project facilities for other languages or unsupported layouts; don't repeat a valid baseline merely to adopt this helper mid-audit.
+
+## Several already-justified faults, one baseline
+
+For deterministic local tests sharing the same inputs and command, the same CLI
+accepts shared `files`, `imports`, `runner`, `tests` plus a `mutations` list
+(1–8 objects). Move each fault's `target`, `old`, `new`, optional `probe` and
+`probe_when` into its own list entry; no other per-fault overrides are supported.
+Use this only for distinct boundaries already needed by the audit, not to
+generate extra faults or batch an investigation whose next step depends on results.
+
+Within that invocation, a successful normal test result is reused when selected
+bytes/modes, imports, test arguments, interpreter, timeout and environment match.
+Each mutant and each probe still runs in a fresh copy. Nothing is cached across
+invocations. External services, changing dependencies, clock/random behavior and
+flaky tests are not controlled: use separate audits when a fresh baseline matters.
+
+Batch JSON contains `status` and ordered `audits`, each with the single-audit
+structure above. `correct_tests_reused: true` explicitly marks a copied result,
+not another execution or independent observation. Incomplete evidence stops the
+batch; unrun entries are not passes. This saves repeated baseline execution,
+not the reasoning needed to select faults or interpret failures.
