@@ -43,7 +43,7 @@ def matrix(spec, root, timeout=5):
         prepared.append((phase["name"], chunks))
     if any(not isinstance(k, str) or not isinstance(v, str) for k, v in checks.items()):
         raise ValueError("checks map names to SQL strings")
-    if sum(len(s) for _, chunks in prepared for s in chunks) + sum(map(len, checks.values())) > 2_000_000:
+    if sum(len(s.encode("utf-8")) for _, chunks in prepared for s in chunks) + sum(len(s.encode("utf-8")) for s in checks.values()) > 2_000_000:
         raise ValueError("SQL exceeds 2 MB")
 
     readonly = False
@@ -62,6 +62,7 @@ def matrix(spec, root, timeout=5):
     # Disable statement caching so a statement authorized in a migration cannot
     # reuse that authorization when later submitted as a read-only check.
     db = sqlite3.connect(":memory:", cached_statements=0)
+    db.execute("PRAGMA temp_store=MEMORY")
     db.set_authorizer(authorize)
     deadline = time.monotonic() + timeout
     db.set_progress_handler(lambda: int(time.monotonic() >= deadline), 1000)
@@ -108,7 +109,7 @@ def main():
         else:
             with open(args.spec, encoding="utf-8") as stream:
                 raw = stream.read(2_000_001)
-        if len(raw) > 2_000_000:
+        if len(raw.encode("utf-8")) > 2_000_000:
             raise ValueError("recipe exceeds 2 MB")
         result = matrix(json.loads(raw), args.source, args.timeout)
         print(json.dumps(result, ensure_ascii=True, default=lambda v: {"blob_hex": v.hex()}))

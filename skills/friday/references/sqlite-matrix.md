@@ -4,7 +4,7 @@ Use this optional Python 3.9+ helper when the actual migration is SQLite and sev
 
 Run `python3 <skill-dir>/scripts/sqlite_matrix.py --source <project> --spec <recipe.json>` (or `--spec -` for stdin). Read this interface instead of the implementation unless inspection or adaptation is needed.
 
-If an existing Python probe already extracts project queries, the equivalent public API is `runpy.run_path('<skill-dir>/scripts/sqlite_matrix.py')['matrix'](recipe, project_root, timeout=5)`. It returns the same result dictionary; check `complete` before interpreting it. This avoids writing an intermediate recipe file or duplicating the matrix loop.
+If an existing Python probe already extracts project queries, load the public API with `matrix = runpy.run_path('<skill-dir>/scripts/sqlite_matrix.py')['matrix']`, then call `matrix(recipe, project_root, timeout=5)`. It returns the same result dictionary; check `complete` before interpreting it. This avoids writing an intermediate recipe file or duplicating the matrix loop.
 
 The recipe has exactly `phases` and `checks`. Each phase has a `name`, a list of relative SQL `files` (run in order), then inline `sql`. Checks map labels to single read-only SQL statements; they run after every phase against the same in-memory database. Example:
 

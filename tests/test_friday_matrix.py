@@ -18,6 +18,11 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_sql_budget_counts_utf8_bytes(self):
+        with self.assertRaises(ValueError):
+            helper.matrix({"phases": [phase("oversized", "--" + "가" * 700000)],
+                           "checks": {"read": "SELECT 1"}}, SCRIPT.parent)
+
     def test_rename_and_rollback_keep_new_data(self):
         recipe = {"phases": [
             phase("before", "CREATE TABLE users(id, name); INSERT INTO users VALUES(1, 'old');"),
