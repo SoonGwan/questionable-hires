@@ -46,4 +46,13 @@ flags above. It exited with an explicit incomplete error, and post-run process
 inspection found no dedicated-profile processes. The earlier successful pair is
 preserved but does not establish reliable startup/termination. Investigate this
 runtime instability before adding browser checks to required CI or claiming the
-browser release gate is satisfied. No favorable retry followed this observation.
+browser release gate is satisfied. No favorable retry followed in that work cycle.
+
+A later diagnostic run instrumented process completion/output sizes to distinguish
+missing output from possible shutdown delay. Both variants exited 0 on that run:
+stdout 2,013/2,011 characters and stderr 2,125 characters each, with the same DOM
+observations as the earlier success. The timeout did not recur, so its cause
+remains unknown. This run is diagnostic, not a replacement for either failure.
+Runner `074c2e4` now reports captured stdout/stderr byte counts on future timeouts
+without including raw browser logs in the diagnostic message. Three mechanics
+tests pass, including UTF-8 byte counting and suppression of raw diagnostic text.
