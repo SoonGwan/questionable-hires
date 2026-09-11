@@ -1,6 +1,6 @@
 # Current candidate: performance objective remains unmet
 
-Resource table includes the subsequent shallow-boundary candidate. The objective is better developer
+Resource table includes the current region-first and context-based isolation candidates. The objective is better developer
 outcomes with similar or lower token/time cost across all eight skills, preserving
 the coworker concept. Neither passing fixtures, more safeguards, shorter instructions
 nor a favorable single sample establishes that objective.
@@ -12,13 +12,13 @@ They are not necessarily the snapshot used by every linked historical report.
 
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
-| Necromancer | `8346bc7`; collector/reference updated for shallow boundaries | [Shallow checkout](NECROMANCER-SHALLOW-01.md), [focused patches](NECROMANCER-FOCUSED-PATCH-01.md), local query check below | Six shallow ranges remove misleading patch bulk, not recover history; model efficiency unverified |
+| Necromancer | `18a2070`; collector/reference `ae99bac` | [Region-first HTTPX](HTTPX-HISTORY-REGION-01.md), [large hunk](NECROMANCER-LARGE-HUNK-01.md), paired 02 | Favorable HTTPX pair has unequal work and baseline repair; combined history task costs more; collector adoption unverified |
 | Receipt | `e00c751`; helper `048fb21`, reference `48ec1c3` | [Package pair](RECEIPT-PACKAGE-01.md), screen 05 | Favorable one-pair costs, unequal verification scope; no broad history/fix efficiency result |
 | Landlord | `925758f` | [HTTPX design](HTTPX-DESIGN-02.md), screen 05 | More tokens than earlier baseline; verification depth differs |
 | Mother-in-law | `d1be060` | [Compact broken search](INTERACTION-COMPACT-01.md), [protected path](CONDITIONAL-PATHS-01.md) | Deadline handoff works in retained artifacts; cost mixed and original output partly missing; browser/recovery coverage limited |
-| Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [setup control](EXORCIST-CONDITIONAL-01.md), screen 06 | Author fault confirms containment gap; revised routing unmeasured by model; efficiency unproven |
+| Exorcist | `4df3eff`; helper `34aedd4`, reference `3ededb6` | [Cancellation distinction](EXORCIST-CANCELLATION-02.md), [paired 02](FAST-PAIRED-02.md) | Current diagnosis uses process containment but reads full helper source and costs more; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
-| Con Artist | `5c697e5`; helper `54328b1`; references `4bbac5a` | [Progressive check](HTTPX-PROGRESSIVE-01.md), [adverse pair](HTTPX-BATCH-TRANSFER-01.md), [batch reuse](CON-ARTIST-BATCH-01.md) | Advanced reference skipped, but full source read and seven commands; still costlier than earlier baseline; batch adoption unmeasured |
+| Con Artist | `1f8b8b6`; helper `54328b1`; references `4bbac5a` | [Counter regression](HTTPX-COUNTER-01.md), [paired 02](FAST-PAIRED-02.md), [batch reuse](CON-ARTIST-BATCH-01.md) | Native copies avoid helper reads in persistence case with fewer tokens but more time; broader context-routing and batch adoption unverified |
 | Friday | `5f1dc34`; helper/reference `e79b208` | [Control with scope failure](FRIDAY-ROUTING-CONTROL-01.md), [runtime routing](FRIDAY-ROUTING-01.md), [mixed writers](FRIDAY-WRITERS-01.md) | Both current paths skip unused reference; control searches parent directory and remains costlier than earlier baseline; production runtime unknown |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
@@ -108,6 +108,16 @@ This is unmeasured model guidance, not an established token/time gain; do not re
 the counter task to turn its adverse record into a favorable headline.
 
 ## Latest combined screen
+
+[Paired 02](FAST-PAIRED-02.md), all current resources at `eca8921`, completes the
+unchanged nine-case/two-arm screen: 18 fresh sessions, no retries or timeouts.
+Skill totals 690,933 tokens / 435.782 seconds versus baseline 651,723 / 321.106:
+**+6.0% tokens / +35.7% time**. Verification depths differ. Two skill patches were
+rejected with unknown outside-project targets; protected skill has an empty
+original runtime capture, followed by a separately labeled successful author
+replay. Original files and 29 installed resource instances were checked. This
+is adverse combined evidence, not acceptance. Do not keep rerunning this exposed
+set or substitute stronger safeguards for the requested performance improvement.
 
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
 promoted: four cases / eight fresh sessions use 10.4% more total tokens and 10.6%
