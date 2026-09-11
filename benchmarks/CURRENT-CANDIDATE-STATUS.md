@@ -94,6 +94,19 @@ baseline copies files and runs five tests versus skill's two. This is adverse
 evidence, not routing acceptance. The prepared response-test environment now
 includes upstream-pinned chardet 5.2.0; earlier environment reports are unchanged.
 
+Con Artist `1f8b8b6` replaces the small-native-first preference with context-based
+isolation: in-memory substitution only when original compilation semantics and
+bindings can be preserved; module/package copies when recreating that context
+adds work or uncertainty. This responds to the actual extracted-function failure,
+not a claim that copies always cost less. Existing helper routing, original-file
+protection, actual runner checks, character and automatic invocation remain.
+A new executable regression verifies that whole-module isolation preserves
+deferred annotations and closure bindings: current tests/probe pass, the weak test
+survives the mutation, and the same stronger assertion fails only the mutant.
+All 139 repository tests pass (14.147 seconds), plus skill/repository validators.
+This is unmeasured model guidance, not an established token/time gain; do not rerun
+the counter task to turn its adverse record into a favorable headline.
+
 ## Latest combined screen
 
 The isolated two-skill [decision-core comparison](DECISION-CORE-01.md) is not
