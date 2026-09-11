@@ -136,6 +136,9 @@ def audit(root, spec, python=sys.executable, timeout=30):
         raise ValueError('Use unittest or the already installed pytest')
     if 'probe' in spec and not isinstance(spec['probe'], str):
         raise ValueError('probe must be Python assertion code')
+    probe_when = spec.get('probe_when', 'always')
+    if probe_when not in ('always', 'survives') or ('probe_when' in spec and 'probe' not in spec):
+        raise ValueError('probe_when requires a probe and must be always or survives')
     target = str(relative(spec['target']))
     old, new = spec['old'], spec['new']
     if not isinstance(old, str) or not old or not isinstance(new, str) or old == new:
@@ -149,27 +152,35 @@ def audit(root, spec, python=sys.executable, timeout=30):
         raise ValueError('Mutation text must match exactly once')
     faulty = original.replace(old, new, 1).encode('utf-8')
     results = {}
+    order = [('correct', 'tests'), ('correct', 'probe'), ('mutant', 'tests'), ('mutant', 'probe')]
+    if probe_when == 'survives':
+        order = [('correct', 'tests'), ('mutant', 'tests'), ('correct', 'probe'), ('mutant', 'probe')]
+    skipped = None
     try:
         with tempfile.TemporaryDirectory(prefix='.con-artist-', dir=root) as scratch:
-            for variant in ('correct', 'mutant'):
-                for check in ('tests', 'probe'):
-                    if check == 'probe' and 'probe' not in spec:
-                        continue
-                    # Each check starts from the same inputs, not prior test side effects.
-                    directory = Path(scratch) / (variant + '-' + check)
-                    directory.mkdir()
-                    for name, content in files.items():
-                        dest = directory / name
-                        dest.parent.mkdir(parents=True, exist_ok=True)
-                        dest.write_bytes(faulty if variant == 'mutant' and name == target else content)
-                        dest.chmod(modes[name])
-                    result = execute(str(python), directory, spec,
-                                     spec.get('probe') if check == 'probe' else None, timeout)
-                    results[variant + '_' + check] = result
-                    if result['timed_out'] or (variant == 'correct' and result['exit_code'] != 0):
-                        return dict(status='incomplete', checks=results)
-        return dict(status='observed', checks=results,
-                    limitation='Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.')
+            for variant, check in order:
+                if check == 'probe' and ('probe' not in spec or skipped is not None):
+                    continue
+                # Each check starts from the same inputs, not prior test side effects.
+                directory = Path(scratch) / (variant + '-' + check)
+                directory.mkdir()
+                for name, content in files.items():
+                    dest = directory / name
+                    dest.parent.mkdir(parents=True, exist_ok=True)
+                    dest.write_bytes(faulty if variant == 'mutant' and name == target else content)
+                    dest.chmod(modes[name])
+                result = execute(str(python), directory, spec,
+                                 spec.get('probe') if check == 'probe' else None, timeout)
+                results[variant + '_' + check] = result
+                if result['timed_out'] or (variant == 'correct' and result['exit_code'] != 0):
+                    return dict(status='incomplete', checks=results)
+                if probe_when == 'survives' and variant == 'mutant' and check == 'tests' and result['exit_code'] != 0:
+                    skipped = 'Mutant tests exited nonzero; inspect their failure before any coverage claim. Proposed probe was not validated.'
+        output = dict(status='observed', checks=results,
+                      limitation='Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.')
+        if skipped is not None:
+            output['probe_skipped'] = skipped
+        return output
     finally:
         changed = [name for name, content in files.items()
                    if not (root / name).is_file() or (root / name).is_symlink()

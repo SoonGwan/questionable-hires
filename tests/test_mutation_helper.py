@@ -53,6 +53,53 @@ class MutationHelperTests(unittest.TestCase):
         self.assertEqual(set(result['checks']), {'correct_tests', 'mutant_tests'})
         self.assertEqual(result['checks']['mutant_tests']['exit_code'], 1)
 
+    def test_conditional_probe_skips_two_processes_when_tests_detect_fault(self):
+        p = self.root / 'test_service.py'
+        p.write_text(p.read_text().replace('self.assertTrue(save([], "item"))',
+                                         's = []; save(s, "item"); self.assertEqual(s, ["item"])'))
+        result = self.run_audit(dict(self.recipe, probe_when='survives', probe='raise AssertionError("must not execute")'))
+        self.assertEqual(list(result['checks']), ['correct_tests', 'mutant_tests'])
+        self.assertEqual(result['checks']['correct_tests']['exit_code'], 0)
+        self.assertIn('AssertionError', result['checks']['mutant_tests']['output'])
+        self.assertIn('not validated', result['probe_skipped'])
+
+    def test_conditional_survivor_validates_same_probe_on_fresh_copies(self):
+        p = self.root / 'test_service.py'
+        p.write_text('from pathlib import Path\nPath("side-effect").touch()\n' + p.read_text())
+        probe = 'from pathlib import Path\nassert not Path("side-effect").exists()\n' + self.recipe['probe']
+        result = self.run_audit(dict(self.recipe, probe_when='survives', probe=probe))
+        self.assertEqual(list(result['checks']), ['correct_tests', 'mutant_tests', 'correct_probe', 'mutant_probe'])
+        self.assertEqual([r['exit_code'] for r in result['checks'].values()], [0, 0, 0, 1])
+        self.assertNotIn('probe_skipped', result)
+
+    def test_conditional_mode_does_not_certify_syntax_failure(self):
+        result = self.run_audit(dict(self.recipe, probe_when='survives', new='    bad syntax !!!\n'))
+        self.assertIn('SyntaxError', result['checks']['mutant_tests']['output'])
+        self.assertIn('not automatically', result['limitation'])
+        self.assertIn('inspect', result['probe_skipped'])
+
+    def test_conditional_mode_rejects_broken_correct_probe_after_survival(self):
+        result = self.run_audit(dict(self.recipe, probe_when='survives', probe='assert False'))
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(list(result['checks']), ['correct_tests', 'mutant_tests', 'correct_probe'])
+
+    def test_invalid_probe_condition_is_rejected(self):
+        for value in ('sometimes', None, True):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                self.run_audit(dict(self.recipe, probe_when=value))
+        recipe = dict(self.recipe, probe_when='survives')
+        del recipe['probe']
+        with self.assertRaises(ValueError):
+            self.run_audit(recipe)
+
+    def test_conditional_mutant_timeout_is_incomplete_not_a_skip_win(self):
+        result = self.run_audit(dict(self.recipe, probe_when='survives',
+                                    new='    while True: pass\n'), timeout=0.1)
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(list(result['checks']), ['correct_tests', 'mutant_tests'])
+        self.assertTrue(result['checks']['mutant_tests']['timed_out'])
+        self.assertNotIn('probe_skipped', result)
+
     def test_failed_baseline_stops_before_mutation(self):
         (self.root / 'service.py').write_text('import missing_internal_runtime\n' + (self.root / 'service.py').read_text())
         result = self.run_audit()
