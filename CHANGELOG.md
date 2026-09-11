@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Standalone installation now attempts rollback on cancellation and continues
+  cleaning its other new targets when one cleanup fails, preserving the original
+  install error. Two real-copy regressions reproduce the previous failures and
+  pass after the fix; all 11 installer tests pass. Cleanup remains best-effort.
 - Failed local package builds now attempt to remove their newly created output,
   allowing retry after successful cleanup. Existing destinations are never
   eligible for cleanup. The original error or cancellation is preserved even

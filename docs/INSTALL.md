@@ -13,7 +13,7 @@ python3 scripts/install.py --dest /absolute/path/to/your-project/.agents/skills 
 python3 scripts/install.py --dest /absolute/path/to/your-project/.agents/skills
 ```
 
-Replace the example project path with your project's actual path. To install just one hire, add `--skill necromancer`; repeat `--skill` for several hires. The installer refuses to overwrite any existing target and rolls back newly created skill folders on a copy error.
+Replace the example project path with your project's actual path. To install just one hire, add `--skill necromancer`; repeat `--skill` for several hires. The installer refuses to overwrite any existing target. On a copy error or cancellation it attempts to remove every skill folder created by that invocation, preserving the original error even if cleanup fails. If filesystem permissions prevent cleanup, partial folders can remain: inspect the reported destination before retrying, and preserve unrelated or pre-existing files.
 
 For all your projects, choose your user skill directory instead:
 
