@@ -19,7 +19,7 @@ They are not necessarily the snapshot used by every linked historical report.
 | Exorcist | `3ededb6`; helper `34aedd4`, reference `3ededb6` | [Setup control](EXORCIST-CONDITIONAL-01.md), [async path](CONDITIONAL-PATHS-01.md) | Conditional helper selection is mixed; current async artifact lacks hard cancellation containment; efficiency unproven |
 | Hostage Negotiator | `4c327a9` | [Bounded transfer](HOSTAGE-TRANSFER-02.md), screen 05, [automatic scope cue](AUTO-LABEL-01.md) | Correct focused changes; no repeatable efficiency advantage |
 | Con Artist | `5c697e5`; helper `54328b1`; references `4bbac5a` | [Progressive check](HTTPX-PROGRESSIVE-01.md), [adverse pair](HTTPX-BATCH-TRANSFER-01.md), [batch reuse](CON-ARTIST-BATCH-01.md) | Advanced reference skipped, but full source read and seven commands; still costlier than earlier baseline; batch adoption unmeasured |
-| Friday | `5f1dc34`; helper/reference `e79b208` | [Runtime routing](FRIDAY-ROUTING-01.md), [mixed writers](FRIDAY-WRITERS-01.md), screen 05 | Current gap skips unused reference with mixed costs; compatible control not rechecked; production runtime unknown |
+| Friday | `5f1dc34`; helper/reference `e79b208` | [Control with scope failure](FRIDAY-ROUTING-CONTROL-01.md), [runtime routing](FRIDAY-ROUTING-01.md), [mixed writers](FRIDAY-WRITERS-01.md) | Both current paths skip unused reference; control searches parent directory and remains costlier than earlier baseline; production runtime unknown |
 
 UI metadata and character identities remain intact. Automatic selection stays enabled.
 The five optional helpers do not constitute a claim that every task should use one.
@@ -78,7 +78,10 @@ SQL tools. Its [one-case check](FRIDAY-ROUTING-01.md) skips the unused reference
 preserves the required gap findings and uses separate committed connections.
 Tokens/time are slightly lower than the preceding skill, but runtime depth differs
 and time remains above the earlier baseline. Five shell calls remain. The current
-compatible-control path is unmeasured; no broad efficiency gain is established.
+[control check](FRIDAY-ROUTING-CONTROL-01.md) preserves completed-migration behavior
+and rechecks the atomicity prerequisite, but searches the parent directory outside
+scope. Its 107,480 tokens / 76.871 seconds remain costlier in tokens than the
+earlier baseline. No strict scope success or broad efficiency gain is established.
 
 The [mixed-writer pair](FRIDAY-WRITERS-01.md) demonstrates both local fixtures but
 not an overall efficiency gain. Both models preserve the compatible post-migration
