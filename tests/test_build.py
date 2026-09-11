@@ -13,6 +13,78 @@ spec.loader.exec_module(builder)
 
 
 class BuildTests(unittest.TestCase):
+    def test_bundled_friday_preserves_incompatible_reader_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            scratch = Path(directory).resolve()
+            plugin = builder.build(scratch / 'bundle')
+            project = scratch / 'project'
+            project.mkdir()
+            files = {'schema.sql': 'CREATE TABLE users(id INTEGER, name TEXT);',
+                     'up.sql': 'ALTER TABLE users RENAME COLUMN name TO display_name;',
+                     'down.sql': 'ALTER TABLE users RENAME COLUMN display_name TO name;'}
+            for name, source in files.items():
+                (project / name).write_text(source)
+            recipe = dict(phases=[
+                dict(name='before', files=['schema.sql'], sql="INSERT INTO users VALUES(1, 'old');"),
+                dict(name='up', files=['up.sql'], sql="INSERT INTO users VALUES(2, 'new');"),
+                dict(name='down', files=['down.sql'], sql='')],
+                checks={'old': 'SELECT id, name FROM users ORDER BY id',
+                        'new': 'SELECT id, display_name FROM users ORDER BY id'})
+            process = subprocess.run(
+                [sys.executable, '-I', '-B', str(plugin / 'skills/friday/scripts/sqlite_matrix.py'),
+                 '--source', str(project), '--spec', '-'], cwd=scratch,
+                input=json.dumps(recipe), text=True, capture_output=True, timeout=10)
+            self.assertEqual(process.returncode, 0, process.stderr)
+            result = json.loads(process.stdout)
+            self.assertTrue(result['complete'])
+            self.assertEqual([p['name'] for p in result['phases']], ['before', 'up', 'down'])
+            for phase, reader, rows in zip(result['phases'], ['old', 'new', 'old'],
+                                           [[[1, 'old']], [[1, 'old'], [2, 'new']],
+                                            [[1, 'old'], [2, 'new']]]):
+                self.assertTrue(phase['checks'][reader]['ok'])
+                self.assertEqual(phase['checks'][reader]['rows'], rows)
+                failed = phase['checks']['new' if reader == 'old' else 'old']
+                self.assertFalse(failed['ok'])
+                self.assertIn('no such column', failed['error'])
+            self.assertEqual({p.name: p.read_text() for p in project.iterdir()}, files)
+
+    def test_bundled_necromancer_reads_real_history_without_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            scratch = Path(directory).resolve()
+            plugin = builder.build(scratch / 'bundle')
+            project = scratch / 'project'
+            project.mkdir()
+
+            def git(*args):
+                return subprocess.check_output(['git', *args], cwd=project, text=True).strip()
+
+            git('init', '-q', '--template=')
+            for key, value in [('user.name', 'Fixture'), ('user.email', 'fixture@example.invalid'),
+                               ('commit.gpgsign', 'false'), ('core.hooksPath', str(scratch / 'no-hooks'))]:
+                git('config', key, value)
+            source = project / 'legacy.py'
+            source.write_text('def label(p):\n    return p["display"]\n')
+            git('add', 'legacy.py')
+            git('commit', '-qm', 'Initial label')
+            source.write_text('def label(p):\n    return p.get("display") or p["name"]\n')
+            git('add', 'legacy.py')
+            git('commit', '-qm', 'Preserve partner compatibility')
+            revision = git('rev-parse', 'HEAD')
+            before = {str(p.relative_to(project)): p.read_bytes()
+                      for p in project.rglob('*') if p.is_file()}
+            process = subprocess.run(
+                [sys.executable, '-I', '-B', str(plugin / 'skills/necromancer/scripts/trace.py'),
+                 '--repo', str(project), '--path', 'legacy.py', '--lines', '2:2'],
+                cwd=scratch, text=True, capture_output=True, timeout=15)
+            self.assertEqual(process.returncode, 0, process.stderr)
+            result = json.loads(process.stdout)
+            self.assertEqual(result['history'], 'available')
+            self.assertEqual(result['blame'][0]['commit'], revision)
+            self.assertIn('Preserve partner compatibility', result['commits'][0]['evidence'])
+            self.assertIn('+    return p.get', result['commits'][0]['evidence'])
+            self.assertEqual(before, {str(p.relative_to(project)): p.read_bytes()
+                                      for p in project.rglob('*') if p.is_file()})
+
     def test_bundled_con_artist_executes_batch_and_retains_fault_evidence(self):
         with tempfile.TemporaryDirectory() as directory:
             scratch = Path(directory).resolve()

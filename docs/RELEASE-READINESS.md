@@ -88,8 +88,16 @@ the write and duplicating the write both survive the existing weak test; the sam
 stronger assertion passes on correct code and fails with AssertionError on each
 mutant. Copied-import evidence, nontruncated outputs and the second audit's direct
 baseline-observation reference are checked. Original file bytes remain unchanged
-and disposable copies are removed. All nine build tests pass; no model performance
-or host-registration claim follows from this local package execution.
+and disposable copies are removed.
+
+The built Friday CLI also runs three real in-memory SQLite phases (before, rename
+migration with new data, rollback): compatible reader rows are checked, while
+incompatible readers retain query errors despite the completed matrix's exit 0.
+The built Necromancer CLI collects attribution and the introducing patch from a
+disposable two-commit Git repository. Both run outside the checkout with isolated
+Python; project bytes, including Git files for the history check, stay unchanged.
+All eleven build tests pass; no model performance or host-registration claim
+follows from these local package executions.
 
 Source archive rechecked at `eb8a0e2`: `git archive` extraction without `.git`
 passes validation and discovers 216 tests; 214 execute/pass and the two pinned
