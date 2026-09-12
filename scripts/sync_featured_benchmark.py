@@ -3,7 +3,9 @@
 import argparse
 import json
 from pathlib import Path
+import subprocess
 import sys
+import tempfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,11 +67,33 @@ def synchronized(text, replacement):
     return before + replacement + after
 
 
+def sync_charts(value, check):
+    directory = ROOT / value['directory']
+    subprocess.run([
+        sys.executable, '-B', str(ROOT / 'benchmarks/audit_mother_in_law_checkpoint.py'),
+        str(directory)], check=True, stdout=subprocess.DEVNULL)
+    if check:
+        with tempfile.TemporaryDirectory() as temporary:
+            target = Path(temporary)
+            subprocess.run([
+                sys.executable, '-B', str(ROOT / 'benchmarks/render_mother_in_law_chart.py'),
+                str(directory / 'data.json'), '--light', str(target / 'comparison-light.svg'),
+                '--dark', str(target / 'comparison-dark.svg')], check=True)
+            return [name for name in ('comparison-light.svg', 'comparison-dark.svg')
+                    if (directory / name).read_bytes() != (target / name).read_bytes()]
+    subprocess.run([
+        sys.executable, '-B', str(ROOT / 'benchmarks/render_mother_in_law_chart.py'),
+        str(directory / 'data.json'), '--light', str(directory / 'comparison-light.svg'),
+        '--dark', str(directory / 'comparison-dark.svg')], check=True)
+    return []
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
     value = values()
+    stale_charts = sync_charts(value, args.check)
     changed = []
     for name, language in (('README.md', 'en'), ('README.ko.md', 'ko')):
         path = ROOT / name
@@ -79,8 +103,9 @@ def main():
             changed.append(name)
             if not args.check:
                 path.write_text(expected)
-    if args.check and changed:
-        print('Featured benchmark is stale: ' + ', '.join(changed), file=sys.stderr)
+    stale = changed + [value['directory'] + '/' + name for name in stale_charts]
+    if args.check and stale:
+        print('Featured benchmark is stale: ' + ', '.join(stale), file=sys.stderr)
         return 1
     if not args.check:
         print('Synchronized: ' + ', '.join(changed or ['already current']))
