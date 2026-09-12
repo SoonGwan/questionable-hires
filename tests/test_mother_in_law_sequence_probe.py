@@ -32,6 +32,26 @@ class GuardedSearch:
             self.result = result
 
 
+class ErrorSearch:
+    def __init__(self):
+        self.result = None
+        self.error = None
+        self.generation = 0
+
+    async def run(self, query, fetch):
+        self.generation += 1
+        generation = self.generation
+        try:
+            result = await fetch(query)
+        except RuntimeError as error:
+            if generation == self.generation:
+                self.error = str(error)
+            return
+        if generation == self.generation:
+            self.result = result
+            self.error = None
+
+
 class MotherInLawSequenceProbeTests(unittest.IsolatedAsyncioTestCase):
     async def test_distinguishes_stale_overwrite_from_guard(self):
         unsafe = await probe.probe(UnsafeSearch, 'run', 'result', 'old', 'new', None)
@@ -43,6 +63,13 @@ class MotherInLawSequenceProbeTests(unittest.IsolatedAsyncioTestCase):
         cases = await probe.probe(UnsafeSearch, 'run', 'result', 'old', 'new', '')
         self.assertEqual(cases[-1]['name'], 'older-success-after-boundary')
         self.assertFalse(cases[-1]['passed'])
+
+    async def test_error_state_adds_stale_failure_without_another_harness(self):
+        cases = await probe.probe(
+            ErrorSearch, 'run', 'result', 'old', 'new', None, 'error')
+        self.assertEqual(cases[-1]['name'], 'older-error-after-newer-success')
+        self.assertTrue(cases[-1]['passed'])
+        self.assertIsNone(cases[-1]['observed']['error_state'])
 
     def test_loader_rejects_source_outside_root(self):
         with tempfile.TemporaryDirectory() as directory:

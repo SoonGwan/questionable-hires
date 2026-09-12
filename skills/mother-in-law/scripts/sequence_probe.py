@@ -26,7 +26,8 @@ def load_class(source, class_name, root):
     return candidate
 
 
-async def sequence(factory, method_name, state_name, queries, order, failure=None):
+async def sequence(factory, method_name, state_name, queries, order, failure=None,
+                   error_state_name=None):
     target = factory()
     pending, entered, tasks = {}, asyncio.Queue(), []
 
@@ -53,8 +54,12 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
                 await tasks[index]
             except RuntimeError as error:
                 errors.append(str(error))
-        return {'queries': queries, 'completion_order': [queries[i] for i in order],
-                'state': getattr(target, state_name), 'errors': errors}
+        observed = {'queries': queries,
+                    'completion_order': [queries[i] for i in order],
+                    'state': getattr(target, state_name), 'errors': errors}
+        if error_state_name is not None:
+            observed['error_state'] = getattr(target, error_state_name)
+        return observed
     finally:
         for task in tasks:
             if not task.done():
@@ -62,7 +67,7 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
         await asyncio.gather(*tasks, return_exceptions=True)
 
 
-async def probe(factory, method, state, old, new, boundary):
+async def probe(factory, method, state, old, new, boundary, error_state=None):
     cases = []
     normal = await sequence(factory, method, state, [old, new], [0, 1])
     cases.append({'name': 'normal', 'passed': normal['state'] == new + ' result',
@@ -70,6 +75,13 @@ async def probe(factory, method, state, old, new, boundary):
     stale = await sequence(factory, method, state, [old, new], [1, 0])
     cases.append({'name': 'older-success-after-newer-success',
                   'passed': stale['state'] == new + ' result', 'observed': stale})
+    if error_state is not None:
+        stale_error = await sequence(factory, method, state, [old, new], [1, 0],
+                                     failure=0, error_state_name=error_state)
+        cases.append({'name': 'older-error-after-newer-success',
+                      'passed': stale_error['state'] == new + ' result'
+                      and not stale_error['error_state'],
+                      'observed': stale_error})
     if boundary is not None:
         crossed = await sequence(factory, method, state, [old, boundary], [1, 0])
         cases.append({'name': 'older-success-after-boundary',
@@ -85,6 +97,7 @@ def main():
     parser.add_argument('--class-name', required=True)
     parser.add_argument('--method', default='run')
     parser.add_argument('--state', default='result')
+    parser.add_argument('--error-state', help='optional error attribute; adds a stale-error case')
     parser.add_argument('--old', default='old')
     parser.add_argument('--new', default='new')
     parser.add_argument('--boundary', help='optional documented invalidating query; empty is valid')
@@ -95,7 +108,8 @@ def main():
             raise ValueError('timeout must be in (0, 30] and queries must differ')
         factory = load_class((args.root / args.source), args.class_name, args.root)
         cases = asyncio.run(asyncio.wait_for(
-            probe(factory, args.method, args.state, args.old, args.new, args.boundary),
+            probe(factory, args.method, args.state, args.old, args.new, args.boundary,
+                  args.error_state),
             timeout=args.timeout))
         result = {'complete': True, 'layer': 'local async component', 'cases': cases}
         print(json.dumps(result, separators=(',', ':')))
