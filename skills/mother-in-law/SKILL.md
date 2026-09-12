@@ -13,6 +13,13 @@ Read the applicable instructions, interaction code, and test entrypoint once.
 Trust a documented local runtime unless launch fails; do not relist files or probe
 facts that the real check will answer.
 
+When a UI-less Python component has the simple `async run(query, fetch)` shape and
+the project does not require a different retained-test layout, prefer
+`scripts/sequence_probe.py` over rewriting future/event plumbing. Run `--help` only
+if needed. Supply the source, class name, and optional documented boundary query;
+exit 1 means a stale-state failure was reproduced, while 0 means the targeted guard
+held. Project instructions and existing adequate runners take precedence.
+
 Build one small reproduction with isolated per-case state. For an asynchronous
 interaction, cover the nearest normal case and applicable stale completion classes:
 
