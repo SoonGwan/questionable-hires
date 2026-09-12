@@ -15,10 +15,13 @@ facts that the real check will answer.
 
 When a UI-less Python component has the simple `async run(query, fetch)` shape and
 the project does not require a different retained-test layout, prefer
-`scripts/sequence_probe.py` over rewriting future/event plumbing. Run `--help` only
-if needed. Supply the source, class name, and optional documented boundary query;
-exit 1 means a stale-state failure was reproduced, while 0 means the targeted guard
-held. Project instructions and existing adequate runners take precedence.
+`scripts/sequence_probe.py` over rewriting future/event plumbing. Its CLI contract
+is `python3 -B SCRIPT --root . --source FILE --class-name CLASS [--boundary QUERY]`;
+defaults are method `run`, state `result`, queries `old`/`new`, and timeout 5.
+Run it directly so its captured stdout is the evidence—do not read the script,
+redirect it, or echo its output again before the first run. Exit 1 reproduces stale
+state, 0 means the targeted guard held, and 2 warrants inspecting help/source.
+Project instructions and existing adequate runners take precedence.
 
 Build one small reproduction with isolated per-case state. For an asynchronous
 interaction, cover the nearest normal case and applicable stale completion classes:
