@@ -75,6 +75,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--stage-only', action='store_true', help='Prepare and verify without model usage')
+    parser.add_argument('--arms', nargs='+', choices=['baseline', 'skill'],
+                        default=['baseline', 'skill'])
     parser.add_argument('--container', action='store_true', help='Run model cells in the pinned Linux image')
     parser.add_argument('--container-image', default=IMAGE)
     parser.add_argument('--docker-context', default='colima')
@@ -99,7 +101,7 @@ def main():
         node_runtime = command(['node', '--version'], ROOT, timeout=10)
     manifest = dict(revision=command(['git', 'rev-parse', 'HEAD'], ROOT),
                     task=TASK, model='gpt-6-astra', effort='medium',
-                    order=['baseline', 'skill'], timeout=240,
+                    order=args.arms, timeout=240,
                     started_at=datetime.now(timezone.utc).isoformat(),
                     runtime=dict(codex=codex_runtime, node=node_runtime,
                                  python=platform.python_version(),

@@ -78,6 +78,23 @@ class BrowserModelStageTests(unittest.TestCase):
                 self.assertEqual('finished_at' in manifest, scenario != 'limit')
                 self.assertEqual(bool(manifest.get('stopped_after_limit')), scenario == 'limit')
 
+    def test_runner_can_iterate_only_the_skill_arm(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / 'run'
+            result = dict(completed=True, limit_detected=False, elapsed_seconds=1)
+            with mock.patch.object(sys, 'argv', [
+                    'run_browser_model.py', '--output', str(output), '--arms', 'skill']), \
+                    mock.patch.object(runner, 'stage', return_value={}), \
+                    mock.patch.object(runner, 'command', return_value='runtime'), \
+                    mock.patch.object(runner, 'resource_manifest', return_value={}), \
+                    mock.patch.object(runner, 'disabled_skills', return_value=[]), \
+                    mock.patch.object(runner, 'run_cell', return_value=result) as model, \
+                    mock.patch('builtins.print'):
+                self.assertEqual(runner.main(), 0)
+            self.assertEqual(model.call_count, 1)
+            self.assertEqual(model.call_args.args[1], 'skill')
+            self.assertEqual(json.loads((output / 'run.json').read_text())['order'], ['skill'])
+
     def fixture(self, root):
         source = root / 'benchmarks/browser/model-project'
         dependency = root / 'benchmarks/browser/node_modules/playwright-core'
