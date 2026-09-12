@@ -93,18 +93,20 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 
 ## Does it actually work?
 
-**Latest focused candidate check:** `mother-in-law` met **5/5** reviewed
-interaction-QA targets versus baseline's **4/5**, with zero clean-case false
-positives in either arm. Its equal-task normalized total tokens fell to **84.5%**
-and normalized elapsed time to **61.6%**. This is five tasks with one fresh
-session per arm, not a whole-team or repeated-sample claim.
+**Latest frozen confirmation:** `mother-in-law` and baseline both met **5/5**
+reviewed interaction-QA targets, with zero false positives. Across five new cases
+committed before execution, the skill used **93.2%** normalized total tokens and
+**71.3%** normalized elapsed time. This is one fresh session per arm and task,
+not a whole-team or repeated-sample claim.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="benchmarks/results/mother-in-law-fast-2026-09-12/comparison-dark.svg">
-  <img src="benchmarks/results/mother-in-law-fast-2026-09-12/comparison-light.svg" alt="Five-task mother-in-law checkpoint: quality targets baseline 4 of 5 and skill 5 of 5, normalized tokens 100 and 84.5 percent, normalized elapsed time 100 and 61.6 percent, zero clean-case false positives." width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="benchmarks/results/mother-in-law-confirmation-2026-09-12/comparison-dark.svg">
+  <img src="benchmarks/results/mother-in-law-confirmation-2026-09-12/comparison-light.svg" alt="Five-task frozen mother-in-law confirmation: both arms meet five of five reviewed targets; normalized tokens 100 and 93.2 percent; normalized elapsed time 100 and 71.3 percent; zero false positives." width="100%">
 </picture>
 
-[Inspect the five-case results, raw values, method, and limitations](benchmarks/results/mother-in-law-fast-2026-09-12/README.md).
+[Inspect the frozen cases, raw values, method, and limitations](benchmarks/results/mother-in-law-confirmation-2026-09-12/README.md). The earlier
+[candidate-development checkpoint](benchmarks/results/mother-in-law-fast-2026-09-12/README.md)
+is retained separately.
 
 **Latest combined check: the efficiency goal is not met.** The current
 [nine-task gate](benchmarks/BUNDLE-CURRENT-02-REVIEW.md), 18 fresh sessions at
@@ -118,6 +120,9 @@ comparable to the original chart's equal-task mean ratios.
 
 **The chart below is the original experiment, not a measurement of today's files.** Later candidates have targeted checks, real HTTPX audits/design reviews, and this project's packaging repair recorded in [current candidate status](benchmarks/CURRENT-CANDIDATE-STATUS.md). Results are mixed: local helper gains do not automatically reduce model-session cost, and some comparisons perform unequal verification. Broad performance improvement remains unproven. Historical runs, including [nine-task screen 05](benchmarks/FAST-REGRESSION-05.md), remain available rather than being replaced by a favorable sample.
 
+<details>
+<summary>Historical whole-team experiment — 72 sessions on the original skill files</summary>
+
 We completed **72 fresh GPT-6 Astra sessions** at medium reasoning: eight small synthetic tasks × three arms × three repetitions. Baseline = 100%; generic control used **111.9% tokens / 125.1% time**, and the corresponding skill used **111.5% tokens / 117.6% time**. Implementation line churn was identical. Neither arm saved resources in this experiment.
 
 <picture>
@@ -128,6 +133,8 @@ We completed **72 fresh GPT-6 Astra sessions** at medium reasoning: eight small 
 Strict evidence-and-scope success was **19/24 baseline, 16/24 control, 18/24 skill**. Central fixes and diagnoses generally agreed. Four skill sessions have unresolved rejected-patch records; three control audits changed existing tests. These are unblinded author judgments on tiny synthetic tasks, not proof of superiority or a general safety ranking. No session timed out; no dollar cost is inferred from subscription usage.
 
 [Original repeated experiment, methods and raw evidence](benchmarks/REPORT-2026-09-11.md) · [Reproduce the comparison](benchmarks/README.md) · [Earlier n=1 smoke results](benchmarks/REPORT.md) · [Eight worked examples](examples/README.md)
+
+</details>
 
 Historical whole-team routing checks selected the expected skill files in eight sessions. A historical local bundle also passed CLI installation and removal. See [routing evidence](benchmarks/REPORT.md#automatic-routing-with-the-whole-team) and the dated [installation record](docs/INSTALLATION-TEST.md); these are not checks of every later revision.
 
