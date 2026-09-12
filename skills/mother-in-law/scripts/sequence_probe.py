@@ -27,7 +27,7 @@ def load_class(source, class_name, root):
 
 
 async def sequence(factory, method_name, state_name, queries, order, failure=None,
-                   error_state_name=None):
+                   error_state_name=None, sequential=False):
     target = factory()
     pending, entered, tasks = {}, asyncio.Queue(), []
 
@@ -37,15 +37,22 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
         entered.put_nowait(query)
         return await future
 
+    async def start(query):
+        method = getattr(target, method_name)
+        tasks.append(asyncio.create_task(method(query, fetch)))
+        if await entered.get() != query:
+            raise AssertionError('submission order changed')
+
     try:
-        for query in queries:
-            method = getattr(target, method_name)
-            tasks.append(asyncio.create_task(method(query, fetch)))
-            if await entered.get() != query:
-                raise AssertionError('submission order changed')
+        if not sequential:
+            for query in queries:
+                await start(query)
         errors = []
+        checkpoints = []
         for index in order:
             query = queries[index]
+            if sequential:
+                await start(query)
             if failure == index:
                 pending[query].set_exception(RuntimeError('controlled failure'))
             else:
@@ -54,11 +61,15 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
                 await tasks[index]
             except RuntimeError as error:
                 errors.append(str(error))
+            if sequential:
+                checkpoints.append(getattr(target, state_name) == query + ' result')
         observed = {'queries': queries,
                     'completion_order': [queries[i] for i in order],
                     'state': getattr(target, state_name), 'errors': errors}
         if error_state_name is not None:
             observed['error_state'] = getattr(target, error_state_name)
+        if sequential:
+            observed['checkpoints_passed'] = checkpoints
         return observed
     finally:
         for task in tasks:
@@ -69,8 +80,8 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
 
 async def probe(factory, method, state, old, new, boundary, error_state=None):
     cases = []
-    normal = await sequence(factory, method, state, [old, new], [0, 1])
-    cases.append({'name': 'normal', 'passed': normal['state'] == new + ' result',
+    normal = await sequence(factory, method, state, [old, new], [0, 1], sequential=True)
+    cases.append({'name': 'normal', 'passed': all(normal['checkpoints_passed']),
                   'observed': normal})
     stale = await sequence(factory, method, state, [old, new], [1, 0])
     cases.append({'name': 'older-success-after-newer-success',
@@ -83,6 +94,11 @@ async def probe(factory, method, state, old, new, boundary, error_state=None):
                       and not stale_error['error_state'],
                       'observed': stale_error})
     if boundary is not None:
+        boundary_normal = await sequence(factory, method, state, [old, boundary],
+                                         [0, 1], sequential=True)
+        cases.append({'name': 'normal-boundary',
+                      'passed': all(boundary_normal['checkpoints_passed']),
+                      'observed': boundary_normal})
         crossed = await sequence(factory, method, state, [old, boundary], [1, 0])
         cases.append({'name': 'older-success-after-boundary',
                       'passed': crossed['state'] == boundary + ' result',

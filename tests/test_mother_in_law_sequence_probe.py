@@ -53,6 +53,23 @@ class ErrorSearch:
 
 
 class MotherInLawSequenceProbeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_normal_detects_missing_first_result_hidden_by_overlap(self):
+        class DropsFirst(GuardedSearch):
+            async def run(self, query, fetch):
+                await super().run(query, fetch)
+                if self.generation == 1:
+                    self.result = None
+
+        cases = await probe.probe(DropsFirst, 'run', 'result', 'old', 'new', None)
+        self.assertFalse(cases[0]['passed'])
+        self.assertEqual(cases[0]['observed']['checkpoints_passed'], [False, True])
+        self.assertTrue(cases[1]['passed'])
+
+    async def test_clear_normal_and_stale_cases_preserve_working_guard(self):
+        cases = await probe.probe(GuardedSearch, 'run', 'result', 'old', 'new', '')
+        self.assertEqual(len(cases), 4)
+        self.assertTrue(all(case['passed'] for case in cases))
+
     async def test_distinguishes_stale_overwrite_from_guard(self):
         unsafe = await probe.probe(UnsafeSearch, 'run', 'result', 'old', 'new', None)
         guarded = await probe.probe(GuardedSearch, 'run', 'result', 'old', 'new', None)
