@@ -1,8 +1,8 @@
 # Catalog interaction QA
 
-Open `index.html` locally in installed Chrome using the local `playwright-core`
+Open `index.html` locally in installed Chromium using the local `playwright-core`
 Node package. The evaluation environment supplies that package without an install.
-Chrome executable: `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`.
+Use the executable path in `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
 Use a fresh headless browser context, block HTTP(S) page requests and close owned
 contexts/browser afterward. Do not use a personal browser profile or install
 packages. Node supports `.mjs` modules; `import { chromium } from 'playwright-core'`.
