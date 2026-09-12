@@ -15,4 +15,7 @@ stale completion once:
 Control responses directly. Omit inapplicable classes without manufacturing
 parallel state. On launch failure, retain one diagnostic and mark dependent cases
 unrun; lower-layer checks do not replace browser evidence. Keep detailed evidence
-in files and print compact case statuses. Avoid duplicate logs and screenshots.
+in files and print one compact status per case plus the evidence path. When that
+stdout includes every case, outcome, and cleanup status, use it for the report;
+do not reopen the detailed evidence merely to repeat it. Inspect the file only for
+missing or ambiguous output. Avoid duplicate logs and screenshots.
