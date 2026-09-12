@@ -61,3 +61,27 @@ baseline-versus-skill result: it was one baseline smoke session, its console str
 was not yet captured by the benchmark runner, and its local QA artifacts remain
 unpublished. A paired run still needs identical staged inputs, captured raw events,
 timeouts, dependency and source integrity checks, and reviewer scoring.
+
+## Directional skill iteration
+
+Two fresh skill-arm smoke sessions used the same staged fixture and runtime. The
+first skill revision found only two of the three defects: it omitted the older
+failure arriving after a newer success. It used 152,724 input tokens (139,392
+cached), 3,118 output tokens, and 112 reasoning-output tokens. This was worse than
+the baseline on input and worse on defect coverage, despite lower output.
+
+That observed miss motivated the focused `mother-in-law` revision at `ca6eda9`.
+The revision names the three distinct stale-completion classes, removes duplicate
+repetitions by default, and discourages environment probes already answered by the
+real check. A second fresh session then exercised one current failure/retry case
+and all three applicable stale-completion classes. It reproduced all three defects
+with trusted input and rendered result/error/focus/selection evidence, using a
+40-second bounded command. The turn used 127,525 input tokens (110,592 cached),
+2,850 output tokens, and 101 reasoning-output tokens.
+
+Against the single baseline smoke session, the revised skill retained 3/3 defect
+coverage while using 11.6% fewer input tokens and 39.5% fewer output tokens. This
+is useful directional evidence, not a publishable superiority claim: execution
+was sequential rather than randomized, each arm has only one comparable completed
+session, elapsed time was not captured by the runner, and the baseline repeated
+its cases while the revision intentionally ran each discriminating case once.
