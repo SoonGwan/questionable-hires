@@ -36,6 +36,7 @@ class BrowserModelStageTests(unittest.TestCase):
         self.assertNotIn('--sandbox', command)
         self.assertIn('/work', command)
         self.assertNotIn(str(workspace), command[command.index('test-image') + 1:])
+        self.assertTrue(any('test -f /work/README.md' in value for value in command))
 
     def test_container_launcher_rejects_missing_or_linked_auth(self):
         with tempfile.TemporaryDirectory() as directory:

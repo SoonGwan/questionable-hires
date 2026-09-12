@@ -122,11 +122,16 @@ def resource_manifest(root):
 
 
 def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
-             skills_root=None, project_source=None, launcher=None):
+             skills_root=None, project_source=None, launcher=None,
+             workspace_root=None):
     skills_root = skills_root or ROOT / "skills"
     cell = output / f"{case['id']}--{arm}--{repeat}"
     cell.mkdir()
-    allocated_workspace = Path(tempfile.mkdtemp(prefix="qh-eval-")) / "project"
+    if workspace_root:
+        allocated_workspace = workspace_root / f"{case['id']}--{arm}--{repeat}" / 'project'
+        allocated_workspace.parent.mkdir(parents=True)
+    else:
+        allocated_workspace = Path(tempfile.mkdtemp(prefix="qh-eval-")) / "project"
     # Use the same physical root for preparation, CLI -C, installed resources and
     # evidence paths. macOS temporary directories may have /var and /private/var
     # aliases; do not broaden writable roots to accommodate different spellings.

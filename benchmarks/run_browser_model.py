@@ -43,7 +43,8 @@ def container_launcher(context, image, auth_file):
             '-v', f'{workspace}:/work:rw',
             '-e', 'CODEX_HOME=/run/codex-home',
             '-e', f'PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH={CHROMIUM}', image,
-            'sh', '-c', 'install -m 600 /run/codex-auth.json '
+            'sh', '-c', 'test -f /work/README.md && '
+            'install -m 600 /run/codex-auth.json '
             '/run/codex-home/auth.json && exec "$@"', 'sh', *translated,
         ]
     return launch
@@ -120,7 +121,8 @@ def main():
     for arm in manifest['order']:
         result = run_cell(dict(id='browser-catalog', skill='mother-in-law', task=TASK),
                           arm, 1, output, 'gpt-6-astra', 'medium', 240, disabled,
-                          project_source=source, launcher=launcher)
+                          project_source=source, launcher=launcher,
+                          workspace_root=(output / '.workspaces') if args.container else None)
         manifest['cells'].append(result)
         result['dependency_unchanged'] = resource_manifest(
             output / ('browser-catalog--' + arm + '--1') /
