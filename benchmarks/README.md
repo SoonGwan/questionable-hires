@@ -3,7 +3,9 @@
 Current status: [all eight candidates and unresolved performance gaps](CURRENT-CANDIDATE-STATUS.md).
 The historical [Exorcist transfer comparison — 27 sessions, all conditions 9/9](REPORT-EXORCIST-TRANSFER.md) showed no comparative quality gain; it is not the latest bundle validation.
 
-Latest focused checkpoint: [Mother-in-law across five interaction tickets](results/mother-in-law-fast-2026-09-12/README.md)
+Latest frozen confirmation: [Mother-in-law across five new interaction tickets](results/mother-in-law-confirmation-2026-09-12/README.md)
+
+Earlier development checkpoint: [Mother-in-law across five interaction tickets](results/mother-in-law-fast-2026-09-12/README.md)
 improves reviewed target coverage from 4/5 to 5/5, reduces normalized tokens to
 84.5%, and reduces normalized elapsed time to 61.6%. It does not replace the historical
 eight-skill chart below.
