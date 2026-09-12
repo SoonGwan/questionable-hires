@@ -197,6 +197,8 @@ class BenchmarkRunnerTests(unittest.TestCase):
             self.assertEqual(manifest['suite'], 'custom')
             self.assertEqual(manifest['case_ids'], ['new-domain'])
             self.assertEqual(manifest['skill_snapshot_sha256']['exorcist'], runner.hashlib.sha256(b'Frozen candidate').hexdigest())
+            self.assertEqual(manifest['skill_resources_sha256']['exorcist'],
+                             runner.resource_digest(snapshot / 'exorcist'))
 
     def test_jobs_above_three_rejected_without_launch(self):
         with patch.object(sys, 'argv', ['run.py', '--output', '/tmp/unused', '--jobs', '4']):

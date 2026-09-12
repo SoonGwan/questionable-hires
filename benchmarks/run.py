@@ -121,6 +121,13 @@ def resource_manifest(root):
     return manifest
 
 
+def resource_digest(root):
+    """Hash paths, kinds, modes and bytes represented by resource_manifest."""
+    encoded = json.dumps(resource_manifest(root), sort_keys=True,
+                         separators=(',', ':')).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
              skills_root=None, project_source=None, launcher=None,
              workspace_root=None):
@@ -142,6 +149,7 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
     if arm == "auto":
         prompt = case["task"] + f"\n\nWork only inside this {project_kind}. Do not use external services. Do not delegate."
     skill_hash = None
+    skill_resources_hash = None
     if arm in {"skill", "auto"}:
         source = skills_root / case["skill"]
         if arm == "auto":
@@ -151,6 +159,7 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
         else:
             shutil.copytree(source, workspace / ".agents/skills" / case["skill"])
         skill_hash = hashlib.sha256((workspace / '.agents/skills' / case['skill'] / 'SKILL.md').read_bytes()).hexdigest()
+        skill_resources_hash = resource_digest(workspace / '.agents/skills' / case['skill'])
         if arm == "skill":
             prompt = f"Use ${case['skill']} at .agents/skills/{case['skill']}/SKILL.md.\n\n" + prompt
     elif arm == "control":
@@ -204,7 +213,9 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
     limited = any(term in (stdout + stderr).lower() for term in
                   ("usage_limit_reached", "usage limit", "rate_limit_exceeded", "insufficient_quota", "billing hard limit"))
     meta = {"limit_detected": limited, "attempted": True, "case": case["id"], "skill": case["skill"], "arm": arm, "repeat": repeat, "model": model, "reasoning_effort": effort,
-            "base_commit": base, "skill_sha256": skill_hash, "elapsed_seconds": duration, "exit_code": process.returncode,
+            "base_commit": base, "skill_sha256": skill_hash,
+            "skill_resources_sha256": skill_resources_hash,
+            "elapsed_seconds": duration, "exit_code": process.returncode,
             "timed_out": timed_out, "usage": usage, "completed": usage is not None and process.returncode == 0 and not timed_out,
             "workspace": str(workspace), "allocated_workspace": str(allocated_workspace),
             "prompt": prompt, "disabled_personal_skills": len(disabled),
@@ -270,6 +281,8 @@ def main():
                 "arms": args.arms, "repeats": args.repeats, "case_ids": [c["id"] for c in cases],
                 "suite": "custom" if args.cases_file else args.suite, "cases_sha256": hashlib.sha256(cases_path.read_bytes()).hexdigest(),
                 "skill_snapshot_sha256": {p.parent.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(skills_root.glob("*/SKILL.md"))},
+                "skill_resources_sha256": {p.parent.name: resource_digest(p.parent)
+                                             for p in sorted(skills_root.glob("*/SKILL.md"))},
                 "limitation": "Synthetic tasks; runtime system instructions remain. Personal skills disabled where discovered; review traces for contamination."}
     (output / "run.json").write_text(json.dumps(manifest, indent=2) + "\n")
     disabled = disabled_skills()
