@@ -93,6 +93,19 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 
 ## Does it actually work?
 
+**Latest focused candidate check:** `mother-in-law` met **5/5** reviewed
+interaction-QA targets versus baseline's **4/5**, with zero clean-case false
+positives in either arm. Its equal-task normalized total tokens fell to **98.0%**;
+normalized elapsed time remains **104.1%**. This is five tasks with one fresh
+session per arm, not a whole-team or repeated-sample claim.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="benchmarks/results/mother-in-law-fast-2026-09-12/comparison-dark.svg">
+  <img src="benchmarks/results/mother-in-law-fast-2026-09-12/comparison-light.svg" alt="Five-task mother-in-law checkpoint: quality targets baseline 4 of 5 and skill 5 of 5, normalized tokens 100 and 98.0 percent, normalized elapsed time 100 and 104.1 percent, zero clean-case false positives." width="100%">
+</picture>
+
+[Inspect the five-case results, raw values, method, and limitations](benchmarks/results/mother-in-law-fast-2026-09-12/README.md).
+
 **Latest combined check: the efficiency goal is not met.** The current
 [nine-task gate](benchmarks/BUNDLE-CURRENT-02-REVIEW.md), 18 fresh sessions at
 resource snapshot `e02c9bb`, used **10.33% more total tokens and 23.08% more summed
