@@ -121,7 +121,8 @@ def resource_manifest(root):
     return manifest
 
 
-def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills_root=None, project_source=None):
+def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
+             skills_root=None, project_source=None, launcher=None):
     skills_root = skills_root or ROOT / "skills"
     cell = output / f"{case['id']}--{arm}--{repeat}"
     cell.mkdir()
@@ -154,6 +155,10 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
     config = "skills.config=[" + ",".join("{path=" + json.dumps(str(p)) + ",enabled=false}" for p in disabled) + "]"
     args = ["codex", "exec", "--ignore-user-config", "--ignore-rules", "--ephemeral", "--sandbox", "workspace-write", "--model", model,
             "-c", f'model_reasoning_effort="{effort}"', "-c", config, "--json", "-C", str(workspace), prompt]
+    execution = 'host-workspace-write'
+    if launcher:
+        args = launcher(workspace, args)
+        execution = 'external-container'
     started = time.monotonic()
     process = subprocess.Popen(args, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
     timed_out = False
@@ -198,6 +203,7 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
             "timed_out": timed_out, "usage": usage, "completed": usage is not None and process.returncode == 0 and not timed_out,
             "workspace": str(workspace), "allocated_workspace": str(allocated_workspace),
             "prompt": prompt, "disabled_personal_skills": len(disabled),
+            "execution": execution,
             "capture_diagnostics": capture_diagnostics,
             "installed_resources_before": installed_before,
             "installed_resources_after": installed_after,

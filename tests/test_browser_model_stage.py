@@ -17,6 +17,39 @@ finally:
 
 
 class BrowserModelStageTests(unittest.TestCase):
+    def test_container_launcher_translates_workspace_and_keeps_auth_out_of_image(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            auth = root / 'auth.json'
+            auth.write_text('{}')
+            workspace = root / 'project'
+            launch = runner.container_launcher('test-context', 'test-image', auth)
+            command = launch(workspace, [
+                'codex', 'exec', '--sandbox', 'workspace-write', '-C',
+                str(workspace), 'prompt',
+            ])
+        self.assertEqual(command[:5], ['docker', '--context', 'test-context', 'run', '--rm'])
+        self.assertIn('test-image', command)
+        self.assertIn(f'{auth.resolve()}:/run/codex-auth.json:ro', command)
+        self.assertIn(f'{workspace}:/work:rw', command)
+        self.assertIn('--dangerously-bypass-approvals-and-sandbox', command)
+        self.assertNotIn('--sandbox', command)
+        self.assertIn('/work', command)
+        self.assertNotIn(str(workspace), command[command.index('test-image') + 1:])
+
+    def test_container_launcher_rejects_missing_or_linked_auth(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            missing = root / 'missing.json'
+            with self.assertRaises(ValueError):
+                runner.container_launcher('context', 'image', missing)
+            auth = root / 'auth.json'
+            auth.write_text('{}')
+            linked = root / 'linked.json'
+            linked.symlink_to(auth)
+            with self.assertRaises(ValueError):
+                runner.container_launcher('context', 'image', linked)
+
     def test_runner_exit_distinguishes_completion_limit_and_integrity(self):
         for scenario, expected, count in [('complete', 0, 2), ('incomplete', 1, 2),
                                           ('limit', 1, 1), ('changed', 1, 2)]:
