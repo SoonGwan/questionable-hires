@@ -10,6 +10,11 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Mother-in-law browser evidence deduplication](MOTHER-BROWSER-DEDUPE-01.md):
+  browser coverage remains 3/3 while tokens fall 18.1% from the prior skill cell;
+  the same-snapshot five-case check is only -11.8% tokens / -31.6% time, so the
+  favorable browser cell is not mixed into the published checkpoint.
+
 - [Browser model screen](BROWSER-MODEL-01-REVIEW.md): both browser launches abort;
   no browser interaction verified. Skill +34.17% tokens / −1.55% time with extra
   handler-only fallback work; baseline has a project-scope exception. Not a win.
