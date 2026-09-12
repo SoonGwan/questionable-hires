@@ -93,19 +93,20 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 
 ## Does it actually work?
 
-**Latest frozen confirmation:** `mother-in-law` and baseline both met **5/5**
-reviewed interaction-QA targets, with zero false positives. Across five new cases
-committed before execution, the skill used **93.2%** normalized total tokens and
-**71.3%** normalized elapsed time. This is one fresh session per arm and task,
-not a whole-team or repeated-sample claim.
+<!-- featured-benchmark:start -->
+
+**Latest frozen confirmation:** `mother-in-law` met **5/5** reviewed interaction-QA targets versus baseline **5/5**, with **0** skill false positives. Across 5 new cases committed before execution, the skill used **93.2%** normalized total tokens and **71.3%** normalized elapsed time. This is one fresh session per arm and task, not a whole-team or repeated-sample claim.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="benchmarks/results/mother-in-law-confirmation-2026-09-12/comparison-dark.svg">
-  <img src="benchmarks/results/mother-in-law-confirmation-2026-09-12/comparison-light.svg" alt="Five-task frozen mother-in-law confirmation: both arms meet five of five reviewed targets; normalized tokens 100 and 93.2 percent; normalized elapsed time 100 and 71.3 percent; zero false positives." width="100%">
+  <img src="benchmarks/results/mother-in-law-confirmation-2026-09-12/comparison-light.svg" alt="5-task frozen mother-in-law confirmation: baseline meets 5 of 5 reviewed targets and skill meets 5 of 5; normalized tokens 100 and 93.2 percent; normalized elapsed time 100 and 71.3 percent." width="100%">
 </picture>
 
-[Inspect the frozen cases, raw values, method, and limitations](benchmarks/results/mother-in-law-confirmation-2026-09-12/README.md). The earlier
-[candidate-development checkpoint](benchmarks/results/mother-in-law-fast-2026-09-12/README.md)
+[Inspect the frozen cases, raw values, method, and limitations](benchmarks/results/mother-in-law-confirmation-2026-09-12/README.md).
+
+<!-- featured-benchmark:end -->
+
+The earlier [candidate-development checkpoint](benchmarks/results/mother-in-law-fast-2026-09-12/README.md)
 is retained separately.
 
 **Latest combined check: the efficiency goal is not met.** The current

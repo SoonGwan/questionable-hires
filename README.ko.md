@@ -27,18 +27,19 @@
 
 ## 진짜 작동하나요?
 
-**최신 사전 고정 확인 실험:** 클릭 꼬투리 QA(`mother-in-law`)와 스킬 미적용 조건
-모두 검토 대상 **5/5**를 충족했고 오탐은 없었습니다. 실행 전에 커밋한
-새 과제 5개에서 스킬의 정규화 총 토큰은 **93.2%**, 실행 시간은
-**71.3%**였습니다. 과제·조건별 새 세션 1회 결과이며 팀 전체나 반복
-표본의 우월성을 뜻하지 않습니다.
+<!-- featured-benchmark:start -->
+
+**최신 사전 고정 확인 실험:** 클릭 꼬투리 QA(`mother-in-law`)는 검토 대상 **5/5**, 스킬 미적용 조건은 **5/5**를 충족했고 스킬 오탐은 **0건**이었습니다. 실행 전에 커밋한 새 과제 5개에서 스킬의 정규화 총 토큰은 **93.2%**, 실행 시간은 **71.3%**였습니다. 과제·조건별 새 세션 1회 결과이며 팀 전체나 반복 표본의 우월성을 뜻하지 않습니다.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="benchmarks/results/mother-in-law-confirmation-2026-09-12/comparison-dark.svg">
-  <img src="benchmarks/results/mother-in-law-confirmation-2026-09-12/comparison-light.svg" alt="새 과제 5개의 사전 고정 확인 실험. 두 조건 모두 5개 기준을 충족했고, 스킬은 정규화 토큰 93.2%, 실행 시간 71.3%를 사용했습니다." width="100%">
+  <img src="benchmarks/results/mother-in-law-confirmation-2026-09-12/comparison-light.svg" alt="새 과제 5개의 사전 고정 확인 실험. 스킬 미적용 조건은 5개, 스킬은 5개 기준을 충족했고, 스킬은 정규화 토큰 93.2%, 실행 시간 71.3%를 사용했습니다." width="100%">
 </picture>
 
-[과제·원시 수치·방법·한계 확인](benchmarks/results/mother-in-law-confirmation-2026-09-12/README.md) ·
+[과제·원시 수치·방법·한계 확인](benchmarks/results/mother-in-law-confirmation-2026-09-12/README.md)
+
+<!-- featured-benchmark:end -->
+
 [이전 후보 개발 결과](benchmarks/results/mother-in-law-fast-2026-09-12/README.md)
 
 팀 전체의 최신 통합 검증은 아직 비용 절감 목표를 충족하지 못했습니다.
