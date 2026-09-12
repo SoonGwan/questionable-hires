@@ -54,7 +54,8 @@ Production code stayed intact. The no-skill baseline also found this flaw. [Comp
 
 ## Hire one. Or make eight questionable decisions.
 
-Requires Python 3.8+, Git, and access to this currently private repository:
+Requires Python 3.8+ and Git. Clone the repository, then install one hire or the
+whole team:
 
 ```sh
 git clone https://github.com/SoonGwan/questionable-hires.git

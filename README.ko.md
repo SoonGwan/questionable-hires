@@ -79,7 +79,8 @@
 
 ## 설치
 
-Python 3.8 이상과 Git이 필요합니다. 현재 private 레포이므로 접근 권한이 있어야 합니다.
+Python 3.8 이상과 Git이 필요합니다. 저장소를 clone한 다음 한 명만 고르거나
+8명 전부 설치할 수 있습니다.
 
 ```sh
 git clone https://github.com/SoonGwan/questionable-hires.git

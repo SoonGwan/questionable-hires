@@ -1,6 +1,8 @@
 # Onboarding
 
-The repository is private. GitHub access is required to clone it. Installing a skill does not select your model or change your approval settings.
+Clone access is required while the repository is private; no special access is
+needed after a public release. Installing a skill does not select your model or
+change your approval settings.
 
 ## Install into a project
 

@@ -4,6 +4,21 @@ Checked 2026-09-11 against local commit `dd10633` and read-only GitHub API
 responses. This is a release gate, not a claim of perfection or authorization to
 publish. Preserve the eight coworker identities and report adverse evaluations.
 
+Pre-publication audit on 2026-09-12 KST at `57485a2`: a filename-only scan of
+every reachable Git revision found zero files matching common private-key,
+GitHub-token, OpenAI-key or bearer-token patterns. This is a bounded pattern scan,
+not proof that history contains no sensitive prose. A `git archive HEAD`
+extraction with no `.git` passed catalog/link/form validation, featured-chart and
+localized-README synchronization, and discovered 261 tests: 259 executed and
+passed, while two Git-history provenance comparisons skipped explicitly. No
+ignored local model logs or browser dependencies were present in the archive.
+
+The latest hosted run at `57485a2` scheduled Python 3.9 and 3.11, but both jobs
+ended with zero executed steps. This remains an external GitHub Actions gate, not
+a test failure or passing Linux evidence. Repository visibility is still private,
+there is no tag or GitHub Release, and the owner must explicitly authorize both
+visibility and release publication.
+
 Latest full local run on 2026-09-12 KST at `254e703`: **240 tests pass in
 38.612 seconds** on local macOS/Python 3.9.6. This includes replaying both exported
 nested-interaction projects outside the checkout without private logs or Git.
