@@ -4,8 +4,8 @@ Current status: [all eight candidates and unresolved performance gaps](CURRENT-C
 The historical [Exorcist transfer comparison — 27 sessions, all conditions 9/9](REPORT-EXORCIST-TRANSFER.md) showed no comparative quality gain; it is not the latest bundle validation.
 
 Latest focused checkpoint: [Mother-in-law across five interaction tickets](results/mother-in-law-fast-2026-09-12/README.md)
-improves reviewed target coverage from 4/5 to 5/5 and reduces normalized tokens to
-98.0%; normalized elapsed time remains 104.1%. It does not replace the historical
+improves reviewed target coverage from 4/5 to 5/5, reduces normalized tokens to
+84.5%, and reduces normalized elapsed time to 61.6%. It does not replace the historical
 eight-skill chart below.
 
 This suite runs actual Codex sessions in fresh synthetic Git repositories. The model can inspect files, run commands, and implement changes when the task asks for them. It is not a single-shot code-generation comparison.

@@ -95,13 +95,13 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 
 **Latest focused candidate check:** `mother-in-law` met **5/5** reviewed
 interaction-QA targets versus baseline's **4/5**, with zero clean-case false
-positives in either arm. Its equal-task normalized total tokens fell to **98.0%**;
-normalized elapsed time remains **104.1%**. This is five tasks with one fresh
+positives in either arm. Its equal-task normalized total tokens fell to **84.5%**
+and normalized elapsed time to **61.6%**. This is five tasks with one fresh
 session per arm, not a whole-team or repeated-sample claim.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="benchmarks/results/mother-in-law-fast-2026-09-12/comparison-dark.svg">
-  <img src="benchmarks/results/mother-in-law-fast-2026-09-12/comparison-light.svg" alt="Five-task mother-in-law checkpoint: quality targets baseline 4 of 5 and skill 5 of 5, normalized tokens 100 and 98.0 percent, normalized elapsed time 100 and 104.1 percent, zero clean-case false positives." width="100%">
+  <img src="benchmarks/results/mother-in-law-fast-2026-09-12/comparison-light.svg" alt="Five-task mother-in-law checkpoint: quality targets baseline 4 of 5 and skill 5 of 5, normalized tokens 100 and 84.5 percent, normalized elapsed time 100 and 61.6 percent, zero clean-case false positives." width="100%">
 </picture>
 
 [Inspect the five-case results, raw values, method, and limitations](benchmarks/results/mother-in-law-fast-2026-09-12/README.md).
