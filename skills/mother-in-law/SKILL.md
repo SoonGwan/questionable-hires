@@ -13,16 +13,15 @@ Read the applicable instructions, interaction code, and test entrypoint once.
 Trust a documented local runtime unless launch fails; do not relist files or probe
 facts that the real check will answer.
 
-Build one small parameterized reproduction with isolated per-case state. For an
-asynchronous interaction, cover the nearest normal case and each applicable stale
-completion class exactly once:
+Build one small reproduction with isolated per-case state. For an asynchronous
+interaction, cover the nearest normal case and applicable stale completion classes:
 
-1. older success after newer success;
-2. older failure after newer success;
-3. older completion after an invalidating boundary such as clear or navigation.
+1. older success after newer success—the default discriminating case;
+2. older failure only when the interaction exposes error or recovery state;
+3. older completion after a documented invalidating action such as clear.
 
 Exercise both success and failure: guarding results can still leave a stale error.
-Omit a class only when it cannot occur or is irrelevant, and say so. Control
+Omit inapplicable classes without manufacturing parallel state. Control
 responses or clocks directly; avoid sleeps, permutations, and unobserved-flakiness
 repetitions.
 
@@ -37,8 +36,10 @@ browser evidence. Use only local test data and no destructive production actions
 ## Deliver and stop
 
 Return the sequence, expected/observed outcome, tested layer, and complete bounded
-command. Keep detailed evidence in files. After the run, print only compact case
-statuses; do not echo full evidence or per-step observations unless debugging an
-unexpected result. Avoid duplicate logs and screenshots.
+command. Once the targeted adversarial case and nearest normal case pass against a
+working guard, stop; do not expand a clean check into a hazard survey. Prefer the
+runnable check and its captured output as evidence. Add separate JSON or screenshots
+only when they preserve an observation the check output cannot. Do not echo full
+evidence or per-step observations unless debugging an unexpected result.
 
 Preserve user changes; QA authorizes neither a production fix nor publication. Implement only when requested. Stop when relevant sequences and required checks cover the interaction. An unexecuted concern is not an observed defect.
