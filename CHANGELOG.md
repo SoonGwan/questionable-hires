@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Documented `npx skills add SoonGwan/questionable-hires` installation and
+  verified all eight skills are discovered by `skills@1.5.26`; a complete
+  `mother-in-law` tree installs into a disposable Codex project.
 - Reject installation/build outputs inside copied source trees before writing,
   preventing accidental self-copying. Normal `dist/bundle` builds remain supported.
 - Standalone installation rejects symbolic links in selected skill sources before

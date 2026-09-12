@@ -4,6 +4,28 @@ Clone access is required while the repository is private; no special access is
 needed after a public release. Installing a skill does not select your model or
 change your approval settings.
 
+## Install with the skills CLI
+
+The repository follows the standard `skills/*/SKILL.md` layout and can be
+installed without a Questionable Hires npm package:
+
+```sh
+npx skills add SoonGwan/questionable-hires
+```
+
+For a non-interactive project-local Codex installation of one skill:
+
+```sh
+npx skills add SoonGwan/questionable-hires \
+  --agent codex --skill mother-in-law --copy -y
+```
+
+This invokes the independent [Vercel Labs skills CLI](https://github.com/vercel-labs/skills).
+It was locally checked with `skills@1.5.26`: all eight skills were discovered and
+the complete four-file `mother-in-law` tree was copied into a disposable Codex
+project. This does not prove a remote unauthenticated install until the repository
+is public. Review third-party CLIs and skill contents before installation.
+
 ## Install into a project
 
 Requires Python 3.8+ and an authenticated Git client. From a directory where you keep tools:

@@ -79,8 +79,25 @@
 
 ## 설치
 
-Python 3.8 이상과 Git이 필요합니다. 저장소를 clone한 다음 한 명만 고르거나
-8명 전부 설치할 수 있습니다.
+Node.js/npm과 Git이 있다면 한 명만 고르거나 8명 전부 설치할 수 있습니다.
+
+```sh
+npx skills add SoonGwan/questionable-hires
+```
+
+8개 스킬을 자동으로 찾은 뒤 설치할 스킬과 지원 에이전트를 고를 수 있습니다.
+질문 없이 현재 프로젝트의 Codex에 한 명만 복사하려면:
+
+```sh
+npx skills add SoonGwan/questionable-hires --agent codex --skill mother-in-law --copy -y
+```
+
+이 명령은 이 저장소가 만든 CLI가 아니라 독립적인
+[`skills`](https://github.com/vercel-labs/skills) CLI를 실행합니다. 실행 전에
+CLI와 설치할 스킬을 확인하세요. 비공개 개발 중에는 Git 인증이 필요하며,
+저장소가 공개되면 같은 명령을 별도 접근 권한 없이 사용할 수 있습니다.
+
+저장소에 포함된 Python 3.8 이상용 설치기를 직접 사용해도 됩니다.
 
 ```sh
 git clone https://github.com/SoonGwan/questionable-hires.git

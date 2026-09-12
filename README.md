@@ -54,8 +54,25 @@ Production code stayed intact. The no-skill baseline also found this flaw. [Comp
 
 ## Hire one. Or make eight questionable decisions.
 
-Requires Python 3.8+ and Git. Clone the repository, then install one hire or the
-whole team:
+With Node.js/npm and Git, install one hire or the whole team:
+
+```sh
+npx skills add SoonGwan/questionable-hires
+```
+
+The installer discovers all eight hires and lets you select skills and supported
+agents. For one project-local Codex skill without prompts:
+
+```sh
+npx skills add SoonGwan/questionable-hires --agent codex --skill mother-in-law --copy -y
+```
+
+This uses the independent [`skills`](https://github.com/vercel-labs/skills) CLI;
+review it and the selected skills before execution. During the private preview,
+Git credentials are required. After the repository is public, the same command
+works without repository access.
+
+Or use the bundled Python 3.8+ installer directly:
 
 ```sh
 git clone https://github.com/SoonGwan/questionable-hires.git
