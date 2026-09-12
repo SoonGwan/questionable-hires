@@ -9,20 +9,38 @@ description: Test a changed user interaction for realistic sequence failures suc
 
 ## Visit like a real user
 
-Trace the changed UI/request path from applicable project instructions and its documented test entrypoint to the visible success condition. Reuse the discovered file inventory; widen only for unresolved paths or uncovered instruction locations, including hidden or nested paths when relevant. Read already-located requirements, affected code and runner documentation together where independent. Keep discovery inside an explicitly restricted project root.
+Read the applicable instructions, affected interaction code, and documented test
+entrypoint once. Trust a documented local runtime and executable path unless launch
+fails; don't add separate environment probes that the real check will answer.
 
-Choose the shortest discriminating sequence: start an operation, cross a relevant state boundary, then complete or fail the earlier operation. Pair it with the nearest normal sequence. Reuse existing browser/test facilities or a small parameterized reproduction, not a new framework or hazard checklist. Control promises, responses or clocks rather than sleeps or permutations.
+Build one small parameterized reproduction with isolated per-case state. For an
+asynchronous interaction, cover the nearest normal case and each applicable stale
+completion class exactly once:
 
-Observe actual submitted operations, latest selection, or recovered input/error/focus as appropriate. A disabled button doesn't prove server idempotency; mocked state doesn't prove rendered focus. Report a working guard honestly.
+1. older success after newer success;
+2. older failure after newer success;
+3. older completion after an invalidating boundary such as clear or navigation.
 
-Bound behavior-dependent waits and clean up owned operations. Prefer the existing runner's timeout when it covers the test and cleanup; don't add a self-spawning wrapper solely to duplicate that boundary. Cancellation isn't termination: when tested operations can ignore it, use a process deadline covering cleanup. Preserve that deadline in the reproducible command and report timeout as incomplete, not a reproduced defect.
+Exercise both success and failure because guarding only rendered results can still
+leave a stale error. Omit a class only when the operation cannot produce it or the
+requirement makes it irrelevant, and say so. Control responses or clocks directly;
+do not use sleeps, broad permutations, or duplicate repetitions unless flakiness is
+observed.
 
-Treat browser launch as a shared prerequisite when cases use the same runtime: establish it in suite setup or the first relevant check, not a separate duplicate smoke run. If that prerequisite fails before page interaction, retain the diagnostic and mark dependent cases unrun instead of repeating an unchanged launch per case. Retry only after a relevant change or evidence of a transient cause; do not treat a test-specific assertion failure as environment failure. Keep per-case state isolated when launch succeeds.
+Use real browser/user input and inspect the rendered state. Record submitted
+operations and relevant result, error, selection, input, and focus state. Mocked
+state alone does not prove rendered behavior; a disabled button does not prove
+server idempotency.
 
-Use local/designated test data, not real purchases, messages or destructive production actions. If browser execution is unavailable, keep browser QA incomplete. A focused lower-layer check can resolve a remaining question, but a parallel substitute suite does not establish rendered behavior.
+Launch a shared browser once and use a bounded runner that covers cleanup. If
+launch fails before interaction, retain one diagnostic and mark dependent cases
+unrun. Do not replace missing browser evidence with a parallel lower-layer suite.
+Use only local/designated test data and no destructive production actions.
 
 ## Deliver and stop
 
-Return the sequence, expected/observed outcome, tested layer and reproducible command—including any deadline needed for termination. A test-file link alone doesn't preserve its external runner. Reuse evidence instead of duplicating logs.
+Return the sequence, expected/observed outcome, tested layer, and complete bounded
+command. Keep evidence compact; a failing assertion with actual rendered state is
+usually more useful than duplicate logs and screenshots.
 
 Preserve user changes; QA authorizes neither a production fix nor publication. Implement only when requested. Stop when relevant sequences and required checks cover the interaction. An unexecuted concern is not an observed defect.
