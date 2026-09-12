@@ -9,22 +9,18 @@ description: Audit whether tests detect broken behavior by tracing assertions an
 
 ## Check what the test actually buys
 
-Start with the user-selected tests or changed behavior. Use the repository's documented test command, or the runner already evidenced by its test imports/configuration; don't guess a different framework or install one. Run that baseline and trace important assertions through implementation and mocks to identify the protected contract.
+Trace the selected assertions through implementation and mocks to the contract they actually protect. Keep discovery, including instruction-file searches, inside an explicitly restricted project root. Use the documented test command or evidenced runner, not a new framework. Reuse a valid baseline; a failing baseline is not a mutation result.
 
-Choose a fault at the boundary the assertion could miss: acknowledged versus persisted, closed flag versus resource cleanup, latest request versus latest completion, full consumption versus early exit. A syntax error is not behavioral sensitivity. Establish a reachable input where the fault violates the contract; equivalent mutations prove nothing.
+Choose a reachable fault at an unobserved boundary: acknowledgment versus persistence, closed flag versus cleanup, latest request versus completion, full consumption versus early exit. Syntax errors and behaviorally equivalent mutations do not establish sensitivity to the intended fault.
 
-Match the experiment to the task size. For a small local audit, one disposable copy and a short inline command are enough; don't build an audit framework, standalone runner, or JSON report merely to record a few checks. Retain a reusable harness when the user needs one or the workflow actually repeats. Verify imports resolve to the copied implementation, and reuse a valid baseline rather than rerunning it unchanged.
+Reuse an established project audit or valid evidence first. Choose isolation by the semantic context it must preserve, not the apparent size of the experiment. A fresh-process in-memory substitution fits when the actual caller resolves it and the original compilation context and bindings remain intact. Extracting function text alone can lose module future flags, closures or decorators; use a disposable module/package copy when reconstructing that context would add work or uncertainty. Don't replace the implementation with a fake or mistake a wrong binding for a surviving fault. Restore substitutions within a reused process and keep original files intact.
 
-Keep test configuration unchanged and vary one behavior at a time. Capture the test exit status separately from log-display commands. A killed mutant protects that fault, not every lifecycle path. Investigate another fault only when a distinct untested boundary matters to the requested contract; stop fishing for survivors.
+Choose [the optional Python helper](references/python-audit.md) when repeated copies, several justified faults sharing a baseline, import verification or bounded subprocess cleanup would otherwise require substantial harness code. Don't read its interface merely because the project uses Python. Preserve test configuration, vary one behavior, and capture each test's own exit status. Check copied-import paths and caller bindings in the actual test/probe process where practical; a separate import-only process adds work without establishing what the test process loads. Preserve runner semantics when integrating checks. Retain a harness only for requested reuse or delivery; source inspection is appropriate for trust review, adaptation or troubleshooting.
 
-If isolation or execution isn't available, report a static concern and proposed experiment, not a demonstrated survivor. Keep a failing baseline separate from mutation results.
+If the original test survives, check the meaningful effect—not merely success or container size that could hide repeated writes. Run the same stronger assertion against correct and faulty implementations: it must pass the former and fail the latter for the intended reason. If the mutant is killed, identify the detecting assertion or warning policy; this protects that fault, not all lifecycle paths.
 
 ## Deliver and stop
 
-For a survivor, assert the externally meaningful effect, not just a returned success flag or final container size that could hide repeated writes. Confirm the same proposed regression passes correct code and fails the fault. For a killed mutant, explain the detecting assertion or warning policy. The decisive commands/results and proposed assertion in the answer can be the complete receipt; separate files are optional. Apply test improvements only when requested, never the deliberate fault.
+Give decisive commands/results, the coverage gap or detecting check, and the proposed assertion. No separate report files are required. Without isolation or execution, label the concern static, not a demonstrated survivor. Apply test improvements only when requested, never the deliberate fault; an audit does not authorize publication.
 
-Stop after the scoped coverage claims have been assessed and any requested improvement verified. Don't chase a global mutation score or demand every mock be removed.
-
-## Working agreement
-
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.
+Stop when the scoped claim is assessed and requested improvements are verified. Try another fault only for a distinct boundary material to that claim; don't fish for survivors, chase a global mutation score, or remove every mock.

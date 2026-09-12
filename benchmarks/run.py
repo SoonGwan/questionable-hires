@@ -19,6 +19,38 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTROL = "Keep the change focused, investigate relevant evidence, and verify your conclusions with appropriate checks."
 
 
+def inspect_capture(stdout, stderr):
+    """Describe capture limitations without inventing lost output or scoring quality."""
+    events, invalid_lines, non_objects = [], [], []
+    for number, line in enumerate(stdout.splitlines(), 1):
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            invalid_lines.append(number)
+            continue
+        if not isinstance(event, dict):
+            non_objects.append(number)
+            continue
+        events.append(event)
+    empty_outputs, event_errors = [], []
+    for event in events:
+        if event.get('type') in ('error', 'turn.failed'):
+            event_errors.append(event.get('type'))
+        item = event.get('item')
+        if (event.get('type') == 'item.completed' and isinstance(item, dict)
+                and item.get('type') == 'command_execution'
+                and not item.get('aggregated_output')):
+            empty_outputs.append(item.get('id'))
+    return events, dict(
+        invalid_json_lines=invalid_lines, non_object_json_lines=non_objects,
+        empty_command_output_items=empty_outputs, error_event_types=event_errors,
+        patch_rejection_count=stderr.lower().count('patch rejected'),
+        limitation='Empty command output may be legitimate. Nonempty output may still be incomplete. '
+                   'These diagnostics neither prove full tool-output capture nor score task success.')
+
+
 def command(args, cwd, **kwargs):
     return subprocess.run(args, cwd=cwd, text=True, capture_output=True, check=True, **kwargs).stdout.strip()
 
@@ -73,11 +105,37 @@ def prepare_repository(source, workspace):
     return command(['git', 'rev-parse', 'HEAD'], workspace)
 
 
-def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills_root=None, project_source=None):
+def resource_manifest(root):
+    """Inventory installed bytes/modes without following symlink targets."""
+    for candidate in (root.parent, root):
+        if candidate.is_symlink():
+            return {'.': dict(kind='symlink-root', target=os.readlink(candidate))}
+    manifest = {}
+    for path in sorted(root.rglob('*')):
+        name = path.relative_to(root).as_posix()
+        if path.is_symlink():
+            manifest[name] = dict(kind='symlink', target=os.readlink(path))
+        elif path.is_file():
+            manifest[name] = dict(kind='file', sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                                  mode=path.stat().st_mode & 0o777)
+    return manifest
+
+
+def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
+             skills_root=None, project_source=None, launcher=None,
+             workspace_root=None):
     skills_root = skills_root or ROOT / "skills"
     cell = output / f"{case['id']}--{arm}--{repeat}"
     cell.mkdir()
-    workspace = Path(tempfile.mkdtemp(prefix="qh-eval-")) / "project"
+    if workspace_root:
+        allocated_workspace = workspace_root / f"{case['id']}--{arm}--{repeat}" / 'project'
+        allocated_workspace.parent.mkdir(parents=True)
+    else:
+        allocated_workspace = Path(tempfile.mkdtemp(prefix="qh-eval-")) / "project"
+    # Use the same physical root for preparation, CLI -C, installed resources and
+    # evidence paths. macOS temporary directories may have /var and /private/var
+    # aliases; do not broaden writable roots to accommodate different spellings.
+    workspace = allocated_workspace.resolve()
     base = prepare_repository(project_source, workspace) if project_source else prepare(case, workspace)
     project_kind = "local repository" if project_source else "synthetic project"
     prompt = case["task"] + f"\n\nWork only inside this {project_kind}. Do not use external services or other installed skills. Do not delegate."
@@ -92,14 +150,20 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
                     shutil.copytree(hire, workspace / ".agents/skills" / hire.name)
         else:
             shutil.copytree(source, workspace / ".agents/skills" / case["skill"])
-        skill_hash = hashlib.sha256((source / "SKILL.md").read_bytes()).hexdigest()
+        skill_hash = hashlib.sha256((workspace / '.agents/skills' / case['skill'] / 'SKILL.md').read_bytes()).hexdigest()
         if arm == "skill":
             prompt = f"Use ${case['skill']} at .agents/skills/{case['skill']}/SKILL.md.\n\n" + prompt
     elif arm == "control":
         prompt += "\n\n" + CONTROL
+    installed_root = workspace / '.agents/skills'
+    installed_before = resource_manifest(installed_root)
     config = "skills.config=[" + ",".join("{path=" + json.dumps(str(p)) + ",enabled=false}" for p in disabled) + "]"
     args = ["codex", "exec", "--ignore-user-config", "--ignore-rules", "--ephemeral", "--sandbox", "workspace-write", "--model", model,
             "-c", f'model_reasoning_effort="{effort}"', "-c", config, "--json", "-C", str(workspace), prompt]
+    execution = 'host-workspace-write'
+    if launcher:
+        args = launcher(workspace, args)
+        execution = 'external-container'
     started = time.monotonic()
     process = subprocess.Popen(args, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
     timed_out = False
@@ -114,12 +178,15 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
             os.killpg(process.pid, signal.SIGKILL)
             stdout, stderr = process.communicate()
     duration = round(time.monotonic() - started, 3)
-    events = []
-    for line in stdout.splitlines():
-        try:
-            events.append(json.loads(line))
-        except json.JSONDecodeError:
-            pass
+    try:
+        installed_after = resource_manifest(installed_root)
+        resource_diagnostics = dict(changed_paths=sorted(
+            name for name in installed_before.keys() | installed_after.keys()
+            if installed_before.get(name) != installed_after.get(name)))
+    except OSError as error:
+        installed_after = None
+        resource_diagnostics = dict(error=type(error).__name__)
+    events, capture_diagnostics = inspect_capture(stdout, stderr)
     messages = [e["item"]["text"] for e in events if e.get("type") == "item.completed" and e.get("item", {}).get("type") == "agent_message"]
     usage = next((e.get("usage") for e in reversed(events) if e.get("type") == "turn.completed"), None)
     command(["git", "add", "-N", "."], workspace)
@@ -139,7 +206,13 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled, skills
     meta = {"limit_detected": limited, "attempted": True, "case": case["id"], "skill": case["skill"], "arm": arm, "repeat": repeat, "model": model, "reasoning_effort": effort,
             "base_commit": base, "skill_sha256": skill_hash, "elapsed_seconds": duration, "exit_code": process.returncode,
             "timed_out": timed_out, "usage": usage, "completed": usage is not None and process.returncode == 0 and not timed_out,
-            "workspace": str(workspace), "prompt": prompt, "disabled_personal_skills": len(disabled)}
+            "workspace": str(workspace), "allocated_workspace": str(allocated_workspace),
+            "prompt": prompt, "disabled_personal_skills": len(disabled),
+            "execution": execution,
+            "capture_diagnostics": capture_diagnostics,
+            "installed_resources_before": installed_before,
+            "installed_resources_after": installed_after,
+            "resource_diagnostics": resource_diagnostics}
     (cell / "metadata.json").write_text(json.dumps(meta, indent=2) + "\n")
     return meta
 

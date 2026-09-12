@@ -1,0 +1,57 @@
+import asyncio
+import unittest
+
+from search import Search
+
+
+class SearchInteractionTests(unittest.IsolatedAsyncioTestCase):
+    async def test_empty_query_displays_returned_empty_list(self):
+        search = Search()
+        submitted = []
+
+        async def fetch(query):
+            submitted.append(query)
+            return ["previous result"] if query else []
+
+        await search.run("previous", fetch)
+        self.assertEqual(search.result, ["previous result"])
+        await search.run("", fetch)
+        self.assertEqual(submitted, ["previous", ""])
+        self.assertEqual(search.result, [])
+
+    async def test_overlapping_queries_keep_latest_result(self):
+        for completion_order in (("cat", "catalog"), ("catalog", "cat")):
+            with self.subTest(completion_order=completion_order):
+                search = Search()
+                queries = ("cat", "catalog")
+                loop = asyncio.get_running_loop()
+                responses = {query: loop.create_future() for query in queries}
+                started = {query: asyncio.Event() for query in queries}
+                submitted = []
+                tasks = {}
+
+                async def fetch(query):
+                    submitted.append(query)
+                    started[query].set()
+                    return await responses[query]
+
+                try:
+                    for query in queries:
+                        tasks[query] = asyncio.create_task(search.run(query, fetch))
+                        await started[query].wait()
+                    self.assertEqual(submitted, list(queries))
+                    for query in completion_order:
+                        responses[query].set_result([query + " result"])
+                        await tasks[query]
+                        if query == "catalog":
+                            self.assertEqual(search.result, ["catalog result"])
+                    self.assertEqual(
+                        search.result,
+                        ["catalog result"],
+                        "Completing an older query must not replace the latest result",
+                    )
+                finally:
+                    for task in tasks.values():
+                        if not task.done():
+                            task.cancel()
+                    await asyncio.gather(*tasks.values(), return_exceptions=True)

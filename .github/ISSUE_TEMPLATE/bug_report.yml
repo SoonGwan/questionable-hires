@@ -1,18 +1,19 @@
 name: Report a questionable decision
-description: A hire got the engineering wrong, missed evidence, or wandered out of scope.
+description: Report a skill decision, installation failure, or packaging problem.
 title: '[bug] '
 body:
   - type: input
     id: hire
     attributes:
-      label: Hire and version or commit
-      placeholder: receipt at 0.1.0
+      label: Affected skill or tool, and version or commit
+      placeholder: receipt, scripts/install.py, or scripts/build.py at a commit
     validations:
       required: true
   - type: input
     id: environment
     attributes:
-      label: Model, reasoning setting, and host version
+      label: Relevant environment
+      description: For skill behavior, include model, reasoning and host version. For installer/build failures, include OS, Python version and the command used; model details are unnecessary.
     validations:
       required: true
   - type: textarea

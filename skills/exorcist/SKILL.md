@@ -9,20 +9,30 @@ description: Diagnose an uncertain bug by designing experiments that distinguish
 
 ## Find the decision-changing observation
 
-Start at the reported failure and trace only enough of its path to distinguish plausible causes. Reuse existing reproduction evidence. Do not manufacture a hypothesis list when the mechanism is already established.
+Start at the reported failure using supplied paths or the repository file list. Reuse existing reproduction evidence; trace only until plausible causes diverge. Don't manufacture hypotheses for an established mechanism.
 
-Choose the observation at the boundary where explanations diverge: submission versus persistence, dispatch versus completion, configured policy versus effective runtime state. Measuring the same success flag again adds no evidence about an unobserved downstream effect.
+Observe that boundary in the actual implementation: submission versus persistence, dispatch versus completion, configuration versus effective state. Prefer existing observations or a recording dependency. Another layer recording the same value adds nothing unless its provenance is unresolved. A rewritten simulation or repeated success flag cannot establish an unobserved effect.
 
-Before another experiment, identify which possible result would change the diagnosis or corrective action. Prefer the cheapest check that separates those outcomes. Reuse one small harness; vary a relevant factor with comparable inputs and controlled timing. Repetition is useful for unresolved intermittency, not for collecting more passing output.
+Choose the runner before inspecting setup: use existing tests when they exercise the distinction, otherwise one small probe with comparable inputs and controlled timing. Inspect fixtures/configuration if that path uses them or they could explain the symptom. Retain normal controls; repeat only for unresolved intermittency or a required check.
 
-Exercise the affected implementation, not a rewritten model of it. If a suspected dependency is absent and the symptom persists, it is unnecessary for that reproduction—not disproved in every production incident. Explain why the existing safeguard does or does not address this mechanism, rather than merely showing its setting.
+Before another experiment, ask which possible result changes the diagnosis or next action. If none, stop. A symptom without a suspected dependency shows that dependency is unnecessary for this reproduction, not every production incident. Explain why the existing safeguard does or doesn't address the observed mechanism.
 
-When evidence is missing, identify the specific observation that would discriminate remaining causes. Don't replace unavailable runtime evidence with increasingly elaborate simulations. A restart that removes symptoms is not by itself causal proof; preserve logs and user state before any authorized reset.
+## Match containment to the exercised path
+
+Run a bounded local computation with the chosen interpreter or existing test runner. The optional helper is not the default probe command: use it for an identified hang risk that the runner's existing process deadline does not contain. Synchronous code can also block; choose from the actual operations, not the presence of `async` alone.
+
+For asynchronous probes, bound signals that may never arrive and clean up owned tasks. Asyncio timeouts can wait indefinitely for suppressed cancellation. When an additional process deadline is needed, the installed POSIX helper supplies one (replace paths/interpreter):
+
+```sh
+python3 /path/to/exorcist/scripts/run_probe.py --timeout 10 -- python3 -B experiments/probe.py
+```
+
+Trusted local foreground commands only: this kills remaining process-group members even after normal completion; it is not a sandbox. JSON retains child status, timeout and bounded output. Timeout or truncated decisive output means incomplete evidence, not causal proof. See [runner details](references/bounded-probe.md) for exit mapping, limits or adaptation; routine invocation doesn't require source inspection.
 
 ## Finish at the evidence boundary
 
-Report the supported mechanism, decisive command/result, relevant alternative or safeguard, and remaining uncertainty. Link a retained reproduction instead of repeating its full code and output. Keep humor optional.
+Choose one destination for detailed evidence. If a trace file is requested or needed for later analysis, write it and print its path plus distinguishing inputs/outcomes and failures; don't also print the entire trace unless needed to resolve the diagnosis. Otherwise use captured command output directly instead of a file round trip. Preserve necessary ordering/provenance and keep the reproduction rerunnable.
 
-For diagnosis, leave production code unchanged. For a requested fix, implement within scope and rerun the original reproduction plus relevant checks. Preserve user changes and explicit requirements.
+Report the supported mechanism, decisive command/result, safeguard and uncertainty. Name the missing observation if blocked, rather than expanding simulations. Link the reproduction instead of repeating it. A restart alone isn't causal proof; preserve evidence and user state before an authorized reset.
 
-Stop when the evidence supports the next action or identifies the unavailable check. Continue only for an unresolved distinction or verification the task requires—not a general audit.
+Diagnosis leaves production code unchanged. A requested fix stays scoped and reruns the original reproduction plus relevant checks. Preserve user changes and explicit requirements. Keep humor optional.

@@ -17,3 +17,19 @@ Revision `1ec2490`, one fresh skill-only session in `fast-con-artist-02`: 45.965
 Relative to the immediately preceding skill sample, observed tokens fell about 32.4% and elapsed time about 53.9%. Against the earlier no-skill sample, tokens were still about 34.4% higher and time about 11.7% higher. These are descriptive single-sample development observations with temporal/cache confounding, not a general improvement claim.
 
 A remaining avoidable step was trying unavailable pytest despite the existing test importing unittest, then falling back to unittest. The next narrow correction directs runner selection from the repository's documented command or test imports/configuration, without adding a framework. No criteria or expected outcome changed.
+
+## Compressed decision rules
+
+Revision `b7a768d` consolidates repeated setup, evidence and delivery instructions while retaining fault reachability, baseline validity, copied-import verification, isolation, test configuration, identifiable statuses, same stronger check on correct/faulty code and user scope. No general-purpose audit helper was added: its configuration overhead has not been shown cheaper than the small inline experiment.
+
+One fresh session in `fast-con-artist-03` used 67,931 total tokens and 39.295 seconds. [Sanitized evidence](results/fast-con-artist-2026-09-11/run.json) retains the trace, output, source hashes and final files. The author inspected the actual commands: a single isolated experiment ran the existing test and stronger contents assertion on both correct code and the missing-write mutant, verified the copied import, and checked original source/test hashes before cleanup. The resulting diff is empty. All three fixed development criteria are met.
+
+Compared descriptively with the most recent paired skill sample (86,228 tokens, 44.919 seconds), tokens were 21.2% lower and time 12.5% lower. Against that run's baseline (80,188 tokens, 44.416 seconds), they were 15.3% and 11.5% lower. These temporally separated single samples do not establish a causal or stable speedup. Against the earlier, cheaper baseline in the first section, this sample still uses more tokens. Do not select only the favorable baseline or advertise a general win.
+
+Four shell calls were used, the same count as the most recent paired skill sample; different orchestration inside a call and model turns matter. Shorter skill text or shell-call count alone cannot explain the token difference. This checks a lost-write survivor, not larger repository audits, already-detected faults, or unavailable environments. Those remain validation gaps for the compressed candidate.
+
+## Already-effective test control
+
+The existing `clean-cases.json` case `test-sensitive` was run once with the same compressed skill (run revision `8e6b601`), independently of the earlier nine-case screen. [Evidence](results/con-artist-sensitive-2026-09-11/run.json): 68,205 input-plus-output tokens, 39.356 seconds, completed without timeout. The original test passes in the isolated copy, and removing only the append makes that unchanged test fail at the existing exact-contents assertion. The trace verifies imports for both source and test, checks original file bytes, and removes its disposable copy. The final diff is empty.
+
+The agent correctly reports that no stronger assertion is needed for this fault, limits its coverage claim to the dropped append, and stops after that mutation. The author inspected the executed commands, output and answer; all three unchanged case criteria are met. This closes the tested killed-mutant branch, not the larger-project or unavailable-environment gaps. No baseline was run for this case and no efficiency advantage is claimed. No new skill rule was added merely because the control passed.

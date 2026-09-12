@@ -22,6 +22,16 @@ def install(destination, names, dry_run=False):
     conflicts = [name for name in names if (destination / name).exists() or (destination / name).is_symlink()]
     if conflicts:
         raise ValueError("Existing skills left untouched: " + ", ".join(conflicts))
+    source_root = (ROOT / 'skills').resolve()
+    if destination == source_root or source_root in destination.parents:
+        raise ValueError('Installation destination must not be inside the source skill tree')
+    # Refuse linked source resources instead of silently copying their referents.
+    # Check every selected skill before creating any destination folders.
+    for name in names:
+        source = ROOT / 'skills' / name
+        if (ROOT / 'skills').is_symlink() or source.is_symlink() or any(
+                path.is_symlink() for path in source.rglob('*')):
+            raise ValueError('Source symlinks are unsupported: ' + name)
     if dry_run:
         return [destination / name for name in names]
     destination.mkdir(parents=True, exist_ok=True)
@@ -32,11 +42,17 @@ def install(destination, names, dry_run=False):
             target = destination / name
             target.mkdir()
             installed.append(target)
-            shutil.copytree(ROOT / "skills" / name, target, dirs_exist_ok=True)
-    except Exception:
+            shutil.copytree(ROOT / "skills" / name, target, dirs_exist_ok=True,
+                            ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    except BaseException:
         # Only directories created by this invocation are eligible for rollback.
         for target in reversed(installed):
-            shutil.rmtree(target)
+            try:
+                shutil.rmtree(target)
+            except BaseException:
+                # Preserve the install error/cancellation and still attempt
+                # rollback of the other targets created by this invocation.
+                pass
         raise
     return installed
 

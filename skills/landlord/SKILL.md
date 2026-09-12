@@ -9,20 +9,16 @@ description: Review proposed abstractions, dependencies, and configuration for c
 
 ## Inspect the lease
 
-Scope the review to the requested design or diff. Read its consumers and existing project conventions. For each material new abstraction, dependency, or configuration surface, identify the behavior it enables, who uses it today, and the ongoing compatibility or maintenance obligation.
+Inspect supplied design/code paths and their consumers/contracts within project scope. Search unresolved callers in relevant source, test and configuration roots first. Installed skill examples or copied documentation are not application consumers merely because text matches; follow them when imports, configuration or supported usage makes them relevant. Expand when needed—a narrow search cannot prove consumers absent. Retain citation line numbers on first source inspection.
 
-Look for an existing implementation, standard library, platform feature, or installed dependency that satisfies the actual requirements. Compare behavior, accessibility, security, portability, and support requirements before recommending a smaller option.
+Compare the nearest viable project/platform alternative on decision-changing differences. Preserve behavior, accessibility, security, portability and support contracts; stop surveying when they settle the choice.
 
-A single consumer can justify a boundary for security, testing, or volatile external APIs. Multiple similar lines do not automatically justify a framework. Don't equate fewer lines, fewer files, or zero dependencies with lower maintenance cost.
+A single consumer can justify a security, testing or external-API boundary. Neither repetition nor fewer lines/files/dependencies establishes the right abstraction.
 
-Compare the proposed design with the smallest viable alternative on a concrete change the project actually needs: how many places change, what policy is duplicated, and which compatibility promises must remain? Count distinct obligations, not files. Reuse existing checks or a few discriminating examples; don't exhaustively enumerate inputs merely to justify a review recommendation. Keep a layer when removing it only moves its necessary complexity into callers.
+Test the design against a concrete needed change: where will policy live, and which compatibility promises survive? Removing a layer can merely move necessary complexity into callers. Reuse evidence; execute checks for unresolved equivalence, consequential behavior or explicit requirements.
+
+Prefer a known lightweight relevant test group. Narrow for runtime, setup, side effects or isolation—not test count alone. Retain decision-changing probes.
 
 ## Deliver and stop
 
-Report only actionable costs with file or design references and a suggested alternative. A clean review is valid. Apply changes only when simplification or implementation was requested, preserving validation and behavior.
-
-Stop after the scoped design choices have a defensible keep/simplify/remove recommendation and any requested changes are checked. Don't turn one expensive abstraction into a repository-wide eviction.
-
-## Working agreement
-
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.
+Lead with keep, simplify or remove, concrete costs and references; separate observations from inference. A clean review is valid. Stop at the supported recommendation and required checks. Review authorizes neither edits nor publication; implement only when requested, preserving user changes, validation and behavior. Keep humor optional.

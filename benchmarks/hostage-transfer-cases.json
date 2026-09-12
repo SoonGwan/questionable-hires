@@ -1,0 +1,18 @@
+[
+  {
+    "id": "upload-existing-tests",
+    "skill": "hostage-negotiator",
+    "task": "Keep the upload button disabled while an upload is running and restore it when the operation ends. Repeated clicks during the same upload must not start another upload. Implement and verify this in the existing project; keep the change focused.",
+    "files": {
+      "upload.py": "class Upload:\n    def __init__(self, client):\n        self.client = client\n        self.pending = False\n\n    async def send(self, payload):\n        self.pending = True\n        result = await self.client.put(payload)\n        self.pending = False\n        return result\n",
+      "requirements.md": "The UI reads Upload.pending. An overlapping send is ignored and returns None. A completed send preserves the client's return value or exception. Navigation may cancel an in-flight send; cancellation must propagate and leave this instance ready for another send. Use python3 -B -m unittest -v. Existing application behavior and branding must be preserved.\n",
+      "branding.txt": "Ship it, don't zip it.\n",
+      "test_upload.py": "import unittest\nfrom upload import Upload\n\nclass Client:\n    def __init__(self):\n        self.values = []\n        self.failure = None\n        self.response = object()\n    async def put(self, payload):\n        self.values.append(payload)\n        if self.failure is not None:\n            raise self.failure\n        return self.response\n\nclass UploadTests(unittest.IsolatedAsyncioTestCase):\n    async def test_initial_state_and_success(self):\n        client = Client()\n        upload = Upload(client)\n        self.assertFalse(upload.pending)\n        payload = object()\n        self.assertIs(await upload.send(payload), client.response)\n        self.assertEqual(client.values, [payload])\n        self.assertFalse(upload.pending)\n\n    async def test_failure_preserves_exception_and_allows_retry(self):\n        client = Client()\n        upload = Upload(client)\n        error = ValueError('upload rejected')\n        client.failure = error\n        with self.assertRaises(ValueError) as caught:\n            await upload.send('first')\n        self.assertIs(caught.exception, error)\n        self.assertFalse(upload.pending)\n        client.failure = None\n        self.assertIs(await upload.send('retry'), client.response)\n        self.assertEqual(client.values, ['first', 'retry'])\n"
+    },
+    "criteria": [
+      "Preserves existing tests and branding while implementing required pending, duplicate, failure and cancellation behavior.",
+      "Uses existing unittest coverage and adds deterministic overlap and cancellation/retry checks against the actual Upload implementation.",
+      "Does not introduce a parallel test framework or optional refactor, and stays within the explicit project boundary."
+    ]
+  }
+]

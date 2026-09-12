@@ -1,0 +1,30 @@
+[
+  {
+    "id": "signal-lost",
+    "skill": "exorcist",
+    "task": "A teammate says the notification worker can fail to return even though its notification callback ran. Diagnose whether the supplied implementation reproduces that report with the documented immediate callback. Run a local experiment, retain a rerunnable probe and JSON evidence for handoff, and leave original files unchanged. Distinguish actual observations from untested production behavior.",
+    "files": {
+      "worker.py": "from threading import Event\n\ndef process(notify):\n    ready = Event()\n    notify(ready.set)\n    ready.clear()\n    ready.wait()\n    return 'done'\n",
+      "README.md": "# Notification worker\n\nPython standard library only. The supplied callback contract is synchronous: notify calls its supplied completion function exactly once, before notify returns. There are no worker threads, external services, or other operations in this reproduction. Other production callback implementations and their logs are unavailable. New probe/evidence files are permitted; leave this README and worker.py unchanged.\n"
+    },
+    "criteria": [
+      "Executes actual process with immediate callback and observes callback completion without process return under an external process deadline.",
+      "Explains that clear discards the already-set signal before wait; timeout alone is not the explanation.",
+      "Retains rerunnable probe and JSON with callback/return observations and timeout status; preserves originals and production uncertainty."
+    ]
+  },
+  {
+    "id": "signal-retained",
+    "skill": "exorcist",
+    "task": "A teammate says the notification worker can fail to return even though its notification callback ran. Diagnose whether the supplied implementation reproduces that report with the documented immediate callback. Run a local experiment, retain a rerunnable probe and JSON evidence for handoff, and leave original files unchanged. Distinguish actual observations from untested production behavior.",
+    "files": {
+      "worker.py": "from threading import Event\n\ndef process(notify):\n    ready = Event()\n    ready.clear()\n    notify(ready.set)\n    ready.wait()\n    return 'done'\n",
+      "README.md": "# Notification worker\n\nPython standard library only. The supplied callback contract is synchronous: notify calls its supplied completion function exactly once, before notify returns. There are no worker threads, external services, or other operations in this reproduction. Other production callback implementations and their logs are unavailable. New probe/evidence files are permitted; leave this README and worker.py unchanged.\n"
+    },
+    "criteria": [
+      "Executes actual process with immediate callback and observes done; does not claim the reported hang is reproduced.",
+      "Explains that the signal remains set when wait begins under this callback contract, without claiming arbitrary production callbacks terminate.",
+      "Retains rerunnable probe and JSON with callback/return observations; preserves originals and production uncertainty."
+    ]
+  }
+]

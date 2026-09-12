@@ -13,8 +13,52 @@ ROOT = Path(__file__).resolve().parents[1]
 HIRES = {"necromancer", "receipt", "landlord", "mother-in-law", "exorcist", "hostage-negotiator", "con-artist", "friday"}
 
 
-def validate(root):
+def validate_issue_forms(root):
+    """Check this project's two input forms, not the entire GitHub schema."""
     errors = []
+    for name in ('bug_report.yml', 'new_hire.yml'):
+        path = root / '.github/ISSUE_TEMPLATE' / name
+        try:
+            form = yaml.safe_load(path.read_text())
+            if not isinstance(form, dict):
+                raise ValueError('form must be an object')
+            for key in ('name', 'description'):
+                if not isinstance(form.get(key), str) or not form[key].strip():
+                    raise ValueError('missing nonempty ' + key)
+            body = form.get('body')
+            if not isinstance(body, list) or not body:
+                raise ValueError('body must be a nonempty list')
+            seen = set()
+            for field in body:
+                if not isinstance(field, dict):
+                    raise ValueError('field must be an object')
+                if not isinstance(field.get('type'), str) or not field['type'].strip():
+                    raise ValueError('field must have a nonempty type')
+                attributes = field.get('attributes')
+                if not isinstance(attributes, dict):
+                    raise ValueError('field attributes must be an object')
+                if field.get('type') == 'markdown':
+                    if not isinstance(attributes.get('value'), str) or not attributes['value'].strip():
+                        raise ValueError('markdown field must have nonempty content')
+                    continue
+                identity = field.get('id')
+                if not isinstance(identity, str) or not identity.strip() or identity in seen:
+                    raise ValueError('input field IDs must be nonempty and unique')
+                seen.add(identity)
+                label = attributes.get('label')
+                if not isinstance(label, str) or not label.strip():
+                    raise ValueError('input field must have a nonempty label')
+                validations = field.get('validations', {})
+                if not isinstance(validations, dict) or ('required' in validations and
+                        type(validations['required']) is not bool):
+                    raise ValueError('required must be a YAML boolean')
+        except (OSError, ValueError, yaml.YAMLError) as error:
+            errors.append(f'issue form {name}: {error}')
+    return errors
+
+
+def validate(root):
+    errors = validate_issue_forms(root)
     skills = root / "skills"
     found = {p.parent.name for p in skills.glob("*/SKILL.md")}
     if found != HIRES:
@@ -70,4 +114,4 @@ if __name__ == "__main__":
     if errors:
         print("\n".join(errors), file=sys.stderr)
         raise SystemExit(1)
-    print(f"Validated {len(HIRES)} hires, UI metadata, plugin references, and local documentation links.")
+    print(f"Validated {len(HIRES)} hires, UI metadata, plugin references, issue forms, and local documentation links.")

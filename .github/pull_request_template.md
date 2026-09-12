@@ -6,6 +6,10 @@ Describe the concrete problem and resulting behavior. For a new hire, explain it
 
 List the checks actually run and their results. Include a realistic example for behavioral changes. Mark illustrative output and unexecuted checks clearly.
 
+For executable changes, include the local test command. For performance claims,
+include the frozen source/skill revisions and comparison settings, and disclose
+unequal work or missing evidence. Do not attach unreviewed private model logs.
+
 ## Limits
 
 Note remaining uncertainty, compatibility constraints, or incomplete evaluation. Omit this section if none apply.

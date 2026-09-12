@@ -1,0 +1,18 @@
+[
+  {
+    "id": "invoice-provenance",
+    "skill": "exorcist",
+    "task": "Two tenants sometimes see the same invoice text despite having different stored invoices. A teammate suspects the queue delivered a request twice. Diagnose with a local experiment using the supplied implementation; do not fix production code. Leave a rerunnable probe and a machine-readable trace for another developer to inspect, linking requested tenant/invoice to source reads and returned text. Include a normal comparison and distinguish local evidence from production uncertainty. Do not access external services.",
+    "files": {
+      "invoices.py": "class Invoices:\n    def __init__(self, read):\n        self.read = read\n        self.entries = {}\n\n    def get(self, tenant, invoice):\n        if invoice not in self.entries:\n            self.entries[invoice] = self.read(tenant, invoice)\n        return self.entries[invoice]\n",
+      "worker.py": "def handle(request, invoices):\n    return {'ok': True, 'text': invoices.get(request['tenant'], request['invoice'])}\n",
+      "README.md": "# Local invoice worker\n\nPython standard library only. worker.handle is the request entrypoint. The read dependency accepts (tenant, invoice) and returns stored text. Invoice identifiers are unique within a tenant, not across tenants. Invoices instances can serve multiple requests. No queue adapter or production logs are available here. Keep both implementation files unchanged; new experiment and evidence files are permitted.\n"
+    },
+    "criteria": [
+      "Actual worker and invoice implementation reproduce incorrect cross-tenant text with one delivery per request and distinguish a normal comparison.",
+      "Retained machine-readable trace links requested tenant/invoice, actual source reads and returned text; successful response counts alone do not qualify.",
+      "Identifies missing tenant identity in stored lookup keys and distinguishes local queue-independent reproduction from unavailable production evidence.",
+      "Leaves original project files unchanged and retains a rerunnable probe without external services."
+    ]
+  }
+]

@@ -9,20 +9,16 @@ description: Keep a small requested change focused when optional refactors, arch
 
 ## Establish the terms
 
-Recover the user's concrete requested behavior and acceptance conditions from the conversation. Inspect the affected code and existing conventions. Identify which changes are required to deliver that behavior and which would only improve adjacent code.
+Locate applicable instructions, requirements, affected code and existing tests within the allowed project root. Batch independent reads; consume their results before choosing dependent commands, including the documented test invocation. Follow unresolved dependencies, not guessed frameworks or repeated discovery.
 
-For each proposed supporting change, ask whether omitting it makes an acceptance condition fail. If yes, trace that dependency into scope; otherwise defer it. Implement along the existing path when viable. Simple label changes need no architecture survey; pending/retry behavior may require state changes even when the visible request looks small.
+For each supporting change, ask: which acceptance condition fails without it? A small visible change can require state, errors or security work; minimal diff size is not the objective. Separate optional refactors without creating a scope document for an ordinary edit. Ask only for a missing material product decision; adapt when the user changes the request.
 
-Keep optional improvements out of the implementation unless authorized. Mention a consequential deferred issue briefly if useful, without turning it into a new task or approval ceremony. Never hide a real correctness or security requirement to meet an arbitrary diff budget.
+For stateful behavior, follow entry, completion and recovery through the existing owner. Preserve return values, errors and cleanup, including cancellation. Reuse covered tests and add missing transitions at that boundary, not a parallel harness.
 
-Use routine project choices without asking the user to redesign the task. If a material product decision is genuinely missing, prepare independent work and ask only for that decision. When the user expands the scope, update the terms rather than enforcing an obsolete restriction.
+Async regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup.
 
 ## Deliver and stop
 
-Before delivery, map changed production hunks to acceptance conditions or necessary dependencies. Remove only your own unjustified additions, never user work. Verify the affected behavior at its existing test boundary; don't create a test framework for a static edit. For a scope review, explain optional hunks without rewriting them.
+Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse established verification. Deliver the change, decisive evidence and consequential limitations; distinguish observation from inference. Stop when requested behavior and required checks are satisfied, without opportunistic cleanup.
 
-Stop when the agreed behavior and required checks are satisfied. Don't add cleanup merely because you have time left.
-
-## Working agreement
-
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.
+Preserve user changes and explicit requirements. Review does not authorize implementation; publishing and optional refactors require authorization. Keep humor optional.

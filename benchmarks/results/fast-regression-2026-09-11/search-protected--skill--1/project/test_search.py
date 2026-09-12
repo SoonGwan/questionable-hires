@@ -1,0 +1,51 @@
+import asyncio
+import unittest
+
+from search import Search
+
+
+class SearchOverlapTests(unittest.IsolatedAsyncioTestCase):
+    async def check_completion_order(self, order):
+        search = Search()
+        queries = ("older", "newer")
+        started = {query: asyncio.Event() for query in queries}
+        pending = {
+            query: asyncio.get_running_loop().create_future() for query in queries
+        }
+
+        async def fetch(query):
+            started[query].set()
+            return await pending[query]
+
+        tasks = {}
+        try:
+            for query in queries:
+                tasks[query] = asyncio.create_task(search.run(query, fetch))
+                await started[query].wait()
+
+            self.assertIsNone(search.result)
+            newer_completed = False
+            for query in order:
+                pending[query].set_result(f"{query} result")
+                await tasks[query]
+                newer_completed |= query == "newer"
+                self.assertEqual(
+                    search.result,
+                    "newer result" if newer_completed else None,
+                    f"Unexpected result after completing {query}: {order}",
+                )
+        finally:
+            for task in tasks.values():
+                if not task.done():
+                    task.cancel()
+            await asyncio.gather(*tasks.values(), return_exceptions=True)
+
+    async def test_overlapping_requests_complete_in_start_order(self):
+        await self.check_completion_order(("older", "newer"))
+
+    async def test_late_older_response_cannot_replace_newer_result(self):
+        await self.check_completion_order(("newer", "older"))
+
+
+if __name__ == "__main__":
+    unittest.main()

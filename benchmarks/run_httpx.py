@@ -16,6 +16,69 @@ TASKS = {
     'asgi-head': 'Audit whether tests/test_asgi.py protects HEAD response-body handling. Demonstrate test sensitivity with a narrow isolated behavioral mutation. If coverage is missing, propose a focused test and verify it against correct and faulty behavior. Do not change the original source or tests.',
     'asgi-exceptions': 'Audit whether tests/test_asgi.py protects default application-exception propagation. Demonstrate test sensitivity with a narrow isolated behavioral mutation. If coverage is adequate for the targeted fault, report that without demanding a stronger test. Do not change the original source or tests.',
 }
+DESIGN_TASKS = {
+    'transport-design': 'Review httpx/_transports/base.py and httpx/_transports/mock.py for maintenance cost. Recommend whether any simplification is justified by actual consumers and supported contracts in this checkout. Do not edit existing files or perform a general repository audit.',
+}
+AUTH_DESIGN_TASKS = {
+    'auth-flow-design': 'Review Auth.auth_flow, Auth.sync_auth_flow and Auth.async_auth_flow in httpx/_auth.py for maintenance cost. A proposal suggests replacing these similar-looking entrypoints with one universal authentication callback. Recommend whether that simplification is justified by actual consumers and supported contracts in this checkout. Do not edit existing files or perform a general repository audit.',
+}
+DIAGNOSIS_TASKS = {
+    'redirect-auth': 'Diagnose this report against the HTTPX checkout: a GET with an explicit Authorization header follows a 302 from http://example.org/start to https://example.org:8443/end, but the redirected request has no Authorization. The reporter suspects a transport or cache issue because redirecting instead to https://example.org/end keeps it. Reproduce both outcomes locally without network access, identify the responsible mechanism, and recommend a safe next action. Include a same-origin normal control. Do not edit original source/tests, install dependencies, or globally disable credential protections.',
+}
+
+
+def select_profile(profile, requested=None):
+    profiles = {'audit': ('con-artist', TASKS), 'design': ('landlord', DESIGN_TASKS),
+                'diagnosis': ('exorcist', DIAGNOSIS_TASKS),
+                'auth-design': ('landlord', AUTH_DESIGN_TASKS)}
+    if profile not in profiles:
+        raise ValueError('Unknown profile')
+    skill, available = profiles[profile]
+    names = list(dict.fromkeys(requested or available))
+    if any(name not in available for name in names):
+        raise ValueError('Case does not belong to selected profile')
+    return skill, {name: available[name] for name in names}
+
+
+def freeze_skill(repository, revision, destination, skill_name='con-artist'):
+    """Export the whole committed skill, including optional scripts/references."""
+    if skill_name not in ('con-artist', 'landlord', 'exorcist'):
+        raise ValueError('Unsupported HTTPX profile skill')
+    prefix = f'skills/{skill_name}/'
+    entries = subprocess.check_output(['git', 'ls-tree', '-rz', revision, '--', prefix], cwd=repository)
+    selected = []
+    for entry in entries.split(b'\0'):
+        if not entry:
+            continue
+        metadata, name = entry.decode().split('\t', 1)
+        mode, kind, object_id = metadata.split()
+        path = Path(name.removeprefix(prefix))
+        if not name.startswith(prefix) or path.is_absolute() or '..' in path.parts:
+            raise ValueError('Unsafe skill tree entry')
+        if kind != 'blob' or mode not in ('100644', '100755'):
+            raise ValueError('Skill snapshot must contain regular files, not links/submodules')
+        selected.append((path, object_id, mode))
+    if Path('SKILL.md') not in [path for path, _, _ in selected]:
+        raise ValueError('Revision has no selected skill')
+    destination.mkdir(parents=True, exist_ok=False)
+    hashes = {}
+    for path, object_id, mode in selected:
+        target = destination / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        content = subprocess.check_output(['git', 'cat-file', 'blob', object_id], cwd=repository)
+        target.write_bytes(content)
+        target.chmod(0o755 if mode == '100755' else 0o644)
+        hashes[path.as_posix()] = hashlib.sha256(content).hexdigest()
+    return hashes
+
+
+def make_schedule(tasks, arms, repeats):
+    if repeats < 1:
+        raise ValueError('repeats must be positive')
+    schedule = [(case, arm, repeat) for repeat in range(1, repeats + 1)
+                for case in tasks for arm in dict.fromkeys(arms)]
+    random.Random(20260912).shuffle(schedule)
+    return schedule
 
 
 def main():
@@ -23,7 +86,19 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design'), default='audit')
+    parser.add_argument('--case', action='append')
+    parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
+    parser.add_argument('--repeats', type=int, default=3)
+    parser.add_argument('--skill-revision', default='bf420fe')
     args = parser.parse_args()
+    if args.repeats < 1:
+        parser.error('repeats must be positive')
+    try:
+        skill_name, tasks = select_profile(args.profile, args.case)
+    except ValueError as error:
+        parser.error(str(error))
+    skill_revision = command(['git', 'rev-parse', '--verify', args.skill_revision + '^{commit}'], ROOT)
     source, python = args.source.resolve(), args.python.absolute()
     if args.output.exists():
         raise FileExistsError(args.output)
@@ -32,30 +107,38 @@ def main():
     if command(['git', 'status', '--porcelain'], source):
         raise ValueError('Upstream checkout must be clean')
     # Fail before scheduling if environment no longer passes upstream tests.
+    checks = (['tests/test_wsgi.py', 'tests/test_asgi.py'] if args.profile == 'audit' else
+              ['tests/client/test_client.py::test_context_managed_transport',
+               'tests/client/test_client.py::test_context_managed_transport_and_mount'])
+    if args.profile == 'diagnosis':
+        checks = ['tests/client/test_redirects.py::test_cross_domain_redirect_with_auth_header',
+                  'tests/client/test_redirects.py::test_same_domain_https_redirect_with_auth_header']
+    if args.profile == 'auth-design':
+        checks = ['tests/client/test_auth.py::test_sync_auth_reads_response_body',
+                  'tests/client/test_auth.py::test_async_auth_reads_response_body',
+                  'tests/client/test_auth.py::test_sync_auth',
+                  'tests/client/test_auth.py::test_async_auth']
     subprocess.run([str(python), '-B', '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
-                    'tests/test_wsgi.py', 'tests/test_asgi.py'], cwd=source, check=True, timeout=60)
+                    *checks], cwd=source, check=True, timeout=60)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
-    snapshot = output / 'skills/con-artist'
-    snapshot.mkdir(parents=True)
-    for name in ('SKILL.md', 'agents/openai.yaml'):
-        target = snapshot / name
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(subprocess.check_output(['git', 'show', f'bf420fe:skills/con-artist/{name}'], cwd=ROOT))
-    schedule = [(case, arm, repeat) for repeat in range(1, 4) for case in TASKS for arm in ('baseline', 'control', 'skill')]
-    random.Random(20260912).shuffle(schedule)
+    snapshot = output / 'skills' / skill_name
+    skill_files = freeze_skill(ROOT, skill_revision, snapshot, skill_name)
+    schedule = make_schedule(tasks, args.arms, args.repeats)
     manifest = dict(upstream_revision=REVISION, revision=command(['git', 'rev-parse', 'HEAD'], ROOT),
                     codex_version=command(['codex', '--version'], ROOT), model='gpt-6-astra', effort='medium',
                     seed=20260912, timeout_seconds=360, jobs=1,
+                    profile=args.profile, skill_name=skill_name, preflight_checks=checks,
                     skill_sha256=hashlib.sha256((snapshot / 'SKILL.md').read_bytes()).hexdigest(),
-                    tasks=TASKS, schedule=schedule, completed_cells=[], stopped_after_limit=False,
+                    skill_files_sha256=skill_files,
+                    tasks=tasks, schedule=schedule, skill_revision=skill_revision, completed_cells=[], stopped_after_limit=False,
                     started_at=datetime.now(timezone.utc).isoformat(),
                     dependencies=command([str(python), '-m', 'pip', 'freeze'], source))
     (output / 'run.json').write_text(json.dumps(manifest, indent=2) + '\n')
     disabled = disabled_skills()
     for name, arm, repeat in schedule:
         instructions = f'\n\nUse the preinstalled interpreter {python} for all Python/pytest commands. Do not install dependencies. Keep disposable mutation copies and diagnostic artifacts inside this project, without modifying its existing files.'
-        case = dict(id=name, skill='con-artist', task=TASKS[name] + instructions)
+        case = dict(id=name, skill=skill_name, task=tasks[name] + instructions)
         try:
             result = run_cell(case, arm, repeat, output, 'gpt-6-astra', 'medium', 360, disabled, output / 'skills', source)
         except Exception as error:

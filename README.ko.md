@@ -8,7 +8,7 @@
 
 영수증 집착남, 코드 건물주, 레거시 무당까지. 채용 과정은 의문인데 맡기는 일은 분명한 개발자 스킬 8개입니다. GPT-6 Astra를 염두에 두고 만들었습니다.
 
-[English](README.md) · [실제 실행 예시](examples/README.md) · [비교 결과](benchmarks/REPORT.md) · [설치 가이드](docs/INSTALL.md)
+[English](README.md) · [실제 실행 예시](examples/README.md) · [현재 비교 근거](benchmarks/CURRENT-CANDIDATE-STATUS.md) · [설치 가이드](docs/INSTALL.md)
 
 ## 이런 일을 시킵니다
 
@@ -25,7 +25,18 @@
 
 ## 진짜 작동하나요?
 
-현재는 **개발 프리뷰**입니다. GPT-6 Astra / medium으로 **신규 72회**를 측정했습니다. 작은 synthetic 과제 8개 × 스킬 없음·일반 지침·해당 스킬 3조건 × 3반복이며, 각 실행은 새로운 프로세스·대화·Git fixture를 사용했습니다. 기존 n=1 결과는 새 측정에 포함하지 않았습니다.
+**최신 통합 검증에서도 비용 절감 목표는 미달입니다.** 현재 스킬 리소스
+`e02c9bb`로 [9개 과제·18개 새 세션](benchmarks/BUNDLE-CURRENT-02-REVIEW.md)을
+비교했으며, 스킬 조건의 **총 토큰은 10.33%, 실행 시간 합계는 23.08% 증가**했습니다.
+9개 중 8개에서 토큰이, 8개에서 시간이 늘었습니다. 일부 검증은 강화됐지만
+수정 전 증거 부족·범위 이탈·이력 인용 누락·QA 출력 누락도 집계에 남겼습니다.
+검증 범위가 다른 노출된 과제의 1회 반복 결과이므로 보편적인 이득이나 손해를
+증명하지 않습니다. 합계의 비율이며, 아래 최초 그래프의 과제별 비율 평균과는
+계산 방식도 다릅니다.
+
+**아래 그래프는 최초 실험이며 현재 파일의 측정값은 아닙니다.** 이후 수정본의 개별 검사, 실제 HTTPX 감사·설계 리뷰와 이 레포의 패키징 수리 결과는 [현재 후보 상태](benchmarks/CURRENT-CANDIDATE-STATUS.md)에 기록했습니다. 결과는 혼재합니다. 로컬 보조 도구의 개선이 모델 세션의 비용 절감으로 바로 이어지지는 않으며, 일부 비교는 검증 범위도 다릅니다. 전반적인 성능 향상은 아직 입증되지 않았습니다. [9개 과제 검사 05](benchmarks/FAST-REGRESSION-05.md)를 포함한 과거 기록도 유리한 표본으로 대체하지 않고 보존합니다.
+
+현재는 **개발 프리뷰**입니다. 최초 반복 실험은 GPT-6 Astra / medium으로 **72회**를 측정했습니다. 작은 synthetic 과제 8개 × 스킬 없음·일반 지침·해당 스킬 3조건 × 3반복이며, 각 실행은 새로운 프로세스·대화·Git fixture를 사용했습니다. 이전 n=1 결과는 이 반복 실험에 포함하지 않았습니다.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="benchmarks/results/astra-repeat-2026-09-11/analysis/comparison-dark.svg">
@@ -36,9 +47,18 @@
 
 엄격한 증거·범위 기준의 성공은 **스킬 없음 19/24, 일반 지침 16/24, 스킬 18/24**였습니다. 핵심 수정·진단은 대체로 같았습니다. 일반 지침 3회는 감사 중 기존 테스트를 수정했고, 스킬 4회는 거부된 패치의 대상이 로그에 없어 범위 준수를 확인할 수 없었습니다. 타임아웃은 없었습니다. 저자가 직접 채점한 소형 synthetic 실험이며, 우월성이나 일반적인 안전성을 증명하지 않습니다. 구독 사용량을 달러 청구로 환산하지 않았습니다.
 
-[신규 보고서·평가기준·원시 증거](benchmarks/REPORT-2026-09-11.md) · [재현 방법](benchmarks/README.md) · [기존 n=1 결과](benchmarks/REPORT.md)
+[최초 반복 실험·평가기준·원시 증거](benchmarks/REPORT-2026-09-11.md) · [재현 방법](benchmarks/README.md) · [기존 n=1 결과](benchmarks/REPORT.md)
 
-8개 스킬을 함께 설치한 자동 선택 시험도 8회 진행해 각 과제에 맞는 스킬 파일을 읽는 것을 확인했습니다. 로컬 플러그인의 실제 설치·캐시 비교·제거 시험도 통과했습니다. 자세한 범위는 [설치 검증 기록](docs/INSTALLATION-TEST.md)에 있습니다.
+과거 자동 선택 시험 8회에서는 과제에 맞는 스킬 파일을 읽는 것을 확인했습니다. 당시 로컬 플러그인의 설치·캐시 비교·제거 시험도 통과했습니다. 이는 이후 모든 수정본의 검증이 아닙니다. 자세한 범위와 날짜는 [설치 검증 기록](docs/INSTALLATION-TEST.md)에 있습니다.
+
+최근 근거는 위 그래프와 별도로 봐주세요.
+
+- [최근 자동 감사의 실제 기록](benchmarks/results/probe-adoption-01/README.md): 두 조건의 명령·출력·답변·사용량을 확인할 수 있습니다. 토큰 증가와 도우미 미사용, 가린 정보와 출력 누락도 그대로 설명합니다.
+- [모델 사용량 없이 두 결함 감사 실행하기](examples/con-artist.md#try-the-helper-without-model-usage): 실제로 실행할 수 있는 도우미 예제이며, 모델의 속도 향상을 증명하는 비교는 아닙니다.
+
+- [자동 선택과 스킬 없음 비교](benchmarks/CURRENT-SELECTION-01.md): 두 과제에서 적절한 스킬을 선택했지만 둘 다 토큰이 늘었고, 시간 결과는 혼재했습니다. 실제 수행한 작업량도 다릅니다.
+- [관련 없는 요청](benchmarks/ROUTING-NEGATIVE-01.md)과 [예제 폴더의 실제 소비자](benchmarks/LANDLORD-CONFIGURED-01.md): 좁은 선택 범위 검증이며 일반적인 정확도·효율 점수가 아닙니다.
+- [이전 버전·수정본의 실제 기록 열기](benchmarks/results/landlord-compact-01/README.md): 비공개 로그 없이 명령·출력·답변·사용량을 확인할 수 있습니다. 이 비교의 불리한 결과도 그대로 남겼습니다.
 
 예를 들어 `con-artist`는 저장을 제거한 복사본에서도 기존 테스트가 통과하는 것을 확인하고, 저장된 데이터 자체를 검사하면 실패한다는 것을 보여줬습니다. 기본 모델도 이 문제를 찾았습니다. [세 조건을 직접 비교하기 →](examples/con-artist.md)
 
@@ -54,6 +74,11 @@ python3 scripts/install.py --dest /내/프로젝트/.agents/skills --skill necro
 
 실제 프로젝트 경로로 바꿔주세요. `--skill necromancer`를 빼면 8개 전부 설치합니다. `--dry-run`으로 미리 확인할 수 있으며 기존 스킬 폴더는 덮어쓰지 않습니다.
 
+신뢰할 수 있는 소스에서 설치하세요. 소스의 심볼릭 링크 파일·폴더는 쓰기 전에
+거부합니다. 실패하거나 취소하면 이번 실행이 만든 폴더만 정리를 시도합니다.
+정리도 실패할 수 있으므로 재시도 전에 남은 불완전한 폴더를 확인하고,
+기존 파일과 개인 수정본은 보존하세요.
+
 Codex CLI나 IDE의 새 대화에서:
 
 ```text
@@ -64,10 +89,22 @@ $friday 이 배포 롤백 가능한지 봐줘.
 
 모델 선택이나 권한 설정은 변경하지 않습니다. 상시 실행 훅, 별도 백그라운드 프로세스, 텔레메트리도 없습니다. 업데이트·제거 방법은 [설치 가이드](docs/INSTALL.md)에 있습니다.
 
+### 도구도 들고 출근합니다
+
+설치본에는 필요한 경우에만 로컬에서 실행하는 보조 도구 다섯 개가 포함됩니다. 도구 실행에는 **Python 3.9 이상**, Con Artist·Receipt·Exorcist에는 POSIX 환경도 필요합니다. 의존성을 자동 설치하거나 백그라운드에서 실행하지 않습니다.
+
+- **Con Artist:** 임시 복사본에서 Python 결함 주입, 복사본 import 검증, 테스트별 종료 상태, 로그 메모리·시간 제한을 처리합니다. [사용법과 한계](skills/con-artist/references/python-audit.md). 샌드박스가 아니므로 신뢰할 수 있는 테스트만 실행해야 합니다.
+- **Necromancer:** 선택한 코드 줄의 현재 상태와 Git 이력을 모으고, 미커밋 변경·얕은 이력의 한계를 표시합니다. [사용법과 한계](skills/necromancer/references/focused-history.md). 과거 코드를 지금도 유지해야 하는지는 별도로 판단합니다.
+- **Friday:** 메모리 SQLite에서 마이그레이션·롤백 단계별 읽기 쿼리 검사를 재사용합니다. [사용법과 한계](skills/friday/references/sqlite-matrix.md). 쿼리 성공이 배포 준비 완료를 뜻하지 않으며, 다른 DB 엔진의 동작은 별도로 확인해야 합니다.
+- **Receipt:** 현재 테스트를 고정한 채 두 커밋의 Python 구현을 비교하고, 각각의 출력과 커밋 ID를 남깁니다. [사용법과 한계](skills/receipt/references/existing-fix.md). [첫 모델 검사](benchmarks/RECEIPT-HELPER-01.md)는 직전 표본보다 빠르지만 토큰은 늘었습니다. 비용 개선이 입증된 것은 아닙니다.
+- **Exorcist:** 진단 명령의 프로세스 실행 시간과 수집 로그 크기를 제한합니다. [사용법과 한계](skills/exorcist/references/bounded-probe.md). [첫 모델 검사](benchmarks/EXORCIST-PROBE-RUNNER-01.md)에서 도구는 정상 사용했지만 비용은 줄지 않았습니다.
+
+위의 스킬 요청을 그대로 사용하면 필요한 경우 도구를 선택할 수 있습니다. 작은 작업이나 이미 증거를 확보한 작업은 직접 처리하는 편이 더 저렴할 수 있습니다. 전원 설치가 모든 작업에 8명을 전부 투입하라는 뜻은 아닙니다.
+
 ## 같이 채용하기
 
 웃긴 캐릭터마다 실제 개발 판단이 달라져야 합니다. 새로운 스킬에는 구체적인 문제, 출력할 근거, 종료 조건, 그리고 정상 코드를 건드리지 않아야 하는 사례가 필요합니다.
 
-[기여 가이드](CONTRIBUTING.md) · [평가 실행 방법](benchmarks/README.md) · [개발 현황](docs/ROADMAP.md) · [MIT 라이선스](LICENSE)
+[기여 가이드](CONTRIBUTING.md) · [평가 실행 방법](benchmarks/README.md) · [공개 준비와 남은 검증](docs/RELEASE-READINESS.md) · [개발 현황](docs/ROADMAP.md) · [MIT 라이선스](LICENSE)
 
 캐릭터와 실용적인 개발 습관을 연결하는 방식은 [Ponytail](https://github.com/DietrichGebert/ponytail)에서 영감을 받았습니다.

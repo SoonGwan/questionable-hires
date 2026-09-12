@@ -1,0 +1,11 @@
+{
+  "files": ["httpx", "tests", "pyproject.toml"],
+  "imports": ["httpx._transports.asgi", "tests.test_asgi"],
+  "target": "httpx/_transports/asgi.py",
+  "old": "raise_app_exceptions: bool = True",
+  "new": "raise_app_exceptions: bool = False",
+  "runner": "pytest",
+  "tests": ["-q", "-p", "no:cacheprovider", "tests/test_asgi.py"],
+  "probe_when": "survives",
+  "probe": "import asyncio\nimport httpx\nasync def app(scope, receive, send):\n    raise RuntimeError('local sentinel')\nasync def check():\n    async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app)) as client:\n        try:\n            await client.get('http://example.invalid/')\n        except RuntimeError as error:\n            assert str(error) == 'local sentinel'\n        else:\n            raise AssertionError('application error was suppressed')\nasyncio.run(check())\n"
+}

@@ -1,0 +1,193 @@
+import assert from 'node:assert/strict';
+import { writeSync } from 'node:fs';
+import { chromium } from 'playwright-core';
+
+const executablePath = process.argv[2];
+if (!executablePath) throw new Error('Supply the path to an installed Chrome executable');
+const observations = [];
+const timeout = Number(process.argv[3] ?? 60000);
+if (!Number.isSafeInteger(timeout) || timeout < 1 || timeout > 300000)
+  throw new Error('Deadline must be an integer from 1 to 300000 milliseconds');
+let server;
+let timedOut = false;
+// Keep the watchdog active through context and server cleanup. Do not emit a
+// success receipt until those operations have actually finished.
+const watchdog = setTimeout(async () => {
+  timedOut = true;
+  writeSync(2, JSON.stringify({complete: false, error: 'Browser workflow deadline exceeded',
+    completed_variants: observations}) + '\n');
+  setTimeout(() => process.exit(1), 5000);
+  try {
+    if (server) await server.kill();
+  } finally {
+    process.exit(1);
+  }
+}, timeout);
+let browser;
+try {
+  // Bind the automation endpoint to loopback, never all network interfaces.
+  server = await chromium.launchServer({executablePath, headless: true, timeout: 15000,
+    host: '127.0.0.1'});
+  browser = await chromium.connect(server.wsEndpoint(), {timeout: 5000});
+  const variants = [
+    ['fill', false, true], ['fill', true, true],
+    ['keyboard', false, true], ['keyboard', true, true],
+    // Surgical mutation: request ordering still works, view disposal does not.
+    ['fill', true, false], ['keyboard', true, false],
+  ];
+  for (const [driver, guarded, invalidateOnLeave] of variants) {
+    const context = await browser.newContext();
+    try {
+      const page = await context.newPage();
+      page.setDefaultTimeout(5000);
+      const errors = [];
+      page.on('pageerror', error => errors.push(error.message));
+      // Only local file content is needed; block page-originated web requests.
+      await context.route(/^https?:\/\//, route => route.abort());
+      const url = new URL('./search-order.html', import.meta.url);
+      url.search = `manual=1&guard=${guarded ? 'on' : 'off'}&invalidate=${invalidateOnLeave ? 'on' : 'off'}`;
+      await page.goto(url.href);
+      const input = page.locator('#query');
+      const result = page.locator('#results');
+      const inputs = driver === 'keyboard' ? ['o', 'n', 'r'] : ['old', 'new', 'normal'];
+      async function enter(value) {
+        if (driver === 'fill') return input.fill(value);
+        await input.click();
+        await input.press('ControlOrMeta+A');
+        await input.press(value);
+      }
+      await enter(inputs[0]);
+      await enter(inputs[1]);
+      await page.evaluate(() => window.fixture.complete(1, 'new result'));
+      const afterNew = await result.textContent();
+      await page.evaluate(() => window.fixture.complete(0, 'old result'));
+      const afterOld = await result.textContent();
+      await enter(inputs[2]);
+      await page.evaluate(() => window.fixture.complete(2, 'normal result'));
+      const normal = await result.textContent();
+      const submitted = await page.evaluate(() => window.fixture.submitted());
+      const focused = await input.evaluate(element => element === document.activeElement);
+      assert.deepEqual(submitted, inputs.map(value => ({value, trusted: true})));
+      const keys = await page.evaluate(() => window.fixture.keys());
+      if (driver === 'keyboard') {
+        assert.deepEqual(keys.filter(event => inputs.includes(event.key)).map(event => event.key), inputs);
+        assert.ok(keys.every(event => event.trusted));
+      }
+      assert.equal(afterNew, 'new result');
+      assert.equal(afterOld, guarded ? 'new result' : 'old result');
+      assert.equal(normal, 'normal result');
+      assert.equal(focused, true);
+      await enter(inputs[0]);
+      await page.evaluate(() => window.fixture.fail(3));
+      const recovery = {
+        error: await page.locator('#error').textContent(),
+        retainedInput: await input.inputValue(),
+        focusedAfterFailure: await input.evaluate(element => element === document.activeElement),
+      };
+      assert.equal(recovery.error, 'Search failed. Try again.');
+      assert.equal(recovery.retainedInput, inputs[0]);
+      assert.equal(recovery.focusedAfterFailure, true);
+      await enter(inputs[2]);
+      recovery.errorOnRetry = await page.locator('#error').textContent();
+      await page.evaluate(() => window.fixture.complete(4, 'recovered result'));
+      recovery.result = await result.textContent();
+      recovery.errorAfterSuccess = await page.locator('#error').textContent();
+      recovery.focusedAfterSuccess = await input.evaluate(element => element === document.activeElement);
+      assert.equal(recovery.errorOnRetry, '');
+      assert.equal(recovery.result, 'recovered result');
+      assert.equal(recovery.errorAfterSuccess, '');
+      assert.equal(recovery.focusedAfterSuccess, true);
+      recovery.submitted = await page.evaluate(() => window.fixture.submitted());
+      assert.deepEqual(recovery.submitted, [...inputs, inputs[0], inputs[2]].map(value => ({value, trusted: true})));
+      // Same-document route disposal: even the latest request loses ownership
+      // when the user leaves, including late failures, not just stale successes.
+      await enter(inputs[0]);
+      await page.locator('#settings').click();
+      assert.equal(await input.isVisible(), false);
+      await page.evaluate(() => window.fixture.complete(5, 'abandoned search result'));
+      const navigation = {
+        afterLateSuccess: await result.textContent(),
+        heading: await page.locator('#view').textContent(),
+        focusOnHeading: await page.locator('#view').evaluate(element => element === document.activeElement),
+      };
+      assert.equal(navigation.afterLateSuccess, guarded && invalidateOnLeave ? 'Settings panel' : 'abandoned search result');
+      assert.equal(navigation.heading, 'Settings');
+      assert.equal(navigation.focusOnHeading, true);
+      await page.locator('#search').click();
+      assert.equal(await input.isVisible(), true);
+      assert.equal(await input.evaluate(element => element === document.activeElement), true);
+      await enter(inputs[2]);
+      await page.evaluate(() => window.fixture.complete(6, 'returned search result'));
+      navigation.afterReturn = await result.textContent();
+      assert.equal(navigation.afterReturn, 'returned search result');
+      await enter(inputs[0]);
+      await page.locator('#settings').click();
+      await page.evaluate(() => window.fixture.fail(7));
+      navigation.afterLateFailure = await page.locator('#error').textContent();
+      assert.equal(navigation.afterLateFailure, guarded && invalidateOnLeave ? '' : 'Search failed. Try again.');
+      assert.equal(await result.textContent(), 'Settings panel');
+      // Clearing is a real input transition, not a direct model-state mutation.
+      await page.locator('#search').click();
+      await enter(inputs[0]);
+      if (driver === 'fill') {
+        await input.fill('');
+      } else {
+        await input.press('ControlOrMeta+A');
+        await input.press('Backspace');
+      }
+      const cleared = {
+        submitted: (await page.evaluate(() => window.fixture.submitted())).slice(-2),
+        input: await input.inputValue(),
+      };
+      assert.deepEqual(cleared.submitted, [
+        {value: inputs[0], trusted: true}, {value: '', trusted: true},
+      ]);
+      assert.equal(cleared.input, '');
+      await page.evaluate(() => window.fixture.complete(9, ''));
+      cleared.afterEmpty = await result.textContent();
+      await page.evaluate(() => window.fixture.complete(8, 'pre-clear result'));
+      cleared.afterOld = await result.textContent();
+      cleared.focused = await input.evaluate(element => element === document.activeElement);
+      assert.equal(cleared.afterEmpty, '');
+      assert.equal(cleared.afterOld, guarded ? '' : 'pre-clear result');
+      assert.equal(cleared.focused, true);
+      // A fresh-document return is distinct from SPA disposal or BFCache restore.
+      await enter(inputs[0]);
+      const documentNavigation = {
+        pendingSubmission: (await page.evaluate(() => window.fixture.submitted())).at(-1),
+      };
+      assert.deepEqual(documentNavigation.pendingSubmission, {value: inputs[0], trusted: true});
+      const oldDocument = await page.evaluateHandle(() => document);
+      await page.locator('#leave-document').click();
+      await page.waitForURL(new URL('./away.html', import.meta.url).href);
+      assert.equal(await page.locator('h1').textContent(), 'Another document');
+      assert.equal(await page.evaluate(() => typeof window.fixture), 'undefined');
+      await assert.rejects(() => oldDocument.evaluate(doc => doc.title));
+      await oldDocument.dispose();
+      await page.goto(url.href);
+      documentNavigation.submissionsOnReturn = await page.evaluate(() => window.fixture.submitted());
+      documentNavigation.resultOnReturn = await result.textContent();
+      assert.deepEqual(documentNavigation.submissionsOnReturn, []);
+      assert.equal(documentNavigation.resultOnReturn, '');
+      await enter(inputs[2]);
+      await page.evaluate(() => window.fixture.complete(0, 'fresh document result'));
+      documentNavigation.resultAfterNewRequest = await result.textContent();
+      assert.equal(documentNavigation.resultAfterNewRequest, 'fresh document result');
+      assert.deepEqual(await page.evaluate(() => window.fixture.submitted()),
+        [{value: inputs[2], trusted: true}]);
+      assert.deepEqual(errors, []);
+      observations.push({driver, guarded, invalidateOnLeave, submitted, keys, afterNew, afterOld, normal, focused, recovery, navigation, cleared, documentNavigation});
+    } finally {
+      await context.close();
+    }
+  }
+} finally {
+  try {
+    if (browser) await browser.close();
+  } finally {
+    if (server) await server.close();
+    clearTimeout(watchdog);
+  }
+}
+if (timedOut) process.exit(1);
+console.log(JSON.stringify({complete: true, browser: browser.version(), observations}, null, 2));

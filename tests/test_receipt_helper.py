@@ -1,0 +1,381 @@
+import hashlib
+import importlib.util
+import io
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import unittest
+from unittest.mock import Mock, patch
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = ROOT / 'skills/receipt/scripts/compare.py'
+spec = importlib.util.spec_from_file_location('receipt_helper', SCRIPT)
+helper = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(helper)
+
+
+class ReceiptHelperTests(unittest.TestCase):
+    def test_cleanup_failure_stops_comparison_and_cli_reports_no_evidence(self):
+        failure = RuntimeError('Child exit unconfirmed after 5-second cleanup wait; comparison not established')
+        before = {name: (self.root/name).read_bytes() for name in self.recipe['fixed'] + self.recipe['vary']}
+        with patch.object(helper, 'run_check', side_effect=failure) as check, \
+                self.assertRaisesRegex(RuntimeError, 'Child exit unconfirmed'):
+            helper.compare(self.root, self.recipe)
+        self.assertEqual(check.call_count, 1)  # After implementation was not run.
+        self.assertEqual(list(self.root.glob('.receipt-*')), [])
+        self.assertEqual(before, {name: (self.root/name).read_bytes() for name in before})
+        stdout, stderr = io.StringIO(), io.StringIO()
+        with patch.object(sys, 'argv', ['compare.py', '--source', str(self.root), '--spec', '-']), \
+                patch.object(sys, 'stdin', io.StringIO(json.dumps(self.recipe))), \
+                patch.object(sys, 'stdout', stdout), patch.object(sys, 'stderr', stderr), \
+                patch.object(helper, 'run_check', side_effect=failure) as check, \
+                self.assertRaises(SystemExit) as stopped:
+            helper.main()
+        self.assertEqual(stopped.exception.code, 2)
+        self.assertEqual(check.call_count, 1)
+        self.assertEqual(stdout.getvalue(), '')
+        self.assertIn('Comparison not established: Child exit unconfirmed', stderr.getvalue())
+        self.assertNotIn('Traceback', stderr.getvalue())
+        self.assertEqual(list(self.root.glob('.receipt-*')), [])
+
+    def test_unconfirmed_child_exit_is_bounded_and_not_a_comparison(self):
+        process = Mock(returncode=None)
+        process.wait.side_effect = subprocess.TimeoutExpired('probe', 5)
+        with patch.object(helper.subprocess, 'Popen', return_value=process), \
+                patch.object(helper.selectors, 'DefaultSelector', side_effect=subprocess.TimeoutExpired('probe', 1)), \
+                patch.object(helper.os, 'killpg'), \
+                self.assertRaisesRegex(RuntimeError, 'Child exit unconfirmed'):
+            helper.run_check(sys.executable, self.root, self.recipe, 1)
+        process.wait.assert_called_once_with(timeout=5)
+        process.stdout.close.assert_called_once()
+
+    def test_cleanup_timeout_does_not_replace_user_interruption(self):
+        process = Mock(returncode=None)
+        process.poll.return_value = None
+        process.wait.side_effect = subprocess.TimeoutExpired('probe', 5)
+        with patch.object(helper.subprocess, 'Popen', return_value=process), \
+                patch.object(helper.selectors, 'DefaultSelector', side_effect=KeyboardInterrupt), \
+                patch.object(helper.os, 'killpg'), self.assertRaises(KeyboardInterrupt):
+            helper.run_check(sys.executable, self.root, self.recipe, 1)
+        process.wait.assert_called_once_with(timeout=5)
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.git('init', '-q', '--template=')
+        self.git('config', 'user.name', 'Fixture')
+        self.git('config', 'user.email', 'fixture@example.invalid')
+        self.git('config', 'commit.gpgsign', 'false')
+        self.git('config', 'core.hooksPath', str(self.root / 'no-hooks'))
+        (self.root / 'rule.py').write_text('def eligible(n): return n > 18\n')
+        (self.root / 'test_rule.py').write_text('import unittest\n')
+        self.before = self.commit()
+        (self.root / 'rule.py').write_text('def eligible(n): return n >= 18\n')
+        self.after = self.commit()
+        self.tests = ('import unittest\nfrom rule import eligible\n'
+                      'class Boundary(unittest.TestCase):\n'
+                      '    def test_boundary(self): self.assertTrue(eligible(18))\n')
+        (self.root / 'test_rule.py').write_text(self.tests)
+        self.recipe = dict(fixed=['test_rule.py'], vary=['rule.py'],
+                           before=self.before, after=self.after, imports=['rule'],
+                           runner='unittest', tests=['-v', 'test_rule'])
+
+    def git(self, *args):
+        return subprocess.check_output(['git', *args], cwd=self.root, text=True).strip()
+
+    def commit(self):
+        self.git('add', '.')
+        self.git('commit', '-qm', 'Fixture')
+        return self.git('rev-parse', 'HEAD')
+
+    def test_freezes_dirty_current_assertions_not_historical_tests(self):
+        original = (self.root / 'rule.py').read_bytes()
+        status = self.git('status', '--porcelain')
+        result = helper.compare(self.root, self.recipe)
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertIn('Ran 1 test', result['checks']['after']['output'])
+        self.assertEqual(result['revisions'], dict(before=self.before, after=self.after))
+        self.assertEqual(result['fixed_sha256']['test_rule.py'], hashlib.sha256(self.tests.encode()).hexdigest())
+        self.assertEqual((self.root / 'rule.py').read_bytes(), original)
+        self.assertEqual((self.root / 'test_rule.py').read_text(), self.tests)
+        self.assertEqual(self.git('status', '--porcelain'), status)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_working_input_budget_rejects_before_reading_overflow_file(self):
+        for name in ('large-a.bin', 'large-b.bin'):
+            with (self.root / name).open('wb') as stream:
+                stream.truncate(10_000_000)
+        recipe = dict(self.recipe, fixed=['test_rule.py', 'large-a.bin', 'large-b.bin'])
+        read = Path.read_bytes
+        accessed = []
+        def checked_read(path):
+            accessed.append(path.name)
+            if path.name == 'large-b.bin':
+                raise AssertionError('Read started after the working-input budget was exhausted')
+            return read(path)
+        with patch.object(Path, 'read_bytes', checked_read), \
+                patch.object(helper, 'run_check') as execute:
+            with self.assertRaisesRegex(ValueError, 'Inputs exceed 20 MB'):
+                helper.compare(self.root, recipe)
+        execute.assert_not_called()
+        self.assertEqual(accessed, ['test_rule.py', 'large-a.bin'])
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_permission_only_original_change_is_reported_without_restoring(self):
+        original = self.root / 'rule.py'
+        original.chmod(0o644)
+        content = original.read_bytes()
+        (self.root / 'test_rule.py').write_text(
+            'from pathlib import Path\n'
+            f'Path({str(original)!r}).chmod(0o755)\n' + self.tests)
+        with self.assertRaisesRegex(RuntimeError, 'Selected originals changed; not restored: rule.py'):
+            helper.compare(self.root, self.recipe)
+        self.assertEqual(original.read_bytes(), content)
+        self.assertEqual(original.stat().st_mode & 0o777, 0o755)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_cli_reuses_launch_interpreter_and_resolves_revision_expressions(self):
+        # Exercise the documented stdin recipe, not an in-process default argument.
+        assertions = (self.tests + '\n    def test_interpreter(self):\n'
+                      '        import sys\n'
+                      f'        self.assertEqual(sys.executable, {sys.executable!r})\n'
+                      '        print("INTERPRETER_OK", sys.executable, flush=True)\n')
+        (self.root / 'test_rule.py').write_text(assertions)
+        status = self.git('status', '--porcelain')
+        result = subprocess.run(
+            [sys.executable, '-B', str(SCRIPT), '--source', str(self.root), '--spec', '-'],
+            input=json.dumps(dict(self.recipe, before='HEAD^', after='HEAD')),
+            text=True, capture_output=True, timeout=20)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        observed = json.loads(result.stdout)
+        self.assertEqual(observed['revisions'], dict(before=self.before, after=self.after))
+        self.assertEqual(observed['checks']['before']['exit_code'], 1)
+        self.assertEqual(observed['checks']['after']['exit_code'], 0)
+        for check in observed['checks'].values():
+            self.assertIn('INTERPRETER_OK ' + sys.executable, check['output'])
+            self.assertIn('Ran 2 tests', check['output'])
+            self.assertIn('Verified copied import: rule', check['output'])
+        self.assertIn('AssertionError', observed['checks']['before']['output'])
+        self.assertEqual((self.root / 'test_rule.py').read_text(), assertions)
+        self.assertEqual(self.git('status', '--porcelain'), status)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_multiple_literal_files_share_tree_query_and_preserve_modes(self):
+        names = ['z space.txt', 'a[1].txt', 'nested/tab\tname.txt']
+        for name in names:
+            target = self.root / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text('before')
+        (self.root / names[0]).chmod(0o755)
+        before = self.commit()
+        for name in names:
+            (self.root / name).write_text('after')
+        after = self.commit()
+        recipe = dict(self.recipe, before=before, after=after, vary=names)
+        seen = []
+        def check(python, root, recipe, timeout):
+            seen.append([(name, (root/name).read_text(), (root/name).stat().st_mode & 0o777)
+                         for name in names])
+            return dict(exit_code=0, timed_out=False, output='', output_truncated=False)
+        with patch.object(helper, 'git', wraps=helper.git) as calls, patch.object(helper, 'run_check', side_effect=check):
+            helper.compare(self.root, recipe)
+        self.assertEqual(sum(call.args[1] == 'ls-tree' for call in calls.call_args_list), 2)
+        for index, value in enumerate(('before', 'after')):
+            self.assertEqual(seen[index], [(name, value, 0o755 if name == names[0] else 0o644)
+                                          for name in names])
+
+    def test_batched_tree_rejects_one_missing_historical_member(self):
+        (self.root / 'new.txt').write_text('not in history')
+        with patch.object(helper, 'run_check') as execute, self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, vary=['rule.py', 'new.txt']))
+        execute.assert_not_called()
+
+    def test_identical_blobs_are_read_once_but_modes_stay_per_path(self):
+        for name in ('a.txt', 'b.txt'):
+            (self.root / name).write_text('shared content')
+        before = self.commit()
+        (self.root / 'b.txt').chmod(0o755)
+        after = self.commit()
+        observations = []
+        def check(python, root, recipe, timeout):
+            observations.append([(root/name).stat().st_mode & 0o777 for name in ('a.txt', 'b.txt')])
+            self.assertEqual((root/'a.txt').read_text(), 'shared content')
+            self.assertEqual((root/'b.txt').read_text(), 'shared content')
+            return dict(exit_code=0, timed_out=False, output='', output_truncated=False)
+        recipe = dict(self.recipe, before=before, after=after, vary=['a.txt', 'b.txt'])
+        with patch.object(helper, 'git', wraps=helper.git) as calls, patch.object(helper, 'run_check', side_effect=check):
+            helper.compare(self.root, recipe)
+            helper.compare(self.root, recipe)
+        self.assertEqual(sum(call.args[1] == 'cat-file' for call in calls.call_args_list), 2)
+        self.assertTrue(all(call.args[2] == '--batch' for call in calls.call_args_list
+                            if call.args[1] == 'cat-file'))
+        self.assertEqual(observations, [[0o644, 0o644], [0o644, 0o755]] * 2)
+
+    def test_distinct_binary_blobs_use_one_read_process_per_revision(self):
+        names = ['empty.bin', 'space name.bin', 'tab\tname.bin']
+        old = [b'', b'\x00\xff\nheader blob 999\n', b'no trailing newline']
+        new = [b'new empty', old[1], b'changed\x00\n']
+        for name, content in zip(names, old):
+            (self.root/name).write_bytes(content)
+        before = self.commit()
+        for name, content in zip(names, new):
+            (self.root/name).write_bytes(content)
+        after = self.commit()
+        seen = []
+        def check(python, root, recipe, timeout):
+            seen.append([(root/name).read_bytes() for name in names])
+            return dict(exit_code=0, timed_out=False, output='', output_truncated=False)
+        with patch.object(helper, 'git', wraps=helper.git) as calls, patch.object(helper, 'run_check', side_effect=check):
+            helper.compare(self.root, dict(self.recipe, before=before, after=after, vary=names))
+        self.assertEqual(seen, [old, new])
+        reads = [call for call in calls.call_args_list if call.args[1] == 'cat-file']
+        self.assertEqual(len(reads), 2)
+        self.assertEqual([len(call.kwargs['input'].splitlines()) for call in reads], [3, 2])
+        self.assertEqual([(self.root/name).read_bytes() for name in names], new)
+
+    def test_reused_blob_still_counts_toward_each_snapshot_limit(self):
+        (self.root/'large.txt').write_bytes(b'x' * 10_000_001)
+        revision = self.commit()
+        (self.root/'large.txt').write_text('small current input')
+        recipe = dict(self.recipe, before=revision, after=revision, vary=['large.txt'])
+        with patch.object(helper, 'run_check') as execute, self.assertRaisesRegex(ValueError, 'snapshots exceed'):
+            helper.compare(self.root, recipe)
+        execute.assert_not_called()
+        self.assertEqual((self.root/'large.txt').read_text(), 'small current input')
+
+    def test_invalid_batch_response_never_runs_checks(self):
+        real_git = helper.git
+        for corrupt in (lambda data: data.replace(b' blob ', b' tree ', 1),
+                        lambda data: data.split(b'\n', 1)[0] + b'\n',
+                        lambda data: data[:-1] + b'x',
+                        lambda data: data + b'extra'):
+            def read(root, *args, **kwargs):
+                data = real_git(root, *args, **kwargs)
+                return corrupt(data) if args[:2] == ('cat-file', '--batch') else data
+            with self.subTest(corrupt=corrupt), patch.object(helper, 'git', side_effect=read), \
+                    patch.object(helper, 'run_check') as execute, self.assertRaises(ValueError):
+                helper.compare(self.root, self.recipe)
+            execute.assert_not_called()
+            self.assertEqual(list(self.root.glob('.receipt-*')), [])
+
+    def test_batched_tree_rejects_historical_symlink_before_checks(self):
+        alias = self.root / 'historical.py'
+        alias.symlink_to('rule.py')
+        before = self.commit()
+        alias.unlink()
+        alias.write_text('VALUE = 1\n')
+        after = self.commit()
+        recipe = dict(self.recipe, before=before, after=after,
+                      vary=['rule.py', 'historical.py'])
+        status = self.git('status', '--porcelain')
+        with patch.object(helper, 'run_check') as execute, self.assertRaisesRegex(ValueError, 'regular Git file'):
+            helper.compare(self.root, recipe)
+        execute.assert_not_called()
+        self.assertEqual(alias.read_text(), 'VALUE = 1\n')
+        self.assertFalse(alias.is_symlink())
+        self.assertEqual(self.git('status', '--porcelain'), status)
+
+    def test_batched_tree_rejects_historical_directory_before_checks(self):
+        target = self.root / 'historical.py'
+        target.mkdir()
+        child = target / 'inside.txt'
+        child.write_text('historical data')
+        before = self.commit()
+        child.unlink()
+        target.rmdir()
+        target.write_text('VALUE = 2\n')
+        after = self.commit()
+        with patch.object(helper, 'run_check') as execute, self.assertRaisesRegex(ValueError, 'regular Git file'):
+            helper.compare(self.root, dict(self.recipe, before=before, after=after,
+                                           vary=['rule.py', 'historical.py']))
+        execute.assert_not_called()
+        self.assertEqual(target.read_text(), 'VALUE = 2\n')
+
+    def test_cli_reports_observations_not_automatic_proof(self):
+        process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--spec', '-',
+                                  '--source', str(self.root)], input=json.dumps(self.recipe),
+                                 text=True, capture_output=True)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        self.assertEqual(json.loads(process.stdout)['status'], 'observed')
+
+    def test_rejects_aliases_traversal_overlap_and_symlinks(self):
+        for path in ('./test_rule.py', '../test_rule.py', '/tmp/test_rule.py', '.git/config', 'rule.py'):
+            with self.subTest(path=path), self.assertRaises(ValueError):
+                helper.compare(self.root, dict(self.recipe, fixed=[path]))
+        (self.root / 'alias.py').symlink_to('test_rule.py')
+        with self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, fixed=['alias.py']))
+
+    def test_missing_historical_file_fails_before_execution(self):
+        (self.root / 'new.py').write_text('x = 1\n')
+        with self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, vary=['new.py']))
+
+    def test_external_import_is_reported_as_setup_failure(self):
+        result = helper.compare(self.root, dict(self.recipe, imports=['json']))
+        for check in result['checks'].values():
+            self.assertNotEqual(check['exit_code'], 0)
+            self.assertIn('Import escaped comparison copy', check['output'])
+        self.assertEqual(result['status'], 'observed')
+
+    def test_timeout_stops_comparison_and_cleans_copies(self):
+        (self.root / 'test_rule.py').write_text('import time\ntime.sleep(20)\n')
+        result = helper.compare(self.root, self.recipe, timeout=0.2)
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertTrue(result['checks']['before']['timed_out'])
+        self.assertNotIn('after', result['checks'])
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_large_output_is_bounded_without_losing_exit_status(self):
+        (self.root / 'test_rule.py').write_text('print("x" * 100000)\n')
+        result = helper.compare(self.root, self.recipe)
+        for check in result['checks'].values():
+            self.assertEqual(check['exit_code'], 0)
+            self.assertTrue(check['output_truncated'])
+            self.assertLessEqual(len(check['output']), 12000)
+
+    def test_package_relative_imports_and_fixed_data_in_both_copies(self):
+        package = self.root / 'codec'
+        package.mkdir()
+        (package / '__init__.py').write_text('')
+        (package / 'config.py').write_text('SEPARATOR = ":"\n')
+        implementation = package / 'decode.py'
+        implementation.write_text('from .config import SEPARATOR\ndef decode(s): return s.split(SEPARATOR)\n')
+        before = self.commit()
+        implementation.write_text('from .config import SEPARATOR\ndef decode(s): return s.split(SEPARATOR, 1)\n')
+        after = self.commit()
+        (self.root / 'sample.txt').write_text('key:value:with:colons')
+        (self.root / 'test_codec.py').write_text(
+            'import unittest\nfrom pathlib import Path\nfrom codec.decode import decode\n'
+            'class Decode(unittest.TestCase):\n'
+            '    def test_value(self):\n'
+            '        self.assertEqual(decode(Path("sample.txt").read_text()), ["key", "value:with:colons"])\n')
+        recipe = dict(fixed=['codec/__init__.py', 'codec/config.py', 'sample.txt', 'test_codec.py'],
+                      vary=['codec/decode.py'], imports=['codec.decode', 'codec.config'],
+                      before=before, after=after, runner='unittest', tests=['-v', 'test_codec'])
+        status = self.git('status', '--porcelain')
+        result = helper.compare(self.root, recipe)
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertEqual(len(result['fixed_sha256']), 4)
+        self.assertEqual(status, self.git('status', '--porcelain'))
+
+    def test_incompatible_interface_is_not_an_assertion_failure(self):
+        (self.root / 'test_rule.py').write_text(
+            'import unittest\nfrom rule import unavailable_interface\n')
+        result = helper.compare(self.root, self.recipe)
+        for check in result['checks'].values():
+            self.assertNotEqual(check['exit_code'], 0)
+            self.assertIn('ImportError', check['output'])
+            self.assertNotIn('AssertionError', check['output'])
+        self.assertEqual(result['status'], 'observed')
+
+
+if __name__ == '__main__':
+    unittest.main()

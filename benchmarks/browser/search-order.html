@@ -1,0 +1,79 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Local stale-response regression</title>
+<nav><button id="settings">Settings</button><button id="search">Search</button></nav>
+<a id="leave-document" href="away.html">Leave search document</a>
+<h1 id="view" tabindex="-1">Search</h1>
+<label for="query">Search</label>
+<input id="query" autocomplete="off">
+<p id="results" aria-live="polite"></p>
+<p id="error" role="alert"></p>
+<pre id="receipt">RUNNING</pre>
+<script>
+// Synthetic browser fixture, not an application backend or model evaluation.
+const query = document.querySelector('#query');
+const results = document.querySelector('#results');
+const errorMessage = document.querySelector('#error');
+const receipt = document.querySelector('#receipt');
+const guarded = new URLSearchParams(location.search).get('guard') !== 'off';
+const invalidateOnLeave = new URLSearchParams(location.search).get('invalidate') !== 'off';
+const pending = [];
+const keys = [];
+query.addEventListener('keydown', event => keys.push({key: event.key, trusted: event.isTrusted}));
+let latest = 0;
+function navigate(name) {
+  // Same-document view transition: pending requests survive, ownership does not.
+  if (invalidateOnLeave) ++latest;
+  query.hidden = name !== 'Search';
+  document.querySelector('label').hidden = query.hidden;
+  document.querySelector('#view').textContent = name;
+  results.textContent = name === 'Settings' ? 'Settings panel' : '';
+  errorMessage.textContent = '';
+  (query.hidden ? document.querySelector('#view') : query).focus();
+}
+document.querySelector('#settings').addEventListener('click', () => navigate('Settings'));
+document.querySelector('#search').addEventListener('click', () => navigate('Search'));
+query.addEventListener('input', async (event) => {
+  const request = ++latest;
+  const value = query.value;
+  errorMessage.textContent = '';
+  try {
+    const response = await new Promise((resolve, reject) => pending.push({value, resolve, reject, trusted: event.isTrusted}));
+    if (!guarded || request === latest) results.textContent = response;
+  } catch (error) {
+    if (!guarded || request === latest) errorMessage.textContent = error.message;
+  }
+});
+function type(value) {
+  query.value = value;
+  query.dispatchEvent(new Event('input', {bubbles: true}));
+}
+async function complete(index, text) {
+  pending[index].resolve(text);
+  await Promise.resolve();
+}
+async function fail(index) {
+  pending[index].reject(new Error('Search failed. Try again.'));
+  await Promise.resolve();
+}
+window.fixture = {complete, fail, keys: () => keys,
+  submitted: () => pending.map(({value, trusted}) => ({value, trusted}))};
+if (!new URLSearchParams(location.search).has('manual')) (async () => {
+  query.focus();
+  type('old');
+  type('new');
+  await complete(1, 'new result');
+  const afterNew = results.textContent;
+  await complete(0, 'old result');
+  const afterOld = results.textContent;
+  const focusPreserved = document.activeElement === query;
+  type('normal');
+  await complete(2, 'normal result');
+  const normal = results.textContent;
+  const observed = {guarded, submitted: pending.map(p => p.value), afterNew,
+    afterOld, normal, focusPreserved};
+  observed.passed = afterNew === 'new result' && afterOld === 'new result'
+    && normal === 'normal result' && focusPreserved;
+  receipt.textContent = JSON.stringify(observed);
+})().catch(error => { receipt.textContent = JSON.stringify({error: String(error)}); });
+</script>

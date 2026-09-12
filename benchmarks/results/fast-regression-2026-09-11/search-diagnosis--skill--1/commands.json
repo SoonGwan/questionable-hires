@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!package-lock.json'\"'; cat .agents/skills/exorcist/SKILL.md\"",
+    "aggregated_output": "<WORKSPACE>\n---\nname: exorcist\ndescription: Diagnose an uncertain bug by designing experiments that distinguish competing causes, especially speculative cache, timing, environment, or concurrency explanations.\n---\n\n# Exorcist\n\n> You keep saying cache. Let's test that belief.\n\n## Find the decision-changing observation\n\nStart at the reported failure and trace only enough of its path to distinguish plausible causes. Locate relevant files from supplied paths or the actual repository file list before guessing framework-specific paths. Reuse existing reproduction evidence. Do not manufacture a hypothesis list when the mechanism is already established.\n\nChoose the observation at the boundary where explanations diverge: submission versus persistence, dispatch versus completion, configured policy versus effective runtime state. Measuring the same success flag again adds no evidence about an unobserved downstream effect.\n\nBefore another experiment, identify which possible result would change the diagnosis or corrective action. Prefer the cheapest check that separates those outcomes. Reuse one small harness; vary a relevant factor with comparable inputs and controlled timing. Repetition is useful for unresolved intermittency, not for collecting more passing output.\n\nExercise the affected implementation, not a rewritten model of it. If a suspected dependency is absent and the symptom persists, it is unnecessary for that reproduction\u2014not disproved in every production incident. Explain why the existing safeguard does or does not address this mechanism, rather than merely showing its setting.\n\nWhen evidence is missing, identify the specific observation that would discriminate remaining causes. Don't replace unavailable runtime evidence with increasingly elaborate simulations. A restart that removes symptoms is not by itself causal proof; preserve logs and user state before any authorized reset.\n\n## Finish at the evidence boundary\n\nReport the supported mechanism, decisive command/result, relevant alternative or safeguard, and remaining uncertainty. Link a retained reproduction instead of repeating its full code and output. Keep humor optional.\n\nFor diagnosis, leave production code unchanged. For a requested fix, implement within scope and rerun the original reproduction plus relevant checks. Preserve user changes and explicit requirements.\n\nStop when the evidence supports the next action or identifies the unavailable check. Continue only for an unresolved distinction or verification the task requires\u2014not a general audit.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"'; git status --short\"",
+    "aggregated_output": "search.py\n.agents/skills/exorcist/SKILL.md\n.agents/skills/exorcist/agents/openai.yaml\ntransport.py\n?? .agents/\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat search.py transport.py'",
+    "aggregated_output": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\nasync def fetch(query, request):\n    return await request('/search', params={'q': query}, headers={'Cache-Control': 'no-cache'})\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B reproduce_search.py; git diff --exit-code -- search.py transport.py; git status --short'",
+    "aggregated_output": "dispatch=('old', 'new'); completion=('old', 'new')\n  requests=[('/search', {'q': 'old'}, {'Cache-Control': 'no-cache'}), ('/search', {'q': 'new'}, {'Cache-Control': 'no-cache'})]\n  result sequence=['results:old', 'results:new']; final stale=False\ndispatch=('old', 'new'); completion=('new', 'old')\n  requests=[('/search', {'q': 'old'}, {'Cache-Control': 'no-cache'}), ('/search', {'q': 'new'}, {'Cache-Control': 'no-cache'})]\n  result sequence=['results:new', 'results:old']; final stale=True\n?? .agents/\n?? reproduce_search.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

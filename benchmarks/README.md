@@ -1,6 +1,7 @@
 # Same ticket. Three coworkers.
 
-Latest skill revision check: [Exorcist transfer comparison — 27 sessions, all conditions 9/9](REPORT-EXORCIST-TRANSFER.md). No comparative quality gain was observed.
+Current status: [all eight candidates and unresolved performance gaps](CURRENT-CANDIDATE-STATUS.md).
+The historical [Exorcist transfer comparison — 27 sessions, all conditions 9/9](REPORT-EXORCIST-TRANSFER.md) showed no comparative quality gain; it is not the latest bundle validation.
 
 This suite runs actual Codex sessions in fresh synthetic Git repositories. The model can inspect files, run commands, and implement changes when the task asks for them. It is not a single-shot code-generation comparison.
 
@@ -34,11 +35,34 @@ For automatic selection with all eight skills installed, use `--arms auto`. This
 
 ## Evidence
 
+For a compact inspectable example, open the [Landlord version comparison](results/landlord-compact-01/README.md): actual commands/outputs, model answers, usage and fixture files for both versions. The result is adverse, and both arms use a skill—not a no-skill baseline.
+
 Each cell retains the final answer, tool-event log, diff, actual usage reported by Codex, elapsed wall time, fixture commit, skill digest, and completion status. Workspaces remain in temporary directories for inspection. A process completing is not a correctness score. Missing usage and timeouts remain visible.
 
 Review against each case's criteria in `cases.json`, which is never copied into the model's workspace. Run behavior checks against resulting code where applicable. Verify that mutations were isolated, review-only tasks left production files unchanged, and claims match executed commands.
 
 Raw logs stay in ignored `local-runs/`. Before promoting evidence into `results/` or `examples/`, inspect it for private paths, credentials, and unrelated data. The runner replaces its workspace and home prefix in text logs, but that is not a complete secrets scanner.
+
+### Missing command-output evidence
+
+A completed command event can contain only part of its output. Nonempty
+`aggregated_output`, an exit code of zero, and clear capture diagnostics do not
+prove that every command in a shell chain succeeded. Compare the original
+`stdout.original.jsonl` with `events.jsonl` after the documented path redaction
+before blaming the report pipeline. Inspect any intermediate events for the same
+item; do not concatenate repeated snapshots as though they were distinct chunks.
+
+If decisive output is absent from the original events too, mark that check's
+execution evidence unknown. A later successful assertion can prove only the
+conditions it actually checks; a final `git status` or `git diff` cannot establish
+an earlier test's exit status. Keep a missing-evidence case in the results and
+resource totals. Do not reconstruct missing output from the final answer or
+credit an author's later replay to the evaluated model. Any diagnostic rerun
+must be separate from the frozen comparison, with its additional usage retained.
+
+The [scoped-discovery review](NECROMANCER-DISCOVERY-01.md) contains an observed
+example and the source-versus-redaction audit. This is a known evidence limitation,
+not a claim that the runner can recover all model tool output.
 
 ## What this suite cannot establish
 

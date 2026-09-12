@@ -9,6 +9,23 @@ import subprocess
 REVISION = '26d48e0634e6ee9cdc0533996db289ce4b430177'
 
 
+def check_resources(root, expected):
+    if not expected:
+        return dict(matches=None, reason='No full-resource manifest recorded')
+    mismatches = []
+    for name, digest in expected.items():
+        path = Path(name)
+        if path.is_absolute() or '..' in path.parts or path == Path('.'):
+            raise ValueError('Unsafe skill resource path')
+        target = root / path
+        linked = any((root / Path(*path.parts[:i])).is_symlink()
+                     for i in range(len(path.parts) + 1))
+        if linked or not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != digest:
+            mismatches.append(name)
+    return dict(matches=not mismatches, mismatched_or_missing=mismatches,
+                checked_files=len(expected))
+
+
 def compare_files(source, snapshot, names):
     changed, missing = [], []
     for name in names:
@@ -29,6 +46,9 @@ def audit(source, run):
         raise ValueError('Source must be clean')
     names = subprocess.check_output(['git', 'ls-files', '-z'], cwd=source).decode().split('\0')[:-1]
     manifest = json.loads((run / 'run.json').read_text())
+    skill_name = manifest.get('skill_name', 'con-artist')
+    if skill_name not in ('con-artist', 'landlord', 'exorcist'):
+        raise ValueError('Unsupported profile skill in manifest')
     results = []
     for case, arm, repeat in manifest['schedule']:
         cell = run / f'{case}--{arm}--{repeat}'
@@ -39,10 +59,15 @@ def audit(source, run):
         row = dict(cell=cell.name, completed=meta['completed'], base_revision_matches=meta['base_commit'] == REVISION)
         row.update(compare_files(source, cell / 'project', names))
         row['skill_digest_matches'] = meta.get('skill_sha256') == (manifest['skill_sha256'] if arm == 'skill' else None)
+        if arm == 'skill':
+            row['installed_skill_resources'] = check_resources(
+                Path(meta['workspace']) / '.agents/skills' / skill_name,
+                manifest.get('skill_files_sha256'))
         row['patch_rejection_recorded'] = 'patch rejected' in (cell / 'stderr.txt').read_text().lower()
         row['source_manifest_sha256'] = hashlib.sha256('\n'.join(names).encode()).hexdigest()
         results.append(row)
     return dict(upstream_revision=revision, tracked_file_count=len(names), cells=results,
+                frozen_skill_resources=check_resources(run / 'skills' / skill_name, manifest.get('skill_files_sha256')),
                 limitation='Final snapshots cannot prove no transient edits or outside writes. Review full command traces and behavioral claims separately. No completed record does not imply a stopped process.')
 
 

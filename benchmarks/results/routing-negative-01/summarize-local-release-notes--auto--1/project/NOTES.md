@@ -1,0 +1,3 @@
+# Local draft release notes
+
+The export dialog now remembers the last selected separator during the current session. The default for a new session is still comma. The team plans to test keyboard navigation next week; those checks have not run yet. No rollout date has been selected.

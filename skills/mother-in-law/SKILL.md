@@ -9,20 +9,38 @@ description: Test a changed user interaction for realistic sequence failures suc
 
 ## Visit like a real user
 
-Identify the changed user journey, its state transitions, and externally visible success. Read the relevant UI and request handling. Pick failure sequences justified by that flow: duplicate submission, reversed response order, navigation during a save, an empty result, or a failed request followed by retry.
+Read the applicable instructions, affected interaction code, and documented test
+entrypoint once. Trust a documented local runtime and executable path unless launch
+fails; don't add separate environment probes that the real check will answer.
 
-Choose the shortest sequence that could violate the journey's invariant: start an operation, cross a meaningful state boundary, then complete or fail the earlier operation. Pair it with the nearest normal sequence to distinguish a race from a generally broken flow. Reuse one harness with controlled promises, responses, or clocks; avoid arbitrary sleeps and exhaustive permutations. Use the project's browser facilities when available.
+Build one small parameterized reproduction with isolated per-case state. For an
+asynchronous interaction, cover the nearest normal case and each applicable stale
+completion class exactly once:
 
-Observe the effect at its owner: count submitted operations for duplicate prevention, assert latest selection after late responses, and check input/error/focus after recovery when relevant. A disabled button doesn't prove server idempotency; a mocked state transition doesn't prove rendered focus behavior. Prioritize consequential failures over additional screenshots of a passing path.
+1. older success after newer success;
+2. older failure after newer success;
+3. older completion after an invalidating boundary such as clear or navigation.
 
-Use local or designated test data. A QA request doesn't authorize real purchases, messages, or destructive production actions. If browser tooling is unavailable, test the closest relevant state boundary and clearly state that the actual browser journey wasn't exercised.
+Exercise both success and failure because guarding only rendered results can still
+leave a stale error. Omit a class only when the operation cannot produce it or the
+requirement makes it irrelevant, and say so. Control responses or clocks directly;
+do not use sleeps, broad permutations, or duplicate repetitions unless flakiness is
+observed.
+
+Use real browser/user input and inspect the rendered state. Record submitted
+operations and relevant result, error, selection, input, and focus state. Mocked
+state alone does not prove rendered behavior; a disabled button does not prove
+server idempotency.
+
+Launch a shared browser once and use a bounded runner that covers cleanup. If
+launch fails before interaction, retain one diagnostic and mark dependent cases
+unrun. Do not replace missing browser evidence with a parallel lower-layer suite.
+Use only local/designated test data and no destructive production actions.
 
 ## Deliver and stop
 
-For each real failure, provide the action sequence, expected and observed outcomes, evidence, and impacted behavior. Add deterministic regression coverage and a fix when requested. Avoid filing hypothetical failures as observed defects.
+Return the sequence, expected/observed outcome, tested layer, and complete bounded
+command. Keep evidence compact; a failing assertion with actual rendered state is
+usually more useful than duplicate logs and screenshots.
 
-Stop when the most relevant sequences and required checks cover the changed interaction. Report a clean result without inventing complaints. The family visit has an end time.
-
-## Working agreement
-
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.
+Preserve user changes; QA authorizes neither a production fix nor publication. Implement only when requested. Stop when relevant sequences and required checks cover the interaction. An unexecuted concern is not an observed defect.

@@ -13,20 +13,32 @@
 - [x] Eight additional clean, missing-evidence, or necessary-change skill sessions.
 - [x] Eight automatic-selection sessions with the whole team installed.
 - [x] Published answers, command evidence, diffs, metadata, and final snapshots.
-- [x] Eighteen local infrastructure and fixture tests.
+- [x] 203 local infrastructure, helper, packaging and fixture tests (run at `d09128c`).
+- [x] Current source archive: 233 tests execute/pass; two provenance-only skips (`05a9fce`, 35.925 seconds); standalone two-fault example also executes.
+- [x] All-eight installed resource bytes/permissions and standalone/bundle parity.
+- [x] Failed package build cleanup, retry and existing-destination preservation.
 
 See the [evaluation report](../benchmarks/REPORT.md) and [installation record](INSTALLATION-TEST.md) for exactly what those checks establish. An earlier eligibility pilot and an excluded single-hire routing pilot are also retained. Passing these smoke checks does not make every future engineering decision correct.
+
+The [current candidate status](../benchmarks/CURRENT-CANDIDATE-STATUS.md) tracks
+subsequent skill revisions, realistic transfers and adverse results. The original
+report is historical evidence, not the current candidate's performance score.
 
 ## Before a stable public release
 
 - [ ] Repeat independent comparisons and add larger realistic project tasks before making performance claims.
 - [ ] Exercise broader unrelated prompts to measure automatic-selection false positives.
+  - [Two current-bundle negative requests](../benchmarks/ROUTING-NEGATIVE-01.md) showed no observed skill-body reads or scope expansion; ambiguous requests and positive recall remain unchecked by this screen.
 - [ ] Validate browser-facing skills against actual rendered interaction flows.
 - [ ] Verify remote Git marketplace distribution if it is offered as an installation path.
 - [ ] Obtain a passing hosted CI run.
 - [ ] Owner decides when to switch the repository from private to public and publish a release.
 
-Hosted GitHub Actions currently cannot start because GitHub reports failed account payments or an insufficient spending limit. The repository remains private. Neither billing changes nor public visibility changes have been performed.
+The latest hosted run retrieved on 2026-09-11 did not start its test steps:
+GitHub reports failed account payments or an insufficient spending limit. It
+checks an older remote commit, not the current local candidate. See the
+[release-readiness evidence](RELEASE-READINESS.md). The repository remains private;
+neither billing changes nor public visibility changes have been performed.
 
 ## Hiring policy
 

@@ -7,22 +7,14 @@ description: Verify that a requested bug fix changes observable behavior with a 
 
 > You fixed it? Show me the receipt.
 
-## Collect a real receipt
+For a current bug, start with the affected code and project's documented test command; inspect history only if the required behavior or before implementation is unresolved. Choose one stable assertion on the actual affected path, preferably its existing regression test. Reuse established before evidence. Otherwise observe the assertion fail for the reported defect, implement the requested fix, and rerun the unchanged assertion and inputs. Preserve relevant neighboring behavior and required project checks.
 
-Turn the reported bug into one stable observable assertion on the real affected path. Prefer adding it to the existing regression test over writing separate throwaway before/after scripts. Include a neighboring input when it distinguishes the intended boundary from an overbroad fix. A compiler error or missing dependency is not the bug reproduction.
+For an already-present fix requiring historical comparison, use the [isolated comparison procedure](references/existing-fix.md). Don't reverse patches in the user's working tree.
 
-Run the reproduction against the unfixed behavior when available. Record the command, relevant input, failure, and revision or diff context. If the fix already exists, use an isolated copy or worktree for a justified comparison; don't reverse patches in the user's dirty tree. If the old behavior cannot be run, say the before result is unavailable.
+Choose the after check before running it. If a required suite actually executes the unchanged regression with the relevant inputs and runtime, its result is the after evidence; don't also run that regression separately. A skipped, undiscovered or differently configured test does not qualify. Retain required checks with distinct coverage and inspect the focused diff.
 
-For a fix, first observe the assertion fail for the reported reason, then change the implementation and rerun that unchanged assertion. Add surrounding checks only for contracts the diff can affect. Keep command exit status separate from later printing or Git commands so a successful final shell command cannot mask a failed check. Verification-only requests do not authorize production edits.
+Collect final checks together when no intermediate result changes the next action. In a shell supporting `&&`, a fail-fast chain preserves the failing exit; later checks are unrun, not passed. If every check must run, capture each exit explicitly. A semicolon chain's final exit does not establish earlier statuses. Reuse established check results until their relevant inputs change; don't discard a status and rerun just to recover it.
 
-A mocked response proves only the boundary the mock actually exercises. Match the claimed result to the tested layer. Distinguish a successful command from proof of the user's intended outcome.
+Dependency/compiler failures aren't defect reproduction; mocks don't prove unobserved effects. Preserve user changes and scope; verification alone authorizes neither implementation nor publication.
 
-## Deliver and stop
-
-Give the behavior changed, before/after results, exact reproducible command, and remaining verification limits. Include a focused regression test when it meaningfully prevents recurrence. Never invent terminal output or call an unexecuted check passed.
-
-Stop after the reproduction and relevant required checks establish the outcome. Don't collect unrelated green checks to make the receipt longer. A blocked environment is an unverified result, not a product failure or success.
-
-## Working agreement
-
-Preserve user changes and explicit requirements. Review is not permission to implement or publish. Separate observed evidence from inference; keep humor optional. Reuse existing artifacts and report decisive evidence without duplicating full logs.
+Deliver the changed behavior, decisive before/after observations with their commands, focused diff and actual limits. Include revision identities for historical comparisons. Reuse the regression as the receipt; no separate dossier or unrelated green checks. Stop when the requested outcome is verified, not when every possible check has run.
