@@ -88,6 +88,13 @@ archive result. Temporary extraction directories were removed after execution.
 
 ## Latest source archive
 
+[Linux container browser check](../benchmarks/BROWSER-CONTAINER-01.md): after
+explicit owner authorization, the pinned Playwright 1.63.0 image ran all six
+existing browser variants on Linux arm64 with networking disabled and the checkout
+read-only. This establishes an author-side container runtime, not model-driven QA,
+host installation, hosted CI or skill efficiency. Colima and the pulled image
+remain locally available.
+
 Source archive at `a61fec7`, checked 2026-09-12 KST: validation passes;
 243 tests discovered, **241 executed/passed and two explicit provenance-only
 skips**, in 36.940 seconds on local macOS/Python 3.9.6. The skipped comparisons
