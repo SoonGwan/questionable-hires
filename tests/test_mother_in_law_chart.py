@@ -18,6 +18,7 @@ class MotherInLawChartTests(unittest.TestCase):
                                  elapsed_seconds=dict(baseline=100, skill=80)),
             quality=dict(baseline=4, skill=5),
             clean_false_positives=dict(baseline=0, skill=0),
+            quality_rows=[dict(label='Stale error', baseline='MISSED', skill='FOUND')],
             description='Focused comparison', footer='Reviewed evidence only.')
 
     def test_renders_montage_light_and_dark_palettes(self):
@@ -28,6 +29,8 @@ class MotherInLawChartTests(unittest.TestCase):
         self.assertIn('#0F0F10', dark)
         self.assertIn('#3385FF', dark)
         self.assertIn('5/5', light)
+        self.assertIn('One extra bug.', light)
+        self.assertIn('MISSED', light)
 
     def test_rejects_out_of_range_quality(self):
         data = self.data()

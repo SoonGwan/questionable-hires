@@ -16,9 +16,13 @@ def render(data, dark=False):
     if any(set(metrics[name]) != {'baseline', 'skill'} for name in metrics):
         raise ValueError('Every resource metric requires baseline and skill')
     quality = data['quality']
+    quality_rows = data['quality_rows']
     cases = data['cases']
     if not 1 <= cases <= 10 or any(not 0 <= quality[arm] <= cases for arm in ('baseline', 'skill')):
         raise ValueError('Invalid case or quality counts')
+    if not quality_rows or any(set(row) != {'label', 'baseline', 'skill'}
+                               for row in quality_rows):
+        raise ValueError('Quality rows require label, baseline and skill')
 
     parts = [
         '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" '
@@ -62,20 +66,24 @@ def render(data, dark=False):
             text(x+36, 520, arm, 15, 'middle')
 
     x0 = 828
-    text(x0, 170, 'Quality target met', 20)
-    text(x0, 194, 'Case-level reviewed outcomes', 13, opacity=.78)
-    for index, arm in enumerate(('baseline', 'skill')):
-        y = 260 + index * 120
-        width = 280 * quality[arm] / cases
-        parts.append(f'<rect x="{x0}" y="{y}" width="280" height="42" '
-                     f'fill="{neutral}" fill-opacity=".16"/>')
-        parts.append(f'<rect x="{x0}" y="{y}" width="{width}" height="42" '
-                     f'fill="{blue if arm == "skill" else neutral}" '
-                     f'fill-opacity="{1 if arm == "skill" else .48}"/>')
-        text(x0, y-10, arm, 15)
-        text(x0+290, y+28, f'{quality[arm]}/{cases}', 17)
-    text(x0, 500, f'Clean-case false positives: {data["clean_false_positives"]["baseline"]} / '
-                   f'{data["clean_false_positives"]["skill"]} (baseline / skill)', 14)
+    text(x0, 170, 'One extra bug.', 20)
+    text(x0, 194, 'No extra false alarms.', 20)
+    text(x0, 225, f'Reviewed targets: {quality["baseline"]}/{cases} → {quality["skill"]}/{cases}', 14, opacity=.78)
+    text(x0+205, 260, 'baseline', 12, 'middle', .78)
+    text(x0+295, 260, 'skill', 12, 'middle', .78)
+    for index, row in enumerate(quality_rows):
+        y = 300 + index * 50
+        parts.append(f'<path d="M{x0} {y+15}h330" stroke="{neutral}" stroke-opacity=".13"/>')
+        text(x0, y, row['label'], 14)
+        for arm, x in (('baseline', x0+205), ('skill', x0+295)):
+            status = row[arm]
+            color = blue if arm == 'skill' and status != 'MISSED' else neutral
+            opacity = .42 if status == 'MISSED' else 1
+            text(x, y, status, 11, 'middle', opacity)
+            if arm == 'skill' and status != 'MISSED':
+                parts.append(f'<path d="M{x-27} {y+7}h54" stroke="{color}" stroke-width="3"/>')
+    text(x0, 520, f'False positives  {data["clean_false_positives"]["baseline"]} → '
+                   f'{data["clean_false_positives"]["skill"]}', 15)
     text(48, 585, data['footer'], 15)
     text(48, 615, 'Baseline = 100% per task; bars are equal-weight means of task ratios.', 14, opacity=.78)
     text(48, 643, 'Descriptive checkpoint, not a confidence interval or universal superiority claim.', 14, opacity=.78)
