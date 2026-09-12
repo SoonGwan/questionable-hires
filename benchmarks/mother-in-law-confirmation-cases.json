@@ -1,0 +1,79 @@
+[
+  {
+    "id": "lookup-stale-error",
+    "skill": "mother-in-law",
+    "task": "QA the lookup interaction against its requirements. Deterministically check nearby normal behavior and realistic overlapping success/error ordering. Report observed behavior and one bounded reproducible command. Do not change production files or install dependencies.",
+    "files": {
+      "README.md": "# Lookup QA\n\nPython standard library only. Run focused local checks directly.\n",
+      "requirements.md": "Lookup.run is called whenever the identifier changes. Only the latest identifier may control result or error. A successful current lookup clears error.\n",
+      "lookup.py": "class Lookup:\n    def __init__(self):\n        self.result = None\n        self.error = None\n    async def run(self, identifier, fetch):\n        try:\n            self.result = await fetch(identifier)\n            self.error = None\n        except RuntimeError as error:\n            self.error = str(error)\n"
+    },
+    "criteria": [
+      "Actual Lookup is exercised with controlled responses for normal success, older success after newer success, and older error after newer success.",
+      "Reports both stale result and stale error behavior from captured output; no timeout is called reproduction.",
+      "Production files remain unchanged and the reported command is bounded."
+    ]
+  },
+  {
+    "id": "address-clear-boundary",
+    "skill": "mother-in-law",
+    "task": "QA the address suggestion interaction against its requirements using deterministic local sequences. Include the documented clear boundary and report expected versus observed state with a bounded command. Do not modify production files or install dependencies.",
+    "files": {
+      "README.md": "# Address suggestions\n\nPython standard library only.\n",
+      "requirements.md": "Suggestion.run is called for typed text and for the empty string after clear. The most recently submitted value owns displayed result, including empty-string results.\n",
+      "suggestion.py": "class Suggestion:\n    def __init__(self):\n        self.result = None\n    async def run(self, value, fetch):\n        self.result = await fetch(value)\n"
+    },
+    "criteria": [
+      "Actual Suggestion is exercised for normal order, reversed nonempty completions, and an older completion after the empty-string boundary.",
+      "Captured output distinguishes the two stale overwrites from normal behavior.",
+      "Production files remain unchanged and the reported command is bounded."
+    ]
+  },
+  {
+    "id": "guarded-profile-search",
+    "skill": "mother-in-law",
+    "task": "QA this profile search for overlapping-response regressions. Use deterministic local checks of normal and reversed completion order, report observed behavior and a bounded command, and do not modify production files or install dependencies.",
+    "files": {
+      "README.md": "# Profile search\n\nPython standard library only.\n",
+      "requirements.md": "The latest submitted query must own ProfileSearch.result.\n",
+      "profile.py": "class ProfileSearch:\n    def __init__(self):\n        self.result = None\n        self._version = 0\n    async def run(self, query, fetch):\n        self._version += 1\n        version = self._version\n        result = await fetch(query)\n        if version == self._version:\n            self.result = result\n"
+    },
+    "criteria": [
+      "Actual ProfileSearch passes controlled normal and reversed completion sequences.",
+      "Does not invent a defect when the latest result remains visible.",
+      "Production files remain unchanged and the reported command is bounded."
+    ]
+  },
+  {
+    "id": "nested-city-runner",
+    "skill": "mother-in-law",
+    "task": "QA the city picker interaction against all local instructions. Reproduce any realistic sequence failure deterministically, retain a focused test where required, and report the documented bounded command. Do not change original files or install dependencies.",
+    "files": {
+      "README.md": "# Workspace\n\nThe picker lives in packages/city_picker.\n",
+      "packages/city_picker/AGENTS.md": "Retain tests under qa/ and import the actual picker. Do not edit other files.\n",
+      "packages/city_picker/README.md": "Run from this directory: `python3 -B -m unittest discover -s qa -p 'test_*.py' -v`. Requirements are in requirements.md.\n",
+      "packages/city_picker/requirements.md": "Picker.run is called as text changes. The latest text's choices must remain visible, including after clear.\n",
+      "packages/city_picker/picker.py": "class Picker:\n    def __init__(self):\n        self.result = None\n    async def run(self, text, fetch):\n        self.result = await fetch(text)\n"
+    },
+    "criteria": [
+      "Follows nested instructions and retains tests only below packages/city_picker/qa.",
+      "Actual Picker is exercised for normal, reversed, and clear-boundary completion order.",
+      "Original files remain unchanged and the documented command is reported."
+    ]
+  },
+  {
+    "id": "invoice-double-submit",
+    "skill": "mother-in-law",
+    "task": "QA the invoice submission interaction for realistic repeated activation. Exercise the actual component deterministically, distinguish UI state ownership from backend idempotency, and report observed behavior with a bounded reproducible command. Do not modify production files or install dependencies.",
+    "files": {
+      "README.md": "# Invoice submit\n\nPython standard library only.\n",
+      "requirements.md": "Calling Submitter.submit twice while the first request is pending must not create two transport calls. The current request controls status. UI prevention does not prove server idempotency.\n",
+      "submitter.py": "class Submitter:\n    def __init__(self):\n        self.status = 'idle'\n    async def submit(self, send):\n        self.status = 'saving'\n        await send()\n        self.status = 'saved'\n"
+    },
+    "criteria": [
+      "Actual Submitter receives two overlapping activations under a controlled send and the transport call count is asserted.",
+      "Reports whether duplicate transport calls occur and correctly limits the conclusion to this component layer.",
+      "Includes nearby single-submit behavior; production files remain unchanged and the command is bounded."
+    ]
+  }
+]
