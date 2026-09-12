@@ -35,6 +35,14 @@ criteria. Whiskers and confidence intervals are intentionally absent. Local raw
 logs remain ignored; this directory contains reviewed aggregate facts, not private
 session traces.
 
+`cells.json` contains sanitized per-cell resources and review verdicts. Verify
+every plotted value with:
+
+```sh
+python3 benchmarks/audit_mother_in_law_checkpoint.py \
+  benchmarks/results/mother-in-law-fast-2026-09-12
+```
+
 Regenerate the light and dark SVGs:
 
 ```sh
