@@ -86,3 +86,18 @@ See [evaluation instructions](benchmarks/README.md),
 Do not commit `benchmarks/local-runs/` wholesale. Review selected artifacts for
 private data before sharing; redacted paths alone do not establish that a log is
 safe. Follow [security reporting](SECURITY.md) for sensitive findings.
+
+## Keep the featured benchmark synchronized
+
+`benchmarks/featured.json` selects the benchmark shown on both landing pages.
+After changing that pointer or its `data.json`, regenerate the audited light/dark
+charts and both localized README blocks with:
+
+```sh
+python3 -B scripts/sync_featured_benchmark.py
+python3 -B scripts/sync_featured_benchmark.py --check
+```
+
+Commit the dataset, both SVGs, and both README changes together. Historical
+results remain immutable records; publish a new result directory instead of
+rewriting an old experiment to match a newer claim.
