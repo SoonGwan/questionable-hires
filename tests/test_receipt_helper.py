@@ -19,6 +19,27 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_compact_and_pretty_preserve_same_native_evidence(self):
+        native = helper.compare(self.root, self.recipe)
+        self.assertEqual(native['checks']['before']['exit_code'], 1)
+        self.assertEqual(native['checks']['after']['exit_code'], 0)
+        outputs = []
+        for options in ([], ['--pretty']):
+            capture = io.StringIO()
+            with patch.object(sys, 'argv', ['compare.py', '--spec', '-', *options]), \
+                    patch.object(sys, 'stdin', io.StringIO(json.dumps(self.recipe))), \
+                    patch.object(sys, 'stdout', capture), \
+                    patch.object(helper, 'compare', return_value=native) as execute:
+                self.assertEqual(helper.main(), 0)
+                execute.assert_called_once()
+            outputs.append(capture.getvalue())
+            self.assertEqual(json.loads(outputs[-1]), native)
+            self.assertEqual(json.loads(outputs[-1])['checks']['before']['output'],
+                             native['checks']['before']['output'])
+        self.assertEqual(outputs[0].count('\n'), 1)
+        self.assertGreater(outputs[1].count('\n'), 1)
+        self.assertLess(len(outputs[0]), len(outputs[1]))
+
     def src_recipe(self):
         package = self.root / 'src/sample'
         package.mkdir(parents=True)
@@ -93,6 +114,7 @@ class ReceiptHelperTests(unittest.TestCase):
             [sys.executable, '-B', str(SCRIPT), '--source', str(self.root), '--spec', '-'],
             input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
         self.assertEqual(process.returncode, 2, process.stderr)
+        self.assertEqual(process.stdout.count('\n'), 1)
         result = json.loads(process.stdout)
         self.assertEqual(result['status'], 'incomplete')
         self.assertEqual(result['checks']['before']['exit_code'], 1)

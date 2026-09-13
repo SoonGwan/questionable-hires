@@ -28,12 +28,16 @@ supersede adverse results or prove the performance of later resource edits.
 최신 팀 전체 실험도 토큰 절감 목표를 충족하지 못했다. 아래의 이전 기록은
 당시 버전의 근거이며, 오늘의 파일로 다시 측정한 결과가 아니다.
 
-Recent native improvements, separate from those model percentages:
+Recent native improvements are separate from those model percentages.
+[Receipt lossless JSON formatting](RECEIPT-OUTPUT-01.md) follows the measured
+`53b2765` resource: 8.75% fewer characters on one retained payload, identical
+parsed values, optional human indentation. New model-session cost is unmeasured.
+Other recent checks:
 [Receipt import-exit correction](RECEIPT-IMPORT-EXIT-01.md),
 [source-layout support](RECEIPT-SRC-01.md), and
 [installed helper execution](../docs/INSTALLATION-TEST.md#installed-helper-behavior-check--2026-09-13).
-The latest recorded full local suite passed **413 tests in 66.407 seconds** after
-the source-layout pair. This is not hosted-CI, remote-installation or model quality
+The latest recorded full local suite passed **414 tests in 67.848 seconds** after
+the lossless-formatting change. This is not hosted-CI, remote-installation or model quality
 evidence. Historical billing/visibility observations below have not been rechecked.
 
 ## Earlier evidence — preserved, not the latest resource snapshot

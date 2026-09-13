@@ -333,6 +333,8 @@ Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
     parser.add_argument('--spec', required=True, help='JSON file or - for stdin')
     parser.add_argument('--source', default='.', help='Git project root (default: current directory)')
     parser.add_argument('--python', default=sys.executable, help='Check interpreter (default: this Python)')
+    parser.add_argument('--pretty', action='store_true',
+                        help='Indent JSON for human reading; default is compact lossless JSON')
     parser.add_argument('--timeout', type=float, default=30,
                         help='Seconds per check, >0 and <=300 (default: 30); cleanup may wait 5 more')
     args = parser.parse_args()
@@ -347,7 +349,7 @@ Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
         result = compare(args.source, json.loads(raw), args.python, args.timeout)
     except (ValueError, OSError, RuntimeError, subprocess.TimeoutExpired) as error:
         parser.exit(2, 'Comparison not established: ' + str(error) + '\n')
-    print(json.dumps(result, indent=2))
+    print(json.dumps(result, indent=2) if args.pretty else json.dumps(result, separators=(',', ':')))
     return 0 if result['status'] == 'observed' else 2
 
 

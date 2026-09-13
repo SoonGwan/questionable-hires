@@ -66,6 +66,9 @@ JSON
 
 ## Read the evidence, not just the exit code
 
+JSON is compact by default; `--pretty` restores indentation for human reading.
+Both retain identical fields and verbatim captured test-output strings.
+
 CLI 0 means observations collected, **not proof**. Inspect each actual assertion,
 requested test identity, before failure/after pass, copied-import evidence,
 `exit_code`, `timed_out` and `output_truncated`. Help/version output is not execution.
