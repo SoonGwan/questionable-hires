@@ -40,6 +40,11 @@ safe to execute. Definition excerpts omit surrounding imports/globals/base
 classes; inspect them when their semantics matter. Never execute extracted
 function text as a substitute for the implementation.
 
+Within one invocation, selectors and ancestor context reuse one read and at most
+one parse per relative file path; the input limit counts that file once. Output
+still retains each requested excerpt and its provenance. No cache survives the
+invocation, and different files are not an atomic filesystem snapshot.
+
 Reuse collected paths/content while files remain unchanged; don't add this call
 after equivalent context is already available. Then perform the actual audit
 using project facilities or [the copy helper](python-audit.md) as appropriate.

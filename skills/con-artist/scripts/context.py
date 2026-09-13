@@ -93,14 +93,22 @@ def definition_index(body, source, prefix=''):
     return records
 
 
-def describe(root, path, budget, symbol=None, index=False, auto_index=False):
-    source, digest = read(root, path, budget)
-    lines = source.splitlines()
+def describe(root, path, budget, symbol=None, index=False, auto_index=False, cache=None):
+    # Invocation-local only: multiple excerpts must share the same source bytes.
+    if cache is None:
+        cache = {}
+    if path not in cache:
+        source, digest = read(root, path, budget)
+        cache[path] = dict(source=source, digest=digest, lines=source.splitlines())
+    snapshot = cache[path]
+    source, digest, lines = snapshot['source'], snapshot['digest'], snapshot['lines']
     result = dict(path=str(path), sha256=digest)
     large_selected = auto_index and Path(path).suffix == '.py' and len(lines) > FULL_SOURCE_LINES and not symbol
     index = index or large_selected
     if symbol or index:
-        tree = ast.parse(source, filename=str(path))
+        if 'tree' not in snapshot:
+            snapshot['tree'] = ast.parse(source, filename=str(path))
+        tree = snapshot['tree']
         if symbol:
             if isinstance(symbol, int):
                 if symbol > len(lines):
@@ -145,6 +153,7 @@ def collect(root, selectors, full=False):
         raise ValueError('Provide a project directory and 1–8 file[:definition-or-line] selectors')
     selected, directories = [], {Path('.')}
     budget = [0]
+    cache = {}
     for selector in selectors:
         path_text, separator, symbol = selector.partition(':')
         path = Path(path_text)
@@ -166,7 +175,7 @@ def collect(root, selectors, full=False):
                 checked_instructions.append(str(relative))
             if not candidate.exists():
                 continue
-            record = describe(root, relative, budget, index=name == 'conftest.py')
+            record = describe(root, relative, budget, index=name == 'conftest.py', cache=cache)
             if name.startswith('AGENTS'):
                 instructions.append(record)
             elif name == 'conftest.py':
@@ -176,7 +185,7 @@ def collect(root, selectors, full=False):
     result = dict(status='collected', instructions=instructions,
                   instruction_paths_checked=checked_instructions, configs=configs,
                   conftest_indexes=conftests,
-                  selected=[describe(root, path, budget, symbol, auto_index=not full) for path, symbol in selected],
+                  selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache) for path, symbol in selected],
                   limitation='Read-only navigation, not execution or complete dependency/config discovery. Only selected-path ancestors inside the supplied root are checked. Host instructions still apply; inspect additional dependencies when needed. Files must remain stable while reading.')
     encoded = json.dumps(result, ensure_ascii=False, indent=2)
     if len(encoded) > MAX_OUTPUT:

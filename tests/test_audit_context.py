@@ -15,6 +15,32 @@ spec.loader.exec_module(context)
 
 
 class AuditContextTests(unittest.TestCase):
+    def test_multiple_selectors_read_and_parse_each_file_once(self):
+        with patch.object(context, 'read', wraps=context.read) as reads, \
+                patch.object(context.ast, 'parse', wraps=context.ast.parse) as parses:
+            result = context.collect(self.root, ['service.py:Store', 'service.py:6'])
+        self.assertEqual(reads.call_count, 1)
+        self.assertEqual(parses.call_count, 1)
+        self.assertEqual([r['symbol'] for r in result['selected']], ['Store', 'Store.save'])
+        self.assertEqual(result['selected'][0]['sha256'], result['selected'][1]['sha256'])
+
+    def test_shared_conftest_index_and_body_use_one_input_budget(self):
+        source = 'def fixture():\n    return 7\n'
+        self.put('conftest.py', source)
+        with patch.object(context, 'MAX_INPUT', len(source.encode())), \
+                patch.object(context, 'read', wraps=context.read) as reads:
+            result = context.collect(self.root, ['conftest.py:fixture'])
+        self.assertEqual(reads.call_count, 1)
+        self.assertEqual(result['conftest_indexes'][0]['representation'], 'definition_index')
+        self.assertIn('return 7', result['selected'][0]['source'])
+
+    def test_source_cache_does_not_survive_a_collection(self):
+        first = context.collect(self.root, ['service.py:6'])['selected'][0]
+        self.put('service.py', 'def replacement():\n    return 9\n')
+        second = context.collect(self.root, ['service.py:2'])['selected'][0]
+        self.assertNotEqual(first['sha256'], second['sha256'])
+        self.assertEqual(second['symbol'], 'replacement')
+
     def test_line_selects_decorated_method_without_importing_source(self):
         for line in (4, 5, 6):
             result = context.collect(self.root, ['service.py:' + str(line)])['selected'][0]

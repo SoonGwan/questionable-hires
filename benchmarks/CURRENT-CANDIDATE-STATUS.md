@@ -10,6 +10,18 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Con Artist invocation-local context reuse: multiple selectors and ancestor
+  context share one source read and at most one AST parse per relative path.
+  Before the correction, the new two-selector test fails with `2 != 1` reads;
+  a shared conftest index/body also incorrectly consumes its input budget twice.
+  Both now pass, and a separate collection observes changed source rather than
+  a persistent cache. Author replay on clean HTTPX
+  `26d48e0634e6ee9cdc0533996db289ce4b430177`, selecting
+  `Headers.get_list`, `Headers.__getitem__` and `Headers.__setitem__`, produces
+  exactly equal result objects to `0930ffe` with four file reads reduced to two
+  (one implementation and one config). This is helper I/O reduction, **not**
+  reduced model tokens, measured wall time or a whole-task performance win.
+
 - Con Artist [line-based context selection](../skills/con-artist/references/python-context.md)
   resolves traceback-style `file.py:123` directly to the smallest enclosing
   Python definition without importing project code. Behavioral tests cover
