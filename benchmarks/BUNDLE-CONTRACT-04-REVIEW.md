@@ -153,3 +153,30 @@ Baseline has three component tests; skill has the distinct support-failure test
 and a different normal-control arrangement, so work is not identical. Neither
 resource improves in this pair. No whole-gate or general improvement claim follows
 from routing adoption or the absence of a fabricated bug.
+
+## Unprotected search — Mother-in-law reviewed, intermediate-state concern
+
+Six shell calls, **107,600 tokens / 76.477 seconds**. Copies controlled_fetch.py
+into project tests and adds standalone test_search.py using actual Search.
+Native execution has a 15-second outer subprocess deadline, plus one-second
+async waits and owned-task cancellation/wait/exception retrieval. Normal order
+and deliberate wrong-key support assertion pass; reversed order fails on actual
+`results for ca` versus expected `results for cat`. It retains the ordinary
+failure and preserves production/requirements. No disposable helper run precedes
+the native suite; optional probe/browser references are not loaded.
+
+One captured command is legitimately empty (mkdir/copy) and flagged. Native output
+omits the leading normal test-name text but includes its checkpoints, pass tail,
+reversed actual AssertionError, support control and three-test summary. Source
+and output support the observed stale assignment, not browser behavior.
+
+**Concern to verify after timing:** the normal-order test also requires the
+first/older response to become visible while the newest request remains pending.
+That expectation follows the current unconditional assignment, but the provided
+latest-query contract does not require showing that intermediate older result.
+A generation-guard correction may retain the seeded display until the newest
+response arrives and therefore fail this extra assertion. Do not silently edit
+the measured tests or claim a verified correction-compatible regression yet.
+After the serial run, replay a separate guarded counterfactual to determine the
+impact and keep that author evidence distinct. This concern is not an invented
+score change or a reason to omit the cell's cost. Matching baseline pending.
