@@ -11,6 +11,9 @@ Tests own component assertions and bounded task cancellation/draining, including
 after failed entry checks; the asset does neither. Do not shadow runner methods:
 transport failure is `fail_request`, not `unittest.TestCase.fail`.
 
-For new assertion plumbing, exercise an isolated deliberate mismatch. Confirm
-actual/expected assertion evidence, not a support exception; green cases alone
-cannot validate the failure path.
+For custom assertion plumbing you introduce, exercise an isolated deliberate
+mismatch and confirm actual/expected evidence, not a support exception. Ordinary
+unmodified framework assertions do not need a separate test of the assertion
+library. Add repeated-key cases when identity/reuse is relevant to the contract or
+implementation, not merely because the transport supports them. Keep all distinct
+required state transitions, including intervening retention checkpoints.

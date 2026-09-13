@@ -11,6 +11,13 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+2026-09-14 unmeasured follow-up: Mother native-test guidance now distinguishes
+custom assertion plumbing from unmodified framework assertions, and conditions
+repeated-key cases on contract/implementation relevance. The interval run added
+both kinds of extra checks. Required state transitions and retention assertions
+remain mandatory; transport code is unchanged. This is an overhead hypothesis,
+not a demonstrated token/time saving.
+
 Completed 2026-09-14: [interval-contract comparison](MOTHER-INTERVAL-01-REVIEW.md)
 at `14289df`: four cells, **+9.32% tokens / +10.58% time**. The skill adopts
 continuous retention assertions without constraining permitted intermediate

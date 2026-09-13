@@ -111,6 +111,8 @@ The installer includes optional, locally executed helpers. They require **Python
 
 The subsequent [Mother interval-contract check](benchmarks/results/mother-interval-01/README.md) adopts the missing assertion: separate unchanged-test replay rejects the transient fault and accepts a valid correction. Costs still increase **9.32% tokens / 10.58% time**. Two original skill transcripts are partial; replay does not replace them. This is specific coverage progress, not an efficiency win.
 
+Later native-test guidance limits assertion-library self-tests and unrelated repeated-key cases; its cost impact is unmeasured and required state checks remain.
+
 Use the normal skill prompts above; the agent can choose the helper when it saves repeated work. A small task or an already-established result may be cheaper to handle directly. Installing the team does not imply every task should use all eight hires.
 
 ## Does it actually work?
