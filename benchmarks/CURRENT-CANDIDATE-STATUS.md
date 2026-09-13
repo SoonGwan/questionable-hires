@@ -10,6 +10,20 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Con Artist context-routing candidate: the recorded
+  [header session](results/httpx-headers-01/README.md) received a test index,
+  then read the entire 219-line test file. The usage example now combines
+  `--full` for tests needing assertion review with explicit implementation
+  selectors; indexes remain available for locating unknown targets. The actual
+  documented command is executed in a temporary project with a >200-line test:
+  the previous example fails the body-availability assertion, the candidate
+  passes, and implementation/ancestor fixture bodies are not expanded.
+  Author replay on the same pinned HTTPX selectors yields 24,127 output
+  characters versus 20,959 for the index, now including the complete test;
+  implementation excerpts and ancestor context are identical. The first output
+  is larger, but no index-to-test-body readback is needed. Model adoption, total
+  tokens and time remain unmeasured; this does not change frozen scores.
+
 - Con Artist invocation-local context reuse: multiple selectors and ancestor
   context share one source read and at most one AST parse per relative path.
   Before the correction, the new two-selector test fails with `2 != 1` reads;

@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import shlex
 from pathlib import Path
 import subprocess
 import sys
@@ -15,6 +16,26 @@ spec.loader.exec_module(context)
 
 
 class AuditContextTests(unittest.TestCase):
+    def test_documented_command_reads_large_test_body_and_only_selected_method(self):
+        reference = SCRIPT.parents[1] / 'references/python-context.md'
+        command = reference.read_text().split('```sh\n', 1)[1].split('```', 1)[0]
+        argv = shlex.split(command.replace('\\\n', ''))
+        substitutions = {'python': sys.executable,
+                         '/path/to/con-artist/scripts/context.py': str(SCRIPT),
+                         '/permitted/project': str(self.root)}
+        argv = [substitutions.get(arg, arg) for arg in argv]
+        self.put('tests/test_service.py', 'def test_service():\n    assert "BODY" == "BODY"\n' + '\n' * 201)
+        self.put('tests/conftest.py', 'def setup():\n    raise RuntimeError("FIXTURE_NOT_EXECUTED")\n')
+        process = subprocess.run(argv, capture_output=True, text=True, timeout=5)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        result = json.loads(process.stdout)
+        test, implementation = result['selected']
+        self.assertEqual(test['representation'], 'full_source')
+        self.assertIn('assert "BODY" == "BODY"', test['source'])
+        self.assertEqual(implementation['representation'], 'definition')
+        self.assertNotIn('must never import', implementation['source'])
+        self.assertEqual(result['conftest_indexes'][0]['representation'], 'definition_index')
+
     def test_multiple_selectors_read_and_parse_each_file_once(self):
         with patch.object(context, 'read', wraps=context.read) as reads, \
                 patch.object(context.ast, 'parse', wraps=context.ast.parse) as parses:

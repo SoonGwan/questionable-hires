@@ -4,9 +4,15 @@ When Python test/implementation paths are known but their context has not been
 read, collect it once with the installed skill's read-only CLI:
 
 ```sh
-python -B /path/to/con-artist/scripts/context.py --root /permitted/project \
+python -B /path/to/con-artist/scripts/context.py --root /permitted/project --full \
   tests/test_service.py service.py:Store.save
 ```
+
+This reads the test body and only `Store.save` from the implementation in one
+call. Omit `--full` for a locating pass when needed definitions are unknown;
+do not request an index first when you already need the file's assertions.
+For a very large test file, select the relevant test definitions and inspect
+their unresolved setup instead of forcing a whole-file read past output limits.
 
 Supply 1–8 explicit `file[:qualified.definition]` or `file:line` selectors. A
 positive line number from a traceback (for example, `service.py:42`) selects
