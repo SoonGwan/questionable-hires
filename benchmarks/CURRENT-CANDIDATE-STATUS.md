@@ -11,6 +11,13 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+Completed 2026-09-14: [Necromancer multi-decision screen](NECROMANCER-REGIONS-01-REVIEW.md)
+at `667eb10`: two complete cells, **−15.85% tokens / −18.56% time**. Both support
+all three decisions with actual history and a 27-combination consumer matrix.
+Baseline adds per-variant native suites; skill still repeats discovery. No observed
+capture gap, but unequal work and one exposed task at n=1 preclude causal or broad
+efficiency claims. Previous entrypoint timeout remains preserved.
+
 2026-09-14 harness update: [native transcript review diagnostic](NATIVE-CAPTURE-REVIEW-01.md)
 flags possible verbose unittest summary/header mismatches for manual review.
 It locates the two already-reviewed interval capture gaps without changing old

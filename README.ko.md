@@ -137,6 +137,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 - **테스트 사기 감별사(`con-artist`):** 임시 복사본에서 Python 결함 주입, 복사본 import 검증, 테스트별 종료 상태, 로그 메모리·시간 제한을 처리합니다. [사용법과 한계](skills/con-artist/references/python-audit.md). 샌드박스가 아니므로 신뢰할 수 있는 테스트만 실행해야 합니다.
   필요한 경우 [읽기 전용 맥락 수집기](skills/con-artist/references/python-context.md)에 정의 이름이나 오류 추적에 나온 `file.py:123`을 지정해 해당 함수·클래스 본문, 상위 경로의 지침·설정, conftest 색인을 한 번에 모을 수 있습니다. 프로젝트 코드를 import하지 않으며, 색인은 탐색을 돕는 자료이지 테스트 동작이나 모든 의존성을 검증한 결과가 아닙니다.
 - **레거시 고고학자(`necromancer`):** 선택한 코드 줄의 현재 상태와 Git 이력을 모으고, 미커밋 변경·얕은 이력의 한계를 표시합니다. [사용법과 한계](skills/necromancer/references/focused-history.md). 과거 코드를 지금도 유지해야 하는지는 별도로 판단합니다.
+  [세 가지 판단을 요구한 개발 실험](benchmarks/results/necromancer-regions-01/README.md)에서 두 방식 모두 판단을 맞혔고, 스킬은 토큰 15.85%·시간 18.56% 감소를 기록했습니다. 추가 검증량 차이와 이미 노출된 단일 과제 때문에 일반화할 수 없으며, 선택형 이력 수집 도구는 사용하지 않았습니다.
 - **배포 생존 담당(`friday`):** 메모리 SQLite에서 마이그레이션·롤백 단계별 읽기 쿼리 검사를 재사용합니다. [사용법과 한계](skills/friday/references/sqlite-matrix.md). 쿼리 성공이 배포 준비 완료를 뜻하지 않으며, 다른 DB 엔진의 동작은 별도로 확인해야 합니다.
 - **수정 검증관(`receipt`):** 현재 테스트와 지원 파일을 고정해 커밋된 수정 또는 미커밋 Python 수정을 비교합니다. 일반적인 `src/` 패키지도 설치 없이 지원하며 해시·각각의 출력·버전 식별 정보를 남깁니다. [사용법과 한계](skills/receipt/references/existing-fix.md). [소스 구조 모델 검사](benchmarks/results/receipt-src-model-01/README.md)에서는 도구가 실제 사용되고 기록상 비용도 줄었지만, 작업량 차이·출력 일부 누락·단일 과제라는 한계가 있어 전반적인 효율 개선은 아직 미입증입니다.
 - **가설 퇴마사(`exorcist`):** 진단 명령의 프로세스 실행 시간과 수집 로그 크기를 제한합니다. [사용법과 한계](skills/exorcist/references/bounded-probe.md). [첫 모델 검사](benchmarks/EXORCIST-PROBE-RUNNER-01.md)에서 도구는 정상 사용했지만 비용은 줄지 않았습니다.
