@@ -34,6 +34,19 @@ directly awaited CancelledError identity check. Async waits are bounded and owne
 tasks cancel/drain in teardown. Only form.py and test_form.py change. No observed
 scope/capture issue; original/resource reconciliation and author replay pending.
 
+## Active history — baseline
+
+Completed: **63,663 tokens / 24.169 seconds**, three shell calls. Reads both
+current files and the full small two-commit history. Actual partner_label returns
+Ada; separately evaluates the no-fallback expressions on the same name-only
+payload, producing None and KeyError. Unlike skill, this does not replace the
+consumer binding in memory; its no-fallback consequence is supported by the
+inspected direct caller and expression probe. Correct introducing commit and
+keep recommendation, explicit distinction between history and current necessity.
+Final native status is clean; no observed capture/scope issue. Full reconciliation
+pending. This small history pair costs more with skill; prior favorable multi-
+decision results do not replace it.
+
 ## Active history — skill
 
 Completed: **67,242 tokens / 31.022 seconds**, four shell calls. Uses native Git,
