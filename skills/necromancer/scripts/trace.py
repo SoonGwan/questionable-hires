@@ -205,7 +205,8 @@ def trace(repo, filename, start, end, max_commits=3):
     evidence['omitted_commits'] = max(0, len(grouped) - max_commits)
     for commit, paths in list(grouped.items())[:max_commits]:
         cutoff = evidence['shallow'] and any(row['boundary'] and row['commit'] == commit for row in rows)
-        shown = git(repo, 'show', '--no-ext-diff', '--no-textconv', '--format=commit %H%nDate: %cI%n%n%B',
+        shown = git(repo, 'show', '--no-ext-diff', '--no-textconv', '--no-color',
+                    '--src-prefix=a/', '--dst-prefix=b/', '--format=commit %H%nDate: %cI%n%n%B',
                     '--no-patch' if cutoff else '--unified=3', commit, '--', *sorted(paths))
         patch_text, omitted_hunks = shown.stdout, 0
         if shown.returncode == 0 and len(paths) == 1:

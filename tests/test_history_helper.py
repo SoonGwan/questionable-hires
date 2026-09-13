@@ -172,6 +172,30 @@ class HistoryHelperTests(unittest.TestCase):
         combined = '+++ b/a.py\n@@@ -1 -1 +1 @@@\n++new\n'
         self.assertEqual(helper.focused_patch(combined, 'a.py', [1]), (combined, 0))
 
+    def test_user_diff_presentation_does_not_hide_selected_evidence(self):
+        path = self.root / 'legacy.py'
+        noise = ['# unrelated ' + 'x' * 100 + '\n'] * 160
+        gap = [f'SEPARATOR_{index} = {index}\n' for index in range(20)]
+        path.write_text(''.join(noise + gap) + 'VALUE = "before"\n')
+        self.commit('Prepare presentation-independent history')
+        path.write_text(''.join(s.replace('xxx', 'yyy') for s in noise) +
+                        ''.join(gap) + 'VALUE = "after"\n')
+        self.commit('Change both regions')
+        expected = helper.trace(self.root, 'legacy.py', 181, 181)['commits']
+        self.assertIn('-VALUE = "before"', expected[0]['evidence'])
+        self.assertIn('+VALUE = "after"', expected[0]['evidence'])
+        self.assertEqual(expected[0]['omitted_hunks'], 1)
+        for key, value in (('color.ui', 'always'), ('diff.noprefix', 'true')):
+            with self.subTest(setting=key):
+                self.git('config', key, value)
+                config_before = (self.root / '.git/config').read_bytes()
+                try:
+                    actual = helper.trace(self.root, 'legacy.py', 181, 181)['commits']
+                    self.assertEqual(actual, expected)
+                    self.assertEqual((self.root / '.git/config').read_bytes(), config_before)
+                finally:
+                    self.git('config', '--unset', key)
+
     def test_single_large_hunk_retains_selected_historical_line_within_budget(self):
         path = self.root / 'legacy.py'
         noise = ['# unrelated ' + 'x' * 100 + '\n'] * 160
