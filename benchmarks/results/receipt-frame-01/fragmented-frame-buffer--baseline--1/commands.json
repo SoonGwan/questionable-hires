@@ -1,0 +1,50 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd && rg --files -g '\"'!__pycache__'\"' -g '\"'!*.pyc'\"'\"",
+    "aggregated_output": "<WORKSPACE>\nAGENTS.md\npacket.py\ntests/test_packet.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat requirements.md packet.py tests/*.py'",
+    "aggregated_output": "Each frame has an unsigned two-byte big-endian byte length followed by exactly that many payload bytes. Decoder.feed(chunk: bytes) -> list[bytes] accepts any split between calls, including within a header or payload. Return all complete payloads in arrival order exactly once; retain the complete undecoded suffix for the next call. Zero-length frames are valid. Empty feeds must not lose pending data or repeat completed messages. Instances must not share state. Inputs are bytes and payload lengths are at most 65535; malformed-input policy, backpressure, network I/O and thread safety are outside this ticket.\nclass Decoder:\n    def __init__(self):\n        self.pending = bytearray()\n\n    def feed(self, chunk):\n        self.pending.extend(chunk)\n        messages = []\n        while len(self.pending) >= 2:\n            size = int.from_bytes(self.pending[:2], 'big')\n            del self.pending[:2]\n            if len(self.pending) < size:\n                break\n            messages.append(bytes(self.pending[:size]))\n            del self.pending[:size]\n        return messages\nimport unittest\nfrom packet import Decoder\n\n\ndef frame(payload):\n    return len(payload).to_bytes(2, 'big') + payload\n\n\nclass DecoderTests(unittest.TestCase):\n    def test_complete_batch_and_empty_frame(self):\n        decoder = Decoder()\n        self.assertEqual(decoder.feed(frame(b'one') + frame(b'') + frame(b'two')), [b'one', b'', b'two'])\n        self.assertEqual(decoder.feed(b''), [])\n\n    def test_split_header(self):\n        decoder = Decoder()\n        encoded = frame(b'hello')\n        self.assertEqual(decoder.feed(encoded[:1]), [])\n        self.assertEqual(decoder.feed(encoded[1:]), [b'hello'])\n\n    def test_instances_are_independent(self):\n        first, second = Decoder(), Decoder()\n        self.assertEqual(first.feed(b'\\x00'), [])\n        self.assertEqual(second.feed(frame(b'x')), [b'x'])\n        self.assertEqual(first.feed(b'\\x01y'), [b'y'])\n\n    def test_partial_payload_with_empty_feed(self):\n        decoder = Decoder()\n        encoded = frame(b'hello')\n        self.assertEqual(decoder.feed(encoded[:3]), [])\n        self.assertEqual(decoder.feed(b''), [])\n        self.assertEqual(decoder.feed(encoded[3:]), [b'hello'])\n        self.assertEqual(decoder.feed(b''), [])\n\n    def test_complete_then_partial_then_multiple(self):\n        decoder = Decoder()\n        pending = frame(b'world')\n        self.assertEqual(decoder.feed(frame(b'first') + pending[:4]), [b'first'])\n        self.assertEqual(decoder.feed(pending[4:] + frame(b'last')), [b'world', b'last'])\n        self.assertEqual(decoder.feed(b''), [])\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest discover -s tests -v'",
+    "aggregated_output": "test_complete_batch_and_empty_frame (test_packet.DecoderTests) ... ok\ntest_complete_then_partial_then_multiple (test_packet.DecoderTests) ... FAIL\ntest_instances_are_independent (test_packet.DecoderTests) ... ok\ntest_partial_payload_with_empty_feed (test_packet.DecoderTests) ... FAIL\ntest_split_header (test_packet.DecoderTests) ... ok\n\n======================================================================\nFAIL: test_complete_then_partial_then_multiple (test_packet.DecoderTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/tests/test_packet.py\", line 39, in test_complete_then_partial_then_multiple\n    self.assertEqual(decoder.feed(pending[4:] + frame(b'last')), [b'world', b'last'])\nAssertionError: Lists differ: [] != [b'world', b'last']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\nb'world'\n\n- []\n+ [b'world', b'last']\n\n======================================================================\nFAIL: test_partial_payload_with_empty_feed (test_packet.DecoderTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/tests/test_packet.py\", line 32, in test_partial_payload_with_empty_feed\n    self.assertEqual(decoder.feed(encoded[3:]), [b'hello'])\nAssertionError: Lists differ: [] != [b'hello']\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\nb'hello'\n\n- []\n+ [b'hello']\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nFAILED (failures=2)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat AGENTS.md && git status --short && git diff -- packet.py tests requirements.md'",
+    "aggregated_output": "Work only inside this project. Use python3 -B -m unittest discover -s tests -v. Production edits are limited to packet.py; tests and requirements must stay unchanged. The checks use only memory, no temporary files or network. Do not change interpreter/environment settings or install dependencies.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest discover -s tests -v'",
+    "aggregated_output": "test_complete_batch_and_empty_frame (test_packet.DecoderTests) ... ok\ntest_complete_then_partial_then_multiple (test_packet.DecoderTests) ... ok\ntest_instances_are_independent (test_packet.DecoderTests) ... ok\ntest_partial_payload_with_empty_feed (test_packet.DecoderTests) ... ok\ntest_split_header (test_packet.DecoderTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_8",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --check && git diff -- packet.py && git status --short'",
+    "aggregated_output": "diff --git a/packet.py b/packet.py\nindex d1a1762..57146bf 100644\n--- a/packet.py\n+++ b/packet.py\n@@ -7,9 +7,9 @@ class Decoder:\n         messages = []\n         while len(self.pending) >= 2:\n             size = int.from_bytes(self.pending[:2], 'big')\n-            del self.pending[:2]\n-            if len(self.pending) < size:\n+            if len(self.pending) < size + 2:\n                 break\n+            del self.pending[:2]\n             messages.append(bytes(self.pending[:size]))\n             del self.pending[:size]\n         return messages\n M packet.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

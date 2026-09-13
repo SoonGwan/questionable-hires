@@ -25,6 +25,11 @@ it has not established a broad 20–30% gain.
   `7e1e1db`, records **+34.16% tokens / +6.48% time** with more complete before
   evidence than baseline. Later helpers and final-check instructions do not
   retroactively improve this result; their whole-task cost effects are unmeasured.
+- [Receipt frame parsing](results/receipt-frame-01/README.md), resources at
+  `f13a097`: same supplied before/after coverage, 6 versus 3 shell calls, but
+  **+4.01% tokens / +9.81% time**. Final-check batching is adopted without a
+  measured saving on this new authored n=1 task. Instruction-loading overhead
+  and applicability remain priorities; fewer commands alone are not acceptance.
 - [Hostage atomic-export pair](results/hostage-atomic-export-01/README.md),
   `5867752`: −12.85% tokens / −8.43% time with correct core behavior. Both arms
   use two preparation calls; baseline cleanup work, additional skill exception

@@ -1,0 +1,1 @@
+Work only inside this project. Use python3 -B -m unittest discover -s tests -v. Production edits are limited to packet.py; tests and requirements must stay unchanged. The checks use only memory, no temporary files or network. Do not change interpreter/environment settings or install dependencies.

@@ -1,0 +1,16 @@
+diff --git a/packet.py b/packet.py
+index d1a1762..57146bf 100644
+--- a/packet.py
++++ b/packet.py
+@@ -7,9 +7,9 @@ class Decoder:
+         messages = []
+         while len(self.pending) >= 2:
+             size = int.from_bytes(self.pending[:2], 'big')
+-            del self.pending[:2]
+-            if len(self.pending) < size:
++            if len(self.pending) < size + 2:
+                 break
++            del self.pending[:2]
+             messages.append(bytes(self.pending[:size]))
+             del self.pending[:size]
+         return messages
