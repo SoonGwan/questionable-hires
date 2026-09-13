@@ -1,4 +1,5 @@
 import importlib.util
+import io
 import json
 from pathlib import Path
 import subprocess
@@ -19,6 +20,77 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_combined_budget_stops_before_opening_overflow_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'large.sql'
+            source.write_bytes(b' ' * 999_990)
+            recipe = {'phases': [phase('oversized', files=['large.sql'] * 100)],
+                      'checks': {'read': 'SELECT 1'}}
+            opened = []
+            original_open = Path.open
+            def tracked_open(path, *args, **kwargs):
+                opened.append(path)
+                return original_open(path, *args, **kwargs)
+            with patch.object(Path, 'open', tracked_open), \
+                    patch.object(helper.sqlite3, 'connect') as connect, \
+                    self.assertRaisesRegex(ValueError, 'SQL exceeds 2 MB'):
+                helper.matrix(recipe, root)
+            self.assertEqual(opened, [source.resolve(), source.resolve()])
+            connect.assert_not_called()
+            self.assertEqual(source.stat().st_size, 999_990)
+
+    def test_inline_and_check_budget_rejects_before_any_file_read(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / 'schema.sql'
+            source.write_text('SELECT 1;')
+            for inline, query in ((' ' * 2_000_000, 'SELECT 1'), ('', '가' * 700_000)):
+                with self.subTest(inline_bytes=len(inline)), \
+                        patch.object(Path, 'open') as opened, \
+                        patch.object(helper.sqlite3, 'connect') as connect, \
+                        self.assertRaisesRegex(ValueError, 'SQL exceeds 2 MB'):
+                    helper.matrix({'phases': [phase('big', inline, ['schema.sql'])],
+                                   'checks': {'read': query}}, directory)
+                opened.assert_not_called()
+                connect.assert_not_called()
+
+    def test_crlf_file_bytes_count_without_changing_sql_results(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / 'schema.sql'
+            contents = b'CREATE TABLE t(x);\r\nINSERT INTO t VALUES(7);\r\n'
+            source.write_bytes(contents)
+            result = helper.matrix({'phases': [phase('ok', files=['schema.sql'])],
+                                    'checks': {'read': 'SELECT x FROM t'}}, directory)
+            self.assertEqual(result['phases'][0]['checks']['read']['rows'], [(7,)])
+            self.assertEqual(source.read_bytes(), contents)
+
+    def test_exact_combined_budget_remains_executable(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'a.sql').write_bytes(b' ' * 1_000_000)
+            (root / 'b.sql').write_bytes(b' ' * 999_992)
+            result = helper.matrix({'phases': [phase('limit', files=['a.sql', 'b.sql'])],
+                                    'checks': {'read': 'SELECT 1'}}, root)
+            self.assertTrue(result['complete'])
+            self.assertEqual(result['phases'][0]['checks']['read']['rows'], [(1,)])
+
+    def test_growth_after_stat_is_bounded_before_decode_or_sql(self):
+        class GrowingFile(io.BytesIO):
+            requested = []
+            def read(self, size=-1):
+                self.requested.append(size)
+                return super().read(size)
+        with tempfile.TemporaryDirectory() as directory:
+            (Path(directory) / 'a.sql').write_bytes(b' ')
+            grown = GrowingFile(b' ' * 1_000_002)
+            with patch.object(Path, 'open', return_value=grown), \
+                    patch.object(helper.sqlite3, 'connect') as connect, \
+                    self.assertRaisesRegex(ValueError, 'exceeds 1 MB'):
+                helper.matrix({'phases': [phase('growing', files=['a.sql'])],
+                               'checks': {'read': 'SELECT 1'}}, directory)
+            self.assertEqual(grown.requested, [1_000_001])
+            connect.assert_not_called()
+
     def test_deadline_between_migration_chunks_stops_before_next_sql(self):
         now = [0.0]
         executed = []

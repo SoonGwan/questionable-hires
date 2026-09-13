@@ -19,6 +19,11 @@ def matrix(spec, root, timeout=5):
         raise ValueError("provide 1..20 named read queries")
     if not 0 < timeout <= 30:
         raise ValueError("timeout must be in (0, 30]")
+    if any(not isinstance(k, str) or not isinstance(v, str) for k, v in checks.items()):
+        raise ValueError("checks map names to SQL strings")
+    total = sum(len(s.encode("utf-8")) for s in checks.values())
+    if total > 2_000_000:
+        raise ValueError("SQL exceeds 2 MB")
     root = Path(root).resolve(strict=True)
     prepared = []
     for phase in phases:
@@ -28,6 +33,9 @@ def matrix(spec, root, timeout=5):
             raise ValueError("phase name must be nonempty text")
         if not isinstance(phase["files"], list) or not isinstance(phase["sql"], str):
             raise ValueError("files must be a list; sql must be text")
+        total += len(phase["sql"].encode("utf-8"))
+        if total > 2_000_000:
+            raise ValueError("SQL exceeds 2 MB")
         chunks = []
         for filename in phase["files"]:
             relative = Path(filename)
@@ -36,15 +44,25 @@ def matrix(spec, root, timeout=5):
             path = root / relative
             if any(part.is_symlink() for part in [path, *path.parents] if part != root and root in part.parents):
                 raise ValueError("symlink SQL paths are not supported")
-            if not path.is_file() or path.stat().st_size > 1_000_000:
+            if not path.is_file():
                 raise ValueError("SQL file missing or exceeds 1 MB")
-            chunks.append(path.read_text(encoding="utf-8"))
+            length = path.stat().st_size
+            if length > 1_000_000:
+                raise ValueError("SQL file missing or exceeds 1 MB")
+            if total + length > 2_000_000:
+                raise ValueError("SQL exceeds 2 MB")
+            # Preserve original bytes (including CRLF) and bound a read even if
+            # the file grows after stat. Repeated selections count each time.
+            with path.open("rb") as stream:
+                data = stream.read(min(1_000_000, 2_000_000 - total) + 1)
+            if len(data) > 1_000_000:
+                raise ValueError("SQL file missing or exceeds 1 MB")
+            total += len(data)
+            if total > 2_000_000:
+                raise ValueError("SQL exceeds 2 MB")
+            chunks.append(data.decode("utf-8"))
         chunks.append(phase["sql"])
         prepared.append((phase["name"], chunks))
-    if any(not isinstance(k, str) or not isinstance(v, str) for k, v in checks.items()):
-        raise ValueError("checks map names to SQL strings")
-    if sum(len(s.encode("utf-8")) for _, chunks in prepared for s in chunks) + sum(len(s.encode("utf-8")) for s in checks.values()) > 2_000_000:
-        raise ValueError("SQL exceeds 2 MB")
 
     readonly = False
     allowed_reads = {sqlite3.SQLITE_SELECT, sqlite3.SQLITE_READ, sqlite3.SQLITE_FUNCTION,

@@ -27,3 +27,10 @@ Select actual consumer queries and representative writes from the project; this 
 Output includes per-query success/error and up to 20 rows (`truncated` marks omitted rows); blobs use `blob_hex`. Exit 0 means the matrix finished, **not** that the rollout is safe; expected incompatible readers still appear as failed checks. Exit 1 means incomplete execution (migration error or time budget); exit 2 means invalid inputs. Failed migrations stop the sequence without pretending a partially applied phase succeeded. Exhausting the shared SQL budget stops further checks; absent check labels are unrun, not passed.
 
 Only `:memory:` is opened. Attach/detach, PRAGMA, extension loading and writes through checks are denied. SQL files must be regular, nonsymlink project-relative paths. Limits: 20 phases, 20 queries, 1 MB/file, 2 MB combined SQL, default 5-second SQL budget (`--timeout`, max 30). No locks, live data, deployment tooling, network effects or production database semantics are modeled. Unsupported statements are missing evidence, not permission to silently rewrite the migration.
+
+The combined input budget counts UTF-8 inline/query bytes and original file bytes
+(including CRLF), counting repeated file selections each time. Known-overflow
+files are rejected before reading; individual reads are also bounded if a file
+grows after its size check. This bounds retained SQL input, not total process
+memory or concurrent filesystem side effects. SQL execution begins only after
+all selected inputs pass preparation.
