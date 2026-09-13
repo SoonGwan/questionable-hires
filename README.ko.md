@@ -130,7 +130,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
   필요한 경우 [읽기 전용 맥락 수집기](skills/con-artist/references/python-context.md)로 선택한 정의, 상위 경로의 지침·설정, conftest 색인을 한 번에 모을 수 있습니다. 프로젝트 코드를 import하지 않으며, 색인은 탐색을 돕는 자료이지 테스트 동작이나 모든 의존성을 검증한 결과가 아닙니다.
 - **레거시 고고학자(`necromancer`):** 선택한 코드 줄의 현재 상태와 Git 이력을 모으고, 미커밋 변경·얕은 이력의 한계를 표시합니다. [사용법과 한계](skills/necromancer/references/focused-history.md). 과거 코드를 지금도 유지해야 하는지는 별도로 판단합니다.
 - **배포 생존 담당(`friday`):** 메모리 SQLite에서 마이그레이션·롤백 단계별 읽기 쿼리 검사를 재사용합니다. [사용법과 한계](skills/friday/references/sqlite-matrix.md). 쿼리 성공이 배포 준비 완료를 뜻하지 않으며, 다른 DB 엔진의 동작은 별도로 확인해야 합니다.
-- **수정 검증관(`receipt`):** 현재 테스트를 고정한 채 두 커밋의 Python 구현을 비교하고, 각각의 출력과 커밋 ID를 남깁니다. [사용법과 한계](skills/receipt/references/existing-fix.md). [첫 모델 검사](benchmarks/RECEIPT-HELPER-01.md)는 직전 표본보다 빠르지만 토큰은 늘었습니다. 비용 개선이 입증된 것은 아닙니다.
+- **수정 검증관(`receipt`):** 현재 테스트와 선택한 지원 파일 디렉터리를 고정한 채 두 커밋의 Python 구현을 비교하고, 파일별 해시·각각의 출력·커밋 ID를 남깁니다. [사용법과 한계](skills/receipt/references/existing-fix.md). [첫 모델 검사](benchmarks/RECEIPT-HELPER-01.md)는 직전 표본보다 빠르지만 토큰은 늘었습니다. 비용 개선이 입증된 것은 아닙니다.
 - **가설 퇴마사(`exorcist`):** 진단 명령의 프로세스 실행 시간과 수집 로그 크기를 제한합니다. [사용법과 한계](skills/exorcist/references/bounded-probe.md). [첫 모델 검사](benchmarks/EXORCIST-PROBE-RUNNER-01.md)에서 도구는 정상 사용했지만 비용은 줄지 않았습니다.
 - **클릭 꼬투리 QA(`mother-in-law`):** 응답 순서를 제어해 정상 동작·오류 복구·오래된 응답을 검사하고, 필요하면 같은 실행의 JSON 증거를 남깁니다. [지원 인터페이스와 한계](skills/mother-in-law/SKILL.md). 지원 형태에 맞는 UI 없는 Python 컴포넌트용이며 기존 프로젝트 테스트를 우선합니다. 비동기 시간 제한은 동기 블로킹 코드를 중단하거나 브라우저 동작을 검증하지 않습니다.
 

@@ -10,6 +10,12 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Receipt support-directory candidate](RECEIPT-DIRECTORIES-01.md): `0d5c81c`
+  freezes explicit current test/support directories across two historical
+  implementations, with leaf hashes, overlap rejection and bounded traversal.
+  Real temporary-Git/CLI checks reproduce the intended failure then pass with
+  unchanged inputs. Model adoption and whole-task cost remain unmeasured.
+
 - [Two-boundary header transfer](results/httpx-headers-01/README.md): automatic
   index/body readback and batch reuse observed in a new function area. +35.1%
   tokens / −14.9% time; both arms reuse correct suite/control results, baseline
@@ -125,7 +131,7 @@ The optional helpers are not mandatory for every task.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `51ce19e`; collector `6318b91`, reference `3157ee2` | [Scoped discovery](NECROMANCER-DISCOVERY-01.md), [adverse packaging transfer](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md) | Configured consumer preserved with near-identical cost; favorable packaging discovery pair has unequal work and capture limits; earlier transfer adverse; broad savings unproven |
-| Receipt | `abb4b93`; helper/reference `4a29990` | [Two-module transfer](RECEIPT-ASSEMBLY-01.md), [equal explicit requirements](RECEIPT-EQUAL-REQUIREMENTS-01.md), [earlier adverse package](RECEIPT-CURRENT-PACKAGE-01.md) | Two-module transfer +26.0% tokens / −31.1% time despite correct before/after checks; earlier parser pair favorable; combined efficiency unmet |
+| Receipt | `abb4b93`; fixed-directory helper/reference `0d5c81c` | [Directory candidate](RECEIPT-DIRECTORIES-01.md), [two-module transfer](RECEIPT-ASSEMBLY-01.md) | New directory workflow model cost unmeasured; prior two-module +26.0% tokens / −31.1% time; broad efficiency unmet |
 | Landlord | `26a310d` | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Caller search excludes installed example content but still lists resource paths; 68,509 tokens/39.233s in nonpaired regression, no causal efficiency claim; earlier comparisons adverse |
 | Mother-in-law | `b7058c6`; success-state/evidence helper | [Native project integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md), [prior recovery screen](results/mother-recovery-02/README.md) | Native-runner reuse verified on one authored project shape with two variants; raw lower costs have unequal coverage and fixture defects; external-project utility and broad efficiency unproven |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
