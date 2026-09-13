@@ -2,6 +2,8 @@ import hashlib
 import importlib.util
 import io
 import json
+import re
+import shlex
 from pathlib import Path
 import subprocess
 import sys
@@ -17,6 +19,50 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_reference_commands_execute_committed_and_uncommitted_modes(self):
+        reference = ROOT / 'skills/receipt/references/existing-fix.md'
+        commands = re.findall(r'```sh\n(.*?)\n```', reference.read_text(), re.S)
+        self.assertEqual(len(commands), 2)
+        for name in ('parser.py', 'test_parser.py'):
+            source = 'rule.py' if name == 'parser.py' else 'test_rule.py'
+            (self.root / name).write_text((self.root / source).read_text().replace('from rule import', 'from parser import'))
+        # Fresh commits for the literal documented filenames, with old behavior
+        # followed by the fix. Existing fixture files are unrelated support.
+        target = self.root / 'parser.py'
+        target.write_text('def eligible(n): return n > 18\n')
+        before = self.commit()
+        target.write_text('def eligible(n): return n >= 18\n')
+        self.commit()
+        for index, command in enumerate(commands):
+            if index == 1:
+                target.write_text('def eligible(n): return n > 18\n')
+                before = self.commit()
+                target.write_text('def eligible(n): return n >= 18\n')
+            snapshot = {str(p.relative_to(self.root)): p.read_bytes()
+                        for p in self.root.rglob('*') if p.is_file()}
+            # Only substitute the installed executable locations; execute the
+            # reference's actual JSON, runner arguments and stdin shell syntax.
+            command = command.replace('python3 /path/to/receipt/scripts/compare.py',
+                                      shlex.join([sys.executable, '-B', str(SCRIPT)]))
+            process = subprocess.run(['sh', '-c', command], cwd=self.root,
+                                     text=True, capture_output=True, timeout=20)
+            self.assertEqual(process.returncode, 0, process.stderr)
+            result = json.loads(process.stdout)
+            self.assertEqual(result['revisions']['before'], before)
+            self.assertEqual(result['checks']['before']['exit_code'], 1)
+            self.assertIn('AssertionError: False is not true', result['checks']['before']['output'])
+            self.assertEqual(result['checks']['after']['exit_code'], 0)
+            self.assertIn('Verified copied import: parser', result['checks']['after']['output'])
+            if index == 1:
+                self.assertIsNone(result['revisions']['after'])
+                self.assertEqual(result['working_tree_after']['sha256']['parser.py'],
+                                 hashlib.sha256(target.read_bytes()).hexdigest())
+            else:
+                self.assertEqual(result['revisions']['after'], self.git('rev-parse', 'HEAD'))
+            self.assertEqual(snapshot, {str(p.relative_to(self.root)): p.read_bytes()
+                                       for p in self.root.rglob('*') if p.is_file()})
+            self.assertFalse(list(self.root.glob('.receipt-*')))
+
     def test_cli_compares_frozen_uncommitted_implementation_without_changing_index(self):
         target = self.root / 'rule.py'
         target.write_text('def eligible(n): return n >= 99\n')
