@@ -10,6 +10,12 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Success-state correction](MOTHER-SUCCESS-STATE-03.md): `b7058c6` fixes three
+  demonstrated false-pass paths without adding sequences; retains transient
+  failure states and clarifies compatible interfaces. 270 local tests pass.
+  Current model cost and real-project routing remain unmeasured; earlier recovery
+  percentages refer to the prior revision, not this change.
+
 - [Recovery and retained evidence, 8 sessions](results/mother-recovery-02/README.md):
   `699cdba` catches an error-recovery defect the prior helper missed and retains
   same-run JSON. Both arms meet required outcomes 4/4; skill −17.2% total tokens /
@@ -66,7 +72,7 @@ The five optional helpers are not mandatory for every task.
 | Necromancer | `51ce19e`; collector `6318b91`, reference `3157ee2` | [Scoped discovery](NECROMANCER-DISCOVERY-01.md), [adverse packaging transfer](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md) | Configured consumer preserved with near-identical cost; favorable packaging discovery pair has unequal work and capture limits; earlier transfer adverse; broad savings unproven |
 | Receipt | `abb4b93`; helper/reference `4a29990` | [Two-module transfer](RECEIPT-ASSEMBLY-01.md), [equal explicit requirements](RECEIPT-EQUAL-REQUIREMENTS-01.md), [earlier adverse package](RECEIPT-CURRENT-PACKAGE-01.md) | Two-module transfer +26.0% tokens / −31.1% time despite correct before/after checks; earlier parser pair favorable; combined efficiency unmet |
 | Landlord | `26a310d` | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Caller search excludes installed example content but still lists resource paths; 68,509 tokens/39.233s in nonpaired regression, no causal efficiency claim; earlier comparisons adverse |
-| Mother-in-law | `699cdba`; recovery/evidence helper | [Recovery screen](results/mother-recovery-02/README.md), [frozen five-case confirmation](results/mother-in-law-confirmation-2026-09-12/README.md) | Recovery screen favorable with narrower additional coverage on two authored cases; current revision not independently confirmed across project shapes |
+| Mother-in-law | `b7058c6`; success-state/evidence helper | [False-pass correction](MOTHER-SUCCESS-STATE-03.md), [prior recovery screen](results/mother-recovery-02/README.md), [frozen five-case confirmation](results/mother-in-law-confirmation-2026-09-12/README.md) | Local false-pass fixes verified; current model cost and incompatible-interface routing unmeasured; prior recovery screen has narrower additional coverage on two authored cases |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
 | Con Artist | `8b61ed8`; helper/common/advanced references `91fdde3` | [Automatic audit and subsequent candidate](PROBE-ADOPTION-01.md), [report interpretation](CON-ARTIST-REPORT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Auto audit +24.92% tokens / −5.97% time; helper unused. Same-process provenance instruction is newer and has no model result |
