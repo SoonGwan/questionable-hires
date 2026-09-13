@@ -35,3 +35,9 @@ discovery and selected helper usage separately from outcomes. Report total
 input (cached included once) + output and whole process time against the fresh
 baseline. Unequal work and one repetition do not prove equivalent-work savings.
 Shared cache/order effects remain. No featured-chart replacement.
+
+## Completed review
+
+[Both model sessions](results/httpx-queryparams-01/README.md): required core
+outcomes present, +17.7% tokens / −12.8% time. Skill still repeats discovery;
+baseline attempts an out-of-project search. No broad efficiency acceptance.

@@ -10,6 +10,12 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Query parameter transfer](results/httpx-queryparams-01/README.md): entrypoint
+  `613d2ee` prioritizes assertion-local discovery and reuse; the actual skill
+  session still repeats searches. +17.7% tokens / −12.8% time, required core
+  outcomes present; baseline scope exception and unequal provenance checks.
+  Discovery-work reduction and broad savings are not demonstrated.
+
 - [Native probe model recheck](results/httpx-decoder-03/README.md): `89d91af`
   selected successfully without repair; +16.5% tokens / −30.4% time across two
   exposed HTTPX tasks. UTF-8 alone −1.0% tokens / −28.6% time, with extra Trio and
@@ -100,7 +106,7 @@ The optional helpers are not mandatory for every task.
 | Mother-in-law | `b7058c6`; success-state/evidence helper | [Native project integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md), [prior recovery screen](results/mother-recovery-02/README.md) | Native-runner reuse verified on one authored project shape with two variants; raw lower costs have unequal coverage and fixture defects; external-project utility and broad efficiency unproven |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
-| Con Artist | routing `22389f3`; native probe files `89d91af` | [Native probe recheck](results/httpx-decoder-03/README.md), [routing recheck](results/httpx-decoder-02/README.md) | Native files adopted without repair; aggregate tokens +16.5% / time −30.4%, unequal work; broad savings remain unproven |
+| Con Artist | entrypoint `613d2ee`; native probe files `89d91af` | [Query parameter transfer](results/httpx-queryparams-01/README.md), [native probe recheck](results/httpx-decoder-03/README.md) | Discovery reuse not demonstrated; query parameter tokens +17.7% / time −12.8%, unequal provenance; broad savings remain unproven |
 | Friday | `9cae27c`; helper `64dd877`, reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regressions verified for checks and migration chunks; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
 
 ## Reproducibility and release status
