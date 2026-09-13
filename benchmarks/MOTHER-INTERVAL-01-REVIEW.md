@@ -17,3 +17,25 @@ pending checks, two-second waits and owned-task cancellation/draining are presen
 Source SHA-256/Git diff are captured unchanged before/after. Correct final report
 and exact native rerun command. No capture diagnostics or observed scope deviation.
 Standalone author replay and other scheduled cells remain pending.
+
+## Protected search — skill
+
+Completed: **72,758 tokens / 78.579 seconds**, five shell calls. Reads only the
+native route, copies controlled support into standalone test_search.py, and
+explicitly adopts continuous retention from the user task. Retained assertions
+now check the seeded display after older completion while newer is pending,
+for distinct and repeated keys; reverse/final ownership and loading entry are
+also checked. Normal loading and an intended request-key mismatch bring the suite
+to six methods. One-second async waits and owned-task cleanup; no installed imports
+or production edits. The rerun command adds a 20-second parent subprocess bound.
+
+**Native capture limitation:** original raw command output starts with a lone
+`ok`, then the last test name and `Ran 6 tests ... OK` summary (0.033s). Earlier
+individual test output is absent, even though automatic capture diagnostics are
+empty and process exit is 0. The complete summary is captured, but a complete
+per-test native transcript must not be claimed. Source inspection supports rule
+adoption; planned post-timing replay will not fill the original output gap.
+
+The final report is consistent with the retained assertions and captured summary.
+No scope deviation appears in commands; exact source/inventory reconciliation and
+standalone positive/fault controls follow after remaining model timing.
