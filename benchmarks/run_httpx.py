@@ -43,6 +43,11 @@ URL_REPR_TASKS = {
 }
 
 
+HEADER_EQUALITY_TASKS = {
+    'headers-duplicate-equality': 'Audit whether tests/models/test_headers.py protects Headers equality preserving the number of identical repeated header pairs, while ignoring header-name case and pair ordering. Run that unchanged suite on correct code and one narrow isolated fault that discards duplicate multiplicity during equality. Use the supplied interpreter with pytest -q -p no:cacheprovider. Identify the detecting assertion if covered; otherwise verify the same focused assertion on correct and faulty behavior, showing actual and expected equality. Check reordered/case-varied distinct header pairs and unequal values as normal controls on both versions. Inspect copied implementation provenance in each check process. Remove owned disposable copies and preserve all original source/tests/configuration. Captured evidence and a scoped conclusion suffice; no retained harness/report is required. Do not fix production, change warning policy, use network, install dependencies, commit or publish.',
+}
+
+
 def select_profile(profile, requested=None):
     profiles = {'audit': ('con-artist', TASKS), 'design': ('landlord', DESIGN_TASKS),
                 'diagnosis': ('exorcist', DIAGNOSIS_TASKS),
@@ -51,7 +56,8 @@ def select_profile(profile, requested=None):
                 'queryparams-audit': ('con-artist', QUERYPARAM_TASKS),
                 'headers-audit': ('con-artist', HEADER_TASKS),
                 'cookies-audit': ('con-artist', COOKIE_TASKS),
-                'url-repr-audit': ('con-artist', URL_REPR_TASKS)}
+                'url-repr-audit': ('con-artist', URL_REPR_TASKS),
+                'header-equality-audit': ('con-artist', HEADER_EQUALITY_TASKS)}
     if profile not in profiles:
         raise ValueError('Unknown profile')
     skill, available = profiles[profile]
@@ -113,7 +119,7 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit', 'cookies-audit', 'url-repr-audit'), default='audit')
+    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit', 'cookies-audit', 'url-repr-audit', 'header-equality-audit'), default='audit')
     parser.add_argument('--case', action='append')
     parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
     parser.add_argument('--repeats', type=int, default=3)
@@ -149,7 +155,7 @@ def main():
         checks = ['tests/test_decoders.py']
     if args.profile == 'queryparams-audit':
         checks = ['tests/models/test_queryparams.py']
-    if args.profile == 'headers-audit':
+    if args.profile in ('headers-audit', 'header-equality-audit'):
         checks = ['tests/models/test_headers.py']
     if args.profile == 'cookies-audit':
         checks = ['tests/models/test_cookies.py']

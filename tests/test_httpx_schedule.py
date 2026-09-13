@@ -21,6 +21,17 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_header_equality_profile_keeps_prior_boundary_audit(self):
+        skill, tasks = runner.select_profile('header-equality-audit')
+        self.assertEqual(skill, 'con-artist')
+        self.assertEqual(set(tasks), {'headers-duplicate-equality'})
+        self.assertEqual(set(runner.make_schedule(tasks, ['baseline', 'skill'], 1)),
+                         {('headers-duplicate-equality', 'baseline', 1),
+                          ('headers-duplicate-equality', 'skill', 1)})
+        self.assertEqual(runner.select_profile('headers-audit'), ('con-artist', runner.HEADER_TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('header-equality-audit', ['headers-two-boundaries'])
+
     def test_url_repr_profile_is_new_and_preserves_prior_tasks(self):
         skill, tasks = runner.select_profile('url-repr-audit')
         self.assertEqual(skill, 'con-artist')

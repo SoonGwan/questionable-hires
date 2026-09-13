@@ -1,0 +1,11 @@
+{
+  "files": ["httpx", "tests", "pyproject.toml"],
+  "imports": ["httpx._models"],
+  "runner": "pytest",
+  "tests": ["-q", "-p", "no:cacheprovider", "tests/models/test_headers.py"],
+  "target": "httpx/_models.py",
+  "old": "        return sorted(self_list) == sorted(other_list)\n",
+  "new": "        return set(self_list) == set(other_list)\n",
+  "precheck": "import httpx\nleft = httpx.Headers([('X-A', '1'), ('X-B', '2')])\nright = httpx.Headers([('x-b', '2'), ('x-a', '1')])\nassert left == right, (left, right)\nassert left != httpx.Headers([('x-a', 'different'), ('x-b', '2')])\nprint('normal controls: reordered/case-insensitive equality and differing-value inequality pass', flush=True)\n",
+  "probe": "import httpx\nleft = httpx.Headers([('X-A', '1'), ('x-a', '1')])\nright = httpx.Headers([('x-a', '1')])\nactual = (left == right)\nassert actual is False, {'left': left.multi_items(), 'right': right.multi_items(), 'actual_equal': actual, 'expected_equal': False}\n"
+}
