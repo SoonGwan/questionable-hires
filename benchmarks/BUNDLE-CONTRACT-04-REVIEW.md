@@ -126,3 +126,30 @@ baseline schedules an additional original run and traces actual calls; skill
 uses bounded helper phases and rereads packaged implementation. This is an adverse
 token result, not overall acceptance, causal attribution or evidence for unseen
 projects. Other pairs and whole-bundle conclusions remain pending.
+
+## Protected search — Mother-in-law and second pair
+
+Five shell calls, **90,533 tokens / 74.696 seconds**. Retains native
+test_search.py with adapted per-request transport and four async tests. The actual
+Search is exercised from a seeded displayed result, including both completion
+orders, unchanged prior display after each pending submission and older completion
+while newer stays pending. Additional tests check normal single completion and
+the support's deliberate key-mismatch AssertionError. No async runner-method
+collision is present in the inspected source. One-second waits and teardown
+cancel/wait/retrieve owned tasks. Production hash stays unchanged; only the test
+is added, with no installed-skill runtime dependency.
+
+The asset is used; neither disposable probe instructions nor its implementation
+are loaded. This is actual adoption of native delivery and mode-specific routing.
+The copied support retains an unused fail_request method; this is extra delivered
+surface, not exercised error-state coverage. Captured native output starts at an
+`ok` tail, omitting earlier test-name lines, but retains the four-test/OK summary
+and later named tests. Preserve that capture limitation rather than inventing
+missing output. Automatic capture flags are empty, not completeness proof.
+
+Pair: baseline 83,134 tokens / 63.577s versus skill 90,533 / 74.696s:
+**+8.90% tokens / +17.49% time**. Both support the required protected behavior.
+Baseline has three component tests; skill has the distinct support-failure test
+and a different normal-control arrangement, so work is not identical. Neither
+resource improves in this pair. No whole-gate or general improvement claim follows
+from routing adoption or the absence of a fabricated bug.
