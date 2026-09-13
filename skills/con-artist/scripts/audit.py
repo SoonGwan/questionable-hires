@@ -26,6 +26,15 @@ for name in spec['imports']:
     if not location or not pathlib.Path(location).resolve().is_relative_to(root):
         raise RuntimeError('Import escaped copy: ' + name + ': ' + str(location))
     print('Verified copied import:', name, flush=True)
+if spec.get('precheck'):
+    try:
+        exec(compile(spec['precheck'], '<audit-precheck>', 'exec'), {'__name__': '__audit_precheck__'})
+    except BaseException:
+        import traceback
+        print('Precheck failed; not mutation evidence.', flush=True)
+        traceback.print_exc()
+        raise SystemExit(6)
+    print('Precheck completed in check process.', flush=True)
 if spec['probe'] is not None:
     sys.argv = ['audit-probe']
     exec(compile(spec['probe'], '<audit-probe>', 'exec'), {'__name__': '__main__'})
@@ -85,7 +94,7 @@ def execute(python, directory, spec, probe, timeout):
     env.pop('PYTHONPATH', None)
     env.pop('PYTHONOPTIMIZE', None)
     payload = dict(imports=spec['imports'], runner=spec.get('runner', 'unittest'),
-                   tests=spec['tests'], probe=probe)
+                   tests=spec['tests'], probe=probe, precheck=spec.get('precheck'))
     process = subprocess.Popen([python, '-B', '-c', BOOTSTRAP, json.dumps(payload)],
                                cwd=directory, env=env, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
@@ -140,7 +149,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     if not isinstance(spec, dict):
         raise ValueError('Audit recipe must be a JSON object')
     allowed = {'files', 'imports', 'runner', 'tests', 'target', 'old', 'new',
-               'probe', 'probe_when', 'probe_files', 'probe_tests'}
+               'probe', 'probe_when', 'probe_files', 'probe_tests', 'precheck'}
     unknown = set(spec) - allowed
     if unknown:
         raise ValueError('Unknown audit fields: ' + ', '.join(sorted(map(str, unknown))) +
@@ -157,6 +166,8 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
         raise ValueError('Use unittest or the already installed pytest')
     if 'probe' in spec and not isinstance(spec['probe'], str):
         raise ValueError('probe must be Python assertion code')
+    if 'precheck' in spec and not isinstance(spec['precheck'], str):
+        raise ValueError('precheck must be Python assertion code')
     file_probe = 'probe_files' in spec or 'probe_tests' in spec
     if file_probe:
         if 'probe' in spec:
@@ -199,7 +210,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     if original.count(old) != 1:
         raise ValueError('Mutation text must match exactly once')
     faulty = original.replace(old, new, 1).encode('utf-8')
-    identity = (files, modes, spec['imports'], spec['tests'],
+    identity = (files, modes, spec['imports'], spec['tests'], spec.get('precheck'),
                 spec.get('runner', 'unittest'), str(python), timeout, dict(os.environ))
     reused = _baseline is not None and _baseline.get('identity') == identity
     probe_identity = (identity, spec.get('probe'), probe_files, spec.get('probe_tests'))
@@ -241,7 +252,8 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                 result = execute(str(python), directory, phase_spec,
                                  spec.get('probe') if check == 'probe' else None, timeout)
                 results[variant + '_' + check] = result
-                if result['timed_out'] or (variant == 'correct' and result['exit_code'] != 0):
+                if (result['timed_out'] or (variant == 'correct' and result['exit_code'] != 0)
+                        or (spec.get('precheck') and result['exit_code'] == 6)):
                     output = dict(status='incomplete', checks=results)
                     if reused:
                         output['correct_tests_reused'] = True
@@ -274,7 +286,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
 
 def audit_batch(root, spec, python=sys.executable, timeout=30):
     """Reuse a successful baseline only within this explicit local batch."""
-    common_keys = {'files', 'imports', 'runner', 'tests', 'mutations'}
+    common_keys = {'files', 'imports', 'runner', 'tests', 'mutations', 'precheck'}
     fault_keys = {'target', 'old', 'new', 'probe', 'probe_when', 'probe_files', 'probe_tests'}
     mutations = spec.get('mutations')
     if set(spec) - common_keys or not isinstance(mutations, list) or not 1 <= len(mutations) <= 8:

@@ -12,6 +12,7 @@ Use the project's existing interpreter and actual installed skill path. Pass JSO
   "new": "",
   "runner": "unittest",
   "tests": ["-v", "test_service"],
+  "precheck": "import service, test_service\nassert test_service.SaveTests.test_save.__globals__['save'] is service.save\nprint('Verified actual test global save is service.save', flush=True)\n",
   "probe": "from service import save\ns = ['existing']\nsave(s, 'record')\nassert s == ['existing', 'record']\n"
 }
 JSON
@@ -26,6 +27,19 @@ and `--python`, not JSON keys. The optional mode fields are described below.
 For pytest, list implementation modules in `imports`, not selected test modules:
 pre-importing tests bypasses pytest's assertion rewriting and can lose useful
 expected/observed diagnostics. Let pytest collect its tests normally.
+
+Optional `precheck` runs assertion code after copied imports, before each test or
+probe, **in that check's process**. Use it for a required caller-binding check
+instead of a temporary binding module or separate import-only process. The example
+checks unittest's actual test global; adapt it to the real caller. This establishes
+binding at that point, not that the test later calls it or fixtures never rebind it.
+Do not pre-import pytest tests here; use native fixtures/hooks for post-collection
+bindings. Do not replace behavior to make a precheck pass. A precheck exception is
+labeled `Precheck failed; not mutation evidence` in output; inspect it, never count
+it as a killed behavioral fault. With precheck enabled, check exit 6 is reserved
+for incomplete precheck evidence and stops the audit, even on a mutant; a
+precheck's early `SystemExit(0)` is also incomplete. It shares the check timeout and output
+limits. Batch precheck is shared, and changing it invalidates reusable baselines.
 
 For native fixture-based assertions, use `probe_files`/`probe_tests` from
 [probe execution](python-audit-advanced.md#stronger-probes), avoiding nested Python

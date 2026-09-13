@@ -16,6 +16,59 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_precheck_runs_with_actual_binding_in_all_four_check_processes(self):
+        precheck = ('import service, test_service, os\n'
+                    'assert test_service.Tests.test_saved.__globals__["save"] is service.save\n'
+                    'print("binding-pid:", os.getpid(), flush=True)\n')
+        result = self.run_audit(dict(self.recipe, precheck=precheck))
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual([result['checks'][k]['exit_code'] for k in
+                          ('correct_tests', 'mutant_tests', 'correct_probe', 'mutant_probe')], [0, 0, 0, 1])
+        for check in result['checks'].values():
+            self.assertIn('binding-pid:', check['output'])
+            self.assertIn('Precheck completed in check process.', check['output'])
+        self.assertIn('AssertionError', result['checks']['mutant_probe']['output'])
+        self.assertFalse(list(self.root.glob('.con-artist-*')))
+
+    def test_precheck_failure_and_early_success_exit_are_not_fault_evidence(self):
+        for code in ('assert False, "wrong binding"', 'raise SystemExit(0)',
+                     'import service\nassert "append" in service.save.__code__.co_names'):
+            with self.subTest(code=code):
+                result = self.run_audit(dict(self.recipe, precheck=code, probe_when='survives'))
+                self.assertEqual(result['status'], 'incomplete')
+                failed = next(c for c in result['checks'].values() if c['exit_code'] == 6)
+                self.assertIn('Precheck failed; not mutation evidence.', failed['output'])
+                self.assertNotIn('correct_probe', result['checks'])
+                self.assertFalse(list(self.root.glob('.con-artist-*')))
+
+    def test_precheck_change_invalidates_cached_correct_observations(self):
+        baseline, probe_cache = {}, {}
+        helper.audit(self.root, dict(self.recipe, precheck='assert True'),
+                     _baseline=baseline, _probe_baseline=probe_cache)
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit(self.root, dict(self.recipe, precheck='assert 1 == 1'),
+                                  _baseline=baseline, _probe_baseline=probe_cache)
+        self.assertEqual(execute.call_count, 4)
+        self.assertNotIn('correct_tests_reused', result)
+        self.assertNotIn('correct_probe_reused', result)
+
+    def test_precheck_invalid_type_rejected_without_execution(self):
+        with patch.object(helper, 'execute') as execute:
+            with self.assertRaisesRegex(ValueError, 'precheck must be'):
+                self.run_audit(dict(self.recipe, precheck=['assert True']))
+        execute.assert_not_called()
+
+    def test_batch_accepts_shared_precheck_and_timeout_stops(self):
+        batch = self.batch_recipe()
+        batch['precheck'] = 'import service\nassert callable(service.save)'
+        result = helper.audit_batch(self.root, batch)
+        self.assertEqual(result['status'], 'observed')
+        self.assertIn('Precheck completed', result['audits'][0]['checks']['correct_tests']['output'])
+        result = self.run_audit(dict(self.recipe, precheck='while True: pass'), timeout=0.2)
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(set(result['checks']), {'correct_tests'})
+        self.assertTrue(result['checks']['correct_tests']['timed_out'])
+
     def test_misspelled_probe_is_rejected_before_any_execution(self):
         recipe = dict(self.recipe)
         recipe['probes'] = recipe.pop('probe')
