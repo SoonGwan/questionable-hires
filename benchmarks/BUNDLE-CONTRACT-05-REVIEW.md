@@ -116,3 +116,69 @@ before/after manifests and all installed resources match the frozen candidate.
 All original source bytes and exact non-Git/non-skill final inventories match:
 only diagnosis adds its required experiment. Snapshot and command-trace limits
 remain as described above. Six cells are reviewed; the overall run is unfinished.
+
+## Protected search — Mother-in-law
+
+Completed in 73.554 seconds, 72,011 tokens, five shell commands. Retains actual
+Search tests using adapted controlled-fetch support, no separate component helper
+or browser/reference detour. Three native tests pass: two seeded overlapping
+completion orders plus a deliberate expected/actual request-key mismatch. That
+mismatch raises an actual AssertionError, not a shadowed unittest runner error.
+One-second dispatch/completion waits and owned-task cancellation/draining are
+present; cleanup retrieves finished exceptions and rejects pending tasks.
+
+Both sequences assert retained display at request starts and newest result after
+both responses. The old-first intermediate display is printed (`displayed`) but
+not asserted; baseline additionally asserts that state and crosses both orders
+with empty and seeded state. Skill's extra support mismatch does not replace
+those extra baseline controls. Native observations support its no-defect report,
+but test sets are not identical. No production edits, additional artifacts beyond
+`test_search.py`, scope violations or capture flags were found in command review.
+Whole-run post-timing replay remains pending, not silently credited now.
+
+Protected pair descriptive costs: skill **−13.18% tokens / +17.67% time** versus
+baseline. Different controls and n=1 prevent equal-work or general efficiency
+claims. Both observed no reproduced defect, with the native coverage differences
+above retained rather than erased by a common success label.
+
+## Unprotected search — Mother-in-law, native capture missing
+
+Completed in 81.775 seconds, 110,510 tokens, five shell commands. Retains
+`test_search.py` and controlled-fetch support (only docstrings differ from the
+installed asset). Static inspection shows actual Search import, controlled
+overlapping normal/reversed completions, no prescribed normal intermediate
+display, and a deliberate request-key mismatch. One-second waits and finally
+owned-task cleanup are present. The shell wraps the test in a 15-second subprocess
+deadline. Production and requirements remain unchanged.
+
+**Original command item_6 has exit 1 and entirely empty output.** The raw original
+event confirms the gap, not only an exported/redacted version. This is not enough
+to establish intended failure or normal-control passes. The final answer's
+"2 pass, 1 fails" and reproduced-bug assertion cannot fill missing native evidence.
+No retained evidence file exists. Keep this cell and its full costs as capture-
+limited, not verified success. The prescribed author replay after all timing is
+still needed, and cannot become original model execution evidence retrospectively.
+Other command capture/provenance and source preservation are reconciled.
+
+## Formatter review — Landlord and paired costs
+
+Completed in 35.438 seconds, 66,986 tokens, six shell commands. Correctly recommends
+a named formatter with the exact expression, fixed USD contract and preserved
+consumer-facing API. Explicitly identifies policy ownership in the formatter;
+does not execute checks or edit files. It reads all three real files, but still
+does independent known reads in separate calls rather than batching. No duplicated
+full keyword dump; no scope/capture issue found.
+
+Versus baseline's 78,794 tokens / 27.582 seconds: **−14.99% tokens / +28.48% time**.
+Baseline performs an extra project reference search; skill explains future policy
+ownership. This static-review pair does not establish runtime review transfer or
+general improvement. Both preserve exact files/inventory; no candidate is edited
+during this checkpoint because of the observed discovery pattern.
+
+## Nine-cell reconciliation
+
+All three newly reviewed skill cells have matching terminal usage/redacted raw
+events, unchanged installed manifests and resources matching `d4a52ef`. Original
+fixture bytes and complete non-Git/non-skill final inventories match the expected
+test additions. The unprotected search native-output gap remains explicitly
+unresolved. Nine cells reviewed; the scheduled run remains in progress.
