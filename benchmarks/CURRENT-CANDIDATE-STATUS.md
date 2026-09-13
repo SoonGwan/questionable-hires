@@ -10,6 +10,17 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- HTTPX runner environment correction: normalize the supplied interpreter's
+  parent directory aliases while preserving the virtualenv executable symlink.
+  The previous `/tmp/.../venv/bin/python` spelling fails the same literal
+  `sys.executable` assertion observed in baseline repairs; normalized
+  `/private/tmp/.../venv/bin/python` passes in the existing environment.
+  A real temporary virtualenv/aliased-directory test verifies executable identity
+  and that `sys.prefix` remains the virtualenv, not the base interpreter.
+  Future manifests record supplied/effective paths; every arm receives the same
+  effective path. This removes an avoidable environment confound, not a skill
+  performance improvement. Historical prompts, repairs and scores are untouched.
+
 - [Cookie audit transfer](results/httpx-cookies-01/README.md): current `36e201c`
   adopts full-test/scoped-definition context selection. Both fresh sessions
   detect the same path-clearing fault and pass exact domain-only controls;

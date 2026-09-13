@@ -6,6 +6,8 @@ import tempfile
 import hashlib
 import subprocess
 import shutil
+import json
+import venv
 from unittest.mock import patch
 
 directory = Path(__file__).resolve().parents[1] / 'benchmarks'
@@ -19,6 +21,25 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_interpreter_directory_alias_normalizes_without_leaving_virtualenv(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            environment = root / 'environment'
+            venv.EnvBuilder(with_pip=False, symlinks=True).create(environment)
+            alias = root / 'alias'
+            alias.symlink_to(environment, target_is_directory=True)
+            executable = alias / 'bin/python'
+            resolved = runner.interpreter_path(executable)
+            self.assertEqual(resolved, environment / 'bin/python')
+            self.assertTrue(resolved.is_symlink())
+            self.assertNotEqual(resolved, resolved.resolve())
+            output = subprocess.check_output([str(resolved), '-I', '-B', '-c',
+                'import json, sys; print(json.dumps([sys.executable, sys.prefix, sys.base_prefix]))'], text=True)
+            actual, prefix, base = json.loads(output)
+            self.assertEqual(actual, str(resolved))
+            self.assertEqual(Path(prefix), environment)
+            self.assertNotEqual(prefix, base)
+
     def test_cookie_transfer_keeps_existing_profiles_and_exact_cells(self):
         skill, tasks = runner.select_profile('cookies-audit')
         self.assertEqual(skill, 'con-artist')

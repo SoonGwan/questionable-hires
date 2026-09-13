@@ -98,6 +98,12 @@ def make_schedule(tasks, arms, repeats):
     return schedule
 
 
+def interpreter_path(path):
+    """Normalize directory aliases without following the venv's Python symlink."""
+    path = Path(path).absolute()
+    return path.parent.resolve(strict=True) / path.name
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, required=True)
@@ -116,7 +122,7 @@ def main():
     except ValueError as error:
         parser.error(str(error))
     skill_revision = command(['git', 'rev-parse', '--verify', args.skill_revision + '^{commit}'], ROOT)
-    source, python = args.source.resolve(), args.python.absolute()
+    source, python = args.source.resolve(), interpreter_path(args.python)
     if args.output.exists():
         raise FileExistsError(args.output)
     if command(['git', 'rev-parse', 'HEAD'], source) != REVISION:
@@ -154,6 +160,7 @@ def main():
                     codex_version=command(['codex', '--version'], ROOT), model='gpt-6-astra', effort='medium',
                     seed=20260912, timeout_seconds=360, jobs=1,
                     profile=args.profile, skill_name=skill_name, preflight_checks=checks,
+                    interpreter_supplied=str(args.python), interpreter_effective=str(python),
                     skill_sha256=hashlib.sha256((snapshot / 'SKILL.md').read_bytes()).hexdigest(),
                     skill_files_sha256=skill_files,
                     tasks=tasks, schedule=schedule, skill_revision=skill_revision, completed_cells=[], stopped_after_limit=False,
