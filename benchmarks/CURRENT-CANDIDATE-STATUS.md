@@ -10,6 +10,12 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Receipt nested-invoice transfer](results/receipt-invoice-01/README.md):
+  helper/directory use retains both defect failures and both controls, but
+  +30.08% tokens and a skill-side parent/ancestor instruction-search scope
+  failure. Recorded −21.19% time is confounded by concurrent author regression
+  tests during baseline and unequal probes. No accepted speedup or scope pass.
+
 - Receipt follow-up candidate: the historical-comparison
   [reference](../skills/receipt/references/existing-fix.md) now directs discovery
   from the located regression/fix and their imports/input references, narrowing
@@ -18,7 +24,9 @@ test counts. “Current” and “latest” in that archive refer to the origina
   evidence of input completeness. Existing helper constraints are condensed,
   not removed, keeping reference length essentially unchanged. This addresses
   the repeated inventory observed below; behavioral adoption and cost effects
-  of the new guidance are **not yet measured**. No executable helper change.
+  of the new guidance are now measured in the invoice transfer above: necessary
+  inputs retained, but higher tokens and a scope failure. No executable helper
+  change and no accepted performance improvement.
 
 - [Receipt directory model adoption](results/receipt-directory-model-01/README.md):
   the model selects `samples/` and uses the helper without reading its source;

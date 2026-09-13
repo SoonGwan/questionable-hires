@@ -1,0 +1,397 @@
+diff --git a/.invoice-verification-cyu_f2bz/fixed-tests.log b/.invoice-verification-cyu_f2bz/fixed-tests.log
+new file mode 100644
+index 0000000..f745a23
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/fixed-tests.log
+@@ -0,0 +1,9 @@
++test_empty (checks.test_invoice.InvoiceTests) ... ok
++test_negative_tie (checks.test_invoice.InvoiceTests) ... ok
++test_positive_tie (checks.test_invoice.InvoiceTests) ... ok
++test_sum_before_rounding (checks.test_invoice.InvoiceTests) ... ok
++
++----------------------------------------------------------------------
++Ran 4 tests in 0.001s
++
++OK
+diff --git a/.invoice-verification-cyu_f2bz/fixed/README.md b/.invoice-verification-cyu_f2bz/fixed/README.md
+new file mode 100644
+index 0000000..d3e66fd
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/fixed/README.md
+@@ -0,0 +1 @@
++Invoice amounts use exact decimal unit-price strings and integer quantities. Sum before rounding once to the configured quantum, with ties away from zero. Empty invoices retain the configured decimal places. Currency comes from config/company.json. Run python3 -B -m unittest -v checks.test_invoice from the repository root. Standard library only.
+diff --git a/.invoice-verification-cyu_f2bz/fixed/billing/__init__.py b/.invoice-verification-cyu_f2bz/fixed/billing/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/.invoice-verification-cyu_f2bz/fixed/billing/money.py b/.invoice-verification-cyu_f2bz/fixed/billing/money.py
+new file mode 100644
+index 0000000..fa4f37c
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/fixed/billing/money.py
+@@ -0,0 +1,5 @@
++from decimal import Decimal, ROUND_HALF_UP
++
++def total(lines, quantum):
++    amount = sum((Decimal(row['unit_price']) * row['quantity'] for row in lines), Decimal('0'))
++    return str(amount.quantize(Decimal(quantum), rounding=ROUND_HALF_UP))
+diff --git a/.invoice-verification-cyu_f2bz/fixed/billing/service.py b/.invoice-verification-cyu_f2bz/fixed/billing/service.py
+new file mode 100644
+index 0000000..4613ee4
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/fixed/billing/service.py
+@@ -0,0 +1,7 @@
++import json
++from pathlib import Path
++from .money import total
++
++def invoice(lines):
++    settings = json.loads(Path('config/company.json').read_text())
++    return {'currency': settings['currency'], 'total': total(lines, settings['quantum'])}
+diff --git a/.invoice-verification-cyu_f2bz/fixed/checks/__init__.py b/.invoice-verification-cyu_f2bz/fixed/checks/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/.invoice-verification-cyu_f2bz/fixed/checks/fixtures/combined.json b/.invoice-verification-cyu_f2bz/fixed/checks/fixtures/combined.json
+new file mode 100644
+index 0000000..d0ce5bd
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/fixed/checks/fixtures/combined.json
+@@ -0,0 +1 @@
++[{"unit_price":"1.005","quantity":2}]
+diff --git a/.invoice-verification-cyu_f2bz/fixed/checks/fixtures/negative.json b/.invoice-verification-cyu_f2bz/fixed/checks/fixtures/negative.json
+new file mode 100644
+index 0000000..939e29d
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/fixed/checks/fixtures/negative.json
+@@ -0,0 +1 @@
++[{"unit_price":"-1.005","quantity":1}]
+diff --git a/.invoice-verification-cyu_f2bz/fixed/checks/fixtures/positive.json b/.invoice-verification-cyu_f2bz/fixed/checks/fixtures/positive.json
+new file mode 100644
+index 0000000..4b356a5
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/fixed/checks/fixtures/positive.json
+@@ -0,0 +1 @@
++[{"unit_price":"1.005","quantity":1}]
+diff --git a/.invoice-verification-cyu_f2bz/fixed/checks/support.py b/.invoice-verification-cyu_f2bz/fixed/checks/support.py
+new file mode 100644
+index 0000000..5ac530a
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/fixed/checks/support.py
+@@ -0,0 +1,5 @@
++import json
++from pathlib import Path
++
++def example(name):
++    return json.loads((Path(__file__).parent / 'fixtures' / (name + '.json')).read_text())
+diff --git a/.invoice-verification-cyu_f2bz/fixed/checks/test_invoice.py b/.invoice-verification-cyu_f2bz/fixed/checks/test_invoice.py
+new file mode 100644
+index 0000000..1fcad8d
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/fixed/checks/test_invoice.py
+@@ -0,0 +1,16 @@
++import unittest
++from billing.service import invoice
++from checks.support import example
++
++class InvoiceTests(unittest.TestCase):
++    def test_positive_tie(self):
++        self.assertEqual(invoice(example('positive')), {'currency': 'USD', 'total': '1.01'})
++
++    def test_negative_tie(self):
++        self.assertEqual(invoice(example('negative')), {'currency': 'USD', 'total': '-1.01'})
++
++    def test_sum_before_rounding(self):
++        self.assertEqual(invoice(example('combined')), {'currency': 'USD', 'total': '2.01'})
++
++    def test_empty(self):
++        self.assertEqual(invoice([]), {'currency': 'USD', 'total': '0.00'})
+diff --git a/.invoice-verification-cyu_f2bz/fixed/config/company.json b/.invoice-verification-cyu_f2bz/fixed/config/company.json
+new file mode 100644
+index 0000000..1c4197e
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/fixed/config/company.json
+@@ -0,0 +1 @@
++{"currency":"USD","quantum":"0.01"}
+diff --git a/.invoice-verification-cyu_f2bz/previous-tests.log b/.invoice-verification-cyu_f2bz/previous-tests.log
+new file mode 100644
+index 0000000..ed80b3e
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/previous-tests.log
+@@ -0,0 +1,37 @@
++test_empty (checks.test_invoice.InvoiceTests) ... ok
++test_negative_tie (checks.test_invoice.InvoiceTests) ... FAIL
++test_positive_tie (checks.test_invoice.InvoiceTests) ... FAIL
++test_sum_before_rounding (checks.test_invoice.InvoiceTests) ... ok
++
++======================================================================
++FAIL: test_negative_tie (checks.test_invoice.InvoiceTests)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/.invoice-verification-cyu_f2bz/previous/checks/test_invoice.py", line 10, in test_negative_tie
++    self.assertEqual(invoice(example('negative')), {'currency': 'USD', 'total': '-1.01'})
++AssertionError: {'currency': 'USD', 'total': '-1.00'} != {'currency': 'USD', 'total': '-1.01'}
++- {'currency': 'USD', 'total': '-1.00'}
++?                                   ^
++
+++ {'currency': 'USD', 'total': '-1.01'}
++?                                   ^
++
++
++======================================================================
++FAIL: test_positive_tie (checks.test_invoice.InvoiceTests)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/.invoice-verification-cyu_f2bz/previous/checks/test_invoice.py", line 7, in test_positive_tie
++    self.assertEqual(invoice(example('positive')), {'currency': 'USD', 'total': '1.01'})
++AssertionError: {'currency': 'USD', 'total': '1.00'} != {'currency': 'USD', 'total': '1.01'}
++- {'currency': 'USD', 'total': '1.00'}
++?                                  ^
++
+++ {'currency': 'USD', 'total': '1.01'}
++?                                  ^
++
++
++----------------------------------------------------------------------
++Ran 4 tests in 0.001s
++
++FAILED (failures=2)
+diff --git a/.invoice-verification-cyu_f2bz/previous/README.md b/.invoice-verification-cyu_f2bz/previous/README.md
+new file mode 100644
+index 0000000..d3e66fd
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/previous/README.md
+@@ -0,0 +1 @@
++Invoice amounts use exact decimal unit-price strings and integer quantities. Sum before rounding once to the configured quantum, with ties away from zero. Empty invoices retain the configured decimal places. Currency comes from config/company.json. Run python3 -B -m unittest -v checks.test_invoice from the repository root. Standard library only.
+diff --git a/.invoice-verification-cyu_f2bz/previous/billing/__init__.py b/.invoice-verification-cyu_f2bz/previous/billing/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/.invoice-verification-cyu_f2bz/previous/billing/money.py b/.invoice-verification-cyu_f2bz/previous/billing/money.py
+new file mode 100644
+index 0000000..b525756
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/previous/billing/money.py
+@@ -0,0 +1,5 @@
++from decimal import Decimal, ROUND_DOWN
++
++def total(lines, quantum):
++    amount = sum((Decimal(row['unit_price']) * row['quantity'] for row in lines), Decimal('0'))
++    return str(amount.quantize(Decimal(quantum), rounding=ROUND_DOWN))
+diff --git a/.invoice-verification-cyu_f2bz/previous/billing/service.py b/.invoice-verification-cyu_f2bz/previous/billing/service.py
+new file mode 100644
+index 0000000..4613ee4
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/previous/billing/service.py
+@@ -0,0 +1,7 @@
++import json
++from pathlib import Path
++from .money import total
++
++def invoice(lines):
++    settings = json.loads(Path('config/company.json').read_text())
++    return {'currency': settings['currency'], 'total': total(lines, settings['quantum'])}
+diff --git a/.invoice-verification-cyu_f2bz/previous/checks/__init__.py b/.invoice-verification-cyu_f2bz/previous/checks/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/.invoice-verification-cyu_f2bz/previous/checks/fixtures/combined.json b/.invoice-verification-cyu_f2bz/previous/checks/fixtures/combined.json
+new file mode 100644
+index 0000000..d0ce5bd
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/previous/checks/fixtures/combined.json
+@@ -0,0 +1 @@
++[{"unit_price":"1.005","quantity":2}]
+diff --git a/.invoice-verification-cyu_f2bz/previous/checks/fixtures/negative.json b/.invoice-verification-cyu_f2bz/previous/checks/fixtures/negative.json
+new file mode 100644
+index 0000000..939e29d
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/previous/checks/fixtures/negative.json
+@@ -0,0 +1 @@
++[{"unit_price":"-1.005","quantity":1}]
+diff --git a/.invoice-verification-cyu_f2bz/previous/checks/fixtures/positive.json b/.invoice-verification-cyu_f2bz/previous/checks/fixtures/positive.json
+new file mode 100644
+index 0000000..4b356a5
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/previous/checks/fixtures/positive.json
+@@ -0,0 +1 @@
++[{"unit_price":"1.005","quantity":1}]
+diff --git a/.invoice-verification-cyu_f2bz/previous/checks/support.py b/.invoice-verification-cyu_f2bz/previous/checks/support.py
+new file mode 100644
+index 0000000..5ac530a
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/previous/checks/support.py
+@@ -0,0 +1,5 @@
++import json
++from pathlib import Path
++
++def example(name):
++    return json.loads((Path(__file__).parent / 'fixtures' / (name + '.json')).read_text())
+diff --git a/.invoice-verification-cyu_f2bz/previous/checks/test_invoice.py b/.invoice-verification-cyu_f2bz/previous/checks/test_invoice.py
+new file mode 100644
+index 0000000..1fcad8d
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/previous/checks/test_invoice.py
+@@ -0,0 +1,16 @@
++import unittest
++from billing.service import invoice
++from checks.support import example
++
++class InvoiceTests(unittest.TestCase):
++    def test_positive_tie(self):
++        self.assertEqual(invoice(example('positive')), {'currency': 'USD', 'total': '1.01'})
++
++    def test_negative_tie(self):
++        self.assertEqual(invoice(example('negative')), {'currency': 'USD', 'total': '-1.01'})
++
++    def test_sum_before_rounding(self):
++        self.assertEqual(invoice(example('combined')), {'currency': 'USD', 'total': '2.01'})
++
++    def test_empty(self):
++        self.assertEqual(invoice([]), {'currency': 'USD', 'total': '0.00'})
+diff --git a/.invoice-verification-cyu_f2bz/previous/config/company.json b/.invoice-verification-cyu_f2bz/previous/config/company.json
+new file mode 100644
+index 0000000..1c4197e
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/previous/config/company.json
+@@ -0,0 +1 @@
++{"currency":"USD","quantum":"0.01"}
+diff --git a/.invoice-verification-cyu_f2bz/report.json b/.invoice-verification-cyu_f2bz/report.json
+new file mode 100644
+index 0000000..571fc84
+--- /dev/null
++++ b/.invoice-verification-cyu_f2bz/report.json
+@@ -0,0 +1,137 @@
++{
++  "fixed_commit": "ad875f211bc29230a9558a23c38c26713f396035",
++  "previous_commit": "cd977e157a823954db7e382d5d60fe258e5498fe",
++  "runner": [
++    "python3",
++    "-B",
++    "-m",
++    "unittest",
++    "-v",
++    "checks.test_invoice"
++  ],
++  "runs": {
++    "fixed": {
++      "revision": "ad875f211bc29230a9558a23c38c26713f396035",
++      "cwd": "<WORKSPACE>/.invoice-verification-cyu_f2bz/fixed",
++      "exit_code": 0,
++      "controlled_file_sha256": {
++        "README.md": "8318f0da505a58765af67a13066d7e7b272688d9cf76be461d5a276011a19e5f",
++        "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++        "checks/fixtures/combined.json": "e21d9e56c4da9a39a4d13345012e6b4a0486e13e39ac1c8a13259017019bcf40",
++        "checks/fixtures/negative.json": "678e4d9879bbddbf6f09f2e5a9b609ceb41d7de84e3a3e4559b302b32790ba03",
++        "checks/fixtures/positive.json": "13e5ebf8c2af8b143ec02788e04d033b7688e1db43a60be5f5543a3e05a55b19",
++        "checks/support.py": "f51d199ae7e7ca48b98552f7e2e1a90a7b4e5fb9c3c8a4f84cb5e3061e327673",
++        "checks/test_invoice.py": "bdc9ccef3779cf58647326770fb675aae7132b12085bb90de2b08832ca19ad1c",
++        "config/company.json": "eb6a2030a5438507f5c9a7e470c33e37fa8b5275acc7f38542fe75bdb5b99094"
++      },
++      "loaded": {
++        "modules": {
++          "billing.money": {
++            "path": "<WORKSPACE>/.invoice-verification-cyu_f2bz/fixed/billing/money.py",
++            "sha256": "8ef21441e375464c52a3d40f362800485cc83b0c68918226acb1b456d113af59",
++            "git_blob": "fa4f37c26cb2b6b89c1bce142eaa77463419fa8d"
++          },
++          "billing.service": {
++            "path": "<WORKSPACE>/.invoice-verification-cyu_f2bz/fixed/billing/service.py",
++            "sha256": "a92e880763a434ef270151f78175d09b255858bdf7c392ea775d7bb366d78504",
++            "git_blob": "4613ee42d1357c3b00442eef31a4cc8f9fa84575"
++          },
++          "checks.test_invoice": {
++            "path": "<WORKSPACE>/.invoice-verification-cyu_f2bz/fixed/checks/test_invoice.py",
++            "sha256": "bdc9ccef3779cf58647326770fb675aae7132b12085bb90de2b08832ca19ad1c",
++            "git_blob": "1fcad8df33f066c13338b8a6cdbb0c57405e0ddb"
++          },
++          "checks.support": {
++            "path": "<WORKSPACE>/.invoice-verification-cyu_f2bz/fixed/checks/support.py",
++            "sha256": "f51d199ae7e7ca48b98552f7e2e1a90a7b4e5fb9c3c8a4f84cb5e3061e327673",
++            "git_blob": "5ac530a5b28475bd6f8d204cb904e4cdcf48a197"
++          }
++        },
++        "config": {
++          "currency": "USD",
++          "quantum": "0.01"
++        },
++        "results": {
++          "positive": {
++            "currency": "USD",
++            "total": "1.01"
++          },
++          "negative": {
++            "currency": "USD",
++            "total": "-1.01"
++          },
++          "combined": {
++            "currency": "USD",
++            "total": "2.01"
++          },
++          "empty": {
++            "currency": "USD",
++            "total": "0.00"
++          }
++        }
++      }
++    },
++    "previous": {
++      "revision": "cd977e157a823954db7e382d5d60fe258e5498fe",
++      "cwd": "<WORKSPACE>/.invoice-verification-cyu_f2bz/previous",
++      "exit_code": 1,
++      "controlled_file_sha256": {
++        "README.md": "8318f0da505a58765af67a13066d7e7b272688d9cf76be461d5a276011a19e5f",
++        "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++        "checks/fixtures/combined.json": "e21d9e56c4da9a39a4d13345012e6b4a0486e13e39ac1c8a13259017019bcf40",
++        "checks/fixtures/negative.json": "678e4d9879bbddbf6f09f2e5a9b609ceb41d7de84e3a3e4559b302b32790ba03",
++        "checks/fixtures/positive.json": "13e5ebf8c2af8b143ec02788e04d033b7688e1db43a60be5f5543a3e05a55b19",
++        "checks/support.py": "f51d199ae7e7ca48b98552f7e2e1a90a7b4e5fb9c3c8a4f84cb5e3061e327673",
++        "checks/test_invoice.py": "bdc9ccef3779cf58647326770fb675aae7132b12085bb90de2b08832ca19ad1c",
++        "config/company.json": "eb6a2030a5438507f5c9a7e470c33e37fa8b5275acc7f38542fe75bdb5b99094"
++      },
++      "loaded": {
++        "modules": {
++          "billing.money": {
++            "path": "<WORKSPACE>/.invoice-verification-cyu_f2bz/previous/billing/money.py",
++            "sha256": "bdba01dd3e3173a11ba155b5f91816afb44ae09e179b9cd6bee81a4ed7034a91",
++            "git_blob": "b52575690bf5e30f2606973c54f122c9bf578e2d"
++          },
++          "billing.service": {
++            "path": "<WORKSPACE>/.invoice-verification-cyu_f2bz/previous/billing/service.py",
++            "sha256": "a92e880763a434ef270151f78175d09b255858bdf7c392ea775d7bb366d78504",
++            "git_blob": "4613ee42d1357c3b00442eef31a4cc8f9fa84575"
++          },
++          "checks.test_invoice": {
++            "path": "<WORKSPACE>/.invoice-verification-cyu_f2bz/previous/checks/test_invoice.py",
++            "sha256": "bdc9ccef3779cf58647326770fb675aae7132b12085bb90de2b08832ca19ad1c",
++            "git_blob": "1fcad8df33f066c13338b8a6cdbb0c57405e0ddb"
++          },
++          "checks.support": {
++            "path": "<WORKSPACE>/.invoice-verification-cyu_f2bz/previous/checks/support.py",
++            "sha256": "f51d199ae7e7ca48b98552f7e2e1a90a7b4e5fb9c3c8a4f84cb5e3061e327673",
++            "git_blob": "5ac530a5b28475bd6f8d204cb904e4cdcf48a197"
++          }
++        },
++        "config": {
++          "currency": "USD",
++          "quantum": "0.01"
++        },
++        "results": {
++          "positive": {
++            "currency": "USD",
++            "total": "1.00"
++          },
++          "negative": {
++            "currency": "USD",
++            "total": "-1.00"
++          },
++          "combined": {
++            "currency": "USD",
++            "total": "2.01"
++          },
++          "empty": {
++            "currency": "USD",
++            "total": "0.00"
++          }
++        }
++      }
++    }
++  },
++  "original_tracked_files_unchanged": true
++}

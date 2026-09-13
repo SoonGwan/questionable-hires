@@ -1,0 +1,1 @@
+Invoice amounts use exact decimal unit-price strings and integer quantities. Sum before rounding once to the configured quantum, with ties away from zero. Empty invoices retain the configured decimal places. Currency comes from config/company.json. Run python3 -B -m unittest -v checks.test_invoice from the repository root. Standard library only.
