@@ -48,3 +48,37 @@ checks payload object identity and explicit peer-pending status; skill additiona
 runs two default cases. Required retention coverage is present in both, with
 unequal extra verification. Five versus three calls and separate skill/reference
 reads remain overhead. No causal or general efficiency claim from this n=1 pair.
+
+## Clear-on-entry implementation — baseline
+
+Completed: **83,750 tokens / 74.307 seconds**, four shell calls. Native controlled
+observations use real Suggestions and distinct dictionary payloads. Both isolated
+orders show correct seeded/final results but null at both request entries; normal
+order also remains null after the older completion while latest is pending.
+Captures actual/expected values and false matches rather than throwing on the
+first mismatch, so later recovery remains visible. Exit 0 means the observation
+script completed, not that the product passed. The final diagnosis correctly
+identifies line 9's clearing and separates it from final ownership correctness.
+
+One-second waits/cleanup and five-second case bounds; explicit pending-peer checks,
+owned-task completion and original-preservation output are captured. A final
+line-numbered reread supplies locations. The complete inline command is repeated
+in the answer for rerun; no regression artifact was required or created. No
+capture diagnostics or observed scope deviation. Skill counterpart remains pending.
+
+## Transient display implementation — skill
+
+Completed: **70,543 tokens / 32.430 seconds**, five shell calls. Uses the new
+retention option once on actual Suggestions.search/last_result, without reading
+helper implementation or changing source. Native JSON records a normal-overlap
+failure at the older completion: actual `old result`, expected `seed result`,
+with final `new result` nevertheless correct. Reversed retention and both default
+cases pass. Exit 1 and complete=true distinguish a tested product failure from
+probe incompleteness. The answer correctly identifies the transient violation,
+preserves exact native failure evidence and provides the executed short command.
+
+Two-second cooperative bound and unchanged helper cleanup; no output gap or added
+artifact. Four reviewed cells' usage, original/redacted events, frozen installed
+resources and exact original inventories reconcile. Final snapshots alone are
+not proof against transient writes; no scope deviation appears in reviewed traces.
+Baseline counterpart and final clear-on-entry skill session remain pending.
