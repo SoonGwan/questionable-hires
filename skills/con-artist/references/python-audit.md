@@ -62,6 +62,14 @@ exit 1. Inline assertion probes are not unittest suites and remain supported;
 pytest retains native exits. Help/early exits or a nonzero mutant exit still do
 not prove execution or a killed fault: inspect the actual tests and assertions.
 
+A test helper overriding `unittest.TestCase.fail` can break assertion handling:
+an incompatible signature gives TypeError; an async override accepting the message
+can return an unawaited coroutine and let a mismatch pass. Inspect such warnings
+and helper definitions. A stronger probe must have a working failure path of its
+own; do not copy a broken assertion helper into it. The audit preserves native
+outputs/exits, not an automatic classification of production versus test defects.
+Do not change warning policy or repair the original suite merely to credit a kill.
+
 Child-exit confirmation has a separate five-second cleanup wait. An unconfirmed exit stops the audit/batch and produces CLI exit 2 with an audit-not-established error, not collected evidence. Existing interruptions/errors propagate. This is not an OS termination or descendant-containment guarantee; do not automatically retry while the previous process may remain.
 
 Limits: POSIX, Python 3.9+, 20 MB selected inputs; no symlinks/Git internals/path traversal or namespace-package import checks. No dependency installation. This is **not a sandbox**: use trusted tests, local data and authorized actions only. Files outside the selection are not integrity-checked or restored. Use normal project facilities for other languages or unsupported layouts; don't repeat a valid baseline merely to adopt this helper mid-audit.

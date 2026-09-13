@@ -16,6 +16,47 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_shadowed_unittest_fail_can_false_pass_and_independent_probe_exposes_it(self):
+        source = ('import unittest\nfrom service import save\n'
+                  'class Tests(unittest.TestCase):\n'
+                  '    async def fail(self, message):\n        return None\n'
+                  '    def test_saved(self):\n'
+                  '        store = ["existing"]\n        save(store, "record")\n'
+                  '        self.assertListEqual(store, ["existing", "record"])\n')
+        (self.root / 'test_service.py').write_text(source)
+        recipe = dict(self.recipe, probe_when='survives',
+                      probe='from service import save\ns = ["existing"]\nsave(s, "record")\n'
+                            'assert s == ["existing", "record"], s\n')
+        result = self.run_audit(recipe)
+        self.assertEqual([check['exit_code'] for check in result['checks'].values()], [0, 0, 0, 1])
+        self.assertIn('was never awaited', result['checks']['mutant_tests']['output'])
+        self.assertIn("AssertionError: ['existing']", result['checks']['mutant_probe']['output'])
+        self.assertNotIn('probe_skipped', result)
+        # Only the colliding helper name changes; actual assertions stay intact.
+        (self.root / 'test_service.py').write_text(source.replace('async def fail(', 'async def fail_request('))
+        fixed = self.run_audit(recipe)
+        self.assertEqual(list(fixed['checks']), ['correct_tests', 'mutant_tests'])
+        self.assertEqual(fixed['checks']['mutant_tests']['exit_code'], 1)
+        self.assertIn('AssertionError', fixed['checks']['mutant_tests']['output'])
+        self.assertNotIn('was never awaited', fixed['checks']['mutant_tests']['output'])
+
+    def test_shadowed_unittest_fail_type_error_is_preserved_without_probe_credit(self):
+        (self.root / 'test_service.py').write_text(
+            'import unittest\nfrom service import save\n'
+            'class Tests(unittest.TestCase):\n'
+            '    async def fail(self, key, task, error):\n        return None\n'
+            '    def test_saved(self):\n'
+            '        store = []\n        save(store, "record")\n'
+            '        self.assertListEqual(store, ["record"])\n')
+        result = self.run_audit(dict(self.recipe, probe_when='survives'))
+        self.assertEqual(list(result['checks']), ['correct_tests', 'mutant_tests'])
+        self.assertEqual(result['checks']['correct_tests']['exit_code'], 0)
+        self.assertEqual(result['checks']['mutant_tests']['exit_code'], 1)
+        self.assertIn('TypeError', result['checks']['mutant_tests']['output'])
+        self.assertIn('missing 2 required positional arguments', result['checks']['mutant_tests']['output'])
+        self.assertIn('not automatically', result['limitation'])
+        self.assertIn('not validated', result['probe_skipped'])
+
     def test_precheck_runs_with_actual_binding_in_all_four_check_processes(self):
         precheck = ('import service, test_service, os\n'
                     'assert test_service.Tests.test_saved.__globals__["save"] is service.save\n'

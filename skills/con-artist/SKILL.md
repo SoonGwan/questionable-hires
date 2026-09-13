@@ -23,6 +23,11 @@ not proof of resolved dependencies or executed behavior.
 
 Use the documented command or evidenced runner, preserving test configuration. Reuse a valid baseline or established audit; a failing baseline is not mutation evidence. Choose one reachable behavioral fault at the requested boundary, such as acknowledgment versus persistence or closed flag versus cleanup. Syntax errors and equivalent mutations do not establish sensitivity.
 
+A green baseline does not validate assertion plumbing. Custom helpers can shadow
+runner methods (for example, async `unittest.TestCase.fail`), producing support
+errors or false passes. Trace unexpected errors/coroutine warnings through those
+helpers before attributing the audit outcome to production behavior.
+
 Choose isolation by the context it preserves. In-memory substitution fits when the actual caller resolves it and compilation context/bindings remain intact; restore substitutions in reused processes. Extracting function text can lose future flags, closures or decorators: use disposable module/package copies when that context is uncertain. Keep originals intact; a fake implementation or wrong binding does not demonstrate a surviving fault.
 
 For compatible Python copy-based audits, use [the audit helper](references/python-audit.md)

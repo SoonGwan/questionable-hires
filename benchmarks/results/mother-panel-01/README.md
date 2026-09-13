@@ -90,3 +90,28 @@ Featured charts and bilingual landing-page claims are unchanged.
 Post-run repository suite: **368 tests pass (52.258s)**. Skill/catalog/local
 links, featured synchronization and export privacy-pattern checks pass. These
 author checks do not replace model observations or establish remote installation.
+
+## Follow-up: Con Artist assertion-path regression
+
+After this measured run, two author regressions exercised the existing Con Artist
+audit helper on the same **failure mechanism**, not a rerun of the panel model task.
+An async `fail(self, message)` override produces a real false pass for a missing
+append: correct and mutant unittest both exit 0, with an unawaited-coroutine
+warning on the mutant. An independent inline stored-record assertion passes
+correct code and fails faulty code with `AssertionError: ['existing']`. Renaming
+only the helper restores the original list assertion's failure on the mutant.
+
+An incompatible async fail signature reproduces the panel-style TypeError.
+The conditional audit retains that output and explicitly says its skipped stronger
+probe was not validated; a nonzero exit is not automatically credited as a kill.
+The helper behavior already handles these observations, so its algorithm, warning
+policy and CLI are **unchanged**. Con Artist entry/reference guidance now points
+to custom assertion-helper collisions and independent probe failure paths. This
+follows skill-creator's narrow, evidence-driven correction principle, not blanket
+extra mutation runs for every task. Model adoption and cost remain unmeasured.
+
+Focused helper suite: **62 tests pass (10.116s)**. This author-created false-pass
+variant is distinct from the original panel suites, which returned nonzero on
+both faulty variants; do not retroactively label those measured suites false-green.
+Full repository validation after this follow-up: **370 tests pass (52.593s)**;
+skill/catalog, local links, featured synchronization and whitespace checks pass.
