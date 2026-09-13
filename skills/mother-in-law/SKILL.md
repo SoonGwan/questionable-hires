@@ -12,11 +12,13 @@ Use controlled responses/clocks, isolated cases, bounded waits, and owned-operat
 cleanup—never sleeps or production actions. Preserve user files and scope.
 
 Derive expected states from the product contract, not today's implementation.
-For overlapping operations, separate required final ownership from intermediate
-display policy: observing an older response does not require a future fix to
-display it. Assert specified intermediate behavior; report unspecified behavior
-as observation. A regression must reject the fault without rejecting a valid
-correction merely for taking a different permitted path.
+Separate final ownership from interval requirements. “Retain while loading” or
+“until the latest completes” applies throughout that interval: assert the retained
+value after relevant intervening completions while the latest remains pending,
+not only at request entry. Printing an observation is not a regression assertion.
+If only final ownership is required, leave unspecified intermediate display as
+observation; seeing an older response does not require a valid fix to display it.
+A regression must reject the fault without rejecting another permitted path.
 
 Choose the requested deliverable; load only its relevant support:
 
@@ -27,11 +29,12 @@ Choose the requested deliverable; load only its relevant support:
   command or saved JSON is not a standalone project regression.
 
 - **Captured observations without a project-test deliverable:** the optional
-[component probe](references/component-probe.md) fits a zero-argument constructor,
-async `run(query, fetch)` and direct payload state. An opt-in mode checks required
-display retention through normal/reversed overlap; repeated identical overlapping
-queries still require project checks. Existing adequate runners take precedence. Never change
-production to fit a helper. Native-project delivery does not need this reference.
+  [component probe](references/component-probe.md) fits a zero-argument constructor,
+  async `run(query, fetch)` and direct payload state. An opt-in mode checks required
+  display retention through normal/reversed overlap; repeated identical overlapping
+  queries still require project checks. Existing adequate runners take precedence.
+  Never change production to fit a helper. Native-project delivery does not need
+  this reference.
 
 - **Rendered UI:** read [references/browser.md](references/browser.md).
 
