@@ -40,6 +40,10 @@ strings; that section also covers conditional execution. For several already-jus
 faults with one reusable baseline, read [batch mode](python-audit-advanced.md#several-already-justified-faults-one-baseline).
 Neither mode is needed just to assess one existing test against one fault.
 
+For an evidenced `src/` or other explicit project import path, see
+[copied import roots](python-audit-advanced.md#copied-import-roots). Do not install
+the project or guess import paths merely to make a check green.
+
 For small, permitted package/test directories, select those directories plus required configuration rather than reconstructing their import dependencies file by file merely to minimize copy size. Directory selection preserves fixtures and support modules. Narrow the selection when size, scope, sensitive data or incompatible contents require it; do not copy a repository root, environment or unrelated data indiscriminately. The helper enforces its 20 MB input limit before execution.
 
 Each executed check gets a fresh project-local disposable copy with verified imports and the copy as its working directory. Batch mode can reuse successful correct-code observations as documented above. Listed imports execute before the selected test runner.

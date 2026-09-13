@@ -34,7 +34,7 @@ Each executed check gets a fresh project-local disposable copy with verified imp
 ## Several already-justified faults, one baseline
 
 For deterministic local tests sharing the same inputs and command, the same CLI
-accepts shared `files`, `imports`, `runner`, `tests` plus a `mutations` list
+accepts shared `files`, `imports`, `runner`, `tests`, optional `import_roots` plus a `mutations` list
 (1–8 objects). Move each fault's `target`, `old`, `new`, optional `probe` (or
 `probe_files`/`probe_tests`) and
 `probe_when` into its own list entry; no other per-fault overrides are supported.
@@ -42,7 +42,7 @@ Use this only for distinct boundaries already needed by the audit, not to
 generate extra faults or batch an investigation whose next step depends on results.
 
 Within that invocation, a successful normal test result is reused when selected
-bytes/modes, imports, test arguments, interpreter, timeout and environment match.
+bytes/modes, imports, ordered import roots, test arguments, interpreter, timeout and environment match.
 An identical stronger probe also reuses its successful correct-code observation
 under those same conditions; changing the probe runs a new correct-code check.
 Each mutant test and mutant probe still runs in a fresh copy, as does every
@@ -69,6 +69,29 @@ that nothing executed before the error. Remaining mutations are unrun. Inspect
 the error and process state before retrying; do not discard completed evidence.
 Errors before any returned audit, original-integrity/cleanup `RuntimeError`s and
 interruptions still propagate without a collected batch report.
+
+## Copied import roots
+
+When the project's evidenced runner uses a source directory such as `src/`, add
+`"import_roots": ["src"]` to the recipe and select the required source files in
+`files`. The helper prepends these directories **inside each disposable copy**,
+in listed order, followed by the copy root. Default `[]` keeps the existing
+root-only behavior. This path setup precedes listed imports, prechecks, tests and
+probes; it never points at the original source or installs a package.
+
+Roots must be distinct project-relative directories containing selected files.
+Absolute paths, traversal, the already-added `.` root, symlinks, missing/empty
+selections and duplicate normalized paths are rejected before test execution.
+Keep required package initializers and configuration in the selection. Listed
+imports must still resolve to files inside the copy; inspect their reported
+paths and caller bindings. Root order can change which same-named package wins
+and is part of baseline-reuse identity. Batch mode shares roots across faults.
+
+Use the project's documented path order, not a guessed path that hides an import
+failure. Explicit source roots do not reproduce editable-install hooks, build
+steps, package metadata, compiled extensions or namespace-package validation.
+Use project facilities when those are required. The helper still removes inherited
+PYTHONPATH, so unrelated ambient source trees cannot serve as an implicit recipe.
 
 ## Diagnostics and incomplete evidence
 

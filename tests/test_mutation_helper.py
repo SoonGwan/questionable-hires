@@ -17,6 +17,83 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def src_recipe(self):
+        package = self.root / 'src' / 'audit_sample'
+        package.mkdir(parents=True)
+        (package / '__init__.py').write_text('')
+        (package / 'store.py').write_text((self.root / 'service.py').read_text())
+        (self.root / 'test_src.py').write_text(
+            'import unittest\nfrom audit_sample.store import save\n'
+            'class Tests(unittest.TestCase):\n'
+            '    def test_ack(self):\n        self.assertTrue(save([], "item"))\n')
+        return dict(self.recipe, files=['src', 'test_src.py'], imports=['audit_sample.store'],
+                    target='src/audit_sample/store.py', tests=['-v', 'test_src'],
+                    probe='from audit_sample.store import save\ns = ["kept"]\n'
+                          'save(s, "item")\nassert s == ["kept", "item"], s\n')
+
+    def test_src_layout_uses_explicit_copied_import_root_for_all_four_checks(self):
+        recipe = self.src_recipe()
+        unsupported = self.run_audit(recipe)
+        self.assertEqual(unsupported['status'], 'incomplete')
+        self.assertIn("No module named 'audit_sample'", unsupported['checks']['correct_tests']['output'])
+        result = self.run_audit(dict(recipe, import_roots=['src']))
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual([check['exit_code'] for check in result['checks'].values()], [0, 0, 0, 1])
+        self.assertIn("AssertionError: ['kept']", result['checks']['mutant_probe']['output'])
+        for check in result['checks'].values():
+            self.assertIn('"path":"src/audit_sample/store.py"', check['output'])
+        self.assertEqual((self.root / recipe['target']).read_text(),
+                         (self.root / 'service.py').read_text())
+        self.assertFalse(list(self.root.glob('.con-artist-*')))
+
+    def test_invalid_import_roots_are_rejected_before_checks(self):
+        recipe = self.src_recipe()
+        (self.root / 'empty').mkdir()
+        for roots in ('src', ['..'], ['/tmp'], ['.'], ['missing'], ['test_src.py'],
+                      ['empty'], ['src', 'src/'], [1]):
+            with self.subTest(roots=roots), patch.object(helper, 'execute') as execute:
+                with self.assertRaises(ValueError):
+                    self.run_audit(dict(recipe, import_roots=roots))
+                execute.assert_not_called()
+
+    def test_import_root_order_changes_binding_and_invalidates_cached_baseline(self):
+        recipe = self.src_recipe()
+        other = self.root / 'other_src' / 'audit_sample'
+        other.mkdir(parents=True)
+        (other / '__init__.py').write_text('')
+        (other / 'store.py').write_text('def save(store, value):\n    return False\n')
+        recipe['files'].append('other_src')
+        baseline = {}
+        first = helper.audit(self.root, dict(recipe, import_roots=['src', 'other_src']),
+                             _baseline=baseline)
+        self.assertEqual(first['checks']['correct_tests']['exit_code'], 0)
+        second = helper.audit(self.root, dict(recipe, import_roots=['other_src', 'src']),
+                              _baseline=baseline)
+        self.assertEqual(second['status'], 'incomplete')
+        self.assertNotIn('correct_tests_reused', second)
+        check = second['checks']['correct_tests']
+        self.assertEqual(check['exit_code'], 1)
+        self.assertIn('"path":"other_src/audit_sample/store.py"', check['output'])
+        self.assertIn('AssertionError', check['output'])
+
+    def test_src_layout_cli_batch_preserves_native_observations_and_reuse(self):
+        recipe = self.src_recipe()
+        common = {key: recipe[key] for key in ('files', 'imports', 'tests')}
+        fault = {key: recipe[key] for key in ('target', 'old', 'new', 'probe')}
+        common.update(import_roots=['src'], mutations=[fault, dict(fault)])
+        process = subprocess.run([sys.executable, '-B', helper.__file__, '--source',
+                                  str(self.root), '--spec', '-'], input=json.dumps(common),
+                                 capture_output=True, text=True, timeout=15)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        report = json.loads(process.stdout)
+        self.assertEqual(report['status'], 'observed')
+        self.assertTrue(report['audits'][1]['correct_tests_reused'])
+        self.assertTrue(report['audits'][1]['correct_probe_reused'])
+        for row in report['audits']:
+            self.assertEqual(row['checks']['mutant_probe']['exit_code'], 1)
+            self.assertIn("AssertionError: ['kept']", row['checks']['mutant_probe']['output'])
+            self.assertTrue(row['integrity']['owned_scratch_removed'])
+
     def test_unremoved_scratch_never_returns_successful_integrity(self):
         scratch = self.root / '.con-artist-retained'
         scratch.mkdir()

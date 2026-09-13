@@ -19,7 +19,7 @@ import time
 BOOTSTRAP = '''import hashlib, importlib, json, pathlib, runpy, sys
 spec = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
-sys.path.insert(0, str(root))
+sys.path[:0] = [str(root / name) for name in spec['import_roots']] + [str(root)]
 print('Copied process:', json.dumps({'python': sys.executable, 'cwd': str(root)}, separators=(',', ':')), flush=True)
 for name in spec['imports']:
     module = importlib.import_module(name)
@@ -99,7 +99,8 @@ def execute(python, directory, spec, probe, timeout):
     env.pop('PYTHONPATH', None)
     env.pop('PYTHONOPTIMIZE', None)
     payload = dict(imports=spec['imports'], runner=spec.get('runner', 'unittest'),
-                   tests=spec['tests'], probe=probe, precheck=spec.get('precheck'))
+                   tests=spec['tests'], probe=probe, precheck=spec.get('precheck'),
+                   import_roots=spec.get('import_roots', []))
     process = subprocess.Popen([python, '-B', '-c', BOOTSTRAP, json.dumps(payload)],
                                cwd=directory, env=env, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
@@ -154,7 +155,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     if not isinstance(spec, dict):
         raise ValueError('Audit recipe must be a JSON object')
     allowed = {'files', 'imports', 'runner', 'tests', 'target', 'old', 'new',
-               'probe', 'probe_when', 'probe_files', 'probe_tests', 'precheck'}
+               'probe', 'probe_when', 'probe_files', 'probe_tests', 'precheck', 'import_roots'}
     unknown = set(spec) - allowed
     if unknown:
         raise ValueError('Unknown audit fields: ' + ', '.join(sorted(map(str, unknown))) +
@@ -190,6 +191,17 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     if not isinstance(old, str) or not old or not isinstance(new, str) or old == new:
         raise ValueError('Mutation must replace nonempty text with different text')
     files = snapshot(root, spec['files'])
+    import_roots = spec.get('import_roots', [])
+    if not isinstance(import_roots, list) or not all(isinstance(name, str) for name in import_roots):
+        raise ValueError('import_roots must be a list of selected project-relative directories')
+    normalized_roots = []
+    for name in import_roots:
+        path = relative(name)
+        if (not (root / path).is_dir() or (root / path).is_symlink()
+                or not any(path in Path(key).parents for key in files)
+                or path in normalized_roots):
+            raise ValueError('Import root must be a distinct directory containing selected files: ' + name)
+        normalized_roots.append(path)
     probe_files = {}
     total = sum(len(content) for content in files.values())
     for name, content in spec.get('probe_files', {}).items():
@@ -215,7 +227,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     if original.count(old) != 1:
         raise ValueError('Mutation text must match exactly once')
     faulty = original.replace(old, new, 1).encode('utf-8')
-    identity = (files, modes, spec['imports'], spec['tests'], spec.get('precheck'),
+    identity = (files, modes, spec['imports'], spec['tests'], spec.get('precheck'), import_roots,
                 spec.get('runner', 'unittest'), str(python), timeout, dict(os.environ))
     reused = _baseline is not None and _baseline.get('identity') == identity
     probe_identity = (identity, spec.get('probe'), probe_files, spec.get('probe_tests'))
@@ -301,7 +313,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
 
 def audit_batch(root, spec, python=sys.executable, timeout=30):
     """Reuse a successful baseline only within this explicit local batch."""
-    common_keys = {'files', 'imports', 'runner', 'tests', 'mutations', 'precheck'}
+    common_keys = {'files', 'imports', 'runner', 'tests', 'mutations', 'precheck', 'import_roots'}
     fault_keys = {'target', 'old', 'new', 'probe', 'probe_when', 'probe_files', 'probe_tests'}
     mutations = spec.get('mutations')
     if set(spec) - common_keys or not isinstance(mutations, list) or not 1 <= len(mutations) <= 8:
