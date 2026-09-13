@@ -136,7 +136,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 
 - **테스트 사기 감별사(`con-artist`):** 임시 복사본에서 Python 결함 주입, 복사본 import 검증, 테스트별 종료 상태, 로그 메모리·시간 제한을 처리합니다. [사용법과 한계](skills/con-artist/references/python-audit.md). 샌드박스가 아니므로 신뢰할 수 있는 테스트만 실행해야 합니다.
   [실행기 종료 후 정리](benchmarks/CON-ARTIST-PIPE-EXIT-01.md)를 개선해 자식 프로세스의 출력 파이프 때문에 완료된 검사를 중단하던 문제를 해결했습니다. 실제 결함 생존·검출 검사는 통과했습니다. 남은 그룹 구성원은 종료하므로 백그라운드 실행기는 지원하지 않으며, 모델 작업 전체의 절감 효과는 아직 미측정입니다.
-  [진행 중인 checkpoint 06](benchmarks/BUNDLE-CONTRACT-06-REVIEW.md#persistence-audit--skill)에서는 모델이 도우미를 실제 사용해 네 가지 감사 검증 출력을 확보했습니다. 노출된 단일 과제에서 토큰·시간 기록은 줄었지만, baseline의 추가 수정·출력 누락으로 작업량이 다릅니다. 전체 대조 검증은 남아 있으며 파이프 수정 자체의 절감 효과도 분리 측정하지 않았습니다.
+  [완료된 checkpoint 06](benchmarks/BUNDLE-CONTRACT-06-REVIEW.md#persistence-audit--skill)에서는 모델이 도우미를 실제 사용해 네 가지 감사 검증 출력을 확보했습니다. 노출된 단일 과제에서 토큰·시간 기록은 줄었지만, baseline의 추가 수정·출력 누락으로 작업량이 다릅니다. 원본·리소스 대조는 완료했으며 파이프 수정 자체의 절감 효과는 분리 측정하지 않았습니다.
   필요한 경우 [읽기 전용 맥락 수집기](skills/con-artist/references/python-context.md)에 정의 이름이나 오류 추적에 나온 `file.py:123`을 지정해 해당 함수·클래스 본문, 상위 경로의 지침·설정, conftest 색인을 한 번에 모을 수 있습니다. 프로젝트 코드를 import하지 않으며, 색인은 탐색을 돕는 자료이지 테스트 동작이나 모든 의존성을 검증한 결과가 아닙니다.
 - **레거시 고고학자(`necromancer`):** 선택한 코드 줄의 현재 상태와 Git 이력을 모으고, 미커밋 변경·얕은 이력의 한계를 표시합니다. [사용법과 한계](skills/necromancer/references/focused-history.md). 과거 코드를 지금도 유지해야 하는지는 별도로 판단합니다.
   [세 가지 판단을 요구한 개발 실험](benchmarks/results/necromancer-regions-01/README.md)에서 두 방식 모두 판단을 맞혔고, 스킬은 토큰 15.85%·시간 18.56% 감소를 기록했습니다. 추가 검증량 차이와 이미 노출된 단일 과제 때문에 일반화할 수 없으며, 선택형 이력 수집 도구는 사용하지 않았습니다.

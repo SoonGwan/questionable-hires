@@ -1,8 +1,65 @@
-# All-eight checkpoint 06 — review in progress
+# All-eight checkpoint 06 — completed development review
 
 Resource/launch `20ec916`; [frozen protocol](BUNDLE-CONTRACT-06-PROTOCOL.md).
-No aggregate result until all scheduled cells finish and evidence is reviewed.
-No resource/task edits or author replay/test workloads during model timing.
+All 18 scheduled cells completed, with zero timeouts/exclusions. No resource/task
+edits or author replay/test workloads occurred during timing. The notes below
+were recorded as cells completed; their pending reconciliation/replay statements
+are superseded by the final reconciliation here, not missing native evidence.
+
+## Final reconciliation and interpretation — 2026-09-14
+
+Raw events, terminal usage and all installed resource hashes reconcile for every
+cell against launch `20ec916`. No installed resources changed. Original project
+files are unchanged except the two boundary files and form.py in the requested
+implementation cells. Additional files match the reviewed tests/experiments;
+copied ControlledFetch matches the frozen asset byte-for-byte. No observed scope
+violation. The persistence baseline's missing leading native section remains a
+capture limitation, despite correct final diagnosis; replay does not fill it.
+
+Separate [author replay](results/bundle-contract-06/author-replay.json) runs 12
+checks with explicit project-root discovery, unchanged retained tests and
+15-second subprocess bounds. Both protected QA suites reject the transient
+older-result display fault with the intended AssertionError; both order suites
+reject original stale behavior and accept the valid generation guard. Both form
+and boundary implementations pass their retained tests. All 12 match; all retained
+projects are unchanged. This is regression/control evidence, not model timing.
+
+| Case | Baseline tokens | Skill tokens | Token change | Baseline seconds | Skill seconds |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Boundary | 79,719 | 84,554 | +6.07% | 28.046 | 29.779 |
+| Formatter | 62,887 | 66,315 | +5.45% | 21.392 | 26.805 |
+| Active history | 63,663 | 67,242 | +5.62% | 24.169 | 31.022 |
+| Pending form | 66,637 | 88,477 | +32.77% | 71.503 | 74.818 |
+| Persistence audit | 85,571 | 74,321 | −13.15% | 82.170 | 31.402 |
+| Rolling schema | 65,487 | 90,071 | +37.54% | 48.106 | 52.219 |
+| Search diagnosis | 103,849 | 72,244 | −30.43% | 89.305 | 58.001 |
+| Search-order QA | 102,105 | 71,748 | −29.73% | 80.501 | 53.122 |
+| Protected QA | 83,260 | 71,355 | −14.30% | 66.399 | 61.402 |
+| **Sum** | **713,178** | **686,327** | **−3.76%** | **511.591** | **418.570** |
+
+Summed wall time falls **18.18%**. Ratios of sums, cached input counted once;
+not the historical chart's mean-of-task-ratios. Nine exposed authored tasks at
+n=1, shared host/cache and unequal verification/artifacts do not establish causal
+or broad efficiency. Five pairs are adverse on both costs; no broad 20–30% win.
+All eight task-specific skill outcomes have supporting original evidence, but
+that is not a production/holdout result. Existing featured data stays unchanged.
+
+Next work: address avoidable discovery/reference overhead and repeated custom
+setup without losing actual bindings, failure controls or required transitions.
+Do not remove necessary checks simply to offset overhead, or re-run these cases
+until a favorable aggregate appears. Separate instruction/tool changes from
+their future model validation; keep all historical adverse results.
+
+## Pending form — skill
+
+Completed: **88,477 tokens / 74.818 seconds**, five shell calls. Same form.py
+implementation as baseline. Six original native tests pass with all names and
+summary (0.022s): result/error identity, duplicate suppression, instance isolation,
+synchronous failure and cancellation/retry. Controlled task entry/completion and
+teardown have bounds. Baseline additionally tests direct CancelledError identity;
+skill does not. Actual finally propagation preserves it in the implementation,
+but that additional check must not be claimed for this cell. No observed scope
+or capture issue. Despite fewer tests, skill records higher tokens and time.
 
 ## Rolling schema — both arms
 

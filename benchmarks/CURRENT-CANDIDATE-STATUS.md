@@ -9,21 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
+## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
-2026-09-14 [all-eight checkpoint 06 is in progress](BUNDLE-CONTRACT-06-REVIEW.md),
-resource/launch `20ec916`. Persistence skill uses the shipped audit helper and
-captures all four required checks at 74,321 tokens / 31.402s, versus baseline
-85,571 / 82.170s. Baseline adds custom tracing and a repair and lacks leading
-native output; this exposed n=1 pair is unequal work, not broad savings evidence.
-Protected-search skill retains the required interval assertions and passes three
-native tests using copied ControlledFetch. Raw/resource reconciliation and QA
-control replay await the end of timing. No aggregate or featured update yet.
+Completed [all-eight checkpoint 06](BUNDLE-CONTRACT-06-REVIEW.md): all 18 cells,
+zero timeouts/exclusions. Baseline **713,178 tokens / 511.591s**, skill
+**686,327 / 418.570s**: ratio-of-sums **−3.76% tokens / −18.18% time**. Five pairs
+are adverse on both costs. Original streams/usage/resources reconcile, and 12
+post-timing controls match, including transient-fault rejection and acceptance of
+valid guards with unchanged QA tests. Persistence baseline still lacks leading
+native output. Unequal work, shared host/cache and nine exposed tasks at n=1
+preclude broad/causal claims. Helper adoption is observed for mutation, controlled
+QA and SQL matrix, but not isolated pipe-fix savings. Featured data is unchanged.
 
-한국어 중간 현황: checkpoint 06은 실행 중이다. 저장 테스트 감사에서 스킬은
-실제 도우미로 네 가지 검증 출력을 확보했다. 해당 한 쌍의 기록은 유리하지만,
-baseline의 추가 작업·출력 누락과 단일 노출 과제라는 한계가 있다. 전체 성능
-결론과 대표 그래프는 아직 변경하지 않는다.
+한국어 최신 현황: 18개 실행과 별도 대조 검증 12개를 완료했다. 합산 토큰은
+3.76%, 시간은 18.18% 감소했지만 다섯 과제에서는 둘 다 늘었다. 작업량 차이,
+baseline 한 건의 원본 출력 누락, 이미 노출된 소규모 과제라는 한계가 있어
+전반적 20~30% 개선으로 주장하지 않는다. 대표 그래프도 그대로 유지한다.
+
+## Earlier runtime checks and model checkpoints
 
 2026-09-14 [Linux archive check](LINUX-ARCHIVE-430-01.md) at `a81692f`: **428 passed,
 two explicit provenance skips out of 430**, 60.274s. Network-disabled source
