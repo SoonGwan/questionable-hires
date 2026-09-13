@@ -1,5 +1,14 @@
 # Release readiness — development preview
 
+## 2026-09-14: Con Artist completion regression
+
+Revision `ea28d0e` passes **430 local tests in 145.613s**, macOS/Python 3.9.6,
+no reported failures or skips. No executable changes or model run occurred during
+testing. This includes native weak-test survival, stronger-probe rejection and
+sensitive-test detection despite inherited descendant pipes; see
+[runtime evidence](../benchmarks/CON-ARTIST-PIPE-EXIT-01.md). Hosted CI, Linux source
+archives, other Python versions and model efficiency are not verified by this run.
+
 ## 2026-09-14: Receipt comparison completion regression
 
 The executable/test bytes committed as `a869f62` pass **429 local tests in

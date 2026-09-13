@@ -11,6 +11,12 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+2026-09-14 Con Artist runtime update `ea28d0e`: [native audit pipe completion](CON-ARTIST-PIPE-EXIT-01.md)
+fixes reproduced baseline timeouts after direct-runner exit. Weak-test survival
+with stronger-probe rejection and sensitive-test mutant rejection now complete.
+Five focused tests pass; full local suite passes 430 tests in 145.613s. Copied-import evidence, selected
+original preservation and scratch cleanup remain. No model savings claim.
+
 2026-09-14 Receipt runtime update `a869f62`: [inherited-pipe comparison completion](RECEIPT-PIPE-EXIT-01.md)
 fixes a reproduced abort after the native before runner had already finished.
 The same integration regression now obtains before AssertionError and after pass,
