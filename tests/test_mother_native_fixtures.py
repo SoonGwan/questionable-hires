@@ -64,6 +64,31 @@ class MotherNativeFixturesTests(unittest.TestCase):
         frozen = json.loads((ROOT / 'benchmarks/mother-native-project-cases.json').read_text())
         self.assertEqual(frozen, cases())
 
+    def test_frozen_support_collision_is_explicit_not_silently_repaired(self):
+        # This historical fixture has a discovered support defect. Preserve it
+        # and its effect on the experiment, rather than repairing recorded input.
+        with tempfile.TemporaryDirectory() as tmp:
+            project = Path(tmp)
+            for name, contents in cases()[0]['files'].items():
+                target = project / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(contents)
+            source = '''import json
+from tests.support import CatalogCase
+case = CatalogCase()
+observed = []
+for actual, expected in ((None, 'offline'), (['old'], ['new'])):
+    try:
+        case.assertEqual(actual, expected)
+    except Exception as error:
+        observed.append(type(error).__name__)
+print(json.dumps(observed))
+'''
+            run = subprocess.run([sys.executable, '-B', '-c', source], cwd=project,
+                                 capture_output=True, text=True, timeout=10)
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertEqual(json.loads(run.stdout), ['AssertionError', 'TypeError'])
+
     def test_existing_suite_and_independent_ordering_oracle(self):
         for case in cases():
             with self.subTest(case=case['id']), tempfile.TemporaryDirectory() as tmp:
