@@ -8,7 +8,7 @@ from pathlib import Path
 import re
 
 
-def export(source, target):
+def export(source, target, project_files=None):
     target.mkdir(parents=True, exist_ok=False)
     manifest = json.loads((source / "run.json").read_text())
     (target / "run.json").write_text(json.dumps(manifest, indent=2) + "\n")
@@ -49,6 +49,8 @@ def export(source, target):
         project.mkdir()
         for file in snapshot.rglob("*"):
             relative = file.relative_to(snapshot)
+            if project_files is not None and relative.as_posix() not in project_files:
+                continue
             if not file.is_file() or file.is_symlink() or any(part in {".git", ".agents", "__pycache__"} for part in relative.parts):
                 continue
             if file.stat().st_size > 1_000_000:
@@ -60,6 +62,13 @@ def export(source, target):
             copy = project / relative
             copy.parent.mkdir(parents=True, exist_ok=True)
             copy.write_text(redact(contents))
+        if project_files is not None:
+            exported = sorted(str(file.relative_to(project)) for file in project.rglob('*') if file.is_file())
+            (dest / 'project-export.json').write_text(json.dumps({
+                'selection': sorted(set(project_files)), 'exported': exported,
+                'missing': sorted(set(project_files) - set(exported)),
+                'limitation': 'Selected source excerpts, not a complete project. Execution logs are not filtered.'
+            }, indent=2) + '\n')
         answer_path = cell / "answer.md"
         answer = redact(answer_path.read_text()) if answer_path.exists() else ""
         def link(match):
@@ -93,5 +102,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--project-file", action="append", help="Only export these relative project files; logs remain complete")
     args = parser.parse_args()
-    print(f"Exported {export(args.run, args.output)} cells. Review all artifacts before committing.")
+    print(f"Exported {export(args.run, args.output, args.project_file)} cells. Review all artifacts before committing.")

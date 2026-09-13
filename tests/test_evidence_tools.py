@@ -45,6 +45,17 @@ class EvidenceTests(unittest.TestCase):
             self.assertEqual((output / "changes.diff").read_text(), "diff evidence\n")
             with self.assertRaises(FileExistsError):
                 exporter.export(source, target)
+            (workspace / 'unselected.py').write_text('not an exported excerpt\n')
+            selected = root / 'selected-export'
+            exporter.export(source, selected, project_files=['app.py', 'missing.py'])
+            filtered = selected / cell.name
+            self.assertEqual((filtered / 'project/app.py').read_text(), 'answer = 42\n')
+            self.assertFalse((filtered / 'project/unselected.py').exists())
+            self.assertEqual((filtered / 'events.jsonl').read_text(), (output / 'events.jsonl').read_text())
+            self.assertEqual((filtered / 'changes.diff').read_text(), 'diff evidence\n')
+            inventory = json.loads((filtered / 'project-export.json').read_text())
+            self.assertEqual(inventory['exported'], ['app.py'])
+            self.assertEqual(inventory['missing'], ['missing.py'])
 
     def test_export_uses_retained_snapshot_and_preserves_failure_logs(self):
         with tempfile.TemporaryDirectory() as directory:
