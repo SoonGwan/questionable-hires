@@ -41,7 +41,7 @@ Select actual consumer queries and representative writes from the project; this 
 
 Result fields are `engine: "sqlite-memory"`, `complete`, and ordered `phases`.
 Each phase has `name` and `checks`, keyed by your query labels. A successful check
-has `ok: true`, `rows` (up to 20) and `truncated`; a failed check has `ok: false`
+has `ok: true`, ordered `columns`, `rows` (up to 20) and `truncated`; a failed check has `ok: false`
 and `error`, not rows. Migration failures add phase-level `migration_error`;
 budget exhaustion adds top-level `error`. Incomplete phases/checks may be absent,
 and `truncated: true` cannot prove full row equality.
@@ -49,6 +49,12 @@ and `truncated: true` cannot prove full row equality.
 A reader must produce a result set: empty/comment-only SQL is a failed check,
 not a successful query returning zero rows. A real SELECT with zero matching
 rows remains `ok: true, rows: []`; validate that against the consumer's expectation.
+
+`columns` preserves result labels in order, including duplicates and labels on
+zero-row queries. Compare these with actual named/positional consumer contracts:
+equal row values can hide a renamed view column. Labels alone do not prove types,
+constraints, writer compatibility or application behavior; do not collapse
+duplicate labels into a dictionary or infer safety from SELECT success.
 
 Exit 0 means the matrix finished, **not** that the rollout is safe; expected
 incompatible readers still appear as failed checks. Exit 1 means incomplete

@@ -2,6 +2,7 @@ import importlib.util
 import io
 import json
 import copy
+import sqlite3
 from pathlib import Path
 import subprocess
 import sys
@@ -21,6 +22,44 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_reader_column_contract_is_visible_when_values_do_not_change(self):
+        recipe = {'phases': [phase('old view', "CREATE VIEW reader AS SELECT 7 AS old_name;"),
+                             phase('new view', "DROP VIEW reader; CREATE VIEW reader AS SELECT 7 AS new_name;")],
+                  'checks': {'reader': 'SELECT * FROM reader',
+                             'empty': 'SELECT * FROM reader WHERE 0',
+                             'duplicate labels': 'SELECT 1 AS repeated, 2 AS repeated',
+                             'unicode': 'SELECT 3 AS "표시 이름"',
+                             'invalid': 'SELECT * FROM absent'}}
+        result = helper.matrix(recipe, SCRIPT.parent)
+        self.assertTrue(result['complete'])
+        self.assertEqual(result['phases'][0]['checks']['reader']['rows'],
+                         result['phases'][1]['checks']['reader']['rows'])
+        for index, row in enumerate(result['phases']):
+            expected = ['old_name' if index == 0 else 'new_name']
+            self.assertIn('columns', row['checks']['reader'])
+            self.assertEqual(row['checks']['reader']['columns'], expected)
+            self.assertEqual(row['checks']['empty']['columns'], expected)
+            self.assertEqual(row['checks']['empty']['rows'], [])
+            self.assertEqual(row['checks']['duplicate labels']['columns'], ['repeated', 'repeated'])
+            self.assertEqual(row['checks']['duplicate labels']['rows'], [(1, 2)])
+            self.assertEqual(row['checks']['unicode']['columns'], ['표시 이름'])
+            self.assertNotIn('columns', row['checks']['invalid'])
+        process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--spec', '-'],
+                                 input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        self.assertEqual(json.loads(process.stdout), json.loads(helper.format_result(result)))
+
+    def test_named_consumer_breaks_despite_equal_positional_values(self):
+        db = sqlite3.connect(':memory:')
+        self.addCleanup(db.close)
+        db.row_factory = sqlite3.Row
+        old = db.execute('SELECT 7 AS old_name').fetchone()
+        new = db.execute('SELECT 7 AS new_name').fetchone()
+        self.assertEqual(tuple(old), tuple(new))
+        self.assertEqual(old['old_name'], 7)
+        with self.assertRaises(IndexError):
+            _ = new['old_name']
+
     def test_no_statement_is_not_a_successful_empty_reader(self):
         placeholders = {'empty': '', 'whitespace': ' \n\t', 'line comment': '-- reader TODO',
                         'block comment': '/* SELECT * FROM t */', 'semicolon': ';',
@@ -39,9 +78,9 @@ class MatrixTests(unittest.TestCase):
                 self.assertIn('no result set', check['error'])
                 self.assertNotIn('rows', check)
             self.assertEqual(row['checks']['reader'],
-                             {'ok': True, 'rows': [] if index == 0 else [(7,)], 'truncated': False})
+                             {'ok': True, 'rows': [] if index == 0 else [(7,)], 'columns': ['id'], 'truncated': False})
             self.assertEqual(row['checks']['zero_rows'],
-                             {'ok': True, 'rows': [], 'truncated': False})
+                             {'ok': True, 'rows': [], 'columns': ['id'], 'truncated': False})
         process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--spec', '-'],
                                  input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
         self.assertEqual(process.returncode, 0, process.stderr)  # Complete observations, not all checks passed.

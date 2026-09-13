@@ -116,6 +116,7 @@ def matrix(spec, root, timeout=5):
                         continue
                     rows = cursor.fetchmany(21)
                     row["checks"][label] = {"ok": True, "rows": rows[:20],
+                                             "columns": [column[0] for column in cursor.description],
                                              "truncated": len(rows) > 20}
                 except sqlite3.Error as error:
                     row["checks"][label] = {"ok": False, "error": str(error)}

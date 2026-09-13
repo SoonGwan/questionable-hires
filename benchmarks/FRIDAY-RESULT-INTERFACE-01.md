@@ -76,3 +76,35 @@ or rollout readiness. Earlier model scores and featured charts stay unchanged.
 
 After this fix: **391 full-suite tests pass (53.701s)**. Skill validation,
 catalog/local links, featured synchronization and whitespace checks pass.
+
+## Later result-column observations
+
+An author witness demonstrates that `SELECT 7 AS old_name` and
+`SELECT 7 AS new_name` have identical positional values while a sqlite3.Row
+consumer looking up old_name succeeds only on the first result. Previously the
+matrix omitted result-column labels, so a recreated view changing only the label
+produced indistinguishable successful observations. This is an observation gap,
+not proof that the tool or model declared a rollout safe in a historical run.
+
+Each successful check now adds `columns`: the ordered labels from the same
+cursor.description used for the original query. Duplicate labels, Unicode and
+zero-row result metadata are preserved. No dictionary collapse, extra SQL query,
+connection or automatic compatibility score is introduced. Failed checks still
+omit result metadata. Existing `ok`, `rows` and `truncated` semantics are unchanged;
+consumers that compare entire result dictionaries must allow the new field.
+
+The new regression first failed because columns were absent. After the change,
+**22 focused tests pass (0.181s)**, including two view phases with unchanged
+values but changed names, duplicate labels, Unicode, zero rows, failed-reader
+shape and CLI/API parity. A separate native sqlite3.Row witness verifies the
+actual named-consumer failure rather than testing output fields alone.
+
+This applies skill-creator's reusable deterministic evidence principle. Labels
+are not types, constraints or proof of actual application behavior; those still
+require the consumer/runtime checks appropriate to the release. More output has
+a cost, and net model token/time improvement is unmeasured. Historical benchmark
+observations and featured graphs are not relabeled with these new capabilities.
+
+After column observation support: **393 full-suite tests pass (55.200s)**;
+skill validation, catalog/local links, featured synchronization and whitespace
+checks pass.
