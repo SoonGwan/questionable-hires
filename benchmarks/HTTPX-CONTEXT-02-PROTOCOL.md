@@ -24,3 +24,9 @@ and process time to the fresh baseline; historical shifts are not causal estimat
 Keep unequal work, scope violations, shared-cache/order effects and n=1 explicit.
 Do not claim whole-task savings from a smaller author-produced context alone.
 Do not change featured graphs or their language variants.
+
+## Completed review
+
+[Both sessions](results/httpx-context-02/README.md): qualified definition selected,
++3.2% tokens / −7.0% time; required core outcomes present, baseline scope exception.
+Automatic large-file indexing is author-tested but not used in this model cell.
