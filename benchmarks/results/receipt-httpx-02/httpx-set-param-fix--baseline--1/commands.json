@@ -1,0 +1,66 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g AGENTS.md -g '\"'! .git'\"'\"",
+    "aggregated_output": "<WORKSPACE>\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short'",
+    "aggregated_output": "",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc '/private/tmp/qh-httpx-preflight.3Slnqw/venv/bin/python -B -m pytest -q -p no:cacheprovider tests/models/test_url.py::test_url_set_param_manipulation tests/models/test_url.py::test_url_add_param_manipulation tests/models/test_url.py::test_url_remove_param_manipulation'",
+    "aggregated_output": "F..                                                                      [100%]\n=================================== FAILURES ===================================\n_______________________ test_url_set_param_manipulation ________________________\n\n    def test_url_set_param_manipulation():\n        \"\"\"\n        Some basic URL query parameter manipulation.\n        \"\"\"\n        url = httpx.URL(\"https://example.org:123/?a=123\")\n>       assert url.copy_set_param(\"a\", \"456\") == \"https://example.org:123/?a=456\"\nE       AssertionError: assert URL('https://example.org:123/?a=123&a=456') == 'https://example.org:123/?a=456'\nE        +  where URL('https://example.org:123/?a=123&a=456') = copy_set_param('a', '456')\nE        +    where copy_set_param = URL('https://example.org:123/?a=123').copy_set_param\n\ntests/models/test_url.py:689: AssertionError\n1 failed, 2 passed in 0.11s\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg -n -A 24 -B 8 'def copy_set_param|def copy_add_param|def copy_remove_param|def set\\\\(' httpx/_urls.py\"",
+    "aggregated_output": "334-\n335-        url = httpx.URL(\"https://www.example.com\").copy_with(\n336-            username=\"jo@gmail.com\", password=\"a secret\"\n337-        )\n338-        assert url == \"https://jo%40email.com:a%20secret@www.example.com\"\n339-        \"\"\"\n340-        return URL(self, **kwargs)\n341-\n342:    def copy_set_param(self, key: str, value: typing.Any = None) -> URL:\n343-        return self.copy_with(params=self.params.add(key, value))\n344-\n345:    def copy_add_param(self, key: str, value: typing.Any = None) -> URL:\n346-        return self.copy_with(params=self.params.add(key, value))\n347-\n348:    def copy_remove_param(self, key: str) -> URL:\n349-        return self.copy_with(params=self.params.remove(key))\n350-\n351-    def copy_merge_params(self, params: QueryParamTypes) -> URL:\n352-        return self.copy_with(params=self.params.merge(params))\n353-\n354-    def join(self, url: URL | str) -> URL:\n355-        \"\"\"\n356-        Return an absolute URL, using this URL as the base.\n357-\n358-        Eg.\n359-\n360-        url = httpx.URL(\"https://www.example.com/test\")\n361-        url = url.join(\"/new/path\")\n362-        assert url == \"https://www.example.com/new/path\"\n363-        \"\"\"\n364-        from urllib.parse import urljoin\n365-\n366-        return URL(urljoin(str(self), str(URL(url))))\n367-\n368-    def __hash__(self) -> int:\n369-        return hash(str(self))\n370-\n371-    def __eq__(self, other: typing.Any) -> bool:\n372-        return isinstance(other, (URL, str)) and str(self) == str(URL(other))\n--\n529-\n530-        Usage:\n531-\n532-        q = httpx.QueryParams(\"a=123&a=456&b=789\")\n533-        assert q.get_list(\"a\") == [\"123\", \"456\"]\n534-        \"\"\"\n535-        return list(self._dict.get(str(key), []))\n536-\n537:    def set(self, key: str, value: typing.Any = None) -> QueryParams:\n538-        \"\"\"\n539-        Return a new QueryParams instance, setting the value of a key.\n540-\n541-        Usage:\n542-\n543-        q = httpx.QueryParams(\"a=123\")\n544-        q = q.set(\"a\", \"456\")\n545-        assert q == httpx.QueryParams(\"a=456\")\n546-        \"\"\"\n547-        q = QueryParams()\n548-        q._dict = dict(self._dict)\n549-        q._dict[str(key)] = [primitive_value_to_str(value)]\n550-        return q\n551-\n552-    def add(self, key: str, value: typing.Any = None) -> QueryParams:\n553-        \"\"\"\n554-        Return a new QueryParams instance, setting or appending the value of a key.\n555-\n556-        Usage:\n557-\n558-        q = httpx.QueryParams(\"a=123\")\n559-        q = q.add(\"a\", \"456\")\n560-        assert q == httpx.QueryParams(\"a=123&a=456\")\n561-        \"\"\"\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc '/private/tmp/qh-httpx-preflight.3Slnqw/venv/bin/python -B -m pytest -q -p no:cacheprovider tests/models/test_url.py::test_url_set_param_manipulation tests/models/test_url.py::test_url_add_param_manipulation tests/models/test_url.py::test_url_remove_param_manipulation'",
+    "aggregated_output": "...                                                                      [100%]\n3 passed in 0.08s\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_8",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff -- httpx/_urls.py'",
+    "aggregated_output": "diff --git a/httpx/_urls.py b/httpx/_urls.py\nindex 8fd91d4..147a8fa 100644\n--- a/httpx/_urls.py\n+++ b/httpx/_urls.py\n@@ -340,7 +340,7 @@ class URL:\n         return URL(self, **kwargs)\n \n     def copy_set_param(self, key: str, value: typing.Any = None) -> URL:\n-        return self.copy_with(params=self.params.add(key, value))\n+        return self.copy_with(params=self.params.set(key, value))\n \n     def copy_add_param(self, key: str, value: typing.Any = None) -> URL:\n         return self.copy_with(params=self.params.add(key, value))\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_9",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --check'",
+    "aggregated_output": "",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_10",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short'",
+    "aggregated_output": " M httpx/_urls.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

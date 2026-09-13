@@ -1,0 +1,13 @@
+diff --git a/httpx/_urls.py b/httpx/_urls.py
+index 8fd91d4..147a8fa 100644
+--- a/httpx/_urls.py
++++ b/httpx/_urls.py
+@@ -340,7 +340,7 @@ class URL:
+         return URL(self, **kwargs)
+ 
+     def copy_set_param(self, key: str, value: typing.Any = None) -> URL:
+-        return self.copy_with(params=self.params.add(key, value))
++        return self.copy_with(params=self.params.set(key, value))
+ 
+     def copy_add_param(self, key: str, value: typing.Any = None) -> URL:
+         return self.copy_with(params=self.params.add(key, value))

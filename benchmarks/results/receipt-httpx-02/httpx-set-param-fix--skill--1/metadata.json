@@ -1,0 +1,83 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "httpx-set-param-fix",
+  "skill": "receipt",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "8ed44f4f3d3c06bc408b378e435f9e106a7d4254",
+  "skill_sha256": "6c683c637ae9ffa6c803f9007eab106d775bd46c0d72b47f3d27082a94ef6be3",
+  "skill_resources_sha256": "e2de7fafb7c6dad75d896f04b7c8ecd12f005c1f19eba9dd7942bbdee923c533",
+  "elapsed_seconds": 72.546,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 107064,
+    "cached_input_tokens": 85504,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 804,
+    "reasoning_output_tokens": 0
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Use $receipt at .agents/skills/receipt/SKILL.md.\n\nThis is an authored seeded defect in an HTTPX checkout, not an upstream incident. Fix URL.copy_set_param in httpx/_urls.py so setting an existing query key replaces its value instead of appending a duplicate. Preserve the public API and neighboring add/remove behavior. Run the following unchanged native tests before production edits, capture the defect-specific assertion failure, then fix only httpx/_urls.py and rerun the same command. Preserve all other existing files, including tests. Review the focused diff and report actual before/after outcomes. Do not install dependencies, use network access, change interpreter/environment settings or perform a general audit. Any necessary diagnostic artifacts must stay inside this project. Use this preinstalled interpreter for all Python commands.\n\n/private/tmp/qh-httpx-preflight.3Slnqw/venv/bin/python -B -m pytest -q -p no:cacheprovider tests/models/test_url.py::test_url_set_param_manipulation tests/models/test_url.py::test_url_add_param_manipulation tests/models/test_url.py::test_url_remove_param_manipulation\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "receipt/SKILL.md": {
+      "kind": "file",
+      "sha256": "6c683c637ae9ffa6c803f9007eab106d775bd46c0d72b47f3d27082a94ef6be3",
+      "mode": 420
+    },
+    "receipt/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+      "mode": 420
+    },
+    "receipt/references/existing-fix.md": {
+      "kind": "file",
+      "sha256": "d010e325f987da9193d19f497d2d1f69bb698f7170d9c2277a9b0667346b74fa",
+      "mode": 420
+    },
+    "receipt/scripts/compare.py": {
+      "kind": "file",
+      "sha256": "474e877b70cd4887cfdd6b4d8c7eb2bab3ebc4372ab62468e30e83126705d3e3",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "receipt/SKILL.md": {
+      "kind": "file",
+      "sha256": "6c683c637ae9ffa6c803f9007eab106d775bd46c0d72b47f3d27082a94ef6be3",
+      "mode": 420
+    },
+    "receipt/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+      "mode": 420
+    },
+    "receipt/references/existing-fix.md": {
+      "kind": "file",
+      "sha256": "d010e325f987da9193d19f497d2d1f69bb698f7170d9c2277a9b0667346b74fa",
+      "mode": 420
+    },
+    "receipt/scripts/compare.py": {
+      "kind": "file",
+      "sha256": "474e877b70cd4887cfdd6b4d8c7eb2bab3ebc4372ab62468e30e83126705d3e3",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  }
+}

@@ -30,6 +30,11 @@ it has not established a broad 20–30% gain.
   **+4.01% tokens / +9.81% time**. Final-check batching is adopted without a
   measured saving on this new authored n=1 task. Instruction-loading overhead
   and applicability remain priorities; fewer commands alone are not acceptance.
+- [Receipt seeded HTTPX fix](results/receipt-httpx-02/README.md), consolidated
+  entry `f32de37`: identical final fix and required three-test before/after
+  coverage; 8 versus 4 shell calls, but **+61.61% tokens / +112.05% time**.
+  Extra context/inventory work, n=1 and shared conditions prevent causal claims;
+  this actual-code seeded task does not support efficiency acceptance.
 - [Hostage atomic-export pair](results/hostage-atomic-export-01/README.md),
   `5867752`: −12.85% tokens / −8.43% time with correct core behavior. Both arms
   use two preparation calls; baseline cleanup work, additional skill exception
@@ -48,7 +53,7 @@ The eight characters and automatic selection remain intact; helpers are optional
 | Skill | Entrypoint / latest supporting-resource change | Evidence and unresolved work |
 | --- | --- | --- |
 | Necromancer | `51ce19e` / [presentation correction](NECROMANCER-PRESENTATION-01.md) after `3157ee2` | [Discovery](NECROMANCER-DISCOVERY-01.md), [packaging](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md): configured consumer retained; favorable pairs have unequal work/capture limits; broader savings unproven. Git color/prefix regression is author-tested, not model-measured. |
-| Receipt | [Consolidated entry](RECEIPT-ENTRY-COST-01.md) after `10d416f` / `3f936bf` | [Frame](results/receipt-frame-01/README.md) has equal required coverage but higher cost; consolidated wording is not yet model-measured. [Current-bug](results/receipt-current-bug-01/README.md), [invoice](results/receipt-invoice-01/README.md), [scope recheck](results/receipt-scope-recheck-01/README.md) retain adverse or unpaired evidence. Helper reliability is not an end-to-end gain. |
+| Receipt | `f32de37` / `3f936bf` | [Seeded HTTPX](results/receipt-httpx-02/README.md) measures the consolidated entry with higher cost despite matching required checks. [Frame](results/receipt-frame-01/README.md), [current-bug](results/receipt-current-bug-01/README.md), [invoice](results/receipt-invoice-01/README.md), [scope recheck](results/receipt-scope-recheck-01/README.md) retain adverse or unpaired evidence. Helper reliability is not an end-to-end gain. |
 | Landlord | `26a310d` / no separate resources | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [auth design](HTTPX-AUTH-DESIGN-01.md): useful consumer inspection but adverse comparisons/nonpaired costs; resource-path discovery remains. |
 | Mother-in-law | `b7058c6` / `b7058c6` | [Native integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md): native runner reuse works on authored variants; unequal coverage/fixture defects limit lower recorded costs. |
 | Exorcist | `ca2e179` / `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [provenance](EXORCIST-PROVENANCE-01.md): small favorable signal result has baseline repair/unequal work; normal path remains costlier in tokens. |
