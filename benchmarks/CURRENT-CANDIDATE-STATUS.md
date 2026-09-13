@@ -11,6 +11,20 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+2026-09-14 [all-eight checkpoint 06 is in progress](BUNDLE-CONTRACT-06-REVIEW.md),
+resource/launch `20ec916`. Persistence skill uses the shipped audit helper and
+captures all four required checks at 74,321 tokens / 31.402s, versus baseline
+85,571 / 82.170s. Baseline adds custom tracing and a repair and lacks leading
+native output; this exposed n=1 pair is unequal work, not broad savings evidence.
+Protected-search skill retains the required interval assertions and passes three
+native tests using copied ControlledFetch. Raw/resource reconciliation and QA
+control replay await the end of timing. No aggregate or featured update yet.
+
+한국어 중간 현황: checkpoint 06은 실행 중이다. 저장 테스트 감사에서 스킬은
+실제 도우미로 네 가지 검증 출력을 확보했다. 해당 한 쌍의 기록은 유리하지만,
+baseline의 추가 작업·출력 누락과 단일 노출 과제라는 한계가 있다. 전체 성능
+결론과 대표 그래프는 아직 변경하지 않는다.
+
 2026-09-14 [Linux archive check](LINUX-ARCHIVE-430-01.md) at `a81692f`: **428 passed,
 two explicit provenance skips out of 430**, 60.274s. Network-disabled source
 distribution, existing dependencies, no Git/local-run state or overlays. The

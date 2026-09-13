@@ -4,6 +4,41 @@ Resource/launch `20ec916`; [frozen protocol](BUNDLE-CONTRACT-06-PROTOCOL.md).
 No aggregate result until all scheduled cells finish and evidence is reviewed.
 No resource/task edits or author replay/test workloads during model timing.
 
+## Persistence audit — skill
+
+Completed: **74,321 recorded tokens / 31.402 seconds**, three shell calls.
+Uses the shipped Con Artist audit helper with a stdin specification rather than
+writing a custom runner. All four original check outputs are captured: existing
+test passes correct and missing-append code, identical stored-record probe passes
+correct code and rejects the mutant with the intended AssertionError. The probe
+preserves a pre-existing record. Every check verifies copied module provenance
+and the actual test global's identity with the intended `service.save`.
+
+Native output reports unchanged selected original bytes/modes and owned scratch
+removal. No timeout, truncated output or observed scope deviation. Raw/resource
+and final inventory reconciliation remain pending. Compared with this baseline,
+recorded tokens are 13.15% lower and wall time 61.78% lower; baseline's custom
+tracing, in-session repair and missing leading output make this unequal work.
+This is one exposed task at n=1, not a causal or all-eight efficiency result.
+Helper adoption is observed, but no inherited-pipe descendant was exercised, so
+the new pipe fix itself has no isolated model-level savings measurement.
+
+## Protected search — skill
+
+Completed: **71,355 tokens / 61.402 seconds**, six shell calls. Copies the shipped
+ControlledFetch and adds test_search.py; three original native tests pass with
+all individual results and the summary captured (0.017s). Tests actual Search,
+seeds existing display through real runs, asserts retention after older completion
+while newer remains pending, and checks both reversed ownership and replacement.
+
+One-second entry/completion waits and registered owned-task cancellation/draining
+are present; the native suite has a 15-second subprocess bound. Production diff
+is empty; final status lists only installed resources and the two new test files.
+Empty copy-command output is legitimate. No observed capture/scope issue; final
+inventory/resource reconciliation and independent transient/valid-control replay
+remain pending. Tests do not add unrelated assertion-library or repeated-key
+checks. Helper adoption is observed, not an isolated attribution of savings.
+
 ## Persistence audit — baseline
 
 Completed: **85,571 recorded tokens / 82.170 seconds**, five shell calls.
