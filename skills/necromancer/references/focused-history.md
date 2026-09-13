@@ -1,5 +1,13 @@
 # One bounded excavation
 
+For unresolved origin, use `git log -S 'distinctive text' -- <path>` and follow
+renames as needed. For a bulk rewrite, inspect the relevant patch region or
+parent-version function, keeping removed lines and dependency context. An excerpt
+does not prove other changes absent. Select behavior-changing lines: surrounding
+declarations can introduce unrelated attribution. If native Git already supplies
+the missing fact, no collector is necessary. Read the interface below when using
+the helper, not its implementation unless adapting or troubleshooting it.
+
 Once the relevant current file and lines are known, the optional helper collects current text, dirty status, shallow-history status, line attribution and patches for up to three attributed commits:
 
 ```sh
