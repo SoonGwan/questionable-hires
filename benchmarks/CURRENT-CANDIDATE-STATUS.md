@@ -11,6 +11,12 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+2026-09-14 harness update: [native transcript review diagnostic](NATIVE-CAPTURE-REVIEW-01.md)
+flags possible verbose unittest summary/header mismatches for manual review.
+It locates the two already-reviewed interval capture gaps without changing old
+metadata or scoring. Nineteen local runner tests pass; this is not model evidence,
+a capture-loss repair or skill efficiency progress.
+
 2026-09-14 unmeasured follow-up: Mother native-test guidance now distinguishes
 custom assertion plumbing from unmodified framework assertions, and conditions
 repeated-key cases on contract/implementation relevance. The interval run added
