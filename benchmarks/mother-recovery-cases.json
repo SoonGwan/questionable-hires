@@ -1,0 +1,34 @@
+[
+  {
+    "id": "recovery-sticky-error",
+    "skill": "mother-in-law",
+    "task": "QA the catalog lookup against requirements.md. Exercise normal success, current failure followed by successful retry, and overlapping response ordering deterministically. Report expected and observed states, a bounded reproduction command, and limits. Retain a JSON record of the actual execution so the observations survive console loss. Do not modify existing files or install dependencies.",
+    "files": {
+      "README.md": "# Catalog lookup\nPython standard library only. The UI displays Lookup.result and Lookup.error directly. QA files may be added at the project root.\n",
+      "requirements.md": "A current successful request displays its result and clears the error. A current failed request displays an error. A successful retry clears that error. Older success or failure must not replace newer state. Only the Python component is in scope; no browser or backend is available.\n",
+      "lookup.py": "class Lookup:\n    def __init__(self):\n        self.result = None\n        self.error = None\n        self.generation = 0\n\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        try:\n            value = await fetch(query)\n        except RuntimeError as error:\n            if generation == self.generation:\n                self.error = str(error)\n            return\n        if generation == self.generation:\n            self.result = value\n"
+    },
+    "criteria": [
+      "Exercises the actual Lookup with controlled completion order and nearby successful behavior.",
+      "Captured output or retained execution JSON proves current failure followed by success leaves a stale error, including expected versus observed state.",
+      "Tests older success and older error after newer success and does not invent an ordering defect in the guarded branches.",
+      "Leaves originals unchanged, retains actual execution JSON, and reports a bounded reproduction command and component-layer limits."
+    ]
+  },
+  {
+    "id": "recovery-guarded-clean",
+    "skill": "mother-in-law",
+    "task": "QA the catalog lookup against requirements.md. Exercise normal success, current failure followed by successful retry, and overlapping response ordering deterministically. Report expected and observed states, a bounded reproduction command, and limits. Retain a JSON record of the actual execution so the observations survive console loss. Do not modify existing files or install dependencies.",
+    "files": {
+      "README.md": "# Catalog lookup\nPython standard library only. The UI displays Lookup.result and Lookup.error directly. QA files may be added at the project root.\n",
+      "requirements.md": "A current successful request displays its result and clears the error. A current failed request displays an error. A successful retry clears that error. Older success or failure must not replace newer state. Only the Python component is in scope; no browser or backend is available.\n",
+      "lookup.py": "class Lookup:\n    def __init__(self):\n        self.result = None\n        self.error = None\n        self.generation = 0\n\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        try:\n            value = await fetch(query)\n        except RuntimeError as error:\n            if generation == self.generation:\n                self.error = str(error)\n            return\n        if generation == self.generation:\n            self.result = value\n            self.error = None\n"
+    },
+    "criteria": [
+      "Exercises the actual Lookup with controlled completion order and nearby successful behavior.",
+      "Captured output or retained execution JSON proves current failure followed by successful retry clears the error.",
+      "Tests older success and older error after newer success and reports no reproduced defect.",
+      "Leaves originals unchanged, retains actual execution JSON, and reports a bounded reproduction command and component-layer limits."
+    ]
+  }
+]

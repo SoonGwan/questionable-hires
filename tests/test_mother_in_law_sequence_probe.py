@@ -1,5 +1,8 @@
 import importlib.util
+import json
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -53,6 +56,63 @@ class ErrorSearch:
 
 
 class MotherInLawSequenceProbeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_recovery_detects_sticky_error_missed_by_stale_only_check(self):
+        class StickyError(ErrorSearch):
+            async def run(self, query, fetch):
+                previous = self.error
+                await super().run(query, fetch)
+                if previous:
+                    self.error = previous
+
+        cases = await probe.probe(StickyError, 'run', 'result', 'old', 'new', None, 'error')
+        self.assertTrue(cases[-1]['passed'])
+        recovery = next(c for c in cases if c['name'] == 'current-error-then-recovery')
+        self.assertEqual(recovery['observed']['checkpoints_passed'], [True, False])
+        self.assertFalse(recovery['passed'])
+
+    async def test_error_must_be_displayed_and_healthy_recovery_passes(self):
+        class SilentError(ErrorSearch):
+            async def run(self, query, fetch):
+                await super().run(query, fetch)
+                self.error = None
+
+        for factory, expected in ((SilentError, False), (ErrorSearch, True)):
+            cases = await probe.probe(factory, 'run', 'result', 'old', 'new', None, 'error')
+            recovery = next(c for c in cases if c['name'] == 'current-error-then-recovery')
+            self.assertEqual(recovery['passed'], expected)
+        self.assertTrue(all(c['passed'] for c in cases))
+
+    def test_cli_retains_exact_execution_and_refuses_overwrite(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'target.py').write_text(
+                'class Search:\n'
+                '    result = None\n'
+                '    async def run(self, query, fetch):\n'
+                '        self.result = await fetch(query)\n')
+            args = [sys.executable, '-B', probe.__file__, '--root', str(root),
+                    '--source', 'target.py', '--class-name', 'Search',
+                    '--output', 'evidence.json']
+            run = subprocess.run(args, capture_output=True, text=True, timeout=10)
+            self.assertEqual(run.returncode, 1, run.stderr)
+            evidence = root / 'evidence.json'
+            original = evidence.read_bytes()
+            self.assertEqual(json.loads(original), json.loads(run.stdout))
+            self.assertTrue(json.loads(original)['complete'])
+            again = subprocess.run(args, capture_output=True, text=True, timeout=10)
+            self.assertEqual(again.returncode, 2)
+            self.assertFalse(json.loads(again.stdout)['complete'])
+            self.assertEqual(evidence.read_bytes(), original)
+
+    def test_cli_rejects_duplicate_boundary_before_running_source(self):
+        with tempfile.TemporaryDirectory() as directory:
+            run = subprocess.run(
+                [sys.executable, '-B', probe.__file__, '--root', directory,
+                 '--source', 'missing.py', '--class-name', 'Search', '--boundary', 'old'],
+                capture_output=True, text=True, timeout=10)
+            self.assertEqual(run.returncode, 2)
+            self.assertIn('queries must differ', json.loads(run.stdout)['error'])
+
     async def test_normal_detects_missing_first_result_hidden_by_overlap(self):
         class DropsFirst(GuardedSearch):
             async def run(self, query, fetch):

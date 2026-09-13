@@ -62,7 +62,13 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
             except RuntimeError as error:
                 errors.append(str(error))
             if sequential:
-                checkpoints.append(getattr(target, state_name) == query + ' result')
+                if failure == index and error_state_name is not None:
+                    checkpoints.append(bool(getattr(target, error_state_name)))
+                else:
+                    passed = getattr(target, state_name) == query + ' result'
+                    if error_state_name is not None:
+                        passed = passed and not getattr(target, error_state_name)
+                    checkpoints.append(bool(passed))
         observed = {'queries': queries,
                     'completion_order': [queries[i] for i in order],
                     'state': getattr(target, state_name), 'errors': errors}
@@ -87,6 +93,12 @@ async def probe(factory, method, state, old, new, boundary, error_state=None):
     cases.append({'name': 'older-success-after-newer-success',
                   'passed': stale['state'] == new + ' result', 'observed': stale})
     if error_state is not None:
+        recovery = await sequence(factory, method, state, [old, new], [0, 1],
+                                  failure=0, error_state_name=error_state,
+                                  sequential=True)
+        cases.append({'name': 'current-error-then-recovery',
+                      'passed': all(recovery['checkpoints_passed']),
+                      'observed': recovery})
         stale_error = await sequence(factory, method, state, [old, new], [1, 0],
                                      failure=0, error_state_name=error_state)
         cases.append({'name': 'older-error-after-newer-success',
@@ -113,26 +125,42 @@ def main():
     parser.add_argument('--class-name', required=True)
     parser.add_argument('--method', default='run')
     parser.add_argument('--state', default='result')
-    parser.add_argument('--error-state', help='optional error attribute; adds a stale-error case')
+    parser.add_argument('--error-state', help='error attribute; checks current error, recovery and stale error')
+    parser.add_argument('--output', type=Path, help='new JSON evidence file below --root; never overwritten')
     parser.add_argument('--old', default='old')
     parser.add_argument('--new', default='new')
     parser.add_argument('--boundary', help='optional documented invalidating query; empty is valid')
     parser.add_argument('--timeout', type=float, default=5)
     args = parser.parse_args()
+    evidence = None
     try:
-        if not 0 < args.timeout <= 30 or args.old == args.new:
+        if (not 0 < args.timeout <= 30 or args.old == args.new
+                or args.boundary in (args.old, args.new)):
             raise ValueError('timeout must be in (0, 30] and queries must differ')
+        if args.output is not None:
+            path = args.root / args.output
+            if path.is_symlink() or args.root.resolve() not in path.resolve().parents:
+                raise ValueError('output must be a new file below --root')
+            evidence = path.open('x', encoding='utf-8')
         factory = load_class((args.root / args.source), args.class_name, args.root)
         cases = asyncio.run(asyncio.wait_for(
             probe(factory, args.method, args.state, args.old, args.new, args.boundary,
                   args.error_state),
             timeout=args.timeout))
         result = {'complete': True, 'layer': 'local async component', 'cases': cases}
-        print(json.dumps(result, separators=(',', ':')))
-        return int(any(not case['passed'] for case in cases))
+        status = int(any(not case['passed'] for case in cases))
     except (AttributeError, OSError, TypeError, ValueError, asyncio.TimeoutError) as error:
-        print(json.dumps({'complete': False, 'error': str(error)}, separators=(',', ':')))
-        return 2
+        result = {'complete': False, 'error': str(error)}
+        status = 2
+    try:
+        serialized = json.dumps(result, separators=(',', ':'))
+        if evidence is not None:
+            evidence.write(serialized + '\n')
+        print(serialized)
+        return status
+    finally:
+        if evidence is not None:
+            evidence.close()
 
 
 if __name__ == '__main__':
