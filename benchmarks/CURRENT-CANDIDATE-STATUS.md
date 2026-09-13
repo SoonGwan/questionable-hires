@@ -11,6 +11,11 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+2026-09-14 local capability update: [Mother retention option](MOTHER-RETENTION-01.md)
+adds explicit success-path display checkpoints to the disposable component probe.
+Native fault/normal controls and CLI checks pass; model adoption and cost are
+unmeasured. Standalone project-test delivery still takes precedence.
+
 Later [Necromancer entrypoint candidate](NECROMANCER-ENTRY-01.md) consolidates
 decision guidance and moves conditional history procedures to its reference.
 Collector behavior is unchanged. Its two-cell check at `d5c7150` ended with a
