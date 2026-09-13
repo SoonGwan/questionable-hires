@@ -89,3 +89,40 @@ unverified production cache behavior and explains why headers do not control
 response ordering. Scope checks show only the retained experiment was added.
 No capture or resource-change diagnostic flags appear. The matching baseline
 has not yet been reviewed; there is no pairwise gain claim here.
+
+## Formatter review — baseline reviewed
+
+Three shell calls, **62,768 tokens / 26.847 seconds**. Reads all three actual
+project files: USD-only/no-runtime-provider requirements, the single invoice
+consumer and registry implementation. Recommends replacing unnecessary registry
+dispatch with a function preserving the existing formatting expression, including
+its current rounding/negative behavior; no new numerical policy is proposed.
+The answer explicitly labels static review and no executed checks. That matches
+this task's required source/contract analysis, not a hidden test obligation.
+No files are edited; capture diagnostics have no flags. Matching skill pending.
+
+## Persistence audit — Con Artist and first pair
+
+Six shell calls, **119,944 tokens / 45.794 seconds**. Uses the audit helper with
+four fresh copy/check processes. Existing tests pass correct/missing-append code;
+the same stronger exact-record probe passes correct and fails faulty code with
+only the pre-existing record remaining. It invokes the actual test-global save
+binding, not a replacement service. Prechecks assert test-global identity and
+code filename; the helper's new same-process interpreter/copy/module hashes are
+present and reused without custom per-check hashing code. The final shell hashes
+originals again and confirms owned-copy removal. No harness remains.
+
+The agent reads the main skill, default audit reference and audit.py lines 1–180;
+it does not load the collector or advanced diagnostics. Automatic provenance is
+adopted, but substantial helper source inspection remains. All four decisive
+outputs fit the captured helper result without truncation. No capture/resource
+diagnostic flags are reported. Caller binding is verified at precheck/probe time,
+not a native test-call trace like the baseline's additional instrumentation.
+
+Pair: baseline 66,742 tokens / 57.093s versus skill 119,944 / 45.794s:
+**+79.71% tokens / −19.79% time**. Both establish the requested missing-write
+gap and stronger assertion, preserving originals/cleanup. Extra work differs:
+baseline schedules an additional original run and traces actual calls; skill
+uses bounded helper phases and rereads packaged implementation. This is an adverse
+token result, not overall acceptance, causal attribution or evidence for unseen
+projects. Other pairs and whole-bundle conclusions remain pending.
