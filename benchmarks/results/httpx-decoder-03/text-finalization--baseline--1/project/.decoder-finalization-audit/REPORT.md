@@ -19,7 +19,7 @@ Existing test_streaming_text_decoder (line 296) uses ASCII only.
 The UTF-8 autodetect case (line 244) has complete input and calls aread()
 before aiter_text(), so it does not protect incomplete multibyte EOF behavior.
 
-All runs used /tmp/qh-httpx-preflight.3Slnqw/venv/bin/python, with bytecode
+All runs used <ENV>/venv/bin/python, with bytecode
 and pytest cache writing disabled. run_checks.py asserts that each run imports
 its own copied httpx. Commands and exit codes are recorded in runs.json;
 full outputs are in the four *.log files; mutation.diff records the sole change.
