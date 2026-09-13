@@ -11,6 +11,13 @@ it has not established a broad 20–30% gain.
 
 ## Evidence that determines the next work
 
+- [Account-panel delivery transfer](results/mother-panel-01/README.md), Mother
+  entry `eefc721`: **−40.38% tokens / −18.76% time**, five native tests pass per
+  arm, direct project-test delivery without helper duplication. Author fault replay
+  reveals both arms shadow unittest.fail and lose intended assertion diagnostics;
+  not accepted equal-quality superiority. Name-only author repair verifies the
+  cause. Later runner-method/failure-path guidance is not model-measured. N=1
+  targeted synthetic task, not real-project or all-eight confirmation.
 - Latest [all-eight explicit-contract gate](results/bundle-contract-03/README.md),
   resources `557f012`: all 18 cells reviewed; **+16.17% tokens / −12.43% summed
   process time**. Core outcomes supported, one baseline scope violation and
@@ -74,7 +81,7 @@ The eight characters and automatic selection remain intact; helpers are optional
 | Necromancer | `51ce19e` / [presentation correction](NECROMANCER-PRESENTATION-01.md) after `3157ee2` | [Discovery](NECROMANCER-DISCOVERY-01.md), [packaging](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md): configured consumer retained; favorable pairs have unequal work/capture limits; broader savings unproven. Git color/prefix regression is author-tested, not model-measured. |
 | Receipt | `75c8718` / [reference consolidation](RECEIPT-REFERENCE-COMPACT-01.md) after `cf4c2c0` | [Ranges](results/receipt-ranges-01/README.md): earlier watch/report adopted, faster time but substantially more tokens; unequal extra work, no accepted overall gain. Smaller reference is not yet model-measured. [Graph](results/receipt-graph-01/README.md), [settings](results/receipt-uncommitted-01/README.md), [seeded HTTPX](results/receipt-httpx-02/README.md) and [frame](results/receipt-frame-01/README.md) remain adverse. |
 | Landlord | `26a310d` / no separate resources | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [auth design](HTTPX-AUTH-DESIGN-01.md): useful consumer inspection but adverse comparisons/nonpaired costs; resource-path discovery remains. |
-| Mother-in-law | [delivery-first routing](MOTHER-DELIVERY-ROUTING-01.md) after `b7058c6` / helper `b7058c6` | [Current gate](BUNDLE-CONTRACT-03-REVIEW.md): helper plus retained-test duplication, higher tokens. New routing states actual helper coverage and prioritizes requested project tests; author counterexample validated, model transfer unmeasured. Earlier [native integration](results/mother-native-project-01/README.md) and [false-pass correction](MOTHER-SUCCESS-STATE-03.md) remain qualified. |
+| Mother-in-law | [runner-method correction](results/mother-panel-01/README.md) after `eefc721` / helper `b7058c6` | [Panel transfer](results/mother-panel-01/README.md): delivery-first routing adopted, lower raw cost, but both generated suites have assertion-plumbing errors on faulty code. Author name-only repair validated; later guidance adoption unmeasured. [Whole gate](BUNDLE-CONTRACT-03-REVIEW.md), [native integration](results/mother-native-project-01/README.md) and [false-pass correction](MOTHER-SUCCESS-STATE-03.md) retain their historical limits. |
 | Exorcist | `ca2e179` / `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [provenance](EXORCIST-PROVENANCE-01.md): small favorable signal result has baseline repair/unequal work; normal path remains costlier in tokens. |
 | Hostage Negotiator | `5867752` / no separate resources | [Atomic export](results/hostage-atomic-export-01/README.md): direct-read adoption, same preparation call count as baseline, qualified lower raw cost. [Packaging repair](PACKAGING-REPAIR-01.md) also has unequal coverage; [compact regression](HOSTAGE-COMPACT-01.md) and other tasks do not establish broad gains. |
 | Con Artist | `36e201c` / [same-process precheck](CON-ARTIST-PRECHECK-01.md) after `1a7b72a` | [Current gate](BUNDLE-CONTRACT-03-REVIEW.md): binding support and helper inspection add cost. New precheck interface is author-tested, model adoption/savings unmeasured. [Cookies](results/httpx-cookies-01/README.md), [headers](results/httpx-headers-01/README.md), [qualified context](results/httpx-context-02/README.md) retain mixed costs and unequal-work limits. |

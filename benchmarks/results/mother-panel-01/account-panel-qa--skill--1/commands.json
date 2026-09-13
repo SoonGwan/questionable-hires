@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!__pycache__'\"' -g '\"'!*.pyc'\"'\"",
+    "aggregated_output": "<WORKSPACE>\npanel.py\nAGENTS.md\ncontrolled.py\ntest_panel.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat .agents/skills/mother-in-law/SKILL.md requirements.md test_panel.py; git status --short'",
+    "aggregated_output": "---\nname: mother-in-law\ndescription: Test a changed user interaction for realistic sequence failures such as double submission, stale responses, navigation, and recovery; use for interaction QA rather than general code review.\n---\n\n# Mother-in-law\n\n> And what happens if I click it twice?\n\nRead the applicable requirements, interaction code, and test entrypoint once.\nUse controlled responses/clocks, isolated cases, bounded waits, and owned-operation\ncleanup\u2014never sleeps or production actions. Preserve user files and scope.\n\nChoose the deliverable before running checks. If a rerunnable **project test** is\nrequired, add or extend that test first and execute it directly; do not precede\nit with a disposable helper run of the same scenarios. A saved JSON result or\ncommand depending on an installed skill is not a standalone project regression.\nReuse existing coverage, adding missing checkpoints rather than another harness.\n\nFor captured component observations without a project-test deliverable, use\n`scripts/sequence_probe.py` when its contract fits: zero-argument constructor,\nasync `run(query, fetch)`, and state storing the fetched payload directly.\nIt checks sequential normal success and reversed overlapping completion, **not**\nnormal overlapping completion, pending-state retention or an already displayed\nresult while loading. If those or other unsupported checkpoints are required,\nuse project-specific checks from the outset. Existing adequate runners and\ninstructions take precedence; never change production code to fit the helper.\nRun it directly without reading or duplicating its implementation:\n\n```sh\npython3 -B SCRIPT --root . --source FILE --class-name CLASS [--boundary QUERY]\n```\n\nDefaults: method `run`, state `result`, queries `old`/`new`, timeout 5. Exit 1\nmeans a checked behavior failed, 0 means the targeted checks passed, and 2 warrants inspection.\nPass `--error-state ATTRIBUTE` for JSON-serializable error state where falsy means\nclear and truthy means displayed. This checks errors on success, current failure,\nrecovery and stale failure. Failure output retains the failing checkpoint.\nIf retained evidence is requested, use `--output NEW.json` for the same execution's\nJSON. Existing files are refused. Missing console output requires inspecting that\nfile or marking verification incomplete; final prose is not execution evidence.\nThe timeout bounds cooperative async waits, not blocking imports or callbacks.\n\nFor a rendered UI, read [references/browser.md](references/browser.md).\n\nReturn the tested sequence, expected/observed state, tested layer, and complete\nbounded command. Stop after the nearest normal and targeted adversarial cases.\nDo not add separate evidence files when captured check output already proves them.\nBrowser unavailability leaves browser QA incomplete. QA does not authorize a fix.\nAccountPanel displays the latest selected account's complete payload. Loading a new account retains the last displayed payload until the newest request succeeds. Starting any request clears a previous displayed error. An older success or failure must never change the newest request's view, error or loading state. The newest success replaces the payload and clears loading; newest failure preserves the previous payload, displays str(exception), and clears loading. A subsequent successful refresh recovers. Transport errors are handled rather than propagated. Only refresh requests and these state transitions are in scope; rendered browser behavior, cancellation semantics and payload validation are not specified here.\nimport unittest\nfrom controlled import ControlledFetch\nfrom panel import AccountPanel\n\n\nclass PanelTests(unittest.IsolatedAsyncioTestCase):\n    async def test_initial_state(self):\n        panel = AccountPanel(ControlledFetch())\n        self.assertIsNone(panel.view)\n        self.assertIsNone(panel.error)\n        self.assertFalse(panel.loading)\n?? .agents/\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat AGENTS.md panel.py controlled.py'",
+    "aggregated_output": "QA only. Preserve production files and existing tests. Extend test_panel.py with standard-library unittest tests. Use the supplied controlled transport or equivalent deterministic futures; no sleeps, network, dependency installs, delegation or external services. Keep all work inside this project. Any scratch must be project-local and removed.\nclass AccountPanel:\n    def __init__(self, fetch):\n        self.fetch = fetch\n        self.view = None\n        self.error = None\n        self.loading = False\n        self._request = 0\n\n    async def refresh(self, account):\n        self._request += 1\n        request = self._request\n        self.loading = True\n        self.error = None\n        try:\n            payload = await self.fetch(account)\n            if request == self._request:\n                self.view = payload\n        except Exception as error:\n            if request == self._request:\n                self.error = str(error)\n        finally:\n            if request == self._request:\n                self.loading = False\nimport asyncio\n\n\nclass ControlledFetch:\n    \"\"\"One request per key per instance. No real I/O or wall-clock sleeps.\"\"\"\n    def __init__(self):\n        self.calls = asyncio.Queue()\n        self.pending = {}\n\n    async def __call__(self, key):\n        future = asyncio.get_running_loop().create_future()\n        self.pending[key] = future\n        self.calls.put_nowait(key)\n        return await future\n\n    async def started(self, expected):\n        actual = await asyncio.wait_for(self.calls.get(), 1)\n        if actual != expected:\n            raise AssertionError(f'request: expected {expected!r}, observed {actual!r}')\n\n    def complete(self, key, value):\n        self.pending[key].set_result(value)\n\n    def fail(self, key, error):\n        self.pending[key].set_exception(error)\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest -v test_panel'",
+    "aggregated_output": "test_newest_failure_then_successful_recovery (test_panel.PanelSequenceTests) ... ok\ntest_older_failure_while_newest_pending_then_newest_success (test_panel.PanelSequenceTests) ... ok\ntest_overlapping_successes_in_reverse_order (test_panel.PanelSequenceTests) ... ok\ntest_overlapping_successes_in_start_order (test_panel.PanelSequenceTests) ... ok\ntest_initial_state (test_panel.PanelTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.026s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --stat; git diff --check; git status --short'",
+    "aggregated_output": " test_panel.py | 108 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n 1 file changed, 108 insertions(+)\n M test_panel.py\n?? .agents/\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

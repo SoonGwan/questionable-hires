@@ -1,0 +1,119 @@
+import asyncio
+import unittest
+from controlled import ControlledFetch
+from panel import AccountPanel
+
+
+class PanelTests(unittest.IsolatedAsyncioTestCase):
+    async def test_initial_state(self):
+        panel = AccountPanel(ControlledFetch())
+        self.assertIsNone(panel.view)
+        self.assertIsNone(panel.error)
+        self.assertFalse(panel.loading)
+
+
+class PanelSequenceTests(unittest.IsolatedAsyncioTestCase):
+    WAIT_SECONDS = 1
+
+    async def asyncSetUp(self):
+        self.fetch = ControlledFetch()
+        self.panel = AccountPanel(self.fetch)
+        self.tasks = []
+        self.addAsyncCleanup(self.cleanup_requests)
+        self.seed = {
+            "account": "seed", "balance": 17,
+            "details": {"name": "Previously displayed", "tags": ["saved"]},
+        }
+        self.old_payload = {
+            "account": "old", "balance": 23,
+            "details": {"name": "Older selection", "tags": ["old"]},
+        }
+        self.new_payload = {
+            "account": "new", "balance": 41,
+            "details": {"name": "Newest selection", "tags": ["new", "active"]},
+        }
+        seed_task = await self.start_request("seed")
+        self.assert_state("seed pending", None, None, True)
+        await self.succeed("seed", self.seed, seed_task)
+        self.assert_state("seed displayed", self.seed, None, False)
+
+    async def cleanup_requests(self):
+        for task in self.tasks:
+            if not task.done():
+                task.cancel()
+        if self.tasks:
+            await asyncio.wait_for(
+                asyncio.gather(*self.tasks, return_exceptions=True),
+                self.WAIT_SECONDS,
+            )
+
+    async def start_request(self, key):
+        task = asyncio.create_task(self.panel.refresh(key))
+        self.tasks.append(task)
+        # started() checks the actual transport key, not the requested label.
+        await asyncio.wait_for(self.fetch.started(key), self.WAIT_SECONDS)
+        self.assertIn(key, self.fetch.pending)
+        self.assertFalse(self.fetch.pending[key].done())
+        return task
+
+    async def succeed(self, key, payload, task):
+        self.fetch.complete(key, payload)
+        await asyncio.wait_for(task, self.WAIT_SECONDS)
+
+    async def fail(self, key, message, task):
+        self.fetch.fail(key, RuntimeError(message))
+        # Awaiting refresh also verifies that transport errors are handled.
+        await asyncio.wait_for(task, self.WAIT_SECONDS)
+
+    def assert_state(self, checkpoint, view, error, loading):
+        # Keep exercising later checkpoints when a state assertion fails.
+        with self.subTest(checkpoint=checkpoint):
+            self.assertEqual(
+                (self.panel.view, self.panel.error, self.panel.loading),
+                (view, error, loading),
+                "complete (view, error, loading) state",
+            )
+
+    async def start_overlapping_requests(self):
+        old = await self.start_request("old")
+        self.assert_state("older request pending", self.seed, None, True)
+        new = await self.start_request("new")
+        self.assert_state("both requests pending", self.seed, None, True)
+        return old, new
+
+    async def test_overlapping_successes_in_start_order(self):
+        old, new = await self.start_overlapping_requests()
+        await self.succeed("old", self.old_payload, old)
+        self.assert_state("older success; newest pending", self.seed, None, True)
+        await self.succeed("new", self.new_payload, new)
+        self.assert_state("newest success", self.new_payload, None, False)
+
+    async def test_overlapping_successes_in_reverse_order(self):
+        old, new = await self.start_overlapping_requests()
+        await self.succeed("new", self.new_payload, new)
+        self.assert_state("newest success; older pending", self.new_payload, None, False)
+        await self.succeed("old", self.old_payload, old)
+        self.assert_state("older success after newest", self.new_payload, None, False)
+
+    async def test_older_failure_while_newest_pending_then_newest_success(self):
+        old, new = await self.start_overlapping_requests()
+        await self.fail("old", "Older account unavailable", old)
+        self.assert_state("older failure; newest pending", self.seed, None, True)
+        await self.succeed("new", self.new_payload, new)
+        self.assert_state("newest success after older failure", self.new_payload, None, False)
+
+    async def test_newest_failure_then_successful_recovery(self):
+        newest = await self.start_request("new")
+        self.assert_state("newest pending", self.seed, None, True)
+        message = "Newest account unavailable"
+        await self.fail("new", message, newest)
+        self.assert_state("newest failure displayed", self.seed, message, False)
+
+        recovery = await self.start_request("recovery")
+        self.assert_state("recovery clears error and retains payload", self.seed, None, True)
+        recovered_payload = {
+            "account": "recovery", "balance": 59,
+            "details": {"name": "Recovered selection", "tags": ["ready"]},
+        }
+        await self.succeed("recovery", recovered_payload, recovery)
+        self.assert_state("recovery success", recovered_payload, None, False)

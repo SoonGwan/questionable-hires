@@ -1,0 +1,41 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "account-panel-qa",
+  "skill": "mother-in-law",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "2da9f99177e8ce268a5d22863ceeefece4246e25",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 87.293,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 120576,
+    "cached_input_tokens": 105216,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2243,
+    "reasoning_output_tokens": 217
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Audit the changed account-selection interaction against requirements.md. Extend the existing test_panel.py with standalone rerunnable unittest regressions; do not change production or support code. Run the existing test plus your additions using Python 3 standard-library unittest. Exercise the actual AccountPanel and controlled transport, not a substitute panel.\n\nRequired sequences: (1) two overlapping requests completing in start order, (2) the same requests completing in reverse order, (3) an older request failing while the newest is pending and then the newest succeeding, (4) newest failure followed by successful recovery. Seed a displayed payload in each sequence. Assert complete view, error and loading state while requests are pending and after each completion; in sequence 4 also demonstrate that starting recovery clears the displayed error without clearing the previous payload. Check actual request keys. Bound behavior-dependent waits and clean up owned tasks even when assertions fail. Preserve the original initial-state test and all original production/support/requirements files. Keep the tests; captured output is sufficient without extra reports. Report actual findings, expected/observed outcomes and the rerun command, distinguishing component QA from browser QA. Do not fix production, commit, publish or install anything.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  }
+}

@@ -1,0 +1,1 @@
+QA only. Preserve production files and existing tests. Extend test_panel.py with standard-library unittest tests. Use the supplied controlled transport or equivalent deterministic futures; no sleeps, network, dependency installs, delegation or external services. Keep all work inside this project. Any scratch must be project-local and removed.
