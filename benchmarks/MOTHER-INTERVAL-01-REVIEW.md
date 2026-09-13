@@ -39,3 +39,19 @@ adoption; planned post-timing replay will not fill the original output gap.
 The final report is consistent with the retained assertions and captured summary.
 No scope deviation appears in commands; exact source/inventory reconciliation and
 standalone positive/fault controls follow after remaining model timing.
+
+## Final-ownership-only search — baseline
+
+Completed: **84,413 tokens / 67.610 seconds**, four shell calls. Adds retained
+test_search_overlap.py plus SEARCH_QA.md. Actual Search normal completion passes;
+reversed completion fails natively with `results for ca` versus `results for cat`
+(two tests / 0.012s). Normal intermediate display is intentionally not asserted;
+reversed first completion and final latest ownership are. Full native failure
+trace is captured, unlike the protected skill's partial per-test transcript.
+
+Two-second waits/cleanup, actual fetch entry and pending peer/Future checks are
+present. Baseline additionally asserts Search.run returns None, matching the
+current implementation but not an explicit task obligation. The prospective
+guarded replay retains that API; it cannot certify every otherwise valid API
+change. The extra QA document repeats evidence and the native command. Source and
+requirements remain unchanged; no scope violation or capture diagnostic observed.
