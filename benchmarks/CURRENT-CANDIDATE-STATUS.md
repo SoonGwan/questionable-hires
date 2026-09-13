@@ -11,6 +11,13 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+2026-09-14 Receipt runtime update `a869f62`: [inherited-pipe comparison completion](RECEIPT-PIPE-EXIT-01.md)
+fixes a reproduced abort after the native before runner had already finished.
+The same integration regression now obtains before AssertionError and after pass,
+preserving copied-import output, originals and scratch cleanup. Five focused tests
+pass; full local suite then passes 429 tests in 147.545s. Background lifetime changes explicitly; no
+model-session speed/token result or Con Artist fix is implied.
+
 2026-09-14 local regression checkpoint, launch `ead49db`: **428 tests passed in
 169.970s** (macOS/Python 3.9.6). No failures/skips reported; no concurrent model
 run or executable edits. This verifies local regression coverage, not broad model

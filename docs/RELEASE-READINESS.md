@@ -1,5 +1,14 @@
 # Release readiness — development preview
 
+## 2026-09-14: Receipt comparison completion regression
+
+The executable/test bytes committed as `a869f62` pass **429 local tests in
+147.545s**, macOS/Python 3.9.6, with no reported failures or skips. No executable
+edits or concurrent model benchmark ran during the suite. This includes the new
+[native before/after inherited-pipe regression](../benchmarks/RECEIPT-PIPE-EXIT-01.md).
+Local checkout evidence only: current hosted CI, Linux/source archives and the
+Python version matrix are not reverified by this result. Prior checks remain below.
+
 ## 2026-09-14: full local regression after foreground-exit cleanup
 
 Working tree at launch `ead49db`, macOS/Python 3.9.6:
