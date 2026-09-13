@@ -77,4 +77,11 @@ precheck errors, assertion plumbing or cleanup failures, read
 [diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence).
 An unconfirmed child exit stops the audit; do not retry while it may remain.
 
+Required test/probe work must finish in the foreground. When the direct runner
+exits, remaining process-group members are killed and buffered output drained
+under the original deadline; inherited pipes no longer force a finished check
+to time out. Exit detection polls every 50 ms, subject to scheduling. Background
+jobs intended to survive the runner are unsupported; escaped groups are not
+contained. Tests still own assertions and orderly cleanup.
+
 Limits: POSIX, Python 3.9+, 20 MB selected inputs; no symlinks/Git internals/path traversal or namespace-package import checks. No dependency installation. This is **not a sandbox**: use trusted tests, local data and authorized actions only. Files outside the selection are not integrity-checked or restored. Use normal project facilities for other languages or unsupported layouts; don't repeat a valid baseline merely to adopt this helper mid-audit.

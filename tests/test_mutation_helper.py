@@ -17,6 +17,31 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_finished_checks_with_inherited_pipe_preserve_survival_and_detection(self):
+        target = self.root / 'test_service.py'
+        original = target.read_text()
+        background = ('\nimport subprocess, sys\n'
+            '_background = subprocess.Popen([sys.executable, "-B", "-c", '
+            '"import time; time.sleep(20)"])\n')
+        for sensitive in (False, True):
+            with self.subTest(sensitive=sensitive):
+                source = original.replace('self.assertTrue(save([], "item"))',
+                    's = []; save(s, "item"); self.assertEqual(s, ["item"])') if sensitive else original
+                target.write_text(source + background)
+                recipe = dict(self.recipe)
+                if sensitive:
+                    del recipe['probe']
+                result = self.run_audit(recipe, timeout=2)
+                self.assertEqual(result['status'], 'observed')
+                expected = (dict(correct_tests=0, mutant_tests=1) if sensitive else
+                    dict(correct_tests=0, mutant_tests=0, correct_probe=0, mutant_probe=1))
+                self.assertEqual({k: v['exit_code'] for k, v in result['checks'].items()}, expected)
+                self.assertTrue(all(not v['timed_out'] for v in result['checks'].values()))
+                failure = 'mutant_tests' if sensitive else 'mutant_probe'
+                self.assertIn('AssertionError', result['checks'][failure]['output'])
+                self.assertIn('Verified copied import:', result['checks']['correct_tests']['output'])
+                self.assertTrue(result['integrity']['owned_scratch_removed'])
+
     def test_import_early_success_exit_is_incomplete_not_green_baseline(self):
         source = self.root / 'service.py'
         source.write_text('raise SystemExit(0)\n' + source.read_text())

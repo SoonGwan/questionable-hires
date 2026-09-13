@@ -115,6 +115,15 @@ def execute(python, directory, spec, probe, timeout):
     output, characters = '', 0
     decoder = codecs.getincrementaldecoder('utf-8')(errors='replace')
     deadline = time.monotonic() + timeout
+    group_stopped = False
+    def stop_group():
+        nonlocal group_stopped
+        if not group_stopped:
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            group_stopped = True
     def append(chunk, final=False):
         nonlocal output, characters
         decoded = decoder.decode(chunk, final=final)
@@ -125,10 +134,14 @@ def execute(python, directory, spec, probe, timeout):
         with selectors.DefaultSelector() as selector:
             selector.register(process.stdout, selectors.EVENT_READ)
             while selector.get_map():
+                if process.poll() is not None:
+                    # The foreground runner has finished; an inherited pipe
+                    # must not turn its result into a deadline failure.
+                    stop_group()
                 remaining = deadline - time.monotonic()
                 if remaining <= 0:
                     raise subprocess.TimeoutExpired(process.args, timeout)
-                for key, _ in selector.select(remaining):
+                for key, _ in selector.select(min(remaining, 0.05)):
                     chunk = os.read(key.fileobj.fileno(), 4096)
                     if not chunk:
                         append(b'', final=True)
@@ -140,11 +153,7 @@ def execute(python, directory, spec, probe, timeout):
         timed_out = True
     finally:
         pending_error = sys.exc_info()[0]
-        if timed_out or process.poll() is None:
-            try:
-                os.killpg(process.pid, signal.SIGKILL)
-            except ProcessLookupError:
-                pass
+        stop_group()
         process.stdout.close()
         try:
             process.wait(timeout=5)
