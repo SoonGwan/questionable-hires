@@ -93,12 +93,17 @@ class MotherInLawSequenceProbeTests(unittest.IsolatedAsyncioTestCase):
                 finally:
                     finished.append(task)
 
+        # Do not depend on wait_for creating a separate task: on newer Python
+        # the seed may otherwise run in this still-active unittest task.
+        sequence_task = asyncio.create_task(probe.sequence(
+            WaitsAfterReply, 'run', 'result', ['old', 'new'], [0, 1],
+            retain_while_pending=True))
         with self.assertRaises(asyncio.TimeoutError):
-            await asyncio.wait_for(probe.sequence(
-                WaitsAfterReply, 'run', 'result', ['old', 'new'], [0, 1],
-                retain_while_pending=True), 0.05)
+            await asyncio.wait_for(sequence_task, 0.05)
         # The seed uses the sequence task; two subsequent calls are owned peers.
         self.assertEqual(len(active), 3)
+        self.assertIs(active[0], sequence_task)
+        self.assertNotIn(asyncio.current_task(), active)
         self.assertEqual(set(active), set(finished))
         self.assertTrue(all(task.done() for task in active))
 
