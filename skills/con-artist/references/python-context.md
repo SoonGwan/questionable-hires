@@ -8,9 +8,17 @@ python -B /path/to/con-artist/scripts/context.py --root /permitted/project \
   tests/test_service.py service.py:Store.save
 ```
 
-Supply 1–8 explicit `file[:qualified.definition]` selectors. Files are returned in
-full, or the selected class/function/method with decorators and original line
-numbers. For their ancestor directories **inside the supplied root**, output
+Supply 1–8 explicit `file[:qualified.definition]` selectors. When the requested
+definition is known, select it directly (`service.py:Store.save`) rather than the
+whole implementation file. It includes decorators and original line numbers.
+Unqualified Python files over 200 lines return a definition/method index when
+that is smaller than full source; smaller files remain complete. Output labels
+`representation` and `bodies_omitted` explicitly. Read the needed bodies using
+the returned line ranges; an index is not reviewed source. `--full` restores full
+selected files when needed, subject to the same size limits. It does not expand
+ancestor conftest indexes or override an explicit definition selector.
+
+For selected-path ancestor directories **inside the supplied root**, output
 includes complete `AGENTS.md`/`AGENTS.override.md` contents, paths checked for
 those instructions, common pytest config files, and static conftest indexes.
 Follow applicable instructions; host rules determine precedence. Parent-root
@@ -32,7 +40,8 @@ Neither collector exit 0 nor a source hash is execution evidence.
 Python 3.9+, UTF-8 regular files only, no imports/subprocesses/writes. Symlinks,
 traversal and Git internals are refused. Maximum 256 KB per file, 2 MB total input and 100,000
 output characters; invalid/oversized context exits 2 with no partial stdout.
-Unsupported Python syntax in a conftest index also fails explicitly. Use native
+Unsupported Python syntax in an indexed file also fails explicitly (`--full`
+can read a selected file without parsing it). Use native
 project tools for unsupported layouts; don't install dependencies for this tool.
 Files must be stable during reading; this is not a sandbox against concurrent
 filesystem changes. Output includes relative paths and source hashes; it may

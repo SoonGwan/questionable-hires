@@ -13,6 +13,7 @@ import sys
 MAX_FILE = 256_000
 MAX_INPUT = 2_000_000
 MAX_OUTPUT = 100_000
+FULL_SOURCE_LINES = 200
 CONFIGS = ('pytest.ini', '.pytest.ini', 'pyproject.toml', 'tox.ini', 'setup.cfg')
 DEFINITIONS = (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)
 
@@ -57,10 +58,27 @@ def excerpt(lines, first, last):
     return '\n'.join(f'{i}: {lines[i - 1]}' for i in range(first, last + 1))
 
 
-def describe(root, path, budget, symbol=None, index=False):
+def definition_index(body, source, prefix=''):
+    records = []
+    for node in body:
+        if not isinstance(node, DEFINITIONS):
+            continue
+        first, last = span(node)
+        name = prefix + node.name
+        records.append(dict(name=name, kind=type(node).__name__, first_line=first,
+                            last_line=last, decorators=[ast.get_source_segment(source, d)
+                                                        for d in node.decorator_list]))
+        if isinstance(node, ast.ClassDef):
+            records.extend(definition_index(node.body, source, name + '.'))
+    return records
+
+
+def describe(root, path, budget, symbol=None, index=False, auto_index=False):
     source, digest = read(root, path, budget)
     lines = source.splitlines()
     result = dict(path=str(path), sha256=digest)
+    large_selected = auto_index and Path(path).suffix == '.py' and len(lines) > FULL_SOURCE_LINES and not symbol
+    index = index or large_selected
     if symbol or index:
         tree = ast.parse(source, filename=str(path))
         if symbol:
@@ -72,27 +90,30 @@ def describe(root, path, budget, symbol=None, index=False):
                 node = matches[0]
                 body = node.body
             first, last = span(node)
-            result.update(symbol=symbol, source=excerpt(lines, first, last))
+            result.update(representation='definition', symbol=symbol, source=excerpt(lines, first, last))
             result['limitation'] = 'Definition excerpt only; imports, globals, bases and runtime bindings are not resolved.'
         else:
-            definitions, top_level = [], []
+            definitions, top_level = definition_index(tree.body, source), []
             for node in tree.body:
                 first, last = span(node)
-                if isinstance(node, DEFINITIONS):
-                    definitions.append(dict(name=node.name, kind=type(node).__name__,
-                                            first_line=first, last_line=last,
-                                            decorators=[ast.get_source_segment(source, d)
-                                                        for d in node.decorator_list]))
-                else:
+                if not isinstance(node, DEFINITIONS):
                     top_level.append(excerpt(lines, first, last))
-            result.update(definitions=definitions, top_level=top_level,
-                          limitation='Static conftest index, not fixture resolution. Inspect relevant definitions, autouse fixtures, hooks and plugins before execution.')
+            result.update(representation='definition_index', bodies_omitted=True,
+                          definitions=definitions, top_level=top_level,
+                          limitation='Static index only; definition/class bodies are omitted, not reviewed. Inspect relevant definitions, fixtures, hooks and plugins before execution. Conditional definitions remain in top_level; runtime bindings are unresolved.')
+            if large_selected:
+                result['reason'] = 'Selected Python file exceeds 200 lines; use file:qualified.definition or --full to read bodies. No behavioral conclusion is established by this index.'
+                full_result = dict(path=str(path), sha256=digest, representation='full_source',
+                                   source=excerpt(lines, 1, len(lines)))
+                if len(json.dumps(result, ensure_ascii=False)) >= len(json.dumps(full_result, ensure_ascii=False)):
+                    return full_result
     else:
+        result['representation'] = 'full_source'
         result['source'] = excerpt(lines, 1, len(lines))
     return result
 
 
-def collect(root, selectors):
+def collect(root, selectors, full=False):
     root = Path(root).resolve(strict=True)
     if not root.is_dir() or not 1 <= len(selectors) <= 8:
         raise ValueError('Provide a project directory and 1–8 file[:qualified.definition] selectors')
@@ -126,7 +147,7 @@ def collect(root, selectors):
     result = dict(status='collected', instructions=instructions,
                   instruction_paths_checked=checked_instructions, configs=configs,
                   conftest_indexes=conftests,
-                  selected=[describe(root, path, budget, symbol) for path, symbol in selected],
+                  selected=[describe(root, path, budget, symbol, auto_index=not full) for path, symbol in selected],
                   limitation='Read-only navigation, not execution or complete dependency/config discovery. Only selected-path ancestors inside the supplied root are checked. Host instructions still apply; inspect additional dependencies when needed. Files must remain stable while reading.')
     encoded = json.dumps(result, ensure_ascii=False, indent=2)
     if len(encoded) > MAX_OUTPUT:
@@ -137,10 +158,12 @@ def collect(root, selectors):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=Path.cwd())
+    parser.add_argument('--full', action='store_true',
+                        help='Return full selected files instead of indexing Python files over 200 lines; size limits still apply')
     parser.add_argument('selectors', nargs='+', metavar='FILE[:DEFINITION]')
     args = parser.parse_args()
     try:
-        result = collect(args.root, args.selectors)
+        result = collect(args.root, args.selectors, full=args.full)
     except (OSError, ValueError, SyntaxError, RecursionError) as error:
         print(json.dumps(dict(status='incomplete', error=str(error))), file=sys.stderr)
         return 2

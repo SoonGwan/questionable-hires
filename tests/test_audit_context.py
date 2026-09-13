@@ -109,3 +109,50 @@ class AuditContextTests(unittest.TestCase):
         result = context.collect(self.root, ['async_test.py:test_x'])
         self.assertTrue(result['selected'][0]['source'].startswith('1: @marker('))
         self.assertTrue(result['selected'][0]['source'].endswith('5:     assert True'))
+
+    def test_large_python_file_indexes_methods_without_claiming_bodies_read(self):
+        self.put('large.py', 'import os\nclass Outer:\n    class Inner:\n        @staticmethod\n        def act():\n            raise RuntimeError("BODY_NOT_READ")\n' + '\n' * 201)
+        row = context.collect(self.root, ['large.py'])['selected'][0]
+        self.assertEqual(row['representation'], 'definition_index')
+        self.assertTrue(row['bodies_omitted'])
+        self.assertNotIn('source', row)
+        self.assertNotIn('BODY_NOT_READ', json.dumps(row))
+        methods = {d['name']: d for d in row['definitions']}
+        self.assertEqual(methods['Outer.Inner.act']['first_line'], 4)
+        self.assertEqual(methods['Outer.Inner.act']['last_line'], 6)
+        self.assertIn('import os', row['top_level'][0])
+        selected = context.collect(self.root, ['large.py:Outer.Inner.act'])['selected'][0]
+        self.assertEqual(selected['representation'], 'definition')
+        self.assertIn('BODY_NOT_READ', selected['source'])
+        self.assertEqual(selected['sha256'], row['sha256'])
+
+    def test_full_flag_restores_selected_bodies_but_never_bypasses_limits(self):
+        self.put('large.py', 'def f():\n    return "BODY"\n' + '\n' * 201)
+        process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--root', str(self.root),
+                                  '--full', 'large.py'], capture_output=True, text=True, timeout=5)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        row = json.loads(process.stdout)['selected'][0]
+        self.assertEqual(row['representation'], 'full_source')
+        self.assertIn('return "BODY"', row['source'])
+        with patch.object(context, 'MAX_OUTPUT', 10), self.assertRaises(ValueError):
+            context.collect(self.root, ['large.py'], full=True)
+
+    def test_instructions_and_config_are_never_auto_indexed(self):
+        self.put('AGENTS.md', 'Required instruction\n' * 201)
+        self.put('pytest.ini', '# configuration\n' * 201)
+        result = context.collect(self.root, ['service.py'])
+        self.assertIn('201: Required instruction', result['instructions'][0]['source'])
+        self.assertIn('201: # configuration', result['configs'][0]['source'])
+
+    def test_large_unsupported_python_fails_explicitly_but_full_read_is_available(self):
+        self.put('future.py', 'def broken(:\n' + '\n' * 201)
+        with self.assertRaises(SyntaxError):
+            context.collect(self.root, ['future.py'])
+        row = context.collect(self.root, ['future.py'], full=True)['selected'][0]
+        self.assertIn('def broken(:', row['source'])
+
+    def test_dense_definitions_do_not_expand_output_into_a_larger_index(self):
+        self.put('dense.py', ''.join(f'def f{i}(): pass\n' for i in range(201)))
+        row = context.collect(self.root, ['dense.py'])['selected'][0]
+        self.assertEqual(row['representation'], 'full_source')
+        self.assertIn('201: def f200(): pass', row['source'])
