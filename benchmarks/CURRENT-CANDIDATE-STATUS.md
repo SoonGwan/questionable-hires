@@ -11,10 +11,12 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
-Later [Mother delivery-route candidate](MOTHER-ROUTING-01-PROTOCOL.md) separates
-conditional native-test guidance from observation work. Observation-route bytes
-decrease 13.47%; native-route bytes are nearly unchanged, with possible extra
-read-call overhead. Runtime code is unchanged; model impact is not yet measured.
+Completed 2026-09-14: [Mother delivery-route comparison](MOTHER-ROUTING-01-REVIEW.md)
+at `672e22f`: four cells, **+7.92% tokens / −23.35% time**. Both document routes
+are followed, but native-test costs increase and unchanged-test author replay
+exposes missing intermediate-retention assertions. Both original implementations
+are correctly reported clean; that does not establish robust regression coverage.
+No efficiency acceptance. Runtime helper code is unchanged; prior results remain.
 
 Completed 2026-09-14: [three-case retention model comparison](MOTHER-RETENTION-MODEL-01-REVIEW.md),
 six fresh serial sessions at `0e80f9b`: **−1.58% total tokens / −52.77% process
