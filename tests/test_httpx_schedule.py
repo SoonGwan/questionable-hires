@@ -21,6 +21,16 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_url_repr_profile_is_new_and_preserves_prior_tasks(self):
+        skill, tasks = runner.select_profile('url-repr-audit')
+        self.assertEqual(skill, 'con-artist')
+        self.assertEqual(set(tasks), {'url-repr-password'})
+        self.assertEqual(set(runner.make_schedule(tasks, ['baseline', 'skill'], 1)),
+                         {('url-repr-password', 'baseline', 1), ('url-repr-password', 'skill', 1)})
+        self.assertEqual(runner.select_profile('cookies-audit'), ('con-artist', runner.COOKIE_TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('url-repr-audit', ['cookies-scoped-clear'])
+
     def test_interpreter_directory_alias_normalizes_without_leaving_virtualenv(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary).resolve()

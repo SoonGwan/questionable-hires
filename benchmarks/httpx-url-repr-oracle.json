@@ -1,0 +1,10 @@
+{
+  "files": ["httpx", "tests", "pyproject.toml"],
+  "imports": ["httpx._urls"],
+  "runner": "pytest",
+  "tests": ["-q", "-p", "no:cacheprovider", "tests/models/test_url.py", "tests/client/test_auth.py::test_auth_hidden_url"],
+  "target": "httpx/_urls.py",
+  "old": "            userinfo = f'{userinfo.split(\":\")[0]}:[secure]'\n",
+  "new": "            pass  # isolated fault: omit password masking\n",
+  "probe": "import httpx\nfor text, expected in [('https://alice@example.org/path?q=1#frag', \"URL('https://alice@example.org/path?q=1#frag')\"), ('https://example.org/path?q=1#frag', \"URL('https://example.org/path?q=1#frag')\")]:\n    actual = repr(httpx.URL(text))\n    assert actual == expected, (actual, expected)\n    print('normal control:', actual)\n"
+}

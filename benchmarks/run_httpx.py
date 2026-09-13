@@ -38,6 +38,9 @@ HEADER_TASKS = {
 COOKIE_TASKS = {
     'cookies-scoped-clear': 'Audit whether tests/models/test_cookies.py protects Cookies.clear(domain=..., path=...) deleting only the requested path while preserving cookies at another path in the same domain and in a different domain. Demonstrate sensitivity with one narrow isolated behavioral mutation of scoped clearing. If existing coverage detects the fault, identify the detecting assertion; otherwise verify a focused assertion on correct and faulty code. Verify domain-only clearing as a normal control on correct and faulty code. Do not change original source/tests, and do not demand new tests for a fault already detected.',
 }
+URL_REPR_TASKS = {
+    'url-repr-password': 'Audit whether the existing URL/auth tests protect URL.__repr__ masking a nonempty password while preserving the username and ordinary URL components. Use the existing tests/models/test_url.py suite plus tests/client/test_auth.py::test_auth_hidden_url for the correct baseline and the same unchanged tests against one narrow isolated masking fault. Use the supplied interpreter with pytest -q -p no:cacheprovider. Identify the detecting assertion if covered; otherwise verify a focused assertion on correct and faulty behavior. Check username-only and no-userinfo URLs as normal controls on correct and faulty code. Use only synthetic example credentials, no network. Inspect copied implementation provenance in each check process. Remove owned disposable copies, preserve all original source/tests/configuration, and report the actual evidence and scoped conclusion. Captured output is sufficient; no retained harness/report or new test is required for an already detected fault. Do not fix production, change warning policy, commit or publish.',
+}
 
 
 def select_profile(profile, requested=None):
@@ -47,7 +50,8 @@ def select_profile(profile, requested=None):
                 'decoder-audit': ('con-artist', DECODER_TASKS),
                 'queryparams-audit': ('con-artist', QUERYPARAM_TASKS),
                 'headers-audit': ('con-artist', HEADER_TASKS),
-                'cookies-audit': ('con-artist', COOKIE_TASKS)}
+                'cookies-audit': ('con-artist', COOKIE_TASKS),
+                'url-repr-audit': ('con-artist', URL_REPR_TASKS)}
     if profile not in profiles:
         raise ValueError('Unknown profile')
     skill, available = profiles[profile]
@@ -109,7 +113,7 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit', 'cookies-audit'), default='audit')
+    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit', 'cookies-audit', 'url-repr-audit'), default='audit')
     parser.add_argument('--case', action='append')
     parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
     parser.add_argument('--repeats', type=int, default=3)
@@ -149,6 +153,8 @@ def main():
         checks = ['tests/models/test_headers.py']
     if args.profile == 'cookies-audit':
         checks = ['tests/models/test_cookies.py']
+    if args.profile == 'url-repr-audit':
+        checks = ['tests/models/test_url.py', 'tests/client/test_auth.py::test_auth_hidden_url']
     subprocess.run([str(python), '-B', '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
                     *checks], cwd=source, check=True, timeout=60)
     output = args.output.resolve()
