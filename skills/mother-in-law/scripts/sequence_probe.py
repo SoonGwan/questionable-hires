@@ -48,7 +48,9 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
             for query in queries:
                 await start(query)
         errors = []
+        unexpected_errors = []
         checkpoints = []
+        failed_checkpoints = []
         for index in order:
             query = queries[index]
             if sequential:
@@ -61,14 +63,25 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
                 await tasks[index]
             except RuntimeError as error:
                 errors.append(str(error))
+                if failure != index:
+                    unexpected_errors.append({'query': query, 'error': str(error)})
             if sequential:
                 if failure == index and error_state_name is not None:
-                    checkpoints.append(bool(getattr(target, error_state_name)))
+                    passed = bool(getattr(target, error_state_name))
                 else:
                     passed = getattr(target, state_name) == query + ' result'
                     if error_state_name is not None:
                         passed = passed and not getattr(target, error_state_name)
-                    checkpoints.append(bool(passed))
+                checkpoints.append(bool(passed))
+                if not passed:
+                    detail = {'query': query, 'state': getattr(target, state_name)}
+                    if failure != index:
+                        detail['expected_state'] = query + ' result'
+                    if error_state_name is not None:
+                        detail['error_state'] = getattr(target, error_state_name)
+                        detail['expected_error'] = 'displayed' if failure == index else 'clear'
+                    # Freeze failure evidence before subsequent requests mutate state.
+                    failed_checkpoints.append(json.loads(json.dumps(detail)))
         observed = {'queries': queries,
                     'completion_order': [queries[i] for i in order],
                     'state': getattr(target, state_name), 'errors': errors}
@@ -76,6 +89,10 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
             observed['error_state'] = getattr(target, error_state_name)
         if sequential:
             observed['checkpoints_passed'] = checkpoints
+        if unexpected_errors:
+            observed['unexpected_errors'] = unexpected_errors
+        if failed_checkpoints:
+            observed['failed_checkpoints'] = failed_checkpoints
         return observed
     finally:
         for task in tasks:
@@ -86,35 +103,38 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
 
 async def probe(factory, method, state, old, new, boundary, error_state=None):
     cases = []
-    normal = await sequence(factory, method, state, [old, new], [0, 1], sequential=True)
-    cases.append({'name': 'normal', 'passed': all(normal['checkpoints_passed']),
-                  'observed': normal})
-    stale = await sequence(factory, method, state, [old, new], [1, 0])
-    cases.append({'name': 'older-success-after-newer-success',
-                  'passed': stale['state'] == new + ' result', 'observed': stale})
+
+    def record(name, observed, passed):
+        cases.append({'name': name,
+                      'passed': bool(passed and not observed.get('unexpected_errors')),
+                      'observed': observed})
+
+    def successful(observed, query):
+        return (observed['state'] == query + ' result'
+                and (error_state is None or not observed['error_state']))
+
+    normal = await sequence(factory, method, state, [old, new], [0, 1],
+                            error_state_name=error_state, sequential=True)
+    record('normal', normal, all(normal['checkpoints_passed']))
+    stale = await sequence(factory, method, state, [old, new], [1, 0],
+                           error_state_name=error_state)
+    record('older-success-after-newer-success', stale, successful(stale, new))
     if error_state is not None:
         recovery = await sequence(factory, method, state, [old, new], [0, 1],
                                   failure=0, error_state_name=error_state,
                                   sequential=True)
-        cases.append({'name': 'current-error-then-recovery',
-                      'passed': all(recovery['checkpoints_passed']),
-                      'observed': recovery})
+        record('current-error-then-recovery', recovery, all(recovery['checkpoints_passed']))
         stale_error = await sequence(factory, method, state, [old, new], [1, 0],
                                      failure=0, error_state_name=error_state)
-        cases.append({'name': 'older-error-after-newer-success',
-                      'passed': stale_error['state'] == new + ' result'
-                      and not stale_error['error_state'],
-                      'observed': stale_error})
+        record('older-error-after-newer-success', stale_error, successful(stale_error, new))
     if boundary is not None:
         boundary_normal = await sequence(factory, method, state, [old, boundary],
-                                         [0, 1], sequential=True)
-        cases.append({'name': 'normal-boundary',
-                      'passed': all(boundary_normal['checkpoints_passed']),
-                      'observed': boundary_normal})
-        crossed = await sequence(factory, method, state, [old, boundary], [1, 0])
-        cases.append({'name': 'older-success-after-boundary',
-                      'passed': crossed['state'] == boundary + ' result',
-                      'observed': crossed})
+                                         [0, 1], error_state_name=error_state,
+                                         sequential=True)
+        record('normal-boundary', boundary_normal, all(boundary_normal['checkpoints_passed']))
+        crossed = await sequence(factory, method, state, [old, boundary], [1, 0],
+                                 error_state_name=error_state)
+        record('older-success-after-boundary', crossed, successful(crossed, boundary))
     return cases
 
 

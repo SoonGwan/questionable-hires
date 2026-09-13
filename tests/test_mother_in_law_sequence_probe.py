@@ -56,6 +56,55 @@ class ErrorSearch:
 
 
 class MotherInLawSequenceProbeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_result_written_before_success_exception_is_not_a_pass(self):
+        class CrashesAfterRender(ErrorSearch):
+            async def run(self, query, fetch):
+                await super().run(query, fetch)
+                if self.error is None:
+                    raise RuntimeError('render callback crashed')
+
+        cases = await probe.probe(
+            CrashesAfterRender, 'run', 'result', 'old', 'new', None, 'error')
+        self.assertFalse(any(c['passed'] for c in cases))
+        self.assertEqual(cases[0]['observed']['unexpected_errors'][0],
+                         {'query': 'old', 'error': 'render callback crashed'})
+
+    async def test_stale_success_must_preserve_error_as_well_as_result(self):
+        class PollutesError(ErrorSearch):
+            async def run(self, query, fetch):
+                succeeded = False
+
+                async def watched(q):
+                    nonlocal succeeded
+                    value = await fetch(q)
+                    succeeded = True
+                    return value
+
+                await super().run(query, watched)
+                if succeeded and query == 'old' and self.generation == 2:
+                    self.error = 'stale callback error'
+
+        cases = await probe.probe(
+            PollutesError, 'run', 'result', 'old', 'new', None, 'error')
+        self.assertEqual([c['passed'] for c in cases], [True, False, True, True])
+
+    async def test_normal_success_checks_error_before_later_success_repairs_it(self):
+        class TransientError(ErrorSearch):
+            async def run(self, query, fetch):
+                await super().run(query, fetch)
+                if self.generation == 1 and self.result is not None:
+                    self.error = 'unexpected error on first success'
+
+        cases = await probe.probe(
+            TransientError, 'run', 'result', 'old', 'new', '', 'error')
+        self.assertFalse(cases[0]['passed'])
+        self.assertIsNone(cases[0]['observed']['error_state'])
+        self.assertEqual(cases[0]['observed']['failed_checkpoints'], [{
+            'query': 'old', 'state': 'old result', 'expected_state': 'old result',
+            'error_state': 'unexpected error on first success', 'expected_error': 'clear'}])
+        self.assertFalse(next(c for c in cases if c['name'] == 'normal-boundary')['passed'])
+        self.assertTrue(next(c for c in cases if c['name'] == 'current-error-then-recovery')['passed'])
+
     async def test_recovery_detects_sticky_error_missed_by_stale_only_check(self):
         class StickyError(ErrorSearch):
             async def run(self, query, fetch):
