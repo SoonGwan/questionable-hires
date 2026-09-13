@@ -1,0 +1,83 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "receipt-assembly-history",
+  "skill": "receipt",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "171834cfcdab209e892292434872e617123bc428",
+  "skill_sha256": "faa42e29522ccea15283d0ad1b662bd1dfaa1e85d887786d76fbfe775c942d45",
+  "skill_resources_sha256": "c5a4a19a83a099b6558ae47412dbc62bc6875f353224984f04ffb44e6355e173",
+  "elapsed_seconds": 40.073,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 108821,
+    "cached_input_tokens": 85632,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 780,
+    "reasoning_output_tokens": 21
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Use $receipt at .agents/skills/receipt/SKILL.md.\n\nVerify the committed assembly fix against the implementation before and after it, using the same current tests, configuration and samples. Exercise the documented runner and identify the implementation revisions actually loaded. Check numeric part ordering and empty output. Use disposable project-local copies; preserve original files and do not install anything or use external services.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "receipt/SKILL.md": {
+      "kind": "file",
+      "sha256": "faa42e29522ccea15283d0ad1b662bd1dfaa1e85d887786d76fbfe775c942d45",
+      "mode": 420
+    },
+    "receipt/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+      "mode": 420
+    },
+    "receipt/references/existing-fix.md": {
+      "kind": "file",
+      "sha256": "4ea8c6e0f225d6d6cb5fc5c02a77637fb43cc4eaed802a095f97cdc8030e880b",
+      "mode": 420
+    },
+    "receipt/scripts/compare.py": {
+      "kind": "file",
+      "sha256": "91e5ede8a2a7dea815182a67bb1d80e8a867466884c53307c87d5a739cac346a",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "receipt/SKILL.md": {
+      "kind": "file",
+      "sha256": "faa42e29522ccea15283d0ad1b662bd1dfaa1e85d887786d76fbfe775c942d45",
+      "mode": 420
+    },
+    "receipt/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+      "mode": 420
+    },
+    "receipt/references/existing-fix.md": {
+      "kind": "file",
+      "sha256": "4ea8c6e0f225d6d6cb5fc5c02a77637fb43cc4eaed802a095f97cdc8030e880b",
+      "mode": 420
+    },
+    "receipt/scripts/compare.py": {
+      "kind": "file",
+      "sha256": "91e5ede8a2a7dea815182a67bb1d80e8a867466884c53307c87d5a739cac346a",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  }
+}

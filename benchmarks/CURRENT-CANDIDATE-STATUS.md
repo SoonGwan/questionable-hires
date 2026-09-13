@@ -10,6 +10,13 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Receipt directory model adoption](results/receipt-directory-model-01/README.md):
+  the model selects `samples/` and uses the helper without reading its source;
+  both original defects fail before and pass after. Recorded +3.03% tokens /
+  −32.50% time. Repository-wide file enumeration persists; baseline duplicates
+  suite execution and searches its parent directory. One exposed pair, unequal
+  work and a baseline scope exception prevent an accepted broad efficiency win.
+
 - [Receipt support-directory candidate](RECEIPT-DIRECTORIES-01.md): `0d5c81c`
   freezes explicit current test/support directories across two historical
   implementations, with leaf hashes, overlap rejection and bounded traversal.
@@ -17,7 +24,8 @@ test counts. “Current” and “latest” in that archive refer to the origina
   unchanged inputs. Integration replay on the existing record-parser and
   multi-module assembly fixtures additionally verifies leaf/directory recipe
   equivalence: identical revisions, input hashes and required failure/pass
-  outcomes. Model adoption and whole-task cost remain unmeasured.
+  outcomes. Subsequent model adoption and costs are reported above; directory
+  use alone does not establish a performance improvement.
 
 - [Two-boundary header transfer](results/httpx-headers-01/README.md): automatic
   index/body readback and batch reuse observed in a new function area. +35.1%

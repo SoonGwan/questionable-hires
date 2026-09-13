@@ -72,7 +72,10 @@ elapsed time or infer model token savings from shorter selections.
 
 ## Remaining gate
 
-This proves an available preparation mechanism, not adoption or token savings.
+The checks above prove an available preparation mechanism, not token savings.
+The subsequent [model adoption check](results/receipt-directory-model-01/README.md)
+observes directory selection, but still records higher tokens and redundant
+file enumeration; unequal baseline work prevents an equal-work speed claim.
 A fresh realistic comparison must check whether the model selects appropriate
 support directories, preserves runner/fixture semantics, avoids unnecessary
 enumeration and retains required before/after evidence. Directory breadth and

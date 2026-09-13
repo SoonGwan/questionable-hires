@@ -1,0 +1,1 @@
+Run python3 -B -m unittest -v test_assembly from the root. Part names use nonnegative integer suffixes. Assemble in numeric order with the configured separator and a final LF; an empty directory produces an empty string. Standard library only.
