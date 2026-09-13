@@ -11,16 +11,16 @@ description: Audit whether tests detect broken behavior by tracing assertions an
 
 Start from the requested assertions and follow their actual calls through implementation and mocks. Read the reached definitions and relevant fixtures/configuration; broaden discovery when a dependency or contract remains unresolved, not merely because more files exist. Reuse completed project-scoped instruction discovery and known runner information after loading this skill. Keep any new discovery inside the permitted project root.
 
-For known Python test/implementation paths whose context is still unread, use
-[the read-only context collector](references/python-context.md) to gather selected
-source, ancestor instructions/configuration and conftest indexes in one call.
-Use `file:Class.method` or `file:line` for known targets. Running a broad suite
-does not require reading every unrelated test body: select the relevant tests,
-using targeted search to locate unknown assertions. Use `--full` when whole-file
-assertion context is needed, alongside explicit implementation selectors.
-Use indexes for locating unknown targets, not as an extra pass before known reads.
-Skip it when equivalent context is already available; its indexes are navigation,
-not proof of resolved dependencies or executed behavior.
+For a few nearby files, read the relevant source and configuration directly with
+project tools; Python alone is not a reason to load helper references. Running a
+broad suite does not require reading every unrelated test body. Locate unknown
+assertions with targeted search and reuse already-read context.
+
+When scattered targets need ancestor instructions/configuration and fixture
+navigation, [the read-only collector](references/python-context.md) can gather
+that context in one call. Select known definitions/lines directly; whole-file
+reads remain available when needed. Its indexes locate bodies, not prove resolved
+dependencies or executed behavior. Do not add it after equivalent direct reads.
 
 Use the documented command or evidenced runner, preserving test configuration. Reuse a valid baseline or established audit; a failing baseline is not mutation evidence. Choose one reachable behavioral fault at the requested boundary, such as acknowledgment versus persistence or closed flag versus cleanup. Syntax errors and equivalent mutations do not establish sensitivity.
 

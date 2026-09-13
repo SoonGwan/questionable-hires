@@ -107,3 +107,24 @@ in both modes with Unicode and exact equality to the API result. Historical mode
 logs remain in their original formatting and the costs above remain unchanged.
 Full repository suite after the formatting change: **379 tests pass (52.442s)**;
 skill/catalog, featured synchronization and whitespace checks pass.
+
+## Later collector applicability correction
+
+The next candidate removes the entrypoint's implication that known unread Python
+paths should always route through the collector. A few nearby files now use
+direct project reads/search; the optional collector remains useful when scattered
+targets need combined ancestor instruction/configuration and fixture navigation.
+It is not disabled, and instructions still require relevant context, actual
+assertion bodies, unchanged requested suite execution, preserved runner settings,
+valid isolation and caller-binding evidence. Already-read context is reused.
+
+This is based on the observed real-code pair's direct baseline path versus the
+skill's reference/collector/implementation reads, not a claim that every such
+read was unnecessary. Applicable tools are selected before opening their detailed
+references, following skill-creator's progressive disclosure principle. No helper,
+metadata, automatic-selection policy or output contract changes in this step.
+Existing collector and mutation-helper regressions remain the compatibility
+checks; they do not prove model routing or lower costs for this new candidate.
+Compatibility checks: context **23 pass (0.432s)**, mutation helper **62 pass
+(10.025s)**, full repository **379 pass (52.628s)**. Skill/catalog, local links,
+featured synchronization and whitespace checks pass; no model session was rerun.
