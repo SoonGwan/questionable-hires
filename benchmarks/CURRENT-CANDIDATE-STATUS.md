@@ -11,15 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
-In progress: [three-case retention model comparison](MOTHER-RETENTION-MODEL-01-PROTOCOL.md),
-six fresh serial sessions launched at `0e80f9b`. Its normal/clear/transient fixture
-was frozen and natively preflighted before execution. No aggregate outcome or
-replacement for existing measured results is available yet.
+Completed 2026-09-14: [three-case retention model comparison](MOTHER-RETENTION-MODEL-01-REVIEW.md),
+six fresh serial sessions at `0e80f9b`: **−1.58% total tokens / −52.77% process
+time**, 3/3 reviewed targets in both arms, no clean-case false positive. Skill
+adopts the new option in every case; its clean-case token cost increases 34.35%.
+Unequal extra checks, shared host/cache and three capability-selected authored
+tasks at n=1 prevent causal or whole-bundle claims. All six native records retained.
 
 2026-09-14 local capability update: [Mother retention option](MOTHER-RETENTION-01.md)
 adds explicit success-path display checkpoints to the disposable component probe.
-Native fault/normal controls and CLI checks pass; model adoption and cost are
-unmeasured. Standalone project-test delivery still takes precedence. Full local
+Native fault/normal controls and CLI checks pass; the targeted model results above
+now establish adoption at their measured resource, not general savings.
+Standalone project-test delivery still takes precedence. Full local
 suite: 419 tests passed in 174.634s after correcting two startup-sensitive test
 deadlines; the initial failures and unchanged production deadlines are disclosed
 in that report. This is not hosted release verification.
