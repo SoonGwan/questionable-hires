@@ -1,0 +1,10 @@
+{
+  "files": ["httpx", "tests", "pyproject.toml"],
+  "imports": ["httpx._models"],
+  "runner": "pytest",
+  "tests": ["-q", "tests/models/test_cookies.py"],
+  "target": "httpx/_models.py",
+  "old": "            args.append(path)\n",
+  "new": "            pass  # deliberate fault: ignore path restriction\n",
+  "probe": "import httpx\nc = httpx.Cookies()\nc.set('one', 'A', domain='example.com', path='/one')\nc.set('two', 'B', domain='example.com', path='/two')\nc.set('other', 'C', domain='example.org', path='/one')\nc.clear(domain='example.com')\nactual = [(v.domain, v.path, v.name, v.value) for v in c.jar]\nexpected = [('example.org', '/one', 'other', 'C')]\nassert actual == expected, (actual, expected)\nprint('domain-only control:', actual)\n"
+}

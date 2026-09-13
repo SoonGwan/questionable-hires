@@ -19,6 +19,16 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_cookie_transfer_keeps_existing_profiles_and_exact_cells(self):
+        skill, tasks = runner.select_profile('cookies-audit')
+        self.assertEqual(skill, 'con-artist')
+        self.assertEqual(set(tasks), {'cookies-scoped-clear'})
+        self.assertEqual(set(runner.make_schedule(tasks, ['baseline', 'skill'], 1)),
+                         {('cookies-scoped-clear', 'baseline', 1), ('cookies-scoped-clear', 'skill', 1)})
+        self.assertEqual(runner.select_profile('headers-audit'), ('con-artist', runner.HEADER_TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('cookies-audit', ['headers-two-boundaries'])
+
     def test_headers_two_boundary_profile_is_separate(self):
         skill, tasks = runner.select_profile('headers-audit')
         self.assertEqual(skill, 'con-artist')
