@@ -240,3 +240,39 @@ and full non-Git/non-skill inventories match expected additions, except the
 authorized boundary fix whose two final files exactly match the skill arm.
 The diagnosis's retained JSON matches the actual captured JSON. Twelve cells
 are reviewed; the remaining six scheduled cells and post-timing QA replay remain.
+
+## History review — both arms
+
+Baseline records 64,044 tokens / 28.506 seconds; Necromancer records 86,145 /
+34.903, both four shell calls. Both inspect the real name-only consumer, attribute
+the fallback to the compatibility commit, recommend preserving it, and separate
+historical intent from present dependency. Neither modifies project files.
+Baseline demonstrates current consumer output then contrasts direct payload access;
+skill rebinds the actual consumer dependency in memory for both alternative readers.
+Skill uses focused blame/show rather than baseline's full two-commit fixture history,
+but also repeats known-file discovery and keyword matches. Recorded costs increase
+**34.51% tokens / 22.44% time**; better targeting is not a measured efficiency win.
+
+## Release review — both arms
+
+Baseline records 103,439 tokens / 73.591 seconds; Friday records 89,293 / 56.804.
+Both capture native SQLite reader outcomes before up, after up, after new-schema
+insert/update and after down; both reject the documented mixed-version rollout
+and old-binary-first rollback. Both distinguish surviving synthetic data from
+unverified application writers/staging and preserve all six release files.
+Friday consumes its public matrix API, checks completeness, expected reader
+statuses and final inserted/updated values, without retaining another probe.
+Baseline retains a verification script and JSON, additionally checks unchanged-row
+survival and restored column metadata. Its full captured JSON is native evidence,
+not merely a final-answer claim. Recorded skill costs are **−13.68% tokens /
+−22.81% time**, with those unequal extra checks/artifacts; n=1 is not general or
+causal superiority. No deployment or external service use appears in either trace.
+
+## Form implementation — baseline
+
+Baseline records 66,111 tokens / 66.497 seconds, four shell calls. Native five-test
+output passes, covering initial pending state, three overlapping duplicates,
+return identity, independent instances, failure identity/retry, synchronous save
+failure and cancellation cleanup/retry. Retained tests call actual Form, use
+two-second waits and owned-task teardown. Only implementation and regression files
+change; comparison awaits the last scheduled skill cell and post-timing replay.
