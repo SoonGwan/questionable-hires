@@ -28,18 +28,11 @@ For pytest, list implementation modules in `imports`, not selected test modules:
 pre-importing tests bypasses pytest's assertion rewriting and can lose useful
 expected/observed diagnostics. Let pytest collect its tests normally.
 
-Optional `precheck` runs assertion code after copied imports, before each test or
-probe, **in that check's process**. Use it for a required caller-binding check
-instead of a temporary binding module or separate import-only process. The example
-checks unittest's actual test global; adapt it to the real caller. This establishes
-binding at that point, not that the test later calls it or fixtures never rebind it.
-Do not pre-import pytest tests here; use native fixtures/hooks for post-collection
-bindings. Do not replace behavior to make a precheck pass. A precheck exception is
-labeled `Precheck failed; not mutation evidence` in output; inspect it, never count
-it as a killed behavioral fault. With precheck enabled, check exit 6 is reserved
-for incomplete precheck evidence and stops the audit, even on a mutant; a
-precheck's early `SystemExit(0)` is also incomplete. It shares the check timeout and output
-limits. Batch precheck is shared, and changing it invalidates reusable baselines.
+Optional `precheck` runs after copied imports, before each check in that same
+process. Use it for required caller-binding checks, not a separate binding module.
+It establishes current bindings, not later calls or immunity to fixture rebinding;
+use native hooks for post-collection checks without pre-importing pytest tests.
+Precheck failure (check exit 6) is incomplete evidence, never a killed fault.
 
 For native fixture-based assertions, use `probe_files`/`probe_tests` from
 [probe execution](python-audit-advanced.md#stronger-probes), avoiding nested Python
@@ -55,21 +48,11 @@ The single-audit CLI emits JSON with `status` (`observed` or `incomplete`) and `
 
 Correct-code failure or timeout stops as incomplete. CLI exit 0 means observations collected; exit 2 means invalid/incomplete evidence (invalid input may produce only stderr). Selected original bytes and permission bits are checked and copies removed; detected original changes are reported, never silently restored. Output retains a 12,000-character tail per check; invalid UTF-8 is replaced. Timeout defaults to 30 seconds per check; `--timeout` allows at most 300.
 
-Normally completed unittest runs with zero tests or only skipped tests have check
-exit 5 and an explicit diagnostic. An empty correct suite or native correct probe
-therefore stops as incomplete, not a reusable baseline. Actual failures retain
-exit 1. Inline assertion probes are not unittest suites and remain supported;
-pytest retains native exits. Help/early exits or a nonzero mutant exit still do
-not prove execution or a killed fault: inspect the actual tests and assertions.
-
-A test helper overriding `unittest.TestCase.fail` can break assertion handling:
-an incompatible signature gives TypeError; an async override accepting the message
-can return an unawaited coroutine and let a mismatch pass. Inspect such warnings
-and helper definitions. A stronger probe must have a working failure path of its
-own; do not copy a broken assertion helper into it. The audit preserves native
-outputs/exits, not an automatic classification of production versus test defects.
-Do not change warning policy or repair the original suite merely to credit a kill.
-
-Child-exit confirmation has a separate five-second cleanup wait. An unconfirmed exit stops the audit/batch and produces CLI exit 2 with an audit-not-established error, not collected evidence. Existing interruptions/errors propagate. This is not an OS termination or descendant-containment guarantee; do not automatically retry while the previous process may remain.
+Empty/skipped unittest suites give check exit 5, not a valid baseline. Inspect
+actual assertion failures and warnings: broken runner helpers can cause errors or
+false passes. Do not change warning policy to credit a kill. For empty suites,
+precheck errors, assertion plumbing or cleanup failures, read
+[diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence).
+An unconfirmed child exit stops the audit; do not retry while it may remain.
 
 Limits: POSIX, Python 3.9+, 20 MB selected inputs; no symlinks/Git internals/path traversal or namespace-package import checks. No dependency installation. This is **not a sandbox**: use trusted tests, local data and authorized actions only. Files outside the selection are not integrity-checked or restored. Use normal project facilities for other languages or unsupported layouts; don't repeat a valid baseline merely to adopt this helper mid-audit.

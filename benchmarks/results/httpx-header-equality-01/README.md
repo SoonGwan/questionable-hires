@@ -79,3 +79,27 @@ to rerun the same task until its percentage improves.
 Post-run repository verification: **380 tests pass (52.895s)**; catalog/local
 links, featured synchronization, whitespace and exported private-path checks
 pass. These author checks are not additional model performance evidence.
+
+## Later reference-routing candidate
+
+After this measurement, the default Python audit reference was shortened from
+6,997 to 5,445 UTF-8 bytes (**22.18% fewer bytes**, not model tokens). Detailed
+empty-suite/precheck/assertion-helper/cleanup diagnostics now live in the existing
+advanced reference, linked from the normal contract when those conditions arise.
+The default retains all blocking warnings and interpretation requirements:
+nonzero exit is not coverage, precheck/empty suites are incomplete, actual failures
+must be inspected, warning policy is preserved and unconfirmed children must not
+be retried. Copy limits, original integrity, same-process bindings, output limits
+and the executable JSON example remain in the normal reference.
+
+Helper implementation and entrypoint are unchanged. This uses skill-creator's
+progressive-disclosure guidance, not a ban on justified source inspection. No
+model run yet measures adoption or savings for this later candidate, and no
+percentage above is reassigned to it. Total installed documentation is not claimed
+smaller: detail is routed, not discarded.
+
+Candidate verification: packaged executable examples **12 tests pass (2.988s)**;
+full repository **380 tests pass (52.455s)**. Skill validation, local links,
+featured synchronization and whitespace checks pass. An initial test-discovery
+pattern matched zero tests; it was not credited as validation and was replaced
+with the actual test_build.py suite and full discovery.

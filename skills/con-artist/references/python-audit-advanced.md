@@ -69,3 +69,46 @@ that nothing executed before the error. Remaining mutations are unrun. Inspect
 the error and process state before retrying; do not discard completed evidence.
 Errors before any returned audit, original-integrity/cleanup `RuntimeError`s and
 interruptions still propagate without a collected batch report.
+
+## Diagnostics and incomplete evidence
+
+Use this section when a check reports incomplete evidence, unexpected runner
+errors/warnings or cleanup failure. Ordinary successful checks use the common
+CLI contract; helper implementation review remains appropriate for trust review,
+adaptation or unresolved behavior, not a prerequisite to construct a recipe.
+
+### Prechecks
+
+Prechecks share each check's timeout/output limit. Exceptions are labeled
+`Precheck failed; not mutation evidence`. With a precheck enabled, check exit 6
+is reserved for incomplete precheck evidence and stops even a mutant audit.
+Early `SystemExit(0)` also counts as incomplete. Do not replace behavior to make
+a precheck pass. Batch precheck is shared; changing it invalidates reusable
+baselines. It verifies bindings at that point, not later fixture behavior.
+
+### Empty suites and assertion plumbing
+
+Normally completed unittest runs with zero tests or only skipped tests have check
+exit 5 and an explicit diagnostic. An empty correct suite or native correct probe
+stops as incomplete, not a reusable baseline. Actual failures retain exit 1.
+Inline assertion probes are not unittest suites and remain supported; pytest
+retains native exits. Help/early exits or nonzero mutant exits do not prove actual
+test execution or a killed behavioral fault.
+
+A helper overriding `unittest.TestCase.fail` can break assertion handling:
+an incompatible signature gives TypeError; an async override accepting the message
+can return an unawaited coroutine and let a mismatch pass. Inspect warnings and
+helper definitions. A stronger probe needs a working failure path of its own;
+do not copy a broken assertion helper into it. Native outputs/exits do not
+automatically classify production versus test defects. Do not repair the original
+suite or change warning policy merely to credit a kill.
+
+### Cleanup and interruption
+
+Child-exit confirmation has a separate five-second cleanup wait. An unconfirmed
+exit stops the audit/batch with CLI exit 2 and an audit-not-established error,
+not collected evidence. Existing interruptions/errors propagate. This is not an
+OS termination or descendant-containment guarantee; do not automatically retry
+while the previous process may remain. Selected original bytes/modes are checked;
+changes are reported, never silently restored. Files outside selection are not
+integrity-checked or restored.
