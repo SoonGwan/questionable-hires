@@ -19,6 +19,15 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_headers_two_boundary_profile_is_separate(self):
+        skill, tasks = runner.select_profile('headers-audit')
+        self.assertEqual(skill, 'con-artist')
+        self.assertEqual(set(tasks), {'headers-two-boundaries'})
+        self.assertEqual(len(runner.make_schedule(tasks, ['baseline', 'skill'], 1)), 2)
+        self.assertEqual(runner.select_profile('queryparams-audit'), ('con-artist', runner.QUERYPARAM_TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('headers-audit', ['queryparams-repeated-values'])
+
     def test_queryparams_profile_preserves_decoder_and_prior_schedules(self):
         skill, tasks = runner.select_profile('queryparams-audit')
         self.assertEqual(skill, 'con-artist')

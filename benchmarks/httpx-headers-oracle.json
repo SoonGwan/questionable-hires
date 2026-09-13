@@ -1,0 +1,20 @@
+{
+  "files": ["httpx", "tests", "pyproject.toml"],
+  "imports": ["httpx._models"],
+  "runner": "pytest",
+  "tests": ["-q", "tests/models/test_headers.py"],
+  "mutations": [
+    {
+      "target": "httpx/_models.py",
+      "old": "        normalized_key = key.lower().encode(self.encoding)\n",
+      "new": "        normalized_key = key.encode(self.encoding)\n",
+      "probe": "import httpx\nh = httpx.Headers({'single': 'ok'})\nassert h['single'] == 'ok'\nassert h.get_list('single') == ['ok']\nprint('lowercase single-value control passed')\n"
+    },
+    {
+      "target": "httpx/_models.py",
+      "old": "        if not split_commas:\n            return values\n",
+      "new": "        if not split_commas:\n            return values[:1]\n",
+      "probe": "import httpx\nh = httpx.Headers({'single': 'ok'})\nassert h['single'] == 'ok'\nassert h.get_list('single') == ['ok']\nprint('lowercase single-value control passed')\n"
+    }
+  ]
+}

@@ -32,6 +32,9 @@ DECODER_TASKS = {
 QUERYPARAM_TASKS = {
     'queryparams-repeated-values': 'Audit whether tests/models/test_queryparams.py protects QueryParams.get_list returning all values for a repeated query key in order. Demonstrate sensitivity with one narrow isolated behavioral mutation. Include a single-value key as a normal control. If existing coverage detects the fault, identify the detecting assertion without demanding another test; otherwise verify a focused assertion against correct and faulty behavior. Do not change original source or tests.',
 }
+HEADER_TASKS = {
+    'headers-two-boundaries': 'Audit whether tests/models/test_headers.py protects two separate Headers contracts: case-insensitive __getitem__ lookup and get_list preserving repeated values in order with its default split_commas=False behavior. Demonstrate each with one separate narrow isolated behavioral mutation. For each fault, identify the detecting existing assertion if killed, or verify a stronger assertion on correct and faulty code if missed. Verify a lowercase single-value header as a normal control against correct code and each fault. Do not change original source/tests or demand new tests where the selected fault is already detected.',
+}
 
 
 def select_profile(profile, requested=None):
@@ -39,7 +42,8 @@ def select_profile(profile, requested=None):
                 'diagnosis': ('exorcist', DIAGNOSIS_TASKS),
                 'auth-design': ('landlord', AUTH_DESIGN_TASKS),
                 'decoder-audit': ('con-artist', DECODER_TASKS),
-                'queryparams-audit': ('con-artist', QUERYPARAM_TASKS)}
+                'queryparams-audit': ('con-artist', QUERYPARAM_TASKS),
+                'headers-audit': ('con-artist', HEADER_TASKS)}
     if profile not in profiles:
         raise ValueError('Unknown profile')
     skill, available = profiles[profile]
@@ -95,7 +99,7 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit'), default='audit')
+    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit'), default='audit')
     parser.add_argument('--case', action='append')
     parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
     parser.add_argument('--repeats', type=int, default=3)
@@ -131,6 +135,8 @@ def main():
         checks = ['tests/test_decoders.py']
     if args.profile == 'queryparams-audit':
         checks = ['tests/models/test_queryparams.py']
+    if args.profile == 'headers-audit':
+        checks = ['tests/models/test_headers.py']
     subprocess.run([str(python), '-B', '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
                     *checks], cwd=source, check=True, timeout=60)
     output = args.output.resolve()
