@@ -1,6 +1,7 @@
 import importlib.util
 import io
 import json
+import copy
 from pathlib import Path
 import subprocess
 import sys
@@ -20,6 +21,55 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_public_formatter_matches_cli_without_rerunning_or_mutating(self):
+        recipe = {'phases': [phase('values')], 'checks': {
+            'mixed': "SELECT 7, 1.25, NULL, '한글', x'00ff', x''",
+            'missing': 'SELECT * FROM absent'}}
+        result = helper.matrix(recipe, SCRIPT.parent)
+        before = copy.deepcopy(result)
+        with self.assertRaises(TypeError):
+            json.dumps(result)
+        with patch.object(helper.sqlite3, 'connect') as connect:
+            formatted = helper.format_result(result)
+        connect.assert_not_called()
+        self.assertEqual(result, before)
+        self.assertEqual(result['phases'][0]['checks']['mixed']['rows'],
+                         [(7, 1.25, None, '한글', b'\x00\xff', b'')])
+        decoded = json.loads(formatted)
+        self.assertEqual(decoded['phases'][0]['checks']['mixed']['rows'],
+                         [[7, 1.25, None, '한글', {'blob_hex': '00ff'}, {'blob_hex': ''}]])
+        process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--spec', '-'],
+                                 input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        self.assertEqual(process.stdout, formatted + '\n')
+        self.assertFalse(decoded['phases'][0]['checks']['missing']['ok'])
+        self.assertNotIn('rows', decoded['phases'][0]['checks']['missing'])
+
+    def test_public_formatter_preserves_incomplete_execution_and_rejects_unknown_values(self):
+        result = helper.matrix({'phases': [phase('partial', 'CREATE TABLE t(x); INVALID;'),
+                                           phase('unreachable')],
+                                'checks': {'read': 'SELECT * FROM t'}}, SCRIPT.parent)
+        decoded = json.loads(helper.format_result(result))
+        self.assertFalse(decoded['complete'])
+        self.assertEqual(len(decoded['phases']), 1)
+        self.assertIn('migration_error', decoded['phases'][0])
+        self.assertEqual(decoded['phases'][0]['checks'], {})
+        with self.assertRaisesRegex(TypeError, 'Unsupported result value: object'):
+            helper.format_result({'unsupported': object()})
+
+    def test_documented_api_example_executes_with_blob_rows(self):
+        reference = (SCRIPT.parents[1] / 'references/sqlite-matrix.md').read_text()
+        example = reference.split('```python\n', 1)[1].split('\n```', 1)[0]
+        example = example.replace('<skill-dir>', str(SCRIPT.parents[1]))
+        output = io.StringIO()
+        from contextlib import redirect_stdout
+        namespace = {'recipe': {'phases': [phase('example')], 'checks': {'blob': "SELECT x'ff'"}},
+                     'project_root': SCRIPT.parent}
+        with redirect_stdout(output):
+            exec(compile(example, '<documented-friday-api>', 'exec'), namespace)
+        self.assertEqual(json.loads(output.getvalue())['phases'][0]['checks']['blob']['rows'],
+                         [[{'blob_hex': 'ff'}]])
+
     def test_combined_budget_stops_before_opening_overflow_file(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

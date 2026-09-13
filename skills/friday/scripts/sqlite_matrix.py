@@ -125,6 +125,18 @@ def matrix(spec, root, timeout=5):
     return output
 
 
+def format_result(result):
+    """Serialize collected observations exactly as the CLI, including BLOBs.
+
+    Does not run SQL, change result, or establish compatibility.
+    """
+    def encode(value):
+        if isinstance(value, bytes):
+            return {"blob_hex": value.hex()}
+        raise TypeError("Unsupported result value: " + type(value).__name__)
+    return json.dumps(result, ensure_ascii=True, default=encode)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--spec", required=True, help="JSON recipe path, or - for stdin")
@@ -140,7 +152,7 @@ def main():
         if len(raw.encode("utf-8")) > 2_000_000:
             raise ValueError("recipe exceeds 2 MB")
         result = matrix(json.loads(raw), args.source, args.timeout)
-        print(json.dumps(result, ensure_ascii=True, default=lambda v: {"blob_hex": v.hex()}))
+        print(format_result(result))
         return 0 if result["complete"] else 1
     except (ValueError, OSError, TypeError) as error:
         print(json.dumps({"complete": False, "error": str(error)}))

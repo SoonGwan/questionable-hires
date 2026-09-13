@@ -4,7 +4,22 @@ Use this optional Python 3.9+ helper when the actual migration is SQLite and sev
 
 Run `python3 <skill-dir>/scripts/sqlite_matrix.py --source <project> --spec <recipe.json>` (or `--spec -` for stdin). Read this interface instead of the implementation unless inspection or adaptation is needed.
 
-If an existing Python probe already extracts project queries, load the public API with `matrix = runpy.run_path('<skill-dir>/scripts/sqlite_matrix.py')['matrix']`, then call `matrix(recipe, project_root, timeout=5)`. It returns the same result dictionary; check `complete` before interpreting it. This avoids writing an intermediate recipe file or duplicating the matrix loop.
+If an existing Python probe already extracts project queries, use the public API
+without an intermediate recipe file or another matrix loop:
+
+```python
+import runpy
+helper = runpy.run_path('<skill-dir>/scripts/sqlite_matrix.py')
+matrix, format_result = helper['matrix'], helper['format_result']
+result = matrix(recipe, project_root, timeout=5)
+print(format_result(result))
+```
+
+Check `result['complete']` before interpreting compatibility. `matrix` returns
+native SQLite values (row tuples, BLOB `bytes`); `format_result` returns CLI-format
+JSON text (row arrays, BLOB `{"blob_hex": "..."}`) without rerunning SQL or changing
+the result. Plain `json.dumps(result)` fails on BLOBs. Invalid API inputs raise
+exceptions; the CLI instead reports them as exit 2.
 
 The recipe has exactly `phases` and `checks`. Each phase has a `name`, a list of relative SQL `files` (run in order), then inline `sql`. Checks map labels to single read-only SQL statements; they run after every phase against the same in-memory database. Example:
 
@@ -24,7 +39,19 @@ The recipe has exactly `phases` and `checks`. Each phase has a `name`, a list of
 
 Select actual consumer queries and representative writes from the project; this example is not a substitute for discovering their contracts. Choose only reachable phases, including new-version writes before rollback when relevant. Writer compatibility, expected values and which readers coexist remain review decisions: successful SELECT execution alone is not correctness. Do not run mutating checks; represent relevant writes as explicit phases.
 
-Output includes per-query success/error and up to 20 rows (`truncated` marks omitted rows); blobs use `blob_hex`. Exit 0 means the matrix finished, **not** that the rollout is safe; expected incompatible readers still appear as failed checks. Exit 1 means incomplete execution (migration error or time budget); exit 2 means invalid inputs. Failed migrations stop the sequence without pretending a partially applied phase succeeded. Exhausting the shared SQL budget stops further checks; absent check labels are unrun, not passed.
+Result fields are `engine: "sqlite-memory"`, `complete`, and ordered `phases`.
+Each phase has `name` and `checks`, keyed by your query labels. A successful check
+has `ok: true`, `rows` (up to 20) and `truncated`; a failed check has `ok: false`
+and `error`, not rows. Migration failures add phase-level `migration_error`;
+budget exhaustion adds top-level `error`. Incomplete phases/checks may be absent,
+and `truncated: true` cannot prove full row equality.
+
+Exit 0 means the matrix finished, **not** that the rollout is safe; expected
+incompatible readers still appear as failed checks. Exit 1 means incomplete
+execution (migration error or time budget); exit 2 means invalid inputs. Failed
+migrations stop the sequence without pretending a partially applied phase
+succeeded. Exhausting the shared SQL budget stops further checks; absent check
+labels are unrun, not passed.
 
 Only `:memory:` is opened. Attach/detach, PRAGMA, extension loading and writes through checks are denied. SQL files must be regular, nonsymlink project-relative paths. Limits: 20 phases, 20 queries, 1 MB/file, 2 MB combined SQL, default 5-second SQL budget (`--timeout`, max 30). No locks, live data, deployment tooling, network effects or production database semantics are modeled. Unsupported statements are missing evidence, not permission to silently rewrite the migration.
 
