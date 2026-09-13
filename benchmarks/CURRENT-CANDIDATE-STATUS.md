@@ -11,6 +11,13 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+2026-09-14 runtime update `b861c4e`: [Exorcist foreground-exit cleanup](EXORCIST-PIPE-EXIT-01.md)
+starts group cleanup when the direct command exits, rather than waiting for an
+inherited descendant pipe until timeout. Three local repetitions fall from about
+2.003s to 0.107s while retaining direct exit/output; background lifetime is shorter.
+15 runner and four related tests pass. No model adoption, general speed or token
+savings claim; process-group/cleanup limitations remain.
+
 Completed 2026-09-14: [Necromancer multi-decision screen](NECROMANCER-REGIONS-01-REVIEW.md)
 at `667eb10`: two complete cells, **−15.85% tokens / −18.56% time**. Both support
 all three decisions with actual history and a 27-combination consumer matrix.
