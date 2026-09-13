@@ -13,10 +13,12 @@ from pathlib import Path
 import selectors
 import signal
 import subprocess
+import stat
 import sys
 import tempfile
 import time
 
+MAX_FIXED_ENTRIES = 10_000
 
 BOOTSTRAP = '''import importlib, json, pathlib, runpy, sys
 recipe = json.loads(sys.argv[1])
@@ -40,6 +42,46 @@ def checked_path(name):
     if not name or str(path) != name or path.is_absolute() or path == Path('.') or any(p in ('.git', '..') for p in path.parts):
         raise ValueError('Expected a project-relative file')
     return path
+
+
+def fixed_files(root, selections):
+    """Expand explicit working-tree support directories without following links."""
+    files, visited = [], 0
+    for name in selections:
+        relative = checked_path(name)
+        path = root / relative
+        if any(p.is_symlink() for p in [path, *path.parents] if root in p.parents):
+            raise ValueError('Symlink inputs are unsupported')
+        pending, selected = [path], []
+        while pending:
+            item = pending.pop()
+            visited += 1
+            if visited > MAX_FIXED_ENTRIES:
+                raise ValueError('Fixed selections exceed 10000 filesystem entries')
+            relative = checked_path(item.relative_to(root).as_posix())
+            info = item.lstat()
+            if stat.S_ISLNK(info.st_mode):
+                raise ValueError('Symlink inputs are unsupported')
+            if stat.S_ISDIR(info.st_mode):
+                populated = False
+                with os.scandir(item) as entries:
+                    for entry in entries:
+                        populated = True
+                        if visited + len(pending) >= MAX_FIXED_ENTRIES:
+                            raise ValueError('Fixed selections exceed 10000 filesystem entries')
+                        pending.append(Path(entry.path))
+                if not populated:
+                    raise ValueError('Empty fixed directories are unsupported')
+            elif stat.S_ISREG(info.st_mode):
+                selected.append(relative.as_posix())
+            else:
+                raise ValueError('Fixed inputs must be regular files or directories')
+        if not selected:
+            raise ValueError('Fixed directory contains no regular files')
+        files.extend(sorted(selected))
+    if len(files) != len(set(files)):
+        raise ValueError('Fixed selections overlap')
+    return files
 
 
 def git(root, *args, input=None):
@@ -109,6 +151,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
             raise ValueError(key + ' must be a nonempty string list')
     if recipe['runner'] not in ('unittest', 'pytest'):
         raise ValueError('Use unittest or installed pytest')
+    recipe = dict(recipe, fixed=fixed_files(root, recipe['fixed']))
     names = recipe['fixed'] + recipe['vary']
     if len(set(names)) != len(names):
         raise ValueError('fixed and vary must be unique and disjoint')

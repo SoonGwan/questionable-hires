@@ -17,6 +17,90 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_fixed_directory_carries_current_test_support_to_both_revisions(self):
+        tests = self.root / 'checks'
+        (tests / 'samples').mkdir(parents=True)
+        (tests / '__init__.py').write_text('')
+        (tests / 'samples/input.txt').write_text('18')
+        (tests / 'test_fixed.py').write_text(
+            'import unittest\nfrom pathlib import Path\nfrom rule import eligible\n'
+            'class TestFixed(unittest.TestCase):\n'
+            '    def test_rule(self):\n'
+            '        age = int((Path(__file__).parent / "samples/input.txt").read_text())\n'
+            '        self.assertTrue(eligible(age))\n')
+        recipe = dict(self.recipe, fixed=['checks'], tests=['-v', 'checks.test_fixed'])
+        original_recipe = json.dumps(recipe)
+        before = {p.relative_to(tests): p.read_bytes() for p in tests.rglob('*') if p.is_file()}
+        result = helper.compare(self.root, recipe)
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError: False is not true', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertEqual(set(result['fixed_sha256']), {'checks/__init__.py', 'checks/samples/input.txt', 'checks/test_fixed.py'})
+        self.assertEqual(before, {p.relative_to(tests): p.read_bytes() for p in tests.rglob('*') if p.is_file()})
+        self.assertEqual(json.dumps(recipe), original_recipe)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_fixed_directory_overlap_symlink_and_empty_fail_before_execution(self):
+        directory = self.root / 'support'
+        directory.mkdir()
+        (directory / 'data.txt').write_text('value')
+        for selections in (['support', 'support/data.txt'], ['support', 'support']):
+            with patch.object(helper, 'run_check') as run, self.assertRaises(ValueError):
+                helper.compare(self.root, dict(self.recipe, fixed=selections))
+            run.assert_not_called()
+        (directory / 'alias').symlink_to(self.root / 'rule.py')
+        with patch.object(helper, 'run_check') as run, self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, fixed=['support']))
+        run.assert_not_called()
+        (self.root / 'empty').mkdir()
+        with self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, fixed=['empty']))
+        (self.root / 'nested').mkdir()
+        (self.root / 'nested/data').write_text('data')
+        (self.root / 'nested/empty').mkdir()
+        with patch.object(helper, 'run_check') as run, self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, fixed=['nested']))
+        run.assert_not_called()
+
+    def test_fixed_directory_cannot_overlap_historical_implementation(self):
+        with patch.object(helper, 'run_check') as run, self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, fixed=['rule.py']))
+        run.assert_not_called()
+        (self.root / 'support').mkdir()
+        (self.root / 'support/rule.py').write_text('')
+        with patch.object(helper, 'run_check') as run, self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, fixed=['support'], vary=['support/rule.py']))
+        run.assert_not_called()
+
+    def test_directory_entry_budget_and_git_internals_fail_before_read_or_run(self):
+        (self.root / 'support').mkdir()
+        (self.root / 'support/a').write_text('a')
+        (self.root / 'support/b').write_text('b')
+        with patch.object(helper, 'MAX_FIXED_ENTRIES', 2), \
+                patch.object(helper, 'run_check') as run, \
+                patch.object(Path, 'read_bytes') as read, self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, fixed=['support']))
+        read.assert_not_called()
+        run.assert_not_called()
+        (self.root / 'support/.git').mkdir()
+        with patch.object(helper, 'run_check') as run, self.assertRaises(ValueError):
+            helper.compare(self.root, dict(self.recipe, fixed=['support']))
+        run.assert_not_called()
+
+    def test_fixed_directory_cli_reports_each_frozen_file_hash(self):
+        (self.root / 'checks').mkdir()
+        (self.root / 'checks/__init__.py').write_text('')
+        (self.root / 'checks/test_rule.py').write_text(self.tests)
+        recipe = dict(self.recipe, fixed=['checks'], tests=['-v', 'checks.test_rule'])
+        process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--source', str(self.root), '--spec', '-'],
+                                 input=json.dumps(recipe), capture_output=True, text=True, timeout=20)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        result = json.loads(process.stdout)
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError: False is not true', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertEqual(result['fixed_sha256']['checks/test_rule.py'], hashlib.sha256(self.tests.encode()).hexdigest())
+
     def test_cleanup_failure_stops_comparison_and_cli_reports_no_evidence(self):
         failure = RuntimeError('Child exit unconfirmed after 5-second cleanup wait; comparison not established')
         before = {name: (self.root/name).read_bytes() for name in self.recipe['fixed'] + self.recipe['vary']}

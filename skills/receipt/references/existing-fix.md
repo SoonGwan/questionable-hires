@@ -19,9 +19,20 @@ python3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'
 JSON
 ```
 
-`fixed`: current tests, inputs, configuration and required local dependencies.
-`vary`: implementation files from each commit. Both lists are nonempty, disjoint,
-canonical project-relative regular files; no symlinks. Listed imports must resolve
+`fixed`: current tests, inputs, configuration and required local dependencies;
+explicit directories are expanded to their regular files. For example,
+`"fixed":["tests","samples","pyproject.toml"]` preserves nested fixtures and data
+without listing every file. Select only permitted, needed directories: hidden
+files are included, and the repository root, Git internals, symlinks and empty
+directories are rejected. Expansion is bounded to 10,000 filesystem entries.
+Overlapping selections (including a directory plus its child file) fail rather
+than silently deduplicating. Every expanded file is frozen once and its hash
+appears in `fixed_sha256`; the same bytes are used for both implementations.
+
+`vary`: explicit implementation **files** from each commit, not directories.
+Both lists are nonempty, canonical project-relative paths and must remain
+disjoint after expansion; fixed directories cannot contain varying files.
+Listed imports must resolve
 inside each copy. Launch with the project interpreter; checks reuse it by default
 (`--python` overrides this when necessary). Use unittest or installed pytest;
 other runtimes/custom runners require native isolated comparison instead.
