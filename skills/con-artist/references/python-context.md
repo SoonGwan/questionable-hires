@@ -1,7 +1,10 @@
 # Gather an audit slice without executing project code
 
 When Python test/implementation paths are known but their context has not been
-read, collect it once with the installed skill's read-only CLI:
+read, collect the relevant slice once with the installed skill's read-only CLI.
+A suite selected for execution is not automatically a whole-file reading list.
+For known assertions, select their definitions; use a targeted project search to
+locate unknown ones. For a file whose whole assertion context is needed:
 
 ```sh
 python -B /path/to/con-artist/scripts/context.py --root /permitted/project --full \

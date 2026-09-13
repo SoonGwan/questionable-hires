@@ -14,9 +14,10 @@ Start from the requested assertions and follow their actual calls through implem
 For known Python test/implementation paths whose context is still unread, use
 [the read-only context collector](references/python-context.md) to gather selected
 source, ancestor instructions/configuration and conftest indexes in one call.
-Use `file:Class.method` or `file:line` for known targets. For test files whose
-assertions need reading, add `--full` alongside explicit implementation selectors;
-this returns test bodies without expanding selected implementation definitions.
+Use `file:Class.method` or `file:line` for known targets. Running a broad suite
+does not require reading every unrelated test body: select the relevant tests,
+using targeted search to locate unknown assertions. Use `--full` when whole-file
+assertion context is needed, alongside explicit implementation selectors.
 Use indexes for locating unknown targets, not as an extra pass before known reads.
 Skip it when equivalent context is already available; its indexes are navigation,
 not proof of resolved dependencies or executed behavior.
