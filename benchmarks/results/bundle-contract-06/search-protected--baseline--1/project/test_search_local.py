@@ -1,0 +1,100 @@
+"""Deterministic local QA: python3 -B -m unittest -v test_search_local.
+
+Uses the actual Search and only the standard library. Events prove fetch entry;
+controlled futures determine completion order. Timeouts bound behavior-dependent
+waits; there are no timing sleeps or production changes.
+"""
+
+import asyncio
+import unittest
+
+from search import Search
+
+
+TIMEOUT = 2.0
+
+
+class ControlledFetch:
+    def __init__(self, *queries):
+        loop = asyncio.get_running_loop()
+        self.futures = {query: loop.create_future() for query in queries}
+        self.entered = {query: asyncio.Event() for query in queries}
+
+    async def __call__(self, query):
+        self.entered[query].set()
+        return await self.futures[query]
+
+
+class SearchLocalQA(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.search = Search()
+        self.tasks = []
+
+    async def asyncTearDown(self):
+        # Clean up only tasks created by this test, including on assertion failure.
+        for task in self.tasks:
+            if not task.done():
+                task.cancel()
+        if self.tasks:
+            await asyncio.wait_for(
+                asyncio.gather(*self.tasks, return_exceptions=True), TIMEOUT
+            )
+
+    async def start(self, fetch, query):
+        task = asyncio.create_task(self.search.run(query, fetch), name=query)
+        self.tasks.append(task)
+        await asyncio.wait_for(fetch.entered[query].wait(), TIMEOUT)
+        self.assertFalse(fetch.futures[query].done())
+        self.assertFalse(task.done())
+        return task
+
+    async def complete(self, fetch, query, value, task):
+        fetch.futures[query].set_result(value)
+        await asyncio.wait_for(asyncio.shield(task), TIMEOUT)
+
+    async def seed_display(self):
+        fetch = ControlledFetch("seed")
+        task = await self.start(fetch, "seed")
+        await self.complete(fetch, "seed", "existing result", task)
+        self.assertEqual(self.search.result, "existing result")
+
+    async def test_newer_completes_first_older_cannot_overwrite(self):
+        await self.seed_display()
+        fetch = ControlledFetch("older", "newer")
+        older = await self.start(fetch, "older")
+        newer = await self.start(fetch, "newer")
+        self.assertEqual(self.search.result, "existing result")
+
+        await self.complete(fetch, "newer", "newer result", newer)
+        self.assertFalse(older.done())
+        self.assertEqual(self.search.result, "newer result")
+
+        await self.complete(fetch, "older", "older result", older)
+        self.assertEqual(self.search.result, "newer result")
+
+    async def test_older_completes_first_while_newer_stays_pending(self):
+        await self.seed_display()
+        fetch = ControlledFetch("older", "newer")
+        older = await self.start(fetch, "older")
+        newer = await self.start(fetch, "newer")
+
+        await self.complete(fetch, "older", "older result", older)
+        self.assertFalse(fetch.futures["newer"].done())
+        self.assertFalse(newer.done())
+        self.assertEqual(self.search.result, "existing result")
+
+        await self.complete(fetch, "newer", "newer result", newer)
+        self.assertEqual(self.search.result, "newer result")
+
+    async def test_existing_display_retained_while_loading(self):
+        await self.seed_display()
+        fetch = ControlledFetch("replacement")
+        replacement = await self.start(fetch, "replacement")
+        self.assertEqual(self.search.result, "existing result")
+
+        await self.complete(fetch, "replacement", "replacement result", replacement)
+        self.assertEqual(self.search.result, "replacement result")
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

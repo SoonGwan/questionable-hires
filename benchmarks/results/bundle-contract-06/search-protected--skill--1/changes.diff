@@ -1,0 +1,143 @@
+diff --git a/controlled_fetch.py b/controlled_fetch.py
+new file mode 100644
+index 0000000..abee0c4
+--- /dev/null
++++ b/controlled_fetch.py
+@@ -0,0 +1,45 @@
++"""Copy into permitted project test support only when no equivalent exists.
++
++Each received Request identifies one call, even when keys repeat. The test owns
++component tasks: cancel and await them in cleanup. This controls fetch responses,
++not component state or browser rendering. No real network or sleeps.
++"""
++import asyncio
++from dataclasses import dataclass
++from typing import Any
++
++
++@dataclass(frozen=True)
++class Request:
++    key: Any
++    response: asyncio.Future
++
++    def complete(self, value):
++        self.response.set_result(value)
++
++    def fail_request(self, error):
++        self.response.set_exception(error)
++
++
++class ControlledFetch:
++    def __init__(self):
++        self.calls = asyncio.Queue()
++
++    async def __call__(self, key):
++        request = Request(key, asyncio.get_running_loop().create_future())
++        self.calls.put_nowait(request)
++        return await request.response
++
++    async def started(self, expected, timeout=1):
++        """Wait for actual fetch entry, assert its key, return a unique handle.
++
++        A timed-out queue wait does not cancel component tasks. The caller owns
++        those tasks and must clean them even when this assertion fails.
++        """
++        if not 0 < timeout <= 30:
++            raise ValueError('timeout must be in (0, 30]')
++        request = await asyncio.wait_for(self.calls.get(), timeout)
++        if request.key != expected:
++            raise AssertionError(
++                f'request key: expected {expected!r}, observed {request.key!r}')
++        return request
+diff --git a/test_search.py b/test_search.py
+new file mode 100644
+index 0000000..5471f85
+--- /dev/null
++++ b/test_search.py
+@@ -0,0 +1,86 @@
++"""Deterministic component QA; no network, sleeps, or production edits."""
++import asyncio
++import unittest
++
++from controlled_fetch import ControlledFetch
++from search import Search
++
++
++class SearchTests(unittest.IsolatedAsyncioTestCase):
++    async def asyncSetUp(self):
++        self.search = Search()
++        self.fetch = ControlledFetch()
++        self.tasks = []
++        self.addAsyncCleanup(self.cleanup_requests)
++
++    async def cleanup_requests(self):
++        # Register ownership before checking entry so failed checks also drain.
++        for task in self.tasks:
++            if not task.done():
++                task.cancel()
++        if self.tasks:
++            done, pending = await asyncio.wait(self.tasks, timeout=1)
++            for task in done:
++                if not task.cancelled():
++                    task.exception()
++            self.assertFalse(pending, "owned Search tasks did not stop")
++
++    async def start(self, query):
++        task = asyncio.create_task(self.search.run(query, self.fetch))
++        self.tasks.append(task)
++        request = await self.fetch.started(query, timeout=1)
++        self.assertFalse(task.done())
++        return task, request
++
++    async def finish(self, task, request, payload):
++        request.complete(payload)
++        done, _ = await asyncio.wait([task], timeout=1)
++        self.assertIn(task, done, "Search did not process controlled completion")
++        task.result()
++
++    async def seed(self):
++        task, request = await self.start("existing")
++        await self.finish(task, request, "existing result")
++        self.assertEqual(self.search.result, "existing result")
++
++    async def test_single_request_retains_display_until_completion(self):
++        task, request = await self.start("initial")
++        self.assertIsNone(self.search.result)
++        await self.finish(task, request, "existing result")
++        self.assertEqual(self.search.result, "existing result")
++        task, request = await self.start("replacement")
++        self.assertEqual(self.search.result, "existing result")
++        await self.finish(task, request, "replacement result")
++        self.assertEqual(self.search.result, "replacement result")
++
++    async def test_older_completes_while_newer_pending_retains_display(self):
++        await self.seed()
++        older, old_request = await self.start("older")
++        self.assertEqual(self.search.result, "existing result")
++        newer, new_request = await self.start("newer")
++        self.assertEqual(self.search.result, "existing result")
++
++        await self.finish(older, old_request, "older result")
++        self.assertFalse(newer.done())
++        self.assertFalse(new_request.response.done())
++        self.assertEqual(self.search.result, "existing result")
++
++        await self.finish(newer, new_request, "newer result")
++        self.assertEqual(self.search.result, "newer result")
++
++    async def test_newer_completes_first_late_older_cannot_overwrite(self):
++        await self.seed()
++        older, old_request = await self.start("older")
++        self.assertEqual(self.search.result, "existing result")
++        newer, new_request = await self.start("newer")
++        self.assertEqual(self.search.result, "existing result")
++
++        await self.finish(newer, new_request, "newer result")
++        self.assertFalse(older.done())
++        self.assertEqual(self.search.result, "newer result")
++        await self.finish(older, old_request, "older result")
++        self.assertEqual(self.search.result, "newer result")
++
++
++if __name__ == "__main__":
++    unittest.main()

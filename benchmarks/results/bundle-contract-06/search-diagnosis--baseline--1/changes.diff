@@ -1,0 +1,301 @@
+diff --git a/experiments/README.md b/experiments/README.md
+new file mode 100644
+index 0000000..8313e59
+--- /dev/null
++++ b/experiments/README.md
+@@ -0,0 +1,47 @@
++# Search completion-order experiment
++
++The supplied `Search.run` unconditionally assigns each completed fetch to
++`self.result` (`search.py:5`). An older in-flight search can therefore overwrite
++a newer result. The local experiment reproduces this with no cache involved.
++
++Run from the project root, using only Python's standard library:
++
++```sh
++python3 -B experiments/search_order.py
++```
++
++The successful run's recorded output is in `evidence.json`. To refresh it:
++
++```sh
++python3 -B experiments/search_order.py > experiments/evidence.json
++```
++
++The harness imports the actual `Search` and `transport.fetch`. Only the injected
++request function is a stub: it records URL, query parameters, and headers, then
++waits on a separate controlled response gate for each request. It performs no
++network calls and implements no caching. Both scenarios submit `older` then
++`newer` and wait until both requests are in flight before releasing responses.
++
++| Completion order | Final visible query | Outcome |
++| --- | --- | --- |
++| older, newer | newer | Current result |
++| newer, older | older | Stale overwrite reproduced |
++
++Every recorded request targets `/search`, carries the correct query parameter,
++and has `Cache-Control: no-cache`. Assertions verify these arguments, intermediate
++visible results, and final outcomes. Each behavior-dependent wait has a two-second
++deadline. A `finally` block cancels pending owned tasks and response gates, retrieves
++task exceptions, and bounds task cleanup. No timing sleeps determine ordering.
++
++This demonstrates that completion ordering alone is sufficient to cause the bug
++in this project. It does not prove that the observed production incidents followed
++this sequence, nor does it rule out additional cache issues. The recorded header
++shows what this transport passes to its request dependency; there is no real HTTP
++client, server, intermediary, or production trace here to establish actual cache
++behavior. Production diagnosis would require correlating query submission,
++response completion, and result assignment for affected searches.
++
++No production fix was made. The initial working tree was clean; after the run,
++only `experiments/` was untracked and the production-file diff was empty. The
++harness also records SHA-256 hashes and asserts that `search.py` and `transport.py`
++remain unchanged during execution.
+diff --git a/experiments/evidence.json b/experiments/evidence.json
+new file mode 100644
+index 0000000..b7e96a9
+--- /dev/null
++++ b/experiments/evidence.json
+@@ -0,0 +1,119 @@
++{
++  "boundary": "Actual Search and transport; controlled request stub with no cache or network",
++  "wait_timeout_seconds": 2.0,
++  "source_sha256": {
++    "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
++    "transport.py": "937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2"
++  },
++  "production_sources_unchanged": true,
++  "scenarios": [
++    {
++      "completion_order": [
++        "older",
++        "newer"
++      ],
++      "requests": [
++        {
++          "url": "/search",
++          "params": {
++            "q": "older"
++          },
++          "headers": {
++            "Cache-Control": "no-cache"
++          }
++        },
++        {
++          "url": "/search",
++          "params": {
++            "q": "newer"
++          },
++          "headers": {
++            "Cache-Control": "no-cache"
++          }
++        }
++      ],
++      "snapshots": [
++        {
++          "completed_query": "older",
++          "visible_result": {
++            "query": "older",
++            "results": [
++              "result for older"
++            ]
++          }
++        },
++        {
++          "completed_query": "newer",
++          "visible_result": {
++            "query": "newer",
++            "results": [
++              "result for newer"
++            ]
++          }
++        }
++      ],
++      "latest_submitted_query": "newer",
++      "final_result": {
++        "query": "newer",
++        "results": [
++          "result for newer"
++        ]
++      },
++      "stale_final_result": false
++    },
++    {
++      "completion_order": [
++        "newer",
++        "older"
++      ],
++      "requests": [
++        {
++          "url": "/search",
++          "params": {
++            "q": "older"
++          },
++          "headers": {
++            "Cache-Control": "no-cache"
++          }
++        },
++        {
++          "url": "/search",
++          "params": {
++            "q": "newer"
++          },
++          "headers": {
++            "Cache-Control": "no-cache"
++          }
++        }
++      ],
++      "snapshots": [
++        {
++          "completed_query": "newer",
++          "visible_result": {
++            "query": "newer",
++            "results": [
++              "result for newer"
++            ]
++          }
++        },
++        {
++          "completed_query": "older",
++          "visible_result": {
++            "query": "older",
++            "results": [
++              "result for older"
++            ]
++          }
++        }
++      ],
++      "latest_submitted_query": "newer",
++      "final_result": {
++        "query": "older",
++        "results": [
++          "result for older"
++        ]
++      },
++      "stale_final_result": true
++    }
++  ]
++}
+diff --git a/experiments/search_order.py b/experiments/search_order.py
+new file mode 100644
+index 0000000..a808369
+--- /dev/null
++++ b/experiments/search_order.py
+@@ -0,0 +1,117 @@
++"""Run with python3 -B experiments/search_order.py; standard library only."""
++
++import asyncio
++import hashlib
++import json
++from pathlib import Path
++import sys
++
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++
++from search import Search
++from transport import fetch
++
++
++TIMEOUT = 2.0
++
++
++def source_hashes():
++    return {
++        name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
++        for name in ("search.py", "transport.py")
++    }
++
++
++async def scenario(completion_order):
++    search = Search()
++    started = asyncio.Queue()
++    gates = {}
++    requests = []
++    tasks = {}
++    snapshots = []
++
++    async def request(url, *, params, headers):
++        # No cache, HTTP client, server, or external I/O: each request gets its
++        # own response gate. The real transport supplies the recorded arguments.
++        query = params["q"]
++        gates[query] = asyncio.get_running_loop().create_future()
++        requests.append({"url": url, "params": dict(params), "headers": dict(headers)})
++        started.put_nowait(query)
++        return await gates[query]
++
++    async def actual_fetch(query):
++        return await fetch(query, request)
++
++    try:
++        for query in ("older", "newer"):
++            tasks[query] = asyncio.create_task(search.run(query, actual_fetch))
++            observed = await asyncio.wait_for(started.get(), TIMEOUT)
++            assert observed == query, (observed, query)
++
++        assert all(not task.done() for task in tasks.values())
++        assert search.result is None
++        assert requests == [
++            {
++                "url": "/search",
++                "params": {"q": query},
++                "headers": {"Cache-Control": "no-cache"},
++            }
++            for query in ("older", "newer")
++        ], requests
++
++        for query in completion_order:
++            response = {"query": query, "results": [f"result for {query}"]}
++            gates[query].set_result(response)
++            await asyncio.wait_for(asyncio.shield(tasks[query]), TIMEOUT)
++            assert search.result == response, search.result
++            snapshots.append({"completed_query": query, "visible_result": search.result})
++
++        stale = search.result["query"] != "newer"
++        assert stale == (completion_order[-1] == "older")
++        return {
++            "completion_order": list(completion_order),
++            "requests": requests,
++            "snapshots": snapshots,
++            "latest_submitted_query": "newer",
++            "final_result": search.result,
++            "stale_final_result": stale,
++        }
++    finally:
++        # Clean up only tasks and response gates created by this scenario,
++        # including on failed assertions or bounded request/completion waits.
++        for task in tasks.values():
++            if not task.done():
++                task.cancel()
++        for gate in gates.values():
++            if not gate.done():
++                gate.cancel()
++        if tasks:
++            done, pending = await asyncio.wait(tasks.values(), timeout=TIMEOUT)
++            for task in done:
++                if not task.cancelled():
++                    task.exception()  # Retrieve exceptions on failure paths.
++            if pending:
++                raise RuntimeError("Owned search tasks did not terminate within cleanup deadline")
++
++
++async def main():
++    before = source_hashes()
++    outcomes = [
++        await scenario(("older", "newer")),
++        await scenario(("newer", "older")),
++    ]
++    after = source_hashes()
++    assert before == after, "Production source changed during experiment"
++    print(json.dumps({
++        "boundary": "Actual Search and transport; controlled request stub with no cache or network",
++        "wait_timeout_seconds": TIMEOUT,
++        "source_sha256": before,
++        "production_sources_unchanged": before == after,
++        "scenarios": outcomes,
++    }, indent=2))
++
++
++if __name__ == "__main__":
++    asyncio.run(main())

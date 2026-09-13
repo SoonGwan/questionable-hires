@@ -1,0 +1,88 @@
+"""Local, dependency-free probe: python3 -B experiments/search_order_probe.py."""
+
+import asyncio
+import json
+import sys
+from functools import partial
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from search import Search
+from transport import fetch
+
+
+TIMEOUT = 2.0
+QUERIES = ("older", "newer")
+
+
+async def bounded(awaitable):
+    return await asyncio.wait_for(awaitable, timeout=TIMEOUT)
+
+
+async def scenario(order):
+    search = Search()
+    arrivals = asyncio.Queue()
+    gates = {query: asyncio.Event() for query in QUERIES}
+    tasks = {}
+    trace = []
+
+    async def request(url, *, params, headers):
+        # This is the only substituted boundary. There is no cache or network.
+        query = params["q"]
+        trace.append({"event": "request", "url": url,
+                      "params": dict(params), "headers": dict(headers)})
+        arrivals.put_nowait(query)
+        await bounded(gates[query].wait())
+        response = {"query": query, "items": [query + " result"]}
+        trace.append({"event": "response", "body": response})
+        return response
+
+    try:
+        # Confirm actual dispatch of each query before submitting the next.
+        for query in QUERIES:
+            tasks[query] = asyncio.create_task(
+                search.run(query, partial(fetch, request=request)),
+                name="search-probe-" + query,
+            )
+            assert await bounded(arrivals.get()) == query
+
+        requests = [event for event in trace if event["event"] == "request"]
+        assert requests == [
+            {"event": "request", "url": "/search", "params": {"q": query},
+             "headers": {"Cache-Control": "no-cache"}}
+            for query in QUERIES
+        ], requests
+        assert search.result is None
+
+        for query in order:
+            gates[query].set()
+            await bounded(tasks[query])
+            trace.append({"event": "search_result", "completed_query": query,
+                          "result": search.result})
+            assert search.result["query"] == query, trace
+
+        expected = order[-1]
+        assert search.result["query"] == expected
+        return {"submitted": list(QUERIES), "completed": list(order),
+                "latest_query": QUERIES[-1], "final_result": search.result,
+                "stale": search.result["query"] != QUERIES[-1], "trace": trace}
+    finally:
+        # All owned coroutines use cancellation-cooperative asyncio primitives.
+        # Cancel and reap every task even after an assertion or timeout.
+        for task in tasks.values():
+            if not task.done():
+                task.cancel()
+        await bounded(asyncio.gather(*tasks.values(), return_exceptions=True))
+
+
+async def main():
+    normal = await scenario(QUERIES)
+    reversed_order = await scenario(tuple(reversed(QUERIES)))
+    assert normal["stale"] is False
+    assert reversed_order["stale"] is True
+    print(json.dumps({"normal": normal, "reversed": reversed_order}, indent=2))
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

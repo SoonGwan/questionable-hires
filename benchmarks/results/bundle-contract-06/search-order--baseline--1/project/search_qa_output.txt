@@ -1,0 +1,29 @@
+test_normal_overlapping_completion_keeps_latest (test_search_overlap.SearchOverlapTests) ... ok
+test_reversed_completion_does_not_overwrite_latest (test_search_overlap.SearchOverlapTests) ... FAIL
+
+======================================================================
+FAIL: test_reversed_completion_does_not_overwrite_latest (test_search_overlap.SearchOverlapTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 65, in _callTestMethod
+    self._callMaybeAsync(method)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 88, in _callMaybeAsync
+    return self._asyncioTestLoop.run_until_complete(fut)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 102, in _asyncioLoopRunner
+    ret = await awaitable
+  File "<WORKSPACE>/test_search_overlap.py", line 88, in test_reversed_completion_does_not_overwrite_latest
+    await self.check_completion_order(("cat", "ca"))
+  File "<WORKSPACE>/test_search_overlap.py", line 65, in check_completion_order
+    self.assertEqual(
+AssertionError: 'results for ca' != 'results for cat'
+- results for ca
++ results for cat
+?               +
+ : latest query must remain displayed after both requests finish; completion order: cat -> ca
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.012s
+
+FAILED (failures=1)

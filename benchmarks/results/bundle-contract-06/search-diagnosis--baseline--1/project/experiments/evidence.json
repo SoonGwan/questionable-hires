@@ -1,0 +1,119 @@
+{
+  "boundary": "Actual Search and transport; controlled request stub with no cache or network",
+  "wait_timeout_seconds": 2.0,
+  "source_sha256": {
+    "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
+    "transport.py": "937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2"
+  },
+  "production_sources_unchanged": true,
+  "scenarios": [
+    {
+      "completion_order": [
+        "older",
+        "newer"
+      ],
+      "requests": [
+        {
+          "url": "/search",
+          "params": {
+            "q": "older"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        },
+        {
+          "url": "/search",
+          "params": {
+            "q": "newer"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        }
+      ],
+      "snapshots": [
+        {
+          "completed_query": "older",
+          "visible_result": {
+            "query": "older",
+            "results": [
+              "result for older"
+            ]
+          }
+        },
+        {
+          "completed_query": "newer",
+          "visible_result": {
+            "query": "newer",
+            "results": [
+              "result for newer"
+            ]
+          }
+        }
+      ],
+      "latest_submitted_query": "newer",
+      "final_result": {
+        "query": "newer",
+        "results": [
+          "result for newer"
+        ]
+      },
+      "stale_final_result": false
+    },
+    {
+      "completion_order": [
+        "newer",
+        "older"
+      ],
+      "requests": [
+        {
+          "url": "/search",
+          "params": {
+            "q": "older"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        },
+        {
+          "url": "/search",
+          "params": {
+            "q": "newer"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        }
+      ],
+      "snapshots": [
+        {
+          "completed_query": "newer",
+          "visible_result": {
+            "query": "newer",
+            "results": [
+              "result for newer"
+            ]
+          }
+        },
+        {
+          "completed_query": "older",
+          "visible_result": {
+            "query": "older",
+            "results": [
+              "result for older"
+            ]
+          }
+        }
+      ],
+      "latest_submitted_query": "newer",
+      "final_result": {
+        "query": "older",
+        "results": [
+          "result for older"
+        ]
+      },
+      "stale_final_result": true
+    }
+  ]
+}
