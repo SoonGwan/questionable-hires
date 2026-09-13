@@ -1,0 +1,41 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "url-repr-password",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 75.869,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 120737,
+    "cached_input_tokens": 107136,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1952,
+    "reasoning_output_tokens": 119
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Audit whether the existing URL/auth tests protect URL.__repr__ masking a nonempty password while preserving the username and ordinary URL components. Use the existing tests/models/test_url.py suite plus tests/client/test_auth.py::test_auth_hidden_url for the correct baseline and the same unchanged tests against one narrow isolated masking fault. Use the supplied interpreter with pytest -q -p no:cacheprovider. Identify the detecting assertion if covered; otherwise verify a focused assertion on correct and faulty behavior. Check username-only and no-userinfo URLs as normal controls on correct and faulty code. Use only synthetic example credentials, no network. Inspect copied implementation provenance in each check process. Remove owned disposable copies, preserve all original source/tests/configuration, and report the actual evidence and scoped conclusion. Captured output is sufficient; no retained harness/report or new test is required for an already detected fault. Do not fix production, change warning policy, commit or publish.\n\nUse the preinstalled interpreter <PYTHON> for all Python/pytest commands. Do not install dependencies. Keep disposable mutation copies and diagnostic artifacts inside this project, without modifying its existing files.\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  }
+}
