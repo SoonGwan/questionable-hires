@@ -10,6 +10,15 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Receipt unittest no-execution guard: real historical comparison tests show
+  empty and entirely skipped unittest suites previously returning check exit 0.
+  On normal runner completion they now emit a no-execution explanation and exit
+  5. Real failures keep exit 1, and mixed skipped/executed regression coverage
+  retains failing-before/passing-after outcomes. This does not establish that
+  a particular target assertion ran; runner help/early exits and native pytest
+  behavior are not reclassified. It is an execution-evidence guard, not measured
+  model performance or a change to frozen benchmark scores.
+
 - Receipt bounded working-file reads: after the size check, initial reads now
   request only remaining input budget plus one overflow byte, rather than
   reading to EOF. A controlled post-stat growth stream reproduces the old

@@ -59,6 +59,14 @@ revisions, leaf hashes and separate outputs/statuses. CLI exit 0 means collected
 observations, **not proof**: inspect the actual assertion failure, after pass,
 provenance, timeout and truncation fields before claiming the fix.
 
+For a normally completed unittest run, zero tests or an entirely skipped suite
+produces check exit 5 with an explicit no-execution diagnostic. Real failures
+retain exit 1; a passing suite with some skipped tests still exits 0. This guard
+does not prove that the requested regression ran: inspect test identities and
+outcomes, and never use runner help/version output as execution evidence.
+Pytest retains its native exit behavior. The comparison CLI still distinguishes
+collected observations from proof, so inspect each check rather than its outer exit.
+
 Child-exit confirmation has a separate five-second cleanup wait. Unconfirmed exit
 means comparison-not-established (CLI exit 2) and no later comparison; existing
 interruptions/errors propagate. Termination/descendant containment is not

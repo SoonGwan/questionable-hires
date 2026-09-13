@@ -31,6 +31,15 @@ for name in recipe['imports']:
         raise RuntimeError('Import escaped comparison copy: ' + name)
     print('Verified copied import:', name, flush=True)
 sys.argv = [recipe['runner']] + recipe['tests']
+if recipe['runner'] == 'unittest':
+    import unittest
+    result = unittest.main(module=None, exit=False).result
+    if not result.wasSuccessful():
+        raise SystemExit(1)
+    if result.testsRun == len(result.skipped):
+        print('No non-skipped unittest tests ran; this is not passing regression evidence.', flush=True)
+        raise SystemExit(5)
+    raise SystemExit(0)
 runpy.run_module(recipe['runner'], run_name='__main__', alter_sys=True)
 '''
 

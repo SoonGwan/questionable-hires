@@ -17,6 +17,30 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_unittest_mixed_skip_and_real_regression_retains_before_after_outcomes(self):
+        with (self.root / 'test_rule.py').open('a') as stream:
+            stream.write('\n@unittest.skip("unrelated optional check")\n'
+                         'class Optional(unittest.TestCase):\n'
+                         '    def test_optional(self):\n        self.fail("must not run")\n')
+        result = helper.compare(self.root, self.recipe)
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertIn('Ran 2 tests', result['checks']['after']['output'])
+
+    def test_unittest_empty_or_all_skipped_is_not_a_passing_check(self):
+        sources = ('import unittest\n',
+                   'import unittest\nclass Check(unittest.TestCase):\n'
+                   '    @unittest.skip("not exercised")\n'
+                   '    def test_rule(self):\n        self.fail("must not run")\n')
+        for source in sources:
+            with self.subTest(source=source):
+                (self.root / 'test_rule.py').write_text(source)
+                result = helper.compare(self.root, self.recipe)
+                for check in result['checks'].values():
+                    self.assertEqual(check['exit_code'], 5)
+                    self.assertIn('No non-skipped unittest tests ran', check['output'])
+
     def test_final_integrity_read_is_bounded_and_reports_growth_without_restore(self):
         original = self.root / 'rule.py'
         length = original.stat().st_size
