@@ -31,7 +31,7 @@ it has not established a broad 20–30% gain.
 
 ## Current resource revisions and remaining gaps
 
-Checked against Git at `1a7b72a`. Entry/resource revisions are maintenance
+Checked against Git at `1a7b72a`, with the Hostage candidate linked below. Entry/resource revisions are maintenance
 identities, **not** necessarily the versions measured by linked experiments.
 The eight characters and automatic selection remain intact; helpers are optional.
 
@@ -42,7 +42,7 @@ The eight characters and automatic selection remain intact; helpers are optional
 | Landlord | `26a310d` / no separate resources | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [auth design](HTTPX-AUTH-DESIGN-01.md): useful consumer inspection but adverse comparisons/nonpaired costs; resource-path discovery remains. |
 | Mother-in-law | `b7058c6` / `b7058c6` | [Native integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md): native runner reuse works on authored variants; unequal coverage/fixture defects limit lower recorded costs. |
 | Exorcist | `ca2e179` / `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [provenance](EXORCIST-PROVENANCE-01.md): small favorable signal result has baseline repair/unequal work; normal path remains costlier in tokens. |
-| Hostage Negotiator | `6c5e452` / no separate resources | [Packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md): modest favorable packaging pair has unequal coverage/test repairs; other tasks adverse. |
+| Hostage Negotiator | [Known-path candidate](HOSTAGE-KNOWN-PATHS-01.md), after `6c5e452` / no separate resources | [Packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md): modest favorable packaging pair has unequal coverage/test repairs; other tasks adverse. New direct-read guidance has no model adoption/cost evidence yet. |
 | Con Artist | `36e201c` / `1a7b72a` | [Cookies](results/httpx-cookies-01/README.md), [headers](results/httpx-headers-01/README.md), [qualified context](results/httpx-context-02/README.md): real adoption, mixed costs and unequal work. Latest schema, no-execution and evidence-retention guards are not measured model gains. |
 | Friday | `9cae27c` / `fc2c205` | [Input budget](FRIDAY-INPUT-BUDGET-01.md), [changed paths](CHANGED-PATHS-03.md), [branch transfer](FRIDAY-BRANCH-01.md): helper behavior and narrow favorable results; branch transfer costlier, broader improvement unproven. |
 

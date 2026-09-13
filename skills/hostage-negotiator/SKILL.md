@@ -9,7 +9,7 @@ description: Keep a small requested change focused when optional refactors, arch
 
 ## Establish the terms
 
-Locate applicable instructions, requirements, affected code and existing tests within the allowed project root. Batch independent reads; consume their results before choosing dependent commands, including the documented test invocation. Follow unresolved dependencies, not guessed frameworks or repeated discovery.
+Reuse supplied instructions and known project paths. Locate missing requirements, affected code and tests within the allowed root; once an inventory reveals a needed file, read it directly instead of trying more filename-pattern inventories. Batch known independent reads. Let their contents determine the runner and any unresolved dependency search, not guessed frameworks.
 
 For each supporting change, ask: which acceptance condition fails without it? A small visible change can require state, errors or security work; minimal diff size is not the objective. Separate optional refactors without creating a scope document for an ordinary edit. Ask only for a missing material product decision; adapt when the user changes the request.
 
