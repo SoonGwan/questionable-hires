@@ -57,6 +57,15 @@ def command(args, cwd, **kwargs):
 
 def prepare(case, workspace):
     commits = case.get("history") or [{"message": "Initial application", "files": case["files"]}]
+    working = case.get('working_files', {})
+    if not isinstance(working, dict):
+        raise ValueError('working_files must map relative paths to text')
+    for name, content in working.items():
+        path = Path(name)
+        if (not name or str(path) != name or path == Path('.') or path.is_absolute()
+                or any(part in ('..', '.git', '.agents', '.codex') for part in path.parts)
+                or not isinstance(content, str)):
+            raise ValueError('Unsafe working_files input: ' + name)
     for commit in commits:
         for name in commit["files"]:
             path = Path(name)
@@ -77,6 +86,10 @@ def prepare(case, workspace):
         command(["git", "add", "."], workspace)
         env = dict(os.environ, GIT_AUTHOR_DATE=f"2026-01-{index + 1:02d}T12:00:00Z", GIT_COMMITTER_DATE=f"2026-01-{index + 1:02d}T12:00:00Z")
         command(["git", "commit", "-qm", commit["message"]], workspace, env=env)
+    for name, content in working.items():
+        target = workspace / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(content)
     return command(["git", "rev-parse", "HEAD"], workspace)
 
 
@@ -131,6 +144,8 @@ def resource_digest(root):
 def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
              skills_root=None, project_source=None, launcher=None,
              workspace_root=None):
+    if project_source and case.get('working_files'):
+        raise ValueError('working_files is only supported for authored fixtures')
     skills_root = skills_root or ROOT / "skills"
     cell = output / f"{case['id']}--{arm}--{repeat}"
     cell.mkdir()
@@ -144,6 +159,17 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
     # aliases; do not broaden writable roots to accommodate different spellings.
     workspace = allocated_workspace.resolve()
     base = prepare_repository(project_source, workspace) if project_source else prepare(case, workspace)
+    initial_diff, initial_tree = None, base
+    if case.get('working_files'):
+        # Record initial content without staging the user's fixture changes or
+        # creating a commit. This tree is only an author-side diff reference.
+        with tempfile.TemporaryDirectory(prefix='qh-initial-', dir=workspace / '.git') as scratch:
+            env = dict(os.environ, GIT_INDEX_FILE=str(Path(scratch) / 'index'))
+            command(['git', 'read-tree', base], workspace, env=env)
+            command(['git', 'add', '--all', '--', '.'], workspace, env=env)
+            command(['git', 'add', '--force', '--', *case['working_files']], workspace, env=env)
+            initial_tree = command(['git', 'write-tree'], workspace, env=env)
+        initial_diff = command(['git', 'diff', base, initial_tree, '--', '.'], workspace)
     project_kind = "local repository" if project_source else "synthetic project"
     prompt = case["task"] + f"\n\nWork only inside this {project_kind}. Do not use external services or other installed skills. Do not delegate."
     if arm == "auto":
@@ -199,7 +225,12 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
     messages = [e["item"]["text"] for e in events if e.get("type") == "item.completed" and e.get("item", {}).get("type") == "agent_message"]
     usage = next((e.get("usage") for e in reversed(events) if e.get("type") == "turn.completed"), None)
     command(["git", "add", "-N", "."], workspace)
-    diff = command(["git", "diff", base, "--", ".", ":(exclude).agents", ":(exclude)__pycache__"], workspace)
+    if initial_diff is not None:
+        present = [name for name in case['working_files']
+                   if (workspace / name).exists() or (workspace / name).is_symlink()]
+        if present:
+            command(['git', 'add', '-N', '--force', '--', *present], workspace)
+    diff = command(["git", "diff", initial_tree, "--", ".", ":(exclude).agents", ":(exclude)__pycache__"], workspace)
     def redact(text):
         return text.replace(str(workspace), "<WORKSPACE>").replace(str(Path.home()), "<HOME>")
     (cell / "stdout.original.jsonl").write_text(stdout)
@@ -208,6 +239,8 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
     (cell / "stderr.txt").write_text(redact(stderr))
     (cell / "answer.md").write_text(redact("\n\n".join(messages)) + "\n")
     (cell / "changes.diff").write_text(redact(diff) + "\n")
+    if initial_diff is not None:
+        (cell / 'initial.diff').write_text(redact(initial_diff) + '\n')
     snapshot = cell / "project"
     shutil.copytree(workspace, snapshot, ignore=shutil.ignore_patterns(".git", ".agents", "__pycache__"))
     limited = any(term in (stdout + stderr).lower() for term in
@@ -224,6 +257,10 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
             "installed_resources_before": installed_before,
             "installed_resources_after": installed_after,
             "resource_diagnostics": resource_diagnostics}
+    if initial_diff is not None:
+        meta['initial_tree'] = initial_tree
+        meta['initial_working_files'] = {name: hashlib.sha256(content.encode()).hexdigest()
+                                         for name, content in case['working_files'].items()}
     (cell / "metadata.json").write_text(json.dumps(meta, indent=2) + "\n")
     return meta
 

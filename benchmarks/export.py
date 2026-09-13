@@ -78,6 +78,9 @@ def export(source, target):
         (dest / "answer.md").write_text(answer)
         diff_path = cell / "changes.diff"
         (dest / "changes.diff").write_text(redact(diff_path.read_text()) if diff_path.exists() else "")
+        initial = cell / 'initial.diff'
+        if initial.exists():
+            (dest / 'initial.diff').write_text(redact(initial.read_text()))
         (dest / "commands.json").write_text(redact(json.dumps(commands, indent=2)) + "\n")
         meta = json.loads(redact(json.dumps(meta)))
         (dest / "metadata.json").write_text(json.dumps(meta, indent=2) + "\n")

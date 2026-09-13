@@ -12,6 +12,83 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_working_overlay_stays_uncommitted_and_model_diff_excludes_it(self):
+        case = dict(id='dirty', skill='receipt', task='Verify only',
+                    files={'rule.py': 'VALUE = "old"\n', '.gitignore': 'ignored.txt\n'},
+                    working_files={'rule.py': 'VALUE = "fixed"\n', 'test_new.py': '# supplied\n',
+                                   'ignored.txt': 'initial ignored content\n'})
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output, workspaces = root / 'results', root / 'workspaces'
+            output.mkdir()
+            original_popen = runner.subprocess.Popen
+            def dispatch(args, **kwargs):
+                if args[0] != 'codex':
+                    return original_popen(args, **kwargs)
+                project = Path(args[args.index('-C') + 1])
+                self.assertEqual((project / 'rule.py').read_text(), 'VALUE = "fixed"\n')
+                self.assertEqual(runner.command(['git', 'show', 'HEAD:rule.py'], project), 'VALUE = "old"')
+                self.assertEqual(runner.command(['git', 'diff', '--cached'], project), '')
+                self.assertEqual(runner.command(['git', 'rev-list', '--count', 'HEAD'], project), '1')
+                self.assertIn('?? test_new.py', runner.command(['git', 'status', '--short'], project))
+                event = json.dumps(dict(type='turn.completed', usage=dict(input_tokens=1, output_tokens=1)))
+                return original_popen([sys.executable, '-c', 'print(' + repr(event) + ')'], **kwargs)
+            with patch.object(runner.subprocess, 'Popen', side_effect=dispatch):
+                meta = runner.run_cell(case, 'baseline', 1, output, 'gpt-6-astra',
+                                       'medium', 10, [], workspace_root=workspaces)
+            cell = output / 'dirty--baseline--1'
+            self.assertTrue(meta['completed'])
+            self.assertEqual((cell / 'changes.diff').read_text().strip(), '')
+            initial = (cell / 'initial.diff').read_text()
+            self.assertIn('+VALUE = "fixed"', initial)
+            self.assertIn('+# supplied', initial)
+            self.assertIn('+initial ignored content', initial)
+            self.assertEqual(set(meta['initial_working_files']), set(case['working_files']))
+            # Execute the actual exporter too; this initial-state evidence must
+            # survive export rather than becoming a claimed model change.
+            export_spec = importlib.util.spec_from_file_location('export_dirty', runner.ROOT / 'benchmarks/export.py')
+            exporter = importlib.util.module_from_spec(export_spec)
+            export_spec.loader.exec_module(exporter)
+            (output / 'run.json').write_text('{}')
+            exporter.export(output, root / 'export')
+            self.assertEqual((root / 'export/dirty--baseline--1/initial.diff').read_text(), initial)
+            self.assertEqual((root / 'export/dirty--baseline--1/changes.diff').read_text().strip(), '')
+
+    def test_overlay_paths_reject_before_creating_repository(self):
+        for working in ({'../escape': 'x'}, {'.git/config': 'x'}, {'.agents/skills/a': 'x'},
+                        {'./rule.py': 'x'}, {'rule.py': None}, [], {'': 'x'}):
+            with self.subTest(working=working), tempfile.TemporaryDirectory() as directory:
+                workspace = Path(directory) / 'project'
+                with self.assertRaises(ValueError):
+                    runner.prepare(dict(files={'rule.py': 'old'}, working_files=working), workspace)
+                self.assertFalse(workspace.exists())
+
+    def test_overlay_diff_retains_agent_edits_and_deletion_of_initial_ignored_file(self):
+        case = dict(id='edit', skill='receipt', task='Fixture',
+                    files={'rule.py': 'original\n', '.gitignore': 'ignored.txt\n'},
+                    working_files={'rule.py': 'user change\n', 'ignored.txt': 'user scratch\n'})
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / 'results'
+            output.mkdir()
+            original_popen = runner.subprocess.Popen
+            def dispatch(args, **kwargs):
+                if args[0] != 'codex':
+                    return original_popen(args, **kwargs)
+                project = Path(args[args.index('-C') + 1])
+                (project / 'rule.py').write_text('agent change\n')
+                (project / 'ignored.txt').unlink()
+                event = json.dumps(dict(type='turn.completed', usage=dict(input_tokens=1, output_tokens=1)))
+                return original_popen([sys.executable, '-c', 'print(' + repr(event) + ')'], **kwargs)
+            with patch.object(runner.subprocess, 'Popen', side_effect=dispatch):
+                runner.run_cell(case, 'baseline', 1, output, 'gpt-6-astra', 'medium', 10,
+                                [], workspace_root=root / 'workspaces')
+            diff = (output / 'edit--baseline--1/changes.diff').read_text()
+            self.assertIn('-user change', diff)
+            self.assertIn('+agent change', diff)
+            self.assertIn('-user scratch', diff)
+            self.assertNotIn('-original', diff)
+
     def test_resource_manifest_covers_references_scripts_modes_and_symlinks(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
