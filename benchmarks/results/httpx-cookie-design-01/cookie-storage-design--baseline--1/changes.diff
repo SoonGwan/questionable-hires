@@ -1,0 +1,92 @@
+diff --git a/.cookie-review/probe.py b/.cookie-review/probe.py
+new file mode 100644
+index 0000000..ebc4221
+--- /dev/null
++++ b/.cookie-review/probe.py
+@@ -0,0 +1,86 @@
++import asyncio
++import json
++from pathlib import Path
++import sys
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++import httpx
++
++assert Path(httpx.__file__).resolve().parent == Path(__file__).resolve().parents[1] / "httpx"
++print("Runtime:", sys.version.split()[0], "source:", httpx.__file__)
++
++
++def conflict(cookies):
++    for operation in (lambda: cookies["sid"], lambda: dict(cookies)):
++        try:
++            operation()
++        except httpx.CookieConflict:
++            pass
++        else:
++            raise AssertionError("Expected CookieConflict")
++
++
++jar = httpx.Cookies()
++for domain, path, value in [("example.org", "/", "root"), ("example.org", "/app", "app"), ("example.net", "/", "other")]:
++    jar.set("sid", value, domain=domain, path=path)
++assert len(jar) == 3
++conflict(jar)
++assert jar.get("sid", domain="example.org", path="/app") == "app"
++copy = httpx.Cookies(jar)
++copy.delete("sid", domain="example.org", path="/app")
++assert len(copy) == 2 and len(jar) == 3
++cases = [("https://example.org/", "sid=root"), ("https://example.org/app/x", "sid=app; sid=root"), ("https://example.org/application", "sid=root"), ("https://example.net/", "sid=other"), ("https://unrelated.test/", None)]
++flat = {cookie.name: cookie.value for cookie in jar.jar}
++for url, expected in cases:
++    actual = httpx.Request("GET", url, cookies=jar).headers.get("cookie")
++    flattened = httpx.Request("GET", url, cookies=flat).headers.get("cookie")
++    assert actual == expected
++    print(json.dumps({"url": url, "scoped": actual, "name_only_projection": flattened}))
++
++normal = httpx.Cookies({"sid": "normal"})
++assert dict(normal) == {"sid": "normal"}
++assert httpx.Request("GET", "https://example.org/", cookies=normal).headers["cookie"] == httpx.Request("GET", "https://example.org/", cookies=dict(normal)).headers["cookie"] == "sid=normal"
++
++
++def handler(request):
++    if request.url.path == "/seed":
++        return httpx.Response(200, headers=[("set-cookie", "sid=root; Path=/"), ("set-cookie", "sid=app; Path=/app")])
++    if request.url.path == "/normal":
++        return httpx.Response(200, headers={"set-cookie": "one=normal; Path=/"})
++    if request.url.path == "/secure":
++        return httpx.Response(200, headers={"set-cookie": "secret=value; Secure; Path=/"})
++    return httpx.Response(200, json={"cookie": request.headers.get("cookie")})
++
++
++with httpx.Client(transport=httpx.MockTransport(handler), trust_env=False) as client:
++    response = client.get("https://example.org/seed")
++    assert len(response.cookies) == len(client.cookies) == 2
++    conflict(response.cookies)
++    for url, expected in cases:
++        if "example.net" in url:
++            expected = None
++        assert client.get(url).json()["cookie"] == expected
++    client.cookies.clear()
++    response = client.get("https://example.org/normal")
++    assert dict(response.cookies) == dict(client.cookies) == {"one": "normal"}
++    assert client.get("https://example.org/").json()["cookie"] == "one=normal"
++    client.cookies.clear()
++    client.get("https://example.org/secure")
++    assert client.get("http://example.org/").json()["cookie"] is None
++    assert client.get("https://example.org/").json()["cookie"] == "secret=value"
++
++
++async def check_async():
++    async with httpx.AsyncClient(transport=httpx.MockTransport(handler), trust_env=False) as client:
++        response = await client.get("https://example.org/seed")
++        assert len(response.cookies) == len(client.cookies) == 2
++        assert (await client.get("https://example.org/app/x")).json()["cookie"] == "sid=app; sid=root"
++        assert (await client.get("https://unrelated.test/")).json()["cookie"] is None
++        client.cookies.clear()
++        response = await client.get("https://example.org/normal")
++        assert dict(response.cookies) == {"one": "normal"}
++        assert (await client.get("https://example.org/")).json()["cookie"] == "one=normal"
++
++
++asyncio.run(check_async())
++print("PASS: scoped request selection, duplicate lookup/conversion conflicts, scoped copy/delete, sync/async response persistence, Secure filtering, and single-cookie controls")
