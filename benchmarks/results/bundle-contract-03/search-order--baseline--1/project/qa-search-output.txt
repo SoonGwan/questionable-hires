@@ -1,0 +1,40 @@
+test_normal_completion_keeps_latest_result (test_search_race.SearchOrderingTests) ... 
+CONTROL: ca then cat entered actual Search.run; both pending
+CONTROL: ca completed; result=['car', 'cafe']; cat pending
+ASSERT: completion order=('ca', 'cat'); actual=['cat', 'catalog']; expected latest=['cat', 'catalog']
+ok
+test_reversed_completion_keeps_latest_result (test_search_race.SearchOrderingTests) ... 
+CONTROL: ca then cat entered actual Search.run; both pending
+CONTROL: cat completed; result=['cat', 'catalog']; ca pending
+ASSERT: completion order=('cat', 'ca'); actual=['car', 'cafe']; expected latest=['cat', 'catalog']
+FAIL
+
+======================================================================
+FAIL: test_reversed_completion_keeps_latest_result (test_search_race.SearchOrderingTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 65, in _callTestMethod
+    self._callMaybeAsync(method)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 88, in _callMaybeAsync
+    return self._asyncioTestLoop.run_until_complete(fut)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 102, in _asyncioLoopRunner
+    ret = await awaitable
+  File "<WORKSPACE>/test_search_race.py", line 76, in test_reversed_completion_keeps_latest_result
+    await self.check_order(("cat", "ca"))
+  File "<WORKSPACE>/test_search_race.py", line 55, in check_order
+    self.assertEqual(
+AssertionError: Lists differ: ['car', 'cafe'] != ['cat', 'catalog']
+
+First differing element 0:
+'car'
+'cat'
+
+- ['car', 'cafe']
++ ['cat', 'catalog'] : Latest typed query 'cat' must remain visible after both requests finish
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.010s
+
+FAILED (failures=1)

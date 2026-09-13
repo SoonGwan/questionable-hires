@@ -1,0 +1,75 @@
+diff --git a/tests/search_overlap_qa.py b/tests/search_overlap_qa.py
+new file mode 100644
+index 0000000..58488fb
+--- /dev/null
++++ b/tests/search_overlap_qa.py
+@@ -0,0 +1,69 @@
++"""Deterministic component QA; run: python3 -B tests/search_overlap_qa.py."""
++
++import asyncio
++import json
++import sys
++from pathlib import Path
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++from search import Search
++
++
++async def check_order(order):
++    search = Search()
++    loop = asyncio.get_running_loop()
++    replies = {query: loop.create_future() for query in ("old", "new")}
++    entered = {query: asyncio.Event() for query in replies}
++    tasks = {}
++    controls = []
++    assertions = []
++
++    def check(label, actual, expected):
++        assertions.append({"assertion": label, "actual": actual,
++                           "expected": expected, "passed": actual == expected})
++
++    async def fetch(query):
++        entered[query].set()
++        return await replies[query]
++
++    try:
++        for query in ("old", "new"):
++            tasks[query] = asyncio.create_task(search.run(query, fetch))
++            await asyncio.wait_for(entered[query].wait(), timeout=2)
++            controls.append({"request_entered_fetch": query})
++        check("both requests overlap before any response",
++              all(not task.done() for task in tasks.values()), True)
++        check("no response released", all(not r.done() for r in replies.values()), True)
++        check("initial displayed state", search.result, None)
++        for query in order:
++            controls.append({"release_response": query, "payload": query + " result"})
++            replies[query].set_result(query + " result")
++            await asyncio.wait_for(asyncio.shield(tasks[query]), timeout=2)
++            controls.append({"run_completed": query, "displayed_state": search.result})
++            if query == "new":
++                check("new response is displayed", search.result, "new result")
++        check("latest query remains displayed after both responses", search.result, "new result")
++    finally:
++        for task in tasks.values():
++            if not task.done():
++                task.cancel()
++        if tasks:
++            await asyncio.wait_for(asyncio.gather(*tasks.values(), return_exceptions=True), timeout=2)
++        for reply in replies.values():
++            if not reply.done():
++                reply.cancel()
++        controls.append({"cleanup": "all owned tasks settled and response futures settled"})
++    return {"completion_order": order, "controls": controls, "assertions": assertions,
++            "passed": all(item["passed"] for item in assertions)}
++
++
++async def main():
++    cases = []
++    for order in (("old", "new"), ("new", "old")):
++        cases.append(await asyncio.wait_for(check_order(order), timeout=10))
++    print(json.dumps({"layer": "actual Search async component", "cases": cases}, indent=2))
++    return 0 if all(case["passed"] for case in cases) else 1
++
++
++if __name__ == "__main__":
++    sys.exit(asyncio.run(main()))

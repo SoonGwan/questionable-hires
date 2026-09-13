@@ -1,0 +1,133 @@
+{
+  "request_boundary": "controlled in-memory responses; no cache or network",
+  "behavior_wait_timeout_seconds": 2,
+  "scenarios": [
+    {
+      "scenario": "normal",
+      "query_start_order": [
+        "older-query",
+        "newer-query"
+      ],
+      "completion_order": [
+        "older-query",
+        "newer-query"
+      ],
+      "request_records": [
+        {
+          "url": "/search",
+          "params": {
+            "q": "older-query"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        },
+        {
+          "url": "/search",
+          "params": {
+            "q": "newer-query"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        }
+      ],
+      "result_after_each_completion": [
+        {
+          "completed_query": "older-query",
+          "result": {
+            "query": "older-query",
+            "items": [
+              "result for older-query"
+            ]
+          }
+        },
+        {
+          "completed_query": "newer-query",
+          "result": {
+            "query": "newer-query",
+            "items": [
+              "result for newer-query"
+            ]
+          }
+        }
+      ],
+      "final_result": {
+        "query": "newer-query",
+        "items": [
+          "result for newer-query"
+        ]
+      },
+      "final_result_is_stale": false,
+      "owned_tasks_and_response_futures_finished": true
+    },
+    {
+      "scenario": "reversed",
+      "query_start_order": [
+        "older-query",
+        "newer-query"
+      ],
+      "completion_order": [
+        "newer-query",
+        "older-query"
+      ],
+      "request_records": [
+        {
+          "url": "/search",
+          "params": {
+            "q": "older-query"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        },
+        {
+          "url": "/search",
+          "params": {
+            "q": "newer-query"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        }
+      ],
+      "result_after_each_completion": [
+        {
+          "completed_query": "newer-query",
+          "result": {
+            "query": "newer-query",
+            "items": [
+              "result for newer-query"
+            ]
+          }
+        },
+        {
+          "completed_query": "older-query",
+          "result": {
+            "query": "older-query",
+            "items": [
+              "result for older-query"
+            ]
+          }
+        }
+      ],
+      "final_result": {
+        "query": "older-query",
+        "items": [
+          "result for older-query"
+        ]
+      },
+      "final_result_is_stale": true,
+      "owned_tasks_and_response_futures_finished": true
+    }
+  ],
+  "production_sha256_before": {
+    "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
+    "transport.py": "937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2"
+  },
+  "production_sha256_after": {
+    "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
+    "transport.py": "937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2"
+  },
+  "production_files_unchanged": true
+}

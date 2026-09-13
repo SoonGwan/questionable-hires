@@ -11,11 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Evidence that determines the next work
 
-- The latest completed [nine-task combined comparison](BUNDLE-CURRENT-02-REVIEW.md)
+- Latest [all-eight explicit-contract gate](results/bundle-contract-03/README.md),
+  resources `557f012`: all 18 cells reviewed; **+16.17% tokens / −12.43% summed
+  process time**. Core outcomes supported, one baseline scope violation and
+  differing extra work retained. Exposed n=1 synthetic gate, not independent
+  real-development confirmation or overall efficiency acceptance. QA duplication
+  and caller-binding support are next concrete engineering targets.
+- The earlier [nine-task combined comparison](BUNDLE-CURRENT-02-REVIEW.md)
   belongs to frozen revision `417bdac`, **not today's resources**. It records
   **+10.33% tokens / +23.08% summed process time**, with outcome differences.
-  A new current all-eight confirmation is missing; old numbers cannot be
-  relabeled as the newest version's performance.
+  Revised-contract evidence above does not retroactively change it; old numbers
+  cannot be relabeled as the newest version's performance.
 - The recent [cookie audit pair](results/httpx-cookies-01/README.md), Con Artist
   `36e201c`, records **−13.93% tokens / −36.91% time** with correct core outcomes.
   Baseline repairs, different pytest settings/provenance and n=1 prevent an

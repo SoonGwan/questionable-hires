@@ -1,4 +1,11 @@
-# All-eight contract gate 03: incremental review, no aggregate conclusion
+# All-eight contract gate 03: less time, more tokens; objective unmet
+
+All 18 cells are now complete and reviewed. [Full small-project exports and
+cost summary](results/bundle-contract-03/README.md) retain every attempt. Total
+skill cost is **+16.17% tokens / −12.43% summed process time**, with differing
+extra work and one baseline scope violation. This mixed result does not satisfy
+the broad real-development efficiency objective. The incremental passages below
+preserve their checkpoint context; pending statements there describe that stage.
 
 [Frozen protocol](BUNDLE-CONTRACT-03-PROTOCOL.md), launch `b73ca09`, fixture
 SHA-256 `3ed27c165bbf688aafdb2bd9c4b1fd68b6b2fe8861bef27551127a7f655ebdea`.
@@ -320,7 +327,89 @@ Implementation loading and a separate up-before/up-after-write check are observe
 work, not yet a paired efficiency conclusion. The schema/data changed between
 those checks, so they are not automatically redundant observations.
 
-## Remaining work
+## Rolling schema — baseline and reviewed pair
+
+Six shell calls, **105,281 tokens / 103.785 seconds**. Executes actual SQL/readers
+on the same four initial/up-before/up-after/down states, with an insert and updates
+to both pre-existing and inserted rows. Assertions check exact missing-column
+errors, rows and schema; new/changed/untouched data survives down. It hashes all
+six release inputs before/after and leaves them unchanged. Retains three extra
+artifacts: readiness_check.py, redirected JSON observations and readiness_review.md.
+The empty command-output flag reflects redirection; subsequent captured file
+content includes the actual outcomes and assertions-passed record.
+
+Both arms correctly block documented rollout/rollback, separate tested data
+survival from restoration and leave app-writer/staging/runtime evidence unknown.
+Friday costs **−11.36% tokens / −54.00% time**, but baseline's report/harness/file
+round trip, additional inserted-row update and hashing differ from the helper API
+path. Favorable descriptive costs do not isolate helper benefit or establish broad
+gains. Baseline SQLite connection closes normally, not in a failure-path finally;
+no hard interruption guarantee is inferred. No deployment or scope expansion.
+
+## History — baseline and reviewed pair
+
+Four shell calls, **64,067 tokens / 29.741 seconds**. Reads both current files and
+the two actual commits, including the consumer-introducing patch. Executes the
+actual partner caller, then replaces its in-memory display_label binding with
+required/optional display-name alternatives and invokes that caller again. Captured
+Ada/KeyError/None outputs support retaining fallback; no source file is changed.
+Baseline inspects broader history and tests replacement through the caller, while
+skill checks the replacement expressions separately. Both supply requested current
+consumer and relevant commit and distinguish historical intent/current necessity.
+
+Necromancer costs **+33.78% tokens / +28.96% time**. Same shell-call count and
+focused history do not imply efficiency. Different runtime witnesses, shared
+conditions and n=1 prevent causal attribution; both cost dimensions are adverse.
+No capture flags, installed baseline skills or rejected patches appear.
+
+## Necessary state — Hostage Negotiator and final reviewed pair
+
+Five shell calls, **87,653 tokens / 74.982 seconds**. Final Form implementation is
+identical to baseline: per-instance pending, duplicate early return and finally
+cleanup. Seven retained native tests capture success/return identity, pending
+before callback, independent instances, overlapping duplicate prevention, exception
+identity/retry, synchronous callback exception and cancellation/retry. All pass.
+Uses controlled events and AsyncMock for duplicate/retry callbacks; actual Form
+runs throughout. One-second enclosing waits and finally release/cancel/gather
+cover owned cooperative operations; a release wait inside the fake save has no
+independent timeout but is contained by those ownership/wait paths.
+
+Only form.py/test_form.py change; requirements and installed skill resources are
+unchanged. Unlike baseline, no out-of-project discovery appears. Pair cost is
+**+32.56% skill tokens / −9.30% skill time** (rounded); baseline's scope violation
+and six-versus-seven test organization remain explicit. Both implement/test core
+behavior, but this is not strict equivalent-scope success or causal efficiency.
+No capture flags or rejected patches appear for skill.
+
+## Completed-run reconciliation and next engineering work
+
+Run exited normally and records finish **2026-09-13 08:42:08 UTC**. All 18
+scheduled cells completed, with no timeout/account stop/retry/exclusion. Original
+terminal-event usage agrees with every metadata usage record. Original/redacted
+events agree under resolved workspace and home substitutions; installed before/
+after inventories are unchanged and each hash matches frozen/current skill bytes.
+An initial author comparison used unresolved macOS workspace aliases and failed;
+resolving `/private` aliases matches the runner and reconciles all cells. No
+benchmark artifact or model execution was changed to pass that diagnostic.
+
+Decisive assertions, diffs and scope were reviewed above. Empty-output flags from
+explicit file redirection were resolved by reading captured files; clean Git/mkdir
+output was not misclassified as missing test output. Persistence baseline's missing
+initial heading remains disclosed. No author replay replaces original evidence.
+
+Next priorities supported by traces:
+
+1. Mother-in-law: reusable delivery and required checkpoint coverage currently
+   lead to helper plus native-suite duplication. Support the actual delivery
+   contract without two executions or removing requested checks.
+2. Con Artist: explicit caller-binding evidence led to implementation reading and
+   a custom binding module. Inspect a reusable interface for this requirement;
+   preserve actual test binding rather than substituting import-only proof.
+3. Keep broader runtime/task transfer and all-eight scope. Do not optimize this
+   exposed gate repeatedly, claim general 20%+ savings, or credit a short reference
+   on tasks that never loaded it. Realistic independent confirmation remains due.
+
+## Preserved checkpoint note
 
 Continue the existing live run and review every other cell before paired cost
 accounting. Preserve scope/coverage/capture differences and all repairs. No
