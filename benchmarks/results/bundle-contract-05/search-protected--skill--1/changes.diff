@@ -1,0 +1,131 @@
+diff --git a/test_search.py b/test_search.py
+new file mode 100644
+index 0000000..ffc8194
+--- /dev/null
++++ b/test_search.py
+@@ -0,0 +1,125 @@
++"""Local component QA: python3 -B -m unittest -v test_search.
++
++Contract under test: the latest request owns the final result, and starting
++requests retains the displayed result. Older completion while the latest is
++pending is observed, not prescribed by the available requirements.
++Controlled transport adapted from mother-in-law/assets/controlled_fetch.py.
++"""
++import asyncio
++from dataclasses import dataclass
++import unittest
++
++from search import Search
++
++
++@dataclass(frozen=True)
++class Request:
++    key: object
++    response: asyncio.Future
++
++    def complete(self, payload):
++        self.response.set_result(payload)
++
++    def fail_request(self, error):
++        self.response.set_exception(error)
++
++
++class ControlledFetch:
++    def __init__(self):
++        self.calls = asyncio.Queue()
++
++    async def __call__(self, key):
++        request = Request(key, asyncio.get_running_loop().create_future())
++        self.calls.put_nowait(request)
++        return await request.response
++
++    async def started(self, expected):
++        request = await asyncio.wait_for(self.calls.get(), timeout=1)
++        if request.key != expected:
++            raise AssertionError(
++                f'request key: expected {expected!r}, observed {request.key!r}')
++        return request
++
++
++class SearchTests(unittest.IsolatedAsyncioTestCase):
++    async def asyncSetUp(self):
++        self.search = Search()
++        self.fetch = ControlledFetch()
++        self.owned = []
++        self.addAsyncCleanup(self.cleanup_owned)
++
++    async def cleanup_owned(self):
++        for task in self.owned:
++            if not task.done():
++                task.cancel()
++        if self.owned:
++            done, pending = await asyncio.wait(self.owned, timeout=1)
++            for task in done:
++                if not task.cancelled():
++                    task.exception()
++            self.assertFalse(pending, 'owned tasks did not stop within 1 second')
++
++    def launch(self, query):
++        task = asyncio.create_task(self.search.run(query, self.fetch))
++        self.owned.append(task)
++        return task
++
++    async def finished(self, task):
++        await asyncio.wait_for(asyncio.shield(task), timeout=1)
++
++    async def overlapping(self):
++        self.assertIsNone(self.search.result)
++        seed = self.launch('seed')
++        seed_request = await self.fetch.started('seed')
++        self.assertIsNone(self.search.result)
++        seed_request.complete('displayed')
++        await self.finished(seed)
++        self.assertEqual(self.search.result, 'displayed')
++
++        older = self.launch('older')
++        older_request = await self.fetch.started('older')
++        self.assertEqual(self.search.result, 'displayed')
++        newer = self.launch('newer')
++        newer_request = await self.fetch.started('newer')
++        self.assertEqual(self.search.result, 'displayed')
++        self.assertFalse(older.done())
++        self.assertFalse(newer.done())
++        print('\nBoth requests pending: displayed result retained', flush=True)
++        return older, older_request, newer, newer_request
++
++    async def test_older_completes_first(self):
++        older, older_request, newer, newer_request = await self.overlapping()
++        older_request.complete('older result')
++        await self.finished(older)
++        self.assertFalse(newer.done())
++        self.assertFalse(newer_request.response.done())
++        print(f'Older finished; newer pending: {self.search.result!r}', flush=True)
++        newer_request.complete('newer result')
++        await self.finished(newer)
++        self.assertEqual(self.search.result, 'newer result')
++        print(f'Older then newer, final: {self.search.result!r}', flush=True)
++
++    async def test_newer_completes_first(self):
++        older, older_request, newer, newer_request = await self.overlapping()
++        newer_request.complete('newer result')
++        await self.finished(newer)
++        self.assertFalse(older.done())
++        self.assertEqual(self.search.result, 'newer result')
++        older_request.complete('older result')
++        await self.finished(older)
++        self.assertEqual(self.search.result, 'newer result')
++        print(f'Newer then older, final: {self.search.result!r}', flush=True)
++
++    async def test_transport_key_mismatch_is_assertion(self):
++        # Exercise custom assertion plumbing separately from green scenarios.
++        task = self.launch('actual')
++        with self.assertRaisesRegex(
++            AssertionError, "request key: expected 'expected', observed 'actual'"
++        ):
++            await self.fetch.started('expected')
++        self.assertFalse(task.done())
++        # The pending owned operation is cancelled and awaited by cleanup.
++
++
++if __name__ == '__main__':
++    unittest.main()

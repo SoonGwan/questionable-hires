@@ -1,0 +1,262 @@
+{
+  "engine": "Python standard-library sqlite3",
+  "sqlite_version": "3.51.0",
+  "scope": "Synthetic SQL fixtures, not application-writer or staging evidence",
+  "queries": {
+    "old_reader.py": "SELECT id, name FROM users",
+    "new_reader.py": "SELECT id, display_name FROM users"
+  },
+  "states": [
+    {
+      "state": "initial",
+      "schema": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+      "columns": [
+        [
+          0,
+          "id",
+          "INTEGER",
+          0,
+          null,
+          1
+        ],
+        [
+          1,
+          "name",
+          "TEXT",
+          1,
+          null,
+          0
+        ]
+      ],
+      "stored_rows": [
+        [
+          1,
+          "Alice"
+        ],
+        [
+          2,
+          "Bob"
+        ]
+      ],
+      "readers": {
+        "old_reader.py": {
+          "ok": true,
+          "rows": [
+            [
+              1,
+              "Alice"
+            ],
+            [
+              2,
+              "Bob"
+            ]
+          ]
+        },
+        "new_reader.py": {
+          "ok": false,
+          "error": "no such column: display_name"
+        }
+      }
+    },
+    {
+      "state": "up / old instances still running",
+      "schema": "CREATE TABLE users (id INTEGER PRIMARY KEY, display_name TEXT NOT NULL)",
+      "columns": [
+        [
+          0,
+          "id",
+          "INTEGER",
+          0,
+          null,
+          1
+        ],
+        [
+          1,
+          "display_name",
+          "TEXT",
+          1,
+          null,
+          0
+        ]
+      ],
+      "stored_rows": [
+        [
+          1,
+          "Alice"
+        ],
+        [
+          2,
+          "Bob"
+        ]
+      ],
+      "readers": {
+        "old_reader.py": {
+          "ok": false,
+          "error": "no such column: name"
+        },
+        "new_reader.py": {
+          "ok": true,
+          "rows": [
+            [
+              1,
+              "Alice"
+            ],
+            [
+              2,
+              "Bob"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "state": "up after committed writes / old binary restarted before down",
+      "schema": "CREATE TABLE users (id INTEGER PRIMARY KEY, display_name TEXT NOT NULL)",
+      "columns": [
+        [
+          0,
+          "id",
+          "INTEGER",
+          0,
+          null,
+          1
+        ],
+        [
+          1,
+          "display_name",
+          "TEXT",
+          1,
+          null,
+          0
+        ]
+      ],
+      "stored_rows": [
+        [
+          1,
+          "Alice updated"
+        ],
+        [
+          2,
+          "Bob"
+        ],
+        [
+          3,
+          "New user 새 사용자"
+        ]
+      ],
+      "readers": {
+        "old_reader.py": {
+          "ok": false,
+          "error": "no such column: name"
+        },
+        "new_reader.py": {
+          "ok": true,
+          "rows": [
+            [
+              1,
+              "Alice updated"
+            ],
+            [
+              2,
+              "Bob"
+            ],
+            [
+              3,
+              "New user 새 사용자"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "state": "down after committed new-schema writes",
+      "schema": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+      "columns": [
+        [
+          0,
+          "id",
+          "INTEGER",
+          0,
+          null,
+          1
+        ],
+        [
+          1,
+          "name",
+          "TEXT",
+          1,
+          null,
+          0
+        ]
+      ],
+      "stored_rows": [
+        [
+          1,
+          "Alice updated"
+        ],
+        [
+          2,
+          "Bob"
+        ],
+        [
+          3,
+          "New user 새 사용자"
+        ]
+      ],
+      "readers": {
+        "old_reader.py": {
+          "ok": true,
+          "rows": [
+            [
+              1,
+              "Alice updated"
+            ],
+            [
+              2,
+              "Bob"
+            ],
+            [
+              3,
+              "New user 새 사용자"
+            ]
+          ]
+        },
+        "new_reader.py": {
+          "ok": false,
+          "error": "no such column: display_name"
+        }
+      }
+    }
+  ],
+  "synthetic_writes": [
+    {
+      "sql": "UPDATE users SET display_name = ? WHERE id = ?",
+      "parameters": [
+        "Alice updated",
+        1
+      ]
+    },
+    {
+      "sql": "INSERT INTO users (id, display_name) VALUES (?, ?)",
+      "parameters": [
+        3,
+        "New user 새 사용자"
+      ]
+    }
+  ],
+  "checks": {
+    "expected_reader_matrix_verified": true,
+    "up_preserved_initial_rows": true,
+    "down_preserved_committed_insert_and_update": true,
+    "down_restored_initial_column_metadata": true,
+    "release_files_unchanged": true
+  },
+  "release_sha256": {
+    "release.md": "e987b9defd49929fdde127f69256e6f243426ad357b45e608c5368b6bad72192",
+    "001_initial.sql": "f202577af96fe5ff413f6456e176f80eb994ac7d349d89f8707fa32f79cef931",
+    "002_up.sql": "5a4dd92692e21c505e80ae9617776440ecebf01b45eb476a40545c56f98c6daa",
+    "002_down.sql": "f202a32cdf54191fff4f5939b1441ab9b1082649dcd449f93a03918a1d53d286",
+    "old_reader.py": "294758ac1d7dd348534b7506be4c3fe31710f01eb296e3e98659903ddab61b4e",
+    "new_reader.py": "fee2903771180a2b865bbdaed99d0d75711beb2720e7b4d39d8fdff8cb666d3b"
+  }
+}

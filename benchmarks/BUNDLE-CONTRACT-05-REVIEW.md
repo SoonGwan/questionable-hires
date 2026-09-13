@@ -1,11 +1,13 @@
-# All-eight checkpoint 05 — incremental review
+# All-eight checkpoint 05 — completed review
 
-Run remains in progress; no aggregate result or efficiency acceptance yet.
+All 18 cells completed. Aggregate skill costs: −3.12% tokens / −8.53% time;
+broad efficiency objective remains unmet. Sections preserve incremental review
+order; the completed reconciliation and separate author replay appear below.
 [Frozen protocol](BUNDLE-CONTRACT-05-PROTOCOL.md), launch `3bf7752`, resource
 candidate `d4a52ef`, nine-case fixture SHA-256
 `1c3bd0648fecfad35f65cba144f908b0ffdd39ba28e28f05963722488ffc7f65`.
 Raw local evidence: `benchmarks/local-runs/bundle-contract-05/`.
-Review is read-only during timing; no resource/task edits or author test workloads.
+Review was read-only during timing; no resource/task edits or author test workloads.
 
 ## Persistence audit — baseline
 
@@ -276,3 +278,52 @@ return identity, independent instances, failure identity/retry, synchronous save
 failure and cancellation cleanup/retry. Retained tests call actual Form, use
 two-second waits and owned-task teardown. Only implementation and regression files
 change; comparison awaits the last scheduled skill cell and post-timing replay.
+
+## Form implementation — skill and paired costs
+
+Hostage Negotiator records 69,640 tokens / 74.063 seconds and six shell calls.
+Native seven-test output passes the requested state/identity/recovery checks,
+including independent instances, three overlapping duplicates and synchronous
+save exceptions. Actual Form is invoked; one-second completion/entry waits and
+owned-task teardown bound the controlled tests. Only form.py and test_form.py
+change. Known requirements and implementation are nevertheless read in separate
+commands despite the skill's batching instruction. Skill costs **+5.34% tokens /
++11.38% time**. Baseline additionally observes cancellation inside save; counts
+of five versus seven test methods alone do not establish stronger coverage.
+
+## Completed checkpoint and post-timing replay
+
+All 18 scheduled cells completed, zero timeouts, no exclusions. Aggregate input
+plus output (cached input counted once): baseline **748,007 tokens / 523.202s**,
+skill **724,706 / 478.555s**: **−3.12% tokens / −8.53% process time**. These ratios
+of sums are not equal-task mean ratios or confidence estimates. No 20–30% broad
+gain is established; shared host/cache, exposed tasks, n=1 and unequal extra work
+remain material limits. Do not replace the featured confirmation chart.
+
+All 18 terminal usage records match raw events; redacted captures match original
+event streams, installed before/after manifests agree and installed bytes match
+resource `d4a52ef`. Fixture originals and final inventories were reconciled:
+only boundary/form implementations and authorized regression additions changed.
+Snapshot checks alone cannot establish absence of transient or outside writes.
+Reviewed command traces show no project-scope violation in this checkpoint.
+
+After all timing finished, `replay_bundle_contract_05.py` ran ten bounded author
+checks in disposable copies with retained tests unchanged. Both search-order
+arms fail on the original stale overwrite with the intended actual/expected
+assertion and pass on guarded Search. Both protected-search arms pass on their
+original and replacement guarded implementation. Both final Form suites pass.
+All retained project fingerprints remain unchanged; disposable copies are removed.
+This resolves the prior gate's correction-incompatible QA expectation in these
+new outputs, but not causally: both task clarification and resource edits changed.
+The missing original skill search-order native output remains missing; author
+replay is separate evidence and cannot make that cell a verified native success.
+
+Next development priority: reduce redundant known-file reads and handwritten
+verification work while preserving actual consumer bindings, required checks and
+failure output. History and scope-control overhead remain adverse. A directive
+to batch reads already exists and was not consistently followed; adding more
+generic prose without a demonstrated mechanism is not an established fix.
+
+[Exported execution records](results/bundle-contract-05/README.md) retain every
+cell and link the separate author replay. Earlier sections record review order;
+their then-pending statuses are superseded by this completed checkpoint only.

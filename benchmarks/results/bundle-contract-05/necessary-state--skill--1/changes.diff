@@ -1,0 +1,164 @@
+diff --git a/form.py b/form.py
+index 30da310..62367c7 100644
+--- a/form.py
++++ b/form.py
+@@ -1,3 +1,13 @@
+ class Form:
++    def __init__(self):
++        self.pending = False
++
+     async def submit(self, save):
+-        return await save()
++        if self.pending:
++            return None
++
++        self.pending = True
++        try:
++            return await save()
++        finally:
++            self.pending = False
+diff --git a/test_form.py b/test_form.py
+new file mode 100644
+index 0000000..7bc1a09
+--- /dev/null
++++ b/test_form.py
+@@ -0,0 +1,139 @@
++import asyncio
++import unittest
++
++from form import Form
++
++
++TIMEOUT = 1
++
++
++class FormTests(unittest.IsolatedAsyncioTestCase):
++    async def asyncSetUp(self):
++        self.tasks = []
++
++    async def asyncTearDown(self):
++        for task in self.tasks:
++            if not task.done():
++                task.cancel()
++        if self.tasks:
++            await asyncio.wait_for(
++                asyncio.gather(*self.tasks, return_exceptions=True), TIMEOUT
++            )
++
++    async def start_save(self, form, *, result=None, error=None):
++        entered = asyncio.Event()
++        release = asyncio.Event()
++
++        async def save():
++            entered.set()
++            await release.wait()
++            if error is not None:
++                raise error
++            return result
++
++        task = asyncio.create_task(form.submit(save))
++        self.tasks.append(task)
++        await asyncio.wait_for(entered.wait(), TIMEOUT)
++        return task, release
++
++    async def test_initial_pending_and_success_cleanup(self):
++        form = Form()
++        self.assertIs(form.pending, False)
++        task, release = await self.start_save(form)
++        self.assertIs(form.pending, True)
++        release.set()
++        await asyncio.wait_for(task, TIMEOUT)
++        self.assertIs(form.pending, False)
++
++    async def test_overlapping_duplicates_do_not_invoke_save(self):
++        form = Form()
++        task, release = await self.start_save(form)
++        calls = []
++
++        async def duplicate_save():
++            calls.append(True)
++
++        duplicates = [
++            asyncio.create_task(form.submit(duplicate_save)) for _ in range(3)
++        ]
++        self.tasks.extend(duplicates)
++        await asyncio.wait_for(asyncio.gather(*duplicates), TIMEOUT)
++        self.assertEqual(calls, [])
++        self.assertIs(form.pending, True)
++        self.assertFalse(task.done())
++        release.set()
++        await asyncio.wait_for(task, TIMEOUT)
++        self.assertIs(form.pending, False)
++
++    async def test_instances_have_independent_pending_state(self):
++        first, second = Form(), Form()
++        first_task, first_release = await self.start_save(first)
++        self.assertIs(second.pending, False)
++        second_task, second_release = await self.start_save(second)
++        self.assertIs(first.pending, True)
++        self.assertIs(second.pending, True)
++        first_release.set()
++        await asyncio.wait_for(first_task, TIMEOUT)
++        self.assertIs(first.pending, False)
++        self.assertIs(second.pending, True)
++        second_release.set()
++        await asyncio.wait_for(second_task, TIMEOUT)
++        self.assertIs(second.pending, False)
++
++    async def test_return_value_identity(self):
++        form = Form()
++        result = object()
++        task, release = await self.start_save(form, result=result)
++        release.set()
++        self.assertIs(await asyncio.wait_for(task, TIMEOUT), result)
++        self.assertIs(form.pending, False)
++
++    async def test_failure_identity_and_retry(self):
++        form = Form()
++        error = ValueError("save failed")
++        task, release = await self.start_save(form, error=error)
++        self.assertIs(form.pending, True)
++        release.set()
++        with self.assertRaises(ValueError) as caught:
++            await asyncio.wait_for(task, TIMEOUT)
++        self.assertIs(caught.exception, error)
++        self.assertIs(form.pending, False)
++
++        result = object()
++        retry, retry_release = await self.start_save(form, result=result)
++        self.assertIs(form.pending, True)
++        retry_release.set()
++        self.assertIs(await asyncio.wait_for(retry, TIMEOUT), result)
++        self.assertIs(form.pending, False)
++
++    async def test_synchronous_save_exception_cleanup(self):
++        form = Form()
++        error = RuntimeError("failed before returning an awaitable")
++
++        def save():
++            self.assertIs(form.pending, True)
++            raise error
++
++        with self.assertRaises(RuntimeError) as caught:
++            await asyncio.wait_for(form.submit(save), TIMEOUT)
++        self.assertIs(caught.exception, error)
++        self.assertIs(form.pending, False)
++
++    async def test_cancellation_cleanup_and_retry(self):
++        form = Form()
++        task, _ = await self.start_save(form)
++        self.assertIs(form.pending, True)
++        task.cancel()
++        with self.assertRaises(asyncio.CancelledError):
++            await asyncio.wait_for(task, TIMEOUT)
++        self.assertIs(form.pending, False)
++
++        retry, release = await self.start_save(form)
++        self.assertIs(form.pending, True)
++        release.set()
++        await asyncio.wait_for(retry, TIMEOUT)
++        self.assertIs(form.pending, False)
++
++
++if __name__ == "__main__":
++    unittest.main()

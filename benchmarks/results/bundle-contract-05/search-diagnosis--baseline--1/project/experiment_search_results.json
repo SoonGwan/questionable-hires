@@ -1,0 +1,129 @@
+{
+  "boundary": "Actual Search.run and transport.fetch; controlled in-memory request stub",
+  "wait_timeout_seconds": 2.0,
+  "production_sha256_before": {
+    "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
+    "transport.py": "937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2"
+  },
+  "production_sha256_after": {
+    "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
+    "transport.py": "937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2"
+  },
+  "normal": {
+    "invocation_order": [
+      "older",
+      "newer"
+    ],
+    "completion_order": [
+      "older",
+      "newer"
+    ],
+    "requests": [
+      {
+        "url": "/search",
+        "params": {
+          "q": "older"
+        },
+        "headers": {
+          "Cache-Control": "no-cache"
+        }
+      },
+      {
+        "url": "/search",
+        "params": {
+          "q": "newer"
+        },
+        "headers": {
+          "Cache-Control": "no-cache"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "completed_query": "older",
+        "visible_result": {
+          "query": "older",
+          "items": [
+            "result for older"
+          ]
+        }
+      },
+      {
+        "completed_query": "newer",
+        "visible_result": {
+          "query": "newer",
+          "items": [
+            "result for newer"
+          ]
+        }
+      }
+    ],
+    "latest_query": "newer",
+    "final_result": {
+      "query": "newer",
+      "items": [
+        "result for newer"
+      ]
+    },
+    "stale_final_result": false
+  },
+  "reversed": {
+    "invocation_order": [
+      "older",
+      "newer"
+    ],
+    "completion_order": [
+      "newer",
+      "older"
+    ],
+    "requests": [
+      {
+        "url": "/search",
+        "params": {
+          "q": "older"
+        },
+        "headers": {
+          "Cache-Control": "no-cache"
+        }
+      },
+      {
+        "url": "/search",
+        "params": {
+          "q": "newer"
+        },
+        "headers": {
+          "Cache-Control": "no-cache"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "completed_query": "newer",
+        "visible_result": {
+          "query": "newer",
+          "items": [
+            "result for newer"
+          ]
+        }
+      },
+      {
+        "completed_query": "older",
+        "visible_result": {
+          "query": "older",
+          "items": [
+            "result for older"
+          ]
+        }
+      }
+    ],
+    "latest_query": "newer",
+    "final_result": {
+      "query": "older",
+      "items": [
+        "result for older"
+      ]
+    },
+    "stale_final_result": true
+  },
+  "verification": "passed"
+}

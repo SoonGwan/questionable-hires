@@ -1,0 +1,176 @@
+{
+  "kind": "post-timing author replay, not missing model evidence",
+  "cells": [
+    {
+      "cell": "persistence-test--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 65498,
+      "elapsed_seconds": 52.25
+    },
+    {
+      "cell": "search-protected--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 82943,
+      "elapsed_seconds": 62.51
+    },
+    {
+      "cell": "boundary-fix--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 84504,
+      "elapsed_seconds": 31.8
+    },
+    {
+      "cell": "search-diagnosis--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 71654,
+      "elapsed_seconds": 57.852
+    },
+    {
+      "cell": "formatter-review--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 78794,
+      "elapsed_seconds": 27.582
+    },
+    {
+      "cell": "persistence-test--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 73963,
+      "elapsed_seconds": 32.366
+    },
+    {
+      "cell": "search-protected--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 72011,
+      "elapsed_seconds": 73.554
+    },
+    {
+      "cell": "search-order--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 110510,
+      "elapsed_seconds": 81.775
+    },
+    {
+      "cell": "formatter-review--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 66986,
+      "elapsed_seconds": 35.438
+    },
+    {
+      "cell": "search-order--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 102882,
+      "elapsed_seconds": 83.915
+    },
+    {
+      "cell": "search-diagnosis--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 103954,
+      "elapsed_seconds": 94.764
+    },
+    {
+      "cell": "boundary-fix--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 80342,
+      "elapsed_seconds": 33.587
+    },
+    {
+      "cell": "necessary-state--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 66111,
+      "elapsed_seconds": 66.497
+    },
+    {
+      "cell": "history-active--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 86145,
+      "elapsed_seconds": 34.903
+    },
+    {
+      "cell": "rolling-schema--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 89293,
+      "elapsed_seconds": 56.804
+    },
+    {
+      "cell": "rolling-schema--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 103439,
+      "elapsed_seconds": 73.591
+    },
+    {
+      "cell": "history-active--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 64044,
+      "elapsed_seconds": 28.506
+    },
+    {
+      "cell": "necessary-state--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 69640,
+      "elapsed_seconds": 74.063
+    }
+  ],
+  "replays": [
+    {
+      "cell": "search-order--baseline--1",
+      "variant": "original",
+      "exit_code": 1,
+      "output": "test_normal_completion_latest_result_after_both_finish (test_search.SearchOverlapTests) ... ok\ntest_reversed_completion_older_response_cannot_overwrite_latest (test_search.SearchOverlapTests) ... FAIL\n\n======================================================================\nFAIL: test_reversed_completion_older_response_cannot_overwrite_latest (test_search.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search.py\", line 82, in test_reversed_completion_older_response_cannot_overwrite_latest\n    await self.check_completion_order((\"cat\", \"ca\"))\n  File \"<REPLAY>/test_search.py\", line 63, in check_completion_order\n    self.assertEqual(\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : latest query must remain visible after both finish; completion order=('cat', 'ca')\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-order--baseline--1",
+      "variant": "guarded",
+      "exit_code": 0,
+      "output": "test_normal_completion_latest_result_after_both_finish (test_search.SearchOverlapTests) ... ok\ntest_reversed_completion_older_response_cannot_overwrite_latest (test_search.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nOK\n"
+    },
+    {
+      "cell": "search-order--skill--1",
+      "variant": "original",
+      "exit_code": 1,
+      "output": "CONTROL: c and cat both entered fetch and are pending\nOBSERVATION: older finished, newer pending; display='older result'\nASSERTION PASS: normal completion final display is latest result\nCONTROL: c and cat both entered fetch and are pending\nASSERTION PASS: newer finished first; latest result displayed, older pending\nOBSERVATION: both finished in reverse order; display='older result'\nCONTROL PASS: deliberate key mismatch raised the expected AssertionError\ntest_normal_completion_latest_after_both_finish (test_search.SearchSequenceTests) ... ok\ntest_reversed_completion_latest_survives_older (test_search.SearchSequenceTests) ... FAIL\ntest_transport_key_mismatch_raises_actual_assertion (test_search.SearchSequenceTests) ... ok\n\n======================================================================\nFAIL: test_reversed_completion_latest_survives_older (test_search.SearchSequenceTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search.py\", line 74, in test_reversed_completion_latest_survives_older\n    self.assertEqual(self.search.result, 'latest result',\nAssertionError: 'older result' != 'latest result'\n- older result\n+ latest result\n : older response must not overwrite the completed latest result\n\n----------------------------------------------------------------------\nRan 3 tests in 0.016s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-order--skill--1",
+      "variant": "guarded",
+      "exit_code": 0,
+      "output": "CONTROL: c and cat both entered fetch and are pending\nOBSERVATION: older finished, newer pending; display=None\nASSERTION PASS: normal completion final display is latest result\nCONTROL: c and cat both entered fetch and are pending\nASSERTION PASS: newer finished first; latest result displayed, older pending\nOBSERVATION: both finished in reverse order; display='latest result'\nCONTROL PASS: deliberate key mismatch raised the expected AssertionError\ntest_normal_completion_latest_after_both_finish (test_search.SearchSequenceTests) ... ok\ntest_reversed_completion_latest_survives_older (test_search.SearchSequenceTests) ... ok\ntest_transport_key_mismatch_raises_actual_assertion (test_search.SearchSequenceTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.016s\n\nOK\n"
+    },
+    {
+      "cell": "search-protected--baseline--1",
+      "variant": "original",
+      "exit_code": 0,
+      "output": "test_newer_finishes_first_empty (test_search_local.SearchOverlapTests) ... ok\ntest_newer_finishes_first_retains_displayed_result (test_search_local.SearchOverlapTests) ... ok\ntest_older_finishes_first_empty (test_search_local.SearchOverlapTests) ... ok\ntest_older_finishes_first_retains_displayed_result (test_search_local.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.022s\n\nOK\n"
+    },
+    {
+      "cell": "search-protected--baseline--1",
+      "variant": "guarded",
+      "exit_code": 0,
+      "output": "test_newer_finishes_first_empty (test_search_local.SearchOverlapTests) ... ok\ntest_newer_finishes_first_retains_displayed_result (test_search_local.SearchOverlapTests) ... ok\ntest_older_finishes_first_empty (test_search_local.SearchOverlapTests) ... ok\ntest_older_finishes_first_retains_displayed_result (test_search_local.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.022s\n\nOK\n"
+    },
+    {
+      "cell": "search-protected--skill--1",
+      "variant": "original",
+      "exit_code": 0,
+      "output": "\nBoth requests pending: displayed result retained\nNewer then older, final: 'newer result'\n\nBoth requests pending: displayed result retained\nOlder finished; newer pending: 'displayed'\nOlder then newer, final: 'newer result'\ntest_newer_completes_first (test_search.SearchTests) ... ok\ntest_older_completes_first (test_search.SearchTests) ... ok\ntest_transport_key_mismatch_is_assertion (test_search.SearchTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.017s\n\nOK\n"
+    },
+    {
+      "cell": "search-protected--skill--1",
+      "variant": "guarded",
+      "exit_code": 0,
+      "output": "\nBoth requests pending: displayed result retained\nNewer then older, final: 'newer result'\n\nBoth requests pending: displayed result retained\nOlder finished; newer pending: 'displayed'\nOlder then newer, final: 'newer result'\ntest_newer_completes_first (test_search.SearchTests) ... ok\ntest_older_completes_first (test_search.SearchTests) ... ok\ntest_transport_key_mismatch_is_assertion (test_search.SearchTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.017s\n\nOK\n"
+    },
+    {
+      "cell": "necessary-state--baseline--1",
+      "variant": "original",
+      "exit_code": 0,
+      "output": "test_cancellation_cleanup_and_retry (test_form.FormTests) ... ok\ntest_failure_identity_and_retry (test_form.FormTests) ... ok\ntest_initial_pending_duplicates_and_return_identity (test_form.FormTests) ... ok\ntest_instances_are_independent (test_form.FormTests) ... ok\ntest_synchronous_save_exception_identity (test_form.FormTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.021s\n\nOK\n"
+    },
+    {
+      "cell": "necessary-state--skill--1",
+      "variant": "original",
+      "exit_code": 0,
+      "output": "test_cancellation_cleanup_and_retry (test_form.FormTests) ... ok\ntest_failure_identity_and_retry (test_form.FormTests) ... ok\ntest_initial_pending_and_success_cleanup (test_form.FormTests) ... ok\ntest_instances_have_independent_pending_state (test_form.FormTests) ... ok\ntest_overlapping_duplicates_do_not_invoke_save (test_form.FormTests) ... ok\ntest_return_value_identity (test_form.FormTests) ... ok\ntest_synchronous_save_exception_cleanup (test_form.FormTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.026s\n\nOK\n"
+    }
+  ],
+  "retained_projects_unchanged": true
+}
