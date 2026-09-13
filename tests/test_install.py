@@ -1,4 +1,6 @@
 import importlib.util
+import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -68,7 +70,8 @@ class InstallTests(unittest.TestCase):
     def test_installed_helper_entrypoints_execute_without_repo_imports(self):
         helpers = [('necromancer', 'trace.py'), ('con-artist', 'audit.py'),
                    ('receipt', 'compare.py'), ('exorcist', 'run_probe.py'),
-                   ('friday', 'sqlite_matrix.py')]
+                   ('friday', 'sqlite_matrix.py'), ('con-artist', 'context.py'),
+                   ('mother-in-law', 'sequence_probe.py')]
         installer.install(self.dest, [name for name, _ in helpers])
         for name, script in helpers:
             with self.subTest(skill=name):
@@ -77,6 +80,59 @@ class InstallTests(unittest.TestCase):
                     cwd=self.dest, capture_output=True, text=True, timeout=5)
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertIn('usage:', result.stdout)
+
+    @unittest.skipUnless(os.name == 'posix', 'POSIX process deadline wrapper')
+    def test_installed_component_probe_preserves_real_failure_through_wrapper(self):
+        installer.install(self.dest, ['mother-in-law', 'exorcist'])
+        project = Path(self.temp.name) / 'consumer'
+        project.mkdir()
+        source = project / 'search.py'
+        source.write_text(
+            'class Unsafe:\n'
+            '    def __init__(self):\n'
+            '        self.result = None\n'
+            '    async def run(self, query, fetch):\n'
+            '        self.result = await fetch(query)\n'
+            'class Guarded(Unsafe):\n'
+            '    def __init__(self):\n'
+            '        super().__init__()\n'
+            '        self.generation = 0\n'
+            '    async def run(self, query, fetch):\n'
+            '        self.generation += 1\n'
+            '        current = self.generation\n'
+            '        value = await fetch(query)\n'
+            '        if current == self.generation:\n'
+            '            self.result = value\n')
+        original = source.read_bytes()
+        for factory, expected in [('Guarded', [True, True]), ('Unsafe', [True, False])]:
+            with self.subTest(factory=factory):
+                evidence = project / (factory + '.json')
+                result = subprocess.run([
+                    sys.executable, '-I', '-B',
+                    str(self.dest / 'exorcist/scripts/run_probe.py'), '--timeout', '5', '--',
+                    sys.executable, '-I', '-B',
+                    str(self.dest / 'mother-in-law/scripts/sequence_probe.py'),
+                    '--root', str(project), '--source', 'search.py',
+                    '--class-name', factory, '--output', evidence.name,
+                ], cwd=project, capture_output=True, text=True, timeout=12)
+                status = int(not all(expected))
+                self.assertEqual(result.returncode, status, result.stderr)
+                wrapper = json.loads(result.stdout)
+                self.assertEqual(wrapper['exit_code'], status)
+                self.assertFalse(wrapper['timed_out'])
+                self.assertTrue(wrapper['cleanup_complete'])
+                self.assertFalse(wrapper['output_truncated'])
+                observed = json.loads(wrapper['output'])
+                self.assertEqual(observed, json.loads(evidence.read_text()))
+                self.assertTrue(observed['complete'])
+                self.assertEqual([case['passed'] for case in observed['cases']], expected)
+                reverse = observed['cases'][1]['observed']
+                self.assertEqual(reverse['completion_order'], ['new', 'old'])
+                self.assertEqual(reverse['state'],
+                                 'new result' if factory == 'Guarded' else 'old result')
+                self.assertEqual(source.read_bytes(), original)
+        self.assertEqual({p.name for p in project.iterdir()},
+                         {'search.py', 'Guarded.json', 'Unsafe.json'})
 
     def test_conflict_prevents_partial_install(self):
         existing = self.dest / "receipt"
