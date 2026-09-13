@@ -10,9 +10,10 @@ exit-status and stopping rules still apply; do not install missing dependencies.
 Once the runner, regression and fix are located, follow their imports and input
 references to select supporting files. Narrow listings to unresolved paths;
 don't inventory the repository again merely to construct a copy recipe. A known,
-appropriate support directory can be selected directly. Still inspect applicable
-instructions, configuration and cooperating code; a short selection is not proof
-that all required inputs are present.
+appropriate support directory can be selected directly. Still inspect required
+configuration and cooperating code; a short selection is not proof that all
+required inputs are present. The entrypoint's instruction-discovery boundary
+applies here too.
 
 ## Optional Python comparison helper
 
