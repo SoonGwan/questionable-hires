@@ -17,12 +17,13 @@ It locates the two already-reviewed interval capture gaps without changing old
 metadata or scoring. Nineteen local runner tests pass; this is not model evidence,
 a capture-loss repair or skill efficiency progress.
 
-2026-09-14 unmeasured follow-up: Mother native-test guidance now distinguishes
-custom assertion plumbing from unmodified framework assertions, and conditions
-repeated-key cases on contract/implementation relevance. The interval run added
-both kinds of extra checks. Required state transitions and retention assertions
-remain mandatory; transport code is unchanged. This is an overhead hypothesis,
-not a demonstrated token/time saving.
+Completed 2026-09-14: [Mother work-selection comparison](MOTHER-INTERVAL-02-REVIEW.md)
+at `160ff71`: four cells, **−14.54% recorded tokens / +83.52% time**. Both skill
+cells avoid unrelated repeated-key/assertion-library extras. Separate unchanged-test
+replay retains fault rejection and valid-fix acceptance. One original test output
+is absent; another skill cell records connection resets. Initial author discovery
+missed nested tests; both that record and corrected explicit-discovery evidence
+are preserved. No overall efficiency acceptance or broad claim; n=1 exposed tasks.
 
 Completed 2026-09-14: [interval-contract comparison](MOTHER-INTERVAL-01-REVIEW.md)
 at `14289df`: four cells, **+9.32% tokens / +10.58% time**. The skill adopts
