@@ -10,6 +10,14 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Linux distribution check](../docs/RELEASE-READINESS.md): the `10d416f` source
+  archive exposed three Python 3.12 test-portability failures. With the three
+  test corrections, 309 tests pass and two Git-provenance checks explicitly skip
+  (311 discovered); original model fixtures are unchanged. Local Linux arm64,
+  network disabled, existing pure-Python PyYAML mounted read-only. Hosted run
+  34741549262 never started steps due to GitHub's payment/spending-limit gate;
+  local success does not resolve it or prove model efficiency.
+
 - Receipt final-check example candidate: the entrypoint now gives an adaptable
   native shell chain for actual tests, scoped whitespace check and scoped diff,
   rather than only asking for batching. Its code block is extracted and executed
@@ -237,8 +245,9 @@ The optional helpers are not mandatory for every task.
   commands, outputs, answers and usage, including its adverse result.
 - [Host installation evidence](../docs/INSTALLATION-TEST.md) is historical.
   Current package execution tests do not prove current host or remote installation.
-- The repository remains a private development preview. Current hosted CI and
-  publication are unverified; see [release gates](../docs/RELEASE-READINESS.md).
+- The repository remains a private development preview. Hosted CI at `10d416f`
+  was checked and is blocked before execution by GitHub's account restriction;
+  publication remains unverified. See [release gates](../docs/RELEASE-READINESS.md).
   Visibility, billing and publication changes require owner authorization.
 
 ## Interpretation and integrity

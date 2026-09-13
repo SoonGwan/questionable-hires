@@ -14,7 +14,7 @@
 - [x] Eight automatic-selection sessions with the whole team installed.
 - [x] Published answers, command evidence, diffs, metadata, and final snapshots.
 - [x] 203 local infrastructure, helper, packaging and fixture tests (run at `d09128c`).
-- [x] Current source archive: 233 tests execute/pass; two provenance-only skips (`05a9fce`, 35.925 seconds); standalone two-fault example also executes.
+- [x] Linux/Python 3.12 archive plus three portability corrections: 309 tests pass, two provenance-only skips (311 discovered); see dated [release evidence](RELEASE-READINESS.md).
 - [x] All-eight installed resource bytes/permissions and standalone/bundle parity.
 - [x] Failed package build cleanup, retry and existing-destination preservation.
 
@@ -34,9 +34,9 @@ report is historical evidence, not the current candidate's performance score.
 - [ ] Obtain a passing hosted CI run.
 - [ ] Owner decides when to switch the repository from private to public and publish a release.
 
-The latest hosted run retrieved on 2026-09-11 did not start its test steps:
+The hosted run for `10d416f`, retrieved on 2026-09-13, did not start its test steps:
 GitHub reports failed account payments or an insufficient spending limit. It
-checks an older remote commit, not the current local candidate. See the
+provides no executed test evidence. See the
 [release-readiness evidence](RELEASE-READINESS.md). The repository remains private;
 neither billing changes nor public visibility changes have been performed.
 

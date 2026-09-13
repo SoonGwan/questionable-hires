@@ -1,5 +1,48 @@
 # Release readiness — development preview
 
+## 2026-09-13: current Linux archive check and hosted gate
+
+Read-only hosted check of `10d416f`: [run 34741549262](https://github.com/SoonGwan/questionable-hires/actions/runs/34741549262)
+concluded failure with zero executed steps and no assigned runner in both Python
+jobs (`103681980852`, `103681980904`). Both annotations report failed recent
+payments **or** a spending limit requiring increase; this does not identify which
+account setting is responsible. No billing, visibility or release changes were
+made. The hosted gate remains unresolved, not a demonstrated code failure.
+
+Unlike the older feasibility check below, the local Docker endpoint is now live.
+Using the already-present browser image, Linux arm64/Python 3.12.3 tests ran with
+network disabled and a read-only source archive copied into a disposable
+container. Image ID:
+`sha256:59f6ca68c1b94db38c241951f74f3a40b377afff5cc87fbf873154b8531df350`.
+Its Python lacked PyYAML, so the existing host PyYAML 6.0.3 package was mounted
+read-only and used in pure-Python mode (`__with_libyaml__ = False`). No dependency
+was downloaded. The first `/tmp` mount was unavailable inside the Docker VM;
+the archive was relocated to the shared workspace before any tests ran.
+
+The unmodified `10d416f` archive discovered 311 tests and exposed three failures:
+zero-test unittest discovery returned 5 instead of 0; the output-limit test
+contained no actual test; and invoice-control evidence assumed one unittest
+display format. Fixes accept the explicit no-tests status only alongside zero
+discovery, exercise a real passing test for output limits, and recognize both
+qualified method labels while still requiring each named control to pass.
+No frozen model fixture or reported benchmark score was changed.
+
+Rechecking the same archive with only those three test-file corrections passes
+validation/localization checks: **311 discovered, 309 passed, two explicit
+Git-provenance skips, 16.547 seconds**. The skipped checks are the existing
+packaging source/review history comparisons; their archived behavioral tests
+still run. All eight build/install resource checks run inside this suite.
+This is local Linux source-distribution evidence, not hosted CI, a pristine
+dependency install, a model benchmark or verification on Python 3.9/3.11 Linux.
+The workflow now also schedules 3.12 to catch these failures once the account
+restriction is resolved. Scheduling is not execution evidence.
+
+Owned archive copies remain under ignored local runs for reproducibility;
+containers used `--rm`. No persistent container, image, host installation,
+production service or account setting was changed by this check.
+
+## Earlier evidence (each entry retains its original revision)
+
 Checked 2026-09-11 against local commit `dd10633` and read-only GitHub API
 responses. This is a release gate, not a claim of perfection or authorization to
 publish. Preserve the eight coworker identities and report adverse evaluations.
