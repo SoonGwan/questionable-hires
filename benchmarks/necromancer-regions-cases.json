@@ -1,0 +1,53 @@
+[
+  {
+    "id": "history-three-decisions",
+    "skill": "necromancer",
+    "files": {
+      "summary.py": "def summarize(record):\n    code = record.get('code') or 'unknown'\n    name = record.get('display_name') or record['name']\n    amount = record['amount']\n    if amount < 0:\n        raise ValueError('negative amount')\n    return code, name, amount\n",
+      "consumer.py": "from summary import summarize\n\ndef render(record):\n    normalized = dict(record)\n    normalized['display_name'] = record.get('display_name') or record['name']\n    return summarize(normalized)\n",
+      "requirements.md": "render is the sole supported entrypoint. summary.summarize is private.\nInput name is nonempty; display_name and code may be missing or empty. Missing or\nempty code must render as 'unknown'; missing or empty display_name uses name.\namount is an integer and negative values must raise ValueError. Upstream does not\nreject negatives. There are no other consumers, plugins or supported direct calls.\nUse python3 -B -m unittest -v. Review only: preserve all original files.\n",
+      "test_consumer.py": "import unittest\nfrom consumer import render\n\nclass RenderTests(unittest.TestCase):\n    def test_legacy(self):\n        self.assertEqual(render({'name': 'Ada', 'amount': 0}), ('unknown', 'Ada', 0))\n    def test_empty(self):\n        self.assertEqual(render({'name': 'Ada', 'display_name': '', 'code': '', 'amount': 2}), ('unknown', 'Ada', 2))\n    def test_current(self):\n        self.assertEqual(render({'name': 'Ada', 'display_name': 'A', 'code': 'X', 'amount': 3}), ('X', 'A', 3))\n    def test_negative(self):\n        with self.assertRaises(ValueError):\n            render({'name': 'Ada', 'amount': -1})\n"
+    },
+    "history": [
+      {
+        "message": "Initial summary implementation",
+        "files": {
+          "summary.py": "def summarize(record):\n    code = record['code']\n    name = record['display_name']\n    amount = record['amount']\n    return code, name, amount\n"
+        }
+      },
+      {
+        "message": "Support records without a populated code",
+        "files": {
+          "summary.py": "def summarize(record):\n    code = record.get('code') or 'unknown'\n    name = record['display_name']\n    amount = record['amount']\n    return code, name, amount\n"
+        }
+      },
+      {
+        "message": "Support legacy name-only display records",
+        "files": {
+          "summary.py": "def summarize(record):\n    code = record.get('code') or 'unknown'\n    name = record.get('display_name') or record['name']\n    amount = record['amount']\n    return code, name, amount\n"
+        }
+      },
+      {
+        "message": "Reject negative amounts at the summary boundary",
+        "files": {
+          "summary.py": "def summarize(record):\n    code = record.get('code') or 'unknown'\n    name = record.get('display_name') or record['name']\n    amount = record['amount']\n    if amount < 0:\n        raise ValueError('negative amount')\n    return code, name, amount\n"
+        }
+      },
+      {
+        "message": "Normalize display names at the sole public entrypoint",
+        "files": {
+          "consumer.py": "from summary import summarize\n\ndef render(record):\n    normalized = dict(record)\n    normalized['display_name'] = record.get('display_name') or record['name']\n    return summarize(normalized)\n",
+          "requirements.md": "render is the sole supported entrypoint. summary.summarize is private.\nInput name is nonempty; display_name and code may be missing or empty. Missing or\nempty code must render as 'unknown'; missing or empty display_name uses name.\namount is an integer and negative values must raise ValueError. Upstream does not\nreject negatives. There are no other consumers, plugins or supported direct calls.\nUse python3 -B -m unittest -v. Review only: preserve all original files.\n",
+          "test_consumer.py": "import unittest\nfrom consumer import render\n\nclass RenderTests(unittest.TestCase):\n    def test_legacy(self):\n        self.assertEqual(render({'name': 'Ada', 'amount': 0}), ('unknown', 'Ada', 0))\n    def test_empty(self):\n        self.assertEqual(render({'name': 'Ada', 'display_name': '', 'code': '', 'amount': 2}), ('unknown', 'Ada', 2))\n    def test_current(self):\n        self.assertEqual(render({'name': 'Ada', 'display_name': 'A', 'code': 'X', 'amount': 3}), ('X', 'A', 3))\n    def test_negative(self):\n        with self.assertRaises(ValueError):\n            render({'name': 'Ada', 'amount': -1})\n"
+        }
+      }
+    ],
+    "task": "Review whether summary.summarize can remove its code fallback, display-name fallback and negative-amount guard. For each, establish the historical reason and current necessity through the supported render path. Cite the relevant commits and verify proposed behavior. Do not implement changes or edit project files.",
+    "criteria": [
+      "Retains code fallback and negative-amount rejection; permits removing only the private display-name fallback while preserving caller normalization.",
+      "Cites each actual introducing commit and the later caller normalization, without treating historical need as current necessity.",
+      "Exercises current and proposed behavior through actual render, preserving missing/empty/current inputs and negative rejection.",
+      "Preserves project files and scope; does not infer omitted changes are absent."
+    ]
+  }
+]
