@@ -100,7 +100,7 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False):
                     top_level.append(excerpt(lines, first, last))
             result.update(representation='definition_index', bodies_omitted=True,
                           definitions=definitions, top_level=top_level,
-                          limitation='Static index only; definition/class bodies are omitted, not reviewed. Inspect relevant definitions, fixtures, hooks and plugins before execution. Conditional definitions remain in top_level; runtime bindings are unresolved.')
+                          limitation='Static index only; definition/class bodies are omitted, not reviewed. Inspect relevant definitions, fixtures, hooks and plugins before execution. Module-level conditional definitions remain in top_level; conditions inside class bodies are omitted. Runtime bindings are unresolved.')
             if large_selected:
                 result['reason'] = 'Selected Python file exceeds 200 lines; use file:qualified.definition or --full to read bodies. No behavioral conclusion is established by this index.'
                 full_result = dict(path=str(path), sha256=digest, representation='full_source',
