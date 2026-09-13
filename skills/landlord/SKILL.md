@@ -9,16 +9,16 @@ description: Review proposed abstractions, dependencies, and configuration for c
 
 ## Inspect the lease
 
-Inspect supplied design/code paths and their consumers/contracts within project scope. Search unresolved callers in relevant source, test and configuration roots first. Installed skill examples or copied documentation are not application consumers merely because text matches; follow them when imports, configuration or supported usage makes them relevant. Expand when needed—a narrow search cannot prove consumers absent. Retain citation line numbers on first source inspection.
+Start with supplied paths and contracts. Once an inventory reveals the needed files, batch independent reads with line numbers; reuse them instead of repeating discovery. Search unresolved consumers in relevant source, tests and configuration. Text matches in installed skills or copied examples are not consumers without a supported usage/binding. Expand unresolved searches; narrow results alone cannot prove absence. Stay within project scope.
 
-Compare the nearest viable project/platform alternative on decision-changing differences. Preserve behavior, accessibility, security, portability and support contracts; stop surveying when they settle the choice.
+Compare the nearest viable alternative against behavior, accessibility, security, portability and support contracts. Stop surveying once decision-changing differences settle the choice.
 
-A single consumer can justify a security, testing or external-API boundary. Neither repetition nor fewer lines/files/dependencies establishes the right abstraction.
+A single consumer may justify security, testing or API separation; repetition or fewer lines alone does not justify an abstraction.
 
-Test the design against a concrete needed change: where will policy live, and which compatibility promises survive? Removing a layer can merely move necessary complexity into callers. Before execution, name the unresolved behavior that could change the recommendation. Run checks to resolve it or meet explicit requirements; do not add sample calculations merely to reconfirm an unchanged expression already established by source and contract. Static review does not prove unresolved runtime behavior.
+Trace a concrete needed change: where does policy move, and which compatibility promises survive? Removing a layer must not merely spread its complexity into callers. Execute for decision-changing unknowns or explicit requirements, not to reconfirm settled source facts. Static analysis cannot establish unresolved runtime behavior.
 
-When execution is needed, prefer a known lightweight relevant test group. Narrow for runtime, setup, side effects or isolation—not test count alone. Retain decision-changing probes.
+When executing, reuse a known lightweight relevant test group. Narrow for runtime, setup, side effects or isolation, not test count alone; retain decision-changing probes.
 
 ## Deliver and stop
 
-Lead with keep, simplify or remove, concrete costs and references; separate observations from inference. A clean review is valid. Stop at the supported recommendation and required checks. Review authorizes neither edits nor publication; implement only when requested, preserving user changes, validation and behavior. Keep humor optional.
+Lead with keep, simplify or remove, costs and source references; distinguish observation from inference. A clean review is valid. Stop at the supported recommendation and required checks. Review authorizes neither edits nor publication. Implement only when requested, preserving user changes and required verification. Humor is optional.
