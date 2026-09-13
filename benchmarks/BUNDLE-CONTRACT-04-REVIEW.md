@@ -225,3 +225,42 @@ the intermediate-expectation concern. Skill adds seeded pending-state checks,
 support-failure validation and an outer native-process timeout; baseline retains
 extra report/log files and makes an out-of-scope search. Work and scope differ,
 so lower skill time is not an accepted causal efficiency win. All costs remain.
+
+## Search diagnosis — baseline and fifth pair
+
+Five shell calls, **103,376 tokens / 94.733 seconds**. The retained experiment
+uses actual Search and transport with controlled request Events, actual headers
+and response order, normal/reversed controls, bounded waits and finally task
+cleanup. Real assertions establish the stale overwrite with no cache in the
+request stub. It additionally hashes production before/after and retains a README
+and JSON results file; command output is redirected to the file then read back.
+That redirected command has empty console output (flagged); the later command
+and retained file contain both full cases. No production changes are made.
+
+The diagnosis appropriately distinguishes a cache-free local reproduction from
+unverified production behavior. Assertions describing current intermediate
+assignment are appropriate observations in this diagnostic experiment; unlike a
+future regression test, it is not presented as the expected behavior of a fix.
+
+Pair: baseline 103,376 tokens / 94.733s versus Exorcist 71,858 / 63.446s:
+**−30.49% tokens / −33.03% time**. Both support the required local mechanism,
+headers, ordering and rerunnable experiment. Baseline additionally hashes source
+and writes result/document files; skill uses one retained experiment and captured
+output. This is a favorable raw pair with unequal extra work, n=1 and an exposed
+authored task—not independent causal confirmation or all-eight acceptance.
+
+## Boundary fix — baseline and sixth pair
+
+Four shell calls, **80,174 tokens / 32.044 seconds**. Adds exactly-18 regression,
+runs the original implementation and observes its intended failure with age
+17/19 controls passing. The implementation then changes from `>` to `>=`, and
+the same three assertions pass. Captured before/after and final diffs are identical
+in substance to Receipt's retained correction. Only the two requested files change.
+The final shell uses semicolons, not fail-fast propagation, but native pass output
+is visible independently; capture diagnostics have no flags.
+
+Pair: baseline 80,174 tokens / 32.044s versus Receipt 84,469 / 33.408s:
+**+5.36% tokens / +4.26% time**. Core required before/after behavior and delivered
+diff match; discovery and final-shell details differ. No resource improvement in
+this pair. Keep its cost and the broader goal open rather than promoting only the
+favorable diagnosis result.
