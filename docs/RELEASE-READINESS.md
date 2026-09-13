@@ -1,5 +1,28 @@
 # Release readiness — development preview
 
+## 2026-09-13: committed archive gate
+
+The unmodified `92b49df` source archive passes the same network-disabled Linux
+arm64/Python 3.12.3 check described below: 311 discovered, 309 passed, two explicit
+Git-provenance skips (16.622 seconds). No test overlays were used.
+
+`c2fd79e` adds a separate source-archive CI job alongside the existing checkout
+matrix, so checkout history tests remain scheduled rather than being replaced
+by skipped archive checks. The job archives `HEAD`, verifies `.git` and ignored
+local-run state are absent, and runs validation, chart/localization checks and
+the full test suite under Python 3.12. A real temporary-Git integration test
+executes the workflow's Bash block itself: committed payload wins over dirty
+working-tree content, untracked files are absent, and a deliberate validator
+exit 7 stops subsequent checks without hiding the failure.
+
+The complete unmodified `c2fd79e` archive, including that new test, also passes
+locally in the same Linux image: **312 discovered, 310 passed, two explicit
+Git-provenance skips (16.757 seconds)**. The only external test dependency is
+the existing read-only PyYAML mount; there are no overlays, downloaded packages,
+network access or checkout history. Source archive checks and packaging checks
+are not new model efficiency evidence. The new hosted job remains unverified
+until GitHub's account restriction is resolved; adding a job does not bypass it.
+
 ## 2026-09-13: current Linux archive check and hosted gate
 
 Read-only hosted check of `10d416f`: [run 34741549262](https://github.com/SoonGwan/questionable-hires/actions/runs/34741549262)

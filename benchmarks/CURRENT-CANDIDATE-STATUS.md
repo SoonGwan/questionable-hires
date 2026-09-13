@@ -10,6 +10,13 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Committed source-archive gate](../docs/RELEASE-READINESS.md): unmodified
+  `c2fd79e` passes local Linux/Python 3.12 validation and 310 tests, with two
+  explicit Git-provenance skips (312 discovered). A separate archive CI job
+  preserves the checkout matrix; its actual Bash script is tested for committed
+  rather than dirty input and failure propagation. Hosted execution and model
+  efficiency remain unproven; no account restriction was bypassed.
+
 - [Linux distribution check](../docs/RELEASE-READINESS.md): the `10d416f` source
   archive exposed three Python 3.12 test-portability failures. With the three
   test corrections, 309 tests pass and two Git-provenance checks explicitly skip

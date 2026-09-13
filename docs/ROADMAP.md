@@ -14,7 +14,7 @@
 - [x] Eight automatic-selection sessions with the whole team installed.
 - [x] Published answers, command evidence, diffs, metadata, and final snapshots.
 - [x] 203 local infrastructure, helper, packaging and fixture tests (run at `d09128c`).
-- [x] Linux/Python 3.12 archive plus three portability corrections: 309 tests pass, two provenance-only skips (311 discovered); see dated [release evidence](RELEASE-READINESS.md).
+- [x] Unmodified `c2fd79e` archive on Linux/Python 3.12: 310 tests pass, two provenance-only skips (312 discovered); separate source-archive CI job added. See dated [release evidence](RELEASE-READINESS.md).
 - [x] All-eight installed resource bytes/permissions and standalone/bundle parity.
 - [x] Failed package build cleanup, retry and existing-destination preservation.
 
