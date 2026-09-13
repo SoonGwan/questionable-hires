@@ -43,14 +43,16 @@
 [이전 후보 개발 결과](benchmarks/results/mother-in-law-fast-2026-09-12/README.md)
 
 **최근 검토한 팀 전체 통합 실험도 비용 절감 목표는 미달입니다.**
-[9개 과제 통합 실험 04](benchmarks/BUNDLE-CONTRACT-04-REVIEW.md)는 리소스 버전
-`9081dfa`에서 새 세션 18개를 실행했고, 스킬 적용 시 **총 토큰은 4.89% 증가,
-실행 시간 합계는 13.17% 감소**했습니다. 추가 작업량 차이, 범위·출력 기록 문제,
-과도하게 제한적인 QA assertion도 함께 공개합니다. 이미 사용한 과제의 1회 비교이며,
+[9개 과제 통합 실험 05](benchmarks/BUNDLE-CONTRACT-05-REVIEW.md)는 리소스 버전
+`d4a52ef`에서 새 세션 18개를 실행했고, 스킬 적용 시 **총 토큰은 3.12% 감소,
+실행 시간 합계는 8.53% 감소**했습니다. 추가 작업량 차이와 QA 실행 출력 누락 1건도
+함께 공개합니다. 별도 재실행에서는 생성된 테스트가 정상 수정 코드를 통과했지만,
+원래 실행의 출력 누락을 대체하지는 않습니다. 이미 사용한 과제의 1회 비교이며,
 이후 수정본의 측정이나 보편적인 우열의 증거가 아닙니다. 합계 비율은 아래 과거
 그래프의 과제별 비율 평균과 직접 비교할 수 없습니다.
 [이전 불리한 통합 결과](benchmarks/BUNDLE-CURRENT-02-REVIEW.md)와
-[현재 후보 상태](benchmarks/CURRENT-CANDIDATE-STATUS.md)도 그대로 보존합니다.
+[통합 실험 04](benchmarks/BUNDLE-CONTRACT-04-REVIEW.md),
+[현재 후보 상태](benchmarks/CURRENT-CANDIDATE-STATUS.md)도 확인할 수 있습니다.
 
 <details>
 <summary>과거 팀 전체 실험 — 초기 스킬 파일로 실행한 72개 세션</summary>

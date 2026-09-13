@@ -9,12 +9,14 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Latest reviewed checkpoint — repository `e550dd3`
+## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
-An [all-eight checkpoint 05](BUNDLE-CONTRACT-05-PROTOCOL.md) is in progress on
-resource `d4a52ef`; its [incremental review](BUNDLE-CONTRACT-05-REVIEW.md) is not an
-aggregate outcome or replacement for the completed results below. It clarifies
-one prospective QA display contract and preserves previous experiments unchanged.
+The [all-eight checkpoint 05](BUNDLE-CONTRACT-05-REVIEW.md) completed all 18 cells
+on resource `d4a52ef`: **−3.12% tokens / −8.53% process time** in aggregate.
+It clarifies one QA display contract and preserves previous experiments unchanged.
+Ten post-timing author replays confirm unchanged QA tests reject stale overwrite
+and accept guarded Search, and final Form suites pass. One original skill QA
+execution still lacks native output; replay is not replacement model evidence.
 
 These are different tasks and frozen resources, not one pooled benchmark. Percent
 changes compare skill with each report's own baseline. Favorable pairs do not
@@ -22,10 +24,11 @@ supersede adverse results or prove the performance of later resource edits.
 
 | Evidence | Measured resource | Recorded tokens / time | Interpretation |
 | --- | --- | --- | --- |
-| [All-eight gate 04](BUNDLE-CONTRACT-04-REVIEW.md) | `9081dfa` | +4.89% / −13.17% | Latest reviewed combined gate; nine exposed tasks, 18 cells. Extra work, scope/capture issues and overspecified QA assertions remain. Overall efficiency target unmet. |
+| [All-eight gate 05](BUNDLE-CONTRACT-05-REVIEW.md) | `d4a52ef` | −3.12% / −8.53% | Latest combined gate; nine exposed tasks, 18 cells. Unequal work and one missing native QA output; overall target unmet. |
+| [All-eight gate 04](BUNDLE-CONTRACT-04-REVIEW.md) | `9081dfa` | +4.89% / −13.17% | Earlier combined gate preserved. Extra work, scope/capture issues and overspecified QA assertions remain. |
 | [Receipt source-layout transfer](results/receipt-src-model-01/README.md) | `53b2765` | −12.39% / −41.67% | New import-root option adopted; required before/after tests captured. One exposed authored task; unequal extra work and baseline's missing leading output prevent a general efficiency claim. |
 | [HTTPX duplicate-header audit 02](results/httpx-header-equality-02/README.md) | `89e4d61` | −5.40% / −32.42% | Native coverage-gap verification and helper integrity output adopted. Baseline scope violation and unequal checks remain; not equal-scope superiority. |
-| [HTTPX cookie design transfer](results/httpx-cookie-design-01/README.md) | `e267919` | +12.35% / −16.53% | Both preserve runtime contracts; different extra probes. Later Landlord discovery edit `6eb7690` is unmeasured. |
+| [HTTPX cookie design transfer](results/httpx-cookie-design-01/README.md) | `e267919` | +12.35% / −16.53% | Both preserve runtime contracts; different extra probes. Later Landlord discovery edit is measured only on gate 05's static formatter review (−14.99% tokens / +28.48% time), not this runtime transfer. |
 | [Landlord decision checkpoint](results/landlord-decision-01/README.md) | `fee77ff` | +43.35% / +56.67% | Appropriate static review but increased costs; subsequent instructions do not rewrite this adverse result. |
 
 한국어: 최근 Receipt와 Con Artist의 개별 실험에는 비용 감소가 있었지만,
@@ -36,13 +39,14 @@ supersede adverse results or prove the performance of later resource edits.
 Recent native improvements are separate from those model percentages.
 [Receipt lossless JSON formatting](RECEIPT-OUTPUT-01.md) follows the measured
 `53b2765` resource: 8.75% fewer characters on one retained payload, identical
-parsed values, optional human indentation. New model-session cost is unmeasured.
+parsed values, optional human indentation. Gate 05 Receipt does not invoke this
+helper; the formatting change's model-session impact remains unmeasured.
 Other recent checks:
 [Receipt import-exit correction](RECEIPT-IMPORT-EXIT-01.md),
 [source-layout support](RECEIPT-SRC-01.md), and
 [installed helper execution](../docs/INSTALLATION-TEST.md#installed-helper-behavior-check--2026-09-13).
-The latest recorded full local suite passed **414 tests in 67.848 seconds** after
-the lossless-formatting change. This is not hosted-CI, remote-installation or model quality
+The prelaunch full local suite passed **416 tests in 67.828 seconds** after
+the prospective fixture preflight. This is not hosted-CI, remote-installation or model quality
 evidence. Historical billing/visibility observations below have not been rechecked.
 
 ## Earlier evidence — preserved, not the latest resource snapshot

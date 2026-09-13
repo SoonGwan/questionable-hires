@@ -130,14 +130,15 @@ The earlier [candidate-development checkpoint](benchmarks/results/mother-in-law-
 is retained separately.
 
 **Latest reviewed combined check: the efficiency goal is not met.** The
-[nine-task gate 04](benchmarks/BUNDLE-CONTRACT-04-REVIEW.md), 18 fresh sessions at
-resource snapshot `9081dfa`, used **4.89% more total tokens and 13.17% less summed
-process time** with skills. Unequal extra work, scope/capture issues and
-overspecified QA assertions remain disclosed. This exposed single-repeat check
+[nine-task gate 05](benchmarks/BUNDLE-CONTRACT-05-REVIEW.md), 18 fresh sessions at
+resource snapshot `d4a52ef`, used **3.12% fewer total tokens and 8.53% less summed
+process time** with skills. Unequal extra work and one missing native QA output
+remain disclosed. Separate unchanged-test author replay passes corrected search
+behavior without erasing that capture gap. This exposed single-repeat check
 is not a measurement of later resource edits or proof of universal harm/benefit.
 These ratios of sums are not directly comparable to the original chart's
 equal-task mean ratios. [Earlier adverse combined results](benchmarks/BUNDLE-CURRENT-02-REVIEW.md)
-remain preserved.
+and [gate 04](benchmarks/BUNDLE-CONTRACT-04-REVIEW.md) remain preserved.
 
 **The chart below is the original experiment, not a measurement of today's files.** Later candidates have targeted checks, real HTTPX audits/design reviews, and this project's packaging repair recorded in [current candidate status](benchmarks/CURRENT-CANDIDATE-STATUS.md). Results are mixed: local helper gains do not automatically reduce model-session cost, and some comparisons perform unequal verification. Broad performance improvement remains unproven. Historical runs, including [nine-task screen 05](benchmarks/FAST-REGRESSION-05.md), remain available rather than being replaced by a favorable sample.
 
