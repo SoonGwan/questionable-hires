@@ -11,6 +11,11 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — repository `e550dd3`
 
+An [all-eight checkpoint 05](BUNDLE-CONTRACT-05-PROTOCOL.md) is in progress on
+resource `d4a52ef`; its [incremental review](BUNDLE-CONTRACT-05-REVIEW.md) is not an
+aggregate outcome or replacement for the completed results below. It clarifies
+one prospective QA display contract and preserves previous experiments unchanged.
+
 These are different tasks and frozen resources, not one pooled benchmark. Percent
 changes compare skill with each report's own baseline. Favorable pairs do not
 supersede adverse results or prove the performance of later resource edits.
