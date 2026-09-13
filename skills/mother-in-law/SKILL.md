@@ -17,6 +17,14 @@ it with a disposable helper run of the same scenarios. A saved JSON result or
 command depending on an installed skill is not a standalone project regression.
 Reuse existing coverage, adding missing checkpoints rather than another harness.
 
+For standalone Python tests lacking an existing controlled transport, adapt
+[assets/controlled_fetch.py](assets/controlled_fetch.py) into permitted project
+test support. `await fetch.started(key)` returns a distinct request handle;
+call `request.complete(payload)` or `request.fail_request(error)` directly, without
+wrapping them in TestCase methods. Handles distinguish repeated identical keys.
+Keep component assertions and bounded task cleanup in the native test; this asset
+neither generates those assertions nor replaces existing project support.
+
 Keep custom test helpers distinct from runner methods: use `fail_request`, not
 `unittest.TestCase.fail`, for a transport failure. When introducing assertion
 plumbing, exercise a deliberate mismatch in isolation: green cases cannot reveal
