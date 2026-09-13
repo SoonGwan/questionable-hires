@@ -28,3 +28,30 @@ python3 -B benchmarks/run.py --cases-file benchmarks/bundle-contract-v2-cases.js
   --seed 20260913 --timeout 240 --model gpt-6-astra --effort medium \
   --output benchmarks/local-runs/necromancer-entry-01
 ```
+
+## Result — 2026-09-14
+
+Candidate/launch `d5c7150`. Entrypoint bytes decreased 3,490 → 2,310 (33.81%);
+conditional guidance remains in the existing reference. Skill metadata validation,
+23 actual history-helper tests (5.215s), and two fixture tests including native
+preflights (0.222s) passed before launch. These do not prove agent behavior.
+
+Both scheduled attempts are retained. Skill timed out at **240.025s**, exit −15,
+with only thread.started and turn.started events: no captured skill read, tool
+execution, answer, or terminal usage. Usage is **unknown, not zero**. The evidence
+does not identify whether the wait was service, transport, runtime or model-side;
+it does not establish an instruction-caused regression or successful adoption.
+No retry was scheduled.
+
+Baseline completed in **31.418s / 63,924 tokens**, three shell calls. It reads
+actual source/history, cites the introducing compatibility commit, verifies the
+current consumer returns Ada and demonstrates missing-display alternatives, and
+correctly recommends retaining the fallback. Its consumer link points at the
+nearby support comment rather than the call itself. Native output is captured.
+
+Original/redacted event streams reconcile and installed before/after manifests
+are unchanged. No useful token ratio or equal-quality efficiency claim can be
+computed. A timeout-to-completed wall-time ratio is not a task-speed comparison.
+The candidate remains behaviorally unverified; gate 05 remains the latest complete
+bundle evidence. [Every attempted cell](results/necromancer-entry-01/README.md)
+is preserved, including the timeout and null usage.

@@ -13,8 +13,10 @@ it has not established a broad 20–30% gain.
 
 Later [Necromancer entrypoint candidate](NECROMANCER-ENTRY-01.md) consolidates
 decision guidance and moves conditional history procedures to its reference.
-Collector behavior is unchanged; new model behavior/cost is not yet measured.
-This does not relabel the gate 05 history overhead as corrected.
+Collector behavior is unchanged. Its two-cell check at `d5c7150` ended with a
+skill timeout (240.025s, no captured work or usage) and completed baseline
+(63,924 tokens / 31.418s). No retries, instruction adoption or efficiency claim;
+cause unknown. This does not relabel gate 05 history overhead as corrected.
 
 The [all-eight checkpoint 05](BUNDLE-CONTRACT-05-REVIEW.md) completed all 18 cells
 on resource `d4a52ef`: **−3.12% tokens / −8.53% process time** in aggregate.
