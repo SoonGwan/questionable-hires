@@ -180,3 +180,21 @@ the measured tests or claim a verified correction-compatible regression yet.
 After the serial run, replay a separate guarded counterfactual to determine the
 impact and keep that author evidence distinct. This concern is not an invented
 score change or a reason to omit the cell's cost. Matching baseline pending.
+
+## Formatter review — Landlord and third pair
+
+Four shell calls, **66,876 tokens / 30.827 seconds**. Reads the actual three-file
+project and relevant contract/consumer, excluding installed skill text from the
+consumer search. Recommends a named USD function retaining the exact existing
+format expression and policy location, explaining unsupported registry mutation
+and dispatch costs. No original files change. Its optional inline check calls
+actual invoice.total_label and compares a proposed direct function on five
+zero/small/large/negative values, with native assertions and captured pass output.
+This is bounded representative evidence, not universal numerical equivalence.
+
+Pair: baseline 62,768 tokens / 26.847s versus skill 66,876 / 30.827s:
+**+6.54% tokens / +14.83% time**. Both deliver the required source-backed review,
+but baseline explicitly performs static analysis while skill adds executed
+examples and a policy-location explanation. Keep that unequal work in the
+comparison; neither raw resource improves. No capture flags appear, and the
+conclusion is grounded in actual consumers rather than fewer lines alone.
