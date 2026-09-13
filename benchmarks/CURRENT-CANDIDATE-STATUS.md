@@ -10,6 +10,14 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Con Artist single-recipe validation: misspelled `probes` previously omitted
+  the intended stronger check without an error, and JSON `timeout` was silently
+  ignored. Both real regressions fail on the predecessor; unknown fields now
+  fail before execution with the field name and CLI execution-option guidance.
+  Supported fields and explicit batch rules remain unchanged. This prevents
+  these silently altered workflows; it is not model efficiency evidence and
+  does not retroactively change frozen runs or scores.
+
 - [Latest Linux source-distribution check](../docs/RELEASE-READINESS.md):
   unmodified `5b78fef`, Python 3.12.3, network disabled, no checkout or local-run
   state: 326 pass / two explicit Git-history skips (328 discovered). Recent

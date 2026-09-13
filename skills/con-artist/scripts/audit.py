@@ -139,6 +139,12 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     root = Path(root).resolve()
     if not isinstance(spec, dict):
         raise ValueError('Audit recipe must be a JSON object')
+    allowed = {'files', 'imports', 'runner', 'tests', 'target', 'old', 'new',
+               'probe', 'probe_when', 'probe_files', 'probe_tests'}
+    unknown = set(spec) - allowed
+    if unknown:
+        raise ValueError('Unknown audit fields: ' + ', '.join(sorted(map(str, unknown))) +
+                         '. Use CLI --timeout/--python for execution settings.')
     if os.name != 'posix':
         raise ValueError('This helper currently supports POSIX process cleanup only')
     if not 0 < timeout <= 300:

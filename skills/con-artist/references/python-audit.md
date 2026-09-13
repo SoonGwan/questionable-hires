@@ -19,6 +19,10 @@ JSON
 
 `files` selects relative files/directories including needed configuration. `imports` must include the affected implementation and resolve inside each copy. `old` must match `target` exactly once. `tests` supplies arguments for unittest or already-installed pytest. Optional `probe` is the same stronger assertion code for correct/faulty versions, not a replacement implementation. Omit it when only checking existing protection.
 
+Unknown recipe fields are rejected before execution rather than ignored; for
+example, `probes` is not `probe`. Set execution options using CLI `--timeout`
+and `--python`, not JSON keys. The optional mode fields are described below.
+
 For pytest, list implementation modules in `imports`, not selected test modules:
 pre-importing tests bypasses pytest's assertion rewriting and can lose useful
 expected/observed diagnostics. Let pytest collect its tests normally.

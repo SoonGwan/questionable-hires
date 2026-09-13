@@ -16,6 +16,25 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_misspelled_probe_is_rejected_before_any_execution(self):
+        recipe = dict(self.recipe)
+        recipe['probes'] = recipe.pop('probe')
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            with self.assertRaisesRegex(ValueError, 'Unknown audit fields: probes'):
+                helper.audit(self.root, recipe)
+        execute.assert_not_called()
+        self.assertFalse(list(self.root.glob('.con-artist-*')))
+
+    def test_cli_does_not_silently_ignore_recipe_timeout(self):
+        recipe = dict(self.recipe, timeout=0.1)
+        result = subprocess.run([sys.executable, '-B', helper.__file__,
+                                 '--source', str(self.root), '--spec', '-'],
+                                input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(result.stdout, '')
+        self.assertIn('Unknown audit fields: timeout', result.stderr)
+        self.assertFalse(list(self.root.glob('.con-artist-*')))
+
     def test_empty_or_skipped_baseline_stops_before_mutation_and_probe(self):
         for source in ('import unittest\n',
                        'import unittest\n@unittest.skip("optional")\n'
