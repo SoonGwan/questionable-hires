@@ -10,10 +10,17 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Context collector model recheck](results/httpx-context-01/README.md): adopted
+  once, no repeated instruction search; +47.1% tokens / −23.9% time. Required
+  fault/normal outcomes present, but full implementation-file output and helper
+  inspection remain costly. One exposed pair, unequal provenance; token objective
+  unmet and broad savings unproven.
+
 - [Read-only context candidate](CON-ARTIST-CONTEXT-01.md): `d442b3b` collects
   selected Python source, ancestor instructions/configuration and conftest indexes
   without importing project code. Actual HTTPX CLI exercise and ten new behavior
-  tests pass. Model adoption, reduced discovery and whole-task savings unmeasured.
+  tests pass. Subsequent model adoption is reported above; whole-task token
+  savings remain unproven.
 
 - [Query parameter transfer](results/httpx-queryparams-01/README.md): entrypoint
   `613d2ee` prioritizes assertion-local discovery and reuse; the actual skill
@@ -111,7 +118,7 @@ The optional helpers are not mandatory for every task.
 | Mother-in-law | `b7058c6`; success-state/evidence helper | [Native project integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md), [prior recovery screen](results/mother-recovery-02/README.md) | Native-runner reuse verified on one authored project shape with two variants; raw lower costs have unequal coverage and fixture defects; external-project utility and broad efficiency unproven |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
-| Con Artist | entrypoint/context collector `d442b3b`; native probes `89d91af` | [Context candidate](CON-ARTIST-CONTEXT-01.md), [query parameter transfer](results/httpx-queryparams-01/README.md) | New collector model adoption/cost unmeasured; earlier discovery instruction ineffective in observed session; broad savings remain unproven |
+| Con Artist | entrypoint/context collector `d442b3b`; native probes `89d91af` | [Collector model recheck](results/httpx-context-01/README.md), [query parameter transfer](results/httpx-queryparams-01/README.md) | Collector reused but +47.1% tokens / −23.9% time; full-file output and helper inspection remain costly; broad savings unproven |
 | Friday | `9cae27c`; helper `64dd877`, reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regressions verified for checks and migration chunks; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
 
 ## Reproducibility and release status

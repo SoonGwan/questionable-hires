@@ -24,3 +24,10 @@ skill versus fresh baseline total input (cached included once) + output and whol
 process time; historical differences are not paired causal attribution. Retain
 scope/capture failures and unequal work. Skill-first order, shared caches and n=1
 limit interpretation. No featured-chart or localized numerical claim changes.
+
+## Completed review
+
+[Both sessions and original evidence](results/httpx-context-01/README.md):
+collector adopted, no repeated instruction search, +47.1% tokens / −23.9% time.
+Full implementation-file selection and helper inspection remain preparation costs.
+Required core outcomes present; no broad efficiency acceptance.
