@@ -15,9 +15,9 @@ Compare the nearest viable project/platform alternative on decision-changing dif
 
 A single consumer can justify a security, testing or external-API boundary. Neither repetition nor fewer lines/files/dependencies establishes the right abstraction.
 
-Test the design against a concrete needed change: where will policy live, and which compatibility promises survive? Removing a layer can merely move necessary complexity into callers. Reuse evidence; execute checks for unresolved equivalence, consequential behavior or explicit requirements.
+Test the design against a concrete needed change: where will policy live, and which compatibility promises survive? Removing a layer can merely move necessary complexity into callers. Before execution, name the unresolved behavior that could change the recommendation. Run checks to resolve it or meet explicit requirements; do not add sample calculations merely to reconfirm an unchanged expression already established by source and contract. Static review does not prove unresolved runtime behavior.
 
-Prefer a known lightweight relevant test group. Narrow for runtime, setup, side effects or isolation—not test count alone. Retain decision-changing probes.
+When execution is needed, prefer a known lightweight relevant test group. Narrow for runtime, setup, side effects or isolation—not test count alone. Retain decision-changing probes.
 
 ## Deliver and stop
 
