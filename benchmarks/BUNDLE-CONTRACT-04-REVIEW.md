@@ -193,7 +193,7 @@ zero/small/large/negative values, with native assertions and captured pass outpu
 This is bounded representative evidence, not universal numerical equivalence.
 
 Pair: baseline 62,768 tokens / 26.847s versus skill 66,876 / 30.827s:
-**+6.54% tokens / +14.83% time**. Both deliver the required source-backed review,
+**+6.54% tokens / +14.82% time**. Both deliver the required source-backed review,
 but baseline explicitly performs static analysis while skill adds executed
 examples and a policy-location explanation. Keep that unequal work in the
 comparison; neither raw resource improves. No capture flags appear, and the
