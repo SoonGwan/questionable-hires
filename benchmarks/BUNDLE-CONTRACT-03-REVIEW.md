@@ -257,6 +257,69 @@ All three baselines above have no installed skills. No account retry, author
 replay or candidate change was used to repair outcomes. Complete-run accounting
 and remaining history/schema/state reviews are still outstanding.
 
+## Necessary state — baseline reviewed, scope exception retained
+
+Three shell calls, **66,125 tokens / 82.667 seconds**. Adds per-instance pending
+state, returns early on duplicates, and uses finally to clear pending after actual
+save success/error/cancellation. Six retained native async tests pass, covering
+initial/active state, return identity, independent instances, duplicates, error
+identity/retry, synchronous callback failure and cancellation/retry. One-second
+behavior waits and asyncTearDown cancellation/gather cleanup bound cooperative
+owned tasks. Only form.py and test_form.py change; requirements stay unchanged.
+
+**Scope exception:** the second command invokes `find .. -name AGENTS.md -print`,
+outside the explicitly permitted project root. No match is printed; that does
+not make the search authorized. Keep the attempt and all cost, distinguishing
+supported functional behavior from strict scope success. Do not waive this
+criterion or exclude the cell. No original production-test-before requirement
+exists for this feature task; do not retroactively add one.
+
+The final shell uses semicolons, but actual six-test pass output is captured.
+Metadata reports no capture/rejected-patch flags; baseline has no installed skill.
+Counterpart review and cost comparison remain pending.
+
+## History — Necromancer reviewed
+
+Four shell calls, **85,707 tokens / 38.354 seconds**. Reads
+current labels/consumer and native Git blame, then inspects actual historical
+commit `d5fc9729e83eca829c17b3981abfb70be9df1f24` introducing the fallback. No
+optional collector/reference is loaded. Current partner_label executes and
+returns Ada; separate get/direct-index expressions on the name-only payload
+return None/raise KeyError. Those latter checks are expression witnesses, not
+execution of a patched caller. Static actual caller/fallback context supports
+the retention recommendation alongside the observed current call.
+
+The answer distinguishes migration intent from current necessity, identifies a
+compatible input-migration condition, and treats the support-date comment as
+insufficient alone. Both original files and diff remain unchanged; installed
+resource hashes/inventories match frozen/current bytes. No capture flags or
+scope expansion appear. The explicit historical requirement is met in this run;
+the older gate's omission is neither rescored nor inferred away.
+
+## Rolling schema — Friday reviewed
+
+Four shell calls, **93,326 tokens / 47.738 seconds**. Reads supplied release order,
+SQL and reader definitions, then both matrix reference and helper implementation.
+Invokes the helper API using actual reader QUERY literals parsed from source.
+Four states execute: initial, up before writes, up after representative insert/
+update, and down after writes. Captured output includes missing-column errors,
+schema text and actual rows, with explicit compatibility/data-survival assertions.
+The updated Unicode value, untouched row and new row survive down; this is not
+restoration of the original pre-update value.
+
+The answer blocks migration-first rolling coexistence and old-binary-first
+rollback, explains why simple reordering cannot support both schemas concurrently,
+and proposes compatible expansion or coordinated maintenance sequencing. It
+explicitly distinguishes SQL witnesses from absent application-writer evidence
+and leaves staging/runtime unknown. No deployment or original release-file edits;
+diff empty. Installed resource hashes/inventories agree with frozen/current files,
+all six originals match fixture bytes, and no capture flags appear.
+
+Initial discovery lists internal Git paths while staying inside project scope.
+Implementation loading and a separate up-before/up-after-write check are observed
+work, not yet a paired efficiency conclusion. The schema/data changed between
+those checks, so they are not automatically redundant observations.
+
 ## Remaining work
 
 Continue the existing live run and review every other cell before paired cost
