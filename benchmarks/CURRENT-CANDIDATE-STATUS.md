@@ -11,6 +11,11 @@ it has not established a broad 20–30% gain.
 
 ## Evidence that determines the next work
 
+- [Duplicate-header equality audit](results/httpx-header-equality-01/README.md),
+  Con Artist `400c7c3`: both arms verify the coverage gap and a real failing
+  stronger assertion; **+65.33% tokens / −15.92% time**, n=1. Direct reading
+  adopted, collector unused, substantial audit-helper source reads remain.
+  The lower-token/all-eight objective remains unmet; earlier results stay intact.
 - [Real HTTPX URL audit](results/httpx-url-repr-01/README.md), Con Artist `1a75a03`:
   **+98.27% tokens / −14.35% time**. Both preserve all 125 originals and run the
   same 91-test correct/mutant selections plus normal controls. Precheck adopted,
@@ -92,7 +97,7 @@ The eight characters and automatic selection remain intact; helpers are optional
 | Mother-in-law | [runner-method correction](results/mother-panel-01/README.md) after `eefc721` / helper `b7058c6` | [Panel transfer](results/mother-panel-01/README.md): delivery-first routing adopted, lower raw cost, but both generated suites have assertion-plumbing errors on faulty code. Author name-only repair validated; later guidance adoption unmeasured. [Whole gate](BUNDLE-CONTRACT-03-REVIEW.md), [native integration](results/mother-native-project-01/README.md) and [false-pass correction](MOTHER-SUCCESS-STATE-03.md) retain their historical limits. |
 | Exorcist | `ca2e179` / `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [provenance](EXORCIST-PROVENANCE-01.md): small favorable signal result has baseline repair/unequal work; normal path remains costlier in tokens. |
 | Hostage Negotiator | `5867752` / no separate resources | [Atomic export](results/hostage-atomic-export-01/README.md): direct-read adoption, same preparation call count as baseline, qualified lower raw cost. [Packaging repair](PACKAGING-REPAIR-01.md) also has unequal coverage; [compact regression](HOSTAGE-COMPACT-01.md) and other tasks do not establish broad gains. |
-| Con Artist | [collector applicability](results/httpx-url-repr-01/README.md#later-collector-applicability-correction) after `063db29` / compact context `063db29`, [precheck](CON-ARTIST-PRECHECK-01.md) | [URL audit](results/httpx-url-repr-01/README.md): precheck adopted, same core outcomes, nearly double tokens. Later direct-read/collector routing unmeasured. [Assertion-path checks](results/mother-panel-01/README.md#follow-up-con-artist-assertion-path-regression), [whole gate](BUNDLE-CONTRACT-03-REVIEW.md), [cookies](results/httpx-cookies-01/README.md) and [headers](results/httpx-headers-01/README.md) retain their qualified evidence. |
+| Con Artist | [collector applicability](results/httpx-url-repr-01/README.md#later-collector-applicability-correction) `400c7c3` / compact context `063db29`, [precheck](CON-ARTIST-PRECHECK-01.md) | [Equality audit](results/httpx-header-equality-01/README.md): direct reads adopted, gap verified, +65.33% tokens / −15.92% time. [URL audit](results/httpx-url-repr-01/README.md), [assertion-path checks](results/mother-panel-01/README.md#follow-up-con-artist-assertion-path-regression), [whole gate](BUNDLE-CONTRACT-03-REVIEW.md), [cookies](results/httpx-cookies-01/README.md) and [headers](results/httpx-headers-01/README.md) retain their qualified evidence. |
 | Friday | `9cae27c` / [result interface](FRIDAY-RESULT-INTERFACE-01.md) after `fc2c205` | Public formatting preserves native API values and CLI BLOB output; explicit result schema and executable reference are author-tested, model adoption/cost unmeasured. [Input budget](FRIDAY-INPUT-BUDGET-01.md), [changed paths](CHANGED-PATHS-03.md) and [branch transfer](FRIDAY-BRANCH-01.md) retain their qualified results; broader improvement unproven. |
 
 ## Verification and release gates
