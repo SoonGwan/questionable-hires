@@ -82,7 +82,7 @@ class HTTPXScheduleTests(unittest.TestCase):
         temp = tempfile.TemporaryDirectory()
         cls.addClassCleanup(temp.cleanup)
         repository = Path(temp.name)
-        for name in ('exorcist', 'landlord', 'con-artist'):
+        for name in ('exorcist', 'landlord', 'con-artist', 'receipt'):
             shutil.copytree(runner.ROOT / 'skills' / name, repository / 'skills' / name,
                             ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
         for args in (('init', '-q', '--template='), ('config', 'user.name', 'Snapshot Fixture'),
@@ -123,6 +123,21 @@ class HTTPXScheduleTests(unittest.TestCase):
             destination = Path(directory) / 'skill'
             hashes = runner.freeze_skill(runner.ROOT, revision, destination, 'exorcist')
             prefix = 'skills/exorcist/'
+            committed = subprocess.check_output(
+                ['git', 'ls-tree', '-r', '--name-only', revision, '--', prefix],
+                cwd=runner.ROOT, text=True).splitlines()
+            self.assertEqual(set(hashes), {name[len(prefix):] for name in committed})
+            for name, digest in hashes.items():
+                expected = subprocess.check_output(['git', 'show', revision + ':' + prefix + name], cwd=runner.ROOT)
+                self.assertEqual((destination / name).read_bytes(), expected)
+                self.assertEqual(digest, hashlib.sha256(expected).hexdigest())
+
+    def test_receipt_snapshot_contains_all_committed_resources(self):
+        revision = runner.command(['git', 'rev-parse', 'HEAD'], runner.ROOT)
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / 'skill'
+            hashes = runner.freeze_skill(runner.ROOT, revision, destination, 'receipt')
+            prefix = 'skills/receipt/'
             committed = subprocess.check_output(
                 ['git', 'ls-tree', '-r', '--name-only', revision, '--', prefix],
                 cwd=runner.ROOT, text=True).splitlines()

@@ -59,7 +59,7 @@ def select_profile(profile, requested=None):
 
 def freeze_skill(repository, revision, destination, skill_name='con-artist'):
     """Export the whole committed skill, including optional scripts/references."""
-    if skill_name not in ('con-artist', 'landlord', 'exorcist'):
+    if skill_name not in ('con-artist', 'landlord', 'exorcist', 'receipt'):
         raise ValueError('Unsupported HTTPX profile skill')
     prefix = f'skills/{skill_name}/'
     entries = subprocess.check_output(['git', 'ls-tree', '-rz', revision, '--', prefix], cwd=repository)
