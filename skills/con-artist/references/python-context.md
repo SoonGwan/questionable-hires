@@ -8,7 +8,15 @@ python -B /path/to/con-artist/scripts/context.py --root /permitted/project \
   tests/test_service.py service.py:Store.save
 ```
 
-Supply 1–8 explicit `file[:qualified.definition]` selectors. When the requested
+Supply 1–8 explicit `file[:qualified.definition]` or `file:line` selectors. A
+positive line number from a traceback (for example, `service.py:42`) selects
+the smallest enclosing Python definition, including decorators, and reports
+`requested_line` plus its static qualified name. Nested/conditional definitions
+are supported; names do not prove runtime bindings. Out-of-range lines and
+module-level lines outside a definition fail explicitly: select the full file
+for that context. `--full` does not override explicit line selection.
+
+When the requested
 definition is known, select it directly (`service.py:Store.save`) rather than the
 whole implementation file. It includes decorators and original line numbers.
 Unqualified Python files over 200 lines return a definition/method index when

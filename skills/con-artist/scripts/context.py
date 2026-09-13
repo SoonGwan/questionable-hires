@@ -58,6 +58,26 @@ def excerpt(lines, first, last):
     return '\n'.join(f'{i}: {lines[i - 1]}' for i in range(first, last + 1))
 
 
+def definition_at_line(tree, line):
+    matches = []
+    def visit(node, prefix=''):
+        if isinstance(node, DEFINITIONS):
+            name = prefix + node.name
+            first, last = span(node)
+            if first <= line <= last:
+                matches.append((last - first, name, node))
+            prefix = name + '.'
+        for child in ast.iter_child_nodes(node):
+            visit(child, prefix)
+    visit(tree)
+    if not matches:
+        raise ValueError('Line is outside a Python definition; select the full file for module context')
+    matches.sort(key=lambda item: item[0])
+    if len(matches) > 1 and matches[0][0] == matches[1][0]:
+        raise ValueError('Line has ambiguous enclosing definitions')
+    return matches[0][1:]
+
+
 def definition_index(body, source, prefix=''):
     records = []
     for node in body:
@@ -82,13 +102,19 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False):
     if symbol or index:
         tree = ast.parse(source, filename=str(path))
         if symbol:
-            body = tree.body
-            for name in symbol.split('.'):
-                matches = [n for n in body if isinstance(n, DEFINITIONS) and n.name == name]
-                if len(matches) != 1:
-                    raise ValueError('Missing or ambiguous definition: ' + str(path) + ':' + symbol)
-                node = matches[0]
-                body = node.body
+            if isinstance(symbol, int):
+                if symbol > len(lines):
+                    raise ValueError('Selected line exceeds file length: ' + str(path))
+                result['requested_line'] = symbol
+                symbol, node = definition_at_line(tree, symbol)
+            else:
+                body = tree.body
+                for name in symbol.split('.'):
+                    matches = [n for n in body if isinstance(n, DEFINITIONS) and n.name == name]
+                    if len(matches) != 1:
+                        raise ValueError('Missing or ambiguous definition: ' + str(path) + ':' + symbol)
+                    node = matches[0]
+                    body = node.body
             first, last = span(node)
             result.update(representation='definition', symbol=symbol, source=excerpt(lines, first, last))
             result['limitation'] = 'Definition excerpt only; imports, globals, bases and runtime bindings are not resolved.'
@@ -116,15 +142,18 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False):
 def collect(root, selectors, full=False):
     root = Path(root).resolve(strict=True)
     if not root.is_dir() or not 1 <= len(selectors) <= 8:
-        raise ValueError('Provide a project directory and 1–8 file[:qualified.definition] selectors')
+        raise ValueError('Provide a project directory and 1–8 file[:definition-or-line] selectors')
     selected, directories = [], {Path('.')}
     budget = [0]
     for selector in selectors:
         path_text, separator, symbol = selector.partition(':')
         path = Path(path_text)
         checked(root, path)
-        if separator and (not symbol or not all(s.isidentifier() for s in symbol.split('.'))):
-            raise ValueError('Expected a dotted Python definition name')
+        if separator:
+            if symbol.isascii() and symbol.isdecimal() and len(symbol) <= 6 and str(int(symbol)) == symbol and int(symbol) > 0:
+                symbol = int(symbol)
+            elif not symbol or not all(s.isidentifier() for s in symbol.split('.')):
+                raise ValueError('Expected a dotted Python definition name or positive canonical line number')
         selected.append((path, symbol if separator else None))
         directories.update(path.parents)
     ordered = sorted(directories, key=lambda p: (len(p.parts), p.as_posix()))
@@ -160,7 +189,7 @@ def main():
     parser.add_argument('--root', type=Path, default=Path.cwd())
     parser.add_argument('--full', action='store_true',
                         help='Return full selected files instead of indexing Python files over 200 lines; size limits still apply')
-    parser.add_argument('selectors', nargs='+', metavar='FILE[:DEFINITION]')
+    parser.add_argument('selectors', nargs='+', metavar='FILE[:DEFINITION_OR_LINE]')
     args = parser.parse_args()
     try:
         result = collect(args.root, args.selectors, full=args.full)

@@ -10,6 +10,15 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Con Artist [line-based context selection](../skills/con-artist/references/python-context.md)
+  resolves traceback-style `file.py:123` directly to the smallest enclosing
+  Python definition without importing project code. Behavioral tests cover
+  decorators, nested/conditional definitions, invalid/module-level lines and
+  CLI failure without partial output. An author CLI exercise on HTTPX resolves
+  `_models.py:252` to `Headers.get_list`; 315 local tests pass. This is navigation
+  functionality, not measured model adoption or token/time savings. Featured
+  benchmark numbers are unchanged.
+
 - [Committed source-archive gate](../docs/RELEASE-READINESS.md): unmodified
   `c2fd79e` passes local Linux/Python 3.12 validation and 310 tests, with two
   explicit Git-provenance skips (312 discovered). A separate archive CI job

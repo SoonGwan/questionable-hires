@@ -15,6 +15,35 @@ spec.loader.exec_module(context)
 
 
 class AuditContextTests(unittest.TestCase):
+    def test_line_selects_decorated_method_without_importing_source(self):
+        for line in (4, 5, 6):
+            result = context.collect(self.root, ['service.py:' + str(line)])['selected'][0]
+            self.assertEqual(result['requested_line'], line)
+            self.assertEqual(result['symbol'], 'Store.save')
+            self.assertEqual(result['source'],
+                             '4:     @staticmethod\n5:     def save(value):\n6:         return value')
+            self.assertEqual(result['representation'], 'definition')
+
+    def test_line_resolves_nested_and_conditional_definitions(self):
+        self.put('nested.py', 'if True:\n    def outer():\n'
+                 '        async def inner():\n            return 7\n        return inner\n')
+        nested = context.collect(self.root, ['nested.py:4'], full=True)['selected'][0]
+        self.assertEqual(nested['symbol'], 'outer.inner')
+        self.assertEqual(nested['source'], '3:         async def inner():\n4:             return 7')
+        outer = context.collect(self.root, ['nested.py:5'])['selected'][0]
+        self.assertEqual(outer['symbol'], 'outer')
+
+    def test_invalid_or_module_lines_fail_without_partial_cli_context(self):
+        for suffix in ('0', '-1', '01', '9999999', '999', '1', '2'):
+            with self.subTest(suffix=suffix), self.assertRaises(ValueError):
+                context.collect(self.root, ['service.py:' + suffix])
+        result = subprocess.run([sys.executable, '-I', '-B', str(SCRIPT),
+                                 '--root', str(self.root), 'service.py:999'],
+                                capture_output=True, text=True, timeout=5)
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(result.stdout, '')
+        self.assertEqual(json.loads(result.stderr)['status'], 'incomplete')
+
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)

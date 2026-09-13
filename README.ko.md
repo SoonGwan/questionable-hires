@@ -127,7 +127,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 설치본에는 필요한 경우에만 로컬에서 실행하는 보조 도구가 포함됩니다. 도구 실행에는 **Python 3.9 이상**, Con Artist의 결함 주입 실행기·Receipt·Exorcist에는 POSIX 환경도 필요합니다. 의존성을 자동 설치하거나 백그라운드에서 실행하지 않습니다.
 
 - **테스트 사기 감별사(`con-artist`):** 임시 복사본에서 Python 결함 주입, 복사본 import 검증, 테스트별 종료 상태, 로그 메모리·시간 제한을 처리합니다. [사용법과 한계](skills/con-artist/references/python-audit.md). 샌드박스가 아니므로 신뢰할 수 있는 테스트만 실행해야 합니다.
-  필요한 경우 [읽기 전용 맥락 수집기](skills/con-artist/references/python-context.md)로 선택한 정의, 상위 경로의 지침·설정, conftest 색인을 한 번에 모을 수 있습니다. 프로젝트 코드를 import하지 않으며, 색인은 탐색을 돕는 자료이지 테스트 동작이나 모든 의존성을 검증한 결과가 아닙니다.
+  필요한 경우 [읽기 전용 맥락 수집기](skills/con-artist/references/python-context.md)에 정의 이름이나 오류 추적에 나온 `file.py:123`을 지정해 해당 함수·클래스 본문, 상위 경로의 지침·설정, conftest 색인을 한 번에 모을 수 있습니다. 프로젝트 코드를 import하지 않으며, 색인은 탐색을 돕는 자료이지 테스트 동작이나 모든 의존성을 검증한 결과가 아닙니다.
 - **레거시 고고학자(`necromancer`):** 선택한 코드 줄의 현재 상태와 Git 이력을 모으고, 미커밋 변경·얕은 이력의 한계를 표시합니다. [사용법과 한계](skills/necromancer/references/focused-history.md). 과거 코드를 지금도 유지해야 하는지는 별도로 판단합니다.
 - **배포 생존 담당(`friday`):** 메모리 SQLite에서 마이그레이션·롤백 단계별 읽기 쿼리 검사를 재사용합니다. [사용법과 한계](skills/friday/references/sqlite-matrix.md). 쿼리 성공이 배포 준비 완료를 뜻하지 않으며, 다른 DB 엔진의 동작은 별도로 확인해야 합니다.
 - **수정 검증관(`receipt`):** 현재 테스트와 선택한 지원 파일 디렉터리를 고정한 채 두 커밋의 Python 구현을 비교하고, 파일별 해시·각각의 출력·커밋 ID를 남깁니다. [사용법과 한계](skills/receipt/references/existing-fix.md). [첫 모델 검사](benchmarks/RECEIPT-HELPER-01.md)는 직전 표본보다 빠르지만 토큰은 늘었습니다. 비용 개선이 입증된 것은 아닙니다.
