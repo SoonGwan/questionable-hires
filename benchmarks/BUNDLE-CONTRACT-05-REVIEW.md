@@ -63,3 +63,56 @@ non-Git/non-skill inventory is exactly expected, including only the protected
 search's new test. Final snapshots alone cannot prove absence of transient or
 outside operations. This check is evidence reconciliation, not author execution
 of model-generated tests during timing. Remaining cells are not yet reviewed.
+
+## Search diagnosis — Exorcist
+
+Completed in 57.852 seconds, 71,654 tokens, four shell commands. Retains one
+rerunnable experiment importing actual Search/transport. Its request dependency
+records URL, query and actual `Cache-Control: no-cache` headers, using controlled
+Futures without a cache. Both normal and reversed completions record payloads
+and resulting states, verifying latest output normally and stale output under
+reversal. Per-completion assignment assertions describe this reproduction; this
+diagnostic experiment is not a regression that a corrected Search must pass.
+
+One-second bounded dispatch/completion waits and finally cancellation/draining
+are present. Source hash equality is checked within the experiment and recorded
+alongside full native trace output. No duplicate trace file or unnecessary process
+wrapper. Production files remain unchanged. The conclusion distinguishes the
+observed ordering mechanism from untested production cache behavior. No scope or
+capture diagnostic issue was found. Matching baseline is pending review.
+
+## Formatter review — baseline
+
+Completed in 27.582 seconds, 78,794 tokens, four shell commands. Reads all three
+source/contract files with line numbers and searches project consumers. Recommends
+a named USD function retaining the exact formatting expression and caller API;
+no execution, edits or claim of runtime testing. Static evidence supports this
+fixed-consumer decision. Initial filename inventory misses the caller/contract,
+so a second inventory locates them; remaining source searches are included in
+cost. No scope/capture issue. Matching Landlord cell is not yet reviewed.
+
+## Persistence audit — Con Artist and first completed pair
+
+Skill: 32.366 seconds, 73,963 tokens, four shell commands. Uses the installed audit
+CLI and default reference, without collector/advanced-reference or helper-source
+reads. Adapts the example's test method name to the actual binding. All four
+native phases are captured: correct/mutant existing tests pass, stronger correct
+probe passes, faulty probe fails with the preserved-only `['existing']` store.
+Copied process/module hashes and actual test-global binding are verified in each
+process. The helper's two-file integrity/cleanup output is reused without a
+separate final hash or cleanup command. No retained artifacts or scope/capture flags.
+
+Against baseline's 65,498 tokens / 52.250 seconds, skill costs **12.92% more tokens
+and 38.06% less time**. This is not overall efficiency acceptance. Baseline uses
+two copies instead of four, traces actual execution, and checks the acknowledgement
+in its stronger assertion; skill uses individual native deadlines, automatic
+module hashes and byte/mode integrity. Both support the requested persistence gap,
+but work is not identical. N=1 shared-host costs are descriptive, not causal.
+
+## Additional reconciliation
+
+The above three cells' native terminal usage, redacted raw events, installed
+before/after manifests and all installed resources match the frozen candidate.
+All original source bytes and exact non-Git/non-skill final inventories match:
+only diagnosis adds its required experiment. Snapshot and command-trace limits
+remain as described above. Six cells are reviewed; the overall run is unfinished.
