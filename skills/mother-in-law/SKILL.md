@@ -11,11 +11,21 @@ Read the applicable requirements, interaction code, and test entrypoint once.
 Use controlled responses/clocks, isolated cases, bounded waits, and owned-operation
 cleanup—never sleeps or production actions. Preserve user files and scope.
 
-For a UI-less Python component with a zero-argument constructor, an async
-`run(query, fetch)` method and state storing the fetched payload directly, use
-`scripts/sequence_probe.py`. Existing adequate project runners and instructions
-take precedence; use project-specific checks for other contracts, not source
-changes to fit this helper. Run directly without reading or duplicating it:
+Choose the deliverable before running checks. If a rerunnable **project test** is
+required, add or extend that test first and execute it directly; do not precede
+it with a disposable helper run of the same scenarios. A saved JSON result or
+command depending on an installed skill is not a standalone project regression.
+Reuse existing coverage, adding missing checkpoints rather than another harness.
+
+For captured component observations without a project-test deliverable, use
+`scripts/sequence_probe.py` when its contract fits: zero-argument constructor,
+async `run(query, fetch)`, and state storing the fetched payload directly.
+It checks sequential normal success and reversed overlapping completion, **not**
+normal overlapping completion, pending-state retention or an already displayed
+result while loading. If those or other unsupported checkpoints are required,
+use project-specific checks from the outset. Existing adequate runners and
+instructions take precedence; never change production code to fit the helper.
+Run it directly without reading or duplicating its implementation:
 
 ```sh
 python3 -B SCRIPT --root . --source FILE --class-name CLASS [--boundary QUERY]

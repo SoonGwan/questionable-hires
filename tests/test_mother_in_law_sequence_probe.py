@@ -1,3 +1,4 @@
+import asyncio
 import importlib.util
 import json
 from pathlib import Path
@@ -56,6 +57,44 @@ class ErrorSearch:
 
 
 class MotherInLawSequenceProbeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_helper_success_does_not_certify_loading_retention(self):
+        class ClearsWhileLoading(GuardedSearch):
+            async def run(self, query, fetch):
+                self.result = None
+                await super().run(query, fetch)
+
+        # A real counterexample to treating the helper's two cases as complete
+        # project QA. Neither outcome claims to inspect loading retention.
+        cases = await asyncio.wait_for(probe.probe(
+            ClearsWhileLoading, 'run', 'result', 'old', 'new', None), 1)
+        self.assertTrue(all(case['passed'] for case in cases))
+
+        async def check_retention(factory):
+            target = factory()
+            async def initial(query):
+                return 'existing result'
+            await asyncio.wait_for(target.run('seed', initial), 1)
+            self.assertEqual(target.result, 'existing result')
+            entered = asyncio.Event()
+            reply = asyncio.get_running_loop().create_future()
+            async def held(query):
+                entered.set()
+                return await reply
+            task = asyncio.create_task(target.run('next', held))
+            try:
+                await asyncio.wait_for(entered.wait(), 1)
+                self.assertFalse(task.done())
+                self.assertEqual(target.result, 'existing result')
+            finally:
+                if not task.done():
+                    task.cancel()
+                await asyncio.wait_for(asyncio.gather(task, return_exceptions=True), 1)
+                self.assertTrue(task.done())
+
+        await check_retention(GuardedSearch)
+        with self.assertRaisesRegex(AssertionError, "None != 'existing result'"):
+            await check_retention(ClearsWhileLoading)
+
     async def test_result_written_before_success_exception_is_not_a_pass(self):
         class CrashesAfterRender(ErrorSearch):
             async def run(self, query, fetch):
