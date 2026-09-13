@@ -7,6 +7,13 @@ An old-interface/setup failure is not reproduction: disclose incompatibility
 instead of substituting a different check. The entrypoint's runtime, scope,
 exit-status and stopping rules still apply; do not install missing dependencies.
 
+Once the runner, regression and fix are located, follow their imports and input
+references to select supporting files. Narrow listings to unresolved paths;
+don't inventory the repository again merely to construct a copy recipe. A known,
+appropriate support directory can be selected directly. Still inspect applicable
+instructions, configuration and cooperating code; a short selection is not proof
+that all required inputs are present.
+
 ## Optional Python comparison helper
 
 For small local Python comparisons, the installed helper handles copying,
@@ -19,21 +26,18 @@ python3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'
 JSON
 ```
 
-`fixed`: current tests, inputs, configuration and required local dependencies;
-explicit directories are expanded to their regular files. For example,
-`"fixed":["tests","samples","pyproject.toml"]` preserves nested fixtures and data
-without listing every file. Select only permitted, needed directories: hidden
-files are included, and the repository root, Git internals, symlinks and empty
-directories are rejected. Expansion is bounded to 10,000 filesystem entries.
-Overlapping selections (including a directory plus its child file) fail rather
-than silently deduplicating. Every expanded file is frozen once and its hash
-appears in `fixed_sha256`; the same bytes are used for both implementations.
+`fixed`: current tests, inputs, configuration and local dependencies. Files or
+directories such as `["tests","samples","pyproject.toml"]` are accepted;
+directories expand to regular files, including hidden files. Select only needed,
+permitted inputs. Root selection, Git internals, symlinks, empty directories and
+overlapping selections are rejected; traversal is bounded to 10,000 entries.
+Each leaf is frozen once, shared by both implementations and hashed in
+`fixed_sha256`.
 
 `vary`: explicit implementation **files** from each commit, not directories.
-Both lists are nonempty, canonical project-relative paths and must remain
-disjoint after expansion; fixed directories cannot contain varying files.
-Listed imports must resolve
-inside each copy. Launch with the project interpreter; checks reuse it by default
+Both lists must be nonempty, canonical project-relative and disjoint after
+expansion: fixed directories cannot contain varying files. Listed imports must
+resolve inside each copy. Launch with the project interpreter; checks reuse it
 (`--python` overrides this when necessary). Use unittest or installed pytest;
 other runtimes/custom runners require native isolated comparison instead.
 Pass the intended revision expressions directly: the helper resolves and reports
@@ -41,18 +45,16 @@ full commit IDs, so a separate hash-resolution call is unnecessary. `HEAD^` is
 only an example, not a rule for selecting the correct before implementation.
 
 Python 3.9+, POSIX; 20 MB snapshot budget, 30 seconds/check (`--timeout` up to 300),
-last 12,000 output characters. Project-local copies are cleaned; selected original
-contents and permission bits are checked, not every side effect. Detected original
-changes are reported, never silently restored. Trusted tests only, **not a sandbox**.
-The working-file total is checked before each read, so a known-over-budget file
-is rejected without reading it or starting comparisons. This is a snapshot-byte
-budget, not a total process-memory bound or protection against concurrent writes.
-JSON records revisions, fixed-file hashes and separate outputs/statuses. CLI exit
-0 means collected observations, **not proof**: inspect the assertion failure,
-after pass and provenance before claiming the fix.
+last 12,000 output characters. Copies are project-local and cleaned; selected
+original bytes/permissions are checked, not every side effect. Original changes
+are reported, never restored. Trusted tests only, **not a sandbox**. The byte
+budget rejects known-overflow working files before reading/comparing; it does
+not bound total memory or protect against concurrent writes. JSON retains
+revisions, leaf hashes and separate outputs/statuses. CLI exit 0 means collected
+observations, **not proof**: inspect the actual assertion failure, after pass,
+provenance, timeout and truncation fields before claiming the fix.
 
-Child-exit confirmation has a separate five-second cleanup wait. If exit remains
-unconfirmed, the CLI reports comparison-not-established (exit 2), not successful
-evidence; later comparisons do not run. An existing interruption/error still
-propagates. This is not an OS-level termination or descendant-containment guarantee;
-do not automatically retry while a previous process may remain.
+Child-exit confirmation has a separate five-second cleanup wait. Unconfirmed exit
+means comparison-not-established (CLI exit 2) and no later comparison; existing
+interruptions/errors propagate. Termination/descendant containment is not
+guaranteed: don't retry automatically while a previous process may remain.

@@ -10,6 +10,16 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Receipt follow-up candidate: the historical-comparison
+  [reference](../skills/receipt/references/existing-fix.md) now directs discovery
+  from the located regression/fix and their imports/input references, narrowing
+  further listings to unresolved paths. Applicable instructions, configuration
+  and cooperating code still require inspection; directory selection is not
+  evidence of input completeness. Existing helper constraints are condensed,
+  not removed, keeping reference length essentially unchanged. This addresses
+  the repeated inventory observed below; behavioral adoption and cost effects
+  of the new guidance are **not yet measured**. No executable helper change.
+
 - [Receipt directory model adoption](results/receipt-directory-model-01/README.md):
   the model selects `samples/` and uses the helper without reading its source;
   both original defects fail before and pass after. Recorded +3.03% tokens /
