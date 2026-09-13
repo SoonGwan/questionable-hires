@@ -50,3 +50,10 @@ After that correction, the complete local suite passed **419 tests in 174.634s**
 Skill metadata, catalog/document links, featured-language synchronization and
 whitespace validation also passed. The previous failed run remains recorded above;
 these author-suite timings are not a model performance comparison or hosted CI.
+
+Additional preflight: **19 helper tests / 0.632s** preserve a transient wrong
+display even after the final state recovers, and verify timeout cancellation of
+both owned overlapping tasks. A [three-case prospective model protocol](MOTHER-RETENTION-MODEL-01-PROTOCOL.md)
+freezes normal/clear/transient controls before execution. Its two native fixture
+tests pass with a nondefault method/state interface and nondefault queries.
+No new model outcome follows from these preflights.

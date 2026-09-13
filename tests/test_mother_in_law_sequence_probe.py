@@ -57,6 +57,51 @@ class ErrorSearch:
 
 
 class MotherInLawSequenceProbeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_retention_keeps_transient_fault_after_final_state_recovers(self):
+        class TemporarilyPublishesStale(GuardedSearch):
+            async def run(self, query, fetch):
+                generation = self.generation + 1
+                await super().run(query, fetch)
+                if generation < self.generation and self.result == 'seed result':
+                    self.result = query + ' result'
+
+        default = await asyncio.wait_for(probe.probe(
+            TemporarilyPublishesStale, 'run', 'result', 'old', 'new', None), 1)
+        self.assertTrue(all(c['passed'] for c in default))
+        cases = await asyncio.wait_for(probe.probe(
+            TemporarilyPublishesStale, 'run', 'result', 'old', 'new', None,
+            retain_while_pending=True), 1)
+        failed = next(c for c in cases if c['name'] == 'retain-normal-overlap')
+        self.assertFalse(failed['passed'])
+        self.assertEqual(failed['observed']['state'], 'new result')
+        self.assertEqual(failed['observed']['failed_checkpoints'], [{
+            'phase': 'completion', 'query': 'old', 'state': 'old result',
+            'expected_state': 'seed result'}])
+        self.assertTrue(all(c['passed'] for c in cases if c is not failed))
+
+    async def test_retention_timeout_cleans_owned_overlapping_tasks(self):
+        active, finished = [], []
+
+        class WaitsAfterReply(GuardedSearch):
+            async def run(self, query, fetch):
+                task = asyncio.current_task()
+                active.append(task)
+                try:
+                    await super().run(query, fetch)
+                    if self.generation > 1:
+                        await asyncio.Event().wait()
+                finally:
+                    finished.append(task)
+
+        with self.assertRaises(asyncio.TimeoutError):
+            await asyncio.wait_for(probe.sequence(
+                WaitsAfterReply, 'run', 'result', ['old', 'new'], [0, 1],
+                retain_while_pending=True), 0.05)
+        # The seed uses the sequence task; two subsequent calls are owned peers.
+        self.assertEqual(len(active), 3)
+        self.assertEqual(set(active), set(finished))
+        self.assertTrue(all(task.done() for task in active))
+
     def test_retention_cli_opt_in_preserves_failure_evidence(self):
         source = '''class Search:
     def __init__(self):
