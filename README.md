@@ -105,7 +105,7 @@ The installer includes optional, locally executed helpers. They require **Python
   Its optional [read-only context collector](skills/con-artist/references/python-context.md) accepts definition names or traceback-style `file.py:123` selectors and gathers enclosing definitions, ancestor instructions/configuration and conftest indexes without importing project code. Indexes guide inspection; they do not establish test behavior or complete dependency resolution.
 - **Necromancer:** focused current-line attribution and historical patches, including dirty/shallow-history limits. [Usage and limits](skills/necromancer/references/focused-history.md). It collects evidence; it does not decide whether old behavior is still needed.
 - **Friday:** reusable in-memory SQLite reader checks across migration and rollback states. [Usage and limits](skills/friday/references/sqlite-matrix.md). Query success is not production readiness; other database engines require their own evidence.
-- **Receipt:** frozen current assertions and selected support directories against two committed Python implementations, with per-file hashes, independent outputs and revision IDs. [Usage and limits](skills/receipt/references/existing-fix.md). The [first model check](benchmarks/RECEIPT-HELPER-01.md) is faster but uses more tokens than its preceding sample; no efficiency win is established.
+- **Receipt:** frozen current tests and support files against a committed or uncommitted Python fix, including regular `src/` packages without installing them. Records hashes, separate outputs and revision identities. [Usage and limits](skills/receipt/references/existing-fix.md). The [source-layout model check](benchmarks/results/receipt-src-model-01/README.md) adopts the helper with lower recorded costs, but unequal work, a capture gap and one task limit the claim; broad efficiency remains unproven.
 - **Exorcist:** bounded foreground probe execution with independent process deadlines and bounded captured logs. [Usage and limits](skills/exorcist/references/bounded-probe.md). The [first model check](benchmarks/EXORCIST-PROBE-RUNNER-01.md) uses the helper correctly but does not save resources.
 - **Mother-in-law:** controlled async success, recovery and stale-response checks, with optional same-run JSON evidence. [Interface and limits](skills/mother-in-law/SKILL.md). For compatible UI-less Python components only; existing project tests take precedence. Its async timeout does not interrupt blocking code or prove browser behavior.
 
@@ -129,15 +129,15 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 The earlier [candidate-development checkpoint](benchmarks/results/mother-in-law-fast-2026-09-12/README.md)
 is retained separately.
 
-**Latest combined check: the efficiency goal is not met.** The current
-[nine-task gate](benchmarks/BUNDLE-CURRENT-02-REVIEW.md), 18 fresh sessions at
-resource snapshot `e02c9bb`, used **10.33% more total tokens and 23.08% more summed
-process time** with skills. Eight of nine skill cells used more tokens and eight
-took longer. Some verification was stronger, but missing before evidence, a scope
-exception, an omitted history criterion and missing QA output remain in the
-accounting. This is an exposed single-repeat regression with unequal work, not
-proof of universal harm or benefit. These ratios of sums are not directly
-comparable to the original chart's equal-task mean ratios.
+**Latest reviewed combined check: the efficiency goal is not met.** The
+[nine-task gate 04](benchmarks/BUNDLE-CONTRACT-04-REVIEW.md), 18 fresh sessions at
+resource snapshot `9081dfa`, used **4.89% more total tokens and 13.17% less summed
+process time** with skills. Unequal extra work, scope/capture issues and
+overspecified QA assertions remain disclosed. This exposed single-repeat check
+is not a measurement of later resource edits or proof of universal harm/benefit.
+These ratios of sums are not directly comparable to the original chart's
+equal-task mean ratios. [Earlier adverse combined results](benchmarks/BUNDLE-CURRENT-02-REVIEW.md)
+remain preserved.
 
 **The chart below is the original experiment, not a measurement of today's files.** Later candidates have targeted checks, real HTTPX audits/design reviews, and this project's packaging repair recorded in [current candidate status](benchmarks/CURRENT-CANDIDATE-STATUS.md). Results are mixed: local helper gains do not automatically reduce model-session cost, and some comparisons perform unequal verification. Broad performance improvement remains unproven. Historical runs, including [nine-task screen 05](benchmarks/FAST-REGRESSION-05.md), remain available rather than being replaced by a favorable sample.
 

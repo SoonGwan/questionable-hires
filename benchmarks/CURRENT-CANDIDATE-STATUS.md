@@ -9,7 +9,34 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Evidence that determines the next work
+## Latest reviewed checkpoint — repository `e550dd3`
+
+These are different tasks and frozen resources, not one pooled benchmark. Percent
+changes compare skill with each report's own baseline. Favorable pairs do not
+supersede adverse results or prove the performance of later resource edits.
+
+| Evidence | Measured resource | Recorded tokens / time | Interpretation |
+| --- | --- | --- | --- |
+| [All-eight gate 04](BUNDLE-CONTRACT-04-REVIEW.md) | `9081dfa` | +4.89% / −13.17% | Latest reviewed combined gate; nine exposed tasks, 18 cells. Extra work, scope/capture issues and overspecified QA assertions remain. Overall efficiency target unmet. |
+| [Receipt source-layout transfer](results/receipt-src-model-01/README.md) | `53b2765` | −12.39% / −41.67% | New import-root option adopted; required before/after tests captured. One exposed authored task; unequal extra work and baseline's missing leading output prevent a general efficiency claim. |
+| [HTTPX duplicate-header audit 02](results/httpx-header-equality-02/README.md) | `89e4d61` | −5.40% / −32.42% | Native coverage-gap verification and helper integrity output adopted. Baseline scope violation and unequal checks remain; not equal-scope superiority. |
+| [HTTPX cookie design transfer](results/httpx-cookie-design-01/README.md) | `e267919` | +12.35% / −16.53% | Both preserve runtime contracts; different extra probes. Later Landlord discovery edit `6eb7690` is unmeasured. |
+| [Landlord decision checkpoint](results/landlord-decision-01/README.md) | `fee77ff` | +43.35% / +56.67% | Appropriate static review but increased costs; subsequent instructions do not rewrite this adverse result. |
+
+한국어: 최근 Receipt와 Con Artist의 개별 실험에는 비용 감소가 있었지만,
+작업량·범위·출력 기록 차이가 있어 일반적인 성능 향상으로 확정할 수 없다.
+최신 팀 전체 실험도 토큰 절감 목표를 충족하지 못했다. 아래의 이전 기록은
+당시 버전의 근거이며, 오늘의 파일로 다시 측정한 결과가 아니다.
+
+Recent native improvements, separate from those model percentages:
+[Receipt import-exit correction](RECEIPT-IMPORT-EXIT-01.md),
+[source-layout support](RECEIPT-SRC-01.md), and
+[installed helper execution](../docs/INSTALLATION-TEST.md#installed-helper-behavior-check--2026-09-13).
+The latest recorded full local suite passed **413 tests in 66.407 seconds** after
+the source-layout pair. This is not hosted-CI, remote-installation or model quality
+evidence. Historical billing/visibility observations below have not been rechecked.
+
+## Earlier evidence — preserved, not the latest resource snapshot
 
 - [Duplicate-header equality audit](results/httpx-header-equality-01/README.md),
   Con Artist `400c7c3`: both arms verify the coverage gap and a real failing
@@ -38,7 +65,7 @@ it has not established a broad 20–30% gain.
   not accepted equal-quality superiority. Name-only author repair verifies the
   cause. Later runner-method/failure-path guidance is not model-measured. N=1
   targeted synthetic task, not real-project or all-eight confirmation.
-- Latest [all-eight explicit-contract gate](results/bundle-contract-03/README.md),
+- Earlier [all-eight explicit-contract gate](results/bundle-contract-03/README.md),
   resources `557f012`: all 18 cells reviewed; **+16.17% tokens / −12.43% summed
   process time**. Core outcomes supported, one baseline scope violation and
   differing extra work retained. Exposed n=1 synthetic gate, not independent
@@ -90,9 +117,9 @@ it has not established a broad 20–30% gain.
   tokens / −39.99% time**. Targeted synthetic n=1 and baseline's broader integrity
   work limit attribution; this tradeoff is not accepted overall efficiency.
 
-## Current resource revisions and remaining gaps
+## Earlier resource checkpoint and remaining gaps
 
-Checked against Git at `1a7b72a`, with the Hostage candidate linked below. Entry/resource revisions are maintenance
+Historically checked against Git at `1a7b72a`, with the Hostage candidate linked below. This table is not today's resource inventory. Entry/resource revisions are maintenance
 identities, **not** necessarily the versions measured by linked experiments.
 The eight characters and automatic selection remain intact; helpers are optional.
 

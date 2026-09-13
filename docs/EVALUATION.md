@@ -27,4 +27,11 @@ Score correctness and scope separately. A correct diagnosis accompanied by unaut
 
 The automated suite checks installation, bundle construction, catalog structure, and fixture behavior. Actual independent Astra sessions have also been run: 24 three-arm comparisons, eight additional skill-only cases, and a separate three-run pilot. See the [report and execution evidence](../benchmarks/REPORT.md). These are small synthetic smoke tests, not a demonstration of broad superiority. Repeated trials and larger real-project tasks remain necessary before making performance claims.
 
-A separately preregistered 72-session, three-repeat comparison completed on September 11. See the [new report](../benchmarks/REPORT-2026-09-11.md), including strict criterion/scope failures, unknowns, resource increases and independent checks. Earlier smoke runs are excluded. Real-repository effectiveness remains unmeasured.
+A separately preregistered 72-session, three-repeat comparison completed on September 11. See the [historical report](../benchmarks/REPORT-2026-09-11.md), including strict criterion/scope failures, unknowns, resource increases and independent checks. Earlier smoke runs are excluded.
+
+Later work includes actual HTTPX source audits/design reviews and authored
+source-layout verification, not only the original synthetic smoke tasks. See the
+[reviewed candidate checkpoint](../benchmarks/CURRENT-CANDIDATE-STATUS.md) for both
+favorable and adverse results, measured revisions and outstanding all-eight goals.
+Real source does not make an author-selected task an organic issue or independent
+holdout. Broad real-developer effectiveness at lower cost remains unproven.
