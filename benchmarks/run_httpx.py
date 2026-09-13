@@ -25,12 +25,17 @@ AUTH_DESIGN_TASKS = {
 DIAGNOSIS_TASKS = {
     'redirect-auth': 'Diagnose this report against the HTTPX checkout: a GET with an explicit Authorization header follows a 302 from http://example.org/start to https://example.org:8443/end, but the redirected request has no Authorization. The reporter suspects a transport or cache issue because redirecting instead to https://example.org/end keeps it. Reproduce both outcomes locally without network access, identify the responsible mechanism, and recommend a safe next action. Include a same-origin normal control. Do not edit original source/tests, install dependencies, or globally disable credential protections.',
 }
+DECODER_TASKS = {
+    'text-finalization': 'Audit whether tests/test_decoders.py protects UTF-8 text-stream finalization when the stream ends with an incomplete multibyte sequence. Demonstrate sensitivity with one narrow isolated behavioral mutation. If coverage is missing, verify a focused assertion against correct and faulty behavior, including a valid multibyte sequence split across chunks as a normal control. If existing coverage detects the fault, identify the detecting check. Do not change original source or tests.',
+    'line-crlf-split': 'Audit whether tests/test_decoders.py protects a CRLF line ending split across response chunks. Demonstrate sensitivity with one narrow isolated behavioral mutation of the CR carry-over behavior. If existing coverage detects the fault, identify the detecting assertion without demanding another test; otherwise verify a focused assertion against correct and faulty behavior. Include nearby unsplit CRLF behavior. Do not change original source or tests.',
+}
 
 
 def select_profile(profile, requested=None):
     profiles = {'audit': ('con-artist', TASKS), 'design': ('landlord', DESIGN_TASKS),
                 'diagnosis': ('exorcist', DIAGNOSIS_TASKS),
-                'auth-design': ('landlord', AUTH_DESIGN_TASKS)}
+                'auth-design': ('landlord', AUTH_DESIGN_TASKS),
+                'decoder-audit': ('con-artist', DECODER_TASKS)}
     if profile not in profiles:
         raise ValueError('Unknown profile')
     skill, available = profiles[profile]
@@ -86,7 +91,7 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design'), default='audit')
+    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit'), default='audit')
     parser.add_argument('--case', action='append')
     parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
     parser.add_argument('--repeats', type=int, default=3)
@@ -118,6 +123,8 @@ def main():
                   'tests/client/test_auth.py::test_async_auth_reads_response_body',
                   'tests/client/test_auth.py::test_sync_auth',
                   'tests/client/test_auth.py::test_async_auth']
+    if args.profile == 'decoder-audit':
+        checks = ['tests/test_decoders.py']
     subprocess.run([str(python), '-B', '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
                     *checks], cwd=source, check=True, timeout=60)
     output = args.output.resolve()

@@ -19,6 +19,15 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_decoder_profile_does_not_change_prior_audits(self):
+        skill, tasks = runner.select_profile('decoder-audit')
+        self.assertEqual(skill, 'con-artist')
+        self.assertEqual(set(tasks), {'text-finalization', 'line-crlf-split'})
+        self.assertEqual(len(runner.make_schedule(tasks, ['baseline', 'skill'], 1)), 4)
+        self.assertEqual(runner.select_profile('audit'), ('con-artist', runner.TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('decoder-audit', ['asgi-head'])
+
     @classmethod
     def setUpClass(cls):
         temp = tempfile.TemporaryDirectory()
