@@ -327,3 +327,8 @@ generic prose without a demonstrated mechanism is not an established fix.
 [Exported execution records](results/bundle-contract-05/README.md) retain every
 cell and link the separate author replay. Earlier sections record review order;
 their then-pending statuses are superseded by this completed checkpoint only.
+
+Post-export repository validation passed **416 tests in 68.244 seconds**, plus
+catalog/document-link validation, featured localization synchronization check and
+whitespace checks. Exported metadata reconciles all 18 source records. This local
+validation is separate from the measured cells and hosted release verification.
