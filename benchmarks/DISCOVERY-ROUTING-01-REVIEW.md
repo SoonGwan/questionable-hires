@@ -5,6 +5,33 @@ Launch `3cbcd3e`, skill resource `07fa9e2`; see the
 four scheduled cells finish and original evidence is reconciled. No author test
 workloads or resource edits during model timing.
 
+The second, Store process launches at `a74f95c`: the intervening commit adds only
+the atomic baseline review. Skill resources and frozen task inputs are unchanged.
+Atomic scheduling ended without an account limit before Store was started.
+
+## Atomic export — skill
+
+Completed: **89,568 tokens / 87.526s**, six shell calls. Initial inventory includes
+root/nested instructions and target/tests/requirements; reads instructions and
+skill together, then known project files together. No repeated filename inventory
+or redundant keyword search appears. The extra read relative to baseline remains
+real skill-loading cost, not work to subtract from the recorded total.
+
+Streaming temporary output, replace-on-success and finally cleanup preserve the
+requested behavior. The new regression covers existing/absent destinations with
+both RuntimeError and KeyboardInterrupt, retaining original exception identity,
+non-UTF-8 old bytes and no extra directory entries. Baseline has only RuntimeError.
+Four original intended before AssertionErrors and the three-test/four-failure
+summary are captured; verbose headings have the same concatenation/partial-header
+diagnostic as baseline. All three unchanged after tests pass (0.005s), complete
+after summary. Original success/empty methods remain; only exporter/test change.
+
+Final diff is captured, not final status. No observed scope violation; raw/resource
+and inventory reconciliation/replay remain pending. This pair is adverse in both
+costs with unequal exception coverage. No proven routing efficiency gain or
+regression follows from one exposed pair; preserve it rather than retrying for
+lower numbers.
+
 ## Atomic export — baseline
 
 Completed: **83,380 tokens / 49.277s**, five shell calls. Initial inventory locates
