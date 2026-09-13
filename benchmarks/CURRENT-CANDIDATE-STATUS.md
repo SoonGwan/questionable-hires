@@ -14,7 +14,10 @@ it has not established a broad 20–30% gain.
 2026-09-14 local capability update: [Mother retention option](MOTHER-RETENTION-01.md)
 adds explicit success-path display checkpoints to the disposable component probe.
 Native fault/normal controls and CLI checks pass; model adoption and cost are
-unmeasured. Standalone project-test delivery still takes precedence.
+unmeasured. Standalone project-test delivery still takes precedence. Full local
+suite: 419 tests passed in 174.634s after correcting two startup-sensitive test
+deadlines; the initial failures and unchanged production deadlines are disclosed
+in that report. This is not hosted release verification.
 
 Later [Necromancer entrypoint candidate](NECROMANCER-ENTRY-01.md) consolidates
 decision guidance and moves conditional history procedures to its reference.

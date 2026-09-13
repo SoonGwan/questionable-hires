@@ -45,3 +45,8 @@ Both faults remain infinite and must be terminated. Assertions still require the
 correct mutant phase, incomplete/not-skipped classification, cleanup entry,
 termination status and absence of false cleanup success. Production helper
 deadlines and frozen model protocols/results are unchanged.
+
+After that correction, the complete local suite passed **419 tests in 174.634s**.
+Skill metadata, catalog/document links, featured-language synchronization and
+whitespace validation also passed. The previous failed run remains recorded above;
+these author-suite timings are not a model performance comparison or hosted CI.
