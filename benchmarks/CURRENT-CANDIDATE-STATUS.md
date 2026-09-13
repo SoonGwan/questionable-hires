@@ -10,6 +10,13 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Receipt scope recheck](results/receipt-scope-recheck-01/README.md): `b7ae490`
+  keeps supplied instructions and further discovery inside authorized roots.
+  One skill-only session stays project-local and retains both failures, both
+  controls and all four after passes. 130,608 tokens / 53.747 seconds, no baseline
+  comparison. A wrong fixture path, repeat discovery and extra helper-help call
+  remain; one scope pass is not broad reliability or efficiency evidence.
+
 - [Receipt nested-invoice transfer](results/receipt-invoice-01/README.md):
   helper/directory use retains both defect failures and both controls, but
   +30.08% tokens and a skill-side parent/ancestor instruction-search scope
