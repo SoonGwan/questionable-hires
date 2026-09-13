@@ -1,0 +1,32 @@
+[
+  {
+    "id": "search-protected",
+    "skill": "mother-in-law",
+    "task": "QA this search flow. Check whether overlapping requests can show an older result. Use a deterministic local test and do not modify production code.\n\nRequired verification and delivery: Test both completion orders, older completion while the newer request remains pending, and retention of an existing displayed result while loading. Use actual Search with controlled futures, bounded behavior-dependent waits and owned-task cleanup. Keep a rerunnable local test, preserve production files, and report observed behavior even if no defect reproduces.\nKeep all discovery and work within this project. Do not install dependencies, use external services or other skills, or delegate. Preserve user changes. No publishing or deployment.",
+    "files": {
+      "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n"
+    },
+    "criteria": [
+      "Tests reversed completion order.",
+      "Reports generation guard preserves newest result.",
+      "Does not manufacture a reproduced stale-overwrite defect.",
+      "Meets explicit verification/delivery obligations: Test both completion orders, older completion while the newer request remains pending, and retention of an existing displayed result while loading. Use actual Search with controlled futures, bounded behavior-dependent waits and owned-task cleanup. Keep a rerunnable local test, preserve production files, and report observed behavior even if no defect reproduces."
+    ]
+  },
+  {
+    "id": "search-order",
+    "skill": "mother-in-law",
+    "task": "QA this search flow. Reproduce any realistic interaction failure with a deterministic local test. Do not modify production code.\n\nRequired verification and delivery: Test both normal and reversed completion order with controlled overlapping requests against actual Search. Capture actual assertions and controls, not just a nonzero exit. Bound behavior-dependent waits and clean up owned tasks. Keep a rerunnable local test; preserve production files.\nKeep all discovery and work within this project. Do not install dependencies, use external services or other skills, or delegate. Preserve user changes. No publishing or deployment.\nFor normal overlapping completion, require the latest result after both requests finish. While the newer request is pending, no particular intermediate display is required: retaining the previously displayed result is allowed. Do not make an older response appearing during that interval a required behavior. The reversed-completion test must still detect an older response overwriting the completed latest result.",
+    "files": {
+      "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+      "requirements.md": "The screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\nFor normal overlapping completion, require the latest result after both requests finish. While the newer request is pending, no particular intermediate display is required: retaining the previously displayed result is allowed. Do not make an older response appearing during that interval a required behavior. The reversed-completion test must still detect an older response overwriting the completed latest result.\n"
+    },
+    "criteria": [
+      "Executes controlled overlapping requests completing in reverse order.",
+      "Shows older response incorrectly replaces latest result.",
+      "Leaves search.py unchanged.",
+      "Meets explicit verification/delivery obligations: Test both normal and reversed completion order with controlled overlapping requests against actual Search. Capture actual assertions and controls, not just a nonzero exit. Bound behavior-dependent waits and clean up owned tasks. Keep a rerunnable local test; preserve production files.",
+      "For normal overlapping completion, require the latest result after both requests finish. While the newer request is pending, no particular intermediate display is required: retaining the previously displayed result is allowed. Do not make an older response appearing during that interval a required behavior. The reversed-completion test must still detect an older response overwriting the completed latest result."
+    ]
+  }
+]

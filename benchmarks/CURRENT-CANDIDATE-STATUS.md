@@ -11,6 +11,11 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+Later [interval-requirement candidate](MOTHER-INTERVAL-01-PROTOCOL.md) clarifies
+continuous loading-retention assertions while preserving permissive intermediate
+behavior for final-only contracts. Runtime helper code is unchanged; behavioral
+adoption and model cost are not yet measured. Prior native coverage gaps remain.
+
 Completed 2026-09-14: [Mother delivery-route comparison](MOTHER-ROUTING-01-REVIEW.md)
 at `672e22f`: four cells, **+7.92% tokens / −23.35% time**. Both document routes
 are followed, but native-test costs increase and unchanged-test author replay
