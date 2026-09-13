@@ -1,0 +1,24 @@
+[
+  {
+    "id": "uncommitted-graph-fix",
+    "skill": "receipt",
+    "task": "Verify the already-present uncommitted planner.py fix against HEAD, without changing originals. Run all six current test_planner tests unchanged on HEAD implementation and working implementation in separate project-local copies. Within each test process, confirm planner.__file__ resolves inside that copy before executing the native unittest suite. Capture the actual cycle assertion failures before and passing controls, then all six after outcomes. Identify the before commit and the working implementation hash. Preserve planner.py, current test_planner.py and unrelated notes.txt. Delete your comparison copies before finishing; captured output is sufficient, no retained evidence directory is required. Do not commit, stash, reset, install dependencies or use external services. Follow requirements.md and project instructions.",
+    "files": {
+      "AGENTS.md": "Work only inside this project. Verification only; do not edit original files. Use Python standard library and unittest (-v test_planner). Keep scratch explicitly project-local and remove owned comparison copies before finishing.\n",
+      "requirements.md": "order(graph) returns dependencies before dependents once each, traversing graph keys and dependency lists in their insertion order. Graph nodes are strings; every dependency is also a key. Empty graphs are valid. Cycles must raise ValueError(\"cyclic dependency\"), not exhaust recursion. Deep acyclic graphs, missing-node policy and concurrent mutation are out of scope. The working fix already exists; this ticket asks only for retrospective verification with the same current tests.\n",
+      "planner.py": "def order(graph):\n    visited = set()\n    output = []\n    def visit(node):\n        if node in visited:\n            return\n        for dependency in graph[node]:\n            visit(dependency)\n        visited.add(node)\n        output.append(node)\n    for node in graph:\n        visit(node)\n    return output\n",
+      "notes.txt": "Old note.\n"
+    },
+    "working_files": {
+      "planner.py": "def order(graph):\n    visited = set()\n    output = []\n    active = set()\n    def visit(node):\n        if node in visited:\n            return\n        if node in active:\n            raise ValueError(\"cyclic dependency\")\n        active.add(node)\n        for dependency in graph[node]:\n            visit(dependency)\n        active.remove(node)\n        visited.add(node)\n        output.append(node)\n    for node in graph:\n        visit(node)\n    return output\n",
+      "test_planner.py": "import unittest\nimport planner\n\nclass GraphTests(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(planner.order({}), [])\n\n    def test_chain(self):\n        self.assertEqual(planner.order({\"ship\": [\"build\"], \"build\": [\"fetch\"], \"fetch\": []}),\n                         [\"fetch\", \"build\", \"ship\"])\n\n    def test_shared_dependency(self):\n        self.assertEqual(planner.order({\"ship\": [\"a\", \"b\"], \"a\": [\"base\"], \"b\": [\"base\"], \"base\": []}),\n                         [\"base\", \"a\", \"b\", \"ship\"])\n\n    def test_independent_order(self):\n        self.assertEqual(planner.order({\"b\": [], \"a\": []}), [\"b\", \"a\"])\n\n    def check_cycle(self, graph):\n        actual = None\n        try:\n            planner.order(graph)\n        except Exception as error:\n            actual = (type(error).__name__, str(error))\n        self.assertEqual(actual, (\"ValueError\", \"cyclic dependency\"))\n\n    def test_self_cycle(self):\n        self.check_cycle({\"a\": [\"a\"]})\n\n    def test_two_node_cycle(self):\n        self.check_cycle({\"a\": [\"b\"], \"b\": [\"a\"]})\n",
+      "notes.txt": "Unrelated user draft: preserve exactly.\n"
+    },
+    "criteria": [
+      "All six unchanged current tests execute on both implementations; before has two cycle assertion failures and four passes, after six passes.",
+      "Each native test process checks its implementation import belongs to its comparison copy.",
+      "Before commit and working implementation hash are identified; original working files remain unchanged.",
+      "Scratch is project-local and comparison copies removed; no commit/stash/reset/install/external actions."
+    ]
+  }
+]
