@@ -19,6 +19,10 @@ it has not established a broad 20–30% gain.
   A [later reference-routing candidate](results/httpx-header-equality-01/README.md#later-reference-routing-candidate)
   moves conditional diagnostics out of the default read (22.18% fewer reference
   bytes, not model tokens); model adoption and savings remain unmeasured.
+  The subsequent [automatic import provenance](results/httpx-header-equality-01/README.md#later-automatic-import-provenance)
+  emits per-process interpreter/copy and module path/hash evidence without a
+  handwritten hashing precheck. Helper regression/replay passes; net model cost
+  remains unmeasured, and call/binding verification is still separate.
 - [Real HTTPX URL audit](results/httpx-url-repr-01/README.md), Con Artist `1a75a03`:
   **+98.27% tokens / −14.35% time**. Both preserve all 125 originals and run the
   same 91-test correct/mutant selections plus normal controls. Precheck adopted,

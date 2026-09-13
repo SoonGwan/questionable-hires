@@ -16,16 +16,21 @@ import tempfile
 import time
 
 
-BOOTSTRAP = '''import importlib, json, pathlib, runpy, sys
+BOOTSTRAP = '''import hashlib, importlib, json, pathlib, runpy, sys
 spec = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
 sys.path.insert(0, str(root))
+print('Copied process:', json.dumps({'python': sys.executable, 'cwd': str(root)}, separators=(',', ':')), flush=True)
 for name in spec['imports']:
     module = importlib.import_module(name)
     location = getattr(module, '__file__', None)
     if not location or not pathlib.Path(location).resolve().is_relative_to(root):
         raise RuntimeError('Import escaped copy: ' + name + ': ' + str(location))
-    print('Verified copied import:', name, flush=True)
+    location = pathlib.Path(location).resolve()
+    print('Verified copied import:', name, json.dumps({
+        'path': str(location.relative_to(root)),
+        'sha256': hashlib.sha256(location.read_bytes()).hexdigest()
+    }, separators=(',', ':')), flush=True)
 if spec.get('precheck'):
     try:
         exec(compile(spec['precheck'], '<audit-precheck>', 'exec'), {'__name__': '__audit_precheck__'})

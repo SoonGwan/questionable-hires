@@ -44,6 +44,13 @@ For small, permitted package/test directories, select those directories plus req
 
 Each executed check gets a fresh project-local disposable copy with verified imports and the copy as its working directory. Batch mode can reuse successful correct-code observations as documented above. Listed imports execute before the selected test runner.
 
+Each check prints `Copied process:` (interpreter and absolute copy directory)
+and `Verified copied import:` (module, relative file path and SHA-256) in that
+same process. Reuse this provenance instead of writing another file-hashing
+precheck. These are imported-file observations, not proof of function execution,
+code-object identity or later fixture bindings; use `precheck`/native hooks when
+those are required. Provenance shares the output tail limit and can be truncated.
+
 The single-audit CLI emits JSON with `status` (`observed` or `incomplete`) and `checks`. Check keys are `correct_tests`, `mutant_tests` and, when run, `correct_probe`, `mutant_probe`. Each contains `exit_code`, `timed_out`, `output`, and `output_truncated`. Batch reuse references an earlier observation instead of duplicating its output, as described in batch mode. Inspect the actual failure in `output`; neither `observed` nor a nonzero mutant exit establishes coverage. `probe_skipped`, when present, explains unvalidated conditional probes; absent checks are not passes.
 
 Correct-code failure or timeout stops as incomplete. CLI exit 0 means observations collected; exit 2 means invalid/incomplete evidence (invalid input may produce only stderr). Selected original bytes and permission bits are checked and copies removed; detected original changes are reported, never silently restored. Output retains a 12,000-character tail per check; invalid UTF-8 is replaced. Timeout defaults to 30 seconds per check; `--timeout` allows at most 300.

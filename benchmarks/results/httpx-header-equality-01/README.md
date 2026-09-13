@@ -103,3 +103,33 @@ full repository **380 tests pass (52.455s)**. Skill validation, local links,
 featured synchronization and whitespace checks pass. An initial test-discovery
 pattern matched zero tests; it was not credited as validation and was replaced
 with the actual test_build.py suite and full discovery.
+
+## Later automatic import provenance
+
+After the reference-routing change, audit.py now emits the interpreter and copy
+directory once per check, and the relative resolved file path and SHA-256 of each
+listed imported module. Observations are emitted inside the test/probe process
+after import, before the optional precheck/runner. This moves repeated path/hash
+reporting from task-specific scripts into the reusable helper, following
+skill-creator's guidance to automate repeated deterministic work. It does not
+replace function code-object checks, caller-binding assertions or native hooks.
+An imported file hash is not proof that a particular function ran, and records
+share the existing output tail limit rather than bypassing it. Additional output
+and hashing have a cost; net model savings remain unmeasured.
+
+Author replay of the unchanged equality oracle still gives 27 pass on each native
+suite, stronger assertion pass on correct code and intended AssertionError on
+the mutant, with both normal controls passing. Each of four records points to its
+own project-local check directory. Correct checks report module SHA-256
+`e3ffc6bb2bf580bc6e6428708a6f247d036220e709f5a72b785392babbd97e6b`;
+mutant checks report
+`83979840b0a7a7fd70e53061d4315bd4e495cc01e1e5b0b441058a1e4a56f941`.
+These match the earlier baseline's independently emitted file hashes. This is
+helper compatibility evidence, not another model attempt or performance score.
+
+A new regression checks all four copy directories, the interpreter, relative
+module path, expected correct/mutant file hashes, cleanup and actual probe failure.
+Focused mutation tests: **63 pass (10.649s)**; packaged examples: **12 pass
+(2.905s)**. Automatic skill selection and fixture inputs are unchanged.
+Full repository: **381 tests pass (52.890s)**; skill validation, catalog/local
+links, featured synchronization and whitespace checks pass. Upstream remains clean.

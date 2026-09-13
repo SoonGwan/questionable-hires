@@ -1,4 +1,5 @@
 import copy
+import hashlib
 import json
 import importlib.util
 from pathlib import Path
@@ -16,6 +17,31 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_each_check_reports_its_copy_interpreter_and_actual_module_bytes(self):
+        original = (self.root / 'service.py').read_bytes()
+        faulty = original.replace(self.recipe['old'].encode(), self.recipe['new'].encode())
+        result = self.run_audit()
+        directories = set()
+        for name, check in result['checks'].items():
+            lines = check['output'].splitlines()
+            process = json.loads(next(line.removeprefix('Copied process: ')
+                                      for line in lines if line.startswith('Copied process: ')))
+            directory = Path(process['cwd'])
+            directories.add(directory)
+            self.assertTrue(directory.is_relative_to(self.root.resolve()))
+            self.assertEqual(Path(process['python']).resolve(), Path(sys.executable).resolve())
+            self.assertFalse(directory.exists(), 'Owned copy must be cleaned after observation')
+            module = json.loads(next(line.removeprefix('Verified copied import: service ')
+                                     for line in lines if line.startswith('Verified copied import: service ')))
+            self.assertEqual(module['path'], 'service.py')
+            expected = faulty if name.startswith('mutant') else original
+            self.assertEqual(module['sha256'], hashlib.sha256(expected).hexdigest())
+        self.assertEqual(len(directories), 4)
+        self.assertNotEqual(hashlib.sha256(original).hexdigest(), hashlib.sha256(faulty).hexdigest())
+        self.assertEqual(result['checks']['correct_probe']['exit_code'], 0)
+        self.assertEqual(result['checks']['mutant_probe']['exit_code'], 1)
+        self.assertIn('AssertionError', result['checks']['mutant_probe']['output'])
+
     def test_shadowed_unittest_fail_can_false_pass_and_independent_probe_exposes_it(self):
         source = ('import unittest\nfrom service import save\n'
                   'class Tests(unittest.TestCase):\n'
