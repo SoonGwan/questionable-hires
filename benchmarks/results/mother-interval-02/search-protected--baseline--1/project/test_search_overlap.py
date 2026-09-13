@@ -1,0 +1,93 @@
+"""Deterministic local QA: python3 -B -m unittest -v test_search_overlap.py."""
+
+import asyncio
+import unittest
+
+from search import Search
+
+
+TIMEOUT = 2.0
+
+
+class ControlledFetch:
+    def __init__(self, *queries):
+        loop = asyncio.get_running_loop()
+        self.futures = {query: loop.create_future() for query in queries}
+        self.started = {query: asyncio.Event() for query in queries}
+
+    async def __call__(self, query):
+        self.started[query].set()
+        return await self.futures[query]
+
+
+class SearchOverlapTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.search = Search()
+        self.fetch = ControlledFetch("existing", "older", "newer")
+        self.owned_tasks = []
+        self.addAsyncCleanup(self.cleanup_owned_work)
+
+    async def cleanup_owned_work(self):
+        # Only cancel work created by this test, including on assertion failure.
+        for task in self.owned_tasks:
+            if not task.done():
+                task.cancel()
+        for future in self.fetch.futures.values():
+            if not future.done():
+                future.cancel()
+        if self.owned_tasks:
+            await asyncio.wait_for(
+                asyncio.gather(*self.owned_tasks, return_exceptions=True),
+                TIMEOUT,
+            )
+
+    async def start(self, query):
+        task = asyncio.create_task(self.search.run(query, self.fetch))
+        self.owned_tasks.append(task)
+        # Wait for actual fetch entry, not an arbitrary sleep or scheduler guess.
+        await asyncio.wait_for(self.fetch.started[query].wait(), TIMEOUT)
+        self.assertFalse(task.done())
+        self.assertFalse(self.fetch.futures[query].done())
+        return task
+
+    async def complete(self, query, task):
+        self.fetch.futures[query].set_result(query + " result")
+        # Await Search.run itself so its result-assignment branch has executed.
+        await asyncio.wait_for(asyncio.shield(task), TIMEOUT)
+
+    async def prepare_overlap(self):
+        self.assertIsNone(self.search.result)
+        existing = await self.start("existing")
+        await self.complete("existing", existing)
+        self.assertEqual(self.search.result, "existing result")
+
+        older = await self.start("older")
+        self.assertEqual(self.search.result, "existing result")
+        newer = await self.start("newer")
+        self.assertEqual(self.search.result, "existing result")
+        self.assertFalse(older.done())
+        return older, newer
+
+    async def test_older_completes_while_newer_pending(self):
+        older, newer = await self.prepare_overlap()
+        await self.complete("older", older)
+        self.assertFalse(newer.done())
+        self.assertFalse(self.fetch.futures["newer"].done())
+        self.assertEqual(self.search.result, "existing result")
+
+        await self.complete("newer", newer)
+        self.assertEqual(self.search.result, "newer result")
+
+    async def test_newer_completes_before_older(self):
+        older, newer = await self.prepare_overlap()
+        await self.complete("newer", newer)
+        self.assertFalse(older.done())
+        self.assertFalse(self.fetch.futures["older"].done())
+        self.assertEqual(self.search.result, "newer result")
+
+        await self.complete("older", older)
+        self.assertEqual(self.search.result, "newer result")
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

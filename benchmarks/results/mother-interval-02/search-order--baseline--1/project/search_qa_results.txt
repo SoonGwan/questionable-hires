@@ -1,0 +1,56 @@
+test_normal_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests) ... [normal] CONTROL 'ca' entered fetch; response gated
+[normal] CONTROL 'cat' entered fetch; response gated
+[normal] ASSERT actual Search invoked both queries in order: actual=['ca', 'cat'], expected=['ca', 'cat']
+[normal] ASSERT both requests overlap before any response is released: actual=[False, False], expected=[False, False]
+[normal] CONTROL release 'ca' with 'results for ca'
+[normal] ASSERT 'ca' request finished: actual=True, expected=True
+[normal] ASSERT other request is still pending: actual=False, expected=False
+[normal] CONTROL release 'cat' with 'results for cat'
+[normal] ASSERT 'cat' request finished: actual=True, expected=True
+[normal] ASSERT both requests finished before final display assertion: actual=[True, True], expected=[True, True]
+[normal] ASSERT latest query result must remain visible after both finish: actual='results for cat', expected='results for cat'
+[normal] CLEANUP owned=2, done=2, pending=0
+ok
+test_reversed_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests) ... [reversed] CONTROL 'ca' entered fetch; response gated
+[reversed] CONTROL 'cat' entered fetch; response gated
+[reversed] ASSERT actual Search invoked both queries in order: actual=['ca', 'cat'], expected=['ca', 'cat']
+[reversed] ASSERT both requests overlap before any response is released: actual=[False, False], expected=[False, False]
+[reversed] CONTROL release 'cat' with 'results for cat'
+[reversed] ASSERT 'cat' request finished: actual=True, expected=True
+[reversed] ASSERT other request is still pending: actual=False, expected=False
+[reversed] ASSERT completed latest result is visible before older response: actual='results for cat', expected='results for cat'
+[reversed] CONTROL release 'ca' with 'results for ca'
+[reversed] ASSERT 'ca' request finished: actual=True, expected=True
+[reversed] ASSERT both requests finished before final display assertion: actual=[True, True], expected=[True, True]
+[reversed] ASSERT latest query result must remain visible after both finish: actual='results for ca', expected='results for cat'
+[reversed] CLEANUP owned=2, done=2, pending=0
+FAIL
+
+======================================================================
+FAIL: test_reversed_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 65, in _callTestMethod
+    self._callMaybeAsync(method)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 88, in _callMaybeAsync
+    return self._asyncioTestLoop.run_until_complete(fut)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 102, in _asyncioLoopRunner
+    ret = await awaitable
+  File "<WORKSPACE>/test_search_overlap.py", line 85, in test_reversed_completion_keeps_latest_result
+    await self.check_order("reversed")
+  File "<WORKSPACE>/test_search_overlap.py", line 61, in check_order
+    equal(search.result, values["cat"],
+  File "<WORKSPACE>/test_search_overlap.py", line 28, in equal
+    self.assertEqual(actual, expected, message)
+AssertionError: 'results for ca' != 'results for cat'
+- results for ca
++ results for cat
+?               +
+ : latest query result must remain visible after both finish
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.012s
+
+FAILED (failures=1)

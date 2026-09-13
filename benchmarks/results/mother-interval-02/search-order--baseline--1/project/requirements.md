@@ -1,0 +1,2 @@
+The screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.
+For normal overlapping completion, require the latest result after both requests finish. While the newer request is pending, no particular intermediate display is required: retaining the previously displayed result is allowed. Do not make an older response appearing during that interval a required behavior. The reversed-completion test must still detect an older response overwriting the completed latest result.

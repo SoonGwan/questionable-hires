@@ -1,0 +1,155 @@
+{
+  "kind": "separate post-timing author replay",
+  "checks": [
+    {
+      "case": "search-protected",
+      "arm": "baseline",
+      "variant": "original",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "output": "test_newer_completes_before_older (test_search_overlap.SearchOverlapTests) ... ok\ntest_older_completes_while_newer_pending (test_search_overlap.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.014s\n\nOK\n"
+    },
+    {
+      "case": "search-protected",
+      "arm": "baseline",
+      "variant": "transient",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n        self.completed_generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n            self.completed_generation = generation\n        if generation < self.generation and self.completed_generation < self.generation:\n            self.result = result\n",
+      "output": "test_newer_completes_before_older (test_search_overlap.SearchOverlapTests) ... ok\ntest_older_completes_while_newer_pending (test_search_overlap.SearchOverlapTests) ... FAIL\n\n======================================================================\nFAIL: test_older_completes_while_newer_pending (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search_overlap.py\", line 76, in test_older_completes_while_newer_pending\n    self.assertEqual(self.search.result, \"existing result\")\nAssertionError: 'older result' != 'existing result'\n- older result\n+ existing result\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.015s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "case": "search-protected",
+      "arm": "skill",
+      "variant": "original",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "output": "test_newer_completes_first_late_older_cannot_overwrite (test_search.SearchSequenceTests) ... ok\ntest_older_completes_while_newer_pending_retains_display (test_search.SearchSequenceTests) ... ok\ntest_single_request_retains_display_until_completion (test_search.SearchSequenceTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.017s\n\nOK\n"
+    },
+    {
+      "case": "search-protected",
+      "arm": "skill",
+      "variant": "transient",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n        self.completed_generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n            self.completed_generation = generation\n        if generation < self.generation and self.completed_generation < self.generation:\n            self.result = result\n",
+      "output": "test_newer_completes_first_late_older_cannot_overwrite (test_search.SearchSequenceTests) ... ok\ntest_older_completes_while_newer_pending_retains_display (test_search.SearchSequenceTests) ... FAIL\ntest_single_request_retains_display_until_completion (test_search.SearchSequenceTests) ... ok\n\n======================================================================\nFAIL: test_older_completes_while_newer_pending_retains_display (test_search.SearchSequenceTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search.py\", line 75, in test_older_completes_while_newer_pending_retains_display\n    self.assertEqual(\nAssertionError: 'older result' != 'existing result'\n- older result\n+ existing result\n : older completion must retain the display while latest is pending\n\n----------------------------------------------------------------------\nRan 3 tests in 0.017s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "case": "search-order",
+      "arm": "baseline",
+      "variant": "original",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+      "output": "[normal] CONTROL 'ca' entered fetch; response gated\n[normal] CONTROL 'cat' entered fetch; response gated\n[normal] ASSERT actual Search invoked both queries in order: actual=['ca', 'cat'], expected=['ca', 'cat']\n[normal] ASSERT both requests overlap before any response is released: actual=[False, False], expected=[False, False]\n[normal] CONTROL release 'ca' with 'results for ca'\n[normal] ASSERT 'ca' request finished: actual=True, expected=True\n[normal] ASSERT other request is still pending: actual=False, expected=False\n[normal] CONTROL release 'cat' with 'results for cat'\n[normal] ASSERT 'cat' request finished: actual=True, expected=True\n[normal] ASSERT both requests finished before final display assertion: actual=[True, True], expected=[True, True]\n[normal] ASSERT latest query result must remain visible after both finish: actual='results for cat', expected='results for cat'\n[normal] CLEANUP owned=2, done=2, pending=0\n[reversed] CONTROL 'ca' entered fetch; response gated\n[reversed] CONTROL 'cat' entered fetch; response gated\n[reversed] ASSERT actual Search invoked both queries in order: actual=['ca', 'cat'], expected=['ca', 'cat']\n[reversed] ASSERT both requests overlap before any response is released: actual=[False, False], expected=[False, False]\n[reversed] CONTROL release 'cat' with 'results for cat'\n[reversed] ASSERT 'cat' request finished: actual=True, expected=True\n[reversed] ASSERT other request is still pending: actual=False, expected=False\n[reversed] ASSERT completed latest result is visible before older response: actual='results for cat', expected='results for cat'\n[reversed] CONTROL release 'ca' with 'results for ca'\n[reversed] ASSERT 'ca' request finished: actual=True, expected=True\n[reversed] ASSERT both requests finished before final display assertion: actual=[True, True], expected=[True, True]\n[reversed] ASSERT latest query result must remain visible after both finish: actual='results for ca', expected='results for cat'\n[reversed] CLEANUP owned=2, done=2, pending=0\ntest_normal_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests) ... ok\ntest_reversed_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests) ... FAIL\n\n======================================================================\nFAIL: test_reversed_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search_overlap.py\", line 85, in test_reversed_completion_keeps_latest_result\n    await self.check_order(\"reversed\")\n  File \"<REPLAY>/test_search_overlap.py\", line 61, in check_order\n    equal(search.result, values[\"cat\"],\n  File \"<REPLAY>/test_search_overlap.py\", line 28, in equal\n    self.assertEqual(actual, expected, message)\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : latest query result must remain visible after both finish\n\n----------------------------------------------------------------------\nRan 2 tests in 0.011s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "case": "search-order",
+      "arm": "baseline",
+      "variant": "guarded",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "output": "[normal] CONTROL 'ca' entered fetch; response gated\n[normal] CONTROL 'cat' entered fetch; response gated\n[normal] ASSERT actual Search invoked both queries in order: actual=['ca', 'cat'], expected=['ca', 'cat']\n[normal] ASSERT both requests overlap before any response is released: actual=[False, False], expected=[False, False]\n[normal] CONTROL release 'ca' with 'results for ca'\n[normal] ASSERT 'ca' request finished: actual=True, expected=True\n[normal] ASSERT other request is still pending: actual=False, expected=False\n[normal] CONTROL release 'cat' with 'results for cat'\n[normal] ASSERT 'cat' request finished: actual=True, expected=True\n[normal] ASSERT both requests finished before final display assertion: actual=[True, True], expected=[True, True]\n[normal] ASSERT latest query result must remain visible after both finish: actual='results for cat', expected='results for cat'\n[normal] CLEANUP owned=2, done=2, pending=0\n[reversed] CONTROL 'ca' entered fetch; response gated\n[reversed] CONTROL 'cat' entered fetch; response gated\n[reversed] ASSERT actual Search invoked both queries in order: actual=['ca', 'cat'], expected=['ca', 'cat']\n[reversed] ASSERT both requests overlap before any response is released: actual=[False, False], expected=[False, False]\n[reversed] CONTROL release 'cat' with 'results for cat'\n[reversed] ASSERT 'cat' request finished: actual=True, expected=True\n[reversed] ASSERT other request is still pending: actual=False, expected=False\n[reversed] ASSERT completed latest result is visible before older response: actual='results for cat', expected='results for cat'\n[reversed] CONTROL release 'ca' with 'results for ca'\n[reversed] ASSERT 'ca' request finished: actual=True, expected=True\n[reversed] ASSERT both requests finished before final display assertion: actual=[True, True], expected=[True, True]\n[reversed] ASSERT latest query result must remain visible after both finish: actual='results for cat', expected='results for cat'\n[reversed] CLEANUP owned=2, done=2, pending=0\ntest_normal_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests) ... ok\ntest_reversed_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.011s\n\nOK\n"
+    },
+    {
+      "case": "search-order",
+      "arm": "skill",
+      "variant": "original",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "tests"
+      ],
+      "exit_code": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+      "output": "\nCONTROL normal: c and cat both entered fetch and are pending\nASSERT normal after both finish: expected='latest result', actual='latest result'\n\nCONTROL reversed: c and cat both entered fetch and are pending\nASSERT latest completed, older pending: expected='latest result', actual='latest result'\nASSERT reversed after both finish: expected='latest result', actual='older result'\ntest_normal_completion_latest_visible_after_both_finish (test_search.SearchOverlapTests) ... ok\ntest_reversed_completion_older_cannot_overwrite_latest (test_search.SearchOverlapTests) ... FAIL\n\n======================================================================\nFAIL: test_reversed_completion_older_cannot_overwrite_latest (test_search.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/tests/test_search.py\", line 75, in test_reversed_completion_older_cannot_overwrite_latest\n    self.assertEqual(self.search.result, \"latest result\")\nAssertionError: 'older result' != 'latest result'\n- older result\n+ latest result\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "case": "search-order",
+      "arm": "skill",
+      "variant": "guarded",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "tests"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "output": "\nCONTROL normal: c and cat both entered fetch and are pending\nASSERT normal after both finish: expected='latest result', actual='latest result'\n\nCONTROL reversed: c and cat both entered fetch and are pending\nASSERT latest completed, older pending: expected='latest result', actual='latest result'\nASSERT reversed after both finish: expected='latest result', actual='latest result'\ntest_normal_completion_latest_visible_after_both_finish (test_search.SearchOverlapTests) ... ok\ntest_reversed_completion_older_cannot_overwrite_latest (test_search.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nOK\n"
+    }
+  ],
+  "original_projects_unchanged": true,
+  "all_matched": true
+}

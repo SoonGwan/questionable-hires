@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!'\"\\\\.git' -g '\"'!*lock*'\"'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la; git status --short; cat search.py requirements.md; rg --files --hidden -g 'AGENTS.md' -g '\"'!'\"\\\\.git'\"",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 14 03:13 .\ndrwx------@  3 admin  staff   96 Sep 14 03:13 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 14 03:13 .git\n-rw-r--r--@  1 admin  staff  561 Sep 14 03:13 requirements.md\n-rw-r--r--@  1 admin  staff  145 Sep 14 03:13 search.py\nclass Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\nThe screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\nFor normal overlapping completion, require the latest result after both requests finish. While the newer request is pending, no particular intermediate display is required: retaining the previously displayed result is allowed. Do not make an older response appearing during that interval a required behavior. The reversed-completion test must still detect an older response overwriting the completed latest result.\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest -v test_search_overlap.py > search_qa_results.txt 2>&1\nqa_status=$?\ncat search_qa_results.txt\nexit \"$qa_status\"'",
+    "aggregated_output": "test_normal_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests) ... [normal] CONTROL 'ca' entered fetch; response gated\n[normal] CONTROL 'cat' entered fetch; response gated\n[normal] ASSERT actual Search invoked both queries in order: actual=['ca', 'cat'], expected=['ca', 'cat']\n[normal] ASSERT both requests overlap before any response is released: actual=[False, False], expected=[False, False]\n[normal] CONTROL release 'ca' with 'results for ca'\n[normal] ASSERT 'ca' request finished: actual=True, expected=True\n[normal] ASSERT other request is still pending: actual=False, expected=False\n[normal] CONTROL release 'cat' with 'results for cat'\n[normal] ASSERT 'cat' request finished: actual=True, expected=True\n[normal] ASSERT both requests finished before final display assertion: actual=[True, True], expected=[True, True]\n[normal] ASSERT latest query result must remain visible after both finish: actual='results for cat', expected='results for cat'\n[normal] CLEANUP owned=2, done=2, pending=0\nok\ntest_reversed_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests) ... [reversed] CONTROL 'ca' entered fetch; response gated\n[reversed] CONTROL 'cat' entered fetch; response gated\n[reversed] ASSERT actual Search invoked both queries in order: actual=['ca', 'cat'], expected=['ca', 'cat']\n[reversed] ASSERT both requests overlap before any response is released: actual=[False, False], expected=[False, False]\n[reversed] CONTROL release 'cat' with 'results for cat'\n[reversed] ASSERT 'cat' request finished: actual=True, expected=True\n[reversed] ASSERT other request is still pending: actual=False, expected=False\n[reversed] ASSERT completed latest result is visible before older response: actual='results for cat', expected='results for cat'\n[reversed] CONTROL release 'ca' with 'results for ca'\n[reversed] ASSERT 'ca' request finished: actual=True, expected=True\n[reversed] ASSERT both requests finished before final display assertion: actual=[True, True], expected=[True, True]\n[reversed] ASSERT latest query result must remain visible after both finish: actual='results for ca', expected='results for cat'\n[reversed] CLEANUP owned=2, done=2, pending=0\nFAIL\n\n======================================================================\nFAIL: test_reversed_completion_keeps_latest_result (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<WORKSPACE>/test_search_overlap.py\", line 85, in test_reversed_completion_keeps_latest_result\n    await self.check_order(\"reversed\")\n  File \"<WORKSPACE>/test_search_overlap.py\", line 61, in check_order\n    equal(search.result, values[\"cat\"],\n  File \"<WORKSPACE>/test_search_overlap.py\", line 28, in equal\n    self.assertEqual(actual, expected, message)\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : latest query result must remain visible after both finish\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nFAILED (failures=1)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --exit-code -- search.py requirements.md\ngit status --short'",
+    "aggregated_output": "?? search_qa_results.txt\n?? test_search_overlap.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]
