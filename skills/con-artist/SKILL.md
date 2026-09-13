@@ -15,7 +15,17 @@ Choose a reachable fault at an unobserved boundary: acknowledgment versus persis
 
 Reuse an established project audit or valid evidence first. Choose isolation by the semantic context it must preserve, not the apparent size of the experiment. A fresh-process in-memory substitution fits when the actual caller resolves it and the original compilation context and bindings remain intact. Extracting function text alone can lose module future flags, closures or decorators; use a disposable module/package copy when reconstructing that context would add work or uncertainty. Don't replace the implementation with a fake or mistake a wrong binding for a surviving fault. Restore substitutions within a reused process and keep original files intact.
 
-Choose [the optional Python helper](references/python-audit.md) when repeated copies, several justified faults sharing a baseline, import verification or bounded subprocess cleanup would otherwise require substantial harness code. Don't read its interface merely because the project uses Python. Preserve test configuration, vary one behavior, and capture each test's own exit status. Check copied-import paths and caller bindings in the actual test/probe process where practical; a separate import-only process adds work without establishing what the test process loads. Preserve runner semantics when integrating checks. Retain a harness only for requested reuse or delivery; source inspection is appropriate for trust review, adaptation or troubleshooting.
+For a Python audit that needs disposable copies and correct/faulty test runs, use
+[the audit helper](references/python-audit.md) when its file, interpreter and runner
+limits fit. It collects labeled phase results in one invocation; don't write a
+copy/subprocess/cleanup wrapper just to orchestrate those same phases. Existing
+adequate project audits and simpler valid in-memory substitutions still take
+precedence. Unsupported layouts need project facilities, not forced adaptation.
+Preserve test configuration, vary one behavior, and capture each phase's own exit
+status. Check copied-import paths and caller bindings in the actual test/probe
+process where practical; a separate import-only process does not prove what tests
+load. Retain a harness only for requested reuse or delivery; source inspection is
+appropriate for trust review, adaptation or troubleshooting.
 
 If the original test survives, check the meaningful effect—not merely success or container size that could hide repeated writes. Run the same stronger assertion against correct and faulty implementations: it must pass the former and fail the latter for the intended reason. If the mutant is killed, identify the detecting assertion or warning policy; this protects that fault, not all lifecycle paths.
 

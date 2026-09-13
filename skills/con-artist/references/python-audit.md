@@ -19,6 +19,10 @@ JSON
 
 `files` selects relative files/directories including needed configuration. `imports` must include the affected implementation and resolve inside each copy. `old` must match `target` exactly once. `tests` supplies arguments for unittest or already-installed pytest. Optional `probe` is the same stronger assertion code for correct/faulty versions, not a replacement implementation. Omit it when only checking existing protection.
 
+For pytest, list implementation modules in `imports`, not selected test modules:
+pre-importing tests bypasses pytest's assertion rewriting and can lose useful
+expected/observed diagnostics. Let pytest collect its tests normally.
+
 For a stronger assertion or conditional probe execution, read [probe execution](python-audit-advanced.md#stronger-probes). For several already-justified faults with one reusable baseline, read [batch mode](python-audit-advanced.md#several-already-justified-faults-one-baseline). Neither mode is needed just to assess one existing test against one fault.
 
 For small, permitted package/test directories, select those directories plus required configuration rather than reconstructing their import dependencies file by file merely to minimize copy size. Directory selection preserves fixtures and support modules. Narrow the selection when size, scope, sensitive data or incompatible contents require it; do not copy a repository root, environment or unrelated data indiscriminately. The helper enforces its 20 MB input limit before execution.
