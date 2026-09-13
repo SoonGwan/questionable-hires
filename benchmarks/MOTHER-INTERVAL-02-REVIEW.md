@@ -41,3 +41,19 @@ retain these errors; a completed turn does not erase them.
 This pair alone is **−14.12% recorded tokens / +152.80% wall time** relative to its
 fresh baseline. Not an efficiency acceptance or completed experiment. Remaining
 final-only cells and separate post-timing fault/valid-fix checks are pending.
+
+## Final-only search — baseline
+
+Completed: **84,926 tokens / 56.641 seconds**, four shell calls. Adds
+test_search_overlap.py and search_qa_results.txt. Two actual Search tests: normal
+completion passes, reversed completion fails with `results for ca` versus
+`results for cat` (0.012s). Intermediate normal display is not constrained;
+reversed first/final ownership is asserted. One-second controlled waits and
+owned-task cleanup; source/requirements Git diff unchanged. Captured output
+includes controls, assertion values and native failure trace/summary. No capture
+warning or observed scope deviation. Exact exported-output reconciliation remains.
+
+The final suggested unittest invocation is executed inside a shell wrapper that
+also saves/cats output and preserves its exit status; the final answer omits that
+logging wrapper. This is a rerunnable native command, not a byte-identical whole
+shell payload. Baseline alone adds a saved output artifact in this pair.
