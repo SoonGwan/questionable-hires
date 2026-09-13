@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'package.json' -g '*Search*' -g '*search*' -g '*transport*' -g '*lock*'; git status --short\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\ntransport.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git/**'\"'; cat search.py transport.py\"",
+    "aggregated_output": "search.py\ntransport.py\nclass Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\nasync def fetch(query, request):\n    return await request('/search', params={'q': query}, headers={'Cache-Control': 'no-cache'})\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; git diff -- search.py transport.py; python3 --version'",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 13 19:25 .\ndrwx------@  3 admin  staff   96 Sep 13 19:25 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 13 19:25 .git\n-rw-r--r--@  1 admin  staff  145 Sep 13 19:25 search.py\n-rw-r--r--@  1 admin  staff  129 Sep 13 19:25 transport.py\nPython 3.9.6\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B experiments/search_race.py > experiments/search_race_results.json'",
+    "aggregated_output": "",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat experiments/search_race_results.json; git status --short; git diff --exit-code -- search.py transport.py'",
+    "aggregated_output": "{\n  \"experiment\": \"actual Search and transport; controlled cache-free request stub\",\n  \"wait_timeout_seconds\": 2,\n  \"production_sha256_before\": {\n    \"search.py\": \"b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea\",\n    \"transport.py\": \"937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2\"\n  },\n  \"production_sha256_after\": {\n    \"search.py\": \"b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea\",\n    \"transport.py\": \"937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2\"\n  },\n  \"cases\": [\n    {\n      \"case\": \"normal\",\n      \"latest_started_query\": \"newer query\",\n      \"recorded_requests\": [\n        {\n          \"path\": \"/search\",\n          \"params\": {\n            \"q\": \"older query\"\n          },\n          \"headers\": {\n            \"Cache-Control\": \"no-cache\"\n          }\n        },\n        {\n          \"path\": \"/search\",\n          \"params\": {\n            \"q\": \"newer query\"\n          },\n          \"headers\": {\n            \"Cache-Control\": \"no-cache\"\n          }\n        }\n      ],\n      \"completion_order\": [\n        \"older query\",\n        \"newer query\"\n      ],\n      \"result_after_each_completion\": [\n        {\n          \"completed_query\": \"older query\",\n          \"search_result\": {\n            \"query\": \"older query\",\n            \"items\": [\n              \"result for older query\"\n            ]\n          }\n        },\n        {\n          \"completed_query\": \"newer query\",\n          \"search_result\": {\n            \"query\": \"newer query\",\n            \"items\": [\n              \"result for newer query\"\n            ]\n          }\n        }\n      ],\n      \"final_result_is_stale\": false\n    },\n    {\n      \"case\": \"reversed\",\n      \"latest_started_query\": \"newer query\",\n      \"recorded_requests\": [\n        {\n          \"path\": \"/search\",\n          \"params\": {\n            \"q\": \"older query\"\n          },\n          \"headers\": {\n            \"Cache-Control\": \"no-cache\"\n          }\n        },\n        {\n          \"path\": \"/search\",\n          \"params\": {\n            \"q\": \"newer query\"\n          },\n          \"headers\": {\n            \"Cache-Control\": \"no-cache\"\n          }\n        }\n      ],\n      \"completion_order\": [\n        \"newer query\",\n        \"older query\"\n      ],\n      \"result_after_each_completion\": [\n        {\n          \"completed_query\": \"newer query\",\n          \"search_result\": {\n            \"query\": \"newer query\",\n            \"items\": [\n              \"result for newer query\"\n            ]\n          }\n        },\n        {\n          \"completed_query\": \"older query\",\n          \"search_result\": {\n            \"query\": \"older query\",\n            \"items\": [\n              \"result for older query\"\n            ]\n          }\n        }\n      ],\n      \"final_result_is_stale\": true\n    }\n  ],\n  \"checks_passed\": true\n}\n?? experiments/\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

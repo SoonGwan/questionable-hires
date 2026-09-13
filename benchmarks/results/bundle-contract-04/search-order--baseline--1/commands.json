@@ -1,0 +1,50 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!dist'\"' -g '\"'!*lock*'\"' -g '\"'!'\"\\\\.git'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; find .. -name AGENTS.md -print'",
+    "aggregated_output": "",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"cat search.py requirements.md; rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"'\"",
+    "aggregated_output": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\nThe screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\nsearch.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'mkdir -p qa; shasum -a 256 search.py requirements.md; python3 --version'",
+    "aggregated_output": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea  search.py\n369fc267423af64f55359324c33516352e40bdc7ed6467df7f8596e48bab620f  requirements.md\nPython 3.9.6\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s qa -v > qa/search-overlap-results.txt 2>&1\nresult=$?\ncat qa/search-overlap-results.txt\nexit \"$result\"'",
+    "aggregated_output": "test_normal_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests) ... order=('ca', 'cat') stage=overlap controls passed calls=['ca', 'cat'] done={'ca': False, 'cat': False} displayed=None\norder=('ca', 'cat') stage=first response assertions passed calls=['ca', 'cat'] done={'ca': True, 'cat': False} displayed='results for ca'\norder=('ca', 'cat') stage=before latest-query assertion calls=['ca', 'cat'] done={'ca': True, 'cat': True} displayed='results for cat'\nok\ntest_reversed_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests) ... order=('cat', 'ca') stage=overlap controls passed calls=['ca', 'cat'] done={'ca': False, 'cat': False} displayed=None\norder=('cat', 'ca') stage=first response assertions passed calls=['ca', 'cat'] done={'ca': False, 'cat': True} displayed='results for cat'\norder=('cat', 'ca') stage=before latest-query assertion calls=['ca', 'cat'] done={'ca': True, 'cat': True} displayed='results for ca'\nFAIL\n\n======================================================================\nFAIL: test_reversed_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<WORKSPACE>/qa/test_search_overlap.py\", line 88, in test_reversed_completion_keeps_latest_query\n    await self.check_completion_order((\"cat\", \"ca\"))\n  File \"<WORKSPACE>/qa/test_search_overlap.py\", line 64, in check_completion_order\n    self.assertEqual(\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : Latest query 'cat' must remain displayed after both requests finish; completion order was ('cat', 'ca')\n\n----------------------------------------------------------------------\nRan 2 tests in 0.015s\n\nFAILED (failures=1)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_10",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'shasum -a 256 search.py requirements.md; git diff --exit-code -- search.py requirements.md; git status --short'",
+    "aggregated_output": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea  search.py\n369fc267423af64f55359324c33516352e40bdc7ed6467df7f8596e48bab620f  requirements.md\n?? qa/\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

@@ -1,0 +1,176 @@
+{
+  "kind": "author replay after all model timing; not model evidence",
+  "cells": [
+    {
+      "cell": "persistence-test--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 66742,
+      "elapsed_seconds": 57.093
+    },
+    {
+      "cell": "search-protected--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 83134,
+      "elapsed_seconds": 63.577
+    },
+    {
+      "cell": "boundary-fix--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 84469,
+      "elapsed_seconds": 33.408
+    },
+    {
+      "cell": "search-diagnosis--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 71858,
+      "elapsed_seconds": 63.446
+    },
+    {
+      "cell": "formatter-review--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 62768,
+      "elapsed_seconds": 26.847
+    },
+    {
+      "cell": "persistence-test--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 119944,
+      "elapsed_seconds": 45.794
+    },
+    {
+      "cell": "search-protected--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 90533,
+      "elapsed_seconds": 74.696
+    },
+    {
+      "cell": "search-order--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 107600,
+      "elapsed_seconds": 76.477
+    },
+    {
+      "cell": "formatter-review--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 66876,
+      "elapsed_seconds": 30.827
+    },
+    {
+      "cell": "search-order--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 103275,
+      "elapsed_seconds": 90.575
+    },
+    {
+      "cell": "search-diagnosis--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 103376,
+      "elapsed_seconds": 94.733
+    },
+    {
+      "cell": "boundary-fix--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 80174,
+      "elapsed_seconds": 32.044
+    },
+    {
+      "cell": "necessary-state--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 66388,
+      "elapsed_seconds": 70.532
+    },
+    {
+      "cell": "history-active--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 68604,
+      "elapsed_seconds": 28.326
+    },
+    {
+      "cell": "rolling-schema--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 89533,
+      "elapsed_seconds": 54.134
+    },
+    {
+      "cell": "rolling-schema--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 103827,
+      "elapsed_seconds": 93.813
+    },
+    {
+      "cell": "history-active--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 63772,
+      "elapsed_seconds": 26.759
+    },
+    {
+      "cell": "necessary-state--skill--1",
+      "usage_events_resources_reconciled": true,
+      "total_tokens": 69925,
+      "elapsed_seconds": 75.647
+    }
+  ],
+  "replays": [
+    {
+      "cell": "search-order--baseline--1",
+      "variant": "original",
+      "exit_code": 1,
+      "output": "order=('ca', 'cat') stage=overlap controls passed calls=['ca', 'cat'] done={'ca': False, 'cat': False} displayed=None\norder=('ca', 'cat') stage=first response assertions passed calls=['ca', 'cat'] done={'ca': True, 'cat': False} displayed='results for ca'\norder=('ca', 'cat') stage=before latest-query assertion calls=['ca', 'cat'] done={'ca': True, 'cat': True} displayed='results for cat'\norder=('cat', 'ca') stage=overlap controls passed calls=['ca', 'cat'] done={'ca': False, 'cat': False} displayed=None\norder=('cat', 'ca') stage=first response assertions passed calls=['ca', 'cat'] done={'ca': False, 'cat': True} displayed='results for cat'\norder=('cat', 'ca') stage=before latest-query assertion calls=['ca', 'cat'] done={'ca': True, 'cat': True} displayed='results for ca'\ntest_normal_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests) ... ok\ntest_reversed_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests) ... FAIL\n\n======================================================================\nFAIL: test_reversed_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/qa/test_search_overlap.py\", line 88, in test_reversed_completion_keeps_latest_query\n    await self.check_completion_order((\"cat\", \"ca\"))\n  File \"<REPLAY>/qa/test_search_overlap.py\", line 64, in check_completion_order\n    self.assertEqual(\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : Latest query 'cat' must remain displayed after both requests finish; completion order was ('cat', 'ca')\n\n----------------------------------------------------------------------\nRan 2 tests in 0.013s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-order--baseline--1",
+      "variant": "guarded",
+      "exit_code": 1,
+      "output": "order=('ca', 'cat') stage=overlap controls passed calls=['ca', 'cat'] done={'ca': False, 'cat': False} displayed=None\norder=('cat', 'ca') stage=overlap controls passed calls=['ca', 'cat'] done={'ca': False, 'cat': False} displayed=None\norder=('cat', 'ca') stage=first response assertions passed calls=['ca', 'cat'] done={'ca': False, 'cat': True} displayed='results for cat'\norder=('cat', 'ca') stage=before latest-query assertion calls=['ca', 'cat'] done={'ca': True, 'cat': True} displayed='results for cat'\ntest_normal_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests) ... FAIL\ntest_reversed_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests) ... ok\n\n======================================================================\nFAIL: test_normal_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/qa/test_search_overlap.py\", line 85, in test_normal_completion_keeps_latest_query\n    await self.check_completion_order((\"ca\", \"cat\"))\n  File \"<REPLAY>/qa/test_search_overlap.py\", line 56, in check_completion_order\n    self.assertEqual(search.result, values[first])\nAssertionError: None != 'results for ca'\n\n----------------------------------------------------------------------\nRan 2 tests in 0.013s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-order--baseline--1",
+      "variant": "original-contract-only",
+      "exit_code": 1,
+      "output": "order=('ca', 'cat') stage=overlap controls passed calls=['ca', 'cat'] done={'ca': False, 'cat': False} displayed=None\norder=('ca', 'cat') stage=first response assertions passed calls=['ca', 'cat'] done={'ca': True, 'cat': False} displayed='results for ca'\norder=('ca', 'cat') stage=before latest-query assertion calls=['ca', 'cat'] done={'ca': True, 'cat': True} displayed='results for cat'\norder=('cat', 'ca') stage=overlap controls passed calls=['ca', 'cat'] done={'ca': False, 'cat': False} displayed=None\norder=('cat', 'ca') stage=first response assertions passed calls=['ca', 'cat'] done={'ca': False, 'cat': True} displayed='results for cat'\norder=('cat', 'ca') stage=before latest-query assertion calls=['ca', 'cat'] done={'ca': True, 'cat': True} displayed='results for ca'\ntest_normal_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests) ... ok\ntest_reversed_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests) ... FAIL\n\n======================================================================\nFAIL: test_reversed_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/qa/test_search_overlap.py\", line 89, in test_reversed_completion_keeps_latest_query\n    await self.check_completion_order((\"cat\", \"ca\"))\n  File \"<REPLAY>/qa/test_search_overlap.py\", line 65, in check_completion_order\n    self.assertEqual(\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : Latest query 'cat' must remain displayed after both requests finish; completion order was ('cat', 'ca')\n\n----------------------------------------------------------------------\nRan 2 tests in 0.013s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-order--baseline--1",
+      "variant": "guarded-contract-only",
+      "exit_code": 0,
+      "output": "order=('ca', 'cat') stage=overlap controls passed calls=['ca', 'cat'] done={'ca': False, 'cat': False} displayed=None\norder=('ca', 'cat') stage=first response assertions passed calls=['ca', 'cat'] done={'ca': True, 'cat': False} displayed=None\norder=('ca', 'cat') stage=before latest-query assertion calls=['ca', 'cat'] done={'ca': True, 'cat': True} displayed='results for cat'\norder=('cat', 'ca') stage=overlap controls passed calls=['ca', 'cat'] done={'ca': False, 'cat': False} displayed=None\norder=('cat', 'ca') stage=first response assertions passed calls=['ca', 'cat'] done={'ca': False, 'cat': True} displayed='results for cat'\norder=('cat', 'ca') stage=before latest-query assertion calls=['ca', 'cat'] done={'ca': True, 'cat': True} displayed='results for cat'\ntest_normal_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests) ... ok\ntest_reversed_completion_keeps_latest_query (test_search_overlap.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.013s\n\nOK\n"
+    },
+    {
+      "cell": "search-order--skill--1",
+      "variant": "original",
+      "exit_code": 1,
+      "output": "normal: both requests pending; expected retained='results for c', observed='results for c'\nnormal: completed 'ca'; expected='results for ca', observed='results for ca'; 'cat' still pending\nnormal: completed 'cat'; expected latest='results for cat', observed='results for cat'\nreversed: both requests pending; expected retained='results for c', observed='results for c'\nreversed: completed 'cat'; expected='results for cat', observed='results for cat'; 'ca' still pending\nreversed: completed 'ca'; expected latest='results for cat', observed='results for ca'\ncontrol: deliberate request-key mismatch raised the intended AssertionError\ntest_normal_completion_order (test_search.SearchSequenceTests) ... ok\ntest_reversed_completion_order (test_search.SearchSequenceTests) ... FAIL\ntest_transport_key_mismatch_is_an_assertion (test_search.SearchSequenceTests) ... ok\n\n======================================================================\nFAIL: test_reversed_completion_order (test_search.SearchSequenceTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/tests/test_search.py\", line 40, in test_reversed_completion_order\n    await self.check_order(reverse=True)\n  File \"<REPLAY>/tests/test_search.py\", line 77, in check_order\n    self.assertEqual(self.search.result, \"results for cat\", \"latest query must remain visible after both requests complete\")\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : latest query must remain visible after both requests complete\n\n----------------------------------------------------------------------\nRan 3 tests in 0.017s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-order--skill--1",
+      "variant": "guarded",
+      "exit_code": 1,
+      "output": "normal: both requests pending; expected retained='results for c', observed='results for c'\nnormal: completed 'ca'; expected='results for ca', observed='results for c'; 'cat' still pending\nreversed: both requests pending; expected retained='results for c', observed='results for c'\nreversed: completed 'cat'; expected='results for cat', observed='results for cat'; 'ca' still pending\nreversed: completed 'ca'; expected latest='results for cat', observed='results for cat'\ncontrol: deliberate request-key mismatch raised the intended AssertionError\ntest_normal_completion_order (test_search.SearchSequenceTests) ... FAIL\ntest_reversed_completion_order (test_search.SearchSequenceTests) ... ok\ntest_transport_key_mismatch_is_an_assertion (test_search.SearchSequenceTests) ... ok\n\n======================================================================\nFAIL: test_normal_completion_order (test_search.SearchSequenceTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/tests/test_search.py\", line 37, in test_normal_completion_order\n    await self.check_order(reverse=False)\n  File \"<REPLAY>/tests/test_search.py\", line 72, in check_order\n    self.assertEqual(self.search.result, first_result)\nAssertionError: 'results for c' != 'results for ca'\n- results for c\n+ results for ca\n?              +\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.018s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-order--skill--1",
+      "variant": "original-contract-only",
+      "exit_code": 1,
+      "output": "normal: both requests pending; expected retained='results for c', observed='results for c'\nnormal: completed 'ca'; expected='results for ca', observed='results for ca'; 'cat' still pending\nnormal: completed 'cat'; expected latest='results for cat', observed='results for cat'\nreversed: both requests pending; expected retained='results for c', observed='results for c'\nreversed: completed 'cat'; expected='results for cat', observed='results for cat'; 'ca' still pending\nreversed: completed 'ca'; expected latest='results for cat', observed='results for ca'\ncontrol: deliberate request-key mismatch raised the intended AssertionError\ntest_normal_completion_order (test_search.SearchSequenceTests) ... ok\ntest_reversed_completion_order (test_search.SearchSequenceTests) ... FAIL\ntest_transport_key_mismatch_is_an_assertion (test_search.SearchSequenceTests) ... ok\n\n======================================================================\nFAIL: test_reversed_completion_order (test_search.SearchSequenceTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/tests/test_search.py\", line 40, in test_reversed_completion_order\n    await self.check_order(reverse=True)\n  File \"<REPLAY>/tests/test_search.py\", line 78, in check_order\n    self.assertEqual(self.search.result, \"results for cat\", \"latest query must remain visible after both requests complete\")\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : latest query must remain visible after both requests complete\n\n----------------------------------------------------------------------\nRan 3 tests in 0.020s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-order--skill--1",
+      "variant": "guarded-contract-only",
+      "exit_code": 0,
+      "output": "normal: both requests pending; expected retained='results for c', observed='results for c'\nnormal: completed 'ca'; expected='results for ca', observed='results for c'; 'cat' still pending\nnormal: completed 'cat'; expected latest='results for cat', observed='results for cat'\nreversed: both requests pending; expected retained='results for c', observed='results for c'\nreversed: completed 'cat'; expected='results for cat', observed='results for cat'; 'ca' still pending\nreversed: completed 'ca'; expected latest='results for cat', observed='results for cat'\ncontrol: deliberate request-key mismatch raised the intended AssertionError\ntest_normal_completion_order (test_search.SearchSequenceTests) ... ok\ntest_reversed_completion_order (test_search.SearchSequenceTests) ... ok\ntest_transport_key_mismatch_is_an_assertion (test_search.SearchSequenceTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.017s\n\nOK\n"
+    },
+    {
+      "cell": "necessary-state--baseline--1",
+      "variant": "original",
+      "exit_code": 0,
+      "output": "test_cancellation_cleans_up_and_allows_retry (test_form.FormTests) ... ok\ntest_failure_identity_cleanup_and_retry (test_form.FormTests) ... ok\ntest_initial_pending_success_and_return_identity (test_form.FormTests) ... ok\ntest_instances_have_independent_pending_state (test_form.FormTests) ... ok\ntest_overlapping_duplicates_do_not_save_or_clear_pending (test_form.FormTests) ... ok\ntest_synchronous_save_exception_identity_and_cleanup (test_form.FormTests) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.022s\n\nOK\n"
+    },
+    {
+      "cell": "necessary-state--skill--1",
+      "variant": "original",
+      "exit_code": 0,
+      "output": "test_cancellation_cleanup_and_retry (test_form.FormTests) ... ok\ntest_failure_identity_and_retry (test_form.FormTests) ... ok\ntest_initial_pending_and_success_value_identity (test_form.FormTests) ... ok\ntest_instances_are_independent (test_form.FormTests) ... ok\ntest_overlapping_duplicates_do_not_save_or_clear_pending (test_form.FormTests) ... ok\ntest_synchronous_save_exception_identity_and_cleanup (test_form.FormTests) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.031s\n\nOK\n"
+    }
+  ],
+  "retained_projects_unchanged": true
+}

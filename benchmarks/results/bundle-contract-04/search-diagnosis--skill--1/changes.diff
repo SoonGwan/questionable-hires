@@ -1,0 +1,103 @@
+diff --git a/experiments/search_completion_probe.py b/experiments/search_completion_probe.py
+new file mode 100644
+index 0000000..d011901
+--- /dev/null
++++ b/experiments/search_completion_probe.py
+@@ -0,0 +1,97 @@
++"""Run from the project root: python3 -B experiments/search_completion_probe.py.
++
++Uses the real Search and transport; only the request dependency is replaced.
++No network or cache is present. Completion gates, not sleeps, set ordering.
++All behavior-dependent waits and task cleanup have a one-second deadline.
++"""
++
++import asyncio
++import json
++from pathlib import Path
++import sys
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++from search import Search
++from transport import fetch
++
++
++TIMEOUT = 1.0
++
++
++async def case(order):
++    search = Search()
++    loop = asyncio.get_running_loop()
++    queries = ("older", "newer")
++    gates = {query: loop.create_future() for query in queries}
++    dispatched = asyncio.Queue()
++    tasks = {}
++    trace = []
++
++    async def request(path, *, params, headers):
++        query = params["q"]
++        trace.append({"event": "request", "path": path,
++                      "params": dict(params), "headers": dict(headers)})
++        dispatched.put_nowait(query)
++        response = await gates[query]
++        trace.append({"event": "response", "query": query, "body": response})
++        return response
++
++    async def actual_transport(query):
++        return await fetch(query, request)
++
++    try:
++        for query in queries:
++            tasks[query] = asyncio.create_task(search.run(query, actual_transport))
++            seen = await asyncio.wait_for(dispatched.get(), TIMEOUT)
++            assert seen == query, (seen, query)
++
++        # Both actual transport requests must be in flight before either completes.
++        assert all(not task.done() for task in tasks.values())
++        assert search.result is None
++        requests = list(trace)
++        assert requests == [
++            {"event": "request", "path": "/search", "params": {"q": query},
++             "headers": {"Cache-Control": "no-cache"}}
++            for query in queries
++        ], requests
++
++        for query in order:
++            gates[query].set_result({"results_for": query})
++            _, pending = await asyncio.wait({tasks[query]}, timeout=TIMEOUT)
++            if pending:
++                raise TimeoutError(f"Search did not finish for {query}")
++            tasks[query].result()  # Surface exceptions from real production code.
++            trace.append({"event": "display", "after_completion": query,
++                          "result": search.result})
++            assert search.result == {"results_for": query}, trace
++
++        assert search.result == {"results_for": order[-1]}, trace
++        return {"completion_order": order, "trace": trace,
++                "final_result": search.result,
++                "matches_latest_query": search.result == {"results_for": "newer"}}
++    finally:
++        for task in tasks.values():
++            if not task.done():
++                task.cancel()
++        for gate in gates.values():
++            if not gate.done():
++                gate.cancel()
++        if tasks:
++            done, pending = await asyncio.wait(set(tasks.values()), timeout=TIMEOUT)
++            for task in done:
++                if not task.cancelled():
++                    task.exception()  # Retrieve exceptions even on a failed assertion.
++            if pending:
++                raise RuntimeError("Owned Search tasks failed to stop within deadline")
++
++
++async def main():
++    normal = await case(["older", "newer"])
++    reversed_order = await case(["newer", "older"])
++    assert normal["matches_latest_query"]
++    assert not reversed_order["matches_latest_query"]
++    print(json.dumps({"normal": normal, "reversed": reversed_order}, indent=2))
++
++
++if __name__ == "__main__":
++    asyncio.run(main())

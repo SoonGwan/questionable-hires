@@ -1,7 +1,7 @@
 # All-eight checkpoint 04: incremental review
 
-This page records reviewed evidence while the serial run is in progress, not
-an aggregate improvement claim or a count of all completed cells. The full
+This page preserves incremental review and the completed checkpoint below.
+All 18 scheduled cells completed without retry or exclusion. The full
 objective remains unproven. [Frozen protocol](BUNDLE-CONTRACT-04-PROTOCOL.md),
 launch `47fde20`, resource candidate `9081dfa`; unchanged fixture SHA-256
 `3ed27c165bbf688aafdb2bd9c4b1fd68b6b2fe8861bef27551127a7f655ebdea`.
@@ -300,3 +300,73 @@ It recommends preserving behavior while leaving equivalent replacement possible.
 No optional collector/reference or unnecessary history sweep is used. All native
 output and attribution needed for that narrow conclusion are visible, with no
 capture flags. Matching baseline and whole-run conclusions remain pending.
+
+## Completed checkpoint: remaining pairs
+
+Earlier pending statements describe review order, not current execution status.
+[Exported evidence](results/bundle-contract-04/run.json) contains all 18 cells.
+The exporter needed four relative fragment-link prefixes corrected in Landlord's
+answer; answer content and measured logs were not changed. Private workspace/home
+paths are redacted; generic `admin staff` directory ownership remains in listings.
+
+**Friday:** baseline 103,827 tokens / 93.813s, skill 89,533 / 54.134s:
+**−13.77% tokens / −42.30% time**. Both execute actual old/new reader queries
+across initial, up, up-with-insert/update and down, check retained data and hash
+unchanged release files. Both correctly block the documented mixed-version
+rollout/rollback and leave application writers and staging unverified. Baseline
+retains a verifier, report and JSON results; skill uses the public matrix API and
+formatter directly without helper-source inspection or extra artifacts. Skill
+also asserts ordered result columns and no truncation. Captured matrix and native
+PASS are present. Different extra work and n=1 prevent causal/general claims.
+
+**Necromancer:** baseline 63,772 tokens / 26.759s, skill 68,604 / 28.326s:
+**+7.58% tokens / +5.86% time**. Baseline reads both historical patches and actual
+consumer, executes current partner_label as Ada, then demonstrates no-fallback
+payload access gives None or KeyError. Skill instead substitutes the current
+consumer binding in memory. Both establish the live fallback dependency without
+file edits; neither resource improves. Native outputs are captured.
+
+**Hostage Negotiator:** baseline 66,388 tokens / 70.532s, skill 69,925 / 75.647s:
+**+5.33% tokens / +7.25% time**. Skill changes only form.py and adds test_form.py.
+All six captured native tests pass: pending/result identity, overlap suppression,
+independent instances, async failure/retry, synchronous failure and cancellation
+cleanup/retry. Waits and owned-task cleanup are bounded. Baseline's missing native
+output remains missing; later replay is not retroactive model verification.
+
+## Aggregate, limitations and demonstrated next correction
+
+All nine pairs, no exclusions: baseline **733,456 tokens / 555.973s**, skill
+**769,342 tokens / 482.755s**. These are sums of recorded input-plus-output tokens
+(cached input counted once) and cell elapsed time, not task-mean ratios:
+**+4.89% tokens / −13.17% time**. No all-eight efficiency acceptance. The prior
+checkpoint's +16.17% token overhead is a separate stochastic execution, not a
+controlled causal attribution of this reduction. Keep unfavorable pairs, scope
+violations, differing extras and missing capture visible. This exposed authored
+development set is not organic confirmation or an independent holdout.
+
+[Author replay](results/bundle-contract-04/author-replay.json), produced by
+[replay_bundle_contract_04.py](replay_bundle_contract_04.py) after timing, reconciles
+all 18 usage/event streams and unchanged installed resources. Original retained
+projects are fingerprinted before/after and remain unchanged.
+
+The suspected search-test overspecification is **confirmed in both arms**.
+Unmodified native tests fail on the real stale overwrite; they also fail on a
+generation-guard correction that legitimately ignores older completions. The
+extra normal-order assertion demands the older payload instead of retained
+None/seed state. In separate author copies only, making that intermediate assertion
+conditional on completion of the latest request leaves the buggy implementation
+failing and lets the guarded implementation pass. No support TypeError or warning
+substitutes for the intended assertion. Printed expected-state text in those
+author copies remains the original diagnostic text, not a newly validated oracle.
+These are author counterfactuals, not repaired measured deliverables or new scores.
+
+Both retained form suites pass six tests in separate author replay, resolving
+local executability but not the baseline's absent original execution capture.
+
+The subsequent Mother-in-law entrypoint correction distinguishes product-contract
+expectations from current observations, especially unspecified intermediate
+states. It does not prescribe this fixture's expected values, alter the frozen
+test set, authorize production fixes, or mandate extra model runs for every QA
+task. Adoption and resource benefit of that new instruction remain unmeasured.
+Featured charts and both README languages retain their existing provenance;
+this run does not replace them with a selectively favorable claim.

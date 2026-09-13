@@ -1,0 +1,50 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'! .git'\"'\"",
+    "aggregated_output": "<WORKSPACE>\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!.git'\"'\"",
+    "aggregated_output": "test_service.py\nservice.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la'",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 13 19:15 .\ndrwx------@  3 admin  staff   96 Sep 13 19:15 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 13 19:15 .git\n-rw-r--r--@  1 admin  staff   74 Sep 13 19:15 service.py\n-rw-r--r--@  1 admin  staff  153 Sep 13 19:15 test_service.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat service.py test_service.py'",
+    "aggregated_output": "def save(store, record):\n    store.append(record)\n    return {'ok': True}\nimport unittest\nfrom service import save\n\nclass SaveTests(unittest.TestCase):\n    def test_save(self):\n        self.assertTrue(save([], 'record')['ok'])\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; git diff -- service.py test_service.py'",
+    "aggregated_output": "",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport hashlib\nimport shutil\nimport subprocess\nimport sys\nimport tempfile\n\nroot = Path.cwd().resolve()\noriginals = {name: (root / name).read_bytes() for name in ('service.py', 'test_service.py')}\noriginal_entries = set(root.iterdir())\nrunner = r'''\nfrom pathlib import Path\nimport hashlib\nimport inspect\nimport sys\nimport unittest\nimport service\nimport test_service\n\nexpected = Path.cwd() / 'service.py'\nassert Path(service.__file__).resolve() == expected.resolve()\nassert Path(test_service.__file__).resolve() == (Path.cwd() / 'test_service.py').resolve()\nassert test_service.SaveTests.test_save.__globals__['save'] is service.save\nassert Path(inspect.getsourcefile(service.save)).resolve() == expected.resolve()\nprint('BINDING VERIFIED:', expected.resolve(), flush=True)\nprint('IMPLEMENTATION SHA256:', hashlib.sha256(expected.read_bytes()).hexdigest(), flush=True)\ncalls = 0\nlines = []\ndef trace(frame, event, arg):\n    global calls\n    if frame.f_code is service.save.__code__:\n        if event == 'call':\n            calls += 1\n        elif event == 'line':\n            lines.append(frame.f_lineno)\n    return trace\nsys.settrace(trace)\nresult = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(test_service))\nsys.settrace(None)\nprint('SAVE CALLS:', calls, 'EXECUTED LINES:', lines, flush=True)\nassert calls == 1, 'Fault/implementation was not reached exactly once'\nsys.exit(0 if result.wasSuccessful() else 1)\n'''\nstronger = b'''import unittest\nfrom service import save\n\nclass SaveTests(unittest.TestCase):\n    def test_save(self):\n        store = ['existing']\n        self.assertTrue(save(store, 'record')['ok'])\n        self.assertEqual(store, ['existing', 'record'])\n'''\nassert originals['service.py'].count(b'    store.append(record)\\\\n') == 1\nfaulty = originals['service.py'].replace(b'    store.append(record)\\\\n', b'    # Isolated mutation: omit append.\\\\n')\nowned = Path(tempfile.mkdtemp(prefix='.lost-write-audit-', dir=root))\ndef run(label, directory, expected_exit):\n    print('\\\\n=== ' + label + ' ===', flush=True)\n    p = subprocess.run([sys.executable, '-B', '-c', runner], cwd=directory,\n                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\n    print(p.stdout, end='', flush=True)\n    print('EXIT:', p.returncode, 'EXPECTED:', expected_exit, flush=True)\n    assert p.returncode == expected_exit, label\ntry:\n    print('ORIGINAL SHA256:', {n: hashlib.sha256(b).hexdigest() for n, b in originals.items()}, flush=True)\n    run('Actual original test and implementation', root, 0)\n    cases = [\n        ('Existing test / correct', originals['service.py'], originals['test_service.py'], 0),\n        ('Existing test / missing append', faulty, originals['test_service.py'], 0),\n        ('Stronger assertion / correct', originals['service.py'], stronger, 0),\n        ('Stronger assertion / missing append', faulty, stronger, 1),\n    ]\n    for i, (label, implementation, test, expected_exit) in enumerate(cases):\n        directory = owned / str(i)\n        directory.mkdir()\n        (directory / 'service.py').write_bytes(implementation)\n        (directory / 'test_service.py').write_bytes(test)\n        run(label, directory, expected_exit)\nfinally:\n    shutil.rmtree(owned)\n    assert not owned.exists()\n    for name, content in originals.items():\n        assert (root / name).read_bytes() == content, 'Original changed: ' + name\n    assert set(root.iterdir()) == original_entries, 'Unexpected project artifacts'\n    print('\\\\nCLEANUP VERIFIED: owned copies removed; original files byte-identical; project entries unchanged.', flush=True)\nPY\"",
+    "aggregated_output": "BINDING VERIFIED: <WORKSPACE>/.lost-write-audit-ar0_45to/0/service.py\nIMPLEMENTATION SHA256: 3a5c753c169e8c2daf24ba59ea35dde0cb11642cc30ebc9380dc6ed203174099\ntest_save (test_service.SaveTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\nSAVE CALLS: 1 EXECUTED LINES: [2, 3]\nEXIT: 0 EXPECTED: 0\n\n=== Existing test / missing append ===\nBINDING VERIFIED: <WORKSPACE>/.lost-write-audit-ar0_45to/1/service.py\nIMPLEMENTATION SHA256: f68758d546f450e1b3f78c8fc4e41c90485b0d4166700f4936dfdf1bf2096060\ntest_save (test_service.SaveTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\nSAVE CALLS: 1 EXECUTED LINES: [3]\nEXIT: 0 EXPECTED: 0\n\n=== Stronger assertion / correct ===\nBINDING VERIFIED: <WORKSPACE>/.lost-write-audit-ar0_45to/2/service.py\nIMPLEMENTATION SHA256: 3a5c753c169e8c2daf24ba59ea35dde0cb11642cc30ebc9380dc6ed203174099\ntest_save (test_service.SaveTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\nSAVE CALLS: 1 EXECUTED LINES: [2, 3]\nEXIT: 0 EXPECTED: 0\n\n=== Stronger assertion / missing append ===\nBINDING VERIFIED: <WORKSPACE>/.lost-write-audit-ar0_45to/3/service.py\nIMPLEMENTATION SHA256: f68758d546f450e1b3f78c8fc4e41c90485b0d4166700f4936dfdf1bf2096060\ntest_save (test_service.SaveTests) ... FAIL\n\n======================================================================\nFAIL: test_save (test_service.SaveTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.lost-write-audit-ar0_45to/3/test_service.py\", line 8, in test_save\n    self.assertEqual(store, ['existing', 'record'])\nAssertionError: Lists differ: ['existing'] != ['existing', 'record']\n\nSecond list contains 1 additional elements.\nFirst extra element 1:\n'record'\n\n- ['existing']\n+ ['existing', 'record']\n\n----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nFAILED (failures=1)\nSAVE CALLS: 1 EXECUTED LINES: [3]\nEXIT: 1 EXPECTED: 1\n\nCLEANUP VERIFIED: owned copies removed; original files byte-identical; project entries unchanged.\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]
