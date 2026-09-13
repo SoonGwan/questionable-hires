@@ -142,6 +142,65 @@ binding verification accessible without rebuilding support or reading helper
 internals. This is a hypothesis to inspect after the run, not authority to remove
 binding checks or suppress justified source inspection.
 
+## Protected search — Mother-in-law and reviewed pair
+
+Six shell calls, **104,085 tokens / 59.629 seconds**. First runs the installed
+sequence helper: captured normal/reversed cases both pass. Then adds and runs
+`test_search_sequence_local.py` with four native async tests covering both orders
+from empty/seeded display state, older completion while newer is pending, retained
+previous output and final newest output. All four pass. Five-second cooperative
+waits and finally cancellation/gather cleanup cover owned tasks/futures. Production
+Search remains byte-identical; only the rerunnable project test is added.
+
+The helper's two cases precede the more complete retained suite, so overlapping
+scenarios execute twice. No helper source is read. Baseline instead runs its four
+retained tests once. Both satisfy the requested core checks, but extra execution
+and local timeout settings differ. Pair costs: **+58.38% tokens / −3.91% time**;
+not overall efficiency acceptance or causal proof. Native outcomes are captured,
+not inferred from the final semicolon-separated status command.
+
+## Broken search — Mother-in-law reviewed
+
+Eight shell calls, **106,179 tokens / 65.106 seconds**. Helper normal case passes
+and reversal reports old instead of new (exit 1). The model then retains and runs
+`tests/search_overlap_qa.py`, again exercising actual Search in both completion
+orders with controlled futures. JSON includes actual/expected checkpoint values:
+normal latest-query assertion passes, reversed latest-query assertion fails on
+`old result` versus `new result`. The script maps these recorded comparisons to
+exit 1; the failure is not a setup exception or missing-output inference.
+
+Two-second waits/cleanup and ten-second scenario bounds apply to cooperative
+operations; production Search and requirements are unchanged. No helper source
+inspection or external action appears. Metadata flags an empty `mkdir -p tests`
+output, which is expected; decisive helper/native outputs are present. As in the
+protected case, helper then retained project checks duplicate the two orders.
+The counterpart baseline remains to be reviewed; no paired result is claimed yet.
+
+Both QA skill cells have unchanged installed inventories matching frozen/current
+file hashes and unchanged original fixture bytes. The retained-test requirement
+is explicit, so adding those tests is not scope creep. A future engineering
+question is how to satisfy coverage and reusable delivery without duplicate
+execution; do not remove required checks merely to make helper use cheaper.
+
+## Formatter — Landlord and reviewed pair
+
+Four shell calls, **67,406 tokens / 35.264 seconds**. Reads application files with
+line numbers, excludes installed examples from consumer content search, and
+recommends the same plain USD function while retaining centralized policy/caller
+interface. It explains that registration/dispatch APIs disappear without a
+supported extension consumer and gives a concrete negative-format policy change.
+
+Unlike baseline's static review, skill runs eight actual caller versus unchanged
+expression equivalence checks (zero, cents, negative and large values); all outputs
+and completion marker are captured. It explicitly limits this to representative
+equivalence, not financial rounding correctness. All three originals are unchanged,
+diff empty, installed inventories/hashes unchanged, and no capture flags appear.
+
+Pair costs: **−14.65% tokens / +20.69% time**. Both support the requested design
+recommendation, but baseline runs no equivalence probe. Extra execution, shared
+conditions and n=1 prevent causal attribution; this mixed tradeoff does not meet
+the overall efficiency objective. Keep both dimensions and verification differences.
+
 ## Remaining work
 
 Continue the existing live run and review every other cell before paired cost
