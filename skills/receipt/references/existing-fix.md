@@ -21,9 +21,12 @@ For local unittest/installed-pytest comparisons within the limits below, prefer
 the helper to rebuilding copy setup, same-process import checks, execution and
 cleanup. Existing valid evidence still takes precedence. Use native comparison
 when the required layout/runtime or retained-copy workflow is unsupported.
-If the task requires broader original-file integrity checks, add those around
-the helper; its selected-file checks do not cover the whole repository. That
-gap alone need not duplicate the entire comparison pipeline. Invoke the helper
+For additional originals that must remain unchanged, use optional `watch` selections
+(for example `"watch":["notes.txt"]`); they are checked but not copied or executed.
+The result reports original hashes/modes, unchanged status and copy cleanup, so
+do not rebuild these checks for the same selected files. Whole-repository status,
+new-file detection or stronger integrity requirements still need separate checks.
+Invoke the helper
 without reading its source unless adapting or diagnosing it.
 
 Choose the implementation source explicitly; adapt paths and test arguments.
@@ -53,6 +56,15 @@ permitted inputs. Root selection, Git internals, symlinks, empty directories and
 overlapping selections are rejected; traversal is bounded to 10,000 entries.
 Each leaf is frozen once, shared by both implementations and hashed in
 `fixed_sha256`.
+
+`watch` accepts the same file/directory selections, disjoint from `fixed` and
+`vary`, within the shared byte budget. It checks existing selected leaves, not
+new files added to watched directories. `originals` identifies all selected
+original bytes/modes and reports `unchanged`; changes abort without restoration.
+`comparison_copies_removed` confirms owned-copy cleanup, not all side effects.
+Child temporary-directory defaults point inside each comparison copy. Do not
+change global TMPDIR merely to localize these checks: other launchers may create
+files there. Explicit test paths and subprocess behavior are not sandboxed.
 
 `vary`: explicit implementation **files**, not directories.
 Both lists must be nonempty, canonical project-relative and disjoint after

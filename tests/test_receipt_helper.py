@@ -19,6 +19,58 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_watch_preserves_uncopied_original_and_child_temp_is_local(self):
+        note = self.root / 'notes.txt'
+        note.write_text('unrelated draft\n')
+        note.chmod(0o600)
+        tests = self.root / 'test_rule.py'
+        tests.write_text(tests.read_text() + '\n'
+            'import pathlib, tempfile\n'
+            'assert not pathlib.Path("notes.txt").exists()\n'
+            'with tempfile.TemporaryDirectory() as scratch:\n'
+            '    assert pathlib.Path(scratch).resolve().is_relative_to(pathlib.Path.cwd())\n')
+        result = helper.compare(self.root, dict(self.recipe, watch=['notes.txt']))
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError: False is not true', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertTrue(result['originals']['unchanged'])
+        self.assertEqual(result['originals']['watch_only'], ['notes.txt'])
+        self.assertEqual(result['originals']['sha256']['notes.txt'], hashlib.sha256(note.read_bytes()).hexdigest())
+        self.assertEqual(result['originals']['modes']['notes.txt'], 0o600)
+        self.assertTrue(result['comparison_copies_removed'])
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_watch_changes_are_reported_not_restored(self):
+        note = self.root / 'notes.txt'
+        for mutation in ('content', 'mode', 'delete'):
+            note.write_text('original')
+            note.chmod(0o600)
+            def execute(*args):
+                if mutation == 'content':
+                    note.write_text('changed')
+                elif mutation == 'mode':
+                    note.chmod(0o644)
+                else:
+                    note.unlink(missing_ok=True)
+                return dict(exit_code=0, timed_out=False)
+            with self.subTest(mutation=mutation), patch.object(helper, 'run_check', side_effect=execute):
+                with self.assertRaisesRegex(RuntimeError, 'Selected originals changed.*notes.txt'):
+                    helper.compare(self.root, dict(self.recipe, watch=['notes.txt']))
+            if mutation == 'content':
+                self.assertEqual(note.read_text(), 'changed')
+            elif mutation == 'mode':
+                self.assertEqual(note.stat().st_mode & 0o777, 0o644)
+            else:
+                self.assertFalse(note.exists())
+            self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_invalid_watch_does_not_execute_checks(self):
+        for value in ('notes.txt', [None], ['../escape'], ['rule.py']):
+            with self.subTest(value=value), patch.object(helper, 'run_check') as execute:
+                with self.assertRaises(ValueError):
+                    helper.compare(self.root, dict(self.recipe, watch=value))
+                execute.assert_not_called()
+
     def test_reference_commands_execute_committed_and_uncommitted_modes(self):
         reference = ROOT / 'skills/receipt/references/existing-fix.md'
         commands = re.findall(r'```sh\n(.*?)\n```', reference.read_text(), re.S)

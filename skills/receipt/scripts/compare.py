@@ -105,7 +105,8 @@ def git(root, *args, input=None):
 
 
 def run_check(python, root, recipe, timeout):
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', TMPDIR=str(root),
+               TMP=str(root), TEMP=str(root))
     env.pop('PYTHONPATH', None)
     env.pop('PYTHONOPTIMIZE', None)
     process = subprocess.Popen([str(python), '-B', '-c', BOOTSTRAP, json.dumps(recipe)],
@@ -158,22 +159,27 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     root = Path(root).resolve(strict=True)
     if os.name != 'posix' or not 0 < timeout <= 300:
         raise ValueError('Requires POSIX and a timeout in (0, 300]')
-    if not isinstance(recipe, dict) or set(recipe) != {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}:
+    required = {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}
+    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch'}:
         raise ValueError('Recipe requires fixed, vary, before, after, imports, runner and tests')
+    if 'watch' in recipe and (not isinstance(recipe['watch'], list)
+                            or not all(isinstance(v, str) and v for v in recipe['watch'])):
+        raise ValueError('watch must be a list of project-relative selections')
     for key in ('fixed', 'vary', 'imports', 'tests'):
         if not isinstance(recipe[key], list) or not recipe[key] or not all(isinstance(v, str) and v for v in recipe[key]):
             raise ValueError(key + ' must be a nonempty string list')
     if recipe['runner'] not in ('unittest', 'pytest'):
         raise ValueError('Use unittest or installed pytest')
     recipe = dict(recipe, fixed=fixed_files(root, recipe['fixed']))
+    watched = fixed_files(root, recipe.get('watch', []))
     names = recipe['fixed'] + recipe['vary']
-    if len(set(names)) != len(names):
-        raise ValueError('fixed and vary must be unique and disjoint')
+    if len(set(names + watched)) != len(names + watched):
+        raise ValueError('fixed, vary and watch must be unique and disjoint')
     if Path(git(root, 'rev-parse', '--show-toplevel').decode().strip()).resolve() != root:
         raise ValueError('source must be the repository root')
     originals, modes = {}, {}
     total = 0
-    for name in names:
+    for name in names + watched:
         path = root / checked_path(name)
         if any(p.is_symlink() for p in [path, *path.parents] if root in p.parents):
             raise ValueError('Symlink inputs are unsupported')
@@ -197,14 +203,15 @@ def compare(root, recipe, python=sys.executable, timeout=30):
         if (label == 'after' and isinstance(ref, dict) and set(ref) == {'working_tree'}
                 and ref['working_tree'] is True):
             revisions[label] = None
-            variants[label] = (dict(originals), dict(modes))
+            variants[label] = ({name: originals[name] for name in names},
+                               {name: modes[name] for name in names})
             continue
         if not isinstance(ref, str) or not ref or ref.startswith('-') or '\n' in ref:
             raise ValueError('Invalid revision')
         sha = git(root, 'rev-parse', '--verify', '--end-of-options', ref + '^{commit}').decode().strip()
         revisions[label] = sha
-        files = dict(originals)
-        variant_modes = dict(modes)
+        files = {name: originals[name] for name in names}
+        variant_modes = {name: modes[name] for name in names}
         # One literal-path tree query per revision, not one process per file.
         tree = git(root, 'ls-tree', '-l', '-z', sha, '--', *recipe['vary'])
         entries = {}
@@ -269,13 +276,17 @@ def compare(root, recipe, python=sys.executable, timeout=30):
                 if check['timed_out']:
                     result['status'] = 'incomplete'
                     break
-        return result
     finally:
         changed = [name for name, content in originals.items() if (root/name).is_symlink()
                    or not (root/name).is_file() or read_limited(root/name, len(content)) != content
                    or (root/name).stat().st_mode & 0o777 != modes[name]]
         if changed:
             raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))
+    result['originals'] = dict(unchanged=True,
+        sha256={name: hashlib.sha256(content).hexdigest() for name, content in originals.items()},
+        modes=modes, watch_only=watched)
+    result['comparison_copies_removed'] = True
+    return result
 
 
 def main():
@@ -286,6 +297,7 @@ def main():
 
 fixed: current tests/data/config/dependencies; files or explicit directories.
 vary: implementation files. Paths are project-relative and disjoint.
+watch (optional): originals to check but not copy or execute; files/directories.
 before: commit expression. after: commit expression or {"working_tree":true}.
 Working-tree after freezes current bytes/modes once, not the index or a commit.
 imports: modules that must load inside each copy. runner: unittest or pytest.
@@ -297,6 +309,7 @@ Exit 0 means observations collected, not a verified fix: inspect each check's
 assertion output, exit_code, timed_out, output_truncated and import provenance.
 Exit 2 means comparison not established. Copies are cleaned; selected originals
 are checked, not restored. No sandbox or complete side-effect containment.
+Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
 ''')
     parser.add_argument('--spec', required=True, help='JSON file or - for stdin')
     parser.add_argument('--source', default='.', help='Git project root (default: current directory)')
