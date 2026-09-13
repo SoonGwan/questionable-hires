@@ -53,6 +53,10 @@ The eight characters and automatic selection remain intact; helpers are optional
 
 ## Verification and release gates
 
+- [Future fixture scratch policy](HOSTAGE-ATOMIC-TEMP-PREFLIGHT.md) corrects
+  project-local temporary-output control without editing the measured export
+  task. Actual creation-path preflight preserves two before failures/four after
+  passes. No new model run or improvement claim follows from this correction.
 - Local checkout at `1a7b72a`: **330 tests pass** (45.072 seconds). Catalog,
   resource links and featured/localization checks pass. Test count is not a
   model-performance metric or proof of target-assertion coverage.

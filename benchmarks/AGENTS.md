@@ -7,6 +7,10 @@
 - Define input, payload and failure contracts before calling a fixture clean.
   Do not count a reasonable finding under an underspecified contract as an
   agent false positive merely because the author did not intend it.
+- For project-only tasks, give fixture tests explicit project-local temporary
+  directories and verify actual scratch creation paths during preflight. Do not
+  rely on system temp defaults or a model changing global TMPDIR/launcher settings
+  to repair the fixture. Preserve any already-measured version and disclose it.
 - Preserve frozen fixtures, criteria and every scheduled cell. If a fixture
   defect is discovered during execution, disclose the effect on interpretation;
   correct a future version, not the input underlying an already reported run.
