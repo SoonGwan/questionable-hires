@@ -1,0 +1,64 @@
+diff --git a/apps/reports/exporter.py b/apps/reports/exporter.py
+index 16e78a4..e4475c5 100644
+--- a/apps/reports/exporter.py
++++ b/apps/reports/exporter.py
+@@ -1,11 +1,21 @@
+ from pathlib import Path
++from tempfile import NamedTemporaryFile
+ 
+ 
+ def write_rows(destination, rows):
+     destination = Path(destination)
+     count = 0
+-    with destination.open("w", encoding="utf-8", newline="") as stream:
+-        for row in rows:
+-            stream.write(row + "\n")
+-            count += 1
++    temporary = NamedTemporaryFile(
++        mode="w", encoding="utf-8", newline="", dir=destination.parent,
++        delete=False,
++    )
++    temporary_path = Path(temporary.name)
++    try:
++        with temporary as stream:
++            for row in rows:
++                stream.write(row + "\n")
++                count += 1
++        temporary_path.replace(destination)
++    finally:
++        temporary_path.unlink(missing_ok=True)
+     return count
+diff --git a/tests/test_export.py b/tests/test_export.py
+index 22ffaaa..ae8fe69 100644
+--- a/tests/test_export.py
++++ b/tests/test_export.py
+@@ -17,3 +17,29 @@ class ExportTests(unittest.TestCase):
+             path = Path(directory) / "report.txt"
+             self.assertEqual(write_rows(path, iter([])), 0)
+             self.assertEqual(path.read_bytes(), b"")
++
++    def test_iterator_failure_preserves_destination(self):
++        for exists in (True, False):
++            with self.subTest(destination_exists=exists):
++                with tempfile.TemporaryDirectory() as directory:
++                    path = Path(directory) / "report.txt"
++                    previous = b"previous\r\n\xff"
++                    if exists:
++                        path.write_bytes(previous)
++                    original_files = set(Path(directory).iterdir())
++                    error = RuntimeError("row iterator failed")
++
++                    def rows():
++                        yield "Ada"
++                        yield "한글"
++                        raise error
++
++                    with self.assertRaises(RuntimeError) as caught:
++                        write_rows(path, rows())
++
++                    self.assertIs(caught.exception, error)
++                    self.assertEqual(set(Path(directory).iterdir()), original_files)
++                    if exists:
++                        self.assertEqual(path.read_bytes(), previous)
++                    else:
++                        self.assertFalse(path.exists())

@@ -1,4 +1,4 @@
-# Hostage known-path routing candidate — not yet model-validated
+# Hostage known-path routing candidate — qualified transfer evidence
 
 The [combined gate](BUNDLE-CURRENT-02-REVIEW.md) records six shell calls for
 `necessary-state` skill versus three for baseline. Inspection of the retained
@@ -37,4 +37,7 @@ and featured charts remain tied to their frozen revisions.
 
 The next [atomic-export transfer](HOSTAGE-ATOMIC-EXPORT-01-PROTOCOL.md) now has
 an authored input contract and actual before-fail/after-pass fixture preflight.
-Model execution and candidate adoption remain pending.
+[Both model sessions](results/hostage-atomic-export-01/README.md) now complete:
+desired direct-read behavior occurs, but baseline uses the same two preparation
+calls. Raw tokens −12.85% / time −8.43% have extra-work and temporary-root
+limitations, not a causal discovery improvement.
