@@ -437,12 +437,18 @@ class ReceiptHelperTests(unittest.TestCase):
         self.assertFalse(list(self.root.glob('.receipt-*')))
 
     def test_large_output_is_bounded_without_losing_exit_status(self):
-        (self.root / 'test_rule.py').write_text('print("x" * 100000)\n')
+        (self.root / 'test_rule.py').write_text(
+            'import unittest\n'
+            'class OutputTests(unittest.TestCase):\n'
+            '    def test_large_output(self):\n'
+            '        print("x" * 100000)\n'
+            '        self.assertEqual(2 + 2, 4)\n')
         result = helper.compare(self.root, self.recipe)
         for check in result['checks'].values():
             self.assertEqual(check['exit_code'], 0)
             self.assertTrue(check['output_truncated'])
             self.assertLessEqual(len(check['output']), 12000)
+            self.assertIn('Ran 1 test', check['output'])
 
     def test_package_relative_imports_and_fixed_data_in_both_copies(self):
         package = self.root / 'codec'

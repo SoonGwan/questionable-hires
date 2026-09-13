@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import re
 from pathlib import Path
 import tempfile
 import unittest
@@ -43,8 +44,12 @@ class ReceiptInvoiceFixtureTests(unittest.TestCase):
                 self.assertFalse(check['timed_out'])
                 self.assertFalse(check['output_truncated'])
                 for control in ('test_sum_before_rounding', 'test_empty'):
-                    self.assertIn(control + ' (checks.test_invoice.InvoiceTests) ... ok',
-                                  check['output'])
+                    # unittest versions differ on whether the qualified label
+                    # includes the method name; require the same control + ok.
+                    self.assertRegex(check['output'],
+                        r'(?m)^' + re.escape(control) +
+                        r' \(checks\.test_invoice\.InvoiceTests(?:\.' +
+                        re.escape(control) + r')?\) \.\.\. ok$')
                 for module in recipe['imports']:
                     self.assertIn('Verified copied import: ' + module, check['output'])
             expected_fixed = set(case['files']) - {'README.md', 'billing/money.py'}

@@ -22,7 +22,9 @@ class HostageCommandFixtureTests(unittest.TestCase):
                                       cwd=root, capture_output=True, text=True, timeout=5)
 
             default = run('discover', '-v')
-            self.assertEqual(default.returncode, 0, default.stderr)
+            # Empty discovery is not verification. Python versions report it
+            # with either success or the dedicated no-tests exit code.
+            self.assertIn(default.returncode, (0, 5), default.stderr)
             self.assertIn('Ran 0 tests', default.stderr)
             command = ('discover', '-s', 'verification', '-p', 'check_*.py', '-v')
             existing = run(*command)
