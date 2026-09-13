@@ -9,28 +9,30 @@ description: Audit whether tests detect broken behavior by tracing assertions an
 
 ## Check what the test actually buys
 
-Trace the selected assertions through implementation and mocks to the contract they actually protect. Keep discovery, including instruction-file searches, inside an explicitly restricted project root. Use the documented test command or evidenced runner, not a new framework. Reuse a valid baseline; a failing baseline is not a mutation result.
+Start from the requested assertions and follow their actual calls through implementation and mocks. Read the reached definitions and relevant fixtures/configuration; broaden discovery when a dependency or contract remains unresolved, not merely because more files exist. Reuse completed project-scoped instruction discovery and known runner information after loading this skill. Keep any new discovery inside the permitted project root.
 
-Choose a reachable fault at an unobserved boundary: acknowledgment versus persistence, closed flag versus cleanup, latest request versus completion, full consumption versus early exit. Syntax errors and behaviorally equivalent mutations do not establish sensitivity to the intended fault.
+Use the documented command or evidenced runner, preserving test configuration. Reuse a valid baseline or established audit; a failing baseline is not mutation evidence. Choose one reachable behavioral fault at the requested boundary, such as acknowledgment versus persistence or closed flag versus cleanup. Syntax errors and equivalent mutations do not establish sensitivity.
 
-Reuse an established project audit or valid evidence first. Choose isolation by the semantic context it must preserve, not the apparent size of the experiment. A fresh-process in-memory substitution fits when the actual caller resolves it and the original compilation context and bindings remain intact. Extracting function text alone can lose module future flags, closures or decorators; use a disposable module/package copy when reconstructing that context would add work or uncertainty. Don't replace the implementation with a fake or mistake a wrong binding for a surviving fault. Restore substitutions within a reused process and keep original files intact.
+Choose isolation by the context it preserves. In-memory substitution fits when the actual caller resolves it and compilation context/bindings remain intact; restore substitutions in reused processes. Extracting function text can lose future flags, closures or decorators: use disposable module/package copies when that context is uncertain. Keep originals intact; a fake implementation or wrong binding does not demonstrate a surviving fault.
 
-For a Python audit that needs disposable copies and correct/faulty test runs, use
-[the audit helper](references/python-audit.md) when its file, interpreter and runner
-limits fit. It collects labeled phase results in one invocation; don't write a
-copy/subprocess/cleanup wrapper just to orchestrate those same phases. Existing
-adequate project audits and simpler valid in-memory substitutions still take
-precedence. Unsupported layouts need project facilities, not forced adaptation.
-Preserve test configuration, vary one behavior, and capture each phase's own exit
-status. Check copied-import paths and caller bindings in the actual test/probe
-process where practical; a separate import-only process does not prove what tests
-load. Retain a harness only for requested reuse or delivery; source inspection is
-appropriate for trust review, adaptation or troubleshooting.
+For compatible Python copy-based audits, use [the audit helper](references/python-audit.md)
+instead of rebuilding its copy/subprocess/cleanup orchestration. Adequate project
+audits and simpler valid substitutions take precedence; unsupported layouts need
+project facilities. Capture each phase's exit and inspect actual failures. Check
+copied imports and caller bindings in the test/probe process where practical;
+separate import-only processes do not prove what tests load. Inspect helper source
+when trust review, adaptation or troubleshooting requires it.
 
-If the original test survives, check the meaningful effect—not merely success or container size that could hide repeated writes. Run the same stronger assertion against correct and faulty implementations: it must pass the former and fail the latter for the intended reason. If the mutant is killed, identify the detecting assertion or warning policy; this protects that fault, not all lifecycle paths.
+If tests survive, verify the same stronger assertion on correct and faulty code:
+pass the former, fail the latter for the intended effect, not merely success or
+container size. If killed, identify the detecting assertion or warning policy;
+this protects that fault, not every lifecycle path.
 
 ## Deliver and stop
 
-Give decisive commands/results, the coverage gap or detecting check, and the proposed assertion. No separate report files are required. Without isolation or execution, label the concern static, not a demonstrated survivor. Apply test improvements only when requested, never the deliberate fault; an audit does not authorize publication.
+Give decisive commands/results and the gap/proposed assertion or detecting check.
+Keep a harness/report only for requested reuse or delivery. Without isolated
+execution, label the concern static. Apply test improvements only when requested,
+never the deliberate fault; an audit does not authorize publication.
 
 Stop when the scoped claim is assessed and requested improvements are verified. Try another fault only for a distinct boundary material to that claim; don't fish for survivors, chase a global mutation score, or remove every mock.
