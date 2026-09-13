@@ -9,10 +9,42 @@ sys.path.insert(0, str(ROOT / 'benchmarks'))
 import receipt_uncommitted_cases as fixture
 import receipt_graph_cases as graph_fixture
 import receipt_ranges_cases as ranges_fixture
+import receipt_src_cases as src_fixture
 from run import prepare
 
 
 class UncommittedFixtureTests(unittest.TestCase):
+    def test_src_transfer_keeps_current_suite_and_user_files(self):
+        case, = src_fixture.cases()
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory) / 'project'
+            head = prepare(case, project)
+            snapshot = {str(p.relative_to(project)): (p.read_bytes(), p.stat().st_mode)
+                        for p in project.rglob('*') if p.is_file()}
+            spec = importlib.util.spec_from_file_location('src_receipt', ROOT / 'skills/receipt/scripts/compare.py')
+            helper = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(helper)
+            result = helper.compare(project, dict(
+                fixed=['checks', 'src/settings/__init__.py'], vary=['src/settings/parser.py'],
+                watch=['notes.txt'], before='HEAD', after={'working_tree': True},
+                imports=['settings.parser'], import_roots=['src'],
+                runner='unittest', tests=['-v', 'checks.test_parser']))
+            before, after = result['checks']['before'], result['checks']['after']
+            self.assertEqual([before['exit_code'], after['exit_code']], [1, 0])
+            self.assertIn('FAILED (failures=2)', before['output'])
+            self.assertIn("'abc'", before['output'])
+            self.assertIn("'abc=='", before['output'])
+            for check in (before, after):
+                self.assertIn('Ran 5 tests', check['output'])
+                self.assertIn('Verified copied import: settings.parser', check['output'])
+                self.assertFalse(check['timed_out'])
+                self.assertFalse(check['output_truncated'])
+            self.assertEqual(result['revisions'], {'before': head, 'after': None})
+            self.assertTrue(result['originals']['unchanged'])
+            self.assertTrue(result['comparison_copies_removed'])
+            self.assertEqual(snapshot, {str(p.relative_to(project)): (p.read_bytes(), p.stat().st_mode)
+                                       for p in project.rglob('*') if p.is_file()})
+
     def test_ranges_contract_and_watch_preflight(self):
         case, = ranges_fixture.cases()
         with tempfile.TemporaryDirectory() as directory:
