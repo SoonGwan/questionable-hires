@@ -1,0 +1,62 @@
+{
+  "kind": "author replay, not model benchmark",
+  "recipe": {
+    "files": [
+      "httpx",
+      "tests",
+      "pyproject.toml"
+    ],
+    "imports": [
+      "httpx",
+      "httpx._decoders",
+      "httpx._models"
+    ],
+    "target": "httpx/_decoders.py",
+    "old": "        return self.decoder.decode(b\"\", True)\n",
+    "new": "        return self.decoder.decode(b\"\", False)\n",
+    "runner": "pytest",
+    "tests": [
+      "-q",
+      "tests/test_decoders.py"
+    ],
+    "probe_when": "survives",
+    "probe_files": {
+      "tests/test_utf8_finalization_audit.py": "from pathlib import Path\nimport httpx._models as models\nimport httpx._decoders as decoders\nassert models.TextDecoder is decoders.TextDecoder\nassert Path(decoders.__file__).resolve().is_relative_to(Path.cwd())\nimport httpx\nimport pytest\n\n@pytest.mark.parametrize('data, expected', [\n    ((b\"ok \\xe2\", b\"\\x82\\xac\"), \"ok \\u20ac\"),\n    ((b\"ok \\xe2\", b\"\\x82\"), \"ok \\ufffd\"),\n], ids=['valid-split', 'incomplete-at-eof'])\n@pytest.mark.parametrize('mode', ['sync', 'async'])\n@pytest.mark.anyio\nasync def test_utf8_finalization(data, expected, mode):\n    if mode == 'sync':\n        response = httpx.Response(200, content=iter(data))\n        actual = ''.join(response.iter_text())\n    else:\n        async def chunks():\n            for chunk in data:\n                yield chunk\n        response = httpx.Response(200, content=chunks())\n        actual = ''.join([part async for part in response.aiter_text()])\n    assert actual == expected\n"
+    },
+    "probe_tests": [
+      "-v",
+      "tests/test_utf8_finalization_audit.py"
+    ]
+  },
+  "result": {
+    "status": "observed",
+    "checks": {
+      "correct_tests": {
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "Verified copied import: httpx\nVerified copied import: httpx._decoders\nVerified copied import: httpx._models\n........................................                                 [100%]\n40 passed in 0.09s\n",
+        "output_truncated": false
+      },
+      "mutant_tests": {
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "Verified copied import: httpx\nVerified copied import: httpx._decoders\nVerified copied import: httpx._models\n........................................                                 [100%]\n40 passed in 0.09s\n",
+        "output_truncated": false
+      },
+      "correct_probe": {
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "Verified copied import: httpx\nVerified copied import: httpx._decoders\nVerified copied import: httpx._models\n============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.6.0 -- /private/tmp/qh-httpx-preflight.3Slnqw/venv/bin/python\ncachedir: .pytest_cache\nrootdir: <COPY>/.con-artist-rd8c9xiv/correct-probe\nconfigfile: pyproject.toml\nplugins: anyio-4.12.1\ncollecting ... collected 8 items\n\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[asyncio-sync-valid-split] PASSED [ 12%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[asyncio-sync-incomplete-at-eof] PASSED [ 25%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[asyncio-async-valid-split] PASSED [ 37%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[asyncio-async-incomplete-at-eof] PASSED [ 50%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[trio-sync-valid-split] PASSED [ 62%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[trio-sync-incomplete-at-eof] PASSED [ 75%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[trio-async-valid-split] PASSED [ 87%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[trio-async-incomplete-at-eof] PASSED [100%]\n\n============================== 8 passed in 0.03s ===============================\n",
+        "output_truncated": false
+      },
+      "mutant_probe": {
+        "exit_code": 1,
+        "timed_out": false,
+        "output": "Verified copied import: httpx\nVerified copied import: httpx._decoders\nVerified copied import: httpx._models\n============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.6.0 -- /private/tmp/qh-httpx-preflight.3Slnqw/venv/bin/python\ncachedir: .pytest_cache\nrootdir: <COPY>/.con-artist-rd8c9xiv/mutant-probe\nconfigfile: pyproject.toml\nplugins: anyio-4.12.1\ncollecting ... collected 8 items\n\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[asyncio-sync-valid-split] PASSED [ 12%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[asyncio-sync-incomplete-at-eof] FAILED [ 25%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[asyncio-async-valid-split] PASSED [ 37%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[asyncio-async-incomplete-at-eof] FAILED [ 50%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[trio-sync-valid-split] PASSED [ 62%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[trio-sync-incomplete-at-eof] FAILED [ 75%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[trio-async-valid-split] PASSED [ 87%]\ntests/test_utf8_finalization_audit.py::test_utf8_finalization[trio-async-incomplete-at-eof] FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_utf8_finalization[asyncio-sync-incomplete-at-eof] ____________\n\ndata = (b'ok \\xe2', b'\\x82'), expected = 'ok \ufffd', mode = 'sync'\n\n    @pytest.mark.parametrize('data, expected', [\n        ((b\"ok \\xe2\", b\"\\x82\\xac\"), \"ok \\u20ac\"),\n        ((b\"ok \\xe2\", b\"\\x82\"), \"ok \\ufffd\"),\n    ], ids=['valid-split', 'incomplete-at-eof'])\n    @pytest.mark.parametrize('mode', ['sync', 'async'])\n    @pytest.mark.anyio\n    async def test_utf8_finalization(data, expected, mode):\n        if mode == 'sync':\n            response = httpx.Response(200, content=iter(data))\n            actual = ''.join(response.iter_text())\n        else:\n            async def chunks():\n                for chunk in data:\n                    yield chunk\n            response = httpx.Response(200, content=chunks())\n            actual = ''.join([part async for part in response.aiter_text()])\n>       assert actual == expected\nE       AssertionError: assert 'ok ' == 'ok \ufffd'\nE         \nE         - ok \ufffd\nE         ?    -\nE         + ok\n\ntests/test_utf8_finalization_audit.py:25: AssertionError\n___________ test_utf8_finalization[asyncio-async-incomplete-at-eof] ____________\n\ndata = (b'ok \\xe2', b'\\x82'), expected = 'ok \ufffd', mode = 'async'\n\n    @pytest.mark.parametrize('data, expected', [\n        ((b\"ok \\xe2\", b\"\\x82\\xac\"), \"ok \\u20ac\"),\n        ((b\"ok \\xe2\", b\"\\x82\"), \"ok \\ufffd\"),\n    ], ids=['valid-split', 'incomplete-at-eof'])\n    @pytest.mark.parametrize('mode', ['sync', 'async'])\n    @pytest.mark.anyio\n    async def test_utf8_finalization(data, expected, mode):\n        if mode == 'sync':\n            response = httpx.Response(200, content=iter(data))\n            actual = ''.join(response.iter_text())\n        else:\n            async def chunks():\n                for chunk in data:\n                    yield chunk\n            response = httpx.Response(200, content=chunks())\n            actual = ''.join([part async for part in response.aiter_text()])\n>       assert actual == expected\nE       AssertionError: assert 'ok ' == 'ok \ufffd'\nE         \nE         - ok \ufffd\nE         ?    -\nE         + ok\n\ntests/test_utf8_finalization_audit.py:25: AssertionError\n_____________ test_utf8_finalization[trio-sync-incomplete-at-eof] ______________\n\ndata = (b'ok \\xe2', b'\\x82'), expected = 'ok \ufffd', mode = 'sync'\n\n    @pytest.mark.parametrize('data, expected', [\n        ((b\"ok \\xe2\", b\"\\x82\\xac\"), \"ok \\u20ac\"),\n        ((b\"ok \\xe2\", b\"\\x82\"), \"ok \\ufffd\"),\n    ], ids=['valid-split', 'incomplete-at-eof'])\n    @pytest.mark.parametrize('mode', ['sync', 'async'])\n    @pytest.mark.anyio\n    async def test_utf8_finalization(data, expected, mode):\n        if mode == 'sync':\n            response = httpx.Response(200, content=iter(data))\n            actual = ''.join(response.iter_text())\n        else:\n            async def chunks():\n                for chunk in data:\n                    yield chunk\n            response = httpx.Response(200, content=chunks())\n            actual = ''.join([part async for part in response.aiter_text()])\n>       assert actual == expected\nE       AssertionError: assert 'ok ' == 'ok \ufffd'\nE         \nE         - ok \ufffd\nE         ?    -\nE         + ok\n\ntests/test_utf8_finalization_audit.py:25: AssertionError\n_____________ test_utf8_finalization[trio-async-incomplete-at-eof] _____________\n\ndata = (b'ok \\xe2', b'\\x82'), expected = 'ok \ufffd', mode = 'async'\n\n    @pytest.mark.parametrize('data, expected', [\n        ((b\"ok \\xe2\", b\"\\x82\\xac\"), \"ok \\u20ac\"),\n        ((b\"ok \\xe2\", b\"\\x82\"), \"ok \\ufffd\"),\n    ], ids=['valid-split', 'incomplete-at-eof'])\n    @pytest.mark.parametrize('mode', ['sync', 'async'])\n    @pytest.mark.anyio\n    async def test_utf8_finalization(data, expected, mode):\n        if mode == 'sync':\n            response = httpx.Response(200, content=iter(data))\n            actual = ''.join(response.iter_text())\n        else:\n            async def chunks():\n                for chunk in data:\n                    yield chunk\n            response = httpx.Response(200, content=chunks())\n            actual = ''.join([part async for part in response.aiter_text()])\n>       assert actual == expected\nE       AssertionError: assert 'ok ' == 'ok \ufffd'\nE         \nE         - ok \ufffd\nE         ?    -\nE         + ok\n\ntests/test_utf8_finalization_audit.py:25: AssertionError\n========================= 4 failed, 4 passed in 0.05s ==========================\n",
+        "output_truncated": false
+      }
+    },
+    "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure."
+  },
+  "originals_unchanged": true
+}

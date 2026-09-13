@@ -20,3 +20,9 @@ Report current skill versus the **new current baseline** by equal-case mean
 ratios. Prior-skill comparisons are historical and not paired causal attribution.
 Lower cost with weaker evidence or reduced required coverage is not accepted.
 This recheck cannot establish broad eight-skill savings or update featured charts.
+
+## Completed review
+
+[All four cells and subsequent implementation](results/httpx-decoder-02/README.md):
+helper adopted in both skill cells; +32.0% tokens / −15.1% time. Internal repairs
+remain counted. A later native-probe-file feature has author replay evidence only.

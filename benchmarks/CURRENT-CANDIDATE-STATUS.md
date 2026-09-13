@@ -10,11 +10,17 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [HTTPX routing recheck](results/httpx-decoder-02/README.md): helper adopted in
+  both skill cells; +32.0% tokens / −15.1% time against fresh baselines. Core
+  conclusions correct, work unequal, token objective unmet. Follow-up `89d91af`
+  adds native probe files to avoid nested source-string construction; actual
+  HTTPX witness replay and 280 local tests pass. New feature model cost unmeasured.
+
 - [External HTTPX decoder transfer](results/httpx-decoder-01/README.md): both arms
   reach correct scoped conclusions on real upstream code, but skill +53.8% tokens /
   +14.4% process time. The subsequent `22389f3` routes compatible copy-based audits
-  to the existing helper; CLI compatibility replay succeeds, new model benefit
-  remains unmeasured. No favorable result replaces this adverse comparison.
+  to the existing helper; the recheck above now measures that routing. No new
+  result replaces this adverse comparison.
 
 - [Native project integration, four sessions](results/mother-native-project-01/README.md):
   both arms reuse native unittest support on an incompatible helper interface,
@@ -77,7 +83,7 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 Revisions identify each group's last change, not necessarily the snapshot used by
 its linked experiment. Character identities and automatic selection remain intact.
-The five optional helpers are not mandatory for every task.
+The optional helpers are not mandatory for every task.
 
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
@@ -87,7 +93,7 @@ The five optional helpers are not mandatory for every task.
 | Mother-in-law | `b7058c6`; success-state/evidence helper | [Native project integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md), [prior recovery screen](results/mother-recovery-02/README.md) | Native-runner reuse verified on one authored project shape with two variants; raw lower costs have unequal coverage and fixture defects; external-project utility and broad efficiency unproven |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
-| Con Artist | `22389f3`; copy-audit routing and pytest import guidance | [HTTPX decoder transfer](results/httpx-decoder-01/README.md), [automatic audit](PROBE-ADOPTION-01.md) | External decoder comparison adverse; helper compatibility verified separately; new routing has no model result and broad savings remain unproven |
+| Con Artist | routing `22389f3`; native probe files `89d91af` | [HTTPX routing recheck](results/httpx-decoder-02/README.md), [earlier transfer](results/httpx-decoder-01/README.md) | Routing adopted but tokens +32.0%; native probe files verified by author replay only; broad savings remain unproven |
 | Friday | `9cae27c`; helper `64dd877`, reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regressions verified for checks and migration chunks; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
 
 ## Reproducibility and release status
