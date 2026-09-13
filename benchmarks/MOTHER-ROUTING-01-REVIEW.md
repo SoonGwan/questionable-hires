@@ -41,3 +41,18 @@ This pair records **+4.38% tokens / −57.33% time**. The previous observation p
 was +34.35% / −46.23%, but different extra checks/payloads and removal of a final
 tool call prevent attributing that difference solely to instruction bytes. The
 new native route has not yet been reviewed, so routing acceptance remains pending.
+
+## Project-regression route — baseline
+
+Completed: **83,639 tokens / 71.388 seconds**, five shell calls. Adds only
+test_search_overlap.py, importing actual Search. Four native tests pass (0.022s):
+normal/reversed order crossed with empty/seeded display. Seeded state is established
+by a real successful request, not direct state assignment. Entry, intermediate
+older-completed/newer-pending, reversed first completion and final display are
+asserted, with explicit owned-task/Future pending checks. One-second waits and
+async teardown cancel/drain tasks and cancel remaining Futures.
+
+Correctly reports no defect; original source SHA-256 is captured unchanged before/
+after. The missing AGENTS search's exit 1 is not a native-test failure. The retained
+test is self-contained apart from stdlib and production Search; standalone replay
+will run only after all model timing ends. Skill counterpart is still pending.
