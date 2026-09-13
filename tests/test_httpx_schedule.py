@@ -19,6 +19,15 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_queryparams_profile_preserves_decoder_and_prior_schedules(self):
+        skill, tasks = runner.select_profile('queryparams-audit')
+        self.assertEqual(skill, 'con-artist')
+        self.assertEqual(set(tasks), {'queryparams-repeated-values'})
+        self.assertEqual(len(runner.make_schedule(tasks, ['baseline', 'skill'], 1)), 2)
+        self.assertEqual(runner.select_profile('decoder-audit'), ('con-artist', runner.DECODER_TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('queryparams-audit', ['line-crlf-split'])
+
     def test_decoder_profile_does_not_change_prior_audits(self):
         skill, tasks = runner.select_profile('decoder-audit')
         self.assertEqual(skill, 'con-artist')

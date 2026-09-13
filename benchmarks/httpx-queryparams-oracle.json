@@ -1,0 +1,10 @@
+{
+  "files": ["httpx", "tests", "pyproject.toml"],
+  "imports": ["httpx._urls"],
+  "target": "httpx/_urls.py",
+  "old": "        return list(self._dict.get(str(key), []))\n",
+  "new": "        return list(self._dict.get(str(key), []))[:1]\n",
+  "runner": "pytest",
+  "tests": ["-q", "tests/models/test_queryparams.py"],
+  "probe": "import httpx\nassert httpx.QueryParams('b=789').get_list('b') == ['789']\nprint('single-value control passed')\n"
+}
