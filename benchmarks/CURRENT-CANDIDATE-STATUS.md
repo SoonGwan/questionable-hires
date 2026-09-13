@@ -10,6 +10,19 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Receipt entrypoint consolidation candidate: 356 → 289 whitespace-delimited
+  words, retaining the explicit scope boundary, historical routing, unchanged
+  before/after assertions, qualified suite reuse, separate exit statuses and
+  authorization limits. No new helper/reference lookup was added. Existing
+  `inspect_usage.py`/`inspect_output_reuse.py` on invoice baseline/skill/scope
+  recheck yield respectively 8,725/12,726/13,564 captured command-output
+  characters and zero exact recurring long-line characters (default threshold
+  80). The skill/reference read commands alone return 6,014/6,359 characters
+  including Git output. This motivates reducing shared instructions, but neither
+  character counts nor word reduction attributes model tokens or proves savings.
+  New entrypoint behavior and whole-task costs remain unmeasured; existing
+  invoice/scope results belong to their frozen predecessors.
+
 - [Friday input-budget correction](FRIDAY-INPUT-BUDGET-01.md): rejects known
   combined overflow before opening another file and bounds each read against
   post-stat growth. A 100-selection oversized recipe reads twice instead of
@@ -183,7 +196,7 @@ The optional helpers are not mandatory for every task.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `51ce19e`; collector `6318b91`, reference `3157ee2` | [Scoped discovery](NECROMANCER-DISCOVERY-01.md), [adverse packaging transfer](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md) | Configured consumer preserved with near-identical cost; favorable packaging discovery pair has unequal work and capture limits; earlier transfer adverse; broad savings unproven |
-| Receipt | scoped entrypoint `b7ae490`; helper help `0939e0c` | [Scope recheck](results/receipt-scope-recheck-01/README.md), [invoice transfer](results/receipt-invoice-01/README.md), [directory adoption](results/receipt-directory-model-01/README.md) | Directory adoption observed; invoice +30.08% tokens and scope failure, then one scoped recheck with no baseline; repeated discovery and broad efficiency remain unresolved |
+| Receipt | [Consolidated entrypoint](../skills/receipt/SKILL.md), retaining `b7ae490` scope boundary; helper help `0939e0c` | [Scope recheck](results/receipt-scope-recheck-01/README.md), [invoice transfer](results/receipt-invoice-01/README.md), [directory adoption](results/receipt-directory-model-01/README.md) | Prior directory adoption observed; invoice +30.08% tokens and scope failure, then one scoped recheck with no baseline; latest consolidation unmeasured, broad efficiency unresolved |
 | Landlord | `26a310d` | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Caller search excludes installed example content but still lists resource paths; 68,509 tokens/39.233s in nonpaired regression, no causal efficiency claim; earlier comparisons adverse |
 | Mother-in-law | `b7058c6`; success-state/evidence helper | [Native project integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md), [prior recovery screen](results/mother-recovery-02/README.md) | Native-runner reuse verified on one authored project shape with two variants; raw lower costs have unequal coverage and fixture defects; external-project utility and broad efficiency unproven |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |

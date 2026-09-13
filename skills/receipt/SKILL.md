@@ -9,14 +9,14 @@ description: Verify that a requested bug fix changes observable behavior with a 
 
 Reuse applicable instructions already supplied. Discover missing project guidance only within authorized roots; a project-only request does not authorize parent-directory searches or an ancestor-file sweep. If required evidence lies outside scope, report the gap rather than broadening access.
 
-For a current bug, start with the affected code and project's documented test command; inspect history only if the required behavior or before implementation is unresolved. Choose one stable assertion on the actual affected path, preferably its existing regression test. Reuse established before evidence. Otherwise observe the assertion fail for the reported defect, implement the requested fix, and rerun the unchanged assertion and inputs. Preserve relevant neighboring behavior and required project checks.
+For a current bug, use the affected code and documented runner to select a stable regression on the actual path. Reuse valid before evidence; otherwise observe its defect-specific failure, implement the requested fix, then rerun unchanged assertions/inputs. Inspect history only for unresolved behavior or implementation. Preserve neighboring behavior and required checks.
 
 For an already-present fix requiring historical comparison, use the [isolated comparison procedure](references/existing-fix.md). Don't reverse patches in the user's working tree.
 
-Choose the after check before running it. If a required suite actually executes the unchanged regression with the relevant inputs and runtime, its result is the after evidence; don't also run that regression separately. A skipped, undiscovered or differently configured test does not qualify. Retain required checks with distinct coverage and inspect the focused diff.
+A required suite executing the unchanged regression with matching inputs/runtime supplies the after evidence: don't also run it separately. Skipped, undiscovered or differently configured tests don't qualify. Retain distinct required coverage. Reuse results only while their relevant inputs remain unchanged.
 
-Collect final checks together when no intermediate result changes the next action. In a shell supporting `&&`, a fail-fast chain preserves the failing exit; later checks are unrun, not passed. If every check must run, capture each exit explicitly. A semicolon chain's final exit does not establish earlier statuses. Reuse established check results until their relevant inputs change; don't discard a status and rerun just to recover it.
+Batch final checks when no intermediate result affects the next action. With `&&`, failure leaves later checks unrun; if all must run, retain each exit explicitly. A semicolon chain's final status doesn't establish earlier outcomes. Don't rerun merely to recover a discarded status.
 
 Dependency/compiler failures aren't defect reproduction; mocks don't prove unobserved effects. Preserve user changes and scope; verification alone authorizes neither implementation nor publication.
 
-Deliver the changed behavior, decisive before/after observations with their commands, focused diff and actual limits. Include revision identities for historical comparisons. Reuse the regression as the receipt; no separate dossier or unrelated green checks. Stop when the requested outcome is verified, not when every possible check has run.
+Inspect the focused diff. Deliver changed behavior, decisive before/after observations and commands, historical revision identities when applicable, and actual limits. The regression is the receipt: no separate dossier or unrelated green checks. Stop once the requested outcome and required checks are verified.
