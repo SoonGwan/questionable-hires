@@ -11,10 +11,14 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
-Later [interval-requirement candidate](MOTHER-INTERVAL-01-PROTOCOL.md) clarifies
-continuous loading-retention assertions while preserving permissive intermediate
-behavior for final-only contracts. Runtime helper code is unchanged; behavioral
-adoption and model cost are not yet measured. Prior native coverage gaps remain.
+Completed 2026-09-14: [interval-contract comparison](MOTHER-INTERVAL-01-REVIEW.md)
+at `14289df`: four cells, **+9.32% tokens / +10.58% time**. The skill adopts
+continuous retention assertions without constraining permitted intermediate
+display in the final-only task. Eight separate unchanged-test author replays
+reject the transient fault and accept the guarded correction in both arms.
+Both original skill transcripts lack earlier per-test output; replay does not
+repair those gaps. Runtime helper code is unchanged. Specific coverage improves,
+but efficiency remains unaccepted; prior evidence and featured charts remain.
 
 Completed 2026-09-14: [Mother delivery-route comparison](MOTHER-ROUTING-01-REVIEW.md)
 at `672e22f`: four cells, **+7.92% tokens / −23.35% time**. Both document routes
