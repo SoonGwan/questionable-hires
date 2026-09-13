@@ -1,0 +1,102 @@
+import asyncio
+import unittest
+from search import Search
+
+
+class SearchTests(unittest.IsolatedAsyncioTestCase):
+    async def test_initial(self):
+        self.assertIsNone(Search(None).result)
+
+    async def test_identical_queries_complete_in_reverse_order(self):
+        await self.check_reverse_completion("same", "same")
+
+    async def test_different_queries_complete_in_reverse_order(self):
+        await self.check_reverse_completion("older", "newest")
+
+    async def check_reverse_completion(self, older_query, newest_query):
+        # Each fetch invocation gets its own response gate, even for equal keys.
+        requests = asyncio.Queue()
+        fetch_keys = []
+        tasks = []
+        timeout = 2
+
+        async def fetch(query):
+            response = asyncio.get_running_loop().create_future()
+            fetch_keys.append(query)
+            requests.put_nowait((query, response))
+            return await response
+
+        search = Search(fetch)
+
+        async def submit(query):
+            task = asyncio.create_task(search.submit(query))
+            tasks.append(task)
+            key, response = await asyncio.wait_for(requests.get(), timeout)
+            self.assertEqual(key, query, "fetch must receive the submitted key")
+            self.assertFalse(task.done(), "submission must await its response")
+            return task, response
+
+        async def complete(task, response, payload):
+            response.set_result(payload)
+            await asyncio.wait_for(asyncio.shield(task), timeout)
+
+        seed_payload = {
+            "items": [{"id": "seed", "details": {"title": "Displayed"}}],
+            "total": 12,
+            "pagination": {"cursor": "seed-next", "has_more": True},
+        }
+        newest_payload = {
+            "items": [{"id": "newest", "details": {"title": "Newest"}}],
+            "total": 1,
+            "pagination": {"cursor": None, "has_more": False},
+        }
+        older_payload = {
+            "items": [{"id": "older", "details": {"title": "Stale"}}],
+            "total": 7,
+            "pagination": {"cursor": "older-next", "has_more": True},
+        }
+
+        try:
+            seed_task, seed_response = await submit("seed")
+            self.assertIsNone(search.result)
+            await complete(seed_task, seed_response, seed_payload)
+            self.assertEqual(search.result, seed_payload)
+            self.assertEqual(fetch_keys, ["seed"])
+
+            older_task, older_response = await submit(older_query)
+            self.assertEqual(
+                search.result, seed_payload,
+                "an older pending submission must preserve the complete payload",
+            )
+            self.assertEqual(fetch_keys, ["seed", older_query])
+
+            newest_task, newest_response = await submit(newest_query)
+            self.assertEqual(
+                search.result, seed_payload,
+                "the newest pending submission must preserve the complete payload",
+            )
+            self.assertEqual(fetch_keys, ["seed", older_query, newest_query])
+            self.assertIsNot(older_response, newest_response)
+            self.assertFalse(older_task.done())
+
+            await complete(newest_task, newest_response, newest_payload)
+            self.assertEqual(
+                search.result, newest_payload,
+                "the newest completion must replace the complete payload",
+            )
+            self.assertFalse(older_task.done())
+
+            await complete(older_task, older_response, older_payload)
+            self.assertEqual(fetch_keys, ["seed", older_query, newest_query])
+            self.assertEqual(
+                search.result, newest_payload,
+                "an older completion must not overwrite the newest complete payload",
+            )
+        finally:
+            # Also runs when a checkpoint fails with requests still pending.
+            for task in tasks:
+                if not task.done():
+                    task.cancel()
+            await asyncio.wait_for(
+                asyncio.gather(*tasks, return_exceptions=True), timeout,
+            )

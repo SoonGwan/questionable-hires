@@ -1,0 +1,63 @@
+{
+  "kind": "post-run author replay and integrity checks, not model evidence",
+  "cells": [
+    {
+      "arm": "baseline",
+      "tokens": 51209,
+      "seconds": 58.199,
+      "shell_calls": 3,
+      "source_requirements_instructions_unchanged": true,
+      "final_files": [
+        "AGENTS.md",
+        "requirements.md",
+        "search.py",
+        "test_search.py"
+      ],
+      "resources_unchanged": true,
+      "usage_reconciled": true,
+      "events_redaction_reconciled": true,
+      "raw_events_sha256": "92d6014c2b2672c31145ec0f614b553165b715aca151fd2d9e2f4a3c05964451",
+      "checks": [
+        {
+          "variant": "original",
+          "exit_code": 1,
+          "output": "test_different_queries_complete_in_reverse_order (test_search.SearchTests) ... ok\ntest_identical_queries_complete_in_reverse_order (test_search.SearchTests) ... FAIL\ntest_initial (test_search.SearchTests) ... ok\n\n======================================================================\nFAIL: test_identical_queries_complete_in_reverse_order (test_search.SearchTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search.py\", line 11, in test_identical_queries_complete_in_reverse_order\n    await self.check_reverse_completion(\"same\", \"same\")\n  File \"<REPLAY>/test_search.py\", line 91, in check_reverse_completion\n    self.assertEqual(\nAssertionError: {'items': [{'id': 'older', 'details': {'title': 'Stale'}}], [64 chars]rue}} != {'items': [{'id': 'newest', 'details': {'title': 'Newest'}}][59 chars]lse}}\n- {'items': [{'details': {'title': 'Stale'}, 'id': 'older'}],\n?                                   ^ ---           ^^^ ^\n\n+ {'items': [{'details': {'title': 'Newest'}, 'id': 'newest'}],\n?                                   ^^^^^            ^ ^^^^\n\n-  'pagination': {'cursor': 'older-next', 'has_more': True},\n?                           ^ -----  ---              ^^^\n\n+  'pagination': {'cursor': None, 'has_more': False},\n?                           ^                 ^^^^\n\n-  'total': 7}\n?           ^\n\n+  'total': 1}\n?           ^\n : an older completion must not overwrite the newest complete payload\n\n----------------------------------------------------------------------\nRan 3 tests in 0.014s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "variant": "request-identity-counterfactual",
+          "exit_code": 0,
+          "output": "test_different_queries_complete_in_reverse_order (test_search.SearchTests) ... ok\ntest_identical_queries_complete_in_reverse_order (test_search.SearchTests) ... ok\ntest_initial (test_search.SearchTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.013s\n\nOK\n"
+        }
+      ]
+    },
+    {
+      "arm": "skill",
+      "tokens": 77019,
+      "seconds": 66.401,
+      "shell_calls": 4,
+      "source_requirements_instructions_unchanged": true,
+      "final_files": [
+        "AGENTS.md",
+        "requirements.md",
+        "search.py",
+        "test_search.py"
+      ],
+      "resources_unchanged": true,
+      "usage_reconciled": true,
+      "events_redaction_reconciled": true,
+      "raw_events_sha256": "361332ad0b71f56fd8b7585782f23ac1ae9c0ddca5681a524e8fc9a151ccdcb3",
+      "checks": [
+        {
+          "variant": "original",
+          "exit_code": 1,
+          "output": "test_wrong_fetch_key_raises_assertion (test_search.ControlledFetchTests) ... ok\ntest_different_queries_complete_in_reverse_order (test_search.SearchTests) ... ok\ntest_identical_queries_complete_in_reverse_order (test_search.SearchTests) ... FAIL\ntest_initial (test_search.SearchTests) ... ok\n\n======================================================================\nFAIL: test_identical_queries_complete_in_reverse_order (test_search.SearchTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search.py\", line 40, in test_identical_queries_complete_in_reverse_order\n    await self.check_reverse_completion(\"same\", \"same\")\n  File \"<REPLAY>/test_search.py\", line 94, in check_reverse_completion\n    self.assertEqual(\nAssertionError: {'items': [{'id': 'older', 'details': {'tags': ['stale']}}],[37 chars]: 1}} != {'items': [{'id': 'newest', 'details': {'tags': ['fresh', 'n[46 chars]: 1}}\n- {'items': [{'details': {'tags': ['stale']}, 'id': 'older'}],\n?                                    ^^^             ^^^ ^\n\n+ {'items': [{'details': {'tags': ['fresh', 'new']}, 'id': 'newest'}],\n?                                   +++ ^^^^^^ +            ^ ^^^^\n\n-  'meta': {'request': 'older', 'total': 1}}\n?                       ^^^ ^\n\n+  'meta': {'request': 'newest', 'total': 1}}\n?                       ^ ^^^^\n : after older completion: retain full newest payload\n\n----------------------------------------------------------------------\nRan 4 tests in 0.015s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "variant": "request-identity-counterfactual",
+          "exit_code": 0,
+          "output": "test_wrong_fetch_key_raises_assertion (test_search.ControlledFetchTests) ... ok\ntest_different_queries_complete_in_reverse_order (test_search.SearchTests) ... ok\ntest_identical_queries_complete_in_reverse_order (test_search.SearchTests) ... ok\ntest_initial (test_search.SearchTests) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.014s\n\nOK\n"
+        }
+      ]
+    }
+  ]
+}

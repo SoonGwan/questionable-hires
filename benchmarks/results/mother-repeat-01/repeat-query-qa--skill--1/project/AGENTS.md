@@ -1,0 +1,1 @@
+QA only. Preserve search.py, requirements.md and this file. Extend test_search.py; optional new standalone standard-library test support is allowed. No external services, installs, sleeps, production fixes or delegation. Keep any scratch below this project and remove it.

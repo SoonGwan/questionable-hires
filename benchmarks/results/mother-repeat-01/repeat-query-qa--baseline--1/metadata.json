@@ -1,0 +1,41 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "repeat-query-qa",
+  "skill": "mother-in-law",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "3bf2b03f916aea26c777ecb946bb0ff99d90cfe4",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 58.199,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 49544,
+    "cached_input_tokens": 38784,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1665,
+    "reasoning_output_tokens": 234
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Audit Search.submit against requirements.md and retain standalone unittest regressions in test_search.py, preserving its existing initial-state test. Exercise actual Search with controlled successful fetch responses, no network or sleeps. Cover two overlapping identical query submissions completing in reverse order, and a different-query reversed-order normal control. Seed a previously displayed structured payload; assert the complete payload after each submission, after newest completion and after older completion. Check actual fetch keys and control each request separately. Bound behavior-dependent waits and cancel/await owned tasks even after assertions fail. Run python3 -B -m unittest -v test_search and report its actual assertions/findings; a discovered production bug should remain a failing regression, not an expected failure, skip or changed expectation. Do not fix production. You may add standalone standard-library support if useful; retained tests must not depend on an installed skill. Keep tests/support, remove owned scratch, and do not add a separate report, commit or publish. Distinguish component QA from browser QA.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  }
+}

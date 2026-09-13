@@ -1,0 +1,120 @@
+diff --git a/test_search.py b/test_search.py
+index 5bb95fc..ecdbe03 100644
+--- a/test_search.py
++++ b/test_search.py
+@@ -1,7 +1,115 @@
++import asyncio
++from dataclasses import dataclass
+ import unittest
+ from search import Search
+ 
+ 
++@dataclass(frozen=True)
++class Request:
++    key: str
++    response: asyncio.Future
++
++    def complete(self, payload):
++        self.response.set_result(payload)
++
++
++class ControlledFetch:
++    """Local adaptation of the skill transport; no runtime skill dependency."""
++
++    def __init__(self):
++        self.calls = asyncio.Queue()
++
++    async def __call__(self, key):
++        request = Request(key, asyncio.get_running_loop().create_future())
++        self.calls.put_nowait(request)
++        return await request.response
++
++    async def started(self, expected):
++        request = await asyncio.wait_for(self.calls.get(), timeout=1)
++        if request.key != expected:
++            raise AssertionError(
++                f'request key: expected {expected!r}, observed {request.key!r}')
++        return request
++
++
+ class SearchTests(unittest.IsolatedAsyncioTestCase):
+     async def test_initial(self):
+         self.assertIsNone(Search(None).result)
++
++    async def test_identical_queries_complete_in_reverse_order(self):
++        await self.check_reverse_completion("same", "same")
++
++    async def test_different_queries_complete_in_reverse_order(self):
++        await self.check_reverse_completion("older", "newest")
++
++    async def check_reverse_completion(self, older_query, newest_query):
++        fetch = ControlledFetch()
++        search = Search(fetch)
++        tasks = []
++        displayed = {
++            "items": [{"id": "seed", "details": {"tags": ["displayed"]}}],
++            "meta": {"request": "seed", "total": 1},
++        }
++        newest_payload = {
++            "items": [{"id": "newest", "details": {"tags": ["fresh", "new"]}}],
++            "meta": {"request": "newest", "total": 1},
++        }
++        older_payload = {
++            "items": [{"id": "older", "details": {"tags": ["stale"]}}],
++            "meta": {"request": "older", "total": 1},
++        }
++        try:
++            seed_task = asyncio.create_task(search.submit("seed"))
++            tasks.append(seed_task)
++            seed_request = await fetch.started("seed")
++            seed_request.complete(displayed)
++            await asyncio.wait_for(seed_task, timeout=1)
++            self.assertEqual(search.result, displayed, "seed response is displayed")
++
++            older_task = asyncio.create_task(search.submit(older_query))
++            tasks.append(older_task)
++            older_request = await fetch.started(older_query)
++            self.assertFalse(older_task.done())
++            self.assertEqual(
++                search.result, displayed, "after older submission: retain full seed payload")
++
++            newest_task = asyncio.create_task(search.submit(newest_query))
++            tasks.append(newest_task)
++            newest_request = await fetch.started(newest_query)
++            self.assertIsNot(older_request, newest_request)
++            self.assertIsNot(older_request.response, newest_request.response)
++            self.assertFalse(older_task.done())
++            self.assertFalse(newest_task.done())
++            self.assertEqual(
++                search.result, displayed, "after newest submission: retain full seed payload")
++
++            newest_request.complete(newest_payload)
++            await asyncio.wait_for(newest_task, timeout=1)
++            self.assertFalse(older_task.done())
++            self.assertEqual(
++                search.result, newest_payload, "after newest completion: display full newest payload")
++
++            older_request.complete(older_payload)
++            await asyncio.wait_for(older_task, timeout=1)
++            self.assertEqual(
++                search.result, newest_payload, "after older completion: retain full newest payload")
++        finally:
++            for task in tasks:
++                task.cancel()
++            await asyncio.wait_for(
++                asyncio.gather(*tasks, return_exceptions=True), timeout=1)
++
++
++class ControlledFetchTests(unittest.IsolatedAsyncioTestCase):
++    async def test_wrong_fetch_key_raises_assertion(self):
++        fetch = ControlledFetch()
++        task = asyncio.create_task(fetch("actual"))
++        try:
++            with self.assertRaisesRegex(
++                AssertionError, "request key: expected 'expected', observed 'actual'"
++            ):
++                await fetch.started("expected")
++        finally:
++            task.cancel()
++            await asyncio.wait_for(
++                asyncio.gather(task, return_exceptions=True), timeout=1)

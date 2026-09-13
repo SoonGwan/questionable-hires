@@ -1,0 +1,1 @@
+Every submission is a new request, even if its query equals a pending request. Only the newest request may replace the displayed complete payload. Preserve the last displayed payload while any newer request is pending. This audit covers successful responses and request order only; error display, cancellation semantics, payload validation and rendered UI are not specified.
