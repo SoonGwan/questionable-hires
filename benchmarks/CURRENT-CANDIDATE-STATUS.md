@@ -10,6 +10,17 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Con Artist batch evidence retention: a later mutation whose text does not
+  match previously caused CLI exit 2 with empty stdout, losing earlier completed
+  audit observations from the response. The same real CLI regression fails on
+  the predecessor and now retains the first audit's passing baseline and actual
+  failing stronger assertion, followed by an `incomplete` error entry; the third
+  requested audit is not run and original files remain unchanged. Input/file
+  errors after a returned audit preserve earlier evidence. Runtime integrity,
+  unconfirmed cleanup and interruption propagation remain unchanged. Empty
+  checks on an error are not proof of no prior execution. This is failure-path
+  usability, not measured model efficiency or a change to frozen scores.
+
 - HTTPX runner environment correction: normalize the supplied interpreter's
   parent directory aliases while preserving the virtualenv executable symlink.
   The previous `/tmp/.../venv/bin/python` spelling fails the same literal

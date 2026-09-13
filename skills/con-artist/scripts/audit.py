@@ -271,8 +271,18 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
     baseline, probe_baseline, observations = {}, {}, []
     baseline_indices = {}
     for fault in mutations:
-        result = audit(root, dict(common, **fault), python, timeout,
-                       _baseline=baseline, _probe_baseline=probe_baseline)
+        try:
+            result = audit(root, dict(common, **fault), python, timeout,
+                           _baseline=baseline, _probe_baseline=probe_baseline)
+        except (ValueError, KeyError, OSError) as error:
+            if not observations:
+                raise
+            # Retain earlier evidence, but never count the failed or later faults.
+            # RuntimeError (integrity/unconfirmed cleanup) and interruptions still
+            # propagate as before, rather than being treated as ordinary input errors.
+            result = dict(status='incomplete', checks={},
+                          error=type(error).__name__ + ': ' + str(error),
+                          limitation='This audit did not return its checks; empty checks do not prove that no execution occurred. Earlier audit observations are retained. Do not retry until the error and any process state are understood.')
         for name in ('correct_tests', 'correct_probe'):
             if name not in result['checks']:
                 continue

@@ -61,3 +61,11 @@ always point directly to an executed observation, never another reference.
 Incomplete evidence stops the
 batch; unrun entries are not passes. This saves repeated baseline execution,
 not the reasoning needed to select faults or interpret failures.
+
+If a later audit raises an input/file error after earlier audits returned, CLI
+exit 2 includes those earlier observations and a final `incomplete` entry with
+`error` and empty `checks`. That entry has no usable checks; it does not prove
+that nothing executed before the error. Remaining mutations are unrun. Inspect
+the error and process state before retrying; do not discard completed evidence.
+Errors before any returned audit, original-integrity/cleanup `RuntimeError`s and
+interruptions still propagate without a collected batch report.

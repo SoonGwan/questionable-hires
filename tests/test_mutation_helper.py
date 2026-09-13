@@ -406,6 +406,30 @@ class MutationHelperTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue(json.loads(result.stdout)['audits'][1]['correct_tests_reused'])
 
+    def test_batch_cli_preserves_completed_checks_on_later_invalid_mutation(self):
+        originals = {name: (self.root / name).read_bytes() for name in self.recipe['files']}
+        recipe = self.batch_recipe()
+        recipe['mutations'][1]['old'] = 'NO_SUCH_SOURCE_TEXT'
+        recipe['mutations'].append(dict(recipe['mutations'][0]))
+        result = subprocess.run([sys.executable, '-B', helper.__file__,
+                                 '--source', str(self.root), '--spec', '-'],
+                                input=json.dumps(recipe), text=True, capture_output=True, timeout=15)
+        self.assertEqual(result.returncode, 2)
+        self.assertTrue(result.stdout, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report['status'], 'incomplete')
+        self.assertEqual(len(report['audits']), 2)
+        completed, failed = report['audits']
+        self.assertEqual(completed['status'], 'observed')
+        self.assertEqual(completed['checks']['correct_tests']['exit_code'], 0)
+        self.assertEqual(completed['checks']['mutant_probe']['exit_code'], 1)
+        self.assertIn('AssertionError', completed['checks']['mutant_probe']['output'])
+        self.assertEqual(failed['status'], 'incomplete')
+        self.assertEqual(failed['checks'], {})
+        self.assertIn('match exactly once', failed['error'])
+        self.assertEqual(list(self.root.glob('.con-artist-*')), [])
+        self.assertEqual(originals, {name: (self.root / name).read_bytes() for name in originals})
+
     def test_batch_rejects_scope_overrides_and_unbounded_fault_lists(self):
         for recipe in (dict(self.batch_recipe(), mutations=[]),
                        dict(self.batch_recipe(), mutations=self.batch_recipe()['mutations'] * 5),
