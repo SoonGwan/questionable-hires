@@ -21,6 +21,32 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_no_statement_is_not_a_successful_empty_reader(self):
+        placeholders = {'empty': '', 'whitespace': ' \n\t', 'line comment': '-- reader TODO',
+                        'block comment': '/* SELECT * FROM t */', 'semicolon': ';',
+                        'mixed': '; -- reader TODO\n /* not a query */ ;'}
+        recipe = {'phases': [phase('empty table', 'CREATE TABLE t(id INTEGER);'),
+                             phase('new row', 'INSERT INTO t VALUES (7);')],
+                  'checks': dict(placeholders, reader='-- actual query\nSELECT id FROM t',
+                                 zero_rows='SELECT id FROM t WHERE 0')}
+        result = helper.matrix(recipe, SCRIPT.parent)
+        self.assertTrue(result['complete'])
+        self.assertEqual(len(result['phases']), 2)
+        for index, row in enumerate(result['phases']):
+            for name in placeholders:
+                check = row['checks'][name]
+                self.assertFalse(check['ok'], (row['name'], name, check))
+                self.assertIn('no result set', check['error'])
+                self.assertNotIn('rows', check)
+            self.assertEqual(row['checks']['reader'],
+                             {'ok': True, 'rows': [] if index == 0 else [(7,)], 'truncated': False})
+            self.assertEqual(row['checks']['zero_rows'],
+                             {'ok': True, 'rows': [], 'truncated': False})
+        process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--spec', '-'],
+                                 input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
+        self.assertEqual(process.returncode, 0, process.stderr)  # Complete observations, not all checks passed.
+        self.assertEqual(json.loads(process.stdout), json.loads(helper.format_result(result)))
+
     def test_public_formatter_matches_cli_without_rerunning_or_mutating(self):
         recipe = {'phases': [phase('values')], 'checks': {
             'mixed': "SELECT 7, 1.25, NULL, '한글', x'00ff', x''",

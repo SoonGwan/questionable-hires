@@ -46,6 +46,10 @@ and `error`, not rows. Migration failures add phase-level `migration_error`;
 budget exhaustion adds top-level `error`. Incomplete phases/checks may be absent,
 and `truncated: true` cannot prove full row equality.
 
+A reader must produce a result set: empty/comment-only SQL is a failed check,
+not a successful query returning zero rows. A real SELECT with zero matching
+rows remains `ok: true, rows: []`; validate that against the consumer's expectation.
+
 Exit 0 means the matrix finished, **not** that the rollout is safe; expected
 incompatible readers still appear as failed checks. Exit 1 means incomplete
 execution (migration error or time budget); exit 2 means invalid inputs. Failed

@@ -110,6 +110,10 @@ def matrix(spec, root, timeout=5):
                     break
                 try:
                     cursor = db.execute(query)
+                    if cursor.description is None:
+                        row['checks'][label] = {'ok': False, 'error':
+                            'Reader produced no result set; empty/comment-only SQL is not a check'}
+                        continue
                     rows = cursor.fetchmany(21)
                     row["checks"][label] = {"ok": True, "rows": rows[:20],
                                              "truncated": len(rows) > 20}

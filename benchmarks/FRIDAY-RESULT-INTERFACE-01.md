@@ -49,3 +49,30 @@ its actual execution suite passes **19 tests (0.096s)** and packaging passes
 **12 tests (2.951s)**. Catalog/local-link, featured and whitespace checks pass.
 No resource edits overlapped either test run. This formatting correction does
 not change helper behavior, but the final example was checked after the full run.
+
+## Later correction: no statement is not an empty reader
+
+Local execution exposed a separate false-success classification: SQLite accepts
+empty strings, whitespace, comments and bare semicolons without a result set.
+The matrix previously returned `ok: true, rows: []` for these, indistinguishable
+from a real SELECT matching zero rows. A TODO-only reader therefore looked like
+an executed compatibility check. This is an author-discovered helper defect, not
+an observed model benchmark failure or a retrospective rescore.
+
+After executing a check, the helper now requires cursor result metadata before
+fetching rows. No result set produces `ok: false` with a diagnostic and no rows;
+other checks and phases continue. Genuine zero-row SELECTs still succeed, as do
+queries preceded by comments. Empty migration phases remain valid. No SQL parser,
+extra query, connection, new option or row-count heuristic is introduced.
+CLI exit 0 continues to mean complete observations, not that all checks passed.
+
+The regression first failed on the old implementation with the actual empty
+reader classified true. After correction, **20 focused tests pass (0.149s)**.
+It covers six no-statement forms across two migration states, checks the table
+before and after a real insert, retains a zero-row SELECT control and verifies
+actual CLI/API output parity. This applies skill-creator's observable-behavior
+validation principle; it proves this classification fix, not model efficiency
+or rollout readiness. Earlier model scores and featured charts stay unchanged.
+
+After this fix: **391 full-suite tests pass (53.701s)**. Skill validation,
+catalog/local links, featured synchronization and whitespace checks pass.
