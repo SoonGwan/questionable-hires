@@ -1,0 +1,59 @@
+{
+  "upstream_revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "revision": "46af03e9bc760791d076478e9feb9db0a9305f19",
+  "codex_version": "codex-cli 0.153.4",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "seed": 20260912,
+  "timeout_seconds": 360,
+  "jobs": 1,
+  "profile": "headers-audit",
+  "skill_name": "con-artist",
+  "preflight_checks": [
+    "tests/models/test_headers.py"
+  ],
+  "skill_sha256": "36bfb1a80763587eefa29187062696a40486222c6b5d7490b27950afefddc00b",
+  "skill_files_sha256": {
+    "SKILL.md": "36bfb1a80763587eefa29187062696a40486222c6b5d7490b27950afefddc00b",
+    "agents/openai.yaml": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+    "references/python-audit-advanced.md": "7c1baa939f4abe82e8f852da72012942c18a02bfc475dab19166fa3efd7676c6",
+    "references/python-audit.md": "25a979ac0d4a88346606b808cda8c073e7443c2cae5d0db27cc5995414bf6b23",
+    "references/python-context.md": "94c9f7f991289eb156750659bd73713f5cb830f836b08ab0c90a790c937a792a",
+    "scripts/audit.py": "c6b54ca79fb995907724af416062207ab3bfbe3995921a515aad1e4c2a30d60e",
+    "scripts/context.py": "7a45973775a91479f0062f4b7f1cff2166e0f5af92116db3ae545caa6b1098db"
+  },
+  "tasks": {
+    "headers-two-boundaries": "Audit whether tests/models/test_headers.py protects two separate Headers contracts: case-insensitive __getitem__ lookup and get_list preserving repeated values in order with its default split_commas=False behavior. Demonstrate each with one separate narrow isolated behavioral mutation. For each fault, identify the detecting existing assertion if killed, or verify a stronger assertion on correct and faulty code if missed. Verify a lowercase single-value header as a normal control against correct code and each fault. Do not change original source/tests or demand new tests where the selected fault is already detected."
+  },
+  "schedule": [
+    [
+      "headers-two-boundaries",
+      "skill",
+      1
+    ],
+    [
+      "headers-two-boundaries",
+      "baseline",
+      1
+    ]
+  ],
+  "skill_revision": "a2b625845405fc0c77eed6c20022419b8439219e",
+  "completed_cells": [
+    {
+      "case": "headers-two-boundaries",
+      "arm": "skill",
+      "repeat": 1,
+      "completed": true
+    },
+    {
+      "case": "headers-two-boundaries",
+      "arm": "baseline",
+      "repeat": 1,
+      "completed": true
+    }
+  ],
+  "stopped_after_limit": false,
+  "started_at": "2026-09-13T05:03:21.121304+00:00",
+  "dependencies": "anyio==4.12.1\nattrs==26.1.0\nbrotli==1.2.0\ncertifi==2026.7.22\ncffi==2.0.0\nchardet==5.2.0\nclick==8.1.8\ncryptography==50.0.1\nexceptiongroup==1.3.1\nh11==0.16.0\nhttpcore==1.0.9\nhttpx==0.28.1\nidna==3.19\niniconfig==2.1.0\noutcome==1.3.0.post0\npackaging==26.3\npluggy==1.6.0\npycparser==2.23\npytest==8.3.4\nsniffio==1.3.1\nsortedcontainers==2.4.0\ntomli==2.4.1\ntrio==0.27.0\ntrustme==1.2.0\ntyping_extensions==4.16.0\nuvicorn==0.32.1\nzstandard==0.25.0",
+  "finished_at": "2026-09-13T05:05:57.160523+00:00"
+}

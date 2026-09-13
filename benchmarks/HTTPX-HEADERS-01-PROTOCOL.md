@@ -37,3 +37,10 @@ once) + output and whole process time against the fresh baseline. Do not count
 two faults as two independent model tasks or credit hypothetical helper savings.
 Unequal work, one repetition, shared caches/order and authored scope remain
 limitations. No featured-chart or localized numerical claim changes.
+
+## Completed review
+
+[Both model sessions](results/httpx-headers-01/README.md): batch reuse and indexed
+body readback observed; +35.1% tokens / −14.9% time. Both arms reuse correct
+suite/control observations; baseline has extra import processes and a path repair.
+Required core outcomes present; broad efficiency unmet.

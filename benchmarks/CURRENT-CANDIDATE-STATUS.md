@@ -10,6 +10,12 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Two-boundary header transfer](results/httpx-headers-01/README.md): automatic
+  index/body readback and batch reuse observed in a new function area. +35.1%
+  tokens / −14.9% time; both arms reuse correct suite/control results, baseline
+  adds separate import processes and a path repair. Required core outcomes
+  present; unequal work and one authored pair do not establish broad savings.
+
 - [Qualified context recheck](results/httpx-context-02/README.md): `3ff951f`
   selects the exact method; +3.2% tokens / −7.0% time, required core outcomes
   present, unequal provenance and baseline scope exception. Automatic large-file
@@ -124,7 +130,7 @@ The optional helpers are not mandatory for every task.
 | Mother-in-law | `b7058c6`; success-state/evidence helper | [Native project integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md), [prior recovery screen](results/mother-recovery-02/README.md) | Native-runner reuse verified on one authored project shape with two variants; raw lower costs have unequal coverage and fixture defects; external-project utility and broad efficiency unproven |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
-| Con Artist | entrypoint/indexed context `3ff951f`, limitation `a2b6258`; native probes `89d91af` | [Qualified context recheck](results/httpx-context-02/README.md), [earlier collector](results/httpx-context-01/README.md) | Qualified method selected; +3.2% tokens / −7.0% time with unequal provenance; auto-index adoption and broad savings unproven |
+| Con Artist | entrypoint/indexed context `3ff951f`, limitation `a2b6258`; native probes `89d91af` | [Header transfer](results/httpx-headers-01/README.md), [qualified context](results/httpx-context-02/README.md) | Index/body readback and batch reuse observed; header tokens +35.1% / time −14.9% with unequal work; broad savings unproven |
 | Friday | `9cae27c`; helper `64dd877`, reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regressions verified for checks and migration chunks; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
 
 ## Reproducibility and release status
