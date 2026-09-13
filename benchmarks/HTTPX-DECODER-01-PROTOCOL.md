@@ -31,3 +31,8 @@ mutations, added coverage and isolation work must be disclosed. This cannot prov
 all-eight resource savings or replace the frozen featured interaction benchmark.
 Do not count an injected mutation as an upstream production defect. Preserve the
 HTTPX BSD-3-Clause license in any exported third-party source.
+
+## Completed review
+
+[All four outcomes, adverse costs and subsequent unmeasured routing change](results/httpx-decoder-01/README.md).
+The protocol above and frozen resources were not modified during execution.

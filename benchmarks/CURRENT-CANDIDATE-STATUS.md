@@ -10,6 +10,12 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [External HTTPX decoder transfer](results/httpx-decoder-01/README.md): both arms
+  reach correct scoped conclusions on real upstream code, but skill +53.8% tokens /
+  +14.4% process time. The subsequent `22389f3` routes compatible copy-based audits
+  to the existing helper; CLI compatibility replay succeeds, new model benefit
+  remains unmeasured. No favorable result replaces this adverse comparison.
+
 - [Native project integration, four sessions](results/mother-native-project-01/README.md):
   both arms reuse native unittest support on an incompatible helper interface,
   preserve originals and reproduce actual defects. Raw skill costs −21.6% tokens /
@@ -81,7 +87,7 @@ The five optional helpers are not mandatory for every task.
 | Mother-in-law | `b7058c6`; success-state/evidence helper | [Native project integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md), [prior recovery screen](results/mother-recovery-02/README.md) | Native-runner reuse verified on one authored project shape with two variants; raw lower costs have unequal coverage and fixture defects; external-project utility and broad efficiency unproven |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
-| Con Artist | `8b61ed8`; helper/common/advanced references `91fdde3` | [Automatic audit and subsequent candidate](PROBE-ADOPTION-01.md), [report interpretation](CON-ARTIST-REPORT-01.md), [counter regression](HTTPX-COUNTER-01.md) | Auto audit +24.92% tokens / −5.97% time; helper unused. Same-process provenance instruction is newer and has no model result |
+| Con Artist | `22389f3`; copy-audit routing and pytest import guidance | [HTTPX decoder transfer](results/httpx-decoder-01/README.md), [automatic audit](PROBE-ADOPTION-01.md) | External decoder comparison adverse; helper compatibility verified separately; new routing has no model result and broad savings remain unproven |
 | Friday | `9cae27c`; helper `64dd877`, reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regressions verified for checks and migration chunks; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
 
 ## Reproducibility and release status

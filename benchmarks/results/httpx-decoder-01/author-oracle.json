@@ -1,0 +1,58 @@
+[
+  {
+    "case": "text-finalization",
+    "mutant": false,
+    "suite": {
+      "exit_code": 0,
+      "stdout": "........................................                                 [100%]\n40 passed in 0.10s\n",
+      "stderr": ""
+    },
+    "witness": {
+      "exit_code": 0,
+      "stdout": "{\"normal\": \"\\u20ac\", \"expected_normal\": \"\\u20ac\", \"observed\": \"\\ufffd\", \"expected\": \"\\ufffd\"}\n",
+      "stderr": ""
+    }
+  },
+  {
+    "case": "text-finalization",
+    "mutant": true,
+    "suite": {
+      "exit_code": 0,
+      "stdout": "........................................                                 [100%]\n40 passed in 0.09s\n",
+      "stderr": ""
+    },
+    "witness": {
+      "exit_code": 1,
+      "stdout": "{\"normal\": \"\\u20ac\", \"expected_normal\": \"\\u20ac\", \"observed\": \"\", \"expected\": \"\\ufffd\"}\n",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 10, in <module>\nAssertionError: ('', '\ufffd')\n"
+    }
+  },
+  {
+    "case": "line-crlf-split",
+    "mutant": false,
+    "suite": {
+      "exit_code": 0,
+      "stdout": "........................................                                 [100%]\n40 passed in 0.09s\n",
+      "stderr": ""
+    },
+    "witness": {
+      "exit_code": 0,
+      "stdout": "{\"normal\": [\"a\", \"b\"], \"expected_normal\": [\"a\", \"b\"], \"observed\": [\"a\", \"b\"], \"expected\": [\"a\", \"b\"]}\n",
+      "stderr": ""
+    }
+  },
+  {
+    "case": "line-crlf-split",
+    "mutant": true,
+    "suite": {
+      "exit_code": 1,
+      "stdout": "......................................F.                                 [100%]\n=================================== FAILURES ===================================\n____________________________ test_line_decoder_crnl ____________________________\n\n    def test_line_decoder_crnl():\n        response = httpx.Response(200, content=[b\"\", b\"a\\r\\n\\r\\nb\\r\\nc\"])\n        assert list(response.iter_lines()) == [\"a\", \"\", \"b\", \"c\"]\n    \n        response = httpx.Response(200, content=[b\"\", b\"a\\r\\n\\r\\nb\\r\\nc\\r\\n\"])\n        assert list(response.iter_lines()) == [\"a\", \"\", \"b\", \"c\"]\n    \n        response = httpx.Response(200, content=[b\"\", b\"a\\r\", b\"\\n\\r\\nb\\r\\nc\"])\n>       assert list(response.iter_lines()) == [\"a\", \"\", \"b\", \"c\"]\nE       AssertionError: assert ['a', '', '', 'b', 'c'] == ['a', '', 'b', 'c']\nE         \nE         At index 2 diff: '' != 'b'\nE         Left contains one more item: 'c'\nE         Use -v to get more diff\n\ntests/test_decoders.py:339: AssertionError\n1 failed, 39 passed in 0.13s\n",
+      "stderr": ""
+    },
+    "witness": {
+      "exit_code": 1,
+      "stdout": "{\"normal\": [\"a\", \"b\"], \"expected_normal\": [\"a\", \"b\"], \"observed\": [\"a\", \"\", \"b\"], \"expected\": [\"a\", \"b\"]}\n",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 10, in <module>\nAssertionError: ['a', '', 'b']\n"
+    }
+  }
+]
