@@ -53,7 +53,16 @@ those are required. Provenance shares the output tail limit and can be truncated
 
 The single-audit CLI emits JSON with `status` (`observed` or `incomplete`) and `checks`. Check keys are `correct_tests`, `mutant_tests` and, when run, `correct_probe`, `mutant_probe`. Each contains `exit_code`, `timed_out`, `output`, and `output_truncated`. Batch reuse references an earlier observation instead of duplicating its output, as described in batch mode. Inspect the actual failure in `output`; neither `observed` nor a nonzero mutant exit establishes coverage. `probe_skipped`, when present, explains unvalidated conditional probes; absent checks are not passes.
 
-Correct-code failure or timeout stops as incomplete. CLI exit 0 means observations collected; exit 2 means invalid/incomplete evidence (invalid input may produce only stderr). Selected original bytes and permission bits are checked and copies removed; detected original changes are reported, never silently restored. Output retains a 12,000-character tail per check; invalid UTF-8 is replaced. Timeout defaults to 30 seconds per check; `--timeout` allows at most 300.
+Correct-code failure or timeout stops as incomplete. CLI exit 0 means observations collected; exit 2 means invalid/incomplete evidence (invalid input may produce only stderr). Output retains a 12,000-character tail per check; invalid UTF-8 is replaced. Timeout defaults to 30 seconds per check; `--timeout` allows at most 300.
+
+`integrity` reports `selected_files`,
+`selected_original_bytes_and_modes_unchanged` and `owned_scratch_removed` only
+after those checks finish. Reuse this result instead of writing a second hash/
+cleanup check for the same selected inputs. It can accompany incomplete test
+evidence; it does not establish coverage, protect unselected files, inventory
+new original-tree files or cover later commands. Detected original changes or
+unconfirmed removal raise an error, never a successful integrity result; original
+changes are not silently restored.
 
 Empty/skipped unittest suites give check exit 5, not a valid baseline. Inspect
 actual assertion failures and warnings: broken runner helpers can cause errors or

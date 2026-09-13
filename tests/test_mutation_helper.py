@@ -8,7 +8,7 @@ import subprocess
 import sys
 import tracemalloc
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('mutation_helper', ROOT / 'skills/con-artist/scripts/audit.py')
@@ -17,6 +17,48 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_unremoved_scratch_never_returns_successful_integrity(self):
+        scratch = self.root / '.con-artist-retained'
+        scratch.mkdir()
+        context = MagicMock()
+        context.__enter__.return_value = str(scratch)
+        context.__exit__.return_value = False
+        with patch.object(helper.tempfile, 'TemporaryDirectory', return_value=context), \
+                self.assertRaisesRegex(RuntimeError, 'scratch removal unconfirmed'):
+            self.run_audit()
+        self.assertTrue(scratch.is_dir())
+        self.assertTrue((scratch / 'mutant-probe' / 'service.py').is_file())
+
+    def test_integrity_report_covers_selected_inputs_and_removed_scratch(self):
+        before = {name: ((self.root / name).read_bytes(), (self.root / name).stat().st_mode & 0o777)
+                  for name in self.recipe['files']}
+        result = self.run_audit()
+        self.assertEqual(result['integrity'], {'selected_files': 2,
+                         'selected_original_bytes_and_modes_unchanged': True,
+                         'owned_scratch_removed': True})
+        self.assertEqual(before, {name: ((self.root / name).read_bytes(),
+                                        (self.root / name).stat().st_mode & 0o777)
+                                  for name in before})
+        self.assertFalse(list(self.root.glob('.con-artist-*')))
+
+    def test_incomplete_check_can_confirm_integrity_without_claiming_success(self):
+        result = self.run_audit(dict(self.recipe, precheck='raise AssertionError("binding")'))
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(result['checks']['correct_tests']['exit_code'], 6)
+        self.assertTrue(result['integrity']['owned_scratch_removed'])
+        self.assertTrue(result['integrity']['selected_original_bytes_and_modes_unchanged'])
+        self.assertFalse(list(self.root.glob('.con-artist-*')))
+
+    def test_changed_original_bytes_prevent_integrity_success_and_are_not_restored(self):
+        original = self.root / 'service.py'
+        recipe = dict(self.recipe, precheck=(
+            'from pathlib import Path\n'
+            f'Path({str(original.resolve())!r}).write_text("changed by trusted test\\n")\n'))
+        with self.assertRaisesRegex(RuntimeError, 'Selected originals changed.*service.py'):
+            self.run_audit(recipe)
+        self.assertEqual(original.read_text(), 'changed by trusted test\n')
+        self.assertFalse(list(self.root.glob('.con-artist-*')))
+
     def test_each_check_reports_its_copy_interpreter_and_actual_module_bytes(self):
         original = (self.root / 'service.py').read_bytes()
         faulty = original.replace(self.recipe['old'].encode(), self.recipe['new'].encode())

@@ -225,6 +225,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     if probe_when == 'survives':
         order = [('correct', 'tests'), ('mutant', 'tests'), ('correct', 'probe'), ('mutant', 'probe')]
     skipped = None
+    output = None
     try:
         with tempfile.TemporaryDirectory(prefix='.con-artist-', dir=root) as scratch:
             for variant, check in order:
@@ -287,6 +288,15 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                    or (root / name).stat().st_mode & 0o777 != modes[name]]
         if changed:
             raise RuntimeError('Selected originals changed during audit; not restored: ' + ', '.join(changed))
+        if output is not None:
+            # Both normal and early returns leave the context manager before
+            # reaching this finally block. Never report removal from intent alone.
+            if Path(scratch).exists() or Path(scratch).is_symlink():
+                raise RuntimeError('Owned audit scratch removal unconfirmed: ' + scratch)
+            output['integrity'] = dict(
+                selected_files=len(files),
+                selected_original_bytes_and_modes_unchanged=True,
+                owned_scratch_removed=True)
 
 
 def audit_batch(root, spec, python=sys.executable, timeout=30):
