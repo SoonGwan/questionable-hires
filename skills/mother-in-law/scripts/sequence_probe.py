@@ -27,9 +27,20 @@ def load_class(source, class_name, root):
 
 
 async def sequence(factory, method_name, state_name, queries, order, failure=None,
-                   error_state_name=None, sequential=False):
+                   error_state_name=None, sequential=False, retain_while_pending=False):
     target = factory()
     pending, entered, tasks = {}, asyncio.Queue(), []
+    errors, unexpected_errors, checkpoints, failed_checkpoints = [], [], [], []
+    retained = 'seed result'
+
+    def retention_checkpoint(phase, query):
+        observed = getattr(target, state_name)
+        passed = observed == retained
+        checkpoints.append(bool(passed))
+        if not passed:
+            failed_checkpoints.append(json.loads(json.dumps({
+                'phase': phase, 'query': query, 'state': observed,
+                'expected_state': retained})))
 
     async def fetch(query):
         future = asyncio.get_running_loop().create_future()
@@ -44,13 +55,19 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
             raise AssertionError('submission order changed')
 
     try:
+        if retain_while_pending:
+            async def seed_fetch(query):
+                return 'seed result'
+            try:
+                await getattr(target, method_name)(queries[0], seed_fetch)
+            except RuntimeError as error:
+                unexpected_errors.append({'query': queries[0], 'error': str(error)})
+            retention_checkpoint('seed-completion', queries[0])
         if not sequential:
             for query in queries:
                 await start(query)
-        errors = []
-        unexpected_errors = []
-        checkpoints = []
-        failed_checkpoints = []
+                if retain_while_pending:
+                    retention_checkpoint('pending-entry', query)
         for index in order:
             query = queries[index]
             if sequential:
@@ -65,6 +82,10 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
                 errors.append(str(error))
                 if failure != index:
                     unexpected_errors.append({'query': query, 'error': str(error)})
+            if retain_while_pending:
+                if index == len(queries) - 1:
+                    retained = query + ' result'
+                retention_checkpoint('completion', query)
             if sequential:
                 if failure == index and error_state_name is not None:
                     passed = bool(getattr(target, error_state_name))
@@ -87,7 +108,7 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
                     'state': getattr(target, state_name), 'errors': errors}
         if error_state_name is not None:
             observed['error_state'] = getattr(target, error_state_name)
-        if sequential:
+        if sequential or retain_while_pending:
             observed['checkpoints_passed'] = checkpoints
         if unexpected_errors:
             observed['unexpected_errors'] = unexpected_errors
@@ -101,7 +122,8 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
         await asyncio.gather(*tasks, return_exceptions=True)
 
 
-async def probe(factory, method, state, old, new, boundary, error_state=None):
+async def probe(factory, method, state, old, new, boundary, error_state=None,
+                retain_while_pending=False):
     cases = []
 
     def record(name, observed, passed):
@@ -135,6 +157,14 @@ async def probe(factory, method, state, old, new, boundary, error_state=None):
         crossed = await sequence(factory, method, state, [old, boundary], [1, 0],
                                  error_state_name=error_state)
         record('older-success-after-boundary', crossed, successful(crossed, boundary))
+    if retain_while_pending:
+        for name, order in (('retain-normal-overlap', [0, 1]),
+                            ('retain-reversed-overlap', [1, 0])):
+            observed = await sequence(factory, method, state, [old, new], order,
+                                      error_state_name=error_state,
+                                      retain_while_pending=True)
+            record(name, observed, all(observed['checkpoints_passed'])
+                   and successful(observed, new))
     return cases
 
 
@@ -146,6 +176,8 @@ def main():
     parser.add_argument('--method', default='run')
     parser.add_argument('--state', default='result')
     parser.add_argument('--error-state', help='error attribute; checks current error, recovery and stale error')
+    parser.add_argument('--retain-while-pending', action='store_true',
+                        help='opt-in contract: keep displayed result until latest request succeeds')
     parser.add_argument('--output', type=Path, help='new JSON evidence file below --root; never overwritten')
     parser.add_argument('--old', default='old')
     parser.add_argument('--new', default='new')
@@ -165,7 +197,7 @@ def main():
         factory = load_class((args.root / args.source), args.class_name, args.root)
         cases = asyncio.run(asyncio.wait_for(
             probe(factory, args.method, args.state, args.old, args.new, args.boundary,
-                  args.error_state),
+                  args.error_state, args.retain_while_pending),
             timeout=args.timeout))
         result = {'complete': True, 'layer': 'local async component', 'cases': cases}
         status = int(any(not case['passed'] for case in cases))

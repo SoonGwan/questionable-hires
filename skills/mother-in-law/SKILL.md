@@ -39,9 +39,9 @@ a broken failure path, and a support exception is not the intended assertion.
 
 For captured observations **without a project-test deliverable**, the optional
 [component probe](references/component-probe.md) fits a zero-argument constructor,
-async `run(query, fetch)` and direct payload state. It does not cover pending-state
-retention, normal overlapping completion or repeated identical queries; use
-project checks for those. Existing adequate runners take precedence. Never change
+async `run(query, fetch)` and direct payload state. An opt-in mode checks required
+display retention through normal/reversed overlap; repeated identical overlapping
+queries still require project checks. Existing adequate runners take precedence. Never change
 production to fit a helper. Native-project delivery does not need this reference.
 
 For a rendered UI, read [references/browser.md](references/browser.md).

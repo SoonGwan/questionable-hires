@@ -57,6 +57,81 @@ class ErrorSearch:
 
 
 class MotherInLawSequenceProbeTests(unittest.IsolatedAsyncioTestCase):
+    def test_retention_cli_opt_in_preserves_failure_evidence(self):
+        source = '''class Search:
+    def __init__(self):
+        self.result = None
+        self.generation = 0
+    async def run(self, query, fetch):
+        self.generation += 1
+        generation = self.generation
+        CLEAR_ON_ENTRY
+        result = await fetch(query)
+        if generation == self.generation:
+            self.result = result
+'''
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / 'target.py'
+            command = [sys.executable, '-B', probe.__file__, '--root', str(root),
+                       '--source', 'target.py', '--class-name', 'Search']
+            for clear, expected in (('pass', 0), ('self.result = None', 1)):
+                target.write_text(source.replace('CLEAR_ON_ENTRY', clear))
+                before = target.read_bytes()
+                default = subprocess.run(command, capture_output=True, text=True, timeout=5)
+                self.assertEqual(default.returncode, 0, default.stdout + default.stderr)
+                result = subprocess.run(command + ['--retain-while-pending'],
+                                        capture_output=True, text=True, timeout=5)
+                self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
+                evidence = json.loads(result.stdout)
+                self.assertTrue(evidence['complete'])
+                self.assertEqual(len(evidence['cases']), 4)
+                self.assertEqual(result.stderr, '')
+                self.assertEqual(target.read_bytes(), before)
+                if expected:
+                    checkpoint = evidence['cases'][2]['observed']['failed_checkpoints'][0]
+                    self.assertEqual(checkpoint, {'phase': 'pending-entry', 'query': 'old',
+                                                 'state': None, 'expected_state': 'seed result'})
+
+    async def test_retention_seed_exception_cannot_be_hidden_by_later_success(self):
+        class SeedCrash(GuardedSearch):
+            async def run(self, query, fetch):
+                await super().run(query, fetch)
+                if self.generation == 1:
+                    raise RuntimeError('seed callback failed')
+        cases = await asyncio.wait_for(probe.probe(
+            SeedCrash, 'run', 'result', 'old', 'new', None,
+            retain_while_pending=True), 1)
+        for case in cases[-2:]:
+            self.assertFalse(case['passed'])
+            self.assertEqual(case['observed']['unexpected_errors'],
+                             [{'query': 'old', 'error': 'seed callback failed'}])
+
+    async def test_opt_in_retention_checks_entry_and_older_completion(self):
+        class ClearsWhileLoading(GuardedSearch):
+            async def run(self, query, fetch):
+                self.result = None
+                await super().run(query, fetch)
+
+        for factory, expected in ((GuardedSearch, True), (ClearsWhileLoading, False),
+                                  (UnsafeSearch, False)):
+            cases = await asyncio.wait_for(probe.probe(
+                factory, 'run', 'result', 'old', 'new', None,
+                retain_while_pending=True), 1)
+            retention = [c for c in cases if c['name'].startswith('retain-')]
+            self.assertEqual(len(retention), 2)
+            self.assertEqual(all(c['passed'] for c in retention), expected)
+            if factory is ClearsWhileLoading:
+                first = retention[0]['observed']['failed_checkpoints'][0]
+                self.assertEqual(first['phase'], 'pending-entry')
+                self.assertIsNone(first['state'])
+                self.assertEqual(first['expected_state'], 'seed result')
+            if factory is UnsafeSearch:
+                failure = retention[0]['observed']['failed_checkpoints'][0]
+                self.assertEqual(failure['phase'], 'completion')
+                self.assertEqual(failure['state'], 'old result')
+                self.assertEqual(failure['expected_state'], 'seed result')
+
     async def test_helper_success_does_not_certify_loading_retention(self):
         class ClearsWhileLoading(GuardedSearch):
             async def run(self, query, fetch):
