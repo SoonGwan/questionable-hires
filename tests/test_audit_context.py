@@ -1,0 +1,111 @@
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import unittest
+from unittest.mock import patch
+
+
+SCRIPT = Path(__file__).resolve().parents[1] / 'skills/con-artist/scripts/context.py'
+spec = importlib.util.spec_from_file_location('audit_context', SCRIPT)
+context = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(context)
+
+
+class AuditContextTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.put('tests/test_store.py', 'def test_store():\n    assert True\n')
+        self.put('service.py', 'raise RuntimeError("must never import")\n\nclass Store:\n    @staticmethod\n    def save(value):\n        return value\n')
+
+    def put(self, name, text):
+        path = self.root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text)
+
+    def test_collects_scoped_instructions_configs_and_exact_method_without_execution(self):
+        self.put('AGENTS.md', 'root rule')
+        self.put('tests/AGENTS.override.md', 'nested rule')
+        self.put('unrelated/AGENTS.md', 'must not read')
+        self.put('pytest.ini', '[pytest]\naddopts = -q\n')
+        self.put('tests/conftest.py', 'import pytest\npytest_plugins = ["support"]\n\n@pytest.fixture(autouse=True)\ndef setup():\n    raise RuntimeError("not executed")\n')
+        before = {str(p.relative_to(self.root)): p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        result = context.collect(self.root, ['tests/test_store.py', 'service.py:Store.save'])
+        self.assertEqual([r['path'] for r in result['instructions']], ['AGENTS.md', 'tests/AGENTS.override.md'])
+        self.assertEqual(result['selected'][1]['source'], '4:     @staticmethod\n5:     def save(value):\n6:         return value')
+        self.assertEqual(result['configs'][0]['path'], 'pytest.ini')
+        indexed = result['conftest_indexes'][0]
+        self.assertEqual(indexed['definitions'][0]['decorators'], ['pytest.fixture(autouse=True)'])
+        self.assertIn('pytest_plugins', '\n'.join(indexed['top_level']))
+        self.assertNotIn('not executed', json.dumps(indexed))
+        self.assertEqual(before, {str(p.relative_to(self.root)): p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+
+    def test_cli_emits_valid_context_without_side_effects(self):
+        process = subprocess.run([sys.executable, '-I', '-B', str(SCRIPT), '--root', str(self.root),
+                                  'service.py:Store.save'], capture_output=True, text=True, timeout=5)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        self.assertEqual(json.loads(process.stdout)['status'], 'collected')
+        self.assertEqual(process.stderr, '')
+
+    def test_refuses_escape_git_and_symlink_targets_or_ancestor_context(self):
+        for selector in ('../outside.py', '/tmp/outside.py', '.git/config'):
+            with self.subTest(selector=selector), self.assertRaises(ValueError):
+                context.collect(self.root, [selector])
+        (self.root / 'alias.py').symlink_to(self.root / 'service.py')
+        with self.assertRaises(ValueError):
+            context.collect(self.root, ['alias.py'])
+        (self.root / 'AGENTS.md').symlink_to(self.root / 'missing')
+        with self.assertRaises(ValueError):
+            context.collect(self.root, ['service.py'])
+
+    def test_missing_ambiguous_and_invalid_symbols_do_not_select_arbitrary_code(self):
+        for selector in ('service.py:Store.nope', 'service.py:', 'service.py:a-b'):
+            with self.subTest(selector=selector), self.assertRaises(ValueError):
+                context.collect(self.root, [selector])
+        self.put('duplicate.py', 'def f(): pass\ndef f(): pass\n')
+        with self.assertRaises(ValueError):
+            context.collect(self.root, ['duplicate.py:f'])
+
+    def test_size_and_output_caps_fail_without_partial_stdout(self):
+        self.put('large.py', 'x' * (context.MAX_FILE + 1))
+        with self.assertRaises(ValueError):
+            context.collect(self.root, ['large.py'])
+        self.put('wide.py', '# ' + 'a' * context.MAX_OUTPUT)
+        process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--root', str(self.root), 'wide.py'],
+                                 capture_output=True, text=True, timeout=5)
+        self.assertEqual(process.returncode, 2)
+        self.assertEqual(process.stdout, '')
+        self.assertEqual(json.loads(process.stderr)['status'], 'incomplete')
+
+    def test_unsupported_conftest_syntax_is_not_silently_omitted(self):
+        self.put('tests/conftest.py', 'def broken(:\n')
+        with self.assertRaises(SyntaxError):
+            context.collect(self.root, ['tests/test_store.py'])
+
+    def test_total_read_budget_and_non_regular_files_are_rejected(self):
+        with patch.object(context, 'MAX_INPUT', 10), self.assertRaises(ValueError):
+            context.collect(self.root, ['service.py'])
+        with self.assertRaises(ValueError):
+            context.collect(self.root, ['tests'])
+
+    def test_conditional_plugin_or_hook_definitions_remain_visible(self):
+        self.put('tests/conftest.py', 'if FLAG:\n    def pytest_setup():\n        pass\n')
+        result = context.collect(self.root, ['tests/test_store.py'])
+        self.assertIn('def pytest_setup', result['conftest_indexes'][0]['top_level'][0])
+
+    def test_no_parent_or_sibling_instruction_discovery(self):
+        self.put('AGENTS.md', 'outer rule')
+        self.put('nested/test_x.py', 'assert True\n')
+        result = context.collect(self.root / 'nested', ['test_x.py'])
+        self.assertEqual(result['instructions'], [])
+        self.assertEqual(result['instruction_paths_checked'], ['AGENTS.md', 'AGENTS.override.md'])
+
+    def test_async_and_multiline_decorators_preserve_line_numbers(self):
+        self.put('async_test.py', '@marker(\n    "case"\n)\nasync def test_x():\n    assert True\n')
+        result = context.collect(self.root, ['async_test.py:test_x'])
+        self.assertTrue(result['selected'][0]['source'].startswith('1: @marker('))
+        self.assertTrue(result['selected'][0]['source'].endswith('5:     assert True'))

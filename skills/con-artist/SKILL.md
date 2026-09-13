@@ -11,6 +11,12 @@ description: Audit whether tests detect broken behavior by tracing assertions an
 
 Start from the requested assertions and follow their actual calls through implementation and mocks. Read the reached definitions and relevant fixtures/configuration; broaden discovery when a dependency or contract remains unresolved, not merely because more files exist. Reuse completed project-scoped instruction discovery and known runner information after loading this skill. Keep any new discovery inside the permitted project root.
 
+For known Python test/implementation paths whose context is still unread, use
+[the read-only context collector](references/python-context.md) to gather selected
+source, ancestor instructions/configuration and conftest indexes in one call.
+Skip it when equivalent context is already available; its indexes are navigation,
+not proof of resolved dependencies or executed behavior.
+
 Use the documented command or evidenced runner, preserving test configuration. Reuse a valid baseline or established audit; a failing baseline is not mutation evidence. Choose one reachable behavioral fault at the requested boundary, such as acknowledgment versus persistence or closed flag versus cleanup. Syntax errors and equivalent mutations do not establish sensitivity.
 
 Choose isolation by the context it preserves. In-memory substitution fits when the actual caller resolves it and compilation context/bindings remain intact; restore substitutions in reused processes. Extracting function text can lose future flags, closures or decorators: use disposable module/package copies when that context is uncertain. Keep originals intact; a fake implementation or wrong binding does not demonstrate a surviving fault.
