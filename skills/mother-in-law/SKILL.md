@@ -17,6 +17,11 @@ it with a disposable helper run of the same scenarios. A saved JSON result or
 command depending on an installed skill is not a standalone project regression.
 Reuse existing coverage, adding missing checkpoints rather than another harness.
 
+Keep custom test helpers distinct from runner methods: use `fail_request`, not
+`unittest.TestCase.fail`, for a transport failure. When introducing assertion
+plumbing, exercise a deliberate mismatch in isolation: green cases cannot reveal
+a broken failure path, and a support exception is not the intended assertion.
+
 For captured component observations without a project-test deliverable, use
 `scripts/sequence_probe.py` when its contract fits: zero-argument constructor,
 async `run(query, fetch)`, and state storing the fetched payload directly.
