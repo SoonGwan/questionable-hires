@@ -1,5 +1,15 @@
 # Release readiness — development preview
 
+## 2026-09-14: current hosted gate rechecked
+
+Read-only check of `ead49db` [run 34774733190](https://github.com/SoonGwan/questionable-hires/actions/runs/34774733190)
+finds all four jobs concluded failure with no executed steps. Source-archive
+check `103770654579` reports that recent account payments failed **or** the
+spending limit needs increasing; the response does not determine which setting.
+This is not an executed test failure or hosted verification of the current code.
+Repository visibility is still private. No billing, publication or account
+settings were changed. Local execution remains separate evidence.
+
 ## 2026-09-13: latest helper guards verified in the source distribution
 
 The unmodified `5b78fef` archive passes validation, localized featured/chart
