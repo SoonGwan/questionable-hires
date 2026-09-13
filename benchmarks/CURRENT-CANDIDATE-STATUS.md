@@ -89,6 +89,11 @@ The eight characters and automatic selection remain intact; helpers are optional
 
 ## Verification and release gates
 
+- [Historical assertion-contract scan](TEST-CONTRACT-SCAN-01.md): 533 retained
+  Python files, six candidates all belonging to already-qualified native/panel
+  experiments. No new undisclosed case established; unresolved inheritance and
+  other static limits remain. This is not an all-results correctness certificate
+  or a new performance metric.
 - [Future fixture scratch policy](HOSTAGE-ATOMIC-TEMP-PREFLIGHT.md) corrects
   project-local temporary-output control without editing the measured export
   task. Actual creation-path preflight preserves two before failures/four after
