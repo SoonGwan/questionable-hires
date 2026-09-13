@@ -33,6 +33,8 @@ process. Use it for required caller-binding checks, not a separate binding modul
 It establishes current bindings, not later calls or immunity to fixture rebinding;
 use native hooks for post-collection checks without pre-importing pytest tests.
 Precheck failure (check exit 6) is incomplete evidence, never a killed fault.
+Listed-import setup failure or early exit uses reserved check exit 7 and stops
+as incomplete even on a mutant; see [diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence).
 
 For native fixture-based assertions, use `probe_files`/`probe_tests` from
 [probe execution](python-audit-advanced.md#stronger-probes), avoiding nested Python

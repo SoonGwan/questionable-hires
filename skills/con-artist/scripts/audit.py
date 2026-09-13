@@ -21,16 +21,22 @@ spec = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
 sys.path[:0] = [str(root / name) for name in spec['import_roots']] + [str(root)]
 print('Copied process:', json.dumps({'python': sys.executable, 'cwd': str(root)}, separators=(',', ':')), flush=True)
-for name in spec['imports']:
-    module = importlib.import_module(name)
-    location = getattr(module, '__file__', None)
-    if not location or not pathlib.Path(location).resolve().is_relative_to(root):
-        raise RuntimeError('Import escaped copy: ' + name + ': ' + str(location))
-    location = pathlib.Path(location).resolve()
-    print('Verified copied import:', name, json.dumps({
-        'path': str(location.relative_to(root)),
-        'sha256': hashlib.sha256(location.read_bytes()).hexdigest()
-    }, separators=(',', ':')), flush=True)
+try:
+    for name in spec['imports']:
+        module = importlib.import_module(name)
+        location = getattr(module, '__file__', None)
+        if not location or not pathlib.Path(location).resolve().is_relative_to(root):
+            raise RuntimeError('Import escaped copy: ' + name + ': ' + str(location))
+        location = pathlib.Path(location).resolve()
+        print('Verified copied import:', name, json.dumps({
+            'path': str(location.relative_to(root)),
+            'sha256': hashlib.sha256(location.read_bytes()).hexdigest()
+        }, separators=(',', ':')), flush=True)
+except BaseException:
+    import traceback
+    print('Import setup failed; not mutation evidence.', flush=True)
+    traceback.print_exc()
+    raise SystemExit(7)
 if spec.get('precheck'):
     try:
         exec(compile(spec['precheck'], '<audit-precheck>', 'exec'), {'__name__': '__audit_precheck__'})
@@ -270,7 +276,8 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                 result = execute(str(python), directory, phase_spec,
                                  spec.get('probe') if check == 'probe' else None, timeout)
                 results[variant + '_' + check] = result
-                if (result['timed_out'] or (variant == 'correct' and result['exit_code'] != 0)
+                if (result['timed_out'] or result['exit_code'] == 7
+                        or (variant == 'correct' and result['exit_code'] != 0)
                         or (spec.get('precheck') and result['exit_code'] == 6)):
                     output = dict(status='incomplete', checks=results)
                     if reused:

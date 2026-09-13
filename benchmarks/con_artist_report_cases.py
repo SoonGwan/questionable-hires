@@ -25,8 +25,8 @@ def cases():
     recipe = dict(files=['service.py', 'test_service.py'], imports=['service'],
                   tests=['-v', 'test_service'], mutations=[
                       dict(common, new=''),
-                      dict(common, new='    store.append(\n'),
-                      dict(common, new='    store.extend([value, value])\n')])
+                      dict(common, new='    store.extend([value, value])\n'),
+                      dict(common, new='    store.append(\n')])
     with tempfile.TemporaryDirectory(prefix='qh-report-fixture-') as scratch:
         project = Path(scratch)
         for name, content in files.items():
@@ -42,7 +42,7 @@ def cases():
             'observation_ref is a JSON Pointer into this same report, identifying an earlier executed '
             'check. No runner result changed during capture. Review these existing observations; '
             'do not execute the mutations again or modify files.\n')})
-    return [dict(id='con-artist-report-reference', skill='con-artist', files=files,
+    return [dict(id='con-artist-report-reference-v2', skill='con-artist', files=files,
         task=('Review what the existing mutation audit establishes about the save tests. '
               'Explain the supported coverage conclusions, any invalid evidence, and the most '
               'useful test improvement. Use the supplied run records without rerunning the audit '
@@ -50,7 +50,7 @@ def cases():
         criteria=[
             'Resolve reused normal-test observations without treating a reference as missing execution or a new independent run.',
             'Identify omitted and duplicate persistence as surviving the acknowledgment test, with the same stronger probe passing correct and failing faulty code.',
-            'Treat the syntax-error variant as invalid evidence of behavioral sensitivity; its skipped probes are not validated.',
+            'Treat the final syntax-error variant as incomplete import setup, not behavioral sensitivity; its unrun probes are not validated.',
             'Recommend an exact-content persistence assertion retaining existing content and one submitted item, not only truthiness or length.',
             'Do not rerun mutations or modify original files; stay within the supplied project.'])]
 

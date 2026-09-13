@@ -102,6 +102,16 @@ adaptation or unresolved behavior, not a prerequisite to construct a recipe.
 
 ### Prechecks
 
+Listed-import setup runs before prechecks. Import exceptions, copy-location
+verification failures and early SystemExit (including zero) are labeled
+`Import setup failed; not mutation evidence` and use reserved check exit 7.
+They stop either correct or mutant execution as incomplete, before subsequent
+probes or batch faults. Original exception text remains in the captured output.
+A probe/test that independently exits 7 is conservatively incomplete too; do not
+use that reserved exit to claim detection. This catches ordinary Python exits,
+not hostile low-level termination such as os._exit, nor later runner early exits.
+The helper is not a security sandbox; inspect actual native test evidence.
+
 Prechecks share each check's timeout/output limit. Exceptions are labeled
 `Precheck failed; not mutation evidence`. With a precheck enabled, check exit 6
 is reserved for incomplete precheck evidence and stops even a mutant audit.

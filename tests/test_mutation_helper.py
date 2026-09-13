@@ -17,6 +17,60 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_import_early_success_exit_is_incomplete_not_green_baseline(self):
+        source = self.root / 'service.py'
+        source.write_text('raise SystemExit(0)\n' + source.read_text())
+        result = self.run_audit()
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(list(result['checks']), ['correct_tests'])
+        self.assertEqual(result['checks']['correct_tests']['exit_code'], 7)
+        self.assertIn('SystemExit: 0', result['checks']['correct_tests']['output'])
+        self.assertTrue(result['integrity']['owned_scratch_removed'])
+
+    def test_mutant_import_exit_stops_before_survival_probe(self):
+        source = self.root / 'service.py'
+        source.write_text('IMPORT_READY = True\n' + source.read_text())
+        recipe = dict(self.recipe, old='IMPORT_READY = True', new='raise SystemExit(0)',
+                      probe_when='survives')
+        result = self.run_audit(recipe)
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(list(result['checks']), ['correct_tests', 'mutant_tests'])
+        self.assertEqual(result['checks']['mutant_tests']['exit_code'], 7)
+        self.assertNotIn('probe_skipped', result)
+
+    def test_src_package_import_exit_returns_incomplete_cli_evidence(self):
+        recipe = self.src_recipe()
+        package = self.root / 'src' / 'audit_sample' / '__init__.py'
+        for code in (0, 9):
+            with self.subTest(code=code):
+                package.write_text(f'raise SystemExit({code})\n')
+                process = subprocess.run([sys.executable, '-B', helper.__file__, '--source',
+                                          str(self.root), '--spec', '-'],
+                                         input=json.dumps(dict(recipe, import_roots=['src'])),
+                                         capture_output=True, text=True, timeout=10)
+                self.assertEqual(process.returncode, 2, process.stdout + process.stderr)
+                report = json.loads(process.stdout)
+                self.assertEqual(report['status'], 'incomplete')
+                self.assertEqual(list(report['checks']), ['correct_tests'])
+                check = report['checks']['correct_tests']
+                self.assertEqual(check['exit_code'], 7)
+                self.assertIn(f'SystemExit: {code}', check['output'])
+                self.assertIn('Import setup failed', check['output'])
+                self.assertTrue(report['integrity']['owned_scratch_removed'])
+
+    def test_mutant_import_failure_stops_later_batch_faults(self):
+        source = self.root / 'service.py'
+        source.write_text('IMPORT_READY = True\n' + source.read_text())
+        recipe = self.batch_recipe()
+        recipe['mutations'][0] = dict(target='service.py', old='IMPORT_READY = True',
+                                      new='raise SystemExit(0)', probe_when='survives',
+                                      probe=self.recipe['probe'])
+        result = helper.audit_batch(self.root, recipe)
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(len(result['audits']), 1)
+        self.assertEqual(list(result['audits'][0]['checks']), ['correct_tests', 'mutant_tests'])
+        self.assertEqual(result['audits'][0]['checks']['mutant_tests']['exit_code'], 7)
+
     def src_recipe(self):
         package = self.root / 'src' / 'audit_sample'
         package.mkdir(parents=True)
@@ -783,8 +837,10 @@ class MutationHelperTests(unittest.TestCase):
     def test_conditional_mode_does_not_certify_syntax_failure(self):
         result = self.run_audit(dict(self.recipe, probe_when='survives', new='    bad syntax !!!\n'))
         self.assertIn('SyntaxError', result['checks']['mutant_tests']['output'])
-        self.assertIn('not automatically', result['limitation'])
-        self.assertIn('inspect', result['probe_skipped'])
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(result['checks']['mutant_tests']['exit_code'], 7)
+        self.assertNotIn('probe_skipped', result)
+        self.assertEqual(list(result['checks']), ['correct_tests', 'mutant_tests'])
 
     def test_conditional_mode_rejects_broken_correct_probe_after_survival(self):
         result = self.run_audit(dict(self.recipe, probe_when='survives', probe='assert False'))
@@ -828,7 +884,9 @@ class MutationHelperTests(unittest.TestCase):
     def test_syntax_failure_is_not_automatically_called_killed(self):
         result = self.run_audit(dict(self.recipe, new='    broken syntax !!!\n'))
         self.assertIn('SyntaxError', result['checks']['mutant_tests']['output'])
-        self.assertIn('not automatically', result['limitation'])
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(result['checks']['mutant_tests']['exit_code'], 7)
+        self.assertNotIn('mutant_probe', result['checks'])
 
     def test_invalid_mutations_are_rejected_before_copying(self):
         for changes in (dict(old='absent'), dict(old=''), dict(new=self.recipe['old']),

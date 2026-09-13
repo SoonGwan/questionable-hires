@@ -12,18 +12,19 @@ SPEC.loader.exec_module(FIXTURE)
 class ConArtistReportFixtureTests(unittest.TestCase):
     def test_generated_report_preserves_survivors_setup_failure_and_references(self):
         case = FIXTURE.cases()[0]
+        self.assertEqual(case['id'], 'con-artist-report-reference-v2')
         result = json.loads(case['files']['audit-result.json'])
-        self.assertEqual(result['status'], 'observed')
-        first, invalid, third = result['audits']
+        self.assertEqual(result['status'], 'incomplete')
+        first, third, invalid = result['audits']
         self.assertEqual(first['checks']['correct_tests']['exit_code'], 0)
         for audit in (first, third):
             self.assertEqual(audit['checks']['mutant_tests']['exit_code'], 0)
             self.assertEqual(audit['checks']['correct_probe']['exit_code'], 0)
             self.assertEqual(audit['checks']['mutant_probe']['exit_code'], 1)
             self.assertIn('AssertionError', audit['checks']['mutant_probe']['output'])
-        self.assertEqual(invalid['checks']['mutant_tests']['exit_code'], 1)
+        self.assertEqual(invalid['checks']['mutant_tests']['exit_code'], 7)
         self.assertIn('SyntaxError', invalid['checks']['mutant_tests']['output'])
-        self.assertIn('probe_skipped', invalid)
+        self.assertNotIn('probe_skipped', invalid)
         self.assertNotIn('correct_probe', invalid['checks'])
         for audit in (invalid, third):
             self.assertTrue(audit['correct_tests_reused'])
