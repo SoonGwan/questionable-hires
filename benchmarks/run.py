@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 import random
+import re
 from pathlib import Path
 import shutil
 import signal
@@ -17,6 +18,30 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTROL = "Keep the change focused, investigate relevant evidence, and verify your conclusions with appropriate checks."
+
+
+def unittest_transcript_candidate(item):
+    """Flag a narrow verbose-count mismatch for review, never score the tests.
+
+    Custom runners, multiple invocations, subtests and arbitrary output can defeat
+    this heuristic. Silence is not evidence of complete capture.
+    """
+    command_text = item.get('command', '')
+    output = item.get('aggregated_output', '')
+    if ('unittest' not in command_text
+            or not re.search(r'(?<![\w-])(?:-v|--verbose)(?![\w-])', command_text)):
+        return None
+    summaries = re.findall(r'^Ran (\d+) tests? in [^\n]+$', output, re.MULTILINE)
+    if len(summaries) != 1:
+        return None
+    reported = int(summaries[0])
+    # Standard verbose method headers, not failure-trace headings or subtest rows.
+    observed = len(re.findall(r'^\S+ \([^\n]+\) \.\.\.(?: |$)', output, re.MULTILINE))
+    if observed < reported:
+        return dict(item_id=item.get('id'), reported_tests=reported,
+                    observed_verbose_headers=observed,
+                    interpretation='Possible partial transcript or nonstandard runner output; manual review required.')
+    return None
 
 
 def inspect_capture(stdout, stderr):
@@ -34,18 +59,22 @@ def inspect_capture(stdout, stderr):
             non_objects.append(number)
             continue
         events.append(event)
-    empty_outputs, event_errors = [], []
+    empty_outputs, event_errors, transcript_candidates = [], [], []
     for event in events:
         if event.get('type') in ('error', 'turn.failed'):
             event_errors.append(event.get('type'))
         item = event.get('item')
         if (event.get('type') == 'item.completed' and isinstance(item, dict)
-                and item.get('type') == 'command_execution'
-                and not item.get('aggregated_output')):
-            empty_outputs.append(item.get('id'))
+                and item.get('type') == 'command_execution'):
+            if not item.get('aggregated_output'):
+                empty_outputs.append(item.get('id'))
+            candidate = unittest_transcript_candidate(item)
+            if candidate:
+                transcript_candidates.append(candidate)
     return events, dict(
         invalid_json_lines=invalid_lines, non_object_json_lines=non_objects,
         empty_command_output_items=empty_outputs, error_event_types=event_errors,
+        unittest_transcript_review_candidates=transcript_candidates,
         patch_rejection_count=stderr.lower().count('patch rejected'),
         limitation='Empty command output may be legitimate. Nonempty output may still be incomplete. '
                    'These diagnostics neither prove full tool-output capture nor score task success.')

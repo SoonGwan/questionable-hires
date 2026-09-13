@@ -12,6 +12,46 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_verbose_capture_review_uses_real_native_output_without_scoring_failure(self):
+        source = '''import unittest
+class Checks(unittest.TestCase):
+    def test_first(self): self.assertEqual(1, 1)
+    def test_second(self): self.assertEqual("actual", "expected")
+    def test_third(self): self.assertTrue(True)
+unittest.main(verbosity=2)
+'''
+        process = runner.subprocess.run([sys.executable, '-c', source],
+                                        text=True, capture_output=True, timeout=10)
+        self.assertEqual(process.returncode, 1)
+        self.assertIn('AssertionError', process.stderr)
+        item = dict(type='command_execution', id='native',
+                    command='python3 -m unittest -v', aggregated_output=process.stderr,
+                    exit_code=process.returncode)
+        def inspect(value):
+            raw = json.dumps(dict(type='item.completed', item=value))
+            events, diagnostics = runner.inspect_capture(raw, '')
+            self.assertEqual(events[0]['item'], value)
+            return diagnostics['unittest_transcript_review_candidates']
+        self.assertEqual(inspect(item), [])
+        partial = dict(item, aggregated_output=process.stderr[process.stderr.index('test_third'):])
+        candidates = inspect(partial)
+        self.assertEqual(len(candidates), 1)
+        self.assertEqual(candidates[0]['reported_tests'], 3)
+        self.assertEqual(candidates[0]['observed_verbose_headers'], 1)
+        self.assertEqual(partial['exit_code'], 1)
+        self.assertEqual(inspect(dict(partial, command='python3 -m unittest -q')), [])
+        self.assertEqual(inspect(dict(partial, command='python3 report.py')), [])
+        self.assertEqual(inspect(dict(partial, aggregated_output=process.stderr * 2)), [])
+
+    def test_partial_success_summary_is_review_candidate_not_failure(self):
+        item = dict(type='command_execution', id='partial',
+                    command='python3 -m unittest --verbose', exit_code=0,
+                    aggregated_output='ok\ntest_last (checks.C) ... ok\n\nRan 6 tests in 0.033s\n\nOK\n')
+        candidate = runner.unittest_transcript_candidate(item)
+        self.assertEqual((candidate['reported_tests'], candidate['observed_verbose_headers']), (6, 1))
+        self.assertEqual(item['exit_code'], 0)
+        self.assertIsNone(runner.unittest_transcript_candidate(dict(item, aggregated_output='')))
+
     def test_working_overlay_stays_uncommitted_and_model_diff_excludes_it(self):
         case = dict(id='dirty', skill='receipt', task='Verify only',
                     files={'rule.py': 'VALUE = "old"\n', '.gitignore': 'ignored.txt\n'},
