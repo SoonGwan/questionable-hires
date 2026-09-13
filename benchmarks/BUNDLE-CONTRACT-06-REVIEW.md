@@ -39,6 +39,43 @@ inventory/resource reconciliation and independent transient/valid-control replay
 remain pending. Tests do not add unrelated assertion-library or repeated-key
 checks. Helper adoption is observed, not an isolated attribution of savings.
 
+## Search-order QA — skill
+
+Completed: **71,748 tokens / 53.122 seconds**, six shell calls. Copies
+ControlledFetch and adds two actual Search overlap tests. Original native output
+captures normal pass and reversed-completion AssertionError, both test names and
+the two-test/one-failure summary (0.013s). Assertions require latest completion
+visibility and final newest ownership, without constraining the explicitly
+unspecified normal-order pending interval. One-second waits and registered owned
+task cleanup are retained; no production edit or observed capture gap.
+
+## Search-order QA — baseline
+
+Completed: **102,105 tokens / 80.501 seconds**, six shell calls. Adds a custom
+controlled test, Markdown report and saved native output. Both executed native
+runs capture the two-test/one-failure result (0.012s each) with intended stale
+result AssertionError. Tests exercise actual Search, overlap, both orders and
+permitted final-only normal behavior; two-second waits and finally cancellation/
+draining are present. The second run has a 15-second subprocess bound and reports
+native exit 1, although its wrapper itself exits successfully. This is retained
+failure evidence, not a passing QA suite. Production diff is empty.
+
+Both order cells require post-timing original/resource reconciliation and valid
+guard replay. Baseline's additional report, saved transcript and second native
+run mean unequal delivery work. Neither arm's failing QA test means failed task
+execution: detecting the supplied defect is the requested outcome.
+
+## Formatter design — skill
+
+Completed: **66,315 tokens / 26.805 seconds**, three shell calls. Reads Landlord
+entrypoint, actual formatter/consumer and explicit no-plugin USD-only contract.
+Recommends a direct centralized function retaining the exact formatting expression
+and acknowledges removal of the unsupported registry API. Correctly labels its
+verification static; no runtime checks or edits, as with baseline. Both arms still
+repeat discovery/keyword inspection. Skill records higher tokens and time in this
+pair; do not hide that behind favorable audit/QA examples. Initial status contains
+only installed skills; no final native status. Inventory reconciliation pending.
+
 ## Persistence audit — baseline
 
 Completed: **85,571 recorded tokens / 82.170 seconds**, five shell calls.
