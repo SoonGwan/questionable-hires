@@ -21,6 +21,16 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_cookie_design_is_distinct_and_preserves_audit_profile(self):
+        skill, tasks = runner.select_profile('cookie-design')
+        self.assertEqual(skill, 'landlord')
+        self.assertEqual(set(tasks), {'cookie-storage-design'})
+        self.assertEqual(set(runner.make_schedule(tasks, ['baseline', 'skill'], 1)),
+                         {('cookie-storage-design', 'baseline', 1), ('cookie-storage-design', 'skill', 1)})
+        self.assertEqual(runner.select_profile('cookies-audit'), ('con-artist', runner.COOKIE_TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('cookie-design', ['cookies-scoped-clear'])
+
     def test_header_equality_profile_keeps_prior_boundary_audit(self):
         skill, tasks = runner.select_profile('header-equality-audit')
         self.assertEqual(skill, 'con-artist')
