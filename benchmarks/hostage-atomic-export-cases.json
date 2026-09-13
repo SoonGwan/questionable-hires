@@ -1,0 +1,22 @@
+[
+  {
+    "id": "atomic-report-export",
+    "skill": "hostage-negotiator",
+    "task": "Make apps/reports/exporter.py:write_rows preserve an existing destination if consuming the row iterator fails after yielding some rows. When the destination did not exist, failure must leave it absent. Re-raise the original exception object, remove any temporary output, and preserve existing successful output/count behavior. Keep this change focused and verify a defect-specific failure before fixing it, then unchanged assertions after. Read the project instructions and requirements; do not install dependencies or redesign the export API.",
+    "files": {
+      "AGENTS.md": "Work only in this project. Read apps/reports/AGENTS.md before editing the exporter. Preserve existing tests; add focused coverage. Use python3 -B -m unittest discover -s tests -v from the root. Do not install dependencies.\n",
+      "requirements.md": "The destination is a regular file or absent, with an existing writable parent. Rows are strings from a possibly failing iterator. Successful output is UTF-8, one newline per row, and the return value is the row count. On iterator failure, preserve the old destination bytes or its absence, preserve the original exception object, and leave no temporary output. No permission-mode preservation, symlink policy, concurrent writers, crash durability/fsync, or filesystem-failure recovery guarantees are required by this ticket. Keep the function signature. No external network.\n",
+      "apps/__init__.py": "",
+      "apps/reports/__init__.py": "",
+      "apps/reports/AGENTS.md": "Keep UTF-8 and newline behavior and the integer return value. Do not buffer the entire row iterator in memory. Limit production changes to exporter.py; unrelated files are out of scope.\n",
+      "apps/reports/exporter.py": "from pathlib import Path\n\n\ndef write_rows(destination, rows):\n    destination = Path(destination)\n    count = 0\n    with destination.open(\"w\", encoding=\"utf-8\", newline=\"\") as stream:\n        for row in rows:\n            stream.write(row + \"\\n\")\n            count += 1\n    return count\n",
+      "tests/test_export.py": "import tempfile\nimport unittest\nfrom pathlib import Path\nfrom apps.reports.exporter import write_rows\n\n\nclass ExportTests(unittest.TestCase):\n    def test_success_replaces_file(self):\n        with tempfile.TemporaryDirectory() as directory:\n            path = Path(directory) / \"report.txt\"\n            path.write_text(\"previous\")\n            self.assertEqual(write_rows(path, iter([\"Ada\", \"한글\"])), 2)\n            self.assertEqual(path.read_bytes(), \"Ada\\n한글\\n\".encode(\"utf-8\"))\n\n    def test_empty_export(self):\n        with tempfile.TemporaryDirectory() as directory:\n            path = Path(directory) / \"report.txt\"\n            self.assertEqual(write_rows(path, iter([])), 0)\n            self.assertEqual(path.read_bytes(), b\"\")\n"
+    },
+    "criteria": [
+      "Original late-iterator failure is demonstrated before implementation edits; unchanged regression assertions pass after.",
+      "Existing destination bytes survive late failure; absent destination remains absent; original exception identity propagates and temporary output is removed.",
+      "Success, Unicode/newline output, empty export and returned row count remain compatible; existing test methods are preserved.",
+      "Streaming behavior retained, production changes limited to exporter.py, applicable instructions followed and no dependencies installed."
+    ]
+  }
+]

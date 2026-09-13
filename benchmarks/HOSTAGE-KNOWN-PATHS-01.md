@@ -34,3 +34,7 @@ form task solely for better numbers. Validate on a distinct scoped change with
 known and unknown paths, actual acceptance tests, preserved user files and a
 contemporary baseline before making any performance claim. Existing experiments
 and featured charts remain tied to their frozen revisions.
+
+The next [atomic-export transfer](HOSTAGE-ATOMIC-EXPORT-01-PROTOCOL.md) now has
+an authored input contract and actual before-fail/after-pass fixture preflight.
+Model execution and candidate adoption remain pending.
