@@ -198,3 +198,30 @@ but baseline explicitly performs static analysis while skill adds executed
 examples and a policy-location explanation. Keep that unequal work in the
 comparison; neither raw resource improves. No capture flags appear, and the
 conclusion is grounded in actual consumers rather than fewer lines alone.
+
+## Unprotected search — baseline and fourth pair
+
+Six shell calls, **103,275 tokens / 90.575 seconds**. Retains two native tests,
+a QA README and copied result log. Controlled actual Search requests run in both
+completion orders; normal passes and reversed fails on `results for ca` versus
+`results for cat`. One-second waits and finally cancellation/gather cleanup are
+present. Captured output includes both cases, actual assertion failure and original
+before/after hashes. Result text is written then printed, adding an evidence-file
+round trip. No production changes are made.
+
+**Scope violation retained:** the baseline executes `find .. -name AGENTS.md`
+despite the frozen project-only discovery instruction. Its empty output does not
+make the out-of-project traversal compliant. It is not excluded or repaired.
+
+The baseline also asserts that the first completed response must be displayed
+even when that is the older request and the newest is pending. Thus the same
+potential correction-incompatible intermediate assertion appears in **both**
+arms, not only the skill. Replay guarded copies after timing; do not infer
+regression-test suitability for a valid fix from their current pass/fail summaries.
+
+Pair: baseline 103,275 tokens / 90.575s versus skill 107,600 / 76.477s:
+**+4.19% tokens / −15.57% time**. Both reproduce the requested fault but share
+the intermediate-expectation concern. Skill adds seeded pending-state checks,
+support-failure validation and an outer native-process timeout; baseline retains
+extra report/log files and makes an out-of-scope search. Work and scope differ,
+so lower skill time is not an accepted causal efficiency win. All costs remain.
