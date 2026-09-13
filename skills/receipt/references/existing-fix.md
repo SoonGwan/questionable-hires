@@ -93,3 +93,10 @@ Child exit has a separate five-second cleanup wait; unconfirmed exit means CLI 2
 comparison not established and no next comparison. Other errors/interruptions
 propagate. Descendant termination is not guaranteed; do not retry automatically
 while a prior process may remain.
+
+Checks must finish their required work in the foreground. Once the direct native
+runner exits, remaining members of its process group are killed and buffered
+output drained under the original deadline; an inherited pipe alone no longer
+turns a finished check into a timeout. Exit detection polls every 50 ms, subject
+to scheduling. Background jobs intended to outlive the test runner are unsupported.
+Tests still own assertions and orderly cleanup; escaped groups are not contained.

@@ -119,14 +119,27 @@ def run_check(python, root, recipe, timeout):
     deadline = time.monotonic() + timeout
     decoder = codecs.getincrementaldecoder('utf-8')(errors='replace')
     output, size, timed_out = '', 0, False
+    group_stopped = False
+    def stop_group():
+        nonlocal group_stopped
+        if not group_stopped:
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            group_stopped = True
     try:
         with selectors.DefaultSelector() as selector:
             selector.register(process.stdout, selectors.EVENT_READ)
             while selector.get_map():
+                if process.poll() is not None:
+                    # Native runner finished; idle descendants must not turn
+                    # its captured failure into a wrapper timeout.
+                    stop_group()
                 remaining = deadline - time.monotonic()
                 if remaining <= 0:
                     raise subprocess.TimeoutExpired(process.args, timeout)
-                for key, _ in selector.select(remaining):
+                for key, _ in selector.select(min(remaining, 0.05)):
                     chunk = os.read(key.fileobj.fileno(), 4096)
                     text = decoder.decode(chunk, final=not chunk)
                     size += len(text)
@@ -138,11 +151,7 @@ def run_check(python, root, recipe, timeout):
         timed_out = True
     finally:
         pending_error = sys.exc_info()[0]
-        if timed_out or process.poll() is None:
-            try:
-                os.killpg(process.pid, signal.SIGKILL)
-            except ProcessLookupError:
-                pass
+        stop_group()
         process.stdout.close()
         try:
             process.wait(timeout=5)

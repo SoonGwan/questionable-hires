@@ -19,6 +19,27 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_finished_native_checks_do_not_wait_on_inherited_descendant_pipe(self):
+        source = self.tests + ('\nimport subprocess, sys\n'
+            '_background = subprocess.Popen([sys.executable, "-B", "-c", '
+            '"import time; time.sleep(20)"])\n')
+        (self.root / 'test_rule.py').write_text(source)
+        before_files = {str(p.relative_to(self.root)): p.read_bytes()
+                        for p in self.root.rglob('*') if p.is_file()}
+        result = helper.compare(self.root, self.recipe, timeout=2)
+        self.assertEqual(set(result['checks']), {'before', 'after'})
+        for variant, expected in [('before', 1), ('after', 0)]:
+            check = result['checks'][variant]
+            self.assertFalse(check['timed_out'])
+            self.assertEqual(check['exit_code'], expected)
+            self.assertIn('Verified copied import: rule', check['output'])
+            self.assertIn('Ran 1 test', check['output'])
+        self.assertIn('AssertionError', result['checks']['before']['output'])
+        self.assertTrue(result['comparison_copies_removed'])
+        after_files = {str(p.relative_to(self.root)): p.read_bytes()
+                       for p in self.root.rglob('*') if p.is_file()}
+        self.assertEqual(before_files, after_files)
+
     def test_compact_and_pretty_preserve_same_native_evidence(self):
         native = helper.compare(self.root, self.recipe)
         self.assertEqual(native['checks']['before']['exit_code'], 1)
