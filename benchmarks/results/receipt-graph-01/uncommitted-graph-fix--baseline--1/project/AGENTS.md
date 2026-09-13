@@ -1,0 +1,1 @@
+Work only inside this project. Verification only; do not edit original files. Use Python standard library and unittest (-v test_planner). Keep scratch explicitly project-local and remove owned comparison copies before finishing.

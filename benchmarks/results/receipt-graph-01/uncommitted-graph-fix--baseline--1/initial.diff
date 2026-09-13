@@ -1,0 +1,65 @@
+diff --git a/notes.txt b/notes.txt
+index 585e5b3..2ab73dc 100644
+--- a/notes.txt
++++ b/notes.txt
+@@ -1 +1 @@
+-Old note.
++Unrelated user draft: preserve exactly.
+diff --git a/planner.py b/planner.py
+index f0a1551..15ca26a 100644
+--- a/planner.py
++++ b/planner.py
+@@ -1,11 +1,16 @@
+ def order(graph):
+     visited = set()
+     output = []
++    active = set()
+     def visit(node):
+         if node in visited:
+             return
++        if node in active:
++            raise ValueError("cyclic dependency")
++        active.add(node)
+         for dependency in graph[node]:
+             visit(dependency)
++        active.remove(node)
+         visited.add(node)
+         output.append(node)
+     for node in graph:
+diff --git a/test_planner.py b/test_planner.py
+new file mode 100644
+index 0000000..0f909e1
+--- /dev/null
++++ b/test_planner.py
+@@ -0,0 +1,31 @@
++import unittest
++import planner
++
++class GraphTests(unittest.TestCase):
++    def test_empty(self):
++        self.assertEqual(planner.order({}), [])
++
++    def test_chain(self):
++        self.assertEqual(planner.order({"ship": ["build"], "build": ["fetch"], "fetch": []}),
++                         ["fetch", "build", "ship"])
++
++    def test_shared_dependency(self):
++        self.assertEqual(planner.order({"ship": ["a", "b"], "a": ["base"], "b": ["base"], "base": []}),
++                         ["base", "a", "b", "ship"])
++
++    def test_independent_order(self):
++        self.assertEqual(planner.order({"b": [], "a": []}), ["b", "a"])
++
++    def check_cycle(self, graph):
++        actual = None
++        try:
++            planner.order(graph)
++        except Exception as error:
++            actual = (type(error).__name__, str(error))
++        self.assertEqual(actual, ("ValueError", "cyclic dependency"))
++
++    def test_self_cycle(self):
++        self.check_cycle({"a": ["a"]})
++
++    def test_two_node_cycle(self):
++        self.check_cycle({"a": ["b"], "b": ["a"]})

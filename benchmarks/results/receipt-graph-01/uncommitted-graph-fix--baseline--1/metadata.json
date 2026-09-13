@@ -1,0 +1,47 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "uncommitted-graph-fix",
+  "skill": "receipt",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "7180b34dc5ee5c3c309eb04346860c88a477f25e",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 56.411,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 82349,
+    "cached_input_tokens": 74496,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1372,
+    "reasoning_output_tokens": 0
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Verify the already-present uncommitted planner.py fix against HEAD, without changing originals. Run all six current test_planner tests unchanged on HEAD implementation and working implementation in separate project-local copies. Within each test process, confirm planner.__file__ resolves inside that copy before executing the native unittest suite. Capture the actual cycle assertion failures before and passing controls, then all six after outcomes. Identify the before commit and the working implementation hash. Preserve planner.py, current test_planner.py and unrelated notes.txt. Delete your comparison copies before finishing; captured output is sufficient, no retained evidence directory is required. Do not commit, stash, reset, install dependencies or use external services. Follow requirements.md and project instructions.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "initial_tree": "40959d33331fbc51904fc72a7d3a3bd50c1d6b42",
+  "initial_working_files": {
+    "planner.py": "5a54575496ae852d3d508124427b69b5d6a016cf55c798ab7fe8a27ff0ac3977",
+    "test_planner.py": "45aaa1154e138c3e13a87294bde243cd38350bb327cda245887723cab7259d0b",
+    "notes.txt": "2d691c97c53a855e7ee5a96517672629da9ab01b377e70ab5917b38a970d1d2c"
+  }
+}

@@ -45,6 +45,10 @@ it has not established a broad 20–30% gain.
   use two preparation calls; baseline cleanup work, additional skill exception
   coverage and fixture temporary-root inconsistency prevent a causal efficiency
   or strict-scope claim. Separate author contract replay passes both solutions.
+- [Uncommitted graph comparison](results/receipt-graph-01/README.md), Receipt
+  reference `077805c`: working-tree helper adopted, same six native tests and
+  final cleanup, but **+15.49% tokens / +28.15% time**. Baseline interpreter
+  repair and skill launcher-file cleanup remain included; n=1 is not acceptance.
 - `benchmarks/featured.json` remains the source of the landing-page comparison.
   No recent reliability check replaces its frozen experiment or changes its
   charts. Historical adverse results remain available.
@@ -58,7 +62,7 @@ The eight characters and automatic selection remain intact; helpers are optional
 | Skill | Entrypoint / latest supporting-resource change | Evidence and unresolved work |
 | --- | --- | --- |
 | Necromancer | `51ce19e` / [presentation correction](NECROMANCER-PRESENTATION-01.md) after `3157ee2` | [Discovery](NECROMANCER-DISCOVERY-01.md), [packaging](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md): configured consumer retained; favorable pairs have unequal work/capture limits; broader savings unproven. Git color/prefix regression is author-tested, not model-measured. |
-| Receipt | `75c8718` / [mode examples](RECEIPT-MODE-EXAMPLES-01.md) after `75c8718` | [Uncommitted comparison](results/receipt-uncommitted-01/README.md): native workflow, helper not adopted, higher cost with explicit limits. New supported-workflow guidance and both literal examples have author execution checks, not model efficiency evidence. [Seeded HTTPX](results/receipt-httpx-02/README.md) and [frame](results/receipt-frame-01/README.md) remain adverse. |
+| Receipt | `75c8718` / [mode examples](RECEIPT-MODE-EXAMPLES-01.md) at `077805c` | [Graph comparison](results/receipt-graph-01/README.md): helper adopted, higher cost with repair/capture limits. [Settings](results/receipt-uncommitted-01/README.md) used native code; [seeded HTTPX](results/receipt-httpx-02/README.md) and [frame](results/receipt-frame-01/README.md) remain adverse. No accepted efficiency gain. |
 | Landlord | `26a310d` / no separate resources | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [auth design](HTTPX-AUTH-DESIGN-01.md): useful consumer inspection but adverse comparisons/nonpaired costs; resource-path discovery remains. |
 | Mother-in-law | `b7058c6` / `b7058c6` | [Native integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md): native runner reuse works on authored variants; unequal coverage/fixture defects limit lower recorded costs. |
 | Exorcist | `ca2e179` / `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [provenance](EXORCIST-PROVENANCE-01.md): small favorable signal result has baseline repair/unequal work; normal path remains costlier in tokens. |
