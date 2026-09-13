@@ -1,5 +1,9 @@
 # Prospective all-eight gate: contracts aligned, execution not yet authorized by preflight
 
+Historical draft status below. The subsequent [frozen protocol](BUNDLE-CONTRACT-03-PROTOCOL.md)
+records actual author preflight and prospective execution rules; it does not claim
+that model sessions have completed.
+
 This is a **draft fixture, not a completed or frozen benchmark**. No new model
 cells have run. Candidate skill resources currently correspond to `557f012`.
 The previous [bundle review](BUNDLE-CURRENT-02-REVIEW.md) remains unchanged.
