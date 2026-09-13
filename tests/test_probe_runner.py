@@ -103,9 +103,20 @@ asyncio.run(main())
         self.assertLess(result['elapsed_seconds'], 2)
 
     def test_inherited_pipe_from_descendant_does_not_hang(self):
-        result = self.run_code('import subprocess, sys; subprocess.Popen([sys.executable, "-c", "import time; time.sleep(20)"])', 0.2)
-        self.assertTrue(result['timed_out'])
-        self.assertLess(result['elapsed_seconds'], 2)
+        result = self.run_code('import subprocess, sys; subprocess.Popen([sys.executable, "-c", "import time; time.sleep(20)"]); print("parent done", flush=True); sys.exit(7)', 3)
+        self.assertFalse(result['timed_out'])
+        self.assertEqual(result['exit_code'], 7)
+        self.assertEqual(result['output'], 'parent done\n')
+        self.assertTrue(result['cleanup_complete'])
+        self.assertLess(result['elapsed_seconds'], 1.5)
+
+    def test_parent_exit_cleanup_drains_buffered_unicode_output(self):
+        result = self.run_code('import subprocess,sys; subprocess.Popen([sys.executable,"-c","import time; time.sleep(20)"]); print("한글" * 10000,flush=True)', 3)
+        self.assertFalse(result['timed_out'])
+        self.assertEqual(result['exit_code'], 0)
+        self.assertTrue(result['output_truncated'])
+        self.assertEqual(result['output'], ('한글' * 10000 + '\n')[-12000:])
+        self.assertLess(result['elapsed_seconds'], 1.5)
 
     def test_existing_deadline_covers_async_cleanup_without_self_spawn(self):
         code = '''import asyncio

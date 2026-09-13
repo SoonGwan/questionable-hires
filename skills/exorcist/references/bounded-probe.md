@@ -18,6 +18,12 @@ a security sandbox. It kills its process group on deadline and cleans up remaini
 group members after normal completion. Processes that escape that group are not
 contained. Requires Python 3.9+ and POSIX.
 
+Once the direct foreground child exits, group cleanup begins within the polling
+interval (50 ms, subject to scheduling), even if descendants retain its output
+pipe. Buffered output is drained under the original deadline. Such an exit keeps
+the child's status rather than waiting for a descendant to close the pipe; do not
+use this wrapper for a launcher whose background work must survive its exit.
+
 JSON retains the actual `exit_code`, `timed_out`, elapsed seconds and last 12,000
 combined-output characters with a truncation flag. CLI status: 0 successful child,
 1 unsuccessful child, 124 wrapper deadline, 2 invalid invocation. A child exiting

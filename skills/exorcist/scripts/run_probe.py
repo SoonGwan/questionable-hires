@@ -24,14 +24,28 @@ def run(command, timeout=10, cwd=None):
     decoder = codecs.getincrementaldecoder('utf-8')(errors='replace')
     output, size, timed_out = '', 0, False
     cleanup_complete = True
+    group_stopped = False
+    def stop_group():
+        nonlocal group_stopped
+        if not group_stopped:
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            group_stopped = True
     try:
         with selectors.DefaultSelector() as selector:
             selector.register(process.stdout, selectors.EVENT_READ)
             while selector.get_map():
+                # A finished foreground command can leave a descendant holding
+                # the pipe. Start the promised group cleanup now, then drain
+                # buffered output instead of waiting out the whole deadline.
+                if process.poll() is not None:
+                    stop_group()
                 remaining = deadline - time.monotonic()
                 if remaining <= 0:
                     raise subprocess.TimeoutExpired(command, timeout)
-                for key, _ in selector.select(remaining):
+                for key, _ in selector.select(min(remaining, 0.05)):
                     chunk = os.read(key.fileobj.fileno(), 4096)
                     decoded = decoder.decode(chunk, final=not chunk)
                     size += len(decoded)
@@ -44,10 +58,7 @@ def run(command, timeout=10, cwd=None):
     finally:
         # Kill only this invocation's process group, also on interruption and when
         # a child has closed its output but is still running after its parent exits.
-        try:
-            os.killpg(process.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
+        stop_group()
         process.stdout.close()
         try:
             process.wait(timeout=5)
