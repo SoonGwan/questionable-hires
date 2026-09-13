@@ -857,8 +857,10 @@ class MutationHelperTests(unittest.TestCase):
             self.run_audit(recipe)
 
     def test_conditional_mutant_timeout_is_incomplete_not_a_skip_win(self):
+        # Include interpreter/import startup for the healthy first phase. The
+        # mutant still loops forever, so the deadline must actually terminate it.
         result = self.run_audit(dict(self.recipe, probe_when='survives',
-                                    new='    while True: pass\n'), timeout=0.1)
+                                    new='    while True: pass\n'), timeout=1)
         self.assertEqual(result['status'], 'incomplete')
         self.assertEqual(list(result['checks']), ['correct_tests', 'mutant_tests'])
         self.assertTrue(result['checks']['mutant_tests']['timed_out'])

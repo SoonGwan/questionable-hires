@@ -130,15 +130,17 @@ asyncio.run(main())
 '''
         for stubborn in (False, True):
             with self.subTest(stubborn=stubborn):
+                # Startup must reach the cleanup witness under suite load;
+                # stubborn cleanup remains infinite, not a timed sleep win.
                 result = self.run_code('STUBBORN = ' + repr(stubborn) + '\n' + code,
-                                       timeout=0.5)
+                                       timeout=2)
                 self.assertIn('sequence checked\ncleanup entered\n', result['output'])
                 self.assertEqual(result['timed_out'], stubborn)
                 self.assertEqual(result['exit_code'], -9 if stubborn else 0)
                 self.assertEqual('cleanup finished' in result['output'], not stubborn)
                 self.assertTrue(result['cleanup_complete'])
                 self.assertFalse(result['output_truncated'])
-                self.assertLess(result['elapsed_seconds'], 2)
+                self.assertLess(result['elapsed_seconds'], 4)
 
     def test_large_unicode_output_is_bounded(self):
         result = self.run_code('print("안녕" * 100000)')

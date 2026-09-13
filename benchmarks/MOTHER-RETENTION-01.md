@@ -30,3 +30,18 @@ preserved. Limits: direct payload state, zero-argument constructor, distinct
 overlapping query keys, cooperative async waits and success-path retention only.
 No production network, browser, writer, error-retention or general concurrency
 claim. Existing installed-probe tests still cover the default interface separately.
+
+## Full-suite check and test timing correction
+
+First full run: 419 tests / 135.246s, two failures in existing deadline tests.
+The conditional mutation test stopped after the healthy phase instead of reaching
+the intended infinite mutant; the stubborn async-cleanup test captured no startup
+witness. Both unchanged tests then passed alone (2 tests / 0.725s). This is evidence
+of timing sensitivity, not proof of a specific host/service cause or a green suite.
+
+The test-only healthy-phase allowance increases 0.1 → 1 second; the async-cleanup
+allowance increases 0.5 → 2 seconds with an elapsed bound of 4 instead of 2.
+Both faults remain infinite and must be terminated. Assertions still require the
+correct mutant phase, incomplete/not-skipped classification, cleanup entry,
+termination status and absence of false cleanup success. Production helper
+deadlines and frozen model protocols/results are unchanged.
