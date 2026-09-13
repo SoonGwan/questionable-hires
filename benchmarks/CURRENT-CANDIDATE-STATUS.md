@@ -11,6 +11,11 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+Later [Mother delivery-route candidate](MOTHER-ROUTING-01-PROTOCOL.md) separates
+conditional native-test guidance from observation work. Observation-route bytes
+decrease 13.47%; native-route bytes are nearly unchanged, with possible extra
+read-call overhead. Runtime code is unchanged; model impact is not yet measured.
+
 Completed 2026-09-14: [three-case retention model comparison](MOTHER-RETENTION-MODEL-01-REVIEW.md),
 six fresh serial sessions at `0e80f9b`: **−1.58% total tokens / −52.77% process
 time**, 3/3 reviewed targets in both arms, no clean-case false positive. Skill

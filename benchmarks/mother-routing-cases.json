@@ -1,0 +1,31 @@
+[
+  {
+    "id": "retention-guarded",
+    "skill": "mother-in-law",
+    "task": "Review the Suggestions interaction against requirements.md. Do not fix it. Execute controlled observations using the actual component: first establish a displayed successful result, then overlap two requests and complete them in normal and reversed order in isolated cases. Verify display at request entry, after the first completion and after both complete. Distinguish transient violations from final-state correctness. Give the exact rerunnable command and captured actual/expected evidence for findings; no standalone regression-test deliverable is required. Preserve source/requirements, bound waits and clean up owned tasks. Keep work inside this project; no external services, dependency installs, delegation, other skills or publishing.",
+    "files": {
+      "suggestions.py": "class Suggestions:\n    def __init__(self):\n        self.last_result = None\n        self.version = 0\n\n    async def search(self, term, request):\n        self.version += 1\n        version = self.version\n        pass\n        payload = await request(term)\n        if version == self.version:\n            self.last_result = payload\n        pass\n",
+      "requirements.md": "Suggestions is a local async component, not a rendered browser UI.\nsearch(term, request) fetches and stores the returned payload directly. A previously\ndisplayed result must remain visible while the latest request is pending, including\nwhen an older pending request completes. Once the latest request succeeds its\npayload must remain visible even if an older response arrives later. Starting a\nrequest must not erase the existing display. Distinct overlapping query strings\nare sufficient here. Failure handling, caching, cancellation policy and browser\nrendering are outside this task; clean up your own controlled test operations.\n"
+    },
+    "criteria": [
+      "Actual component and controlled overlapping requests executed",
+      "Both completion orders and entry/intermediate/final display checked",
+      "Findings match the explicit display contract and native evidence",
+      "Source preserved; bounded waits and owned-task cleanup"
+    ]
+  },
+  {
+    "id": "search-protected",
+    "skill": "mother-in-law",
+    "task": "QA this search flow. Check whether overlapping requests can show an older result. Use a deterministic local test and do not modify production code.\n\nRequired verification and delivery: Test both completion orders, older completion while the newer request remains pending, and retention of an existing displayed result while loading. Use actual Search with controlled futures, bounded behavior-dependent waits and owned-task cleanup. Keep a rerunnable local test, preserve production files, and report observed behavior even if no defect reproduces.\nKeep all discovery and work within this project. Do not install dependencies, use external services or other skills, or delegate. Preserve user changes. No publishing or deployment.",
+    "files": {
+      "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n"
+    },
+    "criteria": [
+      "Tests reversed completion order.",
+      "Reports generation guard preserves newest result.",
+      "Does not manufacture a reproduced stale-overwrite defect.",
+      "Meets explicit verification/delivery obligations: Test both completion orders, older completion while the newer request remains pending, and retention of an existing displayed result while loading. Use actual Search with controlled futures, bounded behavior-dependent waits and owned-task cleanup. Keep a rerunnable local test, preserve production files, and report observed behavior even if no defect reproduces."
+    ]
+  }
+]
