@@ -11,6 +11,11 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+In progress: [three-case retention model comparison](MOTHER-RETENTION-MODEL-01-PROTOCOL.md),
+six fresh serial sessions launched at `0e80f9b`. Its normal/clear/transient fixture
+was frozen and natively preflighted before execution. No aggregate outcome or
+replacement for existing measured results is available yet.
+
 2026-09-14 local capability update: [Mother retention option](MOTHER-RETENTION-01.md)
 adds explicit success-path display checkpoints to the disposable component probe.
 Native fault/normal controls and CLI checks pass; model adoption and cost are
