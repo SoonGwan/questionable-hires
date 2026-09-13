@@ -8,10 +8,42 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'benchmarks'))
 import receipt_uncommitted_cases as fixture
 import receipt_graph_cases as graph_fixture
+import receipt_ranges_cases as ranges_fixture
 from run import prepare
 
 
 class UncommittedFixtureTests(unittest.TestCase):
+    def test_ranges_contract_and_watch_preflight(self):
+        case, = ranges_fixture.cases()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'project'
+            head = prepare(case, root)
+            snapshot = {str(p.relative_to(root)): (p.read_bytes(), p.stat().st_mode)
+                        for p in root.rglob('*') if p.is_file()}
+            spec = importlib.util.spec_from_file_location('ranges_receipt', ROOT / 'skills/receipt/scripts/compare.py')
+            helper = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(helper)
+            result = helper.compare(root, dict(fixed=['test_ranges.py'], vary=['ranges.py'],
+                watch=['drafts/release.txt'], before='HEAD', after={'working_tree': True},
+                imports=['ranges'], runner='unittest', tests=['-v', 'test_ranges']))
+            before, after = result['checks']['before'], result['checks']['after']
+            self.assertEqual([before['exit_code'], after['exit_code']], [1, 0])
+            self.assertIn('FAILED (failures=2)', before['output'])
+            self.assertIn('AssertionError', before['output'])
+            self.assertIn('[(1, 4), (4, 8)] != [(1, 8)]', before['output'])
+            for check in (before, after):
+                self.assertIn('Ran 7 tests', check['output'])
+                self.assertIn('Verified copied import: ranges', check['output'])
+                self.assertFalse(check['timed_out'])
+                self.assertFalse(check['output_truncated'])
+            self.assertEqual(result['revisions'], {'before': head, 'after': None})
+            self.assertEqual(result['originals']['watch_only'], ['drafts/release.txt'])
+            self.assertTrue(result['originals']['unchanged'])
+            self.assertTrue(result['comparison_copies_removed'])
+            self.assertEqual(snapshot, {str(p.relative_to(root)): (p.read_bytes(), p.stat().st_mode)
+                                       for p in root.rglob('*') if p.is_file()})
+            self.assertFalse(list(root.glob('.receipt-*')))
+
     def test_graph_contract_has_assertion_failures_not_support_errors(self):
         case, = graph_fixture.cases()
         with tempfile.TemporaryDirectory() as directory:

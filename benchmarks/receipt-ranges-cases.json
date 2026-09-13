@@ -1,0 +1,24 @@
+[
+  {
+    "id": "uncommitted-ranges-fix",
+    "skill": "receipt",
+    "task": "Verify the already-present uncommitted ranges.py fix against HEAD. Run all seven current test_ranges tests unchanged on HEAD and working implementations in separate project-local copies. Within each native unittest process, confirm ranges.__file__ resolves inside its copy before running tests. Capture actual before assertion failures and passing controls, then all after outcomes. Identify the before commit and working implementation SHA-256. Preserve all existing original files, including unrelated drafts; report byte and permission checks for ranges.py, test_ranges.py and drafts/release.txt. Delete owned comparison copies before finishing; captured output is sufficient. Do not commit, stash, reset, install dependencies or use external services. Follow project instructions and requirements.md.",
+    "files": {
+      "AGENTS.md": "Verification only, no original-file edits. Use Python standard library unittest (-v test_ranges). Scratch must be explicitly project-local; remove owned comparison copies before finishing.\n",
+      "requirements.md": "coalesce accepts a finite list of integer (start, end) pairs with start < end. Return sorted maximal unions, merging overlapping OR touching pairs. Do not mutate the caller list. Empty input returns []. Invalid intervals, other numeric types and concurrent mutation are out of scope. The working fix already exists; compare retrospectively using the same current tests.\n",
+      "ranges.py": "def coalesce(ranges):\n    result = []\n    for start, end in sorted(ranges):\n        if result and start < result[-1][1]:\n            result[-1] = (result[-1][0], max(result[-1][1], end))\n        else:\n            result.append((start, end))\n    return result\n",
+      "drafts/release.txt": "Old release note.\n"
+    },
+    "working_files": {
+      "ranges.py": "def coalesce(ranges):\n    result = []\n    for start, end in sorted(ranges):\n        if result and start <= result[-1][1]:\n            result[-1] = (result[-1][0], max(result[-1][1], end))\n        else:\n            result.append((start, end))\n    return result\n",
+      "test_ranges.py": "import unittest\nimport ranges\n\nclass RangeTests(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(ranges.coalesce([]), [])\n    def test_disjoint(self):\n        self.assertEqual(ranges.coalesce([(5, 7), (1, 3)]), [(1, 3), (5, 7)])\n    def test_overlap(self):\n        self.assertEqual(ranges.coalesce([(1, 4), (3, 8)]), [(1, 8)])\n    def test_nested(self):\n        self.assertEqual(ranges.coalesce([(1, 9), (2, 3)]), [(1, 9)])\n    def test_touching(self):\n        self.assertEqual(ranges.coalesce([(1, 4), (4, 8)]), [(1, 8)])\n    def test_bridge(self):\n        self.assertEqual(ranges.coalesce([(7, 9), (1, 4), (4, 7)]), [(1, 9)])\n    def test_input_preserved(self):\n        value = [(6, 9), (1, 3)]\n        ranges.coalesce(value)\n        self.assertEqual(value, [(6, 9), (1, 3)])\n",
+      "drafts/release.txt": "Unrelated unfinished release draft. Preserve exactly.\n"
+    },
+    "criteria": [
+      "Seven unchanged native tests on both versions; before two assertion failures and five passing controls, after seven passes.",
+      "Implementation provenance checked within each native test process.",
+      "Before commit and working SHA-256 identified; originals preserved with requested byte/mode checks.",
+      "Project-local copies removed; no commit/stash/reset/install/external actions."
+    ]
+  }
+]
