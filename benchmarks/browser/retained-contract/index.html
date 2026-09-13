@@ -1,0 +1,37 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Catalog search</title>
+<label for="query">Search catalog</label>
+<input id="query" autocomplete="off">
+<p id="results" aria-live="polite"></p>
+<p id="error" role="alert"></p>
+<script>
+const input = document.querySelector('#query');
+const results = document.querySelector('#results');
+const error = document.querySelector('#error');
+const requests = [];
+input.addEventListener('input', async event => {
+  const query = input.value;
+  error.textContent = '';
+  try {
+    const records = await new Promise((resolve, reject) => {
+      requests.push({query, trusted: event.isTrusted, resolve, reject});
+    });
+    results.textContent = records.join(', ');
+  } catch (failure) {
+    error.textContent = failure.message;
+  }
+});
+// Test transport: exposes requests and controls responses, not UI assertions.
+window.transport = {
+  requests: () => requests.map(({query, trusted}) => ({query, trusted})),
+  complete: async (index, records) => {
+    requests[index].resolve(records);
+    await Promise.resolve();
+  },
+  fail: async index => {
+    requests[index].reject(new Error('Search unavailable. Try again.'));
+    await Promise.resolve();
+  },
+};
+</script>

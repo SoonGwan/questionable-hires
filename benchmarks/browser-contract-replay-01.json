@@ -1,0 +1,1474 @@
+{
+  "kind": "author browser replay, not model timing",
+  "image": "questionable-hires/browser-codex:0.153.4-pw1.63.0",
+  "image_id": "sha256:59f6ca68c1b94db38c241951f74f3a40b377afff5cc87fbf873154b8531df350",
+  "source_sha256": "f7ee42c67defd033970c11af7aaacbb7930f6b020296993d6d878db32d488419",
+  "harness_sha256": "81b8e5ea02b7d79f5c3d4f1bf446b7ebb681d91a96d1abb2a44e5e862259cee5",
+  "variants": [
+    {
+      "variant": "original",
+      "exit_code": 1,
+      "evidence": {
+        "layer": "headless Chromium, trusted keyboard input, rendered DOM",
+        "cases": [
+          {
+            "name": "normal success, current failure, retry",
+            "observations": [
+              {
+                "step": "current success",
+                "expected": {
+                  "input": "a",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "a",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "current failure preserves input and focus",
+                "expected": {
+                  "input": "ab",
+                  "error": "Search unavailable. Try again.",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "A",
+                  "error": "Search unavailable. Try again.",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "new input retries and clears error",
+                "expected": {
+                  "input": "abc",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "abc",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "retry success",
+                "expected": {
+                  "input": "abc",
+                  "results": "ABC",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "abc",
+                  "results": "ABC",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              }
+            ],
+            "cleanup": true,
+            "outcome": "PASS"
+          },
+          {
+            "name": "older success after newer success",
+            "observations": [
+              {
+                "step": "newer success",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older success must not replace latest results",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": false
+              }
+            ],
+            "cleanup": true,
+            "outcome": "FAIL"
+          },
+          {
+            "name": "older failure after newer success",
+            "observations": [
+              {
+                "step": "newer success",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older failure must not mark latest success as failed",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "Search unavailable. Try again.",
+                  "focus": "query"
+                },
+                "matches": false
+              }
+            ],
+            "cleanup": true,
+            "outcome": "FAIL"
+          },
+          {
+            "name": "older success after clear",
+            "observations": [
+              {
+                "step": "empty query success",
+                "expected": {
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older response must not repopulate cleared results",
+                "expected": {
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": false
+              }
+            ],
+            "cleanup": true,
+            "outcome": "FAIL"
+          }
+        ],
+        "blockedRequests": [],
+        "cleanup": {
+          "contexts": "closed",
+          "browser": "closed"
+        }
+      },
+      "stdout": "PASS: normal success, current failure, retry; cleanup=true; []; evidence=/work/qa/catalog-evidence.json\nFAIL: older success after newer success; cleanup=true; [{\"step\":\"older success must not replace latest results\",\"expected\":{\"input\":\"ab\",\"results\":\"AB\",\"error\":\"\",\"focus\":\"query\"},\"observed\":{\"requests\":[{\"query\":\"a\",\"trusted\":true},{\"query\":\"ab\",\"trusted\":true}],\"input\":\"ab\",\"results\":\"A\",\"error\":\"\",\"focus\":\"query\"}}]; evidence=/work/qa/catalog-evidence.json\nFAIL: older failure after newer success; cleanup=true; [{\"step\":\"older failure must not mark latest success as failed\",\"expected\":{\"input\":\"ab\",\"results\":\"AB\",\"error\":\"\",\"focus\":\"query\"},\"observed\":{\"requests\":[{\"query\":\"a\",\"trusted\":true},{\"query\":\"ab\",\"trusted\":true}],\"input\":\"ab\",\"results\":\"AB\",\"error\":\"Search unavailable. Try again.\",\"focus\":\"query\"}}]; evidence=/work/qa/catalog-evidence.json\nFAIL: older success after clear; cleanup=true; [{\"step\":\"older response must not repopulate cleared results\",\"expected\":{\"input\":\"\",\"results\":\"\",\"error\":\"\",\"focus\":\"query\"},\"observed\":{\"requests\":[{\"query\":\"a\",\"trusted\":true},{\"query\":\"\",\"trusted\":true}],\"input\":\"\",\"results\":\"A\",\"error\":\"\",\"focus\":\"query\"}}]; evidence=/work/qa/catalog-evidence.json\nCleanup: {\"contexts\":\"closed\",\"browser\":\"closed\"}; HTTP(S) requests blocked=0\n",
+      "stderr": ""
+    },
+    {
+      "variant": "guarded",
+      "exit_code": 0,
+      "evidence": {
+        "layer": "headless Chromium, trusted keyboard input, rendered DOM",
+        "cases": [
+          {
+            "name": "normal success, current failure, retry",
+            "observations": [
+              {
+                "step": "current success",
+                "expected": {
+                  "input": "a",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "a",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "current failure preserves input and focus",
+                "expected": {
+                  "input": "ab",
+                  "error": "Search unavailable. Try again.",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "A",
+                  "error": "Search unavailable. Try again.",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "new input retries and clears error",
+                "expected": {
+                  "input": "abc",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "abc",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "retry success",
+                "expected": {
+                  "input": "abc",
+                  "results": "ABC",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "abc",
+                  "results": "ABC",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              }
+            ],
+            "cleanup": true,
+            "outcome": "PASS"
+          },
+          {
+            "name": "older success after newer success",
+            "observations": [
+              {
+                "step": "newer success",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older success must not replace latest results",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              }
+            ],
+            "cleanup": true,
+            "outcome": "PASS"
+          },
+          {
+            "name": "older failure after newer success",
+            "observations": [
+              {
+                "step": "newer success",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older failure must not mark latest success as failed",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              }
+            ],
+            "cleanup": true,
+            "outcome": "PASS"
+          },
+          {
+            "name": "older success after clear",
+            "observations": [
+              {
+                "step": "empty query success",
+                "expected": {
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older response must not repopulate cleared results",
+                "expected": {
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              }
+            ],
+            "cleanup": true,
+            "outcome": "PASS"
+          }
+        ],
+        "blockedRequests": [],
+        "cleanup": {
+          "contexts": "closed",
+          "browser": "closed"
+        }
+      },
+      "stdout": "PASS: normal success, current failure, retry; cleanup=true; []; evidence=/work/qa/catalog-evidence.json\nPASS: older success after newer success; cleanup=true; []; evidence=/work/qa/catalog-evidence.json\nPASS: older failure after newer success; cleanup=true; []; evidence=/work/qa/catalog-evidence.json\nPASS: older success after clear; cleanup=true; []; evidence=/work/qa/catalog-evidence.json\nCleanup: {\"contexts\":\"closed\",\"browser\":\"closed\"}; HTTP(S) requests blocked=0\n",
+      "stderr": ""
+    },
+    {
+      "variant": "success-only-guard",
+      "exit_code": 1,
+      "evidence": {
+        "layer": "headless Chromium, trusted keyboard input, rendered DOM",
+        "cases": [
+          {
+            "name": "normal success, current failure, retry",
+            "observations": [
+              {
+                "step": "current success",
+                "expected": {
+                  "input": "a",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "a",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "current failure preserves input and focus",
+                "expected": {
+                  "input": "ab",
+                  "error": "Search unavailable. Try again.",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "A",
+                  "error": "Search unavailable. Try again.",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "new input retries and clears error",
+                "expected": {
+                  "input": "abc",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "abc",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "retry success",
+                "expected": {
+                  "input": "abc",
+                  "results": "ABC",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "abc",
+                  "results": "ABC",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              }
+            ],
+            "cleanup": true,
+            "outcome": "PASS"
+          },
+          {
+            "name": "older success after newer success",
+            "observations": [
+              {
+                "step": "newer success",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older success must not replace latest results",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              }
+            ],
+            "cleanup": true,
+            "outcome": "PASS"
+          },
+          {
+            "name": "older failure after newer success",
+            "observations": [
+              {
+                "step": "newer success",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older failure must not mark latest success as failed",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "Search unavailable. Try again.",
+                  "focus": "query"
+                },
+                "matches": false
+              }
+            ],
+            "cleanup": true,
+            "outcome": "FAIL"
+          },
+          {
+            "name": "older success after clear",
+            "observations": [
+              {
+                "step": "empty query success",
+                "expected": {
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older response must not repopulate cleared results",
+                "expected": {
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              }
+            ],
+            "cleanup": true,
+            "outcome": "PASS"
+          }
+        ],
+        "blockedRequests": [],
+        "cleanup": {
+          "contexts": "closed",
+          "browser": "closed"
+        }
+      },
+      "stdout": "PASS: normal success, current failure, retry; cleanup=true; []; evidence=/work/qa/catalog-evidence.json\nPASS: older success after newer success; cleanup=true; []; evidence=/work/qa/catalog-evidence.json\nFAIL: older failure after newer success; cleanup=true; [{\"step\":\"older failure must not mark latest success as failed\",\"expected\":{\"input\":\"ab\",\"results\":\"AB\",\"error\":\"\",\"focus\":\"query\"},\"observed\":{\"requests\":[{\"query\":\"a\",\"trusted\":true},{\"query\":\"ab\",\"trusted\":true}],\"input\":\"ab\",\"results\":\"AB\",\"error\":\"Search unavailable. Try again.\",\"focus\":\"query\"}}]; evidence=/work/qa/catalog-evidence.json\nPASS: older success after clear; cleanup=true; []; evidence=/work/qa/catalog-evidence.json\nCleanup: {\"contexts\":\"closed\",\"browser\":\"closed\"}; HTTP(S) requests blocked=0\n",
+      "stderr": ""
+    },
+    {
+      "variant": "failure-only-guard",
+      "exit_code": 1,
+      "evidence": {
+        "layer": "headless Chromium, trusted keyboard input, rendered DOM",
+        "cases": [
+          {
+            "name": "normal success, current failure, retry",
+            "observations": [
+              {
+                "step": "current success",
+                "expected": {
+                  "input": "a",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "a",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "current failure preserves input and focus",
+                "expected": {
+                  "input": "ab",
+                  "error": "Search unavailable. Try again.",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "A",
+                  "error": "Search unavailable. Try again.",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "new input retries and clears error",
+                "expected": {
+                  "input": "abc",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "abc",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "retry success",
+                "expected": {
+                  "input": "abc",
+                  "results": "ABC",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    },
+                    {
+                      "query": "abc",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "abc",
+                  "results": "ABC",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              }
+            ],
+            "cleanup": true,
+            "outcome": "PASS"
+          },
+          {
+            "name": "older success after newer success",
+            "observations": [
+              {
+                "step": "newer success",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older success must not replace latest results",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": false
+              }
+            ],
+            "cleanup": true,
+            "outcome": "FAIL"
+          },
+          {
+            "name": "older failure after newer success",
+            "observations": [
+              {
+                "step": "newer success",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older failure must not mark latest success as failed",
+                "expected": {
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "ab",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "ab",
+                  "results": "AB",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              }
+            ],
+            "cleanup": true,
+            "outcome": "PASS"
+          },
+          {
+            "name": "older success after clear",
+            "observations": [
+              {
+                "step": "empty query success",
+                "expected": {
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query",
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ]
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": true
+              },
+              {
+                "step": "older response must not repopulate cleared results",
+                "expected": {
+                  "input": "",
+                  "results": "",
+                  "error": "",
+                  "focus": "query"
+                },
+                "observed": {
+                  "requests": [
+                    {
+                      "query": "a",
+                      "trusted": true
+                    },
+                    {
+                      "query": "",
+                      "trusted": true
+                    }
+                  ],
+                  "input": "",
+                  "results": "A",
+                  "error": "",
+                  "focus": "query"
+                },
+                "matches": false
+              }
+            ],
+            "cleanup": true,
+            "outcome": "FAIL"
+          }
+        ],
+        "blockedRequests": [],
+        "cleanup": {
+          "contexts": "closed",
+          "browser": "closed"
+        }
+      },
+      "stdout": "PASS: normal success, current failure, retry; cleanup=true; []; evidence=/work/qa/catalog-evidence.json\nFAIL: older success after newer success; cleanup=true; [{\"step\":\"older success must not replace latest results\",\"expected\":{\"input\":\"ab\",\"results\":\"AB\",\"error\":\"\",\"focus\":\"query\"},\"observed\":{\"requests\":[{\"query\":\"a\",\"trusted\":true},{\"query\":\"ab\",\"trusted\":true}],\"input\":\"ab\",\"results\":\"A\",\"error\":\"\",\"focus\":\"query\"}}]; evidence=/work/qa/catalog-evidence.json\nPASS: older failure after newer success; cleanup=true; []; evidence=/work/qa/catalog-evidence.json\nFAIL: older success after clear; cleanup=true; [{\"step\":\"older response must not repopulate cleared results\",\"expected\":{\"input\":\"\",\"results\":\"\",\"error\":\"\",\"focus\":\"query\"},\"observed\":{\"requests\":[{\"query\":\"a\",\"trusted\":true},{\"query\":\"\",\"trusted\":true}],\"input\":\"\",\"results\":\"A\",\"error\":\"\",\"focus\":\"query\"}}]; evidence=/work/qa/catalog-evidence.json\nCleanup: {\"contexts\":\"closed\",\"browser\":\"closed\"}; HTTP(S) requests blocked=0\n",
+      "stderr": ""
+    }
+  ],
+  "retained_project_unchanged": true
+}
