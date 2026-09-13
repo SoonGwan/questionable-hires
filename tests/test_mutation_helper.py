@@ -16,6 +16,93 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def file_recipe(self):
+        recipe = {k: v for k, v in self.recipe.items() if k != 'probe'}
+        recipe.update(probe_files={'test_probe.py': (
+            'import unittest\nfrom service import save\n'
+            'class Probe(unittest.TestCase):\n'
+            '    def test_persisted_bytes(self):\n'
+            '        store = []\n        save(store, b"\\xff")\n'
+            '        self.assertEqual(store, [b"\\xff"])\n')},
+            probe_tests=['-v', 'test_probe'], probe_when='survives')
+        return recipe
+
+    def test_native_probe_files_preserve_bytes_and_run_real_runner(self):
+        result = self.run_audit(self.file_recipe())
+        self.assertEqual({k: v['exit_code'] for k, v in result['checks'].items()},
+                         dict(correct_tests=0, mutant_tests=0, correct_probe=0, mutant_probe=1))
+        self.assertIn('test_persisted_bytes', result['checks']['mutant_probe']['output'])
+        self.assertIn('AssertionError', result['checks']['mutant_probe']['output'])
+        self.assertNotIn('SyntaxError', result['checks']['mutant_probe']['output'])
+        self.assertFalse((self.root / 'test_probe.py').exists())
+
+    def test_native_probe_cli_json_roundtrip_preserves_escape_sequences(self):
+        result = subprocess.run(
+            [sys.executable, '-B', helper.__file__, '--source', str(self.root), '--spec', '-'],
+            input=json.dumps(self.file_recipe()), capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        checks = json.loads(result.stdout)['checks']
+        self.assertEqual(checks['correct_probe']['exit_code'], 0)
+        self.assertEqual(checks['mutant_probe']['exit_code'], 1)
+        self.assertIn('test_persisted_bytes', checks['mutant_probe']['output'])
+        self.assertNotIn('SyntaxError', checks['mutant_probe']['output'])
+        self.assertFalse((self.root / 'test_probe.py').exists())
+
+    def test_native_probe_files_are_absent_from_original_suite(self):
+        original = self.root / 'test_service.py'
+        original.write_text('from pathlib import Path\n'
+                            'assert not Path("test_probe.py").exists()\n' + original.read_text())
+        result = self.run_audit(self.file_recipe())
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual(result['checks']['mutant_probe']['exit_code'], 1)
+
+    def test_native_probe_rejects_overwrites_traversal_and_ambiguous_modes(self):
+        invalid = [
+            {'probe': 'assert True'},
+            {'probe_tests': []},
+            {'probe_files': {}},
+            {'probe_files': {'../escape.py': 'pass'}},
+            {'probe_files': {'service.py': 'pass'}},
+            {'probe_files': {'new.py': 'pass', 'new.py/child.py': 'pass'}},
+            {'probe_files': {'folder/x.py': 'pass', 'folder/./x.py': 'pass'}},
+        ]
+        for updates in invalid:
+            with self.subTest(updates=updates), patch.object(helper, 'execute') as execute:
+                with self.assertRaises(ValueError):
+                    helper.audit(self.root, dict(self.file_recipe(), **updates))
+                execute.assert_not_called()
+
+    def test_native_probe_batch_reuse_includes_files_and_test_arguments(self):
+        recipe = self.file_recipe()
+        common = {k: recipe[k] for k in ('files', 'imports', 'tests')}
+        fault = {k: v for k, v in recipe.items() if k not in common}
+        second = dict(fault, new='    store.extend([value, value])\n')
+        batch = dict(common, mutations=[fault, second])
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit_batch(self.root, batch)
+        self.assertEqual(execute.call_count, 6)
+        self.assertTrue(result['audits'][1]['correct_probe_reused'])
+        second['probe_tests'] = ['-q', 'test_probe']
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit_batch(self.root, batch)
+        self.assertEqual(execute.call_count, 7)
+        self.assertNotIn('correct_probe_reused', result['audits'][1])
+        second['probe_tests'] = fault['probe_tests']
+        second['probe_files'] = {name: content + '\nprint("new probe content")\n'
+                                 for name, content in fault['probe_files'].items()}
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit_batch(self.root, batch)
+        self.assertEqual(execute.call_count, 7)
+        self.assertNotIn('correct_probe_reused', result['audits'][1])
+
+    def test_native_probe_skips_without_adding_files_when_fault_is_detected(self):
+        recipe = dict(self.file_recipe(), new='    raise RuntimeError("detected")\n')
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = self.run_audit(recipe)
+        self.assertEqual(execute.call_count, 2)
+        self.assertIn('probe_skipped', result)
+        self.assertNotIn('correct_probe', result['checks'])
+
     def test_cleanup_confirmation_is_bounded_and_preserves_interruption(self):
         for interrupted in (False, True):
             process = Mock(returncode=None)

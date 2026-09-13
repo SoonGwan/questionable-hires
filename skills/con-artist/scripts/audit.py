@@ -142,14 +142,41 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
         raise ValueError('Use unittest or the already installed pytest')
     if 'probe' in spec and not isinstance(spec['probe'], str):
         raise ValueError('probe must be Python assertion code')
+    file_probe = 'probe_files' in spec or 'probe_tests' in spec
+    if file_probe:
+        if 'probe' in spec:
+            raise ValueError('Use probe or probe_files/probe_tests, not both')
+        if (not isinstance(spec.get('probe_files'), dict) or not spec['probe_files']
+                or not isinstance(spec.get('probe_tests'), list) or not spec['probe_tests']
+                or not all(isinstance(x, str) and x for x in spec['probe_tests'])):
+            raise ValueError('probe_files and nonempty probe_tests are required together')
+    has_probe = 'probe' in spec or file_probe
     probe_when = spec.get('probe_when', 'always')
-    if probe_when not in ('always', 'survives') or ('probe_when' in spec and 'probe' not in spec):
+    if probe_when not in ('always', 'survives') or ('probe_when' in spec and not has_probe):
         raise ValueError('probe_when requires a probe and must be always or survives')
     target = str(relative(spec['target']))
     old, new = spec['old'], spec['new']
     if not isinstance(old, str) or not old or not isinstance(new, str) or old == new:
         raise ValueError('Mutation must replace nonempty text with different text')
     files = snapshot(root, spec['files'])
+    probe_files = {}
+    total = sum(len(content) for content in files.values())
+    for name, content in spec.get('probe_files', {}).items():
+        if not isinstance(name, str) or not isinstance(content, str):
+            raise ValueError('probe_files must map relative paths to text')
+        path = relative(name)
+        key = str(path)
+        if (root / path).exists() or (root / path).is_symlink():
+            raise ValueError('Probe files must use new project paths: ' + key)
+        for other in (*files, *probe_files):
+            other_path = Path(other)
+            if path == other_path or path in other_path.parents or other_path in path.parents:
+                raise ValueError('Probe file path collision: ' + key)
+        encoded = content.encode('utf-8')
+        total += len(encoded)
+        if total > 20_000_000:
+            raise ValueError('Selected inputs and probe files exceed 20 MB')
+        probe_files[key] = encoded
     modes = {name: (root / name).stat().st_mode & 0o777 for name in files}
     if target not in files:
         raise ValueError('Mutation target must be among selected input files')
@@ -160,7 +187,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     identity = (files, modes, spec['imports'], spec['tests'],
                 spec.get('runner', 'unittest'), str(python), timeout, dict(os.environ))
     reused = _baseline is not None and _baseline.get('identity') == identity
-    probe_identity = (identity, spec.get('probe'))
+    probe_identity = (identity, spec.get('probe'), probe_files, spec.get('probe_tests'))
     probe_reused = False
     results = {}
     order = [('correct', 'tests'), ('correct', 'probe'), ('mutant', 'tests'), ('mutant', 'probe')]
@@ -170,7 +197,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     try:
         with tempfile.TemporaryDirectory(prefix='.con-artist-', dir=root) as scratch:
             for variant, check in order:
-                if check == 'probe' and ('probe' not in spec or skipped is not None):
+                if check == 'probe' and (not has_probe or skipped is not None):
                     continue
                 if variant == 'correct' and check == 'tests' and reused:
                     results['correct_tests'] = dict(_baseline['result'])
@@ -188,7 +215,15 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                     dest.parent.mkdir(parents=True, exist_ok=True)
                     dest.write_bytes(faulty if variant == 'mutant' and name == target else content)
                     dest.chmod(modes[name])
-                result = execute(str(python), directory, spec,
+                phase_spec = spec
+                if check == 'probe' and file_probe:
+                    for name, content in probe_files.items():
+                        dest = directory / name
+                        dest.parent.mkdir(parents=True, exist_ok=True)
+                        with dest.open('xb') as stream:
+                            stream.write(content)
+                    phase_spec = dict(spec, tests=spec['probe_tests'])
+                result = execute(str(python), directory, phase_spec,
                                  spec.get('probe') if check == 'probe' else None, timeout)
                 results[variant + '_' + check] = result
                 if result['timed_out'] or (variant == 'correct' and result['exit_code'] != 0):
@@ -225,13 +260,13 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
 def audit_batch(root, spec, python=sys.executable, timeout=30):
     """Reuse a successful baseline only within this explicit local batch."""
     common_keys = {'files', 'imports', 'runner', 'tests', 'mutations'}
-    fault_keys = {'target', 'old', 'new', 'probe', 'probe_when'}
+    fault_keys = {'target', 'old', 'new', 'probe', 'probe_when', 'probe_files', 'probe_tests'}
     mutations = spec.get('mutations')
     if set(spec) - common_keys or not isinstance(mutations, list) or not 1 <= len(mutations) <= 8:
         raise ValueError('Batch requires shared files/imports/runner/tests and 1–8 mutations')
     for fault in mutations:
         if not isinstance(fault, dict) or set(fault) - fault_keys or not {'target', 'old', 'new'} <= set(fault):
-            raise ValueError('Each mutation requires target/old/new and optional probe/probe_when')
+            raise ValueError('Each mutation requires target/old/new and optional probe settings')
     common = {key: value for key, value in spec.items() if key != 'mutations'}
     baseline, probe_baseline, observations = {}, {}, []
     baseline_indices = {}
