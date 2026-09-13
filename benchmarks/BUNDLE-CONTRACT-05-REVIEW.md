@@ -182,3 +182,61 @@ events, unchanged installed manifests and resources matching `d4a52ef`. Original
 fixture bytes and complete non-Git/non-skill final inventories match the expected
 test additions. The unprotected search native-output gap remains explicitly
 unresolved. Nine cells reviewed; the scheduled run remains in progress.
+
+## Unprotected search — baseline
+
+Completed in 83.915 seconds, 102,882 tokens, five shell commands. Two retained
+native tests execute actual Search with controlled overlapping requests. Normal
+completion passes without prescribing the intermediate display; reversed
+completion fails with `results for ca` versus `results for cat`, after first
+confirming the latest result was visible. Native output captures the intended
+assertion and 2-test summary (0.012s). One-second waits and finally task/reply
+cleanup are present; production/requirement hashes match before and after.
+
+Baseline additionally retains `QA.md`; skill retains controlled-fetch support and
+a support mismatch test. Both source tests now respect the clarified normal
+display contract, but post-timing author replay remains pending. Skill's missing
+native output is not filled by baseline success or by source inspection. These
+unequal artifacts and evidence preclude equal-quality efficiency acceptance.
+
+Search-order pair records skill **+7.41% tokens / −2.55% time**, retaining its
+native-output gap rather than scoring the final-answer claim as reproduced evidence.
+
+## Search diagnosis — baseline and paired costs
+
+Completed in 94.764 seconds, 103,954 tokens, six shell commands. Runs actual
+Search/transport through a recording request dependency and controlled normal/
+reversed completions; recorded headers are `Cache-Control: no-cache` in both.
+Two-second dispatch/completion bounds and owned-task cancellation/draining are
+present. Full native JSON reports normal latest and reversed stale results plus
+matching production hashes. The flagged empty execution output is legitimate
+redirection: the retained JSON and subsequent captured `cat` output agree.
+This differs from the skill search-order cell's absent native output.
+
+Baseline retains an experiment, results JSON and diagnosis notes; Exorcist retains
+only its required experiment and uses captured output. Both support the local
+ordering mechanism without asserting untested production cache behavior. Skill
+costs **−31.07% tokens / −38.95% time**, with unequal extra artifacts/work. No
+causal or broad efficiency claim follows from this exposed single-repeat pair.
+
+## Boundary fix — baseline and paired costs
+
+Completed in 33.587 seconds, 80,342 tokens, six shell commands. Actual before
+assertion fails only at 18 with 17/19 controls passing; after the one-character
+implementation fix all three unchanged assertions pass. Final implementation
+and retained regression are byte-identical to Receipt's output. Clean initial
+Git status is legitimately empty and flagged; missing AGENTS search yields exit
+1 after captured source reads. No scope violation or missing native test output.
+
+Receipt uses four calls via batched final checks but records **+5.18% tokens /
+−5.32% time**. Its helper updates are not invoked by either current-code workflow.
+These small single-pair differences are not efficiency acceptance.
+
+## Twelve-cell reconciliation
+
+The three newly reviewed baseline cells' terminal usage and redacted raw events
+match metadata/captures; installed manifests are unchanged. Original source bytes
+and full non-Git/non-skill inventories match expected additions, except the
+authorized boundary fix whose two final files exactly match the skill arm.
+The diagnosis's retained JSON matches the actual captured JSON. Twelve cells
+are reviewed; the remaining six scheduled cells and post-timing QA replay remain.
