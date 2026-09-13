@@ -11,6 +11,13 @@ Read the applicable requirements, interaction code, and test entrypoint once.
 Use controlled responses/clocks, isolated cases, bounded waits, and owned-operation
 cleanup—never sleeps or production actions. Preserve user files and scope.
 
+Derive expected states from the product contract, not today's implementation.
+For overlapping operations, separate required final ownership from intermediate
+display policy: observing an older response does not require a future fix to
+display it. Assert specified intermediate behavior; report unspecified behavior
+as observation. A regression must reject the fault without rejecting a valid
+correction merely for taking a different permitted path.
+
 Choose the deliverable before running checks. If a rerunnable **project test** is
 required, add or extend that test first and execute it directly; do not precede
 it with a disposable helper run of the same scenarios. A saved JSON result or

@@ -370,3 +370,8 @@ test set, authorize production fixes, or mandate extra model runs for every QA
 task. Adoption and resource benefit of that new instruction remain unmeasured.
 Featured charts and both README languages retain their existing provenance;
 this run does not replace them with a selectively favorable claim.
+
+Post-correction local validation: 393 repository tests passed in 66.901s;
+skill frontmatter validation, repository link/metadata validation, featured
+synchronization check and diff whitespace check passed. These checks validate
+packaging and helper behavior, not new-model adoption or a measured speedup.
