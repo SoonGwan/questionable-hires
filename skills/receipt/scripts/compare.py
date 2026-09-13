@@ -20,16 +20,20 @@ import time
 
 MAX_FIXED_ENTRIES = 10_000
 
-BOOTSTRAP = '''import importlib, json, pathlib, runpy, sys
+BOOTSTRAP = '''import importlib, json, pathlib, runpy, sys, traceback
 recipe = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
 sys.path.insert(0, str(root))
-for name in recipe['imports']:
-    module = importlib.import_module(name)
-    location = getattr(module, '__file__', None)
-    if not location or not pathlib.Path(location).resolve().is_relative_to(root):
-        raise RuntimeError('Import escaped comparison copy: ' + name)
-    print('Verified copied import:', name, flush=True)
+try:
+    for name in recipe['imports']:
+        module = importlib.import_module(name)
+        location = getattr(module, '__file__', None)
+        if not location or not pathlib.Path(location).resolve().is_relative_to(root):
+            raise RuntimeError('Import escaped comparison copy: ' + name)
+        print('Verified copied import:', name, flush=True)
+except BaseException:
+    traceback.print_exc()
+    raise SystemExit(7)
 sys.argv = [recipe['runner']] + recipe['tests']
 if recipe['runner'] == 'unittest':
     import unittest
@@ -273,7 +277,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
                     target.chmod(file_modes[name])
                 check = run_check(python, directory, recipe, timeout)
                 result['checks'][label] = check
-                if check['timed_out']:
+                if check['timed_out'] or check['exit_code'] == 7:
                     result['status'] = 'incomplete'
                     break
     finally:
@@ -309,6 +313,7 @@ Exit 0 means observations collected, not a verified fix: inspect each check's
 assertion output, exit_code, timed_out, output_truncated and import provenance.
 Exit 2 means comparison not established. Copies are cleaned; selected originals
 are checked, not restored. No sandbox or complete side-effect containment.
+Check exit 7 reserves incomplete import/setup evidence; no next comparison runs.
 Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
 ''')
     parser.add_argument('--spec', required=True, help='JSON file or - for stdin')

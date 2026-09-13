@@ -19,6 +19,43 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_cli_after_import_exit_cannot_claim_fixed_regression(self):
+        (self.root / 'rule.py').write_text('raise SystemExit(0)\n')
+        recipe = dict(self.recipe, after={'working_tree': True})
+        process = subprocess.run(
+            [sys.executable, '-B', str(SCRIPT), '--source', str(self.root), '--spec', '-'],
+            input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
+        self.assertEqual(process.returncode, 2, process.stderr)
+        result = json.loads(process.stdout)
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 7)
+        self.assertIn('SystemExit: 0', result['checks']['after']['output'])
+        self.assertNotIn('Ran 1 test', result['checks']['after']['output'])
+        self.assertTrue(result['originals']['unchanged'])
+        self.assertTrue(result['comparison_copies_removed'])
+
+    def test_import_exit_is_incomplete_and_stops_before_next_comparison(self):
+        for code in ('raise SystemExit(0)\n', 'raise SystemExit(9)\n',
+                     'raise RuntimeError("setup failed")\n'):
+            with self.subTest(code=code):
+                (self.root / 'rule.py').write_text(code)
+                revision = self.commit()
+                recipe = dict(self.recipe, before=revision, after=revision)
+                with patch.object(helper, 'run_check', wraps=helper.run_check) as execute:
+                    result = helper.compare(self.root, recipe)
+                self.assertEqual(result['status'], 'incomplete')
+                self.assertEqual(list(result['checks']), ['before'])
+                self.assertEqual(execute.call_count, 1)
+                check = result['checks']['before']
+                self.assertEqual(check['exit_code'], 7)
+                self.assertIn('Traceback', check['output'])
+                self.assertNotIn('Ran 1 test', check['output'])
+                self.assertTrue(result['originals']['unchanged'])
+                self.assertTrue(result['comparison_copies_removed'])
+                self.assertEqual((self.root / 'rule.py').read_text(), code)
+
     def test_watch_preserves_uncopied_original_and_child_temp_is_local(self):
         note = self.root / 'notes.txt'
         note.write_text('unrelated draft\n')
@@ -645,7 +682,8 @@ class ReceiptHelperTests(unittest.TestCase):
         for check in result['checks'].values():
             self.assertNotEqual(check['exit_code'], 0)
             self.assertIn('Import escaped comparison copy', check['output'])
-        self.assertEqual(result['status'], 'observed')
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(list(result['checks']), ['before'])
 
     def test_timeout_stops_comparison_and_cleans_copies(self):
         (self.root / 'test_rule.py').write_text('import time\ntime.sleep(20)\n')

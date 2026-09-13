@@ -65,6 +65,11 @@ requested test identity, before failure/after pass, copied-import evidence,
 `exit_code`, `timed_out` and `output_truncated`. Help/version output is not execution.
 Unittest zero/all-skipped runs return check 5; failures return 1, partial-skip
 success 0. This guard does not prove requested coverage. Pytest keeps native exits.
+Listed-module import exceptions, including `SystemExit(0)`, retain a traceback
+and reserve check exit 7 for incomplete setup; no next comparison runs and CLI
+returns 2. A runner independently exiting 7 is conservatively incomplete too.
+This catches ordinary Python import exceptions, not `os._exit`, later runner
+early exits or adversarial execution. Inspect actual test evidence regardless.
 
 Python 3.9+/POSIX; trusted tests only, **not a sandbox**. Copies are project-local
 and removed; changed selected originals abort without restoration. Watch covers
