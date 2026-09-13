@@ -201,6 +201,62 @@ recommendation, but baseline runs no equivalence probe. Extra execution, shared
 conditions and n=1 prevent causal attribution; this mixed tradeoff does not meet
 the overall efficiency objective. Keep both dimensions and verification differences.
 
+## Broken search — baseline and reviewed pair
+
+Five shell calls, **82,041 tokens / 62.192 seconds**. Adds a retained native
+two-test suite and redirects one execution to `qa-search-output.txt`, then reads
+that file. Actual Search is driven by controlled futures with normal/reversed
+completions, overlap/pending controls, two-second waits and finally cancellation/
+gather cleanup. Captured file output shows normal pass and the intended reversed
+AssertionError: `['car', 'cafe'] != ['cat', 'catalog']`. Both production originals
+match fixture bytes; only test/output are added. The empty execution-output flag
+is explained by explicit redirection, with the decisive log subsequently captured.
+
+Compared with Mother-in-law: **+29.42% skill tokens / +4.69% skill time**. Both
+demonstrate required behavior and retain rerunnable tests. Skill runs a helper
+before its retained checks, while baseline executes once and retains a log.
+Different delivery/support work remains part of costs; no causal effect is
+isolated. Both observed cost dimensions are adverse for this skill pair.
+
+## Search diagnosis — baseline and reviewed pair
+
+Five shell calls, **100,521 tokens / 75.194 seconds**. Actual Search/transport run
+against a controlled recording request boundary, with both completion orders,
+exact URL/params/no-cache header checks and intermediate result assignments.
+Captured JSON establishes normal/newest and reversed/earlier final results,
+two-second cooperative waits/cleanup and settled owned tasks/futures. The model
+also hashes production source/transport before and after; both originals match
+fixture bytes. It retains an experiment and redirected JSON output, then reads
+that output. The empty-output metadata flag reflects this explicit redirection,
+not missing decisive evidence. No production edits or unqualified production-cause
+claim appear.
+
+Compared with Exorcist: **−28.60% skill tokens / −22.33% skill time**. Both satisfy
+the core local diagnosis and retain rerunnable experiments. Baseline's separate
+file round trip, explicit production hashing and additional discovery differ
+from skill's direct captured output and focused final check. This is favorable
+descriptive evidence on this exposed n=1 task, not causal isolation or a general
+20%+ claim. Keep the extra-work and shared-condition limits alongside both figures.
+
+## Boundary fix — baseline and reviewed pair
+
+Six shell calls, **80,626 tokens / 32.270 seconds**. Before implementation change,
+adds/runs the same exactly-18 regression as Receipt: captured suite fails only age
+18 with 17/19 passing. After `>` becomes `>=`, unchanged three-test suite passes.
+Final retained implementation/test diff is identical to the skill counterpart.
+Baseline separates after suite from Git checks; skill batches them. No capture
+flags or rejected patches appear, and final outputs/diffs were inspected.
+
+Compared with Receipt: **+5.25% skill tokens / +7.02% skill time** despite four
+versus six shell calls. Both now perform the explicit pre-edit failure check;
+the old bundle's missing baseline evidence is not carried over or rescored.
+Smaller call count is not a performance win. This current-code task does not load
+the shortened historical-comparison reference, so cannot measure that edit.
+
+All three baselines above have no installed skills. No account retry, author
+replay or candidate change was used to repair outcomes. Complete-run accounting
+and remaining history/schema/state reviews are still outstanding.
+
 ## Remaining work
 
 Continue the existing live run and review every other cell before paired cost
