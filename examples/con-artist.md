@@ -55,6 +55,14 @@ The first failure shows `['existing']`; the second shows
 `['existing', 'new', 'new']`. Check the actual traceback, not just the exit code.
 The assertion protects existing data and exact contents, not only list length.
 
+The recipe also verifies the actual test method's `save` binding in each check
+process, without creating an extra binding module. This checks identity at that
+point, not a call trace or a guarantee against later fixture rebinding. A failed
+precheck makes the audit incomplete; it is not evidence that a test caught the
+fault. The single-fault command in the installed skill's
+[Python audit reference](../skills/con-artist/references/python-audit.md) works
+with these same two source files when run from this example directory.
+
 In the second audit, `correct_tests_reused` and `correct_probe_reused` are true.
 Their `observation_ref` fields point to the first audit's complete checks; read
 the output there. Those are **one observation each**, not independent repeated

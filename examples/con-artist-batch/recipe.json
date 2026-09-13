@@ -3,6 +3,7 @@
   "imports": ["service", "test_service"],
   "runner": "unittest",
   "tests": ["-v", "test_service"],
+  "precheck": "import service, test_service\nassert test_service.SaveTests.test_acknowledges_save.__globals__['save'] is service.save\nprint('Verified actual test global save is service.save', flush=True)\n",
   "mutations": [
     {
       "target": "service.py",

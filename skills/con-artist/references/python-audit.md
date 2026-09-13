@@ -12,7 +12,7 @@ Use the project's existing interpreter and actual installed skill path. Pass JSO
   "new": "",
   "runner": "unittest",
   "tests": ["-v", "test_service"],
-  "precheck": "import service, test_service\nassert test_service.SaveTests.test_save.__globals__['save'] is service.save\nprint('Verified actual test global save is service.save', flush=True)\n",
+  "precheck": "import service, test_service\nassert test_service.SaveTests.test_acknowledges_save.__globals__['save'] is service.save\nprint('Verified actual test global save is service.save', flush=True)\n",
   "probe": "from service import save\ns = ['existing']\nsave(s, 'record')\nassert s == ['existing', 'record']\n"
 }
 JSON

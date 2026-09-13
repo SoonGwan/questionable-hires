@@ -13,6 +13,67 @@ spec.loader.exec_module(builder)
 
 
 class BuildTests(unittest.TestCase):
+    def test_bundled_con_artist_documented_recipes_with_real_example_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            scratch = Path(directory).resolve()
+            plugin = builder.build(scratch / 'bundle with spaces')
+            project = scratch / 'example project'
+            project.mkdir()
+            example = builder.ROOT / 'examples/con-artist-batch'
+            for name in ('service.py', 'test_service.py'):
+                (project / name).write_bytes((example / name).read_bytes())
+            before = {p.name: (p.read_bytes(), p.stat().st_mode & 0o777)
+                      for p in project.iterdir()}
+            reference = (plugin / 'skills/con-artist/references/python-audit.md').read_text()
+            # Execute the shipped JSON itself, not a test-maintained imitation.
+            single = json.loads(reference.split("<<'JSON'\n", 1)[1].split('\nJSON', 1)[0])
+            batch = json.loads((example / 'recipe.json').read_text())
+            for name, recipe in (('documented single', single), ('public batch', batch)):
+                with self.subTest(recipe=name):
+                    process = subprocess.run(
+                        [sys.executable, '-I', '-B',
+                         str(plugin / 'skills/con-artist/scripts/audit.py'), '--spec', '-'],
+                        cwd=project, input=json.dumps(recipe), text=True,
+                        capture_output=True, timeout=15)
+                    self.assertEqual(process.returncode, 0, process.stderr)
+                    result = json.loads(process.stdout)
+                    self.assertEqual(result['status'], 'observed')
+                    audits = result['audits'] if 'audits' in result else [result]
+                    for audit in audits:
+                        self.assertEqual(audit['checks']['mutant_tests']['exit_code'], 0)
+                        failed = audit['checks']['mutant_probe']
+                        self.assertEqual(failed['exit_code'], 1)
+                        self.assertIn('AssertionError', failed['output'])
+                        self.assertIn('Verified actual test global save is service.save',
+                                      failed['output'])
+                    for key in ('correct_tests', 'correct_probe'):
+                        self.assertEqual(audits[0]['checks'][key]['exit_code'], 0)
+                    if name == 'public batch':
+                        self.assertIn("['existing', 'new', 'new']",
+                                      audits[1]['checks']['mutant_probe']['output'])
+                        self.assertTrue(audits[1]['correct_tests_reused'])
+                        self.assertTrue(audits[1]['correct_probe_reused'])
+                    self.assertEqual(before, {p.name: (p.read_bytes(), p.stat().st_mode & 0o777)
+                                             for p in project.iterdir()})
+
+            # A wrong live binding must fail the prerequisite, not earn mutation credit.
+            single['precheck'] = ('import service, test_service\n'
+                                  'service.save = lambda *args: True\n' + single['precheck'])
+            process = subprocess.run(
+                [sys.executable, '-I', '-B', str(plugin / 'skills/con-artist/scripts/audit.py'),
+                 '--spec', '-'], cwd=project, input=json.dumps(single),
+                text=True, capture_output=True, timeout=15)
+            self.assertEqual(process.returncode, 2, process.stderr)
+            result = json.loads(process.stdout)
+            self.assertEqual(result['status'], 'incomplete')
+            self.assertEqual(set(result['checks']), {'correct_tests'})
+            check = result['checks']['correct_tests']
+            self.assertEqual(check['exit_code'], 6)
+            self.assertIn('Precheck failed; not mutation evidence.', check['output'])
+            self.assertIn('AssertionError', check['output'])
+            self.assertEqual(before, {p.name: (p.read_bytes(), p.stat().st_mode & 0o777)
+                                     for p in project.iterdir()})
+
     def test_bundled_friday_preserves_incompatible_reader_evidence(self):
         with tempfile.TemporaryDirectory() as directory:
             scratch = Path(directory).resolve()

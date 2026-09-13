@@ -58,3 +58,30 @@ equivalent verification and lower end-to-end costs on separate realistic tasks.
 Do not repeat the exposed persistence case for a preferred score or substitute
 these helper tests for all-eight real-development improvement. Featured figures
 and previous adverse results are unchanged.
+
+## Shipped example integration
+
+The public two-fault recipe now includes the optional same-process binding
+precheck. The single-audit reference names the same actual example method,
+`SaveTests.test_acknowledges_save`, instead of an unrelated illustrative selector.
+Both interfaces remain optional; no entrypoint or helper algorithm changed here.
+
+A packaging regression builds the distributable into a path containing spaces,
+copies the actual example source files into a separate project, extracts the
+literal JSON from the bundled reference, and executes it through the bundled
+CLI with stdin. It also executes the public batch recipe unchanged. Both preserve
+all project file bytes/modes and leave no scratch files; existing tests survive
+the faults, correct probes pass, and mutant probes produce AssertionError. The
+batch keeps correct-observation reuse and exposes duplicate stored values.
+
+An author-only negative control changes the live implementation binding after
+the test import. The shipped precheck then produces assertion evidence and
+reserved exit 6; CLI exit 2 and only the correct-test phase confirm that no
+mutation success is awarded. This intentionally altered precheck is test support,
+not a recommended user recipe or a measured model action.
+
+Packaging suite: **12 tests pass (2.948 seconds)**. This validates local built
+resources and documentation usability, not remote installation, model adoption,
+token savings or a new benchmark. No featured/chart values change.
+Full repository suite: **365 tests pass (52.354 seconds)**; skill/catalog,
+localization/featured consistency and patch whitespace checks pass.
