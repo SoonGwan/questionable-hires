@@ -17,6 +17,8 @@ it has not established a broad 20–30% gain.
   but full test-file reading, repeated excerpts and helper inspection remain.
   Later assertion-slice routing is unmeasured; real code is not an independent
   project holdout. This is an adverse efficiency result, not a broad success.
+  A later lossless compact-JSON default reduces this same collector output by
+  5.44% in characters; identical parsed values, not measured model-token savings.
 - [Account-panel delivery transfer](results/mother-panel-01/README.md), Mother
   entry `eefc721`: **−40.38% tokens / −18.76% time**, five native tests pass per
   arm, direct project-test delivery without helper duplication. Author fault replay

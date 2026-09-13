@@ -12,7 +12,8 @@ python -B /path/to/con-artist/scripts/context.py --root /permitted/project --ful
 ```
 
 This reads the test body and only `Store.save` from the implementation in one
-call. Omit `--full` for a locating pass when needed definitions are unknown;
+call. CLI output is compact JSON; `--pretty` restores indentation for manual
+inspection without changing fields or source text. Omit `--full` for a locating pass when needed definitions are unknown;
 do not request an index first when you already need the file's assertions.
 For a very large test file, select the relevant test definitions and inspect
 their unresolved setup instead of forcing a whole-file read past output limits.

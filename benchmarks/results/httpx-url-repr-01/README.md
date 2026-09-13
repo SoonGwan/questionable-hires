@@ -87,3 +87,23 @@ Post-run checks: context suite **22 pass (0.362s)**, evidence-export suite **4
 pass (0.019s)**, full repository **378 pass (52.503s)**. Skill/catalog, local
 links, featured consistency and privacy-pattern checks pass. These author checks
 do not establish model transfer of the later reading-scope change.
+
+## Later lossless context formatting
+
+After the reading-scope correction, the collector CLI default was changed from
+indented JSON to compact JSON. `--pretty` retains the prior manual-inspection
+representation. API values, all source excerpts/line numbers, provenance,
+configuration/instructions, limits and error handling are unchanged; this removes
+serialization whitespace, not evidence. The existing conservative output-size
+check still uses the indented representation before either mode emits anything.
+
+Author replay of the exact three selectors above on pinned upstream produces
+**46,431 characters indented / 43,903 compact (5.44% fewer)**, including the final
+newline. Parsing both outputs yields identical values. This is deterministic
+output arithmetic, **not model-token savings or another measured session**.
+It does not solve excessive selection or helper-source inspection on its own.
+Focused context suite: **23 tests pass (0.449s)**, including actual CLI executions
+in both modes with Unicode and exact equality to the API result. Historical model
+logs remain in their original formatting and the costs above remain unchanged.
+Full repository suite after the formatting change: **379 tests pass (52.442s)**;
+skill/catalog, featured synchronization and whitespace checks pass.

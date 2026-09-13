@@ -198,6 +198,8 @@ def main():
     parser.add_argument('--root', type=Path, default=Path.cwd())
     parser.add_argument('--full', action='store_true',
                         help='Return full selected files instead of indexing Python files over 200 lines; size limits still apply')
+    parser.add_argument('--pretty', action='store_true',
+                        help='Indent JSON for manual inspection; default JSON is compact with identical values')
     parser.add_argument('selectors', nargs='+', metavar='FILE[:DEFINITION_OR_LINE]')
     args = parser.parse_args()
     try:
@@ -205,7 +207,8 @@ def main():
     except (OSError, ValueError, SyntaxError, RecursionError) as error:
         print(json.dumps(dict(status='incomplete', error=str(error))), file=sys.stderr)
         return 2
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    print(json.dumps(result, ensure_ascii=False, indent=2 if args.pretty else None,
+                     separators=None if args.pretty else (',', ':')))
     return 0
 
 

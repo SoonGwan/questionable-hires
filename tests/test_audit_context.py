@@ -16,6 +16,21 @@ spec.loader.exec_module(context)
 
 
 class AuditContextTests(unittest.TestCase):
+    def test_compact_cli_retains_every_value_and_pretty_preserves_legacy_shape(self):
+        self.put('tests/test_service.py', 'def test_service():\n    assert "한글" == "한글"\n')
+        selectors = ['tests/test_service.py', 'service.py:Store.save']
+        expected = context.collect(self.root, selectors)
+        outputs = []
+        for options in ([], ['--pretty']):
+            process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--root', str(self.root),
+                                      *options, *selectors], capture_output=True, text=True, timeout=5)
+            self.assertEqual(process.returncode, 0, process.stderr)
+            self.assertEqual(json.loads(process.stdout), expected)
+            outputs.append(process.stdout)
+        self.assertLess(len(outputs[0]), len(outputs[1]))
+        self.assertEqual(outputs[1], json.dumps(expected, ensure_ascii=False, indent=2) + '\n')
+        self.assertEqual(outputs[0], json.dumps(expected, ensure_ascii=False, separators=(',', ':')) + '\n')
+
     def test_documented_command_reads_large_test_body_and_only_selected_method(self):
         reference = SCRIPT.parents[1] / 'references/python-context.md'
         command = reference.read_text().split('```sh\n', 1)[1].split('```', 1)[0]
