@@ -133,6 +133,30 @@ cited. No observed scope deviation or capture gap. Resource/raw reconciliation
 follows timing. This cell does not measure adoption or benefit of Receipt's new
 inherited-pipe cleanup because the helper was not executed.
 
+## Search diagnosis — baseline
+
+Completed: **103,849 tokens / 89.305 seconds**, five shell calls. Adds an
+experiment, saved JSON and README. Runs actual Search/transport with a cache-free
+controlled request boundary; full saved output is subsequently displayed in a
+native command. Both orders, real request headers, result assignments, final
+stale flags and source hashes are captured. Two-second waits and owned cleanup
+are implemented. The empty redirected-run output is legitimate, not a capture
+gap. Final diff/status shows only experiments added. Diagnosis correctly limits
+the local cache-free reproduction rather than ruling out production cache issues.
+No observed scope/capture issue; raw/resource/inventory reconciliation pending.
+Extra saved evidence/report compared with skill is unequal delivery work.
+
+## Eligibility boundary — baseline
+
+Completed: **79,719 tokens / 28.046 seconds**, four shell calls. Adds the 18
+assertion first, obtains the native three-test/one-failure result with both
+neighbors passing, then changes only `>` to `>=` and passes all three unchanged
+tests. Full original before/after evidence and two-file diff are captured. Final
+shell payload uses semicolons and could mask failure, but the actual native
+summary is independently visible and passes. No observed scope/capture issue;
+raw/resource reconciliation pending. Skill has higher recorded tokens/time on
+this equally small patch; no Receipt helper benefit is demonstrated.
+
 ## Search diagnosis — skill
 
 Completed: **72,244 tokens / 58.001 seconds**, five shell calls. Adds only
