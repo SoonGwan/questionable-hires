@@ -4,6 +4,29 @@ Resource/launch `20ec916`; [frozen protocol](BUNDLE-CONTRACT-06-PROTOCOL.md).
 No aggregate result until all scheduled cells finish and evidence is reviewed.
 No resource/task edits or author replay/test workloads during model timing.
 
+## Pending form — baseline
+
+Completed: **66,637 tokens / 71.503 seconds**, four shell calls. Adds per-instance
+pending state, an early duplicate guard and unconditional finally reset. Seven
+original native tests pass with all names and summary captured (0.024s). Actual
+Form tests cover result/exception identity, concurrent duplicates, independent
+instances, synchronous save failure, task cancellation and retry, including a
+directly awaited CancelledError identity check. Async waits are bounded and owned
+tasks cancel/drain in teardown. Only form.py and test_form.py change. No observed
+scope/capture issue; original/resource reconciliation and author replay pending.
+
+## Active history — skill
+
+Completed: **67,242 tokens / 31.022 seconds**, four shell calls. Uses native Git,
+not the optional collector. Actual caller currently returns Ada; replacing its
+imported binding in memory with the proposed no-fallback expression returns None.
+The captured blame and relevant introducing patch agree on `d5fc9729`; shallow
+check is false. Recommendation correctly separates current executable necessity
+from historical migration intent, retaining the supported name-only caller.
+No files edited; final native status contains only installed skills. No observed
+capture/scope issue; original/resource/inventory reconciliation pending. Initial
+keyword search precedes batched known-file reads, so discovery is not fully lean.
+
 ## Persistence audit — skill
 
 Completed: **74,321 recorded tokens / 31.402 seconds**, three shell calls.
