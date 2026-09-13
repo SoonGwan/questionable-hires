@@ -140,6 +140,11 @@ def run_check(python, root, recipe, timeout):
                 output=output, output_truncated=size > 12000)
 
 
+def read_limited(path, limit):
+    with path.open('rb') as stream:
+        return stream.read(limit + 1)
+
+
 def compare(root, recipe, python=sys.executable, timeout=30):
     root = Path(root).resolve(strict=True)
     if os.name != 'posix' or not 0 < timeout <= 300:
@@ -170,7 +175,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
             raise ValueError('Input missing or exceeds 20 MB')
         if total + length > 20_000_000:
             raise ValueError('Inputs exceed 20 MB')
-        originals[name] = path.read_bytes()
+        originals[name] = read_limited(path, 20_000_000 - total)
         total += len(originals[name])
         if total > 20_000_000:
             raise ValueError('Inputs exceed 20 MB')
@@ -249,7 +254,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
         return result
     finally:
         changed = [name for name, content in originals.items() if (root/name).is_symlink()
-                   or not (root/name).is_file() or (root/name).read_bytes() != content
+                   or not (root/name).is_file() or read_limited(root/name, len(content)) != content
                    or (root/name).stat().st_mode & 0o777 != modes[name]]
         if changed:
             raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))

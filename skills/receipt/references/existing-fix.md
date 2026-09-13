@@ -49,8 +49,12 @@ Python 3.9+, POSIX; 20 MB snapshot budget, 30 seconds/check (`--timeout` up to 3
 last 12,000 output characters. Copies are project-local and cleaned; selected
 original bytes/permissions are checked, not every side effect. Original changes
 are reported, never restored. Trusted tests only, **not a sandbox**. The byte
-budget rejects known-overflow working files before reading/comparing; it does
-not bound total memory or protect against concurrent writes. JSON retains
+budget rejects known-overflow working files before reading/comparing and bounds
+each working-file read to the remaining budget plus one overflow byte. Growth
+beyond that budget aborts before test execution. Final integrity reads are bounded
+to the original file length plus one byte; detected changes are not restored.
+This does not bound total memory
+or provide an atomic snapshot against concurrent writes. JSON retains
 revisions, leaf hashes and separate outputs/statuses. CLI exit 0 means collected
 observations, **not proof**: inspect the actual assertion failure, after pass,
 provenance, timeout and truncation fields before claiming the fix.

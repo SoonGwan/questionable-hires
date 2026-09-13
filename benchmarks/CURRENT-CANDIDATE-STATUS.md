@@ -10,6 +10,17 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Receipt bounded working-file reads: after the size check, initial reads now
+  request only remaining input budget plus one overflow byte, rather than
+  reading to EOF. A controlled post-stat growth stream reproduces the old
+  unbounded `read(-1)` and now verifies the exact bounded request, rejection
+  before test execution and no scratch copies. Final original-integrity reads
+  use original length plus one byte; a growth test confirms bounded checking,
+  explicit failure and no restoration of the changed original. Existing
+  known-overflow pre-open rejection and before-fail/after-pass behavior remain
+  covered. This bounds individual reads, not total memory or concurrent snapshot
+  consistency, and establishes no whole-task token/time improvement.
+
 - Con Artist batch evidence retention: a later mutation whose text does not
   match previously caused CLI exit 2 with empty stdout, losing earlier completed
   audit observations from the response. The same real CLI regression fails on

@@ -17,6 +17,41 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_final_integrity_read_is_bounded_and_reports_growth_without_restore(self):
+        original = self.root / 'rule.py'
+        length = original.stat().st_size
+        def execute(*args):
+            original.write_text('x' * 1000)
+            return dict(exit_code=0, timed_out=False, output='fixture', output_truncated=False)
+        with patch.object(helper, 'run_check', side_effect=execute), \
+                patch.object(helper, 'read_limited', wraps=helper.read_limited) as reads, \
+                self.assertRaisesRegex(RuntimeError, 'Selected originals changed'):
+            helper.compare(self.root, self.recipe)
+        self.assertEqual(reads.call_args.args, (self.root.resolve() / 'rule.py', length))
+        self.assertEqual(original.read_text(), 'x' * 1000)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_post_stat_growth_is_read_with_remaining_budget_before_execution(self):
+        class GrowingFile(io.BytesIO):
+            requests = []
+            def read(self, size=-1):
+                self.requests.append(size)
+                return super().read(size)
+        growing = GrowingFile(b'x' * 20_000_001)
+        original_open = Path.open
+        def open_file(path, *args, **kwargs):
+            if path == self.root.resolve() / 'rule.py' and (args[0] if args else kwargs.get('mode')) == 'rb':
+                return growing
+            return original_open(path, *args, **kwargs)
+        with patch.object(Path, 'open', open_file), \
+                patch.object(helper, 'run_check') as execute, \
+                self.assertRaisesRegex(ValueError, 'Inputs exceed 20 MB'):
+            helper.compare(self.root, self.recipe)
+        self.assertEqual(growing.requests,
+                         [20_000_000 - (self.root / 'test_rule.py').stat().st_size + 1])
+        execute.assert_not_called()
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
     def test_help_recipe_runs_without_reading_source_or_creating_spec_file(self):
         help_result = subprocess.run([sys.executable, '-I', '-B', str(SCRIPT), '--help'],
                                      cwd=self.root, capture_output=True, text=True, timeout=5)
@@ -216,14 +251,15 @@ class ReceiptHelperTests(unittest.TestCase):
             with (self.root / name).open('wb') as stream:
                 stream.truncate(10_000_000)
         recipe = dict(self.recipe, fixed=['test_rule.py', 'large-a.bin', 'large-b.bin'])
-        read = Path.read_bytes
+        open_file = Path.open
         accessed = []
-        def checked_read(path):
-            accessed.append(path.name)
-            if path.name == 'large-b.bin':
-                raise AssertionError('Read started after the working-input budget was exhausted')
-            return read(path)
-        with patch.object(Path, 'read_bytes', checked_read), \
+        def checked_open(path, *args, **kwargs):
+            if (args[0] if args else kwargs.get('mode')) == 'rb':
+                accessed.append(path.name)
+                if path.name == 'large-b.bin':
+                    raise AssertionError('Read started after the working-input budget was exhausted')
+            return open_file(path, *args, **kwargs)
+        with patch.object(Path, 'open', checked_open), \
                 patch.object(helper, 'run_check') as execute:
             with self.assertRaisesRegex(ValueError, 'Inputs exceed 20 MB'):
                 helper.compare(self.root, recipe)
