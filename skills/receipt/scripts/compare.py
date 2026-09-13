@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare committed Python implementations with frozen working-tree tests.
+"""Compare committed or uncommitted Python fixes with frozen working-tree tests.
 
 Trusted local tests only. This is not a security sandbox.
 """
@@ -194,6 +194,11 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     blobs = {}  # Immutable object content; never reuse mutable working inputs.
     for label in ('before', 'after'):
         ref = recipe[label]
+        if (label == 'after' and isinstance(ref, dict) and set(ref) == {'working_tree'}
+                and ref['working_tree'] is True):
+            revisions[label] = None
+            variants[label] = (dict(originals), dict(modes))
+            continue
         if not isinstance(ref, str) or not ref or ref.startswith('-') or '\n' in ref:
             raise ValueError('Invalid revision')
         sha = git(root, 'rev-parse', '--verify', '--end-of-options', ref + '^{commit}').decode().strip()
@@ -245,6 +250,10 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     result = dict(status='observed', revisions=revisions, checks={},
                   fixed_sha256={name: hashlib.sha256(originals[name]).hexdigest() for name in recipe['fixed']},
                   limitation='Inspect assertion failures and import provenance; exit codes alone do not prove the fix.')
+    if revisions['after'] is None:
+        result['working_tree_after'] = dict(
+            sha256={name: hashlib.sha256(originals[name]).hexdigest() for name in recipe['vary']},
+            modes={name: modes[name] for name in recipe['vary']})
     try:
         with tempfile.TemporaryDirectory(prefix='.receipt-', dir=root) as scratch:
             for label, (files, file_modes) in variants.items():
@@ -276,7 +285,9 @@ def main():
 {"fixed":["test_rule.py"],"vary":["rule.py"],"before":"HEAD^","after":"HEAD","imports":["rule"],"runner":"unittest","tests":["-v","test_rule"]}
 
 fixed: current tests/data/config/dependencies; files or explicit directories.
-vary: committed implementation files. Paths are project-relative and disjoint.
+vary: implementation files. Paths are project-relative and disjoint.
+before: commit expression. after: commit expression or {"working_tree":true}.
+Working-tree after freezes current bytes/modes once, not the index or a commit.
 imports: modules that must load inside each copy. runner: unittest or pytest.
 Use --spec - to send JSON on stdin; no recipe file is required.
 Directory inputs include hidden files; select only needed, authorized support.

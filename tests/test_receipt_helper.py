@@ -17,6 +17,67 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_cli_compares_frozen_uncommitted_implementation_without_changing_index(self):
+        target = self.root / 'rule.py'
+        target.write_text('def eligible(n): return n >= 99\n')
+        self.git('add', 'rule.py')
+        target.write_text('MODE = "working"\ndef eligible(n): return n >= 18\n')
+        target.chmod(0o755)
+        (self.root / 'test_rule.py').write_text(
+            'import unittest\nimport rule\nclass Working(unittest.TestCase):\n'
+            '    def test_fix(self):\n'
+            '        self.assertTrue(rule.eligible(18))\n'
+            '        self.assertEqual(rule.MODE, "working")\n')
+        recipe = dict(self.recipe, after={'working_tree': True})
+        snapshot = {str(p.relative_to(self.root)): p.read_bytes()
+                    for p in self.root.rglob('*') if p.is_file()}
+        process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--source',
+                                  str(self.root), '--spec', '-'], input=json.dumps(recipe),
+                                 text=True, capture_output=True, timeout=20)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        result = json.loads(process.stdout)
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError: False is not true', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertIn('Verified copied import: rule', result['checks']['after']['output'])
+        self.assertEqual(result['revisions'], {'before': self.before, 'after': None})
+        self.assertEqual(result['working_tree_after'], {'sha256': {
+            'rule.py': hashlib.sha256(target.read_bytes()).hexdigest()}, 'modes': {'rule.py': 0o755}})
+        self.assertEqual(snapshot, {str(p.relative_to(self.root)): p.read_bytes()
+                                    for p in self.root.rglob('*') if p.is_file()})
+        self.assertEqual(target.stat().st_mode & 0o777, 0o755)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_working_tree_selector_rejects_ambiguous_or_before_requests(self):
+        for changes in ({'before': {'working_tree': True}},
+                        {'after': {'working_tree': False}},
+                        {'after': {'working_tree': 1}},
+                        {'after': {'working_tree': True, 'revision': 'HEAD'}}):
+            with self.subTest(changes=changes), patch.object(helper, 'run_check') as execute:
+                with self.assertRaisesRegex(ValueError, 'Invalid revision'):
+                    helper.compare(self.root, dict(self.recipe, **changes))
+                execute.assert_not_called()
+
+    def test_working_after_uses_initial_snapshot_and_reports_later_original_change(self):
+        original = self.root / 'rule.py'
+        frozen = original.read_bytes()
+        execute = helper.run_check
+        observations = []
+        def run(python, root, recipe, timeout):
+            if root.name == 'after':
+                self.assertEqual((root / 'rule.py').read_bytes(), frozen)
+            result = execute(python, root, recipe, timeout)
+            observations.append(result)
+            if root.name == 'before':
+                original.write_text('def eligible(n): return False\n')
+            return result
+        with patch.object(helper, 'run_check', side_effect=run), \
+                self.assertRaisesRegex(RuntimeError, 'Selected originals changed; not restored: rule.py'):
+            helper.compare(self.root, dict(self.recipe, after={'working_tree': True}))
+        self.assertEqual([item['exit_code'] for item in observations], [1, 0])
+        self.assertEqual(original.read_text(), 'def eligible(n): return False\n')
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
     def test_unittest_mixed_skip_and_real_regression_retains_before_after_outcomes(self):
         with (self.root / 'test_rule.py').open('a') as stream:
             stream.write('\n@unittest.skip("unrelated optional check")\n'

@@ -35,7 +35,7 @@ overlapping selections are rejected; traversal is bounded to 10,000 entries.
 Each leaf is frozen once, shared by both implementations and hashed in
 `fixed_sha256`.
 
-`vary`: explicit implementation **files** from each commit, not directories.
+`vary`: explicit implementation **files**, not directories.
 Both lists must be nonempty, canonical project-relative and disjoint after
 expansion: fixed directories cannot contain varying files. Listed imports must
 resolve inside each copy. Launch with the project interpreter; checks reuse it
@@ -44,6 +44,18 @@ other runtimes/custom runners require native isolated comparison instead.
 Pass the intended revision expressions directly: the helper resolves and reports
 full commit IDs, so a separate hash-resolution call is unnecessary. `HEAD^` is
 only an example, not a rule for selecting the correct before implementation.
+
+For a fix already present but not committed, use `"before":"HEAD"` (or the
+appropriate earlier commit) and `"after":{"working_tree":true}`. The helper
+freezes selected current implementation bytes and modes once alongside current
+tests/support, then runs both copies. It does not commit, stash, read staged
+implementation content or reverse a working-tree patch. `revisions.after` is null;
+`working_tree_after.sha256` and `.modes` identify the selected snapshot, not a Git
+commit or the whole repository. Normal Git revision strings retain their meaning.
+Both variants still require each selected file; added/deleted implementation
+layouts need native comparison. This retrospective check does not satisfy a
+request to execute a failure **before making** the original edit. It is not an
+atomic snapshot of concurrently changing files.
 
 Python 3.9+, POSIX; 20 MB snapshot budget, 30 seconds/check (`--timeout` up to 300),
 last 12,000 output characters. Copies are project-local and cleaned; selected
