@@ -1,5 +1,27 @@
 # Release readiness — development preview
 
+## 2026-09-13: latest helper guards verified in the source distribution
+
+The unmodified `5b78fef` archive passes validation, localized featured/chart
+consistency and the full suite under local Linux arm64/Python 3.12.3:
+**328 discovered, 326 passed, two explicit Git-provenance skips, 17.176 seconds**.
+This includes current Receipt/Con Artist no-execution guards, bounded Receipt
+reads, batch evidence retention, source-context selection and existing all-eight
+build/install checks. No `.git` or ignored local runs are in the input archive.
+No file overlays were used. The existing image ID and read-only host PyYAML mount
+are the same as documented below; network access is disabled and no dependencies
+were installed. The retained host archive is
+`benchmarks/local-runs/linux-5b78fef.DCCRYx`; the container was disposable.
+
+This is source-distribution behavior evidence, not a fresh dependency installation,
+model performance measurement, hosted CI success or authorization to publish.
+Read-only recheck of [hosted run 34743404198](https://github.com/SoonGwan/questionable-hires/actions/runs/34743404198)
+at the same revision finds all four jobs failed with zero steps and no assigned
+runner. The source-archive check `103686827727` explicitly reports failed recent
+payments **or** a spending limit requiring increase. It does not establish which
+setting is responsible. Repository visibility remains private. No account,
+billing or publication settings were changed; the owner-side hosted gate remains.
+
 ## 2026-09-13: committed archive gate
 
 The unmodified `92b49df` source archive passes the same network-disabled Linux

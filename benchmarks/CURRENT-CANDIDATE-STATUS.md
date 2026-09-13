@@ -10,6 +10,15 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Latest Linux source-distribution check](../docs/RELEASE-READINESS.md):
+  unmodified `5b78fef`, Python 3.12.3, network disabled, no checkout or local-run
+  state: 326 pass / two explicit Git-history skips (328 discovered). Recent
+  Receipt/Con Artist guards and all-eight packaging tests execute in the archive.
+  Hosted run 34743404198 has zero steps in all four jobs; the source-archive
+  annotation still reports the payment/spending-limit gate. Private visibility
+  is unchanged. Local compatibility does not establish model efficiency or
+  resolve hosted release readiness.
+
 - Con Artist unittest execution guard: empty and entirely skipped correct suites,
   plus empty native correct probes, previously returned `observed` and allowed
   the audit to continue. Real execution regressions now show `incomplete`, check
