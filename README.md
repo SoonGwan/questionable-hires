@@ -54,6 +54,10 @@ Production code stayed intact. The no-skill baseline also found this flaw. [Comp
 
 ## Hire one. Or make eight questionable decisions.
 
+Development candidate: [Landlord and Hostage discovery routing](benchmarks/DISCOVERY-ROUTING-01.md)
+now groups known reads and targets unresolved questions. Required verification
+remains; this instruction update has no measured speed/token benefit yet.
+
 With Node.js/npm and Git, install one hire or the whole team:
 
 ```sh

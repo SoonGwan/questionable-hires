@@ -11,6 +11,13 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
+Newer **unmeasured candidate `07fa9e2`**: [discovery routing](DISCOVERY-ROUTING-01.md)
+updates Hostage Negotiator and Landlord to batch known reads and search remaining
+questions rather than repeat discovery. Required checks, instruction coverage,
+consumer boundaries and justified repeat tests remain. Two skill validators and
+repository validation pass; no model savings or behavioral adoption claim yet.
+The measurements below still belong to `20ec916`, not this newer instruction.
+
 Completed [all-eight checkpoint 06](BUNDLE-CONTRACT-06-REVIEW.md): all 18 cells,
 zero timeouts/exclusions. Baseline **713,178 tokens / 511.591s**, skill
 **686,327 / 418.570s**: ratio-of-sums **−3.76% tokens / −18.18% time**. Five pairs
