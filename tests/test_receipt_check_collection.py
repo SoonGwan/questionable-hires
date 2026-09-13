@@ -1,10 +1,52 @@
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 import unittest
 
 
 class ReceiptCheckCollectionTests(unittest.TestCase):
+    def test_documented_final_chain_executes_actual_tests_and_diff_in_order(self):
+        skill = Path(__file__).resolve().parents[1] / 'skills/receipt/SKILL.md'
+        command, = re.findall(r'```sh\n(.*?)\n```', skill.read_text(), flags=re.S)
+        with tempfile.TemporaryDirectory() as scratch:
+            root = Path(scratch)
+            subprocess.run(['git', 'init', '-q', '--template='], cwd=root, check=True, timeout=5)
+            subprocess.run(['git', 'config', 'core.whitespace', 'trailing-space'],
+                           cwd=root, check=True, timeout=5)
+            app, test = root / 'app.py', root / 'test_app.py'
+            app.write_text('def render(value): return str(value)\n')
+            tests = ('import unittest\nfrom app import render\n'
+                     'class RenderTests(unittest.TestCase):\n'
+                     '    def test_render(self): self.assertEqual(render("ready"), "ready")\n')
+            test.write_text(tests)
+            subprocess.run(['git', 'add', 'app.py', 'test_app.py'], cwd=root, check=True, timeout=5)
+            cases = [
+                ("def render(value): return ' ' + str(value)\n", 'test-failure'),
+                ('def render(value): return str(value)  \n', 'whitespace-failure'),
+                ('def render(value):\n    return str(value)\n', 'success'),
+            ]
+            for source, expected in cases:
+                with self.subTest(expected=expected):
+                    app.write_text(source)
+                    result = subprocess.run(['sh', '-c', command], cwd=root,
+                                            capture_output=True, text=True, timeout=10)
+                    if expected == 'test-failure':
+                        self.assertNotEqual(result.returncode, 0)
+                        self.assertIn("AssertionError: ' ready' != 'ready'", result.stderr)
+                        self.assertEqual(result.stdout, '')
+                    elif expected == 'whitespace-failure':
+                        self.assertNotEqual(result.returncode, 0)
+                        self.assertIn('OK', result.stderr)
+                        self.assertIn('trailing whitespace', result.stdout)
+                        self.assertNotIn('diff --git', result.stdout)
+                    else:
+                        self.assertEqual(result.returncode, 0, result.stderr)
+                        self.assertIn('OK', result.stderr)
+                        self.assertIn('diff --git a/app.py b/app.py', result.stdout)
+                    self.assertEqual(test.read_text(), tests)
+                    self.assertEqual(app.read_text(), source)
+
     def test_fail_fast_chain_preserves_failure_and_does_not_claim_later_execution(self):
         # Real shell statuses, not a wording test of the skill instruction.
         for failing in (None, 0, 1, 2):

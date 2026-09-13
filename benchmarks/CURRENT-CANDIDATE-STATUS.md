@@ -10,13 +10,22 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Receipt final-check example candidate: the entrypoint now gives an adaptable
+  native shell chain for actual tests, scoped whitespace check and scoped diff,
+  rather than only asking for batching. Its code block is extracted and executed
+  in a real temporary Git project: a real assertion failure stops the chain;
+  passing tests with trailing whitespace stop before the diff; a clean fix
+  executes all checks with the current regression unchanged. Untracked files
+  require separate review and all-run requirements still require separate exit
+  capture. This demonstrates shell behavior, not model adoption or cost savings.
+
 - [Receipt current-bug regression](results/receipt-current-bug-01/README.md):
   consolidated `7e1e1db` retains actual before failure and unchanged after pass;
   baseline has after-only evidence. Identical final diffs, but +34.16% tokens /
   +6.48% time and unbatched discovery/final checks. Unequal verification and one
   exposed tiny task prevent causal claims; the efficiency objective remains unmet.
 
-- Receipt entrypoint consolidation candidate: 356 → 289 whitespace-delimited
+- Earlier Receipt entrypoint consolidation: 356 → 289 whitespace-delimited
   words, retaining the explicit scope boundary, historical routing, unchanged
   before/after assertions, qualified suite reuse, separate exit statuses and
   authorization limits. No new helper/reference lookup was added. Existing
@@ -203,7 +212,7 @@ The optional helpers are not mandatory for every task.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `51ce19e`; collector `6318b91`, reference `3157ee2` | [Scoped discovery](NECROMANCER-DISCOVERY-01.md), [adverse packaging transfer](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md) | Configured consumer preserved with near-identical cost; favorable packaging discovery pair has unequal work and capture limits; earlier transfer adverse; broad savings unproven |
-| Receipt | [Consolidated entrypoint](../skills/receipt/SKILL.md) `7e1e1db`; helper help `0939e0c` | [Current-bug regression](results/receipt-current-bug-01/README.md), [scope recheck](results/receipt-scope-recheck-01/README.md), [invoice transfer](results/receipt-invoice-01/README.md) | Current-bug +34.16% tokens with fuller before evidence than baseline; historical scope recheck passes once; broad efficiency unresolved |
+| Receipt | [Entrypoint with native final-check example](../skills/receipt/SKILL.md); helper help `0939e0c` | [Current-bug regression](results/receipt-current-bug-01/README.md), [scope recheck](results/receipt-scope-recheck-01/README.md), [invoice transfer](results/receipt-invoice-01/README.md) | Prior current-bug +34.16% tokens with fuller before evidence than baseline; new example author-tested, model effects unmeasured; broad efficiency unresolved |
 | Landlord | `26a310d` | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Caller search excludes installed example content but still lists resource paths; 68,509 tokens/39.233s in nonpaired regression, no causal efficiency claim; earlier comparisons adverse |
 | Mother-in-law | `b7058c6`; success-state/evidence helper | [Native project integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md), [prior recovery screen](results/mother-recovery-02/README.md) | Native-runner reuse verified on one authored project shape with two variants; raw lower costs have unequal coverage and fixture defects; external-project utility and broad efficiency unproven |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |

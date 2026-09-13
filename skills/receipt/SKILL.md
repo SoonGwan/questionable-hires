@@ -15,7 +15,13 @@ For an already-present fix requiring historical comparison, use the [isolated co
 
 A required suite executing the unchanged regression with matching inputs/runtime supplies the after evidence: don't also run it separately. Skipped, undiscovered or differently configured tests don't qualify. Retain distinct required coverage. Reuse results only while their relevant inputs remain unchanged.
 
-Batch final checks when no intermediate result affects the next action. With `&&`, failure leaves later checks unrun; if all must run, retain each exit explicitly. A semicolon chain's final status doesn't establish earlier outcomes. Don't rerun merely to recover a discarded status.
+After edits, collect independent final checks in one shell call. Adapt this fail-fast example to the actual runner and touched files:
+
+```sh
+python3 -B -m unittest -v && git diff --check -- app.py test_app.py && git diff -- app.py test_app.py
+```
+
+With `&&`, failure leaves later checks unrun; if all must run, retain each exit explicitly. A semicolon chain's final status doesn't establish earlier outcomes. Review new/untracked files separately: `git diff` omits them. Don't rerun checks merely to recover discarded statuses.
 
 Dependency/compiler failures aren't defect reproduction; mocks don't prove unobserved effects. Preserve user changes and scope; verification alone authorizes neither implementation nor publication.
 
