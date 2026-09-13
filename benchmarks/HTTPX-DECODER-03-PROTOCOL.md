@@ -19,3 +19,9 @@ current skill to current baseline using equal-case mean ratios, including cached
 input once plus output. Historical runs are not paired causal estimates. A
 lower cost with weaker evidence is not an accepted win. Shared host/cache and
 skill-first scheduling remain confounders. Do not update featured charts.
+
+## Completed review
+
+[All four sessions](results/httpx-decoder-03/README.md): native probe files used
+without repair in UTF-8; aggregate +16.5% tokens / −30.4% time. Required core
+outcomes are present, but additional work differs and broad efficiency is unmet.
