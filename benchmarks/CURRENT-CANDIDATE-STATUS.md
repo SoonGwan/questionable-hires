@@ -10,6 +10,13 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Friday input-budget correction](FRIDAY-INPUT-BUDGET-01.md): rejects known
+  combined overflow before opening another file and bounds each read against
+  post-stat growth. A 100-selection oversized recipe reads twice instead of
+  100 times; the same behavior test fails against the previous implementation.
+  Exact-limit SQL and CRLF execution pass; 310 local tests pass. This is author
+  input-preparation evidence, not model-token or whole-task performance evidence.
+
 - Receipt CLI usability candidate: `compare.py --help` now includes a complete
   stdin JSON recipe, field meanings, option defaults/limits and the distinction
   between collected observations and proof. A subprocess test extracts the
@@ -176,13 +183,13 @@ The optional helpers are not mandatory for every task.
 | Skill | Current entrypoint; supporting resources | Most relevant evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Necromancer | `51ce19e`; collector `6318b91`, reference `3157ee2` | [Scoped discovery](NECROMANCER-DISCOVERY-01.md), [adverse packaging transfer](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md) | Configured consumer preserved with near-identical cost; favorable packaging discovery pair has unequal work and capture limits; earlier transfer adverse; broad savings unproven |
-| Receipt | `abb4b93`; fixed-directory helper/reference `0d5c81c` | [Directory candidate](RECEIPT-DIRECTORIES-01.md), [two-module transfer](RECEIPT-ASSEMBLY-01.md) | New directory workflow model cost unmeasured; prior two-module +26.0% tokens / −31.1% time; broad efficiency unmet |
+| Receipt | scoped entrypoint `b7ae490`; helper help `0939e0c` | [Scope recheck](results/receipt-scope-recheck-01/README.md), [invoice transfer](results/receipt-invoice-01/README.md), [directory adoption](results/receipt-directory-model-01/README.md) | Directory adoption observed; invoice +30.08% tokens and scope failure, then one scoped recheck with no baseline; repeated discovery and broad efficiency remain unresolved |
 | Landlord | `26a310d` | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [HTTPX auth design](HTTPX-AUTH-DESIGN-01.md) | Caller search excludes installed example content but still lists resource paths; 68,509 tokens/39.233s in nonpaired regression, no causal efficiency claim; earlier comparisons adverse |
 | Mother-in-law | `b7058c6`; success-state/evidence helper | [Native project integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md), [prior recovery screen](results/mother-recovery-02/README.md) | Native-runner reuse verified on one authored project shape with two variants; raw lower costs have unequal coverage and fixture defects; external-project utility and broad efficiency unproven |
 | Exorcist | `ca2e179`; helper/reference `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [required provenance](EXORCIST-PROVENANCE-01.md) | Signal sum -3.9% tokens / -7.0% time, confounded by baseline repair and unequal work; normal path still costlier in tokens and output routing mixed |
 | Hostage Negotiator | `6c5e452` | [Real packaging repair](PACKAGING-REPAIR-01.md), [compact regression](HOSTAGE-COMPACT-01.md), [command transfer](HOSTAGE-COMMAND-01.md) | Packaging pair -11.8% tokens / -6.6% time with unequal coverage and test repairs; other tasks adverse; broad efficiency unproven |
 | Con Artist | entrypoint/indexed context `3ff951f`, limitation `a2b6258`; native probes `89d91af` | [Header transfer](results/httpx-headers-01/README.md), [qualified context](results/httpx-context-02/README.md) | Index/body readback and batch reuse observed; header tokens +35.1% / time −14.9% with unequal work; broad savings unproven |
-| Friday | `9cae27c`; helper `64dd877`, reference `ea48fde` | [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | SQL-budget fail-fast regressions verified for checks and migration chunks; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
+| Friday | entrypoint `9cae27c`; bounded-input helper/reference `fc2c205` | [Input budget](FRIDAY-INPUT-BUDGET-01.md), [Changed paths 03](CHANGED-PATHS-03.md), [interior branch](FRIDAY-BRANCH-01.md) | Input overflow rejected before wasteful reads; SQL-budget checks/migration chunks verified; rolling-schema pair favorable but branch transfer costlier; broad efficiency unproven |
 
 ## Reproducibility and release status
 
