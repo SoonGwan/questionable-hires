@@ -11,6 +11,12 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+2026-09-14 [Linux archive check](LINUX-ARCHIVE-430-01.md) at `a81692f`: **428 passed,
+two explicit provenance skips out of 430**, 60.274s. Network-disabled source
+distribution, existing dependencies, no Git/local-run state or overlays. The
+initial one-test failure is preserved; a task-ownership assumption in the test
+was corrected, with runtime skill code unchanged. No model-performance claim.
+
 2026-09-14 Con Artist runtime update `ea28d0e`: [native audit pipe completion](CON-ARTIST-PIPE-EXIT-01.md)
 fixes reproduced baseline timeouts after direct-runner exit. Weak-test survival
 with stronger-probe rejection and sensitive-test mutant rejection now complete.

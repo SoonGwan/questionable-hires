@@ -1,5 +1,17 @@
 # Release readiness — development preview
 
+## 2026-09-14: current Linux source archive
+
+Unmodified `a81692f` archive passes on Linux arm64/Python 3.12.3 with networking
+disabled: **430 discovered, 428 passed, two explicit Git-provenance skips,
+60.274s**. Catalog and localized-chart checks pass. Existing image and read-only
+PyYAML mount only; no dependency downloads, `.git`, ignored runs or code overlays.
+[Detailed evidence](../benchmarks/LINUX-ARCHIVE-430-01.md) retains the initial
+`cc7ac4d` failure and diagnosis: the retention cleanup test confused its own active
+unittest task with an owned task. Explicit task creation fixes that assumption
+without weakening cleanup assertions or changing runtime skills. Nineteen related
+macOS tests also pass. This is not hosted CI or other Python-version verification.
+
 ## 2026-09-14: Con Artist completion regression
 
 Revision `ea28d0e` passes **430 local tests in 145.613s**, macOS/Python 3.9.6,
