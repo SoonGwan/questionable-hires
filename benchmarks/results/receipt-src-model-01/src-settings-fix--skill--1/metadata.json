@@ -1,0 +1,92 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "src-settings-fix",
+  "skill": "receipt",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "1877068eeac6ccbd648ab48ad3dc6e18b2458644",
+  "skill_sha256": "0c58cc0a400609af6faa5a5cf969175ab9453209ca465e22911597a368ac25d5",
+  "skill_resources_sha256": "351011567afeb50b603024286d7ed92fe0f269a2178e9957d8c92fc61f760ebe",
+  "elapsed_seconds": 39.899,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 75278,
+    "cached_input_tokens": 64384,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 938,
+    "reasoning_output_tokens": 43
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Use $receipt at .agents/skills/receipt/SKILL.md.\n\nVerify the already-present uncommitted fix in src/settings/parser.py against HEAD. Execute the same current checks.test_parser suite and sample files on HEAD implementation and the current working implementation in separate project-local copies. Confirm implementation imports resolve inside each comparison copy. Establish actual defect-specific before failures and after passes, including all five existing test methods; identify the before commit and current implementation content. Preserve every original file, including current tests and unrelated notes.txt changes; do not commit, stash, reset or implement anything. Follow requirements.md and project instructions. Report observed results and limits, not just exit codes. Remove owned comparison copies after checks; do not retain an extra harness or report file.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "receipt/SKILL.md": {
+      "kind": "file",
+      "sha256": "0c58cc0a400609af6faa5a5cf969175ab9453209ca465e22911597a368ac25d5",
+      "mode": 420
+    },
+    "receipt/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+      "mode": 420
+    },
+    "receipt/references/existing-fix.md": {
+      "kind": "file",
+      "sha256": "aec45a047075476d53330d439b7db6e2e80e590480f742c58dc7b5e3ab5684df",
+      "mode": 420
+    },
+    "receipt/scripts/compare.py": {
+      "kind": "file",
+      "sha256": "f0bbfe54ffacaa8b96ce97ea8ebc4b55461e87fe2dd1fbe84e76b5f7ce264012",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "receipt/SKILL.md": {
+      "kind": "file",
+      "sha256": "0c58cc0a400609af6faa5a5cf969175ab9453209ca465e22911597a368ac25d5",
+      "mode": 420
+    },
+    "receipt/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+      "mode": 420
+    },
+    "receipt/references/existing-fix.md": {
+      "kind": "file",
+      "sha256": "aec45a047075476d53330d439b7db6e2e80e590480f742c58dc7b5e3ab5684df",
+      "mode": 420
+    },
+    "receipt/scripts/compare.py": {
+      "kind": "file",
+      "sha256": "f0bbfe54ffacaa8b96ce97ea8ebc4b55461e87fe2dd1fbe84e76b5f7ce264012",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "initial_tree": "04ab2d1cf8a5d2cede22ace3fe5b266973d3926b",
+  "initial_working_files": {
+    "src/settings/parser.py": "5351ff27199aca2c61d7431b184fa34ff87e52bb563dd903c997dfec58674513",
+    "notes.txt": "838b7d84cc95cb97da839ca922b44347bc48f3e1d6613966fdb1eb6fa25989b2",
+    "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "checks/samples/values.json": "9bdcad02d4ba63a92043d75bcc2e479929eff1c736d3d38c6d7aad10a2605213",
+    "checks/support.py": "d58a28c975e8fbf03466132078fb02be1fe708ec876d4d2e548f9a5451080a40",
+    "checks/test_parser.py": "a4c341948e6309e24e2d9ef8f0beaad439c70a196044b63a25064742feac41da"
+  }
+}
