@@ -10,6 +10,15 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Receipt CLI usability candidate: `compare.py --help` now includes a complete
+  stdin JSON recipe, field meanings, option defaults/limits and the distinction
+  between collected observations and proof. A subprocess test extracts the
+  printed recipe and executes it against real Git history: the current assertion
+  fails before and passes after, originals remain unchanged, and copies are
+  cleaned. This addresses the previously uninformative help lookup, not its
+  frequency: help output is larger, the normal skill entrypoint is unchanged,
+  and whole-task cost/adoption effects are unmeasured. No benchmark score change.
+
 - [Receipt scope recheck](results/receipt-scope-recheck-01/README.md): `b7ae490`
   keeps supplied instructions and further discovery inside authorized roots.
   One skill-only session stays project-local and retains both failures, both

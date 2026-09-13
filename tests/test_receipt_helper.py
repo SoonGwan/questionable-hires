@@ -17,6 +17,27 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_help_recipe_runs_without_reading_source_or_creating_spec_file(self):
+        help_result = subprocess.run([sys.executable, '-I', '-B', str(SCRIPT), '--help'],
+                                     cwd=self.root, capture_output=True, text=True, timeout=5)
+        self.assertEqual(help_result.returncode, 0, help_result.stderr)
+        recipes = [json.loads(line) for line in help_result.stdout.splitlines()
+                   if line.startswith('{')]
+        self.assertEqual(len(recipes), 1)
+        originals = {name: (self.root / name).read_bytes()
+                     for name in recipes[0]['fixed'] + recipes[0]['vary']}
+        observed = subprocess.run(
+            [sys.executable, '-I', '-B', str(SCRIPT), '--source', str(self.root), '--spec', '-'],
+            cwd=self.root, input=json.dumps(recipes[0]), capture_output=True,
+            text=True, timeout=20)
+        self.assertEqual(observed.returncode, 0, observed.stderr)
+        result = json.loads(observed.stdout)
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError: False is not true', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertEqual(originals, {name: (self.root / name).read_bytes() for name in originals})
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
     def test_fixed_directory_carries_current_test_support_to_both_revisions(self):
         tests = self.root / 'checks'
         (tests / 'samples').mkdir(parents=True)

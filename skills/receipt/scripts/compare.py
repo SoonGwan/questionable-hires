@@ -256,11 +256,28 @@ def compare(root, recipe, python=sys.executable, timeout=30):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog='''Recipe example (adapt paths, revisions and tests to the project):
+{"fixed":["test_rule.py"],"vary":["rule.py"],"before":"HEAD^","after":"HEAD","imports":["rule"],"runner":"unittest","tests":["-v","test_rule"]}
+
+fixed: current tests/data/config/dependencies; files or explicit directories.
+vary: committed implementation files. Paths are project-relative and disjoint.
+imports: modules that must load inside each copy. runner: unittest or pytest.
+Use --spec - to send JSON on stdin; no recipe file is required.
+Directory inputs include hidden files; select only needed, authorized support.
+No root, symlink, Git-internal, empty-directory or overlapping selections.
+Limits: Python 3.9+/POSIX, 20 MB snapshot, 10000 entries, 12000 output characters.
+Exit 0 means observations collected, not a verified fix: inspect each check's
+assertion output, exit_code, timed_out, output_truncated and import provenance.
+Exit 2 means comparison not established. Copies are cleaned; selected originals
+are checked, not restored. No sandbox or complete side-effect containment.
+''')
     parser.add_argument('--spec', required=True, help='JSON file or - for stdin')
-    parser.add_argument('--source', default='.')
-    parser.add_argument('--python', default=sys.executable)
-    parser.add_argument('--timeout', type=float, default=30)
+    parser.add_argument('--source', default='.', help='Git project root (default: current directory)')
+    parser.add_argument('--python', default=sys.executable, help='Check interpreter (default: this Python)')
+    parser.add_argument('--timeout', type=float, default=30,
+                        help='Seconds per check, >0 and <=300 (default: 30); cleanup may wait 5 more')
     args = parser.parse_args()
     try:
         if args.spec == '-':
