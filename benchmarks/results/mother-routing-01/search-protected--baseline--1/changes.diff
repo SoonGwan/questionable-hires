@@ -1,0 +1,109 @@
+diff --git a/test_search_overlap.py b/test_search_overlap.py
+new file mode 100644
+index 0000000..b09d2da
+--- /dev/null
++++ b/test_search_overlap.py
+@@ -0,0 +1,103 @@
++"""Local regression QA: python3 -B -m unittest -v test_search_overlap.
++
++Uses the real Search and manually resolved fetch futures; no network or sleeps.
++Waits are bounded by task completion or fetch-entry events, not elapsed delays.
++"""
++
++import asyncio
++import unittest
++
++from search import Search
++
++
++class SearchOverlapTests(unittest.IsolatedAsyncioTestCase):
++    TIMEOUT = 1.0
++
++    async def asyncSetUp(self):
++        self.search = Search()
++        self.owned_tasks = []
++        self.futures = {}
++
++    async def asyncTearDown(self):
++        # Only tasks created by this test are cancelled and joined, even if an
++        # assertion or bounded wait fails. Retrieve all task exceptions too.
++        for task in self.owned_tasks:
++            if not task.done():
++                task.cancel()
++        if self.owned_tasks:
++            await asyncio.wait_for(
++                asyncio.gather(*self.owned_tasks, return_exceptions=True),
++                timeout=self.TIMEOUT,
++            )
++        for future in self.futures.values():
++            if not future.done():
++                future.cancel()
++
++    async def start_request(self, query):
++        future = asyncio.get_running_loop().create_future()
++        entered_fetch = asyncio.Event()
++        self.futures[query] = future
++
++        async def fetch(actual_query):
++            self.assertEqual(actual_query, query)
++            entered_fetch.set()
++            return await future
++
++        task = asyncio.create_task(self.search.run(query, fetch), name=query)
++        self.owned_tasks.append(task)
++        await asyncio.wait_for(entered_fetch.wait(), timeout=self.TIMEOUT)
++        self.assertFalse(task.done())
++        self.assertFalse(future.done())
++        return task
++
++    async def complete_request(self, query, task, value):
++        self.futures[query].set_result(value)
++        await asyncio.wait_for(asyncio.shield(task), timeout=self.TIMEOUT)
++        self.assertTrue(task.done())
++
++    async def check_order(self, *, older_first, existing):
++        baseline = None
++        if existing:
++            baseline = "existing displayed result"
++            seed = await self.start_request("seed")
++            await self.complete_request("seed", seed, baseline)
++            self.assertEqual(self.search.result, baseline)
++
++        older = await self.start_request("older")
++        self.assertEqual(self.search.result, baseline)
++        newer = await self.start_request("newer")
++        self.assertEqual(self.search.result, baseline)
++        self.assertFalse(older.done())
++        self.assertFalse(newer.done())
++
++        if older_first:
++            await self.complete_request("older", older, "older result")
++            # Older has fully returned; newer is still blocked on its future.
++            self.assertFalse(newer.done())
++            self.assertFalse(self.futures["newer"].done())
++            self.assertEqual(self.search.result, baseline)
++            await self.complete_request("newer", newer, "newer result")
++        else:
++            await self.complete_request("newer", newer, "newer result")
++            self.assertFalse(older.done())
++            self.assertFalse(self.futures["older"].done())
++            self.assertEqual(self.search.result, "newer result")
++            await self.complete_request("older", older, "older result")
++
++        self.assertEqual(self.search.result, "newer result")
++
++    async def test_older_completes_while_newer_pending_initially_empty(self):
++        await self.check_order(older_first=True, existing=False)
++
++    async def test_newer_completes_before_older_initially_empty(self):
++        await self.check_order(older_first=False, existing=False)
++
++    async def test_existing_result_retained_older_completes_first(self):
++        await self.check_order(older_first=True, existing=True)
++
++    async def test_existing_result_retained_newer_completes_first(self):
++        await self.check_order(older_first=False, existing=True)
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)
