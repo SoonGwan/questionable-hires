@@ -264,3 +264,39 @@ Pair: baseline 80,174 tokens / 32.044s versus Receipt 84,469 / 33.408s:
 diff match; discovery and final-shell details differ. No resource improvement in
 this pair. Keep its cost and the broader goal open rather than promoting only the
 favorable diagnosis result.
+
+## Pending form — baseline implementation, native result unverified
+
+Three shell calls, **66,388 tokens / 70.532 seconds**. The scoped implementation
+adds per-instance pending, returns early for a duplicate and clears state in
+finally while preserving the awaited value/exception. Only form.py and new
+test_form.py change; requirements remain. Six retained async tests cover initial/
+pending state, return identity, duplicate suppression, independent instances,
+failure/retry, synchronous callback failure and cancellation cleanup. The test
+source uses bounded outer waits and finally/teardown-owned-task cleanup.
+
+**Capture gap:** the final shell runs unittest, diff checks and status separated
+by semicolons. Its recorded aggregated output contains only modified/untracked
+file status, no native test names, summary or assertions. Overall command success
+therefore cannot establish unittest success. Retained source and final prose are
+not execution evidence. Mark the native verification outcome unconfirmed pending
+separate author replay after timing; such replay cannot retroactively fill the
+model capture. Capture diagnostics have no flags, demonstrating their limitation.
+Do not exclude this cell or infer a complete task success from implementation alone.
+
+## Current fallback history — Necromancer reviewed
+
+Three shell calls, **68,604 tokens / 28.326 seconds**. Searches actual callers,
+reads labels.py/consumer.py, obtains scoped blame and non-shallow status, then
+inspects the relevant commit's before/after patch. The patch introduces both
+fallback behavior and the current name-only consumer. Native in-memory probing
+prints actual partner_label() as Ada, then None after replacing that consumer's
+binding with a no-fallback function. No original file is changed; only transient
+process state is substituted.
+
+The answer separates the commit's migration rationale from current executable
+necessity; the support-date comment is supporting context, not the sole proof.
+It recommends preserving behavior while leaving equivalent replacement possible.
+No optional collector/reference or unnecessary history sweep is used. All native
+output and attribution needed for that narrow conclusion are visible, with no
+capture flags. Matching baseline and whole-run conclusions remain pending.
