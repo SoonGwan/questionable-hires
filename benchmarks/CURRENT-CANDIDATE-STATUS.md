@@ -10,6 +10,16 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- Con Artist unittest execution guard: empty and entirely skipped correct suites,
+  plus empty native correct probes, previously returned `observed` and allowed
+  the audit to continue. Real execution regressions now show `incomplete`, check
+  exit 5 and no later mutation/probe checks after an empty baseline. Native
+  correct-probe failure also stops before its mutant probe. Existing inline
+  assertion probes and actual survivor/killed-fault behavior remain covered.
+  This is scoped to normally completed unittest runs, not a guarantee about
+  pytest, early exits or requested-assertion identity. No model efficiency claim
+  or frozen benchmark score changes.
+
 - Receipt unittest no-execution guard: real historical comparison tests show
   empty and entirely skipped unittest suites previously returning check exit 0.
   On normal runner completion they now emit a no-execution explanation and exit

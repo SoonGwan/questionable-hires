@@ -31,6 +31,15 @@ if spec['probe'] is not None:
     exec(compile(spec['probe'], '<audit-probe>', 'exec'), {'__name__': '__main__'})
 else:
     sys.argv = [spec['runner']] + spec['tests']
+    if spec['runner'] == 'unittest':
+        import unittest
+        result = unittest.main(module=None, exit=False).result
+        if not result.wasSuccessful():
+            raise SystemExit(1)
+        if result.testsRun == len(result.skipped):
+            print('No non-skipped unittest tests ran; this is not passing audit evidence.', flush=True)
+            raise SystemExit(5)
+        raise SystemExit(0)
     runpy.run_module(spec['runner'], run_name='__main__', alter_sys=True)
 '''
 

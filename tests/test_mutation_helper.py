@@ -16,6 +16,30 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_empty_or_skipped_baseline_stops_before_mutation_and_probe(self):
+        for source in ('import unittest\n',
+                       'import unittest\n@unittest.skip("optional")\n'
+                       'class Tests(unittest.TestCase):\n'
+                       '    def test_optional(self):\n        self.fail("not run")\n'):
+            with self.subTest(source=source):
+                (self.root / 'test_service.py').write_text(source)
+                with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+                    result = self.run_audit()
+                self.assertEqual(result['status'], 'incomplete')
+                self.assertEqual(execute.call_count, 1)
+                self.assertEqual(set(result['checks']), {'correct_tests'})
+                check = result['checks']['correct_tests']
+                self.assertEqual(check['exit_code'], 5)
+                self.assertIn('No non-skipped unittest tests ran', check['output'])
+
+    def test_empty_native_probe_cannot_supply_a_reusable_correct_observation(self):
+        recipe = self.file_recipe()
+        recipe['probe_files'] = {'test_probe.py': 'import unittest\n'}
+        result = self.run_audit(recipe)
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(result['checks']['correct_probe']['exit_code'], 5)
+        self.assertNotIn('mutant_probe', result['checks'])
+
     def file_recipe(self):
         recipe = {k: v for k, v in self.recipe.items() if k != 'probe'}
         recipe.update(probe_files={'test_probe.py': (
