@@ -60,3 +60,33 @@ failure-preserving conjunctions. Two-file patch is retained and base revision
 cited. No observed scope deviation or capture gap. Resource/raw reconciliation
 follows timing. This cell does not measure adoption or benefit of Receipt's new
 inherited-pipe cleanup because the helper was not executed.
+
+## Search diagnosis — skill
+
+Completed: **72,244 tokens / 58.001 seconds**, five shell calls. Adds only
+experiments/search_order_probe.py. Actual Search and transport are imported;
+only the request boundary is replaced with controlled local gates and recorded
+headers. Both normal/reversed overlap execute with two-second signal/task bounds
+and owned-task cancellation/draining. Captured JSON includes request headers,
+completion/state traces and final stale flags; source assertions verify the trace.
+
+No cache is used in the reproduction; final report correctly distinguishes that
+from untested production cache behavior. This diagnostic asserts current faulty
+completion-order behavior; it is not a valid-fix acceptance regression. No helper
+invocation, so the new Exorcist process cleanup is not measured here. Discovery
+unnecessarily lists Git internals but stays within the project. Final diff/status
+preserves production; no observed capture gap or scope violation. Raw/resource
+reconciliation remains pending until timing ends.
+
+## Formatter design — baseline
+
+Completed: **62,887 tokens / 21.392 seconds**, three shell calls. Reads actual
+formatter, sole invoice consumer and explicit USD-only/no-plugin contract.
+Recommends a direct function preserving the existing formatting expression,
+including prefix, conversion, precision and negative/rounding behavior. Source
+locations match native numbered output. It explicitly reports no tests run,
+appropriate to this source-review task, and does not implement the recommendation.
+
+Initial status is clean, no writing command appears. No final native status check;
+author source/inventory reconciliation is still required. No observed capture or
+scope issue. Repeated file discovery and keyword search are retained as extra work.
