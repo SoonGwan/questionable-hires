@@ -72,6 +72,76 @@ Frozen installed resource hashes match current bytes and before/after inventorie
 No malformed/empty-output/rejected-patch flags appear; decisive assertions and
 final changes were inspected, not inferred from the completion flag.
 
+## Search diagnosis — Exorcist reviewed
+
+Four shell calls, **71,776 tokens / 58.403 seconds**. Reads actual Search and
+transport, then adds only `experiments/search_completion_probe.py`. The probe
+imports those real modules, replacing only the request dependency with controlled
+events. Captured JSON includes actual request URL/params/no-cache headers,
+submission/completion order, intermediate stored values and final outcomes.
+Normal completion leaves newer output; reversal leaves earlier output. Assertions
+check exact requests, each stored query and the expected `[False, True] stale
+classification. This is demonstrated local behavior, not proof for every incident.
+
+Signals, task completions and cancellation/gather cleanup have two-second bounds
+on cooperative local operations. No optional process helper/reference is loaded;
+no independent hard process deadline beyond the outer model cell is claimed.
+Detailed evidence is printed once, not duplicated into a separate trace file.
+Production source/transport bytes match the fixture; only the rerunnable probe
+is retained. Final answer explains why no-cache headers do not order assignments
+and names missing production correlation evidence. No false deployment assertion.
+
+## Formatter review — baseline reviewed
+
+Four shell calls, **78,974 tokens / 29.218 seconds**. Inspects all three project
+files with line numbers and searches concrete registry/formatter consumers. The
+answer identifies the fixed USD-only requirement and invoice caller, recommends
+a plain function preserving the exact formatting expression and caller interface,
+and explains costs of registration/mutable dictionary/string lookup. It does not
+generalize that every single-consumer abstraction is unjustified. No files change;
+the answer explicitly says no tests ran rather than inventing runtime evidence.
+
+Both cells above preserve every original project file byte-for-byte. Baseline
+has no installed skills; Exorcist before/after inventories agree and file hashes
+match frozen/current resources. Neither reports capture/rejected-patch flags;
+decisive output and final artifacts were inspected directly. No author execution
+is substituted for the model observations. Counterpart comparisons remain pending.
+
+## Persistence audit — Con Artist and first reviewed pair
+
+Six shell calls, **145,730 tokens / 67.070 seconds**. Context collector reads both
+actual small source/test files with project-local instruction discovery. Before
+execution the model loads entry plus two references, searches audit implementation
+and reads substantial helper source. Those two source-inspection outputs contain
+5,005 and 12,576 characters; loaded entry/reference output contains 13,448.
+These are observed context costs, not isolated causal token attribution.
+
+The model uses the audit helper with the missing-append mutation and conditional
+stronger probe. A temporary project-local binding module checks the actual test
+function's global save identity and copied implementation filename, and a profile
+callback records actual invocation. Four helper children capture existing-test
+pass/pass and exact stored-record assertion pass/fail, preserving an existing
+record. Expected/actual values and the intended mutant AssertionError are visible.
+Each phase reports no timeout/truncation; outer helper exit is zero observations,
+not the sole basis for the coverage finding. The wrapper removes its binding
+file, checks non-Git original bytes/modes (including installed resources), and
+asserts owned-copy removal. No original project files change; final diff is empty.
+Installed resources match frozen/current bytes and unchanged inventories.
+
+Against the reviewed baseline, this pair records **+70.42% tokens / −7.18% time**.
+Both demonstrate the required core mutation and stronger-assertion outcomes with
+actual binding evidence. Baseline additionally reruns the original native test
+and traces return-state data; skill uses four bounded helper phases, binding/profile
+support and larger instruction/source loading. These differences, shared host,
+order and n=1 prevent causal savings claims. The token increase is an adverse
+efficiency dimension, not erased by somewhat lower time or helper adoption.
+No candidate change or additional run follows during the frozen measurement.
+
+The implementation reads expose a practical future target: make required caller
+binding verification accessible without rebuilding support or reading helper
+internals. This is a hypothesis to inspect after the run, not authority to remove
+binding checks or suppress justified source inspection.
+
 ## Remaining work
 
 Continue the existing live run and review every other cell before paired cost
