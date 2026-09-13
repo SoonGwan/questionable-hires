@@ -57,6 +57,12 @@ JSON
   interpreter (default: launching Python; override `--python` if needed), unittest
   or already-installed pytest. Child temp defaults are inside each copy: do not
   redirect global TMPDIR merely to localize checks or other launchers may pollute it.
+- Optional `"import_roots":["src"]` supports regular source-layout packages.
+  Select needed package initializers/support in `fixed` and implementations in
+  `vary`; each root must contain selected files. Ordered canonical directories
+  are prepended inside each copy before its root and reported in the result.
+  No inherited `PYTHONPATH`, editable install, build hook or installed metadata
+  is supplied. Use the native project setup when those are required.
 
 ## Read the evidence, not just the exit code
 

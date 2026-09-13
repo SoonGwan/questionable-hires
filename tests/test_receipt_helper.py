@@ -19,6 +19,73 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def src_recipe(self):
+        package = self.root / 'src/sample'
+        package.mkdir(parents=True)
+        (package / '__init__.py').write_text('from .rule import eligible\n')
+        target = package / 'rule.py'
+        target.write_text('def eligible(n): return n > 18\n')
+        before = self.commit()
+        target.write_text('def eligible(n): return n >= 18\n')
+        after = self.commit()
+        (self.root / 'test_rule.py').write_text(
+            'import unittest\nfrom sample import eligible\n'
+            'class Check(unittest.TestCase):\n'
+            '    def test_boundary(self):\n'
+            '        self.assertTrue(eligible(18))\n')
+        return dict(self.recipe, before=before, after=after,
+                    fixed=['test_rule.py', 'src/sample/__init__.py'],
+                    vary=['src/sample/rule.py'], imports=['sample', 'sample.rule'],
+                    import_roots=['src'])
+
+    def test_src_layout_runs_same_assertion_without_installing_package(self):
+        recipe = self.src_recipe()
+        result = helper.compare(self.root, recipe)
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual(result['import_roots'], ['src'])
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertIn('AssertionError: False is not true', result['checks']['before']['output'])
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        for check in result['checks'].values():
+            self.assertIn('Verified copied import: sample.rule', check['output'])
+            self.assertIn('Ran 1 test', check['output'])
+        self.assertTrue(result['originals']['unchanged'])
+        self.assertTrue(result['comparison_copies_removed'])
+
+    def test_invalid_import_roots_reject_before_execution(self):
+        recipe = self.src_recipe()
+        (self.root / 'empty').mkdir()
+        (self.root / 'linked').symlink_to(self.root / 'src', target_is_directory=True)
+        for roots in ('src', [None], ['.'], ['../src'], ['/tmp'], ['src/'],
+                      ['src', 'src'], ['missing'], ['empty'], ['test_rule.py'], ['linked']):
+            with self.subTest(roots=roots), patch.object(helper, 'run_check') as execute:
+                with self.assertRaises(ValueError):
+                    helper.compare(self.root, dict(recipe, import_roots=roots))
+                execute.assert_not_called()
+                self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_import_root_order_is_effective_in_cli_and_report(self):
+        recipe = self.src_recipe()
+        alternate = self.root / 'alternate/sample'
+        alternate.mkdir(parents=True)
+        (alternate / '__init__.py').write_text('from .rule import eligible\n')
+        (alternate / 'rule.py').write_text('def eligible(n): return True\n')
+        recipe['fixed'] += ['alternate']
+        for roots, expected_before in [(['src', 'alternate'], 1), (['alternate', 'src'], 0)]:
+            with self.subTest(roots=roots):
+                process = subprocess.run(
+                    [sys.executable, '-I', '-B', str(SCRIPT), '--source', str(self.root), '--spec', '-'],
+                    input=json.dumps(dict(recipe, import_roots=roots)),
+                    capture_output=True, text=True, timeout=10)
+                self.assertEqual(process.returncode, 0, process.stderr)
+                result = json.loads(process.stdout)
+                self.assertEqual(result['import_roots'], roots)
+                self.assertEqual(result['checks']['before']['exit_code'], expected_before)
+                self.assertEqual(result['checks']['after']['exit_code'], 0)
+                self.assertIn('Ran 1 test', result['checks']['before']['output'])
+                self.assertTrue(result['originals']['unchanged'])
+                self.assertTrue(result['comparison_copies_removed'])
+
     def test_cli_after_import_exit_cannot_claim_fixed_regression(self):
         (self.root / 'rule.py').write_text('raise SystemExit(0)\n')
         recipe = dict(self.recipe, after={'working_tree': True})

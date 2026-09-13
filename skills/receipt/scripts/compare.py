@@ -23,7 +23,7 @@ MAX_FIXED_ENTRIES = 10_000
 BOOTSTRAP = '''import importlib, json, pathlib, runpy, sys, traceback
 recipe = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
-sys.path.insert(0, str(root))
+sys.path[:0] = [str(root / name) for name in recipe.get('import_roots', [])] + [str(root)]
 try:
     for name in recipe['imports']:
         module = importlib.import_module(name)
@@ -164,7 +164,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     if os.name != 'posix' or not 0 < timeout <= 300:
         raise ValueError('Requires POSIX and a timeout in (0, 300]')
     required = {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}
-    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch'}:
+    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots'}:
         raise ValueError('Recipe requires fixed, vary, before, after, imports, runner and tests')
     if 'watch' in recipe and (not isinstance(recipe['watch'], list)
                             or not all(isinstance(v, str) and v for v in recipe['watch'])):
@@ -179,6 +179,18 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     names = recipe['fixed'] + recipe['vary']
     if len(set(names + watched)) != len(names + watched):
         raise ValueError('fixed, vary and watch must be unique and disjoint')
+    import_roots = recipe.get('import_roots', [])
+    if not isinstance(import_roots, list) or not all(isinstance(name, str) for name in import_roots):
+        raise ValueError('import_roots must be a list of selected project-relative directories')
+    roots = []
+    for name in import_roots:
+        relative = checked_path(name)
+        if (relative in roots or not (root / relative).is_dir()
+                or any(p.is_symlink() for p in [root / relative, *(root / relative).parents]
+                       if root in p.parents)
+                or not any(relative in Path(selected).parents for selected in names)):
+            raise ValueError('Import root must be a distinct directory containing selected files: ' + name)
+        roots.append(relative)
     if Path(git(root, 'rev-parse', '--show-toplevel').decode().strip()).resolve() != root:
         raise ValueError('source must be the repository root')
     originals, modes = {}, {}
@@ -258,7 +270,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
             files[name] = blobs[oid]
             variant_modes[name] = 0o755 if mode == b'100755' else 0o644
         variants[label] = (files, variant_modes)
-    result = dict(status='observed', revisions=revisions, checks={},
+    result = dict(status='observed', revisions=revisions, checks={}, import_roots=list(import_roots),
                   fixed_sha256={name: hashlib.sha256(originals[name]).hexdigest() for name in recipe['fixed']},
                   limitation='Inspect assertion failures and import provenance; exit codes alone do not prove the fix.')
     if revisions['after'] is None:
@@ -305,6 +317,8 @@ watch (optional): originals to check but not copy or execute; files/directories.
 before: commit expression. after: commit expression or {"working_tree":true}.
 Working-tree after freezes current bytes/modes once, not the index or a commit.
 imports: modules that must load inside each copy. runner: unittest or pytest.
+import_roots (optional): ordered selected directories, e.g. ["src"], prepended
+inside each copy before its root. No package installation or inherited PYTHONPATH.
 Use --spec - to send JSON on stdin; no recipe file is required.
 Directory inputs include hidden files; select only needed, authorized support.
 No root, symlink, Git-internal, empty-directory or overlapping selections.
