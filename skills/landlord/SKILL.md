@@ -9,7 +9,7 @@ description: Review proposed abstractions, dependencies, and configuration for c
 
 ## Inspect the lease
 
-Start with supplied paths and contracts. For unknown locations, discover filenames first; for known files, read relevant definitions and consumer context rather than dumping every keyword match before reading them again. Batch independent reads with line numbers and reuse inspected context. Search unresolved consumers in relevant source, tests and configuration, expanding when needed; narrow results cannot prove absence. Installed skills and copied examples are not consumers without a supported usage/binding. Stay within project scope.
+Start with supplied paths and contracts. If locations are missing, discover applicable instructions and relevant filenames together. Batch known definitions, consumer context and contracts with line numbers; search for unresolved bindings, not another copy of already-read source. Expand across relevant source, tests and configuration when consumer coverage is incomplete: a narrow inventory cannot prove absence. Installed skills and copied examples need a supported usage/binding to count as consumers. Stay within project scope.
 
 Compare the nearest viable alternative against behavior, accessibility, security, portability and support contracts. Stop surveying once decision-changing differences settle the choice.
 

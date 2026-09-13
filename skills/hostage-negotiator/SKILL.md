@@ -9,9 +9,9 @@ description: Keep a small requested change focused when optional refactors, arch
 
 ## Establish the terms
 
-Reuse supplied instructions and known project paths. Locate missing requirements, affected code and tests within the allowed root; once an inventory reveals a needed file, read it directly instead of trying more filename-pattern inventories. Batch known independent reads. Let their contents determine the runner and any unresolved dependency search, not guessed frameworks.
+Reuse supplied paths and instructions. When locations are missing, discover applicable project instructions, affected code, contracts and tests together within the allowed root. Then batch the known relevant reads and working-tree status; do not repeat inventory or keyword searches for files already located. Search again for a specific unresolved dependency or instruction boundary. Choose the runner from the project, not a guessed framework.
 
-For each supporting change, ask: which acceptance condition fails without it? A small visible change can require state, errors or security work; minimal diff size is not the objective. Separate optional refactors without creating a scope document for an ordinary edit. Ask only for a missing material product decision; adapt when the user changes the request.
+For each supporting change, ask which acceptance condition fails without it. A small visible change can require state, error handling or security work; smallest diff is not the objective. Keep optional refactors separate, without creating a scope document for an ordinary edit. Ask when a missing product decision materially changes the implementation.
 
 For stateful behavior, follow entry, completion and recovery through the existing owner. Preserve return values, errors and cleanup, including cancellation. Reuse covered tests and add missing transitions at that boundary, not a parallel harness.
 
@@ -19,6 +19,6 @@ Async regression checks must terminate even when the guarded behavior is broken:
 
 ## Deliver and stop
 
-Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse established verification. Deliver the change, decisive evidence and consequential limitations; distinguish observation from inference. Stop when requested behavior and required checks are satisfied, without opportunistic cleanup.
+Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse established verification; repeat when requested or when changed state, nondeterminism or a remaining uncertainty warrants it. Report decisive observations and consequential limitations, separating inference. Stop when requested behavior and required checks are satisfied, without opportunistic cleanup.
 
 Preserve user changes and explicit requirements. Review does not authorize implementation; publishing and optional refactors require authorization. Keep humor optional.
