@@ -1,0 +1,34 @@
+test_duplicate_last_wins (checks.test_parser.ParserTests) ... ok
+test_empty_value (checks.test_parser.ParserTests) ... ok
+test_query_value (checks.test_parser.ParserTests) ... FAIL
+test_token_padding (checks.test_parser.ParserTests) ... FAIL
+test_whitespace_and_comments (checks.test_parser.ParserTests) ... ok
+
+======================================================================
+FAIL: test_query_value (checks.test_parser.ParserTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/parser-verification-s7pa6g2d/head/checks/test_parser.py", line 10, in test_query_value
+    self.assertEqual(parse(sample("query")), {"URL": "https://example.invalid/a?x=1&y=2"})
+AssertionError: {'URL': 'https://example.invalid/a?x'} != {'URL': 'https://example.invalid/a?x=1&y=2'}
+- {'URL': 'https://example.invalid/a?x'}
++ {'URL': 'https://example.invalid/a?x=1&y=2'}
+?                                     ++++++
+
+
+======================================================================
+FAIL: test_token_padding (checks.test_parser.ParserTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/parser-verification-s7pa6g2d/head/checks/test_parser.py", line 7, in test_token_padding
+    self.assertEqual(parse(sample("token")), {"TOKEN": "abc=="})
+AssertionError: {'TOKEN': 'abc'} != {'TOKEN': 'abc=='}
+- {'TOKEN': 'abc'}
++ {'TOKEN': 'abc=='}
+?               ++
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+FAILED (failures=2)

@@ -7,6 +7,10 @@
 - Define input, payload and failure contracts before calling a fixture clean.
   Do not count a reasonable finding under an underspecified contract as an
   agent false positive merely because the author did not intend it.
+- Before freezing, ensure every scored obligation is explicit in the model-visible
+  task or project instructions. For example, "disposable copies" alone is not an
+  explicit end-of-task deletion requirement. Disclose discovered mismatches; do
+  not silently rescore measured attempts.
 - For project-only tasks, give fixture tests explicit project-local temporary
   directories and verify actual scratch creation paths during preflight. Do not
   rely on system temp defaults or a model changing global TMPDIR/launcher settings

@@ -1,0 +1,579 @@
+diff --git a/parser-verification-s7pa6g2d/head-observations.json b/parser-verification-s7pa6g2d/head-observations.json
+new file mode 100644
+index 0000000..771e544
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/head-observations.json
+@@ -0,0 +1,70 @@
++{
++  "imports": {
++    "settings": "<WORKSPACE>/parser-verification-s7pa6g2d/head/settings/__init__.py",
++    "settings.parser": "<WORKSPACE>/parser-verification-s7pa6g2d/head/settings/parser.py",
++    "checks": "<WORKSPACE>/parser-verification-s7pa6g2d/head/checks/__init__.py",
++    "checks.support": "<WORKSPACE>/parser-verification-s7pa6g2d/head/checks/support.py",
++    "checks.test_parser": "<WORKSPACE>/parser-verification-s7pa6g2d/head/checks/test_parser.py"
++  },
++  "test_parse_is_local_parser": true,
++  "tests": [
++    "checks.test_parser.ParserTests.test_duplicate_last_wins",
++    "checks.test_parser.ParserTests.test_empty_value",
++    "checks.test_parser.ParserTests.test_query_value",
++    "checks.test_parser.ParserTests.test_token_padding",
++    "checks.test_parser.ParserTests.test_whitespace_and_comments"
++  ],
++  "samples_sha256": "9bdcad02d4ba63a92043d75bcc2e479929eff1c736d3d38c6d7aad10a2605213",
++  "samples": {
++    "token": {
++      "input": "TOKEN=abc==\n",
++      "actual": {
++        "TOKEN": "abc"
++      },
++      "expected": {
++        "TOKEN": "abc=="
++      },
++      "pass": false
++    },
++    "query": {
++      "input": "URL=https://example.invalid/a?x=1&y=2\n",
++      "actual": {
++        "URL": "https://example.invalid/a?x"
++      },
++      "expected": {
++        "URL": "https://example.invalid/a?x=1&y=2"
++      },
++      "pass": false
++    },
++    "plain": {
++      "input": " # ignored\n\nNAME = Ada\n",
++      "actual": {
++        "NAME": "Ada"
++      },
++      "expected": {
++        "NAME": "Ada"
++      },
++      "pass": true
++    },
++    "empty": {
++      "input": "EMPTY=\n",
++      "actual": {
++        "EMPTY": ""
++      },
++      "expected": {
++        "EMPTY": ""
++      },
++      "pass": true
++    },
++    "duplicate": {
++      "input": "NAME=first\nNAME=last\n",
++      "actual": {
++        "NAME": "last"
++      },
++      "expected": {
++        "NAME": "last"
++      },
++      "pass": true
++    }
++  }
++}
+diff --git a/parser-verification-s7pa6g2d/head-unittest.txt b/parser-verification-s7pa6g2d/head-unittest.txt
+new file mode 100644
+index 0000000..4c21923
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/head-unittest.txt
+@@ -0,0 +1,34 @@
++test_duplicate_last_wins (checks.test_parser.ParserTests) ... ok
++test_empty_value (checks.test_parser.ParserTests) ... ok
++test_query_value (checks.test_parser.ParserTests) ... FAIL
++test_token_padding (checks.test_parser.ParserTests) ... FAIL
++test_whitespace_and_comments (checks.test_parser.ParserTests) ... ok
++
++======================================================================
++FAIL: test_query_value (checks.test_parser.ParserTests)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/parser-verification-s7pa6g2d/head/checks/test_parser.py", line 10, in test_query_value
++    self.assertEqual(parse(sample("query")), {"URL": "https://example.invalid/a?x=1&y=2"})
++AssertionError: {'URL': 'https://example.invalid/a?x'} != {'URL': 'https://example.invalid/a?x=1&y=2'}
++- {'URL': 'https://example.invalid/a?x'}
+++ {'URL': 'https://example.invalid/a?x=1&y=2'}
++?                                     ++++++
++
++
++======================================================================
++FAIL: test_token_padding (checks.test_parser.ParserTests)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/parser-verification-s7pa6g2d/head/checks/test_parser.py", line 7, in test_token_padding
++    self.assertEqual(parse(sample("token")), {"TOKEN": "abc=="})
++AssertionError: {'TOKEN': 'abc'} != {'TOKEN': 'abc=='}
++- {'TOKEN': 'abc'}
+++ {'TOKEN': 'abc=='}
++?               ++
++
++
++----------------------------------------------------------------------
++Ran 5 tests in 0.001s
++
++FAILED (failures=2)
+diff --git a/parser-verification-s7pa6g2d/head/AGENTS.md b/parser-verification-s7pa6g2d/head/AGENTS.md
+new file mode 100644
+index 0000000..0842fb5
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/head/AGENTS.md
+@@ -0,0 +1 @@
++Work only in this project. Verify, do not edit original files, commit, stash or reverse the working patch. Use project-local disposable copies. Python standard library only; do not install anything. Run the current suite with python3 -B -m unittest -v checks.test_parser in each copy.
+diff --git a/parser-verification-s7pa6g2d/head/checks/__init__.py b/parser-verification-s7pa6g2d/head/checks/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/parser-verification-s7pa6g2d/head/checks/samples/values.json b/parser-verification-s7pa6g2d/head/checks/samples/values.json
+new file mode 100644
+index 0000000..117eac0
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/head/checks/samples/values.json
+@@ -0,0 +1 @@
++{"token": "TOKEN=abc==\n", "query": "URL=https://example.invalid/a?x=1&y=2\n", "plain": " # ignored\n\nNAME = Ada\n", "empty": "EMPTY=\n", "duplicate": "NAME=first\nNAME=last\n"}
+diff --git a/parser-verification-s7pa6g2d/head/checks/support.py b/parser-verification-s7pa6g2d/head/checks/support.py
+new file mode 100644
+index 0000000..67a7ec3
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/head/checks/support.py
+@@ -0,0 +1,5 @@
++import json
++from pathlib import Path
++
++def sample(name):
++    return json.loads((Path(__file__).parent / "samples/values.json").read_text())[name]
+diff --git a/parser-verification-s7pa6g2d/head/checks/test_parser.py b/parser-verification-s7pa6g2d/head/checks/test_parser.py
+new file mode 100644
+index 0000000..3d2454e
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/head/checks/test_parser.py
+@@ -0,0 +1,19 @@
++import unittest
++from settings.parser import parse
++from checks.support import sample
++
++class ParserTests(unittest.TestCase):
++    def test_token_padding(self):
++        self.assertEqual(parse(sample("token")), {"TOKEN": "abc=="})
++
++    def test_query_value(self):
++        self.assertEqual(parse(sample("query")), {"URL": "https://example.invalid/a?x=1&y=2"})
++
++    def test_whitespace_and_comments(self):
++        self.assertEqual(parse(sample("plain")), {"NAME": "Ada"})
++
++    def test_empty_value(self):
++        self.assertEqual(parse(sample("empty")), {"EMPTY": ""})
++
++    def test_duplicate_last_wins(self):
++        self.assertEqual(parse(sample("duplicate")), {"NAME": "last"})
+diff --git a/parser-verification-s7pa6g2d/head/notes.txt b/parser-verification-s7pa6g2d/head/notes.txt
+new file mode 100644
+index 0000000..1563bf7
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/head/notes.txt
+@@ -0,0 +1 @@
++Unrelated user draft: keep this exact text.
+diff --git a/parser-verification-s7pa6g2d/head/requirements.md b/parser-verification-s7pa6g2d/head/requirements.md
+new file mode 100644
+index 0000000..ee7dfc4
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/head/requirements.md
+@@ -0,0 +1 @@
++Settings contain KEY=VALUE lines. Split at the first equals only; later equals signs belong to the value. Strip surrounding key/value whitespace, ignore blank/comment lines, retain empty values, last duplicate key wins. Inputs have nonempty keys and an equals sign on each non-comment/nonblank line. Quoting, interpolation and malformed input policy are outside scope. Current checks and samples must be identical for both implementations. The working parser fix is not committed.
+diff --git a/parser-verification-s7pa6g2d/head/settings/__init__.py b/parser-verification-s7pa6g2d/head/settings/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/parser-verification-s7pa6g2d/head/settings/parser.py b/parser-verification-s7pa6g2d/head/settings/parser.py
+new file mode 100644
+index 0000000..e396a18
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/head/settings/parser.py
+@@ -0,0 +1,9 @@
++def parse(text):
++    values = {}
++    for line in text.splitlines():
++        line = line.strip()
++        if not line or line.startswith("#"):
++            continue
++        parts = line.split("=")
++        values[parts[0].strip()] = parts[1].strip()
++    return values
+diff --git a/parser-verification-s7pa6g2d/report.json b/parser-verification-s7pa6g2d/report.json
+new file mode 100644
+index 0000000..29d10be
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/report.json
+@@ -0,0 +1,194 @@
++{
++  "head_commit": "8eb4af505251831800639a7a647a63c72601852c",
++  "original_sha256": {
++    "requirements.md": "afd35e690abc1a60701b1a2ed819f66f17e32d3e12834f9057fdd9090ae2607a",
++    "notes.txt": "838b7d84cc95cb97da839ca922b44347bc48f3e1d6613966fdb1eb6fa25989b2",
++    "AGENTS.md": "7433836b8f405e94433684c343d97352bdb30d34489a75acc7810ddc574ae90f",
++    "settings/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++    "settings/parser.py": "5351ff27199aca2c61d7431b184fa34ff87e52bb563dd903c997dfec58674513",
++    "checks/test_parser.py": "a4c341948e6309e24e2d9ef8f0beaad439c70a196044b63a25064742feac41da",
++    "checks/support.py": "d58a28c975e8fbf03466132078fb02be1fe708ec876d4d2e548f9a5451080a40",
++    "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++    "checks/samples/values.json": "9bdcad02d4ba63a92043d75bcc2e479929eff1c736d3d38c6d7aad10a2605213",
++    ".git/config": "045bead123eef7fc07b2a08a832ea53bd6296698350da7c2fe2df5741f148ab7",
++    ".git/HEAD": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80",
++    ".git/index": "91f2d47d059ed93421ae3628dd2e5e9608328dc7768179da735f3ee15846fff6",
++    ".git/COMMIT_EDITMSG": "4d1d2c615e23bc2c41453e73a234537373ddb1683cf54fb5843747d608e835e9",
++    ".git/objects/3d/2454e0e44403b9ef799caf1a283f118b4d0482": "69f97790f09e057e47cf8a372cd47cd9905019e892f3840bbc7a98a2f6094f63",
++    ".git/objects/67/a7ec344b2f86cf097c3f3f11f449501ca2158f": "f98849cea7e287f489d81150b744132179329f92d32e37aa47c142354a52d085",
++    ".git/objects/ee/7dfc404a555535116413cfae5fa5a2c71303d3": "baa9aae26104df68a13d158b5198e5104734709570e523a9633e136706c8a250",
++    ".git/objects/f5/42b9c8c54977868c2e61fa02fd4a0d22afbfc8": "f029423002d266c3d851aa4d9d91a2630428b7237cd37b8b94cbeb315cde8e4c",
++    ".git/objects/e3/96a185b2a0ecea170741f79f95d3d8968c53e5": "ca937a679b1305039d76adbf2665c2a7c3f683b90cd9e7419633158422931556",
++    ".git/objects/27/b184ea855cdfee5da21c0d53f1618407a9327d": "971da1150aea11a1082b1d7fe0e706b6106c82b4f63f46d58098a725390c2a42",
++    ".git/objects/11/7eac0f31f4ffaa9f5968c09b1b1fdcdd5cadc8": "6d99b12fc1837320de38e28869ac9f3743f7e500e1fa4a8585a5772747dd9f7e",
++    ".git/objects/74/a5555b78c31956a2b580adaf13fc7c02b6c667": "e6f91766b505ac30e478fe9ce95461b404d40f03e76d4375f931edba9b2cb304",
++    ".git/objects/28/d735603fab4900b3e12902ef7e0187d3483437": "12928faffb9173a653efc28ff6f5d9b689b9168001cb92bad0a2f6904b63e1fb",
++    ".git/objects/08/42fb5fd771ab0bb50f77a5dd523d537acf1461": "2a413afa6ea533f1d7268d74f59631a4e54181e9ae7cb433de0a846e1529b5c5",
++    ".git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391": "164c5fa8067facf1a43f09ce3d0e35ebf53a7f5723ecbf15a8667cfc53c26f6c",
++    ".git/objects/f0/9ff62aeb17d4bc0d329c31210eb9dd09b303fa": "909a6256e89b6ec5c47834c6d2ef58eb538b786d04bf63228ea549dfb52bd023",
++    ".git/objects/ff/c0f75877d1ebb083561452f58403ddab2ecae6": "288086a3d2612dad947315649fafc78a576b1c71b4f0acda7d79637e6da7a9f8",
++    ".git/objects/4a/643485f11fe5640a94e46bfa9c6f98740b3eed": "fa0119e0ebf6bfc854619cc22dd0a1a853e02417b3530ce186d2364dbb15012b",
++    ".git/objects/15/63bf733bd561cb2d04ba51d98116bb9dd96478": "1c6ec4f525ba6c0532ca96e474359a7973db1f9ef1c064c0d7f05696b8dfecf9",
++    ".git/objects/12/d908e9a4a654802184b84bdb06086b96736b55": "5b30800038d2da046c0304bec496315c045bbbf5a3562b5e51f18c1c4e818775",
++    ".git/objects/8e/b4af505251831800639a7a647a63c72601852c": "210e1650e85fbd48bd1b6688923bb1174bfa680ab8bf61ae5138cb9a3233c2cf",
++    ".git/logs/HEAD": "a738b837acb8a1ea18194e7d014f5aa0fe4905f00eda56c5b8be5addbf373ade",
++    ".git/logs/refs/heads/main": "a738b837acb8a1ea18194e7d014f5aa0fe4905f00eda56c5b8be5addbf373ade",
++    ".git/refs/heads/main": "0b3e35a7a560e52270744a5a9bc14b5e1a2788948a0e26e47e87eaf4daed4c21"
++  },
++  "status_before": " M notes.txt\n M settings/parser.py\n?? checks/\n",
++  "implementations": {
++    "head": {
++      "parser_sha256": "eb75f6b07a3bdc85ad780f770c864e6ef2b38868c58c0440606d1f365ff03d08",
++      "parser_content": "def parse(text):\n    values = {}\n    for line in text.splitlines():\n        line = line.strip()\n        if not line or line.startswith(\"#\"):\n            continue\n        parts = line.split(\"=\")\n        values[parts[0].strip()] = parts[1].strip()\n    return values\n",
++      "suite_exit_code": 1,
++      "observations": {
++        "imports": {
++          "settings": "<WORKSPACE>/parser-verification-s7pa6g2d/head/settings/__init__.py",
++          "settings.parser": "<WORKSPACE>/parser-verification-s7pa6g2d/head/settings/parser.py",
++          "checks": "<WORKSPACE>/parser-verification-s7pa6g2d/head/checks/__init__.py",
++          "checks.support": "<WORKSPACE>/parser-verification-s7pa6g2d/head/checks/support.py",
++          "checks.test_parser": "<WORKSPACE>/parser-verification-s7pa6g2d/head/checks/test_parser.py"
++        },
++        "test_parse_is_local_parser": true,
++        "tests": [
++          "checks.test_parser.ParserTests.test_duplicate_last_wins",
++          "checks.test_parser.ParserTests.test_empty_value",
++          "checks.test_parser.ParserTests.test_query_value",
++          "checks.test_parser.ParserTests.test_token_padding",
++          "checks.test_parser.ParserTests.test_whitespace_and_comments"
++        ],
++        "samples_sha256": "9bdcad02d4ba63a92043d75bcc2e479929eff1c736d3d38c6d7aad10a2605213",
++        "samples": {
++          "token": {
++            "input": "TOKEN=abc==\n",
++            "actual": {
++              "TOKEN": "abc"
++            },
++            "expected": {
++              "TOKEN": "abc=="
++            },
++            "pass": false
++          },
++          "query": {
++            "input": "URL=https://example.invalid/a?x=1&y=2\n",
++            "actual": {
++              "URL": "https://example.invalid/a?x"
++            },
++            "expected": {
++              "URL": "https://example.invalid/a?x=1&y=2"
++            },
++            "pass": false
++          },
++          "plain": {
++            "input": " # ignored\n\nNAME = Ada\n",
++            "actual": {
++              "NAME": "Ada"
++            },
++            "expected": {
++              "NAME": "Ada"
++            },
++            "pass": true
++          },
++          "empty": {
++            "input": "EMPTY=\n",
++            "actual": {
++              "EMPTY": ""
++            },
++            "expected": {
++              "EMPTY": ""
++            },
++            "pass": true
++          },
++          "duplicate": {
++            "input": "NAME=first\nNAME=last\n",
++            "actual": {
++              "NAME": "last"
++            },
++            "expected": {
++              "NAME": "last"
++            },
++            "pass": true
++          }
++        }
++      }
++    },
++    "working": {
++      "parser_sha256": "5351ff27199aca2c61d7431b184fa34ff87e52bb563dd903c997dfec58674513",
++      "parser_content": "def parse(text):\n    values = {}\n    for line in text.splitlines():\n        line = line.strip()\n        if not line or line.startswith(\"#\"):\n            continue\n        parts = line.split(\"=\", 1)\n        values[parts[0].strip()] = parts[1].strip()\n    return values\n",
++      "suite_exit_code": 0,
++      "observations": {
++        "imports": {
++          "settings": "<WORKSPACE>/parser-verification-s7pa6g2d/working/settings/__init__.py",
++          "settings.parser": "<WORKSPACE>/parser-verification-s7pa6g2d/working/settings/parser.py",
++          "checks": "<WORKSPACE>/parser-verification-s7pa6g2d/working/checks/__init__.py",
++          "checks.support": "<WORKSPACE>/parser-verification-s7pa6g2d/working/checks/support.py",
++          "checks.test_parser": "<WORKSPACE>/parser-verification-s7pa6g2d/working/checks/test_parser.py"
++        },
++        "test_parse_is_local_parser": true,
++        "tests": [
++          "checks.test_parser.ParserTests.test_duplicate_last_wins",
++          "checks.test_parser.ParserTests.test_empty_value",
++          "checks.test_parser.ParserTests.test_query_value",
++          "checks.test_parser.ParserTests.test_token_padding",
++          "checks.test_parser.ParserTests.test_whitespace_and_comments"
++        ],
++        "samples_sha256": "9bdcad02d4ba63a92043d75bcc2e479929eff1c736d3d38c6d7aad10a2605213",
++        "samples": {
++          "token": {
++            "input": "TOKEN=abc==\n",
++            "actual": {
++              "TOKEN": "abc=="
++            },
++            "expected": {
++              "TOKEN": "abc=="
++            },
++            "pass": true
++          },
++          "query": {
++            "input": "URL=https://example.invalid/a?x=1&y=2\n",
++            "actual": {
++              "URL": "https://example.invalid/a?x=1&y=2"
++            },
++            "expected": {
++              "URL": "https://example.invalid/a?x=1&y=2"
++            },
++            "pass": true
++          },
++          "plain": {
++            "input": " # ignored\n\nNAME = Ada\n",
++            "actual": {
++              "NAME": "Ada"
++            },
++            "expected": {
++              "NAME": "Ada"
++            },
++            "pass": true
++          },
++          "empty": {
++            "input": "EMPTY=\n",
++            "actual": {
++              "EMPTY": ""
++            },
++            "expected": {
++              "EMPTY": ""
++            },
++            "pass": true
++          },
++          "duplicate": {
++            "input": "NAME=first\nNAME=last\n",
++            "actual": {
++              "NAME": "last"
++            },
++            "expected": {
++              "NAME": "last"
++            },
++            "pass": true
++          }
++        }
++      }
++    }
++  },
++  "original_files_changed": [],
++  "new_files_outside_evidence_directory": [],
++  "status_after": " M notes.txt\n M settings/parser.py\n?? checks/\n?? parser-verification-s7pa6g2d/\n"
++}
+\ No newline at end of file
+diff --git a/parser-verification-s7pa6g2d/working-observations.json b/parser-verification-s7pa6g2d/working-observations.json
+new file mode 100644
+index 0000000..4580e86
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/working-observations.json
+@@ -0,0 +1,70 @@
++{
++  "imports": {
++    "settings": "<WORKSPACE>/parser-verification-s7pa6g2d/working/settings/__init__.py",
++    "settings.parser": "<WORKSPACE>/parser-verification-s7pa6g2d/working/settings/parser.py",
++    "checks": "<WORKSPACE>/parser-verification-s7pa6g2d/working/checks/__init__.py",
++    "checks.support": "<WORKSPACE>/parser-verification-s7pa6g2d/working/checks/support.py",
++    "checks.test_parser": "<WORKSPACE>/parser-verification-s7pa6g2d/working/checks/test_parser.py"
++  },
++  "test_parse_is_local_parser": true,
++  "tests": [
++    "checks.test_parser.ParserTests.test_duplicate_last_wins",
++    "checks.test_parser.ParserTests.test_empty_value",
++    "checks.test_parser.ParserTests.test_query_value",
++    "checks.test_parser.ParserTests.test_token_padding",
++    "checks.test_parser.ParserTests.test_whitespace_and_comments"
++  ],
++  "samples_sha256": "9bdcad02d4ba63a92043d75bcc2e479929eff1c736d3d38c6d7aad10a2605213",
++  "samples": {
++    "token": {
++      "input": "TOKEN=abc==\n",
++      "actual": {
++        "TOKEN": "abc=="
++      },
++      "expected": {
++        "TOKEN": "abc=="
++      },
++      "pass": true
++    },
++    "query": {
++      "input": "URL=https://example.invalid/a?x=1&y=2\n",
++      "actual": {
++        "URL": "https://example.invalid/a?x=1&y=2"
++      },
++      "expected": {
++        "URL": "https://example.invalid/a?x=1&y=2"
++      },
++      "pass": true
++    },
++    "plain": {
++      "input": " # ignored\n\nNAME = Ada\n",
++      "actual": {
++        "NAME": "Ada"
++      },
++      "expected": {
++        "NAME": "Ada"
++      },
++      "pass": true
++    },
++    "empty": {
++      "input": "EMPTY=\n",
++      "actual": {
++        "EMPTY": ""
++      },
++      "expected": {
++        "EMPTY": ""
++      },
++      "pass": true
++    },
++    "duplicate": {
++      "input": "NAME=first\nNAME=last\n",
++      "actual": {
++        "NAME": "last"
++      },
++      "expected": {
++        "NAME": "last"
++      },
++      "pass": true
++    }
++  }
++}
+diff --git a/parser-verification-s7pa6g2d/working-unittest.txt b/parser-verification-s7pa6g2d/working-unittest.txt
+new file mode 100644
+index 0000000..c318564
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/working-unittest.txt
+@@ -0,0 +1,10 @@
++test_duplicate_last_wins (checks.test_parser.ParserTests) ... ok
++test_empty_value (checks.test_parser.ParserTests) ... ok
++test_query_value (checks.test_parser.ParserTests) ... ok
++test_token_padding (checks.test_parser.ParserTests) ... ok
++test_whitespace_and_comments (checks.test_parser.ParserTests) ... ok
++
++----------------------------------------------------------------------
++Ran 5 tests in 0.000s
++
++OK
+diff --git a/parser-verification-s7pa6g2d/working/AGENTS.md b/parser-verification-s7pa6g2d/working/AGENTS.md
+new file mode 100644
+index 0000000..0842fb5
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/working/AGENTS.md
+@@ -0,0 +1 @@
++Work only in this project. Verify, do not edit original files, commit, stash or reverse the working patch. Use project-local disposable copies. Python standard library only; do not install anything. Run the current suite with python3 -B -m unittest -v checks.test_parser in each copy.
+diff --git a/parser-verification-s7pa6g2d/working/checks/__init__.py b/parser-verification-s7pa6g2d/working/checks/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/parser-verification-s7pa6g2d/working/checks/samples/values.json b/parser-verification-s7pa6g2d/working/checks/samples/values.json
+new file mode 100644
+index 0000000..117eac0
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/working/checks/samples/values.json
+@@ -0,0 +1 @@
++{"token": "TOKEN=abc==\n", "query": "URL=https://example.invalid/a?x=1&y=2\n", "plain": " # ignored\n\nNAME = Ada\n", "empty": "EMPTY=\n", "duplicate": "NAME=first\nNAME=last\n"}
+diff --git a/parser-verification-s7pa6g2d/working/checks/support.py b/parser-verification-s7pa6g2d/working/checks/support.py
+new file mode 100644
+index 0000000..67a7ec3
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/working/checks/support.py
+@@ -0,0 +1,5 @@
++import json
++from pathlib import Path
++
++def sample(name):
++    return json.loads((Path(__file__).parent / "samples/values.json").read_text())[name]
+diff --git a/parser-verification-s7pa6g2d/working/checks/test_parser.py b/parser-verification-s7pa6g2d/working/checks/test_parser.py
+new file mode 100644
+index 0000000..3d2454e
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/working/checks/test_parser.py
+@@ -0,0 +1,19 @@
++import unittest
++from settings.parser import parse
++from checks.support import sample
++
++class ParserTests(unittest.TestCase):
++    def test_token_padding(self):
++        self.assertEqual(parse(sample("token")), {"TOKEN": "abc=="})
++
++    def test_query_value(self):
++        self.assertEqual(parse(sample("query")), {"URL": "https://example.invalid/a?x=1&y=2"})
++
++    def test_whitespace_and_comments(self):
++        self.assertEqual(parse(sample("plain")), {"NAME": "Ada"})
++
++    def test_empty_value(self):
++        self.assertEqual(parse(sample("empty")), {"EMPTY": ""})
++
++    def test_duplicate_last_wins(self):
++        self.assertEqual(parse(sample("duplicate")), {"NAME": "last"})
+diff --git a/parser-verification-s7pa6g2d/working/notes.txt b/parser-verification-s7pa6g2d/working/notes.txt
+new file mode 100644
+index 0000000..1563bf7
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/working/notes.txt
+@@ -0,0 +1 @@
++Unrelated user draft: keep this exact text.
+diff --git a/parser-verification-s7pa6g2d/working/requirements.md b/parser-verification-s7pa6g2d/working/requirements.md
+new file mode 100644
+index 0000000..ee7dfc4
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/working/requirements.md
+@@ -0,0 +1 @@
++Settings contain KEY=VALUE lines. Split at the first equals only; later equals signs belong to the value. Strip surrounding key/value whitespace, ignore blank/comment lines, retain empty values, last duplicate key wins. Inputs have nonempty keys and an equals sign on each non-comment/nonblank line. Quoting, interpolation and malformed input policy are outside scope. Current checks and samples must be identical for both implementations. The working parser fix is not committed.
+diff --git a/parser-verification-s7pa6g2d/working/settings/__init__.py b/parser-verification-s7pa6g2d/working/settings/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/parser-verification-s7pa6g2d/working/settings/parser.py b/parser-verification-s7pa6g2d/working/settings/parser.py
+new file mode 100644
+index 0000000..28d7356
+--- /dev/null
++++ b/parser-verification-s7pa6g2d/working/settings/parser.py
+@@ -0,0 +1,9 @@
++def parse(text):
++    values = {}
++    for line in text.splitlines():
++        line = line.strip()
++        if not line or line.startswith("#"):
++            continue
++        parts = line.split("=", 1)
++        values[parts[0].strip()] = parts[1].strip()
++    return values

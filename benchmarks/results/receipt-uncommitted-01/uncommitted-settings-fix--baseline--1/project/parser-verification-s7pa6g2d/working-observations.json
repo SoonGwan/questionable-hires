@@ -1,0 +1,70 @@
+{
+  "imports": {
+    "settings": "<WORKSPACE>/parser-verification-s7pa6g2d/working/settings/__init__.py",
+    "settings.parser": "<WORKSPACE>/parser-verification-s7pa6g2d/working/settings/parser.py",
+    "checks": "<WORKSPACE>/parser-verification-s7pa6g2d/working/checks/__init__.py",
+    "checks.support": "<WORKSPACE>/parser-verification-s7pa6g2d/working/checks/support.py",
+    "checks.test_parser": "<WORKSPACE>/parser-verification-s7pa6g2d/working/checks/test_parser.py"
+  },
+  "test_parse_is_local_parser": true,
+  "tests": [
+    "checks.test_parser.ParserTests.test_duplicate_last_wins",
+    "checks.test_parser.ParserTests.test_empty_value",
+    "checks.test_parser.ParserTests.test_query_value",
+    "checks.test_parser.ParserTests.test_token_padding",
+    "checks.test_parser.ParserTests.test_whitespace_and_comments"
+  ],
+  "samples_sha256": "9bdcad02d4ba63a92043d75bcc2e479929eff1c736d3d38c6d7aad10a2605213",
+  "samples": {
+    "token": {
+      "input": "TOKEN=abc==\n",
+      "actual": {
+        "TOKEN": "abc=="
+      },
+      "expected": {
+        "TOKEN": "abc=="
+      },
+      "pass": true
+    },
+    "query": {
+      "input": "URL=https://example.invalid/a?x=1&y=2\n",
+      "actual": {
+        "URL": "https://example.invalid/a?x=1&y=2"
+      },
+      "expected": {
+        "URL": "https://example.invalid/a?x=1&y=2"
+      },
+      "pass": true
+    },
+    "plain": {
+      "input": " # ignored\n\nNAME = Ada\n",
+      "actual": {
+        "NAME": "Ada"
+      },
+      "expected": {
+        "NAME": "Ada"
+      },
+      "pass": true
+    },
+    "empty": {
+      "input": "EMPTY=\n",
+      "actual": {
+        "EMPTY": ""
+      },
+      "expected": {
+        "EMPTY": ""
+      },
+      "pass": true
+    },
+    "duplicate": {
+      "input": "NAME=first\nNAME=last\n",
+      "actual": {
+        "NAME": "last"
+      },
+      "expected": {
+        "NAME": "last"
+      },
+      "pass": true
+    }
+  }
+}

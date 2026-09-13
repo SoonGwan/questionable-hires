@@ -1,0 +1,1 @@
+Work only in this project. Verify, do not edit original files, commit, stash or reverse the working patch. Use project-local disposable copies. Python standard library only; do not install anything. Run the current suite with python3 -B -m unittest -v checks.test_parser in each copy.

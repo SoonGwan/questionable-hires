@@ -1,0 +1,65 @@
+diff --git a/checks/__init__.py b/checks/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/checks/samples/values.json b/checks/samples/values.json
+new file mode 100644
+index 0000000..117eac0
+--- /dev/null
++++ b/checks/samples/values.json
+@@ -0,0 +1 @@
++{"token": "TOKEN=abc==\n", "query": "URL=https://example.invalid/a?x=1&y=2\n", "plain": " # ignored\n\nNAME = Ada\n", "empty": "EMPTY=\n", "duplicate": "NAME=first\nNAME=last\n"}
+diff --git a/checks/support.py b/checks/support.py
+new file mode 100644
+index 0000000..67a7ec3
+--- /dev/null
++++ b/checks/support.py
+@@ -0,0 +1,5 @@
++import json
++from pathlib import Path
++
++def sample(name):
++    return json.loads((Path(__file__).parent / "samples/values.json").read_text())[name]
+diff --git a/checks/test_parser.py b/checks/test_parser.py
+new file mode 100644
+index 0000000..3d2454e
+--- /dev/null
++++ b/checks/test_parser.py
+@@ -0,0 +1,19 @@
++import unittest
++from settings.parser import parse
++from checks.support import sample
++
++class ParserTests(unittest.TestCase):
++    def test_token_padding(self):
++        self.assertEqual(parse(sample("token")), {"TOKEN": "abc=="})
++
++    def test_query_value(self):
++        self.assertEqual(parse(sample("query")), {"URL": "https://example.invalid/a?x=1&y=2"})
++
++    def test_whitespace_and_comments(self):
++        self.assertEqual(parse(sample("plain")), {"NAME": "Ada"})
++
++    def test_empty_value(self):
++        self.assertEqual(parse(sample("empty")), {"EMPTY": ""})
++
++    def test_duplicate_last_wins(self):
++        self.assertEqual(parse(sample("duplicate")), {"NAME": "last"})
+diff --git a/notes.txt b/notes.txt
+index f09ff62..1563bf7 100644
+--- a/notes.txt
++++ b/notes.txt
+@@ -1 +1 @@
+-Previous planning note.
++Unrelated user draft: keep this exact text.
+diff --git a/settings/parser.py b/settings/parser.py
+index e396a18..28d7356 100644
+--- a/settings/parser.py
++++ b/settings/parser.py
+@@ -4,6 +4,6 @@ def parse(text):
+         line = line.strip()
+         if not line or line.startswith("#"):
+             continue
+-        parts = line.split("=")
++        parts = line.split("=", 1)
+         values[parts[0].strip()] = parts[1].strip()
+     return values
