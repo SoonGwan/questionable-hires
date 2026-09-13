@@ -4,6 +4,25 @@ Resource/launch `20ec916`; [frozen protocol](BUNDLE-CONTRACT-06-PROTOCOL.md).
 No aggregate result until all scheduled cells finish and evidence is reviewed.
 No resource/task edits or author replay/test workloads during model timing.
 
+## Rolling schema — both arms
+
+Baseline: **65,487 tokens / 48.106 seconds**, three shell calls. Skill:
+**90,071 tokens / 52.219 seconds**, seven shell calls. Both execute the actual
+migrations and AST-extracted supplied reader queries across initial, up,
+post-insert/update and down states. Original outputs show both reader failures
+in incompatible states and preserve updated/unchanged/inserted rows through down.
+Both assert rollback row values and unchanged six release-file hashes. Skill
+also asserts each reader's expected status and uses the shipped SQLite matrix
+helper with a five-second bound; baseline prints the complete reader observations
+and does not add a comparable explicit execution bound.
+
+Both correctly reject the documented rollout and rollback ordering and distinguish
+synthetic SQL writes from unavailable application writer/staging evidence. No
+deployment or release edit, no observed capture/scope issue. Skill's extra resource
+discovery/reference read and matrix assertions are retained costs; helper adoption
+does not establish savings, and this pair is adverse on tokens/time. Raw/resource
+and inventory reconciliation remain pending until timing completes.
+
 ## Pending form — baseline
 
 Completed: **66,637 tokens / 71.503 seconds**, four shell calls. Adds per-instance
