@@ -1,0 +1,83 @@
+diff --git a/tests/test_qa_sequences.py b/tests/test_qa_sequences.py
+new file mode 100644
+index 0000000..8b68511
+--- /dev/null
++++ b/tests/test_qa_sequences.py
+@@ -0,0 +1,77 @@
++import asyncio
++import unittest
++
++from tests.support import CatalogCase
++
++
++class CatalogSequenceChecks(CatalogCase):
++    # Keep unittest assertion reporting separate from the API failure helper.
++    fail = unittest.TestCase.fail
++    reject = CatalogCase.fail
++
++    async def test_old_success_cannot_replace_new_success(self):
++        old = await self.begin('old')
++        new = await self.begin('new')
++        await self.succeed('new', ['New'], new)
++        self.assertEqual((self.view.titles, self.view.problem), (['New'], None))
++        await self.succeed('old', ['Old'], old)
++        self.assertEqual((self.view.titles, self.view.problem), (['New'], None))
++
++    async def test_old_success_cannot_update_while_new_is_pending(self):
++        seed = await self.begin('seed')
++        await self.succeed('seed', ['Seed'], seed)
++        old = await self.begin('old')
++        new = await self.begin('new')
++        before = (list(self.view.titles), self.view.problem)
++        await self.succeed('old', ['Old'], old)
++        observed = (list(self.view.titles), self.view.problem)
++        await self.succeed('new', ['New'], new)
++        self.assertEqual((self.view.titles, self.view.problem), (['New'], None))
++        self.assertEqual(observed, before)
++
++    async def test_old_success_cannot_clear_new_failure(self):
++        old = await self.begin('old')
++        new = await self.begin('new')
++        await self.reject('new', 'new unavailable', new)
++        self.assertEqual((self.view.titles, self.view.problem), ([], 'new unavailable'))
++        await self.succeed('old', ['Old'], old)
++        self.assertEqual((self.view.titles, self.view.problem), ([], 'new unavailable'))
++
++    async def test_old_failure_cannot_replace_new_success(self):
++        old = await self.begin('old')
++        new = await self.begin('new')
++        await self.succeed('new', ['New'], new)
++        await self.reject('old', 'old unavailable', old)
++        self.assertEqual((self.view.titles, self.view.problem), (['New'], None))
++
++    async def test_old_failure_cannot_replace_new_failure(self):
++        old = await self.begin('old')
++        new = await self.begin('new')
++        await self.reject('new', 'new unavailable', new)
++        await self.reject('old', 'old unavailable', old)
++        self.assertEqual((self.view.titles, self.view.problem), ([], 'new unavailable'))
++
++    async def clear_with_pending_search(self):
++        seed = await self.begin('seed')
++        await self.succeed('seed', ['Seed'], seed)
++        failed = await self.begin('failed')
++        await self.reject('failed', 'offline', failed)
++        self.assertEqual((self.view.titles, self.view.problem), (['Seed'], 'offline'))
++        pending = await self.begin('pending')
++        await asyncio.wait_for(self.view.search(' \t\n '), 0.5)
++        self.assertEqual((self.view.titles, self.view.problem), ([], None))
++        self.assertTrue(self.api.entered.empty(), 'Clearing must not call the API')
++        return pending
++
++    async def test_clear_invalidates_pending_success(self):
++        pending = await self.clear_with_pending_search()
++        await self.succeed('pending', ['Obsolete'], pending)
++        self.assertEqual((self.view.titles, self.view.problem), ([], None))
++
++    async def test_clear_invalidates_pending_failure_and_allows_retry(self):
++        pending = await self.clear_with_pending_search()
++        await self.reject('pending', 'obsolete error', pending)
++        self.assertEqual((self.view.titles, self.view.problem), ([], None))
++        retry = await self.begin(' Retry ')
++        await self.succeed('retry', ['Recovered'], retry)
++        self.assertEqual((self.view.titles, self.view.problem), (['Recovered'], None))

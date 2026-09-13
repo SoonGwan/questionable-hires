@@ -1,0 +1,1 @@
+Search trims and lowercases the query and displays unique record titles in response order. A blank query clears titles and errors immediately without calling the API, invalidating pending work. Only the latest submitted search may update titles or problem. Current failure displays its message; a successful retry clears it.

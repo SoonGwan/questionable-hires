@@ -25,3 +25,11 @@ The practical question is whether the skill integrates with native tests when it
 own helper is unsuitable, and whether that integration is useful at comparable
 cost. Failure to improve is retained as evidence, not grounds to select a new
 reporting set until a favorable percentage appears.
+
+## Completed review (protocol above unchanged)
+
+[All four cells and authoring defects](results/mother-native-project-01/README.md).
+Native integration was observed by both arms. The failure contract makes the
+intended clean control unsuitable for false-positive scoring; supporting unittest
+code also has a naming conflict. Raw costs are retained, not promoted as a clean
+comparative win. No case was excluded or rerun and no skill changed during execution.
