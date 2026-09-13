@@ -48,6 +48,28 @@ Full local regression: 302 tests pass in 40.981 seconds. Skill schema, repositor
 catalog/links and featured-language synchronization checks pass. This does not
 establish hosted CI, current remote installation or model efficiency.
 
+## Existing-fixture integration check
+
+[Executable integration test](../tests/test_receipt_equal_work_fixture.py)
+compares explicit leaf recipes with support-directory recipes using the same
+current helper on two existing fixtures. Fixture files and Git histories are
+unchanged; this is author replay, not a new model benchmark.
+
+- Record parser: `checks/` and `samples/` replace their explicit leaves. The
+  package's fixed initializer/settings remain explicit so `records/decode.py`
+  alone can vary. Both recipes reproduce `too many values to unpack` before
+  the fix and pass the same current test afterward.
+- Multi-module assembly: `samples/` replaces its three explicit leaves, while
+  the four implementation modules vary together. Both recipes reproduce two
+  assertion failures before the fix and pass both tests afterward.
+
+For each recipe, the test verifies copied import provenance, test counts,
+untruncated output, no timeout, unchanged original bytes/modes, clean Git status
+and no remaining comparison directory. Both recipes resolve identical commits
+and return identical full leaf hash maps, also checked independently against
+the original bytes. Recipe inputs remain unmodified. The test does not compare
+elapsed time or infer model token savings from shorter selections.
+
 ## Remaining gate
 
 This proves an available preparation mechanism, not adoption or token savings.

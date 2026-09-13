@@ -14,7 +14,10 @@ test counts. “Current” and “latest” in that archive refer to the origina
   freezes explicit current test/support directories across two historical
   implementations, with leaf hashes, overlap rejection and bounded traversal.
   Real temporary-Git/CLI checks reproduce the intended failure then pass with
-  unchanged inputs. Model adoption and whole-task cost remain unmeasured.
+  unchanged inputs. Integration replay on the existing record-parser and
+  multi-module assembly fixtures additionally verifies leaf/directory recipe
+  equivalence: identical revisions, input hashes and required failure/pass
+  outcomes. Model adoption and whole-task cost remain unmeasured.
 
 - [Two-boundary header transfer](results/httpx-headers-01/README.md): automatic
   index/body readback and batch reuse observed in a new function area. +35.1%

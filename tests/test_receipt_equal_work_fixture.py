@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 from pathlib import Path
 import subprocess
@@ -16,6 +17,65 @@ def load(name, relative):
 
 
 class ReceiptEqualWorkFixtureTests(unittest.TestCase):
+    def test_directory_recipes_preserve_existing_comparison_evidence(self):
+        runner = load('directory_runner', 'benchmarks/run.py')
+        helper = load('directory_receipt', 'skills/receipt/scripts/compare.py')
+        fixtures = [
+            ('benchmarks/receipt_equal_work_cases.py',
+             ['records/decode.py'],
+             ['README.md', 'records/__init__.py', 'records/settings.py',
+              'checks', 'samples'],
+             ['records.decode', 'records.settings'], 'checks.test_records',
+             'too many values to unpack', 'Ran 1 test'),
+            ('benchmarks/receipt_assembly_cases.py',
+             ['assembly/__init__.py', 'assembly/reader.py',
+              'assembly/writer.py', 'assembly/service.py'],
+             ['README.md', 'settings.json', 'samples', 'test_assembly.py'],
+             ['assembly.service', 'assembly.reader', 'assembly.writer'],
+             'test_assembly', 'FAILED (failures=2)', 'Ran 2 tests'),
+        ]
+        for path, varying, directories, imports, test, failure, count in fixtures:
+            with self.subTest(fixture=path), tempfile.TemporaryDirectory() as directory:
+                case = load('directory_fixture', path).cases()[0]
+                project = Path(directory) / 'project'
+                runner.prepare(case, project)
+                originals = {name: ((project / name).read_bytes(),
+                                    (project / name).stat().st_mode)
+                             for name in case['files']}
+                leaves = [name for name in case['files'] if name not in varying]
+                identity = None
+                for selection in (leaves, directories):
+                    recipe = dict(fixed=list(selection), vary=varying,
+                                  before='HEAD^', after='HEAD', imports=imports,
+                                  runner='unittest', tests=['-v', test])
+                    result = helper.compare(project, recipe)
+                    self.assertEqual(recipe['fixed'], selection)
+                    self.assertEqual(result['status'], 'observed')
+                    self.assertEqual(result['checks']['before']['exit_code'], 1)
+                    self.assertIn(failure, result['checks']['before']['output'])
+                    self.assertEqual(result['checks']['after']['exit_code'], 0)
+                    for check in result['checks'].values():
+                        self.assertFalse(check['timed_out'])
+                        self.assertFalse(check['output_truncated'])
+                        self.assertIn(count, check['output'])
+                        for name in imports:
+                            self.assertIn('Verified copied import: ' + name,
+                                          check['output'])
+                    self.assertEqual(result['fixed_sha256'], {
+                        name: hashlib.sha256(originals[name][0]).hexdigest()
+                        for name in leaves})
+                    current = (result['revisions'], result['fixed_sha256'])
+                    if identity is None:
+                        identity = current
+                    self.assertEqual(current, identity)
+                    self.assertEqual(originals, {
+                        name: ((project / name).read_bytes(),
+                               (project / name).stat().st_mode)
+                        for name in case['files']})
+                    self.assertEqual(runner.command(
+                        ['git', 'status', '--porcelain'], project), '')
+                    self.assertFalse(list(project.glob('.receipt-*')))
+
     def test_assembly_writer_matches_documented_lf_bytes(self):
         fixture = load('assembly_lf', 'benchmarks/receipt_assembly_cases.py').cases()[0]
         old, current = {}, {}
