@@ -25,3 +25,9 @@ averaging repetitions within each arm. Missing usage stays unavailable, not zero
 An efficiency claim requires meeting the required outcomes, no additional false
 positives and complete comparable usage. This narrow development experiment
 cannot establish whole-team savings or replace the frozen featured confirmation.
+
+## Completed result
+
+[All eight cells, reviewed evidence, limitations and resource arithmetic](results/mother-recovery-02/README.md).
+No scheduled cell was excluded or retried; the protocol above was not changed
+after execution began.

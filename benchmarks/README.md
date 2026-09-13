@@ -5,6 +5,11 @@ The historical [Exorcist transfer comparison — 27 sessions, all conditions 9/9
 
 Latest frozen confirmation: [Mother-in-law across five new interaction tickets](results/mother-in-law-confirmation-2026-09-12/README.md)
 
+Latest narrow development experiment: [Recovery QA with retained execution evidence](results/mother-recovery-02/README.md)
+— 2 authored cases × 2 arms × 2 repeats; required outcomes 4/4 per arm,
+skill −17.2% tokens / −67.0% process time. Baseline performs additional checks;
+this does not replace the frozen confirmation or establish broad savings.
+
 Earlier development checkpoint: [Mother-in-law across five interaction tickets](results/mother-in-law-fast-2026-09-12/README.md)
 improves reviewed target coverage from 4/5 to 5/5, reduces normalized tokens to
 84.5%, and reduces normalized elapsed time to 61.6%. It does not replace the historical

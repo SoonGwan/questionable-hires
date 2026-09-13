@@ -1,0 +1,616 @@
+{
+  "scenarios": [
+    {
+      "name": "normal_success",
+      "events": [
+        {
+          "event": "fetch_started",
+          "query": "normal"
+        },
+        {
+          "event": "release_response",
+          "query": "normal",
+          "outcome": "success",
+          "payload": "normal-result"
+        },
+        {
+          "event": "run_completed",
+          "query": "normal"
+        }
+      ],
+      "checks": [
+        {
+          "label": "current success",
+          "expected": {
+            "result": "normal-result",
+            "error": null
+          },
+          "observed": {
+            "result": "normal-result",
+            "error": null
+          },
+          "pass": true,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "current_failure_then_successful_retry",
+      "events": [
+        {
+          "event": "fetch_started",
+          "query": "attempt"
+        },
+        {
+          "event": "release_response",
+          "query": "attempt",
+          "outcome": "failure",
+          "payload": "attempt-error"
+        },
+        {
+          "event": "run_completed",
+          "query": "attempt"
+        },
+        {
+          "event": "fetch_started",
+          "query": "retry"
+        },
+        {
+          "event": "release_response",
+          "query": "retry",
+          "outcome": "success",
+          "payload": "retry-result"
+        },
+        {
+          "event": "run_completed",
+          "query": "retry"
+        }
+      ],
+      "checks": [
+        {
+          "label": "current failure",
+          "expected": {
+            "result": null,
+            "error": "attempt-error"
+          },
+          "observed": {
+            "result": null,
+            "error": "attempt-error"
+          },
+          "pass": true,
+          "generation": 1
+        },
+        {
+          "label": "successful retry",
+          "expected": {
+            "result": "retry-result",
+            "error": null
+          },
+          "observed": {
+            "result": "retry-result",
+            "error": "attempt-error"
+          },
+          "pass": false,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "overlap_old_success_new_success_complete_new_first",
+      "events": [
+        {
+          "event": "fetch_started",
+          "query": "old"
+        },
+        {
+          "event": "fetch_started",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "new",
+          "outcome": "success",
+          "payload": "new-result"
+        },
+        {
+          "event": "run_completed",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "old",
+          "outcome": "success",
+          "payload": "old-result"
+        },
+        {
+          "event": "run_completed",
+          "query": "old"
+        }
+      ],
+      "checks": [
+        {
+          "label": "after new success",
+          "expected": {
+            "result": "new-result",
+            "error": null
+          },
+          "observed": {
+            "result": "new-result",
+            "error": null
+          },
+          "pass": true,
+          "generation": 2
+        },
+        {
+          "label": "after old success",
+          "expected": {
+            "result": "new-result",
+            "error": null
+          },
+          "observed": {
+            "result": "new-result",
+            "error": null
+          },
+          "pass": true,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "overlap_old_success_new_failure_complete_new_first",
+      "events": [
+        {
+          "event": "fetch_started",
+          "query": "old"
+        },
+        {
+          "event": "fetch_started",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "new",
+          "outcome": "failure",
+          "payload": "new-error"
+        },
+        {
+          "event": "run_completed",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "old",
+          "outcome": "success",
+          "payload": "old-result"
+        },
+        {
+          "event": "run_completed",
+          "query": "old"
+        }
+      ],
+      "checks": [
+        {
+          "label": "after new failure",
+          "expected": {
+            "result": null,
+            "error": "new-error"
+          },
+          "observed": {
+            "result": null,
+            "error": "new-error"
+          },
+          "pass": true,
+          "generation": 2
+        },
+        {
+          "label": "after old success",
+          "expected": {
+            "result": null,
+            "error": "new-error"
+          },
+          "observed": {
+            "result": null,
+            "error": "new-error"
+          },
+          "pass": true,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "overlap_old_failure_new_success_complete_new_first",
+      "events": [
+        {
+          "event": "fetch_started",
+          "query": "old"
+        },
+        {
+          "event": "fetch_started",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "new",
+          "outcome": "success",
+          "payload": "new-result"
+        },
+        {
+          "event": "run_completed",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "old",
+          "outcome": "failure",
+          "payload": "old-error"
+        },
+        {
+          "event": "run_completed",
+          "query": "old"
+        }
+      ],
+      "checks": [
+        {
+          "label": "after new success",
+          "expected": {
+            "result": "new-result",
+            "error": null
+          },
+          "observed": {
+            "result": "new-result",
+            "error": null
+          },
+          "pass": true,
+          "generation": 2
+        },
+        {
+          "label": "after old failure",
+          "expected": {
+            "result": "new-result",
+            "error": null
+          },
+          "observed": {
+            "result": "new-result",
+            "error": null
+          },
+          "pass": true,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "overlap_old_failure_new_failure_complete_new_first",
+      "events": [
+        {
+          "event": "fetch_started",
+          "query": "old"
+        },
+        {
+          "event": "fetch_started",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "new",
+          "outcome": "failure",
+          "payload": "new-error"
+        },
+        {
+          "event": "run_completed",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "old",
+          "outcome": "failure",
+          "payload": "old-error"
+        },
+        {
+          "event": "run_completed",
+          "query": "old"
+        }
+      ],
+      "checks": [
+        {
+          "label": "after new failure",
+          "expected": {
+            "result": null,
+            "error": "new-error"
+          },
+          "observed": {
+            "result": null,
+            "error": "new-error"
+          },
+          "pass": true,
+          "generation": 2
+        },
+        {
+          "label": "after old failure",
+          "expected": {
+            "result": null,
+            "error": "new-error"
+          },
+          "observed": {
+            "result": null,
+            "error": "new-error"
+          },
+          "pass": true,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "overlap_old_success_new_success_complete_old_first",
+      "events": [
+        {
+          "event": "fetch_started",
+          "query": "old"
+        },
+        {
+          "event": "fetch_started",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "old",
+          "outcome": "success",
+          "payload": "old-result"
+        },
+        {
+          "event": "run_completed",
+          "query": "old"
+        },
+        {
+          "event": "release_response",
+          "query": "new",
+          "outcome": "success",
+          "payload": "new-result"
+        },
+        {
+          "event": "run_completed",
+          "query": "new"
+        }
+      ],
+      "checks": [
+        {
+          "label": "after old success",
+          "expected": {
+            "result": null,
+            "error": null
+          },
+          "observed": {
+            "result": null,
+            "error": null
+          },
+          "pass": true,
+          "generation": 2
+        },
+        {
+          "label": "after new success",
+          "expected": {
+            "result": "new-result",
+            "error": null
+          },
+          "observed": {
+            "result": "new-result",
+            "error": null
+          },
+          "pass": true,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "overlap_old_success_new_failure_complete_old_first",
+      "events": [
+        {
+          "event": "fetch_started",
+          "query": "old"
+        },
+        {
+          "event": "fetch_started",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "old",
+          "outcome": "success",
+          "payload": "old-result"
+        },
+        {
+          "event": "run_completed",
+          "query": "old"
+        },
+        {
+          "event": "release_response",
+          "query": "new",
+          "outcome": "failure",
+          "payload": "new-error"
+        },
+        {
+          "event": "run_completed",
+          "query": "new"
+        }
+      ],
+      "checks": [
+        {
+          "label": "after old success",
+          "expected": {
+            "result": null,
+            "error": null
+          },
+          "observed": {
+            "result": null,
+            "error": null
+          },
+          "pass": true,
+          "generation": 2
+        },
+        {
+          "label": "after new failure",
+          "expected": {
+            "result": null,
+            "error": "new-error"
+          },
+          "observed": {
+            "result": null,
+            "error": "new-error"
+          },
+          "pass": true,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "overlap_old_failure_new_success_complete_old_first",
+      "events": [
+        {
+          "event": "fetch_started",
+          "query": "old"
+        },
+        {
+          "event": "fetch_started",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "old",
+          "outcome": "failure",
+          "payload": "old-error"
+        },
+        {
+          "event": "run_completed",
+          "query": "old"
+        },
+        {
+          "event": "release_response",
+          "query": "new",
+          "outcome": "success",
+          "payload": "new-result"
+        },
+        {
+          "event": "run_completed",
+          "query": "new"
+        }
+      ],
+      "checks": [
+        {
+          "label": "after old failure",
+          "expected": {
+            "result": null,
+            "error": null
+          },
+          "observed": {
+            "result": null,
+            "error": null
+          },
+          "pass": true,
+          "generation": 2
+        },
+        {
+          "label": "after new success",
+          "expected": {
+            "result": "new-result",
+            "error": null
+          },
+          "observed": {
+            "result": "new-result",
+            "error": null
+          },
+          "pass": true,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "overlap_old_failure_new_failure_complete_old_first",
+      "events": [
+        {
+          "event": "fetch_started",
+          "query": "old"
+        },
+        {
+          "event": "fetch_started",
+          "query": "new"
+        },
+        {
+          "event": "release_response",
+          "query": "old",
+          "outcome": "failure",
+          "payload": "old-error"
+        },
+        {
+          "event": "run_completed",
+          "query": "old"
+        },
+        {
+          "event": "release_response",
+          "query": "new",
+          "outcome": "failure",
+          "payload": "new-error"
+        },
+        {
+          "event": "run_completed",
+          "query": "new"
+        }
+      ],
+      "checks": [
+        {
+          "label": "after old failure",
+          "expected": {
+            "result": null,
+            "error": null
+          },
+          "observed": {
+            "result": null,
+            "error": null
+          },
+          "pass": true,
+          "generation": 2
+        },
+        {
+          "label": "after new failure",
+          "expected": {
+            "result": null,
+            "error": "new-error"
+          },
+          "observed": {
+            "result": null,
+            "error": "new-error"
+          },
+          "pass": true,
+          "generation": 2
+        }
+      ]
+    }
+  ],
+  "started_utc": "2026-09-13T03:21:10.593177+00:00",
+  "python": "3.9.6",
+  "timeout_seconds": 5.0,
+  "source_sha256_before": {
+    "lookup.py": "692f91cef01e6e64f3b7839ea19beb5a5898c03424ddfd4751e5a9c30bb0a8ca",
+    "requirements.md": "433c295e9b58aac0fa26e2c3d83c9f59f57c9e2260bbf4a0b3bfad3f358b4948",
+    "README.md": "1c770581731a3a2f7981f737d2e852b1792a749f8b410fb31de3cd5691cee3cd"
+  },
+  "ordering": "future release and awaited task completion; no sleeps",
+  "scope": "Python Lookup component; controlled in-process fetch",
+  "limits": [
+    "No browser, backend, network, or real latency exercised",
+    "Failures use RuntimeError, the implemented exception type",
+    "Two overlapping requests; no cancellation or larger fan-out",
+    "Requirements do not specify loading state or result clearing on failure"
+  ],
+  "source_sha256_after": {
+    "lookup.py": "692f91cef01e6e64f3b7839ea19beb5a5898c03424ddfd4751e5a9c30bb0a8ca",
+    "requirements.md": "433c295e9b58aac0fa26e2c3d83c9f59f57c9e2260bbf4a0b3bfad3f358b4948",
+    "README.md": "1c770581731a3a2f7981f737d2e852b1792a749f8b410fb31de3cd5691cee3cd"
+  },
+  "sources_unchanged": true,
+  "summary": {
+    "scenarios": 10,
+    "checks": 19,
+    "passed": 18,
+    "failed": 1
+  },
+  "finished_utc": "2026-09-13T03:21:10.595470+00:00"
+}

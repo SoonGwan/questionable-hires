@@ -1,0 +1,1 @@
+A current successful request displays its result and clears the error. A current failed request displays an error. A successful retry clears that error. Older success or failure must not replace newer state. Only the Python component is in scope; no browser or backend is available.

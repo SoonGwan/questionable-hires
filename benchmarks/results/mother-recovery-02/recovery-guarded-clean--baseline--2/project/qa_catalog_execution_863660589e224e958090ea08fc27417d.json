@@ -1,0 +1,272 @@
+{
+  "started_utc": "2026-09-13T03:16:42Z",
+  "python": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "timeout_seconds": 10,
+  "method": "Explicit fetch-entry events and manually settled futures; no sleeps or network.",
+  "checks": [
+    {
+      "scenario": "normal success",
+      "step": "completed",
+      "expected": {
+        "result": "normal-result",
+        "error": null
+      },
+      "observed": {
+        "result": "normal-result",
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "failure then retry",
+      "step": "current failure completed",
+      "expected": {
+        "error": "attempt-error"
+      },
+      "observed": {
+        "result": null,
+        "error": "attempt-error"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "failure then retry",
+      "step": "successful retry completed",
+      "expected": {
+        "result": "retry-result",
+        "error": null
+      },
+      "observed": {
+        "result": "retry-result",
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=success, newer=success, completion=older-first",
+      "step": "older completed; newer pending",
+      "expected": {
+        "result": null,
+        "error": null
+      },
+      "observed": {
+        "result": null,
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=success, newer=success, completion=older-first",
+      "step": "newer completed",
+      "expected": {
+        "result": "newer-result",
+        "error": null
+      },
+      "observed": {
+        "result": "newer-result",
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=success, newer=success, completion=newer-first",
+      "step": "newer completed; older pending",
+      "expected": {
+        "result": "newer-result",
+        "error": null
+      },
+      "observed": {
+        "result": "newer-result",
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=success, newer=success, completion=newer-first",
+      "step": "older completed; preserve newer state",
+      "expected": {
+        "result": "newer-result",
+        "error": null
+      },
+      "observed": {
+        "result": "newer-result",
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=success, newer=failure, completion=older-first",
+      "step": "older completed; newer pending",
+      "expected": {
+        "result": null,
+        "error": null
+      },
+      "observed": {
+        "result": null,
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=success, newer=failure, completion=older-first",
+      "step": "newer completed",
+      "expected": {
+        "error": "newer-error"
+      },
+      "observed": {
+        "result": null,
+        "error": "newer-error"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=success, newer=failure, completion=newer-first",
+      "step": "newer completed; older pending",
+      "expected": {
+        "error": "newer-error"
+      },
+      "observed": {
+        "result": null,
+        "error": "newer-error"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=success, newer=failure, completion=newer-first",
+      "step": "older completed; preserve newer state",
+      "expected": {
+        "result": null,
+        "error": "newer-error"
+      },
+      "observed": {
+        "result": null,
+        "error": "newer-error"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=failure, newer=success, completion=older-first",
+      "step": "older completed; newer pending",
+      "expected": {
+        "result": null,
+        "error": null
+      },
+      "observed": {
+        "result": null,
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=failure, newer=success, completion=older-first",
+      "step": "newer completed",
+      "expected": {
+        "result": "newer-result",
+        "error": null
+      },
+      "observed": {
+        "result": "newer-result",
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=failure, newer=success, completion=newer-first",
+      "step": "newer completed; older pending",
+      "expected": {
+        "result": "newer-result",
+        "error": null
+      },
+      "observed": {
+        "result": "newer-result",
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=failure, newer=success, completion=newer-first",
+      "step": "older completed; preserve newer state",
+      "expected": {
+        "result": "newer-result",
+        "error": null
+      },
+      "observed": {
+        "result": "newer-result",
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=failure, newer=failure, completion=older-first",
+      "step": "older completed; newer pending",
+      "expected": {
+        "result": null,
+        "error": null
+      },
+      "observed": {
+        "result": null,
+        "error": null
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=failure, newer=failure, completion=older-first",
+      "step": "newer completed",
+      "expected": {
+        "error": "newer-error"
+      },
+      "observed": {
+        "result": null,
+        "error": "newer-error"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=failure, newer=failure, completion=newer-first",
+      "step": "newer completed; older pending",
+      "expected": {
+        "error": "newer-error"
+      },
+      "observed": {
+        "result": null,
+        "error": "newer-error"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "older=failure, newer=failure, completion=newer-first",
+      "step": "older completed; preserve newer state",
+      "expected": {
+        "result": null,
+        "error": "newer-error"
+      },
+      "observed": {
+        "result": null,
+        "error": "newer-error"
+      },
+      "passed": true
+    }
+  ],
+  "source_sha256_before": {
+    "lookup.py": "4edb1045c265f57392148e9577fd075bfa9726b70a47d543699c065e4463e5ae",
+    "requirements.md": "433c295e9b58aac0fa26e2c3d83c9f59f57c9e2260bbf4a0b3bfad3f358b4948",
+    "README.md": "1c770581731a3a2f7981f737d2e852b1792a749f8b410fb31de3cd5691cee3cd"
+  },
+  "harness_sha256": "3c3e39e9031410d1b2367c116ad3a8f0b7a4a7c82972a4068d20822a269ad3a8",
+  "elapsed_seconds": 0.002733041999999998,
+  "source_sha256_after": {
+    "lookup.py": "4edb1045c265f57392148e9577fd075bfa9726b70a47d543699c065e4463e5ae",
+    "requirements.md": "433c295e9b58aac0fa26e2c3d83c9f59f57c9e2260bbf4a0b3bfad3f358b4948",
+    "README.md": "1c770581731a3a2f7981f737d2e852b1792a749f8b410fb31de3cd5691cee3cd"
+  },
+  "sources_unchanged": true,
+  "passed": true,
+  "limits": [
+    "Python component only; no browser or backend exists.",
+    "Failures use RuntimeError, the exception handled by this component.",
+    "Two overlapping requests, both completion orders, all success/failure pairs.",
+    "Cancellation, other exception types, and three-or-more concurrent requests are not exercised.",
+    "Current-failure result retention and loading state are unspecified; only required fields are asserted.",
+    "Async timeout bounds cooperative waits; it cannot interrupt blocking synchronous code."
+  ]
+}

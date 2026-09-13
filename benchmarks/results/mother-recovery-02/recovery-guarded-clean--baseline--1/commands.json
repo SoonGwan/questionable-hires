@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"'\"",
+    "aggregated_output": "<WORKSPACE>\nREADME.md\nlookup.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat requirements.md README.md lookup.py'",
+    "aggregated_output": "total 24\ndrwxr-xr-x@  6 admin  staff  192 Sep 13 12:17 .\ndrwx------@  3 admin  staff   96 Sep 13 12:17 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 13 12:17 .git\n-rw-r--r--@  1 admin  staff  147 Sep 13 12:17 README.md\n-rw-r--r--@  1 admin  staff  524 Sep 13 12:17 lookup.py\n-rw-r--r--@  1 admin  staff  283 Sep 13 12:17 requirements.md\nA current successful request displays its result and clears the error. A current failed request displays an error. A successful retry clears that error. Older success or failure must not replace newer state. Only the Python component is in scope; no browser or backend is available.\n# Catalog lookup\nPython standard library only. The UI displays Lookup.result and Lookup.error directly. QA files may be added at the project root.\nclass Lookup:\n    def __init__(self):\n        self.result = None\n        self.error = None\n        self.generation = 0\n\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        try:\n            value = await fetch(query)\n        except RuntimeError as error:\n            if generation == self.generation:\n                self.error = str(error)\n            return\n        if generation == self.generation:\n            self.result = value\n            self.error = None\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; python3 --version'",
+    "aggregated_output": "Python 3.9.6\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B qa_catalog.py'",
+    "aggregated_output": "{\"record\": \"<WORKSPACE>/qa_catalog_execution_20260913T031824185949Z.json\", \"passed\": true, \"summary\": {\"cases\": 10, \"checks\": 29, \"passed\": 29}}\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_8",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"git diff --exit-code; git status --short; python3 -B -c 'import json,pathlib; p=next(pathlib.Path(\\\".\\\").glob(\\\"qa_catalog_execution_*.json\\\")); r=json.loads(p.read_text()); print(json.dumps({\\\"passed\\\":r[\\\"passed\\\"],\\\"summary\\\":r[\\\"summary\\\"],\\\"existing_sources_unchanged\\\":r[\\\"existing_sources_unchanged\\\"],\\\"elapsed_seconds\\\":r[\\\"elapsed_seconds\\\"],\\\"final_states\\\":[{\\\"case\\\":c[\\\"name\\\"],\\\"expected\\\":c[\\\"checkpoints\\\"][-1][\\\"expected\\\"],\\\"observed\\\":c[\\\"checkpoints\\\"][-1][\\\"observed\\\"]} for c in r[\\\"cases\\\"]]},indent=2))'\"",
+    "aggregated_output": "?? qa_catalog.py\n?? qa_catalog_execution_20260913T031824185949Z.json\n{\n  \"passed\": true,\n  \"summary\": {\n    \"cases\": 10,\n    \"checks\": 29,\n    \"passed\": 29\n  },\n  \"existing_sources_unchanged\": true,\n  \"elapsed_seconds\": 0.0024009579999999947,\n  \"final_states\": [\n    {\n      \"case\": \"normal success\",\n      \"expected\": {\n        \"result\": \"normal result\",\n        \"error\": null,\n        \"generation\": 1\n      },\n      \"observed\": {\n        \"result\": \"normal result\",\n        \"error\": null,\n        \"generation\": 1\n      }\n    },\n    {\n      \"case\": \"failure then retry\",\n      \"expected\": {\n        \"result\": \"retry result\",\n        \"error\": null,\n        \"generation\": 2\n      },\n      \"observed\": {\n        \"result\": \"retry result\",\n        \"error\": null,\n        \"generation\": 2\n      }\n    },\n    {\n      \"case\": \"older success, newer success, order ('older', 'newer')\",\n      \"expected\": {\n        \"result\": \"newer result\",\n        \"error\": null,\n        \"generation\": 2\n      },\n      \"observed\": {\n        \"result\": \"newer result\",\n        \"error\": null,\n        \"generation\": 2\n      }\n    },\n    {\n      \"case\": \"older success, newer success, order ('newer', 'older')\",\n      \"expected\": {\n        \"result\": \"newer result\",\n        \"error\": null,\n        \"generation\": 2\n      },\n      \"observed\": {\n        \"result\": \"newer result\",\n        \"error\": null,\n        \"generation\": 2\n      }\n    },\n    {\n      \"case\": \"older success, newer failure, order ('older', 'newer')\",\n      \"expected\": {\n        \"result\": null,\n        \"error\": \"newer error\",\n        \"generation\": 2\n      },\n      \"observed\": {\n        \"result\": null,\n        \"error\": \"newer error\",\n        \"generation\": 2\n      }\n    },\n    {\n      \"case\": \"older success, newer failure, order ('newer', 'older')\",\n      \"expected\": {\n        \"result\": null,\n        \"error\": \"newer error\",\n        \"generation\": 2\n      },\n      \"observed\": {\n        \"result\": null,\n        \"error\": \"newer error\",\n        \"generation\": 2\n      }\n    },\n    {\n      \"case\": \"older failure, newer success, order ('older', 'newer')\",\n      \"expected\": {\n        \"result\": \"newer result\",\n        \"error\": null,\n        \"generation\": 2\n      },\n      \"observed\": {\n        \"result\": \"newer result\",\n        \"error\": null,\n        \"generation\": 2\n      }\n    },\n    {\n      \"case\": \"older failure, newer success, order ('newer', 'older')\",\n      \"expected\": {\n        \"result\": \"newer result\",\n        \"error\": null,\n        \"generation\": 2\n      },\n      \"observed\": {\n        \"result\": \"newer result\",\n        \"error\": null,\n        \"generation\": 2\n      }\n    },\n    {\n      \"case\": \"older failure, newer failure, order ('older', 'newer')\",\n      \"expected\": {\n        \"result\": null,\n        \"error\": \"newer error\",\n        \"generation\": 2\n      },\n      \"observed\": {\n        \"result\": null,\n        \"error\": \"newer error\",\n        \"generation\": 2\n      }\n    },\n    {\n      \"case\": \"older failure, newer failure, order ('newer', 'older')\",\n      \"expected\": {\n        \"result\": null,\n        \"error\": \"newer error\",\n        \"generation\": 2\n      },\n      \"observed\": {\n        \"result\": null,\n        \"error\": \"newer error\",\n        \"generation\": 2\n      }\n    }\n  ]\n}\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

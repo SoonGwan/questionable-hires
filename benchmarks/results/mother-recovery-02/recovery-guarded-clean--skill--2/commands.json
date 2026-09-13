@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'requirements.md' -g '*.py' -g 'SKILL.md' -g 'README*' -g 'pyproject.toml' -g 'pytest.ini' -g 'Makefile' -g '\"'!**/__pycache__/**'\"' -g '\"'!**/.git/**'\"' -g '.*'\"",
+    "aggregated_output": "<WORKSPACE>\nREADME.md\n.agents/skills/mother-in-law/SKILL.md\n.agents/skills/mother-in-law/scripts/sequence_probe.py\nlookup.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat .agents/skills/mother-in-law/SKILL.md'",
+    "aggregated_output": "---\nname: mother-in-law\ndescription: Test a changed user interaction for realistic sequence failures such as double submission, stale responses, navigation, and recovery; use for interaction QA rather than general code review.\n---\n\n# Mother-in-law\n\n> And what happens if I click it twice?\n\nRead the applicable requirements, interaction code, and test entrypoint once.\nUse controlled responses/clocks, isolated cases, bounded waits, and owned-operation\ncleanup\u2014never sleeps or production actions. Preserve user files and scope.\n\nFor a UI-less Python component shaped like `async run(query, fetch)`, use\n`scripts/sequence_probe.py` unless project rules require another retained-test\nlayout. Run it directly without reading its source or duplicating its output:\n\n```sh\npython3 -B SCRIPT --root . --source FILE --class-name CLASS [--boundary QUERY]\n```\n\nDefaults: method `run`, state `result`, queries `old`/`new`, timeout 5. Exit 1\nmeans a checked behavior failed, 0 means the targeted checks passed, and 2 warrants inspection.\nPass `--error-state ATTRIBUTE` only when the component exposes error state; this\nchecks current error, recovery and older-error-after-newer-success in one harness.\nIf retained evidence is requested, use `--output NEW.json` for the same execution's\nJSON. Existing files are refused. Missing console output requires inspecting that\nfile or marking verification incomplete; final prose is not execution evidence.\nExisting adequate project runners and instructions take precedence.\n\nFor a rendered UI, read [references/browser.md](references/browser.md).\n\nReturn the tested sequence, expected/observed state, tested layer, and complete\nbounded command. Stop after the nearest normal and targeted adversarial cases.\nDo not add separate evidence files when captured check output already proves them.\nBrowser unavailability leaves browser QA incomplete. QA does not authorize a fix.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -a; cat requirements.md README.md lookup.py; rg --files --hidden -g 'AGENTS.md' -g '\"'!**/.git/**'\"'\"",
+    "aggregated_output": ".\n..\n.agents\n.git\nREADME.md\nlookup.py\nrequirements.md\nA current successful request displays its result and clears the error. A current failed request displays an error. A successful retry clears that error. Older success or failure must not replace newer state. Only the Python component is in scope; no browser or backend is available.\n# Catalog lookup\nPython standard library only. The UI displays Lookup.result and Lookup.error directly. QA files may be added at the project root.\nclass Lookup:\n    def __init__(self):\n        self.result = None\n        self.error = None\n        self.generation = 0\n\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        try:\n            value = await fetch(query)\n        except RuntimeError as error:\n            if generation == self.generation:\n                self.error = str(error)\n            return\n        if generation == self.generation:\n            self.result = value\n            self.error = None\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B .agents/skills/mother-in-law/scripts/sequence_probe.py --root . --source lookup.py --class-name Lookup --error-state error --output catalog-lookup-qa.json'",
+    "aggregated_output": "{\"complete\":true,\"layer\":\"local async component\",\"cases\":[{\"name\":\"normal\",\"passed\":true,\"observed\":{\"queries\":[\"old\",\"new\"],\"completion_order\":[\"old\",\"new\"],\"state\":\"new result\",\"errors\":[],\"checkpoints_passed\":[true,true]}},{\"name\":\"older-success-after-newer-success\",\"passed\":true,\"observed\":{\"queries\":[\"old\",\"new\"],\"completion_order\":[\"new\",\"old\"],\"state\":\"new result\",\"errors\":[]}},{\"name\":\"current-error-then-recovery\",\"passed\":true,\"observed\":{\"queries\":[\"old\",\"new\"],\"completion_order\":[\"old\",\"new\"],\"state\":\"new result\",\"errors\":[],\"error_state\":null,\"checkpoints_passed\":[true,true]}},{\"name\":\"older-error-after-newer-success\",\"passed\":true,\"observed\":{\"queries\":[\"old\",\"new\"],\"completion_order\":[\"new\",\"old\"],\"state\":\"new result\",\"errors\":[],\"error_state\":null}}]}\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

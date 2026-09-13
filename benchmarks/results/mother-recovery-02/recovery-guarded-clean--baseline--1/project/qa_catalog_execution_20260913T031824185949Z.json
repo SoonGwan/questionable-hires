@@ -1,0 +1,642 @@
+{
+  "started_utc": "2026-09-13T03:18:24.183312+00:00",
+  "python": "3.9.6",
+  "sources_before": {
+    "lookup.py": "4edb1045c265f57392148e9577fd075bfa9726b70a47d543699c065e4463e5ae",
+    "requirements.md": "433c295e9b58aac0fa26e2c3d83c9f59f57c9e2260bbf4a0b3bfad3f358b4948",
+    "README.md": "1c770581731a3a2f7981f737d2e852b1792a749f8b410fb31de3cd5691cee3cd"
+  },
+  "reproduction": "python3 -B qa_catalog.py",
+  "timeout_seconds": 15,
+  "cases": [
+    {
+      "name": "normal success",
+      "actions": [
+        {
+          "start": "normal"
+        },
+        {
+          "complete": "normal",
+          "outcome": "success"
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "initial",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 0
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 0
+          },
+          "passed": true
+        },
+        {
+          "label": "pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 1
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 1
+          },
+          "passed": true
+        },
+        {
+          "label": "current success",
+          "expected": {
+            "result": "normal result",
+            "error": null,
+            "generation": 1
+          },
+          "observed": {
+            "result": "normal result",
+            "error": null,
+            "generation": 1
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "failure then retry",
+      "actions": [
+        {
+          "start": "first"
+        },
+        {
+          "complete": "first",
+          "outcome": "failure"
+        },
+        {
+          "start": "retry"
+        },
+        {
+          "complete": "retry",
+          "outcome": "success"
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "current failure",
+          "expected": {
+            "result": null,
+            "error": "first error",
+            "generation": 1
+          },
+          "observed": {
+            "result": null,
+            "error": "first error",
+            "generation": 1
+          },
+          "passed": true
+        },
+        {
+          "label": "successful retry clears error",
+          "expected": {
+            "result": "retry result",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "retry result",
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "older success, newer success, order ('older', 'newer')",
+      "actions": [
+        {
+          "start": "older"
+        },
+        {
+          "start": "newer"
+        },
+        {
+          "complete": "older",
+          "outcome": "success"
+        },
+        {
+          "complete": "newer",
+          "outcome": "success"
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "both pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "older completed",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "newer completed",
+          "expected": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "older success, newer success, order ('newer', 'older')",
+      "actions": [
+        {
+          "start": "older"
+        },
+        {
+          "start": "newer"
+        },
+        {
+          "complete": "newer",
+          "outcome": "success"
+        },
+        {
+          "complete": "older",
+          "outcome": "success"
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "both pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "newer completed",
+          "expected": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "older completed",
+          "expected": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "older success, newer failure, order ('older', 'newer')",
+      "actions": [
+        {
+          "start": "older"
+        },
+        {
+          "start": "newer"
+        },
+        {
+          "complete": "older",
+          "outcome": "success"
+        },
+        {
+          "complete": "newer",
+          "outcome": "failure"
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "both pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "older completed",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "newer completed",
+          "expected": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "older success, newer failure, order ('newer', 'older')",
+      "actions": [
+        {
+          "start": "older"
+        },
+        {
+          "start": "newer"
+        },
+        {
+          "complete": "newer",
+          "outcome": "failure"
+        },
+        {
+          "complete": "older",
+          "outcome": "success"
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "both pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "newer completed",
+          "expected": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "older completed",
+          "expected": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "older failure, newer success, order ('older', 'newer')",
+      "actions": [
+        {
+          "start": "older"
+        },
+        {
+          "start": "newer"
+        },
+        {
+          "complete": "older",
+          "outcome": "failure"
+        },
+        {
+          "complete": "newer",
+          "outcome": "success"
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "both pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "older completed",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "newer completed",
+          "expected": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "older failure, newer success, order ('newer', 'older')",
+      "actions": [
+        {
+          "start": "older"
+        },
+        {
+          "start": "newer"
+        },
+        {
+          "complete": "newer",
+          "outcome": "success"
+        },
+        {
+          "complete": "older",
+          "outcome": "failure"
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "both pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "newer completed",
+          "expected": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "older completed",
+          "expected": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer result",
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "older failure, newer failure, order ('older', 'newer')",
+      "actions": [
+        {
+          "start": "older"
+        },
+        {
+          "start": "newer"
+        },
+        {
+          "complete": "older",
+          "outcome": "failure"
+        },
+        {
+          "complete": "newer",
+          "outcome": "failure"
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "both pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "older completed",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "newer completed",
+          "expected": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "older failure, newer failure, order ('newer', 'older')",
+      "actions": [
+        {
+          "start": "older"
+        },
+        {
+          "start": "newer"
+        },
+        {
+          "complete": "newer",
+          "outcome": "failure"
+        },
+        {
+          "complete": "older",
+          "outcome": "failure"
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "both pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "newer completed",
+          "expected": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "passed": true
+        },
+        {
+          "label": "older completed",
+          "expected": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": "newer error",
+            "generation": 2
+          },
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "method": "Event handshakes and explicitly settled futures; no network or sleeps",
+  "limits": [
+    "Python component only; no browser or backend",
+    "RuntimeError failures only; other exceptions and cancellation unspecified",
+    "Two overlapping requests; no stress/performance testing",
+    "Pending-state policy and retention of prior results on failure unspecified"
+  ],
+  "sources_after": {
+    "lookup.py": "4edb1045c265f57392148e9577fd075bfa9726b70a47d543699c065e4463e5ae",
+    "requirements.md": "433c295e9b58aac0fa26e2c3d83c9f59f57c9e2260bbf4a0b3bfad3f358b4948",
+    "README.md": "1c770581731a3a2f7981f737d2e852b1792a749f8b410fb31de3cd5691cee3cd"
+  },
+  "existing_sources_unchanged": true,
+  "summary": {
+    "cases": 10,
+    "checks": 29,
+    "passed": 29
+  },
+  "passed": true,
+  "elapsed_seconds": 0.0024009579999999947
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'requirements.md' -g '*.py' -g 'SKILL.md' -g 'README*' -g 'pyproject.toml' -g 'package.json' -g 'Makefile' -g '\"'!node_modules'\"' -g '\"'!venv'\"' -g '\"'!.git'\"' -g '.agents/**' -g '*' \"",
+    "aggregated_output": "<WORKSPACE>\n.git/COMMIT_EDITMSG\n.git/index\n.git/refs/heads/main\n.git/logs/refs/heads/main\n.git/logs/HEAD\n.git/HEAD\n.git/objects/e1/de0145213181b12020f0b107f3c16f397ae828\n.git/objects/8a/73799136750f03a5e715887e0f0d5a61d48666\n.git/objects/17/7d51d90eb8df3f1f958dacde46be0b213cf0c6\n.git/objects/4b/e2d529d8fe047ded7dcffef0e5f62cc4c11298\n.git/objects/d0/43c6c716bb930ec969d254df75278f365fc574\n.git/config\nREADME.md\n.agents/skills/mother-in-law/SKILL.md\n.agents/skills/mother-in-law/scripts/sequence_probe.py\n.agents/skills/mother-in-law/agents/openai.yaml\n.agents/skills/mother-in-law/references/browser.md\nlookup.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat .agents/skills/mother-in-law/SKILL.md requirements.md lookup.py README.md'",
+    "aggregated_output": "---\nname: mother-in-law\ndescription: Test a changed user interaction for realistic sequence failures such as double submission, stale responses, navigation, and recovery; use for interaction QA rather than general code review.\n---\n\n# Mother-in-law\n\n> And what happens if I click it twice?\n\nRead the applicable requirements, interaction code, and test entrypoint once.\nUse controlled responses/clocks, isolated cases, bounded waits, and owned-operation\ncleanup\u2014never sleeps or production actions. Preserve user files and scope.\n\nFor a UI-less Python component shaped like `async run(query, fetch)`, use\n`scripts/sequence_probe.py` unless project rules require another retained-test\nlayout. Run it directly without reading its source or duplicating its output:\n\n```sh\npython3 -B SCRIPT --root . --source FILE --class-name CLASS [--boundary QUERY]\n```\n\nDefaults: method `run`, state `result`, queries `old`/`new`, timeout 5. Exit 1\nmeans a checked behavior failed, 0 means the targeted checks passed, and 2 warrants inspection.\nPass `--error-state ATTRIBUTE` only when the component exposes error state; this\nchecks current error, recovery and older-error-after-newer-success in one harness.\nIf retained evidence is requested, use `--output NEW.json` for the same execution's\nJSON. Existing files are refused. Missing console output requires inspecting that\nfile or marking verification incomplete; final prose is not execution evidence.\nExisting adequate project runners and instructions take precedence.\n\nFor a rendered UI, read [references/browser.md](references/browser.md).\n\nReturn the tested sequence, expected/observed state, tested layer, and complete\nbounded command. Stop after the nearest normal and targeted adversarial cases.\nDo not add separate evidence files when captured check output already proves them.\nBrowser unavailability leaves browser QA incomplete. QA does not authorize a fix.\nA current successful request displays its result and clears the error. A current failed request displays an error. A successful retry clears that error. Older success or failure must not replace newer state. Only the Python component is in scope; no browser or backend is available.\nclass Lookup:\n    def __init__(self):\n        self.result = None\n        self.error = None\n        self.generation = 0\n\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        try:\n            value = await fetch(query)\n        except RuntimeError as error:\n            if generation == self.generation:\n                self.error = str(error)\n            return\n        if generation == self.generation:\n            self.result = value\n            self.error = None\n# Catalog lookup\nPython standard library only. The UI displays Lookup.result and Lookup.error directly. QA files may be added at the project root.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B .agents/skills/mother-in-law/scripts/sequence_probe.py --root . --source lookup.py --class-name Lookup --error-state error --output catalog-lookup-qa.json'",
+    "aggregated_output": "{\"complete\":true,\"layer\":\"local async component\",\"cases\":[{\"name\":\"normal\",\"passed\":true,\"observed\":{\"queries\":[\"old\",\"new\"],\"completion_order\":[\"old\",\"new\"],\"state\":\"new result\",\"errors\":[],\"checkpoints_passed\":[true,true]}},{\"name\":\"older-success-after-newer-success\",\"passed\":true,\"observed\":{\"queries\":[\"old\",\"new\"],\"completion_order\":[\"new\",\"old\"],\"state\":\"new result\",\"errors\":[]}},{\"name\":\"current-error-then-recovery\",\"passed\":true,\"observed\":{\"queries\":[\"old\",\"new\"],\"completion_order\":[\"old\",\"new\"],\"state\":\"new result\",\"errors\":[],\"error_state\":null,\"checkpoints_passed\":[true,true]}},{\"name\":\"older-error-after-newer-success\",\"passed\":true,\"observed\":{\"queries\":[\"old\",\"new\"],\"completion_order\":[\"new\",\"old\"],\"state\":\"new result\",\"errors\":[],\"error_state\":null}}]}\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"git status --short; python3 -B -c 'import json; from pathlib import Path; p=Path(\\\"catalog-lookup-qa.json\\\"); d=json.loads(p.read_text()); print({\\\"record\\\": str(p), \\\"bytes\\\": p.stat().st_size, \\\"complete\\\": d[\\\"complete\\\"], \\\"cases\\\": len(d[\\\"cases\\\"]), \\\"all_passed\\\": all(c[\\\"passed\\\"] for c in d[\\\"cases\\\"])})'\"",
+    "aggregated_output": "?? .agents/\n?? catalog-lookup-qa.json\n{'record': 'catalog-lookup-qa.json', 'bytes': 777, 'complete': True, 'cases': 4, 'all_passed': True}\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

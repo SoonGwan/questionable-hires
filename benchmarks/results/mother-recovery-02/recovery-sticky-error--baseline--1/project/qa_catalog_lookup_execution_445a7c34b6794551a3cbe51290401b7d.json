@@ -1,0 +1,356 @@
+{
+  "command": "python3 -B qa_catalog_lookup.py",
+  "python": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "platform": "macOS-26.5.1-arm64-arm-64bit",
+  "execution_timeout_seconds": 15,
+  "per_wait_timeout_seconds": 1,
+  "ordering": "explicit futures; fetch-entry events; no sleeps",
+  "input_sha256_before": {
+    "requirements.md": "433c295e9b58aac0fa26e2c3d83c9f59f57c9e2260bbf4a0b3bfad3f358b4948",
+    "README.md": "1c770581731a3a2f7981f737d2e852b1792a749f8b410fb31de3cd5691cee3cd",
+    "lookup.py": "692f91cef01e6e64f3b7839ea19beb5a5898c03424ddfd4751e5a9c30bb0a8ca"
+  },
+  "cases": [
+    {
+      "name": "normal_success",
+      "checks": [
+        {
+          "step": "current request pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 1
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 1
+          },
+          "pass": true
+        },
+        {
+          "step": "current success",
+          "expected": {
+            "result": "catalog-result",
+            "error": null,
+            "generation": 1
+          },
+          "observed": {
+            "result": "catalog-result",
+            "error": null,
+            "generation": 1
+          },
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "current_failure_then_successful_retry",
+      "checks": [
+        {
+          "step": "current failure",
+          "expected": {
+            "result": null,
+            "error": "current-error",
+            "generation": 1
+          },
+          "observed": {
+            "result": null,
+            "error": "current-error",
+            "generation": 1
+          },
+          "pass": true
+        },
+        {
+          "step": "successful retry",
+          "expected": {
+            "result": "retry-result",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "retry-result",
+            "error": "current-error",
+            "generation": 2
+          },
+          "pass": false
+        }
+      ]
+    },
+    {
+      "name": "older_success_after_newer_success",
+      "checks": [
+        {
+          "step": "both requests pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        },
+        {
+          "step": "newer completes first",
+          "expected": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        },
+        {
+          "step": "older completes last",
+          "expected": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "older_success_after_newer_failure",
+      "checks": [
+        {
+          "step": "both requests pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        },
+        {
+          "step": "newer completes first",
+          "expected": {
+            "result": null,
+            "error": "newer-failure",
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": "newer-failure",
+            "generation": 2
+          },
+          "pass": true
+        },
+        {
+          "step": "older completes last",
+          "expected": {
+            "result": null,
+            "error": "newer-failure",
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": "newer-failure",
+            "generation": 2
+          },
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "older_failure_after_newer_success",
+      "checks": [
+        {
+          "step": "both requests pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        },
+        {
+          "step": "newer completes first",
+          "expected": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        },
+        {
+          "step": "older completes last",
+          "expected": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "older_failure_after_newer_failure",
+      "checks": [
+        {
+          "step": "both requests pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        },
+        {
+          "step": "newer completes first",
+          "expected": {
+            "result": null,
+            "error": "newer-failure",
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": "newer-failure",
+            "generation": 2
+          },
+          "pass": true
+        },
+        {
+          "step": "older completes last",
+          "expected": {
+            "result": null,
+            "error": "newer-failure",
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": "newer-failure",
+            "generation": 2
+          },
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "older_success_while_newer_pending",
+      "checks": [
+        {
+          "step": "older completes while newer pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        },
+        {
+          "step": "newer success",
+          "expected": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "older_failure_while_newer_pending",
+      "checks": [
+        {
+          "step": "older completes while newer pending",
+          "expected": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": null,
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        },
+        {
+          "step": "newer success",
+          "expected": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "observed": {
+            "result": "newer-success",
+            "error": null,
+            "generation": 2
+          },
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Python component only; no browser/backend/network",
+    "Failures exercised as RuntimeError, the handled exception type",
+    "Cancellation and other exception types not evaluated",
+    "Requirements do not specify clearing result on failure or state on request start",
+    "Generation is checked as a diagnostic implementation invariant"
+  ],
+  "summary": {
+    "cases": 8,
+    "checks": 20,
+    "passed_checks": 19,
+    "failed_checks": 1
+  },
+  "elapsed_seconds": 0.002765166999999999,
+  "input_sha256_after": {
+    "requirements.md": "433c295e9b58aac0fa26e2c3d83c9f59f57c9e2260bbf4a0b3bfad3f358b4948",
+    "README.md": "1c770581731a3a2f7981f737d2e852b1792a749f8b410fb31de3cd5691cee3cd",
+    "lookup.py": "692f91cef01e6e64f3b7839ea19beb5a5898c03424ddfd4751e5a9c30bb0a8ca"
+  },
+  "existing_inputs_unchanged": true,
+  "exit_code": 1
+}
