@@ -10,6 +10,15 @@ test counts. “Current” and “latest” in that archive refer to the origina
 
 ## Latest evidence
 
+- [Cookie audit transfer](results/httpx-cookies-01/README.md): current `36e201c`
+  adopts full-test/scoped-definition context selection. Both fresh sessions
+  detect the same path-clearing fault and pass exact domain-only controls;
+  raw tokens −13.93% / time −36.91%. Baseline has an interpreter-path repair,
+  different pytest settings, provenance and retained-artifact work. One short
+  test file cannot establish the large-file routing benefit; unequal work and
+  n=1 prevent broad performance claims. All 125 upstream tracked files remain
+  unchanged in both snapshots. Featured scores are unchanged.
+
 - Con Artist context-routing candidate: the recorded
   [header session](results/httpx-headers-01/README.md) received a test index,
   then read the entire 219-line test file. The usage example now combines

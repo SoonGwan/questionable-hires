@@ -1,0 +1,11 @@
+--- correct/httpx/_models.py
++++ faulty/httpx/_models.py
+@@ -1199,7 +1199,7 @@
+             args.append(domain)
+         if path is not None:
+             assert domain is not None
+-            args.append(path)
++            # Mutation: discard the path, clearing the entire requested domain.
+         self.jar.clear(*args)
+ 
+     def update(self, cookies: CookieTypes | None = None) -> None:  # type: ignore

@@ -1,0 +1,41 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "cookies-scoped-clear",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 89.777,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 141649,
+    "cached_input_tokens": 116736,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2308,
+    "reasoning_output_tokens": 127
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Audit whether tests/models/test_cookies.py protects Cookies.clear(domain=..., path=...) deleting only the requested path while preserving cookies at another path in the same domain and in a different domain. Demonstrate sensitivity with one narrow isolated behavioral mutation of scoped clearing. If existing coverage detects the fault, identify the detecting assertion; otherwise verify a focused assertion on correct and faulty code. Verify domain-only clearing as a normal control on correct and faulty code. Do not change original source/tests, and do not demand new tests for a fault already detected.\n\nUse the preinstalled interpreter <ENV>/venv/bin/python for all Python/pytest commands. Do not install dependencies. Keep disposable mutation copies and diagnostic artifacts inside this project, without modifying its existing files.\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  }
+}
