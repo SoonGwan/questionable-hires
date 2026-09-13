@@ -63,3 +63,8 @@ Tests do not prove process isolation, escaped-child containment, adversarial
 concurrent PID reuse safety or a hard OS scheduling guarantee. Diagnostic scripts
 must still be trusted and authorized. No model-session result has measured this
 version's adoption or aggregate performance.
+
+Subsequent full local regression at launch `ead49db`: **428 tests passed in
+169.970s** on macOS/Python 3.9.6, no skips reported. No executable changes or model
+benchmark ran concurrently. [Release gate](../docs/RELEASE-READINESS.md) separates
+this result from the current hosted account restriction and older Linux checks.

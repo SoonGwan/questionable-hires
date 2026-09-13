@@ -11,6 +11,13 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-13, resource `d4a52ef`
 
+2026-09-14 local regression checkpoint, launch `ead49db`: **428 tests passed in
+169.970s** (macOS/Python 3.9.6). No failures/skips reported; no concurrent model
+run or executable edits. This verifies local regression coverage, not broad model
+performance. The [current hosted run](../docs/RELEASE-READINESS.md) still cannot
+start test steps because of an account payment/spending-limit restriction.
+No account settings changed; earlier platform checks remain historical.
+
 2026-09-14 runtime update `b861c4e`: [Exorcist foreground-exit cleanup](EXORCIST-PIPE-EXIT-01.md)
 starts group cleanup when the direct command exits, rather than waiting for an
 inherited descendant pipe until timeout. Three local repetitions fall from about

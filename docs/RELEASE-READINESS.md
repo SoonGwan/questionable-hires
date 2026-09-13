@@ -1,5 +1,19 @@
 # Release readiness — development preview
 
+## 2026-09-14: full local regression after foreground-exit cleanup
+
+Working tree at launch `ead49db`, macOS/Python 3.9.6:
+`python3 -B -m unittest discover -s tests -v` passes **428 tests in 169.970s**,
+exit 0, no reported failures or skips. No executable/test/resource changes or
+concurrent model benchmark ran during the suite; only the hosted-status paragraph
+below was committed while it ran.
+
+Coverage includes all-eight build/install behavior, helper execution, fixture and
+evaluator mechanics, and the new Exorcist inherited-pipe/Unicode-drain regression.
+This is a local checkout result, not a current source-archive/Linux/Python-matrix
+run, fresh dependency installation, hosted CI success or model-performance proof.
+Historical archive and platform checks below retain their original revisions.
+
 ## 2026-09-14: current hosted gate rechecked
 
 Read-only check of `ead49db` [run 34774733190](https://github.com/SoonGwan/questionable-hires/actions/runs/34774733190)
