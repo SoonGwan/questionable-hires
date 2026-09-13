@@ -1,36 +1,27 @@
-# Receipt for a fix that already exists
+# Receipt for an existing fix
 
-Reuse valid existing evidence. Otherwise freeze the current regression assertion
-and inputs in isolated copies; vary implementation, **not each revision's tests**.
-Keep dependencies/configuration comparable and identify the loaded revisions.
-An old-interface/setup failure is not reproduction: disclose incompatibility
-instead of substituting a different check. The entrypoint's runtime, scope,
-exit-status and stopping rules still apply; do not install missing dependencies.
+Reuse valid evidence; otherwise compare implementations in isolated copies with
+**the same current regression assertions/inputs**, comparable configuration and
+dependencies. Identify loaded revisions. Old-interface/setup failures are not
+reproduction: disclose incompatibility, not a substituted check. Entrypoint scope,
+runtime, exit-status and stopping rules apply; do not install missing dependencies.
+Retrospective comparison cannot satisfy a request to run failure before editing.
 
-Once the runner, regression and fix are located, follow their imports and input
-references to select supporting files. Narrow listings to unresolved paths;
-don't inventory the repository again merely to construct a copy recipe. A known,
-appropriate support directory can be selected directly. Still inspect required
-configuration and cooperating code; a short selection is not proof that all
-required inputs are present. The entrypoint's instruction-discovery boundary
-applies here too.
+Follow located tests' imports/inputs to select necessary support/configuration;
+list only unresolved paths, not the whole repository again. Known support
+directories can be selected directly; selection size does not prove completeness.
 
-## Optional Python comparison helper
+## Execute the comparison
 
-For local unittest/installed-pytest comparisons within the limits below, prefer
-the helper to rebuilding copy setup, same-process import checks, execution and
-cleanup. Existing valid evidence still takes precedence. Use native comparison
-when the required layout/runtime or retained-copy workflow is unsupported.
-For additional originals that must remain unchanged, use optional `watch` selections
-(for example `"watch":["notes.txt"]`); they are checked but not copied or executed.
-The result reports original hashes/modes, unchanged status and copy cleanup, so
-do not rebuild these checks for the same selected files. Whole-repository status,
-new-file detection or stronger integrity requirements still need separate checks.
-Invoke the helper
-without reading its source unless adapting or diagnosing it.
+For supported local Python layouts, prefer the helper over rewriting copy setup,
+same-process import checks, execution and cleanup. Invoke it without reading its
+source unless adapting/diagnosing it. Use native isolation for unsupported runtimes,
+added/deleted implementation layouts or retained-copy requirements.
 
-Choose the implementation source explicitly; adapt paths and test arguments.
-For a **committed fix**, compare the appropriate two commits:
+Choose **one** example and adapt paths, tests and revisions. Neither writes a
+recipe, commits, stashes or reverses user patches; HEAD/HEAD^ are examples only.
+
+Committed fix:
 
 ```sh
 python3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'
@@ -38,7 +29,7 @@ python3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'
 JSON
 ```
 
-For an **already-present uncommitted fix**, freeze current implementation bytes:
+Already-present uncommitted fix:
 
 ```sh
 python3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'
@@ -46,68 +37,45 @@ python3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'
 JSON
 ```
 
-Neither example creates a recipe file, commit or stash. Do not run both merely
-because both are shown. `HEAD`/`HEAD^` are examples, not inferred correct revisions.
+- `fixed`: current tests/data/config/local dependencies, files or directories
+  (including hidden leaves). Frozen once and shared across copies; `fixed_sha256`
+  identifies leaves. Select only required, permitted inputs.
+- `vary`: implementation files, required in both variants. `before`/string `after`
+  resolve and report full commit IDs; no separate revision lookup is needed.
+  Working-tree `after` freezes current bytes/modes, **not staged content**;
+  `revisions.after=null`, `working_tree_after` hashes/modes identify selected files,
+  not a commit or whole-repository snapshot.
+- Optional `watch`, e.g. `"watch":["notes.txt"]`: existing files/directories to
+  check but **not copy/execute**. `originals` reports all selected hashes/modes and
+  unchanged status; `comparison_copies_removed` reports owned-copy cleanup.
+  Reuse these checks rather than wrapping duplicates. New files, Git status or
+  whole-repository integrity still require separate checks when requested.
+- Selections must be canonical project-relative, unique and disjoint after
+  expansion; no root, Git internals, symlinks, empty directories or overlap.
+  `fixed`/`vary` must be nonempty. Directory traversal: at most 10,000 entries.
+- `imports` must resolve inside each native test process's copy. Use the project
+  interpreter (default: launching Python; override `--python` if needed), unittest
+  or already-installed pytest. Child temp defaults are inside each copy: do not
+  redirect global TMPDIR merely to localize checks or other launchers may pollute it.
 
-`fixed`: current tests, inputs, configuration and local dependencies. Files or
-directories such as `["tests","samples","pyproject.toml"]` are accepted;
-directories expand to regular files, including hidden files. Select only needed,
-permitted inputs. Root selection, Git internals, symlinks, empty directories and
-overlapping selections are rejected; traversal is bounded to 10,000 entries.
-Each leaf is frozen once, shared by both implementations and hashed in
-`fixed_sha256`.
+## Read the evidence, not just the exit code
 
-`watch` accepts the same file/directory selections, disjoint from `fixed` and
-`vary`, within the shared byte budget. It checks existing selected leaves, not
-new files added to watched directories. `originals` identifies all selected
-original bytes/modes and reports `unchanged`; changes abort without restoration.
-`comparison_copies_removed` confirms owned-copy cleanup, not all side effects.
-Child temporary-directory defaults point inside each comparison copy. Do not
-change global TMPDIR merely to localize these checks: other launchers may create
-files there. Explicit test paths and subprocess behavior are not sandboxed.
+CLI 0 means observations collected, **not proof**. Inspect each actual assertion,
+requested test identity, before failure/after pass, copied-import evidence,
+`exit_code`, `timed_out` and `output_truncated`. Help/version output is not execution.
+Unittest zero/all-skipped runs return check 5; failures return 1, partial-skip
+success 0. This guard does not prove requested coverage. Pytest keeps native exits.
 
-`vary`: explicit implementation **files**, not directories.
-Both lists must be nonempty, canonical project-relative and disjoint after
-expansion: fixed directories cannot contain varying files. Listed imports must
-resolve inside each copy. Launch with the project interpreter; checks reuse it
-(`--python` overrides this when necessary). Use unittest or installed pytest;
-other runtimes/custom runners require native isolated comparison instead.
-Pass the intended revision expressions directly: the helper resolves and reports
-full commit IDs, so a separate hash-resolution call is unnecessary.
+Python 3.9+/POSIX; trusted tests only, **not a sandbox**. Copies are project-local
+and removed; changed selected originals abort without restoration. Watch covers
+existing leaves, not new directory entries or arbitrary side effects. Explicit
+test paths/subprocesses can escape defaults; concurrent snapshots are not atomic.
 
-The working-tree variant freezes selected current implementation bytes and modes
-once alongside current tests/support, then runs both copies. It does not commit, stash, read staged
-implementation content or reverse a working-tree patch. `revisions.after` is null;
-`working_tree_after.sha256` and `.modes` identify the selected snapshot, not a Git
-commit or the whole repository. Normal Git revision strings retain their meaning.
-Both variants still require each selected file; added/deleted implementation
-layouts need native comparison. This retrospective check does not satisfy a
-request to execute a failure **before making** the original edit. It is not an
-atomic snapshot of concurrently changing files.
-
-Python 3.9+, POSIX; 20 MB snapshot budget, 30 seconds/check (`--timeout` up to 300),
-last 12,000 output characters. Copies are project-local and cleaned; selected
-original bytes/permissions are checked, not every side effect. Original changes
-are reported, never restored. Trusted tests only, **not a sandbox**. The byte
-budget rejects known-overflow working files before reading/comparing and bounds
-each working-file read to the remaining budget plus one overflow byte. Growth
-beyond that budget aborts before test execution. Final integrity reads are bounded
-to the original file length plus one byte; detected changes are not restored.
-This does not bound total memory
-or provide an atomic snapshot against concurrent writes. JSON retains
-revisions, leaf hashes and separate outputs/statuses. CLI exit 0 means collected
-observations, **not proof**: inspect the actual assertion failure, after pass,
-provenance, timeout and truncation fields before claiming the fix.
-
-For a normally completed unittest run, zero tests or an entirely skipped suite
-produces check exit 5 with an explicit no-execution diagnostic. Real failures
-retain exit 1; a passing suite with some skipped tests still exits 0. This guard
-does not prove that the requested regression ran: inspect test identities and
-outcomes, and never use runner help/version output as execution evidence.
-Pytest retains its native exit behavior. The comparison CLI still distinguishes
-collected observations from proof, so inspect each check rather than its outer exit.
-
-Child-exit confirmation has a separate five-second cleanup wait. Unconfirmed exit
-means comparison-not-established (CLI exit 2) and no later comparison; existing
-interruptions/errors propagate. Termination/descendant containment is not
-guaranteed: don't retry automatically while a previous process may remain.
+Limits: shared 20 MB snapshot budget, 30 seconds/check (`--timeout` up to 300),
+last 12,000 output characters. Known overflow rejects before reading; reads stop
+at remaining budget + 1 byte and growth beyond budget aborts before tests. Final
+integrity reads stop at original length + 1. Total memory is not bounded by this.
+Child exit has a separate five-second cleanup wait; unconfirmed exit means CLI 2,
+comparison not established and no next comparison. Other errors/interruptions
+propagate. Descendant termination is not guaranteed; do not retry automatically
+while a prior process may remain.
