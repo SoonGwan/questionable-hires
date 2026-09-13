@@ -30,29 +30,12 @@ Keep custom test helpers distinct from runner methods: use `fail_request`, not
 plumbing, exercise a deliberate mismatch in isolation: green cases cannot reveal
 a broken failure path, and a support exception is not the intended assertion.
 
-For captured component observations without a project-test deliverable, use
-`scripts/sequence_probe.py` when its contract fits: zero-argument constructor,
-async `run(query, fetch)`, and state storing the fetched payload directly.
-It checks sequential normal success and reversed overlapping completion, **not**
-normal overlapping completion, pending-state retention or an already displayed
-result while loading. If those or other unsupported checkpoints are required,
-use project-specific checks from the outset. Existing adequate runners and
-instructions take precedence; never change production code to fit the helper.
-Run it directly without reading or duplicating its implementation:
-
-```sh
-python3 -B SCRIPT --root . --source FILE --class-name CLASS [--boundary QUERY]
-```
-
-Defaults: method `run`, state `result`, queries `old`/`new`, timeout 5. Exit 1
-means a checked behavior failed, 0 means the targeted checks passed, and 2 warrants inspection.
-Pass `--error-state ATTRIBUTE` for JSON-serializable error state where falsy means
-clear and truthy means displayed. This checks errors on success, current failure,
-recovery and stale failure. Failure output retains the failing checkpoint.
-If retained evidence is requested, use `--output NEW.json` for the same execution's
-JSON. Existing files are refused. Missing console output requires inspecting that
-file or marking verification incomplete; final prose is not execution evidence.
-The timeout bounds cooperative async waits, not blocking imports or callbacks.
+For captured observations **without a project-test deliverable**, the optional
+[component probe](references/component-probe.md) fits a zero-argument constructor,
+async `run(query, fetch)` and direct payload state. It does not cover pending-state
+retention, normal overlapping completion or repeated identical queries; use
+project checks for those. Existing adequate runners take precedence. Never change
+production to fit a helper. Native-project delivery does not need this reference.
 
 For a rendered UI, read [references/browser.md](references/browser.md).
 

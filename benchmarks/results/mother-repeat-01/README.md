@@ -80,3 +80,23 @@ skills improve developer outcomes at lower cost.
 
 Post-run repository checks: **390 tests pass (53.563s)**; catalog/local links,
 featured synchronization, whitespace and exported private-path checks pass.
+
+## Later mode-specific reference routing
+
+The later candidate moves disposable-probe CLI options, output handling and
+detailed semantics from Mother-in-law's entrypoint into a linked component-probe
+reference. Native-project delivery is explicitly routed away from that reference.
+The entry still states the helper's applicability and unsupported checkpoints,
+including repeated identical queries; native tests, bounded cleanup, assertion
+plumbing, scope and optional standalone support guidance remain. No executable
+helper, asset, metadata or automatic-selection policy changes.
+
+Entrypoint UTF-8 bytes: **3,719 → 2,686 (27.78% fewer)**. This follows
+skill-creator's progressive-disclosure guidance. Detail is routed, not discarded;
+total package size and measured model tokens are not claimed smaller. No new
+model run yet establishes adoption or savings, and this run's adverse results
+continue to describe the original `c6589ee` candidate.
+
+Candidate verification: sequence-probe **14 tests pass (0.257s)**, full
+repository **390 tests pass (53.342s)**. Skill validation, catalog/local links,
+featured synchronization and whitespace checks pass.
