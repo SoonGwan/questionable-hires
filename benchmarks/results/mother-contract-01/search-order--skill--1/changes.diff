@@ -1,0 +1,148 @@
+diff --git a/controlled_fetch.py b/controlled_fetch.py
+new file mode 100644
+index 0000000..abee0c4
+--- /dev/null
++++ b/controlled_fetch.py
+@@ -0,0 +1,45 @@
++"""Copy into permitted project test support only when no equivalent exists.
++
++Each received Request identifies one call, even when keys repeat. The test owns
++component tasks: cancel and await them in cleanup. This controls fetch responses,
++not component state or browser rendering. No real network or sleeps.
++"""
++import asyncio
++from dataclasses import dataclass
++from typing import Any
++
++
++@dataclass(frozen=True)
++class Request:
++    key: Any
++    response: asyncio.Future
++
++    def complete(self, value):
++        self.response.set_result(value)
++
++    def fail_request(self, error):
++        self.response.set_exception(error)
++
++
++class ControlledFetch:
++    def __init__(self):
++        self.calls = asyncio.Queue()
++
++    async def __call__(self, key):
++        request = Request(key, asyncio.get_running_loop().create_future())
++        self.calls.put_nowait(request)
++        return await request.response
++
++    async def started(self, expected, timeout=1):
++        """Wait for actual fetch entry, assert its key, return a unique handle.
++
++        A timed-out queue wait does not cancel component tasks. The caller owns
++        those tasks and must clean them even when this assertion fails.
++        """
++        if not 0 < timeout <= 30:
++            raise ValueError('timeout must be in (0, 30]')
++        request = await asyncio.wait_for(self.calls.get(), timeout)
++        if request.key != expected:
++            raise AssertionError(
++                f'request key: expected {expected!r}, observed {request.key!r}')
++        return request
+diff --git a/test_search.py b/test_search.py
+new file mode 100644
+index 0000000..763856c
+--- /dev/null
++++ b/test_search.py
+@@ -0,0 +1,91 @@
++"""Local component regression: python3 -m unittest -v test_search.
++
++Uses actual Search with controlled transport; no network or timing sleeps.
++Every behavior-dependent wait is bounded to one second.
++"""
++import asyncio
++import unittest
++
++from controlled_fetch import ControlledFetch
++from search import Search
++
++
++class SearchTests(unittest.IsolatedAsyncioTestCase):
++    async def asyncSetUp(self):
++        self.search = Search()
++        self.fetch = ControlledFetch()
++        self.owned_tasks = []
++
++    async def asyncTearDown(self):
++        for task in self.owned_tasks:
++            if not task.done():
++                task.cancel()
++        if self.owned_tasks:
++            done, pending = await asyncio.wait(self.owned_tasks, timeout=1)
++            for task in done:
++                if not task.cancelled():
++                    task.exception()  # Retrieve exceptions even after a failed assertion.
++            self.assertFalse(pending, "owned Search tasks did not stop within 1s")
++
++    def launch(self, query):
++        task = asyncio.create_task(self.search.run(query, self.fetch))
++        self.owned_tasks.append(task)
++        return task
++
++    async def test_single_query(self):
++        task = self.launch("cat")
++        request = await self.fetch.started("cat")
++        self.assertFalse(task.done())
++        request.complete("cat result")
++        await asyncio.wait_for(asyncio.shield(task), timeout=1)
++        print(f"single: expected='cat result', observed={self.search.result!r}", flush=True)
++        self.assertEqual(self.search.result, "cat result")
++
++    async def overlap(self, reverse):
++        older_task = self.launch("ca")
++        older = await self.fetch.started("ca")
++        newer_task = self.launch("cat")
++        newer = await self.fetch.started("cat")
++        self.assertIsNot(older, newer)
++        self.assertFalse(older_task.done())
++        self.assertFalse(newer_task.done())
++        print("controls: both actual Search requests entered fetch and remain pending", flush=True)
++
++        if reverse:
++            newer.complete("cat result")
++            await asyncio.wait_for(asyncio.shield(newer_task), timeout=1)
++            self.assertFalse(older_task.done())
++            print(f"newer first: expected='cat result', observed={self.search.result!r}", flush=True)
++            self.assertEqual(self.search.result, "cat result")
++            older.complete("ca result")
++            await asyncio.wait_for(asyncio.shield(older_task), timeout=1)
++        else:
++            older.complete("ca result")
++            await asyncio.wait_for(asyncio.shield(older_task), timeout=1)
++            self.assertFalse(newer_task.done())
++            # The contract does not specify display policy while newer is pending.
++            print(f"older first: intermediate observation={self.search.result!r}", flush=True)
++            newer.complete("cat result")
++            await asyncio.wait_for(asyncio.shield(newer_task), timeout=1)
++
++        order = "reversed" if reverse else "normal"
++        print(f"{order} final: expected='cat result', observed={self.search.result!r}", flush=True)
++        self.assertEqual(self.search.result, "cat result", "latest query must retain final ownership")
++
++    async def test_overlap_normal_completion(self):
++        await self.overlap(reverse=False)
++
++    async def test_overlap_reversed_completion(self):
++        await self.overlap(reverse=True)
++
++    async def test_transport_key_mismatch_is_an_assertion(self):
++        self.launch("actual")
++        with self.assertRaisesRegex(
++            AssertionError, "request key: expected 'wrong', observed 'actual'"
++        ):
++            await self.fetch.started("wrong")
++        print("control: deliberate key mismatch raised the expected AssertionError", flush=True)
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)

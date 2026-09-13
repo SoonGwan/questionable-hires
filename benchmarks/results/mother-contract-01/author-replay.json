@@ -1,0 +1,45 @@
+{
+  "kind": "author replay after timing; not model evidence",
+  "cells": [
+    {
+      "cell": "search-order--skill--1",
+      "usage_events_resources_reconciled": true,
+      "originals_preserved": true,
+      "total_tokens": 91851,
+      "elapsed_seconds": 64.306,
+      "replays": [
+        {
+          "variant": "original",
+          "exit_code": 1,
+          "output": "controls: both actual Search requests entered fetch and remain pending\nolder first: intermediate observation='ca result'\nnormal final: expected='cat result', observed='cat result'\ncontrols: both actual Search requests entered fetch and remain pending\nnewer first: expected='cat result', observed='cat result'\nreversed final: expected='cat result', observed='ca result'\nsingle: expected='cat result', observed='cat result'\ncontrol: deliberate key mismatch raised the expected AssertionError\ntest_overlap_normal_completion (test_search.SearchTests) ... ok\ntest_overlap_reversed_completion (test_search.SearchTests) ... FAIL\ntest_single_query (test_search.SearchTests) ... ok\ntest_transport_key_mismatch_is_an_assertion (test_search.SearchTests) ... ok\n\n======================================================================\nFAIL: test_overlap_reversed_completion (test_search.SearchTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search.py\", line 79, in test_overlap_reversed_completion\n    await self.overlap(reverse=True)\n  File \"<REPLAY>/test_search.py\", line 73, in overlap\n    self.assertEqual(self.search.result, \"cat result\", \"latest query must retain final ownership\")\nAssertionError: 'ca result' != 'cat result'\n- ca result\n+ cat result\n?   +\n : latest query must retain final ownership\n\n----------------------------------------------------------------------\nRan 4 tests in 0.017s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "variant": "guarded",
+          "exit_code": 0,
+          "output": "controls: both actual Search requests entered fetch and remain pending\nolder first: intermediate observation=None\nnormal final: expected='cat result', observed='cat result'\ncontrols: both actual Search requests entered fetch and remain pending\nnewer first: expected='cat result', observed='cat result'\nreversed final: expected='cat result', observed='cat result'\nsingle: expected='cat result', observed='cat result'\ncontrol: deliberate key mismatch raised the expected AssertionError\ntest_overlap_normal_completion (test_search.SearchTests) ... ok\ntest_overlap_reversed_completion (test_search.SearchTests) ... ok\ntest_single_query (test_search.SearchTests) ... ok\ntest_transport_key_mismatch_is_an_assertion (test_search.SearchTests) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.017s\n\nOK\n"
+        }
+      ],
+      "retained_project_unchanged": true
+    },
+    {
+      "cell": "search-order--baseline--1",
+      "usage_events_resources_reconciled": true,
+      "originals_preserved": true,
+      "total_tokens": 101469,
+      "elapsed_seconds": 83.057,
+      "replays": [
+        {
+          "variant": "original",
+          "exit_code": 1,
+          "output": "CONTROL: ca then cat entered actual Search.run; both pending; no response completed; result is None\nCONTROL: only 'ca' completed; result='results for ca'; 'cat' still pending\nASSERT: completion order=('ca', 'cat'); expected latest result='results for cat'; actual='results for cat'\nCLEANUP: all owned request tasks finished\nCONTROL: ca then cat entered actual Search.run; both pending; no response completed; result is None\nCONTROL: only 'cat' completed; result='results for cat'; 'ca' still pending\nASSERT: completion order=('cat', 'ca'); expected latest result='results for cat'; actual='results for ca'\nCLEANUP: all owned request tasks finished\ntest_normal_completion_order (test_search_overlap.SearchOverlapTests) ... ok\ntest_reversed_completion_order (test_search_overlap.SearchOverlapTests) ... FAIL\n\n======================================================================\nFAIL: test_reversed_completion_order (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/qa/test_search_overlap.py\", line 86, in test_reversed_completion_order\n    await self.check_completion_order((\"cat\", \"ca\"))\n  File \"<REPLAY>/qa/test_search_overlap.py\", line 63, in check_completion_order\n    self.assertEqual(\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : The latest query's result must remain visible after both overlapping requests finish\n\n----------------------------------------------------------------------\nRan 2 tests in 0.011s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "variant": "guarded",
+          "exit_code": 1,
+          "output": "CONTROL: ca then cat entered actual Search.run; both pending; no response completed; result is None\nCLEANUP: all owned request tasks finished\nCONTROL: ca then cat entered actual Search.run; both pending; no response completed; result is None\nCONTROL: only 'cat' completed; result='results for cat'; 'ca' still pending\nASSERT: completion order=('cat', 'ca'); expected latest result='results for cat'; actual='results for cat'\nCLEANUP: all owned request tasks finished\ntest_normal_completion_order (test_search_overlap.SearchOverlapTests) ... FAIL\ntest_reversed_completion_order (test_search_overlap.SearchOverlapTests) ... ok\n\n======================================================================\nFAIL: test_normal_completion_order (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/qa/test_search_overlap.py\", line 83, in test_normal_completion_order\n    await self.check_completion_order((\"ca\", \"cat\"))\n  File \"<REPLAY>/qa/test_search_overlap.py\", line 50, in check_completion_order\n    self.assertEqual(search.result, responses[first])\nAssertionError: None != 'results for ca'\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nFAILED (failures=1)\n"
+        }
+      ],
+      "retained_project_unchanged": true
+    }
+  ]
+}
