@@ -52,6 +52,10 @@ it has not established a broad 20–30% gain.
 - `benchmarks/featured.json` remains the source of the landing-page comparison.
   No recent reliability check replaces its frozen experiment or changes its
   charts. Historical adverse results remain available.
+- [Range verification](results/receipt-ranges-01/README.md), `cf4c2c0`: watch/report
+  adopted without a custom wrapper; same core seven-test coverage, **+43.79%
+  tokens / −39.99% time**. Targeted synthetic n=1 and baseline's broader integrity
+  work limit attribution; this tradeoff is not accepted overall efficiency.
 
 ## Current resource revisions and remaining gaps
 
@@ -62,7 +66,7 @@ The eight characters and automatic selection remain intact; helpers are optional
 | Skill | Entrypoint / latest supporting-resource change | Evidence and unresolved work |
 | --- | --- | --- |
 | Necromancer | `51ce19e` / [presentation correction](NECROMANCER-PRESENTATION-01.md) after `3157ee2` | [Discovery](NECROMANCER-DISCOVERY-01.md), [packaging](NECROMANCER-PACKAGING-REVIEW-01.md), [decision gate](NECROMANCER-DECISION-GATE-01.md): configured consumer retained; favorable pairs have unequal work/capture limits; broader savings unproven. Git color/prefix regression is author-tested, not model-measured. |
-| Receipt | `75c8718` / [selected-original guards](RECEIPT-WATCH-01.md) after `077805c` | [Graph comparison](results/receipt-graph-01/README.md): earlier helper adopted, higher cost with repair/capture limits. New watch/report and child-temp behavior are author-tested, not model-measured. [Settings](results/receipt-uncommitted-01/README.md), [seeded HTTPX](results/receipt-httpx-02/README.md) and [frame](results/receipt-frame-01/README.md) remain adverse. No accepted efficiency gain. |
+| Receipt | `75c8718` / [selected-original guards](RECEIPT-WATCH-01.md) at `cf4c2c0` | [Ranges](results/receipt-ranges-01/README.md): watch/report adopted, faster time but substantially more tokens; unequal extra work, no accepted overall gain. [Graph](results/receipt-graph-01/README.md), [settings](results/receipt-uncommitted-01/README.md), [seeded HTTPX](results/receipt-httpx-02/README.md) and [frame](results/receipt-frame-01/README.md) remain adverse. |
 | Landlord | `26a310d` / no separate resources | [Application-first discovery](LANDLORD-SOURCE-SCOPE-01.md), [compact regression](LANDLORD-COMPACT-01.md), [auth design](HTTPX-AUTH-DESIGN-01.md): useful consumer inspection but adverse comparisons/nonpaired costs; resource-path discovery remains. |
 | Mother-in-law | `b7058c6` / `b7058c6` | [Native integration](results/mother-native-project-01/README.md), [false-pass correction](MOTHER-SUCCESS-STATE-03.md): native runner reuse works on authored variants; unequal coverage/fixture defects limit lower recorded costs. |
 | Exorcist | `ca2e179` / `cb10067` | [Signal transfer](EXORCIST-SIGNAL-01.md), [provenance](EXORCIST-PROVENANCE-01.md): small favorable signal result has baseline repair/unequal work; normal path remains costlier in tokens. |

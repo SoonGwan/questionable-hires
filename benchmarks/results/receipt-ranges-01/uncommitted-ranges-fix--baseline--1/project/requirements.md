@@ -1,0 +1,1 @@
+coalesce accepts a finite list of integer (start, end) pairs with start < end. Return sorted maximal unions, merging overlapping OR touching pairs. Do not mutate the caller list. Empty input returns []. Invalid intervals, other numeric types and concurrent mutation are out of scope. The working fix already exists; compare retrospectively using the same current tests.

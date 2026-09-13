@@ -1,0 +1,47 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "uncommitted-ranges-fix",
+  "skill": "receipt",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "f0e4d86a49a4d6d2d1e7cbc3453070fa3adae517",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 58.267,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 50374,
+    "cached_input_tokens": 39040,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1666,
+    "reasoning_output_tokens": 229
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Verify the already-present uncommitted ranges.py fix against HEAD. Run all seven current test_ranges tests unchanged on HEAD and working implementations in separate project-local copies. Within each native unittest process, confirm ranges.__file__ resolves inside its copy before running tests. Capture actual before assertion failures and passing controls, then all after outcomes. Identify the before commit and working implementation SHA-256. Preserve all existing original files, including unrelated drafts; report byte and permission checks for ranges.py, test_ranges.py and drafts/release.txt. Delete owned comparison copies before finishing; captured output is sufficient. Do not commit, stash, reset, install dependencies or use external services. Follow project instructions and requirements.md.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "initial_tree": "3fdc963b18032f06ca3222d7ed81467a5a3be99f",
+  "initial_working_files": {
+    "ranges.py": "6755f97b1e89dea7470b55322c46528b715e1c77cc8efbaaccea12e37149746b",
+    "test_ranges.py": "03c09691def9ce51d5e7dd2b21278caf686b5e3395cce299114a341d50a96291",
+    "drafts/release.txt": "2a040f32eb55fdf0d44969ce3b5318f19952bd0b57fdedf1e40ecc51922c1027"
+  }
+}
