@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Extracted probe context candidate — 2026-09-15, parent `488515f`
+
+[Conditional Python guidance](PYTHON-PROBE-CONTEXT-01.md) addresses the actual
+annotation-compilation failures in both prior sessions: preserve original module
+future settings/bindings when recompiling extracted source, not the probe's
+inherited settings. Four local controls pass, including eager/deferred annotation
+semantics and an actual behavioral mismatch. No helper or mandatory new probe.
+The entry adds 224 UTF-8 bytes. With build/installer coverage, 36 targeted tests
+pass; no fresh full-suite run. Model adoption and net cost remain unmeasured.
+
+한국어: 원래 컴파일 설정을 잃는 재현된 오류에 한정해 안내를 추가했다. 실제
+검사 4개는 통과했지만 모델 행동·전체 비용 개선은 미검증이다. 아래 원본 결과와
+실패 비용은 그대로 유지하며 그래프도 바꾸지 않는다.
+
 ## Full-history redirect result — 2026-09-15, launch `68569e9`
 
 [Fresh real-checkout pair](results/httpx-redirect-history-01/README.md), Necromancer
