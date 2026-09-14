@@ -11,18 +11,33 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [SQLite transfer 01 review](RECEIPT-LEDGER-01-REVIEW.md), launch `2d8785d`,
+resources `ec0cc28`: all four sessions finish and both arms distinguish complete
+from incomplete fixes. Totals baseline 140,630 tokens / 131.371s, skill 221,949 /
+141.093s: **+57.82% tokens / +7.40% time**. Both skill sessions adapt internals to
+the requested native `-m unittest` command. Original tests are present; baseline a
+has a leading prefix gap. Separate replays retain later Git-index changes, skill
+a's outer assertion failure and b's diagnostic differences. No efficiency win.
+
+한국어: 새 SQLite 과제 4세션은 모두 끝났고 두 모델 모두 완전·불완전 수정을
+구분했다. 합계는 기본 140,630토큰·131.371초, 스킬 221,949토큰·141.093초로
+스킬이 **토큰 57.82%·시간 7.40% 더 사용**했다. 지정된 `-m unittest` 실행에
+맞추려 두 스킬 세션 모두 도우미 내부를 수정했다. 원본 테스트 결과는 있지만
+일부 선행 출력 누락이 있다. 별도 재실행의 Git 인덱스 변경·외부 검사 실패·
+진단 출력 차이도 보존했다. 일반적인 성능 향상이나 효율 개선 결과가 아니다.
+
 Receipt [committed SQLite transfer preflight](RECEIPT-LEDGER-01-PROTOCOL.md),
 resources `ec0cc28`, collector `4325a05`: two new correlated variants exercise real
 committed writes/fresh reads and current tests on historical implementations.
 Complete fix passes; acknowledgement-only fix still doubles balances. Native
 preflight, same-input/import provenance, full original preservation and cleanup
-pass (2 author tests / 0.760s). Four baseline/skill sessions are preregistered, not
-yet run. New authored fixtures are not independent production evidence.
+pass (2 author tests / 0.760s). Four baseline/skill sessions were preregistered;
+their adverse results are reviewed above. These are not independent production data.
 
 한국어: 기존 파서와 다른 SQLite 수정 검증 과제 2종을 준비했다. 실제 커밋된
 쓰기와 새 연결의 읽기로 완전한 수정과 반환값만 고친 불완전한 수정을 구분한다.
 동일 입력·과거 구현·원본 보존·정리까지 직접 검증했고 작성자 테스트 2개가
-통과했다. 기본/스킬 비교 4세션의 조건은 고정했지만 모델 실행은 아직 안 했다.
+통과했다. 고정 조건의 기본/스킬 비교 4세션 결과와 비용 증가를 위에 기록했다.
 서로 관련된 자체 제작 과제이며 실제 사용자·운영 환경의 독립 증거는 아니다.
 
 Collector [pre-add index retention](PRE-COLLECTION-INDEX-01.md), previous source
