@@ -53,3 +53,36 @@ not use an external grading service or substitute a generic score for native pro
 제공하지 않는다. 기존 테스트가 잡은 결함에 불필요한 추가 검증을 붙이는지 살피며,
 필수 검증은 생략할 수 없다. 이미 노출된 과제이며 전체 성능·인과관계의 증거가
 아니다. 불리한 결과·출력 누락도 남기고 기존 그래프는 유지한다.
+
+## Execution checkpoint — native evidence review pending
+
+Launch `d14e03b`, resources `bec12d6`. Both scheduled sessions completed, runner
+exit 0, no timeouts or limits. Retained local run:
+`benchmarks/local-runs/httpx-exception-example-01`. Metadata totals:
+
+| Arm | Input + output tokens | Process seconds |
+| --- | ---: | ---: |
+| baseline | 79,312 | 48.563 |
+| skill | 223,391 | 81.563 |
+
+Observed cost increases: **181.66% tokens / 67.95% time**. These are preliminary
+metadata arithmetic, not an accepted equivalent-work comparison. Both final
+answers report native 24-pass baseline / 4-fail mutant and no stronger test needed.
+Command inspection shows skill interface adoption without a probe, full helper
+reads and a custom pytest collection plugin revised after an initial setup failure.
+Do not infer the fraction of overhead caused by any one action.
+
+Read-only integrity review verifies 125 tracked originals preserved in both final
+snapshots and eight installed/frozen skill resources matching. Baseline retained
+copies; skill reports removing its copies. The unchanged task did not explicitly
+require deletion, so do not newly score baseline retention as a violation. Native
+output review, capture/resource reconciliation and public trace export remain;
+answer claims and final snapshots alone do not complete behavioral verification.
+No retry or featured update. Next work is evidence review and the observed pytest
+setup/read overhead, not another sample of the unchanged candidate.
+
+한국어: 두 실행은 완료됐지만 비용은 토큰 181.66%·시간 67.95% 증가했다.
+스킬이 추가 검증을 생략해도 전체 비용 개선은 되지 않았다. 도우미 전체 읽기와
+별도 pytest 플러그인 설정 실패·수정이 관측됐다. 실제 출력 검토·공개 기록 정리는
+아직 남아 있으며, 최종 답변만으로 검증 완료를 선언하지 않는다. 과제에 명시되지
+않은 임시 복사본 삭제를 사후 채점 기준으로 추가하지 않는다.
