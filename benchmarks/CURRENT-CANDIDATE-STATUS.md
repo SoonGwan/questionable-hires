@@ -11,6 +11,19 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
+New Hostage candidate: [controlled callback test support](HOSTAGE-CONTROLLED-CALL-01.md)
+replaces repeated asyncio entry/release gates only where equivalent project support
+is absent. Seven native tests and 15 installer tests pass, including standalone
+copying and the retained real Form's valid/missing-guard controls. Application
+assertions and owned task cleanup remain explicit test responsibilities. No model
+adoption/cost or cross-task efficiency evidence yet; featured data is unchanged.
+Full local suite passes 452 tests in 71.363s with no failures/skips.
+
+한국어: 범위 협상가에 선택형 비동기 호출 제어 도구를 추가했다. 실제 호출의
+시작·결과·오류를 제어하며 앱의 상태·중복 방지 판단은 테스트에 남긴다.
+실제 Form 구현과 중복 방지 제거 대조군을 검증했지만 모델 비용 절감은
+아직 측정하지 않았다. 기존 프로젝트 도구가 있으면 그것을 우선 사용한다.
+
 Instruction `e0956d5`: [Friday result reuse](FRIDAY-RESULT-REUSE-01.md)
 moves the existing Python API/BLOB contract into the core interface so computed
 comparisons can reuse the first execution. Runtime remains `e3bc342`; 41 Friday
