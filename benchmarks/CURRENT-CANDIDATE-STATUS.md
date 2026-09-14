@@ -9,6 +9,27 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Necromancer guide disclosure — 2026-09-15, parent `28caeb8`
+
+The [routine history interface](../skills/necromancer/references/focused-history.md)
+now keeps invocation, evidence interpretation and operational limits together;
+[API/implementation details](../skills/necromancer/references/focused-history-details.md)
+are conditional. The routine file decreases from 6,033 to 3,311 UTF-8 bytes
+(45.12%); both new references total 5,782 bytes. This is **document size**, not
+model-token or elapsed-time savings. Entry instructions and executable helper
+bytes are unchanged. No new model comparison or featured promotion.
+
+All 42 history regression tests pass (14.551s). A read-only CLI check on actual
+`scripts/install.py` with two selected ranges returns the six selected lines,
+attribution and introducing patch. These checks establish that the documented
+invocation still works, not that a model will avoid reading the detailed reference
+or implementation. Behavioral adoption and end-to-end benefit remain unmeasured.
+
+한국어: Necromancer의 기본 도우미 안내에서 API·내부 구현 설명을 분리했다.
+기본 안내 파일은 6,033→3,311바이트지만, 이를 토큰 45% 절감이라고 부르지 않는다.
+관련 검사 42개와 실제 저장소의 읽기 전용 호출을 확인했다. 실행 코드와 대표
+그래프는 그대로이며 모델의 실제 읽기 선택과 전체 성능 효과는 아직 미측정이다.
+
 ## Linux archive verification — 2026-09-15, source `73d27f5`
 
 [Current source-archive check](LINUX-ARCHIVE-655-01.md): Linux arm64/Python 3.12.3,
