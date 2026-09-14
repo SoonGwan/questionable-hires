@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Named historical regions — 2026-09-15, parent `da20939`
+
+[Optional Python selector](PYTHON-REGIONS-01.md) replaces custom extraction code
+only after historical names/revision are identified. Six local tests pass; an
+author replay preserves three complete HTTPX historical functions (exact source
+line slices, caller references and guard text). Missing/truncated excerpts remain
+explicitly incomplete. This is static evidence preservation, not a model-cost
+result. Entry instructions remain unchanged; no featured/chart update.
+Whole-repository checkpoint: 619 tests pass (94.465s), plus skill/repository and
+featured-language synchronization checks; these are not model benchmarks.
+
+한국어: 반복되는 과거 함수 추출을 작은 선택형 도구로 묶었다. 자동 검사 6개와
+실제 과거 소스의 함수 3개 텍스트 보존은 확인했지만, 모델의 전체 토큰·시간 절감은
+미검증이다. 진입 지침은 늘리지 않았으며 기존 측정값과 그래프도 바꾸지 않는다.
+
 ## Compiler-context transfer — 2026-09-15, launch `46906bf`
 
 [Direct old/new real-checkout screen](results/httpx-auth-history-01/README.md):

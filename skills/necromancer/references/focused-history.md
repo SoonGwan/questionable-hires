@@ -8,6 +8,10 @@ declarations can introduce unrelated attribution. If native Git already supplies
 the missing fact, no collector is necessary. Read the interface below when using
 the helper, not its implementation unless adapting or troubleshooting it.
 
+When a historical Python function is already identified but full-module output
+would bury it, see [named Python excerpts](python-regions.md). This optional
+selector replaces a custom extraction script, not the caller/context check.
+
 Once the relevant current file and lines are known, the optional helper collects current text, dirty status, shallow-history status, line attribution and patches for up to three attributed commits:
 
 ```sh
