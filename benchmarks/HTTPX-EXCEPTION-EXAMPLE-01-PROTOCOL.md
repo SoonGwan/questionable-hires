@@ -56,6 +56,10 @@ not use an external grading service or substitute a generic score for native pro
 
 ## Execution checkpoint — native evidence review pending
 
+Historical preliminary checkpoint below. The subsequent [completed original-evidence
+review and public traces](results/httpx-exception-example-01/README.md) supersede
+its pending-review status, not its recorded values or limitations.
+
 Launch `d14e03b`, resources `bec12d6`. Both scheduled sessions completed, runner
 exit 0, no timeouts or limits. Retained local run:
 `benchmarks/local-runs/httpx-exception-example-01`. Metadata totals:

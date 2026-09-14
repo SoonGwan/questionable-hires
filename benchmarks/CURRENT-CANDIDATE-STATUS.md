@@ -11,6 +11,19 @@ it has not established a broad 20–30% gain.
 
 ## Con Artist conditional example — 2026-09-15, parent `eca85cd`
 
+[HTTPX execution review](results/httpx-exception-example-01/README.md), launch
+`d14e03b`, resources `bec12d6`: both original native audits establish 24-pass
+correct / 4-fail mutant behavior. Skill costs increase **181.66% tokens / 67.95%
+time**. Both omit stronger probes; skill adds full helper reads and a custom pytest
+plugin that first fails during setup, then succeeds after repair. All scheduled
+evidence is preserved and reconciled. No efficiency win or conditional-example
+causality. Next work is proportional provenance guidance, not another unchanged run.
+
+한국어: HTTPX 실제 실행 증거는 양쪽 모두 유효했지만 스킬 비용은 토큰 181.66%·
+시간 67.95% 증가했다. 별도 pytest 진단 플러그인의 설정 실패·수정과 도우미
+전체 읽기가 관측됐다. 실패도 공개했고, 다음은 출처 검증의 과도한 확장을 줄이는
+수정이며 같은 후보를 다시 추첨하지 않는다.
+
 [Executed documentation recipe](CON-ARTIST-CONDITIONAL-EXAMPLE-01.md) now selects
 the existing conditional stronger-probe mode. Real native controls retain four
 checks when existing tests miss the fault or unconditional probe validation is
