@@ -1,0 +1,20 @@
+[
+  {
+    "id": "keyed-publish",
+    "skill": "hostage-negotiator",
+    "task": "Prevent duplicate publication of the same document while its write is pending. Implement the behavior in the existing Publisher, preserving the public write callback contract and unrelated files. Different documents and independent Publisher instances must remain concurrent. Follow requirements.md. Retain rerunnable regression tests for duplicate suppression without releasing the first call, different-key and instance independence, exact argument/result/error identity, synchronous callback failure, success/failure retry and cancellation/retry. Bound behavior-dependent waits and clean up owned tasks. Run the existing tests unchanged as well as the new regressions, and report only observed execution results. Keep all work inside this project; no dependencies, network, other skills, delegation, publication or deployment.",
+    "files": {
+      "app/__init__.py": "",
+      "app/publisher.py": "class Publisher:\n    async def publish(self, document_id, payload, write):\n        return await write(document_id, payload=payload)\n",
+      "requirements.md": "# Duplicate publication\n\nA Publisher instance handles multiple documents. While one publish for a document_id is awaiting its write, another publish for that SAME document_id on that SAME instance must return None promptly without calling its supplied write callback or disturbing the first call. Different document IDs and different Publisher instances must not block or suppress one another. document_id is a nonempty string; exact string equality defines identity, with no normalization.\n\nThe callback receives document_id positionally and the original payload object as the payload keyword. Payload is opaque; do not clone, serialize or inspect it. Preserve the exact successful result object and exact exception object. Clear the document's in-flight state after success, asynchronous failure, a synchronous exception raised by calling write, or cancellation, so a subsequent publish can proceed. Retry is caller-initiated, not automatic. Do not change public signatures, add a queue, shared/global lock, automatic retries or transport calls.\n\nExisting tests: python3 -B -m unittest discover -s tests -v. Keep their original checks unchanged. Add bounded, rerunnable regression checks; test-only support is allowed but not required. There is no production I/O or deployment step in this ticket.\n",
+      "tests/__init__.py": "",
+      "tests/test_publisher.py": "import asyncio\nimport unittest\nfrom app.publisher import Publisher\n\nclass ExistingTests(unittest.IsolatedAsyncioTestCase):\n    async def test_arguments_and_result_identity(self):\n        payload, result = object(), object()\n        observed = []\n        async def write(document_id, *, payload):\n            observed.append((document_id, payload))\n            return result\n        self.assertIs(await asyncio.wait_for(Publisher().publish('doc', payload, write), 1), result)\n        self.assertEqual(observed[0][0], 'doc')\n        self.assertIs(observed[0][1], payload)\n\n    async def test_exception_identity(self):\n        error = ValueError('write failed')\n        async def write(document_id, *, payload):\n            raise error\n        with self.assertRaises(ValueError) as caught:\n            await asyncio.wait_for(Publisher().publish('doc', object(), write), 1)\n        self.assertIs(caught.exception, error)\n"
+    },
+    "criteria": [
+      "Suppresses same-document same-instance overlap promptly without invoking the duplicate callback or disturbing the first call.",
+      "Allows different document IDs and independent instances to progress without a global busy guard.",
+      "Preserves exact callback arguments and result/exception identities, with cleanup and caller-driven retries after success, asynchronous failure, synchronous failure and cancellation.",
+      "Preserves existing tests and unrelated files; retains and runs bounded rerunnable regression checks with owned task cleanup and accurate execution reporting."
+    ]
+  }
+]

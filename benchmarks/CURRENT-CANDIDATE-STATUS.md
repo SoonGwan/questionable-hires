@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
+Prepared next transfer probe: [keyed publication protocol](HOSTAGE-KEYED-PUBLISH-01-PROTOCOL.md)
+tests same-document suppression without blocking other keys/instances. The new
+author-written fixture passes native runner and positive/negative controls;
+no model execution/result yet and no independent-holdout claim. Skill remains
+`7dd4b56`, callback asset `d9e7711`.
+
+한국어: 같은 문서만 중복 발행을 막고 다른 문서는 동시에 처리하는 새 과제를
+준비했다. 정상·중복 호출·전역 차단 대조군 사전 검증은 통과했지만 모델
+실험은 아직 실행하지 않았으며, 작성자 제작 과제를 독립 평가로 보지 않는다.
+
 New Hostage instruction/collector candidate: [verification delivery](HOSTAGE-VERIFICATION-DELIVERY-01.md)
 requires test-specific result evidence before a pass claim and adds a review-only
 missing unittest summary diagnostic. The retained gap is detected without changing
