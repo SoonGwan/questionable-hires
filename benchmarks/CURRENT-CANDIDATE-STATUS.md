@@ -14,10 +14,17 @@ it has not established a broad 20–30% gain.
 [Proportional tooling candidate](CON-ARTIST-NATIVE-ROUTING-01.md), parent `03c5963`,
 changes only helper routing: small audits use native facilities; choose the helper
 when its capabilities remove needed orchestration, not for compatibility alone.
-All verification/scope obligations remain. Model effects are pending measurement.
+All verification/scope obligations remain. [Native screen 02](results/installer-native-02/README.md),
+launch/resources `89a45f5`, observes direct native tooling in both skill cells with
+actual detection. Fresh baseline token/time changes: rollback +9.57%/−10.72%,
+cancellation −11.59%/−25.73%. Cancellation baseline repairs a diagnostic failure;
+n=1, exposed related tasks, mixed costs and unequal work prevent general claims.
+Keep provisionally and move beyond the installer cases, including helper-needed work.
 
 한국어: 작은 작업의 도우미 우선 도입을 제거했다. 검증·권한 경계는 유지하며
-실제로 필요한 처리를 줄여줄 때만 선택한다. 새 후보의 모델 효과는 아직 미검증이다.
+실제로 필요한 처리를 줄여줄 때만 선택한다. 새 비교에서 두 스킬 실행에 반영됐고
+실제 결함 탐지도 유지됐다. 비용은 혼합 결과이며 기본 모델의 오류 복구 비용도
+포함돼 일반화하지 않는다. 잠정 유지하고 도우미가 필요한 다른 작업까지 확인한다.
 
 [Installer transfer 01](results/installer-audit-01/README.md), launch `8955cb1`,
 resources `07166bf`: four fresh baseline/skill sessions on two related real-code

@@ -1,5 +1,7 @@
 # Proportional audit tooling — 2026-09-15 KST
 
+Completed: [native routing screen 02](results/installer-native-02/README.md).
+
 Parent `03c5963`. The [installer transfer](results/installer-audit-01/README.md)
 observed 75–97% more skill tokens, helper source inspection and repeated recipes,
 despite valid native detection. The previous entry told compatible Python audits
