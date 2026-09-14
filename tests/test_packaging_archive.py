@@ -10,6 +10,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PackagingArchiveTests(unittest.TestCase):
+    def test_friday_schedule_runs_without_history_and_skips_only_provenance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            archive = Path(directory) / 'archive'
+            for name in ('tests/test_friday_compact_schedule.py', 'benchmarks/run_friday_compact_01.py'):
+                target = archive / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / name, target)
+            result = subprocess.run([sys.executable, '-B', '-m', 'unittest', 'discover',
+                                     '-s', 'tests', '-v'], cwd=archive,
+                                    capture_output=True, text=True, timeout=15)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn('Ran 3 tests', result.stderr)
+            self.assertIn('OK (skipped=1)', result.stderr)
+            self.assertIn('Pinned Friday comparison history unavailable', result.stderr)
+            self.assertIn('test_all_six_fixed_settings_and_no_retry_of_terminal_failure', result.stderr)
+            self.assertIn('test_limit_or_missing_manifest_stops_schedule', result.stderr)
+
     def test_review_regression_runs_without_history_or_git_exporter(self):
         with tempfile.TemporaryDirectory() as directory:
             archive = Path(directory) / 'archive'

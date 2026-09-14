@@ -13,6 +13,11 @@ spec.loader.exec_module(compact)
 
 class FridayCompactScheduleTests(unittest.TestCase):
     def test_frozen_snapshots_differ_only_in_entry_and_preserve_tasks(self):
+        for revision in compact.VERSIONS.values():
+            available = subprocess.run(['git', 'cat-file', '-e', revision + '^{commit}'],
+                                       cwd=ROOT, capture_output=True, timeout=10)
+            if available.returncode:
+                self.skipTest('Pinned Friday comparison history unavailable; schedule checks still run')
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / 'run'
             compact.prepare(output)

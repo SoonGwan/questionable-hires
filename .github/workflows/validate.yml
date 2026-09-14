@@ -17,6 +17,8 @@ jobs:
         python: ['3.9', '3.11', '3.12']
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Checkout tests compare pinned historical resources.
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
