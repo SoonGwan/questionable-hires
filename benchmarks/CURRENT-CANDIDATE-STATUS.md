@@ -19,10 +19,17 @@ integration and 15 installer checks pass. Python support is unchanged. No new
 JavaScript model, browser, TypeScript or efficiency claim; prior measurements
 must not be relabeled as results for this resource.
 
+Prepared [JavaScript SubmitPanel screen](HOSTAGE-JAVASCRIPT-PANEL-01-PROTOCOL.md),
+fixture/preflight `a000672`: one explicit abort-ownership task with two existing
+tests, correct and deliberate guard/cleanup/signal fault controls. Three author
+tests pass; full repository preflight is running. No model session launched yet.
+
 한국어: `8ca9e70`에서 JavaScript용 독립 호출 제어 도구를 추가했다. 실제 호출
 시작·중복 인자·응답 순서·실패 전달과 결함 검출을 Node에서 검증했다.
 Python 지원은 그대로이며, JavaScript 모델 성능이나 브라우저 검증을
 완료했다고 주장하지 않는다.
+기존 테스트를 보존하면서 제출 상태를 구현하는 과제와 정상·결함 대조군을
+준비했다. 취소 책임도 명시했으며, 전체 사전 테스트 후 모델 비교를 시작한다.
 
 Friday compact candidate rejected after [direct comparison](FRIDAY-COMPACT-MODEL-01-REVIEW.md),
 launch `ce6dd4e`: all six sessions complete. Original 235,749 tokens/172.655s;
