@@ -1,10 +1,16 @@
 # Local plugin installation check
 
-Current standalone CLI evidence is separate: [all-eight skills CLI installation](../benchmarks/SKILLS-CLI-INSTALL-01.md),
-source `45fe88e`, `skills@1.5.26`, 2026-09-14. All 38 selected resource files and
-modes match, seven Python entrypoints and both task-aware callback assets execute
-from a disposable project. It is not the historical plugin registration below
-or a remote authenticated installation.
+Standalone CLI checkpoint, 2026-09-15: [all-eight installation and recent helper execution](../benchmarks/SKILLS-CLI-INSTALL-02.md),
+source `0f2706a`, `skills@1.5.26`. All 43 selected resources match bytes/modes;
+eight Python entrypoints, both callback assets, named Python regions and real
+Receipt native before-fail/after-pass execute from installed copies. Network
+disabled, disposable Linux project only. The initial wrong CLI path is retained.
+This is not the historical plugin registration below or a remote authenticated
+installation. [Earlier 38-file checkpoint](../benchmarks/SKILLS-CLI-INSTALL-01.md)
+remains tied to source `45fe88e`.
+
+한국어: 최신 로컬 설치본의 파일 일치와 실제 기능 실행을 확인했으며, 원격 인증·
+호스트 등록·모델 성능 검증과 구분한다. 최초 실행 경로 오류도 기록에 남겼다.
 
 Executed with Codex CLI `0.153.4` on macOS, 2026-09-10 UTC (2026-09-11 in Seoul).
 

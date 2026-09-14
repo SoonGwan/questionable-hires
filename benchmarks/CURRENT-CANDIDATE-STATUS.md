@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Installed recent helpers — 2026-09-15, source `0f2706a`
+
+[Actual skills CLI check](SKILLS-CLI-INSTALL-02.md): all eight skills/43 resources
+match source bytes/modes; eight Python entrypoints, existing callback assets,
+named-region success/missing behavior and Receipt native before-fail/after-pass
+execute from installed copies. Original contents and cleanup verified. An initial
+wrong CLI path failed before installation and is retained. Existing pinned CLI,
+network-disabled Linux container only; no remote npx/authentication, host install
+or model-cost claim. An added ordinary offline installed-helper test and four
+archive tests pass on macOS. No new full-suite result or featured/chart update.
+
+한국어: 실제 CLI로 설치한 8개 스킬·43개 파일의 일치와 최근 기능의 실행을 확인했다.
+최초 경로 오류를 보존했고 일반 회귀 검사에도 설치본 실행을 추가했다. 원격 설치나
+모델 비용 절감은 미검증이며 전체 성능 목표는 아직 미달이다.
+
 ## Receipt startup coexistence verified — 2026-09-15, source `7a59de8`
 
 [Conventional startup support](RECEIPT-STARTUP-COEXIST-01.md): Ubuntu's default
