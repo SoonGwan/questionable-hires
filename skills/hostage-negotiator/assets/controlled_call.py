@@ -9,6 +9,14 @@ save.started(timeout=1) for actual callback entry; it returns a unique Call.
 call.args/call.kwargs hold argument references, not deep snapshots. save.calls
 records every entry, even identical arguments, for call-count assertions.
 
+If entry must happen before a particular application task finishes, await
+save.started_before(task, timeout=1). Pass an already-owned asyncio Task/Future
+on this loop, not a coroutine. Missing entry raises EntryNotObserved early with
+an outcome containing status and the exact value/error (or cancelled status).
+Queued entry wins; this does not establish which task caused it. Tests still
+assert arguments, state and task outcomes. Timeout/cancelling the waiter leaves
+the application task and unconsumed entries untouched.
+
 call.complete(value) delivers that exact object (default None); call.fail(error)
 raises that exact exception. Each call has its own response future. Sibling
 completion/cancellation is independent. Completing a finished/cancelled handle
@@ -28,6 +36,13 @@ thread, browser, transaction or production-runtime evidence.
 import asyncio
 
 
+class EntryNotObserved(AssertionError):
+    def __init__(self, outcome):
+        self.outcome = outcome
+        super().__init__('Application task ' + outcome['status'] +
+                         ' before expected callback entry')
+
+
 class Call:
     def __init__(self, args, kwargs):
         self.args, self.kwargs = args, kwargs
@@ -44,11 +59,13 @@ class ControlledCall:
     def __init__(self):
         self.calls = []
         self._entered = asyncio.Queue()
+        self._entry_changed = asyncio.Event()
 
     async def __call__(self, *args, **kwargs):
         call = Call(args, kwargs)
         self.calls.append(call)
         self._entered.put_nowait(call)
+        self._entry_changed.set()
         return await call.response
 
     async def started(self, timeout=1):
@@ -59,3 +76,35 @@ class ControlledCall:
         if not 0 < timeout <= 30:
             raise ValueError('timeout must be in (0, 30]')
         return await asyncio.wait_for(self._entered.get(), timeout)
+
+    async def started_before(self, task, timeout=1):
+        """Observe entry or task settlement without owning/cancelling that task."""
+        if not 0 < timeout <= 30:
+            raise ValueError('timeout must be in (0, 30]')
+        loop = asyncio.get_running_loop()
+        if not isinstance(task, asyncio.Future) or task.get_loop() is not loop:
+            raise TypeError('task must be an owned asyncio Task/Future on this loop')
+        deadline = loop.time() + timeout
+        while True:
+            if not self._entered.empty():
+                return self._entered.get_nowait()
+            if task.done():
+                if task.cancelled():
+                    outcome = dict(status='cancelled')
+                elif task.exception() is not None:
+                    outcome = dict(status='failed', error=task.exception())
+                else:
+                    outcome = dict(status='completed', value=task.result())
+                raise EntryNotObserved(outcome)
+            self._entry_changed.clear()
+            # Wait for notification, never dequeue in a cancellable child task.
+            # Otherwise cancellation could lose an entry already taken by it.
+            notice = asyncio.create_task(self._entry_changed.wait())
+            try:
+                done, _ = await asyncio.wait((notice, task), timeout=max(0, deadline - loop.time()),
+                                             return_when=asyncio.FIRST_COMPLETED)
+                if not done:
+                    raise asyncio.TimeoutError('Timed out waiting for callback entry')
+            finally:
+                notice.cancel()
+                await asyncio.gather(notice, return_exceptions=True)

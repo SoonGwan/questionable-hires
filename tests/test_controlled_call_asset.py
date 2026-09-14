@@ -1,5 +1,4 @@
 import asyncio
-import ast
 import importlib.util
 from pathlib import Path
 import shutil
@@ -16,6 +15,139 @@ spec.loader.exec_module(asset)
 
 
 class ControlledCallTests(unittest.IsolatedAsyncioTestCase):
+    async def test_plain_entry_wait_cannot_observe_already_completed_application(self):
+        task = asyncio.create_task(asyncio.sleep(0, result='skipped callback'))
+        self.tasks.append(task)
+        self.assertEqual(await task, 'skipped callback')
+        with self.assertRaises(asyncio.TimeoutError):
+            await self.callback.started(0.01)
+
+    async def test_task_aware_wait_reports_exact_outcomes_without_timeout(self):
+        value, error = object(), ValueError('callback skipped')
+        for status, result in [('completed', value), ('failed', error), ('cancelled', None)]:
+            task = asyncio.get_running_loop().create_future()
+            if status == 'completed': task.set_result(result)
+            elif status == 'failed': task.set_exception(result)
+            else: task.cancel()
+            with self.assertRaises(asset.EntryNotObserved) as caught:
+                await self.callback.started_before(task, timeout=30)
+            self.assertEqual(caught.exception.outcome['status'], status)
+            if status != 'cancelled':
+                self.assertIs(caught.exception.outcome['error' if status == 'failed' else 'value'], result)
+
+    async def test_task_aware_wait_preserves_entry_arguments_results_and_errors(self):
+        for queued in (False, True):
+            argument = object()
+            task = self.start(argument, named=argument)
+            if queued: await asyncio.sleep(0)
+            call = await self.callback.started_before(task)
+            self.assertIs(call.args[0], argument)
+            self.assertIs(call.kwargs['named'], argument)
+            value = object()
+            call.complete(value)
+            self.assertIs(await task, value)
+
+    async def test_task_aware_timeout_and_cancellation_leave_application_alive(self):
+        gate = asyncio.Event()
+        async def application():
+            await gate.wait()
+            return await self.callback('later')
+        task = asyncio.create_task(application())
+        self.tasks.append(task)
+        with self.assertRaises(asyncio.TimeoutError):
+            await self.callback.started_before(task, timeout=0.01)
+        waiter = asyncio.create_task(self.callback.started_before(task, timeout=30))
+        await asyncio.sleep(0)
+        waiter.cancel()
+        with self.assertRaises(asyncio.CancelledError): await waiter
+        self.assertFalse(task.done())
+        gate.set()
+        call = await self.callback.started_before(task)
+        self.assertEqual(call.args, ('later',))
+        call.complete('result')
+        self.assertEqual(await task, 'result')
+
+    async def test_cancelled_waiter_does_not_consume_entry_queued_during_wakeup(self):
+        task = asyncio.get_running_loop().create_future()
+        waiter = asyncio.create_task(self.callback.started_before(task))
+        await asyncio.sleep(0)
+        application = self.start('preserved')
+        await asyncio.sleep(0)
+        self.assertEqual(len(self.callback.calls), 1)
+        waiter.cancel()
+        with self.assertRaises(asyncio.CancelledError): await waiter
+        call = await self.callback.started()
+        self.assertEqual(call.args, ('preserved',))
+        call.complete()
+        await application
+        task.set_result(None)
+
+    async def test_queued_entry_wins_and_competing_waits_do_not_duplicate_calls(self):
+        task = self.start('first')
+        await asyncio.sleep(0)
+        finished = asyncio.get_running_loop().create_future()
+        finished.set_result(None)
+        call = await self.callback.started_before(finished)
+        self.assertEqual(call.args, ('first',))
+        call.complete()
+        await task
+        with self.assertRaises(asset.EntryNotObserved):
+            await self.callback.started_before(finished)
+        app = self.start('second')
+        waits = [asyncio.create_task(self.callback.started_before(app)) for _ in range(2)]
+        done, pending = await asyncio.wait(waits, return_when=asyncio.FIRST_COMPLETED)
+        self.assertEqual(len(done), 1)
+        entry = done.pop().result()
+        entry.complete('finished')
+        with self.assertRaises(asset.EntryNotObserved): await pending.pop()
+        self.assertEqual(await app, 'finished')
+
+    async def test_task_aware_wait_rejects_wrong_loop_and_non_task_without_scheduling(self):
+        for task in (None, object()):
+            with self.assertRaises(TypeError): await self.callback.started_before(task)
+        other = asyncio.new_event_loop()
+        try:
+            with self.assertRaises(TypeError): await self.callback.started_before(other.create_future())
+        finally: other.close()
+        for timeout in (0, -1, 31, float('nan'), float('inf')):
+            with self.assertRaises(ValueError): await self.callback.started_before(None, timeout)
+
+    async def test_application_cancellation_wakes_entry_wait_without_becoming_waiter_cancellation(self):
+        gate = asyncio.Event()
+        task = asyncio.create_task(gate.wait())
+        self.tasks.append(task)
+        waiter = asyncio.create_task(self.callback.started_before(task, timeout=30))
+        await asyncio.sleep(0)
+        task.cancel()
+        with self.assertRaises(asset.EntryNotObserved) as caught:
+            await asyncio.wait_for(waiter, 1)
+        self.assertEqual(caught.exception.outcome, {'status': 'cancelled'})
+        self.assertTrue(task.cancelled())
+
+    async def test_real_two_stage_operation_keeps_results_and_rejects_skipped_decode(self):
+        for skip in (False, True):
+            fetch, decode = asset.ControlledCall(), asset.ControlledCall()
+            payload, result = object(), object()
+            async def application():
+                received = await fetch()
+                if skip: return received
+                return await decode(received)
+            task = asyncio.create_task(application())
+            self.tasks.append(task)
+            (await fetch.started_before(task)).complete(payload)
+            if skip:
+                with self.assertRaises(asset.EntryNotObserved) as caught:
+                    await asyncio.wait_for(decode.started_before(task, timeout=30), 1)
+                self.assertEqual(caught.exception.outcome['status'], 'completed')
+                self.assertIs(caught.exception.outcome['value'], payload)
+                self.assertIs(await task, payload)
+                self.assertEqual(decode.calls, [])
+            else:
+                entry = await decode.started_before(task)
+                self.assertIs(entry.args[0], payload)
+                entry.complete(result)
+                self.assertIs(await task, result)
+
     async def asyncSetUp(self):
         self.callback = asset.ControlledCall()
         self.tasks = []
@@ -100,17 +232,6 @@ class ControlledCallTests(unittest.IsolatedAsyncioTestCase):
 
 
 class StandaloneTests(unittest.TestCase):
-    def test_documentation_move_preserves_frozen_executable_ast(self):
-        frozen = ASSET.parents[3] / 'benchmarks/results/hostage-keyed-publish-01/keyed-publish--skill--1/project/tests/controlled_call.py'
-        old, current = ast.parse(frozen.read_text()), ast.parse(ASSET.read_text())
-        self.assertIsInstance(old.body[0], ast.Expr)
-        self.assertIsInstance(current.body[0], ast.Expr)
-        self.assertIsInstance(old.body[0].value.value, str)
-        self.assertIsInstance(current.body[0].value.value, str)
-        old.body.pop(0)
-        current.body.pop(0)
-        self.assertEqual(ast.dump(old), ast.dump(current))
-
     def test_copy_runs_without_skill_installation(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -121,7 +242,7 @@ async def main():
     callback = ControlledCall()
     task = asyncio.create_task(callback())
     try:
-        call = await callback.started()
+        call = await callback.started_before(task)
         call.complete(42)
         assert await asyncio.wait_for(task, 1) == 42
     finally:

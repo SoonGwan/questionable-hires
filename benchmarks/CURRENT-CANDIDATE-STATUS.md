@@ -11,12 +11,24 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Current Python Hostage runtime addition: [task-aware entry](HOSTAGE-PYTHON-ENTRY-WAIT-01.md).
+An optional wait detects an already-finished application rather than spending its
+entry deadline. Local tests cover exact outcomes, both cancellation directions,
+queued-entry preservation and competing consumers; correct two-stage behavior
+passes and skipped decode yields the actual completed payload. Python model
+adoption/cost remains unmeasured; no historical score or featured change.
+Full current local suite: 494 passed in 68.746s, no failures/skips.
+
+한국어: Python에도 앱 작업 종료를 확인하는 선택형 콜백 대기를 추가했다. 대기만
+취소해도 앱 작업은 유지하고, 취소와 콜백 진입이 겹쳐도 콜백을 잃지 않는지
+검증했다. 실제 모델 채택·전체 비용 효과는 아직 미측정이다.
+
 Measurement review improvement — 2026-09-14: the runner flags direct `node --test`
 commands without complete TAP/spec count summaries for manual review. Retained
 entry-wait model evidence flags `item_8` only, not its final 45-pass command.
 Native success/failure reporter controls pass; diagnostics never rescore results
 or rewrite frozen metadata. This improves evidence review, not skill performance.
-Full current local suite: 486 passed in 68.961s, no failures/skips.
+Local suite at `4ca29d1`: 486 passed in 68.961s, no failures/skips.
 
 한국어: Node 테스트 요약 출력 누락을 자동 검토 대상으로 표시한다. 기존 결과를
 실패로 바꾸거나 출력 누락을 복구하는 기능은 아니며, 성능 향상 수치도 아니다.
