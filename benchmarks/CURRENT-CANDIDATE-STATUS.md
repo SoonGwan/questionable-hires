@@ -11,6 +11,14 @@ it has not established a broad 20–30% gain.
 
 ## Con Artist conditional example — 2026-09-15, parent `eca85cd`
 
+[Proportional tooling candidate](CON-ARTIST-NATIVE-ROUTING-01.md), parent `03c5963`,
+changes only helper routing: small audits use native facilities; choose the helper
+when its capabilities remove needed orchestration, not for compatibility alone.
+All verification/scope obligations remain. Model effects are pending measurement.
+
+한국어: 작은 작업의 도우미 우선 도입을 제거했다. 검증·권한 경계는 유지하며
+실제로 필요한 처리를 줄여줄 때만 선택한다. 새 후보의 모델 효과는 아직 미검증이다.
+
 [Installer transfer 01](results/installer-audit-01/README.md), launch `8955cb1`,
 resources `07166bf`: four fresh baseline/skill sessions on two related real-code
 tasks all establish native defect detection. Skill tokens increase 97.28% / 75.32%;
