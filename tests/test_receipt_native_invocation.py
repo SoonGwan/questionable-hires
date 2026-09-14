@@ -130,7 +130,7 @@ class Probe(unittest.TestCase):
         site_path = Path(path)
         self.assertTrue(site_path.is_relative_to(user_base))
         site_path.mkdir(parents=True)
-        original_hook = site_path/'sitecustomize.py'
+        original_hook = site_path/'usercustomize.py'
         original_hook.write_text('raise RuntimeError("original configured hook")\n')
         with patch.dict(os.environ, {'PYTHONUSERBASE': str(user_base), 'PYTHONNOUSERSITE': ''}):
             result = helper.compare(self.root, dict(self.recipe, invocation='module'))

@@ -25,6 +25,11 @@ class StartupHookTests(unittest.TestCase):
         self.site_path = Path(path)
         self.assertTrue(self.site_path.is_relative_to(base))
         self.site_path.mkdir(parents=True)
+        # The distro's stdlib sitecustomize may precede user-site packages.
+        # Configure this owned fixture's normal import order, keeping the first
+        # PYTHONPATH entry (the comparison adapter, when present) first.
+        (self.site_path / 'receipt_fixture.pth').write_text(
+            'import sys; sys.path.insert(1, ' + repr(str(self.site_path)) + ')\n')
         environment = patch.dict(os.environ, {'PYTHONUSERBASE': str(base), 'PYTHONNOUSERSITE': ''})
         environment.start()
         self.addCleanup(environment.stop)
@@ -44,6 +49,11 @@ class StartupHookTests(unittest.TestCase):
             'assert builtins.receipt_hook_order == ["site"]\n'
             'assert "fixture-user-site" in sitecustomize.__file__\n'
             'builtins.receipt_hook_order.append("user")\nprint("USER-HOOK-RAN", flush=True)\n')
+        direct = subprocess.run([sys.executable, '-B', '-c',
+                                 'import builtins; assert builtins.receipt_hook_order == ["site", "user"]'],
+                                capture_output=True, text=True, timeout=10)
+        self.assertEqual(direct.returncode, 0, direct.stderr)
+        self.assertEqual(direct.stdout.splitlines(), ['SITE-HOOK-RAN', 'USER-HOOK-RAN'])
         (self.root / 'test_rule.py').write_text(
             'import builtins, subprocess, sys\nassert builtins.receipt_hook_order == ["site", "user"]\n'
             'child = subprocess.run([sys.executable, "-B", "-c", '
