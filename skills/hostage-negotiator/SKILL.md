@@ -21,6 +21,6 @@ For Python asyncio callback tests without equivalent project support, the option
 
 ## Deliver and stop
 
-Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse established verification; repeat when requested or when changed state, nondeterminism or a remaining uncertainty warrants it. Report decisive observations and consequential limitations, separating inference. Stop when requested behavior and required checks are satisfied, without opportunistic cleanup.
+Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse established verification; repeat when requested or when changed state, nondeterminism or a remaining uncertainty warrants it. When batching tests with diff/status, preserve the test's exit rather than the last command's success. Confirm required checks actually ran from their result output; missing output or undiscovered/skipped tests cannot support a pass claim. Inspect existing evidence first and rerun only the unresolved, safely repeatable check when needed. Report decisive observations and consequential limitations, separating inference. Stop when requested behavior and required checks are satisfied, without opportunistic cleanup.
 
 Preserve user changes and explicit requirements. Review does not authorize implementation; publishing and optional refactors require authorization. Keep humor optional.

@@ -11,6 +11,19 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
+New Hostage instruction/collector candidate: [verification delivery](HOSTAGE-VERIFICATION-DELIVERY-01.md)
+requires test-specific result evidence before a pass claim and adds a review-only
+missing unittest summary diagnostic. The retained gap is detected without changing
+old metadata, completion or scores; native/redirected/unrun controls remain distinct
+from proof of capture loss. No new model measurement, asset/runtime change or
+efficiency claim. Model adoption and impact need further evidence.
+Full local suite: 454 tests pass in 80.333s, no failures/skips.
+
+한국어: 테스트 자체의 종료 상태와 실행 결과를 확인하도록 마무리 지침을
+보완했다. 벤치마크도 테스트 요약이 없는 명령을 검토 대상으로 표시하며,
+출력 누락·테스트 실패를 자동 확정하거나 과거 결과를 수정하지 않는다.
+새 지침의 모델 행동·비용 효과는 아직 미측정이다.
+
 Hostage candidate `d9e7711`: [controlled callback test support](HOSTAGE-CONTROLLED-CALL-01.md)
 replaces repeated asyncio entry/release gates only where equivalent project support
 is absent. Seven native tests and 15 installer tests pass, including standalone

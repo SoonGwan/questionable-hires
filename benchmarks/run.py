@@ -59,7 +59,7 @@ def inspect_capture(stdout, stderr):
             non_objects.append(number)
             continue
         events.append(event)
-    empty_outputs, event_errors, transcript_candidates = [], [], []
+    empty_outputs, event_errors, transcript_candidates, missing_summaries = [], [], [], []
     for event in events:
         if event.get('type') in ('error', 'turn.failed'):
             event_errors.append(event.get('type'))
@@ -71,10 +71,22 @@ def inspect_capture(stdout, stderr):
             candidate = unittest_transcript_candidate(item)
             if candidate:
                 transcript_candidates.append(candidate)
+            # A shell's last exit may belong to git status, not the test process.
+            # This also flags legitimate redirection, setup failures or unrun
+            # commands: review evidence, never infer lost capture or test failure.
+            if (re.search(r'(?<!\S)-m\s+unittest\b', item.get('command', ''))
+                    and not re.search(r'^Ran \d+ tests? in [^\n]+$',
+                                      item.get('aggregated_output', ''), re.MULTILINE)):
+                missing_summaries.append(dict(
+                    item_id=item.get('id'),
+                    interpretation='No native unittest count summary in this command output; '
+                    'tests may be unrun, redirected, failed during setup, or incompletely captured. '
+                    'Review test-specific exit/evidence; shell success alone is insufficient.'))
     return events, dict(
         invalid_json_lines=invalid_lines, non_object_json_lines=non_objects,
         empty_command_output_items=empty_outputs, error_event_types=event_errors,
         unittest_transcript_review_candidates=transcript_candidates,
+        unittest_missing_summary_review_candidates=missing_summaries,
         patch_rejection_count=stderr.lower().count('patch rejected'),
         limitation='Empty command output may be legitimate. Nonempty output may still be incomplete. '
                    'These diagnostics neither prove full tool-output capture nor score task success.')

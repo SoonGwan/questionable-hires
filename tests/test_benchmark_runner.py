@@ -12,6 +12,35 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_missing_test_summary_flags_retained_native_gap_without_rescoring(self):
+        path = runner.ROOT / 'benchmarks/results/hostage-call-model-01/necessary-state--skill--1/events.jsonl'
+        raw = path.read_text()
+        events, diagnostic = runner.inspect_capture(raw, '')
+        self.assertEqual(events, [json.loads(line) for line in raw.splitlines()])
+        flagged = diagnostic['unittest_missing_summary_review_candidates']
+        self.assertEqual([row['item_id'] for row in flagged], ['item_8'])
+        item = next(e['item'] for e in events if e.get('type') == 'item.completed'
+                    and e.get('item', {}).get('id') == 'item_8')
+        self.assertEqual(item['exit_code'], 0)
+        self.assertIn('diff --git', item['aggregated_output'])
+        self.assertTrue(any(e['type'] == 'turn.completed' for e in events))
+
+    def test_missing_summary_distinguishes_review_from_proven_capture_loss(self):
+        def inspect(output, command='python3 -m unittest -v; git status --short', status=0):
+            item = dict(type='command_execution', id='probe', command=command,
+                        aggregated_output=output, exit_code=status)
+            _, diagnostics = runner.inspect_capture(json.dumps(dict(type='item.completed', item=item)), '')
+            return diagnostics['unittest_missing_summary_review_candidates']
+        self.assertEqual(inspect('Ran 1 test in 0.001s\n\nOK\n'), [])
+        self.assertEqual(inspect('Ran 0 tests in 0.000s\n\nOK\n'), [])
+        self.assertEqual(inspect('Ran 2 tests in 0.001s\n\nFAILED (failures=1)\n', status=1), [])
+        for output, command in [('', 'python3 -m unittest -v > saved.log 2>&1'),
+                                ('M form.py\n', 'false && python3 -m unittest -v; git status --short'),
+                                ('ImportError: missing support\n', 'python3 -m unittest -v')]:
+            self.assertEqual(len(inspect(output, command)), 1)
+        self.assertEqual(inspect('', 'cp helper.py tests/helper.py'), [])
+        self.assertEqual(inspect('', 'python3 -m unittest_extra -v'), [])
+
     def test_verbose_capture_review_uses_real_native_output_without_scoring_failure(self):
         source = '''import unittest
 class Checks(unittest.TestCase):
@@ -31,6 +60,7 @@ unittest.main(verbosity=2)
             raw = json.dumps(dict(type='item.completed', item=value))
             events, diagnostics = runner.inspect_capture(raw, '')
             self.assertEqual(events[0]['item'], value)
+            self.assertEqual(diagnostics['unittest_missing_summary_review_candidates'], [])
             return diagnostics['unittest_transcript_review_candidates']
         self.assertEqual(inspect(item), [])
         partial = dict(item, aggregated_output=process.stderr[process.stderr.index('test_third'):])
