@@ -10,6 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class PackagingReviewFixtureTests(unittest.TestCase):
     def test_archived_review_matches_pinned_source_when_available(self):
+        if not (ROOT / '.git').exists():
+            self.skipTest('No project-owned checkout; archived review tests still run')
         spec = importlib.util.spec_from_file_location(
             'packaging_review_provenance', ROOT / 'benchmarks/packaging_review_cases.py')
         fixture = importlib.util.module_from_spec(spec)

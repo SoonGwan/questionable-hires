@@ -14,6 +14,10 @@ spec.loader.exec_module(fixture)
 
 class PackagingFixtureTests(unittest.TestCase):
     def test_archived_case_matches_pinned_generator_when_history_is_available(self):
+        try:
+            fixture.require_checkout()
+        except ValueError:
+            self.skipTest('No project-owned checkout; archived fixture tests still run')
         available = subprocess.run(
             ['git', 'cat-file', '-e', fixture.SNAPSHOT + '^{commit}'],
             cwd=ROOT, capture_output=True)

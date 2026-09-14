@@ -13,6 +13,10 @@ spec.loader.exec_module(compact)
 
 class FridayCompactScheduleTests(unittest.TestCase):
     def test_frozen_snapshots_differ_only_in_entry_and_preserve_tasks(self):
+        try:
+            compact.require_checkout()
+        except ValueError:
+            self.skipTest('No project-owned checkout; parent history is not fixture evidence')
         for revision in compact.VERSIONS.values():
             available = subprocess.run(['git', 'cat-file', '-e', revision + '^{commit}'],
                                        cwd=ROOT, capture_output=True, timeout=10)

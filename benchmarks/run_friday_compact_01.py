@@ -20,7 +20,17 @@ SCHEDULE = (
 )
 
 
+def require_checkout():
+    if not (ROOT / '.git').exists():
+        raise ValueError('Frozen snapshots require this project checkout, not parent history')
+    result = subprocess.run(['git', 'rev-parse', '--show-toplevel'], cwd=ROOT,
+                            capture_output=True, text=True, timeout=10)
+    if result.returncode or Path(result.stdout.strip()).resolve() != ROOT.resolve():
+        raise ValueError('Git history does not belong to the selected project root')
+
+
 def prepare(output):
+    require_checkout()
     output.mkdir(parents=True, exist_ok=False)
     resources = {}
     for condition, revision in VERSIONS.items():

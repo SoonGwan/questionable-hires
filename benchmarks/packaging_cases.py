@@ -9,7 +9,18 @@ ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOT = 'a701093'
 
 
+def require_checkout():
+    """Never borrow history from a checkout containing an extracted archive."""
+    if not (ROOT / '.git').exists():
+        raise ValueError('Pinned export requires this project checkout; use archived fixtures without history')
+    result = subprocess.run(['git', 'rev-parse', '--show-toplevel'], cwd=ROOT,
+                            capture_output=True, text=True, timeout=10)
+    if result.returncode or Path(result.stdout.strip()).resolve() != ROOT.resolve():
+        raise ValueError('Git history does not belong to the selected project root')
+
+
 def cases():
+    require_checkout()
     names = subprocess.check_output(
         ['git', 'ls-tree', '-r', '--name-only', SNAPSHOT, '--',
          'scripts/build.py', 'tests/test_build.py', 'skills', 'LICENSE',
