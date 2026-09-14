@@ -11,6 +11,22 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Hostage [handoff evidence screen 01](HOSTAGE-EVIDENCE-01-REVIEW.md), launch
+`fe62f84`, resources `6510712`: matching report 96,307 tokens / 40.542s, stale
+97,260 / 43.977s, absent 74,656 / 31.630s. Matching reuses verified prior evidence;
+stale restores exact tested inputs and validly reuses that report. Absent issues a
+new suite command but the original native result is missing despite a final pass
+claim. Four separate native replays match expected outcomes and original resource/
+file inventories reconcile; they cannot fill that gap. It exists in raw CLI stdout,
+not export. Model-visible output is independently unavailable, so root cause remains
+unresolved. Skill-only authored scenarios do not establish efficiency or full adoption.
+
+한국어: 보고서 일치 조건은 재실행 없이 근거를 재사용했고, 오래된 조건은 코드를
+검증됐던 상태로 복구한 뒤 해시를 확인해 재사용했다. 보고서 없는 조건은 새 검사를
+요청했지만 원본 로그에 테스트 결과가 빠져 통과 여부는 미확인이다. 별도 네이티브
+검증 4회는 예상대로 동작했다. 누락은 공개 변환 전 CLI 원본에도 있으며 모델이
+실제로 본 출력은 별도 확인할 수 없어 원인을 단정하거나 성공률로 표시하지 않는다.
+
 Hostage [missing-evidence delivery candidate](HOSTAGE-MISSING-EVIDENCE-01.md),
 previous source `ccca07e`, makes the recovery branch explicit: attributable existing
 report, observe a live execution, safe scoped rerun, or unverified delivery. Never

@@ -34,3 +34,8 @@ existing failure-preserving final-batch control passes (one test covering five
 scenarios, 1.514s). Catalog/local links and featured EN/KO synchronization pass.
 Runtime assets are unchanged. The previous full 509-test run belongs to `ccca07e`,
 not a new whole-suite or model measurement of this instruction edit.
+
+Subsequent [handoff screen 01](HOSTAGE-EVIDENCE-01-REVIEW.md) supports attributable
+report reuse and exact-input restoration. Its absent-report case issues a new
+test command but again lacks the original native output. Model-visible versus
+logged output is unresolved; do not treat later replay as original verification.
