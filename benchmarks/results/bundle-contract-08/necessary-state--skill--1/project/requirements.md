@@ -1,0 +1,1 @@
+The UI reads Form.pending for the disabled state. Duplicate calls to submit while pending must not invoke save again. Preserve a successful save's return value and propagate failures after clearing pending.

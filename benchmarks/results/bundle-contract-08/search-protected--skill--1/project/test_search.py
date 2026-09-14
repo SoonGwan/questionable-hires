@@ -1,0 +1,130 @@
+"""Deterministic component QA. Run: python3 -B -m unittest -v test_search"""
+
+import asyncio
+from dataclasses import dataclass
+from typing import Any
+import unittest
+
+from search import Search
+
+
+# Local copy of the skill's transport; reruns do not need the installed skill.
+@dataclass(frozen=True)
+class Request:
+    key: Any
+    response: asyncio.Future
+
+    def complete(self, value):
+        self.response.set_result(value)
+
+    def fail_request(self, error):
+        self.response.set_exception(error)
+
+
+class ControlledFetch:
+    def __init__(self):
+        self.calls = asyncio.Queue()
+
+    async def __call__(self, key):
+        request = Request(key, asyncio.get_running_loop().create_future())
+        self.calls.put_nowait(request)
+        return await request.response
+
+    async def started(self, expected, timeout=1):
+        if not 0 < timeout <= 30:
+            raise ValueError('timeout must be in (0, 30]')
+        request = await asyncio.wait_for(self.calls.get(), timeout)
+        if request.key != expected:
+            raise AssertionError(
+                f'request key: expected {expected!r}, observed {request.key!r}')
+        return request
+
+
+class SearchTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.search = Search()
+        self.fetch = ControlledFetch()
+        self.owned_tasks = []
+        self.addAsyncCleanup(self.cleanup_tasks)
+
+    async def cleanup_tasks(self):
+        for task in self.owned_tasks:
+            if not task.done():
+                task.cancel()
+        if self.owned_tasks:
+            done, pending = await asyncio.wait(self.owned_tasks, timeout=1)
+            for task in done:
+                if not task.cancelled():
+                    task.exception()
+            self.assertFalse(pending, 'owned Search tasks did not stop within 1s')
+
+    async def start(self, query):
+        task = asyncio.create_task(self.search.run(query, self.fetch))
+        # Register ownership before any entry check can fail.
+        self.owned_tasks.append(task)
+        request = await self.fetch.started(query)
+        return task, request
+
+    async def complete(self, task, request, payload):
+        request.complete(payload)
+        await asyncio.wait_for(asyncio.shield(task), timeout=1)
+
+    async def seed_result(self):
+        task, request = await self.start('seed')
+        await self.complete(task, request, 'existing result')
+        self.assertEqual(self.search.result, 'existing result')
+
+    async def overlap(self, *, newer_first, seeded=False, same_query=False):
+        if seeded:
+            await self.seed_result()
+        retained = 'existing result' if seeded else None
+        older_task, older = await self.start('query')
+        self.assertEqual(self.search.result, retained)
+        newer_task, newer = await self.start('query' if same_query else 'new query')
+        self.assertIsNot(older.response, newer.response)
+        self.assertEqual(self.search.result, retained)
+        self.assertFalse(older_task.done())
+        self.assertFalse(newer_task.done())
+
+        if newer_first:
+            await self.complete(newer_task, newer, 'newer result')
+            self.assertEqual(self.search.result, 'newer result')
+            self.assertFalse(older_task.done())
+            self.assertFalse(older.response.done())
+            await self.complete(older_task, older, 'older result')
+        else:
+            await self.complete(older_task, older, 'older result')
+            self.assertFalse(newer_task.done())
+            self.assertFalse(newer.response.done())
+            # Retention is required through this intervening completion too.
+            self.assertEqual(self.search.result, retained)
+            await self.complete(newer_task, newer, 'newer result')
+        self.assertEqual(self.search.result, 'newer result')
+
+    async def test_single_request(self):
+        task, request = await self.start('query')
+        self.assertIsNone(self.search.result)
+        await self.complete(task, request, 'result')
+        self.assertEqual(self.search.result, 'result')
+
+    async def test_older_completes_while_newer_pending(self):
+        await self.overlap(newer_first=False)
+
+    async def test_newer_completes_then_older_cannot_overwrite(self):
+        await self.overlap(newer_first=True)
+
+    async def test_existing_result_retained_through_older_completion(self):
+        await self.overlap(newer_first=False, seeded=True)
+
+    async def test_existing_result_retained_until_newer_completes_first(self):
+        await self.overlap(newer_first=True, seeded=True)
+
+    async def test_repeated_query_older_completes_first(self):
+        await self.overlap(newer_first=False, seeded=True, same_query=True)
+
+    async def test_repeated_query_newer_completes_first(self):
+        await self.overlap(newer_first=True, seeded=True, same_query=True)
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

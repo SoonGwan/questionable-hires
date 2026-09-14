@@ -1,0 +1,39 @@
+test_normal_completion_latest_after_both_finish (test_search_overlap.SearchOverlapTests) ... CONTROL: c started before cat; both requests blocked in fetch
+CONTROL: c completed with 'older: c'; display='older: c'
+CONTROL: cat completed with 'latest: cat'; display='latest: cat'
+ASSERT (normal order, both finished): expected='latest: cat', actual='latest: cat'
+CONTROL: all owned tasks finished; response gates closed
+ok
+test_reversed_completion_older_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests) ... CONTROL: c started before cat; both requests blocked in fetch
+CONTROL: cat completed with 'latest: cat'; display='latest: cat'
+ASSERT (reversed order, latest finished first): expected='latest: cat', actual='latest: cat'
+CONTROL: c completed with 'older: c'; display='older: c'
+ASSERT (reversed order, both finished): expected='latest: cat', actual='older: c'
+CONTROL: all owned tasks finished; response gates closed
+FAIL
+
+======================================================================
+FAIL: test_reversed_completion_older_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 65, in _callTestMethod
+    self._callMaybeAsync(method)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 88, in _callMaybeAsync
+    return self._asyncioTestLoop.run_until_complete(fut)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 102, in _asyncioLoopRunner
+    ret = await awaitable
+  File "<WORKSPACE>/test_search_overlap.py", line 101, in test_reversed_completion_older_cannot_overwrite_latest
+    self.assert_latest_visible("reversed order, both finished")
+  File "<WORKSPACE>/test_search_overlap.py", line 78, in assert_latest_visible
+    self.assertEqual(
+AssertionError: 'older: c' != 'latest: cat'
+- older: c
++ latest: cat
+ : reversed order, both finished: latest query's result must remain visible
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.010s
+
+FAILED (failures=1)

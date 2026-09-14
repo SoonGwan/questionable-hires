@@ -1,0 +1,295 @@
+diff --git a/experiments/README.md b/experiments/README.md
+new file mode 100644
+index 0000000..3c24130
+--- /dev/null
++++ b/experiments/README.md
+@@ -0,0 +1,51 @@
++# Search completion-order experiment
++
++Run from the project root using the installed Python (standard library only):
++
++```sh
++python3 experiments/search_completion_order.py
++```
++
++The captured successful run is `search_completion_order.results.json`. To refresh it:
++
++```sh
++python3 experiments/search_completion_order.py > experiments/search_completion_order.results.json
++```
++
++The experiment imports the actual `Search` and `transport.fetch`. Only the injected
++request callable is a controlled in-memory stub. It records URL, query parameters,
++and headers, and returns unique query-specific responses without a cache. Both
++requests are confirmed in flight before responses are released. Events and futures
++control ordering; no timing sleeps are used. Behavior-dependent waits have a
++two-second timeout. A `finally` block cancels unfinished owned tasks and futures
++and drains the tasks with a bounded wait, including on failures.
++
++## Local evidence
++
++| Request issue order | Controlled completion order | Final Search.result |
++| --- | --- | --- |
++| older, newer | older, newer | newer (current) |
++| older, newer | newer, older | older (stale) |
++
++All four recorded requests target `/search` with the correct `q` and
++`Cache-Control: no-cache`. Assertions verify headers, each intermediate result,
++and the expected final outcome. In the normal case the older result also appears
++temporarily while the newer request is pending.
++
++`Search.run` unconditionally assigns each awaited response to `self.result`.
++There is no latest-query check, so the last response to complete wins even when
++it belongs to the earlier query. Reversing only completion order reproduces the
++reported stale-result pattern with no cache present.
++
++## Limits and preservation
++
++This establishes a race in the supplied code when overlapping calls share a
++Search instance. It does not establish how often production calls overlap or
++prove that production incidents have no additional causes. Real request clients,
++servers, caches, and UI lifecycle behavior were not exercised. A recorded request
++header alone does not establish production cache behavior.
++
++No production fix was made. SHA-256 hashes before and after the run matched for
++`search.py` and `transport.py`; `git diff` also confirmed both files unchanged.
++All added artifacts are under `experiments/`. No dependencies or external
++services are required, and imports do not write bytecode files.
+diff --git a/experiments/search_completion_order.py b/experiments/search_completion_order.py
+new file mode 100644
+index 0000000..c5f3258
+--- /dev/null
++++ b/experiments/search_completion_order.py
+@@ -0,0 +1,111 @@
++"""Run with: python3 experiments/search_completion_order.py (stdlib only)."""
++
++import asyncio
++import hashlib
++import json
++import sys
++from pathlib import Path
++
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++sys.dont_write_bytecode = True
++
++from search import Search
++from transport import fetch
++
++
++TIMEOUT = 2.0
++QUERIES = ("older-query", "newer-query")
++
++
++def production_hashes():
++    return {
++        name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
++        for name in ("search.py", "transport.py")
++    }
++
++
++async def scenario(completion_order):
++    search = Search()
++    loop = asyncio.get_running_loop()
++    arrived = {q: asyncio.Event() for q in QUERIES}
++    releases = {q: loop.create_future() for q in QUERIES}
++    requests = []
++    snapshots = []
++    tasks = {}
++
++    async def request(url, *, params, headers):
++        query = params["q"]
++        requests.append({"url": url, "params": dict(params), "headers": dict(headers)})
++        arrived[query].set()
++        # A distinct response for each request, with no cache or network involved.
++        return await asyncio.wait_for(asyncio.shield(releases[query]), TIMEOUT)
++
++    async def actual_transport(query):
++        return await fetch(query, request)
++
++    try:
++        # Ensure request issue order without relying on sleeps or scheduler timing.
++        for query in QUERIES:
++            tasks[query] = asyncio.create_task(search.run(query, actual_transport))
++            await asyncio.wait_for(arrived[query].wait(), TIMEOUT)
++
++        assert search.result is None, "A request completed before its release"
++        assert requests == [
++            {"url": "/search", "params": {"q": q},
++             "headers": {"Cache-Control": "no-cache"}}
++            for q in QUERIES
++        ], requests
++
++        for query in completion_order:
++            response = {"query": query, "request_id": QUERIES.index(query) + 1}
++            releases[query].set_result(response)
++            await asyncio.wait_for(asyncio.shield(tasks[query]), TIMEOUT)
++            assert search.result == response, (query, search.result)
++            snapshots.append({"completed_query": query, "visible_result": search.result})
++
++        stale = search.result["query"] != QUERIES[-1]
++        assert stale == (completion_order[-1] == QUERIES[0])
++        return {
++            "issue_order": list(QUERIES),
++            "completion_order": list(completion_order),
++            "recorded_requests": requests,
++            "snapshots": snapshots,
++            "latest_issued_query": QUERIES[-1],
++            "final_result": search.result,
++            "final_result_is_stale": stale,
++        }
++    finally:
++        # Own and drain every spawned task, including when an assertion/timeout fails.
++        for task in tasks.values():
++            if not task.done():
++                task.cancel()
++        for release in releases.values():
++            if not release.done():
++                release.cancel()
++        if tasks:
++            await asyncio.wait_for(
++                asyncio.gather(*tasks.values(), return_exceptions=True), TIMEOUT
++            )
++
++
++async def main():
++    before = production_hashes()
++    cases = {
++        "normal": await scenario(QUERIES),
++        "reversed": await scenario(tuple(reversed(QUERIES))),
++    }
++    after = production_hashes()
++    assert before == after, "Production files changed during experiment"
++    print(json.dumps({
++        "production_sha256": after,
++        "production_files_unchanged": before == after,
++        "request_boundary": "Controlled in-memory request stub; no cache or network",
++        "wait_timeout_seconds": TIMEOUT,
++        "cases": cases,
++    }, indent=2))
++
++
++if __name__ == "__main__":
++    asyncio.run(main())
+diff --git a/experiments/search_completion_order.results.json b/experiments/search_completion_order.results.json
+new file mode 100644
+index 0000000..441493c
+--- /dev/null
++++ b/experiments/search_completion_order.results.json
+@@ -0,0 +1,115 @@
++{
++  "production_sha256": {
++    "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
++    "transport.py": "937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2"
++  },
++  "production_files_unchanged": true,
++  "request_boundary": "Controlled in-memory request stub; no cache or network",
++  "wait_timeout_seconds": 2.0,
++  "cases": {
++    "normal": {
++      "issue_order": [
++        "older-query",
++        "newer-query"
++      ],
++      "completion_order": [
++        "older-query",
++        "newer-query"
++      ],
++      "recorded_requests": [
++        {
++          "url": "/search",
++          "params": {
++            "q": "older-query"
++          },
++          "headers": {
++            "Cache-Control": "no-cache"
++          }
++        },
++        {
++          "url": "/search",
++          "params": {
++            "q": "newer-query"
++          },
++          "headers": {
++            "Cache-Control": "no-cache"
++          }
++        }
++      ],
++      "snapshots": [
++        {
++          "completed_query": "older-query",
++          "visible_result": {
++            "query": "older-query",
++            "request_id": 1
++          }
++        },
++        {
++          "completed_query": "newer-query",
++          "visible_result": {
++            "query": "newer-query",
++            "request_id": 2
++          }
++        }
++      ],
++      "latest_issued_query": "newer-query",
++      "final_result": {
++        "query": "newer-query",
++        "request_id": 2
++      },
++      "final_result_is_stale": false
++    },
++    "reversed": {
++      "issue_order": [
++        "older-query",
++        "newer-query"
++      ],
++      "completion_order": [
++        "newer-query",
++        "older-query"
++      ],
++      "recorded_requests": [
++        {
++          "url": "/search",
++          "params": {
++            "q": "older-query"
++          },
++          "headers": {
++            "Cache-Control": "no-cache"
++          }
++        },
++        {
++          "url": "/search",
++          "params": {
++            "q": "newer-query"
++          },
++          "headers": {
++            "Cache-Control": "no-cache"
++          }
++        }
++      ],
++      "snapshots": [
++        {
++          "completed_query": "newer-query",
++          "visible_result": {
++            "query": "newer-query",
++            "request_id": 2
++          }
++        },
++        {
++          "completed_query": "older-query",
++          "visible_result": {
++            "query": "older-query",
++            "request_id": 1
++          }
++        }
++      ],
++      "latest_issued_query": "newer-query",
++      "final_result": {
++        "query": "older-query",
++        "request_id": 1
++      },
++      "final_result_is_stale": true
++    }
++  }
++}

@@ -1,0 +1,156 @@
+diff --git a/qa-results.txt b/qa-results.txt
+new file mode 100644
+index 0000000..16f9675
+--- /dev/null
++++ b/qa-results.txt
+@@ -0,0 +1,39 @@
++test_normal_completion_latest_after_both_finish (test_search_overlap.SearchOverlapTests) ... CONTROL: c started before cat; both requests blocked in fetch
++CONTROL: c completed with 'older: c'; display='older: c'
++CONTROL: cat completed with 'latest: cat'; display='latest: cat'
++ASSERT (normal order, both finished): expected='latest: cat', actual='latest: cat'
++CONTROL: all owned tasks finished; response gates closed
++ok
++test_reversed_completion_older_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests) ... CONTROL: c started before cat; both requests blocked in fetch
++CONTROL: cat completed with 'latest: cat'; display='latest: cat'
++ASSERT (reversed order, latest finished first): expected='latest: cat', actual='latest: cat'
++CONTROL: c completed with 'older: c'; display='older: c'
++ASSERT (reversed order, both finished): expected='latest: cat', actual='older: c'
++CONTROL: all owned tasks finished; response gates closed
++FAIL
++
++======================================================================
++FAIL: test_reversed_completion_older_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 65, in _callTestMethod
++    self._callMaybeAsync(method)
++  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 88, in _callMaybeAsync
++    return self._asyncioTestLoop.run_until_complete(fut)
++  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
++    return future.result()
++  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 102, in _asyncioLoopRunner
++    ret = await awaitable
++  File "<WORKSPACE>/test_search_overlap.py", line 101, in test_reversed_completion_older_cannot_overwrite_latest
++    self.assert_latest_visible("reversed order, both finished")
++  File "<WORKSPACE>/test_search_overlap.py", line 78, in assert_latest_visible
++    self.assertEqual(
++AssertionError: 'older: c' != 'latest: cat'
++- older: c
+++ latest: cat
++ : reversed order, both finished: latest query's result must remain visible
++
++----------------------------------------------------------------------
++Ran 2 tests in 0.010s
++
++FAILED (failures=1)
+diff --git a/test_search_overlap.py b/test_search_overlap.py
+new file mode 100644
+index 0000000..7988aaf
+--- /dev/null
++++ b/test_search_overlap.py
+@@ -0,0 +1,105 @@
++"""Deterministic local QA: python3 -m unittest -v test_search_overlap.
++
++Uses actual Search with a controlled fetch; no network, dependencies or sleeps.
++The reverse-order regression is expected to fail until Search rejects stale results.
++"""
++
++import asyncio
++import unittest
++
++from search import Search
++
++
++TIMEOUT = 2.0
++
++
++class SearchOverlapTests(unittest.IsolatedAsyncioTestCase):
++    async def asyncSetUp(self):
++        self.search = Search()
++        self.tasks = []
++        self.started = {query: asyncio.Event() for query in ("c", "cat")}
++        self.responses = {
++            query: asyncio.get_running_loop().create_future()
++            for query in self.started
++        }
++        self.calls = []
++
++    async def asyncTearDown(self):
++        # Own every task and response gate, including on assertion/timeout failure.
++        for task in self.tasks:
++            if not task.done():
++                task.cancel()
++        for response in self.responses.values():
++            if not response.done():
++                response.cancel()
++        if self.tasks:
++            await asyncio.wait_for(
++                asyncio.gather(*self.tasks, return_exceptions=True), TIMEOUT
++            )
++        self.assertTrue(all(task.done() for task in self.tasks))
++        print("CONTROL: all owned tasks finished; response gates closed", flush=True)
++
++    async def fetch(self, query):
++        self.calls.append(query)
++        self.started[query].set()
++        return await self.responses[query]
++
++    async def start_overlap(self):
++        for query in ("c", "cat"):
++            task = asyncio.create_task(self.search.run(query, self.fetch))
++            self.tasks.append(task)
++            await asyncio.wait_for(self.started[query].wait(), TIMEOUT)
++        self.assertEqual(self.calls, ["c", "cat"])
++        self.assertTrue(all(not task.done() for task in self.tasks))
++        self.assertTrue(all(not gate.done() for gate in self.responses.values()))
++        print("CONTROL: c started before cat; both requests blocked in fetch", flush=True)
++        return self.tasks
++
++    async def complete(self, query, value, task):
++        self.assertFalse(task.done(), f"{query} must still be pending before release")
++        self.assertFalse(self.responses[query].done())
++        self.responses[query].set_result(value)
++        await asyncio.wait_for(asyncio.shield(task), TIMEOUT)
++        self.assertTrue(task.done())
++        self.assertFalse(task.cancelled())
++        self.assertIsNone(task.exception())
++        print(
++            f"CONTROL: {query} completed with {value!r}; "
++            f"display={self.search.result!r}",
++            flush=True,
++        )
++
++    def assert_latest_visible(self, phase):
++        print(
++            f"ASSERT ({phase}): expected='latest: cat', "
++            f"actual={self.search.result!r}",
++            flush=True,
++        )
++        self.assertEqual(
++            self.search.result, "latest: cat",
++            f"{phase}: latest query's result must remain visible",
++        )
++
++    async def test_normal_completion_latest_after_both_finish(self):
++        older, newer = await self.start_overlap()
++        await self.complete("c", "older: c", older)
++        self.assertFalse(newer.done())
++        self.assertFalse(self.responses["cat"].done())
++        # Deliberately no assertion about display while the latest is pending.
++        await self.complete("cat", "latest: cat", newer)
++        self.assertTrue(all(task.done() for task in self.tasks))
++        self.assert_latest_visible("normal order, both finished")
++
++    async def test_reversed_completion_older_cannot_overwrite_latest(self):
++        older, newer = await self.start_overlap()
++        await self.complete("cat", "latest: cat", newer)
++        self.assertFalse(older.done())
++        self.assertFalse(self.responses["c"].done())
++        self.assert_latest_visible("reversed order, latest finished first")
++        await self.complete("c", "older: c", older)
++        self.assertTrue(all(task.done() for task in self.tasks))
++        self.assert_latest_visible("reversed order, both finished")
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)

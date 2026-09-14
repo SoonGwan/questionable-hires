@@ -190,15 +190,16 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 The earlier [candidate-development checkpoint](benchmarks/results/mother-in-law-fast-2026-09-12/README.md)
 is retained separately.
 
-**Whole-team checkpoint 07 (2026-09-14): broad efficiency remains unproven.**
-The [nine-task review](benchmarks/BUNDLE-CONTRACT-07-REVIEW.md), 18 fresh sessions
-at resource snapshot `32bf8bd`, records **0.55% fewer total tokens and 21.04% less
-summed process time** with skills. Three task pairs cost more on both axes; five
-use more tokens. Unequal extra work and a missing leading baseline test-output
-section remain disclosed. Twenty separate native controls match expected
-outcomes; replay does not fill original output gaps. These exposed authored tasks,
-n=1 per arm and shared host/cache do not prove a general 20–30% gain or measure
-later edits. Ratios of sums differ from the original chart's equal-task means.
+**Whole-team checkpoint 08 (2026-09-14): broad efficiency remains unproven.**
+The [nine-task review](benchmarks/BUNDLE-CONTRACT-08-REVIEW.md), 18 fresh sessions
+at resource snapshot `ecff8a8`, records **0.58% fewer total tokens and 15.08% less
+summed process time** with skills. Three task pairs cost more on both axes; six
+use more tokens. Unequal extra work and two original test-output gaps remain
+disclosed: protected-search baseline and pending-form skill. Twenty-two separate
+native controls match expected outcomes; replay does not fill original gaps.
+These exposed authored tasks, n=1 per arm and shared host/cache do not prove a
+general 20–30% gain or measure later edits. Ratios of sums differ from the original
+chart's equal-task means. [Checkpoint 07](benchmarks/BUNDLE-CONTRACT-07-REVIEW.md),
 [Checkpoint 05](benchmarks/BUNDLE-CONTRACT-05-REVIEW.md),
 [checkpoint 06](benchmarks/BUNDLE-CONTRACT-06-REVIEW.md) and
 [earlier adverse results](benchmarks/BUNDLE-CURRENT-02-REVIEW.md) remain preserved.

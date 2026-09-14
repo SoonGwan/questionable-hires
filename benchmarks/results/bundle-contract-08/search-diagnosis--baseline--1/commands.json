@@ -1,0 +1,58 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!*lock*'\"' -g 'AGENTS.md' -g 'package.json' -g '*Search*' -g '*search*' -g '*transport*' -g '*README*' -g '*test*'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\ntransport.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"git status --short; rg --files -g 'AGENTS.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"'\"",
+    "aggregated_output": "",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git'\"'; cat search.py transport.py; git ls-files\"",
+    "aggregated_output": "search.py\ntransport.py\nclass Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\nasync def fetch(query, request):\n    return await request('/search', params={'q': query}, headers={'Cache-Control': 'no-cache'})\nsearch.py\ntransport.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'mkdir -p experiments; python3 --version; shasum -a 256 search.py transport.py'",
+    "aggregated_output": "Python 3.9.6\nb0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea  search.py\n937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2  transport.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 experiments/search_completion_order.py > experiments/search_completion_order.results.json'",
+    "aggregated_output": "",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_8",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat experiments/search_completion_order.results.json; git diff --exit-code -- search.py transport.py; git status --short'",
+    "aggregated_output": "{\n  \"production_sha256\": {\n    \"search.py\": \"b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea\",\n    \"transport.py\": \"937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2\"\n  },\n  \"production_files_unchanged\": true,\n  \"request_boundary\": \"Controlled in-memory request stub; no cache or network\",\n  \"wait_timeout_seconds\": 2.0,\n  \"cases\": {\n    \"normal\": {\n      \"issue_order\": [\n        \"older-query\",\n        \"newer-query\"\n      ],\n      \"completion_order\": [\n        \"older-query\",\n        \"newer-query\"\n      ],\n      \"recorded_requests\": [\n        {\n          \"url\": \"/search\",\n          \"params\": {\n            \"q\": \"older-query\"\n          },\n          \"headers\": {\n            \"Cache-Control\": \"no-cache\"\n          }\n        },\n        {\n          \"url\": \"/search\",\n          \"params\": {\n            \"q\": \"newer-query\"\n          },\n          \"headers\": {\n            \"Cache-Control\": \"no-cache\"\n          }\n        }\n      ],\n      \"snapshots\": [\n        {\n          \"completed_query\": \"older-query\",\n          \"visible_result\": {\n            \"query\": \"older-query\",\n            \"request_id\": 1\n          }\n        },\n        {\n          \"completed_query\": \"newer-query\",\n          \"visible_result\": {\n            \"query\": \"newer-query\",\n            \"request_id\": 2\n          }\n        }\n      ],\n      \"latest_issued_query\": \"newer-query\",\n      \"final_result\": {\n        \"query\": \"newer-query\",\n        \"request_id\": 2\n      },\n      \"final_result_is_stale\": false\n    },\n    \"reversed\": {\n      \"issue_order\": [\n        \"older-query\",\n        \"newer-query\"\n      ],\n      \"completion_order\": [\n        \"newer-query\",\n        \"older-query\"\n      ],\n      \"recorded_requests\": [\n        {\n          \"url\": \"/search\",\n          \"params\": {\n            \"q\": \"older-query\"\n          },\n          \"headers\": {\n            \"Cache-Control\": \"no-cache\"\n          }\n        },\n        {\n          \"url\": \"/search\",\n          \"params\": {\n            \"q\": \"newer-query\"\n          },\n          \"headers\": {\n            \"Cache-Control\": \"no-cache\"\n          }\n        }\n      ],\n      \"snapshots\": [\n        {\n          \"completed_query\": \"newer-query\",\n          \"visible_result\": {\n            \"query\": \"newer-query\",\n            \"request_id\": 2\n          }\n        },\n        {\n          \"completed_query\": \"older-query\",\n          \"visible_result\": {\n            \"query\": \"older-query\",\n            \"request_id\": 1\n          }\n        }\n      ],\n      \"latest_issued_query\": \"newer-query\",\n      \"final_result\": {\n        \"query\": \"older-query\",\n        \"request_id\": 1\n      },\n      \"final_result_is_stale\": true\n    }\n  }\n}\n?? experiments/\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_11",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --exit-code -- search.py transport.py; git status --short'",
+    "aggregated_output": "?? experiments/\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

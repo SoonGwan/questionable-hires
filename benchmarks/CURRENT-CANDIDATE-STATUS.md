@@ -9,7 +9,28 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
+## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
+
+[All-eight checkpoint 08](BUNDLE-CONTRACT-08-REVIEW.md), resources `ecff8a8`:
+all 18 scheduled sessions complete; summed tokens 747,430 baseline / 743,068 skill
+(−0.58%), process time 533.487s / 453.064s (−15.08%). Six pairs use more tokens,
+three cost more on both axes. Two original native-output gaps remain unverified:
+protected-search baseline and pending-form skill. All raw usage/resource hashes,
+original modes and full retained inventories reconcile; 22 separate unchanged-test
+controls match expected outcomes, including valid duplicate-return alternatives.
+Replay cannot repair capture gaps. Exposed authored tasks, n=1, shared host/cache
+and unequal extra work do not establish causal or broad real-developer gains.
+Friday adopts the shorter guide but still uses more tokens in this pair; Con Artist
+prints its entire implementation. No featured promotion or hosted release claim.
+
+한국어: 8개 스킬·9개 과제·18개 세션을 모두 완료했다. 전체 토큰 합계는 0.58%,
+실행 시간 합계는 15.08% 낮았지만 과제 6개는 토큰이 늘었고 3개는 두 비용이
+모두 늘었다. 원본 테스트 출력 누락 2건은 미확인으로 남긴다. 별도 검증 22개는
+정상·허용 가능한 대체 구현 통과와 결함 검출을 확인했지만 원본 누락을 채우지 않는다.
+기존에 사용한 작성자 과제·조건별 1회·작업량 차이 때문에 일반적인 성능 향상이나
+공개 배포 준비 완료로 주장하지 않는다. 기존 그래프 수치는 변경하지 않았다.
+
+## Earlier focused checks — 2026-09-14
 
 Friday [short-guide model 01](FRIDAY-CORE-GUIDE-MODEL-01-REVIEW.md), launch `37686ac`,
 resources `ce82fcb`: 89,545 tokens / 54.127s, four shell calls. Reads only the core

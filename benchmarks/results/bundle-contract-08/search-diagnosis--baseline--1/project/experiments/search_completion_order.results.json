@@ -1,0 +1,115 @@
+{
+  "production_sha256": {
+    "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
+    "transport.py": "937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2"
+  },
+  "production_files_unchanged": true,
+  "request_boundary": "Controlled in-memory request stub; no cache or network",
+  "wait_timeout_seconds": 2.0,
+  "cases": {
+    "normal": {
+      "issue_order": [
+        "older-query",
+        "newer-query"
+      ],
+      "completion_order": [
+        "older-query",
+        "newer-query"
+      ],
+      "recorded_requests": [
+        {
+          "url": "/search",
+          "params": {
+            "q": "older-query"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        },
+        {
+          "url": "/search",
+          "params": {
+            "q": "newer-query"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        }
+      ],
+      "snapshots": [
+        {
+          "completed_query": "older-query",
+          "visible_result": {
+            "query": "older-query",
+            "request_id": 1
+          }
+        },
+        {
+          "completed_query": "newer-query",
+          "visible_result": {
+            "query": "newer-query",
+            "request_id": 2
+          }
+        }
+      ],
+      "latest_issued_query": "newer-query",
+      "final_result": {
+        "query": "newer-query",
+        "request_id": 2
+      },
+      "final_result_is_stale": false
+    },
+    "reversed": {
+      "issue_order": [
+        "older-query",
+        "newer-query"
+      ],
+      "completion_order": [
+        "newer-query",
+        "older-query"
+      ],
+      "recorded_requests": [
+        {
+          "url": "/search",
+          "params": {
+            "q": "older-query"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        },
+        {
+          "url": "/search",
+          "params": {
+            "q": "newer-query"
+          },
+          "headers": {
+            "Cache-Control": "no-cache"
+          }
+        }
+      ],
+      "snapshots": [
+        {
+          "completed_query": "newer-query",
+          "visible_result": {
+            "query": "newer-query",
+            "request_id": 2
+          }
+        },
+        {
+          "completed_query": "older-query",
+          "visible_result": {
+            "query": "older-query",
+            "request_id": 1
+          }
+        }
+      ],
+      "latest_issued_query": "newer-query",
+      "final_result": {
+        "query": "older-query",
+        "request_id": 1
+      },
+      "final_result_is_stale": true
+    }
+  }
+}

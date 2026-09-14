@@ -1,0 +1,26 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg -n \\\"display_label\\\" .; git status --short; rg --files -g AGENTS.md -g '\"'!node_modules'\"' -g '\"'!vendor'\"'\"",
+    "aggregated_output": "<WORKSPACE>\n./consumer.py:1:from labels import display_label\n./consumer.py:5:    return display_label({'name': 'Ada'})\n./labels.py:1:def display_label(payload):\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat labels.py consumer.py; git log --oneline --all --decorate; git log -p --all -- labels.py consumer.py'",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 14 20:09 .\ndrwx------@  3 admin  staff   96 Sep 14 20:09 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 14 20:09 .git\n-rw-r--r--@  1 admin  staff  155 Sep 14 20:09 consumer.py\n-rw-r--r--@  1 admin  staff   86 Sep 14 20:09 labels.py\ndef display_label(payload):\n    return payload.get('display_name') or payload['name']\nfrom labels import display_label\n\n# Partner API v1 remains supported through December 2027.\ndef partner_label():\n    return display_label({'name': 'Ada'})\nd5fc972 (HEAD -> main) Keep API v1 partners working during migration\n9e7cfdb Add label reader for internal v2 payloads\ncommit d5fc9729e83eca829c17b3981abfb70be9df1f24\nAuthor: Fixture Author <fixture@example.invalid>\nDate:   Fri Jan 2 12:00:00 2026 +0000\n\n    Keep API v1 partners working during migration\n\ndiff --git a/consumer.py b/consumer.py\nnew file mode 100644\nindex 0000000..5ef9f50\n--- /dev/null\n+++ b/consumer.py\n@@ -0,0 +1,5 @@\n+from labels import display_label\n+\n+# Partner API v1 remains supported through December 2027.\n+def partner_label():\n+    return display_label({'name': 'Ada'})\ndiff --git a/labels.py b/labels.py\nindex 253183c..6116bc3 100644\n--- a/labels.py\n+++ b/labels.py\n@@ -1,2 +1,2 @@\n def display_label(payload):\n-    return payload['display_name']\n+    return payload.get('display_name') or payload['name']\n\ncommit 9e7cfdbc8f0030e053e4ff3eac6a40d0ec8042be\nAuthor: Fixture Author <fixture@example.invalid>\nDate:   Thu Jan 1 12:00:00 2026 +0000\n\n    Add label reader for internal v2 payloads\n\ndiff --git a/labels.py b/labels.py\nnew file mode 100644\nindex 0000000..253183c\n--- /dev/null\n+++ b/labels.py\n@@ -0,0 +1,2 @@\n+def display_label(payload):\n+    return payload['display_name']\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nfrom consumer import partner_label\npayload = {'name': 'Ada'}\nprint('Current partner_label():', repr(partner_label()))\nprint('Without fallback, using get:', repr(payload.get('display_name')))\ntry:\n    print(payload['display_name'])\nexcept KeyError as exc:\n    print('Without fallback, using indexing:', type(exc).__name__, str(exc))\nPY\n git status --short\"",
+    "aggregated_output": "Current partner_label(): 'Ada'\nWithout fallback, using get: None\nWithout fallback, using indexing: KeyError 'display_name'\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

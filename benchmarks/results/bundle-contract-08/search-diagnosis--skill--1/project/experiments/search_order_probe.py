@@ -1,0 +1,87 @@
+"""Run from the project root: python3 -B experiments/search_order_probe.py.
+
+Exercises production Search and transport with a cache-free recording request
+dependency. Only response completion order changes between cases. All signals
+and task waits are bounded; tasks owned by each case are cleaned up on failure.
+"""
+
+import asyncio
+import json
+from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from search import Search
+from transport import fetch
+
+
+DEADLINE = 2
+
+
+async def bounded(awaitable):
+    return await asyncio.wait_for(awaitable, timeout=DEADLINE)
+
+
+async def case(completion_order):
+    search = Search()
+    dispatched = asyncio.Queue()
+    responses = {}
+    tasks = {}
+    trace = []
+
+    async def request(url, *, params, headers):
+        query = params['q']
+        response = asyncio.get_running_loop().create_future()
+        responses[query] = response
+        trace.append({'event': 'request', 'url': url,
+                      'params': dict(params), 'headers': dict(headers)})
+        dispatched.put_nowait(query)
+        return await response
+
+    async def real_transport(query):
+        return await fetch(query, request)
+
+    try:
+        for query in ('old', 'new'):
+            tasks[query] = asyncio.create_task(search.run(query, real_transport))
+            assert await bounded(dispatched.get()) == query
+
+        assert search.result is None
+        assert len(trace) == 2
+        for record, query in zip(trace, ('old', 'new')):
+            assert record == {'event': 'request', 'url': '/search',
+                              'params': {'q': query},
+                              'headers': {'Cache-Control': 'no-cache'}}
+
+        for query in completion_order:
+            payload = {'query': query, 'items': [query + '-result']}
+            responses[query].set_result(payload)
+            await bounded(tasks[query])
+            trace.append({'event': 'completed', 'query': query,
+                          'visible_result': search.result})
+            assert search.result == payload
+
+        stale = search.result['query'] != 'new'
+        assert stale == (completion_order[-1] == 'old')
+        return {'completion_order': completion_order, 'trace': trace,
+                'final_result_is_stale': stale}
+    finally:
+        for task in tasks.values():
+            if not task.done():
+                task.cancel()
+        # The exercised Search/transport and this dependency do not suppress
+        # cancellation or perform blocking operations, so no process guard is
+        # needed. Bound cleanup too, and retrieve all task exceptions.
+        await bounded(asyncio.gather(*tasks.values(), return_exceptions=True))
+
+
+async def main():
+    results = []
+    for order in (('old', 'new'), ('new', 'old')):
+        results.append(await case(order))
+    print(json.dumps({'cases': results, 'verification': 'PASS'}, indent=2))
+
+
+if __name__ == '__main__':
+    asyncio.run(main())

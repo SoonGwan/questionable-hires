@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!'\"\\\\.git'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la\ncat search.py\nfind . -name AGENTS.md -print\ngit status --short'",
+    "aggregated_output": "total 8\ndrwxr-xr-x@  4 admin  staff  128 Sep 14 19:56 .\ndrwx------@  3 admin  staff   96 Sep 14 19:56 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 14 19:56 .git\n-rw-r--r--@  1 admin  staff  309 Sep 14 19:56 search.py\nclass Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff -- search.py\nshasum -a 256 search.py\npython3 --version'",
+    "aggregated_output": "74efb5a944c45ef5d3bdf969b3bafe7820d7871c337a36a6e511cac18c29bdb4  search.py\nPython 3.9.6\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest -v test_search_race\nshasum -a 256 search.py\ngit status --short\ngit diff --exit-code -- search.py'",
+    "aggregated_output": "",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

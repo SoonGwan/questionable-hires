@@ -1,0 +1,108 @@
+"""Deterministic race checks; run: python3 -B -m unittest -v test_search_race.
+
+Only Search's fetch dependency is controlled. Events acknowledge request entry;
+futures choose completion order. Timeouts bound behavior-dependent waits, rather
+than using sleeps to guess when tasks have run. Each test owns and cleans up its
+tasks, including when an assertion or timeout fails.
+"""
+
+import asyncio
+import unittest
+
+from search import Search
+
+
+class SearchRaceTests(unittest.IsolatedAsyncioTestCase):
+    TIMEOUT = 2.0
+
+    async def asyncSetUp(self):
+        self.search = Search()
+        self.tasks = []
+        self.futures = []
+        self.addAsyncCleanup(self.cleanup_owned_work)
+
+    async def cleanup_owned_work(self):
+        for task in self.tasks:
+            if not task.done():
+                task.cancel()
+        if self.tasks:
+            await asyncio.wait_for(
+                asyncio.gather(*self.tasks, return_exceptions=True),
+                timeout=self.TIMEOUT,
+            )
+        for future in self.futures:
+            if not future.done():
+                future.cancel()
+
+    async def start_request(self, query):
+        entered = asyncio.Event()
+        response = asyncio.get_running_loop().create_future()
+        self.futures.append(response)
+
+        async def fetch(actual_query):
+            self.assertEqual(actual_query, query)
+            entered.set()
+            return await response
+
+        task = asyncio.create_task(self.search.run(query, fetch), name=query)
+        self.tasks.append(task)
+        await asyncio.wait_for(entered.wait(), timeout=self.TIMEOUT)
+        self.assertFalse(task.done())
+        self.assertFalse(response.done())
+        return task, response
+
+    async def complete(self, request, value):
+        task, response = request
+        response.set_result(value)
+        await asyncio.wait_for(asyncio.shield(task), timeout=self.TIMEOUT)
+
+    def assert_pending(self, request):
+        task, response = request
+        self.assertFalse(task.done(), "Request must still be running")
+        self.assertFalse(response.done(), "Fetch must still be unresolved")
+
+    async def test_older_first_is_ignored_while_newer_pending(self):
+        older = await self.start_request("older")
+        newer = await self.start_request("newer")
+        await self.complete(older, "older result")
+
+        self.assert_pending(newer)
+        self.assertIsNone(self.search.result)
+
+        await self.complete(newer, "newer result")
+        self.assertEqual(self.search.result, "newer result")
+
+    async def test_newer_first_cannot_be_overwritten_by_older(self):
+        older = await self.start_request("older")
+        newer = await self.start_request("newer")
+        await self.complete(newer, "newer result")
+
+        self.assert_pending(older)
+        self.assertEqual(self.search.result, "newer result")
+
+        await self.complete(older, "older result")
+        self.assertEqual(self.search.result, "newer result")
+
+    async def test_existing_result_is_retained_until_newest_completes(self):
+        seed = await self.start_request("seed")
+        await self.complete(seed, "existing result")
+        self.assertEqual(self.search.result, "existing result")
+
+        older = await self.start_request("older")
+        self.assert_pending(older)
+        self.assertEqual(self.search.result, "existing result")
+        newer = await self.start_request("newer")
+        self.assert_pending(older)
+        self.assert_pending(newer)
+        self.assertEqual(self.search.result, "existing result")
+
+        await self.complete(older, "older result")
+        self.assert_pending(newer)
+        self.assertEqual(self.search.result, "existing result")
+
+        await self.complete(newer, "newer result")
+        self.assertEqual(self.search.result, "newer result")
+
+
+if __name__ == "__main__":
+    unittest.main()
