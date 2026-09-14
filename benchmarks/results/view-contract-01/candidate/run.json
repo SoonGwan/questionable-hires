@@ -1,0 +1,31 @@
+{
+  "revision": "e1324fcb833d9f02a34c4acc197befc84fb3dcae",
+  "started_at": "2026-09-14T22:40:08.213966+00:00",
+  "schedule": [
+    "original",
+    "candidate"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 240,
+  "session_persistence_requested": true,
+  "case": {
+    "id": "view-contract",
+    "skill": "friday",
+    "task": "Review the rollout/rollback proposal in release.md using $friday.\nExecute the actual supplied SQL scripts and both literal reader queries at all\nfive checkpoints in one disposable in-memory sequence. Check ordered column\nlabels and complete row values, including BLOB bytes, against the consumer and\nwrite contracts. Distinguish inactive-reader errors from active incompatibilities.\nIdentify the first blocking step, what remains recoverable, whether new writes\nsurvive rollback and the smallest compatible mitigation. Do not mistake successful\nSELECT execution for consumer compatibility.\n\nPreserve all supplied files and installed skill resources. Do not fix or deploy\nthe proposal. No dependencies, network, environment changes, commits or external\nservices. If scratch files are needed, keep them inside the project and remove\nthem. Use python3 -B and existing local facilities. Report decisive commands,\nexpected/observed values and limits; no separate report file is required.",
+    "files": {
+      "001_schema.sql": "CREATE TABLE items(id INTEGER PRIMARY KEY, title TEXT NOT NULL, payload BLOB NOT NULL);\nINSERT INTO items VALUES(1, '\uccab \ud56d\ubaa9', x'00ff'), (2, 'keep', x'');\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\n",
+      "002_up.sql": "DROP VIEW public_items;\nCREATE VIEW public_items AS SELECT id, title, payload FROM items;\n",
+      "003_new_writes.sql": "UPDATE items SET title='updated', payload=x'fe00' WHERE id=1;\nINSERT INTO items VALUES(3, 'new', x'80');\n",
+      "002_down.sql": "DROP VIEW public_items;\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\n",
+      "readers.py": "OLD = 'SELECT * FROM public_items ORDER BY id'\nNEW = 'SELECT id, title, payload FROM public_items ORDER BY id'\n",
+      "release.md": "# View rollout proposal\n\nThis is a SQL-only authored local release-review fixture. Application writers,\nconcurrent connections, crash recovery and other database engines are out of scope.\nConsumers execute the literal queries in readers.py. OLD maps by returned column\nnames and requires ordered columns [id, label, payload]. NEW requires\n[id, title, payload]. Both require exact full ordered rows and binary payloads.\nNo application code is supplied or needed to execute these specified SQL contracts.\n\nOrder: (1) apply 001_schema.sql, OLD active; (2) apply 002_up.sql with OLD still\nactive; (3) apply 003_new_writes.sql while OLD and NEW coexist; (4) drain NEW and\nrestart OLD without a schema change; (5) apply 002_down.sql with OLD active.\nAll committed representative updates/inserts must remain visible after rollback.\nNo zero-downtime promises beyond this explicit sequence, no staging authorization.\n\nReview this proposal as supplied; do not modify SQL or reader contracts. A missing\ninactive reader is an observation, not by itself a blocker at that phase.\n"
+    }
+  },
+  "protocol_sha256": "971c2a3575963413590ce0dbb7b1760499530968d701221513bb9d2f585cd97e",
+  "condition": "candidate",
+  "skill_revision": "45a274121bd391123b55b3d61f33ab30b7f39eef",
+  "skill_resources_sha256": "cb54de7fc70d432ed2f0d1bc3de686d55784c6dea3c02aca69d14d0231e0281a"
+}

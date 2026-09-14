@@ -9,6 +9,26 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Friday view-contract screen — 2026-09-15, launch `e1324fc`
+
+[Original execution review](results/view-contract-01/README.md): original
+`c5eddbc` and candidate `45a2741` both complete all five checkpoints/ten literal
+reader observations, identify active column incompatibility and preserve rollback
+BLOB values and all inputs. Neither reads or uses changed helper resources.
+Candidate records **+0.68% tokens / +17.09% time**, not an attributed API effect.
+All six shell outputs/exits match original stored responses. No favorable retries
+or chart changes; n=1 and shared-host/targeted-synthetic limitations remain.
+
+Follow-up clarifies combining necessary file discovery with already-supplied
+release inputs instead of a listing-only first round trip observed in both cells.
+It does not force helpers or remove required checks. That entry clarification is
+**not measured by this pair**; no additional runtime change or general gain claim.
+
+한국어: 두 버전이 필요한 검토를 완료했지만 성능 개선은 확인되지 않았다.
+새 기능 미사용 상태에서 토큰 0.68%, 시간 17.09% 증가를 기록했다. 후속 수정은
+실제로 관찰한 별도 목록 조회를 줄이는 안내이며, 해당 수정의 성능은 미측정이다.
+원본 근거와 불리한 수치를 보존하고 대표 그래프는 바꾸지 않는다.
+
 ## Friday selected row assertions — 2026-09-15, source `cb7cba1`
 
 [Native assertion capability](FRIDAY-ROW-ASSERTIONS-01.md) adds optional
