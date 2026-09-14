@@ -1,4 +1,5 @@
 import asyncio
+import ast
 import importlib.util
 from pathlib import Path
 import shutil
@@ -99,6 +100,17 @@ class ControlledCallTests(unittest.IsolatedAsyncioTestCase):
 
 
 class StandaloneTests(unittest.TestCase):
+    def test_documentation_move_preserves_frozen_executable_ast(self):
+        frozen = ASSET.parents[3] / 'benchmarks/results/hostage-keyed-publish-01/keyed-publish--skill--1/project/tests/controlled_call.py'
+        old, current = ast.parse(frozen.read_text()), ast.parse(ASSET.read_text())
+        self.assertIsInstance(old.body[0], ast.Expr)
+        self.assertIsInstance(current.body[0], ast.Expr)
+        self.assertIsInstance(old.body[0].value.value, str)
+        self.assertIsInstance(current.body[0].value.value, str)
+        old.body.pop(0)
+        current.body.pop(0)
+        self.assertEqual(ast.dump(old), ast.dump(current))
+
     def test_copy_runs_without_skill_installation(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

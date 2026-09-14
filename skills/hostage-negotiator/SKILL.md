@@ -17,7 +17,7 @@ For stateful behavior, follow entry, completion and recovery through the existin
 
 Async regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup.
 
-For Python asyncio callback tests without equivalent project support, the optional [controlled-call asset](references/async-callback.md) replaces repeated entry/release gates. It controls callbacks, not application state; keep the actual owner and required assertions.
+For Python asyncio callback tests without equivalent project support, read and copy the optional [controlled-call asset](assets/controlled_call.py); its module docstring contains the usage and limits. It replaces repeated entry/release gates, not application assertions. No separate reference is needed for this path.
 
 ## Deliver and stop
 

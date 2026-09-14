@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
+New instruction candidate: [Hostage single-read interface](HOSTAGE-SINGLE-READ-01.md)
+routes directly to the callback asset with usage/limits in its module docstring.
+Executable AST matches frozen `d9e7711`; eight native asset and 15 installer tests
+pass. Old reference links remain valid. New model adoption/cost is unmeasured;
+the copied asset grows while the separate active reference read is removed.
+
+한국어: 호출 제어 도구의 사용법과 구현을 한 파일에서 확인하도록 연결을
+줄였다. 실행 코드 구조는 기존과 같고 로컬·설치 검증은 통과했다. 복사되는
+파일은 커지므로, 읽기 단계 감소가 실제 토큰 절감으로 이어지는지는 미확인이다.
+
 Reviewed transfer probe: [keyed publication screen](HOSTAGE-KEYED-PUBLISH-01-REVIEW.md)
 tests same-document suppression without blocking other keys/instances. The new
 author-written fixture is not independent holdout. Launch `a1a258c`, skill

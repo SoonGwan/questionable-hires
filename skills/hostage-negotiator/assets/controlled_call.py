@@ -1,7 +1,29 @@
-"""Local asyncio callback control for tests; no application-state assertions.
+"""Controlled asyncio callbacks; copy into permitted test support only if needed.
 
-Copy only when the project's test support has no equivalent. Tests own their
-tasks and must cancel/drain them. No threads, real I/O or blocking-code timeout.
+Prefer equivalent project fixtures. Use the real application owner and runner;
+the copied module needs no installed skill. No application implementation here.
+
+save = ControlledCall() accepts any positional/keyword arguments, including none.
+Start the application task with owned cleanup registered BEFORE waiting. Await
+save.started(timeout=1) for actual callback entry; it returns a unique Call.
+call.args/call.kwargs hold argument references, not deep snapshots. save.calls
+records every entry, even identical arguments, for call-count assertions.
+
+call.complete(value) delivers that exact object (default None); call.fail(error)
+raises that exact exception. Each call has its own response future. Sibling
+completion/cancellation is independent. Completing a finished/cancelled handle
+raises asyncio.InvalidStateError, exposing accidental double completion.
+
+Assert required pending state, duplicate suppression, instance isolation and
+recovery through the application; entry alone proves none of them. Cancel the
+application task to test cancellation, not just its response future. Test
+synchronous callback failure with an ordinary raising function, not this double.
+
+Tests own tasks: cancel and drain them even if entry/assertions fail; started's
+timeout does not clean application tasks. Bound application waits too. Async
+timeouts cannot interrupt blocking code or guarantee termination of tasks that
+resist cancellation; use process bounds when needed. This supplies no network,
+thread, browser, transaction or production-runtime evidence.
 """
 import asyncio
 
