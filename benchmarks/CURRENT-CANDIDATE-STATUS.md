@@ -9,6 +9,25 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Friday selected row assertions — 2026-09-15, source `cb7cba1`
+
+[Native assertion capability](FRIDAY-ROW-ASSERTIONS-01.md) adds optional
+`assert_rows` to validate completion, selected-reader success, truncation, ordered
+columns and values from an already-collected matrix without rerunning SQL.
+Native BLOBs/duplicate columns remain intact; explicit errors survive `python -O`.
+It asserts only the selected observation, not deployment readiness. No entry or
+CLI change. Eight new and 42 existing matrix checks pass; full system-Python
+suite is 651 discovered / 648 passed / 3 pytest-environment skips, 98.235s.
+Those three pass separately in the existing pytest runtime / 3.160s; the original
+skips remain skips, not a full-suite result in that second environment.
+Model adoption and whole-task savings are unmeasured; charts remain unchanged.
+
+한국어: 이미 수집한 SQL 결과의 완료·오류·잘림·컬럼·값을 재실행 없이 검증하는
+선택적 기능을 추가했다. 관련 검사 50개와 전체 기본 환경 검증을 마쳤다.
+전체 검사 중 pytest 환경이 필요한 3개는 생략으로 기록하고, 기존 pytest 환경에서
+별도로 3개 모두 통과를 확인했다. 모델 토큰·시간
+절감이나 배포 준비 완료를 주장하지 않으며 기존 그래프는 유지한다.
+
 ## SQLite entry routing screen — 2026-09-15, launch `2a176bc`
 
 [Reverse-order follow-up](results/sqlite-debit-02/README.md) compares `ed4a38a`
