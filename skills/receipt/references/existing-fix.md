@@ -70,10 +70,15 @@ JSON
   Default `bootstrap` is unchanged. Temporary copy-local startup checks same-process
   imports; results include `command`, `native_exit_code`, `provenance_ready`.
   Timeout/output supervision remains. Only child-local lookup changes; descendants
-  don't inherit the probe. Any discoverable `sitecustomize`/`usercustomize` hook
-  (including a distribution-provided default), or disabled site initialization,
-  is currently unsupported and needs native project setup instead. Do not remove
-  an existing hook or bypass provenance checks to make this mode pass.
+  don't inherit the probe. Existing system/user `sitecustomize` and enabled
+  `usercustomize` run in order before copied-import verification; their actual
+  modules are retained, not replaced with the probe. User-site disabling remains
+  effective. Hook errors (including early exit) stop comparison with check 7,
+  rather than continuing tests after a startup warning. Conventional hooks are
+  supported, not arbitrary startup rewrites: project-local customization,
+  disabled site initialization, or hooks depending on the exact startup stack or
+  replacing import machinery need native project setup. Do not remove hooks or
+  bypass provenance to make a comparison pass.
 - Optional `"import_roots":["src"]` supports regular source-layout packages.
   Select needed package initializers/support in `fixed` and implementations in
   `vary`; each root must contain selected files. Ordered canonical directories

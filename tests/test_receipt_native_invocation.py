@@ -48,13 +48,11 @@ class NativeInvocationTests(unittest.TestCase):
 import rule
 class Probe(unittest.TestCase):
     def test_startup(self):
-        startup = sys.modules['sitecustomize']
-        self.assertEqual(startup.root, pathlib.Path.cwd())
-        self.assertIn('rule', startup.recipe['imports'])
-        self.assertEqual((startup.probe/'ready').read_bytes(), b'ready')
-        self.assertNotIn(str(startup.probe), sys.path)
-        self.assertNotIn(str(startup.probe), os.environ['PYTHONPATH'])
-        child = subprocess.run([sys.executable, '-B', '-c', 'import sys; print("sitecustomize" in sys.modules)'], capture_output=True, text=True, check=True)
+        probe, = pathlib.Path.cwd().glob('.receipt-startup-*')
+        self.assertEqual((probe/'ready').read_bytes(), b'ready')
+        self.assertNotIn(str(probe), sys.path)
+        self.assertNotIn(str(probe), os.environ['PYTHONPATH'])
+        child = subprocess.run([sys.executable, '-B', '-c', 'import sys; print(any(".receipt-startup-" in str(getattr(m, "__file__", "")) for m in sys.modules.values()))'], capture_output=True, text=True, check=True)
         self.assertEqual(child.stdout.strip(), 'False')
 ''')
         result = helper.compare(self.root, dict(self.recipe, invocation='module'))
@@ -140,7 +138,8 @@ class Probe(unittest.TestCase):
         self.assertEqual(result['status'], 'incomplete')
         self.assertEqual(list(result['checks']), ['before'])
         self.assertEqual(check['exit_code'], 7)
-        self.assertIn('does not replace startup customization: sitecustomize', check['output'])
+        self.assertIn('RuntimeError: original configured hook', check['output'])
+        self.assertFalse(check['provenance_ready'])
         self.assertEqual(original_hook.read_text(), 'raise RuntimeError("original configured hook")\n')
 
     def test_timeout_and_output_bound_keep_existing_process_supervision(self):

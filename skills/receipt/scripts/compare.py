@@ -49,12 +49,9 @@ runpy.run_module(recipe['runner'], run_name='__main__', alter_sys=True)
 '''
 
 
-NATIVE_STARTUP = '''import importlib, importlib.machinery, os, pathlib, sys, traceback
+NATIVE_STARTUP = '''import importlib, os, pathlib, site, sys, traceback
 def _receipt_startup():
     global probe, root
-    # A Python-based interpreter launcher must not satisfy the native probe.
-    if sys.argv[:1] != ['-m']:
-        return
     probe = pathlib.Path(__file__).resolve().parent
     root = probe.parent
     paths = [str(root / name) for name in recipe.get('import_roots', [])] + [str(root)]
@@ -62,9 +59,27 @@ def _receipt_startup():
     # Child processes inherit copy lookup, not this one-process startup probe.
     os.environ['PYTHONPATH'] = os.pathsep.join(paths)
     try:
-        for name in ('sitecustomize', 'usercustomize'):
-            if importlib.machinery.PathFinder.find_spec(name, sys.path) is not None:
-                raise RuntimeError('Native invocation does not replace startup customization: ' + name)
+        # Remove only our temporary lookup/identity, then import the real hooks.
+        # Keep the adapter identity when no real sitecustomize exists: Python's
+        # in-progress outer import still requires that sys.modules entry.
+        adapter = sys.modules.pop('sitecustomize')
+        try:
+            importlib.import_module('sitecustomize')
+        except ImportError as error:
+            if error.name != 'sitecustomize':
+                raise
+            sys.modules['sitecustomize'] = adapter
+        if site.ENABLE_USER_SITE:
+            try:
+                importlib.import_module('usercustomize')
+            except ImportError as error:
+                if error.name != 'usercustomize':
+                    raise
+        # Python's following usercustomize import reuses the cached real module.
+        # A Python-based launcher must not satisfy the native probe, but still
+        # receives the original hooks instead of silently shadowing them.
+        if sys.argv[:1] != ['-m']:
+            return
         for name in recipe['imports']:
             module = importlib.import_module(name)
             location = getattr(module, '__file__', None)

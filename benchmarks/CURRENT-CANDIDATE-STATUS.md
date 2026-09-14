@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt startup coexistence candidate — 2026-09-15, parent `f985200`
+
+Native-mode startup now removes its own temporary lookup/identity, imports real
+system/user hooks in order, then verifies copied imports. Existing modules and
+disabled user-site settings are retained; failures stop with incomplete check 7.
+Four new controls pass: hook order/identity/once-only behavior (including children),
+real before-fail/after-pass, hook errors, wrong import provenance and disabled
+user-site behavior. The preceding startup implementation yields five failure
+entries in the initial four-control replay (before adding the child assertions).
+Thirteen native invocation tests also pass on macOS. Full-platform verification
+is pending; no model-cost gain or broad startup compatibility claim. Project-local
+hooks and arbitrary startup/import rewrites remain outside this helper's contract.
+
+한국어: 기본·사용자 시작 훅을 보존한 뒤 같은 프로세스의 복사본 import를 검증하도록
+수정했다. 새 대조 4개와 기존 native 검사 13개는 통과했지만 전체 플랫폼 검증은
+아직 진행 전이다. 훅 오류·외부 모듈 연결 차단은 유지하며 모델 성능 수치는 아니다.
+
 ## Linux archive compatibility — 2026-09-15, source `80360c3`
 
 [Current source-distribution gate](LINUX-ARCHIVE-619-01.md) discovers 619 tests
