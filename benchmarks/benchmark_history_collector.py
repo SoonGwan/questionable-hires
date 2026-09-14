@@ -17,6 +17,7 @@ SCRIPT = 'skills/necromancer/scripts/trace.py'
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--baseline-revision', required=True, help='Trusted local revision to execute')
+    parser.add_argument('--layout', choices=('rewrite', 'scattered'), default='rewrite')
     args = parser.parse_args()
     revision = subprocess.check_output(
         ['git', 'rev-parse', '--verify', args.baseline_revision + '^{commit}'],
@@ -35,7 +36,9 @@ def main():
         git('config', 'commit.gpgsign', 'false')
         git('config', 'core.hooksPath', str(scratch / 'no-hooks'))
         for version in ('old', 'new'):
-            (repo / 'data.txt').write_text(''.join(f'{version}_{i:06d}\n' for i in range(100000)))
+            (repo / 'data.txt').write_text(''.join(
+                f'{version if args.layout == "rewrite" or i % 20 == 0 else "old"}_{i:06d}\n'
+                for i in range(100000)))
             git('add', 'data.txt')
             git('commit', '-qm', version)
         before = git('status', '--porcelain')
@@ -60,13 +63,15 @@ def main():
                     canonical = evidence
                 if evidence != canonical:
                     raise RuntimeError('Collector evidence differs')
-                if not evidence['commits'][0].get('selected_patch_excerpt'):
+                if args.layout == 'rewrite' and not evidence['commits'][0].get('selected_patch_excerpt'):
                     raise RuntimeError('Fixture did not exercise large-hunk excerpt')
+                if args.layout == 'scattered' and not any(c['omitted_hunks'] > 1000 for c in evidence['commits']):
+                    raise RuntimeError('Fixture did not exercise many-hunk selection')
                 timings[name].append(elapsed)
         if (before or git('status', '--porcelain') or
                 hashlib.sha256((repo / 'data.txt').read_bytes()).hexdigest() != source_hash):
             raise RuntimeError('Fixture changed during collection')
-        print(json.dumps(dict(baseline_revision=revision, python=sys.version,
+        print(json.dumps(dict(baseline_revision=revision, layout=args.layout, python=sys.version,
                               candidate_sha256=hashlib.sha256(current).hexdigest(),
                               input_sha256=source_hash, evidence_identical=True,
                               current_file_bytes=(repo / 'data.txt').stat().st_size,

@@ -14,6 +14,21 @@ spec.loader.exec_module(helper)
 
 
 class HistoryHelperTests(unittest.TestCase):
+    def test_focused_hunk_selection_matches_intersection_boundaries(self):
+        prefix = 'commit fixture\n--- a/a.py\n+++ b/a.py\n'
+        hunks = [('@@ -1,2 +1,2 @@\n one\n two\n', 1, 2),
+                 ('@@ -8 +8,0 @@\n-deleted\n', 8, 0),
+                 ('@@ -12 +12 @@\n-old\n+new\n', 12, 1),
+                 ('@@ -20,2 +20,2 @@\n three\n four\n', 20, 2)]
+        source = prefix + ''.join(h[0] for h in hunks)
+        for targets in ([], [0], [1], [2], [3], [8], [12], [13], [20], [21], [22],
+                        [21, 1, 12, 12, 8], list(range(1, 101))):
+            with self.subTest(targets=targets):
+                selected = [text for text, start, count in hunks
+                            if set(targets).intersection(range(start, start + count))]
+                expected = (prefix + ''.join(selected), len(hunks) - len(selected)) if selected else (source, 0)
+                self.assertEqual(helper.focused_patch(source, 'a.py', targets), expected)
+
     def test_header_gate_preserves_data_and_rejects_malformed_headers(self):
         prefix = '--- a/a.py\n+++ b/a.py\n'
         data = '@@ -1,1 +1,1 @@\n @@ -not a header\n'

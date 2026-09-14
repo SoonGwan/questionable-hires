@@ -60,11 +60,13 @@ def focused_patch(output, historical_path, line_numbers):
     if len(parts) < 3 or parts[0].strip():
         return output, 0
     kept, omitted = [], 0
+    targets = sorted(set(line_numbers))
     for index in range(1, len(parts), 2):
         hunk = parts[index]
         match = re.match(r'@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@', hunk)
         start, count = int(match[1]), int(match[2] or 1)
-        if any(start <= line < start + count for line in line_numbers):
+        position = bisect_left(targets, start)
+        if position < len(targets) and targets[position] < start + count:
             kept.append(hunk + parts[index + 1])
         else:
             omitted += 1

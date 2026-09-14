@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## History collector checkpoint — 2026-09-15, parent `dd4982f`
+
+[Hunk lookup](HISTORY-HUNK-LOOKUP-01.md) replaces per-hunk scans with binary
+search while retaining identical evidence. Twenty-five tests pass. Function-only
+large-input timing improves, but actual Git collector medians are small/mixed
+(rewrite 274.44→278.03 ms; scattered 239.46→237.83 ms). No whole-task/model gain
+is established; keep all observations and stop treating helper timing as the goal.
+
+한국어: 이력 도우미 내부 탐색을 개선하고 동일 출력·25개 테스트를 확인했다.
+실제 Git 전체 실행은 차이가 작고 일부 악화되어 스킬 성능 개선으로 주장하지
+않는다. 도우미 미세 측정 대신 개발 작업 전체의 개선으로 돌아간다.
+
 ## Refresh-owner checkpoint — 2026-09-15, launch `3c29443`
 
 [Flag handoff 01 review](HOSTAGE-FLAG-01-REVIEW.md), launch `094cc69`, resources
