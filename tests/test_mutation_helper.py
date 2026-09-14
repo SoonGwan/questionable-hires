@@ -17,6 +17,42 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_materialization_reuses_parent_creation_without_reusing_copies(self):
+        assets = self.root / 'assets'
+        assets.mkdir()
+        for index in range(8):
+            path = assets / str(index)
+            path.write_bytes(bytes([index]) * 30)
+            path.chmod(0o640)
+        recipe = dict(self.recipe, files=[*self.recipe['files'], 'assets'])
+        native_execute = helper.execute
+        original_mkdir = Path.mkdir
+        created = []
+        checked_copies = []
+        def mkdir(path, *args, **kwargs):
+            created.append(path)
+            return original_mkdir(path, *args, **kwargs)
+        def execute(python, directory, spec, probe, timeout):
+            self.assertNotIn(directory, checked_copies)
+            checked_copies.append(directory)
+            for index in range(8):
+                path = directory / 'assets' / str(index)
+                self.assertEqual(path.read_bytes(), bytes([index]) * 30)
+                self.assertEqual(path.stat().st_mode & 0o777, 0o640)
+            (directory / 'assets/0').write_bytes(b'phase-local mutation')
+            return native_execute(python, directory, spec, probe, timeout)
+        with patch.object(Path, 'mkdir', mkdir), patch.object(helper, 'execute', execute):
+            result = helper.audit(self.root, recipe)
+        self.assertEqual(len(checked_copies), 4)
+        for directory in checked_copies:
+            self.assertEqual(created.count(directory / 'assets'), 1)
+            self.assertEqual(created.count(directory), 1)
+            self.assertFalse(directory.exists())
+        self.assertEqual(result['checks']['mutant_probe']['exit_code'], 1)
+        self.assertIn('AssertionError', result['checks']['mutant_probe']['output'])
+        self.assertTrue(result['integrity']['selected_original_bytes_and_modes_unchanged'])
+        self.assertEqual((assets / '0').read_bytes(), bytes([0]) * 30)
+
     def test_batch_test_selection_changes_run_new_baselines(self):
         path = self.root / 'test_service.py'
         path.write_text(path.read_text() + '\n'
