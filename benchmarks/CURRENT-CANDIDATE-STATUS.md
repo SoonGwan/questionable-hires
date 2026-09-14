@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Checkpoint 09 intake — 2026-09-14, launch `3a7d972`, review pending
+
+[Collection/arithmetic](BUNDLE-CONTRACT-09-INTAKE.md), resources `9071a1c`:
+18/18 sessions ended, no timeouts; raw usage and installed resources reconcile.
+Baseline 760,865 tokens / 572.922s; skill 657,044 / 460.983s (−13.65% / −19.54%).
+Four pairs cost more tokens; history/schema cost more on both axes. Pending-form
+skill lacks original native-test output. Full behavioral/scope review and author
+controls remain pending; these are not accepted efficacy claims or chart updates.
+
+한국어: 새 18세션의 실행과 사용량 대조는 끝났다. 합계 토큰 13.65%·시간
+19.54% 감소지만 4개 과제의 토큰은 증가했고 이력·스키마는 시간도 증가했다.
+폼 스킬의 원본 테스트 출력 누락이 있다. 전체 행동·범위·대조군 검토는 아직
+진행 전이며 일반적 성능 향상으로 발표하거나 그래프를 바꾸지 않는다.
+
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
 Receipt [Git review preservation](RECEIPT-GIT-REVIEW-01.md), parent `65c2340`:
