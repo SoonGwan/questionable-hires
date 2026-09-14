@@ -11,6 +11,14 @@ it has not established a broad 20–30% gain.
 
 ## Refresh-owner checkpoint — 2026-09-15, launch `3c29443`
 
+[Prospective follow-up 02](HOSTAGE-REFRESH-02-PROTOCOL.md) freezes candidate
+`0a94dab` for four fresh baseline/skill sessions on the same exposed development
+tasks. Separate original report evidence from retained-code controls and cost;
+no held-out or broad performance claim is planned. Results are pending.
+
+한국어: 명령 분리 후보의 후속 4세션 계획을 고정했다. 기존 개발 과제의 재확인이며
+새 과제 일반화 검증이 아니다. 결과는 아직 없고 원본 증거와 재실행을 구분한다.
+
 [Refresh-owner review](HOSTAGE-REFRESH-01-REVIEW.md), measured resources `864005b`:
 four completed sessions, observed sum reductions 10.61% tokens / 8.62% time,
 but both skill answers claim passing tests without original native results.
