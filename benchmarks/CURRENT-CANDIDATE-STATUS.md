@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
+Newer unmeasured instruction candidate `1c483b9`: [Friday interface split](FRIDAY-INTERFACE-01.md)
+keeps CLI contracts/limits in the core guide and routes API/BLOB/byte-accounting
+details conditionally. Core 3,733 bytes versus previous 6,447; combined documents
+6,554 bytes. This is file size, not model savings, and advanced use can cost an
+extra read. 35 Friday and 15 install tests pass; runtime remains `bef0937`.
+
+한국어 안내 변경: 기본 CLI 안내와 선택형 API·특수 결과 설명을 분리했다.
+예제 실행과 설치 검증은 통과했지만, 모델의 토큰·시간 절감 효과는 아직
+확인하지 않았다. 고급 사용에서는 문서를 추가로 읽는 비용이 생길 수 있다.
+
 New runtime candidate `bef0937`: [Friday literal-reader references](FRIDAY-LITERAL-READERS-01.md)
 replace custom extraction code for declaration-only Python query files via the
 existing matrix CLI/API. Static file/hash/line evidence and strict rejection of
