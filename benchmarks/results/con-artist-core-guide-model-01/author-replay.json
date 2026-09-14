@@ -1,0 +1,69 @@
+{
+  "kind": "separate author reconciliation/replay, not original model evidence",
+  "resource": "da333ab07c80743cc550a07a5b7a463f500cc933",
+  "raw_usage_resources_inventory_reconciled": true,
+  "original_recipe": {
+    "files": [
+      "service.py",
+      "test_service.py"
+    ],
+    "imports": [
+      "service",
+      "test_service"
+    ],
+    "target": "service.py",
+    "old": "    store.append(record)\n",
+    "new": "",
+    "runner": "unittest",
+    "tests": [
+      "-v",
+      "test_service"
+    ],
+    "precheck": "import service, test_service\nassert test_service.SaveTests.test_save.__globals__['save'] is service.save\nprint('Verified actual test_save global save is copied service.save', flush=True)\n",
+    "probe_when": "survives",
+    "probe": "import service, test_service\nsave = test_service.SaveTests.test_save.__globals__['save']\nassert save is service.save\nstore = ['existing']\nsave(store, 'record')\nprint('Stored records:', repr(store), flush=True)\nassert store == ['existing', 'record'], f'Expected preserved existing record and appended new record; got {store!r}'\n"
+  },
+  "native_phase_exits": {
+    "correct_tests": 0,
+    "mutant_tests": 0,
+    "correct_probe": 0,
+    "mutant_probe": 1
+  },
+  "replay": {
+    "status": "observed",
+    "checks": {
+      "correct_tests": {
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "Copied process: {\"python\":\"/Applications/Xcode.app/Contents/Developer/usr/bin/python3\",\"cwd\":\"<REPLAY>/.con-artist-2gt6a2ha/correct-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"3a5c753c169e8c2daf24ba59ea35dde0cb11642cc30ebc9380dc6ed203174099\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"a1e3618a944fd2cf4d903ebacd83d1f4ef539115ccaf4274101ee491be78ad95\"}\nVerified actual test_save global save is copied service.save\nPrecheck completed in check process.\ntest_save (test_service.SaveTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+        "output_truncated": false
+      },
+      "mutant_tests": {
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "Copied process: {\"python\":\"/Applications/Xcode.app/Contents/Developer/usr/bin/python3\",\"cwd\":\"<REPLAY>/.con-artist-2gt6a2ha/mutant-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"d3a0c0eae522f575c35179039b6355c2f86fd2d42e46690ea5c0c9d231777fb2\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"a1e3618a944fd2cf4d903ebacd83d1f4ef539115ccaf4274101ee491be78ad95\"}\nVerified actual test_save global save is copied service.save\nPrecheck completed in check process.\ntest_save (test_service.SaveTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+        "output_truncated": false
+      },
+      "correct_probe": {
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "Copied process: {\"python\":\"/Applications/Xcode.app/Contents/Developer/usr/bin/python3\",\"cwd\":\"<REPLAY>/.con-artist-2gt6a2ha/correct-probe\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"3a5c753c169e8c2daf24ba59ea35dde0cb11642cc30ebc9380dc6ed203174099\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"a1e3618a944fd2cf4d903ebacd83d1f4ef539115ccaf4274101ee491be78ad95\"}\nVerified actual test_save global save is copied service.save\nPrecheck completed in check process.\nStored records: ['existing', 'record']\n",
+        "output_truncated": false
+      },
+      "mutant_probe": {
+        "exit_code": 1,
+        "timed_out": false,
+        "output": "Copied process: {\"python\":\"/Applications/Xcode.app/Contents/Developer/usr/bin/python3\",\"cwd\":\"<REPLAY>/.con-artist-2gt6a2ha/mutant-probe\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"d3a0c0eae522f575c35179039b6355c2f86fd2d42e46690ea5c0c9d231777fb2\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"a1e3618a944fd2cf4d903ebacd83d1f4ef539115ccaf4274101ee491be78ad95\"}\nVerified actual test_save global save is copied service.save\nPrecheck completed in check process.\nStored records: ['existing']\nTraceback (most recent call last):\n  File \"<string>\", line 33, in <module>\n  File \"<audit-probe>\", line 7, in <module>\nAssertionError: Expected preserved existing record and appended new record; got ['existing']\n",
+        "output_truncated": false
+      }
+    },
+    "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+    "integrity": {
+      "selected_files": 2,
+      "selected_original_bytes_and_modes_unchanged": true,
+      "owned_scratch_removed": true
+    }
+  },
+  "original_project_preserved": true,
+  "limitation": "Recorded commands do not show project-source or guide reads; replay does not establish guide adoption."
+}

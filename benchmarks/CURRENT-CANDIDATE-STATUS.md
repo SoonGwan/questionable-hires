@@ -11,18 +11,31 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Con Artist [short-guide screen 01](CON-ARTIST-CORE-GUIDE-MODEL-01-REVIEW.md), launch
+`da333ab`, resources `8e3bdc4`: 73,679 tokens / 35.540s, three recorded shell calls.
+All four actual audit phases and copied binding/integrity evidence are captured;
+unchanged-recipe author replay reproduces them. However, no project-source or guide
+read is recorded, so **guide adoption is unverified**. Descriptive −28.12% tokens /
+−7.79% time versus checkpoint 08 is not an accepted causal gain: exposed n=1,
+unequal reads/work and shared cache. Frozen exports remain, featured unchanged.
+
+한국어: 새 Con Artist 실행은 73,679토큰·35.540초였고 네 단계 검증 결과와
+복사본 바인딩·원본 보존을 확인했다. 하지만 기록에 프로젝트 코드와 수정 안내를
+읽은 단계가 없어 안내 채택은 미확인이다. 이전 단일 실행보다 토큰 28.12%·시간
+7.79% 낮았지만 수정 효과로 인정하거나 전체 성능 그래프에 반영하지 않는다.
+
 Con Artist [core-guide candidate 01](CON-ARTIST-CORE-GUIDE-01.md), previous source
 `58d31fb`: routine guide 7,189 → 5,190 bytes (−27.81%), core plus advanced −9.27%.
 Repeated prose is compressed; cleanup mechanics remain in the routed advanced
 section. The executable recipe, binding/evidence/integrity limits and legitimate
 source inspection remain. 76 helper and 12 packaging tests pass, including the
 actual shipped recipe's positive/fault checks. Runtime/entry unchanged; model
-adoption and token savings are not yet measured for this edit.
+adoption remains unverified in the subsequent screen above; no accepted token-saving claim.
 
 한국어: Con Artist 기본 안내를 27.81% 줄였고 상세 문서까지 합치면 9.27%
 감소했다. 필요한 결함·바인딩·실행 결과 검증은 유지했으며 실제 배포 예제를 포함한
 도구·패키징 테스트 88개가 통과했다. 문서 크기 감소이지 모델 토큰 절감률은 아니며,
-이번 수정의 모델 채택과 성능은 아직 미측정이다.
+이후 실행에서도 안내를 읽은 기록이 없어 모델 채택과 수정 효과는 미확인이다.
 
 [All-eight checkpoint 08](BUNDLE-CONTRACT-08-REVIEW.md), resources `ecff8a8`:
 all 18 scheduled sessions complete; summed tokens 747,430 baseline / 743,068 skill

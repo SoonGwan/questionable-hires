@@ -37,3 +37,7 @@ Local validation after the edit:
 Next evidence needed: a frozen model adoption/transfer screen that records reads,
 all required audit checks, original output gaps and costs. Do not substitute this
 byte reduction for model efficiency or overwrite historical/featured graphs.
+
+Subsequent [model screen 01](CON-ARTIST-CORE-GUIDE-MODEL-01-REVIEW.md) captures
+the audit's four phases but no source/guide read. Adoption remains unverified;
+its lower descriptive cost is not an accepted guide-efficiency result.
