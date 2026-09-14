@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Friday [sequence adoption 01](FRIDAY-SEQUENCE-MODEL-01-REVIEW.md), launch `70225a0`,
+resources `b2925c9`: control 73,060 tokens / 65.347s, gap 93,445 / 72.019s.
+Against previous skill, control tokens −19.08% but time +2.69%; gap −1.56% /
+−12.79%. Actual entrypoints, representative sequences and all-record fresh reads
+are observed; both exact-program replays match complete stdout. Exposed n=1 and
+different work, no contemporary baseline: not a causal/general efficiency claim.
+
+한국어: 새 지침 실행에서 정상 73,060토큰·65.347초, 결함 93,445토큰·72.019초다.
+이전 스킬 대비 정상 토큰은 19.08% 줄었지만 시간은 2.69% 늘었고, 결함은
+1.56%·12.79% 줄었다. 대표 시퀀스·매번 전체 레코드 확인과 별도 재검증을 확인했다.
+단일 기존 과제·작업량 차이·동시 기본 비교 부재로 일반적인 개선 주장은 하지 않는다.
+
 Friday [representative-sequence candidate](FRIDAY-WITNESS-SEQUENCE-01.md), previous
 source `ae7f566`: combine coverage obligations without caching stale observations.
 An author-written 12-write/72-mixed-read sequence preserves all-row checks and

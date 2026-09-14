@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Replay four retained programs without modifying measured projects or logs."""
+import argparse
 import hashlib
 import importlib.util
 import json
@@ -12,6 +13,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 RUN = ROOT / 'benchmarks/local-runs/friday-ack-01'
 REV = '76c251c'
+EXACT_OUTPUT = False
 
 
 def inventory(root):
@@ -61,7 +63,7 @@ def main():
             process = subprocess.run(shlex.split(item['command']), cwd=copy,
                                      capture_output=True, text=True, timeout=30)
             assert process.returncode == 0 and not process.stderr
-            if meta['case'].endswith('control'):
+            if meta['case'].endswith('control') or EXACT_OUTPUT:
                 assert process.stdout == item['aggregated_output']
                 assert inventory(copy) == copied_before
                 normalization = 'none; complete stdout equal'
@@ -90,4 +92,11 @@ def main():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--profile', choices=('ack-01', 'sequence-01'), default='ack-01')
+    args = parser.parse_args()
+    if args.profile == 'sequence-01':
+        RUN = ROOT / 'benchmarks/local-runs/friday-sequence-model-01'
+        REV = '70225a0'
+        EXACT_OUTPUT = True
     main()
