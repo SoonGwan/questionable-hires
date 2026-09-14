@@ -11,28 +11,35 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
-Prepared next transfer probe: [keyed publication protocol](HOSTAGE-KEYED-PUBLISH-01-PROTOCOL.md)
+Reviewed transfer probe: [keyed publication screen](HOSTAGE-KEYED-PUBLISH-01-REVIEW.md)
 tests same-document suppression without blocking other keys/instances. The new
-author-written fixture passes native runner and positive/negative controls;
-no model execution/result yet and no independent-holdout claim. Skill remains
-`7dd4b56`, callback asset `d9e7711`.
+author-written fixture is not independent holdout. Launch `a1a258c`, skill
+`7dd4b56`, callback asset `d9e7711`: baseline 104,309 tokens/92.624s; skill
+130,644/99.704s (**+25.25% / +7.64%**). Both produce identical implementation;
+asset adoption transfers but costs more. Skill captures standalone nine-pass
+summary/exit with partial headers; baseline lacks the full-suite section. Eight
+separate native replay outcomes match; originals/resources/usage reconcile.
+Replay cannot repair original capture gaps and no efficiency win is accepted.
 
 한국어: 같은 문서만 중복 발행을 막고 다른 문서는 동시에 처리하는 새 과제를
-준비했다. 정상·중복 호출·전역 차단 대조군 사전 검증은 통과했지만 모델
-실험은 아직 실행하지 않았으며, 작성자 제작 과제를 독립 평가로 보지 않는다.
+실행했다. 스킬은 도구를 활용하고 동일한 구현을 만들었지만 토큰 25.25%,
+시간 7.64% 증가했다. 스킬의 단독 테스트 명령은 9개 통과 요약·종료 상태를
+남겼으나 개별 출력은 일부 누락됐다. 별도 결함 대조군 검증은 원본 누락을
+대신하지 않으며, 작성자 제작 과제를 독립 평가로 보지 않는다.
 
 New Hostage instruction/collector candidate: [verification delivery](HOSTAGE-VERIFICATION-DELIVERY-01.md)
 requires test-specific result evidence before a pass claim and adds a review-only
 missing unittest summary diagnostic. The retained gap is detected without changing
 old metadata, completion or scores; native/redirected/unrun controls remain distinct
-from proof of capture loss. No new model measurement, asset/runtime change or
-efficiency claim. Model adoption and impact need further evidence.
+from proof of capture loss. The keyed screen above observes standalone test
+status, without isolating this instruction's causal effect or showing efficiency.
 Full local suite: 454 tests pass in 80.333s, no failures/skips.
 
 한국어: 테스트 자체의 종료 상태와 실행 결과를 확인하도록 마무리 지침을
 보완했다. 벤치마크도 테스트 요약이 없는 명령을 검토 대상으로 표시하며,
 출력 누락·테스트 실패를 자동 확정하거나 과거 결과를 수정하지 않는다.
-새 지침의 모델 행동·비용 효과는 아직 미측정이다.
+위 문서별 발행 실험에서 단독 테스트 상태는 확인했지만 이 지침만의 효과를
+분리하지 않았고 비용 절감도 입증하지 못했다.
 
 Hostage candidate `d9e7711`: [controlled callback test support](HOSTAGE-CONTROLLED-CALL-01.md)
 replaces repeated asyncio entry/release gates only where equivalent project support
