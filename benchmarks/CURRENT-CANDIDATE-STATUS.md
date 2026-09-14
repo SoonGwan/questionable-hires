@@ -24,6 +24,22 @@ or proof of whole-task efficiency. Historical README checkpoint counts stay date
 설치·패키징을 포함한 기존 테스트 범위의 검증이며, 실제 모델 성능 개선이나
 호스팅 CI 통과를 의미하지 않는다. 스킬 전체의 성능 목표는 여전히 미입증이다.
 
+## Necromancer bounded source read — 2026-09-15, parent `7bb94b9`
+
+The history collector previously checked current-file size and then read without
+a byte bound. A real-file regression grows the file by 3 MB after the size check;
+old code fails to reject it. The collector now requests at most 2,000,001 bytes and
+rejects overflow before Git collection. Already-known overflow is rejected without
+reading; an exactly 2 MB file preserves selected Unicode/CRLF text. All 28 history
+helper tests and the collector benchmark regression pass. Metadata/link validation
+and featured synchronization pass too. This bounds one source read, not total
+memory, Git output or concurrent snapshot consistency; no model-cost gain claimed.
+
+한국어: 크기 확인 직후 파일이 커지는 경우 기존 이력 도우미가 제한 없이 읽는
+문제를 실제 파일로 재현했다. 읽기 자체를 2MB+1바이트로 제한하고 초과 시 Git
+실행 전에 중단하도록 수정했다. 경계 크기·한글·CRLF 보존을 포함한 관련 29개
+테스트가 통과했다. 전체 메모리 제한이나 모델 토큰·시간 개선을 입증한 것은 아니다.
+
 ## Capture localization — 2026-09-15, launches `d21d6f4` through `4a70281`
 
 [Persisted CLI tool-response diagnostic](CLI-ROLLOUT-PROBE-01.md), launch `bcd761d`,

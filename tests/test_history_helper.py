@@ -14,6 +14,66 @@ spec.loader.exec_module(helper)
 
 
 class HistoryHelperTests(unittest.TestCase):
+    def test_current_file_exact_limit_preserves_selected_text(self):
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory).resolve()
+            first = 'value = "한글"\r\n'.encode()
+            (root / 'boundary.py').write_bytes(first + b'#' * (2_000_000 - len(first)))
+            with patch.object(helper, 'git', return_value=subprocess.CompletedProcess([], 1, '', 'no history')):
+                result = helper.trace(root, 'boundary.py', 1, 1)
+            self.assertEqual(result['current_lines'], [dict(line=1, text='value = "한글"\r')])
+            self.assertEqual(result['history'], 'unavailable')
+
+    def test_known_current_file_overflow_rejects_without_reading(self):
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory).resolve()
+            (root / 'large.py').write_bytes(b'#' * 2_000_001)
+            with patch.object(Path, 'open', side_effect=AssertionError('Must not read oversized file')), \
+                    patch.object(helper, 'git') as git:
+                with self.assertRaisesRegex(ValueError, 'exceeds 2 MB'):
+                    helper.trace(root, 'large.py', 1, 1)
+            git.assert_not_called()
+
+    def test_current_file_growth_is_bounded_before_git_collection(self):
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory).resolve()
+            target = root / 'growing.py'
+            target.write_bytes(b'value = 1\n')
+            original_stat, original_open = Path.stat, Path.open
+            grew, requested = [], []
+
+            def stat_then_grow(path, *args, **kwargs):
+                result = original_stat(path, *args, **kwargs)
+                if path == target and kwargs.get('follow_symlinks', True) and not grew:
+                    grew.append(True)
+                    with open(target, 'ab') as stream:
+                        stream.write(b'#' * 3_000_000)
+                return result
+
+            class Reader:
+                def __init__(self, stream):
+                    self.stream = stream
+                def __enter__(self):
+                    return self
+                def __exit__(self, *args):
+                    self.stream.close()
+                def read(self, size=-1):
+                    requested.append(size)
+                    return self.stream.read(size)
+
+            def tracked_open(path, *args, **kwargs):
+                stream = original_open(path, *args, **kwargs)
+                return Reader(stream) if path == target and args == ('rb',) else stream
+
+            with patch.object(Path, 'stat', new=stat_then_grow), \
+                    patch.object(Path, 'open', new=tracked_open), \
+                    patch.object(helper, 'git', return_value=subprocess.CompletedProcess([], 1, '', 'no history')) as git:
+                with self.assertRaisesRegex(ValueError, 'exceeds 2 MB'):
+                    helper.trace(root, 'growing.py', 1, 1)
+            self.assertEqual(grew, [True])
+            self.assertEqual(requested, [2_000_001])
+            git.assert_not_called()
+
     def test_focused_hunk_selection_matches_intersection_boundaries(self):
         prefix = 'commit fixture\n--- a/a.py\n+++ b/a.py\n'
         hunks = [('@@ -1,2 +1,2 @@\n one\n two\n', 1, 2),

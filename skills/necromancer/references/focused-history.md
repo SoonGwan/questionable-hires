@@ -18,6 +18,11 @@ Run from the worktree root or pass `--repo`. Use the actual installed skill path
 
 Limits are explicit: at most 100 selected lines, a 2 MB current file, 20 seconds per Git command, and at most five commits with `--max-commits`. Patch text is capped at 12,000 characters each; truncation and omitted commits are reported. Historical filenames from blame are used so a rename does not silently hide the relevant earlier patch.
 
+Known oversized current files are rejected before reading. The source read itself
+stops at 2 MB plus one detection byte, so growth after the size check is rejected
+before Git collection. This bounds that read, not total memory or Git output, and
+does not make concurrently edited files a consistent snapshot.
+
 Source and Git output must decode as UTF-8. Line numbers follow Git's LF boundaries, not a language parser's: embedded Unicode separators and CR characters remain source content, including the CR in CRLF files. Current text, blame rows and numbered patch excerpts use the same boundary rule.
 
 Nearby regions of the same behavior can share one bounded range instead of recollecting status, attribution and the same patches separately. Combine only when the intervening context is relevant; check omitted commits and truncation before reusing the result. Keep distant or unrelated regions separate. Fewer calls are not a saving if a wider range adds irrelevant history or hides a decisive commit.

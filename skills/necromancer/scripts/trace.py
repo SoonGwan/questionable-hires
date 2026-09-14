@@ -182,7 +182,11 @@ def trace(repo, filename, start, end, max_commits=3):
         raise ValueError('Select 1–100 lines and 1–5 commits')
     if target.stat().st_size > 2_000_000:
         raise ValueError('Selected file exceeds 2 MB; use focused native tools')
-    lines = git_lines(target.read_bytes().decode('utf-8'))
+    with target.open('rb') as stream:
+        current = stream.read(2_000_001)
+    if len(current) > 2_000_000:
+        raise ValueError('Selected file exceeds 2 MB while reading; use focused native tools')
+    lines = git_lines(current.decode('utf-8'))
     if end > len(lines):
         raise ValueError('Line range exceeds current file')
     evidence = dict(path=path.as_posix(), current_lines=[dict(line=i + 1, text=lines[i])
