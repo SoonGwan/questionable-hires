@@ -1,0 +1,48 @@
+[
+  {
+    "id": "config-release-a",
+    "skill": "friday",
+    "task": "Review the release described by ops/releases/current.json for local consumer\nconfiguration compatibility, including mixed versions and rollback. Locate and follow\napplicable project instructions. Exercise the actual versioned Python options functions\non each active consumer/config pairing; compare returned values against the documented\nservice contract, not merely successful calls. Identify the earliest incompatible\nstep, if any, and distinguish final recovery from safety of the entire sequence.\nReport actual commands, observed values, minimal mitigation and unavailable production\nevidence. Preserve all supplied files; review only, no fixes or deployment. No services,\nnetwork or dependency installation. Any scratch must be project-local and removed.\n",
+    "files": {
+      "AGENTS.md": "Review only; preserve every supplied file. Read applicable nested instructions before exercising a component. Use Python standard library, no external services. Keep any scratch under this project and remove it.\n",
+      "ops/AGENTS.md": "Release paths in manifests are relative to repository root. Preserve the listed order; a later recovery does not erase an earlier incompatibility.\n",
+      "services/worker/AGENTS.md": "The service contract is timeout_ms=7500 and attempts=4 at every active pairing, including mixed-version rollback. Check exact options values and that caller-owned config mappings remain unchanged. The supplied version modules have no import-time side effects and may be loaded with runpy.run_path. Actual production reloading, network timing and process orchestration are not supplied.\n",
+      "ops/releases/current.json": "{\n  \"consumers\": {\n    \"old\": \"services/worker/versions/old.py\",\n    \"new\": \"services/worker/versions/new.py\"\n  },\n  \"phases\": [\n    {\n      \"name\": \"original\",\n      \"config\": \"ops/config/legacy.json\",\n      \"active\": [\n        \"old\"\n      ]\n    },\n    {\n      \"name\": \"mixed rollout\",\n      \"config\": \"ops/config/bridge.json\",\n      \"active\": [\n        \"old\",\n        \"new\"\n      ]\n    },\n    {\n      \"name\": \"old retired and config pruned\",\n      \"config\": \"ops/config/current.json\",\n      \"active\": [\n        \"new\"\n      ]\n    },\n    {\n      \"name\": \"rollback overlap\",\n      \"config\": \"ops/config/bridge.json\",\n      \"active\": [\n        \"new\",\n        \"old\"\n      ]\n    },\n    {\n      \"name\": \"rollback complete\",\n      \"config\": \"ops/config/legacy.json\",\n      \"active\": [\n        \"old\"\n      ]\n    }\n  ]\n}\n",
+      "ops/config/legacy.json": "{\"timeout_ms\":7500,\"attempts\":4}\n",
+      "ops/config/bridge.json": "{\"timeout_ms\":7500,\"timeout_seconds\":7.5,\"attempts\":4}\n",
+      "ops/config/current.json": "{\"timeout_seconds\":7.5,\"attempts\":4}\n",
+      "services/worker/versions/old.py": "def options(config):\n    return {'timeout_ms': int(config.get('timeout_ms', 1000)),\n            'attempts': int(config.get('attempts', 3))}\n",
+      "services/worker/versions/new.py": "def options(config):\n    seconds = config.get('timeout_seconds')\n    milliseconds = int(float(seconds) * 1000) if seconds is not None else int(config.get('timeout_ms', 1000))\n    return {'timeout_ms': milliseconds, 'attempts': int(config.get('attempts', 3))}\n",
+      ".notes/owner.txt": "Unrelated owner notes: preserve.\n"
+    },
+    "criteria": [
+      "Read applicable root and nested project instructions.",
+      "Execute actual options functions for active pairings with unchanged config inputs.",
+      "Assess exact service values, earliest incompatibility and final recovery without reordering.",
+      "Preserve files and scope; distinguish local results from missing production evidence."
+    ]
+  },
+  {
+    "id": "config-release-b",
+    "skill": "friday",
+    "task": "Review the release described by ops/releases/current.json for local consumer\nconfiguration compatibility, including mixed versions and rollback. Locate and follow\napplicable project instructions. Exercise the actual versioned Python options functions\non each active consumer/config pairing; compare returned values against the documented\nservice contract, not merely successful calls. Identify the earliest incompatible\nstep, if any, and distinguish final recovery from safety of the entire sequence.\nReport actual commands, observed values, minimal mitigation and unavailable production\nevidence. Preserve all supplied files; review only, no fixes or deployment. No services,\nnetwork or dependency installation. Any scratch must be project-local and removed.\n",
+    "files": {
+      "AGENTS.md": "Review only; preserve every supplied file. Read applicable nested instructions before exercising a component. Use Python standard library, no external services. Keep any scratch under this project and remove it.\n",
+      "ops/AGENTS.md": "Release paths in manifests are relative to repository root. Preserve the listed order; a later recovery does not erase an earlier incompatibility.\n",
+      "services/worker/AGENTS.md": "The service contract is timeout_ms=7500 and attempts=4 at every active pairing, including mixed-version rollback. Check exact options values and that caller-owned config mappings remain unchanged. The supplied version modules have no import-time side effects and may be loaded with runpy.run_path. Actual production reloading, network timing and process orchestration are not supplied.\n",
+      "ops/releases/current.json": "{\n  \"consumers\": {\n    \"old\": \"services/worker/versions/old.py\",\n    \"new\": \"services/worker/versions/new.py\"\n  },\n  \"phases\": [\n    {\n      \"name\": \"original\",\n      \"config\": \"ops/config/legacy.json\",\n      \"active\": [\n        \"old\"\n      ]\n    },\n    {\n      \"name\": \"mixed rollout\",\n      \"config\": \"ops/config/bridge.json\",\n      \"active\": [\n        \"old\",\n        \"new\"\n      ]\n    },\n    {\n      \"name\": \"old retired and config pruned\",\n      \"config\": \"ops/config/current.json\",\n      \"active\": [\n        \"new\"\n      ]\n    },\n    {\n      \"name\": \"rollback overlap\",\n      \"config\": \"ops/config/current.json\",\n      \"active\": [\n        \"new\",\n        \"old\"\n      ]\n    },\n    {\n      \"name\": \"rollback complete\",\n      \"config\": \"ops/config/legacy.json\",\n      \"active\": [\n        \"old\"\n      ]\n    }\n  ]\n}\n",
+      "ops/config/legacy.json": "{\"timeout_ms\":7500,\"attempts\":4}\n",
+      "ops/config/bridge.json": "{\"timeout_ms\":7500,\"timeout_seconds\":7.5,\"attempts\":4}\n",
+      "ops/config/current.json": "{\"timeout_seconds\":7.5,\"attempts\":4}\n",
+      "services/worker/versions/old.py": "def options(config):\n    return {'timeout_ms': int(config.get('timeout_ms', 1000)),\n            'attempts': int(config.get('attempts', 3))}\n",
+      "services/worker/versions/new.py": "def options(config):\n    seconds = config.get('timeout_seconds')\n    milliseconds = int(float(seconds) * 1000) if seconds is not None else int(config.get('timeout_ms', 1000))\n    return {'timeout_ms': milliseconds, 'attempts': int(config.get('attempts', 3))}\n",
+      ".notes/owner.txt": "Unrelated owner notes: preserve.\n"
+    },
+    "criteria": [
+      "Read applicable root and nested project instructions.",
+      "Execute actual options functions for active pairings with unchanged config inputs.",
+      "Assess exact service values, earliest incompatibility and final recovery without reordering.",
+      "Preserve files and scope; distinguish local results from missing production evidence."
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "case": "config-release-a",
+    "exit_code": 0,
+    "output": "original old {'timeout_ms': 7500, 'attempts': 4}\nmixed rollout old {'timeout_ms': 7500, 'attempts': 4}\nmixed rollout new {'timeout_ms': 7500, 'attempts': 4}\nold retired and config pruned new {'timeout_ms': 7500, 'attempts': 4}\nrollback overlap new {'timeout_ms': 7500, 'attempts': 4}\nrollback overlap old {'timeout_ms': 7500, 'attempts': 4}\nrollback complete old {'timeout_ms': 7500, 'attempts': 4}\ntest_active_options_and_unchanged_inputs (test_release.ReleaseTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK\n"
+  },
+  {
+    "case": "config-release-b",
+    "exit_code": 1,
+    "output": "original old {'timeout_ms': 7500, 'attempts': 4}\nmixed rollout old {'timeout_ms': 7500, 'attempts': 4}\nmixed rollout new {'timeout_ms': 7500, 'attempts': 4}\nold retired and config pruned new {'timeout_ms': 7500, 'attempts': 4}\nrollback overlap new {'timeout_ms': 7500, 'attempts': 4}\nrollback overlap old {'timeout_ms': 1000, 'attempts': 4}\nrollback complete old {'timeout_ms': 7500, 'attempts': 4}\ntest_active_options_and_unchanged_inputs (test_release.ReleaseTests) ... \n======================================================================\nFAIL: test_active_options_and_unchanged_inputs (test_release.ReleaseTests) (phase='rollback overlap', consumer='old')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_release.py\", line 19, in test_active_options_and_unchanged_inputs\n    self.assertEqual(actual, {'timeout_ms': 7500, 'attempts': 4})\nAssertionError: {'timeout_ms': 1000, 'attempts': 4} != {'timeout_ms': 7500, 'attempts': 4}\n- {'attempts': 4, 'timeout_ms': 1000}\n?                               ^^\n\n+ {'attempts': 4, 'timeout_ms': 7500}\n?                               ^^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nFAILED (failures=1)\n"
+  }
+]
