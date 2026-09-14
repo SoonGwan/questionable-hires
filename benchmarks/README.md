@@ -72,6 +72,17 @@ resource totals. Do not reconstruct missing output from the final answer or
 credit an author's later replay to the evaluated model. Any diagnostic rerun
 must be separate from the frozen comparison, with its additional usage retained.
 
+For commands containing the direct spelling `node --test`, the runner now emits
+`node_missing_summary_review_candidates` when no complete TAP/spec count summary
+is visible (tests, pass, fail, cancelled and skipped). This catches the first
+test-output gap in the [task-aware entry screen](HOSTAGE-ENTRY-WAIT-MODEL-01-REVIEW.md).
+It is a command-text heuristic, not a shell parser: quoted examples, redirected
+output, unrun branches and other reporters can be flagged. Wrapper commands or
+other argument orderings may be missed. A summary from one invocation may hide
+another invocation's missing output; summary presence is not proof of complete
+capture or correct tests. Warnings never change completion, usage or task scores.
+Frozen metadata is not retroactively rewritten by this new diagnostic.
+
 The [scoped-discovery review](NECROMANCER-DISCOVERY-01.md) contains an observed
 example and the source-versus-redaction audit. This is a known evidence limitation,
 not a claim that the runner can recover all model tool output.

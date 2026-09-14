@@ -60,6 +60,7 @@ def inspect_capture(stdout, stderr):
             continue
         events.append(event)
     empty_outputs, event_errors, transcript_candidates, missing_summaries = [], [], [], []
+    node_missing_summaries = []
     for event in events:
         if event.get('type') in ('error', 'turn.failed'):
             event_errors.append(event.get('type'))
@@ -82,11 +83,25 @@ def inspect_capture(stdout, stderr):
                     interpretation='No native unittest count summary in this command output; '
                     'tests may be unrun, redirected, failed during setup, or incompletely captured. '
                     'Review test-specific exit/evidence; shell success alone is insufficient.'))
+            # Narrow command-text heuristic, not a shell parser: quoted examples,
+            # redirection and unrun branches can also require manual review.
+            if re.search(r'''(?<![\w.-])node\s+--test(?=[\s;'\"]|$)''', item.get('command', '')):
+                output = re.sub(r'\x1b\[[0-9;]*m', '', item.get('aggregated_output', ''))
+                fields = set(re.findall(
+                    r'^(?:#|ℹ) (tests|pass|fail|cancelled|skipped) \d+\s*$', output, re.MULTILINE))
+                if fields != {'tests', 'pass', 'fail', 'cancelled', 'skipped'}:
+                    node_missing_summaries.append(dict(
+                        item_id=item.get('id'),
+                        interpretation='No complete Node TAP/spec count summary in this command output; '
+                        'tests may be unrun, redirected, use another reporter, fail during setup, '
+                        'or be incompletely captured. Review test-specific evidence; '
+                        'this is not a test-failure or proven-capture-loss verdict.'))
     return events, dict(
         invalid_json_lines=invalid_lines, non_object_json_lines=non_objects,
         empty_command_output_items=empty_outputs, error_event_types=event_errors,
         unittest_transcript_review_candidates=transcript_candidates,
         unittest_missing_summary_review_candidates=missing_summaries,
+        node_missing_summary_review_candidates=node_missing_summaries,
         patch_rejection_count=stderr.lower().count('patch rejected'),
         limitation='Empty command output may be legitimate. Nonempty output may still be incomplete. '
                    'These diagnostics neither prove full tool-output capture nor score task success.')

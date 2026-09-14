@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Measurement review improvement — 2026-09-14: the runner flags direct `node --test`
+commands without complete TAP/spec count summaries for manual review. Retained
+entry-wait model evidence flags `item_8` only, not its final 45-pass command.
+Native success/failure reporter controls pass; diagnostics never rescore results
+or rewrite frozen metadata. This improves evidence review, not skill performance.
+Full current local suite: 486 passed in 68.961s, no failures/skips.
+
+한국어: Node 테스트 요약 출력 누락을 자동 검토 대상으로 표시한다. 기존 결과를
+실패로 바꾸거나 출력 누락을 복구하는 기능은 아니며, 성능 향상 수치도 아니다.
+
 Hostage [fresh task-aware entry adoption](HOSTAGE-ENTRY-WAIT-MODEL-01-REVIEW.md),
 launch `e26ea1d`, resource `328bc1f`: 151,437 tokens / 156.115s, one skill-only
 session. Actual tests use the API with their corresponding application tasks.
@@ -31,7 +41,7 @@ for an impossible entry until timeout. Author-adapted retained tests preserve
 43/43 final passes and eight skipped-decode detections; fault diagnosis changes
 from 8.1120s to 0.1024s. First adaptation error is preserved; corrected native
 timing overlaps author regressions, n=1; that local result is not model evidence.
-Full current local suite: 483 passed in 67.999s, no failures/skips.
+Local suite at `328bc1f`: 483 passed in 67.999s, no failures/skips.
 
 한국어: 앱 작업이 끝났는데 콜백 진입을 계속 기다리던 비용을 줄이는 선택형 API를
 추가했다. 작성자 적용본은 정상 43개 통과·결함 8개 검출을 유지하면서 실패 진단이

@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 import sys
+import shutil
 
 spec = importlib.util.spec_from_file_location("runner", Path(__file__).resolve().parents[1] / "benchmarks/run.py")
 runner = importlib.util.module_from_spec(spec)
@@ -12,6 +13,62 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_node_summary_review_finds_retained_gap_without_changing_evidence(self):
+        path = runner.ROOT / 'benchmarks/results/hostage-entry-wait-model-01/javascript-preview-latest--skill--1/events.jsonl'
+        before = path.read_bytes()
+        events, diagnostic = runner.inspect_capture(before.decode(), '')
+        self.assertEqual([row['item_id'] for row in diagnostic['node_missing_summary_review_candidates']],
+                         ['item_8'])
+        self.assertEqual(events, [json.loads(line) for line in before.decode().splitlines()])
+        self.assertEqual(path.read_bytes(), before)
+
+    @unittest.skipUnless(shutil.which('node'), 'Native Node reporters are required')
+    def test_node_summary_review_accepts_native_pass_fail_and_empty_files(self):
+        with tempfile.TemporaryDirectory() as folder:
+            source = Path(folder) / 'checks.test.mjs'
+            for reporter in ('tap', 'spec'):
+                for failing in (False, True):
+                    source.write_text("import test from 'node:test';\nimport assert from 'node:assert/strict';\n"
+                                      + "test('identity', () => assert.equal('actual', "
+                                      + ("'expected'" if failing else "'actual'") + "));\n")
+                    process = runner.subprocess.run(['node', '--test', '--test-reporter=' + reporter,
+                                                     str(source)], capture_output=True, text=True, timeout=10)
+                    self.assertEqual(process.returncode, int(failing))
+                    output = process.stdout + process.stderr
+                    if failing:
+                        self.assertIn('actual', output)
+                        self.assertIn('expected', output)
+                    item = dict(type='command_execution', id='native', command='node --test',
+                                aggregated_output=output, exit_code=process.returncode)
+                    def inspect(value):
+                        events, diagnostics = runner.inspect_capture(json.dumps(
+                            dict(type='item.completed', item=value)), '')
+                        self.assertEqual(events[0]['item'], value)
+                        return diagnostics['node_missing_summary_review_candidates']
+                    self.assertEqual(inspect(item), [])
+                    self.assertEqual(len(inspect(dict(item, aggregated_output=output.splitlines()[0]))), 1)
+            source.write_text('// no tests\n')
+            process = runner.subprocess.run(['node', '--test', '--test-reporter=tap', str(source)],
+                                            capture_output=True, text=True, timeout=10)
+            self.assertEqual(process.returncode, 0)
+            self.assertEqual(inspect(dict(item, aggregated_output=process.stdout)), [])
+
+    def test_node_summary_review_is_not_a_shell_or_test_result_verdict(self):
+        def inspect(command, output=''):
+            item = dict(type='command_execution', id='probe', command=command,
+                        aggregated_output=output, exit_code=0)
+            return runner.inspect_capture(json.dumps(dict(type='item.completed', item=item)), '')[1][
+                'node_missing_summary_review_candidates']
+        for command in ('node --test > results.log', 'false && node --test; git status --short',
+                        'node --test --test-reporter=dot', "echo 'node --test'"):
+            self.assertEqual(len(inspect(command)), 1)
+        for command in ('node --test-only', 'node --test-reporter=tap', 'my-node --test', 'cp support.mjs copy.mjs'):
+            self.assertEqual(inspect(command), [])
+        summary = ''.join(f'ℹ {field} 0\n' for field in ('tests', 'pass', 'fail', 'cancelled', 'skipped'))
+        self.assertEqual(inspect('node --test', summary), [])
+        self.assertEqual(inspect('node --test', '\x1b[32m' + summary + '\x1b[0m'), [])
+        self.assertEqual(len(inspect('node --test', 'ℹ tests 4\nℹ pass 4\n')), 1)
+
     def test_missing_test_summary_flags_retained_native_gap_without_rescoring(self):
         path = runner.ROOT / 'benchmarks/results/hostage-call-model-01/necessary-state--skill--1/events.jsonl'
         raw = path.read_text()
