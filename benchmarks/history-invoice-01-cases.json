@@ -1,0 +1,51 @@
+[
+  {
+    "id": "history-invoice-boundary",
+    "skill": "necromancer",
+    "files": {
+      "amounts.py": "from decimal import Decimal, ROUND_HALF_UP\n\n\ndef amount_cents(value):\n    if isinstance(value, int):\n        return value\n    return int((Decimal(value) * 100).quantize(Decimal(\"1\"), rounding=ROUND_HALF_UP))\n",
+      "invoice.py": "from decimal import Decimal\nfrom amounts import amount_cents\n\n\ndef invoice_total(amount):\n    if not isinstance(amount, str):\n        raise TypeError(\"invoice amounts must be decimal strings\")\n    return amount_cents(Decimal(amount))\n",
+      "test_invoice.py": "import unittest\nfrom invoice import invoice_total\n\n\nclass InvoiceTests(unittest.TestCase):\n    def test_positive_half_cent(self):\n        self.assertEqual(invoice_total(\"1.005\"), 101)\n\n    def test_negative_half_cent(self):\n        self.assertEqual(invoice_total(\"-1.005\"), -101)\n\n    def test_exact_cents(self):\n        self.assertEqual(invoice_total(\"2.34\"), 234)\n",
+      "requirements.md": "invoice.invoice_total is the only supported entrypoint. Amounts are finite\ndecimal strings in major units, including negatives and fractional cents. Return\ninteger cents by rounding half away from zero. amounts.amount_cents is private.\nThe integer-minor-unit batch importer is retired; no plugins, alternate callers\nor supported external imports of amounts exist. Preserve this contract.\n",
+      "AGENTS.md": "Read-only review. Do not edit, commit or install anything. Use Python's\nstandard library and local Git. Run Python with -B to avoid bytecode artifacts.\nIn-memory substitution for behavioral checks is allowed; preserve project files.\nDo not access external services. Temporary files, if necessary, must stay inside\nthis project and be removed when finished. Captured test output is sufficient;\ndo not create a separate evidence report unless needed for missing output.\n"
+    },
+    "history": [
+      {
+        "message": "Initial invoice formatting",
+        "files": {
+          "amounts.py": "from decimal import Decimal\n\n\ndef amount_cents(value):\n    return int(Decimal(value) * 100)\n",
+          "invoice.py": "from amounts import amount_cents\n\n\ndef invoice_total(amount):\n    return amount_cents(amount)\n"
+        }
+      },
+      {
+        "message": "Preserve half-cent invoice rounding, including credits",
+        "files": {
+          "amounts.py": "from decimal import Decimal, ROUND_HALF_UP\n\n\ndef amount_cents(value):\n    return int((Decimal(value) * 100).quantize(Decimal(\"1\"), rounding=ROUND_HALF_UP))\n"
+        }
+      },
+      {
+        "message": "Accept integer minor units from the batch importer",
+        "files": {
+          "amounts.py": "from decimal import Decimal, ROUND_HALF_UP\n\n\ndef amount_cents(value):\n    if isinstance(value, int):\n        return value\n    return int((Decimal(value) * 100).quantize(Decimal(\"1\"), rounding=ROUND_HALF_UP))\n"
+        }
+      },
+      {
+        "message": "Retire batch importer and normalize at invoice boundary",
+        "files": {
+          "invoice.py": "from decimal import Decimal\nfrom amounts import amount_cents\n\n\ndef invoice_total(amount):\n    if not isinstance(amount, str):\n        raise TypeError(\"invoice amounts must be decimal strings\")\n    return amount_cents(Decimal(amount))\n",
+          "test_invoice.py": "import unittest\nfrom invoice import invoice_total\n\n\nclass InvoiceTests(unittest.TestCase):\n    def test_positive_half_cent(self):\n        self.assertEqual(invoice_total(\"1.005\"), 101)\n\n    def test_negative_half_cent(self):\n        self.assertEqual(invoice_total(\"-1.005\"), -101)\n\n    def test_exact_cents(self):\n        self.assertEqual(invoice_total(\"2.34\"), 234)\n",
+          "requirements.md": "invoice.invoice_total is the only supported entrypoint. Amounts are finite\ndecimal strings in major units, including negatives and fractional cents. Return\ninteger cents by rounding half away from zero. amounts.amount_cents is private.\nThe integer-minor-unit batch importer is retired; no plugins, alternate callers\nor supported external imports of amounts exist. Preserve this contract.\n",
+          "AGENTS.md": "Read-only review. Do not edit, commit or install anything. Use Python's\nstandard library and local Git. Run Python with -B to avoid bytecode artifacts.\nIn-memory substitution for behavioral checks is allowed; preserve project files.\nDo not access external services. Temporary files, if necessary, must stay inside\nthis project and be removed when finished. Captured test output is sufficient;\ndo not create a separate evidence report unless needed for missing output.\n"
+        }
+      }
+    ],
+    "task": "Review two proposed independent simplifications in amounts.amount_cents:\n(A) remove the isinstance(value, int) early return;\n(B) replace the final quantized return with return int(Decimal(value) * 100),\nleaving the early return unchanged. Do not combine the proposals.\nFor each, establish why the existing behavior was introduced from the actual\nrelevant commit change, then decide whether it is necessary under the current\nsupported invoice contract and caller. Verify current, A-only and B-only behavior\nthrough invoice.invoice_total for \"1.005\", \"-1.005\" and \"2.34\", comparing with\nthe required values. Cite the introducing commits and current call path. Give\nseparate recommendations, separating historical reason from current necessity.\nThis is review, not implementation: preserve all project files; no commits,\ndependency installs, network, publishing or external history fetching. Use -B\nfor Python. In-memory substitution is permitted. If you need scratch, keep it\ninside the project and remove it before finishing; captured output is enough.",
+    "criteria": [
+      "A is removable at the supported boundary: it always passes Decimal, not int.",
+      "B is not compatible: positive/negative half cents truncate instead of rounding away from zero.",
+      "Identify distinct actual introducing changes for integer minor units and rounding, not just the current normalization commit.",
+      "Observe three specified values through the real invoice entrypoint for current and each independent proposal.",
+      "Preserve original files and scope; distinguish private helper history from supported current contracts."
+    ]
+  }
+]
