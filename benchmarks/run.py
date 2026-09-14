@@ -229,7 +229,7 @@ def resource_digest(root):
 
 def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
              skills_root=None, project_source=None, launcher=None,
-             workspace_root=None):
+             workspace_root=None, persist_session=False):
     if project_source and case.get('working_files'):
         raise ValueError('working_files is only supported for authored fixtures')
     skills_root = skills_root or ROOT / "skills"
@@ -281,6 +281,8 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
     config = "skills.config=[" + ",".join("{path=" + json.dumps(str(p)) + ",enabled=false}" for p in disabled) + "]"
     args = ["codex", "exec", "--ignore-user-config", "--ignore-rules", "--ephemeral", "--sandbox", "workspace-write", "--model", model,
             "-c", f'model_reasoning_effort="{effort}"', "-c", config, "--json", "-C", str(workspace), prompt]
+    if persist_session:
+        args.remove('--ephemeral')
     execution = 'host-workspace-write'
     if launcher:
         args = launcher(workspace, args)
@@ -344,6 +346,7 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
             "workspace": str(workspace), "allocated_workspace": str(allocated_workspace),
             "prompt": prompt, "disabled_personal_skills": len(disabled),
             "execution": execution,
+            "session_persistence_requested": persist_session,
             "capture_diagnostics": capture_diagnostics,
             "installed_resources_before": installed_before,
             "installed_resources_after": installed_after,
@@ -370,6 +373,8 @@ def main():
     parser.add_argument("--seed", type=int, default=20260911)
     parser.add_argument("--timeout", type=int, default=240)
     parser.add_argument("--model", default="gpt-6-astra")
+    parser.add_argument('--persist-session', action='store_true',
+                        help='Opt in to CLI session storage for capture diagnostics; default remains ephemeral. Does not export rollouts.')
     parser.add_argument("--effort", default="medium", choices=["low", "medium", "high", "xhigh"])
     args = parser.parse_args()
     if min(args.repeats, args.jobs, args.timeout) < 1:
@@ -405,6 +410,7 @@ def main():
                 for case in cases for arm in dict.fromkeys(args.arms)]
     random.Random(args.seed).shuffle(schedule)
     manifest = {"jobs": args.jobs, "timeout_seconds": args.timeout, "seed": args.seed,
+                "session_persistence_requested": args.persist_session,
                 "schedule": [f"{c['id']}--{a}--{r}" for c, a, r in schedule],"started_at": datetime.now(timezone.utc).isoformat(), "revision": command(["git", "rev-parse", "HEAD"], ROOT),
                 "codex_version": command(["codex", "--version"], ROOT), "model": args.model, "effort": args.effort,
                 "arms": args.arms, "repeats": args.repeats, "case_ids": [c["id"] for c in cases],
@@ -424,7 +430,8 @@ def main():
             item = next(pending, None)
             if item is not None:
                 case, arm, repeat = item
-                running[pool.submit(run_cell, case, arm, repeat, output, args.model, args.effort, args.timeout, disabled, skills_root)] = item
+                options = {'persist_session': True} if args.persist_session else {}
+                running[pool.submit(run_cell, case, arm, repeat, output, args.model, args.effort, args.timeout, disabled, skills_root, **options)] = item
         for _ in range(args.jobs):
             submit()
         while running:

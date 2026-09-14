@@ -13,6 +13,33 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_session_persistence_is_explicit_and_does_not_drop_isolation_flags(self):
+        for persist in (False, True):
+            with self.subTest(persist=persist), tempfile.TemporaryDirectory(dir=runner.ROOT) as directory:
+                root = Path(directory)
+                output = root / 'results'
+                output.mkdir()
+                seen = []
+                actual = runner.subprocess.Popen
+
+                def launch(args, **kwargs):
+                    if args[0] != 'codex':
+                        return actual(args, **kwargs)
+                    seen.append(args)
+                    event = json.dumps(dict(type='turn.completed', usage=dict(input_tokens=1, output_tokens=1)))
+                    return actual([sys.executable, '-c', 'print(' + repr(event) + ')'], **kwargs)
+
+                with patch.object(runner.subprocess, 'Popen', side_effect=launch):
+                    meta = runner.run_cell(dict(id='storage', skill='exorcist', task='Fixture', files={'x.py': 'x=1\n'}),
+                                           'baseline', 1, output, 'gpt-6-astra', 'medium', 10, [],
+                                           workspace_root=root / 'workspaces', persist_session=persist)
+                self.assertEqual(len(seen), 1)
+                self.assertEqual('--ephemeral' in seen[0], not persist)
+                self.assertIn('--ignore-user-config', seen[0])
+                self.assertIn('--ignore-rules', seen[0])
+                self.assertEqual(seen[0][seen[0].index('--sandbox') + 1], 'workspace-write')
+                self.assertEqual(meta['session_persistence_requested'], persist)
+
     def test_retained_programmatic_runner_partial_capture_is_reviewable(self):
         path = runner.ROOT / 'benchmarks/results/reporter-diagnosis-01/reporter-lifecycle--skill--1/commands.json'
         item = next(c for c in json.loads(path.read_text()) if c['id'] == 'item_8')
