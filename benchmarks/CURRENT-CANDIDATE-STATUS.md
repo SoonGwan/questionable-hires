@@ -9,7 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Checkpoint 09 intake — 2026-09-14, launch `3a7d972`, review pending
+## Reviewed checkpoint 09 — 2026-09-14, launch `3a7d972`
+
+[Consolidated review](BUNDLE-CONTRACT-09-REVIEW.md): observed totals −13.65%
+tokens / −19.54% time, but four token regressions, two time regressions, unequal
+work and two original capture gaps. Final schema controls detect three actual
+rollback data faults in both arms (8/8 outcomes). Checkpoint review is complete;
+the broad usefulness/performance goal is not. No featured-chart promotion.
+
+한국어: 이번 평가 검토는 끝났지만 전체 성능 목표는 미완료다. 토큰·시간 합계
+감소와 함께 비용 증가·작업량 차이·원본 출력 누락 2건을 유지한다. 롤백 데이터
+손실 대조 8회도 검증했다. 다음 개선 대상은 폼 비용과 근거 없는 통과 보고다.
+
+The following dated partial notes preserve the order of review; their pending
+whole-checkpoint statements are superseded by the consolidated review above.
+
+아래 부분 검토 기록의 당시 미완료 표시는 위 종합 검토로 갱신됐다.
 
 [Export verification](BUNDLE-CONTRACT-09-EXPORT.md): all 18 cells and 58 project
 text files are available; raw usage/events/provenance reconcile. Exporter fixes
