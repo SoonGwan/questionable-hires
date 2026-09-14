@@ -19,10 +19,13 @@ and content-sensitive batch reuse are checked. Seven feature tests and 80 existi
 helper tests pass. A separate author replay uses the earlier model-written store
 tests and records all four required phases with real payload assertion failures.
 Entry routing is conditional; no model adoption/cost evidence or chart changes.
+Runtime/test source `07a2575`: full local macOS suite **638 pass / 97.975s**, no
+reported skips; hosted CI and model-performance gains are not established.
 
 한국어: 같은 경로의 기존·보강 테스트를 정상·결함 코드에 각각 실행하는 기능을
 추가했다. 기능·기존 검사와 이전 모델 작성 테스트의 실제 재실행을 확인했다.
 원본 수정이나 도구 사용을 강제하지 않으며 모델 성능 향상은 아직 미측정이다.
+수정 소스의 전체 macOS 로컬 검사 638개도 통과했다(97.975초).
 
 ## Con Artist copy-parent preparation — 2026-09-15, parent `d1615c4`
 
