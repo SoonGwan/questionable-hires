@@ -23,6 +23,56 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_optional_phase_fields_match_explicit_defaults_without_mutation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = "CREATE TABLE t(x); INSERT INTO t VALUES(x'ff0080');"
+            (root / 'initial.sql').write_text(source)
+            recipe = {'phases': [
+                {'name': 'file only', 'files': ['initial.sql']},
+                {'name': 'inline only', 'sql': "INSERT INTO t VALUES(x'');"},
+                {'name': 'checkpoint'}], 'checks': {'reader': 'SELECT x FROM t'}}
+            before = copy.deepcopy(recipe)
+            explicit = copy.deepcopy(recipe)
+            for entry in explicit['phases']:
+                entry.setdefault('files', [])
+                entry.setdefault('sql', '')
+            result = helper.matrix(recipe, root)
+            self.assertTrue(result['complete'])
+            self.assertEqual(result, helper.matrix(explicit, root))
+            self.assertEqual(result['phases'][-1]['checks']['reader']['rows'],
+                             [(bytes.fromhex('ff0080'),), (b'',)])
+            self.assertEqual(recipe, before)
+            self.assertEqual((root / 'initial.sql').read_text(), source)
+            process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--source', str(root), '--spec', '-'],
+                                     input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
+            self.assertEqual(process.returncode, 0, process.stderr)
+            self.assertEqual(json.loads(process.stdout), json.loads(helper.format_result(result)))
+
+    def test_optional_phase_fields_do_not_accept_typos_or_nulls(self):
+        invalid = [{}, {'sql': ''}, {'name': ''}, {'name': None},
+                   {'name': 'bad', 'file': []}, {'name': 'bad', 'sql': None},
+                   {'name': 'bad', 'files': None}, {'name': 'bad', 'files': ''},
+                   {'name': 'bad', 'sql': []}]
+        for entry in invalid:
+            with self.subTest(entry=entry), patch.object(helper.sqlite3, 'connect') as connect:
+                with self.assertRaises(ValueError):
+                    helper.matrix({'phases': [entry], 'checks': {'read': 'SELECT 1'}}, '.')
+                connect.assert_not_called()
+
+    def test_optional_fields_still_enforce_preparation_limits(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'large.sql').write_bytes(b' ' * 1_000_001)
+            invalid = [{'name': 'inline', 'sql': '--' + '가' * 700000},
+                       {'name': 'file', 'files': ['large.sql']},
+                       {'name': 'escape', 'files': ['../outside.sql']}]
+            for entry in invalid:
+                with self.subTest(name=entry['name']), patch.object(helper.sqlite3, 'connect') as connect:
+                    with self.assertRaises(ValueError):
+                        helper.matrix({'phases': [entry], 'checks': {'read': 'SELECT 1'}}, root)
+                    connect.assert_not_called()
+
     def test_literal_references_execute_the_existing_release_fixture_without_custom_extraction(self):
         fixtures = json.loads((SCRIPT.parents[3] / 'benchmarks/bundle-contract-v2-cases.json').read_text())
         fixture = next(case for case in fixtures if case['id'] == 'rolling-schema')

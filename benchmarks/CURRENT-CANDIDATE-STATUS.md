@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
+New unmeasured runtime change: [Friday phase defaults](FRIDAY-PHASE-DEFAULTS-01.md)
+allows omitted empty `files`/`sql`, correcting the observed API preparation
+failure without relaxing unknown-key/type/path/budget checks. Native regression
+fails on the preceding runtime and passes after the patch; 40 Friday tests pass.
+Full local suite: 444 tests pass in 71.433s, no failures/skips.
+No model-cost benefit has been measured for this patch.
+
+한국어: 파일 또는 SQL만 실행할 때 빈 항목을 생략할 수 있게 수정했다.
+이전 버전의 오류 재현과 수정 후 실행은 검증했으며 잘못된 입력 검사는
+유지했다. 모델의 재실행·토큰·시간 감소는 아직 재측정하지 않았다.
+
 Instruction candidate `1c483b9`: [Friday interface split](FRIDAY-INTERFACE-01.md)
 keeps CLI contracts/limits in the core guide and routes API/BLOB/byte-accounting
 details conditionally. Core 3,733 bytes versus previous 6,447; combined documents

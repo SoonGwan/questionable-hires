@@ -10,7 +10,9 @@ with JSON on stdin, or replace `-` with a recipe path. Inspect implementation on
 for trust, adaptation or troubleshooting.
 
 The recipe has exactly `phases` and `checks`. Each phase runs its relative SQL
-`files` in order, then inline `sql`. Named checks run after every phase against
+`files` in order, then inline `sql`. Only `name` is required: omitted `files`
+defaults to `[]`, omitted `sql` to `""`; name alone is a read checkpoint.
+Unknown keys, nulls and wrong types are rejected. Named checks run after every phase against
 the same in-memory database. Example (replace files, queries and data with the
 actual release's contracts):
 
@@ -19,7 +21,7 @@ actual release's contracts):
   "phases": [
     {"name": "before", "files": ["schema.sql"], "sql": "INSERT INTO users VALUES (1, 'old');"},
     {"name": "up + new data", "files": ["up.sql"], "sql": "INSERT INTO users VALUES (2, 'new');"},
-    {"name": "down", "files": ["down.sql"], "sql": ""}
+    {"name": "down", "files": ["down.sql"]}
   ],
   "checks": {
     "old reader": "SELECT id, name FROM users ORDER BY id",

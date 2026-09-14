@@ -88,17 +88,19 @@ def matrix(spec, root, timeout=5):
     checks = resolved
     prepared = []
     for phase in phases:
-        if not isinstance(phase, dict) or set(phase) != {"name", "files", "sql"}:
-            raise ValueError("each phase requires name, files and sql")
+        if (not isinstance(phase, dict) or "name" not in phase
+                or set(phase) - {"name", "files", "sql"}):
+            raise ValueError("each phase requires name; only files and sql are optional")
         if not isinstance(phase["name"], str) or not phase["name"]:
             raise ValueError("phase name must be nonempty text")
-        if not isinstance(phase["files"], list) or not isinstance(phase["sql"], str):
+        files, sql = phase.get("files", []), phase.get("sql", "")
+        if not isinstance(files, list) or not isinstance(sql, str):
             raise ValueError("files must be a list; sql must be text")
-        total += len(phase["sql"].encode("utf-8"))
+        total += len(sql.encode("utf-8"))
         if total > 2_000_000:
             raise ValueError("SQL exceeds 2 MB")
         chunks = []
-        for filename in phase["files"]:
+        for filename in files:
             relative = Path(filename)
             if relative.is_absolute() or not relative.parts or ".." in relative.parts:
                 raise ValueError("SQL files must be relative to source")
@@ -122,7 +124,7 @@ def matrix(spec, root, timeout=5):
             if total > 2_000_000:
                 raise ValueError("SQL exceeds 2 MB")
             chunks.append(data.decode("utf-8"))
-        chunks.append(phase["sql"])
+        chunks.append(sql)
         prepared.append((phase["name"], chunks))
 
     readonly = False
