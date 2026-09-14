@@ -8,6 +8,7 @@ import os
 import selectors
 import signal
 import subprocess
+import sys
 import time
 
 
@@ -83,6 +84,8 @@ contained. Requires Python 3.9+ and POSIX. Reuse existing deadlines when availab
 
 JSON stdout: actual exit_code, timed_out, elapsed_seconds, output (last 12,000
 combined-output characters), output_truncated, cleanup_complete. No result file is required.
+Default is compact JSON; --pretty indents it. UTF-8 stdout emits Unicode directly;
+other stdout encodings use ASCII escapes. Both retain identical parsed evidence.
 CLI status: 0 child success; 1 child failure; 124 wrapper timeout; 2 invalid input.
 125 means child exit could not be confirmed within 5 seconds after group kill;
 it takes precedence over 124. This is not an OS-level containment guarantee.
@@ -90,6 +93,8 @@ A child exiting 124 maps to CLI 1. Timeout/truncated evidence is not causal proo
 Keep assertions and task cleanup in the probe; this supplies a process deadline.''')
     parser.add_argument('--timeout', type=float, default=10,
                         help='finite seconds in (0, 300], default 10')
+    parser.add_argument('--pretty', action='store_true',
+                        help='Indent JSON; default is compact. Parsed evidence is unchanged.')
     parser.add_argument('command', nargs=argparse.REMAINDER,
                         help='after --, the executable and its arguments')
     args = parser.parse_args()
@@ -98,7 +103,12 @@ Keep assertions and task cleanup in the probe; this supplies a process deadline.
         result = run(command, args.timeout)
     except (OSError, ValueError) as error:
         parser.exit(2, 'Probe not started: ' + str(error) + '\n')
-    print(json.dumps(result, indent=2))
+    # Keep UTF-8 logs readable without expanding every non-ASCII character.
+    # Retain ASCII escapes on other output encodings to avoid losing the result.
+    utf8_output = codecs.lookup(sys.stdout.encoding or 'utf-8').name == 'utf-8'
+    print(json.dumps(result, ensure_ascii=not utf8_output,
+                     indent=2 if args.pretty else None,
+                     separators=None if args.pretty else (',', ':')))
     # Preserve the actual status in JSON. CLI 124 uniquely means our timeout;
     # other unsuccessful commands map to 1 (including a child exiting 124).
     if not result['cleanup_complete']:

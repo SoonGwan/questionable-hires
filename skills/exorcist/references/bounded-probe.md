@@ -25,7 +25,11 @@ the child's status rather than waiting for a descendant to close the pipe; do no
 use this wrapper for a launcher whose background work must survive its exit.
 
 JSON retains the actual `exit_code`, `timed_out`, elapsed seconds and last 12,000
-combined-output characters with a truncation flag. CLI status: 0 successful child,
+combined-output characters with a truncation flag. Default JSON is compact; use
+`--pretty` before `--` for indentation. UTF-8 stdout preserves Unicode characters;
+other stdout encodings use ASCII escapes. Parsed evidence and exit mapping are
+identical in both modes; no child command is rerun for formatting.
+CLI status: 0 successful child,
 1 unsuccessful child, 124 wrapper deadline, 2 invalid invocation. A child exiting
 124 is still CLI 1; inspect JSON. Default deadline 10 seconds, maximum 300.
 After killing the group, child-exit confirmation has a separate 5-second limit.

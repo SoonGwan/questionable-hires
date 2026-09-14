@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Exorcist output encoding — 2026-09-15, parent `3d763e7`
+
+[Same-evidence serialization](EXORCIST-OUTPUT-ENCODING-01.md) removes unnecessary
+Unicode escaping on UTF-8 stdout and defaults to compact JSON, with `--pretty`
+and non-UTF-8 ASCII escaping retained. Decoded fields, process deadlines and
+cleanup are unchanged. Authored samples reduce JSON bytes by 0.77% (ASCII),
+44.91% (Korean), 36.13% (mixed); **not model-token or whole-task savings**.
+Nineteen probe tests pass on macOS/Linux and twelve bundle tests pass. An initial
+Linux test argument-limit error is disclosed and repaired without reducing output.
+No model run, skill-selection change or chart promotion.
+
+한국어: Exorcist의 같은 로그를 더 적은 JSON 바이트로 출력하도록 개선했다.
+한글 표본 44.91% 감소는 출력 전송량이며 전체 성능 절감률이 아니다. 내용과
+상태·정리 동작을 유지하고 macOS/Linux 및 배포 묶음 검사를 통과했다.
+
 ## Link-parser model transfer — 2026-09-15, launch `f76ee9c`
 
 [New HTTPX ticket comparison](results/link-history-01/README.md): original
