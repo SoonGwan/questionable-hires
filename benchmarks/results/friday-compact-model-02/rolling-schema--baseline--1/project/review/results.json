@@ -1,0 +1,134 @@
+{
+  "engine": "SQLite",
+  "sqlite_version": "3.51.0",
+  "scope": "In-memory schema/reader verification, not staging or application writers",
+  "queries": {
+    "old": "SELECT id, name FROM users",
+    "new": "SELECT id, display_name FROM users"
+  },
+  "states": [
+    {
+      "state": "initial",
+      "schema": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+      "readers": {
+        "old": {
+          "rows": [
+            [
+              1,
+              "Alice"
+            ],
+            [
+              2,
+              "Bob"
+            ]
+          ]
+        },
+        "new": {
+          "error": "no such column: display_name"
+        }
+      }
+    },
+    {
+      "state": "up_before_new_schema_data",
+      "schema": "CREATE TABLE users (id INTEGER PRIMARY KEY, display_name TEXT NOT NULL)",
+      "readers": {
+        "old": {
+          "error": "no such column: name"
+        },
+        "new": {
+          "rows": [
+            [
+              1,
+              "Alice"
+            ],
+            [
+              2,
+              "Bob"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "state": "up_after_committed_insert_update_before_down",
+      "schema": "CREATE TABLE users (id INTEGER PRIMARY KEY, display_name TEXT NOT NULL)",
+      "readers": {
+        "old": {
+          "error": "no such column: name"
+        },
+        "new": {
+          "rows": [
+            [
+              1,
+              "Alice Updated"
+            ],
+            [
+              2,
+              "Bob"
+            ],
+            [
+              3,
+              "New User"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "state": "down_after_new_schema_data",
+      "schema": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+      "readers": {
+        "old": {
+          "rows": [
+            [
+              1,
+              "Alice Updated"
+            ],
+            [
+              2,
+              "Bob"
+            ],
+            [
+              3,
+              "New User"
+            ]
+          ]
+        },
+        "new": {
+          "error": "no such column: display_name"
+        }
+      }
+    }
+  ],
+  "representative_sql_fixtures_not_application_writers": [
+    [
+      "UPDATE users SET display_name = ? WHERE id = ?",
+      [
+        "Alice Updated",
+        1
+      ]
+    ],
+    [
+      "INSERT INTO users (id, display_name) VALUES (?, ?)",
+      [
+        3,
+        "New User"
+      ]
+    ]
+  ],
+  "rollback_data_check": {
+    "updated_existing_row_survives": true,
+    "untouched_existing_row_survives": true,
+    "inserted_row_survives": true,
+    "original_updated_value_restored": false
+  },
+  "release_file_sha256_before_and_after": {
+    "release.md": "e987b9defd49929fdde127f69256e6f243426ad357b45e608c5368b6bad72192",
+    "001_initial.sql": "f202577af96fe5ff413f6456e176f80eb994ac7d349d89f8707fa32f79cef931",
+    "002_up.sql": "5a4dd92692e21c505e80ae9617776440ecebf01b45eb476a40545c56f98c6daa",
+    "002_down.sql": "f202a32cdf54191fff4f5939b1441ab9b1082649dcd449f93a03918a1d53d286",
+    "old_reader.py": "294758ac1d7dd348534b7506be4c3fe31710f01eb296e3e98659903ddab61b4e",
+    "new_reader.py": "fee2903771180a2b865bbdaed99d0d75711beb2720e7b4d39d8fdff8cb666d3b"
+  },
+  "all_assertions_passed": true
+}

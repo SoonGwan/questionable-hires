@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Friday [compact screen 02](FRIDAY-COMPACT-MODEL-02-REVIEW.md), launch `135c4df`,
+resources `f15f3ae`: baseline 88,162 tokens / 96.665s; skill 69,840 / 54.054s
+(descriptive −20.78% / −44.08%). Both meet the visible task and separate unchanged
+program replays match. Skill uses native SQLite, not the compact formatter;
+baseline creates extra durable artifacts and stronger intermediate assertions.
+Exposed n=1, unequal work/shared cache: no causal or general efficiency claim.
+
+한국어: 기본 88,162토큰·96.665초, Friday 69,840토큰·54.054초로 관측상
+20.78%·44.08% 감소했다. 별도 재검증도 일치했다. 기본 실행은 추가 보고서와
+더 많은 중간 검증을 만들었고 스킬은 직접 SQL을 실행했다. 단일 기존 과제와
+작업량 차이가 있어 전체 성능 개선으로 일반화하지 않는다.
+
 Friday [compact candidate](FRIDAY-COMPACT-01.md), previous resource `7f5a1fc`:
 entry bytes −22.03%; lossless compact JSON on the retained matrix object −7.71%.
 36 matrix and 12 packaging tests pass. Checks and result fields are unchanged;

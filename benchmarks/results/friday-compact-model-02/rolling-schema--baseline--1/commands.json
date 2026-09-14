@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd && rg --files -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!*lock*'\"' -g 'AGENTS.md' -g '*'\"",
+    "aggregated_output": "<WORKSPACE>\n.git/COMMIT_EDITMSG\n.git/index\n.git/refs/heads/main\n.git/logs/refs/heads/main\n.git/logs/HEAD\n.git/HEAD\n.git/objects/82/ed59d2b25e5568f9ffb9c41bac662631482658\n.git/objects/15/400af86fe5a18185371d07e1ceae4aade14a82\n.git/objects/5e/eb9038fcffd21855b2cc746e36d81be9d31016\n.git/objects/26/b30ce64056e325461b911b8b0f178715db5803\n.git/objects/7b/0b5fe325b91a084d61b5f1ddeebdbc2a797850\n.git/objects/7c/1f97382ebd1bfaf338e441dfc26ee3137f26d8\n.git/objects/7d/c69791649b1391f18d6299f1a9355d633555dc\n.git/objects/df/100e8f8e9f0aaffa5b8ad5e0996f8875c81297\n.git/config\nold_reader.py\n002_up.sql\n001_initial.sql\nnew_reader.py\n002_down.sql\nrelease.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'for f in release.md 001_initial.sql 002_up.sql 002_down.sql old_reader.py new_reader.py; do echo \"$f\"; nl -ba \"$f\"; done'",
+    "aggregated_output": "release.md\n     1\tDeploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\n001_initial.sql\n     1\tCREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n002_up.sql\n     1\tALTER TABLE users RENAME COLUMN name TO display_name;\n002_down.sql\n     1\tALTER TABLE users RENAME COLUMN display_name TO name;\nold_reader.py\n     1\tQUERY = 'SELECT id, name FROM users'\nnew_reader.py\n     1\tQUERY = 'SELECT id, display_name FROM users'\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short && git diff -- release.md 001_initial.sql 002_up.sql 002_down.sql old_reader.py new_reader.py'",
+    "aggregated_output": "",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 review/verify_release.py > review/results.json && cat review/results.json'",
+    "aggregated_output": "{\n  \"engine\": \"SQLite\",\n  \"sqlite_version\": \"3.51.0\",\n  \"scope\": \"In-memory schema/reader verification, not staging or application writers\",\n  \"queries\": {\n    \"old\": \"SELECT id, name FROM users\",\n    \"new\": \"SELECT id, display_name FROM users\"\n  },\n  \"states\": [\n    {\n      \"state\": \"initial\",\n      \"schema\": \"CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)\",\n      \"readers\": {\n        \"old\": {\n          \"rows\": [\n            [\n              1,\n              \"Alice\"\n            ],\n            [\n              2,\n              \"Bob\"\n            ]\n          ]\n        },\n        \"new\": {\n          \"error\": \"no such column: display_name\"\n        }\n      }\n    },\n    {\n      \"state\": \"up_before_new_schema_data\",\n      \"schema\": \"CREATE TABLE users (id INTEGER PRIMARY KEY, display_name TEXT NOT NULL)\",\n      \"readers\": {\n        \"old\": {\n          \"error\": \"no such column: name\"\n        },\n        \"new\": {\n          \"rows\": [\n            [\n              1,\n              \"Alice\"\n            ],\n            [\n              2,\n              \"Bob\"\n            ]\n          ]\n        }\n      }\n    },\n    {\n      \"state\": \"up_after_committed_insert_update_before_down\",\n      \"schema\": \"CREATE TABLE users (id INTEGER PRIMARY KEY, display_name TEXT NOT NULL)\",\n      \"readers\": {\n        \"old\": {\n          \"error\": \"no such column: name\"\n        },\n        \"new\": {\n          \"rows\": [\n            [\n              1,\n              \"Alice Updated\"\n            ],\n            [\n              2,\n              \"Bob\"\n            ],\n            [\n              3,\n              \"New User\"\n            ]\n          ]\n        }\n      }\n    },\n    {\n      \"state\": \"down_after_new_schema_data\",\n      \"schema\": \"CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)\",\n      \"readers\": {\n        \"old\": {\n          \"rows\": [\n            [\n              1,\n              \"Alice Updated\"\n            ],\n            [\n              2,\n              \"Bob\"\n            ],\n            [\n              3,\n              \"New User\"\n            ]\n          ]\n        },\n        \"new\": {\n          \"error\": \"no such column: display_name\"\n        }\n      }\n    }\n  ],\n  \"representative_sql_fixtures_not_application_writers\": [\n    [\n      \"UPDATE users SET display_name = ? WHERE id = ?\",\n      [\n        \"Alice Updated\",\n        1\n      ]\n    ],\n    [\n      \"INSERT INTO users (id, display_name) VALUES (?, ?)\",\n      [\n        3,\n        \"New User\"\n      ]\n    ]\n  ],\n  \"rollback_data_check\": {\n    \"updated_existing_row_survives\": true,\n    \"untouched_existing_row_survives\": true,\n    \"inserted_row_survives\": true,\n    \"original_updated_value_restored\": false\n  },\n  \"release_file_sha256_before_and_after\": {\n    \"release.md\": \"e987b9defd49929fdde127f69256e6f243426ad357b45e608c5368b6bad72192\",\n    \"001_initial.sql\": \"f202577af96fe5ff413f6456e176f80eb994ac7d349d89f8707fa32f79cef931\",\n    \"002_up.sql\": \"5a4dd92692e21c505e80ae9617776440ecebf01b45eb476a40545c56f98c6daa\",\n    \"002_down.sql\": \"f202a32cdf54191fff4f5939b1441ab9b1082649dcd449f93a03918a1d53d286\",\n    \"old_reader.py\": \"294758ac1d7dd348534b7506be4c3fe31710f01eb296e3e98659903ddab61b4e\",\n    \"new_reader.py\": \"fee2903771180a2b865bbdaed99d0d75711beb2720e7b4d39d8fdff8cb666d3b\"\n  },\n  \"all_assertions_passed\": true\n}\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_8",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short && git diff --exit-code -- release.md 001_initial.sql 002_up.sql 002_down.sql old_reader.py new_reader.py'",
+    "aggregated_output": "?? review/\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]
