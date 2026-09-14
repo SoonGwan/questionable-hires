@@ -1,0 +1,53 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "history-invoice-boundary",
+  "skill": "necromancer",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "9b050b628b971c45ff80073172d26f262341ada0",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 51.499,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 89768,
+    "cached_input_tokens": 74240,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1322,
+    "reasoning_output_tokens": 0
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Review two proposed independent simplifications in amounts.amount_cents:\n(A) remove the isinstance(value, int) early return;\n(B) replace the final quantized return with return int(Decimal(value) * 100),\nleaving the early return unchanged. Do not combine the proposals.\nFor each, establish why the existing behavior was introduced from the actual\nrelevant commit change, then decide whether it is necessary under the current\nsupported invoice contract and caller. Verify current, A-only and B-only behavior\nthrough invoice.invoice_total for \"1.005\", \"-1.005\" and \"2.34\", comparing with\nthe required values. Cite the introducing commits and current call path. Give\nseparate recommendations, separating historical reason from current necessity.\nThis is review, not implementation: preserve all project files; no commits,\ndependency installs, network, publishing or external history fetching. Use -B\nfor Python. In-memory substitution is permitted. If you need scratch, keep it\ninside the project and remove it before finishing; captured output is enough.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 457,
+    "mode": 420,
+    "sha256": "0caaada42b0b818fc478cc15cf30439a0506ddedca3dcb3ddefd9e8ea0466b8a",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Invoice history transfer — 2026-09-15, launch `14a8556`
+
+[Fresh two-proposal screen](results/history-invoice-01/README.md), Necromancer
+resources `401eab9`: both sessions correctly distinguish obsolete integer support
+from required half-cent rounding, inspect the actual introducing diffs and verify
+the current/A-only/B-only entrypoint results. Skill records **+3.64% tokens /
++10.94% time**, no efficiency win. Both first try unavailable `python` then use
+`python3 -B`; all original failures remain. Neither uses the optional collector,
+so the compact-output change has no measured adoption/effect here. Five original
+files per arm and installed resources are preserved; 13 shell outputs match the
+original stored responses. One authored task/n=1/shared host, not broad proof.
+
+한국어: 새 과제의 판단과 실제 검증은 양쪽 모두 맞았지만 스킬은 토큰 3.64%·시간
+10.94% 증가했다. 양쪽의 첫 실행 실패도 포함한 수치이며, 이력 도우미 미사용으로
+출력 축소의 모델 효과는 미측정이다. 원본 파일과 응답은 확인했고 불리한 결과도
+보존한다. 이 과제에 맞춰 규칙을 더 붙이거나 좋은 수치가 나올 때까지 재시도하지 않는다.
+
 ## History output transport — 2026-09-15, parent `b9799dd`
 
 [Compact collector output](HISTORY-COMPACT-OUTPUT-01.md) makes CLI JSON compact
