@@ -337,6 +337,26 @@ class MatrixTests(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, 'Unsupported result value: object'):
             helper.format_result({'unsupported': object()})
 
+    def test_compact_formatter_preserves_retained_model_observations(self):
+        evidence = SCRIPT.parents[3] / 'benchmarks/results/bundle-contract-08/rolling-schema--skill--1/commands.json'
+        commands = json.loads(evidence.read_text())
+        observations = []
+        for command in commands:
+            for line in command['aggregated_output'].splitlines():
+                if line.startswith('{"engine": "sqlite-memory"'):
+                    observations.append(json.loads(line))
+        self.assertEqual(len(observations), 1)
+        original = observations[0]
+        before = copy.deepcopy(original)
+        compact = helper.format_result(original)
+        self.assertEqual(json.loads(compact), original)
+        self.assertEqual(original, before)
+        self.assertLess(len(compact.encode()), len(json.dumps(original).encode()))
+        self.assertEqual(len(original['phases']), 4)
+        self.assertEqual(sum(not check['ok'] for phase in original['phases']
+                             for check in phase['checks'].values()), 4)
+        self.assertEqual(set(original['reader_sources']), {'old', 'new'})
+
     def test_documented_api_example_executes_with_blob_rows(self):
         reference = (SCRIPT.parents[1] / 'references/sqlite-matrix.md').read_text()
         example = reference.split('```python\n', 1)[1].split('\n```', 1)[0]

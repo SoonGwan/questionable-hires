@@ -219,7 +219,7 @@ def format_result(result):
         if isinstance(value, bytes):
             return {"blob_hex": value.hex()}
         raise TypeError("Unsupported result value: " + type(value).__name__)
-    return json.dumps(result, ensure_ascii=True, default=encode)
+    return json.dumps(result, ensure_ascii=True, default=encode, separators=(',', ':'))
 
 
 def main():

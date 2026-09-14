@@ -11,6 +11,15 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Friday [compact candidate](FRIDAY-COMPACT-01.md), previous resource `7f5a1fc`:
+entry bytes −22.03%; lossless compact JSON on the retained matrix object −7.71%.
+36 matrix and 12 packaging tests pass. Checks and result fields are unchanged;
+model interpretation and whole-task efficiency remain unmeasured for this edit.
+
+한국어: Friday 안내문은 22.03%, 기존 결과 객체의 JSON은 7.71% 작아졌다.
+검증 횟수와 결과 필드는 유지하고 관련 테스트 48개가 통과했다. 파일 크기 기준이며
+실제 모델의 지침 채택·토큰·시간 개선은 아직 검증하지 않았다.
+
 Collector-only [capture persistence check](CAPTURE-PERSISTENCE-01.md), previous
 source `b2993d2`: preserve received CLI streams before post-run Git inspection.
 A real failing-Git control and 25 runner tests pass. This prevents a separate

@@ -4,6 +4,8 @@ Use with the [core CLI/API interface](sqlite-matrix.md) when interpreting
 binary/duplicate/empty-column output or diagnosing rejected inputs and byte limits.
 
 Invalid API inputs raise exceptions; CLI invalid inputs instead produce exit 2.
+CLI and `format_result` use compact JSON separators; decoded fields and values
+are unchanged. Compare parsed observations, not whitespace in serialized output.
 
 ## Input shape and failure details
 
