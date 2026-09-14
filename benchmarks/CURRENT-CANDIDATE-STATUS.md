@@ -9,6 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Native pager interval screen — 2026-09-15, launch `fa3c10d`
+
+[Pager screen](results/pager-loading-01/README.md), Mother-in-law entrypoint
+`c6d8ea0`: both arms deliver four native tests with two real loading-interval
+failures and correct error/retry control, preserving production and existing
+test support. Skill records **−12.30% tokens / +8.04% time**; baseline's recorded
+WebSocket reconnection and different test organization remain included. This
+authored n=1 pair is not an overall efficiency win. Persisted shell outputs match
+CLI records; separate unchanged-suite author replays fail on original code and
+pass on a generation guard. Skill still reads unused transport resources despite
+adequate project support, identifying a concrete next routing correction.
+
+한국어: 새 페이지 전환 사례에서 양쪽 모두 로딩 중간 상태 결함을 실제 assertion으로
+검출했다. 스킬은 토큰 12.30% 감소·시간 8.04% 증가로 전체 효율 목표는 미달이다.
+기존 프로젝트 지원을 재사용하면서도 불필요한 transport 자료까지 읽는 경로가
+확인됐다. 연결 재시도·구현 차이·단일 합성 사례라는 한계를 보존하며, 대표 그래프는
+바꾸지 않는다. 원본 실행과 별도 작성자 재검증을 구분해 공개 가능한 기록을 남겼다.
+
 ## Repository regression checkpoint — 2026-09-15, source `888c362`
 
 Full local `python3 -B -m unittest discover -s tests` passes **592 tests / 90.302s**,

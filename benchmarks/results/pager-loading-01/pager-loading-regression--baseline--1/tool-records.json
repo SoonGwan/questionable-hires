@@ -1,0 +1,217 @@
+{
+  "session_id": "01a0a13b-7623-7413-8ca2-9a82172b3cb9",
+  "source_bytes": 104905,
+  "source_sha256": "6b4aa0882b62036dc4b30d2249a21a7e826a688f5ba9c434b4b6d8aa45e2280e",
+  "source_lines": 45,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "ab99b0b1fbfd49972dbcb61c917e3e4443bc41f0600dd176d1c7f7027fc28690",
+      "record": {
+        "timestamp": "2026-09-14T18:43:55.834Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0af019a45593801a016aa84069f34887d0935ce64916ec1393",
+          "status": "completed",
+          "call_id": "call_ZECqw0SEoTJxnN7gRorOw0VH",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files -g '!__pycache__/**' -g '!\\\\.git/**'\",\"max_output_tokens\":2000}));\ntext(await tools.exec_command({cmd:\"cat test_pager.py test_support.py pager.py\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a13b-766e-79d1-b30c-ce5a95a24d8d",
+            "create_time": 1789411431.268409
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "2db05d2c9547f1c42063466ead712ecbf6e8cc99b0fe009e0e77460a3be6d25c",
+      "record": {
+        "timestamp": "2026-09-14T18:43:56.036Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a13b-a604-7383-a76e-7d4babf411cf",
+          "call_id": "call_ZECqw0SEoTJxnN7gRorOw0VH",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"243de7\",\"wall_time_seconds\":0.000002875,\"exit_code\":0,\"original_token_count\":33,\"output\":\"<WORKSPACE>\\nAGENTS.md\\npager.py\\ntest_pager.py\\ntest_support.py\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"f20a24\",\"wall_time_seconds\":0.000002375,\"exit_code\":0,\"original_token_count\":555,\"output\":\"import asyncio\\nimport unittest\\nfrom pager import Pager\\nfrom test_support import requests\\n\\n\\nclass PagerTests(unittest.IsolatedAsyncioTestCase):\\n    async def test_single_success(self):\\n        async with requests() as (fetch, start, next_request):\\n            pager = Pager(fetch)\\n            task = start(pager.select(1))\\n            page, response = await next_request()\\n            self.assertEqual(page, 1)\\n            self.assertTrue(pager.loading)\\n            self.assertEqual(pager.rows, ['cached'])\\n            response.set_result(['page one'])\\n            await asyncio.wait_for(task, 1)\\n            self.assertEqual(pager.rows, ['page one'])\\n            self.assertFalse(pager.loading)\\n            self.assertIsNone(pager.error)\\nimport asyncio\\nfrom contextlib import asynccontextmanager\\n\\n\\n@asynccontextmanager\\nasync def requests():\\n    \\\"\\\"\\\"Existing project fixture. Owns only tasks registered with start().\\\"\\\"\\\"\\n    entered = asyncio.Queue()\\n    tasks = []\\n\\n    async def fetch(page):\\n        response = asyncio.get_running_loop().create_future()\\n        entered.put_nowait((page, response))\\n        return await response\\n\\n    def start(coroutine):\\n        task = asyncio.create_task(coroutine)\\n        tasks.append(task)\\n        return task\\n\\n    async def next_request():\\n        return await asyncio.wait_for(entered.get(), 1)\\n\\n    try:\\n        yield fetch, start, next_request\\n    finally:\\n        for task in tasks:\\n            if not task.done():\\n                task.cancel()\\n        await asyncio.wait_for(asyncio.gather(*tasks, return_exceptions=True), 1)\\nclass Pager:\\n    def __init__(self, fetch):\\n        self.fetch = fetch\\n        self.rows = ['cached']\\n        self.loading = False\\n        self.error = None\\n        self._generation = 0\\n\\n    async def select(self, page):\\n        self._generation += 1\\n        generation = self._generation\\n        self.loading = True\\n        self.error = None\\n        try:\\n            rows = await self.fetch(page)\\n            if generation == self._generation:\\n                self.rows = rows\\n        except OSError as error:\\n            if generation == self._generation:\\n                self.error = str(error)\\n        finally:\\n            self.loading = False\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a13b-766e-79d1-b30c-ce5a95a24d8d",
+            "create_time": 1789411436.036675
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "8ca78b6f76a25cf114115bc3c1439a5ab73524f457ac8304ef6748bebd7cfdac",
+      "record": {
+        "timestamp": "2026-09-14T18:44:03.986Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0af019a45593801a016aa84073a3e087d0aaf34ccb11ada90b",
+          "status": "completed",
+          "call_id": "call_kpg0xeCDOf2EhFaGIeFFfVg5",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md && git status --short\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a13b-766e-79d1-b30c-ce5a95a24d8d",
+            "create_time": 1789411436.64998
+          }
+        }
+      }
+    },
+    {
+      "line": 24,
+      "line_sha256": "dce167b813e41cb38c56a48d024e99b217e454a7e441df9a6a0dcb73e36a5a58",
+      "record": {
+        "timestamp": "2026-09-14T18:44:04.096Z",
+        "ordinal": 23,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a13b-c580-7041-94f3-7658746d15cd",
+          "call_id": "call_kpg0xeCDOf2EhFaGIeFFfVg5",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"784b3c\",\"wall_time_seconds\":0.000001833,\"exit_code\":0,\"original_token_count\":73,\"output\":\"Python standard library; native unittest. QA only: extend test_pager.py, preserve all other files and existing test behavior. No network, installs or delegation. Any scratch must be project-local and removed. Existing requests() test support owns registered tasks and bounds entry/cleanup.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a13b-766e-79d1-b30c-ce5a95a24d8d",
+            "create_time": 1789411444.096666
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "97f83d23f18c68aded686361b5bc72f128781e106aabf31e14dbcd37dd3c5696",
+      "record": {
+        "timestamp": "2026-09-14T18:44:33.499Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0af019a45593801a016aa84077dfc487d0acd9389fbdc28610",
+          "status": "completed",
+          "call_id": "call_xct19xwzQu5Q5Uj4EZxG9WVz",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/test_pager.py\\n@@\\n             self.assertFalse(pager.loading)\\n             self.assertIsNone(pager.error)\\n+\\n+    def assert_state(self, pager, rows, loading, error):\\n+        self.assertEqual(\\n+            (pager.rows, pager.loading, pager.error),\\n+            (rows, loading, error),\\n+        )\\n+\\n+    async def check_older_completion(self, older_error=None):\\n+        async with requests() as (fetch, start, next_request):\\n+            pager = Pager(fetch)\\n+            self.assert_state(pager, ['cached'], False, None)\\n+\\n+            older = start(pager.select(1))\\n+            page, older_response = await next_request()\\n+            self.assertEqual(page, 1)\\n+            self.assert_state(pager, ['cached'], True, None)\\n+\\n+            newer = start(pager.select(2))\\n+            page, newer_response = await next_request()\\n+            self.assertEqual(page, 2)\\n+            self.assert_state(pager, ['cached'], True, None)\\n+\\n+            if older_error is None:\\n+                older_response.set_result(['older page'])\\n+            else:\\n+                older_response.set_exception(older_error)\\n+            await asyncio.wait_for(older, 1)\\n+\\n+            # Inspect the completed older request before releasing the newer one.\\n+            # A subtest lets the latest completion be checked even on regression.\\n+            with self.subTest(transition='older complete, newer pending'):\\n+                self.assertFalse(newer_response.done())\\n+                self.assertFalse(newer.done())\\n+                self.assert_state(pager, ['cached'], True, None)\\n+\\n+            newer_response.set_result(['newer page'])\\n+            await asyncio.wait_for(newer, 1)\\n+            self.assert_state(pager, ['newer page'], False, None)\\n+\\n+    async def test_older_success_while_newer_pending(self):\\n+        await self.check_older_completion()\\n+\\n+    async def test_older_oserror_while_newer_pending(self):\\n+        await self.check_older_completion(OSError('older request failed'))\\n+\\n+    async def test_latest_error_followed_by_successful_retry(self):\\n+        async with requests() as (fetch, start, next_request):\\n+            pager = Pager(fetch)\\n+            self.assert_state(pager, ['cached'], False, None)\\n+\\n+            latest = start(pager.select(3))\\n+            page, response = await next_request()\\n+            self.assertEqual(page, 3)\\n+            self.assert_state(pager, ['cached'], True, None)\\n+\\n+            response.set_exception(OSError('latest request failed'))\\n+            await asyncio.wait_for(latest, 1)\\n+            self.assert_state(pager, ['cached'], False, 'latest request failed')\\n+\\n+            retry = start(pager.select(3))\\n+            page, response = await next_request()\\n+            self.assertEqual(page, 3)\\n+            self.assert_state(pager, ['cached'], True, None)\\n+\\n+            response.set_result(['retried page'])\\n+            await asyncio.wait_for(retry, 1)\\n+            self.assert_state(pager, ['retried page'], False, None)\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v test_pager\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a13b-766e-79d1-b30c-ce5a95a24d8d",
+            "create_time": 1789411444.669608
+          }
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "b3998200bfb2907190813cf262b287638468cac71204e6019512a0aeb6145820",
+      "record": {
+        "timestamp": "2026-09-14T18:44:33.752Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a13c-3958-76f0-878f-9137d008697e",
+          "call_id": "call_xct19xwzQu5Q5Uj4EZxG9WVz",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a84b7b\",\"wall_time_seconds\":0.000002625,\"exit_code\":1,\"original_token_count\":525,\"output\":\"test_latest_error_followed_by_successful_retry (test_pager.PagerTests) ... ok\\ntest_older_oserror_while_newer_pending (test_pager.PagerTests) ... test_older_success_while_newer_pending (test_pager.PagerTests) ... test_single_success (test_pager.PagerTests) ... ok\\n\\n======================================================================\\nFAIL: test_older_oserror_while_newer_pending (test_pager.PagerTests) (transition='older complete, newer pending')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_pager.py\\\", line 54, in check_older_completion\\n    self.assert_state(pager, ['cached'], True, None)\\n  File \\\"<WORKSPACE>/test_pager.py\\\", line 23, in assert_state\\n    self.assertEqual(\\nAssertionError: Tuples differ: (['cached'], False, None) != (['cached'], True, None)\\n\\nFirst differing element 1:\\nFalse\\nTrue\\n\\n- (['cached'], False, None)\\n?              ^^^^\\n\\n+ (['cached'], True, None)\\n?              ^^^\\n\\n\\n======================================================================\\nFAIL: test_older_success_while_newer_pending (test_pager.PagerTests) (transition='older complete, newer pending')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_pager.py\\\", line 54, in check_older_completion\\n    self.assert_state(pager, ['cached'], True, None)\\n  File \\\"<WORKSPACE>/test_pager.py\\\", line 23, in assert_state\\n    self.assertEqual(\\nAssertionError: Tuples differ: (['cached'], False, None) != (['cached'], True, None)\\n\\nFirst differing element 1:\\nFalse\\nTrue\\n\\n- (['cached'], False, None)\\n?              ^^^^\\n\\n+ (['cached'], True, None)\\n?              ^^^\\n\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.016s\\n\\nFAILED (failures=2)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a13b-766e-79d1-b30c-ce5a95a24d8d",
+            "create_time": 1789411473.752884
+          }
+        }
+      }
+    },
+    {
+      "line": 36,
+      "line_sha256": "f2a2d75fb3e7dc3d206c383db0bd0adea9ca0368702c9bd02153ea9073715464",
+      "record": {
+        "timestamp": "2026-09-14T18:44:37.565Z",
+        "ordinal": 35,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0af019a45593801a016aa84094a63087d0bfd6505c722128ae",
+          "status": "completed",
+          "call_id": "call_EBKdRXDXvs5pSHo9vfNDJ6pO",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff --check && git diff --stat && git status --short\",\"max_output_tokens\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a13b-766e-79d1-b30c-ce5a95a24d8d",
+            "create_time": 1789411474.241519
+          }
+        }
+      }
+    },
+    {
+      "line": 39,
+      "line_sha256": "4f9eb4b0ce545976aaeee400515be11572593de5fc5f33965363404ae2adaa07",
+      "record": {
+        "timestamp": "2026-09-14T18:44:37.684Z",
+        "ordinal": 38,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a13c-48b4-7c23-bd83-9cc3337fd301",
+          "call_id": "call_EBKdRXDXvs5pSHo9vfNDJ6pO",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"e726bb\",\"wall_time_seconds\":0.0000015,\"exit_code\":0,\"original_token_count\":33,\"output\":\" test_pager.py | 67 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\\n 1 file changed, 67 insertions(+)\\n M test_pager.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a13b-766e-79d1-b30c-ce5a95a24d8d",
+            "create_time": 1789411477.684262
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

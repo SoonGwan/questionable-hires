@@ -1,0 +1,62 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "pager-loading-regression",
+  "skill": "mother-in-law",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "2c5234363abbd0c564ed999c432a5fbd254cc4e4",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 61.057,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 88238,
+    "cached_input_tokens": 80768,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1443,
+    "reasoning_output_tokens": 173
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Add native regression tests for Pager.select in pager.py. This is QA,\nnot a production fix. Read the existing test_pager.py and test_support.py.\nThe product contract is latest-request ownership, retaining the previous rows\nand loading=True throughout the interval until the latest request completes.\nOlder completion, whether success or OSError, must not replace rows, clear loading\nor show an error while the latest request is pending. Latest success clears\nloading and displays its rows. Latest OSError clears loading, retains rows and\nshows its message; retry clears the error at entry, retains rows while loading,\nand displays its successful response. No browser result is requested.\n\nKeep the existing single-success test. Add exactly three native test methods:\nolder success while a newer request remains pending; older OSError while newer\nremains pending; latest error followed by successful retry. Shared test helpers\nare allowed. Check actual request keys and required rows/loading/error states at\nthe relevant transitions, including AFTER older completion before releasing the\nnewer request. Use deterministic responses, bounded waits and failure-safe cleanup.\n\nRun the four-method native suite once after writing the tests. Retain real\nregression failures; do not fix production, mark expectedFailure, skip, weaken\nthe contract or add disposable probes. No extra report file is needed. Report\nnative test identities/results, demonstrated fault and tested layer. If the\nsuite cannot run due to a test-authoring error, repair only that error and rerun;\nall attempts remain evidence, not a passing performance shortcut.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [
+      "error"
+    ],
+    "unittest_transcript_review_candidates": [
+      {
+        "item_id": "item_6",
+        "reported_tests": 4,
+        "observed_verbose_headers": 2,
+        "interpretation": "Possible partial transcript or nonstandard runner output; manual review required."
+      }
+    ],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 369,
+    "mode": 420,
+    "sha256": "17cf65bcc396f24240de6062814b8a06b3b9f28883be852ec1e8deff00c87a05",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

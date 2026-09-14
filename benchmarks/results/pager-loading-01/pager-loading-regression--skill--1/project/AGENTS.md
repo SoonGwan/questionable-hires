@@ -1,0 +1,1 @@
+Python standard library; native unittest. QA only: extend test_pager.py, preserve all other files and existing test behavior. No network, installs or delegation. Any scratch must be project-local and removed. Existing requests() test support owns registered tasks and bounds entry/cleanup.
