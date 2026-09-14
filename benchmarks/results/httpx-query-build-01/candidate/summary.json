@@ -1,0 +1,97 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "query-build",
+    "skill": "exorcist",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+    "skill_sha256": "261dbc7419a5aa5830864b2438cfd4b61a322056b5d46cc9cbb1850f5032f2ef",
+    "skill_resources_sha256": "85dfb87469533e470c02145968b95ba328a1b8fd783599d2bdad2f580e316072",
+    "elapsed_seconds": 63.1,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 99680,
+      "cached_input_tokens": 80512,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1665,
+      "reasoning_output_tokens": 104
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $exorcist at .agents/skills/exorcist/SKILL.md.\n\nDiagnose an HTTPX report: Client.build_request seems to lose query\nvalues already embedded in a URL after an adapter starts passing params or the\nclient is given default params. The reporter suspects encoding or request caching.\nReproduce offline with actual Client.build_request, without sending any requests.\nUse URL https://example.invalid/items?from=url&tag=url1&tag=url2 for four cases:\n1. No client params; omit request params.\n2. No client params; explicitly pass request params={}.\n3. Client params={'tenant': 'client'}; omit request params.\n4. Client params={'tenant': 'client', 'tag': ['client1', 'client2']}; request\n   params={'tag': ['request1', 'request2'], 'page': '2'}.\nFor each, record the built URL and ordered repeated query items. Locate the\nresponsible mechanism in this checkout, distinguish URL-query behavior from\nclient/request params merging, and explain why omission and an empty mapping may\ndiffer. Recommend a scoped caller-side approach for preserving intended URL\nvalues without dropping repeated values or silently overriding caller precedence.\nThe requested deliverable is a diagnosis, not a library fix or general API audit.\nPreserve original files, use no network or installs, and do not commit/publish.\nKeep any disposable probes project-local and remove them; captured output suffices.\n\n\nUse the preinstalled interpreter <PREINSTALLED_PYTHON> for all Python/pytest commands. Do not install dependencies. Keep disposable mutation copies and diagnostic artifacts inside this project, without modifying its existing files.\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+    "disabled_personal_skills": 9,
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "exorcist/SKILL.md": {
+        "kind": "file",
+        "sha256": "261dbc7419a5aa5830864b2438cfd4b61a322056b5d46cc9cbb1850f5032f2ef",
+        "mode": 420
+      },
+      "exorcist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "7b32eff2aac69985ed633c2f8aa63ddaf4ff584230b1f3540ac82c91dc81b87a",
+        "mode": 420
+      },
+      "exorcist/references/bounded-probe.md": {
+        "kind": "file",
+        "sha256": "ec9fb6853a9bd6d1f8d612bd406707c9d309956873e0ca9a09333c4662289f40",
+        "mode": 420
+      },
+      "exorcist/scripts/run_probe.py": {
+        "kind": "file",
+        "sha256": "eeb0c18f3e56875aff899c508748a66f8aa432330e908b27556aa98eab30fd3d",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "exorcist/SKILL.md": {
+        "kind": "file",
+        "sha256": "261dbc7419a5aa5830864b2438cfd4b61a322056b5d46cc9cbb1850f5032f2ef",
+        "mode": 420
+      },
+      "exorcist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "7b32eff2aac69985ed633c2f8aa63ddaf4ff584230b1f3540ac82c91dc81b87a",
+        "mode": 420
+      },
+      "exorcist/references/bounded-probe.md": {
+        "kind": "file",
+        "sha256": "ec9fb6853a9bd6d1f8d612bd406707c9d309956873e0ca9a09333c4662289f40",
+        "mode": 420
+      },
+      "exorcist/scripts/run_probe.py": {
+        "kind": "file",
+        "sha256": "eeb0c18f3e56875aff899c508748a66f8aa432330e908b27556aa98eab30fd3d",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 11595,
+      "mode": 420,
+      "sha256": "5f2f26917869aa62a693f5ae1bf889f52e310d76244fe10c1c9264d4a697d9f7",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]

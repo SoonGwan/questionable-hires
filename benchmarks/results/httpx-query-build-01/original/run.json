@@ -1,0 +1,49 @@
+{
+  "upstream_revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "revision": "6464e848a6097be0e81210c22a92ceb10091bfe7",
+  "codex_version": "codex-cli 0.153.4",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "seed": 20260912,
+  "timeout_seconds": 360,
+  "jobs": 1,
+  "session_persistence_requested": true,
+  "profile": "query-build-diagnosis",
+  "skill_name": "exorcist",
+  "preflight_checks": [
+    "tests/client/test_queryparams.py::test_client_queryparams",
+    "tests/client/test_queryparams.py::test_client_queryparams_echo"
+  ],
+  "interpreter_supplied": "<PREINSTALLED_PYTHON>",
+  "interpreter_effective": "<PREINSTALLED_PYTHON>",
+  "skill_sha256": "8bab259a8b49f9e653ce289dea938d32bdae98137ab8ab80f08cdb8cec484f20",
+  "skill_files_sha256": {
+    "SKILL.md": "8bab259a8b49f9e653ce289dea938d32bdae98137ab8ab80f08cdb8cec484f20",
+    "agents/openai.yaml": "7b32eff2aac69985ed633c2f8aa63ddaf4ff584230b1f3540ac82c91dc81b87a",
+    "references/bounded-probe.md": "ec9fb6853a9bd6d1f8d612bd406707c9d309956873e0ca9a09333c4662289f40",
+    "scripts/run_probe.py": "eeb0c18f3e56875aff899c508748a66f8aa432330e908b27556aa98eab30fd3d"
+  },
+  "tasks": {
+    "query-build": "Diagnose an HTTPX report: Client.build_request seems to lose query\nvalues already embedded in a URL after an adapter starts passing params or the\nclient is given default params. The reporter suspects encoding or request caching.\nReproduce offline with actual Client.build_request, without sending any requests.\nUse URL https://example.invalid/items?from=url&tag=url1&tag=url2 for four cases:\n1. No client params; omit request params.\n2. No client params; explicitly pass request params={}.\n3. Client params={'tenant': 'client'}; omit request params.\n4. Client params={'tenant': 'client', 'tag': ['client1', 'client2']}; request\n   params={'tag': ['request1', 'request2'], 'page': '2'}.\nFor each, record the built URL and ordered repeated query items. Locate the\nresponsible mechanism in this checkout, distinguish URL-query behavior from\nclient/request params merging, and explain why omission and an empty mapping may\ndiffer. Recommend a scoped caller-side approach for preserving intended URL\nvalues without dropping repeated values or silently overriding caller precedence.\nThe requested deliverable is a diagnosis, not a library fix or general API audit.\nPreserve original files, use no network or installs, and do not commit/publish.\nKeep any disposable probes project-local and remove them; captured output suffices.\n"
+  },
+  "schedule": [
+    [
+      "query-build",
+      "skill",
+      1
+    ]
+  ],
+  "skill_revision": "d90c1d42117844d490afc4d3da9deca63ed1fcb0",
+  "completed_cells": [
+    {
+      "case": "query-build",
+      "arm": "skill",
+      "repeat": 1,
+      "completed": true
+    }
+  ],
+  "stopped_after_limit": false,
+  "started_at": "2026-09-14T19:20:29.931785+00:00",
+  "dependencies": "anyio==4.12.1\nattrs==26.1.0\nbrotli==1.2.0\ncertifi==2026.7.22\ncffi==2.0.0\nchardet==5.2.0\nclick==8.1.8\ncryptography==50.0.1\nexceptiongroup==1.3.1\nh11==0.16.0\nhttpcore==1.0.9\nhttpx==0.28.1\nidna==3.19\niniconfig==2.1.0\noutcome==1.3.0.post0\npackaging==26.3\npluggy==1.6.0\npycparser==2.23\npytest==8.3.4\nsniffio==1.3.1\nsortedcontainers==2.4.0\ntomli==2.4.1\ntrio==0.27.0\ntrustme==1.2.0\ntyping_extensions==4.16.0\nuvicorn==0.32.1\nzstandard==0.25.0",
+  "finished_at": "2026-09-14T19:21:31.512242+00:00"
+}

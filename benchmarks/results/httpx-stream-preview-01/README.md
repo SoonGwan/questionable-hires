@@ -93,3 +93,8 @@ returning unrelated images, not evidence that all discovery is wasteful. Control
 stopping criteria, native execution and scope stay intact; no helper is added.
 The correction follows skill-creator's evidence-backed, narrow-instruction rule.
 Its adoption and resource effect need new-task evidence, not this run's percentages.
+
+Later [old/new query-construction screen](../httpx-query-build-01/README.md)
+observes direct-search adoption but does not accept a whole-task improvement.
+The discovery paragraph is restored to its previous version; this earlier stream
+comparison remains unchanged and is not repurposed as evidence for that decision.

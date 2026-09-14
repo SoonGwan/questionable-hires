@@ -9,19 +9,39 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Old/new Exorcist discovery screen — 2026-09-15, launch `6464e84`
+
+[New real-checkout query-construction task](results/httpx-query-build-01/README.md):
+candidate `329d06c`, no-skill baseline and original skill `d90c1d4`, one fresh
+session each. All reproduce the four required cases and explain repeated-value
+and caller-precedence semantics correctly. Candidate versus original records
+**+33.29% tokens / +3.14% time**; versus baseline **−10.90% / −6.85%**. Extra
+mitigation probes/repeated constructions, outer-call grouping, baseline's missing
+test-path error and n=1 limit causality. First-search adoption is not a whole-task
+improvement. Reject performance adoption and restore the original Exorcist entry
+exactly; no extra stronger discovery rule or favorable rerun. All 125 upstream
+files per cell and original stored responses are retained; charts stay unchanged.
+
+한국어: 새 실제 저장소 과제에서 수정 전·후·미적용 조건을 직접 비교했다. 진단은
+모두 맞았지만 수정 후는 수정 전보다 토큰 33.29%·시간 3.14%가 많았다. 추가
+검증·도구 호출 묶음·미적용 조건의 잘못된 파일 경로 등 작업 차이가 있으므로
+문구의 인과 효과로 단정하지 않는다. 첫 검색이 바뀐 것만으로 개선으로 채택하지
+않고 Exorcist 진입점을 기존 상태로 복원했다. 모든 결과와 한계는 보존한다.
+
 ## Real HTTPX stream diagnosis — 2026-09-15, launch `a2546a2`
 
 Subsequent discovery candidate, parent `9d3ba59`: Exorcist now routes named APIs
 or errors to content search instead of treating them as filenames; supplied
 failure paths still take precedence and missing locations still allow inventory.
 This corrects the observed uninformative first filter without adding a helper or
-weakening diagnosis, controls, scope or stopping rules. Not model-measured yet;
-the comparison below remains tied to its original frozen resources.
+weakening diagnosis, controls, scope or stopping rules. Unmeasured at this earlier
+checkpoint; the later query-construction screen above does not accept it and
+restores the prior entry. The comparison below retains its frozen resources.
 
 한국어: 후속 후보는 API·오류 이름이 주어졌을 때 해당 심볼을 내용 검색으로 먼저
 찾도록 보정했다. 이미 주어진 경로와 필요한 파일 탐색은 유지하며, 검증이나
-진단 범위를 줄이지 않는다. 이 문구 수정 자체의 비용 절감은 아직 측정하지
-않았고, 아래 결과를 새 후보의 효과로 옮겨 붙이지 않는다.
+진단 범위를 줄이지 않았다. 당시에는 미측정이었으며, 위 후속 직접 비교에서는
+개선으로 채택하지 않고 기존 지침으로 복원했다. 아래 결과는 그대로 보존한다.
 
 [Full-checkout stream-preview comparison](results/httpx-stream-preview-01/README.md),
 Exorcist resources from `d90c1d4`: both reproduce three real Client/MockTransport
