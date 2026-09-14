@@ -1,0 +1,279 @@
+diff --git a/preview.mjs b/preview.mjs
+index de863b9..ca350bf 100644
+--- a/preview.mjs
++++ b/preview.mjs
+@@ -1,9 +1,21 @@
+ export class PreviewLoader {
+   state = { status: 'idle', value: null, error: null };
++  #request;
+   async load(key, fetchBytes, decode, signal) {
+-    const bytes = await fetchBytes(key, signal);
+-    const value = await decode(bytes, signal);
+-    this.state = { status: 'ready', value, error: null };
+-    return value;
++    const request = this.#request = {};
++    this.state = { status: 'loading', value: this.state.value, error: null };
++    try {
++      const bytes = await fetchBytes(key, signal);
++      const value = await decode(bytes, signal);
++      if (this.#request === request) {
++        this.state = { status: 'ready', value, error: null };
++      }
++      return value;
++    } catch (error) {
++      if (this.#request === request) {
++        this.state = { status: 'error', value: this.state.value, error };
++      }
++      throw error;
++    }
+   }
+ }
+diff --git a/preview.regression.test.mjs b/preview.regression.test.mjs
+new file mode 100644
+index 0000000..7c001af
+--- /dev/null
++++ b/preview.regression.test.mjs
+@@ -0,0 +1,243 @@
++import assert from 'node:assert/strict';
++import test from 'node:test';
++import { PreviewLoader } from './preview.mjs';
++
++function deferred() {
++  let resolve, reject;
++  const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
++  // A gate can be rejected before the corresponding callback starts.
++  promise.catch(() => {});
++  return { promise, resolve, reject };
++}
++
++async function bounded(promise) {
++  let timer;
++  try {
++    return await Promise.race([
++      promise,
++      new Promise((_, reject) => {
++        timer = setTimeout(() => reject(new Error('callback/task did not settle')), 1000);
++      }),
++    ]);
++  } finally {
++    clearTimeout(timer);
++  }
++}
++
++function state(loader, status, value = null, error = null) {
++  assert.deepEqual(Object.keys(loader.state).sort(), ['error', 'status', 'value']);
++  assert.equal(loader.state.status, status);
++  assert.equal(loader.state.value, value);
++  assert.equal(loader.state.error, error);
++}
++
++// Every load has a rejection observer from the moment it is started. Cleanup
++// releases both phases, including phases which have not been entered yet.
++function harness(t) {
++  const requests = [];
++  t.after(async () => {
++    for (const request of requests) {
++      request.fetch.resolve(request.bytes);
++      request.decode.resolve(request.value);
++    }
++    await bounded(Promise.all(requests.map(request => request.outcome)));
++  });
++  return (loader, key = {}, controller = new AbortController(), abortPhase) => {
++    const request = {
++      key, controller, bytes: {}, value: {},
++      fetch: deferred(), decode: deferred(),
++      fetched: deferred(), decoded: deferred(), calls: [],
++    };
++    requests.push(request);
++    function callback(phase, argument, signal) {
++      request.calls.push([phase, argument, signal]);
++      request[phase === 'fetch' ? 'fetched' : 'decoded'].resolve();
++      const gate = request[phase];
++      if (abortPhase !== phase) return gate.promise;
++      const onAbort = () => gate.reject(signal.reason);
++      signal.addEventListener('abort', onAbort, { once: true });
++      if (signal.aborted) onAbort();
++      return gate.promise.finally(() => signal.removeEventListener('abort', onAbort));
++    }
++    request.outcome = loader.load(key,
++      (key, signal) => callback('fetch', key, signal),
++      (bytes, signal) => callback('decode', bytes, signal), controller.signal,
++    ).then(value => ({ ok: true, value }), error => ({ ok: false, error }));
++    return request;
++  };
++}
++
++async function enterDecode(request) {
++  request.fetch.resolve(request.bytes);
++  await bounded(request.decoded.promise);
++}
++
++async function finish(request, failurePhase, reason = {}) {
++  if (failurePhase === 'fetch') request.fetch.reject(reason);
++  else {
++    await enterDecode(request);
++    if (failurePhase === 'decode') request.decode.reject(reason);
++    else request.decode.resolve(request.value);
++  }
++  const result = await bounded(request.outcome);
++  assert.equal(result.ok, !failurePhase);
++  assert.equal(failurePhase ? result.error : result.value,
++    failurePhase ? reason : request.value);
++  assert.equal(request.calls.length, failurePhase === 'fetch' ? 1 : 2);
++  assert.equal(request.calls[0][0], 'fetch');
++  assert.equal(request.calls[0][1], request.key);
++  assert.equal(request.calls[0][2], request.controller.signal);
++  if (failurePhase !== 'fetch') {
++    assert.equal(request.calls[1][0], 'decode');
++    assert.equal(request.calls[1][1], request.bytes);
++    assert.equal(request.calls[1][2], request.controller.signal);
++  }
++}
++
++test('idle, loading in both phases, ready, error, and recovery preserve identities', async t => {
++  const start = harness(t), loader = new PreviewLoader();
++  state(loader, 'idle');
++  const first = start(loader);
++  state(loader, 'loading');
++  await enterDecode(first);
++  state(loader, 'loading');
++  await finish(first);
++  state(loader, 'ready', first.value);
++  const second = start(loader), reason = {};
++  state(loader, 'loading', first.value);
++  await finish(second, 'decode', reason);
++  state(loader, 'error', first.value, reason);
++  const recovery = start(loader);
++  state(loader, 'loading', first.value);
++  await finish(recovery);
++  state(loader, 'ready', recovery.value);
++});
++
++// Use the SAME object key for both calls: ownership must be per invocation.
++for (const oldPhase of ['fetch', 'decode']) {
++  for (const newestPhase of ['fetch', 'decode', 'ready', 'error']) {
++    for (const staleFailure of [false, true]) {
++      test(`older ${oldPhase} ${staleFailure ? 'failure' : 'success'} cannot change newest ${newestPhase}`, async t => {
++        const start = harness(t), loader = new PreviewLoader(), key = {};
++        const displayed = {};
++        await loader.load({}, () => ({}), () => displayed);
++        const older = start(loader, key);
++        if (oldPhase === 'decode') await enterDecode(older);
++        const newest = start(loader, key), newestError = {};
++        state(loader, 'loading', displayed);
++        if (newestPhase === 'decode') await enterDecode(newest);
++        if (newestPhase === 'ready') await finish(newest);
++        if (newestPhase === 'error') await finish(newest, 'decode', newestError);
++        const expectedStatus = ['fetch', 'decode'].includes(newestPhase) ? 'loading' : newestPhase;
++        const expectedValue = newestPhase === 'ready' ? newest.value : displayed;
++        const expectedError = newestPhase === 'error' ? newestError : null;
++        state(loader, expectedStatus, expectedValue, expectedError);
++        await finish(older, staleFailure ? oldPhase : undefined, {});
++        state(loader, expectedStatus, expectedValue, expectedError);
++        if (expectedStatus === 'loading') {
++          await finish(newest);
++          state(loader, 'ready', newest.value);
++        }
++      });
++    }
++  }
++}
++
++for (const phase of ['fetch', 'decode']) {
++  for (const asynchronous of [false, true]) {
++    test(`${phase} ${asynchronous ? 'rejection' : 'synchronous throw'} preserves reason and recovers`, async t => {
++      const start = harness(t), loader = new PreviewLoader(), displayed = {};
++      await loader.load({}, () => ({}), () => displayed);
++      const key = {}, bytes = {}, reason = {}, signal = new AbortController().signal;
++      let decodeCalls = 0;
++      const fail = () => {
++        if (asynchronous) return Promise.reject(reason);
++        throw reason;
++      };
++      const promise = loader.load(key, (received, passed) => {
++        state(loader, 'loading', displayed);
++        assert.equal(received, key);
++        assert.equal(passed, signal);
++        return phase === 'fetch' ? fail() : bytes;
++      }, (received, passed) => {
++        decodeCalls++;
++        state(loader, 'loading', displayed);
++        assert.equal(received, bytes);
++        assert.equal(passed, signal);
++        return fail();
++      }, signal);
++      await bounded(assert.rejects(promise, error => error === reason));
++      assert.equal(decodeCalls, phase === 'fetch' ? 0 : 1);
++      state(loader, 'error', displayed, reason);
++      const recovery = start(loader);
++      state(loader, 'loading', displayed);
++      await finish(recovery);
++      state(loader, 'ready', recovery.value);
++    });
++  }
++}
++
++for (const phase of ['fetch', 'decode']) {
++  for (const newer of [undefined, 'fetch', 'ready', 'error']) {
++    test(`actual abort rejection in ${phase} with newer ${newer ?? 'absent'}`, async t => {
++      const start = harness(t), loader = new PreviewLoader(), reason = {};
++      const aborted = start(loader, {}, new AbortController(), phase);
++      if (phase === 'decode') await enterDecode(aborted);
++      const newest = newer && start(loader), newestError = {};
++      if (newer === 'ready') await finish(newest);
++      if (newer === 'error') await finish(newest, 'fetch', newestError);
++      aborted.controller.abort(reason);
++      const result = await bounded(aborted.outcome);
++      assert.equal(result.ok, false);
++      assert.equal(result.error, reason);
++      assert.equal(aborted.calls.length, phase === 'fetch' ? 1 : 2);
++      for (const [stage, argument, signal] of aborted.calls) {
++        assert.equal(argument, stage === 'fetch' ? aborted.key : aborted.bytes);
++        assert.equal(signal, aborted.controller.signal);
++      }
++      if (!newer) state(loader, 'error', null, reason);
++      if (newer === 'fetch') state(loader, 'loading');
++      if (newer === 'ready') state(loader, 'ready', newest.value);
++      if (newer === 'error') state(loader, 'error', null, newestError);
++      const recovery = start(loader);
++      await finish(recovery);
++      state(loader, 'ready', recovery.value);
++      if (newer === 'fetch') {
++        await finish(newest);
++        state(loader, 'ready', recovery.value);
++      }
++    });
++  }
++}
++
++test('instances keep independent request ownership', async t => {
++  const start = harness(t), a = new PreviewLoader(), b = new PreviewLoader();
++  const olderA = start(a);
++  await enterDecode(olderA);
++  const pendingB = start(b);
++  await finish(olderA);
++  state(a, 'ready', olderA.value);
++  state(b, 'loading');
++  const newestA = start(a), reason = {};
++  await finish(pendingB, 'fetch', reason);
++  state(b, 'error', null, reason);
++  state(a, 'loading', olderA.value);
++  await finish(newestA);
++  state(a, 'ready', newestA.value);
++  state(b, 'error', null, reason);
++});
++
++test('abort does not settle callbacks that ignore it or cancel a newer controller', async t => {
++  const start = harness(t), loader = new PreviewLoader();
++  const older = start(loader);
++  older.controller.abort({});
++  await enterDecode(older);
++  state(loader, 'loading');
++  const newest = start(loader);
++  await finish(older);
++  state(loader, 'loading');
++  assert.equal(newest.controller.signal.aborted, false);
++  await finish(newest);
++  state(loader, 'ready', newest.value);
++  assert.equal(newest.controller.signal.aborted, false);
++});

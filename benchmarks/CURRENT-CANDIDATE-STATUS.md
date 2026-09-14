@@ -11,15 +11,23 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
-Next unmeasured transfer fixture: [two-stage preview ownership](HOSTAGE-JAVASCRIPT-PREVIEW-01-PROTOCOL.md).
-No skill/runtime change. Author preflight distinguishes seven actual defects
-across latest-request fetch/decode state, with 18 native tests and full local
-suite 473/473 passing in 64.942s. These are measurement-support checks, not new
-model quality or performance results; no model session has run on this fixture.
+[Two-stage preview transfer reviewed](HOSTAGE-JAVASCRIPT-PREVIEW-01-REVIEW.md),
+launch `4a064bc`, resource `f0b29dd`: baseline 109,445 tokens/214.251s; skill
+125,009/146.851s, **+14.22% tokens / −31.46% time**. Both implementations correct;
+original native final counts 33/33 versus 54/54. Skill first repairs two failures
+in its own undefined-reason assertion helper. Eighteen initial replays match and
+raw/resources/originals reconcile. However, a separate four-run counterexample
+finds stale success mutating state in place: baseline detects 11 failures, while
+skill remains 54/54 green. Object identity alone misses changed state contents.
+No scope/capture exception observed. Do not promote timing as an accepted overall
+gain; fix demonstrated regression weakness next. Full preflight 473/473 passed,
+but local fixture tests did not themselves prove model regression strength.
 
-한국어: 다음 검증은 가져오기·변환 두 단계에서 요청이 겹치는 미리보기 작업이다.
-결함 7종을 구분하는 테스트를 마련했고 전체 로컬 테스트 473개가 통과했다.
-아직 이 과제의 모델 실행 전이며, 아래 기존 수치를 새 과제에 적용하지 않는다.
+한국어: 두 단계 미리보기 비교도 끝났다. 시간은 31.46% 줄었지만 토큰은 14.22%
+늘었다. 더 중요한 문제는 상태 객체의 내용만 덮어쓰는 결함을 스킬 테스트가
+놓친다는 점이다. 기본 실행은 11개 테스트로 잡았고, 스킬은 54개가 모두 통과했다.
+최종 구현 자체의 오류는 아니지만 회귀 검증의 실제 약점이므로 이를 먼저 고쳐야
+한다. 좋은 시간 수치만으로 개선 성공을 주장하지 않는다.
 
 [JS usage-first screen](HOSTAGE-JAVASCRIPT-USAGE-MODEL-01-REVIEW.md), launch
 `8d21e74`, resource `f0b29dd`: baseline 87,491 tokens/92.970s, skill 114,460/86.698s,
