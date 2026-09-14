@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Collector-only [capture persistence check](CAPTURE-PERSISTENCE-01.md), previous
+source `b2993d2`: preserve received CLI streams before post-run Git inspection.
+A real failing-Git control and 25 runner tests pass. This prevents a separate
+post-processing loss; it does not resolve the original missing-output prefix or
+establish a skill improvement. No new model run or chart update.
+
+한국어: 실행 후 Git 검사 오류가 나도 이미 받은 원본 로그를 먼저 저장하도록
+수집기를 수정했다. 관련 테스트 25개가 통과했다. 기존 출력 일부 누락의 원인
+해결이나 스킬 성능 향상을 뜻하지 않으며 모델 재실행·그래프 변경은 없다.
+
 Hostage [handoff evidence screen 01](HOSTAGE-EVIDENCE-01-REVIEW.md), launch
 `fe62f84`, resources `6510712`: matching report 96,307 tokens / 40.542s, stale
 97,260 / 43.977s, absent 74,656 / 31.630s. Matching reuses verified prior evidence;

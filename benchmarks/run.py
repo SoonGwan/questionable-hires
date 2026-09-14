@@ -269,6 +269,15 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
             os.killpg(process.pid, signal.SIGKILL)
             stdout, stderr = process.communicate()
     duration = round(time.monotonic() - started, 3)
+    # Save received CLI streams before inspecting the possibly modified project.
+    # Later Git/snapshot failures must not discard an already-paid execution.
+    # This preserves emitted text, not output omitted upstream by the CLI.
+    def redact(text):
+        return text.replace(str(workspace), "<WORKSPACE>").replace(str(Path.home()), "<HOME>")
+    (cell / "stdout.original.jsonl").write_text(stdout)
+    (cell / "stderr.original.txt").write_text(stderr)
+    (cell / "events.jsonl").write_text(redact(stdout))
+    (cell / "stderr.txt").write_text(redact(stderr))
     try:
         installed_after = resource_manifest(installed_root)
         resource_diagnostics = dict(changed_paths=sorted(
@@ -287,12 +296,6 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
         if present:
             command(['git', 'add', '-N', '--force', '--', *present], workspace)
     diff = command(["git", "diff", initial_tree, "--", ".", ":(exclude).agents", ":(exclude)__pycache__"], workspace)
-    def redact(text):
-        return text.replace(str(workspace), "<WORKSPACE>").replace(str(Path.home()), "<HOME>")
-    (cell / "stdout.original.jsonl").write_text(stdout)
-    (cell / "stderr.original.txt").write_text(stderr)
-    (cell / "events.jsonl").write_text(redact(stdout))
-    (cell / "stderr.txt").write_text(redact(stderr))
     (cell / "answer.md").write_text(redact("\n\n".join(messages)) + "\n")
     (cell / "changes.diff").write_text(redact(diff) + "\n")
     if initial_diff is not None:

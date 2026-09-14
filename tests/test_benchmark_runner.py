@@ -13,6 +13,43 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_cli_streams_survive_post_execution_git_failure(self):
+        with tempfile.TemporaryDirectory(dir=runner.ROOT) as directory:
+            root = Path(directory)
+            output = root / 'results'
+            output.mkdir()
+            stdout = json.dumps(dict(type='turn.completed', usage=dict(input_tokens=1,
+                                                                       output_tokens=1))) + '\n'
+            stderr = 'retained diagnostic: 한글\n'
+            actual_popen = runner.subprocess.Popen
+
+            def launch(args, **kwargs):
+                if args[0] != 'codex':
+                    return actual_popen(args, **kwargs)
+                workspace = Path(args[args.index('-C') + 1])
+                # Preserve Git data in this disposable fixture, but make the
+                # author's subsequent git-add fail after the child has exited.
+                producer = ('import pathlib, sys; p = pathlib.Path(' + repr(str(workspace)) +
+                            '); (p / ".git").rename(p / "saved-git"); '
+                            '(p / ".git").write_text("gitdir: missing-fixture-git\\n"); '
+                            'sys.stdout.write(' + repr(stdout) + '); '
+                            'sys.stderr.write(' + repr(stderr) + ')')
+                return actual_popen([sys.executable, '-c', producer], **kwargs)
+
+            with patch.object(runner.subprocess, 'Popen', side_effect=launch):
+                with self.assertRaises(runner.subprocess.CalledProcessError) as caught:
+                    runner.run_cell(dict(id='postprocess', skill='exorcist', task='Fixture',
+                                         files={'source.py': 'VALUE = 1\n'}),
+                                    'baseline', 1, output, 'gpt-6-astra', 'medium', 10, [],
+                                    workspace_root=root / 'workspaces')
+            self.assertEqual(caught.exception.cmd, ['git', 'add', '-N', '.'])
+            cell = output / 'postprocess--baseline--1'
+            self.assertEqual((cell / 'stdout.original.jsonl').read_text(), stdout)
+            self.assertEqual((cell / 'stderr.original.txt').read_text(), stderr)
+            self.assertEqual((cell / 'events.jsonl').read_text(), stdout)
+            self.assertEqual((cell / 'stderr.txt').read_text(), stderr)
+            self.assertFalse((cell / 'metadata.json').exists())
+
     def test_node_summary_review_finds_retained_gap_without_changing_evidence(self):
         path = runner.ROOT / 'benchmarks/results/hostage-entry-wait-model-01/javascript-preview-latest--skill--1/events.jsonl'
         before = path.read_bytes()
