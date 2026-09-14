@@ -22,12 +22,22 @@ Restoration `f73c0a3` returns Friday's entry to the measured original, with othe
 resources unchanged. No causal/general claim from n=1, unequal work or shared
 host/cache; failed candidate and all metrics remain available.
 
+Post-rejection local suite: 461 tests pass in 71.013s. Three additional
+[commit-boundary author checks](FRIDAY-WRITER-PROTOCOL.md#post-run-acknowledgment-ambiguity--2026-09-14)
+pass in 0.019s, verifying actual cross-connection visibility before/after commit,
+committed gap/control rollback and a native wrong-claim failure. These checks
+clarify the historical fixture's limits, not new model performance; no measured
+input or score was rewritten.
+
 한국어: Friday 축약본의 직접 비교 6개 세션이 끝났다. 합계 토큰 21.31% 증가,
 시간 1.41% 감소로 효율 개선에 실패했고, 상위 폴더 탐색 문제도 남았다.
 원본 사용량·도구·파일을 대조한 뒤 `f73c0a3`에서 기존 지침으로 복구했다.
 조합 검증을 많이 했다는 이유로 더 유용하다고 보지 않으며, 실패한 후보와
 응답·커밋 명세의 불명확한 부분도 보존한다. 아래 전체 비교는 여전히 유효한
 역사적 측정이며, 새롭고 일반적인 성능 향상 주장은 아니다.
+복구 후 전체 로컬 테스트 461개가 통과했다. 별도 추가한 3개 검증은 함수
+반환과 커밋의 차이를 실제 연결 두 개로 확인하며, 과거 평가 점수나 모델
+출력을 바꾸지 않는다.
 
 [Checkpoint 07](BUNDLE-CONTRACT-07-REVIEW.md), resources `32bf8bd`: all 18 serial
 sessions across nine fixed tasks completed, no timeouts/exclusions. Baseline
