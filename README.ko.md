@@ -12,6 +12,8 @@
 
 [English](README.md) · [실제 실행 예시](examples/README.md) · [현재 비교 근거](benchmarks/CURRENT-CANDIDATE-STATUS.md) · [설치 가이드](docs/INSTALL.md)
 
+`a636475` 기준 로컬 검증(2026-09-14): [8개 스킬 패키징·설치된 도우미 검사를 포함한 테스트 518개 통과](docs/INSTALLATION-TEST.md#whole-bundle-regression--2026-09-14-source-a636475). 모델 성능이나 원격 설치 성공률을 뜻하지 않습니다.
+
 ## 이런 일을 시킵니다
 
 | 한국어 별칭 · 코드명 | 한마디 | 맡기는 일 |

@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Whole-bundle [local regression](../docs/INSTALLATION-TEST.md#whole-bundle-regression--2026-09-14-source-a636475),
+source `a636475`: 518 tests / 76.826s, no failures/skips. All-eight source/copy/
+package inventory and installed behavioral controls pass after recent changes.
+This is local distribution/runtime evidence, not hosted CI, remote installation
+or a model-efficiency measurement; no installed user configuration was changed.
+
+한국어: `a636475` 기준 전체 518개 테스트가 76.826초에 실패·스킵 없이 통과했다.
+8개 스킬 복사본·패키지 일치와 설치된 도우미의 실제 동작 검사도 포함된다.
+로컬 검증이며 공개 원격 설치·호스팅 CI·모델 성능 향상의 증거는 아니다.
+
 Friday [sequence adoption 01](FRIDAY-SEQUENCE-MODEL-01-REVIEW.md), launch `70225a0`,
 resources `b2925c9`: control 73,060 tokens / 65.347s, gap 93,445 / 72.019s.
 Against previous skill, control tokens −19.08% but time +2.69%; gap −1.56% /

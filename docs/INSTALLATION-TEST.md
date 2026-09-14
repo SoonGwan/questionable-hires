@@ -81,3 +81,30 @@ errors also use exit 2. Linked/special resources and unreadable files are not
 silently skipped (generated Python cache exclusions mirror installation).
 Use a trusted checkout not being changed concurrently; there is no race isolation.
 Differences are reported for manual review, never automatically overwritten.
+
+## Whole-bundle regression — 2026-09-14, source a636475
+
+After the Friday sequence candidate and CLI-stream preservation changes,
+`python3 -B -m unittest discover -s tests` passes **518 tests in 76.826s**, with
+no failures or skips. This is a fresh local full-suite result, not a relabeling
+of the earlier 509-test run. No model session was started by these unit tests;
+printed synthetic schedule/completion messages exercise runner controls.
+
+Included distribution coverage at this revision:
+
+- All eight standalone copies preserve source resource bytes and modes, and the
+  built marketplace's skill inventory matches the standalone inventory.
+- All seven copied Python script entrypoints run `--help` under isolated Python
+  outside the checkout; this checks executability, not every workflow.
+- Actual installed Mother-in-law/Exorcist composition preserves both passing
+  behavior and the intended stale-result failure, child/outer exits and evidence.
+- Bundled Con Artist, Friday, Necromancer, Receipt and Exorcist checks execute
+  actual recipes, history or processes; they are not only manifest assertions.
+- Missing/different installation comparison, conflict preservation, failed-copy
+  cleanup, native fixture failures and output-capture controls remain covered.
+
+Repository/link validation and featured English/Korean synchronization checks
+also pass. User installation/configuration was not changed. This is local macOS
+evidence, not refreshed hosted CI, remote `npx` authentication, automatic skill
+selection, a public-release certification or proof of all-eight model efficiency.
+The test duration is recorded for reproducibility, not marketed as performance.
