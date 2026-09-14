@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Repository regression checkpoint — 2026-09-15, source `888c362`
+
+Full local `python3 -B -m unittest discover -s tests` passes **592 tests / 90.302s**,
+with no reported skips. This covers the repository's existing helper, fixture,
+collector, installation and packaging tests, including the recent batching and
+rollout-extraction changes. Eight-hire metadata/local-link validation, featured
+English/Korean synchronization and `git diff --check` also pass; the test run leaves
+the worktree unchanged. This is not hosted CI, a fresh live browser/model benchmark,
+or proof of whole-task efficiency. Historical README checkpoint counts stay dated.
+
+한국어: `888c362` 기준 전체 로컬 회귀 검사 592개가 90.302초에 통과했고 생략은
+보고되지 않았다. 스킬 메타데이터·문서 링크·대표 결과의 언어 동기화도 확인했다.
+설치·패키징을 포함한 기존 테스트 범위의 검증이며, 실제 모델 성능 개선이나
+호스팅 CI 통과를 의미하지 않는다. 스킬 전체의 성능 목표는 여전히 미입증이다.
+
 ## Capture localization — 2026-09-15, launches `d21d6f4` through `4a70281`
 
 [Persisted CLI tool-response diagnostic](CLI-ROLLOUT-PROBE-01.md), launch `bcd761d`,
