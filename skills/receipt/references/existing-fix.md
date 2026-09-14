@@ -45,16 +45,14 @@ JSON
 - Optional `"watch":["notes.txt"]`: existing files/directories checked, **not
   copied/executed**. `originals` gives selected hashes/modes/unchanged status;
   `comparison_copies_removed` gives cleanup. Reuse those selected-file checks.
-- Optional `"guard_tree":true`: when whole-project preservation is requested and
-  reading the whole source is authorized, compare all source entries around the
-  native comparison, including Git/ignored files, empty directories and modes.
-  Hash files internally; report `tree_guard` unchanged/counts/inventory digest,
-  not another full hash listing. Symlinks are recorded without reading targets.
-  Added/removed/changed entries abort without restoration. This replaces a custom
-  before/after tree snapshot for that interval, not Git diff review or later checks.
-  Opt-in only: at most 10,000 entries including root and 20 MB streamed per
-  inventory, separate from the copying budget. No exclusions; unsupported sizes
-  or special files fail closed. Use a suitable native method for larger projects.
+- Optional `"guard_tree":true`: only for requested whole-project preservation
+  with all source reads authorized. Inventory Git/ignored files, directories
+  (including empty/root), bytes/modes and link text, not link targets. `tree_guard`
+  reports unchanged/counts/digest, not a full hash listing. Replaces snapshots
+  around native comparison, not diff review/later checks. Added/removed/changed
+  entries abort without restoration. No exclusions; special files/oversize fail
+  closed: 10,000 entries including root, 20 MB streamed per inventory, separate
+  from copying. Larger projects need another native method.
 - Selections must be canonical project-relative, unique and disjoint after
   expansion; no root, Git internals, symlinks, empty directories or overlap.
   `fixed`/`vary` must be nonempty. Directory traversal: at most 10,000 entries.
@@ -62,14 +60,13 @@ JSON
   interpreter (default: launching Python; override `--python` if needed), unittest
   or already-installed pytest. Child temp defaults are inside each copy: do not
   redirect global TMPDIR merely to localize checks or other launchers may pollute it.
-- When the ticket requires `python -B -m unittest ...`, set `"invocation":"module"`
-  with `runner: "unittest"` and the existing `tests` arguments; no internal adapter
-  is needed. The default `bootstrap` invocation is unchanged. Module mode uses a
-  temporary copy-local startup probe for same-process imports, reports `command`,
-  `native_exit_code` and `provenance_ready`, and retains timeout/output supervision.
-  Only child-local lookup is configured; descendants do not inherit the probe.
-  Required custom site/user startup hooks or disabled Python site initialization
-  are unsupported; use a suitable native project setup instead of replacing them.
+- Optional `"invocation":"module"`: for required `python -B -m unittest ...`,
+  with `runner: "unittest"` and existing `tests`; no internal adapter needed.
+  Default `bootstrap` is unchanged. Temporary copy-local startup checks same-process
+  imports; results include `command`, `native_exit_code`, `provenance_ready`.
+  Timeout/output supervision remains. Only child-local lookup changes; descendants
+  don't inherit the probe. Required site/user hooks or disabled site initialization
+  need native project setup instead.
 - Optional `"import_roots":["src"]` supports regular source-layout packages.
   Select needed package initializers/support in `fixed` and implementations in
   `vary`; each root must contain selected files. Ordered canonical directories
@@ -85,16 +82,14 @@ output. Reserve `--pretty` for a human-readable JSON request, not extra evidence
 CLI 0 means observations collected, **not proof**. Inspect each actual assertion,
 requested test identity, before failure/after pass, copied-import evidence,
 `exit_code`, `timed_out` and `output_truncated`. Help/version output is not execution.
-Bootstrap unittest zero/all-skipped runs return check 5; failures return 1,
-partial-skip success 0. Module invocation preserves native exits, including 0 for
-empty/all-skipped runs: inspect actual counts/skips, not just the exit. Missing
-module-startup provenance reserves check 7 (native exit is retained separately).
-Neither mode proves requested coverage. Pytest keeps native exits.
-Listed-module import exceptions, including `SystemExit(0)`, retain a traceback
-and reserve check exit 7 for incomplete setup; no next comparison runs and CLI
-returns 2. A runner independently exiting 7 is conservatively incomplete too.
-This catches ordinary Python import exceptions, not `os._exit`, later runner
-early exits or adversarial execution. Inspect actual test evidence regardless.
+Bootstrap unittest: failure 1, empty/all-skipped 5, partial-skip success 0.
+Module mode preserves native exits, including **0 for empty/all-skipped**: inspect
+counts/skips. Missing startup provenance reserves check 7, retaining the native
+exit separately. Pytest keeps native exits. No mode proves requested coverage.
+Listed import exceptions (including `SystemExit(0)`) retain tracebacks and reserve
+check 7: CLI 2, no next comparison. Independent runner exit 7 is conservatively
+incomplete too. This does not catch `os._exit`, later early exits or adversarial
+execution; inspect actual tests.
 
 Python 3.9+/POSIX, trusted tests only: **not a sandbox**. Project-local copies are
 removed; changed selected originals abort without restoration. Watch excludes new
@@ -102,18 +97,17 @@ entries/arbitrary effects. Test paths/subprocesses can escape; snapshots aren't 
 Tree guards do not cover link targets, ownership, timestamps, ACLs/xattrs, concurrent
 writes, changes restored between observations, or operations outside their interval.
 
-Limits: shared 20 MB snapshot budget, 30 seconds/check (`--timeout` up to 300),
-last 12,000 output characters. Known overflow rejects before reading; reads stop
-at remaining budget + 1 byte and growth beyond budget aborts before tests. Final
-integrity reads stop at original length + 1. Total memory is not bounded by this.
+Copying: shared 20 MB budget. Known overflow rejects before reading; reads stop at
+remaining budget + 1 byte, growth overflow aborts before tests, final integrity
+reads stop at original length + 1. Total memory is not bounded by these limits.
+Execution: 30 seconds/check (`--timeout` up to 300), last 12,000 output characters.
 Child exit has a separate five-second cleanup wait; unconfirmed exit means CLI 2,
 comparison not established and no next comparison. Other errors/interruptions
 propagate. Descendant termination is not guaranteed; do not retry automatically
 while a prior process may remain.
 
-Checks must finish their required work in the foreground. Once the direct native
-runner exits, remaining members of its process group are killed and buffered
-output drained under the original deadline; an inherited pipe alone no longer
-turns a finished check into a timeout. Exit detection polls every 50 ms, subject
-to scheduling. Background jobs intended to outlive the test runner are unsupported.
-Tests still own assertions and orderly cleanup; escaped groups are not contained.
+Required work must finish in the foreground. After direct-runner exit, remaining
+process-group members are killed and buffered output drained under the original
+deadline; inherited pipes alone don't cause timeouts. Exit polling: 50 ms, subject
+to scheduling. Persistent background jobs are unsupported; tests still own
+assertions/cleanup and escaped groups aren't contained.

@@ -11,6 +11,15 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [guide compaction 02](RECEIPT-GUIDE-COMPACT-02.md), parent `b55aa6a`:
+single guide 7,563 → 6,953 bytes (−8.07%); runtime, examples and evidence
+requirements unchanged. Author validation only; no model-token gain measured.
+Historical results and featured charts remain unchanged.
+
+한국어: 실행 안내의 중복을 줄여 파일 크기는 8.07% 감소했다. 실행 코드·예제·
+검증 의무는 그대로다. 작성자 검증이며 모델 토큰 감소를 입증한 것은 아니다.
+기존 측정과 대표 그래프는 유지한다.
+
 Receipt [native adoption 01](RECEIPT-NATIVE-MODEL-01-REVIEW.md), launch `b2c7703`,
 resources `bc3b225`: both sessions use the ordinary native-mode CLI, without
 internal adapters/custom hashing. Correct complete/partial diagnoses, full native
