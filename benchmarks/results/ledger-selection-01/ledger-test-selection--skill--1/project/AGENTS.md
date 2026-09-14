@@ -1,0 +1,1 @@
+Audit only. Python standard library, native unittest. Keep all scratch and database files inside this project or its disposable project-local copies. No network, installs, delegation or original-file edits. Remove owned scratch before finishing.

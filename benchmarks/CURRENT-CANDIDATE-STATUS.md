@@ -88,11 +88,20 @@ can share recipe setup without skipping executions. Different selections run new
 correct baselines; matching adjacent ones retain explicit reuse. Actual assertion
 detection, surviving weak tests, integrity and later-invalid-input behavior are
 covered by 78 passing helper tests. Not yet measured in a model task; no new
-performance claim or change to the featured benchmark.
+performance claim or change to the featured benchmark. Subsequent
+[ledger selection screen](results/ledger-selection-01/README.md), launch `dde6b61`,
+records −17.69% tokens / +9.04% time, with six valid requested checks in each arm.
+Both use native orchestration; the new helper API is not exercised. Stored tool
+responses retain all six summaries and the real persisted-value failure. No causal
+claim or generalized efficiency win follows from this single mixed pair.
 
 한국어: 테스트별 실행이 필요할 때 공통 설정을 한 번에 제출하도록 확장했다.
 선택 변경 시 정상 코드 재실행과 실제 결함 탐지를 확인했고 도우미 테스트 78개가
 통과했다. 실행 자체를 줄이거나 모델 성능 개선을 입증한 것은 아니다.
+
+후속 원장 감사에서는 양쪽 모두 여섯 검증을 수행했고 스킬 토큰 −17.69%, 시간
++9.04%였다. 새 도우미 API는 사용되지 않아 해당 변경의 효과로 돌릴 수 없다.
+실제 도구 응답을 보존했으며 단일 혼합 결과로 전체 성능 개선을 주장하지 않는다.
 
 [Proportional tooling candidate](CON-ARTIST-NATIVE-ROUTING-01.md), parent `03c5963`,
 changes only helper routing: small audits use native facilities; choose the helper

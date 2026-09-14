@@ -1,0 +1,115 @@
+{
+  "session_id": "01a0a124-e834-7da0-b365-0dd613d62ea8",
+  "source_bytes": 125162,
+  "source_sha256": "09d28f0c1129ce7da3cc43717769ed59285cb062d78f6c5b960acf7e1c35325a",
+  "source_lines": 33,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "17462cee45cc01a732fff55bc8ec8f4b75b5a4fc790b307a31f6221836eab36c",
+      "record": {
+        "timestamp": "2026-09-14T18:19:14.881Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_07af2ea9e1b135bb016aa83a9ef38087d084c20b73f87f4d80",
+          "status": "completed",
+          "call_id": "call_me8PhYzCmbmPW0eEV15WCUKl",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'ledger.py' -g 'test_ledger.py' -g 'SKILL.md' -g 'pyproject.toml' -g 'setup.cfg' -g 'pytest.ini' -g 'unittest.cfg' -g 'README*' -g '! .git'\",\"max_output_tokens\":3000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/con-artist/SKILL.md; cat AGENTS.md; cat ledger.py; cat test_ledger.py\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a124-e878-7763-b625-05f8b2333a89",
+            "create_time": 1789409947.697569
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "9bdf20d47087cc2a0eda20765b0d058057a31e1ffc9c83c0443e7562bf914fea",
+      "record": {
+        "timestamp": "2026-09-14T18:19:15.088Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a125-0d10-76e1-b07b-362a36151f25",
+          "call_id": "call_me8PhYzCmbmPW0eEV15WCUKl",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"643975\",\"wall_time_seconds\":0.000003083,\"exit_code\":0,\"original_token_count\":30,\"output\":\"<WORKSPACE>\\ntest_ledger.py\\nAGENTS.md\\nledger.py\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d1d01a\",\"wall_time_seconds\":0.00000225,\"exit_code\":0,\"original_token_count\":1487,\"output\":\"---\\nname: con-artist\\ndescription: Audit whether tests detect broken behavior by tracing assertions and running narrow controlled mutations in an isolated workspace; use for test-quality reviews, not routine test execution.\\n---\\n\\n# Con Artist\\n\\n> Your mock is very impressed with itself.\\n\\n## Check what the test actually buys\\n\\nTrace the requested assertions far enough to establish the actual exercised effect\\nand select a reachable fault. Follow unresolved bindings, mocks and relevant setup;\\nreading every intermediate wrapper is not itself evidence. Reuse known instructions,\\nrunner and source context. Keep discovery inside the permitted project root; a\\nbroad suite need not become a reading list of unrelated tests.\\n\\nUse the evidenced runner and configuration; reuse a valid correct-code baseline.\\nChoose one meaningful fault at the requested boundary, such as acknowledging\\nwithout persisting. Preserve originals and compilation/binding context through\\nproject isolation, disposable module/package copies or a valid substitution;\\nrestore substitutions in reused processes. A wrong binding, rewritten simulation,\\nsyntax error or equivalent mutation cannot establish test sensitivity.\\n\\nInspect each phase's actual assertion and exit, not just a green baseline or a\\nnonzero mutant status. Runner errors/warnings can indicate broken assertion\\nplumbing, not a detected production fault. Establish provenance through copied\\nimports, traced bindings and defect-specific observations. Add instrumentation for\\nrequired or unresolved dispatch, not duplicate evidence; a separate import-only\\nprocess does not prove what the test process loads.\\n\\n## Use support only where it helps\\n\\n- Nearby known files: read relevant source/configuration directly. For scattered\\n  Python context, [the collector](references/python-context.md) locates definitions,\\n  ancestor instructions and fixtures. Select known bodies directly; indexes are\\n  navigation, not reviewed bodies or execution. Don't recollect equivalent context.\\n- Small self-contained audits: use the native runner in project-local copies or\\n  a valid substitution. Choose [the Python helper](references/python-audit.md) when\\n  its bounded processes, selected-input integrity checks or shared-baseline batches\\n  remove needed orchestration. Python compatibility alone is not a reason to adopt\\n  it or load its guide. Read implementation for a concrete trust/adaptation question.\\n- Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)\\n  covers false-pass assertion helpers and incomplete checks. It is not routine setup.\\n\\nIf tests survive, verify the same stronger assertion on correct and faulty code:\\npass the former, fail the latter for the intended effect, not merely success or\\ncontainer size. If killed, identify the detecting assertion or warning policy;\\nthis protects that fault, not every lifecycle path.\\n\\n## Deliver and stop\\n\\nGive decisive commands/results and the gap/proposed assertion or detecting check.\\nKeep a harness/report only for requested reuse or delivery. Without isolated\\nexecution, label the concern static. Apply test improvements only when requested,\\nnever the deliberate fault; an audit does not authorize publication.\\n\\nStop when the scoped claim and requested improvements are verified. Add faults\\nonly for distinct material boundaries, not to fish for survivors, chase a global\\nmutation score or remove every mock. Preserve user changes and explicit requirements.\\nAudit only. Python standard library, native unittest. Keep all scratch and database files inside this project or its disposable project-local copies. No network, installs, delegation or original-file edits. Remove owned scratch before finishing.\\nimport sqlite3\\n\\n\\ndef transfer(path, source, destination, amount):\\n    if amount <= 0 or source == destination:\\n        raise ValueError('invalid transfer')\\n    connection = sqlite3.connect(path)\\n    try:\\n        connection.execute('BEGIN IMMEDIATE')\\n        changed = connection.execute(\\n            'UPDATE accounts SET balance = balance - ? WHERE id = ? AND balance >= ?',\\n            (amount, source, amount))\\n        if changed.rowcount != 1:\\n            raise ValueError('source unavailable')\\n        changed = connection.execute(\\n            'UPDATE accounts SET balance = balance + ? WHERE id = ?', (amount, destination))\\n        if changed.rowcount != 1:\\n            raise LookupError('destination missing')\\n        connection.commit()\\n    except BaseException:\\n        connection.rollback()\\n        raise\\n    finally:\\n        connection.close()\\nimport sqlite3\\nimport tempfile\\nimport unittest\\nfrom pathlib import Path\\nfrom ledger import transfer\\n\\n\\nclass Transfers(unittest.TestCase):\\n    def setUp(self):\\n        self.directory = tempfile.TemporaryDirectory(prefix='ledger-test-', dir=Path.cwd())\\n        self.addCleanup(self.directory.cleanup)\\n        self.path = Path(self.directory.name) / 'ledger.sqlite'\\n        with sqlite3.connect(self.path) as connection:\\n            connection.execute('CREATE TABLE accounts (id TEXT PRIMARY KEY, balance INTEGER NOT NULL)')\\n            connection.executemany('INSERT INTO accounts VALUES (?, ?)', [('a', 100), ('b', 20)])\\n\\n    def balances(self):\\n        with sqlite3.connect(self.path) as connection:\\n            return connection.execute('SELECT id, balance FROM accounts ORDER BY id').fetchall()\\n\\n    def test_rejects_missing_destination(self):\\n        with self.assertRaisesRegex(LookupError, 'destination missing'):\\n            transfer(self.path, 'a', 'absent', 10)\\n\\n    def test_error_keeps_persisted_balances(self):\\n        with self.assertRaises(LookupError):\\n            transfer(self.path, 'a', 'absent', 10)\\n        self.assertEqual(self.balances(), [('a', 100), ('b', 20)])\\n\\n    def test_success_moves_balance(self):\\n        transfer(self.path, 'a', 'b', 10)\\n        self.assertEqual(self.balances(), [('a', 90), ('b', 30)])\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a124-e878-7763-b625-05f8b2333a89",
+            "create_time": 1789409955.088823
+          }
+        }
+      }
+    },
+    {
+      "line": 24,
+      "line_sha256": "d49adfcf8038c98dae73863f554de74f148c2047ec33531e01a53365c670c6e4",
+      "record": {
+        "timestamp": "2026-09-14T18:19:46.988Z",
+        "ordinal": 23,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_07af2ea9e1b135bb016aa83aad3ce087d09cdd625d3f53cd46",
+          "status": "completed",
+          "call_id": "call_KiDLfIVyzDWWlCFfgyYEp7jl",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport difflib\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport subprocess\\nimport sys\\nimport tempfile\\n\\nroot = Path.cwd()\\nnames = ('ledger.py', 'test_ledger.py')\\noriginals = {name: (root / name).read_bytes() for name in names}\\nneedle = b'    except BaseException:\\\\n        connection.rollback()\\\\n        raise\\\\n'\\nreplacement = b'    except BaseException:\\\\n        connection.commit()\\\\n        raise\\\\n'\\nassert originals['ledger.py'].count(needle) == 1\\nfaulty = originals['ledger.py'].replace(needle, replacement, 1)\\nmethods = ('test_rejects_missing_destination', 'test_error_keeps_persisted_balances', 'test_success_moves_balance')\\nprint('RUNTIME:', sys.executable, sys.version, flush=True)\\nprint('FAULT DIFF:\\\\n' + ''.join(difflib.unified_diff(originals['ledger.py'].decode().splitlines(True), faulty.decode().splitlines(True), fromfile='normal/ledger.py', tofile='faulty/ledger.py')), flush=True)\\nscratch = Path(tempfile.mkdtemp(prefix='.con-artist-audit-', dir=root))\\nresults = []\\ntry:\\n    for variant in ('normal', 'faulty'):\\n        directory = scratch / variant\\n        directory.mkdir()\\n        (directory / 'ledger.py').write_bytes(originals['ledger.py'] if variant == 'normal' else faulty)\\n        (directory / 'test_ledger.py').write_bytes(originals['test_ledger.py'])\\n        assert (directory / 'test_ledger.py').read_bytes() == originals['test_ledger.py']\\n        print(variant, 'test SHA256:', hashlib.sha256((directory / 'test_ledger.py').read_bytes()).hexdigest(), flush=True)\\n    for method in methods:\\n        for variant in ('normal', 'faulty'):\\n            directory = scratch / variant\\n            command = [sys.executable, '-B', '-E', '-s', '-m', 'unittest', '-v', 'test_ledger.Transfers.' + method]\\n            print('\\\\nCWD:', directory, '\\\\nCOMMAND:', repr(command), flush=True)\\n            env = os.environ.copy()\\n            env['TMPDIR'] = str(directory)\\n            env['TEMP'] = str(directory)\\n            env['TMP'] = str(directory)\\n            try:\\n                result = subprocess.run(command, cwd=directory, env=env, capture_output=True, text=True, timeout=20)\\n                print(result.stdout + result.stderr, end='', flush=True)\\n                print('EXIT:', result.returncode, flush=True)\\n                results.append((method, variant, result.returncode))\\n            except subprocess.TimeoutExpired as exc:\\n                print('TIMEOUT:', exc, flush=True)\\n                results.append((method, variant, 'timeout'))\\n    print('\\\\nRESULTS:', results, flush=True)\\nfinally:\\n    shutil.rmtree(scratch)\\n    assert not scratch.exists()\\n    for name, original in originals.items():\\n        assert (root / name).read_bytes() == original, name + ' changed'\\n    print('CLEANUP: owned scratch removed; original ledger.py and test_ledger.py byte-identical.', flush=True)\\nPY\",\"max_output_tokens\":5000,\"yield_time_ms\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a124-e878-7763-b625-05f8b2333a89",
+            "create_time": 1789409955.553868
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "26edc6b2630e11573f53acd115fba3398ea82feab169bc62b2dd3fa6d8db24d1",
+      "record": {
+        "timestamp": "2026-09-14T18:19:48.005Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a125-8da5-77c0-8801-198353e6402e",
+          "call_id": "call_KiDLfIVyzDWWlCFfgyYEp7jl",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 1.0 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ef1aa3\",\"wall_time_seconds\":0.829342417,\"exit_code\":0,\"original_token_count\":1126,\"output\":\"RUNTIME: /Applications/Xcode.app/Contents/Developer/usr/bin/python3 3.9.6 (default, Apr 17 2026, 18:15:52) \\n[Clang 21.0.0 (clang-2100.1.1.101)]\\nFAULT DIFF:\\n--- normal/ledger.py\\n+++ faulty/ledger.py\\n@@ -18,7 +18,7 @@\\n             raise LookupError('destination missing')\\n         connection.commit()\\n     except BaseException:\\n-        connection.rollback()\\n+        connection.commit()\\n         raise\\n     finally:\\n         connection.close()\\n\\nnormal test SHA256: eccec8c75a930d6791d1256440633820cd68e22d2d8e3fbfe656923992360232\\nfaulty test SHA256: eccec8c75a930d6791d1256440633820cd68e22d2d8e3fbfe656923992360232\\n\\nCWD: <WORKSPACE>/.con-artist-audit-vs11aofl/normal \\nCOMMAND: ['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-B', '-E', '-s', '-m', 'unittest', '-v', 'test_ledger.Transfers.test_rejects_missing_destination']\\ntest_rejects_missing_destination (test_ledger.Transfers) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.005s\\n\\nOK\\nEXIT: 0\\n\\nCWD: <WORKSPACE>/.con-artist-audit-vs11aofl/faulty \\nCOMMAND: ['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-B', '-E', '-s', '-m', 'unittest', '-v', 'test_ledger.Transfers.test_rejects_missing_destination']\\ntest_rejects_missing_destination (test_ledger.Transfers) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.004s\\n\\nOK\\nEXIT: 0\\n\\nCWD: <WORKSPACE>/.con-artist-audit-vs11aofl/normal \\nCOMMAND: ['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-B', '-E', '-s', '-m', 'unittest', '-v', 'test_ledger.Transfers.test_error_keeps_persisted_balances']\\ntest_error_keeps_persisted_balances (test_ledger.Transfers) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.004s\\n\\nOK\\nEXIT: 0\\n\\nCWD: <WORKSPACE>/.con-artist-audit-vs11aofl/faulty \\nCOMMAND: ['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-B', '-E', '-s', '-m', 'unittest', '-v', 'test_ledger.Transfers.test_error_keeps_persisted_balances']\\ntest_error_keeps_persisted_balances (test_ledger.Transfers) ... FAIL\\n\\n======================================================================\\nFAIL: test_error_keeps_persisted_balances (test_ledger.Transfers)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.con-artist-audit-vs11aofl/faulty/test_ledger.py\\\", line 28, in test_error_keeps_persisted_balances\\n    self.assertEqual(self.balances(), [('a', 100), ('b', 20)])\\nAssertionError: Lists differ: [('a', 90), ('b', 20)] != [('a', 100), ('b', 20)]\\n\\nFirst differing element 0:\\n('a', 90)\\n('a', 100)\\n\\n- [('a', 90), ('b', 20)]\\n?        ^\\n\\n+ [('a', 100), ('b', 20)]\\n?        ^^\\n\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.004s\\n\\nFAILED (failures=1)\\nEXIT: 1\\n\\nCWD: <WORKSPACE>/.con-artist-audit-vs11aofl/normal \\nCOMMAND: ['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-B', '-E', '-s', '-m', 'unittest', '-v', 'test_ledger.Transfers.test_success_moves_balance']\\ntest_success_moves_balance (test_ledger.Transfers) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.004s\\n\\nOK\\nEXIT: 0\\n\\nCWD: <WORKSPACE>/.con-artist-audit-vs11aofl/faulty \\nCOMMAND: ['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-B', '-E', '-s', '-m', 'unittest', '-v', 'test_ledger.Transfers.test_success_moves_balance']\\ntest_success_moves_balance (test_ledger.Transfers) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.004s\\n\\nOK\\nEXIT: 0\\n\\nRESULTS: [('test_rejects_missing_destination', 'normal', 0), ('test_rejects_missing_destination', 'faulty', 0), ('test_error_keeps_persisted_balances', 'normal', 0), ('test_error_keeps_persisted_balances', 'faulty', 1), ('test_success_moves_balance', 'normal', 0), ('test_success_moves_balance', 'faulty', 0)]\\nCLEANUP: owned scratch removed; original ledger.py and test_ledger.py byte-identical.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a124-e878-7763-b625-05f8b2333a89",
+            "create_time": 1789409988.005339
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

@@ -1,0 +1,135 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "ledger-test-selection",
+  "skill": "con-artist",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "8055a9bdce26834cc33e018e1fb6980ce6e0ae15",
+  "skill_sha256": "edb3dbeabb298fe023999f108f39801aee79c3296b6cfccd084baed06e4e816c",
+  "skill_resources_sha256": "87ff1a7af9d52fbb4373da87f64b63618db3bc1bcaa095a7c43093595328001b",
+  "elapsed_seconds": 56.767,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 56358,
+    "cached_input_tokens": 47232,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1564,
+    "reasoning_output_tokens": 135
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Use $con-artist at .agents/skills/con-artist/SKILL.md.\n\nAudit whether each of the three existing test methods in test_ledger.py\ndetects this specific transaction fault in ledger.py: replace only the error\nhandler's connection.rollback() with connection.commit(), keeping the re-raise.\nUse the real implementation and native unittest, not a rewritten simulation.\n\nWe need independent process exit evidence per method for a test-ownership review.\nRun exactly one normal and one faulty native process for each method (six test\nprocesses total); do not also run the grouped suite. Reuse those normal checks.\nYou may batch command submissions. Keep the same test bodies, inputs and Python\nruntime across normal/faulty variants. Bound execution and keep copies/scratch\nproject-local. Preserve originals and remove owned scratch before finishing.\n\nReport a per-method normal/faulty exit and detecting assertion, or what a passing\ntest actually observes. Explain the persisted-data consequence, supported by the\nactual checks. No test improvements, extra faults, separate stronger probes,\nproduction edits or report file are requested. Include decisive commands and\nscope/coverage limits; do not claim that one fault proves all transaction safety.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "con-artist/SKILL.md": {
+      "kind": "file",
+      "sha256": "edb3dbeabb298fe023999f108f39801aee79c3296b6cfccd084baed06e4e816c",
+      "mode": 420
+    },
+    "con-artist/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-advanced.md": {
+      "kind": "file",
+      "sha256": "81ed9cefd40b173998ae86729e92568b2dc1213c62783825a07295c43e051143",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-probes.md": {
+      "kind": "file",
+      "sha256": "84d79080eaa7b85d30cd36447ba571ad4893198145ba8d159b9c62d3cc85451d",
+      "mode": 420
+    },
+    "con-artist/references/python-audit.md": {
+      "kind": "file",
+      "sha256": "0420bf73ba7325c976618dbbe8e726eda23e3c7e16d66e56de227e327f9617ec",
+      "mode": 420
+    },
+    "con-artist/references/python-context.md": {
+      "kind": "file",
+      "sha256": "92adbb6cfbcf8d254fc871bc1bf81a45ce819d33b444b54b2d8b579c52692950",
+      "mode": 420
+    },
+    "con-artist/scripts/audit.py": {
+      "kind": "file",
+      "sha256": "862c75aeaaf6b90cc9a6d772c9dac6711264c0ec9220dfa34e86898c39766d21",
+      "mode": 420
+    },
+    "con-artist/scripts/context.py": {
+      "kind": "file",
+      "sha256": "fe806318bcbfbd1e705a77c3d7d8973909a48a5fc2547377a4bf9084f62c49ec",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "con-artist/SKILL.md": {
+      "kind": "file",
+      "sha256": "edb3dbeabb298fe023999f108f39801aee79c3296b6cfccd084baed06e4e816c",
+      "mode": 420
+    },
+    "con-artist/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-advanced.md": {
+      "kind": "file",
+      "sha256": "81ed9cefd40b173998ae86729e92568b2dc1213c62783825a07295c43e051143",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-probes.md": {
+      "kind": "file",
+      "sha256": "84d79080eaa7b85d30cd36447ba571ad4893198145ba8d159b9c62d3cc85451d",
+      "mode": 420
+    },
+    "con-artist/references/python-audit.md": {
+      "kind": "file",
+      "sha256": "0420bf73ba7325c976618dbbe8e726eda23e3c7e16d66e56de227e327f9617ec",
+      "mode": 420
+    },
+    "con-artist/references/python-context.md": {
+      "kind": "file",
+      "sha256": "92adbb6cfbcf8d254fc871bc1bf81a45ce819d33b444b54b2d8b579c52692950",
+      "mode": 420
+    },
+    "con-artist/scripts/audit.py": {
+      "kind": "file",
+      "sha256": "862c75aeaaf6b90cc9a6d772c9dac6711264c0ec9220dfa34e86898c39766d21",
+      "mode": 420
+    },
+    "con-artist/scripts/context.py": {
+      "kind": "file",
+      "sha256": "fe806318bcbfbd1e705a77c3d7d8973909a48a5fc2547377a4bf9084f62c49ec",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 289,
+    "mode": 420,
+    "sha256": "d7137384edbc82eba7ddf3eedecd681c0b8cec7c545614b38999fb7940a346eb",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

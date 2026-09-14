@@ -1,0 +1,53 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "ledger-test-selection",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "8055a9bdce26834cc33e018e1fb6980ce6e0ae15",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 52.059,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 68969,
+    "cached_input_tokens": 61184,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1405,
+    "reasoning_output_tokens": 68
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Audit whether each of the three existing test methods in test_ledger.py\ndetects this specific transaction fault in ledger.py: replace only the error\nhandler's connection.rollback() with connection.commit(), keeping the re-raise.\nUse the real implementation and native unittest, not a rewritten simulation.\n\nWe need independent process exit evidence per method for a test-ownership review.\nRun exactly one normal and one faulty native process for each method (six test\nprocesses total); do not also run the grouped suite. Reuse those normal checks.\nYou may batch command submissions. Keep the same test bodies, inputs and Python\nruntime across normal/faulty variants. Bound execution and keep copies/scratch\nproject-local. Preserve originals and remove owned scratch before finishing.\n\nReport a per-method normal/faulty exit and detecting assertion, or what a passing\ntest actually observes. Explain the persisted-data consequence, supported by the\nactual checks. No test improvements, extra faults, separate stronger probes,\nproduction edits or report file are requested. Include decisive commands and\nscope/coverage limits; do not claim that one fault proves all transaction safety.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 289,
+    "mode": 420,
+    "sha256": "d314c3c29fc67609f4491dd91460485f6c6315022a6f3567d4275a8311ab2f14",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}
