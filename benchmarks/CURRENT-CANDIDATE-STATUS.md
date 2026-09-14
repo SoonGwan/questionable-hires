@@ -11,6 +11,14 @@ it has not established a broad 20–30% gain.
 
 ## Capture localization — 2026-09-15, launches `d21d6f4` through `4a70281`
 
+[Native streaming preflight](APP-SERVER-NATIVE-CAPTURE-01.md) now retains the full
+delayed payload, genuine assertion diagnostics, cap flags and timeout output.
+Four evidence-reconciliation tests pass. This is standalone command execution,
+not yet model-issued tools; the benchmark transport and featured claims are unchanged.
+
+한국어: 별도 명령 실행 사전 검사에서 전체 출력·실제 실패·잘림 표시·시간 초과를
+보존했다. 증거 대조 4개가 통과했지만 모델 도구 호출 검증은 아직 남아 있다.
+
 [Four baseline-only diagnostic sessions](CLI-OUTPUT-LOCALIZATION-01.md) preserve
 six immediate outputs fully, but both delayed 92-byte outputs lose the leading
 47 bytes from CLI command events. Final answers correctly report fresh nonces
