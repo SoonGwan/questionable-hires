@@ -11,6 +11,14 @@ it has not established a broad 20–30% gain.
 
 ## Refresh-owner checkpoint — 2026-09-15, launch `3c29443`
 
+[Adoption screen 03](HOSTAGE-REFRESH-03-PROTOCOL.md) preregisters two fresh skill
+sessions for resources `6b6962c`. No fresh baseline; historical costs cannot prove
+superiority. Keep full behavioral/evidence requirements and both outcomes. Once
+adoption is supported, move to different workflows rather than tuning this pair.
+
+한국어: 읽기·점검 후보의 새 스킬 2세션 점검을 고정했다. 새 기본 모델이 없으므로
+우위를 주장하지 않는다. 지시 채택이 확인되면 다른 작업 비교로 넓힐 계획이다.
+
 [Read/review candidate 03](HOSTAGE-READ-BUDGET-03.md), parent `e659f0e`: concrete
 complete-usage excerpt commands, missing-path-only discovery, combined non-test
 review checks. Dedicated native evidence is preserved. Entry +16 bytes; usage
