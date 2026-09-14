@@ -19,7 +19,7 @@ Async regression checks must terminate even when the guarded behavior is broken:
 
 For Python asyncio callback tests without equivalent project support, read and copy the optional [controlled-call asset](assets/controlled_call.py); its module docstring contains the usage and limits. It replaces repeated entry/release gates, not application assertions. No separate reference is needed for this path.
 
-For JavaScript Promise callbacks without equivalent support, use the optional [ES-module asset](assets/controlled_call.mjs) instead. Read only the asset for the actual runtime; tests still own application assertions, rejection handling and cleanup. A timed-out entry wait does not cancel application work.
+For JavaScript Promise callbacks without equivalent support, use the optional [ES-module asset](assets/controlled_call.mjs) instead. Its `withControlledCalls` wrapper can own bounded waits, registered-task rejection handling and callback release/drain; plain `controlledCall` leaves those to the test. Read only the asset for the actual runtime. Tests still own application assertions and external-resource cleanup; deadlines do not cancel application work.
 
 ## Deliver and stop
 

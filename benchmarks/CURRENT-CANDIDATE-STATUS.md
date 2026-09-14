@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Unmeasured local candidate: the [JavaScript lifecycle wrapper](HOSTAGE-JAVASCRIPT-SCOPE-01.md)
+adds optional bounded body/drain ownership in the existing module, addressing
+scenario boilerplate observed below. Ten new native lifecycle/fault tests and the
+seven original callback tests pass, including standalone-copy integration.
+Full current local suite: 470 tests passed in 68.700s, no failures/skips.
+This changes the current JS resource; the measurements below remain tied to
+`8ca9e70`. No model cost reduction is yet demonstrated for the wrapper.
+
+한국어: 현재 JavaScript 도구에 반복 정리 코드를 대체하는 선택형 래퍼를 추가했다.
+새 동작·결함 검증 10개와 기존 호출 검증 7개는 통과했다. 아직 모델 비용을
+측정하지 않은 후보이며, 아래 기존 수치를 새 도구의 성과로 해석하면 안 된다.
+
 [JavaScript SubmitPanel review](HOSTAGE-JAVASCRIPT-PANEL-01-REVIEW.md), launch
 `3949ef6`, resource `8ca9e70`: both sessions complete. Baseline 68,671 tokens/
 92.478s; skill 132,886/102.947s: **+93.51% tokens / +11.32% time**. Both preserve
