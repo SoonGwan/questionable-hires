@@ -11,15 +11,25 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
-Newer unmeasured instruction candidate `1c483b9`: [Friday interface split](FRIDAY-INTERFACE-01.md)
+Instruction candidate `1c483b9`: [Friday interface split](FRIDAY-INTERFACE-01.md)
 keeps CLI contracts/limits in the core guide and routes API/BLOB/byte-accounting
 details conditionally. Core 3,733 bytes versus previous 6,447; combined documents
 6,554 bytes. This is file size, not model savings, and advanced use can cost an
 extra read. 35 Friday and 15 install tests pass; runtime remains `bef0937`.
 
-한국어 안내 변경: 기본 CLI 안내와 선택형 API·특수 결과 설명을 분리했다.
-예제 실행과 설치 검증은 통과했지만, 모델의 토큰·시간 절감 효과는 아직
-확인하지 않았다. 고급 사용에서는 문서를 추가로 읽는 비용이 생길 수 있다.
+[Interface model screen 01](FRIDAY-INTERFACE-MODEL-01-REVIEW.md), launch `15797aa`,
+runtime `bef0937`: all four cells complete across two exposed tasks, n=1 per arm.
+Baseline 132,229 tokens/134.346s; skill 222,886/145.651s (**+68.56% tokens,
++8.41% time**). Core-only versus conditional advanced loading was adopted, but
+the binary API probe needed a real in-session repair for omitted empty `sql`.
+Unequal verification work and shared host/cache prevent causal attribution.
+Raw usage, resources and exact unchanged fixtures reconcile. No efficiency win;
+no exclusions, retries or featured changes.
+
+한국어: 기본/고급 문서를 나누어 읽는 동작은 확인했지만, 두 과제의 전체
+토큰은 68.56%, 시간은 8.41% 증가했다. 빈 `sql` 누락으로 전체 코드를 다시
+실행한 실제 오류도 보존했다. 검증량 차이가 있어 원인별 효과는 단정하지
+않으며, 개별 유리한 시간만 대표 성과로 쓰지 않는다.
 
 New runtime candidate `bef0937`: [Friday literal-reader references](FRIDAY-LITERAL-READERS-01.md)
 replace custom extraction code for declaration-only Python query files via the

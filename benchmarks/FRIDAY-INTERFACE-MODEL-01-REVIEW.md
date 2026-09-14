@@ -1,8 +1,8 @@
-# Friday interface screen 01 — review in progress
+# Friday interface screen 01 — reviewed
 
 Launch `15797aa`, instruction resource `1c483b9`, runtime `bef0937`.
 [Frozen protocol](FRIDAY-INTERFACE-MODEL-01-PROTOCOL.md). No task/resource edits
-or author test workloads during model timing; no aggregate before final review.
+or author test workloads during model timing. All four scheduled cells completed.
 
 ## Binary rollback — baseline
 
@@ -49,5 +49,38 @@ and migrations with native initial/up/post-write/down observations, explicit
 post-write/down row equality, schema snapshots, integrity check and unchanged
 six-file hashes. Correctly identifies rolling migration-first and old-binary-first
 rollback blockers. Representative SQL writes are not labeled application-writer
-evidence; staging remains unavailable. No observed scope/capture issue. Final
-source/raw/resource reconciliation awaits the last cell.
+evidence; staging remains unavailable. No observed scope/capture issue.
+
+## Rolling schema — skill
+
+Completed: **89,461 tokens / 47.918s**, six shell calls. Reads the core guide only,
+then executes the CLI recipe with literal reader references. Complete native
+output contains all four phases, expected reader errors and the three current
+rows surviving down. No repair. Unlike baseline, no additional explicit row
+assertion, integrity check or original-file hashes in the model's probe. Final
+Git checks show no tracked changes. Correct rollout/rollback blockers and no
+invented writer or staging evidence. No observed capture/scope issue.
+
+## Whole screen and limitations
+
+| Task | Baseline tokens / seconds | Skill tokens / seconds |
+| --- | --- | --- |
+| Binary rollback | 67,116 / 72.821 | 133,425 / 97.733 |
+| Rolling schema | 65,113 / 61.525 | 89,461 / 47.918 |
+| Sum | 132,229 / 134.346 | 222,886 / 145.651 |
+
+The sum is **+68.56% tokens and +8.41% elapsed time**: adverse overall, not an
+efficiency win. Tokens include cached input and output, not a dollar estimate.
+Conditional reference loading was adopted, but that does not establish savings.
+Binary API repair is actionable friction; extra work and shared host/cache prevent
+causal attribution. Two author-exposed tasks, n=1 per arm, are not an independent
+holdout or evidence of a broad performance gain. No cells excluded or rerun.
+
+[Binary exports](results/friday-interface-model-01/binary/) and
+[rolling exports](results/friday-interface-model-01/rolling/) retain commands,
+native output, final answers and metadata, including the failed first API call.
+Both reconciliation reports confirm terminal usage, sanitized raw events, frozen
+resource bytes and exact unchanged fixture snapshots for all four cells, with
+no errors. Reconciliation is an author audit, not an additional model success
+score. Earlier pending-reconciliation notes above describe review order only.
+Featured data and historical measurements remain unchanged.
