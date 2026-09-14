@@ -1,0 +1,200 @@
+{
+  "kind": "separate retained-test controls, not original model execution",
+  "revision": "3a7d972d4cfa5cc28a5df44125c55eaeb60aa1b9",
+  "checks": [
+    {
+      "cell": "boundary-fix--baseline--1",
+      "variant": "final",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "counts": [
+        "3"
+      ],
+      "inventory_sha256": {
+        "test_eligibility.py": "58ac7a17ad8d0911a178505cfb7026777619221ae1a86f03608398fcc06dbc63",
+        "eligibility.py": "22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f"
+      },
+      "implementation": "def eligible(age):\n    return age >= 18\n",
+      "test_source": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_exactly_eighteen(self):\n        self.assertTrue(eligible(18))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v"
+      ],
+      "matched": true,
+      "output": "test_adult (test_eligibility.EligibilityTests) ... ok\ntest_exactly_eighteen (test_eligibility.EligibilityTests) ... ok\ntest_minor (test_eligibility.EligibilityTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "cell": "boundary-fix--baseline--1",
+      "variant": "original",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "counts": [
+        "3"
+      ],
+      "inventory_sha256": {
+        "test_eligibility.py": "58ac7a17ad8d0911a178505cfb7026777619221ae1a86f03608398fcc06dbc63",
+        "eligibility.py": "22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f"
+      },
+      "implementation": "def eligible(age):\n    return age > 18\n",
+      "test_source": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_exactly_eighteen(self):\n        self.assertTrue(eligible(18))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v"
+      ],
+      "matched": true,
+      "output": "test_adult (test_eligibility.EligibilityTests) ... ok\ntest_exactly_eighteen (test_eligibility.EligibilityTests) ... FAIL\ntest_minor (test_eligibility.EligibilityTests) ... ok\n\n======================================================================\nFAIL: test_exactly_eighteen (test_eligibility.EligibilityTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<REPLAY>/test_eligibility.py\", line 8, in test_exactly_eighteen\n    self.assertTrue(eligible(18))\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "boundary-fix--baseline--1",
+      "variant": "admits_minor",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "counts": [
+        "3"
+      ],
+      "inventory_sha256": {
+        "test_eligibility.py": "58ac7a17ad8d0911a178505cfb7026777619221ae1a86f03608398fcc06dbc63",
+        "eligibility.py": "22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f"
+      },
+      "implementation": "def eligible(age):\n    return age >= 17\n",
+      "test_source": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_exactly_eighteen(self):\n        self.assertTrue(eligible(18))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v"
+      ],
+      "matched": true,
+      "output": "test_adult (test_eligibility.EligibilityTests) ... ok\ntest_exactly_eighteen (test_eligibility.EligibilityTests) ... ok\ntest_minor (test_eligibility.EligibilityTests) ... FAIL\n\n======================================================================\nFAIL: test_minor (test_eligibility.EligibilityTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<REPLAY>/test_eligibility.py\", line 6, in test_minor\n    self.assertFalse(eligible(17))\nAssertionError: True is not false\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "boundary-fix--baseline--1",
+      "variant": "rejects_adult",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "counts": [
+        "3"
+      ],
+      "inventory_sha256": {
+        "test_eligibility.py": "58ac7a17ad8d0911a178505cfb7026777619221ae1a86f03608398fcc06dbc63",
+        "eligibility.py": "22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f"
+      },
+      "implementation": "def eligible(age):\n    return age == 18\n",
+      "test_source": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_exactly_eighteen(self):\n        self.assertTrue(eligible(18))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v"
+      ],
+      "matched": true,
+      "output": "test_adult (test_eligibility.EligibilityTests) ... FAIL\ntest_exactly_eighteen (test_eligibility.EligibilityTests) ... ok\ntest_minor (test_eligibility.EligibilityTests) ... ok\n\n======================================================================\nFAIL: test_adult (test_eligibility.EligibilityTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<REPLAY>/test_eligibility.py\", line 10, in test_adult\n    self.assertTrue(eligible(19))\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "boundary-fix--skill--1",
+      "variant": "final",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "counts": [
+        "3"
+      ],
+      "inventory_sha256": {
+        "test_eligibility.py": "58ac7a17ad8d0911a178505cfb7026777619221ae1a86f03608398fcc06dbc63",
+        "eligibility.py": "22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f"
+      },
+      "implementation": "def eligible(age):\n    return age >= 18\n",
+      "test_source": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_exactly_eighteen(self):\n        self.assertTrue(eligible(18))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v"
+      ],
+      "matched": true,
+      "output": "test_adult (test_eligibility.EligibilityTests) ... ok\ntest_exactly_eighteen (test_eligibility.EligibilityTests) ... ok\ntest_minor (test_eligibility.EligibilityTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "cell": "boundary-fix--skill--1",
+      "variant": "original",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "counts": [
+        "3"
+      ],
+      "inventory_sha256": {
+        "test_eligibility.py": "58ac7a17ad8d0911a178505cfb7026777619221ae1a86f03608398fcc06dbc63",
+        "eligibility.py": "22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f"
+      },
+      "implementation": "def eligible(age):\n    return age > 18\n",
+      "test_source": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_exactly_eighteen(self):\n        self.assertTrue(eligible(18))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v"
+      ],
+      "matched": true,
+      "output": "test_adult (test_eligibility.EligibilityTests) ... ok\ntest_exactly_eighteen (test_eligibility.EligibilityTests) ... FAIL\ntest_minor (test_eligibility.EligibilityTests) ... ok\n\n======================================================================\nFAIL: test_exactly_eighteen (test_eligibility.EligibilityTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<REPLAY>/test_eligibility.py\", line 8, in test_exactly_eighteen\n    self.assertTrue(eligible(18))\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "boundary-fix--skill--1",
+      "variant": "admits_minor",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "counts": [
+        "3"
+      ],
+      "inventory_sha256": {
+        "test_eligibility.py": "58ac7a17ad8d0911a178505cfb7026777619221ae1a86f03608398fcc06dbc63",
+        "eligibility.py": "22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f"
+      },
+      "implementation": "def eligible(age):\n    return age >= 17\n",
+      "test_source": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_exactly_eighteen(self):\n        self.assertTrue(eligible(18))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v"
+      ],
+      "matched": true,
+      "output": "test_adult (test_eligibility.EligibilityTests) ... ok\ntest_exactly_eighteen (test_eligibility.EligibilityTests) ... ok\ntest_minor (test_eligibility.EligibilityTests) ... FAIL\n\n======================================================================\nFAIL: test_minor (test_eligibility.EligibilityTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<REPLAY>/test_eligibility.py\", line 6, in test_minor\n    self.assertFalse(eligible(17))\nAssertionError: True is not false\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "boundary-fix--skill--1",
+      "variant": "rejects_adult",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "counts": [
+        "3"
+      ],
+      "inventory_sha256": {
+        "test_eligibility.py": "58ac7a17ad8d0911a178505cfb7026777619221ae1a86f03608398fcc06dbc63",
+        "eligibility.py": "22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f"
+      },
+      "implementation": "def eligible(age):\n    return age == 18\n",
+      "test_source": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_exactly_eighteen(self):\n        self.assertTrue(eligible(18))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v"
+      ],
+      "matched": true,
+      "output": "test_adult (test_eligibility.EligibilityTests) ... FAIL\ntest_exactly_eighteen (test_eligibility.EligibilityTests) ... ok\ntest_minor (test_eligibility.EligibilityTests) ... ok\n\n======================================================================\nFAIL: test_adult (test_eligibility.EligibilityTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<REPLAY>/test_eligibility.py\", line 10, in test_adult\n    self.assertTrue(eligible(19))\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=1)\n"
+    }
+  ],
+  "retained_projects_unchanged": true,
+  "all_matched": true
+}

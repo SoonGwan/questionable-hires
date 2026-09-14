@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Checkpoint 09 intake — 2026-09-14, launch `3a7d972`, review pending
 
+[Boundary/formatter review](BUNDLE-CONTRACT-09-BOUNDARY-FORMATTER-REVIEW.md):
+boundary original before/after evidence is present and final files match across
+arms; 8 native adverse/positive controls match. Formatter recommendations are
+supported, but baseline executes seven extra value checks while skill explicitly
+uses static review. Preserve unequal-work and cost caveats. A malformed private
+link in the formatter answer needs redaction before full-run publication.
+
+한국어: 경계값 원본 증거와 대조 8회를 확인했다. 포매터 결론도 타당하지만
+기본 모델만 추가 실행 검증을 해 비용 차이를 동일 작업의 효율로 보지 않는다.
+전체 공개 전 로컬 링크 가림과 나머지 과제 검토가 남아 있다.
+
 [History/schema review](BUNDLE-CONTRACT-09-READONLY-REVIEW.md): both arms reach
 supported conclusions, four literal Python witness replays reproduce captured
 stdout and preserve original files. Both skill pairs still cost more tokens/time.
