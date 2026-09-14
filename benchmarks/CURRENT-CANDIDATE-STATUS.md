@@ -11,17 +11,31 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+[Keyed import transfer 01](HOSTAGE-KEYED-IMPORT-01-REVIEW.md), launch `6d0d108`,
+resources `c0aa9a1`: one skill-only cell, 118,971 tokens / 103.161s. Original six
+native tests pass; unchanged-test replay accepts a valid False-returning duplicate
+and detects missing guard/cleanup and all-key blocking. Faulty variants also reveal
+secondary unbound-local errors from continuing dependent subtests. The task
+explicitly clarifies unspecified returns, so this does not isolate the instruction
+effect or establish efficiency/general real-project gains. No skill/featured change.
+
+한국어: 다른 키는 계속 처리하는 2단계 가져오기 작업에서도 새 API를 사용했다.
+정상·대체 반환값 구현은 모두 통과하고 중복·복구·키별 독립성 결함을 검출했다.
+다만 실패 뒤 다음 단계까지 진행하는 subtest 구조에서 추가 오류도 발견했다.
+과제가 반환값 계약을 명시하므로 스킬만의 효과나 비용 절감으로 주장하지 않는다.
+
 Python [callback adoption 01](HOSTAGE-PYTHON-ENTRY-MODEL-01-REVIEW.md), launch
 `08a8f6e`, resources `4b79eb9`: 114,248 tokens / 87.024s, one skill-only cell.
 Actual task-aware API use and original 6/6 native passes are confirmed. Separate
 replays detect missing guard/cleanup but reject a valid False-returning duplicate
 suppression path: the generated test invents a None-return contract. A narrow
-post-run instruction correction is not yet model-validated. Full-asset reading
+post-run instruction correction is subsequently exercised by the transfer screen
+above, with an explicit-task-clarification confound. Full-asset reading
 and deadline-based missing-guard failure remain; no efficiency/featured claim.
 
 한국어: Python 새 API 사용과 원본 테스트 6개 통과를 확인했지만, 정상 중복 차단의
-반환값까지 None으로 강제하는 과잉 검증을 발견했다. 이를 막는 지침을 수정했으며
-수정 지침의 모델 효과는 아직 미검증이다. 114,248토큰·87.024초로 비용 절감을
+반환값까지 None으로 강제하는 과잉 검증을 발견했다. 이를 막는 지침을 수정했고
+이후 다른 과제에서 사용했지만 지침만의 효과는 분리하지 못했다. 114,248토큰·87.024초로 비용 절감을
 입증하지 못했고 기존 결과·이미지는 그대로 보존한다.
 
 Distribution check: [all-eight skills CLI install](SKILLS-CLI-INSTALL-01.md),

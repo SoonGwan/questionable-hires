@@ -55,9 +55,12 @@ After measurement, the Hostage entry instruction was narrowed to preserve
 existing/specified outputs while not inventing return contracts for newly
 suppressed operations. This is a small instruction correction supported by the
 False-return control, following skill-creator's scope-preserving guidance.
-It leaves required state/identity/cancellation coverage intact. The correction
-has **not** yet been evaluated in a fresh model output; original generated tests
-and all measured resources remain unchanged.
+It leaves required state/identity/cancellation coverage intact. At this checkpoint
+the correction had **not** yet been evaluated in a fresh model output; original
+generated tests and all measured resources remain unchanged.
+Subsequent evidence: [keyed import transfer 01](HOSTAGE-KEYED-IMPORT-01-REVIEW.md)
+uses the correction and accepts a valid alternate duplicate result, with an
+explicit-task-clarification confound; it does not retroactively repair this output.
 Post-correction local validation: 497 repository tests pass in 68.980s, no
 failures/skips; catalog, skill frontmatter and featured EN/KO synchronization
 checks pass. These checks do not prove the instruction changes model decisions.

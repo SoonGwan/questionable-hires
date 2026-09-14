@@ -1,0 +1,333 @@
+diff --git a/controlled_call.py b/controlled_call.py
+new file mode 100644
+index 0000000..a258597
+--- /dev/null
++++ b/controlled_call.py
+@@ -0,0 +1,110 @@
++"""Controlled asyncio callbacks; copy into permitted test support only if needed.
++
++Prefer equivalent project fixtures. Use the real application owner and runner;
++the copied module needs no installed skill. No application implementation here.
++
++save = ControlledCall() accepts any positional/keyword arguments, including none.
++Start the application task with owned cleanup registered BEFORE waiting. Await
++save.started(timeout=1) for actual callback entry; it returns a unique Call.
++call.args/call.kwargs hold argument references, not deep snapshots. save.calls
++records every entry, even identical arguments, for call-count assertions.
++
++If entry must happen before a particular application task finishes, await
++save.started_before(task, timeout=1). Pass an already-owned asyncio Task/Future
++on this loop, not a coroutine. Missing entry raises EntryNotObserved early with
++an outcome containing status and the exact value/error (or cancelled status).
++Queued entry wins; this does not establish which task caused it. Tests still
++assert arguments, state and task outcomes. Timeout/cancelling the waiter leaves
++the application task and unconsumed entries untouched.
++
++call.complete(value) delivers that exact object (default None); call.fail(error)
++raises that exact exception. Each call has its own response future. Sibling
++completion/cancellation is independent. Completing a finished/cancelled handle
++raises asyncio.InvalidStateError, exposing accidental double completion.
++
++Assert required pending state, duplicate suppression, instance isolation and
++recovery through the application; entry alone proves none of them. Cancel the
++application task to test cancellation, not just its response future. Test
++synchronous callback failure with an ordinary raising function, not this double.
++
++Tests own tasks: cancel and drain them even if entry/assertions fail; started's
++timeout does not clean application tasks. Bound application waits too. Async
++timeouts cannot interrupt blocking code or guarantee termination of tasks that
++resist cancellation; use process bounds when needed. This supplies no network,
++thread, browser, transaction or production-runtime evidence.
++"""
++import asyncio
++
++
++class EntryNotObserved(AssertionError):
++    def __init__(self, outcome):
++        self.outcome = outcome
++        super().__init__('Application task ' + outcome['status'] +
++                         ' before expected callback entry')
++
++
++class Call:
++    def __init__(self, args, kwargs):
++        self.args, self.kwargs = args, kwargs
++        self.response = asyncio.get_running_loop().create_future()
++
++    def complete(self, value=None):
++        self.response.set_result(value)
++
++    def fail(self, error):
++        self.response.set_exception(error)
++
++
++class ControlledCall:
++    def __init__(self):
++        self.calls = []
++        self._entered = asyncio.Queue()
++        self._entry_changed = asyncio.Event()
++
++    async def __call__(self, *args, **kwargs):
++        call = Call(args, kwargs)
++        self.calls.append(call)
++        self._entered.put_nowait(call)
++        self._entry_changed.set()
++        return await call.response
++
++    async def started(self, timeout=1):
++        """Return the next actual callback entry, not merely a scheduled task.
++
++        Timeout leaves application tasks untouched; their cleanup is test-owned.
++        """
++        if not 0 < timeout <= 30:
++            raise ValueError('timeout must be in (0, 30]')
++        return await asyncio.wait_for(self._entered.get(), timeout)
++
++    async def started_before(self, task, timeout=1):
++        """Observe entry or task settlement without owning/cancelling that task."""
++        if not 0 < timeout <= 30:
++            raise ValueError('timeout must be in (0, 30]')
++        loop = asyncio.get_running_loop()
++        if not isinstance(task, asyncio.Future) or task.get_loop() is not loop:
++            raise TypeError('task must be an owned asyncio Task/Future on this loop')
++        deadline = loop.time() + timeout
++        while True:
++            if not self._entered.empty():
++                return self._entered.get_nowait()
++            if task.done():
++                if task.cancelled():
++                    outcome = dict(status='cancelled')
++                elif task.exception() is not None:
++                    outcome = dict(status='failed', error=task.exception())
++                else:
++                    outcome = dict(status='completed', value=task.result())
++                raise EntryNotObserved(outcome)
++            self._entry_changed.clear()
++            # Wait for notification, never dequeue in a cancellable child task.
++            # Otherwise cancellation could lose an entry already taken by it.
++            notice = asyncio.create_task(self._entry_changed.wait())
++            try:
++                done, _ = await asyncio.wait((notice, task), timeout=max(0, deadline - loop.time()),
++                                             return_when=asyncio.FIRST_COMPLETED)
++                if not done:
++                    raise asyncio.TimeoutError('Timed out waiting for callback entry')
++            finally:
++                notice.cancel()
++                await asyncio.gather(notice, return_exceptions=True)
+diff --git a/importer.py b/importer.py
+index c544fe3..1518afb 100644
+--- a/importer.py
++++ b/importer.py
+@@ -1,4 +1,13 @@
+ class Importer:
++    def __init__(self):
++        self.busy_keys = set()
++
+     async def import_one(self, key, fetch, persist):
+-        payload = await fetch(key)
+-        return await persist(key, payload)
++        if key in self.busy_keys:
++            return
++        self.busy_keys.add(key)
++        try:
++            payload = await fetch(key)
++            return await persist(key, payload)
++        finally:
++            self.busy_keys.remove(key)
+diff --git a/test_importer.py b/test_importer.py
+new file mode 100644
+index 0000000..04c00fa
+--- /dev/null
++++ b/test_importer.py
+@@ -0,0 +1,191 @@
++import asyncio
++import unittest
++
++from controlled_call import ControlledCall
++from importer import Importer
++
++
++class BusyImportTests(unittest.IsolatedAsyncioTestCase):
++    def own(self, coroutine):
++        task = asyncio.create_task(coroutine)
++
++        async def cleanup():
++            if not task.done():
++                task.cancel()
++            await asyncio.gather(task, return_exceptions=True)
++
++        self.addAsyncCleanup(cleanup)
++        return task
++
++    async def finish(self, task):
++        return await asyncio.wait_for(asyncio.shield(task), 1)
++
++    async def retry(self, importer, key):
++        before = set(importer.busy_keys)
++        payload, result = object(), object()
++        observed = []
++
++        async def fetch(received):
++            self.assertEqual(received, key)
++            self.assertEqual(importer.busy_keys, before | {key})
++            observed.append('fetch')
++            return payload
++
++        async def persist(received, data):
++            self.assertEqual(received, key)
++            self.assertIs(data, payload)
++            self.assertEqual(importer.busy_keys, before | {key})
++            observed.append('persist')
++            return result
++
++        task = self.own(importer.import_one(key, fetch, persist))
++        self.assertIs(await self.finish(task), result)
++        self.assertEqual(observed, ['fetch', 'persist'])
++        self.assertEqual(importer.busy_keys, before)
++
++    async def test_duplicate_during_fetch_and_persist_then_retry(self):
++        importer = Importer()
++        self.assertEqual(importer.busy_keys, set())
++        fetch, persist = ControlledCall(), ControlledCall()
++        key = 'catalog import'
++        equal_key = ''.join(['catalog', ' import'])
++        self.assertEqual(key, equal_key)
++        self.assertIsNot(key, equal_key)
++        task = self.own(importer.import_one(key, fetch, persist))
++        fetched = await fetch.started_before(task)
++        self.assertEqual(fetched.args, (key,))
++        payload, result = object(), object()
++        duplicate_calls = []
++
++        async def forbidden(*args):
++            duplicate_calls.append(args)
++            self.fail('duplicate invoked a callback')
++
++        for phase in ('fetch', 'persist'):
++            with self.subTest(phase=phase):
++                self.assertEqual(importer.busy_keys, {key})
++                before = set(importer.busy_keys)
++                duplicate = self.own(importer.import_one(equal_key, forbidden, forbidden))
++                await self.finish(duplicate)
++                self.assertEqual(importer.busy_keys, before)
++                self.assertFalse(task.done())
++                self.assertEqual(duplicate_calls, [])
++                if phase == 'fetch':
++                    self.assertEqual(persist.calls, [])
++                    fetched.complete(payload)
++                    saved = await persist.started_before(task)
++                    self.assertEqual(saved.args[0], key)
++                    self.assertIs(saved.args[1], payload)
++
++        saved.complete(result)
++        self.assertIs(await self.finish(task), result)
++        self.assertEqual(importer.busy_keys, set())
++        await self.retry(importer, key)
++        self.assertEqual(duplicate_calls, [])
++        self.assertEqual(len(fetch.calls), 1)
++        self.assertEqual(len(persist.calls), 1)
++
++    async def test_other_keys_and_instances_proceed_independently(self):
++        first, second = Importer(), Importer()
++        self.assertEqual(first.busy_keys, set())
++        self.assertEqual(second.busy_keys, set())
++        self.assertIsNot(first.busy_keys, second.busy_keys)
++        fetch, persist = ControlledCall(), ControlledCall()
++        task = self.own(first.import_one('catalog', fetch, persist))
++        fetched = await fetch.started_before(task)
++        for phase in ('fetch', 'persist'):
++            with self.subTest(phase=phase):
++                before = set(first.busy_keys)
++                await self.retry(first, 'other')
++                await self.retry(second, 'catalog')
++                self.assertEqual(first.busy_keys, before)
++                self.assertEqual(second.busy_keys, set())
++                self.assertFalse(task.done())
++                if phase == 'fetch':
++                    fetched.complete(object())
++                    saved = await persist.started_before(task)
++        saved.complete()
++        await self.finish(task)
++        self.assertEqual(first.busy_keys, set())
++
++    async def test_failures_clean_only_active_key_and_allow_retry(self):
++        for phase in ('fetch', 'persist'):
++            for synchronous in (False, True):
++                with self.subTest(phase=phase, synchronous=synchronous):
++                    importer = Importer()
++                    other_fetch = ControlledCall()
++                    other = self.own(importer.import_one('other', other_fetch, ControlledCall()))
++                    other_call = await other_fetch.started_before(other)
++                    before = set(importer.busy_keys)
++                    error, payload = ValueError('callback failed'), object()
++                    observed = []
++                    failing = ControlledCall()
++
++                    def throw(*args):
++                        self.assertEqual(importer.busy_keys, before | {'catalog'})
++                        raise error
++
++                    async def fetch(key):
++                        observed.append(('fetch', key))
++                        self.assertEqual(importer.busy_keys, before | {key})
++                        return payload
++
++                    async def persist(*args):
++                        self.fail('persist ran after fetch failure')
++
++                    callback = throw if synchronous else failing
++                    task = self.own(importer.import_one(
++                        'catalog', callback if phase == 'fetch' else fetch,
++                        callback if phase == 'persist' else persist))
++                    if not synchronous:
++                        call = await failing.started_before(task)
++                        self.assertEqual(importer.busy_keys, before | {'catalog'})
++                        self.assertEqual(call.args[0], 'catalog')
++                        if phase == 'persist':
++                            self.assertIs(call.args[1], payload)
++                        call.fail(error)
++                    with self.assertRaises(ValueError) as caught:
++                        await self.finish(task)
++                    self.assertIs(caught.exception, error)
++                    self.assertEqual(observed, [('fetch', 'catalog')] if phase == 'persist' else [])
++                    self.assertEqual(importer.busy_keys, before)
++                    self.assertFalse(other.done())
++                    self.assertFalse(other_call.response.done())
++                    await self.retry(importer, 'catalog')
++
++    async def test_cancellation_in_each_phase_cleans_only_active_key_and_allows_retry(self):
++        for phase in ('fetch', 'persist'):
++            with self.subTest(phase=phase):
++                importer = Importer()
++                other_fetch, other_persist = ControlledCall(), ControlledCall()
++                other = self.own(importer.import_one('other', other_fetch, other_persist))
++                other_call = await other_fetch.started_before(other)
++                before = set(importer.busy_keys)
++                fetch, persist = ControlledCall(), ControlledCall()
++                task = self.own(importer.import_one('catalog', fetch, persist))
++                call = await fetch.started_before(task)
++                payload = object()
++                if phase == 'persist':
++                    call.complete(payload)
++                    call = await persist.started_before(task)
++                    self.assertIs(call.args[1], payload)
++                self.assertEqual(importer.busy_keys, before | {'catalog'})
++                task.cancel()
++                with self.assertRaises(asyncio.CancelledError):
++                    await self.finish(task)
++                self.assertTrue(task.cancelled())
++                self.assertTrue(call.response.cancelled())
++                self.assertEqual(importer.busy_keys, before)
++                self.assertFalse(other.done())
++                self.assertFalse(other_call.response.done())
++                if phase == 'fetch':
++                    self.assertEqual(persist.calls, [])
++                await self.retry(importer, 'catalog')
++                other_payload, other_result = object(), object()
++                other_call.complete(other_payload)
++                saved = await other_persist.started_before(other)
++                self.assertIs(saved.args[1], other_payload)
++                self.assertEqual(importer.busy_keys, {'other'})
++                saved.complete(other_result)
++                self.assertIs(await self.finish(other), other_result)
++                self.assertEqual(importer.busy_keys, set())
