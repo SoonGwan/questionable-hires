@@ -1,0 +1,2 @@
+CREATE TABLE people(id INTEGER PRIMARY KEY, name TEXT NOT NULL);
+INSERT INTO people VALUES(1,'Ada'),(2,'keep');

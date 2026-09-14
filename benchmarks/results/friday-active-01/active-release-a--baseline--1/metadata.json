@@ -1,0 +1,52 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "active-release-a",
+  "skill": "friday",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "d8c15b9c2ec7f72fdacae4ada09c2f93f0a956dd",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 55.115,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 65509,
+    "cached_input_tokens": 58368,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1468,
+    "reasoning_output_tokens": 0
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Review the planned SQLite release against release.json and requirements.md.\nRun the supplied SQL and active reader queries through the reachable forward and\nrollback states, including the supplied new-version writes. Check exact row values\nand column names, preserved updated/untouched/inserted records, and the first failing\nstep if any. Both column names and values are part of the reader contract. Distinguish\ninactive reader incompatibility from an actually active incompatible reader. Report\nwhether this local SQL plan is compatible and what remains unknown for production.\nThis is review only: preserve every supplied file; do not fix, deploy, install\ndependencies, contact services or publish. Use disposable in-memory databases;\nany scratch must be under this project and removed afterward. Include the command,\nactual observed results and failures in your review; do not claim unexecuted checks.\nAny equivalent native SQLite method is valid; no particular helper is required.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 681,
+    "mode": 420,
+    "sha256": "5916e28a23ca698df9c9ba8c6ae5b3dde033af5a53794874aa0a1f947f2764dc",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

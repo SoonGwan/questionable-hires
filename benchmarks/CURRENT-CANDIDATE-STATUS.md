@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Friday consumer selection — 2026-09-15, parent `761a4b8`
 
+[Active-consumer review 01](FRIDAY-ACTIVE-01-REVIEW.md), launch `fc577c9`,
+resources `8153fec`: all four original sessions distinguish compatible ordering
+from a premature active old reader and preserve rollback values. Skill totals
+increase **21.08% tokens / 11.55% time**. Neither skill session uses the optional
+matrix; repeated discovery/read splitting is observable, not a proven cause.
+Keep all adverse observations; do not promote helper adoption or broad savings.
+
+한국어: 새 4세션은 양쪽 모두 정상/오류와 데이터 복구를 구분했지만 스킬 합산
+토큰 21.08%·시간 11.55%가 증가했다. 도우미는 사용되지 않았다. 반복 탐색은
+다음 개선 후보일 뿐 원인·절감률은 미입증이며, 불리한 결과도 보존한다.
+
 [Phase-specific checks](FRIDAY-PHASE-SELECTION-01.md) allow the optional SQLite
 matrix to execute explicitly named active readers per rollout/rollback phase.
 Defaults remain all readers; absent observations are unrun, not passes. Actual
