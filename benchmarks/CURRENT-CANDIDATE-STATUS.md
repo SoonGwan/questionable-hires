@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Cookie-history near transfer — 2026-09-15, launch `4a02569`
+
+[Original/candidate comparison](results/httpx-cookie-history-01/README.md):
+`62195d8` records **−17.40% tokens / −18.84% time** versus `da20939`, both with
+all ten required observations and supported earlier operational history. Neither
+reads the guide or uses a helper; candidate writes its own historical AST
+extraction twice. No selector benefit is established. Original performs additional
+earlier-history/stdlib checks. Same-source near transfer, n=1, no no-skill arm;
+no featured promotion. All original files/resources remain unchanged. CLI omission
+and budget truncation are distinguished using stored original tool records.
+
+한국어: 이번 과제는 토큰 17.40%·시간 18.84% 감소했지만 도구는 미사용이다. 필수
+관찰은 양쪽 모두 충족했으며 같은 소스·1회·추가 작업 차이가 있어 일반화나 도구
+성과로 주장하지 않는다. 도구가 발견되지 않은 안내 경로가 다음 개선 대상이다.
+
 ## Named historical regions — 2026-09-15, parent `da20939`
 
 [Optional Python selector](PYTHON-REGIONS-01.md) replaces custom extraction code

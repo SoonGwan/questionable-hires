@@ -1,0 +1,22 @@
+{
+  "revision": "4a025692b20c9e2849bc0a98efe1c047f37b3001",
+  "started_at": "2026-09-14T20:40:09.008174+00:00",
+  "schedule": [
+    "original",
+    "candidate"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 360,
+  "session_persistence_requested": true,
+  "source_revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "protocol_sha256": "409433dd6854eb861e32d6f6956e63937aadb76c7a100b3ad30a35255b2c0c17",
+  "case": {
+    "id": "cookie-history",
+    "skill": "necromancer",
+    "task": "Review removing only `headers.pop(\"Cookie\", None)` from\nBaseClient._redirect_headers. Is that a behavior-preserving cleanup? Establish\ncurrent necessity and locally evidenced history; do not implement the removal.\n\nCompare current and proposed behavior using actual Client/MockTransport requests\nwith trust_env=False and follow_redirects=True. For each scenario use a fresh\nclient, GET https://example.invalid/start, return a 302 at /start and a 200 at\nthe destination. Seed client.cookies with sid=old, domain=example.invalid,\npath=/ except in case 5. Record both initial and redirected Cookie headers and\nrequest URLs in each version for these five cases:\n(1) Location /done, Set-Cookie: sid=new; Path=/;\n(2) Location /done, Set-Cookie: sid=gone; Path=/; Max-Age=0;\n(3) Location https://other.invalid/done, no Set-Cookie;\n(4) Location /done, no Set-Cookie;\n(5) initially empty jar, Location /done, Set-Cookie: sid=new; Path=/.\nUse these synthetic cookies only. Explain the mechanism and which cases change\nor remain equivalent. Do not infer browser behavior or remote server acceptance.\n\nInspect relevant local history and an earlier operational implementation,\nincluding how it constructs redirected requests with cookies. Distinguish code\nmovement/line attribution from behavioral introduction. Support earlier presence\nwith actual ancestor code; first-ever origin/intent is not required and must not\nbe invented. Use only ancestors of pinned HEAD, not other branch tips or external\nissue pages. Give a retain/simplify/remove recommendation with current and\nhistorical evidence and behavior to preserve.\n\nPreserve original project files and installed resources. No network, installs,\nfetching, commits or publishing. In-memory substitutions or owned disposable\ncopies are permitted; no particular technique is required. Use\n<PREINSTALLED_PYTHON> with -B; pytest additionally with -p no:cacheprovider.\nScratch must stay inside this project and be removed before finishing. Captured\noutput is sufficient; no separate report/harness is required."
+  },
+  "limitation": "Near-transfer n=1 old/new skill comparison; no no-skill arm or general improvement claim."
+}
