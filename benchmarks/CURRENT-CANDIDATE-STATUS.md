@@ -11,13 +11,25 @@ it has not established a broad 20–30% gain.
 
 ## Refresh-owner checkpoint — 2026-09-15, launch `3c29443`
 
+[Follow-up 02 review](HOSTAGE-REFRESH-02-REVIEW.md), launch `b237aae`, resources
+`0a94dab`: both skill native transcripts now substantiate final pass claims, but
+observed sum tokens **increase 58.57%**, time decreases 6.03%. Four sessions and
+all adverse observations retained; 16 separate author controls match. Repeated
+reads/review calls are the next cost target, not permission to weaken evidence.
+Detailed test-path review remains; no broad gain or featured promotion.
+
+한국어: 후속 4세션에서 스킬의 실제 테스트 근거는 확보됐지만 토큰 58.57% 증가,
+시간 6.03% 감소로 성능 목표는 미달이다. 대조 16회와 불리한 원본을 보존했다.
+다음은 근거를 유지하면서 반복 읽기·점검 왕복을 줄이는 일이다.
+
 [Prospective follow-up 02](HOSTAGE-REFRESH-02-PROTOCOL.md) freezes candidate
 `0a94dab` for four fresh baseline/skill sessions on the same exposed development
 tasks. Separate original report evidence from retained-code controls and cost;
-no held-out or broad performance claim is planned. Results are pending.
+no held-out or broad performance claim is planned. This historical plan is now
+followed by the completed observations above.
 
 한국어: 명령 분리 후보의 후속 4세션 계획을 고정했다. 기존 개발 과제의 재확인이며
-새 과제 일반화 검증이 아니다. 결과는 아직 없고 원본 증거와 재실행을 구분한다.
+새 과제 일반화 검증이 아니다. 당시 계획의 완료 결과는 위 기록을 따른다.
 
 [Refresh-owner review](HOSTAGE-REFRESH-01-REVIEW.md), measured resources `864005b`:
 four completed sessions, observed sum reductions 10.61% tokens / 8.62% time,

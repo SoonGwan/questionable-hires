@@ -16,14 +16,19 @@ from replay_hostage_call_01 import inventory
 
 def replay(run):
     manifest = json.loads((run / 'run.json').read_text())
-    assert manifest['revision'].startswith('3c29443') and manifest['finished_at']
+    revisions = {
+        '3c2944362d41c7638a2d39938fb8a8fd92d55db7': {'a': 5, 'b': 8},
+        'b237aae19e3466b9a90d9cb38bd40e68d5ab926b': {'a': 7, 'b': 6},
+    }
+    assert manifest['revision'] in revisions and manifest['finished_at']
+    baseline_counts = revisions[manifest['revision']]
     frozen = subprocess.check_output(['git', 'show', manifest['revision'] + ':benchmarks/hostage-refresh-cases.json'])
     assert hashlib.sha256(frozen).hexdigest() == manifest['cases_sha256'] == '7b0bc8120865802a29dd97b6fedb9863bdbe19742ce68bb93307588b55a04c21'
     cases = {case['id']: case for case in json.loads(frozen)}
     # Same specified behavior with non-unit generation increments: tests must
     # inspect observable ownership, not prescribe an internal counter value.
     alternative = SOURCE.replace('self.generation += 1', 'self.generation += 2')
-    report = dict(kind='author controls, not original model evidence', cells=[], checks=[])
+    report = dict(kind='author controls, not original model evidence', revision=manifest['revision'], cells=[], checks=[])
     for cell in sorted(run.glob('*--*')):
         meta = json.loads((cell / 'metadata.json').read_text())
         events = [json.loads(line) for line in (cell / 'stdout.original.jsonl').read_text().splitlines()]
@@ -53,7 +58,8 @@ def replay(run):
                     def decode(value):
                         return value.decode(errors='replace') if isinstance(value, bytes) else value or ''
                     code, output, timeout = None, decode(error.stdout) + decode(error.stderr), True
-                count = 6 if variant == 'author_oracle_final' else (5 if cell.name == 'refresh-owner-a--baseline--1' else 8)
+                count = (6 if variant == 'author_oracle_final' else
+                         baseline_counts[meta['case'][-1]] if meta['arm'] == 'baseline' else 8)
                 expected = 1 if variant == 'broken_owner' else 0
                 counts = re.findall(r'Ran (\d+) tests? in ', output)
                 tests_unchanged = variant == 'author_oracle_final' or all((scratch / p).read_bytes() == (project / p).read_bytes() for p in before if p != 'preview.py')
