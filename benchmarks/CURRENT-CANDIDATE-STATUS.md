@@ -11,12 +11,19 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
-Newer **unmeasured candidate `07fa9e2`**: [discovery routing](DISCOVERY-ROUTING-01.md)
-updates Hostage Negotiator and Landlord to batch known reads and search remaining
-questions rather than repeat discovery. Required checks, instruction coverage,
-consumer boundaries and justified repeat tests remain. Two skill validators and
-repository validation pass; no model savings or behavioral adoption claim yet.
-The measurements below still belong to `20ec916`, not this newer instruction.
+Newer **candidate `07fa9e2`**: [discovery routing screen](DISCOVERY-ROUTING-01-REVIEW.md)
+retains all four attempts. Atomic baseline 83,380 tokens/49.277s versus skill
+89,568/87.526s (**+7.42%/+77.62%**, extra exception coverage). Store baseline
+65,155/83.303s completes; skill times out at 240.027s after a connection-reset
+event, with native checks but no final recommendation or terminal usage. No
+aggregate token ratio, retries or inferred cause. All raw/resources reconcile;
+four unchanged-test author replays match. No demonstrated efficiency improvement;
+the all-eight measurements below still belong to `20ec916`, not this candidate.
+
+한국어 후보 검증: 새 탐색 지침의 4개 시도 중 3개가 완료됐다. 파일 내보내기는
+스킬의 토큰·시간이 늘었고, Store 검토는 연결 오류 후 제한 시간에 도달해 최종
+답변·사용량이 없다. 네 가지 별도 재실행 검증은 통과했지만 성능 개선 증거는
+아니다. 실패를 제외하거나 누락된 토큰을 0으로 집계하지 않는다.
 
 Completed [all-eight checkpoint 06](BUNDLE-CONTRACT-06-REVIEW.md): all 18 cells,
 zero timeouts/exclusions. Baseline **713,178 tokens / 511.591s**, skill

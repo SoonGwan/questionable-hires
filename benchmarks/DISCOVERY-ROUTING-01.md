@@ -1,7 +1,9 @@
 # Discovery routing candidate — 2026-09-14
 
-Instruction resource `07fa9e2`; previous candidate `5e957ca`. This is an
-unmeasured instruction change, not a new model-performance result.
+Instruction resource `07fa9e2`; previous candidate `5e957ca`. The initial design
+rationale below preceded measurement. The subsequent [four-cell screen](DISCOVERY-ROUTING-01-REVIEW.md)
+is adverse/incomplete: atomic skill costs more, Store skill times out after a
+connection reset. It does not establish an efficiency improvement.
 
 Checkpoint 06 showed repeated file discovery/keyword inspection in Landlord and
 separate instruction discovery after known source reads in Hostage Negotiator.
@@ -20,7 +22,7 @@ Both skill-creator validators and the repository validator pass; localization
 and featured synchronization are checked. These verify packaging, not model
 adoption, maintained task success or reduced time/tokens. No runtime code changed.
 
-Next behavioral check should use the existing native Store review and nested
+The subsequent behavioral check uses the existing native Store review and nested
 atomic-export task, not only the tiny cases that motivated this change. Preserve
 their original inputs and compare fresh baseline/skill cells after native
 preflight. Inspect actual instruction coverage, concrete consumer bindings,

@@ -54,9 +54,10 @@ Production code stayed intact. The no-skill baseline also found this flaw. [Comp
 
 ## Hire one. Or make eight questionable decisions.
 
-Development candidate: [Landlord and Hostage discovery routing](benchmarks/DISCOVERY-ROUTING-01.md)
-now groups known reads and targets unresolved questions. Required verification
-remains; this instruction update has no measured speed/token benefit yet.
+Development candidate: [Landlord and Hostage discovery routing](benchmarks/DISCOVERY-ROUTING-01-REVIEW.md)
+targets repeated discovery while preserving required checks. Its two-task screen
+does not demonstrate savings: atomic skill costs more and Store skill times out
+after a connection error. All attempts and missing usage are retained.
 
 With Node.js/npm and Git, install one hire or the whole team:
 

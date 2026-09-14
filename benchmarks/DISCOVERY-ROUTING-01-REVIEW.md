@@ -1,9 +1,53 @@
-# Discovery routing 01 — review in progress
+# Discovery routing 01 — completed review, improvement unproven
 
 Launch `3cbcd3e`, skill resource `07fa9e2`; see the
-[frozen protocol](DISCOVERY-ROUTING-01-PROTOCOL.md). No aggregate claim until all
-four scheduled cells finish and original evidence is reconciled. No author test
-workloads or resource edits during model timing.
+[frozen protocol](DISCOVERY-ROUTING-01-PROTOCOL.md). No author test
+workloads or resource edits occurred during model timing. The per-cell notes below
+were recorded during execution; pending checks are resolved in this final section.
+
+## Final reconciliation — 2026-09-14
+
+All four scheduled attempts are retained: **three completed, one timed out**.
+Atomic baseline **83,380 tokens / 49.277s**, skill **89,568 / 87.526s**:
+**+7.42% tokens / +77.62% time**, with different exception coverage. Store baseline
+**65,155 / 83.303s**; skill **240.027s, unknown tokens**, no completed final answer.
+No aggregate token ratio: missing terminal usage is not zero. No exclusions or
+author retries, no inferred reconnect-cost subtraction, no favorable-result claim.
+
+All raw events and installed-resource hashes reconcile; complete cells' terminal
+usage matches metadata, and the incomplete cell has no terminal usage event.
+Both Store snapshots exactly match originals. Atomic snapshots change only the
+exporter and test file, with no additional files; AST comparison confirms original
+success/empty test methods unchanged. Four independent before/after replays use
+the retained tests without changes, reject the original implementation and pass
+the final implementation. Original projects remain unchanged.
+
+The atomic verbose-header concatenation reproduces in independent native replay
+for both arms. This supports a local runner formatting explanation rather than
+establishing lost capture; the initial diagnostic remains in metadata. Decisive
+before failures and after passes are captured. This finding does not repair or
+reclassify unrelated historical missing-output cases.
+
+The candidate has **not demonstrated efficiency improvement**. Hostage avoids
+repeat inventories but still incurs skill loading and additional exception checks.
+Landlord reads source with line numbers once but repeats inventories after its
+entrypoint; the intended routing is only partly adopted. Its connection failure
+prevents evaluating final delivery or token cost. Do not infer the wording caused
+the timeout, or manufacture a finished answer from intermediate evidence.
+
+Further work needs a stronger task-specific mechanism and broader realistic
+evidence, not more repeated advice or retries of this screen. Current skill files
+remain experimental; featured data and previous measurements are unchanged.
+
+## Store review — skill, incomplete
+
+Five completed shell calls establish actual driver/Store/service contracts, a
+direct-service bypass experiment and the native two-test local pass. No staging
+receipt or external service was used. Source reads are numbered in one batch,
+but three inventories recur without a clear new consumer question. The stream
+then reports `Reconnecting... 2/5` with connection-reset error and the cell reaches
+its 240s limit (exit −15). Only introductory commentary is in answer.md; no final
+recommendation or terminal usage. Author replay cannot complete this model task.
 
 The second, Store process launches at `a74f95c`: the intervening commit adds only
 the atomic baseline review. Skill resources and frozen task inputs are unchanged.
