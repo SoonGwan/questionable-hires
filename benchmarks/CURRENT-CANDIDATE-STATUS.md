@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Checkpoint 09 intake — 2026-09-14, launch `3a7d972`, review pending
 
+[Partial form review](BUNDLE-CONTRACT-09-FORM-REVIEW.md): ten native retained-test
+controls preserve originals. Both suites reject missing guard/cleanup, but baseline
+rejects a contract-valid duplicate returning False; skill accepts it. Skill's
+original native-test output remains missing despite later replay passes. This
+narrow artifact benefit does not establish an equal-work or general efficiency win.
+
+한국어: 폼 테스트 대조 10회를 끝냈다. 두 테스트 모두 결함을 잡았지만 기본
+테스트는 유효한 False 반환을 잘못 실패시켰고 스킬은 통과했다. 후속 통과로
+스킬 원본 출력 누락을 채우지는 않는다. 전체 과제 검토와 효율 판정은 남아 있다.
+
 [Collection/arithmetic](BUNDLE-CONTRACT-09-INTAKE.md), resources `9071a1c`:
 18/18 sessions ended, no timeouts; raw usage and installed resources reconcile.
 Baseline 760,865 tokens / 572.922s; skill 657,044 / 460.983s (−13.65% / −19.54%).
