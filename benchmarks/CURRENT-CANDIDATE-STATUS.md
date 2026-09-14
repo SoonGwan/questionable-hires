@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist conditional name selection — 2026-09-15, parent `2f68f14`
+
+[Static selector correction](CONTEXT-CONDITIONAL-NAMES-01.md): known names inside
+control flow can now be selected without evaluating branches. An unconditional
+definition plus a conditional same-name replacement is correctly ambiguous rather
+than silently selecting the former. Qualified parent scopes remain unambiguous;
+nested names do not leak. Three original assertion failures become passing checks;
+32 context tests including actual isolated CLI behavior pass. Optional helper and
+reference only, no entry expansion. Model adoption/cost effects remain unmeasured.
+
+한국어: 조건부 정의의 이름 선택과 동명 후보 모호성 처리를 수정했다. 수정 전
+단언 실패 3건, 수정 후 CLI 포함 관련 검사 32개 통과를 확인했다. 정적 수집기
+기능 개선이며 실행 바인딩이나 모델 성능 향상을 입증한 것은 아니다.
+
 ## Landlord optional-discovery candidate — 2026-09-15, parent `4a8bcc4`
 
 The direct screen below did not establish a benefit from requiring definition

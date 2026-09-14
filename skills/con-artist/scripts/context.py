@@ -102,6 +102,15 @@ def definition_index(body, source, prefix=''):
     return records
 
 
+def scope_definitions(body):
+    """Yield static definitions through control flow, but not nested scopes."""
+    for node in body:
+        if isinstance(node, DEFINITIONS):
+            yield node
+        else:
+            yield from scope_definitions(ast.iter_child_nodes(node))
+
+
 def describe(root, path, budget, symbol=None, index=False, auto_index=False, cache=None):
     # Invocation-local only: multiple excerpts must share the same source bytes.
     if cache is None:
@@ -127,7 +136,7 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
             else:
                 body = tree.body
                 for name in symbol.split('.'):
-                    matches = [n for n in body if isinstance(n, DEFINITIONS) and n.name == name]
+                    matches = [n for n in scope_definitions(body) if n.name == name]
                     if len(matches) != 1:
                         raise ValueError('Missing or ambiguous definition: ' + str(path) + ':' + symbol)
                     node = matches[0]

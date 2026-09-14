@@ -191,6 +191,26 @@ class AuditContextTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Missing or ambiguous definition'):
             context.collect(self.root, ['scope.py:inner'])
 
+    def test_conditional_selector_cli_preserves_success_and_refuses_ambiguity(self):
+        for source, expected_exit in (
+            ('if FLAG:\n    def selected():\n        return 7\n', 0),
+            ('def selected(): pass\nif FLAG:\n    def selected(): pass\n', 2),
+        ):
+            with self.subTest(expected_exit=expected_exit):
+                self.put('cli_branch.py', source)
+                process = subprocess.run(
+                    [sys.executable, '-I', '-B', str(SCRIPT), '--root', str(self.root),
+                     'cli_branch.py:selected'], capture_output=True, text=True, timeout=5)
+                self.assertEqual(process.returncode, expected_exit, process.stderr)
+                if expected_exit == 0:
+                    record = json.loads(process.stdout)['selected'][0]
+                    self.assertEqual(record['source'], '2:     def selected():\n3:         return 7')
+                    self.assertEqual(process.stderr, '')
+                else:
+                    self.assertEqual(process.stdout, '')
+                    self.assertEqual(json.loads(process.stderr)['status'], 'incomplete')
+                self.assertEqual((self.root / 'cli_branch.py').read_text(), source)
+
     def test_invalid_or_module_lines_fail_without_partial_cli_context(self):
         for suffix in ('0', '-1', '01', '9999999', '999', '1', '2'):
             with self.subTest(suffix=suffix), self.assertRaises(ValueError):

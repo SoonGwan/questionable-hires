@@ -29,6 +29,13 @@ for that context. `--full` does not override explicit line selection.
 When the requested
 definition is known, select it directly (`service.py:Store.save`) rather than the
 whole implementation file. It includes decorators and original line numbers.
+Named selection follows static definitions through control-flow blocks without
+evaluating conditions, and respects class/function scopes. Multiple definitions
+at any selected scope are ambiguous, including an unconditional definition plus
+a conditional replacement; use an explicit line or inspect the enclosing source.
+A unique static definition does not prove that its branch executes or that a later
+assignment/decorator preserves its runtime binding. Index coverage is unchanged;
+conditional class-body definitions may require surrounding source inspection.
 Line numbers follow Python physical lines (LF, CRLF or CR). Unicode separators
 and control characters inside literals do not create extra source lines. Excerpts
 use LF between numbered lines; hashes still identify the original file bytes.
