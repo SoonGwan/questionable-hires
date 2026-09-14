@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Friday consumer selection — 2026-09-15, parent `761a4b8`
 
+[Discovery screen 02](FRIDAY-ACTIVE-02-REVIEW.md), launch `8e66077`, resources
+`636935e`: both skill sessions use three commands with grouped reads and retain
+correct active-reader/rollback evidence. Historical skill sums fall 12.15% tokens
+and 8.80% time; B tokens increase by 68. Candidate remains 6.37% more tokens and
+1.73% more time than the historical baseline. No fresh baseline/held-out tasks;
+no causal or broad gain. Initial discovery precedes entry reading. Keep the small
+candidate provisionally and move beyond the repeatedly exposed pair.
+
+한국어: 두 새 세션의 명령이 각각 3번으로 줄고 기존 증거도 유지됐다. 이전 스킬
+대비 비용 감소는 관측됐지만 오류 과제 토큰은 소폭 증가했고, 과거 기준보다도
+여전히 비싸다. 신규 기준군·새 과제가 없어 일반 성능 개선은 미입증이다.
+
 [Discovery candidate 02](FRIDAY-DISCOVERY-02.md), parent `a1700a3`, adds a
 focused grouped-read/missing-path instruction after repeated inventory was
 observed. The documented command preserves hidden project instructions while

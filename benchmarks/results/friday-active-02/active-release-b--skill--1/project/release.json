@@ -1,0 +1,50 @@
+{
+  "phases": [
+    {
+      "name": "initial",
+      "files": [
+        "schema.sql"
+      ],
+      "sql": "",
+      "readers": [
+        "old_reader.py"
+      ]
+    },
+    {
+      "name": "up after old drained",
+      "files": [
+        "up.sql"
+      ],
+      "sql": "",
+      "readers": [
+        "new_reader.py"
+      ]
+    },
+    {
+      "name": "new writes",
+      "files": [],
+      "sql": "UPDATE people SET label='새 이름' WHERE id=1; INSERT INTO people VALUES(3,'inserted');",
+      "readers": [
+        "new_reader.py"
+      ]
+    },
+    {
+      "name": "rollback starts",
+      "files": [],
+      "sql": "",
+      "readers": [
+        "old_reader.py"
+      ]
+    },
+    {
+      "name": "rollback finishes",
+      "files": [
+        "down.sql"
+      ],
+      "sql": "",
+      "readers": [
+        "old_reader.py"
+      ]
+    }
+  ]
+}
