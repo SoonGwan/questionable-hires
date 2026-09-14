@@ -11,16 +11,23 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
-New unmeasured runtime change: [Friday phase defaults](FRIDAY-PHASE-DEFAULTS-01.md)
+Runtime `e3bc342`: [Friday phase defaults](FRIDAY-PHASE-DEFAULTS-01.md)
 allows omitted empty `files`/`sql`, correcting the observed API preparation
 failure without relaxing unknown-key/type/path/budget checks. Native regression
 fails on the preceding runtime and passes after the patch; 40 Friday tests pass.
 Full local suite: 444 tests pass in 71.433s, no failures/skips.
-No model-cost benefit has been measured for this patch.
+[Fresh model screen](FRIDAY-PHASE-DEFAULTS-MODEL-01-REVIEW.md), launch `90d703a`,
+confirms first-call adoption of omitted `sql` with no preparation repair. Baseline
+66,514 tokens/68.346s versus skill 111,170/70.479s (**+67.14% / +3.12%**).
+The skill then duplicates SQLite execution for native comparisons. Both outcomes
+are supported; unequal work and n=1 prevent efficiency acceptance. All raw usage,
+resources and original snapshots reconcile. No exclusions or featured changes.
 
 한국어: 파일 또는 SQL만 실행할 때 빈 항목을 생략할 수 있게 수정했다.
 이전 버전의 오류 재현과 수정 후 실행은 검증했으며 잘못된 입력 검사는
-유지했다. 모델의 재실행·토큰·시간 감소는 아직 재측정하지 않았다.
+유지했다. 새 세션에서도 빈 항목 생략은 첫 실행에 성공했지만, 별도의
+바이트 비교를 위해 SQLite를 다시 실행했다. 전체 토큰 67.14%, 시간 3.12%
+증가로 효율 향상은 아니며, 중복 실행을 다음 개선 대상으로 확인했다.
 
 Instruction candidate `1c483b9`: [Friday interface split](FRIDAY-INTERFACE-01.md)
 keeps CLI contracts/limits in the core guide and routes API/BLOB/byte-accounting

@@ -145,7 +145,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 - **레거시 고고학자(`necromancer`):** 선택한 코드 줄의 현재 상태와 Git 이력을 모으고, 미커밋 변경·얕은 이력의 한계를 표시합니다. [사용법과 한계](skills/necromancer/references/focused-history.md). 과거 코드를 지금도 유지해야 하는지는 별도로 판단합니다.
   [세 가지 판단을 요구한 개발 실험](benchmarks/results/necromancer-regions-01/README.md)에서 두 방식 모두 판단을 맞혔고, 스킬은 토큰 15.85%·시간 18.56% 감소를 기록했습니다. 추가 검증량 차이와 이미 노출된 단일 과제 때문에 일반화할 수 없으며, 선택형 이력 수집 도구는 사용하지 않았습니다.
 - **배포 생존 담당(`friday`):** 메모리 SQLite에서 마이그레이션·롤백 단계별 읽기 쿼리 검사를 재사용합니다. [사용법과 한계](skills/friday/references/sqlite-matrix.md). 쿼리 성공이 배포 준비 완료를 뜻하지 않으며, 다른 DB 엔진의 동작은 별도로 확인해야 합니다.
-  [빈 단계 항목 생략 지원](benchmarks/FRIDAY-PHASE-DEFAULTS-01.md)으로 재현된 API 입력 오류를 없애고 검증 조건은 유지했습니다. 로컬 테스트는 통과했지만 모델 비용 영향은 아직 측정하지 않았습니다.
+  [빈 단계 항목 생략 지원](benchmarks/FRIDAY-PHASE-DEFAULTS-01.md)으로 재현된 API 입력 오류를 없애고 검증 조건은 유지했습니다. [새 단일 과제 실험](benchmarks/FRIDAY-PHASE-DEFAULTS-MODEL-01-REVIEW.md)에서도 첫 실행에 성공했지만 SQL 중복 실행과 함께 토큰 67.14%, 시간 3.12% 증가를 기록했습니다. 사용성 오류 수정이며 효율 향상의 증거는 아닙니다.
   이후 [두 과제 인터페이스 실험](benchmarks/FRIDAY-INTERFACE-MODEL-01-REVIEW.md)은 API 오류 수정·재실행을 포함해 전체 토큰 68.56%, 시간 8.41% 증가를 기록했습니다. 필요한 문서만 읽는 동작은 확인했지만 효율 개선은 아니며, 모든 시도를 보존했습니다.
   [고정 쿼리 선언 참조](benchmarks/FRIDAY-LITERAL-READERS-01.md)는 Python 파일을 실행하거나 별도 추출 코드를 작성하지 않고 쿼리를 읽습니다. 동적 모듈은 거부하며, 파일·해시·줄 번호가 실제 실행 경로까지 증명하지는 않습니다. [단일 과제 실험](benchmarks/FRIDAY-LITERAL-MODEL-01-REVIEW.md)에서 실제 사용을 확인했고 토큰은 10.07% 증가, 시간은 24.73% 감소했습니다. 추가 검증량이 달라 일반적 절감 효과로 주장하지 않습니다.
 - **수정 검증관(`receipt`):** 현재 테스트와 지원 파일을 고정해 커밋된 수정 또는 미커밋 Python 수정을 비교합니다. 일반적인 `src/` 패키지도 설치 없이 지원하며 해시·각각의 출력·버전 식별 정보를 남깁니다. [사용법과 한계](skills/receipt/references/existing-fix.md). [소스 구조 모델 검사](benchmarks/results/receipt-src-model-01/README.md)에서는 도구가 실제 사용되고 기록상 비용도 줄었지만, 작업량 차이·출력 일부 누락·단일 과제라는 한계가 있어 전반적인 효율 개선은 아직 미입증입니다.

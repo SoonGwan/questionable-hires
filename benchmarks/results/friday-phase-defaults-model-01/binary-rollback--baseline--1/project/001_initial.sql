@@ -1,0 +1,2 @@
+CREATE TABLE artifacts (id INTEGER PRIMARY KEY, payload BLOB NOT NULL);
+INSERT INTO artifacts VALUES (1, X'00FF80'), (2, X'01FE'), (3, X'');
