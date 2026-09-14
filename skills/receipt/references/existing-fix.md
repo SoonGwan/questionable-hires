@@ -1,25 +1,22 @@
 # Receipt for an existing fix
 
-Reuse valid evidence; otherwise compare implementations in isolated copies with
-**the same current regression assertions/inputs**, comparable configuration and
-dependencies. Identify loaded revisions. Old-interface/setup failures are not
-reproduction: disclose incompatibility, not a substituted check. Entrypoint scope,
-runtime, exit-status and stopping rules apply; do not install missing dependencies.
-Retrospective comparison cannot satisfy a request to run failure before editing.
+Compare isolated implementations with **the same current assertions/inputs** and
+comparable dependencies/configuration; reuse valid evidence. Identify loaded
+revisions. Setup/old-interface failures are not defect reproduction. Preserve
+entrypoint scope and stopping rules; do not install dependencies. Retrospective
+comparison does not satisfy a requirement to observe failure before editing.
 
-Follow located tests' imports/inputs to select necessary support/configuration;
-list only unresolved paths, not the whole repository again. Known support
-directories can be selected directly; selection size does not prove completeness.
+Select support/configuration from actual test imports/inputs. List unresolved
+paths only; select known directories directly. Selection size is not completeness.
 
 ## Execute the comparison
 
-For supported local Python layouts, prefer the helper over rewriting copy setup,
-same-process import checks, execution and cleanup. Invoke it without reading its
-source unless adapting/diagnosing it. Use native isolation for unsupported runtimes,
-added/deleted implementation layouts or retained-copy requirements.
+For supported Python layouts, use the helper's copying, same-process import
+checks and cleanup; inspect source only for adaptation/diagnosis. Use native
+isolation for unsupported runtimes, added/deleted implementations or retained copies.
 
-Choose **one** example and adapt paths, tests and revisions. Neither writes a
-recipe, commits, stashes or reverses user patches; HEAD/HEAD^ are examples only.
+Adapt **one** example's paths/tests/revisions; HEAD/HEAD^ are placeholders.
+Neither writes a recipe, commits, stashes nor reverses user patches.
 
 Committed fix:
 
@@ -37,19 +34,18 @@ python3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'
 JSON
 ```
 
-- `fixed`: current tests/data/config/local dependencies, files or directories
-  (including hidden leaves). Frozen once and shared across copies; `fixed_sha256`
-  identifies leaves. Select only required, permitted inputs.
+- `fixed`: required, permitted current tests/data/config/dependencies, files or
+  directories including hidden leaves. Frozen once for both copies; leaf hashes
+  appear in `fixed_sha256`.
 - `vary`: implementation files, required in both variants. `before`/string `after`
   resolve and report full commit IDs; no separate revision lookup is needed.
   Working-tree `after` freezes current bytes/modes, **not staged content**;
   `revisions.after=null`, `working_tree_after` hashes/modes identify selected files,
   not a commit or whole-repository snapshot.
-- Optional `watch`, e.g. `"watch":["notes.txt"]`: existing files/directories to
-  check but **not copy/execute**. `originals` reports all selected hashes/modes and
-  unchanged status; `comparison_copies_removed` reports owned-copy cleanup.
-  Reuse these checks rather than wrapping duplicates. New files, Git status or
-  whole-repository integrity still require separate checks when requested.
+- Optional `"watch":["notes.txt"]`: existing files/directories checked, **not
+  copied/executed**. `originals` gives selected hashes/modes/unchanged status;
+  `comparison_copies_removed` gives cleanup. Reuse those checks; new entries,
+  Git status and whole-repository integrity need separate checks when requested.
 - Selections must be canonical project-relative, unique and disjoint after
   expansion; no root, Git internals, symlinks, empty directories or overlap.
   `fixed`/`vary` must be nonempty. Directory traversal: at most 10,000 entries.
@@ -66,8 +62,7 @@ JSON
 
 ## Read the evidence, not just the exit code
 
-JSON is compact by default; `--pretty` restores indentation for human reading.
-Both retain identical fields and verbatim captured test-output strings.
+JSON is compact; `--pretty` adds indentation without changing fields or captured output.
 
 CLI 0 means observations collected, **not proof**. Inspect each actual assertion,
 requested test identity, before failure/after pass, copied-import evidence,
@@ -80,10 +75,9 @@ returns 2. A runner independently exiting 7 is conservatively incomplete too.
 This catches ordinary Python import exceptions, not `os._exit`, later runner
 early exits or adversarial execution. Inspect actual test evidence regardless.
 
-Python 3.9+/POSIX; trusted tests only, **not a sandbox**. Copies are project-local
-and removed; changed selected originals abort without restoration. Watch covers
-existing leaves, not new directory entries or arbitrary side effects. Explicit
-test paths/subprocesses can escape defaults; concurrent snapshots are not atomic.
+Python 3.9+/POSIX, trusted tests only: **not a sandbox**. Project-local copies are
+removed; changed selected originals abort without restoration. Watch excludes new
+entries/arbitrary effects. Test paths/subprocesses can escape; snapshots aren't atomic.
 
 Limits: shared 20 MB snapshot budget, 30 seconds/check (`--timeout` up to 300),
 last 12,000 output characters. Known overflow rejects before reading; reads stop

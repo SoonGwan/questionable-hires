@@ -11,6 +11,15 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [single-guide candidate](RECEIPT-GUIDE-COMPACT-01.md), previous source
+`94392cc`: guide 6,215 → 5,713 bytes (−8.08%), no new resource or runtime change.
+A split was rejected because demonstrated source-layout use would read more.
+Actual committed/uncommitted examples pass; model cost effects remain unmeasured.
+
+한국어: Receipt 안내를 한 문서로 유지하면서 8.08% 압축했다. `src/` 작업에서
+읽을 양이 늘어나는 분리안은 폐기했다. 실제 커밋·미커밋 비교 예제는 통과했고,
+실행 코드·기능·파일 수는 그대로다. 모델 토큰·시간 효과는 아직 측정하지 않았다.
+
 Whole-bundle [local regression](../docs/INSTALLATION-TEST.md#whole-bundle-regression--2026-09-14-source-a636475),
 source `a636475`: 518 tests / 76.826s, no failures/skips. All-eight source/copy/
 package inventory and installed behavioral controls pass after recent changes.
