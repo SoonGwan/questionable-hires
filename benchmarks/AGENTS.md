@@ -1,5 +1,10 @@
 # Benchmark authoring and evidence
 
+- Treat context-control arguments as requests, not verified removal. For claims
+  about skill exposure or instruction timing, inspect matching recorded initial
+  messages when available: a later file read may repeat an already-injected body.
+  Catalog mentions alone do not prove executable availability. Keep unavailable
+  evidence unknown and never publish private instruction text as benchmark data.
 - Before freezing a new QA fixture, exercise the supplied test support through
   both a passing check and a deliberate failing assertion. Verify that failure
   output preserves the relevant actual/expected values, rather than reporting a

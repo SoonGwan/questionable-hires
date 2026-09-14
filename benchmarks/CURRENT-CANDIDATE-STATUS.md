@@ -9,6 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Recorded initial context audit — 2026-09-15, parent `dbbbba0`
+
+[Six-session post-run audit](CONTEXT-EXPOSURE-01.md) verifies exact frozen skill
+bodies already injected before the first tool in both conditions of view-contract-01
+and sqlite-debit-01/02. A later file read was not first exposure, so entry guidance
+could in principle affect first-call choices; its actual benefit remains unmeasured.
+Historical `disabled_personal_skills: 9` counted requested paths, not verified
+removal: all six catalogs also show six non-target entries. Catalog presence alone
+does not establish executable availability. New metadata separates disable requests
+from unverified enforcement. Raw identities/hashes are retained without private
+instruction text; no new model calls, changed charts or retrospective cell filtering.
+
+한국어: 여섯 원본 세션에서 첫 호출 전 스킬 본문 주입을 확인했다. 파일을 다시
+읽은 시점과 최초 노출을 구분하고, 비활성화 요청 수를 검증된 제거 수처럼 쓰던
+메타데이터를 수정했다. 실행 가능 여부나 성능 효과는 별개이며 기존 결과는 보존한다.
+
 ## Friday view-contract screen — 2026-09-15, launch `e1324fc`
 
 [Original execution review](results/view-contract-01/README.md): original

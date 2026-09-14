@@ -5,7 +5,7 @@ The historical [Exorcist transfer comparison — 27 sessions, all conditions 9/9
 
 Latest frozen confirmation: [Mother-in-law across five new interaction tickets](results/mother-in-law-confirmation-2026-09-12/README.md)
 
-Latest narrow development experiment: [Recovery QA with retained execution evidence](results/mother-recovery-02/README.md)
+Historical development checkpoint — mother-recovery-02: [Recovery QA with retained execution evidence](results/mother-recovery-02/README.md)
 — 2 authored cases × 2 arms × 2 repeats; required outcomes 4/4 per arm,
 skill −17.2% tokens / −67.0% process time. Baseline performs additional checks;
 this does not replace the frozen confirmation or establish broad savings.
@@ -23,7 +23,7 @@ This suite runs actual Codex sessions in fresh synthetic Git repositories. The m
 - **control:** the same task plus “Keep the change focused, investigate relevant evidence, and verify your conclusions with appropriate checks.”
 - **skill:** the same task with exactly its corresponding Questionable Hires skill installed and explicitly invoked.
 
-All arms use the same model, reasoning effort, tool sandbox, starting files, and history. Every cell gets a new process, repository, and conversation. The runner ignores user configuration and disables personal skill files it discovers. Runtime system instructions still apply. Inspect traces for unexpected skills or tools before accepting a run; this setup does not claim to erase the host's built-in knowledge.
+All arms use the same model, reasoning effort, tool sandbox, starting files, and history. Every cell gets a new process, repository, and conversation. The runner requests ignored user configuration and disables for discovered personal paths; those arguments do not prove absent provider catalogs or injected context. Runtime system instructions still apply. Inspect recorded initial messages and tool use before accepting isolation claims; this setup does not claim to erase the host's built-in knowledge. See [the six-session context audit](CONTEXT-EXPOSURE-01.md).
 
 ## Reproduce
 
@@ -41,7 +41,7 @@ python3 benchmarks/run.py --output benchmarks/local-runs/full --repeats 3 --jobs
 
 The default is one repetition, three arms, medium reasoning, and a 240-second per-cell timeout. Use `--case`, `--arms`, `--timeout`, and `--effort` to narrow a run. Output directories must be new; an existing experiment is never overwritten.
 
-For a separately preregistered task set, pass `--cases-file path/to/cases.json` (the same schema as `cases.json`). For version comparisons, `--skills-root path/to/frozen/skills` evaluates a separate skill snapshot without replacing working or installed skills. The manifest records the task-file digest and skill entrypoint digests; each skill cell also records the entrypoint actually copied. Snapshot digests cover `SKILL.md`, not supporting resources. Use distinct output directories, keep model/effort/tasks fixed, and interleave version runs in a predeclared order to reduce time-of-run confounding. These options do not themselves implement a paired-version experiment or prove behavioral improvement.
+For a separately preregistered task set, pass `--cases-file path/to/cases.json` (the same schema as `cases.json`). For version comparisons, `--skills-root path/to/frozen/skills` evaluates a separate skill snapshot without replacing working or installed skills. Current cells record the copied entry digest plus supporting-resource digests/manifests before and after execution; older artifacts may contain only entry evidence, so inspect their actual fields. Use distinct output directories, keep model/effort/tasks fixed, and interleave version runs in a predeclared order to reduce time-of-run confounding. These options do not themselves implement a paired-version experiment or prove behavioral improvement.
 
 For automatic selection with all eight skills installed, use `--arms auto`. This supplies the task without explicitly naming a skill; inspect command traces to see which files the model actually loads. Use `--suite clean --arms skill` for the additional clean and limiting cases. Actual recorded results are in [the report](REPORT.md).
 
@@ -56,6 +56,16 @@ Review against each case's criteria in `cases.json`, which is never copied into 
 Raw logs stay in ignored `local-runs/`. Before promoting evidence into `results/` or `examples/`, inspect it for private paths, credentials, and unrelated data. The runner replaces its workspace and home prefix in text logs, but that is not a complete secrets scanner.
 
 ### Missing command-output evidence
+
+For a persisted session, `inspect_skill_context.py --rollout <matching-local-session>
+--events <cell/events.jsonl> --entry <frozen-skill/SKILL.md> --output <new-summary.json>`
+checks exact entry injection before the first recorded tool call and lists initial
+catalog names without exporting private instructions. A later file read need not
+be the first exposure to that skill. Absence from these recorded messages is not
+proof about unrecorded context. New metadata uses `personal_skill_disable_requests`
+and an explicitly unverified status; historical `disabled_personal_skills` counted
+requested paths, not verified removals. Do not rewrite frozen metadata as though
+initial context had been checked at launch.
 
 A completed command event can contain only part of its output. Nonempty
 `aggregated_output`, an exit code of zero, and clear capture diagnostics do not
