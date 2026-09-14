@@ -9,6 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Archive context corrections — 2026-09-15, source `6e99847`
+
+[History ownership and native hook fixtures](ARCHIVE-CONTEXT-02.md) address the
+prior nine-entry failure. Pinned exporters reject parent Git history; true
+source archives explicitly skip only three unavailable history comparisons and
+still run archived behavior/schedule checks. Active-hook tests use an owned
+temporary runtime when user site is disabled, without altering the user's venv.
+Native disabled-hook behavior is independently checked, not skipped. Seventeen
+focused hook tests pass in both system and isolated-venv Python; history checks
+pass in checkout and behave correctly in a fresh nested archive. Full corrected
+archive verification is still pending; no model/featured claim.
+
+한국어: 상위 Git 이력 오인과 사용자 site 활성화에 대한 검사 가정을 수정했다.
+실제 훅 검사와 비활성 환경 검사를 유지한 채 두 Python 환경에서 관련 17개가
+각각 통과했다. 수정된 압축본 전체 검증은 아직 진행 중이며 성능 수치는 아니다.
+
 ## Pytest replacements and archive repair — 2026-09-15, source `df799cf`
 
 [Native pytest/distribution check](PYTEST-REPLACEMENT-01.md): actual autouse and
