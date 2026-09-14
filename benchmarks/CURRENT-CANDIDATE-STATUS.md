@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Landlord large-file selection candidate — 2026-09-15, parent `3ef72f6`
+
+The header screen below shows a 43,865-character source batch, output truncation
+and recovery reads despite fewer commands. The entry now selects relevant symbol/
+consumer regions within large files before batching, retains enclosing/full-file
+context when needed, and explicitly recovers missing decisive evidence. Consumer
+coverage expansion and all execution/scope obligations remain unchanged. No new
+helper, fixed line cap or ban on necessary rereading. Model adoption and cost
+effects are unmeasured; do not attach the prior screen's numbers to this candidate.
+
+한국어: 큰 파일 일괄 읽기의 실제 잘림에 근거해 관련 정의·소비자 구간을 먼저
+고르도록 수정했다. 필요한 전체 맥락·누락 복구·소비자 조사와 검증은 유지한다.
+새 지침의 행동·비용 효과는 아직 미검증이며 이전 수치를 재사용하지 않는다.
+
 ## Landlord header design screen — 2026-09-15, launch `5c6e1a0`
 
 [Real-header review](results/httpx-headers-design-01/README.md), resource `bd1d8b8`:
