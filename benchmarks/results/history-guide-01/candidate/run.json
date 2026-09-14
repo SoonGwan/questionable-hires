@@ -1,0 +1,24 @@
+{
+  "revision": "9ccd466c499f222c2b35874528f9da0ceabc390c",
+  "started_at": "2026-09-14T23:14:40.033382+00:00",
+  "schedule": [
+    "original",
+    "candidate"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 360,
+  "session_persistence_requested": true,
+  "source_revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "case": {
+    "id": "auth-history",
+    "skill": "necromancer",
+    "task": "Review the proposal to remove URL-userinfo authentication fallback from\nBaseClient._build_request_auth: delete the username/password assignment and its\nfollowing if block, leaving the explicit/client authentication selection and\nfinal return Auth() unchanged. Is this a behavior-preserving removal of obsolete\ncompatibility code? Establish current necessity and locally evidenced history.\n\nCompare current and proposed behavior through an actual Client with MockTransport\nand trust_env=False. Record the outgoing Authorization header for each of these\nfive cases, using only these synthetic credentials:\n(1) https://url-user:url-pass@example.invalid/path, no client/request auth;\n(2) that URL with client auth=(\"client-user\", \"client-pass\"), request auth omitted;\n(3) that URL/client with request auth=(\"request-user\", \"request-pass\");\n(4) that URL/client with request auth=None explicitly;\n(5) https://example.invalid/path with that client auth and request auth=None.\nExplain the differences between omitted auth and explicit None; do not infer\nserver-side acceptance from locally observed headers. Do not use real credentials.\n\nInspect the relevant local history and an earlier implementation. Distinguish\ncode movement/line attribution from behavioral introduction, and support any\nclaimed earlier presence with actual ancestor code. First-ever origin or intent\nis not required and must not be invented. Use only ancestors of pinned HEAD,\nnot later branch tips or external issue pages. Recommend retain, simplify or\nremove based on the supported behavior you observed, with current and historical\nevidence. This is a compatibility review, not an authorization to change policy.\n\nPreserve original project files and installed resources. No network, dependency\ninstalls, fetching, commits or publishing. In-memory substitutions or owned\ndisposable copies are permitted; do not force a particular technique. Use\n<PREINSTALLED_PYTHON> with -B; pytest additionally with -p no:cacheprovider. Any\nscratch must stay inside the project and be removed before finishing. Captured\noutput is sufficient; do not create a separate report/harness unless needed."
+  },
+  "protocol_sha256": "62b5167547fcd2f98bdef53d87a9468688ade3d85dc400889f5336182156e421",
+  "condition": "candidate",
+  "skill_revision": "3a04643",
+  "skill_resources_sha256": "757014600e480b4e612bd50231f0a73b0c586ec328af07470fa04f75548a7533"
+}

@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## History guide model screen — 2026-09-15, launch `9ccd466`
+
+[Real-HTTPX reused-task comparison](results/history-guide-01/README.md): original
+`28caeb8` versus candidate `3a04643`, n=1 each, original first. Both complete the
+required ten header observations and ancestor review; all 125 source files and
+resources remain unchanged. Candidate **+35.21% tokens / +8.06% time**. Neither
+reads the changed guide: no attributable disclosure effect, no accepted gain.
+Both initial AST-format assertions fail before repaired successful probes; partial
+capture truncation remains disclosed. No retries, new skill edit or chart change.
+
+한국어: 실제 HTTPX를 이용한 기존 과제에서 수정본 비용이 증가했다. 수정된
+안내는 양쪽 모두 읽지 않아 성능 효과가 입증되지 않았다. 필수 관측은 확인했고
+실패·잘림도 보존한다. 이 과제를 다시 돌려 좋은 수치만 얻으려 하지는 않는다.
+
 ## Necromancer guide disclosure — 2026-09-15, parent `28caeb8`
 
 The [routine history interface](../skills/necromancer/references/focused-history.md)
