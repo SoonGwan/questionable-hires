@@ -1,0 +1,20 @@
+[
+  {
+    "id": "sqlite-commit-audit",
+    "skill": "con-artist",
+    "task": "Audit whether the existing receipt tests detect a lost commit in this upload\npath. Inspect the actual test, endpoint binding and ledger implementation. Execute\nthe existing native tests on correct code and an isolated reachable fault omitting\nthe ledger commit (keep acknowledgment and connection closing unchanged). Verify\nthe actual test's imported endpoint and that endpoint's writer binding in the same\nprocess as the checks, not just in a separate import-only process.\nIf the tests survive, execute the same stronger native assertion on both versions:\nread through a new SQLite connection after the actual upload call and compare the\ncomplete ordered rows, retaining the pre-existing row and exact new binary payload.\nShow correct code passing and the faulty code failing for missing committed data,\nnot setup/import failures. Preserve originals and remove owned disposable copies.\nCaptured commands/results are sufficient; no permanent harness/report is required.\nWork only inside this project: no services, dependencies, other skills, delegation,\npublishing or production repair.",
+    "files": {
+      "ingest/__init__.py": "",
+      "ingest/ledger.py": "import sqlite3\n\n\ndef write_event(database, event_id, payload):\n    connection = sqlite3.connect(database)\n    try:\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\n                           (event_id, payload))\n        connection.commit()\n    finally:\n        connection.close()\n    return {'accepted': event_id}\n",
+      "ingest/endpoint.py": "from ingest.ledger import write_event as _record\n\n\ndef handle_upload(database, event_id, payload):\n    return _record(database, event_id, payload)\n",
+      "test_receipts.py": "import sqlite3\nimport tempfile\nfrom pathlib import Path\nimport unittest\nfrom ingest.endpoint import handle_upload as accept\n\n\nclass LedgerFixture(unittest.TestCase):\n    def setUp(self):\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-',\n                                                  dir=Path(__file__).resolve().parent)\n        self.addCleanup(self.scratch.cleanup)\n        self.database = Path(self.scratch.name) / 'events.sqlite'\n        connection = sqlite3.connect(self.database)\n        try:\n            connection.execute('CREATE TABLE events (id INTEGER PRIMARY KEY, payload BLOB NOT NULL)')\n            connection.execute('INSERT INTO events VALUES (?, ?)', (10, b'previous'))\n            connection.commit()\n        finally:\n            connection.close()\n\n\nclass ReceiptTests(LedgerFixture):\n    def test_acknowledges_binary_upload(self):\n        self.assertEqual(accept(self.database, 20, b'\\x00\\xffnew'), {'accepted': 20})\n\n    def test_acknowledges_empty_upload(self):\n        self.assertEqual(accept(self.database, 30, b''), {'accepted': 30})\n",
+      "requirements.md": "Python 3.9+ standard library; python3 -B -m unittest -v test_receipts.\nSuccessful handle_upload must preserve the integer ID and exact bytes payload in\nthe disk SQLite database, visible from a newly opened connection after it returns.\nPreviously committed events must survive. The acknowledgment is not durability proof.\nIDs are distinct positive integers and payloads are bytes, including empty/binary bytes.\nNo networking or concurrent writers are in scope. Existing production/test files are\nimmutable for this audit. Use disposable project-local copies, clean owned scratch,\nand preserve all original bytes/modes. Do not install packages or change warnings.\n"
+    },
+    "criteria": [
+      "Actual source inspection and same-process test-to-endpoint-to-ledger binding evidence.",
+      "Correct and missing-commit native tests execute; syntax/setup failures are not sensitivity.",
+      "Same stronger native row assertion passes correct code and rejects lost binary row through a fresh connection.",
+      "Pre-existing row and originals preserved; owned project-local scratch removed."
+    ]
+  }
+]
