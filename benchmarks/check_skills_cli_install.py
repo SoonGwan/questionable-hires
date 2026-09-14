@@ -22,6 +22,53 @@ def inventory(root):
     return result
 
 
+def exercise_recent_helpers(installed, project, run):
+    """Use installed CLIs, not imports from the source checkout."""
+    selector = installed / 'necromancer/scripts/python_regions.py'
+    source = 'raise RuntimeError("source must not execute")\nclass Service:\n    def value(self):\n        return 42\n'
+    selected = json.loads(run([sys.executable, '-I', '-B', str(selector), '--name', 'Service.value'], input=source))
+    assert selected['complete'] and len(selected['regions']) == 1
+    assert selected['regions'][0]['text'] == '    def value(self):\n        return 42\n'
+    missing = json.loads(run([sys.executable, '-I', '-B', str(selector), '--name', 'missing'],
+                             input=source, expected_exit=1))
+    assert not missing['complete'] and missing['missing_names'] == ['missing']
+    with tempfile.TemporaryDirectory(prefix='receipt-native-', dir=project) as folder:
+        root = Path(folder)
+        def git(*args):
+            return run(['git', '-C', str(root), '-c', 'user.name=Fixture',
+                        '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgSign=false',
+                        '-c', 'core.hooksPath=/dev/null', *args])
+        git('init', '-q')
+        (root / 'rule.py').write_text('def eligible(age): return age > 18\n')
+        (root / 'test_rule.py').write_text('import unittest\nfrom rule import eligible\n'
+            'class Boundary(unittest.TestCase):\n'
+            '    def test_inclusive_age(self): self.assertTrue(eligible(18))\n')
+        git('add', 'rule.py', 'test_rule.py')
+        git('commit', '-qm', 'before')
+        (root / 'rule.py').write_text('def eligible(age): return age >= 18\n')
+        git('add', 'rule.py')
+        git('commit', '-qm', 'after')
+        original = inventory(root)
+        recipe = dict(fixed=['test_rule.py'], vary=['rule.py'], before='HEAD^', after='HEAD',
+                      imports=['rule', 'test_rule'], runner='unittest', tests=['-v', 'test_rule'],
+                      invocation='module', guard_tree=True)
+        observed = json.loads(run([sys.executable, '-I', '-B',
+                                   str(installed / 'receipt/scripts/compare.py'),
+                                   '--source', str(root), '--spec', '-'], input=json.dumps(recipe)))
+        assert set(observed['checks']) == {'before', 'after'}
+        for phase, expected in [('before', 1), ('after', 0)]:
+            check = observed['checks'][phase]
+            assert check['exit_code'] == check['native_exit_code'] == expected, check
+            assert check['provenance_ready'] and not check['timed_out'] and not check['output_truncated']
+            assert 'test_inclusive_age' in check['output'] and 'Ran 1 test' in check['output']
+        assert 'AssertionError: False is not true' in observed['checks']['before']['output']
+        assert observed['comparison_copies_removed'] and observed['tree_guard']['unchanged']
+        assert inventory(root) == original
+    return dict(named_regions_complete=True, missing_region_exit=1,
+                receipt_native_before_exit=1, receipt_native_after_exit=0,
+                receipt_original_tree_unchanged=True)
+
+
 def check(source, cli):
     names = sorted(p.parent.name for p in (source / 'skills').glob('*/SKILL.md'))
     assert len(names) == 8
@@ -32,11 +79,12 @@ def check(source, cli):
     with tempfile.TemporaryDirectory(prefix='skills-install-check-') as folder:
         project = Path(folder)
 
-        def run(args):
-            completed = subprocess.run(args, cwd=project, text=True, capture_output=True, timeout=30)
+        def run(args, input=None, expected_exit=0):
+            completed = subprocess.run(args, cwd=project, input=input, text=True, capture_output=True, timeout=30)
             commands.append({'command': args, 'exit_code': completed.returncode,
+                             'stdin': input, 'expected_exit': expected_exit,
                              'stdout': completed.stdout, 'stderr': completed.stderr})
-            assert completed.returncode == 0, completed.stdout + completed.stderr
+            assert completed.returncode == expected_exit, completed.stdout + completed.stderr
             return completed.stdout
 
         run(['node', str(cli), 'add', str(source), '--list'])
@@ -82,11 +130,12 @@ await withControlledCalls(async scope => {
 });
 console.log('installed JavaScript task-aware callback passed');
 '''])
+        recent = exercise_recent_helpers(installed, project, run)
         assert inventory(installed) == expected
         assert inventory(source / 'skills') == source_before
         report = dict(kind='local skills CLI copy and executable check; not remote/model evidence',
                       skills=names, installed_inventory=expected, python_entrypoints=len(scripts),
-                      commands=commands, copied_bytes_and_modes_match=True)
+                      commands=commands, copied_bytes_and_modes_match=True, recent_helpers=recent)
         text = json.dumps(report, indent=2)
         return text.replace(str(project), '<PROJECT>').replace(str(source), '<SOURCE>').replace(str(cli), '<CLI>')
 
