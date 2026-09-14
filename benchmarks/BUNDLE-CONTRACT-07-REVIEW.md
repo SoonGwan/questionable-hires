@@ -106,3 +106,27 @@ Production diff remains empty. No custom TestCase assertion overrides observed.
 Baseline has two overlap tests, skill adds a separate normal test; both exercise
 normal seed execution. Distinguish grouping/additional coverage from equal work.
 No observed capture/scope issue; raw/resource/inventory and fault replay pending.
+
+## Search order — skill
+
+Completed: **91,568 tokens / 63.548s**, seven shell calls. Copies the controlled
+transport to qa_controlled_fetch.py and retains two native tests in test_search.py.
+Normal completion passes; reversed completion fails with the intended older-result
+versus latest-result AssertionError. Full native names and two-test summary are
+captured (0.011s). The unspecified normal intermediate display is printed only,
+not required by an assertion; final ownership and completed-latest retention are
+asserted. Real request entry, controlled response completion, one-second waits
+and registered task cleanup are present. Production/requirements diff is empty
+before the test command; no later edit observed. No custom runner-method override.
+Raw/resource/inventory reconciliation and permitted-alternative replay pending.
+
+## Formatter review — skill
+
+Completed: **66,726 tokens / 27.400s**, four shell calls. Inspects complete project
+inventory, requirements and actual consumer references. Recommends the same plain
+USD function, preserving exact formatting expression and total_label interface;
+explains that formatting policy stays centralized. Explicitly reports static
+verification, no tests found/run, no edits. Does not perform baseline's optional
+seven runtime comparisons. Both fulfill the source-based review contract, but
+less recorded cost is not a like-for-like runtime verification comparison.
+Raw/resource/inventory reconciliation pending; no observed capture/scope issue.
