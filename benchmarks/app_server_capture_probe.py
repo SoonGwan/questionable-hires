@@ -14,13 +14,13 @@ import time
 
 
 class Connection:
-    def __init__(self, output):
+    def __init__(self, output, *, args=None, cwd=None):
         self.output = output
         self.messages = queue.Queue()
         self.stderr = (output / 'server-stderr.txt').open('xb')
         self.raw = (output / 'server-events.jsonl').open('xb')
         self.requests = (output / 'requests.jsonl').open('x')
-        self.process = subprocess.Popen(['codex', 'app-server', '--stdio'],
+        self.process = subprocess.Popen(args or ['codex', 'app-server', '--stdio'], cwd=cwd,
                                         stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                         stderr=self.stderr, start_new_session=True)
         self.reader = threading.Thread(target=self.read, daemon=True)
