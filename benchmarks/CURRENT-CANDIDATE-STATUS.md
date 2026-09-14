@@ -11,6 +11,10 @@ it has not established a broad 20–30% gain.
 
 ## Friday cursor lifetime — 2026-09-15, parent `be44fb9`
 
+Patched source `bca1a59`: **601 tests / 91.275s**, full local suite passes with
+no reported skips. This is regression validation, not a model efficiency result
+or hosted CI evidence. 한국어: 수정 소스의 전체 로컬 검사 601개가 통과했다.
+
 [Bounded-reader regression](FRIDAY-CURSOR-LIFETIME-01.md): the helper's unfinished
 reader could lock the next table replacement, misreporting a tool-induced failure
 as a migration error. Six actual assertion failures before the correction become

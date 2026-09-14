@@ -46,6 +46,10 @@ After the fix: **42 helper tests pass**, including all eight boundary/control
 combinations and the genuine-failure/CLI tests. Skill validation, repository
 metadata/local links and featured synchronization checks pass.
 
+Full regression on patched source `bca1a59`: **601 tests / 91.275s**, no reported
+skips (`python3 -B -m unittest discover -s tests`). Mocked runner output within
+that suite is not a fresh model run or hosted CI result.
+
 Reproduce with:
 
 ```sh
