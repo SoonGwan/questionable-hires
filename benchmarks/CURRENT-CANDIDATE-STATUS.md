@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Prepared [commit-before-ack transfer screen](FRIDAY-ACK-01-PROTOCOL.md), author
+source `3fa1fd1`, resources unchanged: actual caller commits/closes before success,
+fresh read connections, gap/control and rollback checks. Two native fixture tests
+pass, including intended missing-commit failure `10 != 20`. Model execution is
+not yet reported; older ambiguous fixtures and measurements remain unchanged.
+
+한국어: 커밋 후 성공 응답을 반환하는 실제 호출 코드와 독립 연결 읽기를 갖춘
+새 결함·정상 과제를 준비했다. 커밋을 제거하면 `10 != 20`으로 실패하는 대조를
+포함해 테스트 2개가 통과했다. 모델 성능 결과는 아직 없고 과거 과제는 보존했다.
+
 Friday [compact screen 02](FRIDAY-COMPACT-MODEL-02-REVIEW.md), launch `135c4df`,
 resources `f15f3ae`: baseline 88,162 tokens / 96.665s; skill 69,840 / 54.054s
 (descriptive −20.78% / −44.08%). Both meet the visible task and separate unchanged
