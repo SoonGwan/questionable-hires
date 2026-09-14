@@ -1,5 +1,8 @@
 # Reviewable diagnostic observations — 2026-09-15 KST
 
+Outcome: [screen 02 rejected; paragraph reverted](results/reporter-observation-02/README.md).
+The proposal below is historical, not the current skill instruction.
+
 Parent `e5c9ef2`. Replace the existing output-choice paragraph, not experiment
 coverage, helper mechanics, scope rules or a reporter-specific diagnosis.
 
