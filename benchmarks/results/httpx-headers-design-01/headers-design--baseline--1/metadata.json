@@ -1,0 +1,53 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "headers-design",
+  "skill": "landlord",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 103.291,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 113784,
+    "cached_input_tokens": 85120,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2975,
+    "reasoning_output_tokens": 31
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Review a proposal to replace HTTPX Headers with a plain dict[str, str] to reduce\nmaintenance. Compare two concrete representations: P1 keeps the last value for\neach lowercased ASCII name; P2 stores dict(existing_headers), including its\njoined values. Can either preserve the current public behavior and real\nconsumers without adding equivalent policy/state elsewhere? Recommend keep,\nsimplify or replace, with actual source references and maintenance tradeoffs.\n\nStart with httpx/_models.py, tests/models/test_headers.py and relevant consumers\nsuch as httpx/_transports/default.py. Inspect additional bindings only as needed.\nRun the existing tests/models/test_headers.py group. Also execute these four\nbyte-pair inputs using actual httpx.Headers:\n1. [(b'x-tag', b'one'), (b'x-other', b'other')]\n2. [(b'X-Tag', b'one'), (b'x-tag', b'two')]\n3. [(b'x-tag', b'one, two')]\n4. [(b'x-tag', b'one, two'), (b'x-tag', b'three')]\nFor each, record original headers and reconstructions from P1 and P2:\nindexing at 'x-tag', get_list('x-tag') without comma splitting, multi_items(),\nand raw name/value pairs. Decode these ASCII bytes only for readable reporting.\nExplain preserved behavior versus lost information and whether comma splitting\ncan restore original field boundaries. Reconstruction is an information-loss\nprobe, not a full replacement implementation; do not claim it tests a complete\nnew transport. Inspect one real consumer and trace where the compatibility\npolicy would have to move if the wrapper disappeared. Do not implement a full\nalternative or infer network behavior from these local observations.\n\nPreserve source files and installed resources. No network, installs, history\nfetches, commits or publication. Use <PREINSTALLED_PYTHON> with -B; pytest also\nwith -p no:cacheprovider. Scratch, if needed, stays inside this project and must\nbe removed. Captured observations suffice; no separate report file required.\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 11595,
+    "mode": 420,
+    "sha256": "6071ab2747cd652870df437425a7bb0a7b55b869f650e9cd037b257494b8117e",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

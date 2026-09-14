@@ -1,0 +1,23 @@
+{
+  "revision": "5c6e1a00ecaefc4609aae49b47fd0b1326fed41c",
+  "source_revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "skill_revision": "bd1d8b8",
+  "skill_resources_sha256": "222438b1fc70b3633907b1b3f25f90bc3dcc348ac31470b24b06966f8d065cea",
+  "started_at": "2026-09-14T21:11:27.496534+00:00",
+  "schedule": [
+    "baseline",
+    "skill"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 240,
+  "session_persistence_requested": true,
+  "protocol_sha256": "1d8e9ca1d2cd921bc01906916a8ee28bf70b7c755680bbfffef64649de463e3f",
+  "case": {
+    "id": "headers-design",
+    "skill": "landlord",
+    "task": "Review a proposal to replace HTTPX Headers with a plain dict[str, str] to reduce\nmaintenance. Compare two concrete representations: P1 keeps the last value for\neach lowercased ASCII name; P2 stores dict(existing_headers), including its\njoined values. Can either preserve the current public behavior and real\nconsumers without adding equivalent policy/state elsewhere? Recommend keep,\nsimplify or replace, with actual source references and maintenance tradeoffs.\n\nStart with httpx/_models.py, tests/models/test_headers.py and relevant consumers\nsuch as httpx/_transports/default.py. Inspect additional bindings only as needed.\nRun the existing tests/models/test_headers.py group. Also execute these four\nbyte-pair inputs using actual httpx.Headers:\n1. [(b'x-tag', b'one'), (b'x-other', b'other')]\n2. [(b'X-Tag', b'one'), (b'x-tag', b'two')]\n3. [(b'x-tag', b'one, two')]\n4. [(b'x-tag', b'one, two'), (b'x-tag', b'three')]\nFor each, record original headers and reconstructions from P1 and P2:\nindexing at 'x-tag', get_list('x-tag') without comma splitting, multi_items(),\nand raw name/value pairs. Decode these ASCII bytes only for readable reporting.\nExplain preserved behavior versus lost information and whether comma splitting\ncan restore original field boundaries. Reconstruction is an information-loss\nprobe, not a full replacement implementation; do not claim it tests a complete\nnew transport. Inspect one real consumer and trace where the compatibility\npolicy would have to move if the wrapper disappeared. Do not implement a full\nalternative or infer network behavior from these local observations.\n\nPreserve source files and installed resources. No network, installs, history\nfetches, commits or publication. Use <PREINSTALLED_PYTHON> with -B; pytest also\nwith -p no:cacheprovider. Scratch, if needed, stays inside this project and must\nbe removed. Captured observations suffice; no separate report file required."
+  }
+}

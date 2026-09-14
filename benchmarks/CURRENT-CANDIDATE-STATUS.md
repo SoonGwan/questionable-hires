@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Landlord header design screen — 2026-09-15, launch `5c6e1a0`
+
+[Real-header review](results/httpx-headers-design-01/README.md), resource `bd1d8b8`:
+both complete 27 native tests, twelve representations and supported consumer/
+maintenance analysis. Skill **+37.89% tokens / −14.51% time**; seven versus eight
+shell commands, four outer calls each. Skill's large numbered source batch is
+budget-truncated and followed by test rereading. Both retain decisive original
+outputs and preserve source/resources. No overall efficiency win or featured
+promotion; same-source n=1 and differing extra work limit inference.
+
+한국어: 호출 수는 줄었지만 토큰이 37.89% 증가해 전체 효율 개선은 아니다. 큰
+파일 일괄 읽기와 출력 잘림이 다음 개선 대상이다. 양쪽 필수 검사·관찰은 충족했고
+원본 증거와 불리한 결과를 보존한다.
+
 ## Installed recent helpers — 2026-09-15, source `0f2706a`
 
 [Actual skills CLI check](SKILLS-CLI-INSTALL-02.md): all eight skills/43 resources
