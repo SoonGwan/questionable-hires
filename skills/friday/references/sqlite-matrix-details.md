@@ -1,26 +1,8 @@
-# SQLite matrix: API and result details
+# SQLite matrix: result and budget details
 
-Use with the [core interface](sqlite-matrix.md) when embedding the helper in an
-existing Python probe, interpreting BLOB/duplicate/empty-column output, or
-diagnosing byte limits. Ordinary CLI recipes do not need this reference.
+Use with the [core CLI/API interface](sqlite-matrix.md) when interpreting
+duplicate/empty-column output or diagnosing byte limits.
 
-## Python integration and BLOBs
-
-Use the public API to reuse an existing recipe/probe without an intermediate
-JSON file or another execution loop:
-
-```python
-import runpy
-helper = runpy.run_path('<skill-dir>/scripts/sqlite_matrix.py')
-matrix, format_result = helper['matrix'], helper['format_result']
-result = matrix(recipe, project_root, timeout=5)
-print(format_result(result))
-```
-
-Check `result['complete']` before interpreting compatibility. `matrix` returns
-native row tuples and BLOB `bytes`. `format_result` returns CLI-format JSON text:
-row arrays and BLOB `{"blob_hex": "..."}`, including empty BLOBs. It neither
-reruns SQL nor modifies the result; plain `json.dumps(result)` fails on BLOBs.
 Invalid API inputs raise exceptions; CLI invalid inputs instead produce exit 2.
 
 ## Column and empty-result contracts

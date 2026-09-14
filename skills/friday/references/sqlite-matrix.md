@@ -5,9 +5,23 @@ existing runner for a single query and the actual engine for other databases.
 Application writers, transaction/multiple-connection behavior and production
 readiness need their actual runtime evidence; this is not a sandbox or simulator.
 
-Run `python3 <skill-dir>/scripts/sqlite_matrix.py --source <project> --spec -`
-with JSON on stdin, or replace `-` with a recipe path. Inspect implementation only
-for trust, adaptation or troubleshooting.
+Choose the output you need before execution. For printed observations, run
+`python3 <skill-dir>/scripts/sqlite_matrix.py --source <project> --spec -`
+with JSON on stdin (or a recipe path instead of `-`). For Python value comparisons,
+use the same recipe through the public API and compare its retained rows:
+
+```python
+import runpy
+helper = runpy.run_path('<skill-dir>/scripts/sqlite_matrix.py')
+matrix, format_result = helper['matrix'], helper['format_result']
+result = matrix(recipe, project_root, timeout=5)
+print(format_result(result))
+```
+
+The API retains row tuples and BLOB `bytes`; formatting returns JSON with BLOB
+`{"blob_hex": "..."}` (empty bytes included), without rerunning SQL or changing
+`result`. Plain `json.dumps(result)` cannot encode BLOBs. Inspect implementation
+only for trust, adaptation or troubleshooting.
 
 The recipe has exactly `phases` and `checks`. Each phase runs its relative SQL
 `files` in order, then inline `sql`. Only `name` is required: omitted `files`
@@ -53,6 +67,13 @@ has `ok: false` and `error`, not rows. Migration failure adds `migration_error`;
 budget exhaustion adds top-level `error`. Missing phases/checks are unrun, not
 passed. `truncated: true` cannot prove full row equality.
 
+For computed comparisons, select the relevant phase/check from `result`, verify
+`complete`, `ok` and no truncation, then compare its `rows` using the actual
+contract. Reuse captured results for decoding, assertions and reporting; another
+execution loop is needed only for missing observations, changed state or an
+independent check the task actually requires. Preserve failed checks as evidence,
+not empty successful rows.
+
 Compare values and column labels with the real consumer contract. Empty/comment
 SQL fails; a real zero-row SELECT succeeds but still needs interpretation.
 
@@ -67,7 +88,6 @@ project-relative. Limits: 20 phases/queries, 20 returned rows/check, 1 MB/file,
 2 MB combined input, default 5-second SQL budget (`--timeout`, max 30).
 Unsupported operations need other evidence, not silently rewritten migrations.
 
-Read [API and result details](sqlite-matrix-details.md) only when embedding in a
-Python probe, handling BLOBs/duplicate or empty column results, or diagnosing
-input-budget limits. These limits do not provide total-memory or filesystem-race
+Read [result and budget details](sqlite-matrix-details.md) for duplicate/empty
+column semantics or input-budget diagnostics. These limits do not provide total-memory or filesystem-race
 isolation, live locking, network, or production-runtime guarantees.

@@ -298,7 +298,7 @@ class MatrixTests(unittest.TestCase):
             helper.format_result({'unsupported': object()})
 
     def test_documented_api_example_executes_with_blob_rows(self):
-        reference = (SCRIPT.parents[1] / 'references/sqlite-matrix-details.md').read_text()
+        reference = (SCRIPT.parents[1] / 'references/sqlite-matrix.md').read_text()
         example = reference.split('```python\n', 1)[1].split('\n```', 1)[0]
         example = example.replace('<skill-dir>', str(SCRIPT.parents[1]))
         output = io.StringIO()
@@ -309,6 +309,41 @@ class MatrixTests(unittest.TestCase):
             exec(compile(example, '<documented-friday-api>', 'exec'), namespace)
         self.assertEqual(json.loads(output.getvalue())['phases'][0]['checks']['blob']['rows'],
                          [[{'blob_hex': 'ff'}]])
+
+    def test_core_api_reuses_single_execution_for_binary_comparisons(self):
+        reference = (SCRIPT.parents[1] / 'references/sqlite-matrix.md').read_text()
+        example = reference.split('```python\n', 1)[1].split('\n```', 1)[0]
+        example = example.replace('<skill-dir>', str(SCRIPT.parents[1]))
+        fixture = json.loads((SCRIPT.parents[3] / 'benchmarks/friday-binary-rollback-cases.json').read_text())[0]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name, content in fixture['files'].items():
+                (root / name).write_text(content)
+            recipe = {'phases': [{'name': name, 'files': [name]} for name in
+                      ('001_initial.sql', '002_up.sql', 'verification_writes.sql', '002_down.sql')],
+                      'checks': {name: {'python_file': name + '_reader.py', 'constant': 'QUERY'}
+                                 for name in ('old', 'new')}}
+            output = io.StringIO()
+            from contextlib import redirect_stdout
+            namespace = {'recipe': recipe, 'project_root': root}
+            with patch.object(sqlite3, 'connect', wraps=sqlite3.connect) as connect, redirect_stdout(output):
+                exec(compile(example, '<documented-friday-api>', 'exec'), namespace)
+                result = namespace['result']
+                self.assertTrue(result['complete'])
+                current = result['phases'][2]['checks']['new']
+                down = result['phases'][3]['checks']['old']
+                for check in (current, down):
+                    self.assertTrue(check['ok'])
+                    self.assertFalse(check['truncated'])
+                expected = {key: bytes.fromhex(value) for key, value in current['rows']}
+                actual = dict(down['rows'])
+                self.assertEqual(expected, {1: b'\xff\x00\x80', 2: b'\x01\xfe', 3: b'', 4: b'\x00\x01\xff'})
+                self.assertEqual(set(actual), set(expected))
+                self.assertEqual([key for key in actual if actual[key] != expected[key]], [1, 2, 4])
+                self.assertEqual({key: bytes.fromhex(value.decode('ascii')) for key, value in actual.items()}, expected)
+                connect.assert_called_once_with(':memory:', cached_statements=0)
+            self.assertEqual(json.loads(output.getvalue()), json.loads(helper.format_result(result)))
+            self.assertEqual({p.name: p.read_text() for p in root.iterdir()}, fixture['files'])
 
     def test_core_guide_recipe_executes_native_compatibility_and_rollback(self):
         reference = (SCRIPT.parents[1] / 'references/sqlite-matrix.md').read_text()

@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
+New instruction candidate: [Friday result reuse](FRIDAY-RESULT-REUSE-01.md)
+moves the existing Python API/BLOB contract into the core interface so computed
+comparisons can reuse the first execution. Runtime remains `e3bc342`; 41 Friday
+tests pass, including the documented snippet with one SQLite connection and all
+binary current-value comparisons. Core context grows; model adoption/cost is
+unmeasured. Earlier model outputs and featured data remain unchanged.
+
+한국어: 첫 실행 결과로 값 비교까지 할 수 있도록 API 예제를 기본 안내로
+옮겼다. 실제 문서 예제는 DB 연결 한 번으로 바이트 비교까지 검증했지만,
+기본 안내가 길어지는 비용이 있어 모델의 선택·효율은 새 측정이 필요하다.
+
 Runtime `e3bc342`: [Friday phase defaults](FRIDAY-PHASE-DEFAULTS-01.md)
 allows omitted empty `files`/`sql`, correcting the observed API preparation
 failure without relaxing unknown-key/type/path/budget checks. Native regression
