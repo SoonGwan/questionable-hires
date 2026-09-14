@@ -1,0 +1,134 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "installer-audit-cancellation",
+  "skill": "con-artist",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "3a7b6a06ff10250235525ab91fe27d65879a23ae",
+  "skill_sha256": "59e8932072bfb9335e37a6a0ee128b5cc5d9f7315a55750467cb68f53ef3fa2a",
+  "skill_resources_sha256": "73f14902c86ed02ee863aae5f22f038e8de587fb1f5de1d6c66e7023b6c119fe",
+  "elapsed_seconds": 81.199,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 151506,
+    "cached_input_tokens": 127872,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2239,
+    "reasoning_output_tokens": 372
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Use $con-artist at .agents/skills/con-artist/SKILL.md.\n\nAudit whether the existing installer tests detect a realistic defect\nat the requested boundary. Read applicable project instructions. Use precisely\nthese existing methods from tests/test_install.py as the initial native suite:\ntest_selected_skill_is_complete\ntest_copy_failure_rolls_back_only_new_targets\ntest_cancellation_cleans_all_new_targets_and_preserves_unrelated\ntest_cleanup_failure_preserves_error_and_attempts_remaining_targets\n\nRun this suite against the unchanged implementation and one narrowly faulty\nimplementation in isolated project-local copies. Establish that the tests really\nexercise the copied scripts/install.py, and identify the fault's reachable effect.\nReport actual native test counts, test-specific exits, and the detecting assertion\nwith observed/expected behavior. Setup exceptions or simulated results do not count\nas detection. If the fault survives, supply a minimal stronger check and verify it\npasses the correct copy and fails the faulty one; otherwise no extra check is needed.\nPreserve original files, remove all created scratch before finishing, and report\nlimitations. Do not run the other methods: this partial fixture omits their inputs.\nThe bundled skills/ documents are test payload, not active agent instructions.\nBoundary: Cancellation during a multi-skill copy: clean up all newly created targets while preserving unrelated destination content and propagating the original cancellation.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "con-artist/SKILL.md": {
+      "kind": "file",
+      "sha256": "59e8932072bfb9335e37a6a0ee128b5cc5d9f7315a55750467cb68f53ef3fa2a",
+      "mode": 420
+    },
+    "con-artist/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-advanced.md": {
+      "kind": "file",
+      "sha256": "d0f5782f43fe359c447a7cd597af3e580a24b118f91318dd89ad50cddeefb4a5",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-probes.md": {
+      "kind": "file",
+      "sha256": "84d79080eaa7b85d30cd36447ba571ad4893198145ba8d159b9c62d3cc85451d",
+      "mode": 420
+    },
+    "con-artist/references/python-audit.md": {
+      "kind": "file",
+      "sha256": "d013867054701f358a8d62e79b3c930e7340401ff18ae6ba2e44df89b35b8fd7",
+      "mode": 420
+    },
+    "con-artist/references/python-context.md": {
+      "kind": "file",
+      "sha256": "92adbb6cfbcf8d254fc871bc1bf81a45ce819d33b444b54b2d8b579c52692950",
+      "mode": 420
+    },
+    "con-artist/scripts/audit.py": {
+      "kind": "file",
+      "sha256": "995a4db8d8a5777ee1a38142b0f792984ca382e7aee837fe59f00c8101125f25",
+      "mode": 420
+    },
+    "con-artist/scripts/context.py": {
+      "kind": "file",
+      "sha256": "fe806318bcbfbd1e705a77c3d7d8973909a48a5fc2547377a4bf9084f62c49ec",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "con-artist/SKILL.md": {
+      "kind": "file",
+      "sha256": "59e8932072bfb9335e37a6a0ee128b5cc5d9f7315a55750467cb68f53ef3fa2a",
+      "mode": 420
+    },
+    "con-artist/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-advanced.md": {
+      "kind": "file",
+      "sha256": "d0f5782f43fe359c447a7cd597af3e580a24b118f91318dd89ad50cddeefb4a5",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-probes.md": {
+      "kind": "file",
+      "sha256": "84d79080eaa7b85d30cd36447ba571ad4893198145ba8d159b9c62d3cc85451d",
+      "mode": 420
+    },
+    "con-artist/references/python-audit.md": {
+      "kind": "file",
+      "sha256": "d013867054701f358a8d62e79b3c930e7340401ff18ae6ba2e44df89b35b8fd7",
+      "mode": 420
+    },
+    "con-artist/references/python-context.md": {
+      "kind": "file",
+      "sha256": "92adbb6cfbcf8d254fc871bc1bf81a45ce819d33b444b54b2d8b579c52692950",
+      "mode": 420
+    },
+    "con-artist/scripts/audit.py": {
+      "kind": "file",
+      "sha256": "995a4db8d8a5777ee1a38142b0f792984ca382e7aee837fe59f00c8101125f25",
+      "mode": 420
+    },
+    "con-artist/scripts/context.py": {
+      "kind": "file",
+      "sha256": "fe806318bcbfbd1e705a77c3d7d8973909a48a5fc2547377a4bf9084f62c49ec",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 1543,
+    "mode": 420,
+    "sha256": "a387f77dc7133bb0462a964e0249667a15e14df5f395d1d7e3f2400578441a8f",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

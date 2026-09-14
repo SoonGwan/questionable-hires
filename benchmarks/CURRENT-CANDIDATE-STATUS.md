@@ -11,16 +11,27 @@ it has not established a broad 20–30% gain.
 
 ## Con Artist conditional example — 2026-09-15, parent `eca85cd`
 
+[Installer transfer 01](results/installer-audit-01/README.md), launch `8955cb1`,
+resources `07166bf`: four fresh baseline/skill sessions on two related real-code
+tasks all establish native defect detection. Skill tokens increase 97.28% / 75.32%;
+time changes −3.49% / +6.28%. Work volume differs, n=1, no efficiency win. Repeated
+helper recipes and implementation reads remain observed friction. All original
+commands/usage reconcile, supplied file bytes and installed resources are preserved.
+
+한국어: 설치 오류·취소 작업에서도 실제 결함은 잡았지만 스킬 토큰이 97.28%·
+75.32% 증가했다. 동일 구현의 관련 과제 2개·각 1회이고 실행량도 달라 일반적
+성능 개선 근거가 아니다. 원본 증거를 남기고 반복 호출·사용법 확인 비용을 개선한다.
+
 [Evidence-first routing candidate](CON-ARTIST-ROUTER-02.md), parent `1fa11f3`,
 reduces the common entry 4,155→3,419 bytes and routes Python details conditionally.
 Tracing is bounded by the actual effect and unresolved bindings, not a complete
 wrapper itinerary. Native proof, stronger assertions, runtime context and scope
-are retained. 121 targeted tests pass; model adoption/net costs remain unmeasured.
+are retained. 121 targeted tests pass; the adverse installer screen above now measures this candidate.
 Instruction size is not a performance result; next comparison must change workflow.
 
 한국어: 공통 안내를 줄이고 Python 상세는 필요한 경우에 읽도록 재배치했다.
-필수 검증·바인딩 불확실성·권한 경계는 보존했다. 121개 테스트 통과지만 모델
-효과는 미검증이며 지침 바이트 감소를 토큰 절감으로 표시하지 않는다.
+필수 검증·바인딩 불확실성·권한 경계는 보존했다. 121개 테스트가 통과했고 이후
+위 설치 비교에서 불리한 모델 비용을 관측했다. 지침 바이트 감소는 토큰 절감이 아니다.
 
 [Provenance adoption 02](results/httpx-provenance-02/README.md), launch `670e708`,
 resources `b044a19`: one fresh skill session has native 24-pass / 4-fail evidence,

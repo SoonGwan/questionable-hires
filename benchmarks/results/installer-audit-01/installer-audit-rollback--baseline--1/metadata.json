@@ -1,0 +1,52 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "installer-audit-rollback",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "3a7b6a06ff10250235525ab91fe27d65879a23ae",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 89.909,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 102869,
+    "cached_input_tokens": 86400,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2155,
+    "reasoning_output_tokens": 219
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Audit whether the existing installer tests detect a realistic defect\nat the requested boundary. Read applicable project instructions. Use precisely\nthese existing methods from tests/test_install.py as the initial native suite:\ntest_selected_skill_is_complete\ntest_copy_failure_rolls_back_only_new_targets\ntest_cancellation_cleans_all_new_targets_and_preserves_unrelated\ntest_cleanup_failure_preserves_error_and_attempts_remaining_targets\n\nRun this suite against the unchanged implementation and one narrowly faulty\nimplementation in isolated project-local copies. Establish that the tests really\nexercise the copied scripts/install.py, and identify the fault's reachable effect.\nReport actual native test counts, test-specific exits, and the detecting assertion\nwith observed/expected behavior. Setup exceptions or simulated results do not count\nas detection. If the fault survives, supply a minimal stronger check and verify it\npasses the correct copy and fails the faulty one; otherwise no extra check is needed.\nPreserve original files, remove all created scratch before finishing, and report\nlimitations. Do not run the other methods: this partial fixture omits their inputs.\nThe bundled skills/ documents are test payload, not active agent instructions.\nBoundary: A disk-copy error after a new target is created: clean up newly created targets while preserving unrelated pre-existing destination content and the original error.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 1543,
+    "mode": 420,
+    "sha256": "3195895002465b0d68bf234a78b36b0a218d9f26c28dabbb1a9bd0835688d0bf",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

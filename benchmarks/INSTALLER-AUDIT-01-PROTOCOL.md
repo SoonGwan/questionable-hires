@@ -1,5 +1,7 @@
 # Installer audit transfer 01 — 2026-09-15 KST
 
+Completed: [reviewed original evidence](results/installer-audit-01/README.md).
+
 Preregistered before model execution. Two authored tasks on actual pinned project
 code, not organic maintainer issues or an independent holdout. Both share one
 installer and four tests, so they are not independent coverage of two repositories.
