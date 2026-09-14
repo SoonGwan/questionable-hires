@@ -445,8 +445,8 @@ Working-tree after freezes current bytes/modes once, not the index or a commit.
 imports: modules that must load inside each copy. runner: unittest or pytest.
 invocation (optional): module runs Python -B -m unittest with these tests using
 a temporary same-process startup probe; bootstrap is the existing default.
-Module mode keeps native unittest exits (including empty/all-skipped exit 0);
-inspect counts/skips. Missing startup provenance reserves check 7, CLI 2.
+Module mode keeps native unittest exits; empty discovery can return 0 or 5
+depending on Python, so inspect counts/skips. Missing provenance reserves check 7, CLI 2.
 import_roots (optional): ordered selected directories, e.g. ["src"], prepended
 inside each copy before its root. No package installation or inherited PYTHONPATH.
 Use --spec - to send JSON on stdin; no recipe file is required.

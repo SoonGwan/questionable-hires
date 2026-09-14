@@ -90,8 +90,9 @@ CLI 0 means observations collected, **not proof**. Inspect each actual assertion
 requested test identity, before failure/after pass, copied-import evidence,
 `exit_code`, `timed_out` and `output_truncated`. Help/version output is not execution.
 Bootstrap unittest: failure 1, empty/all-skipped 5, partial-skip success 0.
-Module mode preserves native exits, including **0 for empty/all-skipped**: inspect
-counts/skips. Missing startup provenance reserves check 7, retaining the native
+Module mode preserves native exits: empty discovery may return 0 or 5 depending
+on Python, and all-skipped checks can return 0. Inspect counts/skips; no such result
+proves a passing regression. Missing startup provenance reserves check 7, retaining the native
 exit separately. Pytest keeps native exits. No mode proves requested coverage.
 Listed import exceptions (including `SystemExit(0)`) retain tracebacks and reserve
 check 7: CLI 2, no next comparison. Independent runner exit 7 is conservatively

@@ -20,6 +20,12 @@ class NativeInvocationTests(unittest.TestCase):
     commit = fixture.ReceiptHelperTests.commit
     src_recipe = fixture.ReceiptHelperTests.src_recipe
 
+    def direct_empty_exit(self, *flags):
+        result = subprocess.run([sys.executable, '-B', *flags, '-m', 'unittest', '-v', 'test_rule'],
+                                cwd=self.root, capture_output=True, text=True, timeout=10)
+        self.assertIn('Ran 0 tests', result.stdout + result.stderr)
+        return result.returncode
+
     def test_actual_module_command_provenance_and_before_after(self):
         with patch.object(helper.subprocess, 'Popen', wraps=helper.subprocess.Popen) as launch:
             result = helper.compare(self.root, dict(self.recipe, invocation='module', guard_tree=True))
@@ -65,10 +71,13 @@ class Probe(unittest.TestCase):
             ('import unittest\n@unittest.skip("fixture")\nclass Skipped(unittest.TestCase):\n    def test_skipped(self): self.fail()\n', 'OK (skipped=1)')]:
             with self.subTest(summary=summary):
                 (self.root/'test_rule.py').write_text(source)
+                direct = subprocess.run([sys.executable, '-B', '-m', 'unittest', '-v', 'test_rule'],
+                                        cwd=self.root, capture_output=True, text=True, timeout=10)
+                self.assertIn(summary, direct.stdout + direct.stderr)
                 result = helper.compare(self.root, dict(self.recipe, invocation='module'))
                 for check in result['checks'].values():
-                    self.assertEqual(check['native_exit_code'], 0)
-                    self.assertEqual(check['exit_code'], 0)
+                    self.assertEqual(check['native_exit_code'], direct.returncode)
+                    self.assertEqual(check['exit_code'], direct.returncode)
                     self.assertIn(summary, check['output'])
 
     def test_startup_system_exit_is_incomplete_and_stops_next_comparison(self):
@@ -90,7 +99,7 @@ class Probe(unittest.TestCase):
         self.assertEqual(result['status'], 'incomplete')
         self.assertEqual(list(result['checks']), ['before'])
         check = result['checks']['before']
-        self.assertEqual(check['native_exit_code'], 0)
+        self.assertEqual(check['native_exit_code'], self.direct_empty_exit('-S'))
         self.assertEqual(check['exit_code'], 7)
         self.assertFalse(check['provenance_ready'])
         self.assertIn('Ran 0 tests', check['output'])
@@ -101,7 +110,7 @@ class Probe(unittest.TestCase):
         launcher.write_text('#!' + sys.executable + '\nimport os, sys\nos.execv(sys.executable, [sys.executable, "-S", *sys.argv[1:]])\n')
         launcher.chmod(0o755)
         result = helper.compare(self.root, dict(self.recipe, invocation='module'), python=launcher)
-        self.assertEqual(result['checks']['before']['native_exit_code'], 0)
+        self.assertEqual(result['checks']['before']['native_exit_code'], self.direct_empty_exit('-S'))
         self.assertEqual(result['checks']['before']['exit_code'], 7)
         self.assertFalse(result['checks']['before']['provenance_ready'])
 
