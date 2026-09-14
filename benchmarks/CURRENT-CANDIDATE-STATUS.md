@@ -11,6 +11,11 @@ it has not established a broad 20–30% gain.
 
 ## Distant history ranges — 2026-09-15, parent `671128e`
 
+Candidate `00981b0`: **609 tests / 93.865s**, full local regression passes with
+no reported skips. Skill, metadata/link, whitespace and featured-sync checks pass.
+한국어: 후보 소스의 전체 로컬 검사 609개가 통과했다. 모델 성능이나 호스팅 CI
+통과를 의미하지 않는다.
+
 [Shared collection](HISTORY-RANGES-01.md) adds repeatable CLI line ranges and a
 multi-range API without selecting gaps. A real three-region control uses 4 Git
 commands rather than 12, preserving selected attribution/changes and explicit

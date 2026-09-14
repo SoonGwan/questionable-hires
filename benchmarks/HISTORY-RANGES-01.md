@@ -34,6 +34,10 @@ Before implementation, the new CLI assertion observed only the last range
 These establish unsupported new behavior, not four pre-existing analysis bugs.
 After implementation, all five new tests pass.
 
+Full regression on candidate `00981b0`: **609 tests / 93.865s**, no reported
+skips. Skill validation, metadata/local links and featured synchronization pass.
+Mocked runner messages inside the test suite are not new model executions.
+
 [Raw local measurement](history-ranges-01-local.json) executes the previous
 collector from `671128e` three times per round and the candidate once with three
 ranges. It uses one 1.1 MB, 100,000-line authored Git file, 30 selected lines,
