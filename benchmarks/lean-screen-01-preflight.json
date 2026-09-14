@@ -1,0 +1,328 @@
+{
+  "source_hashes": {
+    "history-invoice-01-cases.json": "6669c0e61c88c33c3a95d014916362eafbf511fa82dfd658b3386fd75306bebc",
+    "receipt-ledger-cases.json": "5aeac6200940dc4d29898920429aae684712afea753df12e7985862f5016b742",
+    "landlord-check-scope-cases.json": "b255651b7cc425bda2791c7cd5b0151a96b41666915451566208c30af1fe87ee",
+    "editor-snapshot-01-cases.json": "909b36893325124e315d0803deeacb9f937df255de891d120429949a2af40b7b",
+    "exorcist-runtime-cases.json": "2cb25eeb821a2952683d4933d1fabc23b9fdcccc65ad44cb25fdbd5ece49beeb",
+    "hostage-refresh-cases.json": "7b0bc8120865802a29dd97b6fedb9863bdbe19742ce68bb93307588b55a04c21",
+    "con-artist-sqlite-cases.json": "c5a3b37e70613ed8eb657db25aa043772a0056692b207ff1d29c1e91bbce4c3f",
+    "cases_view_contract.py": "e3000694ff000352d8b081e858c04e720a3d8952b87be998652070920827b3a8",
+    "lean_screen_cases.py": "dec85f04d2888a86b321394f7d811000c9add4c3e545e13093e54abc5ff13b1e"
+  },
+  "cases": [
+    "history-invoice-boundary",
+    "ledger-delivery-b",
+    "store-check-scope",
+    "editor-snapshot-present",
+    "runner-environment-timing",
+    "refresh-owner-a",
+    "sqlite-commit-audit",
+    "view-contract"
+  ],
+  "existing_controls": {
+    "tests": 10,
+    "output": "test_actual_boundary_controls_and_distinct_history (test_history_invoice_fixture.HistoryInvoiceFixtureTests) ... ok\ntest_frozen_payload_matches_generator (test_history_invoice_fixture.HistoryInvoiceFixtureTests) ... ok\ntest_frozen_cases_match_generator (test_receipt_ledger_fixture.LedgerFixtureTests) ... ok\ntest_real_sqlite_complete_and_partial_fix_with_same_current_tests (test_receipt_ledger_fixture.LedgerFixtureTests) ... ok\ntest_local_contract_and_unavailable_staging_are_distinct (test_landlord_check_scope_fixture.LandlordCheckScopeTests) ... ok\ntest_fixture_reproduces_import_timing_not_random_retries (test_exorcist_runtime_fixture.RuntimeFixtureTests) ... ok\ntest_frozen_cases_preserve_concurrency_contract_without_author_oracle (test_hostage_refresh_fixture.RefreshFixtureTests) ... ok\ntest_native_positive_and_actual_owned_state_failure (test_hostage_refresh_fixture.RefreshFixtureTests) ... ok\ntest_frozen_files_match_generator (test_sqlite_audit_fixture.SQLiteAuditFixtureTests) ... ok\ntest_native_receipts_survive_but_new_connection_rows_detect_lost_commit (test_sqlite_audit_fixture.SQLiteAuditFixtureTests) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 1.672s\n\nOK\n"
+  },
+  "editor": {
+    "python": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+    "results": [
+      {
+        "variant": "original",
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "test_initial_state (test_editor.EditorTests) ... ok\ntest_nested_edit_during_save (test_editor.EditorTests) ... test_save_without_intervening_edit (test_editor.EditorTests) ... ok\n\n======================================================================\nFAIL: test_nested_edit_during_save (test_editor.EditorTests) (stage='pending snapshot')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_editor.py\", line 45, in test_nested_edit_during_save\n    self.assertEqual(payload, expected)\nAssertionError: {'display': {'theme': 'contrast'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}\n- {'alerts': ['mentions'], 'display': {'theme': 'contrast'}}\n?                                                ^^^^ ^^^\n\n+ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}\n?                                                ^^ ^\n\n\n======================================================================\nFAIL: test_nested_edit_during_save (test_editor.EditorTests) (stage='stored snapshot')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_editor.py\", line 49, in test_nested_edit_during_save\n    self.assertEqual(stored, [expected])\nAssertionError: Lists differ: [{'display': {'theme': 'contrast'}, 'alerts': ['mentions']}] != [{'display': {'theme': 'dark'}, 'alerts': ['mentions']}]\n\nFirst differing element 0:\n{'display': {'theme': 'contrast'}, 'alerts': ['mentions']}\n{'display': {'theme': 'dark'}, 'alerts': ['mentions']}\n\n- [{'alerts': ['mentions'], 'display': {'theme': 'contrast'}}]\n?                                                 ^^^^ ^^^\n\n+ [{'alerts': ['mentions'], 'display': {'theme': 'dark'}}]\n?                                                 ^^ ^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.010s\n\nFAILED (failures=2)\n"
+      },
+      {
+        "variant": "deep-snapshot",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "test_initial_state (test_editor.EditorTests) ... ok\ntest_nested_edit_during_save (test_editor.EditorTests) ... ok\ntest_save_without_intervening_edit (test_editor.EditorTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.010s\n\nOK\n"
+      }
+    ],
+    "limitation": "Author assertion/support preflight only. Oracle and conforming code are not provided to model arms. The absent-support condition requires model-authored support."
+  },
+  "friday": {
+    "records": [
+      {
+        "checkpoint": 1,
+        "checks": {
+          "OLD": {
+            "query_ok": true,
+            "contract_ok": true,
+            "columns": [
+              "id",
+              "label",
+              "payload"
+            ],
+            "rows": [
+              [
+                1,
+                "\uccab \ud56d\ubaa9",
+                {
+                  "blob_hex": "00ff"
+                }
+              ],
+              [
+                2,
+                "keep",
+                {
+                  "blob_hex": ""
+                }
+              ]
+            ]
+          },
+          "NEW": {
+            "query_ok": false,
+            "error": "no such column: title",
+            "inactive": true
+          }
+        }
+      },
+      {
+        "checkpoint": 2,
+        "checks": {
+          "OLD": {
+            "query_ok": true,
+            "contract_ok": false,
+            "assertion": "(['id', 'title', 'payload'], ['id', 'label', 'payload'])",
+            "columns": [
+              "id",
+              "title",
+              "payload"
+            ],
+            "rows": [
+              [
+                1,
+                "\uccab \ud56d\ubaa9",
+                {
+                  "blob_hex": "00ff"
+                }
+              ],
+              [
+                2,
+                "keep",
+                {
+                  "blob_hex": ""
+                }
+              ]
+            ]
+          },
+          "NEW": {
+            "query_ok": true,
+            "contract_ok": true,
+            "columns": [
+              "id",
+              "title",
+              "payload"
+            ],
+            "rows": [
+              [
+                1,
+                "\uccab \ud56d\ubaa9",
+                {
+                  "blob_hex": "00ff"
+                }
+              ],
+              [
+                2,
+                "keep",
+                {
+                  "blob_hex": ""
+                }
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "checkpoint": 3,
+        "checks": {
+          "OLD": {
+            "query_ok": true,
+            "contract_ok": false,
+            "assertion": "(['id', 'title', 'payload'], ['id', 'label', 'payload'])",
+            "columns": [
+              "id",
+              "title",
+              "payload"
+            ],
+            "rows": [
+              [
+                1,
+                "updated",
+                {
+                  "blob_hex": "fe00"
+                }
+              ],
+              [
+                2,
+                "keep",
+                {
+                  "blob_hex": ""
+                }
+              ],
+              [
+                3,
+                "new",
+                {
+                  "blob_hex": "80"
+                }
+              ]
+            ]
+          },
+          "NEW": {
+            "query_ok": true,
+            "contract_ok": true,
+            "columns": [
+              "id",
+              "title",
+              "payload"
+            ],
+            "rows": [
+              [
+                1,
+                "updated",
+                {
+                  "blob_hex": "fe00"
+                }
+              ],
+              [
+                2,
+                "keep",
+                {
+                  "blob_hex": ""
+                }
+              ],
+              [
+                3,
+                "new",
+                {
+                  "blob_hex": "80"
+                }
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "checkpoint": 4,
+        "checks": {
+          "OLD": {
+            "query_ok": true,
+            "contract_ok": false,
+            "assertion": "(['id', 'title', 'payload'], ['id', 'label', 'payload'])",
+            "columns": [
+              "id",
+              "title",
+              "payload"
+            ],
+            "rows": [
+              [
+                1,
+                "updated",
+                {
+                  "blob_hex": "fe00"
+                }
+              ],
+              [
+                2,
+                "keep",
+                {
+                  "blob_hex": ""
+                }
+              ],
+              [
+                3,
+                "new",
+                {
+                  "blob_hex": "80"
+                }
+              ]
+            ]
+          },
+          "NEW": {
+            "query_ok": true,
+            "contract_ok": true,
+            "columns": [
+              "id",
+              "title",
+              "payload"
+            ],
+            "rows": [
+              [
+                1,
+                "updated",
+                {
+                  "blob_hex": "fe00"
+                }
+              ],
+              [
+                2,
+                "keep",
+                {
+                  "blob_hex": ""
+                }
+              ],
+              [
+                3,
+                "new",
+                {
+                  "blob_hex": "80"
+                }
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "checkpoint": 5,
+        "checks": {
+          "OLD": {
+            "query_ok": true,
+            "contract_ok": true,
+            "columns": [
+              "id",
+              "label",
+              "payload"
+            ],
+            "rows": [
+              [
+                1,
+                "updated",
+                {
+                  "blob_hex": "fe00"
+                }
+              ],
+              [
+                2,
+                "keep",
+                {
+                  "blob_hex": ""
+                }
+              ],
+              [
+                3,
+                "new",
+                {
+                  "blob_hex": "80"
+                }
+              ]
+            ]
+          },
+          "NEW": {
+            "query_ok": false,
+            "error": "no such column: title",
+            "inactive": true
+          }
+        }
+      }
+    ],
+    "limitation": "Author preflight only, not model performance."
+  },
+  "landlord_native_removal": {
+    "exit_code": 1,
+    "output": "test_new_and_existing (test_contract.Contract) ... test_operational_failure_is_not_duplicate (test_contract.Contract) ... ok\n\n======================================================================\nFAIL: test_new_and_existing (test_contract.Contract) (key='first')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_contract.py\", line 12, in test_new_and_existing\n    self.assertIs(save(store, key, 'original')['created'], True)\nAssertionError: None is not True\n\n======================================================================\nFAIL: test_new_and_existing (test_contract.Contract) (key='second')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_contract.py\", line 12, in test_new_and_existing\n    self.assertIs(save(store, key, 'original')['created'], True)\nAssertionError: None is not True\n\n======================================================================\nFAIL: test_new_and_existing (test_contract.Contract) (key='')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_contract.py\", line 12, in test_new_and_existing\n    self.assertIs(save(store, key, 'original')['created'], True)\nAssertionError: None is not True\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nFAILED (failures=3)\n"
+  },
+  "limitation": "Author controls only. Reused developer fixtures, not independent real-project validation or model performance."
+}

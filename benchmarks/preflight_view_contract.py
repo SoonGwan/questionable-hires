@@ -7,10 +7,7 @@ import sqlite3
 from cases_view_contract import FILES
 
 
-def main():
-    output = Path(__file__).with_name('view-contract-01-preflight.json')
-    if output.exists():
-        raise ValueError('Refusing to replace preflight evidence')
+def check():
     readers = {n.targets[0].id: ast.literal_eval(n.value) for n in ast.parse(FILES['readers.py']).body}
     records = []
     db = sqlite3.connect(':memory:')
@@ -44,8 +41,16 @@ def main():
             records.append(dict(checkpoint=index + 1, checks=checks))
     finally:
         db.close()
+    return dict(records=records, limitation='Author preflight only, not model performance.')
+
+
+def main():
+    output = Path(__file__).with_name('view-contract-01-preflight.json')
+    if output.exists():
+        raise ValueError('Refusing to replace preflight evidence')
+    result = check()
     with output.open('x') as stream:
-        json.dump(dict(records=records, limitation='Author preflight only, not model performance.'), stream,
+        json.dump(result, stream,
                   indent=2, default=lambda value: {'blob_hex': value.hex()})
         stream.write('\n')
     print('Five checkpoints / ten reader observations; expected native values and active column assertion failures verified.')

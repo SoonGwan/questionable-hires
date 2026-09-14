@@ -9,6 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## All-eight screen frozen — 2026-09-15, candidate parent `1a95f12`
+
+[Frozen 8-task / 24-session protocol](LEAN-SCREEN-01-PROTOCOL.md) covers all roles
+with baseline/current/lean, one repeat and approximately balanced order. Selected
+tasks are exposed authored development cases, not held-out real-world evidence.
+[Native preflight](lean-screen-01-preflight.json) verifies positive/negative
+controls for all eight roles. Seven selection/snapshot tests pass (1.168s),
+including byte/mode identity of all non-entry resources and unchanged metadata.
+Only Friday's embedded skill invocation is removed uniformly from the shared task
+to keep baseline neutral. **Model execution has not started**; no improvement or
+promotion is claimed. Current shipped resources remain unchanged.
+
+한국어: 8개 역할·3조건·24세션의 비교 입력과 순서를 고정했다. 전 역할의 실제
+정상/결함 대조와 스냅샷 검사를 통과했다. 재사용한 개발 과제이며 모델 실행은
+아직 시작 전이다. 기존 배포 스킬과 대표 그래프는 유지한다.
+
 ## All-eight lean entry candidate — 2026-09-15, base `3aaef96`
 
 [Unpromoted redesign](LEAN-ENTRY-01.md) tests a broader hypothesis after narrow
