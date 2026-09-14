@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Friday consumer selection — 2026-09-15, parent `761a4b8`
 
+[Discovery candidate 02](FRIDAY-DISCOVERY-02.md), parent `a1700a3`, adds a
+focused grouped-read/missing-path instruction after repeated inventory was
+observed. The documented command preserves hidden project instructions while
+excluding Git internals in an actual local test. Entry cost grows by 363 bytes;
+model behavior and net efficiency remain unmeasured. No verification obligations
+or helper routing are removed to make traces shorter.
+
+한국어: 반복 탐색을 줄이는 후보 문단과 실제 파일 탐색 검사를 추가했다. 지침은
+363바이트 증가했고 모델 행동·전체 비용 효과는 미검증이다. 검증 의무는 유지한다.
+
 [Active-consumer review 01](FRIDAY-ACTIVE-01-REVIEW.md), launch `fc577c9`,
 resources `8153fec`: all four original sessions distinguish compatible ordering
 from a premature active old reader and preserve rollback values. Skill totals

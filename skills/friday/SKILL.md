@@ -9,6 +9,8 @@ description: Review a planned deployment or release diff for rollback feasibilit
 
 ## Read Monday's incident report early
 
+Read supplied release inputs and applicable project instructions together when practical. Discover missing paths, not a new full inventory before each read. Keep Git internals out of file discovery (for example, `rg --files --hidden -g '!.git'`); use Git commands for relevant history. Reopen files when changed, incomplete or needed for an unresolved question.
+
 Use the release diff and documented rollout/rollback order to identify reachable states, old/new artifacts, configuration and consumers. Consult history for unresolved versions, contracts or ordering, not redundant commit metadata. Do not impose rolling deployment or zero downtime on another strategy.
 
 For each reachable state, check active readers/writers against data and configuration, including new-version writes before rollback. Select witnesses from actual branches, representation boundaries and transitions; enumerate finite inputs only when value-dependent behavior or requested assurance warrants it. Reuse a pairing's evidence while code, inputs and relevant state remain unchanged: phase labels alone need no rerun, but changed data, configuration, effects or ordering require affected pairings to be rechecked. Include queued/external effects when their contract changes.
