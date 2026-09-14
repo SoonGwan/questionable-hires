@@ -72,6 +72,30 @@ test-baseline-only reuse. This execution-count reduction is not a model token
 or wall-time benchmark. Use separate audits for nondeterministic tests or when
 fresh baseline observations are required.
 
+### Compare required test selections without repeating recipe setup
+
+The [selection recipe](con-artist-batch/selection-recipe.json) submits one lost-write
+fault against two existing test selections. The acknowledgement test misses it;
+the [exact-record assertion](con-artist-batch/test_persistence.py) detects it.
+
+```sh
+python3 -B skills/con-artist/scripts/audit.py \
+  --source examples/con-artist-batch \
+  --spec examples/con-artist-batch/selection-recipe.json
+```
+
+Expect correct/faulty exits **0/0** in the first audit and **0/1** in the second.
+The second failure shows `['existing']` instead of `['existing', 'new']`.
+Each selection gets its own correct baseline: four native processes, no baseline
+reuse or stronger-probe processes. The original files remain unchanged and owned
+copies are removed. CLI exit 0 means observations collected, not that both tests
+protect persistence. This is a local example, not a model-performance benchmark.
+
+한국어: 위 명령은 모델 계정 없이 실행할 수 있다. 같은 쓰기 누락 결함을 두 테스트로
+감사하며 정상/결함 종료 코드는 각각 0/0, 0/1이다. 설정을 한 번에 제출할 뿐, 필요한
+네 번의 검증은 모두 실행한다. 실제 실패 내용과 원본 보존을 확인해야 하며 도우미의
+종료 코드 0을 “두 테스트 모두 결함을 탐지했다”로 해석하면 안 된다.
+
 ### Run the historical model task
 
 From this repository, with authenticated Codex CLI access:

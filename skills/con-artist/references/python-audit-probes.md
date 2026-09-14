@@ -38,6 +38,6 @@ propagate the exit with `raise SystemExit(pytest.main([...]))`, not an ignored
 return. Native file probes already handle that propagation. Probe-created files
 do not carry over to another check.
 
-Only for several justified faults, [batch reuse](python-audit-advanced.md#several-already-justified-faults-one-baseline)
+Only for several justified faults, [batch reuse](python-audit-batch.md)
 includes probe contents and test arguments in its identity. For unexpected setup,
 assertion or cleanup failures, read [diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence).

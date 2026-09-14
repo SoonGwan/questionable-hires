@@ -82,6 +82,18 @@ Python 코드 내부 테스트의 출력 누락 후보를 놓치던 검증기를
 
 ## Con Artist conditional example — 2026-09-15, parent `eca85cd`
 
+Usability follow-up, 2026-09-15, parent `8e94a97`: batch instructions now have a
+dedicated [installed reference](../skills/con-artist/references/python-audit-batch.md)
+instead of loading unrelated advanced modes; the old anchor still routes correctly.
+A [runnable selection example](../examples/con-artist.md#compare-required-test-selections-without-repeating-recipe-setup)
+demonstrates four native checks with separate normal baselines, missed versus
+detected lost writes, real assertion diagnostics and unchanged originals. Both
+example integration tests pass. No new model measurement or runtime algorithm change.
+
+한국어: 일괄 실행 안내를 별도 문서로 분리하고 모델 계정 없이 실행 가능한 테스트
+선택 예제를 추가했다. 네 번의 실제 검증에서 정상 통과·결함 누락·결함 탐지와
+원본 보존을 확인했으며 두 예제 통합 테스트가 통과했다. 모델 성능 수치는 아니다.
+
 [Test-selection batching candidate](CON-ARTIST-TEST-SELECTION-01.md), parent
 `f7d91dc`, allows per-entry native test arguments so required test-specific exits
 can share recipe setup without skipping executions. Different selections run new

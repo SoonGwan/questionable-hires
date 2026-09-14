@@ -1,0 +1,19 @@
+{
+  "files": ["service.py", "test_service.py", "test_persistence.py"],
+  "imports": ["service"],
+  "runner": "unittest",
+  "tests": ["-v", "test_service"],
+  "mutations": [
+    {
+      "target": "service.py",
+      "old": "    store.append(record)\n",
+      "new": ""
+    },
+    {
+      "target": "service.py",
+      "old": "    store.append(record)\n",
+      "new": "",
+      "tests": ["-v", "test_persistence"]
+    }
+  ]
+}
