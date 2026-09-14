@@ -1,0 +1,94 @@
+{
+  "upstream_revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "python": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "imported_module": "httpx/__init__.py",
+  "results": [
+    {
+      "case": "omitted",
+      "client_kwargs": {},
+      "request_kwargs": {},
+      "url": "https://example.invalid/items?from=url&tag=url1&tag=url2",
+      "items": [
+        [
+          "from",
+          "url"
+        ],
+        [
+          "tag",
+          "url1"
+        ],
+        [
+          "tag",
+          "url2"
+        ]
+      ]
+    },
+    {
+      "case": "empty",
+      "client_kwargs": {},
+      "request_kwargs": {
+        "params": {}
+      },
+      "url": "https://example.invalid/items",
+      "items": []
+    },
+    {
+      "case": "defaults",
+      "client_kwargs": {
+        "params": {
+          "tenant": "client"
+        }
+      },
+      "request_kwargs": {},
+      "url": "https://example.invalid/items?tenant=client",
+      "items": [
+        [
+          "tenant",
+          "client"
+        ]
+      ]
+    },
+    {
+      "case": "override",
+      "client_kwargs": {
+        "params": {
+          "tenant": "client",
+          "tag": [
+            "client1",
+            "client2"
+          ]
+        }
+      },
+      "request_kwargs": {
+        "params": {
+          "tag": [
+            "request1",
+            "request2"
+          ],
+          "page": "2"
+        }
+      },
+      "url": "https://example.invalid/items?tenant=client&tag=request1&tag=request2&page=2",
+      "items": [
+        [
+          "tenant",
+          "client"
+        ],
+        [
+          "tag",
+          "request1"
+        ],
+        [
+          "tag",
+          "request2"
+        ],
+        [
+          "page",
+          "2"
+        ]
+      ]
+    }
+  ],
+  "deliberate_assertion_failure": "Lists differ: [] != [('from', 'url'), ('tag', 'url1'), ('tag', 'url2')]\n\nSecond list contains 3 additional elements.\nFirst extra element 0:\n('from', 'url')\n\n- []\n+ [('from', 'url'), ('tag', 'url1'), ('tag', 'url2')]",
+  "limitation": "Author real-object construction preflight and actual assertion control, not model evidence; no requests sent or files created."
+}

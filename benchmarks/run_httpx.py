@@ -28,6 +28,27 @@ DIAGNOSIS_TASKS = {
 STREAM_DIAGNOSIS_TASKS = {
     'response-preview': 'Diagnose this HTTPX report: a logging preview consumes response.iter_bytes() inside client.stream(), then application response.read() raises StreamConsumed. A preview using response.read() instead appears to work; an ordinary client.get response also remains readable after an iter_bytes preview. The reporter suspects premature pooled-connection closure. Reproduce all three paths offline with actual Client/MockTransport and the same nonempty body, recording preview bytes, later body or exception, consumption/closed state and underlying stream close calls. Explain which boundary distinguishes the outcomes and recommend a safe next action, including the memory tradeoff of buffering. Use actual HTTPX objects, not a simulation of their internals. Preserve original files; do not fix production, use network, install dependencies, commit or publish. Keep any disposable probes project-local and remove them; captured output and a scoped diagnosis suffice.',
 }
+QUERY_BUILD_TASKS = {
+    'query-build': '''Diagnose an HTTPX report: Client.build_request seems to lose query
+values already embedded in a URL after an adapter starts passing params or the
+client is given default params. The reporter suspects encoding or request caching.
+Reproduce offline with actual Client.build_request, without sending any requests.
+Use URL https://example.invalid/items?from=url&tag=url1&tag=url2 for four cases:
+1. No client params; omit request params.
+2. No client params; explicitly pass request params={}.
+3. Client params={'tenant': 'client'}; omit request params.
+4. Client params={'tenant': 'client', 'tag': ['client1', 'client2']}; request
+   params={'tag': ['request1', 'request2'], 'page': '2'}.
+For each, record the built URL and ordered repeated query items. Locate the
+responsible mechanism in this checkout, distinguish URL-query behavior from
+client/request params merging, and explain why omission and an empty mapping may
+differ. Recommend a scoped caller-side approach for preserving intended URL
+values without dropping repeated values or silently overriding caller precedence.
+The requested deliverable is a diagnosis, not a library fix or general API audit.
+Preserve original files, use no network or installs, and do not commit/publish.
+Keep any disposable probes project-local and remove them; captured output suffices.
+''',
+}
 DECODER_TASKS = {
     'text-finalization': 'Audit whether tests/test_decoders.py protects UTF-8 text-stream finalization when the stream ends with an incomplete multibyte sequence. Demonstrate sensitivity with one narrow isolated behavioral mutation. If coverage is missing, verify a focused assertion against correct and faulty behavior, including a valid multibyte sequence split across chunks as a normal control. If existing coverage detects the fault, identify the detecting check. Do not change original source or tests.',
     'line-crlf-split': 'Audit whether tests/test_decoders.py protects a CRLF line ending split across response chunks. Demonstrate sensitivity with one narrow isolated behavioral mutation of the CR carry-over behavior. If existing coverage detects the fault, identify the detecting assertion without demanding another test; otherwise verify a focused assertion against correct and faulty behavior. Include nearby unsplit CRLF behavior. Do not change original source or tests.',
@@ -66,7 +87,8 @@ def select_profile(profile, requested=None):
                 'url-repr-audit': ('con-artist', URL_REPR_TASKS),
                 'header-equality-audit': ('con-artist', HEADER_EQUALITY_TASKS),
                 'cookie-design': ('landlord', COOKIE_DESIGN_TASKS),
-                'stream-diagnosis': ('exorcist', STREAM_DIAGNOSIS_TASKS)}
+                'stream-diagnosis': ('exorcist', STREAM_DIAGNOSIS_TASKS),
+                'query-build-diagnosis': ('exorcist', QUERY_BUILD_TASKS)}
     if profile not in profiles:
         raise ValueError('Unknown profile')
     skill, available = profiles[profile]
@@ -128,7 +150,7 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit', 'cookies-audit', 'url-repr-audit', 'header-equality-audit', 'cookie-design', 'stream-diagnosis'), default='audit')
+    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit', 'cookies-audit', 'url-repr-audit', 'header-equality-audit', 'cookie-design', 'stream-diagnosis', 'query-build-diagnosis'), default='audit')
     parser.add_argument('--case', action='append')
     parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
     parser.add_argument('--repeats', type=int, default=3)
@@ -160,6 +182,9 @@ def main():
     if args.profile == 'stream-diagnosis':
         checks = ['tests/models/test_responses.py::test_read',
                   'tests/models/test_responses.py::test_iter_bytes']
+    if args.profile == 'query-build-diagnosis':
+        checks = ['tests/client/test_queryparams.py::test_client_queryparams',
+                  'tests/client/test_queryparams.py::test_client_queryparams_echo']
     if args.profile == 'auth-design':
         checks = ['tests/client/test_auth.py::test_sync_auth_reads_response_body',
                   'tests/client/test_auth.py::test_async_auth_reads_response_body',

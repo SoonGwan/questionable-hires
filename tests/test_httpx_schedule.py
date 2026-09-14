@@ -21,6 +21,15 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_query_build_diagnosis_keeps_previous_profiles_separate(self):
+        skill, tasks = runner.select_profile('query-build-diagnosis')
+        self.assertEqual(skill, 'exorcist')
+        self.assertEqual(set(tasks), {'query-build'})
+        self.assertEqual(runner.select_profile('stream-diagnosis'), ('exorcist', runner.STREAM_DIAGNOSIS_TASKS))
+        self.assertEqual(runner.select_profile('queryparams-audit'), ('con-artist', runner.QUERYPARAM_TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('query-build-diagnosis', ['queryparams-repeated-values'])
+
     def test_stream_diagnosis_is_distinct_and_preserves_old_diagnosis(self):
         skill, tasks = runner.select_profile('stream-diagnosis')
         self.assertEqual(skill, 'exorcist')
