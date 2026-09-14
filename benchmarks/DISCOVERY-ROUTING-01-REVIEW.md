@@ -32,6 +32,21 @@ costs with unequal exception coverage. No proven routing efficiency gain or
 regression follows from one exposed pair; preserve it rather than retrying for
 lower numbers.
 
+## Store review — baseline
+
+Completed: **65,155 tokens / 83.303s**, five shell calls. Reads the actual driver,
+adapter, service and local/staging contracts. Directly supplies Backend to the
+actual service: creation returns None, duplicate raises Duplicate, original value
+is preserved and operational error propagates. These original probe assertions
+and outputs are captured. The actual two-test local suite also passes with a
+complete native transcript. No staging suite or fabricated receipt.
+
+Recommendation accurately retains or relocates necessary conversion rather than
+counting classes. Re-reads source with line numbers after an earlier unnumbered
+batch; this is avoidable repeated read, not a consumer-discovery requirement.
+Native clean status precedes the final read-only unittest command. No observed
+scope/capture issue; original/resources/inventory reconciliation remains pending.
+
 ## Atomic export — baseline
 
 Completed: **83,380 tokens / 49.277s**, five shell calls. Initial inventory locates
