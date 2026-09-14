@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## All-eight lean entry candidate — 2026-09-15, base `3aaef96`
+
+[Unpromoted redesign](LEAN-ENTRY-01.md) tests a broader hypothesis after narrow
+HTTPX-history tuning failed to establish savings. Eight shorter role-specific
+entry bodies preserve selection metadata and links to unchanged resources.
+Entry lengths decrease 26.3–57.0%; these are file bytes, **not performance gains**.
+Three packaging tests and eight isolated skill validations pass. No model calls,
+production skill changes or chart promotion. Behavioral validation across at most
+eight tasks, including known failure boundaries, is still required.
+
+한국어: 8개 전체의 진입 지침을 짧게 재구성한 실험 후보를 별도로 만들었다.
+현재 설치본과 도구는 유지한다. 형식 검사는 통과했지만 실제 작업 정확성과 비용은
+아직 미검증이며, 검증 전에는 배포본으로 교체하지 않는다.
+
 ## Exorcist output encoding — 2026-09-15, parent `3d763e7`
 
 [Same-evidence serialization](EXORCIST-OUTPUT-ENCODING-01.md) removes unnecessary
