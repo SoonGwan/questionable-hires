@@ -106,6 +106,10 @@ python3 scripts/install.py --dest /실제/프로젝트/.agents/skills --skill co
 종료 코드는 일치 0, 차이/미설치 2, 비교 실패 1입니다. 원격 최신 여부나 모델에서의
 활성화 여부를 검증하는 명령은 아닙니다. [업데이트 방법](docs/INSTALL.md#updates-and-removal).
 
+오프라인 전달용으로는 벤치마크 저장소 없이 스킬과 설치기만 담는
+[작은 독립 설치 아카이브](docs/STANDALONE-ARCHIVE.md#한국어)를 만들 수 있습니다.
+기존 `npx` 다운로드 경로를 바꾸거나 릴리스를 공개하는 기능은 아닙니다.
+
 Node.js/npm과 Git이 있다면 한 명만 고르거나 8명 전부 설치할 수 있습니다.
 
 ```sh
