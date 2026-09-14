@@ -20,9 +20,17 @@ A fresh unmodified `df799cf` archive passes all ten replacement tests and the
 retained store replay. Tested pytest is declared for the existing CI jobs; hosted
 CI and model efficiency remain unverified. Prior worktree passes are not relabeled.
 
+**Full archive follow-up is not green:** 641 tests / nine failure entries / 101.218s
+under the existing pytest virtualenv with process-local access to existing PyYAML.
+Three historical comparisons see the parent checkout's Git history; six hook
+fixture failures occur with user site disabled. These test/environment assumptions
+remain unresolved, not evidence of nine production bugs or accepted passes.
+
 한국어: pytest 동작을 확인했고 깨끗한 압축본의 검사 시작 오류 7건도 고쳤다.
 새 압축본에서 관련 10개 검사와 저장 테스트 재실행이 통과했다. 이전 로컬 검사
 통과를 배포 검증으로 확대하지 않으며 모델 성능 수치나 그래프는 그대로다.
+전체 압축본 검사에서는 실패 항목 9건이 남았다. 상위 Git 이력 오인과 가상환경의
+비활성 user site에 대한 검사 가정을 추가로 수정·검증해야 한다.
 
 ## Con Artist existing-path native probes — 2026-09-15, parent `dd315e0`
 
