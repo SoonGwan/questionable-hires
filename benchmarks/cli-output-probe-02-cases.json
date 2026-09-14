@@ -1,0 +1,14 @@
+[
+  {
+    "id": "cli-output-probe",
+    "skill": "exorcist",
+    "files": {
+      "emit.py": "import hashlib, json, sys, uuid\nfrom pathlib import Path\nmode = sys.argv[1]\nassert mode in ('tiny', 'bulk', 'chunked')\ncount = 8 if mode == 'tiny' else 512\nfirst, last = uuid.uuid4().hex, uuid.uuid4().hex\nlines = ['BEGIN ' + mode + ' ' + first + '\\n']\nlines += ['ROW %04d ' % n + 'x' * 120 + '\\n' for n in range(count)]\nlines += ['END ' + mode + ' ' + last + '\\n']\npayload = ''.join(lines).encode()\nwith Path('witness-' + mode + '.json').open('x') as stream:\n    json.dump(dict(mode=mode, first=first, last=last, rows=count,\n                   bytes=len(payload), sha256=hashlib.sha256(payload).hexdigest()), stream)\nif mode == 'chunked':\n    for line in lines:\n        sys.stdout.buffer.write(line.encode())\n        sys.stdout.buffer.flush()\nelse:\n    sys.stdout.buffer.write(payload)\n    sys.stdout.buffer.flush()\n",
+      "AGENTS.md": "This is an output-capture diagnostic. Run only the three requested commands once each. Do not inspect source or witness files; preserve them. No network, dependencies, extra commands or delegation.\n"
+    },
+    "task": "Run exactly these three commands, once each in separate command tool calls:\npython3 -B emit.py tiny\npython3 -B emit.py bulk\npython3 -B emit.py chunked\nUse the command tool's available output budget to retain the output (exactly\n1000 tokens if configurable). Do not redirect, filter or pipe output. Do not read\nemit.py or the generated witness files. Do not repeat commands or use other tools.\nFor each command, report the BEGIN and END nonce actually visible in its tool\nresponse and the process exit code. If a marker is not visible, write null; don't\ninfer it. Do not reproduce ROW lines. Finish with one JSON object keyed by mode,\neach containing first, last, exit_code. The witness files must remain untouched.\n",
+    "criteria": [
+      "Diagnostic only; compare emitted output and independent witnesses, not skill performance."
+    ]
+  }
+]

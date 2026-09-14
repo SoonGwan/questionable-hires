@@ -27,8 +27,8 @@ else:
 '''
 
 
-def cases():
-    return [dict(id='cli-output-probe', skill='exorcist', files={
+def cases(output_tokens=20000):
+    result = [dict(id='cli-output-probe', skill='exorcist', files={
         'emit.py': EMITTER,
         'AGENTS.md': 'This is an output-capture diagnostic. Run only the three requested commands once each. Do not inspect source or witness files; preserve them. No network, dependencies, extra commands or delegation.\n'},
         task='''Run exactly these three commands, once each in separate command tool calls:
@@ -43,12 +43,16 @@ response and the process exit code. If a marker is not visible, write null; don'
 infer it. Do not reproduce ROW lines. Finish with one JSON object keyed by mode,
 each containing first, last, exit_code. The witness files must remain untouched.
 ''', criteria=['Diagnostic only; compare emitted output and independent witnesses, not skill performance.'])]
+    if output_tokens != 20000:
+        result[0]['task'] = result[0]['task'].replace('at least\n20000 tokens', 'exactly\n' + str(output_tokens) + ' tokens')
+    return result
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--output-tokens', type=int, choices=(1000, 20000), default=20000)
     args = parser.parse_args()
     with args.output.open('x') as stream:
-        json.dump(cases(), stream, indent=2)
+        json.dump(cases(args.output_tokens), stream, indent=2)
         stream.write('\n')
