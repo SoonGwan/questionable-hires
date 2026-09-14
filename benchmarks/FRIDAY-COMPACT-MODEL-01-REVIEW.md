@@ -57,3 +57,25 @@ this as scope-clean or infer that no files changed proves discovery compliance.
 Also re-reads all release files with line numbers and collects unnecessary Git
 history. No observed missing decisive output; original-file/resource reconciliation
 remains pending. This result is not an accepted overall improvement.
+
+## Writer gap — original
+
+Completed: **70,476 tokens / 51.122s**, five shell calls. Executes actual compiled
+versions.py functions without reading the SQL-only helper. Four isolated shared
+in-memory databases exercise old/new update and insert witnesses; each uses
+separate migration/old/new connections with committed writes. Native controls
+assert pre-up old writes/inserts, initial backfill agreement and old operations
+after down. It closes the new connection before executing the documented down
+sequence. Actual cross-version stale/null values and lost new update are printed,
+not asserted as expected failures. No production readiness overclaim.
+
+The final answer's introductory 'both columns equal to 11' is imprecise for insert
+cases: seeded ID 1 is 11, but target ID 2 is newly inserted. The table's operation,
+reader and rollback values match native output. It correctly identifies the last
+recoverable state before dropping the new column and warns against blind overwrite.
+Final status contains installed resources only; no observed scope/capture issue.
+Original-file/resource reconciliation remains pending after timing.
+
+Candidate costs **−1.92% tokens / −2.38% time** for this pair, with different extra
+work (sequential later writes versus isolated multiconnection witnesses) and the
+candidate's parent-discovery scope exception. Not an accepted efficiency win.
