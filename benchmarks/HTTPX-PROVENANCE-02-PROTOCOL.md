@@ -1,5 +1,7 @@
 # Provenance adoption screen 02 — 2026-09-15 KST
 
+Completed: [original evidence review and public trace](results/httpx-provenance-02/README.md).
+
 Freeze resources `b044a19` after the [proportional provenance change](CON-ARTIST-PROVENANCE-01.md).
 Use unchanged HTTPX `26d48e0634e6ee9cdc0533996db289ce4b430177`, the existing
 `audit` / `asgi-exceptions` task, same supplied interpreter and native configuration.

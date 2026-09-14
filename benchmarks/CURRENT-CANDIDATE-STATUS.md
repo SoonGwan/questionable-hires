@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Con Artist conditional example — 2026-09-15, parent `eca85cd`
 
+[Provenance adoption 02](results/httpx-provenance-02/README.md), launch `670e708`,
+resources `b044a19`: one fresh skill session has native 24-pass / 4-fail evidence,
+without a new pytest plugin or setup retry. Historical skill costs fall 31.38%
+tokens / 43.83% time, but tokens remain 93.27% above the historical baseline.
+No fresh baseline or causal/general gain. Keep provisionally and transfer to
+another workflow; stop tuning this exposed task. All original evidence reconciles.
+
+한국어: 새 실행에서 중복 진단 플러그인·재시도 없이 실제 검증을 유지했다.
+이전 스킬 대비 비용은 줄었지만 과거 기본 모델보다 토큰은 93.27% 많아 목표에는
+미달이다. 새 기준군 없는 1회이며 이 과제 반복 대신 다른 작업 비교로 이동한다.
+
 [Proportional provenance candidate](CON-ARTIST-PROVENANCE-01.md), parent `ec5d7d4`,
 clarifies that the unittest precheck example does not demand a pytest plugin.
 Extra binding instrumentation needs an explicit requirement or unresolved dispatch;
