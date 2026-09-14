@@ -75,3 +75,7 @@ Next screen must use the unchanged task obligations and inspect actual command
 selection, absence/presence of internal adapters, native results, source identity,
 cleanup and all resource costs. Preserve adverse outcomes and replay differences;
 do not extrapolate from these local tests or change historical/featured charts.
+
+Follow-up: [native adoption 01](RECEIPT-NATIVE-MODEL-01-REVIEW.md) observes the
+ordinary CLI replacing adapters and lower cost than previous skill sessions, but
+tokens still exceed the prior baseline. Candidate preflight above predates that run.

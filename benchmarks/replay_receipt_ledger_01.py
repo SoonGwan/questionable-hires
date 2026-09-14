@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Replay actual ledger programs, restoring captured indexes only in owned copies."""
 import hashlib
+import argparse
 import importlib.util
 import json
 from pathlib import Path
@@ -36,6 +37,13 @@ def normalize(text, root):
 
 
 def main():
+    global RUN, REV
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--profile', choices=['ledger-01', 'native-01'], default='ledger-01')
+    args = parser.parse_args()
+    if args.profile == 'native-01':
+        RUN = ROOT/'benchmarks/local-runs/receipt-native-model-01'
+        REV = 'b2c7703'
     spec = importlib.util.spec_from_file_location('runner', ROOT/'benchmarks/run.py')
     runner = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(runner)
@@ -66,11 +74,13 @@ def main():
         assert raw.replace(str(workspace), '<WORKSPACE>').replace(str(Path.home()), '<HOME>') == (cell/'events.jsonl').read_text()
         events = [json.loads(line) for line in raw.splitlines()]
         assert next(e['usage'] for e in reversed(events) if e['type']=='turn.completed') == meta['usage']
-        items = [e['item'] for e in events if e['type']=='item.completed' and "python3 -B - <<" in e.get('item', {}).get('command', '')]
+        items = [e['item'] for e in events if e['type']=='item.completed' and
+                 ("python3 -B - <<" in e.get('item', {}).get('command', '') or
+                  (args.profile == 'native-01' and '--spec' in e.get('item', {}).get('command', '')))]
         assert len(items) == 1
         item = items[0]
         script = shlex.split(item['command'])[-1]
-        assert script.startswith('python3 -B - <<')
+        assert script.startswith('python3 -B ')
         index_record = meta['pre_collection_index']
         index = (cell/index_record['file']).read_bytes()
         assert index_record['status'] == 'retained'
@@ -108,7 +118,7 @@ def main():
                     assert original == replay[start:]
                 else:
                     assert original == replay
-            reports.append(dict(cell=cell.name, kind='separate exact-program author replay',
+            reports.append(dict(cell=cell.name, profile=args.profile, kind='separate exact-program author replay',
                 exit_code=completed.returncode, restored_index_sha256=index_record['sha256'],
                 original_prefix_gap=original_prefix_gap,
                 helper_object_equal=helper_equal if meta['arm']=='skill' else None,
