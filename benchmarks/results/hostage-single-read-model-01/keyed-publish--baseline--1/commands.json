@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!*cache*'\"' -g '\"'!node_modules'\"'\"",
+    "aggregated_output": "<WORKSPACE>\ntests/test_publisher.py\ntests/__init__.py\napp/publisher.py\napp/__init__.py\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la; cat requirements.md app/publisher.py tests/test_publisher.py; rg --files --hidden -g AGENTS.md -g '\"'!'\"\\\\.git/**'\"",
+    "aggregated_output": "total 8\ndrwxr-xr-x@  6 admin  staff   192 Sep 14 14:32 .\ndrwx------@  3 admin  staff    96 Sep 14 14:32 ..\ndrwxr-xr-x@ 10 admin  staff   320 Sep 14 14:32 .git\ndrwxr-xr-x@  4 admin  staff   128 Sep 14 14:32 app\n-rw-r--r--@  1 admin  staff  1300 Sep 14 14:32 requirements.md\ndrwxr-xr-x@  4 admin  staff   128 Sep 14 14:32 tests\n# Duplicate publication\n\nA Publisher instance handles multiple documents. While one publish for a document_id is awaiting its write, another publish for that SAME document_id on that SAME instance must return None promptly without calling its supplied write callback or disturbing the first call. Different document IDs and different Publisher instances must not block or suppress one another. document_id is a nonempty string; exact string equality defines identity, with no normalization.\n\nThe callback receives document_id positionally and the original payload object as the payload keyword. Payload is opaque; do not clone, serialize or inspect it. Preserve the exact successful result object and exact exception object. Clear the document's in-flight state after success, asynchronous failure, a synchronous exception raised by calling write, or cancellation, so a subsequent publish can proceed. Retry is caller-initiated, not automatic. Do not change public signatures, add a queue, shared/global lock, automatic retries or transport calls.\n\nExisting tests: python3 -B -m unittest discover -s tests -v. Keep their original checks unchanged. Add bounded, rerunnable regression checks; test-only support is allowed but not required. There is no production I/O or deployment step in this ticket.\nclass Publisher:\n    async def publish(self, document_id, payload, write):\n        return await write(document_id, payload=payload)\nimport asyncio\nimport unittest\nfrom app.publisher import Publisher\n\nclass ExistingTests(unittest.IsolatedAsyncioTestCase):\n    async def test_arguments_and_result_identity(self):\n        payload, result = object(), object()\n        observed = []\n        async def write(document_id, *, payload):\n            observed.append((document_id, payload))\n            return result\n        self.assertIs(await asyncio.wait_for(Publisher().publish('doc', payload, write), 1), result)\n        self.assertEqual(observed[0][0], 'doc')\n        self.assertIs(observed[0][1], payload)\n\n    async def test_exception_identity(self):\n        error = ValueError('write failed')\n        async def write(document_id, *, payload):\n            raise error\n        with self.assertRaises(ValueError) as caught:\n            await asyncio.wait_for(Publisher().publish('doc', object(), write), 1)\n        self.assertIs(caught.exception, error)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest discover -s tests -v'",
+    "aggregated_output": "ok\n\n----------------------------------------------------------------------\nRan 9 tests in 0.041s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --check; git diff --stat; git diff -- app/publisher.py tests/test_publisher.py; git status --short'",
+    "aggregated_output": " app/publisher.py | 11 ++++++++++-\n 1 file changed, 10 insertions(+), 1 deletion(-)\ndiff --git a/app/publisher.py b/app/publisher.py\nindex 6284de5..00d075b 100644\n--- a/app/publisher.py\n+++ b/app/publisher.py\n@@ -1,3 +1,12 @@\n class Publisher:\n+    def __init__(self):\n+        self._in_flight = set()\n+\n     async def publish(self, document_id, payload, write):\n-        return await write(document_id, payload=payload)\n+        if document_id in self._in_flight:\n+            return None\n+        self._in_flight.add(document_id)\n+        try:\n+            return await write(document_id, payload=payload)\n+        finally:\n+            self._in_flight.remove(document_id)\n M app/publisher.py\n?? tests/test_publisher_regressions.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

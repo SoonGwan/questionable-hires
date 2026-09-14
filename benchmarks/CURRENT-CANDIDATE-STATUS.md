@@ -11,15 +11,21 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
-New instruction candidate: [Hostage single-read interface](HOSTAGE-SINGLE-READ-01.md)
+Instruction `6d733b9`: [Hostage single-read interface](HOSTAGE-SINGLE-READ-01.md)
 routes directly to the callback asset with usage/limits in its module docstring.
 Executable AST matches frozen `d9e7711`; eight native asset and 15 installer tests
-pass. Old reference links remain valid. New model adoption/cost is unmeasured;
-the copied asset grows while the separate active reference read is removed.
+pass. Old reference links remain valid. [Model screen](HOSTAGE-SINGLE-READ-MODEL-01-REVIEW.md)
+confirms batched project/entry/asset read without opening the redirect. Baseline
+87,216 tokens/88.793s; skill 92,819/82.136s (**+6.42% / −7.50%**). Required
+transitions remain covered despite grouped subtests; extra witnesses differ.
+Both standalone test summaries pass but have partial headers. Eight separate
+replay controls match and raw/resources/inventories reconcile. Not a general or
+causal efficiency win; earlier adverse evidence and featured numbers stay fixed.
 
 한국어: 호출 제어 도구의 사용법과 구현을 한 파일에서 확인하도록 연결을
-줄였다. 실행 코드 구조는 기존과 같고 로컬·설치 검증은 통과했다. 복사되는
-파일은 커지므로, 읽기 단계 감소가 실제 토큰 절감으로 이어지는지는 미확인이다.
+줄였다. 새 모델은 프로젝트·지침·도구를 함께 읽고 필요한 검증을 유지했다.
+토큰은 6.42% 증가, 시간은 7.50% 감소로 전체 효율 향상은 아직 아니다.
+원본 개별 테스트 출력 일부 누락은 별도 재실행 결과로 대체하지 않는다.
 
 Reviewed transfer probe: [keyed publication screen](HOSTAGE-KEYED-PUBLISH-01-REVIEW.md)
 tests same-document suppression without blocking other keys/instances. The new
