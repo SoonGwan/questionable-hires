@@ -1,0 +1,21 @@
+{
+  "revision": "f76ee9c223bcff290d76d0548c81b2325a970a3e",
+  "started_at": "2026-09-14T23:27:19.132867+00:00",
+  "schedule": [
+    "original",
+    "candidate"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 360,
+  "session_persistence_requested": true,
+  "source_revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "case": {
+    "id": "link-history",
+    "skill": "necromancer",
+    "task": "Review two independent proposed cleanups in httpx._models._parse_header_links:\nA: change only url, params = val.split(\";\", 1) to url, params = val.split(\";\").\nB: change only key, value = param.split(\"=\") to key, value = param.split(\"=\", 1).\nKeep the surrounding try/except, breaks, stripping and caller unchanged.\nDo not combine the proposals. Are they behavior-preserving at Response.links?\nThis is a compatibility review, not an instruction to improve standards support.\n\nObserve actual httpx.Response(200, headers=...).links for current, A-only and\nB-only, independently, with these six Link header inputs in this order:\n1. No Link header.\n2. </next>\n3. </next>; rel=next\n4. </next>; rel=next; type=text/plain\n5. </next>; token=a=b; rel=next\n6. </next>; preload; rel=next\nRetain the complete returned mapping (keys and values) or actual error for each\nof all 18 observations. Explain changes and unchanged controls through the actual\npublic property and parser. Compatibility means preserving these current\nobservations; a potentially useful behavior change is not equivalent cleanup.\n\nEstablish locally evidenced history: inspect the relevant attributed change and\nan earlier operational implementation plus its Response.links caller. Distinguish\ncode movement/renaming from introduction. Cite actual ancestor code; first-ever\norigin or author intent is not required and must not be invented. Use only\nancestors of pinned HEAD, not external issues or other branch tips.\nGive separate retain/simplify/remove recommendations and the behavior to preserve.\n\nPreserve all original files and installed resources. No network, installations,\nfetching, commits or publishing. Use <PREINSTALLED_PYTHON> with -B; pytest also\nwith -p no:cacheprovider. In-memory substitutions or owned disposable copies are\nallowed; no particular implementation technique is required. Scratch must stay\ninside this project and be removed before finishing. Captured output is enough;\nno separate report file or persistent harness is required."
+  },
+  "protocol_sha256": "0de40dde8c2fd3028266929a3b75f67f9d6c483e41c8c5b17c51997e5cd15b90"
+}
