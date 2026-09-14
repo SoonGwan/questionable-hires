@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Capture localization — 2026-09-15, launches `d21d6f4` through `4a70281`
 
+[Persisted CLI tool-response diagnostic](CLI-ROLLOUT-PROBE-01.md), launch `bcd761d`,
+now retains both actual response chunks (92 bytes, witness hash match), tool
+arguments and same-session polling. CLI completion still omits BEGIN. Four reviewed
+tool records are exported; full private context remains local. Retain CLI transport
+and use explicit equivalent persistence across future comparison arms. No skill
+gain or historical rescore; 27 runner and four extraction/reconciliation tests pass.
+
+한국어: 세션 저장 기록에서는 실제 도구 응답 두 조각과 호출 인자를 보존했고
+92바이트 원본 해시가 일치했다. 앞으로 비교군에 동일한 저장 설정을 적용할
+근거가 생겼다. 전체 비공개 문맥은 로컬에만 남기며 스킬 성능 개선 주장은 아니다.
+
 [Native streaming preflight](APP-SERVER-NATIVE-CAPTURE-01.md) now retains the full
 delayed payload, genuine assertion diagnostics, cap flags and timeout output.
 Four native evidence-reconciliation tests pass. This preflight covered standalone
