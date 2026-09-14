@@ -116,6 +116,31 @@ class HistoryHelperTests(unittest.TestCase):
         after = {str(p.relative_to(self.root)): p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
         self.assertEqual(before, after)
 
+    def test_git_lines_preserve_embedded_separators_and_carriage_returns(self):
+        self.git('config', 'core.autocrlf', 'false')
+        for separator in ('\v', '\f', '\x1c', '\x1d', '\x1e', '\x85', '\u2028', '\u2029', '\r'):
+            for ending in ('\n', '\r\n', ''):
+                with self.subTest(separator=repr(separator), ending=repr(ending)):
+                    first = f'const label = "before{separator}after";'
+                    second = 'const done = true;'
+                    source = first + '\n' + second + ending
+                    (self.root / 'legacy.py').write_bytes(source.encode('utf-8'))
+                    commit = self.commit('Keep Git physical rows')
+                    result = helper.trace(self.root, 'legacy.py', 1, 2)
+                    expected = [first, second + ('\r' if ending == '\r\n' else '')]
+                    self.assertEqual([r['text'] for r in result['current_lines']], expected)
+                    self.assertEqual([r['text'] for r in result['blame']], expected)
+                    self.assertEqual([r['current_line'] for r in result['blame']], [1, 2])
+                    raw = subprocess.check_output(
+                        ['git', 'show', '--format=', '--no-color', commit, '--', 'legacy.py'],
+                        cwd=self.root).decode('utf-8')
+                    excerpt = helper.selected_patch_excerpt(raw, 'legacy.py', [1, 2])
+                    self.assertIsNotNone(excerpt)
+                    self.assertIn(first, excerpt)
+                    self.assertEqual((self.root / 'legacy.py').read_bytes(), source.encode('utf-8'))
+                    with self.assertRaisesRegex(ValueError, 'Line range exceeds'):
+                        helper.trace(self.root, 'legacy.py', 3, 3)
+
     def test_cli_emits_parseable_evidence_for_only_selected_behavior(self):
         completed = subprocess.run(
             [sys.executable, '-B', str(ROOT / 'skills/necromancer/scripts/trace.py'),

@@ -11,14 +11,26 @@ import subprocess
 
 
 def git(repo, *args):
-    return subprocess.run(['git', '--no-pager', '--no-optional-locks', '--literal-pathspecs',
+    result = subprocess.run(['git', '--no-pager', '--no-optional-locks', '--literal-pathspecs',
                            '-c', 'core.fsmonitor=false', '-c', 'core.quotePath=false', *args],
-                          cwd=repo, text=True, capture_output=True, timeout=20)
+                          cwd=repo, capture_output=True, timeout=20)
+    # Universal-newline decoding would rewrite CR bytes in source evidence.
+    result.stdout = result.stdout.decode('utf-8')
+    result.stderr = result.stderr.decode('utf-8')
+    return result
+
+
+def git_lines(text):
+    """Git numbers LF-delimited rows; CR and Unicode separators are content."""
+    rows = text.split('\n')
+    if rows[-1] == '':
+        rows.pop()
+    return rows
 
 
 def parse_blame(output):
     rows, current = [], None
-    for line in output.splitlines():
+    for line in git_lines(output):
         match = re.fullmatch(r'([0-9a-f]{40,64}) (\d+) (\d+)(?: \d+)?', line)
         if match:
             commit, old, new = match.groups()
@@ -85,7 +97,7 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
         row_count += 1
 
     old = new = old_left = new_left = None
-    for line in body.splitlines():
+    for line in git_lines(body):
         match = (re.fullmatch(r'@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@.*', line)
                  if line.startswith('@@ -') else None)
         if match:
@@ -168,7 +180,7 @@ def trace(repo, filename, start, end, max_commits=3):
         raise ValueError('Select 1–100 lines and 1–5 commits')
     if target.stat().st_size > 2_000_000:
         raise ValueError('Selected file exceeds 2 MB; use focused native tools')
-    lines = target.read_text().splitlines()
+    lines = git_lines(target.read_bytes().decode('utf-8'))
     if end > len(lines):
         raise ValueError('Line range exceeds current file')
     evidence = dict(path=path.as_posix(), current_lines=[dict(line=i + 1, text=lines[i])

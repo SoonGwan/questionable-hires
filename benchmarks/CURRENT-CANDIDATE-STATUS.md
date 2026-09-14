@@ -11,13 +11,23 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Current Necromancer runtime correction: [Git physical lines](NECROMANCER-PHYSICAL-LINES-01.md).
+LF-only parsing and byte-preserving UTF-8 decoding keep current source, blame
+and patch rows aligned. All 27 real-Git separator/ending combinations pass;
+model adoption and cost remain unmeasured for this correction.
+Full current local suite: 481 tests passed in 68.185s, no failures/skips.
+
+한국어: 이력 수집기가 문자열 속 구분 문자나 CR 때문에 현재 코드와 Git 이력을
+다르게 표시하던 오류를 수정했다. 실제 Git 저장소의 27개 조합을 검증했으며,
+모델 성능 향상 수치로 해석하지 않는다.
+
 Current Con Artist runtime correction: [physical source lines](CON-ARTIST-PHYSICAL-LINES-01.md).
 Valid UTF-8 string separators previously shifted AST excerpts and silently
 omitted source. The collector now uses Python physical line boundaries while
 preserving raw hashes, cache and no-execution behavior. Targeted native Python
 checks pass; model adoption/cost for this revision are not yet measured. Other
 skill runtimes and historical results remain unchanged.
-Full current local suite: 480 tests passed in 65.191s, no failures/skips.
+Local suite at `c7683ca`: 480 tests passed in 65.191s, no failures/skips.
 
 한국어: 테스트 감사용 코드 수집기가 문자열 속 유니코드 구분 문자를 줄바꿈으로
 잘못 세어 코드를 잘라내던 오류를 고쳤다. 원본 해시와 읽기 전용 동작은 유지했다.

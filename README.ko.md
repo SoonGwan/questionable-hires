@@ -177,6 +177,7 @@ Store 검토는 연결 오류 후 시간 초과됐습니다. 모든 시도와 �
   필요한 경우 [읽기 전용 맥락 수집기](skills/con-artist/references/python-context.md)에 정의 이름이나 오류 추적에 나온 `file.py:123`을 지정해 해당 함수·클래스 본문, 상위 경로의 지침·설정, conftest 색인을 한 번에 모을 수 있습니다. 프로젝트 코드를 import하지 않으며, 색인은 탐색을 돕는 자료이지 테스트 동작이나 모든 의존성을 검증한 결과가 아닙니다.
   [물리적 줄 번호 처리](benchmarks/CON-ARTIST-PHYSICAL-LINES-01.md)를 고쳐 문자열 속 유니코드 구분 문자 때문에 코드가 잘리거나 줄 번호가 밀리는 문제를 해결했습니다. 로컬 소스 무결성 검증은 통과했으며 모델 비용 효과는 아직 미측정입니다.
 - **레거시 고고학자(`necromancer`):** 선택한 코드 줄의 현재 상태와 Git 이력을 모으고, 미커밋 변경·얕은 이력의 한계를 표시합니다. [사용법과 한계](skills/necromancer/references/focused-history.md). 과거 코드를 지금도 유지해야 하는지는 별도로 판단합니다.
+  [Git 줄 경계 처리](benchmarks/NECROMANCER-PHYSICAL-LINES-01.md)를 고쳐 현재 코드·줄별 이력·변경 발췌에서 문자열 속 구분 문자와 CR을 그대로 보존합니다. 실제 Git 검증은 통과했으며 모델 비용 효과는 아직 미측정입니다.
   [세 가지 판단을 요구한 개발 실험](benchmarks/results/necromancer-regions-01/README.md)에서 두 방식 모두 판단을 맞혔고, 스킬은 토큰 15.85%·시간 18.56% 감소를 기록했습니다. 추가 검증량 차이와 이미 노출된 단일 과제 때문에 일반화할 수 없으며, 선택형 이력 수집 도구는 사용하지 않았습니다.
 - **배포 생존 담당(`friday`):** 메모리 SQLite에서 마이그레이션·롤백 단계별 읽기 쿼리 검사를 재사용합니다. [사용법과 한계](skills/friday/references/sqlite-matrix.md). 쿼리 성공이 배포 준비 완료를 뜻하지 않으며, 다른 DB 엔진의 동작은 별도로 확인해야 합니다.
   최신 [실행 결과 재사용 안내](benchmarks/FRIDAY-RESULT-REUSE-01.md)는 기존 Python API를 기본 문서에 배치했습니다. [새 모델 실험](benchmarks/FRIDAY-RESULT-REUSE-MODEL-01-REVIEW.md)에서도 한 번의 실행 결과로 값 비교까지 마쳤지만, 토큰 39.28%, 시간 2.04% 증가와 검증량 차이로 효율 향상을 입증하지는 못했습니다. 실행 코드는 `e3bc342` 그대로입니다.

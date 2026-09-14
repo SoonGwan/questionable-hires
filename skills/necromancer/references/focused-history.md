@@ -18,6 +18,8 @@ Run from the worktree root or pass `--repo`. Use the actual installed skill path
 
 Limits are explicit: at most 100 selected lines, a 2 MB current file, 20 seconds per Git command, and at most five commits with `--max-commits`. Patch text is capped at 12,000 characters each; truncation and omitted commits are reported. Historical filenames from blame are used so a rename does not silently hide the relevant earlier patch.
 
+Source and Git output must decode as UTF-8. Line numbers follow Git's LF boundaries, not a language parser's: embedded Unicode separators and CR characters remain source content, including the CR in CRLF files. Current text, blame rows and numbered patch excerpts use the same boundary rule.
+
 Nearby regions of the same behavior can share one bounded range instead of recollecting status, attribution and the same patches separately. Combine only when the intervening context is relevant; check omitted commits and truncation before reusing the result. Keep distant or unrelated regions separate. Fewer calls are not a saving if a wider range adds irrelevant history or hides a decisive commit.
 
 For an unambiguous single-file patch, only complete hunks overlapping the attributed historical lines are returned, with `omitted_hunks` counting excluded hunks. This is a focused excerpt, not the entire change or proof that omitted changes are unrelated semantically. Commit metadata and nearby hunk context remain. Ambiguous/multi-file/combined patches or no matching hunk fall back to the full capped output. If surrounding changes matter, inspect `git show <commit> -- <historical-path>`; do not infer their absence from the excerpt.
