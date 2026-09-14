@@ -44,8 +44,17 @@ JSON
   not a commit or whole-repository snapshot.
 - Optional `"watch":["notes.txt"]`: existing files/directories checked, **not
   copied/executed**. `originals` gives selected hashes/modes/unchanged status;
-  `comparison_copies_removed` gives cleanup. Reuse those checks; new entries,
-  Git status and whole-repository integrity need separate checks when requested.
+  `comparison_copies_removed` gives cleanup. Reuse those selected-file checks.
+- Optional `"guard_tree":true`: when whole-project preservation is requested and
+  reading the whole source is authorized, compare all source entries around the
+  native comparison, including Git/ignored files, empty directories and modes.
+  Hash files internally; report `tree_guard` unchanged/counts/inventory digest,
+  not another full hash listing. Symlinks are recorded without reading targets.
+  Added/removed/changed entries abort without restoration. This replaces a custom
+  before/after tree snapshot for that interval, not Git diff review or later checks.
+  Opt-in only: at most 10,000 entries including root and 20 MB streamed per
+  inventory, separate from the copying budget. No exclusions; unsupported sizes
+  or special files fail closed. Use a suitable native method for larger projects.
 - Selections must be canonical project-relative, unique and disjoint after
   expansion; no root, Git internals, symlinks, empty directories or overlap.
   `fixed`/`vary` must be nonempty. Directory traversal: at most 10,000 entries.
@@ -79,6 +88,8 @@ early exits or adversarial execution. Inspect actual test evidence regardless.
 Python 3.9+/POSIX, trusted tests only: **not a sandbox**. Project-local copies are
 removed; changed selected originals abort without restoration. Watch excludes new
 entries/arbitrary effects. Test paths/subprocesses can escape; snapshots aren't atomic.
+Tree guards do not cover link targets, ownership, timestamps, ACLs/xattrs, concurrent
+writes, changes restored between observations, or operations outside their interval.
 
 Limits: shared 20 MB snapshot budget, 30 seconds/check (`--timeout` up to 300),
 last 12,000 output characters. Known overflow rejects before reading; reads stop

@@ -19,6 +19,7 @@ import tempfile
 import time
 
 MAX_FIXED_ENTRIES = 10_000
+MAX_GUARD_BYTES = 20_000_000
 
 BOOTSTRAP = '''import importlib, json, pathlib, runpy, sys, traceback
 recipe = json.loads(sys.argv[1])
@@ -168,13 +169,57 @@ def read_limited(path, limit):
         return stream.read(limit + 1)
 
 
+def tree_inventory(root):
+    """Bounded read-only inventory; record links, never their target contents."""
+    inventory, pending, total = {}, [root], 0
+    while pending:
+        path = pending.pop()
+        name = path.relative_to(root).as_posix()
+        info = path.lstat()
+        mode = stat.S_IMODE(info.st_mode)
+        if len(inventory) >= MAX_FIXED_ENTRIES:
+            raise ValueError('Tree guard exceeds 10000 entries')
+        if stat.S_ISLNK(info.st_mode):
+            inventory[name] = ('symlink', mode, os.readlink(path))
+        elif stat.S_ISDIR(info.st_mode):
+            inventory[name] = ('directory', mode)
+            with os.scandir(path) as entries:
+                for entry in entries:
+                    if len(inventory) + len(pending) >= MAX_FIXED_ENTRIES:
+                        raise ValueError('Tree guard exceeds 10000 entries')
+                    pending.append(Path(entry.path))
+        elif stat.S_ISREG(info.st_mode):
+            if info.st_size > MAX_GUARD_BYTES - total:
+                raise ValueError('Tree guard exceeds 20 MB per inventory')
+            digest = hashlib.sha256()
+            descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+            with os.fdopen(descriptor, 'rb') as stream:
+                opened = os.fstat(stream.fileno())
+                if not stat.S_ISREG(opened.st_mode) or (opened.st_dev, opened.st_ino) != (info.st_dev, info.st_ino):
+                    raise ValueError('Tree guard file changed while opening')
+                while True:
+                    chunk = stream.read(min(65536, MAX_GUARD_BYTES - total + 1))
+                    if not chunk:
+                        break
+                    total += len(chunk)
+                    if total > MAX_GUARD_BYTES:
+                        raise ValueError('Tree guard exceeds 20 MB per inventory')
+                    digest.update(chunk)
+            inventory[name] = ('file', mode, digest.hexdigest())
+        else:
+            raise ValueError('Tree guard supports only files, directories and symlinks')
+    return inventory, total
+
+
 def compare(root, recipe, python=sys.executable, timeout=30):
     root = Path(root).resolve(strict=True)
     if os.name != 'posix' or not 0 < timeout <= 300:
         raise ValueError('Requires POSIX and a timeout in (0, 300]')
     required = {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}
-    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots'}:
+    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree'}:
         raise ValueError('Recipe requires fixed, vary, before, after, imports, runner and tests')
+    if type(recipe.get('guard_tree', False)) is not bool:
+        raise ValueError('guard_tree must be a boolean')
     if 'watch' in recipe and (not isinstance(recipe['watch'], list)
                             or not all(isinstance(v, str) and v for v in recipe['watch'])):
         raise ValueError('watch must be a list of project-relative selections')
@@ -286,6 +331,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
         result['working_tree_after'] = dict(
             sha256={name: hashlib.sha256(originals[name]).hexdigest() for name in recipe['vary']},
             modes={name: modes[name] for name in recipe['vary']})
+    guarded = tree_inventory(root) if recipe.get('guard_tree', False) else None
     try:
         with tempfile.TemporaryDirectory(prefix='.receipt-', dir=root) as scratch:
             for label, (files, file_modes) in variants.items():
@@ -307,6 +353,18 @@ def compare(root, recipe, python=sys.executable, timeout=30):
                    or (root/name).stat().st_mode & 0o777 != modes[name]]
         if changed:
             raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))
+        if guarded is not None:
+            current, _ = tree_inventory(root)
+            previous, byte_count = guarded
+            differences = sorted(name for name in previous.keys() | current.keys()
+                                 if previous.get(name) != current.get(name))
+            if differences:
+                raise RuntimeError('Project tree changed; not restored (' + str(len(differences))
+                                   + ' paths): ' + ', '.join(differences[:20]))
+            encoded = json.dumps(previous, sort_keys=True, separators=(',', ':')).encode()
+            result['tree_guard'] = dict(unchanged=True, entries=len(previous),
+                file_bytes=byte_count, inventory_sha256=hashlib.sha256(encoded).hexdigest(),
+                scope='source root including Git metadata; symlink targets not read')
     result['originals'] = dict(unchanged=True,
         sha256={name: hashlib.sha256(content).hexdigest() for name, content in originals.items()},
         modes=modes, watch_only=watched)
@@ -323,6 +381,9 @@ def main():
 fixed: current tests/data/config/dependencies; files or explicit directories.
 vary: implementation files. Paths are project-relative and disjoint.
 watch (optional): originals to check but not copy or execute; files/directories.
+guard_tree (optional boolean): inventory all source entries including Git around
+the comparison; no link traversal. 10000 entries/20 MB read per inventory. Opt in
+only when whole-project preservation is requested and all source reads are allowed.
 before: commit expression. after: commit expression or {"working_tree":true}.
 Working-tree after freezes current bytes/modes once, not the index or a commit.
 imports: modules that must load inside each copy. runner: unittest or pytest.

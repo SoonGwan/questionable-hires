@@ -11,6 +11,21 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [optional tree guard candidate](RECEIPT-TREE-GUARD-01.md), previous source
+`41b5f28`: requested whole-project preservation can use bounded internal inventories
+instead of a custom hash wrapper. Includes Git/ignored files, directories/modes
+and link text; no target traversal or restoration, not a sandbox. Nine actual
+native mutation subcases reject changes; eight guard tests plus 47 helper and 12
+packaging tests pass. Guide +896 bytes and two opt-in inventory reads; model
+adoption, wrapper removal and whole-task efficiency remain unmeasured.
+
+한국어: 전체 원본 보존이 필요한 경우에만 켜는 변경 감지 기능을 추가했다.
+모델이 별도 해시 검사 코드를 만드는 대신 내부에서 제한된 범위로 비교한다.
+Git·무시된 파일·디렉터리 권한·링크 자체를 포함하며 링크 대상은 읽지 않는다.
+실제 테스트 실행 중 원본을 바꾸는 9종을 탐지했고 관련 테스트 67개가 통과했다.
+격리·복구 기능은 아니다. 안내는 896바이트 늘고 선택 시 전체 읽기가 추가된다.
+모델의 실제 채택·중복 코드 제거·토큰과 시간 절감은 아직 측정하지 않았다.
+
 Receipt [output-choice screen 01](RECEIPT-OUTPUT-CHOICE-01-REVIEW.md), launch
 `15a2e38`, resources `72e1ff2`: compact output adopted, but 82,253 tokens / 53.954s,
 **+7.18% / +9.90%** versus prior skill execution. Six shell calls versus four,
