@@ -15,6 +15,11 @@ For supported Python layouts, use the helper's copying, same-process import
 checks and cleanup; inspect source only for adaptation/diagnosis. Use native
 isolation for unsupported runtimes, added/deleted implementations or retained copies.
 
+When verification must preserve Git metadata too, use
+`git --no-optional-locks -c diff.autoRefreshIndex=false` for status/diff review.
+This suppresses optional index refresh, not other command/driver side effects;
+it does not make mutating commands read-only or change persistent Git settings.
+
 Adapt **one** example's paths/tests/revisions; HEAD/HEAD^ are placeholders.
 Neither writes a recipe, commits, stashes nor reverses user patches.
 

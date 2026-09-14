@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [Git review preservation](RECEIPT-GIT-REVIEW-01.md), parent `65c2340`:
+native tests reproduce optional index writes after comparison. Command-local
+status/diff controls preserve the tree with identical review output; optional
+locks alone failed here. 27 related tests pass. Guide +295 bytes; no model-cost
+measurement, universal read-only guarantee or change to frozen results.
+
+한국어: 비교 후 Git 조회의 인덱스 변경을 실제로 재현했다. 두 명령별 갱신
+제어를 함께 쓰면 변경 내역을 숨기지 않고 원본 목록을 유지했다. 관련 테스트
+27개 통과, 안내 295바이트 증가. 모든 부작용 방지·모델 효율 향상 실측은 아니다.
+
 Receipt [guide compaction 02](RECEIPT-GUIDE-COMPACT-02.md), parent `b55aa6a`:
 single guide 7,563 → 6,953 bytes (−8.07%); runtime, examples and evidence
 requirements unchanged. Author validation only; no model-token gain measured.
