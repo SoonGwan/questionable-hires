@@ -9,17 +9,35 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Refresh-owner checkpoint — 2026-09-15, launch `3c29443`
+
+[Refresh-owner review](HOSTAGE-REFRESH-01-REVIEW.md), measured resources `864005b`:
+four completed sessions, observed sum reductions 10.61% tokens / 8.62% time,
+but both skill answers claim passing tests without original native results.
+Separate author controls confirm retained suites accept valid alternatives and
+detect faulty cleanup (16/16); they do not repair original capture gaps.
+The next candidate separates native-test commands from final diff/status instead
+of prescribing one batch. Structure validation and two fixture tests pass;
+model adoption is not yet measured. No featured-chart change or broad win claim.
+
+한국어: 새 4세션에서 토큰 10.61%·시간 8.62% 감소가 관측됐지만 스킬 두 번
+모두 원본 테스트 결과 없는 통과 보고가 있어 성공으로 인정하지 않는다.
+별도 대조 16회는 정상/오류 구분을 확인했을 뿐 원본 누락을 보완하지 않는다.
+다음 후보는 테스트와 최종 점검 명령을 분리한다. 로컬 검사만 통과했고
+실제 모델 보고 개선은 미검증이다. 기존 대표 그래프는 유지한다.
+
 ## Reviewed checkpoint 09 — 2026-09-14, launch `3a7d972`
 
 [Refresh-owner transfer preflight](HOSTAGE-REFRESH-01-PROTOCOL.md), resources
 `864005b`: two new variants explicitly require concurrent callbacks, not duplicate
 suppression. Native six-method oracle accepts the correct owner and detects older
 success/failure/cancellation clearing pending (three actual assertions). Oracle is
-not model-visible; two fixture tests pass. Four model sessions are planned, not run.
+not model-visible; two fixture tests pass. At this historical preflight, four model
+sessions were planned; completed observations are linked in the checkpoint above.
 
 한국어: 동시 실행을 유지해야 하는 새 과제 2종의 사전 검증을 끝냈다. 정상
 구현 통과와 잘못된 상태 해제 3경로 실패를 확인했다. 정답 테스트는 모델에
-주지 않는다. 기본/스킬 4세션 계획이며 아직 성능 실측은 아니다.
+주지 않는다. 당시 기본/스킬 4세션 계획이었으며 완료 결과는 위 새 기록에 있다.
 
 [Hostage evidence/entry candidate 02](HOSTAGE-EVIDENCE-COMPACT-02.md), parent
 `a43f4bf`: require locating native test evidence before pass claims; combine

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!*.pyc'\"' -g '\"'!__pycache__'\"' -g '\"'!*lock*'\"'\"",
+    "aggregated_output": "<WORKSPACE>\nnotes.txt\nrequirements.md\npreview.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat requirements.md preview.py notes.txt; find .. -name AGENTS.md -print'",
+    "aggregated_output": "total 24\ndrwxr-xr-x@  6 admin  staff  192 Sep 14 23:53 .\ndrwx------@  3 admin  staff   96 Sep 14 23:53 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 14 23:53 .git\n-rw-r--r--@  1 admin  staff   43 Sep 14 23:53 notes.txt\n-rw-r--r--@  1 admin  staff  464 Sep 14 23:53 preview.py\n-rw-r--r--@  1 admin  staff  719 Sep 14 23:53 requirements.md\nEvery refresh must invoke its supplied fetch(key), even while another\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\nEach call returns its own exact fetched object or propagates its own exception.\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\nfailure or cancellation cannot clear pending while the latest is unresolved.\nLatest settlement clears pending even if older calls remain running. Keep the prior\nvalue during loading and on failure/cancellation. Instances are independent.\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\nclass Preview:\n    def __init__(self):\n        self.pending = False\n        self.value = None\n        self.generation = 0\n\n    async def refresh(self, key, fetch):\n        self.generation += 1\n        generation = self.generation\n        self.pending = True\n        try:\n            value = await fetch(key)\n            if generation == self.generation:\n                self.value = value\n            return value\n        finally:\n            self.pending = False\nOwner draft: preserve this unrelated note.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest discover -v'",
+    "aggregated_output": "test_both_success_completion_orders (test_preview.PreviewTests) ... ok\ntest_earlier_failure_or_cancellation_leaves_latest_pending (test_preview.PreviewTests) ... test_instances_are_independent (test_preview.PreviewTests) ... ok\ntest_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests) ... test_synchronous_callback_failure_and_retry (test_preview.PreviewTests) ... \n======================================================================\nFAIL: test_earlier_failure_or_cancellation_leaves_latest_pending (test_preview.PreviewTests) (mode='cancel_task')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_preview.py\", line 118, in test_earlier_failure_or_cancellation_leaves_latest_pending\n    await self.settle_unsuccessfully(earlier, first, mode)\n  File \"<WORKSPACE>/test_preview.py\", line 68, in settle_unsuccessfully\n    self.assertEqual(caught.exception.args, (\"controlled cancellation\",))\nAssertionError: Tuples differ: () != ('controlled cancellation',)\n\nSecond tuple contains 1 additional elements.\nFirst extra element 0:\n'controlled cancellation'\n\n- ()\n+ ('controlled cancellation',)\n\n======================================================================\nFAIL: test_earlier_failure_or_cancellation_leaves_latest_pending (test_preview.PreviewTests) (mode='callback_cancel')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_preview.py\", line 118, in test_earlier_failure_or_cancellation_leaves_latest_pending\n    await self.settle_unsuccessfully(earlier, first, mode)\n  File \"<WORKSPACE>/test_preview.py\", line 77, in settle_unsuccessfully\n    self.assertIs(caught.exception, error)\nAssertionError: CancelledError() is not CancelledError('callback cancellation')\n\n======================================================================\nFAIL: test_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests) (mode='cancel_task')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_preview.py\", line 135, in test_latest_failure_or_cancellation_and_retry\n    await self.settle_unsuccessfully(latest, second, mode)\n  File \"<WORKSPACE>/test_preview.py\", line 68, in settle_unsuccessfully\n    self.assertEqual(caught.exception.args, (\"controlled cancellation\",))\nAssertionError: Tuples differ: () != ('controlled cancellation',)\n\nSecond tuple contains 1 additional elements.\nFirst extra element 0:\n'controlled cancellation'\n\n- ()\n+ ('controlled cancellation',)\n\n======================================================================\nFAIL: test_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests) (mode='callback_cancel')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_preview.py\", line 135, in test_latest_failure_or_cancellation_and_retry\n    await self.settle_unsuccessfully(latest, second, mode)\n  File \"<WORKSPACE>/test_preview.py\", line 77, in settle_unsuccessfully\n    self.assertIs(caught.exception, error)\nAssertionError: CancelledError() is not CancelledError('callback cancellation')\n\n======================================================================\nFAIL: test_synchronous_callback_failure_and_retry (test_preview.PreviewTests) (error='CancelledError')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_preview.py\", line 173, in test_synchronous_callback_failure_and_retry\n    self.assertIs(caught.exception, error)\nAssertionError: CancelledError() is not CancelledError('synchronous cancellation')\n\n----------------------------------------------------------------------\nRan 5 tests in 0.038s\n\nFAILED (failures=5)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_8",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest discover -v'",
+    "aggregated_output": "test_both_success_completion_orders (test_preview.PreviewTests) ... ok\ntest_earlier_failure_or_cancellation_leaves_latest_pending (test_preview.PreviewTests) ... ok\ntest_instances_are_independent (test_preview.PreviewTests) ... ok\ntest_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests) ... ok\ntest_synchronous_callback_failure_and_retry (test_preview.PreviewTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.041s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_9",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff -- preview.py requirements.md notes.txt; git status --short'",
+    "aggregated_output": "diff --git a/preview.py b/preview.py\nindex f56b4ff..2ce0584 100644\n--- a/preview.py\n+++ b/preview.py\n@@ -14,4 +14,5 @@ class Preview:\n                 self.value = value\n             return value\n         finally:\n-            self.pending = False\n+            if generation == self.generation:\n+                self.pending = False\n M preview.py\n?? test_preview.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_10",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest discover -v'",
+    "aggregated_output": "test_both_success_completion_orders (test_preview.PreviewTests) ... ok\ntest_earlier_failure_or_cancellation_leaves_latest_pending (test_preview.PreviewTests) ... ok\ntest_instances_are_independent (test_preview.PreviewTests) ... ok\ntest_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests) ... ok\ntest_synchronous_callback_failure_and_retry (test_preview.PreviewTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.041s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

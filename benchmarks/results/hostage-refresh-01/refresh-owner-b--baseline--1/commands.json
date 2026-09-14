@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!'\"\\\\.git' -g '\"'!*pyc'\"'\"",
+    "aggregated_output": "<WORKSPACE>\nnotes.txt\nrequirements.md\npreview.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat requirements.md preview.py notes.txt; find .. -name AGENTS.md -print'",
+    "aggregated_output": "total 24\ndrwxr-xr-x@  6 admin  staff  192 Sep 14 23:55 .\ndrwx------@  3 admin  staff   96 Sep 14 23:55 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 14 23:55 .git\n-rw-r--r--@  1 admin  staff   43 Sep 14 23:55 notes.txt\n-rw-r--r--@  1 admin  staff  514 Sep 14 23:55 preview.py\n-rw-r--r--@  1 admin  staff  719 Sep 14 23:55 requirements.md\nEvery refresh must invoke its supplied fetch(key), even while another\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\nEach call returns its own exact fetched object or propagates its own exception.\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\nfailure or cancellation cannot clear pending while the latest is unresolved.\nLatest settlement clears pending even if older calls remain running. Keep the prior\nvalue during loading and on failure/cancellation. Instances are independent.\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\nclass Preview:\n    def __init__(self):\n        self.pending = False\n        self.value = None\n        self.generation = 0\n\n    async def refresh(self, key, fetch):\n        self.generation += 1\n        generation = self.generation\n        self.pending = True\n        try:\n            value = await fetch(key)\n            if generation == self.generation:\n                self.value = value\n            return value\n        finally:\n            if generation == self.generation:\n                self.pending = False\nOwner draft: preserve this unrelated note.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; git diff -- preview.py requirements.md notes.txt'",
+    "aggregated_output": "",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest discover -v'",
+    "aggregated_output": "test_earlier_cancellation_keeps_latest_pending (test_preview.PreviewTests) ... ok\ntest_earlier_failure_keeps_latest_pending (test_preview.PreviewTests) ... ok\ntest_instances_are_independent (test_preview.PreviewTests) ... ok\ntest_latest_cancellation_clears_pending_and_allows_retry (test_preview.PreviewTests) ... ok\ntest_latest_failure_clears_pending_and_allows_retry (test_preview.PreviewTests) ... ok\ntest_success_earlier_completes_first (test_preview.PreviewTests) ... ok\ntest_success_latest_completes_first (test_preview.PreviewTests) ... ok\ntest_synchronous_callback_failure_and_retry (test_preview.PreviewTests) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.039s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_8",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --exit-code -- preview.py requirements.md notes.txt; git status --short'",
+    "aggregated_output": "?? test_preview.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

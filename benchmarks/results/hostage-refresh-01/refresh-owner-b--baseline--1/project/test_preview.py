@@ -1,0 +1,229 @@
+import asyncio
+import unittest
+
+from preview import Preview
+
+
+TIMEOUT = 2
+
+
+class ControlledFetch:
+    """Let a test observe invocation and explicitly settle the fetch."""
+
+    def __init__(self):
+        self.entered = asyncio.Event()
+        self.result = asyncio.get_running_loop().create_future()
+        self.keys = []
+
+    async def __call__(self, key):
+        self.keys.append(key)
+        self.entered.set()
+        return await self.result
+
+
+class PreviewTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.tasks = []
+        self.addAsyncCleanup(self.cleanup_tasks)
+
+    async def cleanup_tasks(self):
+        for task in self.tasks:
+            if not task.done():
+                task.cancel()
+        if self.tasks:
+            await asyncio.wait_for(
+                asyncio.gather(*self.tasks, return_exceptions=True), TIMEOUT
+            )
+
+    async def bounded(self, awaitable):
+        # A timeout must fail the test, not cancel the refresh being observed.
+        task = asyncio.ensure_future(awaitable)
+        if task not in self.tasks:
+            self.tasks.append(task)
+        return await asyncio.wait_for(asyncio.shield(task), TIMEOUT)
+
+    async def start(self, preview, key, fetch):
+        task = asyncio.create_task(preview.refresh(key, fetch))
+        self.tasks.append(task)
+        await asyncio.wait_for(fetch.entered.wait(), TIMEOUT)
+        self.assertEqual(fetch.keys, [key])
+        self.assertFalse(task.done())
+        return task
+
+    async def seeded(self):
+        preview = Preview()
+        self.assertIsNone(preview.value)
+        self.assertFalse(preview.pending)
+        prior = object()
+
+        async def fetch(key):
+            self.assertEqual(key, "seed")
+            return prior
+
+        self.assertIs(await self.bounded(preview.refresh("seed", fetch)), prior)
+        self.assertIs(preview.value, prior)
+        self.assertFalse(preview.pending)
+        return preview, prior
+
+    async def overlapping(self):
+        preview, prior = await self.seeded()
+        earlier, latest = ControlledFetch(), ControlledFetch()
+        # Equal keys explicitly exercise the prohibition on deduplication.
+        old_task = await self.start(preview, "same", earlier)
+        self.assertTrue(preview.pending)
+        self.assertIs(preview.value, prior)
+        new_task = await self.start(preview, "same", latest)
+        self.assertTrue(preview.pending)
+        self.assertIs(preview.value, prior)
+        self.assertFalse(old_task.done())
+        self.assertFalse(earlier.result.cancelled())
+        return preview, prior, earlier, latest, old_task, new_task
+
+    async def test_success_earlier_completes_first(self):
+        preview, prior, earlier, latest, old, new = await self.overlapping()
+        old_value, new_value = object(), object()
+        earlier.result.set_result(old_value)
+        self.assertIs(await self.bounded(old), old_value)
+        self.assertTrue(preview.pending)
+        self.assertIs(preview.value, prior)
+        self.assertFalse(new.done())
+        latest.result.set_result(new_value)
+        self.assertIs(await self.bounded(new), new_value)
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, new_value)
+
+    async def test_success_latest_completes_first(self):
+        preview, _, earlier, latest, old, new = await self.overlapping()
+        old_value, new_value = object(), object()
+        latest.result.set_result(new_value)
+        self.assertIs(await self.bounded(new), new_value)
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, new_value)
+        self.assertFalse(old.done())
+        self.assertFalse(earlier.result.cancelled())
+        earlier.result.set_result(old_value)
+        self.assertIs(await self.bounded(old), old_value)
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, new_value)
+
+    async def settle_unsuccessfully(self, task, fetch, cancel):
+        if cancel:
+            task.cancel()
+            with self.assertRaises(asyncio.CancelledError):
+                await self.bounded(task)
+            self.assertTrue(task.cancelled())
+        else:
+            error = RuntimeError("controlled failure")
+            fetch.result.set_exception(error)
+            with self.assertRaises(RuntimeError) as caught:
+                await self.bounded(task)
+            self.assertIs(caught.exception, error)
+
+    async def earlier_unsuccessful(self, cancel):
+        preview, prior, earlier, latest, old, new = await self.overlapping()
+        await self.settle_unsuccessfully(old, earlier, cancel)
+        self.assertTrue(preview.pending)
+        self.assertIs(preview.value, prior)
+        self.assertFalse(new.done())
+        self.assertFalse(latest.result.cancelled())
+        value = object()
+        latest.result.set_result(value)
+        self.assertIs(await self.bounded(new), value)
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, value)
+
+    async def test_earlier_failure_keeps_latest_pending(self):
+        await self.earlier_unsuccessful(cancel=False)
+
+    async def test_earlier_cancellation_keeps_latest_pending(self):
+        await self.earlier_unsuccessful(cancel=True)
+
+    async def latest_unsuccessful_and_retry(self, cancel):
+        preview, prior, earlier, latest, old, new = await self.overlapping()
+        await self.settle_unsuccessfully(new, latest, cancel)
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, prior)
+        self.assertFalse(old.done())
+        self.assertFalse(earlier.result.cancelled())
+        retry_fetch = ControlledFetch()
+        retry = await self.start(preview, "retry", retry_fetch)
+        self.assertTrue(preview.pending)
+        self.assertIs(preview.value, prior)
+        old_value = object()
+        earlier.result.set_result(old_value)
+        self.assertIs(await self.bounded(old), old_value)
+        self.assertTrue(preview.pending)
+        self.assertIs(preview.value, prior)
+        self.assertFalse(retry.done())
+        value = object()
+        retry_fetch.result.set_result(value)
+        self.assertIs(await self.bounded(retry), value)
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, value)
+
+    async def test_latest_failure_clears_pending_and_allows_retry(self):
+        await self.latest_unsuccessful_and_retry(cancel=False)
+
+    async def test_latest_cancellation_clears_pending_and_allows_retry(self):
+        await self.latest_unsuccessful_and_retry(cancel=True)
+
+    async def test_synchronous_callback_failure_and_retry(self):
+        preview, prior = await self.seeded()
+        earlier = ControlledFetch()
+        old = await self.start(preview, "old", earlier)
+        error = ValueError("synchronous failure")
+        keys = []
+
+        def fail(key):
+            keys.append(key)
+            self.assertTrue(preview.pending)
+            self.assertIs(preview.value, prior)
+            raise error
+
+        with self.assertRaises(ValueError) as caught:
+            await self.bounded(preview.refresh("sync", fail))
+        self.assertIs(caught.exception, error)
+        self.assertEqual(keys, ["sync"])
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, prior)
+        self.assertFalse(old.done())
+        earlier.result.set_result(object())
+        self.assertIs(await self.bounded(old), earlier.result.result())
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, prior)
+        retry_fetch = ControlledFetch()
+        retry = await self.start(preview, "retry", retry_fetch)
+        self.assertTrue(preview.pending)
+        self.assertIs(preview.value, prior)
+        value = object()
+        retry_fetch.result.set_result(value)
+        self.assertIs(await self.bounded(retry), value)
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, value)
+
+    async def test_instances_are_independent(self):
+        first, first_prior = await self.seeded()
+        second, second_prior = await self.seeded()
+        first_fetch, second_fetch = ControlledFetch(), ControlledFetch()
+        first_task = await self.start(first, "shared", first_fetch)
+        self.assertFalse(second.pending)
+        self.assertIs(second.value, second_prior)
+        second_task = await self.start(second, "shared", second_fetch)
+        value = object()
+        first_fetch.result.set_result(value)
+        self.assertIs(await self.bounded(first_task), value)
+        self.assertFalse(first.pending)
+        self.assertIs(first.value, value)
+        self.assertTrue(second.pending)
+        self.assertIs(second.value, second_prior)
+        self.assertFalse(second_task.done())
+        await self.settle_unsuccessfully(second_task, second_fetch, cancel=False)
+        self.assertFalse(second.pending)
+        self.assertIs(second.value, second_prior)
+        self.assertFalse(first.pending)
+        self.assertIs(first.value, value)
+        self.assertIsNot(first_prior, second_prior)
+
+
+if __name__ == "__main__":
+    unittest.main()
