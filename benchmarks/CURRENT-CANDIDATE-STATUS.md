@@ -11,15 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
-Current Hostage instruction candidate: [copy integrity without reprinting](HOSTAGE-COPY-CHECK-01.md).
-The prior model read the usage header and then printed all copied support.
-The candidate offers a native byte comparison for copy-integrity questions while
-retaining implementation inspection for adaptation/uncertainty. Four affected
-integration tests pass; runtime unchanged, model adoption/cost unmeasured.
+Current Hostage [copy-check model review](HOSTAGE-COPY-CHECK-MODEL-01-REVIEW.md),
+launch `b2b213a`, resource `ee1fa12`: 148,517 tokens / 166.259s, one skill-only
+session. `cmp` succeeds as the final shell command, but full implementation is
+still printed after the usage header. Copy verification adopted; cheap reading
+not established. Original 43/43 native passes; 12 separate replays match,
+including valid mutable updates and rejection of stale in-place changes.
+Unequal extra work, deadline-based detection of skipped decode, no baseline or
+efficiency claim. No favorable retry or featured change.
 
-한국어: 사용 설명을 읽고 복사본 전체를 다시 출력한 기록에 대응해, 복사 무결성만
-확인할 때는 바이트 비교를 쓰도록 안내했다. 실제 동작 검증이나 필요한 구현
-읽기는 유지하며, 모델의 토큰 절감은 아직 검증하지 않았다.
+한국어: 새 모델이 복사본 비교를 실제로 사용했지만 그 전에 구현 전체를 읽었다.
+148,517토큰·166.259초, 원본 테스트 43개 통과와 별도 결함 재실행 12개를 확인했다.
+복사 확인 채택과 중복 읽기 해소는 다르며, 절감 효과를 입증한 결과는 아니다.
 
 Current Necromancer runtime correction: [Git physical lines](NECROMANCER-PHYSICAL-LINES-01.md).
 LF-only parsing and byte-preserving UTF-8 decoding keep current source, blame
