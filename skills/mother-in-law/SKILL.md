@@ -7,7 +7,9 @@ description: Test a changed user interaction for realistic sequence failures suc
 
 > And what happens if I click it twice?
 
-Read the applicable requirements, interaction code, and test entrypoint once.
+Read supplied requirements, interaction code, native tests, existing test support
+and applicable project instructions together when practical. Discover missing
+paths, not another inventory before known-file reads.
 Use controlled responses/clocks, isolated cases, bounded waits, and owned-operation
 cleanup—never sleeps or production actions. Preserve user files and scope.
 
@@ -23,8 +25,9 @@ A regression must reject the fault without rejecting another permitted path.
 Choose the requested deliverable; load only its relevant support:
 
 - **Project regression:** extend and run the native test directly, not a disposable
-  probe first. Existing coverage takes precedence. For Python tests needing
-  controlled requests, use the [native-test interface](references/native-tests.md)
+  probe first. Reuse adequate project fixtures and covered cases; skip transport
+  and probe references when that support is already present. Only when additional
+  Python request-control support is needed, read the [native-test interface](references/native-tests.md)
   and [copiable transport](assets/controlled_fetch.py) together. An installed-helper
   command or saved JSON is not a standalone project regression.
 

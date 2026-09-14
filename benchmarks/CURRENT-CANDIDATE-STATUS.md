@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Native pager interval screen — 2026-09-15, launch `fa3c10d`
 
+Subsequent candidate: move the existing-project-support decision into the
+entrypoint, before transport resources are read; batch supplied project inputs
+and instructions before missing-path discovery. This follows the observed unused
+reads, preserving native assertions, interval contracts, cleanup and QA-only
+scope. No executable asset changes. The measured pair below describes the old
+entrypoint, not this unmeasured routing correction.
+
+한국어: 후속 수정은 기존 프로젝트 지원이 충분하면 transport 설명·자산을 읽지
+않도록 진입점에서 먼저 결정하게 한다. 이미 주어진 파일과 프로젝트 지침을 함께
+읽도록 바꿨고, 중간 상태 검증·정리·QA 범위는 유지했다. 아래 측정치는 수정 전
+버전의 결과이며, 이 변경의 절감 효과로 옮겨 붙이지 않는다.
+
 [Pager screen](results/pager-loading-01/README.md), Mother-in-law entrypoint
 `c6d8ea0`: both arms deliver four native tests with two real loading-interval
 failures and correct error/retry control, preserving production and existing
