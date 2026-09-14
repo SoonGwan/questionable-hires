@@ -140,6 +140,57 @@ class AuditContextTests(unittest.TestCase):
         outer = context.collect(self.root, ['nested.py:5'])['selected'][0]
         self.assertEqual(outer['symbol'], 'outer')
 
+    def test_named_selection_crosses_control_flow_without_executing_it(self):
+        source = ('raise RuntimeError("must never execute")\n'
+                  'if unavailable_flag:\n'
+                  '    def outer():\n'
+                  '        try:\n'
+                  '            @decorate\n'
+                  '            async def inner():\n'
+                  '                return 7\n'
+                  '        finally:\n'
+                  '            pass\n')
+        self.put('conditional.py', source)
+        expected = context.collect(self.root, ['conditional.py:7'])['selected'][0]
+        try:
+            actual = context.collect(self.root, ['conditional.py:outer.inner'])['selected'][0]
+        except ValueError as error:
+            self.fail('Known conditional definition was unavailable: ' + str(error))
+        self.assertEqual(actual['symbol'], expected['symbol'])
+        self.assertEqual(actual['source'], expected['source'])
+        self.assertEqual(actual['sha256'], expected['sha256'])
+        self.assertEqual((self.root / 'conditional.py').read_text(), source)
+
+    def test_named_selection_crosses_handler_loop_and_class_conditional(self):
+        self.put('branches.py', 'try:\n    missing()\nexcept Exception:\n'
+                 '    for item in missing_items:\n        class Adapter:\n'
+                 '            if missing_flag:\n                def save(self):\n'
+                 '                    return item\n')
+        try:
+            result = context.collect(self.root, ['branches.py:Adapter.save'])['selected'][0]
+        except ValueError as error:
+            self.fail('Known conditional method was unavailable: ' + str(error))
+        self.assertEqual(result['source'],
+                         '7:                 def save(self):\n8:                     return item')
+
+    def test_conditional_duplicates_and_ambiguous_parent_stay_incomplete(self):
+        sources = [
+            ('if FLAG:\n    def selected(): pass\nelse:\n    def selected(): pass\n', 'selected'),
+            ('def selected(): pass\nif FLAG:\n    def selected(): pass\n', 'selected'),
+            ('if FLAG:\n    class Store:\n        def save(self): pass\n'
+             'else:\n    class Store:\n        pass\n', 'Store.save'),
+        ]
+        for source, symbol in sources:
+            with self.subTest(symbol=symbol, source=source):
+                self.put('duplicate.py', source)
+                with self.assertRaisesRegex(ValueError, 'Missing or ambiguous definition'):
+                    context.collect(self.root, ['duplicate.py:' + symbol])
+
+    def test_nested_scope_does_not_leak_into_unqualified_selection(self):
+        self.put('scope.py', 'def outer():\n    if FLAG:\n        def inner(): pass\n')
+        with self.assertRaisesRegex(ValueError, 'Missing or ambiguous definition'):
+            context.collect(self.root, ['scope.py:inner'])
+
     def test_invalid_or_module_lines_fail_without_partial_cli_context(self):
         for suffix in ('0', '-1', '01', '9999999', '999', '1', '2'):
             with self.subTest(suffix=suffix), self.assertRaises(ValueError):
