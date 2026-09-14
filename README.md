@@ -54,11 +54,6 @@ Production code stayed intact. The no-skill baseline also found this flaw. [Comp
 
 ## Hire one. Or make eight questionable decisions.
 
-Development candidate: [Landlord and Hostage discovery routing](benchmarks/DISCOVERY-ROUTING-01-REVIEW.md)
-targets repeated discovery while preserving required checks. Its two-task screen
-does not demonstrate savings: atomic skill costs more and Store skill times out
-after a connection error. All attempts and missing usage are retained.
-
 With Node.js/npm and Git, install one hire or the whole team:
 
 ```sh
@@ -104,7 +99,34 @@ Normal automatic selection is enabled. No lifecycle hooks, telemetry, background
 
 ### Some coworkers brought tools
 
-The installer includes optional, locally executed helpers. They require **Python 3.9+**; Con Artist's mutation runner, Receipt and Exorcist also require POSIX. They do not install dependencies or run in the background.
+Start with a normal skill request; helpers are optional when the project lacks
+equivalent support. The Python helpers require **Python 3.9+**; Con Artist's
+mutation runner, Receipt and Exorcist also require POSIX. Hostage's standalone
+JavaScript module needs a JavaScript runtime, **not Python**; its native tests
+use Node.js. Helpers do not install dependencies or run in the background.
+
+| Hire | Optional support / boundary |
+| --- | --- |
+| Hostage Negotiator | Controlled [Python calls](skills/hostage-negotiator/assets/controlled_call.py) or [JavaScript calls and cleanup](skills/hostage-negotiator/assets/controlled_call.mjs). Tests still own application assertions; no browser evidence. |
+| Con Artist | [Disposable Python test audits](skills/con-artist/references/python-audit.md) and [read-only context collection](skills/con-artist/references/python-context.md). Run trusted tests only; not a sandbox. |
+| Necromancer | [Focused Git history](skills/necromancer/references/focused-history.md). Attribution is evidence, not a decision to keep or delete code. |
+| Friday | [SQLite compatibility checks](skills/friday/references/sqlite-matrix.md). Not proof of production rollout safety or other DB engines. |
+| Receipt | [Before/after Python fix verification](skills/receipt/references/existing-fix.md). Preserve the reproduction, source identity and both results. |
+| Exorcist | [Bounded foreground probes](skills/exorcist/references/bounded-probe.md). Not for background services. |
+| Mother-in-law | [Controlled interaction checks](skills/mother-in-law/SKILL.md) for compatible UI-less Python components. Existing project tests take precedence; not browser verification. |
+| Landlord | [Review guidance](skills/landlord/SKILL.md); no separate bundled runtime helper. |
+
+**Evidence is mixed.** Some tools are demonstrably useful, but installing them
+does not establish lower model cost. The state-content correction catches
+a previously missed fault; broad all-eight efficiency remains unproven.
+[Current reviewed status](benchmarks/CURRENT-CANDIDATE-STATUS.md).
+
+<details>
+<summary>Per-tool development results, adverse runs and known limitations</summary>
+
+[Landlord and Hostage discovery routing](benchmarks/DISCOVERY-ROUTING-01-REVIEW.md)
+does not demonstrate savings: atomic skill costs more and Store skill times out
+after a connection error. All attempts and missing usage are retained.
 
 - **Hostage Negotiator:** optional [controlled asyncio callbacks](skills/hostage-negotiator/references/async-callback.md) replace repeated entry/release gates when project support is absent. Tests retain application assertions and task cleanup. [Model adoption](benchmarks/HOSTAGE-CALL-MODEL-01-REVIEW.md) is observed, but baseline timeout and absent original test output prevent an accepted efficiency comparison. Separate native replay passes the implementation and rejects defect controls; it does not fill the original evidence gap.
   Optional [JavaScript Promise callbacks](skills/hostage-negotiator/assets/controlled_call.mjs) provide standalone ES-module support too. [Native validation](benchmarks/HOSTAGE-JAVASCRIPT-CALL-01.md) covers identity and defect controls. A [model screen](benchmarks/HOSTAGE-JAVASCRIPT-PANEL-01-REVIEW.md) confirms adoption and passing regressions, but costs **93.51% more tokens and 11.32% more time** than baseline on one authored task. No efficiency or browser-coverage claim.
@@ -136,6 +158,8 @@ The subsequent [Mother interval-contract check](benchmarks/results/mother-interv
 
 The [subsequent work-selection check](benchmarks/results/mother-interval-02/README.md) avoids those extra tests while preserving required assertions in separate replay: **−14.54% recorded tokens / +83.52% time**. Connection resets, one missing original test output and n=1 prevent overall efficiency acceptance; replay does not fill missing model evidence.
 
+</details>
+
 Use the normal skill prompts above; the agent can choose the helper when it saves repeated work. A small task or an already-established result may be cheaper to handle directly. Installing the team does not imply every task should use all eight hires.
 
 ## Does it actually work?
@@ -156,16 +180,18 @@ Use the normal skill prompts above; the agent can choose the helper when it save
 The earlier [candidate-development checkpoint](benchmarks/results/mother-in-law-fast-2026-09-12/README.md)
 is retained separately.
 
-**Latest reviewed combined check: the efficiency goal is not met.** The
-[nine-task gate 05](benchmarks/BUNDLE-CONTRACT-05-REVIEW.md), 18 fresh sessions at
-resource snapshot `d4a52ef`, used **3.12% fewer total tokens and 8.53% less summed
-process time** with skills. Unequal extra work and one missing native QA output
-remain disclosed. Separate unchanged-test author replay passes corrected search
-behavior without erasing that capture gap. This exposed single-repeat check
-is not a measurement of later resource edits or proof of universal harm/benefit.
-These ratios of sums are not directly comparable to the original chart's
-equal-task mean ratios. [Earlier adverse combined results](benchmarks/BUNDLE-CURRENT-02-REVIEW.md)
-and [gate 04](benchmarks/BUNDLE-CONTRACT-04-REVIEW.md) remain preserved.
+**Whole-team checkpoint 07 (2026-09-14): broad efficiency remains unproven.**
+The [nine-task review](benchmarks/BUNDLE-CONTRACT-07-REVIEW.md), 18 fresh sessions
+at resource snapshot `32bf8bd`, records **0.55% fewer total tokens and 21.04% less
+summed process time** with skills. Three task pairs cost more on both axes; five
+use more tokens. Unequal extra work and a missing leading baseline test-output
+section remain disclosed. Twenty separate native controls match expected
+outcomes; replay does not fill original output gaps. These exposed authored tasks,
+n=1 per arm and shared host/cache do not prove a general 20–30% gain or measure
+later edits. Ratios of sums differ from the original chart's equal-task means.
+[Checkpoint 05](benchmarks/BUNDLE-CONTRACT-05-REVIEW.md),
+[checkpoint 06](benchmarks/BUNDLE-CONTRACT-06-REVIEW.md) and
+[earlier adverse results](benchmarks/BUNDLE-CURRENT-02-REVIEW.md) remain preserved.
 
 **The chart below is the original experiment, not a measurement of today's files.** Later candidates have targeted checks, real HTTPX audits/design reviews, and this project's packaging repair recorded in [current candidate status](benchmarks/CURRENT-CANDIDATE-STATUS.md). Results are mixed: local helper gains do not automatically reduce model-session cost, and some comparisons perform unequal verification. Broad performance improvement remains unproven. Historical runs, including [nine-task screen 05](benchmarks/FAST-REGRESSION-05.md), remain available rather than being replaced by a favorable sample.
 

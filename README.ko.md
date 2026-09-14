@@ -27,9 +27,8 @@
 
 ## 진짜 작동하나요?
 
-개발 중인 후보: [구조 관리인·범위 협상가의 탐색 지침 검증](benchmarks/DISCOVERY-ROUTING-01-REVIEW.md)은
-아직 절감 효과를 입증하지 못했습니다. 파일 내보내기는 스킬 비용이 늘었고,
-Store 검토는 연결 오류 후 시간 초과됐습니다. 모든 시도와 사용량 누락을 그대로 남겼습니다.
+현재는 **개발 프리뷰**입니다. 특정 도구의 동작 보강은 확인했지만,
+8개 스킬 전체가 더 적은 비용으로 좋은 결과를 낸다는 주장은 아직 입증되지 않았습니다.
 
 <!-- featured-benchmark:start -->
 
@@ -46,17 +45,17 @@ Store 검토는 연결 오류 후 시간 초과됐습니다. 모든 시도와 �
 
 [이전 후보 개발 결과](benchmarks/results/mother-in-law-fast-2026-09-12/README.md)
 
-**최근 검토한 팀 전체 통합 실험도 비용 절감 목표는 미달입니다.**
-[9개 과제 통합 실험 05](benchmarks/BUNDLE-CONTRACT-05-REVIEW.md)는 리소스 버전
-`d4a52ef`에서 새 세션 18개를 실행했고, 스킬 적용 시 **총 토큰은 3.12% 감소,
-실행 시간 합계는 8.53% 감소**했습니다. 추가 작업량 차이와 QA 실행 출력 누락 1건도
-함께 공개합니다. 별도 재실행에서는 생성된 테스트가 정상 수정 코드를 통과했지만,
-원래 실행의 출력 누락을 대체하지는 않습니다. 이미 사용한 과제의 1회 비교이며,
-이후 수정본의 측정이나 보편적인 우열의 증거가 아닙니다. 합계 비율은 아래 과거
-그래프의 과제별 비율 평균과 직접 비교할 수 없습니다.
-[이전 불리한 통합 결과](benchmarks/BUNDLE-CURRENT-02-REVIEW.md)와
-[통합 실험 04](benchmarks/BUNDLE-CONTRACT-04-REVIEW.md),
-[현재 후보 상태](benchmarks/CURRENT-CANDIDATE-STATUS.md)도 확인할 수 있습니다.
+**팀 전체 통합 실험 07(2026-09-14): 일반적인 효율 향상은 아직 미입증입니다.**
+[9개 과제 검토](benchmarks/BUNDLE-CONTRACT-07-REVIEW.md)는 리소스 `32bf8bd`에서
+새 세션 18개를 실행했고 **총 토큰 0.55% 감소, 실행 시간 합계 21.04% 감소**를
+기록했습니다. 과제 3개는 두 비용이 모두 늘었고, 5개는 토큰이 늘었습니다.
+추가 작업량 차이와 기본 실행 테스트 출력 앞부분 누락도 공개합니다. 별도 네이티브
+대조군 20개는 예상대로 동작했지만 원본 출력 누락을 채우지는 않습니다.
+이미 사용한 작성자 제작 과제·조건별 1회·공유 실행 환경이므로 일반적인 20–30%
+개선이나 이후 수정본의 성과를 증명하지 않습니다. 합계 비율은 과거 그래프의
+과제별 비율 평균과 다릅니다. [통합 실험 05](benchmarks/BUNDLE-CONTRACT-05-REVIEW.md),
+[통합 실험 06](benchmarks/BUNDLE-CONTRACT-06-REVIEW.md),
+[이전 불리한 결과](benchmarks/BUNDLE-CURRENT-02-REVIEW.md)도 그대로 보존합니다.
 
 <details>
 <summary>과거 팀 전체 실험 — 초기 스킬 파일로 실행한 72개 세션</summary>
@@ -136,7 +135,32 @@ $friday 이 배포 롤백 가능한지 봐줘.
 
 ### 도구도 들고 출근합니다
 
-설치본에는 필요한 경우에만 로컬에서 실행하는 보조 도구가 포함됩니다. 도구 실행에는 **Python 3.9 이상**, Con Artist의 결함 주입 실행기·Receipt·Exorcist에는 POSIX 환경도 필요합니다. 의존성을 자동 설치하거나 백그라운드에서 실행하지 않습니다.
+먼저 일반 스킬 요청으로 시작하세요. 프로젝트에 동등한 도구가 없을 때만 보조
+도구를 선택하면 됩니다. Python 도구에는 **Python 3.9 이상**, 테스트 사기 감별사의
+결함 주입 실행기·수정 검증관·가설 퇴마사에는 POSIX도 필요합니다. 범위 협상가의
+독립 JavaScript 모듈은 **Python 없이** JavaScript 환경에서 사용할 수 있으며,
+네이티브 검증에는 Node.js를 사용합니다. 의존성 자동 설치나 상시 실행은 없습니다.
+
+| 스킬 | 선택형 도구와 적용 범위 |
+| --- | --- |
+| 범위 협상가 | [Python 호출 제어](skills/hostage-negotiator/assets/controlled_call.py) 또는 [JavaScript 호출·정리](skills/hostage-negotiator/assets/controlled_call.mjs). 앱 검증은 테스트가 담당하며 브라우저 검증은 아닙니다. |
+| 테스트 사기 감별사 | [Python 테스트 결함 감사](skills/con-artist/references/python-audit.md)와 [읽기 전용 맥락 수집](skills/con-artist/references/python-context.md). 신뢰하는 테스트만 실행하며 샌드박스가 아닙니다. |
+| 레거시 고고학자 | [관련 Git 이력 수집](skills/necromancer/references/focused-history.md). 과거 이유를 찾았다고 유지·삭제 결론이 자동으로 정해지지는 않습니다. |
+| 배포 생존 담당 | [SQLite 호환성 확인](skills/friday/references/sqlite-matrix.md). 운영 배포나 다른 DB 엔진의 안전성을 증명하지 않습니다. |
+| 수정 검증관 | [Python 수정 전후 비교](skills/receipt/references/existing-fix.md). 재현 조건·소스 식별 정보·양쪽 결과를 함께 보존합니다. |
+| 가설 퇴마사 | [시간·출력 제한 진단 실행](skills/exorcist/references/bounded-probe.md). 백그라운드 서비스용이 아닙니다. |
+| 클릭 꼬투리 QA | [응답 순서 제어 검증](skills/mother-in-law/SKILL.md). 지원 인터페이스에 맞는 UI 없는 Python 컴포넌트용이며 기존 테스트가 우선입니다. |
+| 구조 관리인 | [구조 검토 지침](skills/landlord/SKILL.md). 별도 실행 도구는 포함하지 않습니다. |
+
+**효과는 아직 혼재합니다.** 최근 상태 내용 비교 보강은 놓치던 결함을 잡았지만,
+도구 설치가 모델 비용 절감을 보장하지는 않습니다. [현재 검토 결과](benchmarks/CURRENT-CANDIDATE-STATUS.md).
+
+<details>
+<summary>도구별 개발 실험·불리한 결과·알려진 한계 펼치기</summary>
+
+[구조 관리인·범위 협상가의 탐색 지침 검증](benchmarks/DISCOVERY-ROUTING-01-REVIEW.md)은
+아직 절감 효과를 입증하지 못했습니다. 파일 내보내기는 스킬 비용이 늘었고,
+Store 검토는 연결 오류 후 시간 초과됐습니다. 모든 시도와 사용량 누락을 그대로 남겼습니다.
 
 - **범위 협상가(`hostage-negotiator`):** 프로젝트에 동등한 테스트 도구가 없을 때 [비동기 호출 제어 도구](skills/hostage-negotiator/references/async-callback.md)로 반복적인 시작·완료 신호 코드를 대체할 수 있습니다. 앱 동작 검증과 태스크 정리는 테스트가 담당합니다. [모델의 실제 사용](benchmarks/HOSTAGE-CALL-MODEL-01-REVIEW.md)은 확인했지만 기준 실행 시간 초과와 원본 테스트 출력 누락 때문에 효율 비교는 인정하지 않습니다. 별도 재실행에서 구현 통과·결함 대조군 검출을 확인했으며, 이는 원본 누락을 대신하지 않습니다.
   [JavaScript Promise 호출 제어 도구](skills/hostage-negotiator/assets/controlled_call.mjs)도 독립 ES 모듈로 사용할 수 있습니다. [네이티브 검증](benchmarks/HOSTAGE-JAVASCRIPT-CALL-01.md)에서 동일성과 결함 검출을 확인했습니다. [모델 비교](benchmarks/HOSTAGE-JAVASCRIPT-PANEL-01-REVIEW.md)에서 도구 사용과 회귀 테스트 통과는 확인했지만, 작성자 제작 과제 1개에서 기본 실행보다 **토큰 93.51%, 시간 11.32% 증가**했습니다. 효율 향상이나 브라우저 검증을 주장하지 않습니다.
@@ -167,6 +191,8 @@ $friday 이 배포 롤백 가능한지 봐줘.
 이어진 [QA 중간 상태 검증 실험](benchmarks/results/mother-interval-01/README.md)에서는 누락됐던 검증을 실제로 추가했습니다. 생성된 테스트를 변경 없이 별도로 재실행해 일시적인 오류는 잡고 정상 수정은 통과하는 것도 확인했습니다. 다만 **토큰 9.32%·시간 10.58% 증가**로 비용 목표는 미달입니다. 스킬 실행 두 건의 원래 출력은 일부 누락됐으며, 별도 재실행으로 그 기록을 대체하지 않습니다. 특정 오류 검증의 진전이지 효율 개선 성공은 아닙니다.
 
 [후속 작업량 비교](benchmarks/results/mother-interval-02/README.md)에서는 이런 추가 테스트를 줄였고, 별도 재실행에서 필수 오류 검증도 유지했습니다. **기록상 토큰 14.54% 감소·시간 83.52% 증가**였습니다. 연결 재시도·원래 테스트 출력 한 건 누락·조건별 1회 실행 때문에 종합 효율 개선으로 인정하지 않았으며, 별도 재실행으로 모델 증거 누락을 채우지 않습니다.
+
+</details>
 
 위의 스킬 요청을 그대로 사용하면 필요한 경우 도구를 선택할 수 있습니다. 작은 작업이나 이미 증거를 확보한 작업은 직접 처리하는 편이 더 저렴할 수 있습니다. 전원 설치가 모든 작업에 8명을 전부 투입하라는 뜻은 아닙니다.
 
