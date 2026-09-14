@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Checkpoint 09 intake — 2026-09-14, launch `3a7d972`, review pending
 
+[Persistence/diagnosis review](BUNDLE-CONTRACT-09-AUDIT-REVIEW.md): four literal
+replays finish. Con Artist captures all four missing-write checks without reading
+helper source. Baseline persistence lacks its first original phase; replay only
+matches the captured suffix and changes its copy's Git index. Both diagnosis
+probes exercise actual transport/ordering and reproduce captured JSON, with
+different artifact work. Two original gaps now known: form skill and persistence
+baseline. Consolidation, publication and remaining independent controls are due.
+
+한국어: 저장 감사·검색 진단의 실제 재실행 4개를 확인했다. 기본 저장 감사의
+첫 원본 실행 출력 누락을 추가 발견했고 폼 스킬 누락과 함께 유지한다. 스킬
+감사는 도우미 소스를 읽지 않고 네 결과를 확보했다. 전체 공개·추가 대조는 남았다.
+
 [Boundary/formatter review](BUNDLE-CONTRACT-09-BOUNDARY-FORMATTER-REVIEW.md):
 boundary original before/after evidence is present and final files match across
 arms; 8 native adverse/positive controls match. Formatter recommendations are
