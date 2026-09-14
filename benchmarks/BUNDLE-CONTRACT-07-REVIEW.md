@@ -145,3 +145,18 @@ deadline are present. Production/contract hashes match and final diff is empty.
 Unlike skill, writes the same detailed evidence to a file and captured output.
 No observed capture/scope issue; raw/resource/inventory and alternative replay
 pending. Neither arm edits production to make this QA-only task pass.
+
+## Search diagnosis — baseline
+
+Completed: **104,584 tokens / 97.347s**, five shell calls. Retains a rerunnable
+actual Search/transport experiment plus README and recorded JSON. Controls both
+completion orders using request futures; records and asserts the actual request
+path, query parameters and no-cache headers. Native JSON shows new final result
+normally and stale old result in reversed order. Two-second behavioral waits
+and cooperative owned task/future cleanup are present. Production hashes and
+final diff match. Correct final conclusion limits proof to the cache-free local
+reproduction; production timing/cache behavior remains unverified.
+Unlike skill, writes the full JSON and also prints it, and creates experiment
+notes. Baseline asserts every intermediate query result; this is diagnostic
+reproduction, not a product regression requiring a valid future fix to expose
+an older result. No observed capture/scope issue; reconciliation pending.
