@@ -92,3 +92,26 @@ class ProbeReplacementTests(unittest.TestCase):
         self.assertEqual(same['checks']['correct_probe']['observation_ref'], '#/audits/0/checks/correct_probe')
         self.assertNotIn('correct_probe_reused', different)
         self.assertEqual(different['checks']['correct_probe']['exit_code'], 0)
+
+    def test_replacements_can_use_new_probe_support_without_leaking_into_original_checks(self):
+        strengthened = self.strong.replace('import unittest', 'import unittest\nfrom audit_support import EXPECTED')
+        strengthened = strengthened.replace('self.assertEqual(values, ["item"])', 'self.assertEqual(values, EXPECTED)')
+        recipe = dict(self.recipe, probe_replacements={'test_service.py':strengthened},
+                      probe_files={'audit_support.py':'EXPECTED = ["item"]\n'})
+        result = helper.audit(self.root, recipe)
+        self.assertEqual(result['checks']['correct_tests']['exit_code'], 0)
+        self.assertEqual(result['checks']['mutant_tests']['exit_code'], 0)
+        self.assertEqual(result['checks']['correct_probe']['exit_code'], 0)
+        self.assertEqual(result['checks']['mutant_probe']['exit_code'], 1)
+        self.assertFalse((self.root / 'audit_support.py').exists())
+        self.assertEqual((self.root / 'test_service.py').read_text(), self.weak)
+
+    def test_replacement_limits_and_native_mode_are_validated_before_execution(self):
+        invalid = [dict(probe_replacements={'test_service.py':'x' * 20_000_000}),
+                   dict(probe='assert True'), dict(probe_tests=[]),
+                   dict(probe_files={'test_service.py':self.strong})]
+        for update in invalid:
+            with self.subTest(fields=list(update)), patch.object(helper, 'execute') as execute:
+                with self.assertRaises(ValueError):
+                    helper.audit(self.root, dict(self.recipe, **update))
+                execute.assert_not_called()

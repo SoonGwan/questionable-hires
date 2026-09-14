@@ -38,6 +38,38 @@ propagate the exit with `raise SystemExit(pytest.main([...]))`, not an ignored
 return. Native file probes already handle that propagation. Probe-created files
 do not carry over to another check.
 
+## Improve existing tests at their native paths
+
+For an existing test-file improvement, use `probe_replacements` (selected relative
+file path → complete proposed source text) with `probe_tests`, instead of copying
+and modifying test suites manually. Original-test checks keep the original bytes;
+both probe copies receive the proposed bytes at the same path and retain its mode.
+This preserves native module names and fixture layout without editing the original.
+
+```json
+{
+  "probe_replacements": {
+    "test_service.py": "import unittest\nfrom service import save\nclass Tests(unittest.TestCase):\n    def test_saved(self):\n        values = []\n        self.assertTrue(save(values, 'item'))\n        self.assertEqual(values, ['item'])\n"
+  },
+  "probe_tests": ["-v", "test_service"]
+}
+```
+
+Adapt the complete proposed test file, retaining required assertions/fixtures.
+The replacement must name a selected existing file and cannot replace the mutation
+target. Duplicate normalized paths, missing files, mixed inline `probe` mode and
+oversized contents are rejected before execution. Original selected bytes plus
+new/replacement probe contents share the 20 MB input budget. `probe_files` may
+also supply new support files; it still never overwrites existing paths.
+
+Use replacements for test/support changes, not to repair or bypass the production
+fault. File roles and meaningful assertions are reviewed, not inferred from names.
+This is trusted test execution, not a sandbox or proof of assertion quality.
+The same copied imports/precheck and native runner apply to each phase. Correct
+probe failure remains incomplete; changed replacement bytes invalidate batch
+probe reuse. Applying a validated improvement to the source project is a separate,
+authorized edit; this helper never applies it.
+
 Only for several justified faults, [batch reuse](python-audit-batch.md)
 includes probe contents and test arguments in its identity. For unexpected setup,
 assertion or cleanup failures, read [diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence).

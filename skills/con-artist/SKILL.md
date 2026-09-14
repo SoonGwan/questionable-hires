@@ -40,6 +40,8 @@ process does not prove what the test process loads.
   its bounded processes, selected-input integrity checks or shared-baseline batches
   remove needed orchestration. Python compatibility alone is not a reason to adopt
   it or load its guide. Read implementation for a concrete trust/adaptation question.
+  For proposed edits at existing native test paths, its replacement mode compares
+  original and improved tests in fresh copies without changing the source project.
 - Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)
   covers false-pass assertion helpers and incomplete checks. It is not routine setup.
 

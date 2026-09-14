@@ -6,7 +6,7 @@ loading unrelated import-root or runner-diagnostic details.
 For independent, already-scoped local audits, the same CLI accepts shared `files`,
 `imports`, `runner`, `tests`, optional `precheck` and `import_roots` plus a `mutations` list
 (1–8 objects). Move each fault's `target`, `old`, `new`, optional `probe` (or
-`probe_files`/`probe_tests`) and
+`probe_files`/`probe_replacements` with `probe_tests`) and
 `probe_when` into its own list entry. An entry may also override `tests` with native
 runner arguments when the audit requires separate test selections. Other per-entry
 overrides are unsupported.
@@ -24,7 +24,8 @@ per-test process exits. All selected tests and failure diagnostics remain necess
 Within that invocation, a successful normal test result is reused when selected
 bytes/modes, imports, ordered import roots, test arguments, interpreter, timeout and environment match.
 An identical stronger probe also reuses its successful correct-code observation
-under those same conditions; changing the probe runs a new correct-code check.
+under those same conditions; changing the probe, new files or replacement contents
+runs a new correct-code check.
 Each mutant test and mutant probe still runs in a fresh copy, as does every
 non-reused correct check. Nothing is cached across
 invocations. External services, changing dependencies, clock/random behavior and

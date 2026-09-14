@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist existing-path native probes — 2026-09-15, parent `dd315e0`
+
+[Same-path test improvements](EXISTING-TEST-PROBE-01.md) add optional
+`probe_replacements`: compare original and proposed native test files against
+correct/faulty code in fresh copies without editing the source project. Explicit
+selected paths, target exclusion, input limits, native errors, integrity/cleanup
+and content-sensitive batch reuse are checked. Seven feature tests and 80 existing
+helper tests pass. A separate author replay uses the earlier model-written store
+tests and records all four required phases with real payload assertion failures.
+Entry routing is conditional; no model adoption/cost evidence or chart changes.
+
+한국어: 같은 경로의 기존·보강 테스트를 정상·결함 코드에 각각 실행하는 기능을
+추가했다. 기능·기존 검사와 이전 모델 작성 테스트의 실제 재실행을 확인했다.
+원본 수정이나 도구 사용을 강제하지 않으며 모델 성능 향상은 아직 미측정이다.
+
 ## Con Artist copy-parent preparation — 2026-09-15, parent `d1615c4`
 
 [Local materialization check](AUDIT-MATERIALIZATION-01.md): each fresh audit copy

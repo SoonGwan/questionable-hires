@@ -52,7 +52,8 @@ The example validates a stronger assertion only if tests miss the fault, using
 `"probe_when": "survives"`. Omit that field (or use `"always"`) when the request
 requires validating the stronger assertion regardless. A nonzero mutant
 exit skips conditional probes; inspect the failure before calling it detection.
-For fixture-based native probes read [probe_files/probe_tests](python-audit-probes.md),
+For fixture-based native probes or same-path test improvements read
+[native files and replacements](python-audit-probes.md),
 without loading unrelated advanced modes.
 For several justified faults or required test-specific process exits, use
 [batch mode](python-audit-batch.md)
