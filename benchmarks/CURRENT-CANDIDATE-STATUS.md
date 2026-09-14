@@ -11,18 +11,32 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Hostage [fresh task-aware entry adoption](HOSTAGE-ENTRY-WAIT-MODEL-01-REVIEW.md),
+launch `e26ea1d`, resource `328bc1f`: 151,437 tokens / 156.115s, one skill-only
+session. Actual tests use the API with their corresponding application tasks.
+Final native 45/45 passes; first test command output is empty despite exit 0,
+preserved as a capture gap. Twelve unchanged-test replays match, including
+eight skipped-decode failures in 0.0992s without entry deadlines and valid mutable
+updates passing 45/45. Full-module rereading persists. No baseline, broad model
+efficiency claim or featured update.
+
+한국어: 새 모델이 작업 종료 감지 API를 올바른 요청에 연결해 사용했다. 마지막
+원본 테스트 45개 통과는 확인했지만 첫 테스트 명령의 출력 누락은 그대로 남겼다.
+별도 재실행에서 누락된 콜백 8건을 약 0.10초에 검출했다. 모델 전체 속도 개선이
+아니며, 151,437토큰·156.115초를 사용했고 구현 전체 읽기도 남아 있다.
+
 Current Hostage runtime addition: [task-aware callback entry](HOSTAGE-ENTRY-WAIT-01.md).
 Optional `startedBefore(task)` reports early task settlement instead of waiting
 for an impossible entry until timeout. Author-adapted retained tests preserve
 43/43 final passes and eight skipped-decode detections; fault diagnosis changes
 from 8.1120s to 0.1024s. First adaptation error is preserved; corrected native
-timing overlaps author regressions, n=1, no model adoption/cost or broad gain.
+timing overlaps author regressions, n=1; that local result is not model evidence.
 Full current local suite: 483 passed in 67.999s, no failures/skips.
 
 한국어: 앱 작업이 끝났는데 콜백 진입을 계속 기다리던 비용을 줄이는 선택형 API를
 추가했다. 작성자 적용본은 정상 43개 통과·결함 8개 검출을 유지하면서 실패 진단이
 8.1120초에서 0.1024초로 줄었다. 첫 적용 스크립트 오류도 보존했다. 모델 전체
-성능 수치가 아니며, 새 API의 모델 채택·토큰 비용은 아직 미검증이다.
+성능 수치가 아니며, 이후 모델 채택 결과는 위의 별도 기록으로 구분한다.
 
 Current Hostage [copy-check model review](HOSTAGE-COPY-CHECK-MODEL-01-REVIEW.md),
 launch `b2b213a`, resource `ee1fa12`: 148,517 tokens / 166.259s, one skill-only

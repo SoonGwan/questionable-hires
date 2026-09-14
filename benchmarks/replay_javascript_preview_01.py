@@ -8,6 +8,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import time
 
 from replay_hostage_call_01 import inventory
 
@@ -16,9 +17,10 @@ CASES_SHA = 'fd9d98e8557845c3f25aff22f7576c850323f7c0a815528427f7c486338f8c5c'
 
 
 def replay(run, in_place_probe=False, profile='preview-01'):
-    assert profile in ('preview-01', 'state-contents-01', 'copy-check-01')
+    assert profile in ('preview-01', 'state-contents-01', 'copy-check-01', 'entry-wait-01')
     adoption = profile != 'preview-01'
-    resource = {'state-contents-01': '691f896', 'copy-check-01': 'ee1fa12'}.get(profile, RESOURCE)
+    resource = {'state-contents-01': '691f896', 'copy-check-01': 'ee1fa12',
+                'entry-wait-01': '328bc1f'}.get(profile, RESOURCE)
     manifest = json.loads((run / 'run.json').read_text())
     assert manifest['finished_at'] and len(manifest['schedule']) == (1 if adoption else 2)
     source = subprocess.check_output(['git', 'show', resource + ':benchmarks/hostage-javascript-preview-cases.json'])
@@ -44,6 +46,8 @@ def replay(run, in_place_probe=False, profile='preview-01'):
         expected = set(case['files']) | {'preview.regression.test.mjs'}
         skill = meta['arm'] == 'skill'
         test_count = (43 if profile == 'copy-check-01' else 58) if adoption else (54 if skill else 33)
+        if profile == 'entry-wait-01':
+            test_count = 45
         if skill:
             expected.add('test-support/controlled_call.mjs')
             asset = subprocess.check_output(['git', 'show', resource + ':skills/hostage-negotiator/assets/controlled_call.mjs'])
@@ -55,6 +59,9 @@ def replay(run, in_place_probe=False, profile='preview-01'):
         owner = '#latestRequest' if skill and not adoption else '#request'
         token = 'Symbol()' if skill and not adoption else '{}'
         guard = f'if (this.{owner} === request)'
+        if profile == 'entry-wait-01':
+            owner = '#latestRequest'
+            guard = f'if (request === this.{owner})'
         assert final.count(guard) == 2
         assert final.count(f'const request = this.{owner} = {token};') == 1
         assert final.count('decode(bytes, signal)') == 1
@@ -100,6 +107,7 @@ def replay(run, in_place_probe=False, profile='preview-01'):
                 command = ['node', '--test', '--test-reporter=tap']
                 should_pass = variant in ('final', 'valid_mutable_updates')
                 deadline = 90 if adoption else 15
+                started = time.monotonic()
                 try:
                     result = subprocess.run(command, cwd=scratch, capture_output=True, text=True, timeout=deadline)
                     code, output, timed_out = result.returncode, result.stdout + result.stderr, False
@@ -107,6 +115,7 @@ def replay(run, in_place_probe=False, profile='preview-01'):
                     def decoded(value):
                         return value.decode(errors='replace') if isinstance(value, bytes) else value or ''
                     code, output, timed_out = None, decoded(error.stdout) + decoded(error.stderr), True
+                elapsed = time.monotonic() - started
                 unchanged = all((scratch / path).read_bytes() == (project / path).read_bytes()
                                 for path in before if path != 'preview.mjs')
                 counts = {key: int(value) for key, value in re.findall(r'^# (tests|pass|fail|cancelled|skipped) (\d+)$', output, re.M)}
@@ -116,6 +125,7 @@ def replay(run, in_place_probe=False, profile='preview-01'):
                            and (counts.get('pass') == test_count if should_pass else counts.get('fail', 0) > 0))
                 report['checks'].append({'cell': name, 'variant': variant, 'command': command,
                     'exit_code': code, 'timed_out': timed_out, 'process_deadline_seconds': deadline, 'counts': counts,
+                    'elapsed_seconds': elapsed,
                     'matched': matched, 'test_sources_unchanged': unchanged,
                     'replacement_source': implementation,
                     'output': output.replace(str(scratch), '<REPLAY>').replace(str(Path.home()), '<HOME>')})
@@ -134,7 +144,7 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--in-place-probe', action='store_true',
                         help='Separate post-review success-state mutation probe; never rewrite initial replay')
-    parser.add_argument('--profile', choices=('preview-01', 'state-contents-01', 'copy-check-01'), default='preview-01')
+    parser.add_argument('--profile', choices=('preview-01', 'state-contents-01', 'copy-check-01', 'entry-wait-01'), default='preview-01')
     args = parser.parse_args()
     if args.output.exists():
         parser.error('Refusing to overwrite an earlier author attempt')

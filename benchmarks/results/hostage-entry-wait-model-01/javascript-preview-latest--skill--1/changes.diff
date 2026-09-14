@@ -1,0 +1,537 @@
+diff --git a/preview.mjs b/preview.mjs
+index de863b9..a5c22e3 100644
+--- a/preview.mjs
++++ b/preview.mjs
+@@ -1,9 +1,22 @@
+ export class PreviewLoader {
+   state = { status: 'idle', value: null, error: null };
++  #latestRequest;
++
+   async load(key, fetchBytes, decode, signal) {
+-    const bytes = await fetchBytes(key, signal);
+-    const value = await decode(bytes, signal);
+-    this.state = { status: 'ready', value, error: null };
+-    return value;
++    const request = this.#latestRequest = {};
++    this.state = { status: 'loading', value: this.state.value, error: null };
++    try {
++      const bytes = await fetchBytes(key, signal);
++      const value = await decode(bytes, signal);
++      if (request === this.#latestRequest) {
++        this.state = { status: 'ready', value, error: null };
++      }
++      return value;
++    } catch (error) {
++      if (request === this.#latestRequest) {
++        this.state = { status: 'error', value: this.state.value, error };
++      }
++      throw error;
++    }
+   }
+ }
+diff --git a/preview.regression.test.mjs b/preview.regression.test.mjs
+new file mode 100644
+index 0000000..2d79d42
+--- /dev/null
++++ b/preview.regression.test.mjs
+@@ -0,0 +1,297 @@
++import assert from 'node:assert/strict';
++import test from 'node:test';
++import { PreviewLoader } from './preview.mjs';
++import { withControlledCalls } from './test-support/controlled_call.mjs';
++
++// Copy fields, retaining contractual payload/error identities, without aliasing state.
++const snapshot = loader => ({ ...loader.state });
++function stateIs(loader, status, value, error = null) {
++  assert.equal(loader.state.status, status);
++  assert.equal(loader.state.value, value);
++  assert.equal(loader.state.error, error);
++}
++function unchanged(loader, before) {
++  stateIs(loader, before.status, before.value, before.error);
++}
++function request(scope, loader, key = {}, signal = new AbortController().signal) {
++  const fetch = scope.call(), decode = scope.call();
++  const bytes = {}, value = {};
++  const task = scope.run(() => loader.load(key, fetch, decode, signal));
++  return { fetch, decode, bytes, value, task, key, signal };
++}
++async function fetched(r) {
++  const entry = await r.fetch.startedBefore(r.task);
++  assert.equal(entry.args[0], r.key);
++  assert.equal(entry.args[1], r.signal);
++  return entry;
++}
++async function decoded(r) {
++  const entry = await r.decode.startedBefore(r.task);
++  assert.equal(entry.args[0], r.bytes);
++  assert.equal(entry.args[1], r.signal);
++  return entry;
++}
++async function succeed(scope, r) {
++  (await fetched(r)).complete(r.bytes);
++  (await decoded(r)).complete(r.value);
++  assert.equal(await scope.wait(r.task), r.value);
++}
++async function rejects(scope, task, reason) {
++  await assert.rejects(scope.wait(task), error => error === reason);
++}
++
++test('idle, loading in both phases, ready and reload preserve exact displayed value', () =>
++  withControlledCalls(async scope => {
++    const loader = new PreviewLoader();
++    assert.deepEqual(loader.state, { status: 'idle', value: null, error: null });
++    for (let invocation = 0; invocation < 2; invocation++) {
++      const previous = loader.state.value;
++      const r = request(scope, loader);
++      stateIs(loader, 'loading', previous);
++      (await fetched(r)).complete(r.bytes);
++      const decode = await decoded(r);
++      stateIs(loader, 'loading', previous);
++      decode.complete(r.value);
++      assert.equal(await scope.wait(r.task), r.value);
++      stateIs(loader, 'ready', r.value);
++    }
++  }));
++
++for (const phase of ['fetch', 'decode']) {
++  for (const mode of ['throw', 'reject']) {
++    for (const seeded of [false, true]) {
++      test(`${phase} ${mode}, displayed=${seeded}: exact failure and recovery`, () =>
++        withControlledCalls(async scope => {
++          const loader = new PreviewLoader();
++          if (seeded) await succeed(scope, request(scope, loader));
++          const displayed = loader.state.value, reason = { phase, mode };
++          const key = {}, bytes = {}, signal = new AbortController().signal;
++          const failure = scope.call();
++          let decodeCount = 0;
++          const fail = () => {
++            stateIs(loader, 'loading', displayed);
++            if (mode === 'throw') throw reason;
++            return failure();
++          };
++          let task;
++          assert.doesNotThrow(() => {
++            task = loader.load(key, (received, passed) => {
++              assert.equal(received, key); assert.equal(passed, signal);
++              return phase === 'fetch' ? fail() : bytes;
++            }, (received, passed) => {
++              decodeCount++;
++              assert.equal(received, bytes); assert.equal(passed, signal);
++              return fail();
++            }, signal);
++          });
++          scope.run(() => task);
++          assert.ok(task instanceof Promise);
++          if (mode === 'reject') (await failure.startedBefore(task)).fail(reason);
++          await rejects(scope, task, reason);
++          assert.equal(decodeCount, phase === 'fetch' ? 0 : 1);
++          stateIs(loader, 'error', displayed, reason);
++          const recovery = request(scope, loader);
++          stateIs(loader, 'loading', displayed);
++          await succeed(scope, recovery);
++          stateIs(loader, 'ready', recovery.value);
++        }));
++    }
++  }
++}
++
++for (const oldPhase of ['fetch', 'decode']) {
++  for (const outcome of ['success', 'fetch failure', 'decode failure']) {
++    if (oldPhase === 'decode' && outcome === 'fetch failure') continue;
++    for (const newerPhase of ['fetch', 'decode', 'ready', 'error']) {
++      test(`overlap during ${oldPhase}: stale ${outcome} leaves newer ${newerPhase} unchanged (same key)`, () =>
++        withControlledCalls(async scope => {
++          const loader = new PreviewLoader();
++          await succeed(scope, request(scope, loader));
++          const displayed = loader.state.value, key = {};
++          const old = request(scope, loader, key);
++          let oldEntry = await fetched(old);
++          if (oldPhase === 'decode') {
++            oldEntry.complete(old.bytes);
++            oldEntry = await decoded(old);
++          }
++          const newest = request(scope, loader, key);
++          let newEntry = await fetched(newest);
++          stateIs(loader, 'loading', displayed);
++          if (newerPhase === 'decode' || newerPhase === 'ready') {
++            newEntry.complete(newest.bytes);
++            newEntry = await decoded(newest);
++          }
++          const newReason = {};
++          if (newerPhase === 'ready') {
++            newEntry.complete(newest.value);
++            assert.equal(await scope.wait(newest.task), newest.value);
++            stateIs(loader, 'ready', newest.value);
++          } else if (newerPhase === 'error') {
++            newEntry.fail(newReason);
++            await rejects(scope, newest.task, newReason);
++            stateIs(loader, 'error', displayed, newReason);
++          }
++          const before = snapshot(loader), oldReason = {};
++          if (outcome === 'fetch failure') {
++            oldEntry.fail(oldReason);
++          } else {
++            if (oldPhase === 'fetch') {
++              oldEntry.complete(old.bytes);
++              oldEntry = await decoded(old); // stale successful fetch must still decode
++              unchanged(loader, before);
++            }
++            if (outcome === 'success') oldEntry.complete(old.value);
++            else oldEntry.fail(oldReason);
++          }
++          if (outcome === 'success') assert.equal(await scope.wait(old.task), old.value);
++          else await rejects(scope, old.task, oldReason);
++          unchanged(loader, before);
++          assert.equal(old.fetch.calls.length, 1);
++          assert.equal(old.decode.calls.length, outcome === 'fetch failure' ? 0 : 1);
++          if (newerPhase === 'fetch') {
++            newEntry.complete(newest.bytes);
++            newEntry = await decoded(newest);
++          }
++          if (newerPhase === 'fetch' || newerPhase === 'decode') {
++            newEntry.complete(newest.value);
++            assert.equal(await scope.wait(newest.task), newest.value);
++            stateIs(loader, 'ready', newest.value);
++          }
++        }));
++    }
++  }
++}
++
++test('requests and state are isolated between instances', () =>
++  withControlledCalls(async scope => {
++    const left = new PreviewLoader(), right = new PreviewLoader(), key = {};
++    const a = request(scope, left, key), b = request(scope, right, key);
++    const rightPending = snapshot(right);
++    await succeed(scope, a);
++    stateIs(left, 'ready', a.value);
++    unchanged(right, rightPending);
++    const leftReady = snapshot(left), reason = {};
++    (await fetched(b)).fail(reason);
++    await rejects(scope, b.task, reason);
++    stateIs(right, 'error', null, reason);
++    unchanged(left, leftReady);
++    const rightError = snapshot(right);
++    const c = request(scope, left, key);
++    await succeed(scope, c);
++    unchanged(right, rightError);
++    await succeed(scope, request(scope, right, key));
++    stateIs(left, 'ready', c.value);
++  }));
++
++// Abort the controller only in the test. The callback itself rejects on its signal.
++for (const phase of ['fetch', 'decode']) {
++  for (const newerPhase of ['none', 'fetch', 'decode', 'ready', 'error']) {
++    test(`signal-driven ${phase} rejection with newer ${newerPhase}`, () =>
++      withControlledCalls(async scope => {
++        const loader = new PreviewLoader();
++        await succeed(scope, request(scope, loader));
++        const displayed = loader.state.value;
++        const controller = new AbortController(), reason = {};
++        const fetch = scope.call(), decode = scope.call(), key = {}, bytes = {};
++        let removeListener = () => {}, abortCount = 0;
++        const abortable = callback => (...args) => {
++          const task = callback(...args), entry = callback.calls.at(-1);
++          const signal = args[1];
++          const onAbort = () => { abortCount++; entry.fail(signal.reason); };
++          signal.addEventListener('abort', onAbort, { once: true });
++          removeListener = () => signal.removeEventListener('abort', onAbort);
++          return task;
++        };
++        try {
++          const task = scope.run(() => loader.load(key,
++            phase === 'fetch' ? abortable(fetch) : fetch,
++            phase === 'decode' ? abortable(decode) : decode, controller.signal));
++          const f = await fetch.startedBefore(task);
++          assert.equal(f.args[0], key); assert.equal(f.args[1], controller.signal);
++          if (phase === 'decode') {
++            f.complete(bytes);
++            const d = await decode.startedBefore(task);
++            assert.equal(d.args[0], bytes); assert.equal(d.args[1], controller.signal);
++          }
++          let newer, pending;
++          if (newerPhase !== 'none') {
++            newer = request(scope, loader);
++            pending = await fetched(newer);
++            if (newerPhase === 'decode' || newerPhase === 'ready') {
++              pending.complete(newer.bytes);
++              pending = await decoded(newer);
++            }
++            if (newerPhase === 'ready') {
++              pending.complete(newer.value);
++              assert.equal(await scope.wait(newer.task), newer.value);
++            } else if (newerPhase === 'error') {
++              const newReason = {};
++              pending.fail(newReason);
++              await rejects(scope, newer.task, newReason);
++              stateIs(loader, 'error', displayed, newReason);
++            }
++          }
++          const before = snapshot(loader);
++          assert.equal(controller.signal.aborted, false);
++          controller.abort(reason);
++          await rejects(scope, task, reason);
++          assert.equal(abortCount, 1);
++          assert.equal(decode.calls.length, phase === 'fetch' ? 0 : 1);
++          if (newerPhase === 'none') stateIs(loader, 'error', displayed, reason);
++          else unchanged(loader, before);
++          if (newerPhase === 'fetch') {
++            pending.complete(newer.bytes);
++            pending = await decoded(newer);
++          }
++          if (newerPhase === 'fetch' || newerPhase === 'decode') {
++            pending.complete(newer.value);
++            assert.equal(await scope.wait(newer.task), newer.value);
++            stateIs(loader, 'ready', newer.value);
++          }
++          const recovery = request(scope, loader);
++          await succeed(scope, recovery);
++          stateIs(loader, 'ready', recovery.value);
++        } finally { removeListener(); }
++      }));
++  }
++}
++
++for (const phase of ['fetch', 'decode']) {
++  test(`reentrant newer request survives synchronous stale ${phase} throw`, () =>
++    withControlledCalls(async scope => {
++      const loader = new PreviewLoader(), reason = {}, bytes = {};
++      let newer, before, decodeCount = 0;
++      const supersedeAndThrow = () => {
++        newer = request(scope, loader);
++        stateIs(loader, 'loading', null);
++        before = snapshot(loader);
++        throw reason;
++      };
++      const old = scope.run(() => loader.load({},
++        phase === 'fetch' ? supersedeAndThrow : () => bytes,
++        received => {
++          decodeCount++;
++          assert.equal(received, bytes);
++          return supersedeAndThrow();
++        }));
++      await rejects(scope, old, reason);
++      unchanged(loader, before);
++      assert.equal(decodeCount, phase === 'fetch' ? 0 : 1);
++      await succeed(scope, newer);
++      stateIs(loader, 'ready', newer.value);
++    }));
++}
++
++test('abort does not force callbacks that ignore the signal to reject or skip decode', () =>
++  withControlledCalls(async scope => {
++    const loader = new PreviewLoader(), controller = new AbortController();
++    const r = request(scope, loader, {}, controller.signal);
++    const f = await fetched(r);
++    controller.abort({});
++    f.complete(r.bytes);
++    const d = await decoded(r);
++    stateIs(loader, 'loading', null);
++    d.complete(r.value);
++    assert.equal(await scope.wait(r.task), r.value);
++    stateIs(loader, 'ready', r.value);
++  }));
+diff --git a/test-support/controlled_call.mjs b/test-support/controlled_call.mjs
+new file mode 100644
+index 0000000..e5f5359
+--- /dev/null
++++ b/test-support/controlled_call.mjs
+@@ -0,0 +1,197 @@
++/**
++ * Copy into permitted JavaScript test support when no equivalent exists.
++ * No dependencies or application implementation; uses ordinary ES modules.
++ *
++ * const save = controlledCall();
++ * const task = form.submit(save); // register rejection handling/cleanup now
++ * const call = await save.started(1000); // actual entry, timeout in milliseconds
++ * call.complete(result); // or call.fail(error); then await the application task
++ * If entry must precede task settlement, use save.startedBefore(task, 1000).
++ * It rejects early with code ERR_CALLBACK_NOT_ENTERED and an outcome containing
++ * status plus the exact value/reason if the task settles before entry is observed.
++ * Queued entry wins; this does not prove that an unrelated task caused the entry.
++ * The test chooses the relevant task and still asserts its result/state afterward.
++ *
++ * Each call has unique identity even for identical args. args and receiver keep
++ * references, not snapshots. save.calls records all entries. released means a
++ * completion/failure was requested; Promise resolution still assimilates thenables.
++ * Releasing twice throws. Test synchronous invocation errors with a normal
++ * throwing function, not this Promise-returning double.
++ *
++ * Tests own application assertions, bounded application waits and cleanup:
++ * handle rejected tasks promptly, release every unreleased call, then drain tasks.
++ * A started timeout removes only that waiter; it does NOT cancel application
++ * work. Promises have no implicit cancellation. Use the application's AbortSignal
++ * path when testing cancellation. Timers cannot interrupt blocking JS; use runner
++ * process deadlines where needed. No browser/network/rendering evidence is supplied.
++ *
++ * Optional lifecycle ownership (same file, no test-runner dependency):
++ * await withControlledCalls(async ({ call, run, wait }) => {
++ *   const save = call();
++ *   const task = run(() => form.submit(save)); // invokes now; observes rejection
++ *   const entry = await save.started();
++ *   // Assert application state/arguments here, then release the chosen entry.
++ *   entry.complete(result);
++ *   assert.equal(await wait(task), result);
++ * });
++ * The body and final drain each have a timeoutMs deadline (default 1000ms).
++ * run invokes immediately and converts synchronous throws to rejected Promises.
++ * To assert an API does not throw synchronously, invoke it outside run within
++ * assert.doesNotThrow, then register the returned task with run(() => task).
++ * Exit rejects outstanding entry waits, releases unreleased owned calls,
++ * including entries during drain, and drains registered tasks. Test-owned
++ * listeners/resources still need finally.
++ * Cleanup ignores task rejection reasons: assert expected outcomes in the body.
++ * Body failures survive cleanup; if both fail, AggregateError contains both.
++ * Deadlines do not cancel JS/application work or force-settle adopted thenables.
++ */
++export function controlledCall() {
++  return createControlledCall().callback;
++}
++
++function createControlledCall() {
++  const calls = [];
++  const entries = [];
++  const waiters = [];
++
++  function callback(...args) {
++    let resolve, reject;
++    const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
++    let released = false;
++    function release(action, value) {
++      if (released) throw new Error('Controlled call already released');
++      released = true;
++      action(value);
++    }
++    const call = {
++      args, receiver: this,
++      get released() { return released; },
++      complete(value) { release(resolve, value); },
++      fail(error) { release(reject, error); },
++    };
++    calls.push(call);
++    const waiter = waiters.shift();
++    if (waiter) {
++      clearTimeout(waiter.timer);
++      waiter.resolve(call);
++    } else {
++      entries.push(call);
++    }
++    return promise;
++  }
++
++  callback.calls = calls;
++  function started(timeoutMs, task, observeTask = false) {
++    if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 30000) {
++      throw new RangeError('timeoutMs must be in (0, 30000]');
++    }
++    return new Promise((resolve, reject) => {
++      let active = true;
++      const finish = (settle, value) => {
++        if (!active) return;
++        active = false;
++        clearTimeout(waiter.timer);
++        const index = waiters.indexOf(waiter);
++        if (index !== -1) waiters.splice(index, 1);
++        settle(value);
++      };
++      const waiter = {
++        resolve: value => finish(resolve, value),
++        reject: error => finish(reject, error),
++        timer: undefined,
++      };
++      if (observeTask) {
++        const ended = outcome => {
++          const error = new Error('Application task settled before expected callback entry');
++          error.code = 'ERR_CALLBACK_NOT_ENTERED';
++          error.outcome = outcome;
++          waiter.reject(error);
++        };
++        Promise.resolve(task).then(
++          value => ended({ status: 'fulfilled', value }),
++          reason => ended({ status: 'rejected', reason }));
++      }
++      if (entries.length) waiter.resolve(entries.shift());
++      else {
++        waiter.timer = setTimeout(() => waiter.reject(
++          new Error('Timed out waiting for callback entry')), timeoutMs);
++        waiters.push(waiter);
++      }
++    });
++  }
++  callback.started = (timeoutMs = 1000) => started(timeoutMs);
++  callback.startedBefore = (task, timeoutMs = 1000) => started(timeoutMs, task, true);
++  return {
++    callback,
++    closeEntries() {
++      for (const waiter of waiters.splice(0)) {
++        clearTimeout(waiter.timer);
++        waiter.reject(new Error('Controlled-call scope is closed'));
++      }
++    },
++  };
++}
++
++export async function withControlledCalls(body, { timeoutMs = 1000 } = {}) {
++  if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 30000) {
++    throw new RangeError('timeoutMs must be in (0, 30000]');
++  }
++  const owned = [], tasks = [];
++  let closing = false;
++  const requireOpen = () => {
++    if (closing) throw new Error('Controlled-call scope is closed');
++  };
++  async function wait(task) {
++    let timer;
++    try {
++      return await Promise.race([
++        task,
++        new Promise((_, reject) => {
++          timer = setTimeout(() => reject(new Error('Controlled-call deadline exceeded')), timeoutMs);
++        }),
++      ]);
++    } finally { clearTimeout(timer); }
++  }
++  const scope = {
++    wait,
++    call() {
++      requireOpen();
++      const { callback: controlled, closeEntries } = createControlledCall();
++      function callback(...args) {
++        const task = controlled.apply(this, args);
++        if (closing) controlled.calls.at(-1).complete();
++        return task;
++      }
++      callback.calls = controlled.calls;
++      callback.started = (...args) => { requireOpen(); return controlled.started(...args); };
++      callback.startedBefore = (...args) => { requireOpen(); return controlled.startedBefore(...args); };
++      owned.push({ callback, closeEntries });
++      return callback;
++    },
++    run(operation) {
++      requireOpen();
++      let task;
++      try { task = Promise.resolve(operation()); }
++      catch (error) { task = Promise.reject(error); }
++      // Observe immediately without converting the returned task into success.
++      tasks.push(task.then(() => undefined, () => undefined));
++      return task;
++    },
++  };
++  let result, failure, failed = false;
++  try { result = await wait(body(scope)); }
++  catch (error) { failure = error; failed = true; }
++  closing = true;
++  try {
++    for (const { callback, closeEntries } of owned) {
++      closeEntries();
++      for (const entry of callback.calls) if (!entry.released) entry.complete();
++    }
++    await wait(Promise.all(tasks));
++  } catch (cleanupError) {
++    if (failed) throw new AggregateError([failure, cleanupError], 'Body and controlled-call cleanup failed');
++    throw cleanupError;
++  }
++  if (failed) throw failure;
++  return result;
++}
