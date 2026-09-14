@@ -11,15 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
-Prepared [commit-before-ack transfer screen](FRIDAY-ACK-01-PROTOCOL.md), author
-source `3fa1fd1`, resources unchanged: actual caller commits/closes before success,
-fresh read connections, gap/control and rollback checks. Two native fixture tests
-pass, including intended missing-commit failure `10 != 20`. Model execution is
-not yet reported; older ambiguous fixtures and measurements remain unchanged.
+Reviewed [acknowledged-writer screen 01](FRIDAY-ACK-01-REVIEW.md), launch `76c251c`,
+resources `f15f3ae`: four executions/replays complete. Control tokens +3.91% /
+time −18.42%; gap +10.13% / +20.31%. Totals +7.01% tokens / −0.29% time: no
+efficiency win. Both find the gap and no control defect; gap baseline searches
+outside project scope. Skill control performs 2,510 mixed reads versus 280;
+unequal work/shared cache/n=1 prevent causal or general claims.
 
-한국어: 커밋 후 성공 응답을 반환하는 실제 호출 코드와 독립 연결 읽기를 갖춘
-새 결함·정상 과제를 준비했다. 커밋을 제거하면 `10 != 20`으로 실패하는 대조를
-포함해 테스트 2개가 통과했다. 모델 성능 결과는 아직 없고 과거 과제는 보존했다.
+한국어: 실제 커밋·독립 연결 과제 4세션과 별도 재검증이 완료됐다. 정상은 토큰
+3.91% 증가·시간 18.42% 감소, 결함은 10.13%·20.31% 증가했다. 합계 토큰
+7.01% 증가·시간 0.29% 감소로 효율 개선은 입증되지 않았다. 결함 발견·정상
+판정은 일치하지만 기본 실행 하나의 상위 디렉터리 검색은 범위 이탈로 기록했다.
 
 Friday [compact screen 02](FRIDAY-COMPACT-MODEL-02-REVIEW.md), launch `135c4df`,
 resources `f15f3ae`: baseline 88,162 tokens / 96.665s; skill 69,840 / 54.054s

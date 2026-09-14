@@ -1,0 +1,872 @@
+diff --git a/review-local/check.py b/review-local/check.py
+new file mode 100644
+index 0000000..39175aa
+--- /dev/null
++++ b/review-local/check.py
+@@ -0,0 +1,81 @@
++import hashlib
++import json
++from pathlib import Path
++import sqlite3
++import sys
++import tempfile
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.dont_write_bytecode = True
++sys.path.insert(0, str(ROOT))
++import application
++
++originals = {
++    p: hashlib.sha256(p.read_bytes()).hexdigest()
++    for p in ROOT.rglob('*')
++    if p.is_file() and '.git' not in p.parts and 'review-local' not in p.parts
++}
++work = Path(tempfile.mkdtemp(prefix='sqlite-', dir=Path(__file__).parent))
++database = work / 'review.sqlite'
++events = []
++expected = {}
++
++
++def migrate(name):
++    with sqlite3.connect(database) as db:
++        db.executescript((ROOT / name).read_text())
++    events.append({'migration': name})
++
++
++def observe(phase, readers):
++    rows = []
++    for key, value in sorted(expected.items()):
++        readings = {v: application.read(str(database), v, key) for v in readers}
++        rows.append({'id': key, 'latest_acknowledged_value': value,
++                     'reads': readings,
++                     'matches': {v: got == value for v, got in readings.items()}})
++    events.append({'phase': phase, 'rows': rows})
++
++
++def write(version, operation, key, value, readers):
++    ack = application.write(str(database), version, operation, key, value)
++    assert ack == {'acknowledged': True, 'id': key, 'value': value}
++    expected[key] = value
++    events.append({'write': [version, operation, key, value], 'result': ack})
++    # Every known key is read through fresh application connections before
++    # the next write, including keys inserted by the other application version.
++    observe(f'after {version} {operation} id={key} value={value}', readers)
++
++
++migrate('001_initial.sql')
++assert application.read(str(database), 'old', 1) == 10
++write('old', 'update', 1, 11, ['old'])
++write('old', 'insert', 2, 12, ['old'])
++migrate('002_up.sql')
++observe('after expansion and backfill', ['old', 'new'])
++for request in [('old', 'update', 1, 20),
++                ('new', 'update', 2, 30),
++                ('old', 'insert', 3, 40),
++                ('new', 'insert', 4, 50),
++                ('new', 'update', 3, 45),
++                ('old', 'update', 4, 55),
++                ('new', 'update', 1, 25),
++                ('old', 'update', 1, 26)]:
++    write(*request, ['old', 'new'])
++with sqlite3.connect(database) as db:
++    events.append({'before_rollback_storage': db.execute(
++        'SELECT id, quota, quota_limit FROM accounts ORDER BY id').fetchall(),
++        'triggers': db.execute(
++            "SELECT name FROM sqlite_master WHERE type='trigger'").fetchall()})
++# The new version is drained: no further calls to it after this point.
++migrate('002_down.sql')
++observe('after documented rollback', ['old'])
++write('old', 'update', 4, 56, ['old'])
++write('old', 'insert', 5, 60, ['old'])
++assert all(hashlib.sha256(p.read_bytes()).hexdigest() == digest
++           for p, digest in originals.items()), 'Original file changed'
++result = {'sqlite_version': sqlite3.sqlite_version,
++          'database': str(database.relative_to(ROOT)),
++          'original_files_unchanged': True, 'events': events}
++(work / 'results.json').write_text(json.dumps(result, indent=2) + '\n')
++print(json.dumps(result, indent=2))
+diff --git a/review-local/sqlite-djgdq3rm/results.json b/review-local/sqlite-djgdq3rm/results.json
+new file mode 100644
+index 0000000..6a6c53d
+--- /dev/null
++++ b/review-local/sqlite-djgdq3rm/results.json
+@@ -0,0 +1,775 @@
++{
++  "sqlite_version": "3.51.0",
++  "database": "review-local/sqlite-djgdq3rm/review.sqlite",
++  "original_files_unchanged": true,
++  "events": [
++    {
++      "migration": "001_initial.sql"
++    },
++    {
++      "write": [
++        "old",
++        "update",
++        1,
++        11
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 1,
++        "value": 11
++      }
++    },
++    {
++      "phase": "after old update id=1 value=11",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 11,
++          "reads": {
++            "old": 11
++          },
++          "matches": {
++            "old": true
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "old",
++        "insert",
++        2,
++        12
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 2,
++        "value": 12
++      }
++    },
++    {
++      "phase": "after old insert id=2 value=12",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 11,
++          "reads": {
++            "old": 11
++          },
++          "matches": {
++            "old": true
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 12,
++          "reads": {
++            "old": 12
++          },
++          "matches": {
++            "old": true
++          }
++        }
++      ]
++    },
++    {
++      "migration": "002_up.sql"
++    },
++    {
++      "phase": "after expansion and backfill",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 11,
++          "reads": {
++            "old": 11,
++            "new": 11
++          },
++          "matches": {
++            "old": true,
++            "new": true
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 12,
++          "reads": {
++            "old": 12,
++            "new": 12
++          },
++          "matches": {
++            "old": true,
++            "new": true
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "old",
++        "update",
++        1,
++        20
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 1,
++        "value": 20
++      }
++    },
++    {
++      "phase": "after old update id=1 value=20",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 20,
++          "reads": {
++            "old": 20,
++            "new": 11
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 12,
++          "reads": {
++            "old": 12,
++            "new": 12
++          },
++          "matches": {
++            "old": true,
++            "new": true
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "new",
++        "update",
++        2,
++        30
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 2,
++        "value": 30
++      }
++    },
++    {
++      "phase": "after new update id=2 value=30",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 20,
++          "reads": {
++            "old": 20,
++            "new": 11
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 30,
++          "reads": {
++            "old": 12,
++            "new": 30
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "old",
++        "insert",
++        3,
++        40
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 3,
++        "value": 40
++      }
++    },
++    {
++      "phase": "after old insert id=3 value=40",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 20,
++          "reads": {
++            "old": 20,
++            "new": 11
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 30,
++          "reads": {
++            "old": 12,
++            "new": 30
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 3,
++          "latest_acknowledged_value": 40,
++          "reads": {
++            "old": 40,
++            "new": null
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "new",
++        "insert",
++        4,
++        50
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 4,
++        "value": 50
++      }
++    },
++    {
++      "phase": "after new insert id=4 value=50",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 20,
++          "reads": {
++            "old": 20,
++            "new": 11
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 30,
++          "reads": {
++            "old": 12,
++            "new": 30
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 3,
++          "latest_acknowledged_value": 40,
++          "reads": {
++            "old": 40,
++            "new": null
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        },
++        {
++          "id": 4,
++          "latest_acknowledged_value": 50,
++          "reads": {
++            "old": 50,
++            "new": 50
++          },
++          "matches": {
++            "old": true,
++            "new": true
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "new",
++        "update",
++        3,
++        45
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 3,
++        "value": 45
++      }
++    },
++    {
++      "phase": "after new update id=3 value=45",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 20,
++          "reads": {
++            "old": 20,
++            "new": 11
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 30,
++          "reads": {
++            "old": 12,
++            "new": 30
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 3,
++          "latest_acknowledged_value": 45,
++          "reads": {
++            "old": 40,
++            "new": 45
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 4,
++          "latest_acknowledged_value": 50,
++          "reads": {
++            "old": 50,
++            "new": 50
++          },
++          "matches": {
++            "old": true,
++            "new": true
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "old",
++        "update",
++        4,
++        55
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 4,
++        "value": 55
++      }
++    },
++    {
++      "phase": "after old update id=4 value=55",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 20,
++          "reads": {
++            "old": 20,
++            "new": 11
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 30,
++          "reads": {
++            "old": 12,
++            "new": 30
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 3,
++          "latest_acknowledged_value": 45,
++          "reads": {
++            "old": 40,
++            "new": 45
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 4,
++          "latest_acknowledged_value": 55,
++          "reads": {
++            "old": 55,
++            "new": 50
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "new",
++        "update",
++        1,
++        25
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 1,
++        "value": 25
++      }
++    },
++    {
++      "phase": "after new update id=1 value=25",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 25,
++          "reads": {
++            "old": 20,
++            "new": 25
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 30,
++          "reads": {
++            "old": 12,
++            "new": 30
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 3,
++          "latest_acknowledged_value": 45,
++          "reads": {
++            "old": 40,
++            "new": 45
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 4,
++          "latest_acknowledged_value": 55,
++          "reads": {
++            "old": 55,
++            "new": 50
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "old",
++        "update",
++        1,
++        26
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 1,
++        "value": 26
++      }
++    },
++    {
++      "phase": "after old update id=1 value=26",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 26,
++          "reads": {
++            "old": 26,
++            "new": 25
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 30,
++          "reads": {
++            "old": 12,
++            "new": 30
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 3,
++          "latest_acknowledged_value": 45,
++          "reads": {
++            "old": 40,
++            "new": 45
++          },
++          "matches": {
++            "old": false,
++            "new": true
++          }
++        },
++        {
++          "id": 4,
++          "latest_acknowledged_value": 55,
++          "reads": {
++            "old": 55,
++            "new": 50
++          },
++          "matches": {
++            "old": true,
++            "new": false
++          }
++        }
++      ]
++    },
++    {
++      "before_rollback_storage": [
++        [
++          1,
++          26,
++          25
++        ],
++        [
++          2,
++          12,
++          30
++        ],
++        [
++          3,
++          40,
++          45
++        ],
++        [
++          4,
++          55,
++          50
++        ]
++      ],
++      "triggers": []
++    },
++    {
++      "migration": "002_down.sql"
++    },
++    {
++      "phase": "after documented rollback",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 26,
++          "reads": {
++            "old": 26
++          },
++          "matches": {
++            "old": true
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 30,
++          "reads": {
++            "old": 12
++          },
++          "matches": {
++            "old": false
++          }
++        },
++        {
++          "id": 3,
++          "latest_acknowledged_value": 45,
++          "reads": {
++            "old": 40
++          },
++          "matches": {
++            "old": false
++          }
++        },
++        {
++          "id": 4,
++          "latest_acknowledged_value": 55,
++          "reads": {
++            "old": 55
++          },
++          "matches": {
++            "old": true
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "old",
++        "update",
++        4,
++        56
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 4,
++        "value": 56
++      }
++    },
++    {
++      "phase": "after old update id=4 value=56",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 26,
++          "reads": {
++            "old": 26
++          },
++          "matches": {
++            "old": true
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 30,
++          "reads": {
++            "old": 12
++          },
++          "matches": {
++            "old": false
++          }
++        },
++        {
++          "id": 3,
++          "latest_acknowledged_value": 45,
++          "reads": {
++            "old": 40
++          },
++          "matches": {
++            "old": false
++          }
++        },
++        {
++          "id": 4,
++          "latest_acknowledged_value": 56,
++          "reads": {
++            "old": 56
++          },
++          "matches": {
++            "old": true
++          }
++        }
++      ]
++    },
++    {
++      "write": [
++        "old",
++        "insert",
++        5,
++        60
++      ],
++      "result": {
++        "acknowledged": true,
++        "id": 5,
++        "value": 60
++      }
++    },
++    {
++      "phase": "after old insert id=5 value=60",
++      "rows": [
++        {
++          "id": 1,
++          "latest_acknowledged_value": 26,
++          "reads": {
++            "old": 26
++          },
++          "matches": {
++            "old": true
++          }
++        },
++        {
++          "id": 2,
++          "latest_acknowledged_value": 30,
++          "reads": {
++            "old": 12
++          },
++          "matches": {
++            "old": false
++          }
++        },
++        {
++          "id": 3,
++          "latest_acknowledged_value": 45,
++          "reads": {
++            "old": 40
++          },
++          "matches": {
++            "old": false
++          }
++        },
++        {
++          "id": 4,
++          "latest_acknowledged_value": 56,
++          "reads": {
++            "old": 56
++          },
++          "matches": {
++            "old": true
++          }
++        },
++        {
++          "id": 5,
++          "latest_acknowledged_value": 60,
++          "reads": {
++            "old": 60
++          },
++          "matches": {
++            "old": true
++          }
++        }
++      ]
++    }
++  ]
++}
+diff --git a/review-local/sqlite-djgdq3rm/review.sqlite b/review-local/sqlite-djgdq3rm/review.sqlite
+new file mode 100644
+index 0000000..be54501
+Binary files /dev/null and b/review-local/sqlite-djgdq3rm/review.sqlite differ

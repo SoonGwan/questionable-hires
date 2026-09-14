@@ -1,0 +1,169 @@
+{
+  "kind": "separate author replay; original evidence unchanged",
+  "cells": {
+    "quota-ack-control--skill--1": {
+      "exit_code": 0,
+      "stdout": "PASS: initial old operation, migration backfill, old/new inserts and updates, same-value updates, cross-version transitions, fresh reads after every acknowledgment, rollback, post-rollback old writes\nSQLite runtime: 3.51.0\nWitness values: [0, 1, -1, 10, 2147483648, -9223372036854775808, 9223372036854775807]\nCounts: {'acknowledged_writes': 70, 'mixed_reads': 2510, 'rollback_reads': 100}\nRows verified immediately after rollback: 32\nOriginal files unchanged; disposable database removed.\n",
+      "stderr": "",
+      "comparison": "none; complete stdout equal",
+      "observations_match": true,
+      "raw_usage_events_resources_reconciled": true,
+      "originals_unchanged": true,
+      "original_project_inventory": {
+        "application.py": {
+          "sha256": "50149d2c8cb6888792f3b6acec481fbe488cd718319fb0e1f6c6ddd1e3eddc0b",
+          "mode": 420
+        },
+        "release.md": {
+          "sha256": "d9d0fad0a4d8b0465c6511acad4812917db4a6c872f873a66fc2c1d1f25a9544",
+          "mode": 420
+        },
+        "002_down.sql": {
+          "sha256": "45bc7c4ff945eaa02eef567615d0755ec5587f23343fdbe424942cba26a20517",
+          "mode": 420
+        },
+        "001_initial.sql": {
+          "sha256": "de0e0f17855f5e0243f02f1bdbeface8aa0dd90b76243ef1622b5de1e11f3ba5",
+          "mode": 420
+        },
+        "002_up.sql": {
+          "sha256": "6a1dbb47d3d4e21e87f771fc4fc4d6273b6690be56b24178c73d9fc2b5cc39fe",
+          "mode": 420
+        },
+        "versions.py": {
+          "sha256": "8a565594295236e0cb2c8d9e115db41f4a0046e4384d0eeabdaaac4b5a138cac",
+          "mode": 420
+        }
+      }
+    },
+    "quota-ack-gap--skill--1": {
+      "exit_code": 0,
+      "stdout": "{\n  \"sqlite_version\": \"3.51.0\",\n  \"database\": \"review-local/sqlite-rhuysnja/review.sqlite\",\n  \"original_files_unchanged\": true,\n  \"events\": [\n    {\n      \"migration\": \"001_initial.sql\"\n    },\n    {\n      \"write\": [\n        \"old\",\n        \"update\",\n        1,\n        11\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 1,\n        \"value\": 11\n      }\n    },\n    {\n      \"phase\": \"after old update id=1 value=11\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 11,\n          \"reads\": {\n            \"old\": 11\n          },\n          \"matches\": {\n            \"old\": true\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"old\",\n        \"insert\",\n        2,\n        12\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 2,\n        \"value\": 12\n      }\n    },\n    {\n      \"phase\": \"after old insert id=2 value=12\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 11,\n          \"reads\": {\n            \"old\": 11\n          },\n          \"matches\": {\n            \"old\": true\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 12,\n          \"reads\": {\n            \"old\": 12\n          },\n          \"matches\": {\n            \"old\": true\n          }\n        }\n      ]\n    },\n    {\n      \"migration\": \"002_up.sql\"\n    },\n    {\n      \"phase\": \"after expansion and backfill\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 11,\n          \"reads\": {\n            \"old\": 11,\n            \"new\": 11\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 12,\n          \"reads\": {\n            \"old\": 12,\n            \"new\": 12\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": true\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"old\",\n        \"update\",\n        1,\n        20\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 1,\n        \"value\": 20\n      }\n    },\n    {\n      \"phase\": \"after old update id=1 value=20\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 20,\n          \"reads\": {\n            \"old\": 20,\n            \"new\": 11\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 12,\n          \"reads\": {\n            \"old\": 12,\n            \"new\": 12\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": true\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"new\",\n        \"update\",\n        2,\n        30\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 2,\n        \"value\": 30\n      }\n    },\n    {\n      \"phase\": \"after new update id=2 value=30\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 20,\n          \"reads\": {\n            \"old\": 20,\n            \"new\": 11\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 30,\n          \"reads\": {\n            \"old\": 12,\n            \"new\": 30\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"old\",\n        \"insert\",\n        3,\n        40\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 3,\n        \"value\": 40\n      }\n    },\n    {\n      \"phase\": \"after old insert id=3 value=40\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 20,\n          \"reads\": {\n            \"old\": 20,\n            \"new\": 11\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 30,\n          \"reads\": {\n            \"old\": 12,\n            \"new\": 30\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 3,\n          \"latest_acknowledged_value\": 40,\n          \"reads\": {\n            \"old\": 40,\n            \"new\": null\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"new\",\n        \"insert\",\n        4,\n        50\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 4,\n        \"value\": 50\n      }\n    },\n    {\n      \"phase\": \"after new insert id=4 value=50\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 20,\n          \"reads\": {\n            \"old\": 20,\n            \"new\": 11\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 30,\n          \"reads\": {\n            \"old\": 12,\n            \"new\": 30\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 3,\n          \"latest_acknowledged_value\": 40,\n          \"reads\": {\n            \"old\": 40,\n            \"new\": null\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        },\n        {\n          \"id\": 4,\n          \"latest_acknowledged_value\": 50,\n          \"reads\": {\n            \"old\": 50,\n            \"new\": 50\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": true\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"new\",\n        \"update\",\n        3,\n        45\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 3,\n        \"value\": 45\n      }\n    },\n    {\n      \"phase\": \"after new update id=3 value=45\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 20,\n          \"reads\": {\n            \"old\": 20,\n            \"new\": 11\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 30,\n          \"reads\": {\n            \"old\": 12,\n            \"new\": 30\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 3,\n          \"latest_acknowledged_value\": 45,\n          \"reads\": {\n            \"old\": 40,\n            \"new\": 45\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 4,\n          \"latest_acknowledged_value\": 50,\n          \"reads\": {\n            \"old\": 50,\n            \"new\": 50\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": true\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"old\",\n        \"update\",\n        4,\n        55\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 4,\n        \"value\": 55\n      }\n    },\n    {\n      \"phase\": \"after old update id=4 value=55\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 20,\n          \"reads\": {\n            \"old\": 20,\n            \"new\": 11\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 30,\n          \"reads\": {\n            \"old\": 12,\n            \"new\": 30\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 3,\n          \"latest_acknowledged_value\": 45,\n          \"reads\": {\n            \"old\": 40,\n            \"new\": 45\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 4,\n          \"latest_acknowledged_value\": 55,\n          \"reads\": {\n            \"old\": 55,\n            \"new\": 50\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"new\",\n        \"update\",\n        1,\n        25\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 1,\n        \"value\": 25\n      }\n    },\n    {\n      \"phase\": \"after new update id=1 value=25\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 25,\n          \"reads\": {\n            \"old\": 20,\n            \"new\": 25\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 30,\n          \"reads\": {\n            \"old\": 12,\n            \"new\": 30\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 3,\n          \"latest_acknowledged_value\": 45,\n          \"reads\": {\n            \"old\": 40,\n            \"new\": 45\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 4,\n          \"latest_acknowledged_value\": 55,\n          \"reads\": {\n            \"old\": 55,\n            \"new\": 50\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"old\",\n        \"update\",\n        1,\n        26\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 1,\n        \"value\": 26\n      }\n    },\n    {\n      \"phase\": \"after old update id=1 value=26\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 26,\n          \"reads\": {\n            \"old\": 26,\n            \"new\": 25\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 30,\n          \"reads\": {\n            \"old\": 12,\n            \"new\": 30\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 3,\n          \"latest_acknowledged_value\": 45,\n          \"reads\": {\n            \"old\": 40,\n            \"new\": 45\n          },\n          \"matches\": {\n            \"old\": false,\n            \"new\": true\n          }\n        },\n        {\n          \"id\": 4,\n          \"latest_acknowledged_value\": 55,\n          \"reads\": {\n            \"old\": 55,\n            \"new\": 50\n          },\n          \"matches\": {\n            \"old\": true,\n            \"new\": false\n          }\n        }\n      ]\n    },\n    {\n      \"before_rollback_storage\": [\n        [\n          1,\n          26,\n          25\n        ],\n        [\n          2,\n          12,\n          30\n        ],\n        [\n          3,\n          40,\n          45\n        ],\n        [\n          4,\n          55,\n          50\n        ]\n      ],\n      \"triggers\": []\n    },\n    {\n      \"migration\": \"002_down.sql\"\n    },\n    {\n      \"phase\": \"after documented rollback\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 26,\n          \"reads\": {\n            \"old\": 26\n          },\n          \"matches\": {\n            \"old\": true\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 30,\n          \"reads\": {\n            \"old\": 12\n          },\n          \"matches\": {\n            \"old\": false\n          }\n        },\n        {\n          \"id\": 3,\n          \"latest_acknowledged_value\": 45,\n          \"reads\": {\n            \"old\": 40\n          },\n          \"matches\": {\n            \"old\": false\n          }\n        },\n        {\n          \"id\": 4,\n          \"latest_acknowledged_value\": 55,\n          \"reads\": {\n            \"old\": 55\n          },\n          \"matches\": {\n            \"old\": true\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"old\",\n        \"update\",\n        4,\n        56\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 4,\n        \"value\": 56\n      }\n    },\n    {\n      \"phase\": \"after old update id=4 value=56\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 26,\n          \"reads\": {\n            \"old\": 26\n          },\n          \"matches\": {\n            \"old\": true\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 30,\n          \"reads\": {\n            \"old\": 12\n          },\n          \"matches\": {\n            \"old\": false\n          }\n        },\n        {\n          \"id\": 3,\n          \"latest_acknowledged_value\": 45,\n          \"reads\": {\n            \"old\": 40\n          },\n          \"matches\": {\n            \"old\": false\n          }\n        },\n        {\n          \"id\": 4,\n          \"latest_acknowledged_value\": 56,\n          \"reads\": {\n            \"old\": 56\n          },\n          \"matches\": {\n            \"old\": true\n          }\n        }\n      ]\n    },\n    {\n      \"write\": [\n        \"old\",\n        \"insert\",\n        5,\n        60\n      ],\n      \"result\": {\n        \"acknowledged\": true,\n        \"id\": 5,\n        \"value\": 60\n      }\n    },\n    {\n      \"phase\": \"after old insert id=5 value=60\",\n      \"rows\": [\n        {\n          \"id\": 1,\n          \"latest_acknowledged_value\": 26,\n          \"reads\": {\n            \"old\": 26\n          },\n          \"matches\": {\n            \"old\": true\n          }\n        },\n        {\n          \"id\": 2,\n          \"latest_acknowledged_value\": 30,\n          \"reads\": {\n            \"old\": 12\n          },\n          \"matches\": {\n            \"old\": false\n          }\n        },\n        {\n          \"id\": 3,\n          \"latest_acknowledged_value\": 45,\n          \"reads\": {\n            \"old\": 40\n          },\n          \"matches\": {\n            \"old\": false\n          }\n        },\n        {\n          \"id\": 4,\n          \"latest_acknowledged_value\": 56,\n          \"reads\": {\n            \"old\": 56\n          },\n          \"matches\": {\n            \"old\": true\n          }\n        },\n        {\n          \"id\": 5,\n          \"latest_acknowledged_value\": 60,\n          \"reads\": {\n            \"old\": 60\n          },\n          \"matches\": {\n            \"old\": true\n          }\n        }\n      ]\n    }\n  ]\n}\n",
+      "stderr": "",
+      "comparison": "only generated database directory differs",
+      "observations_match": true,
+      "raw_usage_events_resources_reconciled": true,
+      "originals_unchanged": true,
+      "original_project_inventory": {
+        "application.py": {
+          "sha256": "50149d2c8cb6888792f3b6acec481fbe488cd718319fb0e1f6c6ddd1e3eddc0b",
+          "mode": 420
+        },
+        "release.md": {
+          "sha256": "d9d0fad0a4d8b0465c6511acad4812917db4a6c872f873a66fc2c1d1f25a9544",
+          "mode": 420
+        },
+        "002_down.sql": {
+          "sha256": "45bc7c4ff945eaa02eef567615d0755ec5587f23343fdbe424942cba26a20517",
+          "mode": 420
+        },
+        "001_initial.sql": {
+          "sha256": "de0e0f17855f5e0243f02f1bdbeface8aa0dd90b76243ef1622b5de1e11f3ba5",
+          "mode": 420
+        },
+        "002_up.sql": {
+          "sha256": "44c888078fe8255aa4517075f3607c76f87ca1fd5815061d429740ef45a03af4",
+          "mode": 420
+        },
+        "versions.py": {
+          "sha256": "8a565594295236e0cb2c8d9e115db41f4a0046e4384d0eeabdaaac4b5a138cac",
+          "mode": 420
+        },
+        "review-local/check.py": {
+          "sha256": "75835db319292012e34eb59a75d2354b786e5004a33fd83b93c7db3187bf4451",
+          "mode": 420
+        },
+        "review-local/sqlite-djgdq3rm/results.json": {
+          "sha256": "01b7287b03ba7c0abbc487c1aad3d3db4bc1dc67911f561d4686332fc74fff1b",
+          "mode": 420
+        },
+        "review-local/sqlite-djgdq3rm/review.sqlite": {
+          "sha256": "7198a2a7db4e5e12d6116f123dde9106936de4ba79dc4c1464b0bac39e27fda2",
+          "mode": 420
+        }
+      }
+    },
+    "quota-ack-gap--baseline--1": {
+      "exit_code": 0,
+      "stdout": "{\n  \"sqlite_version\": \"3.51.0\",\n  \"baseline\": {\n    \"old\": 10,\n    \"new\": 10\n  },\n  \"writes\": [\n    {\n      \"version\": \"old\",\n      \"operation\": \"update\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 1,\n        \"value\": 20\n      },\n      \"reads\": {\n        \"old\": 20,\n        \"new\": 10\n      },\n      \"both_visible\": false\n    },\n    {\n      \"version\": \"new\",\n      \"operation\": \"update\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 1,\n        \"value\": 30\n      },\n      \"reads\": {\n        \"old\": 20,\n        \"new\": 30\n      },\n      \"both_visible\": false\n    },\n    {\n      \"version\": \"old\",\n      \"operation\": \"update\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 1,\n        \"value\": 40\n      },\n      \"reads\": {\n        \"old\": 40,\n        \"new\": 30\n      },\n      \"both_visible\": false\n    },\n    {\n      \"version\": \"new\",\n      \"operation\": \"update\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 1,\n        \"value\": 50\n      },\n      \"reads\": {\n        \"old\": 40,\n        \"new\": 50\n      },\n      \"both_visible\": false\n    },\n    {\n      \"version\": \"old\",\n      \"operation\": \"insert\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 2,\n        \"value\": 60\n      },\n      \"reads\": {\n        \"old\": 60,\n        \"new\": null\n      },\n      \"both_visible\": false\n    },\n    {\n      \"version\": \"new\",\n      \"operation\": \"insert\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 3,\n        \"value\": 70\n      },\n      \"reads\": {\n        \"old\": 70,\n        \"new\": 70\n      },\n      \"both_visible\": true\n    },\n    {\n      \"version\": \"new\",\n      \"operation\": \"update\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 2,\n        \"value\": 80\n      },\n      \"reads\": {\n        \"old\": 60,\n        \"new\": 80\n      },\n      \"both_visible\": false\n    },\n    {\n      \"version\": \"old\",\n      \"operation\": \"update\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 3,\n        \"value\": 90\n      },\n      \"reads\": {\n        \"old\": 90,\n        \"new\": 70\n      },\n      \"both_visible\": false\n    },\n    {\n      \"version\": \"new\",\n      \"operation\": \"insert\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 4,\n        \"value\": 100\n      },\n      \"reads\": {\n        \"old\": 100,\n        \"new\": 100\n      },\n      \"both_visible\": true\n    }\n  ],\n  \"rollback\": [\n    {\n      \"id\": 1,\n      \"expected\": 50,\n      \"actual\": 40\n    },\n    {\n      \"id\": 2,\n      \"expected\": 80,\n      \"actual\": 60\n    },\n    {\n      \"id\": 3,\n      \"expected\": 90,\n      \"actual\": 90\n    },\n    {\n      \"id\": 4,\n      \"expected\": 100,\n      \"actual\": 100\n    }\n  ],\n  \"old_after_rollback\": [\n    {\n      \"operation\": \"update\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 1,\n        \"value\": 110\n      },\n      \"actual\": 110\n    },\n    {\n      \"operation\": \"insert\",\n      \"acknowledgment\": {\n        \"acknowledged\": true,\n        \"id\": 5,\n        \"value\": 120\n      },\n      \"actual\": 120\n    }\n  ],\n  \"original_files_unchanged\": true,\n  \"original_sha256\": {\n    \"release.md\": \"d9d0fad0a4d8b0465c6511acad4812917db4a6c872f873a66fc2c1d1f25a9544\",\n    \"application.py\": \"50149d2c8cb6888792f3b6acec481fbe488cd718319fb0e1f6c6ddd1e3eddc0b\",\n    \"versions.py\": \"8a565594295236e0cb2c8d9e115db41f4a0046e4384d0eeabdaaac4b5a138cac\",\n    \"001_initial.sql\": \"de0e0f17855f5e0243f02f1bdbeface8aa0dd90b76243ef1622b5de1e11f3ba5\",\n    \"002_up.sql\": \"44c888078fe8255aa4517075f3607c76f87ca1fd5815061d429740ef45a03af4\",\n    \"002_down.sql\": \"45bc7c4ff945eaa02eef567615d0755ec5587f23343fdbe424942cba26a20517\"\n  }\n}\nResults: <REPLAY_PROJECT>/local_review/run-6akv6l8f/results.json\n",
+      "stderr": "",
+      "comparison": "only trailing generated Results path differs",
+      "observations_match": true,
+      "raw_usage_events_resources_reconciled": true,
+      "originals_unchanged": true,
+      "original_project_inventory": {
+        "application.py": {
+          "sha256": "50149d2c8cb6888792f3b6acec481fbe488cd718319fb0e1f6c6ddd1e3eddc0b",
+          "mode": 420
+        },
+        "release.md": {
+          "sha256": "d9d0fad0a4d8b0465c6511acad4812917db4a6c872f873a66fc2c1d1f25a9544",
+          "mode": 420
+        },
+        "002_down.sql": {
+          "sha256": "45bc7c4ff945eaa02eef567615d0755ec5587f23343fdbe424942cba26a20517",
+          "mode": 420
+        },
+        "001_initial.sql": {
+          "sha256": "de0e0f17855f5e0243f02f1bdbeface8aa0dd90b76243ef1622b5de1e11f3ba5",
+          "mode": 420
+        },
+        "002_up.sql": {
+          "sha256": "44c888078fe8255aa4517075f3607c76f87ca1fd5815061d429740ef45a03af4",
+          "mode": 420
+        },
+        "versions.py": {
+          "sha256": "8a565594295236e0cb2c8d9e115db41f4a0046e4384d0eeabdaaac4b5a138cac",
+          "mode": 420
+        },
+        "local_review/exercise.py": {
+          "sha256": "6d67d71e3f28146dfe5eca4f79837e9c8ac9805b10a3e22522fc5ecf379b378d",
+          "mode": 420
+        },
+        "local_review/run-yg4vquep/results.json": {
+          "sha256": "395a934e01e5c564ccdbcac8db70f1de59c48d928bbfddb43b35ea89dfed430b",
+          "mode": 420
+        },
+        "local_review/run-yg4vquep/disposable.sqlite": {
+          "sha256": "8a3e7e54507c86b336bdadbc3b175d89bcc0b2315277ab38cebe7941aa84ff06",
+          "mode": 420
+        }
+      }
+    },
+    "quota-ack-control--baseline--1": {
+      "exit_code": 0,
+      "stdout": "{\"sqlite_version\": \"3.51.0\", \"journal_mode\": \"delete\", \"synchronous\": 2, \"recursive_triggers\": 0}\n{\"writer\": \"old\", \"operation\": \"update\", \"id\": 1, \"value\": 21, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"update\", \"id\": 1, \"value\": 32, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"update\", \"id\": 1, \"value\": 32, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"update\", \"id\": 1, \"value\": 32, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"insert\", \"id\": 2, \"value\": 43, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"insert\", \"id\": 3, \"value\": 54, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"update\", \"id\": 2, \"value\": 65, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"update\", \"id\": 3, \"value\": 76, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"insert\", \"id\": 4, \"value\": 0, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"insert\", \"id\": 5, \"value\": 0, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"update\", \"id\": 1, \"value\": 0, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"update\", \"id\": 1, \"value\": 0, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"insert\", \"id\": 6, \"value\": -1, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"insert\", \"id\": 7, \"value\": -1, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"update\", \"id\": 1, \"value\": -1, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"update\", \"id\": 1, \"value\": -1, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"insert\", \"id\": 8, \"value\": -9223372036854775808, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"insert\", \"id\": 9, \"value\": -9223372036854775808, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"update\", \"id\": 1, \"value\": -9223372036854775808, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"update\", \"id\": 1, \"value\": -9223372036854775808, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"insert\", \"id\": 10, \"value\": 9223372036854775807, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"insert\", \"id\": 11, \"value\": 9223372036854775807, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"old\", \"operation\": \"update\", \"id\": 1, \"value\": 9223372036854775807, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"writer\": \"new\", \"operation\": \"update\", \"id\": 1, \"value\": 9223372036854775807, \"acknowledged\": true, \"both_versions_all_rows\": \"PASS\"}\n{\"rollback\": \"PASS\", \"retained_rows\": [[1, 9223372036854775807], [2, 65], [3, 76], [4, 0], [5, 0], [6, -1], [7, -1], [8, -9223372036854775808], [9, -9223372036854775808], [10, 9223372036854775807], [11, 9223372036854775807]]}\n{\"old_updates_and_inserts_after_rollback\": \"PASS\", \"acknowledged_mixed_writes\": 24, \"fresh_connection_mixed_reads\": 280}\nPASS: original file hashes unchanged; disposable database removed.\n",
+      "stderr": "",
+      "comparison": "none; complete stdout equal",
+      "observations_match": true,
+      "raw_usage_events_resources_reconciled": true,
+      "originals_unchanged": true,
+      "original_project_inventory": {
+        "application.py": {
+          "sha256": "50149d2c8cb6888792f3b6acec481fbe488cd718319fb0e1f6c6ddd1e3eddc0b",
+          "mode": 420
+        },
+        "release.md": {
+          "sha256": "d9d0fad0a4d8b0465c6511acad4812917db4a6c872f873a66fc2c1d1f25a9544",
+          "mode": 420
+        },
+        "002_down.sql": {
+          "sha256": "45bc7c4ff945eaa02eef567615d0755ec5587f23343fdbe424942cba26a20517",
+          "mode": 420
+        },
+        "001_initial.sql": {
+          "sha256": "de0e0f17855f5e0243f02f1bdbeface8aa0dd90b76243ef1622b5de1e11f3ba5",
+          "mode": 420
+        },
+        "002_up.sql": {
+          "sha256": "6a1dbb47d3d4e21e87f771fc4fc4d6273b6690be56b24178c73d9fc2b5cc39fe",
+          "mode": 420
+        },
+        "versions.py": {
+          "sha256": "8a565594295236e0cb2c8d9e115db41f4a0046e4384d0eeabdaaac4b5a138cac",
+          "mode": 420
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "sqlite_version": "3.51.0",
+  "baseline": {
+    "old": 10,
+    "new": 10
+  },
+  "writes": [
+    {
+      "version": "old",
+      "operation": "update",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 1,
+        "value": 20
+      },
+      "reads": {
+        "old": 20,
+        "new": 10
+      },
+      "both_visible": false
+    },
+    {
+      "version": "new",
+      "operation": "update",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 1,
+        "value": 30
+      },
+      "reads": {
+        "old": 20,
+        "new": 30
+      },
+      "both_visible": false
+    },
+    {
+      "version": "old",
+      "operation": "update",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 1,
+        "value": 40
+      },
+      "reads": {
+        "old": 40,
+        "new": 30
+      },
+      "both_visible": false
+    },
+    {
+      "version": "new",
+      "operation": "update",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 1,
+        "value": 50
+      },
+      "reads": {
+        "old": 40,
+        "new": 50
+      },
+      "both_visible": false
+    },
+    {
+      "version": "old",
+      "operation": "insert",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 2,
+        "value": 60
+      },
+      "reads": {
+        "old": 60,
+        "new": null
+      },
+      "both_visible": false
+    },
+    {
+      "version": "new",
+      "operation": "insert",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 3,
+        "value": 70
+      },
+      "reads": {
+        "old": 70,
+        "new": 70
+      },
+      "both_visible": true
+    },
+    {
+      "version": "new",
+      "operation": "update",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 2,
+        "value": 80
+      },
+      "reads": {
+        "old": 60,
+        "new": 80
+      },
+      "both_visible": false
+    },
+    {
+      "version": "old",
+      "operation": "update",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 3,
+        "value": 90
+      },
+      "reads": {
+        "old": 90,
+        "new": 70
+      },
+      "both_visible": false
+    },
+    {
+      "version": "new",
+      "operation": "insert",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 4,
+        "value": 100
+      },
+      "reads": {
+        "old": 100,
+        "new": 100
+      },
+      "both_visible": true
+    }
+  ],
+  "rollback": [
+    {
+      "id": 1,
+      "expected": 50,
+      "actual": 40
+    },
+    {
+      "id": 2,
+      "expected": 80,
+      "actual": 60
+    },
+    {
+      "id": 3,
+      "expected": 90,
+      "actual": 90
+    },
+    {
+      "id": 4,
+      "expected": 100,
+      "actual": 100
+    }
+  ],
+  "old_after_rollback": [
+    {
+      "operation": "update",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 1,
+        "value": 110
+      },
+      "actual": 110
+    },
+    {
+      "operation": "insert",
+      "acknowledgment": {
+        "acknowledged": true,
+        "id": 5,
+        "value": 120
+      },
+      "actual": 120
+    }
+  ],
+  "original_files_unchanged": true,
+  "original_sha256": {
+    "release.md": "d9d0fad0a4d8b0465c6511acad4812917db4a6c872f873a66fc2c1d1f25a9544",
+    "application.py": "50149d2c8cb6888792f3b6acec481fbe488cd718319fb0e1f6c6ddd1e3eddc0b",
+    "versions.py": "8a565594295236e0cb2c8d9e115db41f4a0046e4384d0eeabdaaac4b5a138cac",
+    "001_initial.sql": "de0e0f17855f5e0243f02f1bdbeface8aa0dd90b76243ef1622b5de1e11f3ba5",
+    "002_up.sql": "44c888078fe8255aa4517075f3607c76f87ca1fd5815061d429740ef45a03af4",
+    "002_down.sql": "45bc7c4ff945eaa02eef567615d0755ec5587f23343fdbe424942cba26a20517"
+  }
+}
