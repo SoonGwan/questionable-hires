@@ -20,18 +20,22 @@ Checkpoint 07 below measured the preceding instruction, not this candidate.
 
 [Direct entry comparison](FRIDAY-COMPACT-MODEL-01-PROTOCOL.md) is now running,
 launch `ce6dd4e`: three unchanged reader/writer tasks, six serial old/new sessions.
-Only the entry differs between frozen resources. This has no no-skill arm and
-no new result yet; it tests the compression candidate against its predecessor.
+Only the entry differs between frozen resources. This has no no-skill arm;
+it tests the compression candidate against its predecessor.
 
-[Partial review](FRIDAY-COMPACT-MODEL-01-REVIEW.md) records the completed original
-schema session's actual matrix output and preserved uncertainty. No pair or
-aggregate claim yet; remaining sessions are running.
+[Partial review](FRIDAY-COMPACT-MODEL-01-REVIEW.md) records both schema sessions:
+original 72,238 tokens/38.804s; candidate 87,540/39.824s, **+21.18% / +2.63%**.
+Both preserve required evidence; candidate reads the reference separately and
+collects an unnecessary commit header. This pair is adverse, not a compression
+win. Writer/control sessions are still running; no aggregate conclusion yet.
 
 한국어: Friday 진입 지침의 중복 설명을 줄인 새 후보 `e063131`을 만들었다.
 롤백 전 새 데이터·실제 실행 환경 검증 조건은 유지했고 도구와 과제는 그대로다.
 문서 용량 감소를 토큰 절감으로 보지 않으며, 아래 측정은 수정 전 버전이다.
 현재 기존 읽기·쓰기 과제 3개에서 구버전·축약본 총 6개 세션을 직접 비교
-중이다. 스킬 미사용 대비 비교가 아니며, 아직 새 결과는 없다.
+중이다. 스킬 미사용 대비 비교가 아니다. 첫 SQL 비교는 필요한 검증을
+유지했지만 축약본의 토큰 21.18%, 시간 2.63% 증가로 불리했다. 나머지
+쓰기·정상 대조군까지 그대로 진행하며, 짧은 지침을 성능 향상으로 보지 않는다.
 
 [Checkpoint 07](BUNDLE-CONTRACT-07-REVIEW.md), resources `32bf8bd`: all 18 serial
 sessions across nine fixed tasks completed, no timeouts/exclusions. Baseline
