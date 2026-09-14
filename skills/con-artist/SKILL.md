@@ -35,13 +35,16 @@ process does not prove what the test process loads.
   Python context, [the collector](references/python-context.md) locates definitions,
   ancestor instructions and fixtures. Select known bodies directly; indexes are
   navigation, not reviewed bodies or execution. Don't recollect equivalent context.
+- Existing Python test improvements: consider [native test replacements](references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)
+  when they remove custom copy/run/cleanup plumbing. One recipe checks original
+  and proposed tests against correct/faulty code with the native runner and fixtures;
+  applying the verified edit remains separate. No helper is needed for a simpler
+  native workflow or an already-completed audit.
 - Small self-contained audits: use the native runner in project-local copies or
   a valid substitution. Choose [the Python helper](references/python-audit.md) when
   its bounded processes, selected-input integrity checks or shared-baseline batches
   remove needed orchestration. Python compatibility alone is not a reason to adopt
   it or load its guide. Read implementation for a concrete trust/adaptation question.
-  For proposed edits at existing native test paths, its replacement mode compares
-  original and improved tests in fresh copies without changing the source project.
 - Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)
   covers false-pass assertion helpers and incomplete checks. It is not routine setup.
 

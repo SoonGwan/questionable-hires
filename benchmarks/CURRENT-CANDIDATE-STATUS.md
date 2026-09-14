@@ -9,6 +9,27 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## SQLite debit screen and routing follow-up — 2026-09-15, launch `eb6f41a`
+
+[Original execution review](results/sqlite-debit-01/README.md) compares Con Artist
+`6eef303` and `ed4a38a` on one authored pytest/SQLite audit. Both complete all four
+required phases, strengthen both amount cases and preserve/clean the project.
+Recorded totals: 141,497→137,419 tokens, 91.698→84.771s (−2.88% / −7.55%).
+Neither uses the new helper, so this is **not an attributed replacement-API gain**.
+All 20 shell outputs/exits match original stored responses; fixed order, shared
+host/cache, n=1 and a brief overlapping local check limit interpretation.
+
+Follow-up gives existing-test improvements a direct, optional entry link to native
+replacements instead of burying them beneath the small-audit fallback. It preserves
+native-workflow choice and does not require helper use or repeated checks.
+This routing edit is **not measured by the preceding pair**. No runtime change,
+featured promotion or all-eight performance claim.
+
+한국어: SQLite 과제에서 두 스킬 모두 필요한 검사를 완료했다. 기록상 비용은
+소폭 줄었지만 새 도우미를 사용하지 않아 기능 개선 효과는 입증하지 못했다.
+후속 수정은 기존 테스트 보강 기능으로 바로 연결하는 선택적 안내다. 도구 사용을
+강제하지 않으며, 이 안내 수정의 효과는 아직 미측정이다. 대표 수치는 그대로다.
+
 ## Archive context corrections — 2026-09-15, source `6e99847`
 
 [History ownership and native hook fixtures](ARCHIVE-CONTEXT-02.md) address the
