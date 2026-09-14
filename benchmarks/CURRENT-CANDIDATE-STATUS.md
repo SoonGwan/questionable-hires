@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Pytest replacements and archive repair — 2026-09-15, source `df799cf`
+
+[Native pytest/distribution check](PYTEST-REPLACEMENT-01.md): actual autouse and
+parametrized fixtures, rewritten assertion failures, collection-error refusal and
+fixture-content-sensitive reuse pass three focused checks. Previous `32456fc`
+archive fails seven setup checks because ignored `benchmarks/local-runs` is absent;
+the test/replay scratch parents are corrected to the shipped benchmarks directory.
+A fresh unmodified `df799cf` archive passes all ten replacement tests and the
+retained store replay. Tested pytest is declared for the existing CI jobs; hosted
+CI and model efficiency remain unverified. Prior worktree passes are not relabeled.
+
+한국어: pytest 동작을 확인했고 깨끗한 압축본의 검사 시작 오류 7건도 고쳤다.
+새 압축본에서 관련 10개 검사와 저장 테스트 재실행이 통과했다. 이전 로컬 검사
+통과를 배포 검증으로 확대하지 않으며 모델 성능 수치나 그래프는 그대로다.
+
 ## Con Artist existing-path native probes — 2026-09-15, parent `dd315e0`
 
 [Same-path test improvements](EXISTING-TEST-PROBE-01.md) add optional
