@@ -1,0 +1,121 @@
+diff --git a/.test-evidence.wE1EgE/argv.txt b/.test-evidence.wE1EgE/argv.txt
+new file mode 100644
+index 0000000..c6642a8
+--- /dev/null
++++ b/.test-evidence.wE1EgE/argv.txt
+@@ -0,0 +1,6 @@
++python3
++-B
++-m
++unittest
++discover
++-v
+diff --git a/.test-evidence.wE1EgE/exit.txt b/.test-evidence.wE1EgE/exit.txt
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/.test-evidence.wE1EgE/exit.txt
+@@ -0,0 +1 @@
++0
+diff --git a/.test-evidence.wE1EgE/output.txt b/.test-evidence.wE1EgE/output.txt
+new file mode 100644
+index 0000000..83c7e7c
+--- /dev/null
++++ b/.test-evidence.wE1EgE/output.txt
+@@ -0,0 +1,13 @@
++test_existing_missing (test_flags.ExistingFlagTests) ... ok
++test_existing_true (test_flags.ExistingFlagTests) ... ok
++test_accepted_spellings_case_and_whitespace (test_flags.FlagContractTests) ... ok
++test_invalid_and_blank_strings (test_flags.FlagContractTests) ... ok
++test_missing_and_none_with_both_defaults (test_flags.FlagContractTests) ... ok
++test_worker_accepted_values (test_flags.FlagContractTests) ... ok
++test_worker_missing_and_none_default_to_false (test_flags.FlagContractTests) ... ok
++test_worker_propagates_invalid_and_blank_errors (test_flags.FlagContractTests) ... ok
++
++----------------------------------------------------------------------
++Ran 8 tests in 0.001s
++
++OK
+diff --git a/test_flags.py b/test_flags.py
+index bac3a1d..a0c2bf8 100644
+--- a/test_flags.py
++++ b/test_flags.py
+@@ -1,5 +1,6 @@
+ import unittest
+ from flags import read_flag
++from worker import worker_options
+ 
+ 
+ class ExistingFlagTests(unittest.TestCase):
+@@ -8,3 +9,71 @@ class ExistingFlagTests(unittest.TestCase):
+ 
+     def test_existing_missing(self):
+         self.assertIs(read_flag({}, "TRACE"), False)
++
++
++class FlagContractTests(unittest.TestCase):
++    def test_accepted_spellings_case_and_whitespace(self):
++        for expected, spellings in (
++            (True, ("true", "yes", "on", "1")),
++            (False, ("false", "no", "off", "0")),
++        ):
++            for spelling in spellings:
++                for value in (spelling, spelling.upper(),
++                              " \t" + spelling.title() + "\r\n"):
++                    for default in (False, True):
++                        with self.subTest(value=value, default=default):
++                            env = {"CUSTOM": value, "TRACE": "invalid"}
++                            before = env.copy()
++                            self.assertIs(read_flag(env, "CUSTOM", default), expected)
++                            self.assertEqual(env, before)
++
++    def test_missing_and_none_with_both_defaults(self):
++        for default in (False, True):
++            for env in ({"OTHER": "yes"}, {"CUSTOM": None, "OTHER": "yes"}):
++                with self.subTest(env=env, default=default):
++                    before = env.copy()
++                    self.assertIs(read_flag(env, "CUSTOM", default), default)
++                    self.assertEqual(env, before)
++
++    def test_invalid_and_blank_strings(self):
++        for value in ("", " \t\r\n", "maybe", "2", "-1", "t", "f", "y", "n",
++                      "enabled", "disabled", "none", "null", "true false", "o n"):
++            for default in (False, True):
++                with self.subTest(value=value, default=default):
++                    env = {"CUSTOM": value, "OTHER": "keep"}
++                    before = env.copy()
++                    with self.assertRaises(ValueError):
++                        read_flag(env, "CUSTOM", default)
++                    self.assertEqual(env, before)
++
++    def test_worker_accepted_values(self):
++        for expected, spellings in (
++            (True, ("true", "yes", "on", "1")),
++            (False, ("false", "no", "off", "0")),
++        ):
++            for spelling in spellings:
++                with self.subTest(spelling=spelling):
++                    env = {"TRACE": " \t" + spelling.upper() + "\n", "OTHER": "keep"}
++                    before = env.copy()
++                    options = worker_options(env)
++                    self.assertEqual(options, {"trace": expected, "retries": 3})
++                    self.assertIs(options["trace"], expected)
++                    self.assertEqual(env, before)
++
++    def test_worker_missing_and_none_default_to_false(self):
++        for env in ({"OTHER": "yes"}, {"TRACE": None, "OTHER": "yes"}):
++            with self.subTest(env=env):
++                before = env.copy()
++                options = worker_options(env)
++                self.assertEqual(options, {"trace": False, "retries": 3})
++                self.assertIs(options["trace"], False)
++                self.assertEqual(env, before)
++
++    def test_worker_propagates_invalid_and_blank_errors(self):
++        for value in ("", " \t\n", "maybe", "2", "enabled"):
++            with self.subTest(value=value):
++                env = {"TRACE": value, "OTHER": "keep"}
++                before = env.copy()
++                with self.assertRaises(ValueError):
++                    worker_options(env)
++                self.assertEqual(env, before)

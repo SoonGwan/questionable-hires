@@ -1,0 +1,1272 @@
+diff --git a/flags.py b/flags.py
+index ac9e1bb..4e16c18 100644
+--- a/flags.py
++++ b/flags.py
+@@ -2,4 +2,9 @@ def read_flag(env, name, default=False):
+     value = env.get(name)
+     if value is None:
+         return default
+-    return bool(value)
++    value = value.strip().lower()
++    if value in ("true", "yes", "on", "1"):
++        return True
++    if value in ("false", "no", "off", "0"):
++        return False
++    raise ValueError("Invalid flag value: {!r}".format(value))
+diff --git a/test_flags.py b/test_flags.py
+index bac3a1d..4eb5013 100644
+--- a/test_flags.py
++++ b/test_flags.py
+@@ -1,5 +1,6 @@
+ import unittest
+ from flags import read_flag
++from worker import worker_options
+ 
+ 
+ class ExistingFlagTests(unittest.TestCase):
+@@ -8,3 +9,92 @@ class ExistingFlagTests(unittest.TestCase):
+ 
+     def test_existing_missing(self):
+         self.assertIs(read_flag({}, "TRACE"), False)
++
++
++TRUE_VALUES = ("true", "yes", "on", "1")
++FALSE_VALUES = ("false", "no", "off", "0")
++INVALID_VALUES = ("", " ", "\t\r\n", "truthy", "falsey", "t", "f", "y", "n",
++                  "2", "-1", "yes please", "o n", "none", "null")
++
++
++def spellings(value):
++    return (value, value.upper(), value.title(), " \t" + value.upper() + "\r\n")
++
++
++class FlagContractTests(unittest.TestCase):
++    def test_accepted_spellings_whitespace_and_case(self):
++        for values, expected in ((TRUE_VALUES, True), (FALSE_VALUES, False)):
++            for value in values:
++                for spelling in spellings(value):
++                    for default in (False, True):
++                        with self.subTest(value=spelling, default=default):
++                            self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++                                          expected)
++
++    def test_missing_and_none_with_both_defaults(self):
++        for env in ({}, {"TRACE": None}):
++            for default in (False, True):
++                with self.subTest(env=env, default=default):
++                    self.assertIs(read_flag(env, "TRACE", default), default)
++
++    def test_invalid_and_blank_strings(self):
++        for value in INVALID_VALUES:
++            for default in (False, True):
++                with self.subTest(value=value, default=default):
++                    with self.assertRaises(ValueError):
++                        read_flag({"TRACE": value}, "TRACE", default)
++
++    def test_reads_requested_key_from_supplied_mapping(self):
++        self.assertIs(read_flag({"TRACE": "true", "OTHER": "false"}, "OTHER"), False)
++        self.assertIs(read_flag({"TRACE": "false", "OTHER": "true"}, "OTHER"), True)
++
++    def test_mapping_preserved_on_return_and_error(self):
++        for env in ({"OTHER": "untouched"},
++                    *({"TRACE": value, "OTHER": "untouched"}
++                      for value in (None, *TRUE_VALUES, *FALSE_VALUES, " YES ",
++                                    " OFF ", *INVALID_VALUES))):
++            for default in (False, True):
++                with self.subTest(env=env, default=default):
++                    before = env.copy()
++                    try:
++                        if env.get("TRACE") in INVALID_VALUES:
++                            with self.assertRaises(ValueError):
++                                read_flag(env, "TRACE", default)
++                        else:
++                            read_flag(env, "TRACE", default)
++                    finally:
++                        self.assertEqual(env, before)
++
++
++class WorkerContractTests(unittest.TestCase):
++    def test_accepted_spellings_whitespace_and_case(self):
++        for values, expected in ((TRUE_VALUES, True), (FALSE_VALUES, False)):
++            for value in values:
++                for spelling in spellings(value):
++                    with self.subTest(value=spelling):
++                        env = {"TRACE": spelling, "OTHER": "untouched"}
++                        before = env.copy()
++                        result = worker_options(env)
++                        self.assertEqual(result, {"trace": expected, "retries": 3})
++                        self.assertIs(result["trace"], expected)
++                        self.assertEqual(env, before)
++
++    def test_missing_and_none_default_false(self):
++        for env in ({"OTHER": "true"}, {"TRACE": None, "OTHER": "true"}):
++            with self.subTest(env=env):
++                before = env.copy()
++                result = worker_options(env)
++                self.assertEqual(result, {"trace": False, "retries": 3})
++                self.assertIs(result["trace"], False)
++                self.assertEqual(env, before)
++
++    def test_invalid_and_blank_strings_propagate_without_mutation(self):
++        for value in INVALID_VALUES:
++            with self.subTest(value=value):
++                env = {"TRACE": value, "OTHER": "untouched"}
++                before = env.copy()
++                try:
++                    with self.assertRaises(ValueError):
++                        worker_options(env)
++                finally:
++                    self.assertEqual(env, before)
+diff --git a/verification/baseline-cbsx86e1/command.txt b/verification/baseline-cbsx86e1/command.txt
+new file mode 100644
+index 0000000..06ebdfa
+--- /dev/null
++++ b/verification/baseline-cbsx86e1/command.txt
+@@ -0,0 +1 @@
++python3 -B -m unittest discover -v
+diff --git a/verification/baseline-cbsx86e1/exit.txt b/verification/baseline-cbsx86e1/exit.txt
+new file mode 100644
+index 0000000..d00491f
+--- /dev/null
++++ b/verification/baseline-cbsx86e1/exit.txt
+@@ -0,0 +1 @@
++1
+diff --git a/verification/baseline-cbsx86e1/output.txt b/verification/baseline-cbsx86e1/output.txt
+new file mode 100644
+index 0000000..16398e6
+--- /dev/null
++++ b/verification/baseline-cbsx86e1/output.txt
+@@ -0,0 +1,1098 @@
++test_existing_missing (test_flags.ExistingFlagTests) ... ok
++test_existing_true (test_flags.ExistingFlagTests) ... ok
++test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) ... test_invalid_and_blank_strings (test_flags.FlagContractTests) ... test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) ... test_missing_and_none_with_both_defaults (test_flags.FlagContractTests) ... ok
++test_reads_requested_key_from_supplied_mapping (test_flags.FlagContractTests) ... FAIL
++test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) ... test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) ... test_missing_and_none_default_false (test_flags.WorkerContractTests) ... ok
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='false', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='false', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='FALSE', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='FALSE', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='False', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='False', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value=' \tFALSE\r\n', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value=' \tFALSE\r\n', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='no', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='no', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='NO', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='NO', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='No', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='No', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value=' \tNO\r\n', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value=' \tNO\r\n', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='off', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='off', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='OFF', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='OFF', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='Off', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='Off', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value=' \tOFF\r\n', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value=' \tOFF\r\n', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='0', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='0', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='0', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='0', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='0', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value='0', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value=' \t0\r\n', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) (value=' \t0\r\n', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 31, in test_accepted_spellings_whitespace_and_case
++    self.assertIs(read_flag({"TRACE": spelling}, "TRACE", default),
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value=' ', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value=' ', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='\t\r\n', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='\t\r\n', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='truthy', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='truthy', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='falsey', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='falsey', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='t', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='t', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='f', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='f', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='y', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='y', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='n', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='n', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='2', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='2', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='-1', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='-1', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='yes please', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='yes please', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='o n', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='o n', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='none', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='none', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='null', default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings (test_flags.FlagContractTests) (value='null', default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 45, in test_invalid_and_blank_strings
++    read_flag({"TRACE": value}, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': '', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': '', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': ' ', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': ' ', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': '\t\r\n', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': '\t\r\n', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'truthy', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'truthy', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'falsey', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'falsey', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 't', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 't', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'f', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'f', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'y', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'y', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'n', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'n', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': '2', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': '2', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': '-1', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': '-1', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'yes please', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'yes please', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'o n', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'o n', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'none', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'none', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'null', 'OTHER': 'untouched'}, default=False)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) (env={'TRACE': 'null', 'OTHER': 'untouched'}, default=True)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 62, in test_mapping_preserved_on_return_and_error
++    read_flag(env, "TRACE", default)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_reads_requested_key_from_supplied_mapping (test_flags.FlagContractTests)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 48, in test_reads_requested_key_from_supplied_mapping
++    self.assertIs(read_flag({"TRACE": "true", "OTHER": "false"}, "OTHER"), False)
++AssertionError: True is not False
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='false')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='FALSE')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='False')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value=' \tFALSE\r\n')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='no')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='NO')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='No')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value=' \tNO\r\n')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='off')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='OFF')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='Off')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value=' \tOFF\r\n')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='0')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='0')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value='0')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) (value=' \t0\r\n')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 78, in test_accepted_spellings_whitespace_and_case
++    self.assertEqual(result, {"trace": expected, "retries": 3})
++AssertionError: {'trace': True, 'retries': 3} != {'trace': False, 'retries': 3}
++- {'retries': 3, 'trace': True}
++?                         ^^^
++
+++ {'retries': 3, 'trace': False}
++?                         ^^^^
++
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value=' ')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='\t\r\n')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='truthy')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='falsey')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='t')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='f')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='y')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='n')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='2')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='-1')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='yes please')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='o n')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='none')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++======================================================================
++FAIL: test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) (value='null')
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "<WORKSPACE>/test_flags.py", line 98, in test_invalid_and_blank_strings_propagate_without_mutation
++    worker_options(env)
++AssertionError: ValueError not raised
++
++----------------------------------------------------------------------
++Ran 10 tests in 0.005s
++
++FAILED (failures=124)
+diff --git a/verification/fixed-92ifltqj/command.txt b/verification/fixed-92ifltqj/command.txt
+new file mode 100644
+index 0000000..06ebdfa
+--- /dev/null
++++ b/verification/fixed-92ifltqj/command.txt
+@@ -0,0 +1 @@
++python3 -B -m unittest discover -v
+diff --git a/verification/fixed-92ifltqj/exit.txt b/verification/fixed-92ifltqj/exit.txt
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/verification/fixed-92ifltqj/exit.txt
+@@ -0,0 +1 @@
++0
+diff --git a/verification/fixed-92ifltqj/output.txt b/verification/fixed-92ifltqj/output.txt
+new file mode 100644
+index 0000000..bb6738c
+--- /dev/null
++++ b/verification/fixed-92ifltqj/output.txt
+@@ -0,0 +1,15 @@
++test_existing_missing (test_flags.ExistingFlagTests) ... ok
++test_existing_true (test_flags.ExistingFlagTests) ... ok
++test_accepted_spellings_whitespace_and_case (test_flags.FlagContractTests) ... ok
++test_invalid_and_blank_strings (test_flags.FlagContractTests) ... ok
++test_mapping_preserved_on_return_and_error (test_flags.FlagContractTests) ... ok
++test_missing_and_none_with_both_defaults (test_flags.FlagContractTests) ... ok
++test_reads_requested_key_from_supplied_mapping (test_flags.FlagContractTests) ... ok
++test_accepted_spellings_whitespace_and_case (test_flags.WorkerContractTests) ... ok
++test_invalid_and_blank_strings_propagate_without_mutation (test_flags.WorkerContractTests) ... ok
++test_missing_and_none_default_false (test_flags.WorkerContractTests) ... ok
++
++----------------------------------------------------------------------
++Ran 10 tests in 0.002s
++
++OK

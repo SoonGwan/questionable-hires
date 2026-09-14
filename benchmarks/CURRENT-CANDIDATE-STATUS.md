@@ -11,15 +11,29 @@ it has not established a broad 20–30% gain.
 
 ## Refresh-owner checkpoint — 2026-09-15, launch `3c29443`
 
+[Flag handoff 01 review](HOSTAGE-FLAG-01-REVIEW.md), launch `094cc69`, resources
+`fe3faa8`: four completed sessions, all final native handoffs supported by actual
+retained/read results. Skill uses the conditional evidence recipe without async
+assets. Observed sum costs decrease 5.42% tokens / 14.00% time, with unequal
+before-fix work and test breadth. Sixteen separate controls match. Useful adoption,
+not a broad gain or actual-CLI-loss recovery demonstration. Move to other hires'
+costly workflows; keep this result and prior adverse observations accessible.
+
+한국어: 새 동기식 과제에서 증거 보존 기능의 실제 채택과 양쪽 최종 결과 근거를
+확인했다. 토큰 5.42%·시간 14.00% 감소는 추가 작업·검사 범위 차이가 있는 관측치다.
+대조 16회도 확인했지만 전체 성능 달성은 아니다. 이제 다른 스킬의 비용 개선으로
+이동하며 과거 불리한 결과도 유지한다.
+
 [Flag handoff transfer 01](HOSTAGE-FLAG-01-PROTOCOL.md), resources `fe3faa8`:
 new synchronous parsing/handoff tasks, same durable-evidence contract for fresh
 baseline and skill arms. Native preflight accepts correct behavior and detects
 truthiness/invalid-input faults with real assertions; two fixture tests pass.
-Four model sessions are preregistered; no results yet, no real-user claim.
+Four model sessions were preregistered; completed observations are linked above,
+with no real-user claim.
 
 한국어: 비동기 예제를 벗어나 문자열 설정 파싱·테스트 기록 전달 과제 2종을
 추가했다. 양쪽 조건의 요구가 같고 정상/오류 사전 검증을 통과했다. 새 4세션
-계획이며 아직 모델 결과나 실사용자 성능 증거는 아니다.
+계획의 완료 결과는 위 기록을 따른다. 실사용자 성능 증거는 아니다.
 
 [Optional native evidence retention](HOSTAGE-NATIVE-EVIDENCE-01.md), parent
 `b9cb260`: a conditional single-run recipe stores native argv/output/exit in a

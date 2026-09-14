@@ -1,0 +1,138 @@
+diff --git a/.test-evidence.lDnty2/argv.txt b/.test-evidence.lDnty2/argv.txt
+new file mode 100644
+index 0000000..c6642a8
+--- /dev/null
++++ b/.test-evidence.lDnty2/argv.txt
+@@ -0,0 +1,6 @@
++python3
++-B
++-m
++unittest
++discover
++-v
+diff --git a/.test-evidence.lDnty2/exit.txt b/.test-evidence.lDnty2/exit.txt
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/.test-evidence.lDnty2/exit.txt
+@@ -0,0 +1 @@
++0
+diff --git a/.test-evidence.lDnty2/output.txt b/.test-evidence.lDnty2/output.txt
+new file mode 100644
+index 0000000..25deda1
+--- /dev/null
++++ b/.test-evidence.lDnty2/output.txt
+@@ -0,0 +1,13 @@
++test_existing_missing (test_flags.ExistingFlagTests) ... ok
++test_existing_true (test_flags.ExistingFlagTests) ... ok
++test_accepted_spellings_case_and_whitespace (test_flags.FlagContractTests) ... ok
++test_invalid_and_blank_strings_with_both_defaults (test_flags.FlagContractTests) ... ok
++test_missing_and_none_with_both_defaults (test_flags.FlagContractTests) ... ok
++test_invalid_and_blank_trace_raise (test_flags.WorkerContractTests) ... ok
++test_missing_and_none_default_to_false (test_flags.WorkerContractTests) ... ok
++test_trace_spellings_case_and_whitespace (test_flags.WorkerContractTests) ... ok
++
++----------------------------------------------------------------------
++Ran 8 tests in 0.001s
++
++OK
+diff --git a/flags.py b/flags.py
+index ac9e1bb..bda54f4 100644
+--- a/flags.py
++++ b/flags.py
+@@ -2,4 +2,9 @@ def read_flag(env, name, default=False):
+     value = env.get(name)
+     if value is None:
+         return default
+-    return bool(value)
++    value = value.strip().lower()
++    if value in ("true", "yes", "on", "1"):
++        return True
++    if value in ("false", "no", "off", "0"):
++        return False
++    raise ValueError(f"Invalid flag value: {value!r}")
+diff --git a/test_flags.py b/test_flags.py
+index bac3a1d..6607fb0 100644
+--- a/test_flags.py
++++ b/test_flags.py
+@@ -1,5 +1,6 @@
+ import unittest
+ from flags import read_flag
++from worker import worker_options
+ 
+ 
+ class ExistingFlagTests(unittest.TestCase):
+@@ -8,3 +9,73 @@ class ExistingFlagTests(unittest.TestCase):
+ 
+     def test_existing_missing(self):
+         self.assertIs(read_flag({}, "TRACE"), False)
++
++
++class FlagContractTests(unittest.TestCase):
++    def test_accepted_spellings_case_and_whitespace(self):
++        for expected, spellings in (
++            (True, ("true", "yes", "on", "1")),
++            (False, ("false", "no", "off", "0")),
++        ):
++            for spelling in spellings:
++                for value in (spelling, spelling.upper(), f" \t{spelling.title()}\r\n"):
++                    for default in (False, True):
++                        with self.subTest(value=value, default=default):
++                            env = {"CUSTOM": value, "TRACE": "invalid", "OTHER": None}
++                            before = env.copy()
++                            self.assertIs(read_flag(env, "CUSTOM", default), expected)
++                            self.assertEqual(env, before)
++
++    def test_missing_and_none_with_both_defaults(self):
++        for default in (False, True):
++            for env in ({"OTHER": "yes"}, {"TRACE": None, "OTHER": "yes"}):
++                with self.subTest(env=env, default=default):
++                    before = env.copy()
++                    self.assertIs(read_flag(env, "TRACE", default), default)
++                    self.assertEqual(env, before)
++
++    def test_invalid_and_blank_strings_with_both_defaults(self):
++        for value in ("", " \t\r\n", "t", "f", "y", "n", "2", "-1", "enabled",
++                      "disabled", "None", "true false", "tr ue", " true! "):
++            for default in (False, True):
++                with self.subTest(value=value, default=default):
++                    env = {"TRACE": value, "OTHER": "unchanged"}
++                    before = env.copy()
++                    with self.assertRaises(ValueError):
++                        read_flag(env, "TRACE", default)
++                    self.assertEqual(env, before)
++
++
++class WorkerContractTests(unittest.TestCase):
++    def test_trace_spellings_case_and_whitespace(self):
++        for expected, spellings in (
++            (True, ("true", "yes", "on", "1")),
++            (False, ("false", "no", "off", "0")),
++        ):
++            for spelling in spellings:
++                for value in (spelling, spelling.upper(), f" \t{spelling.title()}\r\n"):
++                    with self.subTest(value=value):
++                        env = {"TRACE": value, "OTHER": "unchanged"}
++                        before = env.copy()
++                        options = worker_options(env)
++                        self.assertEqual(options, {"trace": expected, "retries": 3})
++                        self.assertIs(options["trace"], expected)
++                        self.assertEqual(env, before)
++
++    def test_missing_and_none_default_to_false(self):
++        for env in ({"OTHER": "yes"}, {"TRACE": None, "OTHER": "yes"}):
++            with self.subTest(env=env):
++                before = env.copy()
++                options = worker_options(env)
++                self.assertEqual(options, {"trace": False, "retries": 3})
++                self.assertIs(options["trace"], False)
++                self.assertEqual(env, before)
++
++    def test_invalid_and_blank_trace_raise(self):
++        for value in ("", " \t\r\n", "invalid", "enabled", "2"):
++            with self.subTest(value=value):
++                env = {"TRACE": value, "OTHER": "unchanged"}
++                before = env.copy()
++                with self.assertRaises(ValueError):
++                    worker_options(env)
++                self.assertEqual(env, before)
