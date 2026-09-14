@@ -13,7 +13,7 @@ Reuse supplied paths and instructions. When locations are missing, discover appl
 
 For each supporting change, ask which acceptance condition fails without it. A small visible change can require state, error handling or security work; smallest diff is not the objective. Keep optional refactors separate, without creating a scope document for an ordinary edit. Ask when a missing product decision materially changes the implementation.
 
-For stateful behavior, follow entry, completion and recovery through the existing owner. Preserve return values, errors and cleanup, including cancellation. Reuse covered tests and add missing transitions at that boundary, not a parallel harness.
+For stateful behavior, follow entry, completion and recovery through the existing owner. Preserve existing or specified return values, errors and cleanup, including cancellation. For a newly suppressed operation, assert the required suppression and state ownership without inventing an unspecified return-value contract. Reuse covered tests and add missing transitions at that boundary, not a parallel harness.
 
 When asserting that stale or failed work leaves state unchanged, capture the relevant field values before releasing that work and compare them afterward. Retaining the state object itself can alias in-place mutations. Preserve payload/error references when identity is contractual; snapshot nested mutable contents only where the contract requires their stability.
 

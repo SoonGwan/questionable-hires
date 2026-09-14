@@ -11,6 +11,19 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Python [callback adoption 01](HOSTAGE-PYTHON-ENTRY-MODEL-01-REVIEW.md), launch
+`08a8f6e`, resources `4b79eb9`: 114,248 tokens / 87.024s, one skill-only cell.
+Actual task-aware API use and original 6/6 native passes are confirmed. Separate
+replays detect missing guard/cleanup but reject a valid False-returning duplicate
+suppression path: the generated test invents a None-return contract. A narrow
+post-run instruction correction is not yet model-validated. Full-asset reading
+and deadline-based missing-guard failure remain; no efficiency/featured claim.
+
+한국어: Python 새 API 사용과 원본 테스트 6개 통과를 확인했지만, 정상 중복 차단의
+반환값까지 None으로 강제하는 과잉 검증을 발견했다. 이를 막는 지침을 수정했으며
+수정 지침의 모델 효과는 아직 미검증이다. 114,248토큰·87.024초로 비용 절감을
+입증하지 못했고 기존 결과·이미지는 그대로 보존한다.
+
 Distribution check: [all-eight skills CLI install](SKILLS-CLI-INSTALL-01.md),
 source `45fe88e`, `skills@1.5.26`: all 38 files/modes match in a network-disabled
 disposable project. Seven Python entrypoints and installed Python/JS task-aware
@@ -51,13 +64,15 @@ Current Python Hostage runtime addition: [task-aware entry](HOSTAGE-PYTHON-ENTRY
 An optional wait detects an already-finished application rather than spending its
 entry deadline. Local tests cover exact outcomes, both cancellation directions,
 queued-entry preservation and competing consumers; correct two-stage behavior
-passes and skipped decode yields the actual completed payload. Python model
-adoption/cost remains unmeasured; no historical score or featured change.
+passes and skipped decode yields the actual completed payload. This local check
+does not measure model adoption/cost; the subsequent adoption screen is above.
+No historical score or featured change.
 Local suite at `6d57e68`: 494 passed in 68.746s, no failures/skips.
 
 한국어: Python에도 앱 작업 종료를 확인하는 선택형 콜백 대기를 추가했다. 대기만
 취소해도 앱 작업은 유지하고, 취소와 콜백 진입이 겹쳐도 콜백을 잃지 않는지
-검증했다. 실제 모델 채택·전체 비용 효과는 아직 미측정이다.
+검증했다. 이 로컬 검사는 모델 효과를 측정하지 않으며, 이후 채택 실험은 위에
+별도로 기록했다.
 
 Measurement review improvement — 2026-09-14: the runner flags direct `node --test`
 commands without complete TAP/spec count summaries for manual review. Retained
