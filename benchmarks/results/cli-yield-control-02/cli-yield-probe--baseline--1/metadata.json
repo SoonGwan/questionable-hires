@@ -1,0 +1,52 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "cli-yield-probe",
+  "skill": "exorcist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "0469cca0893b2580f502c328c222e6c1cd908258",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 13.046,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 31014,
+    "cached_input_tokens": 26752,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 126,
+    "reasoning_output_tokens": 0
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Run exactly: python3 -B emit.py\nRequest yield_time_ms=10000 and max_output_tokens=20000 on the command tool if\nconfigurable. The process deliberately produces output before and after a two-second\nwait. If it returns a live session, poll that same session to completion; don't\nrestart it. Do not read emit.py or witness files, or use other commands/tools.\nReport the BEGIN and END nonces actually visible across its tool responses and the\nfinal process exit. Use null for a marker not visible; do not infer it. Finish with\nJSON containing first, last, exit_code, and whether a live-session poll was needed.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 209,
+    "mode": 420,
+    "sha256": "b104fa1608bbf2cc2e26b9f46d9933b26bd2ac0913430580849bb9b0f09c292a",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

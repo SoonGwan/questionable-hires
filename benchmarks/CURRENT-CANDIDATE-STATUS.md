@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Capture localization — 2026-09-15, launches `d21d6f4` through `4a70281`
+
+[Four baseline-only diagnostic sessions](CLI-OUTPUT-LOCALIZATION-01.md) preserve
+six immediate outputs fully, but both delayed 92-byte outputs lose the leading
+47 bytes from CLI command events. Final answers correctly report fresh nonces
+from those missing prefixes. Thus incomplete retained output is not proof the
+model did not observe it. Exact internal cause and actual tool yield/budget
+arguments remain unverified. All four runs are retained; no skill-performance
+claim, retrospective rescore or featured-chart change follows.
+
+한국어: 출력 수집을 따로 실험한 결과, 시간 간격을 둔 출력의 앞부분은 명령
+기록에서 누락됐지만 모델 답변에는 정확히 반영됐다. 기록 누락과 모델 관측
+실패를 구분해야 한다. 원인 코드를 특정한 것은 아니며 기존 판정·그래프는
+그대로 보존한다. 스킬 성능 개선 수치가 아니라 측정 기록의 한계에 대한 실증이다.
+
 ## Exorcist reporter diagnosis — 2026-09-15, launch `3c7721a`
 
 [Reviewable-observation candidate](EXORCIST-OBSERVATION-02.md), parent `e5c9ef2`,
