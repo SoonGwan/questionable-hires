@@ -139,6 +139,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 설치본에는 필요한 경우에만 로컬에서 실행하는 보조 도구가 포함됩니다. 도구 실행에는 **Python 3.9 이상**, Con Artist의 결함 주입 실행기·Receipt·Exorcist에는 POSIX 환경도 필요합니다. 의존성을 자동 설치하거나 백그라운드에서 실행하지 않습니다.
 
 - **범위 협상가(`hostage-negotiator`):** 프로젝트에 동등한 테스트 도구가 없을 때 [비동기 호출 제어 도구](skills/hostage-negotiator/references/async-callback.md)로 반복적인 시작·완료 신호 코드를 대체할 수 있습니다. 앱 동작 검증과 태스크 정리는 테스트가 담당합니다. [모델의 실제 사용](benchmarks/HOSTAGE-CALL-MODEL-01-REVIEW.md)은 확인했지만 기준 실행 시간 초과와 원본 테스트 출력 누락 때문에 효율 비교는 인정하지 않습니다. 별도 재실행에서 구현 통과·결함 대조군 검출을 확인했으며, 이는 원본 누락을 대신하지 않습니다.
+  [JavaScript Promise 호출 제어 도구](skills/hostage-negotiator/assets/controlled_call.mjs)도 독립 ES 모듈로 사용할 수 있습니다. [네이티브 검증](benchmarks/HOSTAGE-JAVASCRIPT-CALL-01.md)에서 반환값·오류 동일성과 중복 방지·정리 누락 검출을 확인했습니다. JavaScript 모델 효율과 브라우저 동작은 아직 측정하지 않았습니다.
   새 [검증 결과 전달 지침](benchmarks/HOSTAGE-VERIFICATION-DELIVERY-01.md)은 테스트 결과와 셸의 마지막 종료 상태를 구분합니다. 이 지침만의 효과는 분리 측정하지 않았으며, 수집기는 요약이 없는 명령을 자동 채점하지 않고 검토 대상으로 표시합니다.
   [문서별 발행 과제](benchmarks/HOSTAGE-KEYED-PUBLISH-01-REVIEW.md)에서도 도구 재사용과 단독 테스트 종료 상태를 확인했지만, 토큰 25.25%·시간 7.64% 증가 및 원본 출력 일부 누락으로 효율 개선은 인정하지 않습니다. 별도 대조군 검증은 정확성을 뒷받침하며 원본 누락을 대신하지 않습니다.
   최신 [단일 파일 안내](benchmarks/HOSTAGE-SINGLE-READ-01.md)는 [새 모델 실험](benchmarks/HOSTAGE-SINGLE-READ-MODEL-01-REVIEW.md)에서 실제로 사용됐고 필요한 검증도 유지됐습니다. 토큰 6.42% 증가·시간 7.50% 감소를 기록했지만, 하위 테스트 구성·추가 검증량 차이와 원본 개별 출력 일부 누락으로 일반적인 효율 향상은 주장하지 않습니다.
