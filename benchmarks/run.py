@@ -180,7 +180,8 @@ def prepare(case, workspace):
 
 
 def disabled_skills():
-    # Disable individually discovered personal skills without editing user config.
+    # Request disables for discovered personal paths, without editing user config.
+    # This list does not verify provider catalogs, injected context or enforcement.
     paths = set()
     for root in (Path.home() / ".agents/skills", Path.home() / ".codex/skills"):
         if root.exists():
@@ -344,7 +345,8 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
             "elapsed_seconds": duration, "exit_code": process.returncode,
             "timed_out": timed_out, "usage": usage, "completed": usage is not None and process.returncode == 0 and not timed_out,
             "workspace": str(workspace), "allocated_workspace": str(allocated_workspace),
-            "prompt": prompt, "disabled_personal_skills": len(disabled),
+            "prompt": prompt, "personal_skill_disable_requests": len(disabled),
+            "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
             "execution": execution,
             "session_persistence_requested": persist_session,
             "capture_diagnostics": capture_diagnostics,

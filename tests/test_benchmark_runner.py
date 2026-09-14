@@ -31,7 +31,8 @@ class BenchmarkRunnerTests(unittest.TestCase):
 
                 with patch.object(runner.subprocess, 'Popen', side_effect=launch):
                     meta = runner.run_cell(dict(id='storage', skill='exorcist', task='Fixture', files={'x.py': 'x=1\n'}),
-                                           'baseline', 1, output, 'gpt-6-astra', 'medium', 10, [],
+                                           'baseline', 1, output, 'gpt-6-astra', 'medium', 10,
+                                           [root / 'personal/SKILL.md'],
                                            workspace_root=root / 'workspaces', persist_session=persist)
                 self.assertEqual(len(seen), 1)
                 self.assertEqual('--ephemeral' in seen[0], not persist)
@@ -39,6 +40,10 @@ class BenchmarkRunnerTests(unittest.TestCase):
                 self.assertIn('--ignore-rules', seen[0])
                 self.assertEqual(seen[0][seen[0].index('--sandbox') + 1], 'workspace-write')
                 self.assertEqual(meta['session_persistence_requested'], persist)
+                self.assertEqual(meta['personal_skill_disable_requests'], 1)
+                self.assertIn('not checked', meta['personal_skill_disable_verification'])
+                self.assertNotIn('disabled_personal_skills', meta)
+                self.assertTrue(any('enabled=false' in arg for arg in seen[0]))
 
     def test_retained_programmatic_runner_partial_capture_is_reviewable(self):
         path = runner.ROOT / 'benchmarks/results/reporter-diagnosis-01/reporter-lifecycle--skill--1/commands.json'
