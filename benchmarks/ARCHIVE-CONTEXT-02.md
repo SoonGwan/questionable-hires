@@ -47,6 +47,14 @@ Actual focused checks:
 These are fixture/environment and source-distribution checks, not hosted CI or
 20–30% model performance gains. Earlier full-archive failures remain visible.
 
+The first full corrected `6e99847` archive run discovers **643 tests** and ends
+with **two failures / three skips in 101.867s**. The previous nine failure entries
+are absent. Two archive meta-tests still expected the old English skip reasons,
+although their child processes returned success with the correct single skip.
+They now assert the exact historical test's skipped result rather than prose;
+native counts, successful child exit and behavior-test identities remain checked.
+This intermediate failure is retained, not counted as a full pass.
+
 한국어: 압축본이 상위 저장소 이력을 자기 것으로 사용하는 문제를 차단했다.
 자체 이력이 없는 경우 이력 비교만 명시적으로 생략하고 실제 동작 검사는 유지한다.
 사용자 site가 비활성인 가상환경에서는 활성 훅 검사를 별도의 테스트 소유 런타임에서

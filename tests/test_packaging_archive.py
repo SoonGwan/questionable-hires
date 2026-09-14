@@ -23,7 +23,8 @@ class PackagingArchiveTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertIn('Ran 3 tests', result.stderr)
             self.assertIn('OK (skipped=1)', result.stderr)
-            self.assertIn('Pinned Friday comparison history unavailable', result.stderr)
+            self.assertRegex(result.stderr,
+                             r'test_frozen_snapshots_differ_only_in_entry_and_preserve_tasks[^\n]*\.\.\. skipped ')
             self.assertIn('test_all_six_fixed_settings_and_no_retry_of_terminal_failure', result.stderr)
             self.assertIn('test_limit_or_missing_manifest_stops_schedule', result.stderr)
 
@@ -44,7 +45,8 @@ class PackagingArchiveTests(unittest.TestCase):
             self.assertIn('Ran 2 tests', result.stderr)
             self.assertIn('OK (skipped=1)', result.stderr)
             self.assertIn('test_actual_cleanup_removal_breaks_existing_regression', result.stderr)
-            self.assertIn('Pinned packaging review provenance unavailable', result.stderr)
+            self.assertRegex(result.stderr,
+                             r'test_archived_review_matches_pinned_source_when_available[^\n]*\.\.\. skipped ')
 
     def test_archived_regression_runs_without_git_history(self):
         with tempfile.TemporaryDirectory() as directory:
