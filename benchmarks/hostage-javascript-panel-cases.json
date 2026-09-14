@@ -1,0 +1,18 @@
+[
+  {
+    "id": "javascript-submit-panel",
+    "skill": "hostage-negotiator",
+    "task": "Implement SubmitPanel.pending so the UI can disable Submit during save. Prevent overlapping submissions on that instance, clear pending after success or failure, and preserve the existing API. Follow requirements.md. Retain new rerunnable native regression tests and preserve both existing tests unchanged. Verify initial/pending state, duplicate suppression, independent concurrent instances, signal identity, returned value identity, asynchronous and synchronous error identity, failure/retry, and abort-triggered rejection cleanup/retry. Use actual SubmitPanel with controlled callbacks; bound behavior-dependent waits, handle rejections promptly, settle owned callbacks and drain tasks even when checks fail. Stay inside this project, do not install dependencies, use external services, other skills, or delegate. No publishing or deployment.",
+    "files": {
+      "panel.mjs": "export class SubmitPanel {\n  async submit(save, signal) {\n    return await save(signal);\n  }\n}\n",
+      "panel.test.mjs": "import assert from 'node:assert/strict';\nimport test from 'node:test';\nimport { SubmitPanel } from './panel.mjs';\n\ntest('preserves result and signal identity', async () => {\n  const panel = new SubmitPanel(), signal = new AbortController().signal, result = {};\n  assert.equal(await panel.submit(async received => { assert.equal(received, signal); return result; }, signal), result);\n});\n\ntest('preserves callback rejection identity', async () => {\n  const error = new Error('save failed');\n  await assert.rejects(new SubmitPanel().submit(async () => { throw error; }), reason => reason === error);\n});\n",
+      "requirements.md": "Runtime: JavaScript ES modules, installed Node.js, standard-library node:test. Run node --test; no dependency installation or build step is needed.\nThe UI reads the boolean pending property, initially false. A submission sets pending before invoking save(signal); overlapping submissions on that same instance resolve undefined promptly and must not invoke their callback. Different instances remain independent. Preserve signal object identity, successful result identity and propagated error identity. Clear pending on every settled path, including synchronous invocation errors and rejected saves, so another submission can retry.\nCancellation belongs to the supplied callback: forward the signal unchanged, and when that callback rejects because its signal was aborted, propagate that exact reason and clear pending. Do not invent a new cancellation API, abort the caller's controller, or pretend the panel can force an abort-ignoring callback to settle. No browser rendering is provided or required; test the actual panel class.\nKeep both existing tests and their assertions unchanged. Add regression coverage without editing unrelated files. Use local controlled promises/signals rather than network or arbitrary sleeps; every behavior-dependent wait needs a deadline, and tests own callback settlement, rejection handlers and cleanup.\n"
+    },
+    "criteria": [
+      "Per-instance pending and duplicate suppression meet the visible contract without changing callback/signal/result/error semantics.",
+      "Native retained tests exercise every explicitly requested transition, including actual abort-caused callback rejection, bounded waits and owned cleanup.",
+      "Both existing tests remain unchanged; original native output shows nonempty tests and the actual test result, not only final prose.",
+      "All discovery and work remain project-local; no dependencies, services, deployment or delegation."
+    ]
+  }
+]
