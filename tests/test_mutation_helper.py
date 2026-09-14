@@ -79,6 +79,27 @@ class MutationHelperTests(unittest.TestCase):
         self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir() if p.is_file()})
         self.assertEqual(list(self.root.glob('.con-artist-*')), [])
 
+    def test_probe_files_share_only_parent_preparation_not_execution_state(self):
+        recipe = self.file_recipe()
+        probe = recipe['probe_files']['test_probe.py']
+        recipe.update(probe_files={'checks/__init__.py': '', 'checks/test_probe.py': probe,
+                                   'checks/marker.txt': 'independent probe inputs'},
+                      probe_tests=['-v', 'checks.test_probe'])
+        mkdir = Path.mkdir
+        created = []
+        def recorded(path, *args, **kwargs):
+            created.append(path)
+            return mkdir(path, *args, **kwargs)
+        with patch.object(Path, 'mkdir', recorded):
+            result = self.run_audit(recipe)
+        probe_directories = [p for p in created if p.name == 'checks']
+        self.assertEqual(len(probe_directories), 2)
+        self.assertEqual(len(set(probe_directories)), 2)
+        self.assertEqual(result['checks']['correct_probe']['exit_code'], 0)
+        self.assertEqual(result['checks']['mutant_probe']['exit_code'], 1)
+        self.assertIn('AssertionError', result['checks']['mutant_probe']['output'])
+        self.assertFalse((self.root / 'checks').exists())
+
     def test_invalid_later_test_selection_retains_prior_audit(self):
         common = {key: self.recipe[key] for key in ('files', 'imports', 'tests')}
         fault = {key: self.recipe[key] for key in ('target', 'old', 'new')}

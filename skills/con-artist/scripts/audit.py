@@ -287,16 +287,21 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                 # Each check starts from the same inputs, not prior test side effects.
                 directory = Path(scratch) / (variant + '-' + check)
                 directory.mkdir()
+                created_parents = {directory}
                 for name, content in files.items():
                     dest = directory / name
-                    dest.parent.mkdir(parents=True, exist_ok=True)
+                    if dest.parent not in created_parents:
+                        dest.parent.mkdir(parents=True, exist_ok=True)
+                        created_parents.add(dest.parent)
                     dest.write_bytes(faulty if variant == 'mutant' and name == target else content)
                     dest.chmod(modes[name])
                 phase_spec = spec
                 if check == 'probe' and file_probe:
                     for name, content in probe_files.items():
                         dest = directory / name
-                        dest.parent.mkdir(parents=True, exist_ok=True)
+                        if dest.parent not in created_parents:
+                            dest.parent.mkdir(parents=True, exist_ok=True)
+                            created_parents.add(dest.parent)
                         with dest.open('xb') as stream:
                             stream.write(content)
                     phase_spec = dict(spec, tests=spec['probe_tests'])
