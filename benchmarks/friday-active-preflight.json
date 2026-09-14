@@ -1,0 +1,12 @@
+[
+  {
+    "case": "active-release-a",
+    "exit_code": 0,
+    "output": "initial old_reader.py [(1, 'Ada'), (2, 'keep')]\nup after old drained new_reader.py [(1, 'Ada'), (2, 'keep')]\nnew writes new_reader.py [(1, '새 이름'), (2, 'keep'), (3, 'inserted')]\nrollback starts old_reader.py [(1, '새 이름'), (2, 'keep'), (3, 'inserted')]\nrollback finishes old_reader.py [(1, '새 이름'), (2, 'keep'), (3, 'inserted')]\ntest_active_readers_and_recovery (test_release.ReleaseTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.003s\n\nOK\n"
+  },
+  {
+    "case": "active-release-b",
+    "exit_code": 1,
+    "output": "initial old_reader.py [(1, 'Ada'), (2, 'keep')]\nup after old drained new_reader.py [(1, 'Ada'), (2, 'keep')]\nnew writes new_reader.py [(1, '새 이름'), (2, 'keep'), (3, 'inserted')]\nrollback finishes old_reader.py [(1, '새 이름'), (2, 'keep'), (3, 'inserted')]\ntest_active_readers_and_recovery (test_release.ReleaseTests) ... \n======================================================================\nFAIL: test_active_readers_and_recovery (test_release.ReleaseTests) (phase='rollback starts', reader='old_reader.py')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_release.py\", line 20, in test_active_readers_and_recovery\n    cursor = db.execute(query)\nsqlite3.OperationalError: no such column: name\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_release.py\", line 22, in test_active_readers_and_recovery\n    self.fail('active reader incompatible: ' + str(error))\nAssertionError: active reader incompatible: no such column: name\n\n----------------------------------------------------------------------\nRan 1 test in 0.003s\n\nFAILED (failures=1)\n"
+  }
+]

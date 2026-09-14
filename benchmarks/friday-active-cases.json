@@ -1,0 +1,44 @@
+[
+  {
+    "id": "active-release-a",
+    "skill": "friday",
+    "task": "Review the planned SQLite release against release.json and requirements.md.\nRun the supplied SQL and active reader queries through the reachable forward and\nrollback states, including the supplied new-version writes. Check exact row values\nand column names, preserved updated/untouched/inserted records, and the first failing\nstep if any. Both column names and values are part of the reader contract. Distinguish\ninactive reader incompatibility from an actually active incompatible reader. Report\nwhether this local SQL plan is compatible and what remains unknown for production.\nThis is review only: preserve every supplied file; do not fix, deploy, install\ndependencies, contact services or publish. Use disposable in-memory databases;\nany scratch must be under this project and removed afterward. Include the command,\nactual observed results and failures in your review; do not claim unexecuted checks.\nAny equivalent native SQLite method is valid; no particular helper is required.\n",
+    "files": {
+      "schema.sql": "CREATE TABLE people(id INTEGER PRIMARY KEY, name TEXT NOT NULL);\nINSERT INTO people VALUES(1,'Ada'),(2,'keep');\n",
+      "up.sql": "ALTER TABLE people RENAME COLUMN name TO label;\n",
+      "down.sql": "ALTER TABLE people RENAME COLUMN label TO name;\n",
+      "old_reader.py": "QUERY = \"SELECT id, name FROM people ORDER BY id\"\n",
+      "new_reader.py": "QUERY = \"SELECT id, label FROM people ORDER BY id\"\n",
+      "release.json": "{\n  \"phases\": [\n    {\n      \"name\": \"initial\",\n      \"files\": [\n        \"schema.sql\"\n      ],\n      \"sql\": \"\",\n      \"readers\": [\n        \"old_reader.py\"\n      ]\n    },\n    {\n      \"name\": \"up after old drained\",\n      \"files\": [\n        \"up.sql\"\n      ],\n      \"sql\": \"\",\n      \"readers\": [\n        \"new_reader.py\"\n      ]\n    },\n    {\n      \"name\": \"new writes\",\n      \"files\": [],\n      \"sql\": \"UPDATE people SET label='새 이름' WHERE id=1; INSERT INTO people VALUES(3,'inserted');\",\n      \"readers\": [\n        \"new_reader.py\"\n      ]\n    },\n    {\n      \"name\": \"rollback starts\",\n      \"files\": [\n        \"down.sql\"\n      ],\n      \"sql\": \"\",\n      \"readers\": [\n        \"old_reader.py\"\n      ]\n    },\n    {\n      \"name\": \"rollback finishes\",\n      \"files\": [],\n      \"sql\": \"\",\n      \"readers\": [\n        \"old_reader.py\"\n      ]\n    }\n  ]\n}\n",
+      "requirements.md": "Scope is local SQLite SQL compatibility and value recovery only.\nThe deployment is a documented maintenance-window strategy, not a rolling release:\nold processes are drained before up.sql; only the listed active readers run at each\ncheckpoint. release.json is the exact proposed order, including rollback. Do not\nsilently reorder it. Each phase executes files in order, then its SQL, then the\nlisted readers. All phases share the same database. Empty file/SQL lists mean no\nchange, not a fresh database. Reader names map to literal QUERY constants in the\nnamed Python files; these files are declarations, not application writer code.\nEach reader returns id and its version's label column, ordered by id. Before new\nwrites, values must be [(1, 'Ada'), (2, 'keep')]; afterward they must remain\n[(1, '새 이름'), (2, 'keep'), (3, 'inserted')] through rollback. All three record\nidentities must survive. No queued/external effects are in this local SQL contract.\nActual application writers, locking, maintenance orchestration and staging are not\nsupplied and cannot be certified. An acceptable local plan is not deployment approval.\n",
+      "notes.txt": "Owner draft: retain without edits.\n"
+    },
+    "criteria": [
+      "Assess exact active-reader compatibility and earliest failure without reordering.",
+      "Execute actual SQL and verify columns and all post-write/rollback row values.",
+      "Distinguish local SQL evidence from unavailable application/production evidence.",
+      "Preserve supplied files and remove only owned project-local scratch."
+    ]
+  },
+  {
+    "id": "active-release-b",
+    "skill": "friday",
+    "task": "Review the planned SQLite release against release.json and requirements.md.\nRun the supplied SQL and active reader queries through the reachable forward and\nrollback states, including the supplied new-version writes. Check exact row values\nand column names, preserved updated/untouched/inserted records, and the first failing\nstep if any. Both column names and values are part of the reader contract. Distinguish\ninactive reader incompatibility from an actually active incompatible reader. Report\nwhether this local SQL plan is compatible and what remains unknown for production.\nThis is review only: preserve every supplied file; do not fix, deploy, install\ndependencies, contact services or publish. Use disposable in-memory databases;\nany scratch must be under this project and removed afterward. Include the command,\nactual observed results and failures in your review; do not claim unexecuted checks.\nAny equivalent native SQLite method is valid; no particular helper is required.\n",
+    "files": {
+      "schema.sql": "CREATE TABLE people(id INTEGER PRIMARY KEY, name TEXT NOT NULL);\nINSERT INTO people VALUES(1,'Ada'),(2,'keep');\n",
+      "up.sql": "ALTER TABLE people RENAME COLUMN name TO label;\n",
+      "down.sql": "ALTER TABLE people RENAME COLUMN label TO name;\n",
+      "old_reader.py": "QUERY = \"SELECT id, name FROM people ORDER BY id\"\n",
+      "new_reader.py": "QUERY = \"SELECT id, label FROM people ORDER BY id\"\n",
+      "release.json": "{\n  \"phases\": [\n    {\n      \"name\": \"initial\",\n      \"files\": [\n        \"schema.sql\"\n      ],\n      \"sql\": \"\",\n      \"readers\": [\n        \"old_reader.py\"\n      ]\n    },\n    {\n      \"name\": \"up after old drained\",\n      \"files\": [\n        \"up.sql\"\n      ],\n      \"sql\": \"\",\n      \"readers\": [\n        \"new_reader.py\"\n      ]\n    },\n    {\n      \"name\": \"new writes\",\n      \"files\": [],\n      \"sql\": \"UPDATE people SET label='새 이름' WHERE id=1; INSERT INTO people VALUES(3,'inserted');\",\n      \"readers\": [\n        \"new_reader.py\"\n      ]\n    },\n    {\n      \"name\": \"rollback starts\",\n      \"files\": [],\n      \"sql\": \"\",\n      \"readers\": [\n        \"old_reader.py\"\n      ]\n    },\n    {\n      \"name\": \"rollback finishes\",\n      \"files\": [\n        \"down.sql\"\n      ],\n      \"sql\": \"\",\n      \"readers\": [\n        \"old_reader.py\"\n      ]\n    }\n  ]\n}\n",
+      "requirements.md": "Scope is local SQLite SQL compatibility and value recovery only.\nThe deployment is a documented maintenance-window strategy, not a rolling release:\nold processes are drained before up.sql; only the listed active readers run at each\ncheckpoint. release.json is the exact proposed order, including rollback. Do not\nsilently reorder it. Each phase executes files in order, then its SQL, then the\nlisted readers. All phases share the same database. Empty file/SQL lists mean no\nchange, not a fresh database. Reader names map to literal QUERY constants in the\nnamed Python files; these files are declarations, not application writer code.\nEach reader returns id and its version's label column, ordered by id. Before new\nwrites, values must be [(1, 'Ada'), (2, 'keep')]; afterward they must remain\n[(1, '새 이름'), (2, 'keep'), (3, 'inserted')] through rollback. All three record\nidentities must survive. No queued/external effects are in this local SQL contract.\nActual application writers, locking, maintenance orchestration and staging are not\nsupplied and cannot be certified. An acceptable local plan is not deployment approval.\n",
+      "notes.txt": "Owner draft: retain without edits.\n"
+    },
+    "criteria": [
+      "Assess exact active-reader compatibility and earliest failure without reordering.",
+      "Execute actual SQL and verify columns and all post-write/rollback row values.",
+      "Distinguish local SQL evidence from unavailable application/production evidence.",
+      "Preserve supplied files and remove only owned project-local scratch."
+    ]
+  }
+]
