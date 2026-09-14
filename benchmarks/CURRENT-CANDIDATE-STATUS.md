@@ -11,13 +11,26 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Release check at `57d48fd`: [network-disabled Linux source archive](LINUX-ARCHIVE-497-01.md)
+discovers 497 tests, 494 pass, three explicit Git-provenance skips, 28.060s.
+The first `7087e52` archive error is preserved; only the unavailable Friday
+history comparison is skipped, while schedule checks still run. Checkout CI now
+requests full history. Hosted run `34821858042` at `7087e52` still has zero steps
+in all four failed jobs (payment/spending-limit annotation); private visibility
+unchanged. Local archive behavior is not hosted CI or model efficiency evidence.
+
+한국어: Linux 배포 아카이브에서 497개 중 494개가 통과했고, Git 이력 비교 3개는
+명시적으로 건너뛰었다. 첫 실패는 보존하고 이력 없는 배포본의 검사 전제를 고쳤다.
+일반 CI는 전체 이력을 받도록 했지만, 호스팅 CI는 계정 제한으로 실행 전 실패
+상태이며 저장소 공개·계정 설정은 변경하지 않았다.
+
 Current Friday preparation optimization: [shared reader snapshot](FRIDAY-READER-SNAPSHOT-01.md).
 Multiple literal queries from one module share a validated read/parse within one
 matrix call. A native three-check case goes from three parses to one; SQL still
 runs after every phase, new invocations reread changed files, and repeated inputs
 still consume the full byte budget. This does not target the older two-file
 rolling-schema pair and is not model-level efficiency evidence.
-Full current local suite: 496 passed in 69.115s, no failures/skips.
+macOS suite at `7087e52`: 496 passed in 69.115s, no failures/skips.
 
 한국어: 한 Python 파일의 여러 쿼리를 검사할 때 읽기·구문 분석을 한 번만 하도록
 개선했다. SQL 결과는 재사용하지 않아 단계별 데이터 변경을 계속 확인한다.

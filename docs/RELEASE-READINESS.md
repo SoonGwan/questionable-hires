@@ -1,6 +1,22 @@
 # Release readiness — development preview
 
-## 2026-09-14: current Linux source archive
+## 2026-09-14: Linux archive `57d48fd`
+
+The unmodified source archive passes on network-disabled Linux arm64/Python
+3.12.3/Node v24.20.0: **497 discovered, 494 passed, three explicit historical
+Git-provenance skips, 28.060s**. Catalog and localized-chart checks pass, with no
+code overlays or downloads. [Evidence and initial failure](../benchmarks/LINUX-ARCHIVE-497-01.md)
+preserve the `7087e52` archive error and the corrected archive's full log.
+
+The correction separates an unavailable Friday history comparison from runnable
+schedule tests. Normal checkout CI now requests full history; archive tests still
+intentionally exclude it. This is local source-distribution evidence, not hosted
+CI or general model efficiency. Read-only inspection of hosted run `34821858042`
+at `7087e52` finds all four jobs failed before any steps, with an account payment
+or spending-limit annotation. Visibility is private; account/publication settings
+were not changed.
+
+## 2026-09-14: earlier Linux source archive `a81692f`
 
 Unmodified `a81692f` archive passes on Linux arm64/Python 3.12.3 with networking
 disabled: **430 discovered, 428 passed, two explicit Git-provenance skips,
