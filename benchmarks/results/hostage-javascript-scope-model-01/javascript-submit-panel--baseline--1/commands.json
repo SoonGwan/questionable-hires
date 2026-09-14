@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'requirements.md' -g 'package.json' -g '*Submit*' -g '*test*' -g 'tsconfig*'\"",
+    "aggregated_output": "<WORKSPACE>\npanel.test.mjs\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la; cat requirements.md; cat panel.test.mjs; rg --files --hidden -g '\"'!.git/**'\"'\"",
+    "aggregated_output": "total 24\ndrwxr-xr-x@  6 admin  staff   192 Sep 14 15:39 .\ndrwx------@  3 admin  staff    96 Sep 14 15:39 ..\ndrwxr-xr-x@ 10 admin  staff   320 Sep 14 15:39 .git\n-rw-r--r--@  1 admin  staff    95 Sep 14 15:39 panel.mjs\n-rw-r--r--@  1 admin  staff   602 Sep 14 15:39 panel.test.mjs\n-rw-r--r--@  1 admin  staff  1342 Sep 14 15:39 requirements.md\nRuntime: JavaScript ES modules, installed Node.js, standard-library node:test. Run node --test; no dependency installation or build step is needed.\nThe UI reads the boolean pending property, initially false. A submission sets pending before invoking save(signal); overlapping submissions on that same instance resolve undefined promptly and must not invoke their callback. Different instances remain independent. Preserve signal object identity, successful result identity and propagated error identity. Clear pending on every settled path, including synchronous invocation errors and rejected saves, so another submission can retry.\nCancellation belongs to the supplied callback: forward the signal unchanged, and when that callback rejects because its signal was aborted, propagate that exact reason and clear pending. Do not invent a new cancellation API, abort the caller's controller, or pretend the panel can force an abort-ignoring callback to settle. No browser rendering is provided or required; test the actual panel class.\nKeep both existing tests and their assertions unchanged. Add regression coverage without editing unrelated files. Use local controlled promises/signals rather than network or arbitrary sleeps; every behavior-dependent wait needs a deadline, and tests own callback settlement, rejection handlers and cleanup.\nimport assert from 'node:assert/strict';\nimport test from 'node:test';\nimport { SubmitPanel } from './panel.mjs';\n\ntest('preserves result and signal identity', async () => {\n  const panel = new SubmitPanel(), signal = new AbortController().signal, result = {};\n  assert.equal(await panel.submit(async received => { assert.equal(received, signal); return result; }, signal), result);\n});\n\ntest('preserves callback rejection identity', async () => {\n  const error = new Error('save failed');\n  await assert.rejects(new SubmitPanel().submit(async () => { throw error; }), reason => reason === error);\n});\npanel.mjs\npanel.test.mjs\nrequirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat panel.mjs; git status --short; node --version'",
+    "aggregated_output": "export class SubmitPanel {\n  async submit(save, signal) {\n    return await save(signal);\n  }\n}\nv24.16.0\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'node --test'",
+    "aggregated_output": "\u2714 pending spans save, suppresses overlaps promptly, and clears for reuse (0.729458ms)\n\u2714 different panel instances save concurrently and clear independently (0.592875ms)\n\u2714 asynchronous save failure preserves reason, clears pending, and permits retry (0.256458ms)\n\u2714 synchronous save failure preserves reason, clears pending, and permits retry (0.171333ms)\n\u2714 callback rejection on abort preserves reason and allows cleanup and retry (0.249375ms)\n\u2714 preserves result and signal identity (0.417916ms)\n\u2714 preserves callback rejection identity (0.245416ms)\n\u2139 tests 7\n\u2139 suites 0\n\u2139 pass 7\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 48.047791\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --check; git diff --stat; git diff -- panel.test.mjs; git status --short'",
+    "aggregated_output": " panel.mjs | 11 ++++++++++-\n 1 file changed, 10 insertions(+), 1 deletion(-)\n M panel.mjs\n?? panel.pending.test.mjs\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

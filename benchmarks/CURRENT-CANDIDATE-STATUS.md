@@ -11,17 +11,22 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
-Unmeasured local candidate: the [JavaScript lifecycle wrapper](HOSTAGE-JAVASCRIPT-SCOPE-01.md)
-adds optional bounded body/drain ownership in the existing module, addressing
-scenario boilerplate observed below. Ten new native lifecycle/fault tests and the
-seven original callback tests pass, including standalone-copy integration.
-Full current local suite: 470 tests passed in 68.700s, no failures/skips.
-This changes the current JS resource; the measurements below remain tied to
-`8ca9e70`. No model cost reduction is yet demonstrated for the wrapper.
+[JavaScript lifecycle model screen](HOSTAGE-JAVASCRIPT-SCOPE-MODEL-01-REVIEW.md),
+launch `330a17b`, resource `22bd929`: baseline 104,047 tokens/99.788s; skill
+115,286/93.105s, **+10.80% tokens / −6.70% time**. Both capture seven native passes
+and all required transitions. Skill actually uses the wrapper instead of writing
+scenario/deadline machinery: new test file 136 versus 174 lines, but copied
+support adds 162 lines; do not claim lower total code size. Ten separate fault
+replays match; raw events/resources and unchanged original tests reconcile.
+No scope/capture exception observed. n=1 exposed authored pair, unequal extra
+witnesses and shared host/cache; no broad efficiency win. Full local preflight:
+470 tests passed in 68.700s, no failures/skips, including helper/native controls.
 
-한국어: 현재 JavaScript 도구에 반복 정리 코드를 대체하는 선택형 래퍼를 추가했다.
-새 동작·결함 검증 10개와 기존 호출 검증 7개는 통과했다. 아직 모델 비용을
-측정하지 않은 후보이며, 아래 기존 수치를 새 도구의 성과로 해석하면 안 된다.
+한국어: 새 정리 도구를 실제로 사용한 비교도 끝났다. 토큰은 10.80% 더 썼고
+시간은 6.70% 줄었다. 직접 작성한 테스트는 174줄에서 136줄로 줄었지만 복사한
+도구 162줄이 추가되므로 전체 코드가 줄었다고 주장하지 않는다. 양쪽 기존
+테스트 보존·7개 통과 및 별도 결함 대조군 10개를 확인했다. 과제 하나의 결과이며
+일반적인 효율 개선은 아직 입증되지 않았다. 아래 결과는 이전 도구의 기록이다.
 
 [JavaScript SubmitPanel review](HOSTAGE-JAVASCRIPT-PANEL-01-REVIEW.md), launch
 `3949ef6`, resource `8ca9e70`: both sessions complete. Baseline 68,671 tokens/

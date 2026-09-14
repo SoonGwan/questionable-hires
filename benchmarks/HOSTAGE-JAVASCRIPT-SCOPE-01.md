@@ -1,6 +1,9 @@
 # JavaScript callback lifecycle candidate — 2026-09-14
 
-Status: native validation only; no model efficiency measurement for this candidate.
+Status: [first model screen reviewed](HOSTAGE-JAVASCRIPT-SCOPE-MODEL-01-REVIEW.md).
+Resource `22bd929` was adopted and replaced authored lifecycle boilerplate,
+but used 10.80% more total tokens and 6.70% less wall time than a fresh baseline.
+One exposed authored pair is not proof of a general efficiency improvement.
 
 ## Evidence motivating the change
 
@@ -52,10 +55,11 @@ Full repository validation: 470 tests passed in 68.700s, no failures or skips.
 Skill validation, repository link/metadata validation, featured EN/KO sync check
 and whitespace checks passed. These are local checks, not a hosted release gate.
 
-## Next measurement gate
+## Measurement gate and remaining work
 
 Before claiming savings, freeze the candidate and compare fresh sessions on
 unchanged explicit contracts. Preserve every attempt and inspect retained native
 assertions, resource adoption, additional reads and cleanup behavior. Treat the
 previous panel as an exposed development case, not an independent confirmation.
-No featured chart or historical metric changes for this unmeasured candidate.
+The first screen completed these checks; transfer/repeated evidence remains
+necessary. No featured chart or historical metric changes for this candidate.
