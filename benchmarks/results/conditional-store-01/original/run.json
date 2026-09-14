@@ -1,0 +1,32 @@
+{
+  "revision": "889af32948af3ce7db31c47e218b5db4b8c4eae3",
+  "started_at": "2026-09-14T21:38:59.128432+00:00",
+  "schedule": [
+    "original",
+    "candidate"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 240,
+  "session_persistence_requested": true,
+  "case": {
+    "id": "conditional-store",
+    "skill": "con-artist",
+    "task": "Audit and improve tests/test_submit.py for the persisted-content contract\nin README.md. Follow the actual implementation through store/service.py,\nstore/backend.py:FileStore.save and store/codec.py:encode, including the effective\ndefault codec. Determine whether the current two tests detect acknowledging a\nsubmission without persisting the supplied payload. Use one narrow controlled fault at the\nactual write boundary in disposable project-local copies; keep the real binding\nand runtime context. Run the original tests on correct and faulty copies and\nrecord each outcome. Then strengthen tests/test_submit.py for actual persisted\ncontent after the first submission and replacement, retaining the existing\nacknowledgment assertions. Run those improved tests on correct and faulty copies\nand record each outcome, the detecting assertion and actual/expected evidence.\nBoth original tests and both improved tests must execute, not just import.\n\nUse python3 with -B and the project's native unittest runner. No dependencies,\nnetwork, unrelated audits, environment changes, commits or publication. Change\nonly tests/test_submit.py in the original project; preserve production files,\nREADME and installed skill resources. Scratch and all mutated copies must stay\ninside this project and be removed after use. Do not apply the deliberate fault\nto the original implementation. Report the test gap or protection, checks and\nremaining scope limits; no separate report file is required.",
+    "files": {
+      "store/__init__.py": "",
+      "store/codec.py": "import json\nimport os\n\nif os.environ.get(\"STORE_CODEC\", \"json\") == \"json\":\n    def encode(value):\n        return json.dumps(value, sort_keys=True, ensure_ascii=False).encode(\"utf-8\")\nelse:\n    raise RuntimeError(\"Unsupported codec\")\n",
+      "store/backend.py": "from pathlib import Path\nfrom .codec import encode\n\n\nclass FileStore:\n    def __init__(self, directory):\n        self.directory = Path(directory)\n\n    def save(self, key, value):\n        payload = encode(value)\n        destination = self.directory / (key + \".json\")\n        destination.write_bytes(payload)\n        return {\"accepted\": True, \"key\": key}\n",
+      "store/service.py": "from .backend import FileStore\n\n\ndef submit(directory, key, value):\n    return FileStore(directory).save(key, value)\n",
+      "tests/__init__.py": "",
+      "tests/test_submit.py": "import tempfile\nimport unittest\nfrom pathlib import Path\nfrom store.service import submit\n\n\nclass SubmissionTests(unittest.TestCase):\n    def test_acknowledges_submission(self):\n        with tempfile.TemporaryDirectory(prefix=\"audit-store-\", dir=Path.cwd()) as folder:\n            result = submit(folder, \"ticket\", {\"title\": \"\uccab \uc694\uccad\", \"count\": 2})\n            self.assertEqual(result, {\"accepted\": True, \"key\": \"ticket\"})\n\n    def test_acknowledges_replacement(self):\n        with tempfile.TemporaryDirectory(prefix=\"audit-store-\", dir=Path.cwd()) as folder:\n            submit(folder, \"ticket\", {\"title\": \"first\", \"count\": 1})\n            result = submit(folder, \"ticket\", {\"title\": \"\uc218\uc815 \uc694\uccad\", \"count\": 3})\n            self.assertEqual(result, {\"accepted\": True, \"key\": \"ticket\"})\n",
+      "README.md": "# Ticket store\n\nThis is an authored local audit fixture, not a deployed service.\n`store.service.submit(directory, key, value)` must synchronously persist the JSON\ncontent before acknowledging success. Reusing a key replaces its content with\nthe latest complete value. The directory already exists; keys are trusted simple\nidentifiers and payloads are JSON-compatible. Path hardening, concurrency and\ncrash-atomic replacement are outside this ticket's contract.\n\nThe supported default codec is JSON; no STORE_CODEC override is required.\nRun `python3 -B -m unittest -v tests.test_submit` from this project.\nTests allocate and remove their temporary directories under the project cwd.\n"
+    }
+  },
+  "protocol_sha256": "a3458c45b32546b1989684bb6234f702eabecc1302283dcff166507fc0dcc92e",
+  "condition": "original",
+  "skill_revision": "1d80f49",
+  "skill_resources_sha256": "c23be195b0164f364da8397f512d5c3df8556c1e1a9af8f2a70696e91a09ef38"
+}

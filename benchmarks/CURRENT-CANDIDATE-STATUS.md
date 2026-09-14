@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist conditional store screen — 2026-09-15, launch `889af32`
+
+[New authored store audit](results/conditional-store-01/README.md): original
+`1d80f49` versus candidate `de65613`, one session each. Both perform four required
+native phases, produce valid content assertions and preserve scope/cleanup.
+Candidate records **−1.30% tokens / −7.98% time**, but neither uses or reads the
+changed collector/reference. This does not measure its effect. Both use seven
+shell/five outer calls and one extra final native check; original adds an obsolete
+field control. Four CLI prefix omissions have complete original stored evidence.
+No performance adoption, forced-helper follow-up or featured promotion.
+
+한국어: 새 저장소 감사에서 양쪽 모두 실제 테스트 보강·결함 탐지·정리를 충족했다.
+수정본 기록 비용은 약간 낮지만 변경된 수집기는 양쪽 모두 사용하지 않아 인과
+효과로 볼 수 없다. 같은 작은 과제를 반복하거나 도구 사용을 강제하지 않는다.
+
 ## Con Artist conditional name selection — 2026-09-15, parent `2f68f14`
 
 [Static selector correction](CONTEXT-CONDITIONAL-NAMES-01.md): known names inside
