@@ -108,3 +108,36 @@ also pass. User installation/configuration was not changed. This is local macOS
 evidence, not refreshed hosted CI, remote `npx` authentication, automatic skill
 selection, a public-release certification or proof of all-eight model efficiency.
 The test duration is recorded for reproducibility, not marketed as performance.
+
+## Whole-bundle regression — 2026-09-15 KST, source 624dee0
+
+Full source: `624dee0ab5bd07491b2cffca87f95b10bdcdbc98`, clean worktree at
+launch, macOS with Python 3.9.6. Executed on 2026-09-14 UTC / 2026-09-15 KST:
+
+```sh
+python3 -B -m unittest discover -s tests -v
+```
+
+Native summary: **560 tests in 88.351s, OK**, process exit 0, no failures or
+skips. This run includes the earlier distribution and installed-helper checks,
+plus the subsequent native-invocation, Git review, Hostage output-retention and
+usage-excerpt controls, flag/refresh fixtures, and history hunk-selection checks.
+The output-retention controls deliberately discard displayed output and verify
+the retained native result; they do not reproduce or diagnose a real model CLI
+capture failure. Runner schedule messages in this suite use test controls, not
+new live model benchmark sessions.
+
+`python3 -B scripts/validate.py` and
+`python3 -B scripts/sync_featured_benchmark.py --check` also pass. The English
+and Korean README regression links point to this same revision-specific result;
+the historical records above remain unchanged. No installed user configuration
+or featured benchmark values were updated.
+
+This establishes local regression coverage at the named revision, not perfect
+skills, a 20–30% model-performance gain, hosted CI success, remote installation
+or public-release readiness. Runtime is an observation, not a speed comparison.
+
+한국어 요약: 위 커밋에서 전체 테스트 **560개가 88.351초에 통과**했고 실패·건너뜀은
+없었습니다. 패키징과 설치된 도우미 실행, 최근 추가된 실행 결과 보존·Git 검토·이력
+조회 검사 등을 함께 실행했습니다. 로컬 회귀 검증이며, 모델 성능 향상이나 원격
+설치·공개 배포 성공을 뜻하지 않습니다. 기존 벤치마크 그래프 수치는 변경하지 않았습니다.
