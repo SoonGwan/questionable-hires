@@ -53,3 +53,56 @@ then changes only `>` to `>=`. Same three assertions pass after, with full nativ
 headers/summary. Final failure-preserving `&&` command includes focused diff check,
 diff and status. Two-file change, original 17/19 assertions retained. No observed
 capture/scope issue; source/resource reconciliation and author replay pending.
+
+## Search diagnosis — skill
+
+Completed: **90,572 tokens / 63.739s**, five shell calls. Reads Exorcist entry,
+actual Search and transport; retains experiments/search_completion_probe.py.
+Actual transport invokes the recording request dependency with no-cache headers.
+Controlled old/new completions show final new in normal order and stale old in
+reversed order. Native JSON includes both requests, headers, response order and
+visible-result observations. Assertions enforce the distinguishing outcomes.
+Two-second arrival/completion/cleanup waits and owned task/future cleanup are
+present. This is a cooperative local probe, not containment of arbitrary blocking
+code. Production hashes match before/after; final conclusion distinguishes a
+local cache-free reproduction from unconfirmed production incidents. No observed
+capture/scope issue; raw/resource/inventory reconciliation remains pending.
+
+## Formatter review — baseline
+
+Completed: **79,177 tokens / 31.620s**, four shell calls. Inspects all three project
+files and concrete consumer references. Correctly recommends a plain USD function
+while preserving the original formatting expression, rounding and negative sign
+placement. Seven representative actual-versus-alternative comparisons pass in
+native output; final answer explicitly does not call this a full suite. No edits
+observed. Inventory reconciliation remains pending. These optional comparisons
+must be distinguished from the required source-based recommendation in pair review.
+
+## Persistence audit — skill
+
+Completed: **74,656 tokens / 37.700s**, four shell calls. Reads Con Artist entry
+and audit interface, then uses the installed helper once. Four separate copied
+checks capture correct-existing pass, correct-stronger pass, faulty-existing pass
+and faulty-stronger intended stored-row AssertionError. Each includes copied
+imports/hashes and same-process actual test-global binding checks. The same
+stronger assertion retains the existing row and requires the appended record.
+Helper reports original selected bytes/modes unchanged and scratch removed.
+No in-session repair or missing decisive output observed; no retained audit was
+requested. Final diagnosis accurately identifies the surviving lost write.
+Compared with baseline, avoids the observed tracing repair and has complete
+four-check evidence, but this one pair does not isolate helper causality.
+Raw/resource/inventory reconciliation remains pending.
+
+## Protected search — skill
+
+Completed: **72,381 tokens / 68.585s**, six shell calls. Reads native-test support
+and copies controlled transport into standalone tests/test_search.py. Three
+native named tests pass (0.020s): normal and both overlap completion orders.
+Real Search seeds existing display; assertions preserve it at request entry and
+after older completion while newer remains pending, then require newest ownership.
+One-second entry/completion waits and registered owned-task cleanup are present.
+Cleanup assumes cooperative cancellation of the actual local operations.
+Production diff remains empty. No custom TestCase assertion overrides observed.
+Baseline has two overlap tests, skill adds a separate normal test; both exercise
+normal seed execution. Distinguish grouping/additional coverage from equal work.
+No observed capture/scope issue; raw/resource/inventory and fault replay pending.
