@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Friday [representative-sequence candidate](FRIDAY-WITNESS-SEQUENCE-01.md), previous
+source `ae7f566`: combine coverage obligations without caching stale observations.
+An author-written 12-write/72-mixed-read sequence preserves all-row checks and
+detects five intended synchronization/recovery/cross-record faults. 54 Friday
+tests pass. Entry grows 522 bytes; model adoption and cost effects are unmeasured.
+
+한국어: Friday가 모든 값·버전·작업의 조합을 늘리기보다 대표 순서에 검증 목적을
+묶도록 지침을 추가했다. 직접 작성한 12회 쓰기·72회 읽기는 매번 전체 레코드를
+확인하면서 결함 5종을 검출했다. 관련 테스트 54개가 통과했지만 지침은 522바이트
+늘었고, 모델의 검증량·토큰 감소는 아직 입증되지 않았다.
+
 Reviewed [acknowledged-writer screen 01](FRIDAY-ACK-01-REVIEW.md), launch `76c251c`,
 resources `f15f3ae`: four executions/replays complete. Control tokens +3.91% /
 time −18.42%; gap +10.13% / +20.31%. Totals +7.01% tokens / −0.29% time: no
