@@ -1,5 +1,9 @@
 # Final-check batching — a lower-round-trip candidate
 
+Subsequent [model adoption screen](HOSTAGE-FINAL-BATCH-MODEL-01-REVIEW.md)
+records actual batching with a partial original test transcript; this local
+preflight remains separate evidence, not a retroactive model-performance result.
+
 2026-09-14. The [keyed-import model at `6d0d108`](HOSTAGE-KEYED-IMPORT-01-REVIEW.md)
 used separate commands for native tests (item 7), copy/original-test checks
 (item 9), and final diff/status (item 10). Those final two commands use semicolons:

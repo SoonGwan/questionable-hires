@@ -1,5 +1,9 @@
 # Dependent async phases — remove misleading follow-on errors
 
+Subsequent [model adoption screen](HOSTAGE-FINAL-BATCH-MODEL-01-REVIEW.md)
+generates sequential dependent phases without the prior secondary errors in
+separate fault replays. Its capture/cost limits are distinct from this author control.
+
 2026-09-14, author control on frozen keyed-import artifacts at `e8ab180`.
 [Original model review](HOSTAGE-KEYED-IMPORT-01-REVIEW.md);
 [all twelve native outputs and adapted source](results/hostage-dependent-phases-01/author-control.json).

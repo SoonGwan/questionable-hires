@@ -13,18 +13,20 @@ import tempfile
 from replay_hostage_call_01 import inventory
 
 RESOURCE = '6d0d108'
+PROFILES = {'keyed-import-01': (RESOURCE, 6), 'final-batch-01': ('d035f34', 10)}
 
 
-def frozen(path):
-    return subprocess.check_output(['git', 'show', RESOURCE + ':' + path])
+def frozen(path, resource=RESOURCE):
+    return subprocess.check_output(['git', 'show', resource + ':' + path])
 
 
-def replay(run):
+def replay(run, profile='keyed-import-01'):
+    resource, count = PROFILES[profile]
     run = run.resolve()
     manifest = json.loads((run / 'run.json').read_text())
-    assert manifest['finished_at'] and manifest['revision'].startswith(RESOURCE)
+    assert manifest['finished_at'] and manifest['revision'].startswith(resource)
     assert manifest['schedule'] == ['keyed-import--skill--1']
-    cases = frozen('benchmarks/hostage-keyed-import-cases.json')
+    cases = frozen('benchmarks/hostage-keyed-import-cases.json', resource)
     assert hashlib.sha256(cases).hexdigest() == manifest['cases_sha256']
     case = json.loads(cases)[0]
     cell = run / manifest['schedule'][0]
@@ -36,14 +38,14 @@ def replay(run):
     assert raw.replace(meta['workspace'], '<WORKSPACE>').replace(str(Path.home()), '<HOME>') == (cell / 'events.jsonl').read_text()
     assert meta['installed_resources_before'] == meta['installed_resources_after']
     for name, info in meta['installed_resources_before'].items():
-        assert hashlib.sha256(frozen('skills/' + name)).hexdigest() == info['sha256']
+        assert hashlib.sha256(frozen('skills/' + name, resource)).hexdigest() == info['sha256']
     project = cell / 'project'
     original = inventory(project)
     assert set(original) == set(case['files']) | {'controlled_call.py', 'test_importer.py'}
     for name, content in case['files'].items():
         if name != 'importer.py':
             assert (project / name).read_text() == content
-    assert (project / 'controlled_call.py').read_bytes() == frozen('skills/hostage-negotiator/assets/controlled_call.py')
+    assert (project / 'controlled_call.py').read_bytes() == frozen('skills/hostage-negotiator/assets/controlled_call.py', resource)
     source = (project / 'importer.py').read_text()
     guard = '        if key in self.busy_keys:\n            return\n'
     cleanup = '        finally:\n            self.busy_keys.remove(key)'
@@ -53,7 +55,7 @@ def replay(run):
                 'missing_guard': source.replace(guard, ''),
                 'missing_cleanup': source.replace(cleanup, '        finally:\n            pass'),
                 'blocks_other_keys': source.replace('if key in self.busy_keys:', 'if self.busy_keys:')}
-    report = dict(kind='separate author replay, not model evidence', resource=RESOURCE,
+    report = dict(kind='separate author replay, not model evidence', resource=resource,
                   usage_resources_reconciled=True, inventory=original, checks=[])
     for variant, implementation in variants.items():
         with tempfile.TemporaryDirectory(prefix='author-replay-', dir=run) as temporary:
@@ -75,7 +77,7 @@ def replay(run):
                 exit_code=code, timed_out=timeout, test_sources_unchanged=unchanged,
                 native_counts=re.findall(r'Ran (\d+) tests? in ', output),
                 contract_matched=code == expected and not timeout and unchanged
-                    and re.findall(r'Ran (\d+) tests? in ', output) == ['6'],
+                    and re.findall(r'Ran (\d+) tests? in ', output) == [str(count)],
                 replacement_source=implementation,
                 output=output.replace(str(scratch), '<REPLAY>').replace(str(Path.home()), '<HOME>')))
     assert inventory(project) == original
@@ -87,8 +89,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--profile', choices=sorted(PROFILES), default='keyed-import-01')
     args = parser.parse_args()
-    report = replay(args.run)
+    report = replay(args.run, args.profile)
     with args.output.open('x') as stream:
         json.dump(report, stream, indent=2)
         stream.write('\n')

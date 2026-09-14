@@ -11,28 +11,44 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+[Final batching model 01](HOSTAGE-FINAL-BATCH-MODEL-01-REVIEW.md), launch `d035f34`,
+resources `fc557ad`: 95,992 tokens / 94.261s, four shell calls, final checks in one
+failure-preserving call. Sequential dependent phases adopted. Original summary
+says ten pass but only five headers are captured; preserve that gap. Six separate
+unchanged-test replays accept final/alternate results and reject four faults,
+without prior unbound-local errors. Descriptive −19.31% tokens / −8.63% time versus
+keyed-import 01 is not causal: n=1, shared host/cache and unequal verification.
+No featured promotion or all-eight performance claim.
+
+한국어: 새 모델이 최종 검사를 한 호출로 묶고 의존 단계도 실패 시 중단하도록
+작성했다. 95,992토큰·94.261초로 이전 단일 실행보다 낮았지만 작업량·캐시 조건이
+달라 일반적 절감으로 주장하지 않는다. 원본의 테스트 이름 일부 누락은 보존했고,
+별도 재실행은 정상·대체 구현 통과와 결함 검출, 부차적 오류 해소를 확인했다.
+
 Hostage [final-check batching candidate](HOSTAGE-FINAL-BATCH-01.md) addresses three
 separate finalization calls in the keyed-import trace and masked intermediate
 statuses. Native controls exercise six unchanged retained tests, real cmp and Git:
 normal batch passes; test/copy/original-test/whitespace faults return nonzero,
 while semicolon chains end in zero. Initial cmp-message assertion error disclosed.
-No new runtime; instruction adoption and actual token/time gains remain unmeasured.
+No new runtime; this local check alone does not measure adoption or gains.
+The subsequent model screen and its limits are above.
 
 한국어: 마지막 테스트·복사 확인·diff/status를 판단이 필요한 중간 단계가 없을 때
 한 호출로 묶도록 안내를 구체화했다. 실제 명령 검증에서 4종 실패를 최종 성공
-상태가 가리지 않음을 확인했다. 새 모델의 채택·토큰 절감은 아직 미측정이다.
+상태가 가리지 않음을 확인했다. 이후 모델 채택 결과와 측정 한계는 위에 구분했다.
 
 Python [dependent-phase guidance](HOSTAGE-DEPENDENT-PHASES-01.md), author control
 on `e8ab180` artifacts: unwrap only two continuing subtests around dependent
 phases. Twelve native runs preserve final/alternate passes and all four fault
 detections, while removing secondary unbound-local errors from three fault
 variants. Assertions/waits/cleanup and independent subtests remain. Optional
-Python asset docstring only; runtime unchanged, new-model adoption/cost unmeasured.
+Python asset docstring only; runtime unchanged. Subsequent adoption evidence and
+cost/capture limitations are above, separate from this author adaptation.
 
 한국어: 서로 의존하는 콜백 단계는 앞 단계 실패 후 정리로 빠지도록 Python 사용
 안내를 보완했다. 작성자 적용본의 12회 실행에서 정상·대체 구현 통과와 결함 검출을
-유지하며 3개 결함 실행의 부차적 오류를 없앴다. 실제 모델 채택·비용 효과는 아직
-미측정이며 원본 모델 테스트와 그래프는 변경하지 않았다.
+유지하며 3개 결함 실행의 부차적 오류를 없앴다. 이후 실제 모델 채택은 위에 별도로
+기록했으며 원본 모델 테스트와 그래프는 변경하지 않았다.
 
 [Keyed import transfer 01](HOSTAGE-KEYED-IMPORT-01-REVIEW.md), launch `6d0d108`,
 resources `c0aa9a1`: one skill-only cell, 118,971 tokens / 103.161s. Original six
