@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Direct optional-selector route — 2026-09-15, parent `f866c44`
+
+The cookie transfer below shows custom extraction twice without discovering the
+new helper. The entry now separates collector and named-excerpt links by need;
+known Python names route directly to the selector interface, without loading the
+collector guide. Removed its nested duplicate route. Helper use remains optional,
+and native Git remains sufficient for one fact. This is an unmeasured discovery
+candidate, not the resource measured below or an accepted efficiency improvement.
+Entry cost increases 136 UTF-8 bytes (2,534 → 2,670); any avoided reference loading
+is still hypothetical. Six selector, twelve build and twenty installer tests pass
+(38 targeted total), plus skill/repository/synchronization validation. The prior
+619-test full-suite checkpoint remains historical; it was not rerun for this route.
+
+한국어: 함수 추출을 두 번 직접 작성하면서 도구를 발견하지 못한 실행에 근거해
+진입 링크를 용도별로 나눴다. 긴 이력 가이드를 거치지 않고 추출 도구 안내로
+갈 수 있지만 사용은 선택이다. 이 안내 수정의 실제 비용 효과는 아직 미검증이다.
+
 ## Cookie-history near transfer — 2026-09-15, launch `4a02569`
 
 [Original/candidate comparison](results/httpx-cookie-history-01/README.md):
