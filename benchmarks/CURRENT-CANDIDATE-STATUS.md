@@ -11,14 +11,28 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [single-guide adoption 01](RECEIPT-GUIDE-MODEL-01-REVIEW.md), launch
+`885a1f5`, resources `723be6f`: 76,746 tokens / 49.094s. The compact guide and
+helper are used; original native evidence shows two defect-specific failures
+before and all five current tests passing after. Literal-recipe replay matches;
+original files remain unchanged and comparison copies are removed. Exposed n=1,
+no contemporary baseline: no causal cost claim. Pretty output and overlapping
+integrity checks remain visible extra work; featured graphs are unchanged.
+
+한국어: 짧아진 Receipt 안내를 실제 사용한 실행은 76,746토큰·49.094초다.
+원본 출력에서 수정 전 결함 2개 실패와 수정 후 기존 테스트 5개 통과를 확인했다.
+같은 설정의 별도 재실행도 일치했고 원본 보존·비교용 복사본 정리를 확인했다.
+기존 과제 1회·동시 기본 비교 부재로 토큰 절감 효과는 입증되지 않았다.
+긴 출력과 일부 중복 무결성 검사는 남아 있으며 대표 그래프는 변경하지 않는다.
+
 Receipt [single-guide candidate](RECEIPT-GUIDE-COMPACT-01.md), previous source
 `94392cc`: guide 6,215 → 5,713 bytes (−8.08%), no new resource or runtime change.
 A split was rejected because demonstrated source-layout use would read more.
-Actual committed/uncommitted examples pass; model cost effects remain unmeasured.
+Actual committed/uncommitted examples pass; causal model cost effects remain unproven.
 
 한국어: Receipt 안내를 한 문서로 유지하면서 8.08% 압축했다. `src/` 작업에서
 읽을 양이 늘어나는 분리안은 폐기했다. 실제 커밋·미커밋 비교 예제는 통과했고,
-실행 코드·기능·파일 수는 그대로다. 모델 토큰·시간 효과는 아직 측정하지 않았다.
+실행 코드·기능·파일 수는 그대로다. 모델 토큰·시간의 인과적 개선은 아직 입증되지 않았다.
 
 Whole-bundle [local regression](../docs/INSTALLATION-TEST.md#whole-bundle-regression--2026-09-14-source-a636475),
 source `a636475`: 518 tests / 76.826s, no failures/skips. All-eight source/copy/

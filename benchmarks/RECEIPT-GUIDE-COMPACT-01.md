@@ -20,3 +20,7 @@ for an artificially short entry read.
 Final candidate validation: 47 Receipt helper tests pass (15.019s), including
 execution of both literal documented commands; 12 packaging tests pass (3.231s).
 Repository validation, skill validation and EN/KO featured synchronization pass.
+
+Follow-up: [single-guide adoption 01](RECEIPT-GUIDE-MODEL-01-REVIEW.md) measures
+the committed candidate. It confirms use and observed before/after behavior on
+one exposed task, not causal token/time improvement.

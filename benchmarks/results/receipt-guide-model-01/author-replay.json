@@ -1,0 +1,124 @@
+{
+  "kind": "separate author recipe replay, not original model evidence",
+  "recipe": {
+    "fixed": [
+      "checks",
+      "src/settings/__init__.py",
+      "requirements.md",
+      "AGENTS.md"
+    ],
+    "vary": [
+      "src/settings/parser.py"
+    ],
+    "before": "HEAD",
+    "after": {
+      "working_tree": true
+    },
+    "watch": [
+      "notes.txt",
+      ".agents"
+    ],
+    "imports": [
+      "settings",
+      "settings.parser",
+      "checks.test_parser",
+      "checks.support"
+    ],
+    "import_roots": [
+      "src"
+    ],
+    "runner": "unittest",
+    "tests": [
+      "-v",
+      "checks.test_parser"
+    ]
+  },
+  "exit_code": 0,
+  "observations_match": true,
+  "normalization": "only project/copy paths and native test durations",
+  "raw_usage_resources_reconciled": true,
+  "original_inventories_unchanged": true,
+  "replay": {
+    "status": "observed",
+    "revisions": {
+      "before": "1877068eeac6ccbd648ab48ad3dc6e18b2458644",
+      "after": null
+    },
+    "checks": {
+      "before": {
+        "exit_code": 1,
+        "timed_out": false,
+        "output": "Verified copied import: settings\nVerified copied import: settings.parser\nVerified copied import: checks.test_parser\nVerified copied import: checks.support\ntest_duplicate_last_wins (checks.test_parser.ParserTests) ... ok\ntest_empty_value (checks.test_parser.ParserTests) ... ok\ntest_query_value (checks.test_parser.ParserTests) ... FAIL\ntest_token_padding (checks.test_parser.ParserTests) ... FAIL\ntest_whitespace_and_comments (checks.test_parser.ParserTests) ... ok\n\n======================================================================\nFAIL: test_query_value (checks.test_parser.ParserTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<REPLAY_PROJECT>/.receipt-vn07xdm8/before/checks/test_parser.py\", line 10, in test_query_value\n    self.assertEqual(parse(sample(\"query\")), {\"URL\": \"https://example.invalid/a?x=1&y=2\"})\nAssertionError: {'URL': 'https://example.invalid/a?x'} != {'URL': 'https://example.invalid/a?x=1&y=2'}\n- {'URL': 'https://example.invalid/a?x'}\n+ {'URL': 'https://example.invalid/a?x=1&y=2'}\n?                                     ++++++\n\n\n======================================================================\nFAIL: test_token_padding (checks.test_parser.ParserTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<REPLAY_PROJECT>/.receipt-vn07xdm8/before/checks/test_parser.py\", line 7, in test_token_padding\n    self.assertEqual(parse(sample(\"token\")), {\"TOKEN\": \"abc==\"})\nAssertionError: {'TOKEN': 'abc'} != {'TOKEN': 'abc=='}\n- {'TOKEN': 'abc'}\n+ {'TOKEN': 'abc=='}\n?               ++\n\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nFAILED (failures=2)\n",
+        "output_truncated": false
+      },
+      "after": {
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "Verified copied import: settings\nVerified copied import: settings.parser\nVerified copied import: checks.test_parser\nVerified copied import: checks.support\ntest_duplicate_last_wins (checks.test_parser.ParserTests) ... ok\ntest_empty_value (checks.test_parser.ParserTests) ... ok\ntest_query_value (checks.test_parser.ParserTests) ... ok\ntest_token_padding (checks.test_parser.ParserTests) ... ok\ntest_whitespace_and_comments (checks.test_parser.ParserTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK\n",
+        "output_truncated": false
+      }
+    },
+    "import_roots": [
+      "src"
+    ],
+    "fixed_sha256": {
+      "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "checks/samples/values.json": "9bdcad02d4ba63a92043d75bcc2e479929eff1c736d3d38c6d7aad10a2605213",
+      "checks/support.py": "d58a28c975e8fbf03466132078fb02be1fe708ec876d4d2e548f9a5451080a40",
+      "checks/test_parser.py": "a4c341948e6309e24e2d9ef8f0beaad439c70a196044b63a25064742feac41da",
+      "src/settings/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "requirements.md": "afd35e690abc1a60701b1a2ed819f66f17e32d3e12834f9057fdd9090ae2607a",
+      "AGENTS.md": "670a86563f93583b461b64869be80669322aaca531ad94d056d33249c7835f99"
+    },
+    "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+    "working_tree_after": {
+      "sha256": {
+        "src/settings/parser.py": "5351ff27199aca2c61d7431b184fa34ff87e52bb563dd903c997dfec58674513"
+      },
+      "modes": {
+        "src/settings/parser.py": 420
+      }
+    },
+    "originals": {
+      "unchanged": true,
+      "sha256": {
+        "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "checks/samples/values.json": "9bdcad02d4ba63a92043d75bcc2e479929eff1c736d3d38c6d7aad10a2605213",
+        "checks/support.py": "d58a28c975e8fbf03466132078fb02be1fe708ec876d4d2e548f9a5451080a40",
+        "checks/test_parser.py": "a4c341948e6309e24e2d9ef8f0beaad439c70a196044b63a25064742feac41da",
+        "src/settings/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "requirements.md": "afd35e690abc1a60701b1a2ed819f66f17e32d3e12834f9057fdd9090ae2607a",
+        "AGENTS.md": "670a86563f93583b461b64869be80669322aaca531ad94d056d33249c7835f99",
+        "src/settings/parser.py": "5351ff27199aca2c61d7431b184fa34ff87e52bb563dd903c997dfec58674513",
+        "notes.txt": "838b7d84cc95cb97da839ca922b44347bc48f3e1d6613966fdb1eb6fa25989b2",
+        ".agents/skills/receipt/SKILL.md": "0c58cc0a400609af6faa5a5cf969175ab9453209ca465e22911597a368ac25d5",
+        ".agents/skills/receipt/agents/openai.yaml": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+        ".agents/skills/receipt/references/existing-fix.md": "8bea72d054deed13b3b5cb3900878e28f6ae5a4f9a7b1f9ec932701b13e072d6",
+        ".agents/skills/receipt/scripts/compare.py": "c71e5d1487a0f4508acc93e431253cc97b4729e43ee51d4e7894af0a51a6df86"
+      },
+      "modes": {
+        "checks/__init__.py": 420,
+        "checks/samples/values.json": 420,
+        "checks/support.py": 420,
+        "checks/test_parser.py": 420,
+        "src/settings/__init__.py": 420,
+        "requirements.md": 420,
+        "AGENTS.md": 420,
+        "src/settings/parser.py": 420,
+        "notes.txt": 420,
+        ".agents/skills/receipt/SKILL.md": 420,
+        ".agents/skills/receipt/agents/openai.yaml": 420,
+        ".agents/skills/receipt/references/existing-fix.md": 420,
+        ".agents/skills/receipt/scripts/compare.py": 420
+      },
+      "watch_only": [
+        "notes.txt",
+        ".agents/skills/receipt/SKILL.md",
+        ".agents/skills/receipt/agents/openai.yaml",
+        ".agents/skills/receipt/references/existing-fix.md",
+        ".agents/skills/receipt/scripts/compare.py"
+      ]
+    },
+    "comparison_copies_removed": true
+  }
+}
