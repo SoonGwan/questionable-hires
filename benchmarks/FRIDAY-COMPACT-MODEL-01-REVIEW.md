@@ -79,3 +79,25 @@ Original-file/resource reconciliation remains pending after timing.
 Candidate costs **−1.92% tokens / −2.38% time** for this pair, with different extra
 work (sequential later writes versus isolated multiconnection witnesses) and the
 candidate's parent-discovery scope exception. Not an accepted efficiency win.
+
+## Writer control — original
+
+Completed: **93,035 tokens / 82.729s**, six shell calls. Runs actual application
+functions on project-local temporary SQLite files with two connections. Tests
+both recursive-trigger settings, seven integer witnesses, cross-version updates
+and inserts, transaction rollback, exact 15-row survival after down and continuing
+old operations. Native output reports 642 reader assertions plus exact data/schema
+comparisons, all passing. Temporary contexts and explicit connection cleanup are
+present. No SQL-only helper, edits or observed out-of-project discovery; the
+initial inventory unnecessarily lists Git internals. Final source reconciliation
+and temporary/original inventory checks remain pending after timing.
+
+A separate native probe shows new_write returns with an open transaction:
+writer reads 99 while another connection reads 10, and closing without commit
+retains 10. Final answer correctly says committed-write compatibility/recovery
+passes and conditions acknowledgment on a successful commit. **Fixture ambiguity:**
+the release says 'acknowledged' but does not define function return as acknowledgment
+or supply caller transaction handling. This is a supported conditional concern,
+not a false positive or proof that committed synchronization is defective. Keep
+the frozen fixture and author's intended control distinction; do not silently
+rescore a reasonable finding under that missing contract.

@@ -31,6 +31,10 @@ win. Writer/control sessions are still running; no aggregate conclusion yet.
 The candidate writer-gap session diagnoses actual committed-write divergence,
 but runs parent-rooted instruction discovery against a project-only requirement.
 That scope exception is preserved; no scope-clean success claim is accepted.
+Five sessions are reviewed; the last candidate control is running. Original
+control confirms committed-write recovery but identifies unspecified commit/
+acknowledgment handling. Treat that evidenced conditional concern as a fixture
+ambiguity, not an invented defect in working synchronization.
 
 한국어: Friday 진입 지침의 중복 설명을 줄인 새 후보 `e063131`을 만들었다.
 롤백 전 새 데이터·실제 실행 환경 검증 조건은 유지했고 도구와 과제는 그대로다.
@@ -41,6 +45,8 @@ That scope exception is preserved; no scope-clean success claim is accepted.
 쓰기·정상 대조군까지 그대로 진행하며, 짧은 지침을 성능 향상으로 보지 않는다.
 쓰기 결함은 실제 함수로 진단했지만 상위 폴더까지 탐색한 범위 위반도 확인돼
 그대로 기록했다. 파일을 수정하지 않았다는 이유로 이 문제를 숨기지 않는다.
+구버전 정상 대조군은 커밋된 데이터 보존을 확인했고, 응답 시점과 커밋의
+관계가 명세에 없다는 조건도 실험으로 밝혔다. 이를 오탐으로 처리하지 않는다.
 
 [Checkpoint 07](BUNDLE-CONTRACT-07-REVIEW.md), resources `32bf8bd`: all 18 serial
 sessions across nine fixed tasks completed, no timeouts/exclusions. Baseline
