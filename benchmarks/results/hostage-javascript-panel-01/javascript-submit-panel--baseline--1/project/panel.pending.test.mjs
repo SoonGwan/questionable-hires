@@ -1,0 +1,194 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { SubmitPanel } from './panel.mjs';
+
+async function within(promise) {
+  let timer;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error('Timed out waiting for submission')), 1000);
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// Observe rejections immediately, and settle every owned callback before draining
+// submissions in finally, including when an assertion or deadline fails.
+async function withSubmissions(check) {
+  const gates = [], tasks = [], cleanups = [];
+  const scope = {
+    gate() {
+      let resolve, reject;
+      const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
+      promise.catch(() => {});
+      const gate = { promise, resolve, reject };
+      gates.push(gate);
+      return gate;
+    },
+    submit(panel, save, signal) {
+      const task = panel.submit(save, signal).then(
+        value => ({ status: 'fulfilled', value }),
+        reason => ({ status: 'rejected', reason }),
+      );
+      tasks.push(task);
+      return task;
+    },
+    cleanup(callback) { cleanups.push(callback); },
+  };
+  try {
+    await check(scope);
+  } finally {
+    for (const gate of gates) gate.resolve();
+    try {
+      await within(Promise.all(tasks));
+    } finally {
+      for (const cleanup of cleanups) cleanup();
+    }
+  }
+}
+
+async function fulfilled(task, value) {
+  const outcome = await within(task);
+  assert.equal(outcome.status, 'fulfilled');
+  assert.equal(outcome.value, value);
+}
+
+async function rejected(task, reason) {
+  const outcome = await within(task);
+  assert.equal(outcome.status, 'rejected');
+  assert.equal(outcome.reason, reason);
+}
+
+test('pending is synchronous, suppresses overlapping saves, and clears after success', () =>
+  withSubmissions(async scope => {
+    const panel = new SubmitPanel();
+    const signal = new AbortController().signal;
+    const result = {};
+    const gate = scope.gate();
+    let calls = 0, received, pendingInSave, reentrant;
+    const duplicate = () => { calls++; return 'unexpected'; };
+    assert.equal(panel.pending, false);
+    const first = scope.submit(panel, value => {
+      calls++;
+      received = value;
+      pendingInSave = panel.pending;
+      reentrant = scope.submit(panel, duplicate, signal);
+      return gate.promise;
+    }, signal);
+    assert.equal(panel.pending, true);
+    assert.equal(pendingInSave, true);
+    assert.equal(received, signal);
+    await fulfilled(reentrant, undefined);
+    await fulfilled(scope.submit(panel, duplicate, signal), undefined);
+    assert.equal(calls, 1);
+    assert.equal(panel.pending, true);
+    gate.resolve(result);
+    await fulfilled(first, result);
+    assert.equal(panel.pending, false);
+    const next = {};
+    await fulfilled(scope.submit(panel, () => next), next);
+    assert.equal(panel.pending, false);
+  }));
+
+test('different instances save concurrently and clear pending independently', () =>
+  withSubmissions(async scope => {
+    const a = new SubmitPanel(), b = new SubmitPanel();
+    const gateA = scope.gate(), gateB = scope.gate();
+    const signalA = new AbortController().signal, signalB = new AbortController().signal;
+    const resultA = {}, resultB = {};
+    let callsA = 0, callsB = 0, receivedA, receivedB;
+    assert.equal(a.pending, false);
+    assert.equal(b.pending, false);
+    const first = scope.submit(a, signal => {
+      callsA++; receivedA = signal; return gateA.promise;
+    }, signalA);
+    const second = scope.submit(b, signal => {
+      callsB++; receivedB = signal; return gateB.promise;
+    }, signalB);
+    assert.equal(callsA, 1);
+    assert.equal(callsB, 1);
+    assert.equal(receivedA, signalA);
+    assert.equal(receivedB, signalB);
+    assert.equal(a.pending, true);
+    assert.equal(b.pending, true);
+    gateA.resolve(resultA);
+    await fulfilled(first, resultA);
+    assert.equal(a.pending, false);
+    assert.equal(b.pending, true);
+    gateB.resolve(resultB);
+    await fulfilled(second, resultB);
+    assert.equal(b.pending, false);
+  }));
+
+test('asynchronous rejection preserves identity, clears pending, and permits retry', () =>
+  withSubmissions(async scope => {
+    const panel = new SubmitPanel(), gate = scope.gate();
+    const error = new Error('asynchronous save failure');
+    const first = scope.submit(panel, () => gate.promise);
+    assert.equal(panel.pending, true);
+    gate.reject(error);
+    await rejected(first, error);
+    assert.equal(panel.pending, false);
+    const retryGate = scope.gate(), result = {};
+    let calls = 0;
+    const retry = scope.submit(panel, () => { calls++; return retryGate.promise; });
+    assert.equal(calls, 1);
+    assert.equal(panel.pending, true);
+    retryGate.resolve(result);
+    await fulfilled(retry, result);
+    assert.equal(panel.pending, false);
+  }));
+
+test('synchronous invocation errors preserve identity and allow immediate retry', () =>
+  withSubmissions(async scope => {
+    const panel = new SubmitPanel(), error = new Error('synchronous save failure');
+    let pendingInSave;
+    const first = scope.submit(panel, () => {
+      pendingInSave = panel.pending;
+      throw error;
+    });
+    assert.equal(pendingInSave, true);
+    assert.equal(panel.pending, false);
+    const gate = scope.gate(), result = {};
+    const retry = scope.submit(panel, () => gate.promise);
+    assert.equal(panel.pending, true);
+    await rejected(first, error);
+    gate.resolve(result);
+    await fulfilled(retry, result);
+    assert.equal(panel.pending, false);
+  }));
+
+test('callback rejection on abort preserves reason, clears pending, and permits retry', () =>
+  withSubmissions(async scope => {
+    const panel = new SubmitPanel(), controller = new AbortController();
+    const gate = scope.gate(), reason = new Error('caller cancelled');
+    let received;
+    const first = scope.submit(panel, signal => {
+      received = signal;
+      const onAbort = () => gate.reject(signal.reason);
+      signal.addEventListener('abort', onAbort, { once: true });
+      scope.cleanup(() => signal.removeEventListener('abort', onAbort));
+      return gate.promise;
+    }, controller.signal);
+    assert.equal(received, controller.signal);
+    assert.equal(controller.signal.aborted, false);
+    assert.equal(panel.pending, true);
+    controller.abort(reason);
+    await rejected(first, reason);
+    assert.equal(panel.pending, false);
+    const retryGate = scope.gate(), result = {}, retrySignal = new AbortController().signal;
+    let retryReceived;
+    const retry = scope.submit(panel, signal => {
+      retryReceived = signal;
+      return retryGate.promise;
+    }, retrySignal);
+    assert.equal(retryReceived, retrySignal);
+    assert.equal(panel.pending, true);
+    retryGate.resolve(result);
+    await fulfilled(retry, result);
+    assert.equal(panel.pending, false);
+  }));

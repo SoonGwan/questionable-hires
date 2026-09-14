@@ -1,5 +1,10 @@
 # JavaScript controlled callbacks — local capability validation
 
+Later [model screen](HOSTAGE-JAVASCRIPT-PANEL-01-REVIEW.md) confirms asset adoption
+and required regressions, but records +93.51% tokens / +11.32% time versus baseline.
+Ten separate author regression/fault replays match. The local capability evidence
+below must not be promoted into a model-efficiency claim.
+
 Resource `8ca9e70`, 2026-09-14. Optional ES-module asset extends Hostage's callback
 test support beyond Python; it is not a claim of improved model efficiency.
 The existing Python asset and behavior remain unchanged. Routing selects only

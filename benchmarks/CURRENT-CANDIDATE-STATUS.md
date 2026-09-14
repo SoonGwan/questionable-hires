@@ -11,31 +11,26 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
-New capability `8ca9e70`: [Hostage JavaScript callbacks](HOSTAGE-JAVASCRIPT-CALL-01.md)
-adds an optional standalone ES-module double with actual entry, unique handles,
-controlled resolution/rejection and expiring waiters. Seven native Node tests
-include valid/missing-guard/missing-cleanup authored Form controls. Standalone-copy
-integration and 15 installer checks pass. Python support is unchanged. No new
-JavaScript model, browser, TypeScript or efficiency claim; prior measurements
-must not be relabeled as results for this resource.
+[JavaScript SubmitPanel review](HOSTAGE-JAVASCRIPT-PANEL-01-REVIEW.md), launch
+`3949ef6`, resource `8ca9e70`: both sessions complete. Baseline 68,671 tokens/
+92.478s; skill 132,886/102.947s: **+93.51% tokens / +11.32% time**. Both preserve
+existing tests and capture seven native passes. Skill copies the JS asset exactly,
+but still builds lifecycle setup and makes more separate discovery/read calls.
+Ten separate final/original/guard/cleanup/signal replays match, all raw resources/
+usage and reviewed inventories reconcile. No observed scope/capture issue.
+Adoption is demonstrated; efficiency is not. One authored n=1 pair, unequal extra
+witnesses and shared host/cache remain limitations. No browser/TypeScript claim.
 
-Prepared [JavaScript SubmitPanel screen](HOSTAGE-JAVASCRIPT-PANEL-01-PROTOCOL.md),
-fixture/preflight `a000672`: one explicit abort-ownership task with two existing
-tests, correct and deliberate guard/cleanup/signal fault controls. Three author
-tests pass; full repository preflight passes 469 tests in 70.708s, no failures/skips.
-The two-session baseline/skill screen is running at launch `3949ef6`, with frozen
-resource `8ca9e70`. [Baseline review](HOSTAGE-JAVASCRIPT-PANEL-01-REVIEW.md)
-records seven native passing tests with original tests unchanged, actual abort
-rejection/retry and owned cleanup. No completed pair or model performance claim yet; no author
-test workloads or resource/task edits during timing.
+Local capability/preflight: seven native asset tests, independent copy/installer
+checks, and author panel contract/fault controls passed. Full repository preflight
+was 469 tests in 70.708s, no failures/skips; that is not model performance evidence.
+Python support and historical/featured measurements remain unchanged.
 
-한국어: `8ca9e70`에서 JavaScript용 독립 호출 제어 도구를 추가했다. 실제 호출
-시작·중복 인자·응답 순서·실패 전달과 결함 검출을 Node에서 검증했다.
-Python 지원은 그대로이며, JavaScript 모델 성능이나 브라우저 검증을
-완료했다고 주장하지 않는다.
-기존 테스트를 보존하면서 제출 상태를 구현하는 과제와 정상·결함 대조군을
-준비했다. 취소 책임도 명시했고, 전체 469개 테스트 통과 후 기본·스킬 비교를
-시작했다. 아직 완료된 비교 결과나 모델 성능 향상 주장은 없다.
+한국어: JavaScript 비교 두 세션이 끝났다. 기존 테스트를 보존하고 양쪽 모두
+7개 테스트가 통과했지만, 스킬은 토큰 93.51%, 시간 11.32% 더 썼다.
+도구를 그대로 사용했어도 별도 정리 코드와 반복 읽기가 남았다. 원본 사용량·
+도구·파일을 대조했고 별도 결함 대조군 10개도 예상대로 동작했다.
+도구 사용 성공을 효율 개선으로 보지 않으며, 브라우저 검증을 주장하지 않는다.
 
 Friday compact candidate rejected after [direct comparison](FRIDAY-COMPACT-MODEL-01-REVIEW.md),
 launch `ce6dd4e`: all six sessions complete. Original 235,749 tokens/172.655s;
