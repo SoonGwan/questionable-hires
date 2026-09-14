@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist conditional example — 2026-09-15, parent `eca85cd`
+
+[Executed documentation recipe](CON-ARTIST-CONDITIONAL-EXAMPLE-01.md) now selects
+the existing conditional stronger-probe mode. Real native controls retain four
+checks when existing tests miss the fault or unconditional probe validation is
+required, and execute two when the existing assertion already detects it. The
+prior guide reproduces two unnecessary executions in that case. Helper defaults
+and the entrypoint are unchanged; model uptake and token/time savings are unmeasured.
+
+한국어: 첫 예제가 조건부 추가 검증을 사용하도록 수정했다. 기존 테스트가 결함을
+잡는 경우만 실행 4회를 2회로 줄이고, 놓치거나 추가 검증 자체가 요구되면 4회를
+유지하는 실제 대조를 확인했다. 모델 성능 개선이나 전체 50% 절감 주장은 아니다.
+
 ## Con Artist input bounds — 2026-09-15, parent `f19186c`
 
 [Bounded reads](CON-ARTIST-INPUT-BOUND-01.md) fix a reproduced size-check/read

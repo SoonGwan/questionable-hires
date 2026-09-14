@@ -15,6 +15,7 @@ question. Adapt the files, binding and behavioral fault to the actual project:
   "new": "",
   "runner": "unittest",
   "tests": ["-v", "test_service"],
+  "probe_when": "survives",
   "precheck": "import service, test_service\nassert test_service.SaveTests.test_acknowledges_save.__globals__['save'] is service.save\nprint('Verified actual test global save is service.save', flush=True)\n",
   "probe": "from service import save\ns = ['existing']\nsave(s, 'record')\nassert s == ['existing', 'record']\n"
 }
@@ -41,8 +42,9 @@ expected/observed diagnostics. Let pytest collect its tests normally.
 fixture rebinding; use native hooks for post-collection checks. Import/setup or
 precheck failures are incomplete evidence, never killed faults.
 
-When probes are needed only if tests miss the fault, add `"probe_when": "survives"`.
-Omit it when the stronger assertion must be verified regardless. A nonzero mutant
+The example validates a stronger assertion only if tests miss the fault, using
+`"probe_when": "survives"`. Omit that field (or use `"always"`) when the request
+requires validating the stronger assertion regardless. A nonzero mutant
 exit skips conditional probes; inspect the failure before calling it detection.
 For fixture-based native probes read [probe_files/probe_tests](python-audit-probes.md),
 without loading unrelated advanced modes.
