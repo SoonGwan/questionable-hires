@@ -11,6 +11,21 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Con Artist [SQLite transfer 01](CON-ARTIST-SQLITE-01-REVIEW.md), launch `360775f`,
+resources `8e3bdc4`: baseline 86,152 tokens / 69.112s; skill 99,868 / 49.308s
+(+15.92% tokens, −28.65% time). Skill reads actual sources/core/native-probe guide,
+verifies alias bindings, and captures all four native phases for a real disk commit
+fault. Both unchanged programs replay expected outcomes; binary literals decode
+identically. Baseline's original correct-existing section is missing and remains
+unverified. Skill loads the whole advanced guide; targeted routing remains costly.
+New authored n=1 task, unequal work/shared cache: no causal or broad efficiency win.
+
+한국어: 새 SQLite 과제에서 스킬이 실제 파일·함수 연결과 디스크 커밋 누락을
+검증했다. 토큰은 15.92% 늘고 시간은 28.65% 줄었다. 원래 프로그램 재검증도
+예상대로 동작했지만 스킬 미적용 원본의 첫 정상 테스트 출력 누락은 그대로 남긴다.
+스킬은 필요한 네이티브 테스트 안내뿐 아니라 상세 문서 전체를 읽었다. 다른 구조에
+적용되는 것은 확인했지만 단일 작성자 과제의 결과를 일반적인 성능 향상으로 주장하지 않는다.
+
 Con Artist [short-guide screen 01](CON-ARTIST-CORE-GUIDE-MODEL-01-REVIEW.md), launch
 `da333ab`, resources `8e3bdc4`: 73,679 tokens / 35.540s, three recorded shell calls.
 All four actual audit phases and copied binding/integrity evidence are captured;
