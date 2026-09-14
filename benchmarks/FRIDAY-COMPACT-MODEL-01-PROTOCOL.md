@@ -1,31 +1,48 @@
-# Friday compact screen 01 — 2026-09-14
+# Friday compact entry: direct old/new development comparison
 
-Resources `f15f3ae`; unchanged `rolling-schema` from
-`bundle-contract-v2-cases.json` SHA-256
-`1c3bd0648fecfad35f65cba144f908b0ffdd39ba28e28f05963722488ffc7f65`.
-One fresh baseline and one explicit-skill session, Astra medium, serial, seed
-20260911, 240 seconds each, no favorable retries. Freeze before launch. No author
-tests or resource/task changes during timing. No previous solutions in prompts.
+Freeze original `b2816cd` versus candidate `e063131`. Resource inventories differ
+only at friday/SKILL.md; scripts, references and metadata are byte-identical.
+This isolates the changed input, not a causal effect from one model run.
 
-Local preflight at candidate: 36 matrix and 12 packaging tests pass, including
-real compatible/incompatible readers, inserts/updates retained after rollback,
-partial migration and value/column errors. Task/project unchanged; no new harness.
+Three existing exposed authored tasks, unchanged:
 
-Review original project reads, actual supplied SQL/query use, relevant initial/up/
-down observations, insert and update before down, full surviving values and
-columns, both ordering blockers, staging unknown, mitigations and unchanged release
-files. Report guide/helper use without requiring a helper over another valid path.
-Compare generated work, not just completion or output size. Missing output remains
-unverified even if final prose says pass; separate replay cannot fill original gaps.
-Reconcile usage, installed resources and source inventory after timing; replay the
-actual retained program/recipe unchanged separately before accepting its evidence.
+- rolling-schema from bundle-contract-v2-cases.json, SHA-256
+  `1c3bd0648fecfad35f65cba144f908b0ffdd39ba28e28f05963722488ffc7f65`.
+- quota-overlap-gap and quota-overlap-control from friday-writer-cases.json,
+  SHA-256 `7f61ee6e426636279085446bf5dc1f1c9c09b8b68f48f532d82eda6c80412341`.
 
-Preserve both cells, errors, timeouts and unknown usage. Report absolute tokens and
-time, descriptive paired changes only. This exposed n=1 authored case with shared
-host/cache cannot establish causal effects, statistical superiority, unexposed
-transfer or all-eight gains. The previous byte reduction is not measured tokens.
-Do not rewrite historical or featured graphs. Sync reviewed EN/KO status later.
+The writer cases use actual Python application functions over SQLite; they are
+not another database engine, multiconnection transaction or production test.
+No new fixture or criterion is introduced. Release contracts remain visible in
+the supplied projects. Review actual writer/reader binding and acknowledged
+updates/inserts, not merely helper execution or a SELECT success flag.
+
+Before launch, native fixture test confirms the gap's stale/null values and
+lost new update after down, while the synchronization control preserves all
+values. The existing matrix's 33 tests pass. Three new orchestration tests pass:
+frozen resources/cases, six-session settings, terminal failure retention and
+account-limit/missing-manifest stopping. Prior full local suite: 458 passes,
+70.722s. These are local checks, not hosted CI or model evidence.
+
+Six serial fresh explicit-Friday Astra medium sessions, n=1 per task/version,
+240 seconds/cell, jobs=1, seed20260911. Order is original/candidate for schema,
+candidate/original for writer gap, original/candidate for writer control. No
+no-skill arm: this asks whether compression improves the preceding skill, not
+whether either version beats a baseline. Orders are not fully counterbalanced.
+
+Preserve all attempts, errors, output gaps, timeout/unknown usage and extra work.
+Never subtract reconnect costs or replace original logs with author replay.
+No resource/task edits or author tests during timing. No favorable-result retry;
+stop new scheduling after account limits or missing runner completion. Poll a
+live handle after observation timeouts rather than restarting it.
+
+After all six terminal sessions: inspect conclusions, actual function/query
+execution, data surviving rollback, output completeness and original-file scope;
+reconcile raw usage and frozen installed resources. Report every pair. Aggregate
+only known complete usage, cached input counted once plus output. Exposed n=1
+tasks/shared host/cache/unequal extras prohibit a general efficiency claim.
+Update dated EN/KO status; leave historical/featured charts unchanged.
 
 ```sh
-python3 -B benchmarks/run.py --cases-file benchmarks/bundle-contract-v2-cases.json --case rolling-schema --output benchmarks/local-runs/friday-compact-model-01 --arms baseline skill --repeats 1 --jobs 1 --seed 20260911 --timeout 240 --model gpt-6-astra --effort medium
+python3 -B benchmarks/run_friday_compact_01.py --output benchmarks/local-runs/friday-compact-model-01
 ```
