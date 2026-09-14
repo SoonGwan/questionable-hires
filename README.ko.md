@@ -92,6 +92,16 @@
 
 ## 설치
 
+이미 설치했다면 현재 체크아웃과 복사본을 읽기 전용으로 비교할 수 있습니다:
+
+```sh
+python3 scripts/install.py --dest /실제/프로젝트/.agents/skills --skill con-artist --check
+```
+
+누락·내용/권한 변경·추가 파일을 JSON으로 알려주며 개인 수정은 덮어쓰지 않습니다.
+종료 코드는 일치 0, 차이/미설치 2, 비교 실패 1입니다. 원격 최신 여부나 모델에서의
+활성화 여부를 검증하는 명령은 아닙니다. [업데이트 방법](docs/INSTALL.md#updates-and-removal).
+
 Node.js/npm과 Git이 있다면 한 명만 고르거나 8명 전부 설치할 수 있습니다.
 
 ```sh

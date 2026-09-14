@@ -84,6 +84,11 @@ python3 scripts/install.py --dest /path/to/your-project/.agents/skills --skill n
 
 Replace the project path. Omit `--skill necromancer` to install all eight; add `--dry-run` to preview. Existing skill folders are never overwritten.
 
+Already installed? Use `--check` instead of `--dry-run` to compare installed bytes
+and file modes with this checkout. It reports missing/changed/extra resources
+without writing; exit 0 means matching, 2 differences, 1 comparison failure.
+It does not update copies or establish that this checkout is the remote latest.
+
 Install from a trusted checkout: linked source files or directories are rejected
 before writing. On failure or cancellation, the installer attempts to remove
 only folders it created. Cleanup can fail too, so inspect any remaining partial

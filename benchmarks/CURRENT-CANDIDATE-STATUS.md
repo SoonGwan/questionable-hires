@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Read-only [installed-copy comparison](../docs/INSTALLATION-TEST.md#read-only-installation-comparison--2026-09-14),
+previous source `be6ddeb`: `scripts/install.py --check` identifies missing, changed
+bytes/modes and extra files without updating copies or replacing personal edits.
+20 installation tests and the full 509-test suite pass, including all-eight matching
+and real CLI failure controls. This helps users verify which local resources they have; it is not
+remote freshness, hosted installation/model discovery or performance evidence.
+
+한국어: 설치 복사본과 현재 로컬 소스를 수정 없이 비교하는 `--check`를 추가했다.
+누락·내용/권한 차이·개인 추가 파일을 구분하고 덮어쓰지 않는다. 설치 테스트 20개가
+통과했고 전체 509개 테스트도 통과했다. 원격 최신 여부·모델 활성화·성능 향상의 증거는 아니다.
+
 Con Artist [focused probe routing model 01](CON-ARTIST-PROBE-ROUTING-MODEL-01-REVIEW.md),
 launch `bcc6713`, resources `708c7a8`: 96,455 tokens / 46.178s, four shell calls.
 Actual project/common/focused-guide reads are captured, without advanced/source

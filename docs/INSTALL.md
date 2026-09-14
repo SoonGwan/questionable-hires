@@ -67,6 +67,21 @@ In the ChatGPT skill selector, use `@`. Discovery and invocation follow the [off
 
 ## Updates and removal
 
+Check an existing project installation against this local checkout without writing:
+
+```sh
+python3 scripts/install.py --dest /absolute/path/to/your-project/.agents/skills --skill con-artist --check
+```
+
+Omit `--skill` to check all eight. JSON reports missing, changed (bytes or file
+modes) and extra resources per hire. Exit 0 means all selected copies match;
+2 means differences/missing installs; 1 means the comparison failed (for example,
+a linked/special resource or unreadable file). Generated Python cache files are
+ignored. No destination is created and no files are replaced, deleted or repaired.
+Differences can be personal edits, not just outdated files. This compares only
+the local checkout—not remote freshness, model discovery or skill safety. Use a
+trusted, quiescent checkout/install; this is not concurrent filesystem isolation.
+
 Run `git pull --ff-only` in your source checkout. Installed skills are copies, so pulling alone does not update them. Compare your installed folder with the corresponding source folder, move the old installed folder to a backup location outside the discovery directory, and rerun the installer for that hire. Preserve any personal edits before replacing a copy.
 
 To uninstall, move only the installed hire folders you selected out of `.agents/skills` into a backup location. Restart the host if needed. This project installs no hooks, background services, credentials, or model settings.

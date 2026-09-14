@@ -19,6 +19,75 @@ class InstallTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.dest = Path(self.temp.name) / "skills"
 
+    def test_check_absent_destination_does_not_create_it(self):
+        result = installer.check_installation(self.dest, ['con-artist'])
+        self.assertFalse(result['matches'])
+        self.assertEqual(result['skills'][0]['status'], 'missing')
+        self.assertIn('references/python-audit-probes.md', result['skills'][0]['missing'])
+        self.assertFalse(self.dest.exists())
+
+    def test_check_all_installed_resources_and_personal_differences(self):
+        names = installer.available()
+        installer.install(self.dest, names)
+        self.assertTrue(installer.check_installation(self.dest, names)['matches'])
+        target = self.dest / 'con-artist'
+        (target / 'SKILL.md').write_text('personal instructions\n')
+        (target / 'references/python-audit-probes.md').unlink()
+        (target / 'personal.md').write_text('keep my notes\n')
+        executable = target / 'scripts/audit.py'
+        executable.chmod(executable.stat().st_mode ^ 0o100)
+        before = installer.resource_inventory(target)
+        result = installer.check_installation(self.dest, ['con-artist', 'con-artist'])
+        self.assertEqual(result['skills'], [dict(skill='con-artist', status='different',
+            missing=['references/python-audit-probes.md'], changed=['SKILL.md', 'scripts/audit.py'],
+            extra=['personal.md'])])
+        self.assertEqual(installer.resource_inventory(target), before)
+        self.assertFalse(result['matches'])
+
+    def test_check_ignores_generated_cache_but_refuses_linked_resources(self):
+        installer.install(self.dest, ['con-artist'])
+        target = self.dest / 'con-artist'
+        (target / '__pycache__').mkdir()
+        (target / '__pycache__/anything.pyc').write_bytes(b'cache')
+        self.assertTrue(installer.check_installation(self.dest, ['con-artist'])['matches'])
+        outside = Path(self.temp.name) / 'outside'
+        outside.write_text('do not read or change me')
+        (target / 'linked.txt').symlink_to(outside)
+        with patch.object(Path, 'open', side_effect=AssertionError('link target opened')):
+            # Inspect the linked node through an otherwise empty skill directory.
+            linked_root = Path(self.temp.name) / 'linked-only'
+            linked_root.mkdir()
+            (linked_root / 'linked.txt').symlink_to(outside)
+            with self.assertRaisesRegex(ValueError, 'Unsupported linked'):
+                installer.resource_inventory(linked_root)
+        self.assertEqual(outside.read_text(), 'do not read or change me')
+        with self.assertRaisesRegex(ValueError, 'Unsupported linked'):
+            installer.check_installation(self.dest, ['con-artist'])
+
+    def test_check_cli_exit_codes_and_json(self):
+        command = [sys.executable, '-B', str(installer.ROOT / 'scripts/install.py'),
+                   '--dest', str(self.dest), '--skill', 'con-artist', '--check']
+        missing = subprocess.run(command, capture_output=True, text=True, timeout=10)
+        self.assertEqual(missing.returncode, 2, missing.stderr)
+        self.assertFalse(json.loads(missing.stdout)['matches'])
+        self.assertFalse(self.dest.exists())
+        installer.install(self.dest, ['con-artist'])
+        same = subprocess.run(command, capture_output=True, text=True, timeout=10)
+        self.assertEqual(same.returncode, 0, same.stderr)
+        self.assertTrue(json.loads(same.stdout)['matches'])
+        (self.dest / 'con-artist/broken-link').symlink_to(self.dest / 'absent')
+        broken = subprocess.run(command, capture_output=True, text=True, timeout=10)
+        self.assertEqual(broken.returncode, 1)
+        self.assertIn('no files changed', broken.stderr)
+        self.assertEqual(broken.stdout, '')
+
+    def test_check_rejects_unknown_names_and_file_destination(self):
+        with self.assertRaisesRegex(ValueError, 'Unknown hires'):
+            installer.check_installation(self.dest, ['../outside'])
+        self.dest.write_text('not a directory')
+        with self.assertRaisesRegex(ValueError, 'Destination must be a directory'):
+            installer.check_installation(self.dest, ['con-artist'])
+
     def test_selected_skill_is_complete(self):
         installer.install(self.dest, ["necromancer"])
         source = installer.ROOT / "skills/necromancer"

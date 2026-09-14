@@ -56,3 +56,28 @@ All seven shipped script entrypoints additionally execute `--help` from installe
 copies under isolated Python; all eight hires' resources are compared byte-for-byte
 and mode-for-mode with standalone and built-plugin copies. This supplements rather
 than reruns or relabels the historical CLI installation record above.
+
+## Read-only installation comparison — 2026-09-14
+
+Previous source `be6ddeb`. `scripts/install.py --check` compares selected installed
+skills to the local source checkout, without creating or updating installations.
+This addresses copies that remain stale after a source pull, including newly added
+resources such as Con Artist's focused native-probe guide. It does not fetch,
+certify remote freshness, activate models, or label personal edits safe to replace.
+
+Five new regression tests exercise missing destinations without creation; complete
+all-eight installation matching; byte/mode differences, missing/new resources and
+personal extra files without modification; cache exclusions and refusal to open
+linked resources; real CLI JSON/exits for matching, different and invalid inputs.
+All 20 installation tests pass in 1.777s. Existing installed helper behavior tests
+remain, rather than replacing behavioral coverage with hash checks.
+Full post-change validation: 509 tests pass in 74.941s, no failures/skips. The
+pre-change 504-test suite also passed (74.456s). These are local checks, not hosted
+CI or a model-efficiency experiment; neither duration is a claimed improvement.
+
+Comparison failures emit no partial success report. Exit 0 is matching, 2 is
+differences/missing installs, and 1 is a comparison failure. Normal argument parser
+errors also use exit 2. Linked/special resources and unreadable files are not
+silently skipped (generated Python cache exclusions mirror installation).
+Use a trusted checkout not being changed concurrently; there is no race isolation.
+Differences are reported for manual review, never automatically overwritten.
