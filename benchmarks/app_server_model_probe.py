@@ -7,6 +7,7 @@ Personal rules/hooks remain in force. Never silently retry a model turn.
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 import time
 import tomllib
@@ -21,7 +22,9 @@ def launch_args():
     config = tomllib.loads(config_path.read_text()) if config_path.exists() else {}
     overrides = ['notify=[]', 'features.plugins=false', 'features.multi_agent=false']
     for name in config.get('mcp_servers', {}):
-        overrides.append('mcp_servers.' + json.dumps(name) + '.enabled=false')
+        if not re.fullmatch(r'[A-Za-z0-9_-]+', name):
+            raise ValueError('Unsupported MCP config key; do not guess CLI key escaping')
+        overrides.append('mcp_servers.' + name + '.enabled=false')
     roots = [Path.home() / '.agents/skills', Path.home() / '.codex/skills', codex_root / 'skills']
     paths = sorted({str(p.resolve()) for root in roots if root.is_dir()
                     for p in root.rglob('SKILL.md')})

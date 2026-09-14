@@ -24,3 +24,12 @@ delayed output, an actual assertion failure, truncation and timeout. It did not
 test this model-issued event route. Existing featured results remain frozen.
 
 Launch: `python3.11 -B benchmarks/app_server_model_probe.py --output benchmarks/local-runs/app-server-model-capture-01`.
+
+## Startup defect, before any model turn
+
+Launch `74fba98` exited before initialization with `invalid transport` for the
+quoted MCP config key. The CLI override path did not interpret JSON key quoting
+as intended. Keep `app-server-model-capture-01` as failed startup evidence.
+The launcher now accepts only simple validated bare server names and refuses
+ambiguous key escaping. Use a new output `app-server-model-capture-02` after this
+correction; fixture/model/task remain unchanged. This is not a repeated model draw.
