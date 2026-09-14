@@ -24,7 +24,9 @@ fixture/preflight `a000672`: one explicit abort-ownership task with two existing
 tests, correct and deliberate guard/cleanup/signal fault controls. Three author
 tests pass; full repository preflight passes 469 tests in 70.708s, no failures/skips.
 The two-session baseline/skill screen is running at launch `3949ef6`, with frozen
-resource `8ca9e70`. No completed pair or model performance claim yet; no author
+resource `8ca9e70`. [Baseline review](HOSTAGE-JAVASCRIPT-PANEL-01-REVIEW.md)
+records seven native passing tests with original tests unchanged, actual abort
+rejection/retry and owned cleanup. No completed pair or model performance claim yet; no author
 test workloads or resource/task edits during timing.
 
 한국어: `8ca9e70`에서 JavaScript용 독립 호출 제어 도구를 추가했다. 실제 호출
