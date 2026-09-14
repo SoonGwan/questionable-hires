@@ -31,7 +31,15 @@ Trusted local foreground commands only: this kills remaining process-group membe
 
 ## Finish at the evidence boundary
 
-Choose one destination for detailed evidence. If a trace file is requested or needed for later analysis, write it and print its path plus distinguishing inputs/outcomes and failures; don't also print the entire trace unless needed to resolve the diagnosis. Otherwise use captured command output directly instead of a file round trip. Preserve necessary ordering/provenance and keep the reproduction rerunnable.
+Keep diagnostic output focused on decisive ordered observations, normal controls,
+native failures and counts. Inspect needed source separately; a large source dump
+in the experiment output can crowd out the observations. Use captured output when
+it fits. For longer or requested traces, write one project-local record and read
+the relevant segments; don't duplicate the entire record on stdout. Confirm the
+claimed events are actually visible before reporting them. Missing segments stay
+unverified; recover retained records before considering a safe rerun. Preserve
+required artifacts and remove disposable records only after review. Keep the
+reproduction rerunnable.
 
 Report the supported mechanism, decisive command/result, safeguard and uncertainty. Name the missing observation if blocked, rather than expanding simulations. Link the reproduction instead of repeating it. A restart alone isn't causal proof; preserve evidence and user state before an authorized reset.
 

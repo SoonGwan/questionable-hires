@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Exorcist reporter diagnosis — 2026-09-15, launch `3c7721a`
 
+[Reviewable-observation candidate](EXORCIST-OBSERVATION-02.md), parent `e5c9ef2`,
+replaces the output-choice paragraph: separate source inspection, retain decisive
+native events, use selective trace reads only when needed, verify visible evidence
+before claims and preserve requested artifacts. No tool/coverage change. Model
+adoption and net performance are not yet measured for this candidate.
+
+한국어: 소스 설명과 실행 관측을 분리하고 주장에 필요한 기록을 실제로 확인하도록
+기존 문단을 바꿨다. 필요한 경우만 파일을 쓰며 검증 범위·도구는 그대로다.
+수정 후보의 채택·성능 효과는 아직 미검증이다.
+
 [Reporter lifecycle screen](results/reporter-diagnosis-01/README.md): unchanged
 Exorcist records −41.41% tokens / −44.07% time against one fresh baseline. Baseline
 repairs its own probe error; skill's leading diagnostic output is missing, so its
