@@ -11,6 +11,13 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
+New runtime candidate `bef0937`: [Friday literal-reader references](FRIDAY-LITERAL-READERS-01.md)
+replace custom extraction code for declaration-only Python query files via the
+existing matrix CLI/API. Static file/hash/line evidence and strict rejection of
+dynamic modules preserve the boundary; runtime consumer binding is not inferred.
+28 native matrix tests pass, including the existing release fixture through CLI.
+Model adoption/cost impact is unmeasured; historical results below are unchanged.
+
 Newer **candidate `07fa9e2`**: [discovery routing screen](DISCOVERY-ROUTING-01-REVIEW.md)
 retains all four attempts. Atomic baseline 83,380 tokens/49.277s versus skill
 89,568/87.526s (**+7.42%/+77.62%**, extra exception coverage). Store baseline
