@@ -44,7 +44,8 @@ precheck failures are incomplete evidence, never killed faults.
 When probes are needed only if tests miss the fault, add `"probe_when": "survives"`.
 Omit it when the stronger assertion must be verified regardless. A nonzero mutant
 exit skips conditional probes; inspect the failure before calling it detection.
-For fixture-based native probes use [probe_files/probe_tests](python-audit-advanced.md#stronger-probes).
+For fixture-based native probes read [probe_files/probe_tests](python-audit-probes.md),
+without loading unrelated advanced modes.
 For several already-justified faults sharing a baseline, use [batch mode](python-audit-advanced.md#several-already-justified-faults-one-baseline).
 
 For an evidenced `src/` or other explicit project import path, see

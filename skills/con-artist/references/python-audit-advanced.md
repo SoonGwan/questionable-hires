@@ -4,32 +4,9 @@ Read only the section needed by the current audit; the common CLI and limits are
 
 ## Stronger probes
 
-For fixture-dependent pytest/unittest checks, prefer native test files rather than
-embedding their source inside a Python `write_text` string inside JSON. Supply
-`probe_files` (new relative file paths → source text) and `probe_tests` (arguments
-for the same runner), **instead of** `probe`. For example, with `runner: "pytest"`:
-
-```json
-{
-  "probe_files": {
-    "tests/test_persistence_audit.py": "from service import save\n\ndef test_persisted():\n    store = []\n    save(store, b'\\xff')\n    assert store == [b'\\xff']\n"
-  },
-  "probe_tests": ["-q", "tests/test_persistence_audit.py"],
-  "probe_when": "survives"
-}
-```
-
-These fields augment the common recipe. Files exist only in the fresh
-correct/faulty **probe** copies, never during the original-test checks or in the
-source project. Existing project paths, selected-file collisions and traversal
-are refused before execution. Inputs plus probe files share the 20 MB limit.
-Native runner exit status is preserved automatically, including collection errors;
-check actual assertion output. Normal single-layer JSON escaping still applies.
-Batch probe reuse includes both file contents and probe test arguments.
-
-When the stronger probe is needed **only if existing tests miss the fault**, add `"probe_when": "survives"`. This runs correct/mutant tests first and runs both fresh-copy probes only if mutant tests exit 0. A nonzero mutant exit skips both probes and records `probe_skipped`; inspect its failure, do not automatically call it a killed behavioral fault or claim the proposed probe was validated. Omit this option (default `"always"`) when the probe itself must be verified regardless of existing coverage. A timeout or failing correct check still stops as incomplete.
-
-Each executed check gets a fresh project-local disposable copy with verified imports; batch reuse is described below. The copy is its working directory; listed imports run before tests or probe. A probe executes as `__main__` in that same process. For fixture-dependent assertions, create a test inside the copy and invoke pytest with `raise SystemExit(pytest.main([...]))`: calling `pytest.main` without propagating its result can falsely report success. Probe-created files do not carry over to another check.
+The [native-probe interface](python-audit-probes.md) now has its own short guide.
+Read it for `probe_files`/`probe_tests` and conditional stronger assertions; the
+other sections here are not prerequisites. This heading preserves existing links.
 
 ## Several already-justified faults, one baseline
 

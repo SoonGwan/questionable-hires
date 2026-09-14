@@ -28,7 +28,11 @@ class BuildTests(unittest.TestCase):
             # Execute the shipped JSON itself, not a test-maintained imitation.
             single = json.loads(reference.split("<<'JSON'\n", 1)[1].split('\nJSON', 1)[0])
             batch = json.loads((example / 'recipe.json').read_text())
-            for name, recipe in (('documented single', single), ('public batch', batch)):
+            native_reference = (plugin / 'skills/con-artist/references/python-audit-probes.md').read_text()
+            native = {k: v for k, v in single.items() if k != 'probe'}
+            native.update(json.loads(native_reference.split('```json\n', 1)[1].split('\n```', 1)[0]))
+            for name, recipe in (('documented single', single), ('public batch', batch),
+                                 ('documented native', native)):
                 with self.subTest(recipe=name):
                     process = subprocess.run(
                         [sys.executable, '-I', '-B',
@@ -53,6 +57,11 @@ class BuildTests(unittest.TestCase):
                                       audits[1]['checks']['mutant_probe']['output'])
                         self.assertTrue(audits[1]['correct_tests_reused'])
                         self.assertTrue(audits[1]['correct_probe_reused'])
+                    if name == 'documented native':
+                        for key in ('correct_probe', 'mutant_probe'):
+                            self.assertIn('Ran 1 test in ', audits[0]['checks'][key]['output'])
+                            self.assertIn('test_persisted', audits[0]['checks'][key]['output'])
+                        self.assertIn("b'\\xff'", audits[0]['checks']['mutant_probe']['output'])
                     self.assertEqual(before, {p.name: (p.read_bytes(), p.stat().st_mode & 0o777)
                                              for p in project.iterdir()})
 
