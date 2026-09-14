@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Landlord optional-discovery candidate — 2026-09-15, parent `4a8bcc4`
+
+The direct screen below did not establish a benefit from requiring definition
+discovery before large-file reads. The entry now permits direct batching of known
+regions while retaining relevant region selection, enclosing context, truncation
+recovery and all consumer/test/scope obligations. This is a narrow instruction
+change, not a new helper or a ban on necessary discovery. No model measurement
+of this candidate yet; the preceding adverse pair remains tied to `775a6a9`.
+
+한국어: 별도 사전 검색을 필수 단계로 만들지 않고, 이미 아는 정의·소비자 구간을
+바로 묶어 읽도록 수정했다. 필요한 맥락·누락 복구·검증은 유지한다. 새 수정의
+성능은 아직 미검증이며 아래의 불리한 측정값도 이전 수정본에 그대로 남긴다.
+
 ## Landlord direct QueryParams screen — 2026-09-15, launch `f8ac46c`
 
 [Direct revision comparison](results/httpx-query-design-01/README.md), original
