@@ -1,0 +1,46 @@
+{
+  "records": [
+    {
+      "tests": "original",
+      "implementation": "correct",
+      "exit_code": 0,
+      "output": "test_acknowledges_replacement (tests.test_submit.SubmissionTests) ... ok\ntest_acknowledges_submission (tests.test_submit.SubmissionTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\n",
+      "original_files_unchanged": true,
+      "scratch_removed": true
+    },
+    {
+      "tests": "original",
+      "implementation": "faulty",
+      "exit_code": 0,
+      "output": "test_acknowledges_replacement (tests.test_submit.SubmissionTests) ... ok\ntest_acknowledges_submission (tests.test_submit.SubmissionTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\n",
+      "original_files_unchanged": true,
+      "scratch_removed": true
+    },
+    {
+      "tests": "improved",
+      "implementation": "correct",
+      "exit_code": 0,
+      "output": "test_acknowledges_replacement (tests.test_submit.SubmissionTests) ... ok\ntest_acknowledges_submission (tests.test_submit.SubmissionTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\n",
+      "original_files_unchanged": true,
+      "scratch_removed": true
+    },
+    {
+      "tests": "improved",
+      "implementation": "faulty",
+      "exit_code": 1,
+      "output": "test_acknowledges_replacement (tests.test_submit.SubmissionTests) ... FAIL\ntest_acknowledges_submission (tests.test_submit.SubmissionTests) ... FAIL\n\n======================================================================\nFAIL: test_acknowledges_replacement (tests.test_submit.SubmissionTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PROJECT>/tests/test_submit.py\", line 20, in test_acknowledges_replacement\n    self.assertEqual(json.loads((Path(folder) / \"ticket.json\").read_text()), {\"title\": \"\uc218\uc815 \uc694\uccad\", \"count\": 3})\nAssertionError: None != {'title': '\uc218\uc815 \uc694\uccad', 'count': 3}\n\n======================================================================\nFAIL: test_acknowledges_submission (tests.test_submit.SubmissionTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PROJECT>/tests/test_submit.py\", line 13, in test_acknowledges_submission\n    self.assertEqual(json.loads((Path(folder) / \"ticket.json\").read_text()), {\"title\": \"\uccab \uc694\uccad\", \"count\": 2})\nAssertionError: None != {'title': '\uccab \uc694\uccad', 'count': 2}\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nFAILED (failures=2)\n",
+      "original_files_unchanged": true,
+      "scratch_removed": true
+    }
+  ],
+  "original_files_sha256": {
+    "store/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "store/codec.py": "abbb552550a454e276748312f8567b3990e2152a99c338d8e1f0b1646cae5ce6",
+    "store/backend.py": "ed4b82c998dc41c6ca36227b334ae0be7ad825b220d75734267584d4f091f368",
+    "store/service.py": "73fe0ea68ce8f4bf7da0ea2193929b0004fe14e4187acedc97ee3944626cf1d5",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_submit.py": "2ffb604440208ed5549f29a8964f8ea4b91040e93ec1dfcd97646d514704a6dc",
+    "README.md": "6a1c0929dcc7ac7b42a9ce3d0536e276cf4d2d1c0d54da3410b372deca80b8ff"
+  },
+  "limitation": "Authored native preflight only; not model evidence or a full mutation score."
+}
