@@ -28,6 +28,13 @@ Both file types are limited to 1 MB and use regular nonsymlink project-relative
 paths. Known-overflow files are rejected before reading, and reads remain bounded
 if a file grows after stat. All selected input is prepared before SQL begins.
 
+Within one matrix call, references to the same normalized Python path share one
+validated declaration snapshot and hash. Each selection still charges its source
+and query bytes against the same budget; this is not a larger-input escape hatch.
+All selected SQL checks still execute after every phase. No SQL results are
+cached, and the next matrix call rereads files. This does not isolate concurrent
+filesystem changes; provenance describes the source snapshot actually read.
+
 Parsing/input limits bound retained source, not total memory or filesystem races.
 The SQL budget is shared across migration chunks and checks, not reset per phase;
 it does not bound Python parsing or whole-process wall time. Migration failure

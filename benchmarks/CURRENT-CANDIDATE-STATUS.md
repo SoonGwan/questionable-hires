@@ -11,13 +11,25 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Current Friday preparation optimization: [shared reader snapshot](FRIDAY-READER-SNAPSHOT-01.md).
+Multiple literal queries from one module share a validated read/parse within one
+matrix call. A native three-check case goes from three parses to one; SQL still
+runs after every phase, new invocations reread changed files, and repeated inputs
+still consume the full byte budget. This does not target the older two-file
+rolling-schema pair and is not model-level efficiency evidence.
+Full current local suite: 496 passed in 69.115s, no failures/skips.
+
+한국어: 한 Python 파일의 여러 쿼리를 검사할 때 읽기·구문 분석을 한 번만 하도록
+개선했다. SQL 결과는 재사용하지 않아 단계별 데이터 변경을 계속 확인한다.
+로컬 처리 최적화이며, 기존 모델 실험의 토큰 증가가 해결됐다는 뜻은 아니다.
+
 Current Python Hostage runtime addition: [task-aware entry](HOSTAGE-PYTHON-ENTRY-WAIT-01.md).
 An optional wait detects an already-finished application rather than spending its
 entry deadline. Local tests cover exact outcomes, both cancellation directions,
 queued-entry preservation and competing consumers; correct two-stage behavior
 passes and skipped decode yields the actual completed payload. Python model
 adoption/cost remains unmeasured; no historical score or featured change.
-Full current local suite: 494 passed in 68.746s, no failures/skips.
+Local suite at `6d57e68`: 494 passed in 68.746s, no failures/skips.
 
 한국어: Python에도 앱 작업 종료를 확인하는 선택형 콜백 대기를 추가했다. 대기만
 취소해도 앱 작업은 유지하고, 취소와 콜백 진입이 겹쳐도 콜백을 잃지 않는지

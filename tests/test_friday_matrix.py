@@ -23,6 +23,46 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_shared_reader_module_is_parsed_once_without_reusing_sql_observations(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            text = "FIRST = 'SELECT x FROM t ORDER BY x'\nSECOND = 'SELECT count(*) FROM t'\n"
+            (root / 'readers.py').write_text(text)
+            recipe = {'phases': [phase('before', 'CREATE TABLE t(x); INSERT INTO t VALUES(1);'),
+                                 phase('after', 'INSERT INTO t VALUES(2);')],
+                      'checks': {name: {'python_file': 'readers.py', 'constant': constant}
+                                 for name, constant in [('rows', 'FIRST'), ('count', 'SECOND'), ('again', 'FIRST')]}}
+            real_open, opened = Path.open, []
+            def tracked_open(path, *args, **kwargs):
+                opened.append(path)
+                return real_open(path, *args, **kwargs)
+            with patch.object(helper.ast, 'parse', wraps=helper.ast.parse) as parsed, \
+                    patch.object(Path, 'open', tracked_open):
+                result = helper.matrix(recipe, root)
+            self.assertEqual(parsed.call_count, 1)
+            self.assertEqual(opened, [root.resolve() / 'readers.py'])
+            self.assertEqual(result['phases'][0]['checks']['count']['rows'], [(1,)])
+            self.assertEqual(result['phases'][1]['checks']['count']['rows'], [(2,)])
+            self.assertEqual(result['phases'][1]['checks']['rows']['rows'], [(1,), (2,)])
+            self.assertEqual(result['phases'][1]['checks']['again'], result['phases'][1]['checks']['rows'])
+            for label, entry in result['reader_sources'].items():
+                self.assertEqual(entry['sha256'], hashlib.sha256(text.encode()).hexdigest())
+                self.assertEqual(entry['line'], 2 if label == 'count' else 1)
+            (root / 'readers.py').write_text(text.replace('count(*)', 'sum(x)'))
+            self.assertEqual(helper.matrix(recipe, root)['phases'][1]['checks']['count']['rows'], [(3,)])
+
+    def test_cached_declarations_still_validate_each_selection_before_sql(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'readers.py').write_text("QUERY = 'SELECT 1'\nNOT_SQL = 42\n")
+            for constant in ('MISSING', 'NOT_SQL'):
+                with patch.object(helper.sqlite3, 'connect') as connect:
+                    with self.assertRaisesRegex(ValueError, 'literal SQL string'):
+                        helper.matrix({'phases': [phase('checkpoint')], 'checks': {
+                            'first': {'python_file': 'readers.py', 'constant': 'QUERY'},
+                            'second': {'python_file': 'readers.py', 'constant': constant}}}, root)
+                    connect.assert_not_called()
+
     def test_optional_phase_fields_match_explicit_defaults_without_mutation(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

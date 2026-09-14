@@ -10,7 +10,7 @@ import sys
 import time
 
 
-def literal_reader(reference, root, remaining):
+def literal_reader(reference, root, remaining, cache=None):
     """Read a declaration-only module without importing or executing it."""
     if (not isinstance(reference, dict) or set(reference) != {'python_file', 'constant'}
             or not all(isinstance(value, str) and value for value in reference.values())):
@@ -18,6 +18,27 @@ def literal_reader(reference, root, remaining):
     relative = Path(reference['python_file'])
     if relative.is_absolute() or not relative.parts or '..' in relative.parts:
         raise ValueError('reader file must be project-relative')
+    key = relative.as_posix()
+    if cache is not None and key in cache:
+        constants, length, digest = cache[key]
+        if length > remaining:
+            raise ValueError('SQL exceeds 2 MB')
+    else:
+        constants, length, digest = reader_constants(relative, root, remaining)
+        if cache is not None:
+            cache[key] = constants, length, digest
+    selected = constants.get(reference['constant'])
+    if selected is None or not isinstance(selected[0], str):
+        raise ValueError('selected reader constant must be a literal SQL string')
+    query, line = selected
+    return query, length, {'python_file': key,
+                           'constant': reference['constant'], 'line': line,
+                           'sha256': digest, 'query': query,
+                           'kind': 'static literal, not runtime binding evidence'}
+
+
+def reader_constants(relative, root, remaining):
+    """One bounded declaration snapshot; no imports or SQL execution."""
     path = root / relative
     if any(part.is_symlink() for part in [path, *path.parents]
            if part != root and root in part.parents):
@@ -48,14 +69,7 @@ def literal_reader(reference, root, remaining):
         if name in constants:
             raise ValueError('reader module reassigns a constant: ' + name)
         constants[name] = (node.value.value, node.lineno)
-    selected = constants.get(reference['constant'])
-    if selected is None or not isinstance(selected[0], str):
-        raise ValueError('selected reader constant must be a literal SQL string')
-    query, line = selected
-    return query, len(source), {'python_file': relative.as_posix(),
-                               'constant': reference['constant'], 'line': line,
-                               'sha256': hashlib.sha256(source).hexdigest(),
-                               'query': query, 'kind': 'static literal, not runtime binding evidence'}
+    return constants, len(source), hashlib.sha256(source).hexdigest()
 
 
 def matrix(spec, root, timeout=5):
@@ -75,17 +89,18 @@ def matrix(spec, root, timeout=5):
     if total > 2_000_000:
         raise ValueError("SQL exceeds 2 MB")
     root = Path(root).resolve(strict=True)
-    resolved, sources = {}, {}
+    resolved, sources, reader_cache = {}, {}, {}
     for label, value in checks.items():
         if isinstance(value, str):
             resolved[label] = value
         else:
-            query, source_bytes, provenance = literal_reader(value, root, 2_000_000 - total)
+            query, source_bytes, provenance = literal_reader(value, root, 2_000_000 - total, reader_cache)
             total += source_bytes + len(query.encode('utf-8'))
             if total > 2_000_000:
                 raise ValueError('SQL exceeds 2 MB')
             resolved[label], sources[label] = query, provenance
     checks = resolved
+    reader_cache.clear()  # Keep selected queries/provenance, not unused constants.
     prepared = []
     for phase in phases:
         if (not isinstance(phase, dict) or "name" not in phase
