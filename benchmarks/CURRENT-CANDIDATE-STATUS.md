@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Con Artist conditional example — 2026-09-15, parent `eca85cd`
 
+[Evidence-first routing candidate](CON-ARTIST-ROUTER-02.md), parent `1fa11f3`,
+reduces the common entry 4,155→3,419 bytes and routes Python details conditionally.
+Tracing is bounded by the actual effect and unresolved bindings, not a complete
+wrapper itinerary. Native proof, stronger assertions, runtime context and scope
+are retained. 121 targeted tests pass; model adoption/net costs remain unmeasured.
+Instruction size is not a performance result; next comparison must change workflow.
+
+한국어: 공통 안내를 줄이고 Python 상세는 필요한 경우에 읽도록 재배치했다.
+필수 검증·바인딩 불확실성·권한 경계는 보존했다. 121개 테스트 통과지만 모델
+효과는 미검증이며 지침 바이트 감소를 토큰 절감으로 표시하지 않는다.
+
 [Provenance adoption 02](results/httpx-provenance-02/README.md), launch `670e708`,
 resources `b044a19`: one fresh skill session has native 24-pass / 4-fail evidence,
 without a new pytest plugin or setup retry. Historical skill costs fall 31.38%

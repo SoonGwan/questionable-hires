@@ -9,37 +9,38 @@ description: Audit whether tests detect broken behavior by tracing assertions an
 
 ## Check what the test actually buys
 
-Start from the requested assertions and follow their actual calls through implementation and mocks. Read the reached definitions and relevant fixtures/configuration; broaden discovery when a dependency or contract remains unresolved, not merely because more files exist. Reuse completed project-scoped instruction discovery and known runner information after loading this skill. Keep any new discovery inside the permitted project root.
+Trace the requested assertions far enough to establish the actual exercised effect
+and select a reachable fault. Follow unresolved bindings, mocks and relevant setup;
+reading every intermediate wrapper is not itself evidence. Reuse known instructions,
+runner and source context. Keep discovery inside the permitted project root; a
+broad suite need not become a reading list of unrelated tests.
 
-For a few nearby files, read the relevant source and configuration directly with
-project tools; Python alone is not a reason to load helper references. Running a
-broad suite does not require reading every unrelated test body. Locate unknown
-assertions with targeted search and reuse already-read context.
+Use the evidenced runner and configuration; reuse a valid correct-code baseline.
+Choose one meaningful fault at the requested boundary, such as acknowledging
+without persisting. Preserve originals and compilation/binding context through
+project isolation, disposable module/package copies or a valid substitution;
+restore substitutions in reused processes. A wrong binding, rewritten simulation,
+syntax error or equivalent mutation cannot establish test sensitivity.
 
-When scattered targets need ancestor instructions/configuration and fixture
-navigation, [the read-only collector](references/python-context.md) can gather
-that context in one call. Select known definitions/lines directly; whole-file
-reads remain available when needed. Its indexes locate bodies, not prove resolved
-dependencies or executed behavior. Do not add it after equivalent direct reads.
+Inspect each phase's actual assertion and exit, not just a green baseline or a
+nonzero mutant status. Runner errors/warnings can indicate broken assertion
+plumbing, not a detected production fault. Establish provenance through copied
+imports, traced bindings and defect-specific observations. Add instrumentation for
+required or unresolved dispatch, not duplicate evidence; a separate import-only
+process does not prove what the test process loads.
 
-Use the documented command or evidenced runner, preserving test configuration. Reuse a valid baseline or established audit; a failing baseline is not mutation evidence. Choose one reachable behavioral fault at the requested boundary, such as acknowledgment versus persistence or closed flag versus cleanup. Syntax errors and equivalent mutations do not establish sensitivity.
+## Use support only where it helps
 
-A green baseline does not validate assertion plumbing. Custom helpers can shadow
-runner methods (for example, async `unittest.TestCase.fail`), producing support
-errors or false passes. Trace unexpected errors/coroutine warnings through those
-helpers before attributing the audit outcome to production behavior.
-
-Choose isolation by the context it preserves. In-memory substitution fits when the actual caller resolves it and compilation context/bindings remain intact; restore substitutions in reused processes. Extracting function text can lose future flags, closures or decorators: use disposable module/package copies when that context is uncertain. Keep originals intact; a fake implementation or wrong binding does not demonstrate a surviving fault.
-
-For compatible Python copy-based audits, use [the audit helper](references/python-audit.md)
-instead of rebuilding its copy/subprocess/cleanup orchestration. Adequate project
-audits and simpler valid substitutions take precedence; unsupported layouts need
-project facilities. Capture each phase's exit and inspect actual failures. Establish
-the exercised path from copied-import evidence, traced bindings and defect-specific
-observations. Add binding instrumentation for an explicit requirement or unresolved
-dispatch, not to duplicate established evidence. Separate import-only processes do
-not prove what tests load. Inspect helper source for a concrete trust, adaptation
-or troubleshooting question.
+- Nearby known files: read relevant source/configuration directly. For scattered
+  Python context, [the collector](references/python-context.md) locates definitions,
+  ancestor instructions and fixtures. Select known bodies directly; indexes are
+  navigation, not reviewed bodies or execution. Don't recollect equivalent context.
+- Compatible Python copy audits: use [the audit helper](references/python-audit.md)
+  instead of rebuilding orchestration. Adequate project audits and simpler valid
+  substitutions take precedence; unsupported layouts need project facilities.
+  Read implementation for a concrete trust, adaptation or troubleshooting question.
+- Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)
+  covers false-pass assertion helpers and incomplete checks. It is not routine setup.
 
 If tests survive, verify the same stronger assertion on correct and faulty code:
 pass the former, fail the latter for the intended effect, not merely success or
@@ -53,4 +54,6 @@ Keep a harness/report only for requested reuse or delivery. Without isolated
 execution, label the concern static. Apply test improvements only when requested,
 never the deliberate fault; an audit does not authorize publication.
 
-Stop when the scoped claim is assessed and requested improvements are verified. Try another fault only for a distinct boundary material to that claim; don't fish for survivors, chase a global mutation score, or remove every mock.
+Stop when the scoped claim and requested improvements are verified. Add faults
+only for distinct material boundaries, not to fish for survivors, chase a global
+mutation score or remove every mock. Preserve user changes and explicit requirements.

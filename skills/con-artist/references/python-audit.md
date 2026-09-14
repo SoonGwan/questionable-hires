@@ -5,6 +5,9 @@ JSON on stdin, without a recipe file or wrapper. This interface is sufficient fo
 supported audits. Inspect source for a concrete trust, adaptation or troubleshooting
 question. Adapt the files, binding and behavioral fault to the actual project:
 
+Use complete module/package copies when extraction would lose future flags,
+closures or decorators. A shorter extracted function is not an equivalent runtime.
+
 ```sh
 /path/to/project/python /path/to/con-artist/scripts/audit.py --spec - <<'JSON'
 {
