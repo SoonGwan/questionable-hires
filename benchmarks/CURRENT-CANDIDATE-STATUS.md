@@ -11,17 +11,31 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [output-choice screen 01](RECEIPT-OUTPUT-CHOICE-01-REVIEW.md), launch
+`15a2e38`, resources `72e1ff2`: compact output adopted, but 82,253 tokens / 53.954s,
+**+7.18% / +9.90%** versus prior skill execution. Six shell calls versus four,
+including a separate full hash listing and another snapshot. Native five-test
+before/after evidence and literal-recipe replay match; original files remain
+unchanged. Original SPEC/PYTHON prefixes are missing, so exact version evidence
+is not established there. Exposed n=1, unequal work: no efficiency claim.
+
+한국어: 압축 출력 안내는 실제 채택됐지만 82,253토큰·53.954초로 이전보다
+7.18%·9.90% 증가했다. 호출은 4회에서 6회로 늘었고 별도 전체 해시 출력과
+추가 스냅샷이 있었다. 실제 기존 테스트 5개의 수정 전후 결과·별도 재실행·원본
+보존은 확인됐다. 원본 로그의 설정·Python 버전 선행 출력 두 줄은 빠져 있어
+정확한 버전 관찰을 입증할 수 없다. 기존 과제 1회이며 성능 개선 결과가 아니다.
+
 Receipt [output-choice follow-up](RECEIPT-GUIDE-COMPACT-01.md#output-choice-follow-up--2026-09-14-previous-source-da5b10e),
 previous source `da5b10e`: explicitly prefer existing compact JSON for agent use.
 The retained measured helper object is 6,036 bytes indented / 5,516 compact
 (−8.61%), with complete parsed equality. No runtime or integrity change; 47
 helper and 12 packaging tests pass. This is output arithmetic, not model token
-savings; instruction adoption and whole-task cost effects are not yet measured.
+savings; the subsequent screen above observes adoption but higher overall cost.
 
 한국어: Receipt가 이미 제공하는 압축 JSON을 에이전트 실행의 기본 선택으로
 명확히 안내했다. 보존된 실제 결과는 모든 필드를 유지하면서 6,036 → 5,516바이트
 (8.61% 감소)다. 실행 코드·원본 보존 검사는 바꾸지 않았고 관련 테스트 59개가
-통과했다. 출력 크기의 계산이며 새 안내의 실제 채택·전체 토큰 절감 증거는 아니다.
+통과했다. 출력 크기의 계산이며 후속 실행에서는 실제 채택됐지만 전체 비용은 늘었다.
 
 Receipt [single-guide adoption 01](RECEIPT-GUIDE-MODEL-01-REVIEW.md), launch
 `885a1f5`, resources `723be6f`: 76,746 tokens / 49.094s. The compact guide and

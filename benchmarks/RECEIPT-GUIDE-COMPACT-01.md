@@ -51,3 +51,7 @@ tests / 3.236s pass. The helper tests include actual native failing-before and
 passing-after observations serialized through both CLI modes, with full object
 equality. Skill/repository validation and featured EN/KO synchronization pass.
 Model adoption and whole-task efficiency of this instruction remain unmeasured.
+
+Subsequent [output-choice screen 01](RECEIPT-OUTPUT-CHOICE-01-REVIEW.md) observes
+compact selection but **higher** recorded whole-task token/time cost. The candidate
+validation above is historical pre-run evidence, not an efficiency claim.

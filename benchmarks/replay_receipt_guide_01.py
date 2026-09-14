@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Replay the literal measured recipe separately, retaining native evidence."""
 import ast
+import argparse
 import hashlib
 import importlib.util
 import json
@@ -22,6 +23,14 @@ def inventory(root):
 
 
 def main():
+    global RUN, REV
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--profile', choices=['guide-01', 'output-choice-01'], default='guide-01')
+    args = parser.parse_args()
+    output_choice = args.profile == 'output-choice-01'
+    if output_choice:
+        RUN = ROOT / 'benchmarks/local-runs/receipt-output-choice-01'
+        REV = '15a2e38'
     module = importlib.util.spec_from_file_location('runner', ROOT / 'benchmarks/run.py')
     runner = importlib.util.module_from_spec(module)
     module.loader.exec_module(runner)
@@ -51,15 +60,18 @@ def main():
     assert raw.replace(str(workspace), '<WORKSPACE>').replace(str(Path.home()), '<HOME>') == (cell / 'events.jsonl').read_text()
     events = [json.loads(line) for line in raw.splitlines()]
     assert next(e['usage'] for e in reversed(events) if e['type'] == 'turn.completed') == meta['usage']
-    item = next(e['item'] for e in events if e['type'] == 'item.completed' and e.get('item', {}).get('id') == 'item_5')
-    recipe = ast.literal_eval(re.search(r'spec = (\{.*?\n\})\nresult', item['command'], re.S).group(1))
+    item_id = 'item_7' if output_choice else 'item_5'
+    item = next(e['item'] for e in events if e['type'] == 'item.completed' and e.get('item', {}).get('id') == item_id)
+    recipe = ast.literal_eval(re.search(r'spec = (\{.*?\n\})\n(?:result|print)', item['command'], re.S).group(1))
     original, _ = json.JSONDecoder().raw_decode(item['aggregated_output'])
+    options = [] if output_choice else ['--pretty']
+    assert ('--pretty' in item['command']) == bool(options)
     with tempfile.TemporaryDirectory(prefix='qh-receipt-replay-', dir=RUN) as folder:
         copy = Path(folder) / 'project'
         shutil.copytree(workspace, copy)
         copied_before = inventory(copy)
         process = subprocess.run(['python3', '-B', '.agents/skills/receipt/scripts/compare.py',
-                                  '--source', '.', '--spec', '-', '--pretty'], cwd=copy,
+                                  '--source', '.', '--spec', '-', *options], cwd=copy,
                                  input=json.dumps(recipe), capture_output=True, text=True, timeout=40)
         assert process.returncode == 0 and not process.stderr
         replay = json.loads(process.stdout)
@@ -79,6 +91,7 @@ def main():
         safe_replay = json.loads(json.dumps(replay).replace(str(copy), '<REPLAY_PROJECT>'))
     assert inventory(workspace) == snapshot and inventory(cell / 'project') == project_snapshot
     report = {'kind': 'separate author recipe replay, not original model evidence',
+              'profile': args.profile,
               'recipe': recipe, 'exit_code': 0, 'observations_match': True,
               'normalization': 'only project/copy paths and native test durations',
               'raw_usage_resources_reconciled': True, 'original_inventories_unchanged': True,
