@@ -1,27 +1,18 @@
 # Local SQLite transition checks
 
-Use this optional Python 3.9+ helper when the actual migration is SQLite and several states reuse the same read queries. For a single query use the existing runner; for another database use its actual engine, not a SQLite translation. This is a bounded local aid, not a SQL security sandbox or production rollout simulator.
+Optional Python 3.9+ helper for repeated SQL-only SQLite reader checks. Use the
+existing runner for a single query and the actual engine for other databases.
+Application writers, transaction/multiple-connection behavior and production
+readiness need their actual runtime evidence; this is not a sandbox or simulator.
 
-Run `python3 <skill-dir>/scripts/sqlite_matrix.py --source <project> --spec <recipe.json>` (or `--spec -` for stdin). Read this interface instead of the implementation unless inspection or adaptation is needed.
+Run `python3 <skill-dir>/scripts/sqlite_matrix.py --source <project> --spec -`
+with JSON on stdin, or replace `-` with a recipe path. Inspect implementation only
+for trust, adaptation or troubleshooting.
 
-If an existing Python probe already extracts project queries, use the public API
-without an intermediate recipe file or another matrix loop:
-
-```python
-import runpy
-helper = runpy.run_path('<skill-dir>/scripts/sqlite_matrix.py')
-matrix, format_result = helper['matrix'], helper['format_result']
-result = matrix(recipe, project_root, timeout=5)
-print(format_result(result))
-```
-
-Check `result['complete']` before interpreting compatibility. `matrix` returns
-native SQLite values (row tuples, BLOB `bytes`); `format_result` returns CLI-format
-JSON text (row arrays, BLOB `{"blob_hex": "..."}`) without rerunning SQL or changing
-the result. Plain `json.dumps(result)` fails on BLOBs. Invalid API inputs raise
-exceptions; the CLI instead reports them as exit 2.
-
-The recipe has exactly `phases` and `checks`. Each phase has a `name`, a list of relative SQL `files` (run in order), then inline `sql`. Checks map labels to single read-only SQL statements or the literal-reader references below; they run after every phase against the same in-memory database. Example:
+The recipe has exactly `phases` and `checks`. Each phase runs its relative SQL
+`files` in order, then inline `sql`. Named checks run after every phase against
+the same in-memory database. Example (replace files, queries and data with the
+actual release's contracts):
 
 ```json
 {
@@ -37,59 +28,44 @@ The recipe has exactly `phases` and `checks`. Each phase has a `name`, a list of
 }
 ```
 
-Select actual consumer queries and representative writes from the project; this example is not a substitute for discovering their contracts. Choose only reachable phases, including new-version writes before rollback when relevant. Writer compatibility, expected values and which readers coexist remain review decisions: successful SELECT execution alone is not correctness. Do not run mutating checks; represent relevant writes as explicit phases.
+Choose reachable phases and actual consumer queries, including relevant new-version
+writes before rollback. Put writes in phases, not read-only checks. Expected values,
+coexisting readers and writer compatibility remain review decisions: a successful
+SELECT does not prove correctness.
 
-For Python query-declaration files, replace a check's SQL string with
-`{"python_file": "old_reader.py", "constant": "QUERY"}`. This works through the
-same CLI/API, avoiding a custom AST extraction loop. The file is never imported
-or executed. Only modules consisting of docstrings and unique, simple scalar
-literal assignments are accepted; the selected value must be a string. Imports,
-functions, annotations, computed expressions, conditional definitions, chained
-assignments and reassignment are rejected rather than guessed. Use actual runtime
-facilities when these are required, not a fabricated simplified reader module.
+Instead of inline SQL, a check may be
+`{"python_file": "old_reader.py", "constant": "QUERY"}`. This reads without
+importing/executing Python. Only docstrings and unique simple scalar literal
+assignments are accepted; the selected constant must be a string. Imports,
+functions, annotations, computed/conditional/chained assignments and reassignment
+are rejected. Use actual runtime facilities for dynamic queries, not a fabricated
+simplified module.
 
-`reader_sources` records each referenced label's relative file, constant name,
-line, original byte SHA-256 and extracted query. This establishes the inspected
-literal, not whether the application loads that module or replaces the binding
-at runtime; verify its real consumer. Invalid references fail preparation before
-any SQL, as CLI exit 2/API ValueError. SQL text still passes the same read-only
-authorization and output checks; referencing a file does not make a write safe.
+`reader_sources` records relative file, constant, line, byte SHA-256 and query.
+This is static provenance, not proof of runtime consumer binding. Invalid
+references fail before SQL; referenced SQL still receives read-only checks.
 
-Result fields are `engine: "sqlite-memory"`, `complete`, and ordered `phases`.
-Each phase has `name` and `checks`, keyed by your query labels. A successful check
-has `ok: true`, ordered `columns`, `rows` (up to 20) and `truncated`; a failed check has `ok: false`
-and `error`, not rows. Migration failures add phase-level `migration_error`;
-budget exhaustion adds top-level `error`. Incomplete phases/checks may be absent,
-and `truncated: true` cannot prove full row equality.
+Read `complete` before interpreting results. Ordered `phases` contain `name` and
+named `checks`: success has `ok`, ordered `columns`, `rows` and `truncated`; failure
+has `ok: false` and `error`, not rows. Migration failure adds `migration_error`;
+budget exhaustion adds top-level `error`. Missing phases/checks are unrun, not
+passed. `truncated: true` cannot prove full row equality.
 
-A reader must produce a result set: empty/comment-only SQL is a failed check,
-not a successful query returning zero rows. A real SELECT with zero matching
-rows remains `ok: true, rows: []`; validate that against the consumer's expectation.
+Compare values and column labels with the real consumer contract. Empty/comment
+SQL fails; a real zero-row SELECT succeeds but still needs interpretation.
 
-`columns` preserves result labels in order, including duplicates and labels on
-zero-row queries. Compare these with actual named/positional consumer contracts:
-equal row values can hide a renamed view column. Labels alone do not prove types,
-constraints, writer compatibility or application behavior; do not collapse
-duplicate labels into a dictionary or infer safety from SELECT success.
+Exit 0 means execution completed, **not** deployment safety or all readers passing.
+Exit 1 means incomplete execution (migration failure/time budget); exit 2 means
+invalid input. Failed migrations stop the sequence; never treat partial state as
+the next successful phase.
 
-Exit 0 means the matrix finished, **not** that the rollout is safe; expected
-incompatible readers still appear as failed checks. Exit 1 means incomplete
-execution (migration error or time budget); exit 2 means invalid inputs. Failed
-migrations stop the sequence without pretending a partially applied phase
-succeeded. Exhausting the shared SQL budget stops further checks; absent check
-labels are unrun, not passed.
+Only `:memory:` is opened; attach/detach, PRAGMA, extension loading and writes
+through checks are denied. SQL/Python files must be regular, nonsymlink and
+project-relative. Limits: 20 phases/queries, 20 returned rows/check, 1 MB/file,
+2 MB combined input, default 5-second SQL budget (`--timeout`, max 30).
+Unsupported operations need other evidence, not silently rewritten migrations.
 
-Only `:memory:` is opened. Attach/detach, PRAGMA, extension loading and writes through checks are denied. SQL files must be regular, nonsymlink project-relative paths. Limits: 20 phases, 20 queries, 1 MB/file, 2 MB combined SQL, default 5-second SQL budget (`--timeout`, max 30). No locks, live data, deployment tooling, network effects or production database semantics are modeled. Unsupported statements are missing evidence, not permission to silently rewrite the migration.
-
-The combined input budget counts UTF-8 inline/query bytes and original file bytes
-(including CRLF), counting repeated file selections each time. Known-overflow
-files are rejected before reading; individual reads are also bounded if a file
-grows after its size check. This bounds retained SQL input, not total process
-memory or concurrent filesystem side effects. SQL execution begins only after
-all selected inputs pass preparation.
-
-Referenced Python files use the same project-relative, nonsymlink and 1 MB limits.
-Their raw bytes **and** extracted UTF-8 query bytes count toward the shared 2 MB
-budget, including repeated references. Parsing is static and size-bounded, not a
-total-memory guarantee or filesystem race isolation. Inline-only recipes retain
-their existing result shape without a `reader_sources` field.
+Read [API and result details](sqlite-matrix-details.md) only when embedding in a
+Python probe, handling BLOBs/duplicate or empty column results, or diagnosing
+input-budget limits. These limits do not provide total-memory or filesystem-race
+isolation, live locking, network, or production-runtime guarantees.

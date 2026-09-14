@@ -248,7 +248,7 @@ class MatrixTests(unittest.TestCase):
             helper.format_result({'unsupported': object()})
 
     def test_documented_api_example_executes_with_blob_rows(self):
-        reference = (SCRIPT.parents[1] / 'references/sqlite-matrix.md').read_text()
+        reference = (SCRIPT.parents[1] / 'references/sqlite-matrix-details.md').read_text()
         example = reference.split('```python\n', 1)[1].split('\n```', 1)[0]
         example = example.replace('<skill-dir>', str(SCRIPT.parents[1]))
         output = io.StringIO()
@@ -259,6 +259,26 @@ class MatrixTests(unittest.TestCase):
             exec(compile(example, '<documented-friday-api>', 'exec'), namespace)
         self.assertEqual(json.loads(output.getvalue())['phases'][0]['checks']['blob']['rows'],
                          [[{'blob_hex': 'ff'}]])
+
+    def test_core_guide_recipe_executes_native_compatibility_and_rollback(self):
+        reference = (SCRIPT.parents[1] / 'references/sqlite-matrix.md').read_text()
+        recipe = json.loads(reference.split('```json\n', 1)[1].split('\n```', 1)[0])
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            files = {'schema.sql': 'CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT);',
+                     'up.sql': 'ALTER TABLE users RENAME COLUMN name TO display_name;',
+                     'down.sql': 'ALTER TABLE users RENAME COLUMN display_name TO name;'}
+            for name, source in files.items():
+                (root / name).write_text(source)
+            process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--source', str(root), '--spec', '-'],
+                                     input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
+            self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+            result = json.loads(process.stdout)
+            self.assertTrue(result['complete'])
+            self.assertEqual([(p['checks']['old reader']['ok'], p['checks']['new reader']['ok'])
+                              for p in result['phases']], [(True, False), (False, True), (True, False)])
+            self.assertEqual(result['phases'][2]['checks']['old reader']['rows'], [[1, 'old'], [2, 'new']])
+            self.assertEqual({p.name: p.read_text() for p in root.iterdir()}, files)
 
     def test_combined_budget_stops_before_opening_overflow_file(self):
         with tempfile.TemporaryDirectory() as directory:
