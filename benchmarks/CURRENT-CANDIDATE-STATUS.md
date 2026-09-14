@@ -18,10 +18,13 @@ than silently selecting the former. Qualified parent scopes remain unambiguous;
 nested names do not leak. Three original assertion failures become passing checks;
 32 context tests including actual isolated CLI behavior pass. Optional helper and
 reference only, no entry expansion. Model adoption/cost effects remain unmeasured.
+Runtime/test source `f9d8e69`: full local macOS suite **629 pass / 96.668s**, no
+reported skips; this is not hosted CI or model-cost evidence.
 
 한국어: 조건부 정의의 이름 선택과 동명 후보 모호성 처리를 수정했다. 수정 전
 단언 실패 3건, 수정 후 CLI 포함 관련 검사 32개 통과를 확인했다. 정적 수집기
 기능 개선이며 실행 바인딩이나 모델 성능 향상을 입증한 것은 아니다.
+수정 소스의 전체 macOS 로컬 검사 629개도 통과했다(96.668초).
 
 ## Landlord optional-discovery candidate — 2026-09-15, parent `4a8bcc4`
 

@@ -34,6 +34,11 @@ on refusal, JSON status and unchanged source. The resulting **32 context tests
 pass** (0.677s on this host). No per-skill entry text or default workflow is added;
 only the optional collector and its focused reference change.
 
+Runtime/test source `f9d8e69` also passes the full local macOS suite:
+**629 tests in 96.668s**, no reported skips. Skill metadata/link validation,
+skill-creator validation, featured synchronization and whitespace checks pass.
+This is local regression evidence, not hosted CI or a model benchmark.
+
 Run:
 
 ```sh
@@ -52,3 +57,5 @@ project performance claim or featured chart update is made.
 3건을 확인했고, 수정 후 CLI 성공·모호성 거부를 포함한 관련 검사 32개가 통과했다.
 조건을 실행하거나 런타임 바인딩을 추정하지 않는다. 선택에 실패한 뒤 같은 코드를
 다시 찾는 경로를 줄일 수 있는 기능 수정이지만 모델 토큰·시간 절감은 미측정이다.
+수정 소스 `f9d8e69` 기준 전체 macOS 로컬 검사도 629개 통과(96.668초)했으며,
+호스팅 CI나 모델 성능 검증을 대신하지 않는다.
