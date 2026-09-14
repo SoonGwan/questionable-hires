@@ -1,0 +1,97 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "auth-history",
+    "skill": "necromancer",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+    "skill_sha256": "9c42dc6fdd0f7c4a3110fb85a4296615832038a2fe350cdcfad0984aafa2eb37",
+    "skill_resources_sha256": "6a2aede33266a25278f91a6b3092b37f82126965be67e3fcd938705f22f51704",
+    "elapsed_seconds": 103.034,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 229051,
+      "cached_input_tokens": 193152,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2874,
+      "reasoning_output_tokens": 52
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $necromancer at .agents/skills/necromancer/SKILL.md.\n\nReview the proposal to remove URL-userinfo authentication fallback from\nBaseClient._build_request_auth: delete the username/password assignment and its\nfollowing if block, leaving the explicit/client authentication selection and\nfinal return Auth() unchanged. Is this a behavior-preserving removal of obsolete\ncompatibility code? Establish current necessity and locally evidenced history.\n\nCompare current and proposed behavior through an actual Client with MockTransport\nand trust_env=False. Record the outgoing Authorization header for each of these\nfive cases, using only these synthetic credentials:\n(1) https://url-user:url-pass@example.invalid/path, no client/request auth;\n(2) that URL with client auth=(\"client-user\", \"client-pass\"), request auth omitted;\n(3) that URL/client with request auth=(\"request-user\", \"request-pass\");\n(4) that URL/client with request auth=None explicitly;\n(5) https://example.invalid/path with that client auth and request auth=None.\nExplain the differences between omitted auth and explicit None; do not infer\nserver-side acceptance from locally observed headers. Do not use real credentials.\n\nInspect the relevant local history and an earlier implementation. Distinguish\ncode movement/line attribution from behavioral introduction, and support any\nclaimed earlier presence with actual ancestor code. First-ever origin or intent\nis not required and must not be invented. Use only ancestors of pinned HEAD,\nnot later branch tips or external issue pages. Recommend retain, simplify or\nremove based on the supported behavior you observed, with current and historical\nevidence. This is a compatibility review, not an authorization to change policy.\n\nPreserve original project files and installed resources. No network, dependency\ninstalls, fetching, commits or publishing. In-memory substitutions or owned\ndisposable copies are permitted; do not force a particular technique. Use\n<PREINSTALLED_PYTHON> with -B; pytest additionally with -p no:cacheprovider. Any\nscratch must stay inside the project and be removed before finishing. Captured\noutput is sufficient; do not create a separate report/harness unless needed.\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+    "disabled_personal_skills": 9,
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "necromancer/SKILL.md": {
+        "kind": "file",
+        "sha256": "9c42dc6fdd0f7c4a3110fb85a4296615832038a2fe350cdcfad0984aafa2eb37",
+        "mode": 420
+      },
+      "necromancer/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+        "mode": 420
+      },
+      "necromancer/references/focused-history.md": {
+        "kind": "file",
+        "sha256": "a90b79c8e7001bcbacc61aa52819ef6807a1194b5fb771538d0fb72912c9d468",
+        "mode": 420
+      },
+      "necromancer/scripts/trace.py": {
+        "kind": "file",
+        "sha256": "5116059d8f7cc2dc1ce0139a718656a64067657468c0d0ba670f00b019e821ed",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "necromancer/SKILL.md": {
+        "kind": "file",
+        "sha256": "9c42dc6fdd0f7c4a3110fb85a4296615832038a2fe350cdcfad0984aafa2eb37",
+        "mode": 420
+      },
+      "necromancer/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+        "mode": 420
+      },
+      "necromancer/references/focused-history.md": {
+        "kind": "file",
+        "sha256": "a90b79c8e7001bcbacc61aa52819ef6807a1194b5fb771538d0fb72912c9d468",
+        "mode": 420
+      },
+      "necromancer/scripts/trace.py": {
+        "kind": "file",
+        "sha256": "5116059d8f7cc2dc1ce0139a718656a64067657468c0d0ba670f00b019e821ed",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 11595,
+      "mode": 420,
+      "sha256": "6071ab2747cd652870df437425a7bb0a7b55b869f650e9cd037b257494b8117e",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]
