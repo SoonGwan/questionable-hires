@@ -1,0 +1,121 @@
+import asyncio
+import unittest
+
+from form import Form
+from tests.controlled_call import ControlledCall
+
+
+class FormTests(unittest.IsolatedAsyncioTestCase):
+    def start(self, form, save):
+        task = asyncio.create_task(form.submit(save))
+        self.addAsyncCleanup(self.cancel_and_drain, task)
+        return task
+
+    async def cancel_and_drain(self, task):
+        if not task.done():
+            task.cancel()
+        await asyncio.wait_for(
+            asyncio.gather(task, return_exceptions=True), timeout=1
+        )
+
+    async def finish(self, task):
+        return await asyncio.wait_for(task, timeout=1)
+
+    async def test_initial_pending_and_success_value_identity(self):
+        form, save = Form(), ControlledCall()
+        self.assertIs(form.pending, False)
+        task = self.start(form, save)
+        call = await save.started()
+        self.assertIs(form.pending, True)
+        value = object()
+        call.complete(value)
+        self.assertIs(await self.finish(task), value)
+        self.assertIs(form.pending, False)
+
+    async def test_overlapping_duplicates_do_not_save_or_clear_pending(self):
+        form, save = Form(), ControlledCall()
+        task = self.start(form, save)
+        call = await save.started()
+        duplicates = [self.start(form, save) for _ in range(3)]
+        for duplicate in duplicates:
+            self.assertIsNone(await self.finish(duplicate))
+        self.assertEqual(len(save.calls), 1)
+        self.assertIs(form.pending, True)
+        self.assertFalse(task.done())
+        call.complete()
+        await self.finish(task)
+        self.assertIs(form.pending, False)
+
+    async def test_instances_have_independent_pending_state(self):
+        first, second, save = Form(), Form(), ControlledCall()
+        first_task = self.start(first, save)
+        first_call = await save.started()
+        self.assertIs(second.pending, False)
+        second_task = self.start(second, save)
+        second_call = await save.started()
+        self.assertIs(first.pending, True)
+        self.assertIs(second.pending, True)
+        first_call.complete()
+        await self.finish(first_task)
+        self.assertIs(first.pending, False)
+        self.assertIs(second.pending, True)
+        self.assertFalse(second_task.done())
+        second_call.complete()
+        await self.finish(second_task)
+        self.assertIs(second.pending, False)
+        self.assertEqual(len(save.calls), 2)
+
+    async def test_failure_identity_and_retry(self):
+        form, save = Form(), ControlledCall()
+        task = self.start(form, save)
+        call = await save.started()
+        error = RuntimeError('save failed')
+        call.fail(error)
+        with self.assertRaises(RuntimeError) as caught:
+            await self.finish(task)
+        self.assertIs(caught.exception, error)
+        self.assertIs(form.pending, False)
+        retry = self.start(form, save)
+        retry_call = await save.started()
+        self.assertIs(form.pending, True)
+        value = object()
+        retry_call.complete(value)
+        self.assertIs(await self.finish(retry), value)
+        self.assertIs(form.pending, False)
+        self.assertEqual(len(save.calls), 2)
+
+    async def test_synchronous_callback_failure_clears_pending(self):
+        form = Form()
+        error = RuntimeError('callback failed')
+
+        def save():
+            self.assertIs(form.pending, True)
+            raise error
+
+        with self.assertRaises(RuntimeError) as caught:
+            await self.finish(self.start(form, save))
+        self.assertIs(caught.exception, error)
+        self.assertIs(form.pending, False)
+
+    async def test_cancellation_cleanup_and_retry(self):
+        form, save = Form(), ControlledCall()
+        task = self.start(form, save)
+        call = await save.started()
+        self.assertIs(form.pending, True)
+        task.cancel()
+        with self.assertRaises(asyncio.CancelledError):
+            await self.finish(task)
+        self.assertTrue(task.cancelled())
+        self.assertTrue(call.response.cancelled())
+        self.assertIs(form.pending, False)
+        retry = self.start(form, save)
+        retry_call = await save.started()
+        self.assertIs(form.pending, True)
+        retry_call.complete()
+        await self.finish(retry)
+        self.assertIs(form.pending, False)
+        self.assertEqual(len(save.calls), 2)
+
+
+if __name__ == '__main__':
+    unittest.main()

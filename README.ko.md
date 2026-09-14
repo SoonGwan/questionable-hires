@@ -138,7 +138,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 
 설치본에는 필요한 경우에만 로컬에서 실행하는 보조 도구가 포함됩니다. 도구 실행에는 **Python 3.9 이상**, Con Artist의 결함 주입 실행기·Receipt·Exorcist에는 POSIX 환경도 필요합니다. 의존성을 자동 설치하거나 백그라운드에서 실행하지 않습니다.
 
-- **범위 협상가(`hostage-negotiator`):** 프로젝트에 동등한 테스트 도구가 없을 때 [비동기 호출 제어 도구](skills/hostage-negotiator/references/async-callback.md)로 반복적인 시작·완료 신호 코드를 대체할 수 있습니다. 앱 동작 검증과 태스크 정리는 테스트가 담당합니다. [로컬 대조군 검증](benchmarks/HOSTAGE-CONTROLLED-CALL-01.md)은 통과했으며 모델의 실제 사용·비용 영향은 아직 측정하지 않았습니다.
+- **범위 협상가(`hostage-negotiator`):** 프로젝트에 동등한 테스트 도구가 없을 때 [비동기 호출 제어 도구](skills/hostage-negotiator/references/async-callback.md)로 반복적인 시작·완료 신호 코드를 대체할 수 있습니다. 앱 동작 검증과 태스크 정리는 테스트가 담당합니다. [모델의 실제 사용](benchmarks/HOSTAGE-CALL-MODEL-01-REVIEW.md)은 확인했지만 기준 실행 시간 초과와 원본 테스트 출력 누락 때문에 효율 비교는 인정하지 않습니다. 별도 재실행에서 구현 통과·결함 대조군 검출을 확인했으며, 이는 원본 누락을 대신하지 않습니다.
 - **테스트 사기 감별사(`con-artist`):** 임시 복사본에서 Python 결함 주입, 복사본 import 검증, 테스트별 종료 상태, 로그 메모리·시간 제한을 처리합니다. [사용법과 한계](skills/con-artist/references/python-audit.md). 샌드박스가 아니므로 신뢰할 수 있는 테스트만 실행해야 합니다.
   [실행기 종료 후 정리](benchmarks/CON-ARTIST-PIPE-EXIT-01.md)를 개선해 자식 프로세스의 출력 파이프 때문에 완료된 검사를 중단하던 문제를 해결했습니다. 실제 결함 생존·검출 검사는 통과했습니다. 남은 그룹 구성원은 종료하므로 백그라운드 실행기는 지원하지 않으며, 모델 작업 전체의 절감 효과는 아직 미측정입니다.
   [완료된 checkpoint 06](benchmarks/BUNDLE-CONTRACT-06-REVIEW.md#persistence-audit--skill)에서는 모델이 도우미를 실제 사용해 네 가지 감사 검증 출력을 확보했습니다. 노출된 단일 과제에서 토큰·시간 기록은 줄었지만, baseline의 추가 수정·출력 누락으로 작업량이 다릅니다. 원본·리소스 대조는 완료했으며 파이프 수정 자체의 절감 효과는 분리 측정하지 않았습니다.
