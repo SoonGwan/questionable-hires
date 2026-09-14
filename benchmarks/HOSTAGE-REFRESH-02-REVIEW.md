@@ -43,7 +43,7 @@ Recorded shell command counts are baseline a/b: 6/5, skill a/b: 12/7. Counts do
 not establish causal token attribution. Skill a separately runs discovery, `ls`,
 resource reads, status, another instruction search, copy, two tests, integrity,
 diff check and final review. Skill b also repeats inventory and includes a full
-new-test diff in its final output. Both read the entire 6 KB helper alongside the
+new-test diff in its final output. Both read the entire 5,388-byte helper alongside the
 entrypoint, not only its usage docstring. Baseline b spends work repairing a
 cancellation test; baseline a and skill a both demonstrate pre-fix failure.
 Keep these work differences visible rather than attributing all cost to one edit.

@@ -9,7 +9,7 @@ description: Keep a small requested change focused when optional refactors, arch
 
 ## Establish the terms
 
-Reuse supplied paths and instructions. When locations are missing, discover applicable project instructions, affected code, contracts and tests together within the allowed root. Then batch the known relevant reads and working-tree status; do not repeat inventory or keyword searches for files already located. Search again for a specific unresolved dependency or instruction boundary. Choose the runner from the project, not a guessed framework.
+Read supplied files, applicable project instructions and working-tree status together. Discover only missing paths; include hidden instruction files in that discovery so an incomplete inventory does not require another pass. Do not precede known-file reads with a separate directory listing. Search again for an unresolved dependency or instruction boundary. Use the project's runner.
 
 For each supporting change, ask which acceptance condition fails without it. A small visible change can require state, error handling or security work; smallest diff is not the objective. Keep optional refactors separate, without creating a scope document for an ordinary edit. Ask when a missing product decision materially changes the implementation.
 
@@ -19,11 +19,11 @@ When asserting that stale or failed work leaves state unchanged, capture the rel
 
 Async regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup.
 
-Without equivalent project support, use the optional [Python asyncio asset](assets/controlled_call.py) or [JavaScript Promise asset](assets/controlled_call.mjs), only for the actual runtime. Read Python's module docstring or JavaScript's opening usage comment alongside known application files; copy into permitted test support. Usage and limits live there, including optional JS lifecycle ownership. Inspect implementation for trust, adaptation or unclear behavior. Use `cmp <asset-path> <copy-path>` to check an unchanged copy, not another full read. Assets replace repeated entry/release gates, not application assertions or external-resource cleanup; no separate reference is needed.
+Without equivalent project support, optionally copy the [Python asyncio asset](assets/controlled_call.py) or [JavaScript Promise asset](assets/controlled_call.mjs) for the actual runtime into permitted test support. Read its complete usage block alongside application files: `sed -n '1,/^"""$/p' <python-asset>` or `sed -n '1,/^ \*\//p' <js-asset>`. These include limits and optional JS lifecycle ownership; inspect implementation for trust, adaptation or unclear behavior. Assets replace entry/release gates, not application assertions or external-resource cleanup; no separate reference is needed.
 
 ## Deliver and stop
 
-Run native tests in a dedicated command so their results and process exit remain directly inspectable. Keep copy-integrity checks and final diff/status in a separate batch; a later successful command is not test evidence. Do not recopy an existing helper merely to make its integrity check pass.
+Run native tests in a dedicated command so results and process exit remain inspectable. Then combine remaining copy integrity (`cmp <asset> <copy>`), diff checks and scope status in one non-test call, preserving each needed exit. Inspect new code not already visible in your edit output; do not reprint a whole generated suite merely to confirm it exists. A later successful command is not test evidence; never recopy a helper to make its integrity check pass.
 
 Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse valid evidence; rerun only for changed relevant inputs, unresolved uncertainty or an explicit requirement.
 

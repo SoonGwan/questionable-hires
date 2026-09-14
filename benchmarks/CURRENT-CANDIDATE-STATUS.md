@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Refresh-owner checkpoint — 2026-09-15, launch `3c29443`
 
+[Read/review candidate 03](HOSTAGE-READ-BUDGET-03.md), parent `e659f0e`: concrete
+complete-usage excerpt commands, missing-path-only discovery, combined non-test
+review checks. Dedicated native evidence is preserved. Entry +16 bytes; usage
+excerpts 2,382/5,388 Python and 2,918/7,835 JavaScript bytes. These are not token
+savings. Existing 21 helper tests pass; actual model uptake remains unmeasured.
+
+한국어: 반복 읽기·점검 비용 후보를 수정했다. 테스트 근거는 유지하고 사용법
+전체만 읽는 명령과 필요한 탐색·점검 묶음을 안내한다. 기존 도우미 테스트 21개
+통과지만 바이트 감소는 모델 토큰 절감이 아니며 실제 개선은 아직 미검증이다.
+
 [Follow-up 02 review](HOSTAGE-REFRESH-02-REVIEW.md), launch `b237aae`, resources
 `0a94dab`: both skill native transcripts now substantiate final pass claims, but
 observed sum tokens **increase 58.57%**, time decreases 6.03%. Four sessions and
