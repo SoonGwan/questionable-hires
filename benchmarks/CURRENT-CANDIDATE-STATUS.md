@@ -18,9 +18,16 @@ and fixtures are unchanged. File size is not model token savings. Validation
 passes; local suite completed 458 tests in 70.722s, not a behavioral model result.
 Checkpoint 07 below measured the preceding instruction, not this candidate.
 
+[Direct entry comparison](FRIDAY-COMPACT-MODEL-01-PROTOCOL.md) is now running,
+launch `ce6dd4e`: three unchanged reader/writer tasks, six serial old/new sessions.
+Only the entry differs between frozen resources. This has no no-skill arm and
+no new result yet; it tests the compression candidate against its predecessor.
+
 한국어: Friday 진입 지침의 중복 설명을 줄인 새 후보 `e063131`을 만들었다.
 롤백 전 새 데이터·실제 실행 환경 검증 조건은 유지했고 도구와 과제는 그대로다.
 문서 용량 감소를 토큰 절감으로 보지 않으며, 아래 측정은 수정 전 버전이다.
+현재 기존 읽기·쓰기 과제 3개에서 구버전·축약본 총 6개 세션을 직접 비교
+중이다. 스킬 미사용 대비 비교가 아니며, 아직 새 결과는 없다.
 
 [Checkpoint 07](BUNDLE-CONTRACT-07-REVIEW.md), resources `32bf8bd`: all 18 serial
 sessions across nine fixed tasks completed, no timeouts/exclusions. Baseline
