@@ -11,11 +11,21 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Current Hostage instruction candidate: [copy integrity without reprinting](HOSTAGE-COPY-CHECK-01.md).
+The prior model read the usage header and then printed all copied support.
+The candidate offers a native byte comparison for copy-integrity questions while
+retaining implementation inspection for adaptation/uncertainty. Four affected
+integration tests pass; runtime unchanged, model adoption/cost unmeasured.
+
+한국어: 사용 설명을 읽고 복사본 전체를 다시 출력한 기록에 대응해, 복사 무결성만
+확인할 때는 바이트 비교를 쓰도록 안내했다. 실제 동작 검증이나 필요한 구현
+읽기는 유지하며, 모델의 토큰 절감은 아직 검증하지 않았다.
+
 Current Necromancer runtime correction: [Git physical lines](NECROMANCER-PHYSICAL-LINES-01.md).
 LF-only parsing and byte-preserving UTF-8 decoding keep current source, blame
 and patch rows aligned. All 27 real-Git separator/ending combinations pass;
 model adoption and cost remain unmeasured for this correction.
-Full current local suite: 481 tests passed in 68.185s, no failures/skips.
+Local suite at `6806512`: 481 tests passed in 68.185s, no failures/skips.
 
 한국어: 이력 수집기가 문자열 속 구분 문자나 CR 때문에 현재 코드와 Git 이력을
 다르게 표시하던 오류를 수정했다. 실제 Git 저장소의 27개 조합을 검증했으며,

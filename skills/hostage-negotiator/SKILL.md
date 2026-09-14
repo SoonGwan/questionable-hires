@@ -21,7 +21,7 @@ Async regression checks must terminate even when the guarded behavior is broken:
 
 For Python asyncio callback tests without equivalent project support, read and copy the optional [controlled-call asset](assets/controlled_call.py); its module docstring contains the usage and limits. It replaces repeated entry/release gates, not application assertions. No separate reference is needed for this path.
 
-For JavaScript Promise callbacks without equivalent support, use the optional [ES-module asset](assets/controlled_call.mjs) instead. Read its opening usage comment first (`sed -n '1,/^ \*\//p' <asset-path>`), alongside the known application files, and copy the module into permitted test support. Inspect implementation when adapting it or resolving unclear behavior, not as a prerequisite to ordinary reuse. The comment covers both plain calls and optional `withControlledCalls` lifecycle ownership. Read only the resource for the actual runtime; tests still own application assertions and external-resource cleanup.
+For JavaScript Promise callbacks without equivalent support, use the optional [ES-module asset](assets/controlled_call.mjs) instead. Read its opening usage comment first (`sed -n '1,/^ \*\//p' <asset-path>`), alongside the known application files, and copy the module into permitted test support. To check an unchanged copy, use `cmp <asset-path> <copy-path>` and its exit status rather than printing the module again. Inspect implementation when adapting it or resolving unclear behavior. The comment covers both plain calls and optional `withControlledCalls` lifecycle ownership. Read only the resource for the actual runtime; tests still own application assertions and external-resource cleanup.
 
 ## Deliver and stop
 

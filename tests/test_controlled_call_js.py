@@ -8,6 +8,32 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ControlledCallJavaScriptTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which('cmp'), 'cmp is required for the POSIX copy-check example')
+    def test_copy_check_distinguishes_identical_changed_and_missing_support(self):
+        asset = ROOT / 'skills/hostage-negotiator/assets/controlled_call.mjs'
+        original = asset.read_bytes()
+        with tempfile.TemporaryDirectory() as folder:
+            target = Path(folder) / 'copied support.mjs'
+            shutil.copyfile(asset, target)
+
+            def compare(path):
+                return subprocess.run(['cmp', str(asset), str(path)],
+                                      capture_output=True, timeout=5)
+
+            identical = compare(target)
+            self.assertEqual(identical.returncode, 0, identical.stderr)
+            self.assertEqual(identical.stdout, b'')
+            self.assertEqual(identical.stderr, b'')
+            target.write_bytes(original.replace(b'timeoutMs = 1000', b'timeoutMs = 1001', 1))
+            self.assertNotEqual(target.read_bytes(), original)
+            different = compare(target)
+            self.assertEqual(different.returncode, 1)
+            self.assertTrue(different.stdout or different.stderr)
+            missing = compare(Path(folder) / 'missing.mjs')
+            self.assertGreater(missing.returncode, 1)
+            self.assertTrue(missing.stderr)
+        self.assertEqual(asset.read_bytes(), original)
+
     @unittest.skipUnless(shutil.which('node'), 'Node is required for native JavaScript verification')
     def test_scope_lifecycle_and_failure_controls(self):
         result = subprocess.run(['node', '--test', '--test-reporter=tap',
