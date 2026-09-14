@@ -13,11 +13,11 @@ it has not established a broad 20–30% gain.
 
 Checkpoint 07 is running, launch `b2816cd`, resources `32bf8bd`: nine fixed tasks,
 18 serial sessions. [Partial review](BUNDLE-CONTRACT-07-REVIEW.md) records the first
-nine completed cells, including the persistence baseline's tracing repair and
+ten completed cells, including the persistence baseline's tracing repair and
 missing output and the skill's complete four-check audit. No aggregate or new overall outcome yet; author replay waits for
 all timing to finish. The reviewed checkpoint below is still historical 06.
 
-한국어: 전체 8개 스킬 재측정이 진행 중이다. 첫 아홉 세션의 실제 결과와
+한국어: 전체 8개 스킬 재측정이 진행 중이다. 첫 열 세션의 실제 결과와
 오류·출력 한계를 기록했으며, 전체 집계나 새 성능 향상 주장은 아직 없다.
 
 Instruction `6d733b9`: [Hostage single-read interface](HOSTAGE-SINGLE-READ-01.md)

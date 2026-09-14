@@ -130,3 +130,18 @@ verification, no tests found/run, no edits. Does not perform baseline's optional
 seven runtime comparisons. Both fulfill the source-based review contract, but
 less recorded cost is not a like-for-like runtime verification comparison.
 Raw/resource/inventory reconciliation pending; no observed capture/scope issue.
+
+## Search order — baseline
+
+Completed: **102,363 tokens / 76.138s**, five shell calls. Retains two native
+tests in test_search_overlap.py and an additional QA_SEARCH_RESULTS.txt report.
+Controlled actual Search requests pass normal completion and fail reversed
+completion with the intended stale-versus-latest AssertionError. Full two-test
+native output (0.012s) and child exit 1 are printed and saved. The wrapping Python
+command itself succeeds after collecting that expected failure; it is not a
+passing test exit. No assertion requires the unspecified normal intermediate
+display. Two-second waits, owned future/task cleanup and a 15-second child process
+deadline are present. Production/contract hashes match and final diff is empty.
+Unlike skill, writes the same detailed evidence to a file and captured output.
+No observed capture/scope issue; raw/resource/inventory and alternative replay
+pending. Neither arm edits production to make this QA-only task pass.
