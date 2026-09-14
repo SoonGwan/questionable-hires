@@ -11,6 +11,15 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
+Checkpoint 07 is running, launch `b2816cd`, resources `32bf8bd`: nine fixed tasks,
+18 serial sessions. [Partial review](BUNDLE-CONTRACT-07-REVIEW.md) records the first
+three completed cells, including the persistence baseline's tracing repair and
+missing output. No aggregate or new overall outcome yet; author replay waits for
+all timing to finish. The reviewed checkpoint below is still historical 06.
+
+한국어: 전체 8개 스킬 재측정이 진행 중이다. 첫 세 세션의 실제 결과와
+오류·출력 한계를 기록했으며, 전체 집계나 새 성능 향상 주장은 아직 없다.
+
 Instruction `6d733b9`: [Hostage single-read interface](HOSTAGE-SINGLE-READ-01.md)
 routes directly to the callback asset with usage/limits in its module docstring.
 Executable AST matches frozen `d9e7711`; eight native asset and 15 installer tests
