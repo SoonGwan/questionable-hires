@@ -12,12 +12,14 @@ import re
 from pathlib import Path
 import shutil
 import signal
+import stat
 import subprocess
 import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTROL = "Keep the change focused, investigate relevant evidence, and verify your conclusions with appropriate checks."
+INDEX_CAPTURE_LIMIT = 20_000_000
 
 
 def unittest_transcript_candidate(item):
@@ -109,6 +111,32 @@ def inspect_capture(stdout, stderr):
 
 def command(args, cwd, **kwargs):
     return subprocess.run(args, cwd=cwd, text=True, capture_output=True, check=True, **kwargs).stdout.strip()
+
+
+def preserve_collector_index(workspace, cell):
+    """Retain local index bytes before author git-add, outside model timing."""
+    path = workspace / '.git/index'
+    try:
+        if (workspace / '.git').is_symlink() or not (workspace / '.git').is_dir():
+            return dict(status='unavailable', reason='Git directory is not a local directory')
+        info = path.lstat()
+        if not stat.S_ISREG(info.st_mode) or info.st_size > INDEX_CAPTURE_LIMIT:
+            return dict(status='unavailable', reason='Index is not a regular file within 20 MB')
+        descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        with os.fdopen(descriptor, 'rb') as stream:
+            opened = os.fstat(stream.fileno())
+            if not stat.S_ISREG(opened.st_mode) or (opened.st_dev, opened.st_ino) != (info.st_dev, info.st_ino):
+                return dict(status='unavailable', reason='Index changed while opening')
+            data = stream.read(INDEX_CAPTURE_LIMIT + 1)
+        if len(data) > INDEX_CAPTURE_LIMIT:
+            return dict(status='unavailable', reason='Index grew beyond 20 MB')
+        name = 'git-index.before-collection.bin'
+        (cell / name).write_bytes(data)
+        return dict(status='retained', file=name, bytes=len(data),
+                    mode=stat.S_IMODE(info.st_mode), sha256=hashlib.sha256(data).hexdigest(),
+                    artifact_scope='Local raw artifact; binary index is not included by exporter')
+    except OSError as error:
+        return dict(status='unavailable', reason=type(error).__name__)
 
 
 def prepare(case, workspace):
@@ -278,6 +306,8 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
     (cell / "stderr.original.txt").write_text(stderr)
     (cell / "events.jsonl").write_text(redact(stdout))
     (cell / "stderr.txt").write_text(redact(stderr))
+    collector_index = preserve_collector_index(workspace, cell)
+    (cell / 'git-index.before-collection.json').write_text(json.dumps(collector_index, indent=2) + '\n')
     try:
         installed_after = resource_manifest(installed_root)
         resource_diagnostics = dict(changed_paths=sorted(
@@ -316,6 +346,7 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
             "installed_resources_before": installed_before,
             "installed_resources_after": installed_after,
             "resource_diagnostics": resource_diagnostics}
+    meta['pre_collection_index'] = collector_index
     if initial_diff is not None:
         meta['initial_tree'] = initial_tree
         meta['initial_working_files'] = {name: hashlib.sha256(content.encode()).hexdigest()

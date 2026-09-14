@@ -11,6 +11,19 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Collector [pre-add index retention](PRE-COLLECTION-INDEX-01.md), previous source
+`3cbae6d`: future runs retain local index bytes/mode/hash after model timing and
+before collector Git mutation. Actual child/Git tests show identical captured
+pre-add bytes despite a changed final index; failures retain evidence too. Five
+new and 25 existing runner tests pass. Binary stays local, metadata is exportable.
+This is not a full snapshot, does not repair old evidence and proves no model gain.
+
+한국어: 앞으로는 모델 실행이 끝난 직후, 수집기가 Git 인덱스를 바꾸기 전에
+원본 바이트·권한·해시를 로컬에 보존한다. 실제 하위 프로세스·Git 검증에서
+수집 전 상태 보존과 이후 변경을 구분했고 관련 테스트 30개가 통과했다.
+바이너리는 공개 결과에서 제외한다. 전체 스냅샷은 아니며 과거 증거의 빈 부분을
+복구하거나 스킬 성능 향상을 입증하는 변경은 아니다.
+
 Receipt [tree adoption 01](RECEIPT-TREE-MODEL-01-REVIEW.md), launch `eb16150`,
 resources `ec0cc28`: guard adopted without custom hash code/listing. 76,962 tokens /
 46.154s: −6.43% / −14.46% versus output-choice 01, but +0.28% / −5.99% versus
