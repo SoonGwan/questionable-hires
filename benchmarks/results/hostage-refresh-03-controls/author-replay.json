@@ -1,0 +1,157 @@
+{
+  "kind": "author controls, not original model evidence",
+  "revision": "37322ce1dc64a5c9c89f4f5d3e2bb67bd4a8d4fe",
+  "cells": [
+    {
+      "cell": "refresh-owner-a--skill--1",
+      "usage": {
+        "input_tokens": 118199,
+        "cached_input_tokens": 102272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3002,
+        "reasoning_output_tokens": 97
+      },
+      "elapsed_seconds": 104.015,
+      "inventory": {
+        "preview.py": "5f726b99d55848543c74a3613d7152c201a0e3537eb3e0921f9331070b84a411",
+        "requirements.md": "f5cc9cc830e7250b7312d32f9b49ae1cfdd5767108919e14e89fcdb55c7fdc52",
+        "test_preview.py": "5b9ab48c3eca21948e26b03dc2c7ddf74084f6629b3426325a4ebf25ad6867f6",
+        "notes.txt": "3069e25d5f5bc84da5c209fe5298dbe4fe73a7354027b58c3818c4458a560f02",
+        "controlled_call.py": "a8112c1bfd4e2962ace968dc48e6b6c61e295961d793034b07984678e6776303"
+      }
+    },
+    {
+      "cell": "refresh-owner-b--skill--1",
+      "usage": {
+        "input_tokens": 139690,
+        "cached_input_tokens": 128000,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2966,
+        "reasoning_output_tokens": 129
+      },
+      "elapsed_seconds": 117.079,
+      "inventory": {
+        "preview.py": "5f726b99d55848543c74a3613d7152c201a0e3537eb3e0921f9331070b84a411",
+        "requirements.md": "f5cc9cc830e7250b7312d32f9b49ae1cfdd5767108919e14e89fcdb55c7fdc52",
+        "test_preview.py": "504b3a39efc959ead5a10ddae9b97d94dbdb23a29858d4a392da0f4f6fc2b119",
+        "notes.txt": "3069e25d5f5bc84da5c209fe5298dbe4fe73a7354027b58c3818c4458a560f02",
+        "controlled_call.py": "a8112c1bfd4e2962ace968dc48e6b6c61e295961d793034b07984678e6776303"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "cell": "refresh-owner-a--skill--1",
+      "variant": "final",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 0,
+      "expected_count": 7,
+      "tests_unchanged": true,
+      "matched": true,
+      "output": "test_both_success_completion_orders (test_preview.PreviewTests) ... ok\ntest_earlier_cancellation_while_latest_pending (test_preview.PreviewTests) ... ok\ntest_earlier_failure_while_latest_pending (test_preview.PreviewTests) ... ok\ntest_instance_isolation (test_preview.PreviewTests) ... ok\ntest_latest_cancellation_and_retry (test_preview.PreviewTests) ... ok\ntest_latest_failure_and_retry (test_preview.PreviewTests) ... ok\ntest_synchronous_failure_and_retry (test_preview.PreviewTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.047s\n\nOK\n"
+    },
+    {
+      "cell": "refresh-owner-a--skill--1",
+      "variant": "broken_owner",
+      "exit_code": 1,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 1,
+      "expected_count": 7,
+      "tests_unchanged": true,
+      "matched": true,
+      "output": "test_both_success_completion_orders (test_preview.PreviewTests) ... test_earlier_cancellation_while_latest_pending (test_preview.PreviewTests) ... FAIL\ntest_earlier_failure_while_latest_pending (test_preview.PreviewTests) ... FAIL\ntest_instance_isolation (test_preview.PreviewTests) ... ok\ntest_latest_cancellation_and_retry (test_preview.PreviewTests) ... FAIL\ntest_latest_failure_and_retry (test_preview.PreviewTests) ... FAIL\ntest_synchronous_failure_and_retry (test_preview.PreviewTests) ... ok\n\n======================================================================\nFAIL: test_both_success_completion_orders (test_preview.PreviewTests) (order=(0, 1))\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<REPLAY>/test_preview.py\", line 88, in test_both_success_completion_orders\n    self.assert_unchanged(preview, before)\n  File \"<REPLAY>/test_preview.py\", line 42, in assert_unchanged\n    self.assertIs(preview.pending, before[0])\nAssertionError: False is not True\n\n======================================================================\nFAIL: test_earlier_cancellation_while_latest_pending (test_preview.PreviewTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_preview.py\", line 98, in test_earlier_cancellation_while_latest_pending\n    await self.earlier_unsuccessful(\"cancellation\")\n  File \"<REPLAY>/test_preview.py\", line 109, in earlier_unsuccessful\n    self.assert_unchanged(preview, before)\n  File \"<REPLAY>/test_preview.py\", line 42, in assert_unchanged\n    self.assertIs(preview.pending, before[0])\nAssertionError: False is not True\n\n======================================================================\nFAIL: test_earlier_failure_while_latest_pending (test_preview.PreviewTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_preview.py\", line 95, in test_earlier_failure_while_latest_pending\n    await self.earlier_unsuccessful(\"failure\")\n  File \"<REPLAY>/test_preview.py\", line 109, in earlier_unsuccessful\n    self.assert_unchanged(preview, before)\n  File \"<REPLAY>/test_preview.py\", line 42, in assert_unchanged\n    self.assertIs(preview.pending, before[0])\nAssertionError: False is not True\n\n======================================================================\nFAIL: test_latest_cancellation_and_retry (test_preview.PreviewTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_preview.py\", line 121, in test_latest_cancellation_and_retry\n    await self.latest_unsuccessful(\"cancellation\")\n  File \"<REPLAY>/test_preview.py\", line 140, in latest_unsuccessful\n    self.assert_unchanged(preview, before)\n  File \"<REPLAY>/test_preview.py\", line 42, in assert_unchanged\n    self.assertIs(preview.pending, before[0])\nAssertionError: False is not True\n\n======================================================================\nFAIL: test_latest_failure_and_retry (test_preview.PreviewTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_preview.py\", line 118, in test_latest_failure_and_retry\n    await self.latest_unsuccessful(\"failure\")\n  File \"<REPLAY>/test_preview.py\", line 140, in latest_unsuccessful\n    self.assert_unchanged(preview, before)\n  File \"<REPLAY>/test_preview.py\", line 42, in assert_unchanged\n    self.assertIs(preview.pending, before[0])\nAssertionError: False is not True\n\n----------------------------------------------------------------------\nRan 7 tests in 0.046s\n\nFAILED (failures=5)\n"
+    },
+    {
+      "cell": "refresh-owner-a--skill--1",
+      "variant": "valid_counter_step",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 0,
+      "expected_count": 7,
+      "tests_unchanged": true,
+      "matched": true,
+      "output": "test_both_success_completion_orders (test_preview.PreviewTests) ... ok\ntest_earlier_cancellation_while_latest_pending (test_preview.PreviewTests) ... ok\ntest_earlier_failure_while_latest_pending (test_preview.PreviewTests) ... ok\ntest_instance_isolation (test_preview.PreviewTests) ... ok\ntest_latest_cancellation_and_retry (test_preview.PreviewTests) ... ok\ntest_latest_failure_and_retry (test_preview.PreviewTests) ... ok\ntest_synchronous_failure_and_retry (test_preview.PreviewTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.047s\n\nOK\n"
+    },
+    {
+      "cell": "refresh-owner-a--skill--1",
+      "variant": "author_oracle_final",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "6"
+      ],
+      "expected_exit": 0,
+      "expected_count": 6,
+      "tests_unchanged": true,
+      "matched": true,
+      "output": "test_initial_state (test_preview.RefreshTests) ... ok\ntest_instances_independent (test_preview.RefreshTests) ... ok\ntest_latest_completes_before_old (test_preview.RefreshTests) ... ok\ntest_latest_error_cancel_and_retry (test_preview.RefreshTests) ... ok\ntest_old_settlement_cannot_clear_latest (test_preview.RefreshTests) ... ok\ntest_synchronous_callback_error (test_preview.RefreshTests) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.029s\n\nOK\n"
+    },
+    {
+      "cell": "refresh-owner-b--skill--1",
+      "variant": "final",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "8"
+      ],
+      "expected_exit": 0,
+      "expected_count": 8,
+      "tests_unchanged": true,
+      "matched": true,
+      "output": "test_earlier_cancellation_while_latest_pending (test_preview.PreviewTests) ... ok\ntest_earlier_failure_while_latest_pending (test_preview.PreviewTests) ... ok\ntest_instance_isolation (test_preview.PreviewTests) ... ok\ntest_latest_cancellation_and_retry (test_preview.PreviewTests) ... ok\ntest_latest_failure_and_retry (test_preview.PreviewTests) ... ok\ntest_latest_success_before_older_success (test_preview.PreviewTests) ... ok\ntest_older_success_while_latest_pending (test_preview.PreviewTests) ... ok\ntest_synchronous_failure_and_retry (test_preview.PreviewTests) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.048s\n\nOK\n"
+    },
+    {
+      "cell": "refresh-owner-b--skill--1",
+      "variant": "broken_owner",
+      "exit_code": 1,
+      "timed_out": false,
+      "native_counts": [
+        "8"
+      ],
+      "expected_exit": 1,
+      "expected_count": 8,
+      "tests_unchanged": true,
+      "matched": true,
+      "output": "test_earlier_cancellation_while_latest_pending (test_preview.PreviewTests) ... FAIL\ntest_earlier_failure_while_latest_pending (test_preview.PreviewTests) ... FAIL\ntest_instance_isolation (test_preview.PreviewTests) ... ok\ntest_latest_cancellation_and_retry (test_preview.PreviewTests) ... ok\ntest_latest_failure_and_retry (test_preview.PreviewTests) ... ok\ntest_latest_success_before_older_success (test_preview.PreviewTests) ... ok\ntest_older_success_while_latest_pending (test_preview.PreviewTests) ... FAIL\ntest_synchronous_failure_and_retry (test_preview.PreviewTests) ... FAIL\n\n======================================================================\nFAIL: test_earlier_cancellation_while_latest_pending (test_preview.PreviewTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_preview.py\", line 121, in test_earlier_cancellation_while_latest_pending\n    await self.earlier_unsuccessful(cancel=True)\n  File \"<REPLAY>/test_preview.py\", line 109, in earlier_unsuccessful\n    self.assert_unchanged(preview, before)\n  File \"<REPLAY>/test_preview.py\", line 38, in assert_unchanged\n    self.assertIs(preview.pending, pending)\nAssertionError: False is not True\n\n======================================================================\nFAIL: test_earlier_failure_while_latest_pending (test_preview.PreviewTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_preview.py\", line 118, in test_earlier_failure_while_latest_pending\n    await self.earlier_unsuccessful(cancel=False)\n  File \"<REPLAY>/test_preview.py\", line 109, in earlier_unsuccessful\n    self.assert_unchanged(preview, before)\n  File \"<REPLAY>/test_preview.py\", line 38, in assert_unchanged\n    self.assertIs(preview.pending, pending)\nAssertionError: False is not True\n\n======================================================================\nFAIL: test_older_success_while_latest_pending (test_preview.PreviewTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_preview.py\", line 72, in test_older_success_while_latest_pending\n    self.assert_unchanged(preview, before)\n  File \"<REPLAY>/test_preview.py\", line 38, in assert_unchanged\n    self.assertIs(preview.pending, pending)\nAssertionError: False is not True\n\n======================================================================\nFAIL: test_synchronous_failure_and_retry (test_preview.PreviewTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_preview.py\", line 176, in test_synchronous_failure_and_retry\n    self.assert_unchanged(preview, before)\n  File \"<REPLAY>/test_preview.py\", line 38, in assert_unchanged\n    self.assertIs(preview.pending, pending)\nAssertionError: False is not True\n\n----------------------------------------------------------------------\nRan 8 tests in 0.048s\n\nFAILED (failures=4)\n"
+    },
+    {
+      "cell": "refresh-owner-b--skill--1",
+      "variant": "valid_counter_step",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "8"
+      ],
+      "expected_exit": 0,
+      "expected_count": 8,
+      "tests_unchanged": true,
+      "matched": true,
+      "output": "test_earlier_cancellation_while_latest_pending (test_preview.PreviewTests) ... ok\ntest_earlier_failure_while_latest_pending (test_preview.PreviewTests) ... ok\ntest_instance_isolation (test_preview.PreviewTests) ... ok\ntest_latest_cancellation_and_retry (test_preview.PreviewTests) ... ok\ntest_latest_failure_and_retry (test_preview.PreviewTests) ... ok\ntest_latest_success_before_older_success (test_preview.PreviewTests) ... ok\ntest_older_success_while_latest_pending (test_preview.PreviewTests) ... ok\ntest_synchronous_failure_and_retry (test_preview.PreviewTests) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.049s\n\nOK\n"
+    },
+    {
+      "cell": "refresh-owner-b--skill--1",
+      "variant": "author_oracle_final",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "6"
+      ],
+      "expected_exit": 0,
+      "expected_count": 6,
+      "tests_unchanged": true,
+      "matched": true,
+      "output": "test_initial_state (test_preview.RefreshTests) ... ok\ntest_instances_independent (test_preview.RefreshTests) ... ok\ntest_latest_completes_before_old (test_preview.RefreshTests) ... ok\ntest_latest_error_cancel_and_retry (test_preview.RefreshTests) ... ok\ntest_old_settlement_cannot_clear_latest (test_preview.RefreshTests) ... ok\ntest_synchronous_callback_error (test_preview.RefreshTests) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.029s\n\nOK\n"
+    }
+  ],
+  "original_projects_unchanged": true
+}

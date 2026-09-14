@@ -19,6 +19,7 @@ def replay(run):
     revisions = {
         '3c2944362d41c7638a2d39938fb8a8fd92d55db7': {'a': 5, 'b': 8},
         'b237aae19e3466b9a90d9cb38bd40e68d5ab926b': {'a': 7, 'b': 6},
+        '37322ce1dc64a5c9c89f4f5d3e2bb67bd4a8d4fe': {},
     }
     assert manifest['revision'] in revisions and manifest['finished_at']
     baseline_counts = revisions[manifest['revision']]
@@ -58,8 +59,9 @@ def replay(run):
                     def decode(value):
                         return value.decode(errors='replace') if isinstance(value, bytes) else value or ''
                     code, output, timeout = None, decode(error.stdout) + decode(error.stderr), True
+                skill_count = 7 if manifest['revision'].startswith('37322ce') and meta['case'] == 'refresh-owner-a' else 8
                 count = (6 if variant == 'author_oracle_final' else
-                         baseline_counts[meta['case'][-1]] if meta['arm'] == 'baseline' else 8)
+                         baseline_counts[meta['case'][-1]] if meta['arm'] == 'baseline' else skill_count)
                 expected = 1 if variant == 'broken_owner' else 0
                 counts = re.findall(r'Ran (\d+) tests? in ', output)
                 tests_unchanged = variant == 'author_oracle_final' or all((scratch / p).read_bytes() == (project / p).read_bytes() for p in before if p != 'preview.py')

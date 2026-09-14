@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Refresh-owner checkpoint — 2026-09-15, launch `3c29443`
 
+[Adoption screen 03 results](HOSTAGE-REFRESH-03-REVIEW.md), launch `37322ce`,
+resources `6b6962c`: both sessions complete; whole-helper reads remain, one repeats
+final checks, and one dedicated test command has empty original CLI output despite
+a pass claim. Sum cost is 263,857 tokens / 221.094s; no fresh baseline. Eight
+separate author controls match, but no complete adoption or performance win.
+Investigate durable evidence and read-path uptake before another model run.
+
+한국어: 새 2세션에서 전체 도우미 읽기·반복 점검·원본 출력 없는 통과 보고가
+남았다. 합계 263,857토큰·221.094초이며 새 기본 모델 비교는 없다. 대조 8회는
+예상대로 동작했지만 검증 완료로 올리지 않고 증거 보존·읽기 경로를 먼저 살핀다.
+
 [Adoption screen 03](HOSTAGE-REFRESH-03-PROTOCOL.md) preregisters two fresh skill
 sessions for resources `6b6962c`. No fresh baseline; historical costs cannot prove
 superiority. Keep full behavioral/evidence requirements and both outcomes. Once
