@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Checkpoint 09 intake — 2026-09-14, launch `3a7d972`, review pending
 
+[History/schema review](BUNDLE-CONTRACT-09-READONLY-REVIEW.md): both arms reach
+supported conclusions, four literal Python witness replays reproduce captured
+stdout and preserve original files. Both skill pairs still cost more tokens/time.
+Neither skill reads its helper; matrix misuse is not the observed cause. This
+is not full-shell replay or independent fault validation; remaining review is due.
+
+한국어: 이력·스키마의 실제 Python 검증 4개는 원본 출력과 일치하고 파일을
+보존했다. 결론은 타당하지만 두 스킬 모두 토큰·시간이 더 들었다. 도우미를
+읽지 않았으므로 도우미 남용을 원인으로 단정하지 않는다. 추가 검토는 남았다.
+
 [Partial search QA review](BUNDLE-CONTRACT-09-SEARCH-REVIEW.md): four original
 native captures contain decisive evidence; 12 retained-test controls match.
 Both arms detect stale/retention faults and accept contract-valid alternatives.
