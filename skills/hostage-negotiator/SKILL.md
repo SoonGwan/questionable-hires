@@ -23,7 +23,7 @@ Without equivalent project support, use the optional [Python asyncio asset](asse
 
 ## Deliver and stop
 
-After edits, batch remaining native tests, copy-integrity checks and final diff/status in one shell call when no intervening decision is needed. Use `&&` to stop on failure; later checks are then unrun. If every check must run regardless, retain each exit separately: a final successful status command must not hide a failed test or copy check. Do not recopy an existing helper merely to make its integrity check pass.
+Run native tests in a dedicated command so their results and process exit remain directly inspectable. Keep copy-integrity checks and final diff/status in a separate batch; a later successful command is not test evidence. Do not recopy an existing helper merely to make its integrity check pass.
 
 Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse valid evidence; rerun only for changed relevant inputs, unresolved uncertainty or an explicit requirement.
 
