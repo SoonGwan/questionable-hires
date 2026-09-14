@@ -18,10 +18,13 @@ requests from 2,068 to 44. Median helper time is 0.533→0.518s (three original 
 three corrected runs), a small confounded local difference, not a model gain.
 Regression checks retain fresh-copy isolation, bytes/modes, assertions and cleanup;
 no shared mutable files, skipped checks or extra entry instructions.
+Runtime/test source `886c4a9`: full local macOS suite **631 pass / 96.994s**, no
+reported skips. No hosted CI or model-efficiency claim.
 
 한국어: 감사 복사본의 중복 디렉터리 생성 요청을 줄였다. 실제 검사·파일·권한·
 독립 복사본은 유지한다. 호출 수 감소와 달리 전체 로컬 시간 차이는 약 0.015초로
 작으며, 모델 성능이나 20~30% 향상을 입증한 것은 아니다.
+수정 소스의 전체 macOS 로컬 검사 631개가 통과했다(96.994초).
 
 ## Con Artist conditional store screen — 2026-09-15, launch `889af32`
 

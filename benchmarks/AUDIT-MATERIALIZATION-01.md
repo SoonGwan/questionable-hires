@@ -49,8 +49,13 @@ A second native probe-file test verifies two distinct phase directories each
 created once, correct-pass/mutant-assertion-failure and absent original probe files;
 it passes separately. No new skill instructions or user-facing workflow burden.
 
+Runtime/test source `886c4a9`: full local macOS suite **631 tests pass in 96.994s**,
+no reported skips. Repository validation, featured synchronization and whitespace
+checks pass. This does not establish hosted CI or model-performance gains.
+
 한국어: 복사본마다 이미 만든 부모 디렉터리를 기억해 같은 디렉터리의 반복 생성
 요청을 줄였다. 514개 파일·네 실제 검사에서 생성 요청은 2,068→44회지만, 도구
 전체 실행 중앙값 차이는 0.533→0.518초 정도에 불과하다. 호출 감소율을 성능
 향상률로 포장하지 않는다. 파일 내용·권한·검사별 독립성·원본 무결성·정리를
 검증했고, 모델 토큰·시간 절감이나 대표 그래프의 수치로 사용하지 않는다.
+수정 소스 기준 전체 macOS 로컬 검사 631개도 통과했다(96.994초).
