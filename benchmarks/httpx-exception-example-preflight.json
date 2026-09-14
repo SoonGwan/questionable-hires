@@ -1,0 +1,24 @@
+{
+  "revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "case": "asgi-exceptions",
+  "correct": {
+    "exit_code": 0,
+    "stdout": "........................                                                 [100%]\n24 passed in 0.05s\n",
+    "stderr": ""
+  },
+  "mutant": {
+    "exit_code": 1,
+    "stdout": "........FF..........FF..                                                 [100%]\n=================================== FAILURES ===================================\n____________________________ test_asgi_exc[asyncio] ____________________________\n\n    @pytest.mark.anyio\n    async def test_asgi_exc():\n        transport = httpx.ASGITransport(app=raise_exc)\n        async with httpx.AsyncClient(transport=transport) as client:\n            with pytest.raises(RuntimeError):\n>               await client.get(\"http://www.example.org/\")\nE               Failed: DID NOT RAISE <class 'RuntimeError'>\n\ntests/test_asgi.py:172: Failed\n____________________ test_asgi_exc_after_response[asyncio] _____________________\n\n    @pytest.mark.anyio\n    async def test_asgi_exc_after_response():\n        transport = httpx.ASGITransport(app=raise_exc_after_response)\n        async with httpx.AsyncClient(transport=transport) as client:\n            with pytest.raises(RuntimeError):\n>               await client.get(\"http://www.example.org/\")\nE               Failed: DID NOT RAISE <class 'RuntimeError'>\n\ntests/test_asgi.py:180: Failed\n_____________________________ test_asgi_exc[trio] ______________________________\n\n    @pytest.mark.anyio\n    async def test_asgi_exc():\n        transport = httpx.ASGITransport(app=raise_exc)\n        async with httpx.AsyncClient(transport=transport) as client:\n            with pytest.raises(RuntimeError):\n>               await client.get(\"http://www.example.org/\")\nE               Failed: DID NOT RAISE <class 'RuntimeError'>\n\ntests/test_asgi.py:172: Failed\n______________________ test_asgi_exc_after_response[trio] ______________________\n\n    @pytest.mark.anyio\n    async def test_asgi_exc_after_response():\n        transport = httpx.ASGITransport(app=raise_exc_after_response)\n        async with httpx.AsyncClient(transport=transport) as client:\n            with pytest.raises(RuntimeError):\n>               await client.get(\"http://www.example.org/\")\nE               Failed: DID NOT RAISE <class 'RuntimeError'>\n\ntests/test_asgi.py:180: Failed\n4 failed, 20 passed in 0.09s\n",
+    "stderr": ""
+  },
+  "correct_witness": {
+    "exit_code": 0,
+    "stdout": "PASS: application exception reaches caller\n",
+    "stderr": ""
+  },
+  "faulty_witness": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 15, in <module>\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/runners.py\", line 44, in run\n    return loop.run_until_complete(main)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"<string>\", line 13, in main\nAssertionError: default transport swallowed application exception\n"
+  }
+}
