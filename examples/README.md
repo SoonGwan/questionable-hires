@@ -2,6 +2,9 @@
 
 These examples link to actual independent Astra runs, including the no-skill and short-instruction controls. They are small synthetic tasks, with one run per condition. Ties are shown honestly.
 
+Choose an example by the job you need: [role selection guide](../docs/CHOOSE-A-HIRE.md)
+([한국어](../docs/CHOOSE-A-HIRE.ko.md)).
+
 - [The fallback has a paying customer.](necromancer.md) — necromancer
 - [The receipt is an actual failing test.](receipt.md) — receipt
 - [One formatter. An entire rental property.](landlord.md) — landlord
