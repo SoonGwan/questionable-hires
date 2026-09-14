@@ -1,10 +1,67 @@
-# Friday compact entry comparison — review in progress
+# Friday compact entry comparison — candidate rejected
 
 Launch `ce6dd4e`; original `b2816cd`, candidate `e063131`.
 [Frozen protocol](FRIDAY-COMPACT-MODEL-01-PROTOCOL.md). This compares two explicit
-skill versions, not either version against no skill. No aggregate before all
-six sessions finish and raw/resource/original-file reconciliation is complete.
-No author tests or resource/task edits during timing.
+skill versions, not either version against no skill. All six sessions completed,
+no timeouts/exclusions. No author tests or resource/task edits occurred during
+timing. Pending statements below are sequential notes superseded by the final
+reconciliation, not by replacing any missing original evidence.
+
+## Final reconciliation and decision — 2026-09-14
+
+All six raw terminal usages/events and installed resource hashes reconcile with
+their frozen original/candidate revisions. Retained inventories exactly match
+the unchanged supplied files, with no symlinks or additional scratch artifacts.
+This proves retained-file preservation, not scope compliance: the candidate gap
+session's parent-rooted discovery remains an explicit scope exception.
+[Exported evidence](results/friday-compact-model-01/runs.json) preserves every
+session, per-run author reconciliation and snapshot provenance. No original
+outputs were replaced by replay, and no decisive capture gap was observed.
+
+| Task | Original tokens | Candidate tokens | Original seconds | Candidate seconds |
+| --- | ---: | ---: | ---: | ---: |
+| Rolling schema | 72,238 | 87,540 | 38.804 | 39.824 |
+| Writer gap | 70,476 | 69,122 | 51.122 | 49.906 |
+| Writer control | 93,035 | 129,328 | 82.729 | 80.495 |
+| **Sum** | **235,749** | **285,990** | **172.655** | **170.225** |
+
+Candidate records **+21.31% tokens / −1.41% time**, ratios of sums with cached
+input counted once plus output. No unknown-as-zero or success-only exclusions.
+The larger control run performs far more combinations, but more assertions do
+not establish more useful developer outcomes. Both versions use actual writer
+functions and correctly distinguish gap/control committed data behavior. Original
+control additionally tests acknowledgment timing and gives a supported condition;
+candidate's unqualified initial 'contract satisfied' does not resolve that missing
+caller contract, even though its subsequent claims explicitly concern commits.
+
+Reject the compact entry as an efficiency candidate; restore the prior entry
+byte-for-byte in `f73c0a3`. All other resources are unchanged. This does not prove
+compression caused either scope expansion or combinatorial testing: exposed n=1
+tasks, shared host/cache, unbalanced order and unequal work forbid that causal
+claim. It supplies no reason to ship this candidate as an improvement. Keep the
+attempt, ambiguity and adverse metrics; do not rerun to find favorable numbers.
+
+Next work should address a distinct observed bottleneck with a behavioral design,
+not another broad wording reduction or arbitrary test-count cap. Required writer
+transitions, exactness boundaries and unknown acknowledgment semantics remain
+part of the reasoning. Featured charts are unchanged.
+
+## Writer control — candidate
+
+Completed: **129,328 tokens / 80.495s**, six shell calls. Actual compiled versions.py
+functions execute on project-local temporary databases with separate old/new/admin
+connections. Enumerates creator/writer combinations, all 15×15 source/target
+integer witnesses and four independent recursion-setting combinations. Native
+output captures 14,520 committed writes, 28,928 cross-version reader checks and
+3,664 exact retained-row checks. Also verifies integer storage, repeated-value
+updates, final new writes before down and continuing old writes/inserts afterward.
+No helper loaded, no original edits or retained scratch; explicit connection
+closing covers the successful run. No observed out-of-project discovery or
+decisive output gap. Does not probe acknowledgment before commit as original does.
+
+Candidate costs **+39.01% tokens** versus original control, with much greater
+combinatorial coverage but no demonstrated decision-changing failure. Its output
+supports committed-write recovery, not a definition of application acknowledgment.
 
 ## Rolling schema — original
 

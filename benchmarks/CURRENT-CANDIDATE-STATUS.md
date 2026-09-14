@@ -11,42 +11,23 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
-New unmeasured instruction `e063131`: [Friday compact entry](FRIDAY-COMPACT-ENTRY-01.md)
-reduces repeated entry prose from 3,314 to 2,320 bytes while retaining release,
-new-write recovery and actual-runtime evidence boundaries. Helper/reference code
-and fixtures are unchanged. File size is not model token savings. Validation
-passes; local suite completed 458 tests in 70.722s, not a behavioral model result.
-Checkpoint 07 below measured the preceding instruction, not this candidate.
+Friday compact candidate rejected after [direct comparison](FRIDAY-COMPACT-MODEL-01-REVIEW.md),
+launch `ce6dd4e`: all six sessions complete. Original 235,749 tokens/172.655s;
+candidate 285,990/170.225s: **+21.31% tokens / −1.41% time**. Raw usage/resources
+and unchanged fixture inventories reconcile. Candidate's parent-rooted discovery
+remains a scope exception; control's large combination count is not a utility
+gain. Original's acknowledgment-before-commit concern is a supported condition
+under missing caller semantics, not an invented synchronization defect.
+Restoration `f73c0a3` returns Friday's entry to the measured original, with other
+resources unchanged. No causal/general claim from n=1, unequal work or shared
+host/cache; failed candidate and all metrics remain available.
 
-[Direct entry comparison](FRIDAY-COMPACT-MODEL-01-PROTOCOL.md) is now running,
-launch `ce6dd4e`: three unchanged reader/writer tasks, six serial old/new sessions.
-Only the entry differs between frozen resources. This has no no-skill arm;
-it tests the compression candidate against its predecessor.
-
-[Partial review](FRIDAY-COMPACT-MODEL-01-REVIEW.md) records both schema sessions:
-original 72,238 tokens/38.804s; candidate 87,540/39.824s, **+21.18% / +2.63%**.
-Both preserve required evidence; candidate reads the reference separately and
-collects an unnecessary commit header. This pair is adverse, not a compression
-win. Writer/control sessions are still running; no aggregate conclusion yet.
-The candidate writer-gap session diagnoses actual committed-write divergence,
-but runs parent-rooted instruction discovery against a project-only requirement.
-That scope exception is preserved; no scope-clean success claim is accepted.
-Five sessions are reviewed; the last candidate control is running. Original
-control confirms committed-write recovery but identifies unspecified commit/
-acknowledgment handling. Treat that evidenced conditional concern as a fixture
-ambiguity, not an invented defect in working synchronization.
-
-한국어: Friday 진입 지침의 중복 설명을 줄인 새 후보 `e063131`을 만들었다.
-롤백 전 새 데이터·실제 실행 환경 검증 조건은 유지했고 도구와 과제는 그대로다.
-문서 용량 감소를 토큰 절감으로 보지 않으며, 아래 측정은 수정 전 버전이다.
-현재 기존 읽기·쓰기 과제 3개에서 구버전·축약본 총 6개 세션을 직접 비교
-중이다. 스킬 미사용 대비 비교가 아니다. 첫 SQL 비교는 필요한 검증을
-유지했지만 축약본의 토큰 21.18%, 시간 2.63% 증가로 불리했다. 나머지
-쓰기·정상 대조군까지 그대로 진행하며, 짧은 지침을 성능 향상으로 보지 않는다.
-쓰기 결함은 실제 함수로 진단했지만 상위 폴더까지 탐색한 범위 위반도 확인돼
-그대로 기록했다. 파일을 수정하지 않았다는 이유로 이 문제를 숨기지 않는다.
-구버전 정상 대조군은 커밋된 데이터 보존을 확인했고, 응답 시점과 커밋의
-관계가 명세에 없다는 조건도 실험으로 밝혔다. 이를 오탐으로 처리하지 않는다.
+한국어: Friday 축약본의 직접 비교 6개 세션이 끝났다. 합계 토큰 21.31% 증가,
+시간 1.41% 감소로 효율 개선에 실패했고, 상위 폴더 탐색 문제도 남았다.
+원본 사용량·도구·파일을 대조한 뒤 `f73c0a3`에서 기존 지침으로 복구했다.
+조합 검증을 많이 했다는 이유로 더 유용하다고 보지 않으며, 실패한 후보와
+응답·커밋 명세의 불명확한 부분도 보존한다. 아래 전체 비교는 여전히 유효한
+역사적 측정이며, 새롭고 일반적인 성능 향상 주장은 아니다.
 
 [Checkpoint 07](BUNDLE-CONTRACT-07-REVIEW.md), resources `32bf8bd`: all 18 serial
 sessions across nine fixed tasks completed, no timeouts/exclusions. Baseline

@@ -1,5 +1,11 @@
 # Friday compact entry candidate — 2026-09-14
 
+**Rejected after [direct comparison](FRIDAY-COMPACT-MODEL-01-REVIEW.md).**
+Candidate totals +21.31% tokens / −1.41% time versus the original across three
+exposed tasks; a scope exception also remains. `f73c0a3` restores the prior entry.
+The proposal and premeasurement rationale below are retained historical context,
+not a current performance claim.
+
 Instruction revision `e063131`, compared with measured checkpoint-07 launch
 `b2816cd`. Only skills/friday/SKILL.md changes; executable matrix, references,
 metadata and task fixtures remain unchanged.
