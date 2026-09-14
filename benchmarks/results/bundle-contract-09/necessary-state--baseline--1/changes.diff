@@ -1,0 +1,185 @@
+diff --git a/form.py b/form.py
+index 30da310..62367c7 100644
+--- a/form.py
++++ b/form.py
+@@ -1,3 +1,13 @@
+ class Form:
++    def __init__(self):
++        self.pending = False
++
+     async def submit(self, save):
+-        return await save()
++        if self.pending:
++            return None
++
++        self.pending = True
++        try:
++            return await save()
++        finally:
++            self.pending = False
+diff --git a/test_form.py b/test_form.py
+new file mode 100644
+index 0000000..cfde87d
+--- /dev/null
++++ b/test_form.py
+@@ -0,0 +1,160 @@
++import asyncio
++import unittest
++from unittest.mock import AsyncMock
++
++from form import Form
++
++
++class FormTests(unittest.IsolatedAsyncioTestCase):
++    timeout = 1
++
++    async def asyncSetUp(self):
++        self.tasks = []
++
++    def start(self, coroutine):
++        task = asyncio.create_task(coroutine)
++        self.tasks.append(task)
++        return task
++
++    async def bounded(self, awaitable):
++        return await asyncio.wait_for(awaitable, timeout=self.timeout)
++
++    async def asyncTearDown(self):
++        for task in self.tasks:
++            if not task.done():
++                task.cancel()
++        if self.tasks:
++            await self.bounded(asyncio.gather(*self.tasks, return_exceptions=True))
++
++    def controlled_save(self, result=None, error=None):
++        entered = asyncio.Event()
++        release = asyncio.Event()
++
++        async def save():
++            entered.set()
++            await self.bounded(release.wait())
++            if error is not None:
++                raise error
++            return result
++
++        return AsyncMock(side_effect=save), entered, release
++
++    async def test_initial_pending_and_success_value_identity(self):
++        form = Form()
++        self.assertIs(form.pending, False)
++        result = object()
++        save, entered, release = self.controlled_save(result=result)
++        task = self.start(form.submit(save))
++        await self.bounded(entered.wait())
++        self.assertIs(form.pending, True)
++        release.set()
++        self.assertIs(await self.bounded(task), result)
++        self.assertIs(form.pending, False)
++        save.assert_awaited_once_with()
++
++    async def test_overlapping_duplicates_do_not_invoke_save_or_clear_pending(self):
++        form = Form()
++        save, entered, release = self.controlled_save()
++        first = self.start(form.submit(save))
++        await self.bounded(entered.wait())
++        duplicate_save = AsyncMock()
++        duplicates = [self.start(form.submit(duplicate_save)) for _ in range(3)]
++        self.assertEqual(
++            await self.bounded(asyncio.gather(*duplicates)), [None, None, None]
++        )
++        duplicate_save.assert_not_called()
++        save.assert_awaited_once_with()
++        self.assertIs(form.pending, True)
++        self.assertFalse(first.done())
++        release.set()
++        await self.bounded(first)
++        self.assertIs(form.pending, False)
++
++    async def test_instances_have_independent_pending_state(self):
++        first, second = Form(), Form()
++        save1, entered1, release1 = self.controlled_save()
++        save2, entered2, release2 = self.controlled_save()
++        task1 = self.start(first.submit(save1))
++        await self.bounded(entered1.wait())
++        self.assertIs(second.pending, False)
++        task2 = self.start(second.submit(save2))
++        await self.bounded(entered2.wait())
++        self.assertIs(first.pending, True)
++        self.assertIs(second.pending, True)
++        release1.set()
++        await self.bounded(task1)
++        self.assertIs(first.pending, False)
++        self.assertIs(second.pending, True)
++        release2.set()
++        await self.bounded(task2)
++        self.assertIs(second.pending, False)
++        save1.assert_awaited_once_with()
++        save2.assert_awaited_once_with()
++
++    async def test_failure_preserves_exception_identity_and_allows_retry(self):
++        form = Form()
++        error = RuntimeError("save failed")
++        save, entered, release = self.controlled_save(error=error)
++        task = self.start(form.submit(save))
++        await self.bounded(entered.wait())
++        self.assertIs(form.pending, True)
++        release.set()
++        with self.assertRaises(RuntimeError) as caught:
++            await self.bounded(task)
++        self.assertIs(caught.exception, error)
++        self.assertIs(form.pending, False)
++        await self.assert_retry(form)
++
++    async def assert_retry(self, form):
++        result = object()
++        save, entered, release = self.controlled_save(result=result)
++        task = self.start(form.submit(save))
++        await self.bounded(entered.wait())
++        self.assertIs(form.pending, True)
++        release.set()
++        self.assertIs(await self.bounded(task), result)
++        self.assertIs(form.pending, False)
++        save.assert_awaited_once_with()
++
++    async def test_cancellation_cleans_up_and_allows_retry(self):
++        form = Form()
++        save, entered, _ = self.controlled_save()
++        task = self.start(form.submit(save))
++        await self.bounded(entered.wait())
++        self.assertIs(form.pending, True)
++        task.cancel()
++        with self.assertRaises(asyncio.CancelledError):
++            await self.bounded(task)
++        self.assertTrue(task.cancelled())
++        self.assertIs(form.pending, False)
++        await self.assert_retry(form)
++
++    async def test_save_cancellation_preserves_exception_identity(self):
++        form = Form()
++        error = asyncio.CancelledError("save cancelled")
++        save = AsyncMock(side_effect=error)
++
++        async def submit_and_check():
++            with self.assertRaises(asyncio.CancelledError) as caught:
++                await form.submit(save)
++            self.assertIs(caught.exception, error)
++
++        await self.bounded(submit_and_check())
++        self.assertIs(form.pending, False)
++
++    async def test_synchronous_save_exception_clears_pending(self):
++        form = Form()
++        error = ValueError("could not start save")
++
++        def save():
++            self.assertIs(form.pending, True)
++            raise error
++
++        with self.assertRaises(ValueError) as caught:
++            await self.bounded(form.submit(save))
++        self.assertIs(caught.exception, error)
++        self.assertIs(form.pending, False)
++
++
++if __name__ == "__main__":
++    unittest.main()

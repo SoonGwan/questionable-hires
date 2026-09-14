@@ -1,0 +1,111 @@
+"""Local regression checks: python3 -B -m unittest -v test_search_local"""
+
+import asyncio
+import unittest
+
+from search import Search
+
+
+TIMEOUT = 2.0
+
+
+class ControlledFetch:
+    """One explicitly released future and entry signal per request."""
+
+    def __init__(self):
+        self.entered = asyncio.Event()
+        self.future = asyncio.get_running_loop().create_future()
+        self.queries = []
+
+    async def __call__(self, query):
+        self.queries.append(query)
+        self.entered.set()
+        return await self.future
+
+
+class SearchOverlapTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.search = Search()
+        self.tasks = []
+
+    async def asyncTearDown(self):
+        # Clean up only tasks this test owns, including on assertion/timeout failure.
+        for task in self.tasks:
+            if not task.done():
+                task.cancel()
+        await asyncio.wait_for(
+            asyncio.gather(*self.tasks, return_exceptions=True), TIMEOUT
+        )
+
+    async def start(self, query):
+        fetch = ControlledFetch()
+        task = asyncio.create_task(self.search.run(query, fetch), name=query)
+        self.tasks.append(task)
+        # Wait for actual fetch entry, never for an arbitrary scheduling delay.
+        await asyncio.wait_for(fetch.entered.wait(), TIMEOUT)
+        self.assertEqual(fetch.queries, [query])
+        self.assertFalse(fetch.future.done())
+        self.assertFalse(task.done())
+        return fetch, task
+
+    async def finish(self, request, result):
+        fetch, task = request
+        fetch.future.set_result(result)
+        # Completion proves Search has had the opportunity to commit its result.
+        await asyncio.wait_for(asyncio.shield(task), TIMEOUT)
+
+    def assert_pending(self, request):
+        fetch, task = request
+        self.assertFalse(fetch.future.done())
+        self.assertFalse(task.done())
+
+    async def seed_display(self):
+        initial = await self.start("initial")
+        await self.finish(initial, "existing result")
+        self.assertEqual(self.search.result, "existing result")
+
+    async def test_newer_completes_first_then_older_cannot_overwrite(self):
+        older = await self.start("older")
+        newer = await self.start("newer")
+        await self.finish(newer, "newer result")
+        self.assertEqual(self.search.result, "newer result")
+        self.assert_pending(older)
+        await self.finish(older, "older result")
+        self.assertEqual(self.search.result, "newer result")
+
+    async def test_older_completes_first_while_newer_remains_pending(self):
+        older = await self.start("older")
+        newer = await self.start("newer")
+        await self.finish(older, "older result")
+        self.assert_pending(newer)
+        self.assertIsNone(self.search.result)
+        await self.finish(newer, "newer result")
+        self.assertEqual(self.search.result, "newer result")
+
+    async def test_existing_display_retained_through_older_first_completion(self):
+        await self.seed_display()
+        older = await self.start("older")
+        self.assertEqual(self.search.result, "existing result")
+        newer = await self.start("newer")
+        self.assertEqual(self.search.result, "existing result")
+        await self.finish(older, "older result")
+        self.assert_pending(newer)
+        self.assertEqual(self.search.result, "existing result")
+        await self.finish(newer, "newer result")
+        self.assertEqual(self.search.result, "newer result")
+
+    async def test_existing_display_retained_until_newer_first_completion(self):
+        await self.seed_display()
+        older = await self.start("older")
+        self.assertEqual(self.search.result, "existing result")
+        newer = await self.start("newer")
+        self.assertEqual(self.search.result, "existing result")
+        await self.finish(newer, "newer result")
+        self.assert_pending(older)
+        self.assertEqual(self.search.result, "newer result")
+        await self.finish(older, "older result")
+        self.assertEqual(self.search.result, "newer result")
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

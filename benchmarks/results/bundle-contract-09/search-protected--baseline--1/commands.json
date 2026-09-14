@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '*search*' -g '*Search*' -g '*test*' -g 'pubspec.yaml' -g 'package.json' -g 'README*' -g 'pyproject.toml'; git status --short\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"rg --files --hidden -g '\"'!.git/**'\"'; cat search.py\"",
+    "aggregated_output": "search.py\nclass Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; git ls-files; python3 --version; shasum -a 256 search.py'",
+    "aggregated_output": "total 8\ndrwxr-xr-x@  4 admin  staff  128 Sep 14 23:04 .\ndrwx------@  3 admin  staff   96 Sep 14 23:04 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 14 23:04 .git\n-rw-r--r--@  1 admin  staff  309 Sep 14 23:04 search.py\nsearch.py\nPython 3.9.6\n74efb5a944c45ef5d3bdf969b3bafe7820d7871c337a36a6e511cac18c29bdb4  search.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest -v test_search_local'",
+    "aggregated_output": "test_existing_display_retained_through_older_first_completion (test_search_local.SearchOverlapTests) ... ok\ntest_existing_display_retained_until_newer_first_completion (test_search_local.SearchOverlapTests) ... ok\ntest_newer_completes_first_then_older_cannot_overwrite (test_search_local.SearchOverlapTests) ... ok\ntest_older_completes_first_while_newer_remains_pending (test_search_local.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.019s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --exit-code -- search.py; shasum -a 256 search.py; git status --short'",
+    "aggregated_output": "74efb5a944c45ef5d3bdf969b3bafe7820d7871c337a36a6e511cac18c29bdb4  search.py\n?? test_search_local.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

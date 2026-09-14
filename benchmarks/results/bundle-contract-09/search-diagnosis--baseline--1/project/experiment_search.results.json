@@ -1,0 +1,118 @@
+{
+  "boundary": "in-memory controlled request; no cache or HTTP server",
+  "wait_timeout_seconds": 2.0,
+  "production_sha256_before": {
+    "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
+    "transport.py": "937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2"
+  },
+  "production_sha256_after": {
+    "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
+    "transport.py": "937ea09b0f4d3363f84d8b6d16646b4950ecb399be2ba3e21ff56b788ff0d9e2"
+  },
+  "normal": {
+    "start_order": [
+      "earlier",
+      "newer"
+    ],
+    "completion_order": [
+      "earlier",
+      "newer"
+    ],
+    "recorded_requests": [
+      {
+        "path": "/search",
+        "params": {
+          "q": "earlier"
+        },
+        "headers": {
+          "Cache-Control": "no-cache"
+        }
+      },
+      {
+        "path": "/search",
+        "params": {
+          "q": "newer"
+        },
+        "headers": {
+          "Cache-Control": "no-cache"
+        }
+      }
+    ],
+    "result_after_each_completion": [
+      {
+        "query": "earlier",
+        "items": [
+          "result for earlier"
+        ]
+      },
+      {
+        "query": "newer",
+        "items": [
+          "result for newer"
+        ]
+      }
+    ],
+    "final_result": {
+      "query": "newer",
+      "items": [
+        "result for newer"
+      ]
+    },
+    "latest_query": "newer",
+    "stale_final_result": false,
+    "owned_tasks_finished": true
+  },
+  "reversed": {
+    "start_order": [
+      "earlier",
+      "newer"
+    ],
+    "completion_order": [
+      "newer",
+      "earlier"
+    ],
+    "recorded_requests": [
+      {
+        "path": "/search",
+        "params": {
+          "q": "earlier"
+        },
+        "headers": {
+          "Cache-Control": "no-cache"
+        }
+      },
+      {
+        "path": "/search",
+        "params": {
+          "q": "newer"
+        },
+        "headers": {
+          "Cache-Control": "no-cache"
+        }
+      }
+    ],
+    "result_after_each_completion": [
+      {
+        "query": "newer",
+        "items": [
+          "result for newer"
+        ]
+      },
+      {
+        "query": "earlier",
+        "items": [
+          "result for earlier"
+        ]
+      }
+    ],
+    "final_result": {
+      "query": "earlier",
+      "items": [
+        "result for earlier"
+      ]
+    },
+    "latest_query": "newer",
+    "stale_final_result": true,
+    "owned_tasks_finished": true
+  }
+}

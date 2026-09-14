@@ -8,10 +8,21 @@ from pathlib import Path
 import re
 
 
+def redact_paths(text, workspace=None):
+    if workspace is not None:
+        text = text.replace(str(workspace), '<WORKSPACE>')
+        text = text.replace('/private<WORKSPACE>', '<WORKSPACE>')
+    text = text.replace(str(Path.home()), '<HOME>')
+    # Keep JSON escapes and Markdown delimiters outside a redacted path. Also
+    # handle observed model links missing the "folders" component of macOS temp.
+    return re.sub(r'''/(?:private/)?var/(?:folders/|[a-z0-9]{2}/[A-Za-z0-9_-]+/T/)[^\s"'<>\\)\]}]+''',
+                  '<TEMP>', text)
+
+
 def export(source, target, project_files=None):
     target.mkdir(parents=True, exist_ok=False)
     manifest = json.loads((source / "run.json").read_text())
-    (target / "run.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    (target / "run.json").write_text(redact_paths(json.dumps(manifest, indent=2)) + "\n")
     rows = []
     for cell in sorted(source.glob("*--*")):
         meta_path = cell / "metadata.json"
@@ -25,11 +36,7 @@ def export(source, target, project_files=None):
         dest = target / cell.name
         dest.mkdir()
         def redact(text):
-            text = text.replace(str(workspace), "<WORKSPACE>")
-            text = text.replace("/private<WORKSPACE>", "<WORKSPACE>")
-            text = text.replace(str(Path.home()), "<HOME>")
-            # Generated mutation directories sometimes use system temp locations.
-            return re.sub(r"/(?:private/)?var/folders/[^\s\"'<>]+", "<TEMP>", text)
+            return redact_paths(text, workspace)
         events_path = cell / "events.jsonl"
         event_text = events_path.read_text() if events_path.exists() else ""
         events = []
@@ -73,6 +80,8 @@ def export(source, target, project_files=None):
         answer = redact(answer_path.read_text()) if answer_path.exists() else ""
         def link(match):
             label, target = match.groups()
+            if target == '<TEMP>':
+                return label  # Masked location is not a usable source link.
             if target.startswith("<") and target.endswith(">"):
                 target = target[1:-1]
             source_path, separator, fragment = target.partition("#")

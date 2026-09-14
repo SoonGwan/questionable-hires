@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Checkpoint 09 intake — 2026-09-14, launch `3a7d972`, review pending
 
+[Export verification](BUNDLE-CONTRACT-09-EXPORT.md): all 18 cells and 58 project
+text files are available; raw usage/events/provenance reconcile. Exporter fixes
+observed malformed temporary paths without consuming following evidence; 31
+related author tests pass. Both original output gaps remain; consolidated review
+and remaining controls are pending, with no featured-chart change.
+
+한국어: 18세션·텍스트 파일 58개 공개본을 원본과 대조했다. 잘못된 임시 경로
+가림과 증거 보존을 수정했고 관련 테스트 31개가 통과했다. 원본 출력 누락과
+불리한 결과를 유지하며 종합 검토·남은 대조는 아직 진행해야 한다.
+
 [Persistence/diagnosis review](BUNDLE-CONTRACT-09-AUDIT-REVIEW.md): four literal
 replays finish. Con Artist captures all four missing-write checks without reading
 helper source. Baseline persistence lacks its first original phase; replay only

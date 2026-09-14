@@ -1,0 +1,44 @@
+test_normal_completion_keeps_latest_after_both_finish (test_search_overlap.SearchOverlapTests) ... [ca -> cat] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates
+[ca -> cat] released 'ca'; Search.run finished; displayed='results for ca'
+[ca -> cat] PASS controls: only 'ca' completed; 'cat' still gated
+[ca -> cat] released 'cat'; Search.run finished; displayed='results for cat'
+[ca -> cat] PASS controls: both Search.run calls finished in the requested order
+[ca -> cat] assert latest remains visible: expected='results for cat', actual='results for cat'
+[ca -> cat] cleanup: all owned request tasks settled
+ok
+test_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests) ... [cat -> ca] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates
+[cat -> ca] released 'cat'; Search.run finished; displayed='results for cat'
+[cat -> ca] PASS controls: only 'cat' completed; 'ca' still gated
+[cat -> ca] PASS assertion: completed latest query is displayed before the older response
+[cat -> ca] released 'ca'; Search.run finished; displayed='results for ca'
+[cat -> ca] PASS controls: both Search.run calls finished in the requested order
+[cat -> ca] assert latest remains visible: expected='results for cat', actual='results for ca'
+[cat -> ca] cleanup: all owned request tasks settled
+FAIL
+
+======================================================================
+FAIL: test_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 65, in _callTestMethod
+    self._callMaybeAsync(method)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 88, in _callMaybeAsync
+    return self._asyncioTestLoop.run_until_complete(fut)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 102, in _asyncioLoopRunner
+    ret = await awaitable
+  File "<WORKSPACE>/test_search_overlap.py", line 85, in test_reversed_completion_cannot_overwrite_latest
+    await self.check_completion_order(("cat", "ca"))
+  File "<WORKSPACE>/test_search_overlap.py", line 70, in check_completion_order
+    self.assertEqual(search.result, responses[queries[-1]],
+AssertionError: 'results for ca' != 'results for cat'
+- results for ca
++ results for cat
+?               +
+ : after both requests finish, the latest query must remain visible
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.012s
+
+FAILED (failures=1)

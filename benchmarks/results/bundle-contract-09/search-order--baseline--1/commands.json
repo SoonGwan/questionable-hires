@@ -1,0 +1,50 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!dist'\"' -g '\"'!build'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"' -g '\"'!pnpm-lock.yaml'\"' -g '\"'!*lock*'\"' -g 'AGENTS.md' -g 'package.json' -g '*Search*' -g '*search*' -g '*test*' -g '*spec*' -g '*config*' -g 'README*'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la; rg --files --hidden -g '\"'!.git'\"'; git status --short; cat search.py\"",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 14 23:11 .\ndrwx------@  3 admin  staff   96 Sep 14 23:11 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 14 23:11 .git\n-rw-r--r--@  1 admin  staff  561 Sep 14 23:11 requirements.md\n-rw-r--r--@  1 admin  staff  145 Sep 14 23:11 search.py\nsearch.py\nrequirements.md\nclass Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat requirements.md; git diff -- search.py requirements.md; python3 --version'",
+    "aggregated_output": "The screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\nFor normal overlapping completion, require the latest result after both requests finish. While the newer request is pending, no particular intermediate display is required: retaining the previously displayed result is allowed. Do not make an older response appearing during that interval a required behavior. The reversed-completion test must still detect an older response overwriting the completed latest result.\nPython 3.9.6\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'shasum -a 256 search.py requirements.md'",
+    "aggregated_output": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea  search.py\n1b1d977767f7791a03efc9fb7cb2124a3a231731bc0f0834526f5a49c0fd1858  requirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest -v test_search_overlap.py > search_qa_results.txt 2>&1; result=$?; cat search_qa_results.txt; exit \"$result\"'",
+    "aggregated_output": "test_normal_completion_keeps_latest_after_both_finish (test_search_overlap.SearchOverlapTests) ... [ca -> cat] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[ca -> cat] released 'ca'; Search.run finished; displayed='results for ca'\n[ca -> cat] PASS controls: only 'ca' completed; 'cat' still gated\n[ca -> cat] released 'cat'; Search.run finished; displayed='results for cat'\n[ca -> cat] PASS controls: both Search.run calls finished in the requested order\n[ca -> cat] assert latest remains visible: expected='results for cat', actual='results for cat'\n[ca -> cat] cleanup: all owned request tasks settled\nok\ntest_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests) ... [cat -> ca] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[cat -> ca] released 'cat'; Search.run finished; displayed='results for cat'\n[cat -> ca] PASS controls: only 'cat' completed; 'ca' still gated\n[cat -> ca] PASS assertion: completed latest query is displayed before the older response\n[cat -> ca] released 'ca'; Search.run finished; displayed='results for ca'\n[cat -> ca] PASS controls: both Search.run calls finished in the requested order\n[cat -> ca] assert latest remains visible: expected='results for cat', actual='results for ca'\n[cat -> ca] cleanup: all owned request tasks settled\nFAIL\n\n======================================================================\nFAIL: test_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<WORKSPACE>/test_search_overlap.py\", line 85, in test_reversed_completion_cannot_overwrite_latest\n    await self.check_completion_order((\"cat\", \"ca\"))\n  File \"<WORKSPACE>/test_search_overlap.py\", line 70, in check_completion_order\n    self.assertEqual(search.result, responses[queries[-1]],\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : after both requests finish, the latest query must remain visible\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nFAILED (failures=1)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_8",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; git diff --exit-code -- search.py requirements.md; shasum -a 256 search.py requirements.md'",
+    "aggregated_output": "?? search_qa_results.txt\n?? test_search_overlap.py\nb0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea  search.py\n1b1d977767f7791a03efc9fb7cb2124a3a231731bc0f0834526f5a49c0fd1858  requirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

@@ -1,0 +1,89 @@
+"""Run from the project: python3 -B experiments/search_order_probe.py.
+
+Exercises real Search and transport; only the request dependency is replaced.
+No network, cache, dependencies, sleeps, or production edits are needed.
+Detailed evidence is printed as JSON. Failed assertions/timeouts exit nonzero.
+All behavior-dependent waits have deadlines; owned tasks are canceled/joined.
+The exercised code is cooperative, so no extra process watchdog is needed.
+"""
+
+import asyncio
+from functools import partial
+import json
+from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from search import Search
+from transport import fetch
+
+
+DEADLINE = 2
+
+
+async def scenario(order):
+    search = Search()
+    queries = ("earlier", "newer")
+    entered = {q: asyncio.Event() for q in queries}
+    release = {q: asyncio.Event() for q in queries}
+    trace = []
+    tasks = {}
+
+    async def request(url, *, params, headers):
+        query = params["q"]
+        trace.append({"event": "request", "url": url,
+                      "params": dict(params), "headers": dict(headers)})
+        entered[query].set()
+        await asyncio.wait_for(release[query].wait(), DEADLINE)
+        response = {"query": query, "results": [query + " result"]}
+        trace.append({"event": "response", "query": query,
+                      "body": response})
+        return response
+
+    try:
+        for query in queries:
+            tasks[query] = asyncio.create_task(
+                search.run(query, partial(fetch, request=request)),
+                name="probe-search-" + query,
+            )
+            await asyncio.wait_for(entered[query].wait(), DEADLINE)
+        assert search.result is None, "Result changed before either response"
+        requests = [event for event in trace if event["event"] == "request"]
+        assert requests == [
+            {"event": "request", "url": "/search", "params": {"q": q},
+             "headers": {"Cache-Control": "no-cache"}}
+            for q in queries
+        ], requests
+
+        for query in order:
+            release[query].set()
+            await asyncio.wait_for(asyncio.shield(tasks[query]), DEADLINE)
+            trace.append({"event": "Search.run completed", "query": query,
+                          "visible_result": search.result})
+            assert search.result == {
+                "query": query, "results": [query + " result"]
+            }, search.result
+
+        stale = search.result["query"] != queries[-1]
+        assert stale == (order[-1] == "earlier")
+        return {"submission_order": list(queries), "completion_order": order,
+                "trace": trace, "stale_result": stale}
+    finally:
+        for task in tasks.values():
+            if not task.done():
+                task.cancel()
+        if tasks:
+            await asyncio.wait_for(
+                asyncio.gather(*tasks.values(), return_exceptions=True), DEADLINE
+            )
+
+
+async def main():
+    results = []
+    for order in (["earlier", "newer"], ["newer", "earlier"]):
+        results.append(await scenario(order))
+    print(json.dumps({"scenarios": results, "checks": "passed"}, indent=2))
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
