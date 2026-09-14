@@ -36,3 +36,24 @@ extra separate reference read. Recorded costs are **+21.18% tokens / +2.63% time
 versus original on this pair. Shorter entry text does not establish lower session
 cost. Do not infer that compression caused the extra command from n=1, accept an
 efficiency win, or stop the frozen writer/control schedule on this adverse pair.
+
+## Writer gap — candidate
+
+Completed: **69,122 tokens / 49.906s**, five shell calls. Does not load or force
+the SQL reader helper. Imports actual versions.py and runs supplied migrations,
+committed old/new updates/inserts and actual cross-version readers. Native output
+shows stale 20/10 and 20/30 pairs, old insert 40/None, then divergent later writes
+on both inserted accounts. Down retains 20/40/80 rather than acknowledged
+30/70/80; old writes/inserts still execute afterward. Correctly distinguishes
+operability from data retention and explains why blindly copying the new column
+cannot recover a later authoritative old write. Initial backfill equality is
+observed via direct storage output, not a separate initial new_read call. Checks
+print expected/actual values rather than assert them; no retained artifact.
+
+**Scope exception:** native command runs `find .. -name AGENTS.md -print` despite
+the model-visible project-only requirement. No discovered path is printed, but
+the parent-rooted discovery itself exceeds the permitted project. Do not score
+this as scope-clean or infer that no files changed proves discovery compliance.
+Also re-reads all release files with line numbers and collects unnecessary Git
+history. No observed missing decisive output; original-file/resource reconciliation
+remains pending. This result is not an accepted overall improvement.

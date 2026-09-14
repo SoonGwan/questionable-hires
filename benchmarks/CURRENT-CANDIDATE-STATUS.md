@@ -28,6 +28,9 @@ original 72,238 tokens/38.804s; candidate 87,540/39.824s, **+21.18% / +2.63%**.
 Both preserve required evidence; candidate reads the reference separately and
 collects an unnecessary commit header. This pair is adverse, not a compression
 win. Writer/control sessions are still running; no aggregate conclusion yet.
+The candidate writer-gap session diagnoses actual committed-write divergence,
+but runs parent-rooted instruction discovery against a project-only requirement.
+That scope exception is preserved; no scope-clean success claim is accepted.
 
 한국어: Friday 진입 지침의 중복 설명을 줄인 새 후보 `e063131`을 만들었다.
 롤백 전 새 데이터·실제 실행 환경 검증 조건은 유지했고 도구와 과제는 그대로다.
@@ -36,6 +39,8 @@ win. Writer/control sessions are still running; no aggregate conclusion yet.
 중이다. 스킬 미사용 대비 비교가 아니다. 첫 SQL 비교는 필요한 검증을
 유지했지만 축약본의 토큰 21.18%, 시간 2.63% 증가로 불리했다. 나머지
 쓰기·정상 대조군까지 그대로 진행하며, 짧은 지침을 성능 향상으로 보지 않는다.
+쓰기 결함은 실제 함수로 진단했지만 상위 폴더까지 탐색한 범위 위반도 확인돼
+그대로 기록했다. 파일을 수정하지 않았다는 이유로 이 문제를 숨기지 않는다.
 
 [Checkpoint 07](BUNDLE-CONTRACT-07-REVIEW.md), resources `32bf8bd`: all 18 serial
 sessions across nine fixed tasks completed, no timeouts/exclusions. Baseline
