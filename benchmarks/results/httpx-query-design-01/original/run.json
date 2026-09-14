@@ -1,0 +1,24 @@
+{
+  "revision": "f8ac46c8842972e6ae870e1168e0a3deeacaff57",
+  "source_revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "started_at": "2026-09-14T21:25:18.902571+00:00",
+  "schedule": [
+    "candidate",
+    "original"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 240,
+  "session_persistence_requested": true,
+  "protocol_sha256": "e9a57b6b6844936294218216b41e2d5757f97f564cfe278bf729a981190cbeb6",
+  "case": {
+    "id": "query-design",
+    "skill": "landlord",
+    "task": "Review a proposal to replace HTTPX QueryParams with dict(raw_input) followed by\nurllib.parse.urlencode using its default doseq=False, to reduce maintenance.\nCan it preserve current behavior and consumers? Recommend keep, simplify or\nreplace with source references and maintenance tradeoffs. Consider the nearest\nviable repair, not just the proposal's first failing input: explain where\nnormalization, repeated-value handling and ownership policy would move.\n\nStart with httpx/_urls.py, tests/models/test_queryparams.py and the relevant\nrequest-building consumer in httpx/_client.py. Run the existing\ntests/models/test_queryparams.py group. Execute these four actual inputs:\n1. [('a', '1'), ('a', '2'), ('keep', 'x')]\n2. {'enabled': True, 'empty': None}\n3. {'a': ['1', '2']}\n4. {'a': 'one two', 'keep': 'x'}\nFor each record str(httpx.QueryParams(raw_input)), its multi_items(), and\nurllib.parse.urlencode(dict(raw_input)). Explain differences and the preserved\ncontrol. Also execute base = httpx.QueryParams('a=1&a=2&keep=x') and\nderived = base.add('a', '3'); record both afterward. With a context-managed\nhttpx.Client(params=base, trust_env=False, transport=httpx.MockTransport(\nlambda request: httpx.Response(200))), build (do not send) a GET request to\nhttps://example.invalid/path with params=[('a', '7'), ('a', '8')]. Record its\nURL and client.params afterward. Trace the actual merge consumer and explain\nownership and replacement semantics. Distinguish local observations from a\ncomplete replacement implementation or network behavior. Do not implement a\nfull alternative.\n\nPreserve source files and installed resources. No network, installs, history\nfetches, commits or publication. Use <PREINSTALLED_PYTHON> with -B; pytest also\nwith -p no:cacheprovider. Scratch, if needed, stays inside this project and must\nbe removed. Captured observations suffice; no separate report file required."
+  },
+  "condition": "original",
+  "skill_revision": "bd1d8b8",
+  "skill_resources_sha256": "222438b1fc70b3633907b1b3f25f90bc3dcc348ac31470b24b06966f8d065cea"
+}

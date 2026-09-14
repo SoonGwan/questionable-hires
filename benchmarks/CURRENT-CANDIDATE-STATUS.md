@@ -9,7 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Landlord large-file selection candidate — 2026-09-15, parent `3ef72f6`
+## Landlord direct QueryParams screen — 2026-09-15, launch `f8ac46c`
+
+[Direct revision comparison](results/httpx-query-design-01/README.md), original
+`bd1d8b8` versus candidate `775a6a9`: both complete 14 native tests and all required
+encoding/ownership/consumer evidence. Candidate **+1.58% tokens / +13.94% time**,
+eight versus six shell commands, four outer calls each. Region discovery is
+adopted, but extra discovery/configuration reads coexist; no causal attribution
+to one command or overall gain. All 14 stored shell outputs match captures;
+source/resources remain unchanged. Same-project n=1, no featured promotion.
+
+한국어: 수정본은 요구 작업을 모두 수행했지만 토큰 1.58%, 시간 13.94% 증가했다.
+큰 파일 구간 선택만으로 전체 비용이 줄지는 않았다. 필수 사전 검색을 더 늘리지
+않고, 이미 아는 구간을 바로 읽을 수 있도록 다음 수정의 범위를 좁힌다.
+
+## Historical Landlord large-file candidate — 2026-09-15, parent `3ef72f6`
 
 The header screen below shows a 43,865-character source batch, output truncation
 and recovery reads despite fewer commands. The entry now selects relevant symbol/
@@ -17,11 +31,12 @@ consumer regions within large files before batching, retains enclosing/full-file
 context when needed, and explicitly recovers missing decisive evidence. Consumer
 coverage expansion and all execution/scope obligations remain unchanged. No new
 helper, fixed line cap or ban on necessary rereading. Model adoption and cost
-effects are unmeasured; do not attach the prior screen's numbers to this candidate.
+effects were unmeasured at this checkpoint; the direct screen above now measures
+this candidate. The earlier header numbers still belong to the older resource.
 
 한국어: 큰 파일 일괄 읽기의 실제 잘림에 근거해 관련 정의·소비자 구간을 먼저
 고르도록 수정했다. 필요한 전체 맥락·누락 복구·소비자 조사와 검증은 유지한다.
-새 지침의 행동·비용 효과는 아직 미검증이며 이전 수치를 재사용하지 않는다.
+이 시점에는 미검증이었고 위의 직접 비교에서 측정했다. 이전 헤더 수치는 별도다.
 
 ## Landlord header design screen — 2026-09-15, launch `5c6e1a0`
 

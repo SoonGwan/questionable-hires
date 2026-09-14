@@ -1,0 +1,77 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "query-design",
+    "skill": "landlord",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+    "skill_sha256": "4d37f28060ea0fa71ea0fdf1e1746085a234a6b197b393affc21b10abd63b944",
+    "skill_resources_sha256": "71faadec4b65cdefbbb113bd4012eadb3e2d1c948063b6b71d95ab054f6c2af3",
+    "elapsed_seconds": 92.509,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 127642,
+      "cached_input_tokens": 105728,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2641,
+      "reasoning_output_tokens": 35
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $landlord at .agents/skills/landlord/SKILL.md.\n\nReview a proposal to replace HTTPX QueryParams with dict(raw_input) followed by\nurllib.parse.urlencode using its default doseq=False, to reduce maintenance.\nCan it preserve current behavior and consumers? Recommend keep, simplify or\nreplace with source references and maintenance tradeoffs. Consider the nearest\nviable repair, not just the proposal's first failing input: explain where\nnormalization, repeated-value handling and ownership policy would move.\n\nStart with httpx/_urls.py, tests/models/test_queryparams.py and the relevant\nrequest-building consumer in httpx/_client.py. Run the existing\ntests/models/test_queryparams.py group. Execute these four actual inputs:\n1. [('a', '1'), ('a', '2'), ('keep', 'x')]\n2. {'enabled': True, 'empty': None}\n3. {'a': ['1', '2']}\n4. {'a': 'one two', 'keep': 'x'}\nFor each record str(httpx.QueryParams(raw_input)), its multi_items(), and\nurllib.parse.urlencode(dict(raw_input)). Explain differences and the preserved\ncontrol. Also execute base = httpx.QueryParams('a=1&a=2&keep=x') and\nderived = base.add('a', '3'); record both afterward. With a context-managed\nhttpx.Client(params=base, trust_env=False, transport=httpx.MockTransport(\nlambda request: httpx.Response(200))), build (do not send) a GET request to\nhttps://example.invalid/path with params=[('a', '7'), ('a', '8')]. Record its\nURL and client.params afterward. Trace the actual merge consumer and explain\nownership and replacement semantics. Distinguish local observations from a\ncomplete replacement implementation or network behavior. Do not implement a\nfull alternative.\n\nPreserve source files and installed resources. No network, installs, history\nfetches, commits or publication. Use <PREINSTALLED_PYTHON> with -B; pytest also\nwith -p no:cacheprovider. Scratch, if needed, stays inside this project and must\nbe removed. Captured observations suffice; no separate report file required.\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+    "disabled_personal_skills": 9,
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "landlord/SKILL.md": {
+        "kind": "file",
+        "sha256": "4d37f28060ea0fa71ea0fdf1e1746085a234a6b197b393affc21b10abd63b944",
+        "mode": 420
+      },
+      "landlord/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "6584019c06446a90aa95d9896ebe67734920c5ff3b7f75b0c53d48a3b84f03dc",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "landlord/SKILL.md": {
+        "kind": "file",
+        "sha256": "4d37f28060ea0fa71ea0fdf1e1746085a234a6b197b393affc21b10abd63b944",
+        "mode": 420
+      },
+      "landlord/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "6584019c06446a90aa95d9896ebe67734920c5ff3b7f75b0c53d48a3b84f03dc",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 11595,
+      "mode": 420,
+      "sha256": "6071ab2747cd652870df437425a7bb0a7b55b869f650e9cd037b257494b8117e",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]
