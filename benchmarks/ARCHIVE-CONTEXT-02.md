@@ -55,6 +55,22 @@ They now assert the exact historical test's skipped result rather than prose;
 native counts, successful child exit and behavior-test identities remain checked.
 This intermediate failure is retained, not counted as a full pass.
 
+## Fresh full archive verification (`b7b9da1`)
+
+A new unmodified nested source archive passes the full suite: **643 discovered,
+640 passed, three explicit history-only skips / 101.112s**. No `.git`, ignored-run
+overlay, installed-package mutation or source overlays were supplied. It uses the
+existing Python 3.9.6 / pytest 8.3.4 venv and process-local PYTHONPATH access to
+existing host PyYAML, as in the earlier failed full run. All native hook tests now
+execute successfully. The three skips are the own-history comparisons described
+above, not credited as passes. This is local macOS archive evidence, not Linux or
+hosted CI confirmation, and it does not establish model efficiency.
+
+한국어 추가 검증: 새 `b7b9da1` 압축본 전체 검사에서 643개 중 640개 통과,
+자체 이력이 필요한 3개만 명시적으로 생략됐다(101.112초). 앞선 실패 환경과 같은
+기존 가상환경을 사용했고 원본 덮어쓰기나 의존성 설치는 없었다. Linux·호스팅 CI·
+모델 성능 검증과는 구분한다.
+
 한국어: 압축본이 상위 저장소 이력을 자기 것으로 사용하는 문제를 차단했다.
 자체 이력이 없는 경우 이력 비교만 명시적으로 생략하고 실제 동작 검사는 유지한다.
 사용자 site가 비활성인 가상환경에서는 활성 훅 검사를 별도의 테스트 소유 런타임에서

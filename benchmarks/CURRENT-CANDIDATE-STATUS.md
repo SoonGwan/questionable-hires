@@ -18,12 +18,16 @@ still run archived behavior/schedule checks. Active-hook tests use an owned
 temporary runtime when user site is disabled, without altering the user's venv.
 Native disabled-hook behavior is independently checked, not skipped. Seventeen
 focused hook tests pass in both system and isolated-venv Python; history checks
-pass in checkout and behave correctly in a fresh nested archive. Full corrected
-archive verification is still pending; no model/featured claim.
+pass in checkout and behave correctly in a fresh nested archive. A new unmodified
+`b7b9da1` archive passes **640 of 643 tests, three explicit history-only skips /
+101.112s** in the same existing pytest venv/PyYAML environment as the failed run.
+The intermediate two obsolete-message assertions and their correction are retained.
+Local macOS evidence only; no hosted CI, Linux or model/featured claim.
 
 한국어: 상위 Git 이력 오인과 사용자 site 활성화에 대한 검사 가정을 수정했다.
 실제 훅 검사와 비활성 환경 검사를 유지한 채 두 Python 환경에서 관련 17개가
-각각 통과했다. 수정된 압축본 전체 검증은 아직 진행 중이며 성능 수치는 아니다.
+각각 통과했다. 새 압축본 전체 검증은 643개 중 640개 통과·이력 비교 3개 생략으로
+끝났다(101.112초). 중간 실패도 보존하며 모델 성능 개선 수치로 사용하지 않는다.
 
 ## Pytest replacements and archive repair — 2026-09-15, source `df799cf`
 
