@@ -1,0 +1,145 @@
+{
+  "revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "tracked_files": 125,
+  "source_unchanged": true,
+  "earlier_revision": "206c5372a60cb2511cf5ac39c963ff76953c569f",
+  "earlier_source_sha256": "efd7d2948ab65ccdfa95b11057ab2d40788dc082d5579cbc7cb51eaa0b507b74",
+  "native_output": ".                                                                        [100%]\n1 passed in 0.04s\n",
+  "current": [
+    {
+      "case": "rotate",
+      "requests": [
+        {
+          "url": "https://example.invalid/start",
+          "cookie": "sid=old"
+        },
+        {
+          "url": "https://example.invalid/done",
+          "cookie": "sid=new"
+        }
+      ]
+    },
+    {
+      "case": "expire",
+      "requests": [
+        {
+          "url": "https://example.invalid/start",
+          "cookie": "sid=old"
+        },
+        {
+          "url": "https://example.invalid/done",
+          "cookie": null
+        }
+      ]
+    },
+    {
+      "case": "cross-host",
+      "requests": [
+        {
+          "url": "https://example.invalid/start",
+          "cookie": "sid=old"
+        },
+        {
+          "url": "https://other.invalid/done",
+          "cookie": null
+        }
+      ]
+    },
+    {
+      "case": "unchanged",
+      "requests": [
+        {
+          "url": "https://example.invalid/start",
+          "cookie": "sid=old"
+        },
+        {
+          "url": "https://example.invalid/done",
+          "cookie": "sid=old"
+        }
+      ]
+    },
+    {
+      "case": "initially-empty",
+      "requests": [
+        {
+          "url": "https://example.invalid/start",
+          "cookie": null
+        },
+        {
+          "url": "https://example.invalid/done",
+          "cookie": "sid=new"
+        }
+      ]
+    }
+  ],
+  "proposed": [
+    {
+      "case": "rotate",
+      "requests": [
+        {
+          "url": "https://example.invalid/start",
+          "cookie": "sid=old"
+        },
+        {
+          "url": "https://example.invalid/done",
+          "cookie": "sid=old"
+        }
+      ]
+    },
+    {
+      "case": "expire",
+      "requests": [
+        {
+          "url": "https://example.invalid/start",
+          "cookie": "sid=old"
+        },
+        {
+          "url": "https://example.invalid/done",
+          "cookie": "sid=old"
+        }
+      ]
+    },
+    {
+      "case": "cross-host",
+      "requests": [
+        {
+          "url": "https://example.invalid/start",
+          "cookie": "sid=old"
+        },
+        {
+          "url": "https://other.invalid/done",
+          "cookie": "sid=old"
+        }
+      ]
+    },
+    {
+      "case": "unchanged",
+      "requests": [
+        {
+          "url": "https://example.invalid/start",
+          "cookie": "sid=old"
+        },
+        {
+          "url": "https://example.invalid/done",
+          "cookie": "sid=old"
+        }
+      ]
+    },
+    {
+      "case": "initially-empty",
+      "requests": [
+        {
+          "url": "https://example.invalid/start",
+          "cookie": null
+        },
+        {
+          "url": "https://example.invalid/done",
+          "cookie": "sid=new"
+        }
+      ]
+    }
+  ],
+  "deliberate_assertion_failure": "'sid=old' != 'sid=new'\n- sid=old\n+ sid=new\n",
+  "annotations_preserved": true,
+  "limitation": "Author preflight only. Synthetic cookies, no network. Earlier presence is not first-ever origin."
+}
