@@ -23,6 +23,10 @@ launch `ce6dd4e`: three unchanged reader/writer tasks, six serial old/new sessio
 Only the entry differs between frozen resources. This has no no-skill arm and
 no new result yet; it tests the compression candidate against its predecessor.
 
+[Partial review](FRIDAY-COMPACT-MODEL-01-REVIEW.md) records the completed original
+schema session's actual matrix output and preserved uncertainty. No pair or
+aggregate claim yet; remaining sessions are running.
+
 한국어: Friday 진입 지침의 중복 설명을 줄인 새 후보 `e063131`을 만들었다.
 롤백 전 새 데이터·실제 실행 환경 검증 조건은 유지했고 도구와 과제는 그대로다.
 문서 용량 감소를 토큰 절감으로 보지 않으며, 아래 측정은 수정 전 버전이다.
