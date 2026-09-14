@@ -14,7 +14,7 @@ Each character carries one engineering habit: trace the reason, prove the fix, t
 
 **Development preview.** All eight hires have been exercised on small synthetic tasks. The baseline usually reached the same central answer. We show actual comparisons and limitations rather than claim a universal improvement.
 
-Local regression at `624dee0` (2026-09-15 KST): [560 tests passed, including all-eight packaging and installed-helper controls](docs/INSTALLATION-TEST.md#whole-bundle-regression--2026-09-15-kst-source-624dee0). This is not a model-performance or remote-installation score.
+Local regression at `c0f53cc` (2026-09-15 KST): [576 tests passed, including all-eight packaging and installed-helper controls](docs/INSTALLATION-TEST.md#whole-bundle-regression--2026-09-15-kst-source-c0f53cc). This is not a model-performance or remote-installation score.
 
 ## The test passed. The record disappeared.
 

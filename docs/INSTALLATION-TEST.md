@@ -141,3 +141,32 @@ or public-release readiness. Runtime is an observation, not a speed comparison.
 없었습니다. 패키징과 설치된 도우미 실행, 최근 추가된 실행 결과 보존·Git 검토·이력
 조회 검사 등을 함께 실행했습니다. 로컬 회귀 검증이며, 모델 성능 향상이나 원격
 설치·공개 배포 성공을 뜻하지 않습니다. 기존 벤치마크 그래프 수치는 변경하지 않았습니다.
+
+## Whole-bundle regression — 2026-09-15 KST, source c0f53cc
+
+Full source `c0f53cc6a66a80bef482b97a72ccf6b446fa895e`, clean worktree at
+launch, macOS / Python 3.9.6. The native command
+`python3 -B -m unittest discover -s tests -v` completed with **576 tests in
+88.963s, OK**, exit 0, no failures or skips. This supersedes no historical
+measurement: it is a separate source-specific local regression check.
+
+The suite includes all earlier installed-helper controls plus Friday phase-specific
+SQL selection and native configuration/active-consumer fixtures, grouped hidden
+instruction discovery, Con Artist bounded-read growth controls, and the standalone
+archive's extraction/installation/resource comparison. Archive entrypoint `--help`
+checks alone do not demonstrate helper behavior; the separate behavioral tests
+remain in the same full suite. Synthetic scheduler messages are runner unit-test
+controls, not new model benchmark executions.
+
+Repository validation, English/Korean featured synchronization and whitespace
+checks pass. User-installed configuration is unchanged. No live model sessions,
+hosted CI, remote authenticated installation or public release were verified by
+this run. Its duration is not a model-performance metric or speed comparison.
+The broad all-eight 20–30% efficiency objective remains unproven; existing charts
+retain their original measured versions and values.
+
+한국어: `c0f53cc`에서 전체 테스트 **576개가 88.963초에 통과**했고 실패·건너뜀은
+없었다. 최근 단계별 SQL 조회·설정 전환·입력 읽기 상한·독립 설치 아카이브 검사도
+포함한다. 기존 설치된 도우미의 실제 동작 검사도 유지했다. 이는 로컬 회귀 검증이며
+모델 성능 향상, 원격 설치 또는 공개 배포 성공을 뜻하지 않는다. 기존 그래프는
+변경하지 않았고 전체 20–30% 효율 개선은 아직 입증되지 않았다.
