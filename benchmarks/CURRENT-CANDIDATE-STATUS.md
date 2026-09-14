@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Current unmeasured instruction change: [JS usage-first routing](HOSTAGE-JAVASCRIPT-USAGE-FIRST-01.md)
+reads the existing asset's complete usage comment before copying, with source
+inspection when needed. Runtime source is unchanged from `22bd929`; the comment
+now explicitly explains synchronous-throw conversion. Native/standalone checks
+pass. The reviewed model numbers below predate this routing; cost impact unknown.
+
+한국어: 현재는 JavaScript 도구의 사용법·제약을 먼저 읽고 필요할 때 구현을
+확인하도록 안내를 바꾼 미측정 후보다. 실행 코드는 바뀌지 않았고, 아래 수치는
+이 읽기 방식의 성과가 아니다. 테스트를 줄이거나 코드 확인을 금지하지 않는다.
+
 [JavaScript lifecycle model screen](HOSTAGE-JAVASCRIPT-SCOPE-MODEL-01-REVIEW.md),
 launch `330a17b`, resource `22bd929`: baseline 104,047 tokens/99.788s; skill
 115,286/93.105s, **+10.80% tokens / −6.70% time**. Both capture seven native passes

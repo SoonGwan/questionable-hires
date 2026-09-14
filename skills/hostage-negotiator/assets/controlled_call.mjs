@@ -30,6 +30,9 @@
  *   assert.equal(await wait(task), result);
  * });
  * The body and final drain each have a timeoutMs deadline (default 1000ms).
+ * run invokes immediately and converts synchronous throws to rejected Promises.
+ * To assert an API does not throw synchronously, invoke it outside run within
+ * assert.doesNotThrow, then register the returned task with run(() => task).
  * Exit rejects outstanding entry waits, releases unreleased owned calls,
  * including entries during drain, and drains registered tasks. Test-owned
  * listeners/resources still need finally.
