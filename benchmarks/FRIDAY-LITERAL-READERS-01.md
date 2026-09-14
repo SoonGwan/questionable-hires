@@ -34,7 +34,10 @@ actual migrations/readers through CLI stdin, verifies all four version/state
 pairings and preserves updated/unchanged/inserted rows after down. Original six
 fixture files remain unchanged. No custom AST extraction is needed in that call.
 
-Skill packaging and repository validation pass. Full-suite verification is
-recorded separately when finished. There is no new model-session token/time
+Skill packaging and repository validation pass. Full local macOS suite at
+runtime resource `bef0937` passes **438 tests in 77.427s**, no failures/skips.
+Only documentation changed during that suite; no model workload ran concurrently.
+This suite duration is not compared with differently loaded previous runs.
+There is no new model-session token/time
 claim, no broader engine support, no production readiness assertion and no
 featured-chart update.

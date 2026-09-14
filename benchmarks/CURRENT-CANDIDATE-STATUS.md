@@ -15,7 +15,8 @@ New runtime candidate `bef0937`: [Friday literal-reader references](FRIDAY-LITER
 replace custom extraction code for declaration-only Python query files via the
 existing matrix CLI/API. Static file/hash/line evidence and strict rejection of
 dynamic modules preserve the boundary; runtime consumer binding is not inferred.
-28 native matrix tests pass, including the existing release fixture through CLI.
+28 native matrix tests pass, including the existing release fixture through CLI;
+the full local suite passes **438 tests in 77.427s**, no failures/skips.
 Model adoption/cost impact is unmeasured; historical results below are unchanged.
 
 Newer **candidate `07fa9e2`**: [discovery routing screen](DISCOVERY-ROUTING-01-REVIEW.md)
