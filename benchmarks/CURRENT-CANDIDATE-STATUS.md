@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist input bounds — 2026-09-15, parent `f19186c`
+
+[Bounded reads](CON-ARTIST-INPUT-BOUND-01.md) fix a reproduced size-check/read
+gap in snapshot collection and unbounded final original comparison. Two new
+controls fail before the fix; four pass after it, plus 76 helper and 12 build
+tests. Actual reads honor remaining/original byte bounds even after file growth.
+No model-cost claim, entry growth or new benchmark run; total memory and filesystem
+races are not isolated. Existing baseline reuse already exists and is unchanged.
+
+한국어: 파일이 커질 때 20MB 입력 제한을 넘기는 실제 재현을 고쳤고, 종료 시
+원본 비교에도 읽기 상한을 적용했다. 관련 92개 검사가 통과했지만 모델 비용
+절감은 미측정이며 전체 메모리·파일 경합 격리를 뜻하지 않는다.
+
 ## Friday consumer selection — 2026-09-15, parent `761a4b8`
 
 [Configuration transfer 01](FRIDAY-CONFIG-01-REVIEW.md), launch `0723722`,

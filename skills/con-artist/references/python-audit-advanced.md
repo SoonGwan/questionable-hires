@@ -72,6 +72,13 @@ PYTHONPATH, so unrelated ambient source trees cannot serve as an implicit recipe
 
 ## Diagnostics and incomplete evidence
 
+Input collection bounds each read to the remaining 20 MB selection budget plus
+one overflow-detection byte and charges actual bytes, including growth after the
+size check. This bounds the collected input payload, not total process memory or
+filesystem races. The final original-file comparison rejects changed size/mode
+before reading and bounds equal-size reads to the original length plus one byte.
+Neither check makes concurrent source changes a stable snapshot or restores files.
+
 Use this section when a check reports incomplete evidence, unexpected runner
 errors/warnings or cleanup failure. Ordinary successful checks use the common
 CLI contract; helper implementation review remains appropriate for trust review,

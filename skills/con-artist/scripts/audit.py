@@ -93,11 +93,29 @@ def snapshot(root, names):
                 if item.stat().st_size > 20_000_000:
                     raise ValueError('Input too large for this small-audit helper: ' + key)
                 if key not in files:
-                    total += item.stat().st_size
-                    if total > 20_000_000:
+                    remaining = 20_000_000 - total
+                    if item.stat().st_size > remaining:
                         raise ValueError('Selected inputs exceed 20 MB; use the project audit facilities')
-                    files[key] = item.read_bytes()
+                    # The file can grow after stat. Bound allocation and charge
+                    # actual bytes, not the earlier size observation.
+                    with item.open('rb') as stream:
+                        content = stream.read(remaining + 1)
+                    if len(content) > remaining:
+                        raise ValueError('Selected inputs exceed 20 MB; use the project audit facilities')
+                    total += len(content)
+                    files[key] = content
     return files
+
+
+def original_matches(path, content, mode):
+    """Compare one selected input without unbounded reads of a changed file."""
+    if not path.is_file() or path.is_symlink():
+        return False
+    status = path.stat()
+    if status.st_size != len(content) or status.st_mode & 0o777 != mode:
+        return False
+    with path.open('rb') as stream:
+        return stream.read(len(content) + 1) == content
 
 
 def execute(python, directory, spec, probe, timeout):
@@ -311,9 +329,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
         return output
     finally:
         changed = [name for name, content in files.items()
-                   if not (root / name).is_file() or (root / name).is_symlink()
-                   or (root / name).read_bytes() != content
-                   or (root / name).stat().st_mode & 0o777 != modes[name]]
+                   if not original_matches(root / name, content, modes[name])]
         if changed:
             raise RuntimeError('Selected originals changed during audit; not restored: ' + ', '.join(changed))
         if output is not None:
