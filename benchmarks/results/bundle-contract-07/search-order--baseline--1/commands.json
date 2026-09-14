@@ -1,0 +1,42 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!package-lock.json'\"' -g '\"'!yarn.lock'\"' -g '\"'!pnpm-lock.yaml'\"' -g '\"'!*lock*'\"' -g 'AGENTS.md' -g '*Search*' -g '*search*' -g 'package.json' -g '*test*' -g '*config*' -g 'README*'\"",
+    "aggregated_output": "<WORKSPACE>\nsearch.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -la; rg --files --hidden -g '\"'!.git/**'\"'; cat search.py; git status --short\"",
+    "aggregated_output": "total 16\ndrwxr-xr-x@  5 admin  staff  160 Sep 14 14:47 .\ndrwx------@  3 admin  staff   96 Sep 14 14:47 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 14 14:47 .git\n-rw-r--r--@  1 admin  staff  561 Sep 14 14:47 requirements.md\n-rw-r--r--@  1 admin  staff  145 Sep 14 14:47 search.py\nsearch.py\nrequirements.md\nclass Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat requirements.md; git diff -- search.py requirements.md; python3 --version'",
+    "aggregated_output": "The screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\nFor normal overlapping completion, require the latest result after both requests finish. While the newer request is pending, no particular intermediate display is required: retaining the previously displayed result is allowed. Do not make an older response appearing during that interval a required behavior. The reversed-completion test must still detect an older response overwriting the completed latest result.\nPython 3.9.6\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nimport hashlib\nimport pathlib\nimport subprocess\nimport sys\n\nproduction = [pathlib.Path('search.py'), pathlib.Path('requirements.md')]\nbefore = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in production}\ncommand = [sys.executable, '-B', '-m', 'unittest', '-v', 'test_search_overlap.py']\nresult = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=15)\nafter = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in production}\nassert before == after, 'Production files changed during verification'\nreport = 'Command: python3 -B -m unittest -v test_search_overlap.py\\\\n\\\\n' + result.stdout\nreport += '\\\\nExit code: {}\\\\nProduction SHA-256 unchanged:\\\\n'.format(result.returncode)\nreport += ''.join('{}  {}\\\\n'.format(digest, path) for path, digest in after.items())\npathlib.Path('QA_SEARCH_RESULTS.txt').write_text(report)\nprint(report)\nPY\"",
+    "aggregated_output": "Command: python3 -B -m unittest -v test_search_overlap.py\n\ntest_normal_completion_latest_result_after_both_finish (test_search_overlap.SearchOverlapTests) ... [ca -> cat] PASS actual Search started ca then cat; both requests pending\n[ca -> cat] PASS request 'ca' finished successfully\n[ca -> cat] PASS 'cat' remains pending\n[ca -> cat] PASS request 'cat' finished successfully\n[ca -> cat] PASS controlled completion order = ['ca', 'cat']\n[ca -> cat] ASSERT latest result remains visible after both requests finish: expected='results for cat', actual='results for cat'\n[ca -> cat] PASS latest result remains visible after both requests finish\n[ca -> cat] PASS cleanup: all owned requests and reply futures settled\nok\ntest_reversed_completion_older_must_not_overwrite_latest (test_search_overlap.SearchOverlapTests) ... [cat -> ca] PASS actual Search started ca then cat; both requests pending\n[cat -> ca] PASS request 'cat' finished successfully\n[cat -> ca] PASS 'ca' remains pending\n[cat -> ca] ASSERT newer result visible while older request is pending: expected='results for cat', actual='results for cat'\n[cat -> ca] PASS newer result visible while older request is pending\n[cat -> ca] PASS request 'ca' finished successfully\n[cat -> ca] PASS controlled completion order = ['cat', 'ca']\n[cat -> ca] ASSERT latest result remains visible after both requests finish: expected='results for cat', actual='results for ca'\n[cat -> ca] PASS cleanup: all owned requests and reply futures settled\nFAIL\n\n======================================================================\nFAIL: test_reversed_completion_older_must_not_overwrite_latest (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<WORKSPACE>/test_search_overlap.py\", line 88, in test_reversed_completion_older_must_not_overwrite_latest\n    await self.check_order((\"cat\", \"ca\"))\n  File \"<WORKSPACE>/test_search_overlap.py\", line 67, in check_order\n    assert_latest(\"latest result remains visible after both requests finish\")\n  File \"<WORKSPACE>/test_search_overlap.py\", line 43, in assert_latest\n    self.assertEqual(search.result, values[\"cat\"], stage)\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : latest result remains visible after both requests finish\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nFAILED (failures=1)\n\nExit code: 1\nProduction SHA-256 unchanged:\nb0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea  search.py\n1b1d977767f7791a03efc9fb7cb2124a3a231731bc0f0834526f5a49c0fd1858  requirements.md\n\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --exit-code -- search.py requirements.md; git status --short'",
+    "aggregated_output": "?? QA_SEARCH_RESULTS.txt\n?? test_search_overlap.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

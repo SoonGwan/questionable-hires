@@ -1,0 +1,101 @@
+"""Run from the project: python3 -B experiments/search_completion_probe.py.
+
+Exercises real Search and transport with a cache-free recording request boundary.
+All behavior-dependent waits and cleanup have a deadline; no network is used.
+"""
+
+import asyncio
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from search import Search
+from transport import fetch
+
+
+TIMEOUT = 2
+
+
+async def bounded(task):
+    done, _ = await asyncio.wait({task}, timeout=TIMEOUT)
+    if not done:
+        raise TimeoutError(f"Timed out waiting for {task.get_name()}")
+    return task.result()
+
+
+async def exercise(order):
+    search = Search()
+    events = []
+    owned = []
+    arrivals = asyncio.Queue()
+    gates = {}
+
+    def start(coro, name):
+        task = asyncio.create_task(coro, name=name)
+        owned.append(task)
+        return task
+
+    async def request(url, *, params, headers):
+        query = params["q"]
+        events.append({"event": "request", "url": url,
+                       "params": dict(params), "headers": dict(headers)})
+        gate = asyncio.get_running_loop().create_future()
+        gates[query] = gate
+        arrivals.put_nowait(query)
+        response = await gate
+        events.append({"event": "response", "query": query, "body": response})
+        return response
+
+    async def actual_fetch(query):
+        return await fetch(query, request)
+
+    try:
+        searches = {}
+        for query in ("old", "new"):
+            searches[query] = start(search.run(query, actual_fetch), f"search:{query}")
+            arrived = await bounded(start(arrivals.get(), f"arrival:{query}"))
+            assert arrived == query, (arrived, query)
+        assert search.result is None
+
+        for query in order:
+            gates[query].set_result(f"results:{query}")
+            await bounded(searches[query])
+            events.append({"event": "visible_result", "after": query,
+                           "result": search.result})
+
+        requests = [event for event in events if event["event"] == "request"]
+        assert len(requests) == 2
+        assert all(event["url"] == "/search" and
+                   event["headers"] == {"Cache-Control": "no-cache"}
+                   for event in requests), requests
+        assert search.result == f"results:{order[-1]}", events
+        return {"completion_order": order, "events": events,
+                "final_result": search.result,
+                "latest_query": "new", "stale": search.result != "results:new"}
+    finally:
+        for task in owned:
+            if not task.done():
+                task.cancel()
+        for gate in gates.values():
+            if not gate.done():
+                gate.cancel()
+        if owned:
+            done, pending = await asyncio.wait(owned, timeout=TIMEOUT)
+            for task in done:
+                if not task.cancelled():
+                    task.exception()  # Retrieve failures, including on an aborted run.
+            if pending:
+                raise TimeoutError("Owned tasks failed to stop during cleanup")
+
+
+async def main():
+    normal = await exercise(["old", "new"])
+    reversed_order = await exercise(["new", "old"])
+    assert not normal["stale"]
+    assert reversed_order["stale"]
+    print(json.dumps({"normal": normal, "reversed": reversed_order}, indent=2))
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

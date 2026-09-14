@@ -1,0 +1,159 @@
+diff --git a/QA_SEARCH_RESULTS.txt b/QA_SEARCH_RESULTS.txt
+new file mode 100644
+index 0000000..477a42d
+--- /dev/null
++++ b/QA_SEARCH_RESULTS.txt
+@@ -0,0 +1,55 @@
++Command: python3 -B -m unittest -v test_search_overlap.py
++
++test_normal_completion_latest_result_after_both_finish (test_search_overlap.SearchOverlapTests) ... [ca -> cat] PASS actual Search started ca then cat; both requests pending
++[ca -> cat] PASS request 'ca' finished successfully
++[ca -> cat] PASS 'cat' remains pending
++[ca -> cat] PASS request 'cat' finished successfully
++[ca -> cat] PASS controlled completion order = ['ca', 'cat']
++[ca -> cat] ASSERT latest result remains visible after both requests finish: expected='results for cat', actual='results for cat'
++[ca -> cat] PASS latest result remains visible after both requests finish
++[ca -> cat] PASS cleanup: all owned requests and reply futures settled
++ok
++test_reversed_completion_older_must_not_overwrite_latest (test_search_overlap.SearchOverlapTests) ... [cat -> ca] PASS actual Search started ca then cat; both requests pending
++[cat -> ca] PASS request 'cat' finished successfully
++[cat -> ca] PASS 'ca' remains pending
++[cat -> ca] ASSERT newer result visible while older request is pending: expected='results for cat', actual='results for cat'
++[cat -> ca] PASS newer result visible while older request is pending
++[cat -> ca] PASS request 'ca' finished successfully
++[cat -> ca] PASS controlled completion order = ['cat', 'ca']
++[cat -> ca] ASSERT latest result remains visible after both requests finish: expected='results for cat', actual='results for ca'
++[cat -> ca] PASS cleanup: all owned requests and reply futures settled
++FAIL
++
++======================================================================
++FAIL: test_reversed_completion_older_must_not_overwrite_latest (test_search_overlap.SearchOverlapTests)
++----------------------------------------------------------------------
++Traceback (most recent call last):
++  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 65, in _callTestMethod
++    self._callMaybeAsync(method)
++  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 88, in _callMaybeAsync
++    return self._asyncioTestLoop.run_until_complete(fut)
++  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
++    return future.result()
++  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 102, in _asyncioLoopRunner
++    ret = await awaitable
++  File "<WORKSPACE>/test_search_overlap.py", line 88, in test_reversed_completion_older_must_not_overwrite_latest
++    await self.check_order(("cat", "ca"))
++  File "<WORKSPACE>/test_search_overlap.py", line 67, in check_order
++    assert_latest("latest result remains visible after both requests finish")
++  File "<WORKSPACE>/test_search_overlap.py", line 43, in assert_latest
++    self.assertEqual(search.result, values["cat"], stage)
++AssertionError: 'results for ca' != 'results for cat'
++- results for ca
+++ results for cat
++?               +
++ : latest result remains visible after both requests finish
++
++----------------------------------------------------------------------
++Ran 2 tests in 0.012s
++
++FAILED (failures=1)
++
++Exit code: 1
++Production SHA-256 unchanged:
++b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea  search.py
++1b1d977767f7791a03efc9fb7cb2124a3a231731bc0f0834526f5a49c0fd1858  requirements.md
+diff --git a/test_search_overlap.py b/test_search_overlap.py
+new file mode 100644
+index 0000000..f1703e8
+--- /dev/null
++++ b/test_search_overlap.py
+@@ -0,0 +1,92 @@
++"""Deterministic overlap checks against the real Search; standard library only."""
++
++import asyncio
++import unittest
++
++from search import Search
++
++
++class SearchOverlapTests(unittest.IsolatedAsyncioTestCase):
++    TIMEOUT = 2.0
++
++    async def check_order(self, order):
++        search = Search()
++        queries = ("ca", "cat")
++        values = {"ca": "results for ca", "cat": "results for cat"}
++        loop = asyncio.get_running_loop()
++        replies = {query: loop.create_future() for query in queries}
++        entered = {query: asyncio.Event() for query in queries}
++        calls = []
++        completed = []
++        tasks = {}
++
++        def record(message):
++            print("[{}] {}".format(" -> ".join(order), message), flush=True)
++
++        async def fetch(query):
++            calls.append(query)
++            entered[query].set()
++            return await replies[query]
++
++        async def finish(query):
++            replies[query].set_result(values[query])
++            await asyncio.wait_for(asyncio.shield(tasks[query]), self.TIMEOUT)
++            self.assertTrue(tasks[query].done())
++            self.assertFalse(tasks[query].cancelled())
++            self.assertIsNone(tasks[query].exception())
++            completed.append(query)
++            record("PASS request {!r} finished successfully".format(query))
++
++        def assert_latest(stage):
++            record("ASSERT {}: expected={!r}, actual={!r}".format(
++                stage, values["cat"], search.result))
++            self.assertEqual(search.result, values["cat"], stage)
++            record("PASS " + stage)
++
++        try:
++            # Observe each fetch starting, without letting either complete.
++            for query in queries:
++                tasks[query] = asyncio.create_task(search.run(query, fetch))
++                await asyncio.wait_for(entered[query].wait(), self.TIMEOUT)
++
++            self.assertEqual(calls, list(queries))
++            self.assertTrue(all(not task.done() for task in tasks.values()))
++            self.assertTrue(all(not reply.done() for reply in replies.values()))
++            record("PASS actual Search started ca then cat; both requests pending")
++
++            await finish(order[0])
++            self.assertFalse(tasks[order[1]].done())
++            self.assertFalse(replies[order[1]].done())
++            record("PASS {!r} remains pending".format(order[1]))
++            if order[0] == "cat":
++                assert_latest("newer result visible while older request is pending")
++            # Normal order intentionally makes no intermediate display assertion.
++            await finish(order[1])
++            self.assertEqual(completed, list(order))
++            record("PASS controlled completion order = {!r}".format(completed))
++            assert_latest("latest result remains visible after both requests finish")
++        finally:
++            for task in tasks.values():
++                if not task.done():
++                    task.cancel()
++            for reply in replies.values():
++                if not reply.done():
++                    reply.cancel()
++            if tasks:
++                await asyncio.wait_for(
++                    asyncio.gather(*tasks.values(), return_exceptions=True),
++                    self.TIMEOUT,
++                )
++            self.assertTrue(all(task.done() for task in tasks.values()))
++            self.assertTrue(all(reply.done() for reply in replies.values()))
++            record("PASS cleanup: all owned requests and reply futures settled")
++
++    async def test_normal_completion_latest_result_after_both_finish(self):
++        await self.check_order(("ca", "cat"))
++
++    async def test_reversed_completion_older_must_not_overwrite_latest(self):
++        await self.check_order(("cat", "ca"))
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)

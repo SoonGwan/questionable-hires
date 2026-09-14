@@ -1,9 +1,72 @@
-# All-eight checkpoint 07 — review in progress
+# All-eight checkpoint 07 — completed development review
 
 Launch `b2816cd`, resources `32bf8bd`;
-[frozen protocol](BUNDLE-CONTRACT-07-PROTOCOL.md). No aggregate or overall success
-claim before all scheduled timing and original evidence review. Pending checks
-below are review-order notes; author replay waits until model timing finishes.
+[frozen protocol](BUNDLE-CONTRACT-07-PROTOCOL.md). All 18 scheduled cells completed,
+no timeouts/exclusions. No author tests or skill/task edits occurred during timing.
+Pending statements in the sequential review notes below are superseded by the
+final reconciliation here, not by replacing any missing original output.
+
+## Final reconciliation and interpretation — 2026-09-14
+
+All raw terminal usage/events, installed resource hashes and reviewed retained
+file inventories reconcile against launch b2816cd. Installed resources did not
+change. Originals remain unchanged except requested boundary files and form.py;
+additional files match reviewed tests/experiments. Copied standalone transport/
+callback assets match frozen sources. No observed scope violation. Persistence
+baseline's tracing repair and missing leading native section remain limitations;
+author replay cannot fill original capture gaps.
+
+Separate [author replay](results/bundle-contract-07/author-replay.json) exercises
+20 checks on disposable copies with unchanged retained tests, explicit discovery
+roots/counts and 20-second process bounds. Search-order tests reject original
+stale results and accept a valid generation guard. Protected-search tests reject
+the transient old-result overwrite with intended value AssertionErrors. Boundary
+tests reject original exact-18 behavior and accept the final implementation.
+Form tests accept final code and reject missing pending, guard and cleanup.
+Missing guard produces baseline's explicit duplicate-callback AssertionError;
+skill's duplicate waits until its one-second deadline and raises TimeoutError.
+Missing cleanup produces True-is-not-False assertions. All 20 expected outcomes
+match; retained projects are unchanged. These are author checks, not model output.
+
+| Case | Baseline tokens | Skill tokens | Token change | Baseline seconds | Skill seconds |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Boundary | 80,180 | 84,561 | +5.46% | 30.915 | 33.742 |
+| Formatter | 79,177 | 66,726 | −15.73% | 31.620 | 27.400 |
+| Active history | 63,965 | 67,278 | +5.18% | 25.625 | 28.072 |
+| Pending form | 66,600 | 91,330 | +37.13% | 77.490 | 72.227 |
+| Persistence audit | 86,969 | 74,656 | −14.16% | 90.136 | 37.700 |
+| Rolling schema | 103,365 | 109,377 | +5.82% | 70.643 | 45.151 |
+| Search diagnosis | 104,584 | 90,572 | −13.40% | 97.347 | 63.739 |
+| Search-order QA | 102,363 | 91,568 | −10.55% | 76.138 | 63.548 |
+| Protected QA | 65,374 | 72,381 | +10.72% | 57.519 | 68.585 |
+| **Sum** | **752,577** | **748,449** | **−0.55%** | **557.433** | **440.164** |
+
+Summed elapsed time falls **21.04%**. Ratios of sums; input includes cached input
+once, plus output. All usage is known; no success-only selection. This is not the
+historical chart's mean-of-task-ratios. Nine exposed authored tasks, n=1 per arm,
+shared host/cache and unequal extra verification/artifacts prohibit a causal or
+general 20–30% gain claim. Three pairs cost more on both axes and five use more
+tokens. Required work is supported, but broad real-developer efficiency remains
+unproven. Featured figures stay unchanged; historical checkpoint 06 is preserved.
+
+Next improvement targets: callback support still costs more tokens despite
+adoption; Friday avoids repeated SQL but retains discovery/reference overhead.
+Distinguish those costs from useful extra assertions. Do not weaken transitions,
+omit required checks or repeat this exposed suite until a favorable result appears.
+
+## Pending form — skill
+
+Completed: **91,330 tokens / 72.227s**, six shell calls. Reads the callback asset
+directly with actual project code; no redirect reference. Copies it unchanged
+into tests/controlled_call.py. Five native named tests and full passing summary
+are captured (0.023s), covering initial/pending state, duplicate suppression,
+independent concurrent instances, result/error identity, synchronous failure and
+cancellation with retry. Assertions are grouped, not omitted. One-second waits
+and registered owned-task cleanup are present. Empty mkdir/copy output is normal,
+not missing test evidence. Final production implementation is equivalent to
+baseline's; baseline has three duplicate witnesses versus skill's one, while
+skill also verifies retry after synchronous failure. These extras differ.
+No observed capture/scope issue; final reconciliation and replay are above.
 
 ## Persistence audit — baseline
 

@@ -9,16 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
+## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
-Checkpoint 07 is running, launch `b2816cd`, resources `32bf8bd`: nine fixed tasks,
-18 serial sessions. [Partial review](BUNDLE-CONTRACT-07-REVIEW.md) records the first
-seventeen completed cells, including the persistence baseline's tracing repair and
-missing output and the skill's complete four-check audit. No aggregate or new overall outcome yet; author replay waits for
-all timing to finish. The reviewed checkpoint below is still historical 06.
+[Checkpoint 07](BUNDLE-CONTRACT-07-REVIEW.md), resources `32bf8bd`: all 18 serial
+sessions across nine fixed tasks completed, no timeouts/exclusions. Baseline
+752,577 tokens/557.433s; skill 748,449/440.164s: **−0.55% tokens / −21.04% time**
+by ratios of sums. Raw usage/resources and reviewed inventories reconcile;
+20 separate native author controls match with retained tests unchanged. The
+persistence baseline's tracing repair and missing output remain disclosed.
+Three pairs are adverse on both costs; five use more tokens. Exposed authored
+n=1 tasks, shared host/cache and unequal extra work do not establish a causal or
+broad 20–30% efficiency gain. Featured figures remain fixed. Following targeted
+screens and checkpoint 06 are historical evidence, not today's headline result.
 
-한국어: 전체 8개 스킬 재측정이 진행 중이다. 첫 17개 세션의 실제 결과와
-오류·출력 한계를 기록했으며, 전체 집계나 새 성능 향상 주장은 아직 없다.
+한국어: 전체 8개 스킬의 9개 과제·18개 세션이 모두 완료됐다. 합계 기준
+토큰 0.55%, 시간 21.04% 감소지만, 3개 비교는 양쪽 비용이 모두 늘었다.
+원본 사용량·도구·파일을 대조했고 별도 결함 대조군 20개도 예상 결과와
+일치했다. 반복 1회·작성자 제작 과제·추가 검증량 차이 때문에 일반적인
+21% 성능 향상으로 홍보하지 않는다. 원본 출력 누락과 과거 결과는 보존한다.
 
 Instruction `6d733b9`: [Hostage single-read interface](HOSTAGE-SINGLE-READ-01.md)
 routes directly to the callback asset with usage/limits in its module docstring.
