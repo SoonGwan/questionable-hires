@@ -224,6 +224,39 @@ def matrix(spec, root, timeout=5):
     return output
 
 
+def assert_rows(result, phase_index, check, *, columns, rows):
+    """Assert one selected native observation; never execute SQL or infer readiness.
+
+    Explicit raises remain active under python -O. Ordered values use Python
+    equality, retaining native BLOB bytes and duplicate column labels.
+    """
+    if (type(phase_index) is not int or phase_index < 0
+            or phase_index >= len(result['phases'])):
+        raise ValueError('phase_index must identify an observed phase (zero based)')
+    if (not isinstance(columns, (list, tuple))
+            or any(not isinstance(column, str) for column in columns)
+            or not isinstance(rows, (list, tuple))
+            or any(not isinstance(row, (list, tuple)) or len(row) != len(columns) for row in rows)):
+        raise ValueError('provide ordered columns and equally wide list/tuple rows')
+    if result.get('complete') is not True:
+        raise AssertionError('matrix incomplete; inspect recorded errors and unrun phases')
+    phase = result['phases'][phase_index]
+    context = f"phase {phase_index} ({phase['name']!r}), check {check!r}"
+    if check not in phase['checks']:
+        raise AssertionError(context + ': check unrun')
+    observed = phase['checks'][check]
+    if observed.get('ok') is not True:
+        raise AssertionError(context + ': reader failed: ' + observed.get('error', 'unknown error'))
+    if observed.get('truncated') is not False:
+        raise AssertionError(context + ': rows truncated or completeness unknown')
+    expected_columns, expected_rows = list(columns), [tuple(row) for row in rows]
+    if observed['columns'] != expected_columns:
+        raise AssertionError(f"{context}: columns expected {expected_columns!r}, observed {observed['columns']!r}")
+    actual_rows = [tuple(row) for row in observed['rows']]
+    if actual_rows != expected_rows:
+        raise AssertionError(f'{context}: rows expected {expected_rows!r}, observed {actual_rows!r}')
+
+
 def format_result(result):
     """Serialize collected observations exactly as the CLI, including BLOBs.
 

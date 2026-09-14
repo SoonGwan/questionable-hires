@@ -3,6 +3,8 @@ import copy
 import importlib.util
 from pathlib import Path
 import tempfile
+import subprocess
+import sys
 import unittest
 from unittest.mock import patch
 
@@ -65,6 +67,28 @@ class RowAssertionTests(unittest.TestCase):
                 helper.assert_rows(result, index, 'reader', columns=['id', 'value'], rows=[[1, 'old']])
         with self.assertRaisesRegex(AssertionError, 'unrun'):
             helper.assert_rows(result, 0, 'unselected', columns=[], rows=[])
+
+    def test_bad_expectation_shapes_and_order_are_not_silently_normalized(self):
+        result = self.result()
+        for columns, rows in [('id', []), (['id'], [[1, 'old']]), (['id'], ['x'])]:
+            with self.subTest(columns=columns, rows=rows), self.assertRaises(ValueError):
+                helper.assert_rows(result, 0, 'reader', columns=columns, rows=rows)
+        ordered = self.result('SELECT 1 AS id UNION ALL SELECT 2 AS id')
+        with self.assertRaisesRegex(AssertionError, 'rows'):
+            helper.assert_rows(ordered, 0, 'reader', columns=['id'], rows=[(2,), (1,)])
+
+    def test_optimized_interpreter_still_rejects_actual_value_mismatch(self):
+        code = '''import runpy, sys
+h = runpy.run_path(sys.argv[1])
+r = h['matrix']({'phases': [{'name': 'actual'}], 'checks': {'read': 'SELECT 2 AS value'}}, '.')
+h['assert_rows'](r, 0, 'read', columns=['value'], rows=[(1,)])
+'''
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run([sys.executable, '-O', '-B', '-c', code, str(SCRIPT)],
+                                    cwd=directory, text=True, capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('AssertionError', result.stderr)
+        self.assertIn('rows expected [(1,)], observed [(2,)]', result.stderr)
 
 
 if __name__ == '__main__':

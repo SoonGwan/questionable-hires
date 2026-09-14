@@ -68,6 +68,23 @@ success and truncation. Reuse results for assertions/reporting; rerun only for
 missing observations, changed state or required independent evidence. Errors are
 not empty successful results; zero-row SELECTs still need interpretation.
 
+Optional `assert_rows(result, phase_index, check, columns=..., rows=...)` combines
+those guards for one selected observation (zero-based phase index). It raises with
+the phase/check and expected/observed values on mismatch, even under `python -O`.
+It rejects incomplete matrices, failed/unrun checks and truncated rows. Call it
+only for required value assertions; it does not assert unselected outcomes or
+deployment readiness. Expected SQL failures still need explicit error checks.
+Use the native API result for BLOB bytes. Ordering is significant; the helper does
+not sort rows, collapse duplicate columns or infer SQLite storage types from Python
+value equality. Choose actual expected values, not values copied from the result.
+
+For the example's initial old-reader contract, after collecting `result` once:
+
+```python
+assert_rows = helper['assert_rows']
+assert_rows(result, 0, 'old reader', columns=['id', 'name'], rows=[(1, 'old')])
+```
+
 CLI 0 means execution completed, **not** all readers pass or deployment is safe.
 CLI 1 means incomplete migration/budget execution; 2 invalid input. Failed
 migrations stop; partial state is not the next successful phase.
