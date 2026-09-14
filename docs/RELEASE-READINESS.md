@@ -1,5 +1,19 @@
 # Release readiness — development preview
 
+## 2026-09-15: conventional startup compatibility restored
+
+Unmodified `7a59de8` Linux arm64/Python 3.12.3 archive: **623 discovered,
+619 passed, four explicit skips, 36.270s**, exit 0. Receipt now preserves
+conventional system/user startup hooks before checking copied imports; Ubuntu's
+default hook is not removed or hidden. [Runtime controls and all logs](../benchmarks/RECEIPT-STARTUP-COEXIST-01.md)
+retain the preceding failed candidate and its fixture-precedence correction.
+macOS `79a3d2e`: all 623 tests pass (99.093s); subsequent fixture edits pass
+17 targeted tests. No hosted CI, fresh dependency install or model-performance
+claim. Git-provenance/ripgrep skips remain unavailable coverage, not passes.
+
+한국어: 기본 시작 훅을 유지한 Linux 배포본이 619개 통과·4개 명시적 생략으로
+검증됐다. 아래 실패 기록도 보존하며 원격 CI·설치·모델 성능 검증과 구분한다.
+
 ## 2026-09-15: current Linux archive gate fails
 
 Unmodified source archive `80360c3`, network-disabled Linux arm64/Python 3.12.3:

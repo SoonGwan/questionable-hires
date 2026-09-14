@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt startup coexistence verified — 2026-09-15, source `7a59de8`
+
+[Conventional startup support](RECEIPT-STARTUP-COEXIST-01.md): Ubuntu's default
+hook remains in place; actual native comparisons now run. Unmodified Linux archive
+has 623 discovered, 619 passed/four explicit skips (36.270s). macOS runtime source
+`79a3d2e` passes all 623 (99.093s), followed by 17 passing targeted checks after
+fixture-only corrections. Initial Linux five-failure result is retained: the
+test-owned site hook needed native lookup precedence established, not a runtime
+bypass. Hook errors/external imports remain incomplete; arbitrary startup rewrites
+are not supported. This is local compatibility evidence, not a model-cost gain,
+hosted CI or installation verification. No featured/chart changes.
+
+한국어: Ubuntu 기본 훅을 보존한 native 비교가 동작하고 Linux 배포본 619개 통과·
+4개 명시적 생략을 확인했다. macOS 전체 및 후속 관련 검사도 통과했다. 초기
+Linux 검사 실패와 한계도 보존하며 모델 성능이나 모든 시작 환경 지원으로
+일반화하지 않는다. 전체 8개 스킬 효율 목표는 아직 미달이다.
+
 ## Receipt startup coexistence candidate — 2026-09-15, parent `f985200`
 
 Native-mode startup now removes its own temporary lookup/identity, imports real
