@@ -1,0 +1,95 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "redirect-history",
+  "skill": "necromancer",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "skill_sha256": "72e8e925c4403815266c4f243841c81b64f216dd5f8ec6e5c0539dffb9af3901",
+  "skill_resources_sha256": "09ab831d1e9fa5e375112e81188335f0b8858ce8f9ee202c92c0277ca00c2816",
+  "elapsed_seconds": 114.741,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 166172,
+    "cached_input_tokens": 140032,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3331,
+    "reasoning_output_tokens": 95
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Use $necromancer at .agents/skills/necromancer/SKILL.md.\n\nReview two independent proposals in this HTTPX checkout: A removes the\nGET-method-change block that drops Content-Length and Transfer-Encoding from\nBaseClient._redirect_headers; B removes the GET-method-change early return from\nBaseClient._redirect_stream so it always returns request.stream. Do not combine\nthe proposals. Are these redundant legacy treatments that can now be removed?\n\nVerify current, A-only and B-only behavior through an actual Client following\nredirects with MockTransport. For each variant, observe the second request's\nmethod, body bytes, Content-Length and Transfer-Encoding for three cases:\nPOST with b\"payload\" followed by 302; POST with iter([b\"pay\", b\"load\"]) followed\nby 302; and POST with b\"payload\" followed by 307. Use local synthetic URLs,\nrecord actual values and explain each proposal's compatibility consequence.\nDo not claim MockTransport observations demonstrate actual network framing.\n\nTrace both code regions through local Git history. Check the claim that these\nbehaviors were first introduced by the sync-API reintroduction refactor: inspect\nthe relevant attributed change and an earlier implementation where necessary.\nDistinguish line attribution/code movement from behavioral introduction. Citing\nearlier presence is sufficient to refute a claimed later introduction; do not\nclaim first-ever origin or undocumented intent without evidence. Use only\nancestors of the pinned HEAD, not later branch tips or external issue pages.\n\nGive independent recommendations with current call-path and historical evidence.\nThis is a read-only review: preserve original source/tests/configuration and\ninstalled resources. No network, installs, fetching, commits or publishing.\nIn-memory substitutions are allowed. Use <PREINSTALLED_PYTHON> with -B for Python\n(pytest additionally with -p no:cacheprovider). If scratch is necessary, keep it\ninside the project and remove it when done. Captured output is sufficient;\nno separate report or retained harness is required.\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "necromancer/SKILL.md": {
+      "kind": "file",
+      "sha256": "72e8e925c4403815266c4f243841c81b64f216dd5f8ec6e5c0539dffb9af3901",
+      "mode": 420
+    },
+    "necromancer/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+      "mode": 420
+    },
+    "necromancer/references/focused-history.md": {
+      "kind": "file",
+      "sha256": "a90b79c8e7001bcbacc61aa52819ef6807a1194b5fb771538d0fb72912c9d468",
+      "mode": 420
+    },
+    "necromancer/scripts/trace.py": {
+      "kind": "file",
+      "sha256": "5116059d8f7cc2dc1ce0139a718656a64067657468c0d0ba670f00b019e821ed",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "necromancer/SKILL.md": {
+      "kind": "file",
+      "sha256": "72e8e925c4403815266c4f243841c81b64f216dd5f8ec6e5c0539dffb9af3901",
+      "mode": 420
+    },
+    "necromancer/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+      "mode": 420
+    },
+    "necromancer/references/focused-history.md": {
+      "kind": "file",
+      "sha256": "a90b79c8e7001bcbacc61aa52819ef6807a1194b5fb771538d0fb72912c9d468",
+      "mode": 420
+    },
+    "necromancer/scripts/trace.py": {
+      "kind": "file",
+      "sha256": "5116059d8f7cc2dc1ce0139a718656a64067657468c0d0ba670f00b019e821ed",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 11595,
+    "mode": 420,
+    "sha256": "6071ab2747cd652870df437425a7bb0a7b55b869f650e9cd037b257494b8117e",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

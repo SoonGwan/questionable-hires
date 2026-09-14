@@ -9,6 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Full-history redirect result — 2026-09-15, launch `68569e9`
+
+[Fresh real-checkout pair](results/httpx-redirect-history-01/README.md), Necromancer
+`97a9b72`: both correctly observe nine required redirect requests and distinguish
+refactoring attribution from earlier behavior. Skill records **31.80% fewer total
+tokens / 10.32% less time** (169,503 / 114.741s versus 248,548 / 127.947s). Both
+have one annotation-compilation failure; skill repeats six earlier case checks.
+Neither uses the collector, so recent helper changes have no demonstrated effect.
+Different extra work, n=1/shared host and baseline-first order prevent broad or
+causal claims. All 125 original files per arm remain unchanged; fourteen tool
+outputs match stored responses exactly, two historical outputs are explicitly
+budget-truncated with decisive evidence supplied by other original reads.
+
+한국어: 새 실제 저장소 과제의 필수 판단·관찰은 양쪽 모두 충족했고, 이번 한 쌍은
+토큰 31.80%·시간 10.32% 감소했다. 도우미는 미사용이고 추가 작업도 달라 일반화나
+새 기능의 인과 효과로 주장하지 않는다. 실패·중복 작업·출력 잘림을 포함해 기록하고
+기존 불리한 결과와 함께 유지한다. 전체 8개 스킬 목표나 그래프 승격은 아직 아니다.
+
 ## Full-history transfer preflight — 2026-09-15, parent `97a9b72`
 
 [Frozen redirect review](HTTPX-REDIRECT-HISTORY-01-PROTOCOL.md) uses a separate
@@ -16,8 +34,8 @@ full HTTPX history at the same pinned source (125 files, 1,499 ancestors). Nativ
 2-test controls and nine real Client/MockTransport observations pass the author
 preflight; deliberate failures retain actual/expected differences. Earlier
 middleware presence permits checking attribution versus introduction. Previous
-shallow checkouts remain untouched. **No model sessions yet**, no performance
-claim, and no featured changes. The next fixed pair is baseline then skill.
+shallow checkouts remain untouched. At that preflight checkpoint no model sessions
+had run; the completed baseline-then-skill pair is reviewed above. No featured changes.
 
 한국어: 같은 코드의 전체 이력을 별도로 확보해 실제 저장소 기반 새 과제를 고정했다.
 기존 테스트와 정상·변경 동작의 사전 검증은 끝났지만 모델 성능 측정은 아직이다.

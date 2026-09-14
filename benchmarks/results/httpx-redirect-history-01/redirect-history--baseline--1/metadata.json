@@ -1,0 +1,53 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "redirect-history",
+  "skill": "necromancer",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 127.947,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 245146,
+    "cached_input_tokens": 213888,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3402,
+    "reasoning_output_tokens": 23
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Review two independent proposals in this HTTPX checkout: A removes the\nGET-method-change block that drops Content-Length and Transfer-Encoding from\nBaseClient._redirect_headers; B removes the GET-method-change early return from\nBaseClient._redirect_stream so it always returns request.stream. Do not combine\nthe proposals. Are these redundant legacy treatments that can now be removed?\n\nVerify current, A-only and B-only behavior through an actual Client following\nredirects with MockTransport. For each variant, observe the second request's\nmethod, body bytes, Content-Length and Transfer-Encoding for three cases:\nPOST with b\"payload\" followed by 302; POST with iter([b\"pay\", b\"load\"]) followed\nby 302; and POST with b\"payload\" followed by 307. Use local synthetic URLs,\nrecord actual values and explain each proposal's compatibility consequence.\nDo not claim MockTransport observations demonstrate actual network framing.\n\nTrace both code regions through local Git history. Check the claim that these\nbehaviors were first introduced by the sync-API reintroduction refactor: inspect\nthe relevant attributed change and an earlier implementation where necessary.\nDistinguish line attribution/code movement from behavioral introduction. Citing\nearlier presence is sufficient to refute a claimed later introduction; do not\nclaim first-ever origin or undocumented intent without evidence. Use only\nancestors of the pinned HEAD, not later branch tips or external issue pages.\n\nGive independent recommendations with current call-path and historical evidence.\nThis is a read-only review: preserve original source/tests/configuration and\ninstalled resources. No network, installs, fetching, commits or publishing.\nIn-memory substitutions are allowed. Use <PREINSTALLED_PYTHON> with -B for Python\n(pytest additionally with -p no:cacheprovider). If scratch is necessary, keep it\ninside the project and remove it when done. Captured output is sufficient;\nno separate report or retained harness is required.\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 11595,
+    "mode": 420,
+    "sha256": "6071ab2747cd652870df437425a7bb0a7b55b869f650e9cd037b257494b8117e",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}
