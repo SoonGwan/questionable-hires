@@ -11,6 +11,11 @@ it has not established a broad 20–30% gain.
 
 ## Old/new Exorcist discovery screen — 2026-09-15, launch `6464e84`
 
+Restored source `adec236` passes the full local suite: **598 tests / 91.171s**,
+no reported skips. Skill validation, metadata/local links, featured synchronization
+and whitespace checks pass. 한국어: 복원된 소스 기준 전체 로컬 검사 598개가 통과했다.
+이 검사는 스킬의 일반 성능이나 호스팅 CI 통과를 의미하지 않는다.
+
 [New real-checkout query-construction task](results/httpx-query-build-01/README.md):
 candidate `329d06c`, no-skill baseline and original skill `d90c1d4`, one fresh
 session each. All reproduce the four required cases and explain repeated-value

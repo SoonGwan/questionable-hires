@@ -102,3 +102,9 @@ Twenty-one local HTTPX-runner tests and the native four-case/contradictory-asser
 preflight pass. Two upstream preflight tests pass before each timed session.
 These checks do not establish all-eight efficiency or hosted release readiness.
 Featured charts and prior frozen claims remain unchanged.
+
+Post-restore source `adec236`: full local
+`python3 -B -m unittest discover -s tests` passes **598 tests / 91.171s**, no
+reported skips. Skill validation, catalog/local links, featured synchronization
+and whitespace checks pass. The restored entrypoint is byte-identical to
+`d90c1d4`. This is local regression evidence, not a new model trial or hosted CI.
