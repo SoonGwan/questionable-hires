@@ -166,6 +166,28 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
 
 
 def trace(repo, filename, start, end, max_commits=3):
+    return trace_ranges(repo, filename, [(start, end)], max_commits)
+
+
+def trace_ranges(repo, filename, ranges, max_commits=3):
+    """Collect a bounded union of current ranges, sharing Git work per file."""
+    if not isinstance(ranges, (list, tuple)) or not 1 <= len(ranges) <= 100:
+        raise ValueError('Select 1–100 line ranges')
+    for selected in ranges:
+        if (not isinstance(selected, (list, tuple)) or len(selected) != 2
+                or any(type(value) is not int for value in selected)
+                or not 1 <= selected[0] <= selected[1]):
+            raise ValueError('Line ranges require positive integer start/end pairs')
+    merged = []
+    for start, end in sorted(ranges, key=lambda pair: (pair[0], pair[1])):
+        if merged and start <= merged[-1][1] + 1:
+            merged[-1][1] = max(merged[-1][1], end)
+        else:
+            merged.append([start, end])
+    if (sum(end - start + 1 for start, end in merged) > 100
+            or type(max_commits) is not int or not 1 <= max_commits <= 5):
+        raise ValueError('Select 1–100 lines and 1–5 commits')
+    selected_lines = [i for start, end in merged for i in range(start, end + 1)]
     repo = Path(repo).resolve()
     path = Path(filename)
     if path.is_absolute() or '..' in path.parts or '.git' in path.parts:
@@ -178,8 +200,6 @@ def trace(repo, filename, start, end, max_commits=3):
             break
         if parent.is_symlink():
             raise ValueError('Symlinked parent directories are unsupported')
-    if not 1 <= start <= end or end - start >= 100 or not 1 <= max_commits <= 5:
-        raise ValueError('Select 1–100 lines and 1–5 commits')
     if target.stat().st_size > 2_000_000:
         raise ValueError('Selected file exceeds 2 MB; use focused native tools')
     with target.open('rb') as stream:
@@ -187,10 +207,12 @@ def trace(repo, filename, start, end, max_commits=3):
     if len(current) > 2_000_000:
         raise ValueError('Selected file exceeds 2 MB while reading; use focused native tools')
     lines = git_lines(current.decode('utf-8'))
-    if end > len(lines):
+    if selected_lines[-1] > len(lines):
         raise ValueError('Line range exceeds current file')
-    evidence = dict(path=path.as_posix(), current_lines=[dict(line=i + 1, text=lines[i])
-                    for i in range(start - 1, end)], commits=[])
+    evidence = dict(path=path.as_posix(), current_lines=[dict(line=i, text=lines[i - 1])
+                    for i in selected_lines], commits=[])
+    if len(merged) > 1:
+        evidence['ranges'] = merged
     top = git(repo, 'rev-parse', '--show-toplevel', '--is-shallow-repository')
     if top.returncode:
         evidence.update(history='unavailable', reason=top.stderr.strip())
@@ -205,12 +227,13 @@ def trace(repo, filename, start, end, max_commits=3):
         raise ValueError(status.stderr.strip())
     evidence['working_status'] = status.stdout.rstrip()
     evidence['shallow'] = shallow == 'true'
-    blame = git(repo, 'blame', '--no-textconv', '--line-porcelain', '-L', f'{start},{end}', '--', path.as_posix())
+    selections = [argument for start, end in merged for argument in ('-L', f'{start},{end}')]
+    blame = git(repo, 'blame', '--no-textconv', '--line-porcelain', *selections, '--', path.as_posix())
     if blame.returncode:
         evidence.update(history='unavailable', reason=blame.stderr.strip())
         return evidence
     rows = parse_blame(blame.stdout)
-    if len(rows) != end - start + 1:
+    if [row['current_line'] for row in rows] != selected_lines:
         raise ValueError('Incomplete blame parse; use native Git evidence')
     evidence.update(history='available', blame=rows)
     grouped = {}
@@ -255,13 +278,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repo', type=Path, default=Path.cwd())
     parser.add_argument('--path', required=True)
-    parser.add_argument('--lines', required=True, help='Inclusive current line range, e.g. 12:24')
+    parser.add_argument('--lines', required=True, action='append',
+                        help='Inclusive current line range, e.g. 12:24; repeat for distant regions')
     parser.add_argument('--max-commits', type=int, default=3)
     parser.add_argument('--pretty', action='store_true', help='Indent JSON for human reading; default is compact')
     args = parser.parse_args()
     try:
-        start, end = map(int, args.lines.split(':'))
-        result = trace(args.repo, args.path, start, end, args.max_commits)
+        ranges = [tuple(map(int, selection.split(':'))) for selection in args.lines]
+        result = trace_ranges(args.repo, args.path, ranges, args.max_commits)
     except (ValueError, OSError, subprocess.TimeoutExpired) as error:
         parser.exit(2, 'History not established: ' + str(error) + '\n')
     print(json.dumps(result, indent=2 if args.pretty else None, ensure_ascii=False,

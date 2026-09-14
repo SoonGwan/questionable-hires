@@ -29,7 +29,17 @@ does not make concurrently edited files a consistent snapshot.
 
 Source and Git output must decode as UTF-8. Line numbers follow Git's LF boundaries, not a language parser's: embedded Unicode separators and CR characters remain source content, including the CR in CRLF files. Current text, blame rows and numbered patch excerpts use the same boundary rule.
 
-Nearby regions of the same behavior can share one bounded range instead of recollecting status, attribution and the same patches separately. Combine only when the intervening context is relevant; check omitted commits and truncation before reusing the result. Keep distant or unrelated regions separate. Fewer calls are not a saving if a wider range adds irrelevant history or hides a decisive commit.
+For several relevant regions in one file, repeat `--lines 12:24 --lines 180:192`
+instead of recollecting status, blame and shared commits separately. The API is
+`trace_ranges(repo, filename, [(12, 24), (180, 192)], max_commits=3)`; the original
+single-range `trace()` API remains supported. Ranges are sorted and overlapping/
+adjacent ranges merged; at most 100 supplied ranges and 100 distinct selected
+lines total. Gaps are not selected. Multiple disjoint ranges appear in `ranges`;
+a single merged range retains the existing result shape. Commit and patch caps
+are shared across the whole selection, not per range: check `omitted_commits`
+and truncation before concluding that all requested origins were collected.
+Do not combine unrelated investigations merely to reduce calls. Recollect when
+the source/state changes; this is one collection, not a persistent result cache.
 
 For an unambiguous single-file patch, only complete hunks overlapping the attributed historical lines are returned, with `omitted_hunks` counting excluded hunks. This is a focused excerpt, not the entire change or proof that omitted changes are unrelated semantically. Commit metadata and nearby hunk context remain. Ambiguous/multi-file/combined patches or no matching hunk fall back to the full capped output. If surrounding changes matter, inspect `git show <commit> -- <historical-path>`; do not infer their absence from the excerpt.
 

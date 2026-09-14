@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Distant history ranges — 2026-09-15, parent `671128e`
+
+[Shared collection](HISTORY-RANGES-01.md) adds repeatable CLI line ranges and a
+multi-range API without selecting gaps. A real three-region control uses 4 Git
+commands rather than 12, preserving selected attribution/changes and explicit
+global-cap omissions. On one 100,000-line local history, three paired rounds
+record median collector time 0.359s → 0.116s and 15.64% fewer output bytes. This
+is not model token/time improvement; adoption and whole-task effects are unmeasured.
+
+한국어: 떨어진 여러 구간의 수집을 공유해 실제 Git 호출과 도우미 실행 비용을
+줄였다. 선택한 출처·변경과 누락 경고는 유지한다. 로컬 도우미 측정이며 전체
+스킬 성능 향상률은 아니고, 아래 불리한 모델 결과나 기존 그래프는 바꾸지 않는다.
+
 ## Invoice history transfer — 2026-09-15, launch `14a8556`
 
 [Fresh two-proposal screen](results/history-invoice-01/README.md), Necromancer
