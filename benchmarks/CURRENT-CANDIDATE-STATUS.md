@@ -9,6 +9,25 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Real HTTPX stream diagnosis — 2026-09-15, launch `a2546a2`
+
+[Full-checkout stream-preview comparison](results/httpx-stream-preview-01/README.md),
+Exorcist resources from `d90c1d4`: both reproduce three real Client/MockTransport
+paths and correctly distinguish cached content from stream exhaustion/closure.
+Skill records **−15.38% tokens / +7.83% time**, not overall efficiency acceptance.
+Its first filename filter finds unrelated documentation images, followed by
+another inventory and symbol search. Both preserve all 125 tracked upstream files.
+Stored original tool responses retain two decisive outputs partially omitted by
+skill's CLI records; no author rerun repairs those logs. Real library, authored
+n=1 task and no live connection pool: not production diagnosis or all-eight proof.
+
+한국어: 실제 HTTPX에서 응답 본문 보관 여부와 스트림 소진·종료를 구분하는 진단은
+양쪽 모두 맞았다. 스킬은 토큰 15.38% 감소·시간 7.83% 증가로 전체 효율 목표는
+미달이다. 첫 파일 검색이 문서 이미지만 찾는 낭비도 확인됐다. 두 원본 도구 응답은
+일반 실행 로그에서 일부가 빠졌지만 같은 세션의 저장 기록으로 확인했고, 원본
+파일 125개는 보존됐다. 라이브러리 기반 단일 과제로 실제 운영 장애나 일반 성능을
+확정하지 않으며 대표 그래프는 유지한다.
+
 ## Snapshot QA transfer — 2026-09-15, launch `ff67561`
 
 [New settings-snapshot workload](results/editor-snapshot-01/README.md), candidate
