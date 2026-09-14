@@ -1,0 +1,40 @@
+{
+  "revision": "07166bfcca6432f3954b6e1fb88e555acfe11d2a",
+  "selected_tests": [
+    "test_selected_skill_is_complete",
+    "test_copy_failure_rolls_back_only_new_targets",
+    "test_cancellation_cleans_all_new_targets_and_preserves_unrelated",
+    "test_cleanup_failure_preserves_error_and_attempts_remaining_targets"
+  ],
+  "adaptation": "Only test setUp temp directory made explicitly project-local; test bodies unchanged.",
+  "input_sha256": {
+    "scripts/install.py": "ec9bcbb2126a770705fea75b934d8643174cfbbce21e9114cd8aca7d2194f88e",
+    "tests/test_install.py": "3456a2af1ee09fbac93d90a4227d70e4d626538f14047acc965c9522ffbb1dab",
+    "LICENSE": "12617990347aef34127478148491ea4130319623cf169b89c9fdeed41c9c7da7",
+    "skills/necromancer/SKILL.md": "72e8e925c4403815266c4f243841c81b64f216dd5f8ec6e5c0539dffb9af3901",
+    "skills/necromancer/agents/openai.yaml": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+    "skills/necromancer/references/focused-history.md": "9e17d05381fbe16ba93aebf2b73c647215540d7e515f3265e9fc37804c33a9ea",
+    "skills/necromancer/scripts/trace.py": "6ed798f21af6f9d1fe6e5b3ddda66b1732a6b81590e980c7ccf17a292d5c2d1b",
+    "skills/receipt/SKILL.md": "0c58cc0a400609af6faa5a5cf969175ab9453209ca465e22911597a368ac25d5",
+    "skills/receipt/agents/openai.yaml": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+    "skills/receipt/references/existing-fix.md": "da10c609815622f7c0f5d04d071c70f51cde83ea29c38b6733eb0915a689ac7f",
+    "skills/receipt/scripts/compare.py": "3e1ba06ee05834d4c79494c03f89d3c7a67fa2a331db6b3a2132187c0f008249"
+  },
+  "observations": [
+    {
+      "variant": "correct",
+      "exit_code": 0,
+      "output": "test_cancellation_cleans_all_new_targets_and_preserves_unrelated (test_install.InstallTests) ... ok\ntest_cleanup_failure_preserves_error_and_attempts_remaining_targets (test_install.InstallTests) ... ok\ntest_copy_failure_rolls_back_only_new_targets (test_install.InstallTests) ... ok\ntest_selected_skill_is_complete (test_install.InstallTests) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.017s\n\nOK\n"
+    },
+    {
+      "variant": "omit-rollback",
+      "exit_code": 1,
+      "output": "test_cancellation_cleans_all_new_targets_and_preserves_unrelated (test_install.InstallTests) ... FAIL\ntest_cleanup_failure_preserves_error_and_attempts_remaining_targets (test_install.InstallTests) ... FAIL\ntest_copy_failure_rolls_back_only_new_targets (test_install.InstallTests) ... FAIL\ntest_selected_skill_is_complete (test_install.InstallTests) ... ok\n\n======================================================================\nFAIL: test_cancellation_cleans_all_new_targets_and_preserves_unrelated (test_install.InstallTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/tests/test_install.py\", line 303, in test_cancellation_cleans_all_new_targets_and_preserves_unrelated\n    self.assertEqual(list(self.dest.iterdir()), [marker])\nAssertionError: Lists differ: [Posi[119 chars]txt'), PosixPath('<HOME>/orca/workspaces[217 chars]er')] != [Posi[119 chars]txt')]\n\nFirst list contains 2 additional elements.\nFirst extra element 1:\nPosixPath('<PREFLIGHT>/tmp1qpqt_65/skills/receipt')\n\nDiff is 802 characters long. Set self.maxDiff to None to see it.\n\n======================================================================\nFAIL: test_cleanup_failure_preserves_error_and_attempts_remaining_targets (test_install.InstallTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/tests/test_install.py\", line 325, in test_cleanup_failure_preserves_error_and_attempts_remaining_targets\n    self.assertEqual(attempted, ['receipt', 'necromancer'])\nAssertionError: Lists differ: [] != ['receipt', 'necromancer']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'receipt'\n\n- []\n+ ['receipt', 'necromancer']\n\n======================================================================\nFAIL: test_copy_failure_rolls_back_only_new_targets (test_install.InstallTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/tests/test_install.py\", line 278, in test_copy_failure_rolls_back_only_new_targets\n    self.assertEqual(list(self.dest.iterdir()), [existing])\nAssertionError: Lists differ: [Posi[109 chars]ills/receipt'), PosixPath('<HOME>/orca/w[95 chars]ed')] != [Posi[109 chars]ills/unrelated')]\n\nFirst differing element 0:\nPosix[61 chars]rks/installer-preflight-1zybnmnw/tmpfa5ip0ff/skills/receipt')\nPosix[61 chars]rks/installer-preflight-1zybnmnw/tmpfa5ip0ff/skills/unrelated')\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\nPosixPath('<PREFLIGHT>/tmpfa5ip0ff/skills/unrelated')\n\n- [PosixPath('<PREFLIGHT>/tmpfa5ip0ff/skills/receipt'),\n-  PosixPath('<PREFLIGHT>/tmpfa5ip0ff/skills/unrelated')]\n? ^\n\n+ [PosixPath('<PREFLIGHT>/tmpfa5ip0ff/skills/unrelated')]\n? ^\n\n\n----------------------------------------------------------------------\nRan 4 tests in 0.016s\n\nFAILED (failures=3)\n"
+    },
+    {
+      "variant": "miss-cancellation",
+      "exit_code": 1,
+      "output": "test_cancellation_cleans_all_new_targets_and_preserves_unrelated (test_install.InstallTests) ... FAIL\ntest_cleanup_failure_preserves_error_and_attempts_remaining_targets (test_install.InstallTests) ... ok\ntest_copy_failure_rolls_back_only_new_targets (test_install.InstallTests) ... ok\ntest_selected_skill_is_complete (test_install.InstallTests) ... ok\n\n======================================================================\nFAIL: test_cancellation_cleans_all_new_targets_and_preserves_unrelated (test_install.InstallTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/tests/test_install.py\", line 303, in test_cancellation_cleans_all_new_targets_and_preserves_unrelated\n    self.assertEqual(list(self.dest.iterdir()), [marker])\nAssertionError: Lists differ: [Posi[119 chars]txt'), PosixPath('<HOME>/orca/workspaces[217 chars]er')] != [Posi[119 chars]txt')]\n\nFirst list contains 2 additional elements.\nFirst extra element 1:\nPosixPath('<PREFLIGHT>/tmpbj2se2vk/skills/receipt')\n\nDiff is 802 characters long. Set self.maxDiff to None to see it.\n\n----------------------------------------------------------------------\nRan 4 tests in 0.017s\n\nFAILED (failures=1)\n"
+    }
+  ]
+}
