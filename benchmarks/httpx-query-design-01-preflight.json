@@ -1,0 +1,78 @@
+{
+  "source_revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "native_output": "..............                                                           [100%]\n14 passed in 0.03s\n",
+  "original_files_unchanged": true,
+  "tracked_files": 125,
+  "observations": [
+    {
+      "case": 1,
+      "current": "a=1&a=2&keep=x",
+      "multi_items": [
+        [
+          "a",
+          "1"
+        ],
+        [
+          "a",
+          "2"
+        ],
+        [
+          "keep",
+          "x"
+        ]
+      ],
+      "proposed": "a=2&keep=x"
+    },
+    {
+      "case": 2,
+      "current": "enabled=true&empty=",
+      "multi_items": [
+        [
+          "enabled",
+          "true"
+        ],
+        [
+          "empty",
+          ""
+        ]
+      ],
+      "proposed": "enabled=True&empty=None"
+    },
+    {
+      "case": 3,
+      "current": "a=1&a=2",
+      "multi_items": [
+        [
+          "a",
+          "1"
+        ],
+        [
+          "a",
+          "2"
+        ]
+      ],
+      "proposed": "a=%5B%271%27%2C+%272%27%5D"
+    },
+    {
+      "case": 4,
+      "current": "a=one+two&keep=x",
+      "multi_items": [
+        [
+          "a",
+          "one two"
+        ],
+        [
+          "keep",
+          "x"
+        ]
+      ],
+      "proposed": "a=one+two&keep=x"
+    }
+  ],
+  "base": "a=1&a=2&keep=x",
+  "derived": "a=1&a=2&a=3&keep=x",
+  "request_url": "https://example.invalid/path?a=7&a=8&keep=x",
+  "client_after": "a=1&a=2&keep=x",
+  "deliberate_assertion_failure": "'a=1&a=2&keep=x' != 'a=2&keep=x'\n- a=1&a=2&keep=x\n? ----\n+ a=2&keep=x\n",
+  "limitation": "Author checks only; no full replacement implementation, network request or model result."
+}
