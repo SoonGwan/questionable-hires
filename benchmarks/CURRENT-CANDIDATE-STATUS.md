@@ -13,11 +13,21 @@ it has not established a broad 20–30% gain.
 
 [Native streaming preflight](APP-SERVER-NATIVE-CAPTURE-01.md) now retains the full
 delayed payload, genuine assertion diagnostics, cap flags and timeout output.
-Four evidence-reconciliation tests pass. This is standalone command execution,
-not yet model-issued tools; the benchmark transport and featured claims are unchanged.
+Four native evidence-reconciliation tests pass. This preflight covered standalone
+command execution only; the benchmark transport and featured claims are unchanged.
+
+[Subsequent model-route diagnostic](APP-SERVER-MODEL-CAPTURE-01.md), launch `de00a23`,
+does **not** reproduce that success: incremental and completed command output both
+lose BEGIN while the final answer retains its nonce. One model turn, one command;
+personal hooks and built-in app initialization remain. Reject this transport as a
+demonstrated capture fix. Five combined reconciliation tests pass, not performance tests.
 
 한국어: 별도 명령 실행 사전 검사에서 전체 출력·실제 실패·잘림 표시·시간 초과를
-보존했다. 증거 대조 4개가 통과했지만 모델 도구 호출 검증은 아직 남아 있다.
+보존했다. 증거 대조 4개가 통과했으며 그 범위는 모델 없는 명령 실행에 한정된다.
+
+후속 모델 검사에서는 중간 출력에도 앞부분 누락이 남았다. 개인 훅·내장 앱 연결도
+있어 기존 실행기와 동일 조건이 아니다. 이 방식을 검증된 해결책으로 채택하지
+않고 실패 결과까지 보존했다. 통합 증거 대조 5개 통과는 성능 개선 주장이 아니다.
 
 [Four baseline-only diagnostic sessions](CLI-OUTPUT-LOCALIZATION-01.md) preserve
 six immediate outputs fully, but both delayed 92-byte outputs lose the leading

@@ -9,6 +9,30 @@ ROOT = Path(__file__).resolve().parents[1] / 'benchmarks/results/app-server-nati
 
 
 class NativeCaptureTests(unittest.TestCase):
+    def test_model_delta_route_still_loses_prefix(self):
+        root = ROOT.parent / 'app-server-model-capture-02'
+        events = [json.loads(line) for line in (root / 'server-events.jsonl').read_text().splitlines()]
+        items = [e['params']['item'] for e in events if e.get('method') == 'item/completed']
+        commands = [item for item in items if item['type'] == 'commandExecution']
+        self.assertEqual(len(commands), 1)
+        command = commands[0]
+        self.assertEqual(command['command'], "/bin/zsh -lc 'python3 -B emit.py'")
+        self.assertEqual(command['exitCode'], 0)
+        witness = json.loads((root / 'project/witness-delayed.json').read_text())
+        end = 'END delayed ' + witness['last'] + '\n'
+        expected = ('BEGIN delayed ' + witness['first'] + '\n' + end).encode()
+        self.assertEqual(len(expected), witness['bytes'])
+        self.assertEqual(hashlib.sha256(expected).hexdigest(), witness['sha256'])
+        deltas = [e['params']['delta'] for e in events
+                  if e.get('method') == 'item/commandExecution/outputDelta'
+                  and e['params']['itemId'] == command['id']]
+        self.assertEqual(''.join(deltas), end)
+        self.assertEqual(command['aggregatedOutput'], end)
+        answer = json.loads([item['text'] for item in items
+                            if item['type'] == 'agentMessage' and item['phase'] == 'final_answer'][-1])
+        self.assertEqual((answer['first'], answer['last']), (witness['first'], witness['last']))
+        self.assertEqual(json.loads((root / 'outcome.json').read_text())['turn']['status'], 'completed')
+
     def check_record(self, name, identity):
         events = [json.loads(line) for line in (ROOT / 'server-events.jsonl').read_text().splitlines()]
         record = json.loads((ROOT / (name + '.json')).read_text())
