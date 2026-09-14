@@ -11,6 +11,20 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [committed SQLite transfer preflight](RECEIPT-LEDGER-01-PROTOCOL.md),
+resources `ec0cc28`, collector `4325a05`: two new correlated variants exercise real
+committed writes/fresh reads and current tests on historical implementations.
+Complete fix passes; acknowledgement-only fix still doubles balances. Native
+preflight, same-input/import provenance, full original preservation and cleanup
+pass (2 author tests / 0.760s). Four baseline/skill sessions are preregistered, not
+yet run. New authored fixtures are not independent production evidence.
+
+한국어: 기존 파서와 다른 SQLite 수정 검증 과제 2종을 준비했다. 실제 커밋된
+쓰기와 새 연결의 읽기로 완전한 수정과 반환값만 고친 불완전한 수정을 구분한다.
+동일 입력·과거 구현·원본 보존·정리까지 직접 검증했고 작성자 테스트 2개가
+통과했다. 기본/스킬 비교 4세션의 조건은 고정했지만 모델 실행은 아직 안 했다.
+서로 관련된 자체 제작 과제이며 실제 사용자·운영 환경의 독립 증거는 아니다.
+
 Collector [pre-add index retention](PRE-COLLECTION-INDEX-01.md), previous source
 `3cbae6d`: future runs retain local index bytes/mode/hash after model timing and
 before collector Git mutation. Actual child/Git tests show identical captured

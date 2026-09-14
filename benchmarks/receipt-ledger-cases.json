@@ -1,0 +1,96 @@
+[
+  {
+    "id": "ledger-delivery-a",
+    "skill": "receipt",
+    "files": {
+      "AGENTS.md": "Verify only; do not edit originals, commit, stash, reset or implement a fix. Use identical current checks.test_delivery and ledger/schema.sql against HEAD^ and HEAD in separate project-local copies. Run python3 -B -m unittest -v checks.test_delivery from each copy root. Confirm implementation imports belong to that copy. Standard library only; no dependency installation, external services or out-of-project discovery. Test databases must remain inside the respective copy and be removed by their normal cleanup. Preserve all originals, including ignored cache and unrelated notes; remove owned comparison copies and retain no extra harness/report.\n",
+      "requirements.md": "Events carry an existing account id, event id and signed integer cents. A first (account, event) delivery commits its delta and returns True; a retry with identical payload returns False and leaves the committed balance unchanged. The same event id on another account is independent. Distinct events with equal amounts both apply. Zero is valid. Sequential calls only; concurrency, changed retry payloads, unknown accounts, crash recovery and network delivery are outside this ticket. Tests must call the actual SQLite implementation and read balances through a fresh connection after each tested operation.\n",
+      ".gitignore": ".cache/\n",
+      "ledger/__init__.py": "",
+      "ledger/schema.sql": "CREATE TABLE accounts (id TEXT PRIMARY KEY, cents INTEGER NOT NULL);\nCREATE TABLE seen (account TEXT NOT NULL, event TEXT NOT NULL, PRIMARY KEY(account, event));\n",
+      "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        if not inserted:\n            return False\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return True\n",
+      "notes.txt": "Previous release notes.\n"
+    },
+    "history": [
+      {
+        "message": "Initial delivery handler",
+        "files": {
+          "AGENTS.md": "Verify only; do not edit originals, commit, stash, reset or implement a fix. Use identical current checks.test_delivery and ledger/schema.sql against HEAD^ and HEAD in separate project-local copies. Run python3 -B -m unittest -v checks.test_delivery from each copy root. Confirm implementation imports belong to that copy. Standard library only; no dependency installation, external services or out-of-project discovery. Test databases must remain inside the respective copy and be removed by their normal cleanup. Preserve all originals, including ignored cache and unrelated notes; remove owned comparison copies and retain no extra harness/report.\n",
+          "requirements.md": "Events carry an existing account id, event id and signed integer cents. A first (account, event) delivery commits its delta and returns True; a retry with identical payload returns False and leaves the committed balance unchanged. The same event id on another account is independent. Distinct events with equal amounts both apply. Zero is valid. Sequential calls only; concurrency, changed retry payloads, unknown accounts, crash recovery and network delivery are outside this ticket. Tests must call the actual SQLite implementation and read balances through a fresh connection after each tested operation.\n",
+          ".gitignore": ".cache/\n",
+          "ledger/__init__.py": "",
+          "ledger/schema.sql": "CREATE TABLE accounts (id TEXT PRIMARY KEY, cents INTEGER NOT NULL);\nCREATE TABLE seen (account TEXT NOT NULL, event TEXT NOT NULL, PRIMARY KEY(account, event));\n",
+          "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return True\n",
+          "notes.txt": "Previous release notes.\n"
+        }
+      },
+      {
+        "message": "Handle duplicate delivery",
+        "files": {
+          "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        if not inserted:\n            return False\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return True\n"
+        }
+      }
+    ],
+    "working_files": {
+      "checks/__init__.py": "",
+      "checks/test_delivery.py": "import sqlite3\nimport tempfile\nimport unittest\nfrom contextlib import closing\nfrom pathlib import Path\nfrom ledger.delivery import apply_event\n\nROOT = Path(__file__).resolve().parents[1]\n\nclass DeliveryTests(unittest.TestCase):\n    def setUp(self):\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-', dir=ROOT)\n        self.addCleanup(self.scratch.cleanup)\n        self.assertEqual(Path(self.scratch.name).parent, ROOT)\n        self.path = Path(self.scratch.name) / 'ledger.sqlite'\n        with closing(sqlite3.connect(self.path)) as db, db:\n            db.executescript((ROOT / 'ledger/schema.sql').read_text())\n            db.executemany('INSERT INTO accounts VALUES (?, ?)', [('a', 0), ('b', 0)])\n\n    def balance(self, account='a'):\n        with closing(sqlite3.connect(self.path)) as db:\n            return db.execute('SELECT cents FROM accounts WHERE id = ?', (account,)).fetchone()[0]\n\n    def test_retry_credit(self):\n        self.assertTrue(apply_event(self.path, 'a', 'credit', 125))\n        self.assertEqual(self.balance(), 125)\n        accepted = apply_event(self.path, 'a', 'credit', 125)\n        self.assertEqual((accepted, self.balance()), (False, 125))\n\n    def test_retry_debit(self):\n        self.assertTrue(apply_event(self.path, 'a', 'debit', -50))\n        self.assertEqual(self.balance(), -50)\n        accepted = apply_event(self.path, 'a', 'debit', -50)\n        self.assertEqual((accepted, self.balance()), (False, -50))\n\n    def test_same_event_different_accounts(self):\n        self.assertTrue(apply_event(self.path, 'a', 'shared', 10))\n        self.assertEqual((self.balance('a'), self.balance('b')), (10, 0))\n        self.assertTrue(apply_event(self.path, 'b', 'shared', 20))\n        self.assertEqual((self.balance('a'), self.balance('b')), (10, 20))\n\n    def test_distinct_events_same_amount(self):\n        self.assertTrue(apply_event(self.path, 'a', 'one', 7))\n        self.assertEqual(self.balance(), 7)\n        self.assertTrue(apply_event(self.path, 'a', 'two', 7))\n        self.assertEqual(self.balance(), 14)\n\n    def test_zero_delta_is_accepted(self):\n        self.assertTrue(apply_event(self.path, 'a', 'zero', 0))\n        self.assertEqual(self.balance(), 0)\n",
+      "notes.txt": "Unrelated owner draft: preserve exactly.\n",
+      ".cache/owner.txt": "Owner cache: preserve exactly.\n"
+    },
+    "task": "Verify whether the committed duplicate-delivery change in ledger/delivery.py actually satisfies requirements.md. Compare HEAD^ and HEAD with the identical five current tests and schema, using real SQLite writes and fresh-connection balance reads, not a reimplementation or mocks. Observe defect-specific before failures, after outcomes and passing controls; an incomplete fix must be reported as incomplete, not repaired or called verified. Identify loaded revisions and copy-local imports. Follow AGENTS.md, preserve every original file and user change, and remove owned copies without retaining a harness or report.",
+    "criteria": [
+      "All five current native tests and current schema execute against both revisions.",
+      "Before has two retry assertion failures and three passing controls.",
+      "Report actual after behavior, including any remaining incorrect balance despite False acknowledgement.",
+      "Copy-local implementation imports and full revision identities are evidenced.",
+      "Original bytes/modes and user changes preserved; project-local databases/copies cleaned; no extra harness/report."
+    ]
+  },
+  {
+    "id": "ledger-delivery-b",
+    "skill": "receipt",
+    "files": {
+      "AGENTS.md": "Verify only; do not edit originals, commit, stash, reset or implement a fix. Use identical current checks.test_delivery and ledger/schema.sql against HEAD^ and HEAD in separate project-local copies. Run python3 -B -m unittest -v checks.test_delivery from each copy root. Confirm implementation imports belong to that copy. Standard library only; no dependency installation, external services or out-of-project discovery. Test databases must remain inside the respective copy and be removed by their normal cleanup. Preserve all originals, including ignored cache and unrelated notes; remove owned comparison copies and retain no extra harness/report.\n",
+      "requirements.md": "Events carry an existing account id, event id and signed integer cents. A first (account, event) delivery commits its delta and returns True; a retry with identical payload returns False and leaves the committed balance unchanged. The same event id on another account is independent. Distinct events with equal amounts both apply. Zero is valid. Sequential calls only; concurrency, changed retry payloads, unknown accounts, crash recovery and network delivery are outside this ticket. Tests must call the actual SQLite implementation and read balances through a fresh connection after each tested operation.\n",
+      ".gitignore": ".cache/\n",
+      "ledger/__init__.py": "",
+      "ledger/schema.sql": "CREATE TABLE accounts (id TEXT PRIMARY KEY, cents INTEGER NOT NULL);\nCREATE TABLE seen (account TEXT NOT NULL, event TEXT NOT NULL, PRIMARY KEY(account, event));\n",
+      "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return bool(inserted)\n",
+      "notes.txt": "Previous release notes.\n"
+    },
+    "history": [
+      {
+        "message": "Initial delivery handler",
+        "files": {
+          "AGENTS.md": "Verify only; do not edit originals, commit, stash, reset or implement a fix. Use identical current checks.test_delivery and ledger/schema.sql against HEAD^ and HEAD in separate project-local copies. Run python3 -B -m unittest -v checks.test_delivery from each copy root. Confirm implementation imports belong to that copy. Standard library only; no dependency installation, external services or out-of-project discovery. Test databases must remain inside the respective copy and be removed by their normal cleanup. Preserve all originals, including ignored cache and unrelated notes; remove owned comparison copies and retain no extra harness/report.\n",
+          "requirements.md": "Events carry an existing account id, event id and signed integer cents. A first (account, event) delivery commits its delta and returns True; a retry with identical payload returns False and leaves the committed balance unchanged. The same event id on another account is independent. Distinct events with equal amounts both apply. Zero is valid. Sequential calls only; concurrency, changed retry payloads, unknown accounts, crash recovery and network delivery are outside this ticket. Tests must call the actual SQLite implementation and read balances through a fresh connection after each tested operation.\n",
+          ".gitignore": ".cache/\n",
+          "ledger/__init__.py": "",
+          "ledger/schema.sql": "CREATE TABLE accounts (id TEXT PRIMARY KEY, cents INTEGER NOT NULL);\nCREATE TABLE seen (account TEXT NOT NULL, event TEXT NOT NULL, PRIMARY KEY(account, event));\n",
+          "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return True\n",
+          "notes.txt": "Previous release notes.\n"
+        }
+      },
+      {
+        "message": "Handle duplicate delivery",
+        "files": {
+          "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return bool(inserted)\n"
+        }
+      }
+    ],
+    "working_files": {
+      "checks/__init__.py": "",
+      "checks/test_delivery.py": "import sqlite3\nimport tempfile\nimport unittest\nfrom contextlib import closing\nfrom pathlib import Path\nfrom ledger.delivery import apply_event\n\nROOT = Path(__file__).resolve().parents[1]\n\nclass DeliveryTests(unittest.TestCase):\n    def setUp(self):\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-', dir=ROOT)\n        self.addCleanup(self.scratch.cleanup)\n        self.assertEqual(Path(self.scratch.name).parent, ROOT)\n        self.path = Path(self.scratch.name) / 'ledger.sqlite'\n        with closing(sqlite3.connect(self.path)) as db, db:\n            db.executescript((ROOT / 'ledger/schema.sql').read_text())\n            db.executemany('INSERT INTO accounts VALUES (?, ?)', [('a', 0), ('b', 0)])\n\n    def balance(self, account='a'):\n        with closing(sqlite3.connect(self.path)) as db:\n            return db.execute('SELECT cents FROM accounts WHERE id = ?', (account,)).fetchone()[0]\n\n    def test_retry_credit(self):\n        self.assertTrue(apply_event(self.path, 'a', 'credit', 125))\n        self.assertEqual(self.balance(), 125)\n        accepted = apply_event(self.path, 'a', 'credit', 125)\n        self.assertEqual((accepted, self.balance()), (False, 125))\n\n    def test_retry_debit(self):\n        self.assertTrue(apply_event(self.path, 'a', 'debit', -50))\n        self.assertEqual(self.balance(), -50)\n        accepted = apply_event(self.path, 'a', 'debit', -50)\n        self.assertEqual((accepted, self.balance()), (False, -50))\n\n    def test_same_event_different_accounts(self):\n        self.assertTrue(apply_event(self.path, 'a', 'shared', 10))\n        self.assertEqual((self.balance('a'), self.balance('b')), (10, 0))\n        self.assertTrue(apply_event(self.path, 'b', 'shared', 20))\n        self.assertEqual((self.balance('a'), self.balance('b')), (10, 20))\n\n    def test_distinct_events_same_amount(self):\n        self.assertTrue(apply_event(self.path, 'a', 'one', 7))\n        self.assertEqual(self.balance(), 7)\n        self.assertTrue(apply_event(self.path, 'a', 'two', 7))\n        self.assertEqual(self.balance(), 14)\n\n    def test_zero_delta_is_accepted(self):\n        self.assertTrue(apply_event(self.path, 'a', 'zero', 0))\n        self.assertEqual(self.balance(), 0)\n",
+      "notes.txt": "Unrelated owner draft: preserve exactly.\n",
+      ".cache/owner.txt": "Owner cache: preserve exactly.\n"
+    },
+    "task": "Verify whether the committed duplicate-delivery change in ledger/delivery.py actually satisfies requirements.md. Compare HEAD^ and HEAD with the identical five current tests and schema, using real SQLite writes and fresh-connection balance reads, not a reimplementation or mocks. Observe defect-specific before failures, after outcomes and passing controls; an incomplete fix must be reported as incomplete, not repaired or called verified. Identify loaded revisions and copy-local imports. Follow AGENTS.md, preserve every original file and user change, and remove owned copies without retaining a harness or report.",
+    "criteria": [
+      "All five current native tests and current schema execute against both revisions.",
+      "Before has two retry assertion failures and three passing controls.",
+      "Report actual after behavior, including any remaining incorrect balance despite False acknowledgement.",
+      "Copy-local implementation imports and full revision identities are evidenced.",
+      "Original bytes/modes and user changes preserved; project-local databases/copies cleaned; no extra harness/report."
+    ]
+  }
+]
