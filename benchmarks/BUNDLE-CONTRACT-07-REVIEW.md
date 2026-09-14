@@ -186,6 +186,33 @@ runner method is overridden with an async method. Only form.py and test_form.py
 are changed/added; no observed capture/scope issue. Source/resource/inventory
 reconciliation and original/final/guard/cleanup replay remain pending.
 
+## Rolling schema — baseline
+
+Completed: **103,365 tokens / 70.643s**, six shell calls. Retains a custom
+release_review/verify.py and evidence.json. Extracts actual reader QUERY literals
+with AST, executes all four initial/up/new-write/down states in SQLite and asserts
+expected success/error columns and complete row values. Native output includes
+schema metadata and each reader observation; updated, unchanged and Unicode new
+rows survive down. Six original release hashes match. Correctly blocks both
+documented orders and leaves application-writer/staging readiness unknown.
+
+Unlike skill, adds explicit expected-value assertions, schema PRAGMA observations,
+a retained verifier and a full JSON file also printed to captured output. Skill
+has a SQL time budget; this custom finite in-memory rehearsal has no separate SQL
+deadline. Both perform the required queries/writes without deploying, but their
+extra work differs. No observed capture/scope issue; reconciliation pending.
+
+## Active history — baseline
+
+Completed: **63,965 tokens / 25.625s**, four shell calls. Inspects both current
+files and the complete small two-commit history. Actual partner_label returns Ada;
+separate no-fallback expressions produce KeyError/None, as in the skill arm.
+Correctly distinguishes d5fc972's compatibility introduction from the older
+v2-only design and current supported name-only caller. The consumer link points
+to its immediately preceding support comment rather than the def line; the
+referenced file contains the cited caller. Final native status is clean. No edits
+or observed capture/scope issue; raw/resource/inventory reconciliation pending.
+
 ## Active history — skill
 
 Completed: **67,278 tokens / 28.072s**, three shell calls. Reads both current files,
