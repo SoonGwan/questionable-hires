@@ -16,6 +16,10 @@ python3 /path/to/necromancer/scripts/trace.py --path src/legacy.py --lines 12:24
 
 Run from the worktree root or pass `--repo`. Use the actual installed skill path. Python 3.9+ and local Git are required; nothing is installed or fetched. The helper does not edit files, refresh the index or invoke Git textconv/external-diff/fsmonitor programs. It is not a general sandbox.
 
+CLI output is compact JSON; add `--pretty` for indented human-readable output.
+Both retain identical parsed evidence, including source whitespace, errors and
+omission/truncation markers. The Python `trace()` result is unchanged.
+
 Limits are explicit: at most 100 selected lines, a 2 MB current file, 20 seconds per Git command, and at most five commits with `--max-commits`. Patch text is capped at 12,000 characters each; truncation and omitted commits are reported. Historical filenames from blame are used so a rename does not silently hide the relevant earlier patch.
 
 Known oversized current files are rejected before reading. The source read itself

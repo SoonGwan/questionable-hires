@@ -257,13 +257,15 @@ def main():
     parser.add_argument('--path', required=True)
     parser.add_argument('--lines', required=True, help='Inclusive current line range, e.g. 12:24')
     parser.add_argument('--max-commits', type=int, default=3)
+    parser.add_argument('--pretty', action='store_true', help='Indent JSON for human reading; default is compact')
     args = parser.parse_args()
     try:
         start, end = map(int, args.lines.split(':'))
         result = trace(args.repo, args.path, start, end, args.max_commits)
     except (ValueError, OSError, subprocess.TimeoutExpired) as error:
         parser.exit(2, 'History not established: ' + str(error) + '\n')
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    print(json.dumps(result, indent=2 if args.pretty else None, ensure_ascii=False,
+                     separators=None if args.pretty else (',', ':')))
 
 
 if __name__ == '__main__':

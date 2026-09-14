@@ -225,6 +225,35 @@ class HistoryHelperTests(unittest.TestCase):
         self.assertEqual(completed.stderr, '')
         self.assertEqual([item['commit'] for item in result['commits']], [self.changed])
         self.assertEqual([item['line'] for item in result['current_lines']], [2])
+        self.assertEqual(completed.stdout,
+                         json.dumps(result, ensure_ascii=False, separators=(',', ':')) + '\n')
+
+    def test_cli_output_modes_preserve_clean_dirty_and_unavailable_evidence(self):
+        for state in ('clean', 'dirty', 'untracked'):
+            with self.subTest(state=state):
+                filename = 'legacy.py'
+                if state == 'dirty':
+                    (self.root / filename).write_bytes('def label(p):\n    return "한글\\t값"\r\n'.encode())
+                elif state == 'untracked':
+                    filename = 'new.py'
+                    (self.root / filename).write_bytes('def label(p):\n    return "한글"\n'.encode())
+                expected = helper.trace(self.root, filename, 2, 2)
+                outputs = []
+                for flags in ([], ['--pretty']):
+                    process = subprocess.run(
+                        [sys.executable, '-B', str(ROOT / 'skills/necromancer/scripts/trace.py'),
+                         '--path', filename, '--lines', '2:2', *flags], cwd=self.root,
+                        capture_output=True, check=True, timeout=10)
+                    self.assertEqual(process.stderr, b'')
+                    self.assertEqual(json.loads(process.stdout), expected)
+                    outputs.append(process.stdout)
+                self.assertLess(len(outputs[0]), len(outputs[1]))
+                self.assertEqual(outputs[1].decode(), json.dumps(expected, indent=2, ensure_ascii=False) + '\n')
+                if state == 'dirty':
+                    self.assertIsNone(expected['blame'][0]['commit'])
+                    self.assertTrue(expected['current_lines'][0]['text'].endswith('\r'))
+                elif state == 'untracked':
+                    self.assertEqual(expected['history'], 'unavailable')
 
     def test_repository_facts_share_one_git_process(self):
         with patch.object(helper, 'git', wraps=helper.git) as calls:

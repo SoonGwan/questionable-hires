@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## History output transport — 2026-09-15, parent `b9799dd`
+
+[Compact collector output](HISTORY-COMPACT-OUTPUT-01.md) makes CLI JSON compact
+by default with `--pretty` preserving the old representation. Parsed evidence,
+API results and Git collection remain unchanged. Three ranges at the measured
+parent produce 9.82–18.30% fewer UTF-8 output bytes, derived from identical result
+objects. These are not model token/time savings or a representative task sample;
+no new model sessions and no chart promotion.
+
+Validation: **62 targeted tests** pass (history helper/collector, build and
+installation), plus skill, metadata/link and featured-sync checks. Not a fresh
+full-suite or hosted CI result.
+
+한국어: 이력 도우미 출력의 들여쓰기만 줄이고 기존 형식은 `--pretty`로 유지했다.
+세 구간에서 같은 근거의 출력 바이트가 9.82~18.30% 감소했지만, 모델 토큰·시간
+절감은 미측정이다. 실제 CLI의 정상·수정 중·미추적 상태를 API 결과와 대조한다.
+
 ## Friday cursor lifetime — 2026-09-15, parent `be44fb9`
 
 Patched source `bca1a59`: **601 tests / 91.275s**, full local suite passes with
