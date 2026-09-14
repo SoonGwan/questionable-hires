@@ -27,6 +27,10 @@ recovery through the application; entry alone proves none of them. Cancel the
 application task to test cancellation, not just its response future. Test
 synchronous callback failure with an ordinary raising function, not this double.
 
+Use unittest subtests for independent scenarios, not dependent phases of one
+call: a failed fetch-phase assertion must unwind to owned cleanup, not continue
+into a persist phase whose entry/handle was never established.
+
 Tests own tasks: cancel and drain them even if entry/assertions fail; started's
 timeout does not clean application tasks. Bound application waits too. Async
 timeouts cannot interrupt blocking code or guarantee termination of tasks that

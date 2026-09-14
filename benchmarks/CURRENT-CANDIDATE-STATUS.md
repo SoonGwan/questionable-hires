@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Python [dependent-phase guidance](HOSTAGE-DEPENDENT-PHASES-01.md), author control
+on `e8ab180` artifacts: unwrap only two continuing subtests around dependent
+phases. Twelve native runs preserve final/alternate passes and all four fault
+detections, while removing secondary unbound-local errors from three fault
+variants. Assertions/waits/cleanup and independent subtests remain. Optional
+Python asset docstring only; runtime unchanged, new-model adoption/cost unmeasured.
+
+한국어: 서로 의존하는 콜백 단계는 앞 단계 실패 후 정리로 빠지도록 Python 사용
+안내를 보완했다. 작성자 적용본의 12회 실행에서 정상·대체 구현 통과와 결함 검출을
+유지하며 3개 결함 실행의 부차적 오류를 없앴다. 실제 모델 채택·비용 효과는 아직
+미측정이며 원본 모델 테스트와 그래프는 변경하지 않았다.
+
 [Keyed import transfer 01](HOSTAGE-KEYED-IMPORT-01-REVIEW.md), launch `6d0d108`,
 resources `c0aa9a1`: one skill-only cell, 118,971 tokens / 103.161s. Original six
 native tests pass; unchanged-test replay accepts a valid False-returning duplicate
