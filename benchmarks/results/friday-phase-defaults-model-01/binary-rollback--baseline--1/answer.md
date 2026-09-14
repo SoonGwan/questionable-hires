@@ -4,7 +4,7 @@ I’ll inspect the release files, run the supplied queries and migrations agains
 
 Executed both supplied reader queries at each stage in in-memory SQLite 3.51.0, in this order: initial → up → `verification_writes.sql` → down.
 
-The defect is in [002_down.sql:1](002_down.sql#L1): `CAST(payload_hex AS BLOB)` converts hexadecimal text into ASCII bytes; it does not decode the hexadecimal representation. The old reader succeeds after down and returns `bytes`, but nonempty payloads are wrong.
+The defect is in [002_down.sql:1](project/002_down.sql#L1): `CAST(payload_hex AS BLOB)` converts hexadecimal text into ASCII bytes; it does not decode the hexadecimal representation. The old reader succeeds after down and returns `bytes`, but nonempty payloads are wrong.
 
 | Payload | Current represented bytes before down (hex) | Actual bytes after down (hex) | Result |
 |---|---|---|---|

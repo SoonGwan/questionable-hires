@@ -75,12 +75,13 @@ def export(source, target, project_files=None):
             label, target = match.groups()
             if target.startswith("<") and target.endswith(">"):
                 target = target[1:-1]
-            location = re.fullmatch(r"(.+?):(\d+)", target)
-            path, line = location.groups() if location else (target, None)
+            source_path, separator, fragment = target.partition("#")
+            location = re.fullmatch(r"(.+?):(\d+)", source_path)
+            path, line = location.groups() if location else (source_path, None)
             if path.startswith("<WORKSPACE>/"):
                 path = path[len("<WORKSPACE>/"):]
             if (project / path).is_file():
-                suffix = f"#L{line}" if line else ""
+                suffix = f"#{fragment}" if separator else (f"#L{line}" if line else "")
                 return f"[{label}](project/{path}{suffix})"
             return label if location else match.group(0)
         answer = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", link, answer)

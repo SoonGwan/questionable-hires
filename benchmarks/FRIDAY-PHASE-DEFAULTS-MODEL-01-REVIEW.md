@@ -55,3 +55,8 @@ terminal usage, sanitized raw events, unchanged installed resource bytes against
 launch Git and exact fixture snapshots for both cells, with no errors. No observed
 capture/scope gaps in manual review. These checks are not additional model success
 scores. Historical adverse attempts and featured charts remain unchanged.
+
+Export presentation correction: the baseline's original `002_down.sql#L1` link
+is mapped to `project/002_down.sql#L1` in the exported answer. The exporter now
+preserves source fragments while resolving the project path. Original answer,
+events, hashes and measured content remain unchanged; this is not a model repair.
