@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Checkpoint 09 intake — 2026-09-14, launch `3a7d972`, review pending
 
+[Partial search QA review](BUNDLE-CONTRACT-09-SEARCH-REVIEW.md): four original
+native captures contain decisive evidence; 12 retained-test controls match.
+Both arms detect stale/retention faults and accept contract-valid alternatives.
+Both skill pairs cost less, but different witnesses/artifacts and n=1 prevent
+general claims. Original production bytes remain unchanged; other reviews remain.
+
+한국어: 검색 QA 4세션의 원본 증거와 대조 12회를 확인했다. 두 모델 모두 실제
+결함과 계약상 정상 대안을 구분했고 원본 코드는 유지했다. 스킬 관측 비용은
+낮지만 검증 사례·산출물이 달라 일반화하지 않으며 나머지 과제 검토는 남아 있다.
+
 [Partial form review](BUNDLE-CONTRACT-09-FORM-REVIEW.md): ten native retained-test
 controls preserve originals. Both suites reject missing guard/cleanup, but baseline
 rejects a contract-valid duplicate returning False; skill accepts it. Skill's

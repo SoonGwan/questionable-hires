@@ -1,0 +1,413 @@
+{
+  "kind": "separate native author controls, not original model execution",
+  "revision": "3a7d972d4cfa5cc28a5df44125c55eaeb60aa1b9",
+  "cases_sha256": "1c3bd0648fecfad35f65cba144f908b0ffdd39ba28e28f05963722488ffc7f65",
+  "cells": [
+    {
+      "cell": "search-order--baseline--1",
+      "inventory_sha256": {
+        "requirements.md": "1b1d977767f7791a03efc9fb7cb2124a3a231731bc0f0834526f5a49c0fd1858",
+        "search_qa_results.txt": "3fb42154a68def7f7b7671e597624ee1e5eed1b3618853841879ff104375ee43",
+        "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
+        "test_search_overlap.py": "1ed142252d095a7f8554af10c57c8c68a6b627b795bf16de8dbd93dcc93ed9d4"
+      },
+      "retained_sources": {
+        "requirements.md": "The screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\nFor normal overlapping completion, require the latest result after both requests finish. While the newer request is pending, no particular intermediate display is required: retaining the previously displayed result is allowed. Do not make an older response appearing during that interval a required behavior. The reversed-completion test must still detect an older response overwriting the completed latest result.\n",
+        "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+        "search_qa_results.txt": "test_normal_completion_keeps_latest_after_both_finish (test_search_overlap.SearchOverlapTests) ... [ca -> cat] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[ca -> cat] released 'ca'; Search.run finished; displayed='results for ca'\n[ca -> cat] PASS controls: only 'ca' completed; 'cat' still gated\n[ca -> cat] released 'cat'; Search.run finished; displayed='results for cat'\n[ca -> cat] PASS controls: both Search.run calls finished in the requested order\n[ca -> cat] assert latest remains visible: expected='results for cat', actual='results for cat'\n[ca -> cat] cleanup: all owned request tasks settled\nok\ntest_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests) ... [cat -> ca] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[cat -> ca] released 'cat'; Search.run finished; displayed='results for cat'\n[cat -> ca] PASS controls: only 'cat' completed; 'ca' still gated\n[cat -> ca] PASS assertion: completed latest query is displayed before the older response\n[cat -> ca] released 'ca'; Search.run finished; displayed='results for ca'\n[cat -> ca] PASS controls: both Search.run calls finished in the requested order\n[cat -> ca] assert latest remains visible: expected='results for cat', actual='results for ca'\n[cat -> ca] cleanup: all owned request tasks settled\nFAIL\n\n======================================================================\nFAIL: test_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<WORKSPACE>/test_search_overlap.py\", line 85, in test_reversed_completion_cannot_overwrite_latest\n    await self.check_completion_order((\"cat\", \"ca\"))\n  File \"<WORKSPACE>/test_search_overlap.py\", line 70, in check_completion_order\n    self.assertEqual(search.result, responses[queries[-1]],\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : after both requests finish, the latest query must remain visible\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nFAILED (failures=1)\n",
+        "test_search_overlap.py": "\"\"\"Run locally with: python3 -B -m unittest -v test_search_overlap.py\"\"\"\n\nimport asyncio\nimport unittest\n\nfrom search import Search\n\n\nTIMEOUT = 2.0\n\n\nclass SearchOverlapTests(unittest.IsolatedAsyncioTestCase):\n    async def check_completion_order(self, order):\n        search = Search()\n        queries = (\"ca\", \"cat\")\n        responses = {\"ca\": \"results for ca\", \"cat\": \"results for cat\"}\n        entered = {query: asyncio.Event() for query in queries}\n        release = {query: asyncio.Event() for query in queries}\n        calls = []\n        completed = []\n        tasks = {}\n\n        def report(message):\n            print(\"[{}] {}\".format(\" -> \".join(order), message), flush=True)\n\n        async def fetch(query):\n            calls.append(query)\n            entered[query].set()\n            await asyncio.wait_for(release[query].wait(), TIMEOUT)\n            completed.append(query)\n            return responses[query]\n\n        async def finish(query):\n            release[query].set()\n            await asyncio.wait_for(asyncio.shield(tasks[query]), TIMEOUT)\n            report(\"released {!r}; Search.run finished; displayed={!r}\".format(\n                query, search.result))\n\n        try:\n            for query in queries:\n                tasks[query] = asyncio.create_task(search.run(query, fetch))\n                await asyncio.wait_for(entered[query].wait(), TIMEOUT)\n\n            self.assertEqual(calls, list(queries), \"actual Search must fetch both queries in typing order\")\n            self.assertEqual(completed, [], \"neither gated request may have completed\")\n            for query in queries:\n                self.assertFalse(release[query].is_set())\n                self.assertFalse(tasks[query].done(), \"both requests must overlap\")\n            report(\"PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\")\n\n            first, last = order\n            await finish(first)\n            self.assertEqual(completed, [first])\n            self.assertFalse(tasks[last].done(), \"second completion must remain controlled\")\n            self.assertFalse(release[last].is_set())\n            report(\"PASS controls: only {!r} completed; {!r} still gated\".format(first, last))\n\n            if first == queries[-1]:\n                self.assertEqual(search.result, responses[queries[-1]],\n                                 \"completed latest query must be displayed\")\n                report(\"PASS assertion: completed latest query is displayed before the older response\")\n            # Normal order intentionally imposes no intermediate display assertion.\n\n            await finish(last)\n            self.assertEqual(completed, list(order), \"completion order must match the controlled schedule\")\n            self.assertTrue(all(task.done() and not task.cancelled() for task in tasks.values()))\n            report(\"PASS controls: both Search.run calls finished in the requested order\")\n            report(\"assert latest remains visible: expected={!r}, actual={!r}\".format(\n                responses[queries[-1]], search.result))\n            self.assertEqual(search.result, responses[queries[-1]],\n                             \"after both requests finish, the latest query must remain visible\")\n        finally:\n            for task in tasks.values():\n                if not task.done():\n                    task.cancel()\n            if tasks:\n                await asyncio.wait_for(\n                    asyncio.gather(*tasks.values(), return_exceptions=True), TIMEOUT)\n            report(\"cleanup: all owned request tasks settled\")\n\n    async def test_normal_completion_keeps_latest_after_both_finish(self):\n        await self.check_completion_order((\"ca\", \"cat\"))\n\n    async def test_reversed_completion_cannot_overwrite_latest(self):\n        await self.check_completion_order((\"cat\", \"ca\"))\n\n\nif __name__ == \"__main__\":\n    unittest.main(verbosity=2)\n"
+      },
+      "source_export_note": "Source inventory hashes identify originals; exported text redacts local paths.",
+      "original_native_command": {
+        "id": "item_7",
+        "type": "command_execution",
+        "command": "/bin/zsh -lc 'python3 -B -m unittest -v test_search_overlap.py > search_qa_results.txt 2>&1; result=$?; cat search_qa_results.txt; exit \"$result\"'",
+        "aggregated_output": "test_normal_completion_keeps_latest_after_both_finish (test_search_overlap.SearchOverlapTests) ... [ca -> cat] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[ca -> cat] released 'ca'; Search.run finished; displayed='results for ca'\n[ca -> cat] PASS controls: only 'ca' completed; 'cat' still gated\n[ca -> cat] released 'cat'; Search.run finished; displayed='results for cat'\n[ca -> cat] PASS controls: both Search.run calls finished in the requested order\n[ca -> cat] assert latest remains visible: expected='results for cat', actual='results for cat'\n[ca -> cat] cleanup: all owned request tasks settled\nok\ntest_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests) ... [cat -> ca] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[cat -> ca] released 'cat'; Search.run finished; displayed='results for cat'\n[cat -> ca] PASS controls: only 'cat' completed; 'ca' still gated\n[cat -> ca] PASS assertion: completed latest query is displayed before the older response\n[cat -> ca] released 'ca'; Search.run finished; displayed='results for ca'\n[cat -> ca] PASS controls: both Search.run calls finished in the requested order\n[cat -> ca] assert latest remains visible: expected='results for cat', actual='results for ca'\n[cat -> ca] cleanup: all owned request tasks settled\nFAIL\n\n======================================================================\nFAIL: test_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<WORKSPACE>/test_search_overlap.py\", line 85, in test_reversed_completion_cannot_overwrite_latest\n    await self.check_completion_order((\"cat\", \"ca\"))\n  File \"<WORKSPACE>/test_search_overlap.py\", line 70, in check_completion_order\n    self.assertEqual(search.result, responses[queries[-1]],\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : after both requests finish, the latest query must remain visible\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nFAILED (failures=1)\n",
+        "exit_code": 1,
+        "status": "failed"
+      },
+      "original_test_counts": [
+        "2"
+      ]
+    },
+    {
+      "cell": "search-order--skill--1",
+      "inventory_sha256": {
+        "requirements.md": "1b1d977767f7791a03efc9fb7cb2124a3a231731bc0f0834526f5a49c0fd1858",
+        "test_search.py": "e0d10fa2ec8ecde7ce0c724d1405c9ec658ed6617ce10e7afeeb6cbd3c9035d3",
+        "search.py": "b0a6a31914493956af57224dfbf16f1e8f128693717595e6723610b588fc02ea",
+        "controlled_fetch.py": "d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c"
+      },
+      "retained_sources": {
+        "controlled_fetch.py": "\"\"\"Copy into permitted project test support only when no equivalent exists.\n\nEach received Request identifies one call, even when keys repeat. The test owns\ncomponent tasks: cancel and await them in cleanup. This controls fetch responses,\nnot component state or browser rendering. No real network or sleeps.\n\"\"\"\nimport asyncio\nfrom dataclasses import dataclass\nfrom typing import Any\n\n\n@dataclass(frozen=True)\nclass Request:\n    key: Any\n    response: asyncio.Future\n\n    def complete(self, value):\n        self.response.set_result(value)\n\n    def fail_request(self, error):\n        self.response.set_exception(error)\n\n\nclass ControlledFetch:\n    def __init__(self):\n        self.calls = asyncio.Queue()\n\n    async def __call__(self, key):\n        request = Request(key, asyncio.get_running_loop().create_future())\n        self.calls.put_nowait(request)\n        return await request.response\n\n    async def started(self, expected, timeout=1):\n        \"\"\"Wait for actual fetch entry, assert its key, return a unique handle.\n\n        A timed-out queue wait does not cancel component tasks. The caller owns\n        those tasks and must clean them even when this assertion fails.\n        \"\"\"\n        if not 0 < timeout <= 30:\n            raise ValueError('timeout must be in (0, 30]')\n        request = await asyncio.wait_for(self.calls.get(), timeout)\n        if request.key != expected:\n            raise AssertionError(\n                f'request key: expected {expected!r}, observed {request.key!r}')\n        return request\n",
+        "requirements.md": "The screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\nFor normal overlapping completion, require the latest result after both requests finish. While the newer request is pending, no particular intermediate display is required: retaining the previously displayed result is allowed. Do not make an older response appearing during that interval a required behavior. The reversed-completion test must still detect an older response overwriting the completed latest result.\n",
+        "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+        "test_search.py": "\"\"\"Deterministic component regression; no network, dependencies, or sleeps.\n\nRun: python3 -B -m unittest -v test_search\nEvery request-entry, completion, and cleanup wait is bounded to one second.\n\"\"\"\nimport asyncio\nimport unittest\n\nfrom controlled_fetch import ControlledFetch\nfrom search import Search\n\n\nclass SearchOverlapTests(unittest.IsolatedAsyncioTestCase):\n    async def asyncSetUp(self):\n        self.search = Search()\n        self.fetch = ControlledFetch()\n        self.owned = []\n        self.addAsyncCleanup(self.cleanup_requests)\n\n    async def cleanup_requests(self):\n        for task in self.owned:\n            if not task.done():\n                task.cancel()\n        if self.owned:\n            done, pending = await asyncio.wait(self.owned, timeout=1)\n            for task in done:\n                if not task.cancelled():\n                    task.exception()  # Retrieve even on an earlier assertion failure.\n            self.assertFalse(pending, \"owned Search tasks failed to stop in one second\")\n\n    async def start(self, query):\n        task = asyncio.create_task(self.search.run(query, self.fetch))\n        self.owned.append(task)  # Own before waiting, including entry failures.\n        request = await self.fetch.started(query, timeout=1)\n        self.assertFalse(task.done(), \"Search must be awaiting the controlled response\")\n        print(f\"CONTROL: entered {query!r}; response held\", flush=True)\n        return task, request\n\n    async def finish(self, task, request, payload):\n        request.complete(payload)\n        done, pending = await asyncio.wait([task], timeout=1)\n        self.assertFalse(pending, f\"Search did not finish {request.key!r} in one second\")\n        task.result()  # Surface component exceptions rather than only exit status.\n        print(f\"CONTROL: completed {request.key!r} with {payload!r}\", flush=True)\n\n    async def test_normal_overlap_latest_after_both_finish(self):\n        older_task, older = await self.start(\"ca\")\n        latest_task, latest = await self.start(\"cat\")\n        await self.finish(older_task, older, \"older: ca\")\n        self.assertFalse(latest_task.done(), \"latest request must still be pending\")\n        print(f\"OBSERVATION only: while latest pending, result={self.search.result!r}\", flush=True)\n        await self.finish(latest_task, latest, \"latest: cat\")\n        self.assertEqual(self.search.result, \"latest: cat\",\n                         \"After both finish normally, latest query owns the display\")\n        print(\"ASSERT PASS: normal final result == 'latest: cat'\", flush=True)\n\n    async def test_reversed_overlap_latest_survives_older_completion(self):\n        older_task, older = await self.start(\"ca\")\n        latest_task, latest = await self.start(\"cat\")\n        await self.finish(latest_task, latest, \"latest: cat\")\n        self.assertFalse(older_task.done(), \"older request must still be pending\")\n        self.assertEqual(self.search.result, \"latest: cat\",\n                         \"Completed latest query must be displayed\")\n        print(\"ASSERT PASS: latest completed first, result == 'latest: cat'\", flush=True)\n        await self.finish(older_task, older, \"older: ca\")\n        self.assertEqual(self.search.result, \"latest: cat\",\n                         \"Older completion must not overwrite the completed latest result\")\n        print(\"ASSERT PASS: reversed final result == 'latest: cat'\", flush=True)\n\n\nif __name__ == \"__main__\":\n    unittest.main(verbosity=2)\n"
+      },
+      "source_export_note": "Source inventory hashes identify originals; exported text redacts local paths.",
+      "original_native_command": {
+        "id": "item_7",
+        "type": "command_execution",
+        "command": "/bin/zsh -lc \"python3 -B -c 'import subprocess, sys; sys.exit(subprocess.run([sys.executable, \\\"-B\\\", \\\"-m\\\", \\\"unittest\\\", \\\"-v\\\", \\\"test_search\\\"], timeout=15).returncode)'\"",
+        "aggregated_output": "test_normal_overlap_latest_after_both_finish (test_search.SearchOverlapTests) ... CONTROL: entered 'ca'; response held\nCONTROL: entered 'cat'; response held\nCONTROL: completed 'ca' with 'older: ca'\nOBSERVATION only: while latest pending, result='older: ca'\nCONTROL: completed 'cat' with 'latest: cat'\nASSERT PASS: normal final result == 'latest: cat'\nok\ntest_reversed_overlap_latest_survives_older_completion (test_search.SearchOverlapTests) ... CONTROL: entered 'ca'; response held\nCONTROL: entered 'cat'; response held\nCONTROL: completed 'cat' with 'latest: cat'\nASSERT PASS: latest completed first, result == 'latest: cat'\nCONTROL: completed 'ca' with 'older: ca'\nFAIL\n\n======================================================================\nFAIL: test_reversed_overlap_latest_survives_older_completion (test_search.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<WORKSPACE>/test_search.py\", line 66, in test_reversed_overlap_latest_survives_older_completion\n    self.assertEqual(self.search.result, \"latest: cat\",\nAssertionError: 'older: ca' != 'latest: cat'\n- older: ca\n+ latest: cat\n : Older completion must not overwrite the completed latest result\n\n----------------------------------------------------------------------\nRan 2 tests in 0.010s\n\nFAILED (failures=1)\n",
+        "exit_code": 1,
+        "status": "failed"
+      },
+      "original_test_counts": [
+        "2"
+      ]
+    },
+    {
+      "cell": "search-protected--baseline--1",
+      "inventory_sha256": {
+        "search.py": "74efb5a944c45ef5d3bdf969b3bafe7820d7871c337a36a6e511cac18c29bdb4",
+        "test_search_local.py": "b1fccf83ecb76ed9747851610057cf0e230376703acd80d2493235fa726ccfb1"
+      },
+      "retained_sources": {
+        "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+        "test_search_local.py": "\"\"\"Local regression checks: python3 -B -m unittest -v test_search_local\"\"\"\n\nimport asyncio\nimport unittest\n\nfrom search import Search\n\n\nTIMEOUT = 2.0\n\n\nclass ControlledFetch:\n    \"\"\"One explicitly released future and entry signal per request.\"\"\"\n\n    def __init__(self):\n        self.entered = asyncio.Event()\n        self.future = asyncio.get_running_loop().create_future()\n        self.queries = []\n\n    async def __call__(self, query):\n        self.queries.append(query)\n        self.entered.set()\n        return await self.future\n\n\nclass SearchOverlapTests(unittest.IsolatedAsyncioTestCase):\n    async def asyncSetUp(self):\n        self.search = Search()\n        self.tasks = []\n\n    async def asyncTearDown(self):\n        # Clean up only tasks this test owns, including on assertion/timeout failure.\n        for task in self.tasks:\n            if not task.done():\n                task.cancel()\n        await asyncio.wait_for(\n            asyncio.gather(*self.tasks, return_exceptions=True), TIMEOUT\n        )\n\n    async def start(self, query):\n        fetch = ControlledFetch()\n        task = asyncio.create_task(self.search.run(query, fetch), name=query)\n        self.tasks.append(task)\n        # Wait for actual fetch entry, never for an arbitrary scheduling delay.\n        await asyncio.wait_for(fetch.entered.wait(), TIMEOUT)\n        self.assertEqual(fetch.queries, [query])\n        self.assertFalse(fetch.future.done())\n        self.assertFalse(task.done())\n        return fetch, task\n\n    async def finish(self, request, result):\n        fetch, task = request\n        fetch.future.set_result(result)\n        # Completion proves Search has had the opportunity to commit its result.\n        await asyncio.wait_for(asyncio.shield(task), TIMEOUT)\n\n    def assert_pending(self, request):\n        fetch, task = request\n        self.assertFalse(fetch.future.done())\n        self.assertFalse(task.done())\n\n    async def seed_display(self):\n        initial = await self.start(\"initial\")\n        await self.finish(initial, \"existing result\")\n        self.assertEqual(self.search.result, \"existing result\")\n\n    async def test_newer_completes_first_then_older_cannot_overwrite(self):\n        older = await self.start(\"older\")\n        newer = await self.start(\"newer\")\n        await self.finish(newer, \"newer result\")\n        self.assertEqual(self.search.result, \"newer result\")\n        self.assert_pending(older)\n        await self.finish(older, \"older result\")\n        self.assertEqual(self.search.result, \"newer result\")\n\n    async def test_older_completes_first_while_newer_remains_pending(self):\n        older = await self.start(\"older\")\n        newer = await self.start(\"newer\")\n        await self.finish(older, \"older result\")\n        self.assert_pending(newer)\n        self.assertIsNone(self.search.result)\n        await self.finish(newer, \"newer result\")\n        self.assertEqual(self.search.result, \"newer result\")\n\n    async def test_existing_display_retained_through_older_first_completion(self):\n        await self.seed_display()\n        older = await self.start(\"older\")\n        self.assertEqual(self.search.result, \"existing result\")\n        newer = await self.start(\"newer\")\n        self.assertEqual(self.search.result, \"existing result\")\n        await self.finish(older, \"older result\")\n        self.assert_pending(newer)\n        self.assertEqual(self.search.result, \"existing result\")\n        await self.finish(newer, \"newer result\")\n        self.assertEqual(self.search.result, \"newer result\")\n\n    async def test_existing_display_retained_until_newer_first_completion(self):\n        await self.seed_display()\n        older = await self.start(\"older\")\n        self.assertEqual(self.search.result, \"existing result\")\n        newer = await self.start(\"newer\")\n        self.assertEqual(self.search.result, \"existing result\")\n        await self.finish(newer, \"newer result\")\n        self.assert_pending(older)\n        self.assertEqual(self.search.result, \"newer result\")\n        await self.finish(older, \"older result\")\n        self.assertEqual(self.search.result, \"newer result\")\n\n\nif __name__ == \"__main__\":\n    unittest.main(verbosity=2)\n"
+      },
+      "source_export_note": "Source inventory hashes identify originals; exported text redacts local paths.",
+      "original_native_command": {
+        "id": "item_5",
+        "type": "command_execution",
+        "command": "/bin/zsh -lc 'python3 -B -m unittest -v test_search_local'",
+        "aggregated_output": "test_existing_display_retained_through_older_first_completion (test_search_local.SearchOverlapTests) ... ok\ntest_existing_display_retained_until_newer_first_completion (test_search_local.SearchOverlapTests) ... ok\ntest_newer_completes_first_then_older_cannot_overwrite (test_search_local.SearchOverlapTests) ... ok\ntest_older_completes_first_while_newer_remains_pending (test_search_local.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.019s\n\nOK\n",
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "original_test_counts": [
+        "4"
+      ]
+    },
+    {
+      "cell": "search-protected--skill--1",
+      "inventory_sha256": {
+        "search.py": "74efb5a944c45ef5d3bdf969b3bafe7820d7871c337a36a6e511cac18c29bdb4",
+        "tests/test_search.py": "b1dc95eef941e10cb8d2d414aeedb9503dfc12dd8450a372d43ac277d37b304a",
+        "tests/controlled_fetch.py": "d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c"
+      },
+      "retained_sources": {
+        "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+        "tests/controlled_fetch.py": "\"\"\"Copy into permitted project test support only when no equivalent exists.\n\nEach received Request identifies one call, even when keys repeat. The test owns\ncomponent tasks: cancel and await them in cleanup. This controls fetch responses,\nnot component state or browser rendering. No real network or sleeps.\n\"\"\"\nimport asyncio\nfrom dataclasses import dataclass\nfrom typing import Any\n\n\n@dataclass(frozen=True)\nclass Request:\n    key: Any\n    response: asyncio.Future\n\n    def complete(self, value):\n        self.response.set_result(value)\n\n    def fail_request(self, error):\n        self.response.set_exception(error)\n\n\nclass ControlledFetch:\n    def __init__(self):\n        self.calls = asyncio.Queue()\n\n    async def __call__(self, key):\n        request = Request(key, asyncio.get_running_loop().create_future())\n        self.calls.put_nowait(request)\n        return await request.response\n\n    async def started(self, expected, timeout=1):\n        \"\"\"Wait for actual fetch entry, assert its key, return a unique handle.\n\n        A timed-out queue wait does not cancel component tasks. The caller owns\n        those tasks and must clean them even when this assertion fails.\n        \"\"\"\n        if not 0 < timeout <= 30:\n            raise ValueError('timeout must be in (0, 30]')\n        request = await asyncio.wait_for(self.calls.get(), timeout)\n        if request.key != expected:\n            raise AssertionError(\n                f'request key: expected {expected!r}, observed {request.key!r}')\n        return request\n",
+        "tests/test_search.py": "\"\"\"Deterministic component QA; run: python3 -B -m unittest discover -s tests -v.\"\"\"\nimport asyncio\nimport unittest\n\nfrom controlled_fetch import ControlledFetch\nfrom search import Search\n\n\nclass SearchFlowTests(unittest.IsolatedAsyncioTestCase):\n    async def asyncSetUp(self):\n        self.search = Search()\n        self.fetch = ControlledFetch()\n        self.owned_tasks = []\n        self.addAsyncCleanup(self.cleanup_tasks)\n\n    async def cleanup_tasks(self):\n        # Own tasks immediately, including when a fetch-entry assertion fails.\n        for task in self.owned_tasks:\n            if not task.done():\n                task.cancel()\n        if self.owned_tasks:\n            done, pending = await asyncio.wait(self.owned_tasks, timeout=1)\n            for task in done:\n                if not task.cancelled():\n                    task.exception()\n            self.assertFalse(pending, \"owned Search tasks did not stop within 1s\")\n\n    async def start(self, query):\n        task = asyncio.create_task(self.search.run(query, self.fetch))\n        self.owned_tasks.append(task)\n        request = await self.fetch.started(query, timeout=1)\n        return task, request\n\n    async def finish(self, task, request, payload):\n        request.complete(payload)\n        done, pending = await asyncio.wait([task], timeout=1)\n        self.assertFalse(pending, \"Search did not consume its response within 1s\")\n        task.result()\n\n    async def seed_result(self):\n        task, request = await self.start(\"seed\")\n        await self.finish(task, request, \"existing result\")\n        self.assertEqual(self.search.result, \"existing result\")\n\n    async def test_single_request_retains_display_until_completion(self):\n        self.assertIsNone(self.search.result)\n        await self.seed_result()\n        task, request = await self.start(\"replacement\")\n        self.assertFalse(task.done())\n        self.assertFalse(request.response.done())\n        self.assertEqual(self.search.result, \"existing result\")\n        await self.finish(task, request, \"replacement result\")\n        self.assertEqual(self.search.result, \"replacement result\")\n\n    async def test_older_completes_while_newer_pending_retains_existing(self):\n        await self.seed_result()\n        older, old_request = await self.start(\"older\")\n        self.assertEqual(self.search.result, \"existing result\")\n        newer, new_request = await self.start(\"newer\")\n        self.assertEqual(self.search.result, \"existing result\")\n\n        await self.finish(older, old_request, \"older result\")\n        self.assertFalse(newer.done())\n        self.assertFalse(new_request.response.done())\n        self.assertEqual(self.search.result, \"existing result\")\n\n        await self.finish(newer, new_request, \"newer result\")\n        self.assertEqual(self.search.result, \"newer result\")\n\n    async def test_newer_completes_first_older_cannot_replace_it(self):\n        await self.seed_result()\n        older, old_request = await self.start(\"older\")\n        self.assertEqual(self.search.result, \"existing result\")\n        newer, new_request = await self.start(\"newer\")\n        self.assertEqual(self.search.result, \"existing result\")\n\n        await self.finish(newer, new_request, \"newer result\")\n        self.assertFalse(older.done())\n        self.assertFalse(old_request.response.done())\n        self.assertEqual(self.search.result, \"newer result\")\n\n        await self.finish(older, old_request, \"older result\")\n        self.assertEqual(self.search.result, \"newer result\")\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n"
+      },
+      "source_export_note": "Source inventory hashes identify originals; exported text redacts local paths.",
+      "original_native_command": {
+        "id": "item_7",
+        "type": "command_execution",
+        "command": "/bin/zsh -lc 'python3 -B -m unittest discover -s tests -v'",
+        "aggregated_output": "test_newer_completes_first_older_cannot_replace_it (test_search.SearchFlowTests) ... ok\ntest_older_completes_while_newer_pending_retains_existing (test_search.SearchFlowTests) ... ok\ntest_single_request_retains_display_until_completion (test_search.SearchFlowTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.015s\n\nOK\n",
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "original_test_counts": [
+        "3"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "cell": "search-order--baseline--1",
+      "variant": "original_stale",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "expected_test_count": 2,
+      "observed_test_counts": [
+        "2"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "[ca -> cat] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[ca -> cat] released 'ca'; Search.run finished; displayed='results for ca'\n[ca -> cat] PASS controls: only 'ca' completed; 'cat' still gated\n[ca -> cat] released 'cat'; Search.run finished; displayed='results for cat'\n[ca -> cat] PASS controls: both Search.run calls finished in the requested order\n[ca -> cat] assert latest remains visible: expected='results for cat', actual='results for cat'\n[ca -> cat] cleanup: all owned request tasks settled\n[cat -> ca] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[cat -> ca] released 'cat'; Search.run finished; displayed='results for cat'\n[cat -> ca] PASS controls: only 'cat' completed; 'ca' still gated\n[cat -> ca] PASS assertion: completed latest query is displayed before the older response\n[cat -> ca] released 'ca'; Search.run finished; displayed='results for ca'\n[cat -> ca] PASS controls: both Search.run calls finished in the requested order\n[cat -> ca] assert latest remains visible: expected='results for cat', actual='results for ca'\n[cat -> ca] cleanup: all owned request tasks settled\ntest_normal_completion_keeps_latest_after_both_finish (test_search_overlap.SearchOverlapTests) ... ok\ntest_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests) ... FAIL\n\n======================================================================\nFAIL: test_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search_overlap.py\", line 85, in test_reversed_completion_cannot_overwrite_latest\n    await self.check_completion_order((\"cat\", \"ca\"))\n  File \"<REPLAY>/test_search_overlap.py\", line 70, in check_completion_order\n    self.assertEqual(search.result, responses[queries[-1]],\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : after both requests finish, the latest query must remain visible\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-order--baseline--1",
+      "variant": "valid_guarded",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "expected_test_count": 2,
+      "observed_test_counts": [
+        "2"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "[ca -> cat] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[ca -> cat] released 'ca'; Search.run finished; displayed=None\n[ca -> cat] PASS controls: only 'ca' completed; 'cat' still gated\n[ca -> cat] released 'cat'; Search.run finished; displayed='results for cat'\n[ca -> cat] PASS controls: both Search.run calls finished in the requested order\n[ca -> cat] assert latest remains visible: expected='results for cat', actual='results for cat'\n[ca -> cat] cleanup: all owned request tasks settled\n[cat -> ca] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[cat -> ca] released 'cat'; Search.run finished; displayed='results for cat'\n[cat -> ca] PASS controls: only 'cat' completed; 'ca' still gated\n[cat -> ca] PASS assertion: completed latest query is displayed before the older response\n[cat -> ca] released 'ca'; Search.run finished; displayed='results for cat'\n[cat -> ca] PASS controls: both Search.run calls finished in the requested order\n[cat -> ca] assert latest remains visible: expected='results for cat', actual='results for cat'\n[cat -> ca] cleanup: all owned request tasks settled\ntest_normal_completion_keeps_latest_after_both_finish (test_search_overlap.SearchOverlapTests) ... ok\ntest_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nOK\n"
+    },
+    {
+      "cell": "search-order--baseline--1",
+      "variant": "valid_intermediate_old",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n        self.completed_generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n            self.completed_generation = generation\n        if generation < self.generation and self.completed_generation < self.generation:\n            self.result = result\n",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "expected_test_count": 2,
+      "observed_test_counts": [
+        "2"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "[ca -> cat] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[ca -> cat] released 'ca'; Search.run finished; displayed='results for ca'\n[ca -> cat] PASS controls: only 'ca' completed; 'cat' still gated\n[ca -> cat] released 'cat'; Search.run finished; displayed='results for cat'\n[ca -> cat] PASS controls: both Search.run calls finished in the requested order\n[ca -> cat] assert latest remains visible: expected='results for cat', actual='results for cat'\n[ca -> cat] cleanup: all owned request tasks settled\n[cat -> ca] PASS controls: actual Search fetched ca then cat; both requests pending behind closed gates\n[cat -> ca] released 'cat'; Search.run finished; displayed='results for cat'\n[cat -> ca] PASS controls: only 'cat' completed; 'ca' still gated\n[cat -> ca] PASS assertion: completed latest query is displayed before the older response\n[cat -> ca] released 'ca'; Search.run finished; displayed='results for cat'\n[cat -> ca] PASS controls: both Search.run calls finished in the requested order\n[cat -> ca] assert latest remains visible: expected='results for cat', actual='results for cat'\n[cat -> ca] cleanup: all owned request tasks settled\ntest_normal_completion_keeps_latest_after_both_finish (test_search_overlap.SearchOverlapTests) ... ok\ntest_reversed_completion_cannot_overwrite_latest (test_search_overlap.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.012s\n\nOK\n"
+    },
+    {
+      "cell": "search-order--skill--1",
+      "variant": "original_stale",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "expected_test_count": 2,
+      "observed_test_counts": [
+        "2"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "CONTROL: entered 'ca'; response held\nCONTROL: entered 'cat'; response held\nCONTROL: completed 'ca' with 'older: ca'\nOBSERVATION only: while latest pending, result='older: ca'\nCONTROL: completed 'cat' with 'latest: cat'\nASSERT PASS: normal final result == 'latest: cat'\nCONTROL: entered 'ca'; response held\nCONTROL: entered 'cat'; response held\nCONTROL: completed 'cat' with 'latest: cat'\nASSERT PASS: latest completed first, result == 'latest: cat'\nCONTROL: completed 'ca' with 'older: ca'\ntest_normal_overlap_latest_after_both_finish (test_search.SearchOverlapTests) ... ok\ntest_reversed_overlap_latest_survives_older_completion (test_search.SearchOverlapTests) ... FAIL\n\n======================================================================\nFAIL: test_reversed_overlap_latest_survives_older_completion (test_search.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search.py\", line 66, in test_reversed_overlap_latest_survives_older_completion\n    self.assertEqual(self.search.result, \"latest: cat\",\nAssertionError: 'older: ca' != 'latest: cat'\n- older: ca\n+ latest: cat\n : Older completion must not overwrite the completed latest result\n\n----------------------------------------------------------------------\nRan 2 tests in 0.010s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-order--skill--1",
+      "variant": "valid_guarded",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "expected_test_count": 2,
+      "observed_test_counts": [
+        "2"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "CONTROL: entered 'ca'; response held\nCONTROL: entered 'cat'; response held\nCONTROL: completed 'ca' with 'older: ca'\nOBSERVATION only: while latest pending, result=None\nCONTROL: completed 'cat' with 'latest: cat'\nASSERT PASS: normal final result == 'latest: cat'\nCONTROL: entered 'ca'; response held\nCONTROL: entered 'cat'; response held\nCONTROL: completed 'cat' with 'latest: cat'\nASSERT PASS: latest completed first, result == 'latest: cat'\nCONTROL: completed 'ca' with 'older: ca'\nASSERT PASS: reversed final result == 'latest: cat'\ntest_normal_overlap_latest_after_both_finish (test_search.SearchOverlapTests) ... ok\ntest_reversed_overlap_latest_survives_older_completion (test_search.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.010s\n\nOK\n"
+    },
+    {
+      "cell": "search-order--skill--1",
+      "variant": "valid_intermediate_old",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n        self.completed_generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n            self.completed_generation = generation\n        if generation < self.generation and self.completed_generation < self.generation:\n            self.result = result\n",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "expected_test_count": 2,
+      "observed_test_counts": [
+        "2"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "CONTROL: entered 'ca'; response held\nCONTROL: entered 'cat'; response held\nCONTROL: completed 'ca' with 'older: ca'\nOBSERVATION only: while latest pending, result='older: ca'\nCONTROL: completed 'cat' with 'latest: cat'\nASSERT PASS: normal final result == 'latest: cat'\nCONTROL: entered 'ca'; response held\nCONTROL: entered 'cat'; response held\nCONTROL: completed 'cat' with 'latest: cat'\nASSERT PASS: latest completed first, result == 'latest: cat'\nCONTROL: completed 'ca' with 'older: ca'\nASSERT PASS: reversed final result == 'latest: cat'\ntest_normal_overlap_latest_after_both_finish (test_search.SearchOverlapTests) ... ok\ntest_reversed_overlap_latest_survives_older_completion (test_search.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.010s\n\nOK\n"
+    },
+    {
+      "cell": "search-protected--baseline--1",
+      "variant": "original_guarded",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "expected_test_count": 4,
+      "observed_test_counts": [
+        "4"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "test_existing_display_retained_through_older_first_completion (test_search_local.SearchOverlapTests) ... ok\ntest_existing_display_retained_until_newer_first_completion (test_search_local.SearchOverlapTests) ... ok\ntest_newer_completes_first_then_older_cannot_overwrite (test_search_local.SearchOverlapTests) ... ok\ntest_older_completes_first_while_newer_remains_pending (test_search_local.SearchOverlapTests) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.018s\n\nOK\n"
+    },
+    {
+      "cell": "search-protected--baseline--1",
+      "variant": "transient_stale",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n        self.completed_generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n            self.completed_generation = generation\n        if generation < self.generation and self.completed_generation < self.generation:\n            self.result = result\n",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "expected_test_count": 4,
+      "observed_test_counts": [
+        "4"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "test_existing_display_retained_through_older_first_completion (test_search_local.SearchOverlapTests) ... FAIL\ntest_existing_display_retained_until_newer_first_completion (test_search_local.SearchOverlapTests) ... ok\ntest_newer_completes_first_then_older_cannot_overwrite (test_search_local.SearchOverlapTests) ... ok\ntest_older_completes_first_while_newer_remains_pending (test_search_local.SearchOverlapTests) ... FAIL\n\n======================================================================\nFAIL: test_existing_display_retained_through_older_first_completion (test_search_local.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search_local.py\", line 93, in test_existing_display_retained_through_older_first_completion\n    self.assertEqual(self.search.result, \"existing result\")\nAssertionError: 'older result' != 'existing result'\n- older result\n+ existing result\n\n\n======================================================================\nFAIL: test_older_completes_first_while_newer_remains_pending (test_search_local.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search_local.py\", line 81, in test_older_completes_first_while_newer_remains_pending\n    self.assertIsNone(self.search.result)\nAssertionError: 'older result' is not None\n\n----------------------------------------------------------------------\nRan 4 tests in 0.018s\n\nFAILED (failures=2)\n"
+    },
+    {
+      "cell": "search-protected--baseline--1",
+      "variant": "clear_existing_on_start",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.result = None\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "expected_test_count": 4,
+      "observed_test_counts": [
+        "4"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "test_existing_display_retained_through_older_first_completion (test_search_local.SearchOverlapTests) ... FAIL\ntest_existing_display_retained_until_newer_first_completion (test_search_local.SearchOverlapTests) ... FAIL\ntest_newer_completes_first_then_older_cannot_overwrite (test_search_local.SearchOverlapTests) ... ok\ntest_older_completes_first_while_newer_remains_pending (test_search_local.SearchOverlapTests) ... ok\n\n======================================================================\nFAIL: test_existing_display_retained_through_older_first_completion (test_search_local.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search_local.py\", line 88, in test_existing_display_retained_through_older_first_completion\n    self.assertEqual(self.search.result, \"existing result\")\nAssertionError: None != 'existing result'\n\n======================================================================\nFAIL: test_existing_display_retained_until_newer_first_completion (test_search_local.SearchOverlapTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/test_search_local.py\", line 100, in test_existing_display_retained_until_newer_first_completion\n    self.assertEqual(self.search.result, \"existing result\")\nAssertionError: None != 'existing result'\n\n----------------------------------------------------------------------\nRan 4 tests in 0.016s\n\nFAILED (failures=2)\n"
+    },
+    {
+      "cell": "search-protected--skill--1",
+      "variant": "original_guarded",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "expected_exit": 0,
+      "exit_code": 0,
+      "expected_test_count": 3,
+      "observed_test_counts": [
+        "3"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "test_newer_completes_first_older_cannot_replace_it (test_search.SearchFlowTests) ... ok\ntest_older_completes_while_newer_pending_retains_existing (test_search.SearchFlowTests) ... ok\ntest_single_request_retains_display_until_completion (test_search.SearchFlowTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.015s\n\nOK\n"
+    },
+    {
+      "cell": "search-protected--skill--1",
+      "variant": "transient_stale",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n        self.completed_generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n            self.completed_generation = generation\n        if generation < self.generation and self.completed_generation < self.generation:\n            self.result = result\n",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "expected_test_count": 3,
+      "observed_test_counts": [
+        "3"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "test_newer_completes_first_older_cannot_replace_it (test_search.SearchFlowTests) ... ok\ntest_older_completes_while_newer_pending_retains_existing (test_search.SearchFlowTests) ... FAIL\ntest_single_request_retains_display_until_completion (test_search.SearchFlowTests) ... ok\n\n======================================================================\nFAIL: test_older_completes_while_newer_pending_retains_existing (test_search.SearchFlowTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/tests/test_search.py\", line 65, in test_older_completes_while_newer_pending_retains_existing\n    self.assertEqual(self.search.result, \"existing result\")\nAssertionError: 'older result' != 'existing result'\n- older result\n+ existing result\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.015s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "cell": "search-protected--skill--1",
+      "variant": "clear_existing_on_start",
+      "command": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "implementation": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.result = None\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "expected_exit": 1,
+      "exit_code": 1,
+      "expected_test_count": 3,
+      "observed_test_counts": [
+        "3"
+      ],
+      "timed_out": false,
+      "test_sources_unchanged": true,
+      "matched": true,
+      "output": "test_newer_completes_first_older_cannot_replace_it (test_search.SearchFlowTests) ... FAIL\ntest_older_completes_while_newer_pending_retains_existing (test_search.SearchFlowTests) ... FAIL\ntest_single_request_retains_display_until_completion (test_search.SearchFlowTests) ... FAIL\n\n======================================================================\nFAIL: test_newer_completes_first_older_cannot_replace_it (test_search.SearchFlowTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/tests/test_search.py\", line 73, in test_newer_completes_first_older_cannot_replace_it\n    self.assertEqual(self.search.result, \"existing result\")\nAssertionError: None != 'existing result'\n\n======================================================================\nFAIL: test_older_completes_while_newer_pending_retains_existing (test_search.SearchFlowTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/tests/test_search.py\", line 58, in test_older_completes_while_newer_pending_retains_existing\n    self.assertEqual(self.search.result, \"existing result\")\nAssertionError: None != 'existing result'\n\n======================================================================\nFAIL: test_single_request_retains_display_until_completion (test_search.SearchFlowTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<REPLAY>/tests/test_search.py\", line 51, in test_single_request_retains_display_until_completion\n    self.assertEqual(self.search.result, \"existing result\")\nAssertionError: None != 'existing result'\n\n----------------------------------------------------------------------\nRan 3 tests in 0.013s\n\nFAILED (failures=3)\n"
+    }
+  ],
+  "retained_projects_unchanged": true,
+  "all_matched": true
+}
