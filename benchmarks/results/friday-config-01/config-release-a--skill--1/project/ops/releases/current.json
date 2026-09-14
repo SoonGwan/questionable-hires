@@ -1,0 +1,45 @@
+{
+  "consumers": {
+    "old": "services/worker/versions/old.py",
+    "new": "services/worker/versions/new.py"
+  },
+  "phases": [
+    {
+      "name": "original",
+      "config": "ops/config/legacy.json",
+      "active": [
+        "old"
+      ]
+    },
+    {
+      "name": "mixed rollout",
+      "config": "ops/config/bridge.json",
+      "active": [
+        "old",
+        "new"
+      ]
+    },
+    {
+      "name": "old retired and config pruned",
+      "config": "ops/config/current.json",
+      "active": [
+        "new"
+      ]
+    },
+    {
+      "name": "rollback overlap",
+      "config": "ops/config/bridge.json",
+      "active": [
+        "new",
+        "old"
+      ]
+    },
+    {
+      "name": "rollback complete",
+      "config": "ops/config/legacy.json",
+      "active": [
+        "old"
+      ]
+    }
+  ]
+}

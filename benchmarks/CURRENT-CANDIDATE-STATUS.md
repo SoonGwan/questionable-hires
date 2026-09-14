@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Friday consumer selection — 2026-09-15, parent `761a4b8`
 
+[Configuration transfer 01](FRIDAY-CONFIG-01-REVIEW.md), launch `0723722`,
+resources `636935e`: four completed sessions read nested instructions and use
+actual Python consumers; both arms correctly classify both plans. Friday reuses
+stateless observations, yet sum tokens increase **17.61%**, time falls only
+**1.35%**, and B time regresses. No net efficiency win or helper adoption. Stop
+adding read rules to these small pairs; target material repeated-work cost or
+missing developer value rather than promoting fewer cheap function calls.
+
+한국어: 새 설정 과제에서 지침 탐색과 정확한 판정·근거 재사용은 확인했지만,
+합산 토큰 17.61% 증가·시간 1.35% 감소로 목표에는 미달이다. 오류 과제 시간도
+증가했다. 같은 작은 과제에 규칙을 더 붙이거나 호출 수 감소를 성과로 포장하지 않는다.
+
 [Discovery screen 02](FRIDAY-ACTIVE-02-REVIEW.md), launch `8e66077`, resources
 `636935e`: both skill sessions use three commands with grouped reads and retain
 correct active-reader/rollback evidence. Historical skill sums fall 12.15% tokens

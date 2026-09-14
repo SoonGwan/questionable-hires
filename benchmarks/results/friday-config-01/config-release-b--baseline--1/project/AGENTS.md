@@ -1,0 +1,1 @@
+Review only; preserve every supplied file. Read applicable nested instructions before exercising a component. Use Python standard library, no external services. Keep any scratch under this project and remove it.
