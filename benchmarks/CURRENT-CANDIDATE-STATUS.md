@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Next unmeasured transfer fixture: [two-stage preview ownership](HOSTAGE-JAVASCRIPT-PREVIEW-01-PROTOCOL.md).
+No skill/runtime change. Author preflight distinguishes seven actual defects
+across latest-request fetch/decode state, with 18 native tests and full local
+suite 473/473 passing in 64.942s. These are measurement-support checks, not new
+model quality or performance results; no model session has run on this fixture.
+
+한국어: 다음 검증은 가져오기·변환 두 단계에서 요청이 겹치는 미리보기 작업이다.
+결함 7종을 구분하는 테스트를 마련했고 전체 로컬 테스트 473개가 통과했다.
+아직 이 과제의 모델 실행 전이며, 아래 기존 수치를 새 과제에 적용하지 않는다.
+
 [JS usage-first screen](HOSTAGE-JAVASCRIPT-USAGE-MODEL-01-REVIEW.md), launch
 `8d21e74`, resource `f0b29dd`: baseline 87,491 tokens/92.970s, skill 114,460/86.698s,
 **+30.82% tokens / −6.75% time**. The 42-line usage read is actually adopted;
