@@ -1,0 +1,34 @@
+[
+  {
+    "id": "refresh-owner-a",
+    "skill": "hostage-negotiator",
+    "task": "Review Preview.refresh against requirements.md and fix preview.py only if\nneeded. Add rerunnable standard-library unittest tests using actual Preview with\ncontrolled callbacks. Cover both completion orders, earlier failure/cancellation\nwhile latest remains pending, latest failure/cancellation and retry, synchronous\ncallback failure, result/error identity, prior display retention and instance isolation.\nBound behavior-dependent waits and clean up owned tasks; no timing sleeps. Use\npython3 -B -m unittest discover -v and report actual native results and the test\nprocess exit. Never infer passed tests solely from a later diff/status or prior prose.\nPreserve requirements and unrelated owner notes. Test support may be added inside\nthis project; no dependencies, network, external discovery, deployment or publishing.\nDo not serialize or suppress overlapping refresh calls to make the tests pass.\n",
+    "files": {
+      "preview.py": "class Preview:\n    def __init__(self):\n        self.pending = False\n        self.value = None\n        self.generation = 0\n\n    async def refresh(self, key, fetch):\n        self.generation += 1\n        generation = self.generation\n        self.pending = True\n        try:\n            value = await fetch(key)\n            if generation == self.generation:\n                self.value = value\n            return value\n        finally:\n            self.pending = False\n",
+      "requirements.md": "Every refresh must invoke its supplied fetch(key), even while another\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\nEach call returns its own exact fetched object or propagates its own exception.\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\nfailure or cancellation cannot clear pending while the latest is unresolved.\nLatest settlement clears pending even if older calls remain running. Keep the prior\nvalue during loading and on failure/cancellation. Instances are independent.\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\n",
+      "notes.txt": "Owner draft: preserve this unrelated note.\n"
+    },
+    "criteria": [
+      "Preserve overlapping callback invocation and exact per-call results/errors.",
+      "Latest-started request alone owns pending/value across both orders and recovery.",
+      "Keep valid original behavior; change production only if a contract defect exists.",
+      "Retain bounded native tests and report actual evidence without scope expansion."
+    ]
+  },
+  {
+    "id": "refresh-owner-b",
+    "skill": "hostage-negotiator",
+    "task": "Review Preview.refresh against requirements.md and fix preview.py only if\nneeded. Add rerunnable standard-library unittest tests using actual Preview with\ncontrolled callbacks. Cover both completion orders, earlier failure/cancellation\nwhile latest remains pending, latest failure/cancellation and retry, synchronous\ncallback failure, result/error identity, prior display retention and instance isolation.\nBound behavior-dependent waits and clean up owned tasks; no timing sleeps. Use\npython3 -B -m unittest discover -v and report actual native results and the test\nprocess exit. Never infer passed tests solely from a later diff/status or prior prose.\nPreserve requirements and unrelated owner notes. Test support may be added inside\nthis project; no dependencies, network, external discovery, deployment or publishing.\nDo not serialize or suppress overlapping refresh calls to make the tests pass.\n",
+    "files": {
+      "preview.py": "class Preview:\n    def __init__(self):\n        self.pending = False\n        self.value = None\n        self.generation = 0\n\n    async def refresh(self, key, fetch):\n        self.generation += 1\n        generation = self.generation\n        self.pending = True\n        try:\n            value = await fetch(key)\n            if generation == self.generation:\n                self.value = value\n            return value\n        finally:\n            if generation == self.generation:\n                self.pending = False\n",
+      "requirements.md": "Every refresh must invoke its supplied fetch(key), even while another\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\nEach call returns its own exact fetched object or propagates its own exception.\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\nfailure or cancellation cannot clear pending while the latest is unresolved.\nLatest settlement clears pending even if older calls remain running. Keep the prior\nvalue during loading and on failure/cancellation. Instances are independent.\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\n",
+      "notes.txt": "Owner draft: preserve this unrelated note.\n"
+    },
+    "criteria": [
+      "Preserve overlapping callback invocation and exact per-call results/errors.",
+      "Latest-started request alone owns pending/value across both orders and recovery.",
+      "Keep valid original behavior; change production only if a contract defect exists.",
+      "Retain bounded native tests and report actual evidence without scope expansion."
+    ]
+  }
+]
