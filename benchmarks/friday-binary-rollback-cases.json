@@ -1,0 +1,23 @@
+[
+  {
+    "id": "binary-rollback",
+    "skill": "friday",
+    "task": "Review this binary-payload release for rollout and rollback readiness. Execute the supplied reader queries and migrations in local SQLite, including verification_writes.sql before rollback. Compare the actual payload bytes after down with the current values represented before down, covering updated, untouched, inserted and empty payloads. Assess the documented maintenance-window strategy, not an assumed rolling deployment. Preserve all original files. Do not deploy, install dependencies, use external services or claim unavailable application-writer or staging evidence.",
+    "files": {
+      "001_initial.sql": "CREATE TABLE artifacts (id INTEGER PRIMARY KEY, payload BLOB NOT NULL);\nINSERT INTO artifacts VALUES (1, X'00FF80'), (2, X'01FE'), (3, X'');\n",
+      "002_up.sql": "ALTER TABLE artifacts RENAME COLUMN payload TO payload_hex;\nUPDATE artifacts SET payload_hex = hex(payload_hex);\n",
+      "002_down.sql": "UPDATE artifacts SET payload_hex = CAST(payload_hex AS BLOB);\nALTER TABLE artifacts RENAME COLUMN payload_hex TO payload;\n",
+      "verification_writes.sql": "UPDATE artifacts SET payload_hex = 'FF0080' WHERE id = 1;\nINSERT INTO artifacts (id, payload_hex) VALUES (4, '0001FF');\n",
+      "old_reader.py": "QUERY = 'SELECT id, payload FROM artifacts ORDER BY id'\n",
+      "new_reader.py": "QUERY = 'SELECT id, payload_hex FROM artifacts ORDER BY id'\n",
+      "release.md": "# Binary payload release\n\nThis uses a coordinated maintenance window, not a rolling deployment. Stop all readers and writers, apply up, start only the new version. For rollback, stop all consumers, apply down, then start only the old version. There is no mixed-version serving interval.\n\nOld readers require exact opaque bytes, including NUL, non-UTF-8 and empty bytes. The new representation is an uppercase hexadecimal string encoding those same bytes, not a text payload. SQLite's declared BLOB affinity permits TEXT values after up; inspect actual values/types rather than assuming the declaration determines them.\n\nRun the supplied verification_writes.sql as representative new-schema SQL writes before down. Rollback must preserve the CURRENT represented bytes, including the update, untouched row, inserted row and empty payload. It need not undo new-version user changes. The SQL file is a rehearsal fixture; no application writers or staging evidence are supplied.\n\nA reader query executing successfully is not enough: inspect returned payload types and values. Report the concrete transition that breaks a contract if any, and a supported next step. Wrong representation is not automatically permanent data loss. Do not implement a replacement migration during this review. Use in-memory SQLite and work only inside this project; any owned scratch must be project-local and removed.\n"
+    },
+    "criteria": [
+      "Executes actual supplied readers and migrations, including representative SQL writes before down.",
+      "Detects that casting hex text to BLOB yields ASCII hex bytes rather than decoding the binary payload; checks updated, untouched, inserted and empty payloads.",
+      "Preserves current represented values as the recovery target rather than reverting user changes; distinguishes incorrect representation from proven irreversible loss.",
+      "Assesses the explicit stopped-consumer maintenance strategy without inventing a mixed-version rollout blocker.",
+      "Preserves originals, avoids deployment/external services, and does not invent writer or staging verification."
+    ]
+  }
+]
