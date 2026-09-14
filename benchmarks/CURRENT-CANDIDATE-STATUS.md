@@ -11,6 +11,20 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [native invocation candidate](RECEIPT-NATIVE-INVOCATION-01.md), previous
+source `587fb84`: optional `invocation: module` executes literal `-B -m unittest`
+with same-process copy provenance and existing execution supervision. This targets
+the adapters written by both SQLite skill sessions. Thirteen new-mode tests plus
+69 related existing tests pass, including real SQLite positive/partial controls,
+startup bypass, configured-hook rejection and child cleanup. Guide +881 bytes;
+model adoption, adapter removal and whole-task savings remain unmeasured.
+
+한국어: SQLite 평가에서 두 스킬 세션이 직접 바꿨던 실행기를 정식 선택 기능으로
+추가했다. `-B -m unittest` 직접 실행과 같은 프로세스의 import 확인을 제공하며,
+기존 시간·출력 제한을 유지한다. 실제 DB·시작 검증 누락·기존 설정 보존·프로세스
+정리 등을 포함해 관련 테스트 82개가 통과했다. 안내는 881바이트 늘었다.
+모델의 실제 채택·추가 코드 제거·전체 토큰과 시간 절감은 아직 측정하지 않았다.
+
 Receipt [SQLite transfer 01 review](RECEIPT-LEDGER-01-REVIEW.md), launch `2d8785d`,
 resources `ec0cc28`: all four sessions finish and both arms distinguish complete
 from incomplete fixes. Totals baseline 140,630 tokens / 131.371s, skill 221,949 /

@@ -49,6 +49,38 @@ runpy.run_module(recipe['runner'], run_name='__main__', alter_sys=True)
 '''
 
 
+NATIVE_STARTUP = '''import importlib, importlib.machinery, os, pathlib, sys, traceback
+def _receipt_startup():
+    global probe, root
+    # A Python-based interpreter launcher must not satisfy the native probe.
+    if sys.argv[:1] != ['-m']:
+        return
+    probe = pathlib.Path(__file__).resolve().parent
+    root = probe.parent
+    paths = [str(root / name) for name in recipe.get('import_roots', [])] + [str(root)]
+    sys.path[:] = paths + [path for path in sys.path if path != str(probe) and path not in paths]
+    # Child processes inherit copy lookup, not this one-process startup probe.
+    os.environ['PYTHONPATH'] = os.pathsep.join(paths)
+    try:
+        for name in ('sitecustomize', 'usercustomize'):
+            if importlib.machinery.PathFinder.find_spec(name, sys.path) is not None:
+                raise RuntimeError('Native invocation does not replace startup customization: ' + name)
+        for name in recipe['imports']:
+            module = importlib.import_module(name)
+            location = getattr(module, '__file__', None)
+            if not location or not pathlib.Path(location).resolve().is_relative_to(root):
+                raise RuntimeError('Import escaped comparison copy: ' + name)
+            print('Verified copied import:', name, flush=True)
+        (probe / 'ready').write_bytes(b'ready')
+    except BaseException:
+        traceback.print_exc()
+        sys.stdout.flush()
+        sys.stderr.flush()
+        os._exit(7)
+_receipt_startup()
+'''
+
+
 def checked_path(name):
     if not isinstance(name, str):
         raise ValueError('Expected a project-relative file')
@@ -114,7 +146,20 @@ def run_check(python, root, recipe, timeout):
                TMP=str(root), TEMP=str(root))
     env.pop('PYTHONPATH', None)
     env.pop('PYTHONOPTIMIZE', None)
-    process = subprocess.Popen([str(python), '-B', '-c', BOOTSTRAP, json.dumps(recipe)],
+    args = [str(python), '-B', '-c', BOOTSTRAP, json.dumps(recipe)]
+    marker = None
+    if recipe.get('invocation', 'bootstrap') == 'module':
+        for directory in [root, *(root / name for name in recipe.get('import_roots', []))]:
+            if any((directory / name).exists() for name in
+                   ('sitecustomize', 'sitecustomize.py', 'sitecustomize.pyc',
+                    'usercustomize', 'usercustomize.py', 'usercustomize.pyc')):
+                raise ValueError('Native invocation does not replace project startup customization')
+        probe = Path(tempfile.mkdtemp(prefix='.receipt-startup-', dir=root))
+        (probe / 'sitecustomize.py').write_text('recipe = ' + repr(recipe) + '\n' + NATIVE_STARTUP)
+        marker = probe / 'ready'
+        env['PYTHONPATH'] = os.pathsep.join([str(probe), *(str(root / name) for name in recipe.get('import_roots', [])), str(root)])
+        args = [str(python), '-B', '-m', recipe['runner'], *recipe['tests']]
+    process = subprocess.Popen(args,
         cwd=root, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT, start_new_session=True)
     deadline = time.monotonic() + timeout
@@ -160,8 +205,15 @@ def run_check(python, root, recipe, timeout):
             if pending_error is None:
                 raise RuntimeError('Child exit unconfirmed after 5-second cleanup wait; comparison not established') from error
             # Preserve the original interruption/error rather than replacing it.
-    return dict(exit_code=process.returncode, timed_out=timed_out,
-                output=output, output_truncated=size > 12000)
+    result = dict(exit_code=process.returncode, timed_out=timed_out,
+                  output=output, output_truncated=size > 12000)
+    if marker is not None:
+        ready = marker.is_file() and not marker.is_symlink() and read_limited(marker, 5) == b'ready'
+        result.update(command=args, invocation='module', provenance_ready=ready,
+                      native_exit_code=process.returncode)
+        if not ready and not timed_out:
+            result['exit_code'] = 7
+    return result
 
 
 def read_limited(path, limit):
@@ -216,7 +268,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     if os.name != 'posix' or not 0 < timeout <= 300:
         raise ValueError('Requires POSIX and a timeout in (0, 300]')
     required = {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}
-    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree'}:
+    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation'}:
         raise ValueError('Recipe requires fixed, vary, before, after, imports, runner and tests')
     if type(recipe.get('guard_tree', False)) is not bool:
         raise ValueError('guard_tree must be a boolean')
@@ -228,6 +280,10 @@ def compare(root, recipe, python=sys.executable, timeout=30):
             raise ValueError(key + ' must be a nonempty string list')
     if recipe['runner'] not in ('unittest', 'pytest'):
         raise ValueError('Use unittest or installed pytest')
+    if recipe.get('invocation', 'bootstrap') not in ('bootstrap', 'module'):
+        raise ValueError('invocation must be bootstrap or module')
+    if recipe.get('invocation') == 'module' and recipe['runner'] != 'unittest':
+        raise ValueError('Native module invocation currently supports unittest only')
     recipe = dict(recipe, fixed=fixed_files(root, recipe['fixed']))
     watched = fixed_files(root, recipe.get('watch', []))
     names = recipe['fixed'] + recipe['vary']
@@ -387,6 +443,10 @@ only when whole-project preservation is requested and all source reads are allow
 before: commit expression. after: commit expression or {"working_tree":true}.
 Working-tree after freezes current bytes/modes once, not the index or a commit.
 imports: modules that must load inside each copy. runner: unittest or pytest.
+invocation (optional): module runs Python -B -m unittest with these tests using
+a temporary same-process startup probe; bootstrap is the existing default.
+Module mode keeps native unittest exits (including empty/all-skipped exit 0);
+inspect counts/skips. Missing startup provenance reserves check 7, CLI 2.
 import_roots (optional): ordered selected directories, e.g. ["src"], prepended
 inside each copy before its root. No package installation or inherited PYTHONPATH.
 Use --spec - to send JSON on stdin; no recipe file is required.

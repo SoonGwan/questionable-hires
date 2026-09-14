@@ -62,6 +62,14 @@ JSON
   interpreter (default: launching Python; override `--python` if needed), unittest
   or already-installed pytest. Child temp defaults are inside each copy: do not
   redirect global TMPDIR merely to localize checks or other launchers may pollute it.
+- When the ticket requires `python -B -m unittest ...`, set `"invocation":"module"`
+  with `runner: "unittest"` and the existing `tests` arguments; no internal adapter
+  is needed. The default `bootstrap` invocation is unchanged. Module mode uses a
+  temporary copy-local startup probe for same-process imports, reports `command`,
+  `native_exit_code` and `provenance_ready`, and retains timeout/output supervision.
+  Only child-local lookup is configured; descendants do not inherit the probe.
+  Required custom site/user startup hooks or disabled Python site initialization
+  are unsupported; use a suitable native project setup instead of replacing them.
 - Optional `"import_roots":["src"]` supports regular source-layout packages.
   Select needed package initializers/support in `fixed` and implementations in
   `vary`; each root must contain selected files. Ordered canonical directories
@@ -77,8 +85,11 @@ output. Reserve `--pretty` for a human-readable JSON request, not extra evidence
 CLI 0 means observations collected, **not proof**. Inspect each actual assertion,
 requested test identity, before failure/after pass, copied-import evidence,
 `exit_code`, `timed_out` and `output_truncated`. Help/version output is not execution.
-Unittest zero/all-skipped runs return check 5; failures return 1, partial-skip
-success 0. This guard does not prove requested coverage. Pytest keeps native exits.
+Bootstrap unittest zero/all-skipped runs return check 5; failures return 1,
+partial-skip success 0. Module invocation preserves native exits, including 0 for
+empty/all-skipped runs: inspect actual counts/skips, not just the exit. Missing
+module-startup provenance reserves check 7 (native exit is retained separately).
+Neither mode proves requested coverage. Pytest keeps native exits.
 Listed-module import exceptions, including `SystemExit(0)`, retain a traceback
 and reserve check exit 7 for incomplete setup; no next comparison runs and CLI
 returns 2. A runner independently exiting 7 is conservatively incomplete too.
