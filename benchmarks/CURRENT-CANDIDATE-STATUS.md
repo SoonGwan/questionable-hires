@@ -11,17 +11,31 @@ it has not established a broad 20–30% gain.
 
 ## Native pager interval screen — 2026-09-15, launch `fa3c10d`
 
-Subsequent candidate: move the existing-project-support decision into the
+Post-diagnostic local regression at source `1cb854d`: **595 tests pass / 90.582s**,
+no reported skips; skill/catalog/link, featured synchronization and whitespace
+checks pass. 한국어: 전체 로컬 회귀 검사 595개가 통과했다. 호스팅 CI나 스킬 전체
+성능을 입증하는 검사는 아니며, 아래 실제 모델 관측과 구분한다.
+
+Subsequent candidate `1cb854d`: move the existing-project-support decision into the
 entrypoint, before transport resources are read; batch supplied project inputs
 and instructions before missing-path discovery. This follows the observed unused
 reads, preserving native assertions, interval contracts, cleanup and QA-only
-scope. No executable asset changes. The measured pair below describes the old
-entrypoint, not this unmeasured routing correction.
+scope. No executable asset changes. [One exposed-task routing diagnostic](results/pager-routing-02/README.md)
+adopts the gate: preparation shell commands fall 3→1, unused transport reads
+disappear, and the four required native methods retain real interval failures
+and recovery coverage. Versus the earlier skill session: **−28.33% tokens /
+−26.16% time**, with different test organization and no final Git command. This
+is not a contemporary baseline comparison, independent transfer or a causal
+efficiency claim. Unchanged-suite author replay confirms the original failures
+and guarded passes. The paired measurements below still describe the old entry.
 
 한국어: 후속 수정은 기존 프로젝트 지원이 충분하면 transport 설명·자산을 읽지
 않도록 진입점에서 먼저 결정하게 한다. 이미 주어진 파일과 프로젝트 지침을 함께
-읽도록 바꿨고, 중간 상태 검증·정리·QA 범위는 유지했다. 아래 측정치는 수정 전
-버전의 결과이며, 이 변경의 절감 효과로 옮겨 붙이지 않는다.
+읽도록 바꿨고, 중간 상태 검증·정리·QA 범위는 유지했다. 노출 과제 재검사에서
+준비 명령 3→1회와 불필요한 자료 읽기 제거가 확인됐으며, 이전 스킬 실행보다
+토큰 28.33%·시간 26.16%가 적었다. 테스트 구성·최종 Git 확인 차이가 있고 단일
+재검사이므로 일반 성능이나 인과 효과로 확정하지 않는다. 새 과제 전이 검증은
+남아 있으며, 아래 비교군 수치는 수정 전 버전의 결과로 그대로 유지한다.
 
 [Pager screen](results/pager-loading-01/README.md), Mother-in-law entrypoint
 `c6d8ea0`: both arms deliver four native tests with two real loading-interval

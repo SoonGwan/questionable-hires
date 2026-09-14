@@ -1,0 +1,42 @@
+{
+  "results": [
+    {
+      "arm": "skill",
+      "total_tokens": 56368,
+      "elapsed_seconds": 48.708,
+      "shell_commands": 2,
+      "tool_pairs": 2,
+      "original_native_runs": 1,
+      "test_names": [
+        "test_single_success",
+        "test_older_success_while_newer_pending",
+        "test_older_oserror_while_newer_pending",
+        "test_latest_error_followed_by_successful_retry"
+      ],
+      "original_inventory": [
+        "AGENTS.md",
+        "pager.py",
+        "test_pager.py",
+        "test_support.py"
+      ],
+      "test_sha256": "58fb6ede07ec9301892ee8243559ae6d1007808240c7f6e41520412510e821cf",
+      "replays": [
+        {
+          "variant": "original",
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "test_latest_error_followed_by_successful_retry (test_pager.PagerTests) ... ok\ntest_older_oserror_while_newer_pending (test_pager.PagerTests) ... test_older_success_while_newer_pending (test_pager.PagerTests) ... test_single_success (test_pager.PagerTests) ... ok\n\n======================================================================\nFAIL: test_older_oserror_while_newer_pending (test_pager.PagerTests) (transition='older completed, newer pending')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<AUTHOR-COPY>/test_pager.py\", line 49, in check_older_completion\n    self.assert_state(pager, ['cached'], True, None)\n  File \"<AUTHOR-COPY>/test_pager.py\", line 23, in assert_state\n    self.assertEqual(\nAssertionError: Tuples differ: (['cached'], False, None) != (['cached'], True, None)\n\nFirst differing element 1:\nFalse\nTrue\n\n- (['cached'], False, None)\n?              ^^^^\n\n+ (['cached'], True, None)\n?              ^^^\n\n\n======================================================================\nFAIL: test_older_success_while_newer_pending (test_pager.PagerTests) (transition='older completed, newer pending')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<AUTHOR-COPY>/test_pager.py\", line 49, in check_older_completion\n    self.assert_state(pager, ['cached'], True, None)\n  File \"<AUTHOR-COPY>/test_pager.py\", line 23, in assert_state\n    self.assertEqual(\nAssertionError: Tuples differ: (['cached'], False, None) != (['cached'], True, None)\n\nFirst differing element 1:\nFalse\nTrue\n\n- (['cached'], False, None)\n?              ^^^^\n\n+ (['cached'], True, None)\n?              ^^^\n\n\n----------------------------------------------------------------------\nRan 4 tests in 0.017s\n\nFAILED (failures=2)\n"
+        },
+        {
+          "variant": "guarded",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_latest_error_followed_by_successful_retry (test_pager.PagerTests) ... ok\ntest_older_oserror_while_newer_pending (test_pager.PagerTests) ... ok\ntest_older_success_while_newer_pending (test_pager.PagerTests) ... ok\ntest_single_success (test_pager.PagerTests) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.016s\n\nOK\n"
+        }
+      ],
+      "transport_errors": []
+    }
+  ],
+  "python": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "limitation": "Author replay and integrity reconciliation, separate from model timing. Source inspection still required for assertion coverage; no broad performance claim."
+}
