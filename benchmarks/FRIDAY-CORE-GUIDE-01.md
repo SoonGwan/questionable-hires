@@ -1,5 +1,9 @@
 # Friday core guide — less routine reading, unchanged execution
 
+Subsequent [model screen](FRIDAY-CORE-GUIDE-MODEL-01-REVIEW.md) uses the shorter
+guide and reuses results, with lower recorded tokens but higher time versus the
+historical checkpoint. It does not convert document sizes into performance scores.
+
 2026-09-14, previous reference source `c1f639c`. The rolling-schema skill cell in
 [checkpoint 07](BUNDLE-CONTRACT-07-REVIEW.md) read the core SQLite guide and ran
 the helper once, yet used more tokens than its baseline. That result does not

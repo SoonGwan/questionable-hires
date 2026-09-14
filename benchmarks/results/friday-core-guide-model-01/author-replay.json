@@ -1,0 +1,209 @@
+{
+  "kind": "separate author reconciliation/replay, not model output",
+  "resource": "37686ac",
+  "reconciled": true,
+  "original_recipe": {
+    "phases": [
+      {
+        "name": "initial",
+        "files": [
+          "001_initial.sql"
+        ],
+        "sql": "INSERT INTO users (id, name) VALUES (1, 'Original'), (2, 'Unchanged');"
+      },
+      {
+        "name": "up before application replacement",
+        "files": [
+          "002_up.sql"
+        ]
+      },
+      {
+        "name": "up after representative new-schema writes / old binary rollback restart",
+        "sql": "INSERT INTO users (id, display_name) VALUES (3, 'New user'); UPDATE users SET display_name = 'Updated by new schema' WHERE id = 1;"
+      },
+      {
+        "name": "down after rollback",
+        "files": [
+          "002_down.sql"
+        ]
+      }
+    ],
+    "checks": {
+      "old reader": {
+        "python_file": "old_reader.py",
+        "constant": "QUERY"
+      },
+      "new reader": {
+        "python_file": "new_reader.py",
+        "constant": "QUERY"
+      }
+    }
+  },
+  "original_program": "import runpy\nfrom pathlib import Path\nimport hashlib\nroot = Path.cwd()\nfiles = ['release.md','001_initial.sql','002_up.sql','002_down.sql','old_reader.py','new_reader.py']\nbefore = {f: hashlib.sha256((root/f).read_bytes()).hexdigest() for f in files}\nhelper = runpy.run_path('.agents/skills/friday/scripts/sqlite_matrix.py')\nrecipe = {\n 'phases': [\n  {'name':'initial', 'files':['001_initial.sql'], 'sql':\"INSERT INTO users (id, name) VALUES (1, 'Original'), (2, 'Unchanged');\"},\n  {'name':'up before application replacement', 'files':['002_up.sql']},\n  {'name':'up after representative new-schema writes / old binary rollback restart', 'sql':\"INSERT INTO users (id, display_name) VALUES (3, 'New user'); UPDATE users SET display_name = 'Updated by new schema' WHERE id = 1;\"},\n  {'name':'down after rollback', 'files':['002_down.sql']}\n ],\n 'checks': {\n  'old reader': {'python_file':'old_reader.py','constant':'QUERY'},\n  'new reader': {'python_file':'new_reader.py','constant':'QUERY'}\n }\n}\nresult = helper['matrix'](recipe, root, timeout=5)\nprint(helper['format_result'](result))\nassert result['complete']\nexpected = [\n {'old reader': ('name', [(1,'Original'),(2,'Unchanged')]), 'new reader': None},\n {'old reader': None, 'new reader': ('display_name', [(1,'Original'),(2,'Unchanged')])},\n {'old reader': None, 'new reader': ('display_name', [(1,'Updated by new schema'),(2,'Unchanged'),(3,'New user')])},\n {'old reader': ('name', [(1,'Updated by new schema'),(2,'Unchanged'),(3,'New user')]), 'new reader': None}\n]\nassert len(result['phases']) == len(expected)\nfor phase, wants in zip(result['phases'], expected):\n for reader, want in wants.items():\n  check = phase['checks'][reader]\n  if want is None:\n   assert not check['ok'] and 'no such column' in check['error'], check\n  else:\n   column, rows = want\n   assert check['ok'] and not check['truncated'], check\n   assert list(check['columns']) == ['id', column], check\n   assert sorted(map(tuple, check['rows'])) == rows, check\nassert before == {f: hashlib.sha256((root/f).read_bytes()).hexdigest() for f in files}\nprint('PASS: all reader outcomes, column labels, surviving row values, and release-file preservation asserted.')",
+  "original_observations": {
+    "engine": "sqlite-memory",
+    "complete": true,
+    "phases": [
+      {
+        "name": "initial",
+        "checks": {
+          "old reader": {
+            "ok": true,
+            "rows": [
+              [
+                1,
+                "Original"
+              ],
+              [
+                2,
+                "Unchanged"
+              ]
+            ],
+            "columns": [
+              "id",
+              "name"
+            ],
+            "truncated": false
+          },
+          "new reader": {
+            "ok": false,
+            "error": "no such column: display_name"
+          }
+        }
+      },
+      {
+        "name": "up before application replacement",
+        "checks": {
+          "old reader": {
+            "ok": false,
+            "error": "no such column: name"
+          },
+          "new reader": {
+            "ok": true,
+            "rows": [
+              [
+                1,
+                "Original"
+              ],
+              [
+                2,
+                "Unchanged"
+              ]
+            ],
+            "columns": [
+              "id",
+              "display_name"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "up after representative new-schema writes / old binary rollback restart",
+        "checks": {
+          "old reader": {
+            "ok": false,
+            "error": "no such column: name"
+          },
+          "new reader": {
+            "ok": true,
+            "rows": [
+              [
+                1,
+                "Updated by new schema"
+              ],
+              [
+                2,
+                "Unchanged"
+              ],
+              [
+                3,
+                "New user"
+              ]
+            ],
+            "columns": [
+              "id",
+              "display_name"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "down after rollback",
+        "checks": {
+          "old reader": {
+            "ok": true,
+            "rows": [
+              [
+                1,
+                "Updated by new schema"
+              ],
+              [
+                2,
+                "Unchanged"
+              ],
+              [
+                3,
+                "New user"
+              ]
+            ],
+            "columns": [
+              "id",
+              "name"
+            ],
+            "truncated": false
+          },
+          "new reader": {
+            "ok": false,
+            "error": "no such column: display_name"
+          }
+        }
+      }
+    ],
+    "reader_sources": {
+      "old reader": {
+        "python_file": "old_reader.py",
+        "constant": "QUERY",
+        "line": 1,
+        "sha256": "294758ac1d7dd348534b7506be4c3fe31710f01eb296e3e98659903ddab61b4e",
+        "query": "SELECT id, name FROM users",
+        "kind": "static literal, not runtime binding evidence"
+      },
+      "new reader": {
+        "python_file": "new_reader.py",
+        "constant": "QUERY",
+        "line": 1,
+        "sha256": "fee2903771180a2b865bbdaed99d0d75711beb2720e7b4d39d8fdff8cb666d3b",
+        "query": "SELECT id, display_name FROM users",
+        "kind": "static literal, not runtime binding evidence"
+      }
+    }
+  },
+  "inventory_sha256": {
+    "release.md": "e987b9defd49929fdde127f69256e6f243426ad357b45e608c5368b6bad72192",
+    "002_down.sql": "f202a32cdf54191fff4f5939b1441ab9b1082649dcd449f93a03918a1d53d286",
+    "new_reader.py": "fee2903771180a2b865bbdaed99d0d75711beb2720e7b4d39d8fdff8cb666d3b",
+    "001_initial.sql": "f202577af96fe5ff413f6456e176f80eb994ac7d349d89f8707fa32f79cef931",
+    "002_up.sql": "5a4dd92692e21c505e80ae9617776440ecebf01b45eb476a40545c56f98c6daa",
+    "old_reader.py": "294758ac1d7dd348534b7506be4c3fe31710f01eb296e3e98659903ddab61b4e"
+  },
+  "checks": [
+    {
+      "variant": "original_release",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "program_unchanged": true,
+      "files_unchanged": true,
+      "output": "{\"engine\": \"sqlite-memory\", \"complete\": true, \"phases\": [{\"name\": \"initial\", \"checks\": {\"old reader\": {\"ok\": true, \"rows\": [[1, \"Original\"], [2, \"Unchanged\"]], \"columns\": [\"id\", \"name\"], \"truncated\": false}, \"new reader\": {\"ok\": false, \"error\": \"no such column: display_name\"}}}, {\"name\": \"up before application replacement\", \"checks\": {\"old reader\": {\"ok\": false, \"error\": \"no such column: name\"}, \"new reader\": {\"ok\": true, \"rows\": [[1, \"Original\"], [2, \"Unchanged\"]], \"columns\": [\"id\", \"display_name\"], \"truncated\": false}}}, {\"name\": \"up after representative new-schema writes / old binary rollback restart\", \"checks\": {\"old reader\": {\"ok\": false, \"error\": \"no such column: name\"}, \"new reader\": {\"ok\": true, \"rows\": [[1, \"Updated by new schema\"], [2, \"Unchanged\"], [3, \"New user\"]], \"columns\": [\"id\", \"display_name\"], \"truncated\": false}}}, {\"name\": \"down after rollback\", \"checks\": {\"old reader\": {\"ok\": true, \"rows\": [[1, \"Updated by new schema\"], [2, \"Unchanged\"], [3, \"New user\"]], \"columns\": [\"id\", \"name\"], \"truncated\": false}, \"new reader\": {\"ok\": false, \"error\": \"no such column: display_name\"}}}], \"reader_sources\": {\"old reader\": {\"python_file\": \"old_reader.py\", \"constant\": \"QUERY\", \"line\": 1, \"sha256\": \"294758ac1d7dd348534b7506be4c3fe31710f01eb296e3e98659903ddab61b4e\", \"query\": \"SELECT id, name FROM users\", \"kind\": \"static literal, not runtime binding evidence\"}, \"new reader\": {\"python_file\": \"new_reader.py\", \"constant\": \"QUERY\", \"line\": 1, \"sha256\": \"fee2903771180a2b865bbdaed99d0d75711beb2720e7b4d39d8fdff8cb666d3b\", \"query\": \"SELECT id, display_name FROM users\", \"kind\": \"static literal, not runtime binding evidence\"}}}\nPASS: all reader outcomes, column labels, surviving row values, and release-file preservation asserted.\n"
+    },
+    {
+      "variant": "rollback_loses_inserted_row",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "program_unchanged": true,
+      "files_unchanged": true,
+      "output": "{\"engine\": \"sqlite-memory\", \"complete\": true, \"phases\": [{\"name\": \"initial\", \"checks\": {\"old reader\": {\"ok\": true, \"rows\": [[1, \"Original\"], [2, \"Unchanged\"]], \"columns\": [\"id\", \"name\"], \"truncated\": false}, \"new reader\": {\"ok\": false, \"error\": \"no such column: display_name\"}}}, {\"name\": \"up before application replacement\", \"checks\": {\"old reader\": {\"ok\": false, \"error\": \"no such column: name\"}, \"new reader\": {\"ok\": true, \"rows\": [[1, \"Original\"], [2, \"Unchanged\"]], \"columns\": [\"id\", \"display_name\"], \"truncated\": false}}}, {\"name\": \"up after representative new-schema writes / old binary rollback restart\", \"checks\": {\"old reader\": {\"ok\": false, \"error\": \"no such column: name\"}, \"new reader\": {\"ok\": true, \"rows\": [[1, \"Updated by new schema\"], [2, \"Unchanged\"], [3, \"New user\"]], \"columns\": [\"id\", \"display_name\"], \"truncated\": false}}}, {\"name\": \"down after rollback\", \"checks\": {\"old reader\": {\"ok\": true, \"rows\": [[1, \"Updated by new schema\"], [2, \"Unchanged\"]], \"columns\": [\"id\", \"name\"], \"truncated\": false}, \"new reader\": {\"ok\": false, \"error\": \"no such column: display_name\"}}}], \"reader_sources\": {\"old reader\": {\"python_file\": \"old_reader.py\", \"constant\": \"QUERY\", \"line\": 1, \"sha256\": \"294758ac1d7dd348534b7506be4c3fe31710f01eb296e3e98659903ddab61b4e\", \"query\": \"SELECT id, name FROM users\", \"kind\": \"static literal, not runtime binding evidence\"}, \"new reader\": {\"python_file\": \"new_reader.py\", \"constant\": \"QUERY\", \"line\": 1, \"sha256\": \"fee2903771180a2b865bbdaed99d0d75711beb2720e7b4d39d8fdff8cb666d3b\", \"query\": \"SELECT id, display_name FROM users\", \"kind\": \"static literal, not runtime binding evidence\"}}}\nTraceback (most recent call last):\n  File \"<stdin>\", line 39, in <module>\nAssertionError: {'ok': True, 'rows': [(1, 'Updated by new schema'), (2, 'Unchanged')], 'columns': ['id', 'name'], 'truncated': False}\n"
+    }
+  ]
+}

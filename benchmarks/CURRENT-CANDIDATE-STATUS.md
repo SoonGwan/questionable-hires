@@ -11,12 +11,24 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Friday [short-guide model 01](FRIDAY-CORE-GUIDE-MODEL-01-REVIEW.md), launch `37686ac`,
+resources `ce82fcb`: 89,545 tokens / 54.127s, four shell calls. Reads only the core
+guide; API executes once and retained results drive full column/value assertions.
+All four phases/eight reader outputs captured, original files/resources unchanged.
+Separate exact-program replay reproduces observations and rejects rollback row
+loss. Descriptive tokens −18.13%, time +19.88% versus checkpoint 07: unequal work,
+n=1/shared cache, not causal or all-axis improvement. Git-internal discovery remains.
+
+한국어: 짧은 Friday 안내만 읽고 한 번의 SQL 결과로 열·값·롤백 데이터까지 확인했다.
+89,545토큰·54.127초이며 이전 단일 실행보다 토큰은 줄고 시간은 늘었다. 원본 출력과
+별도 데이터 손실 검증은 확인했지만 전체 성능 개선으로 주장하거나 그래프를 바꾸지 않는다.
+
 Friday [core-guide candidate](FRIDAY-CORE-GUIDE-01.md), previous source `c1f639c`:
 routine reference 4,884 → 3,645 bytes (−25.37%); core plus details 7,387 → 7,205
 (−2.46%). Conditional BLOB/rejection diagnostics stay in the existing routed
 details file. CLI/API examples and 35 native matrix tests pass; runtime and skill
 entry unchanged. These are document bytes, not model token or performance gains.
-Actual adoption/read cost remains unmeasured; no historical/featured changes.
+Subsequent adoption and mixed cost evidence is above; no historical/featured changes.
 
 한국어: Friday 기본 안내를 줄이고 조건부 상세 설명은 기존 문서로 옮겼다.
 기본 문서 크기는 25.37% 줄었지만 전체 문서는 2.46% 감소이며, 모델 토큰 절감률이
