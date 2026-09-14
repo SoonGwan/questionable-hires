@@ -171,3 +171,29 @@ overall exit does not independently preserve the test exit, but actual native
 three-pass output is present. Original neighboring tests are retained; two-file
 diff is scoped. Same implementation outcome as skill, with lower recorded cost
 in this pair. No observed capture/scope issue; reconciliation and replay pending.
+
+## Pending form — baseline
+
+Completed: **66,600 tokens / 77.490s**, four shell calls. Adds per-instance pending,
+early duplicate return and unconditional finally reset. Seven native test names
+and the full passing summary are captured (0.022s). Actual Form tests cover initial/
+pending/success state, three overlapping duplicates without a second callback,
+concurrent independent instances, returned object identity, delayed exception
+identity with retry, synchronous callback failure and cancellation cleanup/retry.
+Two-second behavior-dependent waits and owned-task teardown are present; cleanup
+assumes cooperative cancellation of these local callbacks. No custom synchronous
+runner method is overridden with an async method. Only form.py and test_form.py
+are changed/added; no observed capture/scope issue. Source/resource/inventory
+reconciliation and original/final/guard/cleanup replay remain pending.
+
+## Active history — skill
+
+Completed: **67,278 tokens / 28.072s**, three shell calls. Reads both current files,
+native blame/log and the relevant d5fc9729 patch. Actual partner_label returns Ada;
+separate no-fallback expressions on its name-only payload produce None/KeyError.
+These are expression probes, not execution of a modified consumer binding.
+The direct inspected binding supports the consequence. Correct keep recommendation
+separates the introducing migration patch from current executable necessity and
+does not treat the support-date comment alone as proof. No optional collector
+loaded; no files edited, final status contains only installed resources. No
+observed capture/scope issue; raw/resource/inventory reconciliation pending.
