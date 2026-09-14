@@ -197,3 +197,23 @@ separates the introducing migration patch from current executable necessity and
 does not treat the support-date comment alone as proof. No optional collector
 loaded; no files edited, final status contains only installed resources. No
 observed capture/scope issue; raw/resource/inventory reconciliation pending.
+
+## Rolling schema — skill
+
+Completed: **109,377 tokens / 45.151s**, six shell calls. Reads Friday entry and
+the core SQLite interface only, then executes the CLI matrix once with literal
+reader references. Optional phase defaults work without repair. Native output
+captures both actual supplied queries in initial/up/new-write/down states,
+including incompatible-column errors and all updated, unchanged and inserted
+rows after down. All phases complete, no row truncation. Static literal provenance
+is explicitly identified as not runtime consumer binding evidence. No duplicate
+SQL loop or API comparisons are performed; rows are inspected, not additionally
+asserted by model-written code. This differs from earlier asserted matrix runs.
+
+Correctly blocks both documented orders, explains mixed-version incompatibility
+and that reverse rename preserves current data rather than restoring prior values.
+Does not invent application-writer or staging evidence. Initial glob discovery
+also lists Git internals; no scope violation, but it is unnecessary discovery
+output. Final release diff is empty, no new project artifact observed. Resource/
+raw/inventory reconciliation remains pending; helper adoption alone is not a
+cost-saving result.
