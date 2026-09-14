@@ -9,6 +9,27 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Snapshot QA transfer — 2026-09-15, launch `ff67561`
+
+[New settings-snapshot workload](results/editor-snapshot-01/README.md), candidate
+`1cb854d`, tests existing-support and missing-support conditions with one baseline
+and skill session each. All four create valid native regressions: original nested
+snapshot failure, clean normal save, and all three methods passing on a separate
+author-copy deep snapshot. The existing-support branch skips unused transport
+resources; missing support still loads its guide and produces valid native gates.
+**Present: −18.91% tokens / +4.91% time. Absent: −17.90% / −13.29%.** Filename
+inventory returns in both skill cells, so the earlier one-command preparation
+does not generalize. Different support implementations/checks, n=1, shared
+host/cache and authored scope limit attribution. Keep the functional routing
+candidate, not a broad efficiency claim; featured charts stay unchanged.
+
+한국어: 새 설정 저장 과제에서 기존 테스트 지원 유무에 따른 자료 선택이 모두
+동작했고 네 세션 모두 실제 중첩 스냅샷 결함을 검출했다. 지원이 있는 조건은
+토큰 18.91% 감소·시간 4.91% 증가, 없는 조건은 토큰 17.90%·시간 13.29% 감소였다.
+한 조건의 시간 악화를 숨기지 않는다. 앞선 준비 명령 1회는 전이되지 않았으며,
+단일 합성 작업과 구현 차이 때문에 일반적인 효율 향상이나 전체 목표 달성으로
+판정하지 않는다. 원본 실행·별도 작성자 검증을 보존하고 대표 이미지는 유지한다.
+
 ## Native pager interval screen — 2026-09-15, launch `fa3c10d`
 
 Post-diagnostic local regression at source `1cb854d`: **595 tests pass / 90.582s**,

@@ -1,0 +1,104 @@
+diff --git a/test_editor.py b/test_editor.py
+index 4c28512..8feeff6 100644
+--- a/test_editor.py
++++ b/test_editor.py
+@@ -1,7 +1,30 @@
+ import unittest
++import asyncio
++from copy import deepcopy
+ from editor import Editor
+ 
+ 
++class ControlledPersist:
++    def __init__(self):
++        self.entered = asyncio.Event()
++        self.acknowledged = asyncio.Event()
++        self.pending_payload = None
++        self.stored = []
++
++    async def __call__(self, payload):
++        # Retain the actual argument so delayed serialization exposes aliasing.
++        self.pending_payload = payload
++        self.entered.set()
++        await asyncio.wait_for(self.acknowledged.wait(), timeout=5)
++        self.stored.append(deepcopy(payload))
++
++
++async def cleanup_save(task):
++    if not task.done():
++        task.cancel()
++    await asyncio.wait_for(asyncio.gather(task, return_exceptions=True), timeout=5)
++
++
+ class EditorTests(unittest.IsolatedAsyncioTestCase):
+     async def test_initial_state(self):
+         settings = {'display': {'theme': 'light'}, 'alerts': ['mentions']}
+@@ -10,3 +33,68 @@ class EditorTests(unittest.IsolatedAsyncioTestCase):
+         self.assertFalse(editor.dirty)
+         editor.set_theme('dark')
+         self.assertEqual(settings['display']['theme'], 'light')
++
++    async def test_save_without_intervening_edit_marks_settings_clean(self):
++        persist = ControlledPersist()
++        editor = Editor(
++            {'display': {'theme': 'light', 'layout': {'widths': [240, 800]}},
++             'alerts': ['mentions']},
++            persist,
++        )
++        expected = {
++            'display': {'theme': 'dark', 'layout': {'widths': [240, 800]}},
++            'alerts': ['mentions'],
++        }
++        editor.set_theme('dark')
++        self.assertTrue(editor.dirty)
++        save_task = asyncio.create_task(editor.save())
++        try:
++            await asyncio.wait_for(persist.entered.wait(), timeout=5)
++            self.assertFalse(save_task.done())
++            self.assertEqual(persist.stored, [])
++            self.assertEqual(persist.pending_payload, expected)
++            self.assertTrue(editor.dirty)
++
++            persist.acknowledged.set()
++            await asyncio.wait_for(save_task, timeout=5)
++            self.assertEqual(persist.stored, [expected])
++            self.assertEqual(editor.settings, expected)
++            self.assertFalse(editor.dirty)
++        finally:
++            await cleanup_save(save_task)
++
++    async def test_save_preserves_snapshot_and_newer_dirty_edit(self):
++        persist = ControlledPersist()
++        editor = Editor(
++            {'display': {'theme': 'light', 'layout': {'widths': [240, 800]}},
++             'alerts': ['mentions']},
++            persist,
++        )
++        expected_saved = {
++            'display': {'theme': 'dark', 'layout': {'widths': [240, 800]}},
++            'alerts': ['mentions'],
++        }
++        expected_current = {
++            'display': {'theme': 'solarized', 'layout': {'widths': [240, 800]}},
++            'alerts': ['mentions'],
++        }
++        editor.set_theme('dark')
++        save_task = asyncio.create_task(editor.save())
++        try:
++            await asyncio.wait_for(persist.entered.wait(), timeout=5)
++            self.assertFalse(save_task.done())
++            self.assertEqual(persist.pending_payload, expected_saved)
++
++            editor.set_theme('solarized')
++            self.assertFalse(save_task.done())
++            self.assertFalse(persist.acknowledged.is_set())
++            self.assertEqual(persist.stored, [])
++            self.assertEqual(persist.pending_payload, expected_saved)
++
++            persist.acknowledged.set()
++            await asyncio.wait_for(save_task, timeout=5)
++            self.assertEqual(persist.stored, [expected_saved])
++            self.assertEqual(editor.settings, expected_current)
++            self.assertTrue(editor.dirty)
++        finally:
++            await cleanup_save(save_task)
