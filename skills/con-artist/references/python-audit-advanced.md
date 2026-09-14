@@ -14,9 +14,19 @@ For deterministic local tests sharing the same inputs and command, the same CLI
 accepts shared `files`, `imports`, `runner`, `tests`, optional `import_roots` plus a `mutations` list
 (1–8 objects). Move each fault's `target`, `old`, `new`, optional `probe` (or
 `probe_files`/`probe_tests`) and
-`probe_when` into its own list entry; no other per-fault overrides are supported.
+`probe_when` into its own list entry. An entry may also override `tests` with native
+runner arguments when the audit requires separate test selections. Other per-entry
+overrides are unsupported.
 Use this only for distinct boundaries already needed by the audit, not to
 generate extra faults or batch an investigation whose next step depends on results.
+
+When distinct test-specific exits are required, keep the common recipe once and
+put the same fault with each required `tests` selection in `mutations`. This batches
+submission, not test execution: each selection still gets correct/faulty checks
+in separate copies. Different test arguments invalidate baseline reuse. Do not add
+both suite and individual runs unless the requested evidence needs both; a single
+suite invocation already supplies its own assertion results, but not separate
+per-test process exits. All selected tests and failure diagnostics remain necessary.
 
 Within that invocation, a successful normal test result is reused when selected
 bytes/modes, imports, ordered import roots, test arguments, interpreter, timeout and environment match.

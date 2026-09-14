@@ -82,6 +82,18 @@ Python 코드 내부 테스트의 출력 누락 후보를 놓치던 검증기를
 
 ## Con Artist conditional example — 2026-09-15, parent `eca85cd`
 
+[Test-selection batching candidate](CON-ARTIST-TEST-SELECTION-01.md), parent
+`f7d91dc`, allows per-entry native test arguments so required test-specific exits
+can share recipe setup without skipping executions. Different selections run new
+correct baselines; matching adjacent ones retain explicit reuse. Actual assertion
+detection, surviving weak tests, integrity and later-invalid-input behavior are
+covered by 78 passing helper tests. Not yet measured in a model task; no new
+performance claim or change to the featured benchmark.
+
+한국어: 테스트별 실행이 필요할 때 공통 설정을 한 번에 제출하도록 확장했다.
+선택 변경 시 정상 코드 재실행과 실제 결함 탐지를 확인했고 도우미 테스트 78개가
+통과했다. 실행 자체를 줄이거나 모델 성능 개선을 입증한 것은 아니다.
+
 [Proportional tooling candidate](CON-ARTIST-NATIVE-ROUTING-01.md), parent `03c5963`,
 changes only helper routing: small audits use native facilities; choose the helper
 when its capabilities remove needed orchestration, not for compatibility alone.

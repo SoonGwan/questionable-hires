@@ -17,6 +17,44 @@ spec.loader.exec_module(helper)
 
 
 class MutationHelperTests(unittest.TestCase):
+    def test_batch_test_selection_changes_run_new_baselines(self):
+        path = self.root / 'test_service.py'
+        path.write_text(path.read_text() + '\n'
+                        '    def test_persisted(self):\n'
+                        '        store = []; save(store, "item")\n'
+                        '        self.assertEqual(store, ["item"])\n')
+        common = {key: self.recipe[key] for key in ('files', 'imports', 'tests')}
+        fault = {key: self.recipe[key] for key in ('target', 'old', 'new')}
+        weak = dict(fault, tests=['-v', 'test_service.Tests.test_saved'])
+        strong = dict(fault, tests=['-v', 'test_service.Tests.test_persisted'])
+        before = {p.name: p.read_bytes() for p in self.root.iterdir() if p.is_file()}
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit_batch(self.root, dict(common, mutations=[weak, strong, strong]))
+        self.assertEqual(execute.call_count, 5)
+        self.assertEqual(result['status'], 'observed')
+        audits = result['audits']
+        self.assertEqual([r['checks']['mutant_tests']['exit_code'] for r in audits], [0, 1, 1])
+        self.assertFalse(audits[1].get('correct_tests_reused', False))
+        self.assertEqual(audits[2]['checks']['correct_tests']['observation_ref'], '#/audits/1/checks/correct_tests')
+        self.assertIn('AssertionError: Lists differ: [] !=', audits[1]['checks']['mutant_tests']['output'])
+        for audit in audits[:2]:
+            self.assertEqual(audit['checks']['correct_tests']['exit_code'], 0)
+            self.assertIn('Ran 1 test', audit['checks']['correct_tests']['output'])
+        self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir() if p.is_file()})
+        self.assertEqual(list(self.root.glob('.con-artist-*')), [])
+
+    def test_invalid_later_test_selection_retains_prior_audit(self):
+        common = {key: self.recipe[key] for key in ('files', 'imports', 'tests')}
+        fault = {key: self.recipe[key] for key in ('target', 'old', 'new')}
+        with patch.object(helper, 'execute', wraps=helper.execute) as execute:
+            result = helper.audit_batch(self.root, dict(common, mutations=[fault, dict(fault, tests=[]), fault]))
+        self.assertEqual(execute.call_count, 2)
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(len(result['audits']), 2)
+        self.assertEqual(result['audits'][0]['checks']['correct_tests']['exit_code'], 0)
+        self.assertEqual(result['audits'][1]['checks'], {})
+        self.assertIn('tests must be a nonempty string list', result['audits'][1]['error'])
+
     def test_finished_checks_with_inherited_pipe_preserve_survival_and_detection(self):
         target = self.root / 'test_service.py'
         original = target.read_text()

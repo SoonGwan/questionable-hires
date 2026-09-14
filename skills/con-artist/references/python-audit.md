@@ -54,7 +54,9 @@ requires validating the stronger assertion regardless. A nonzero mutant
 exit skips conditional probes; inspect the failure before calling it detection.
 For fixture-based native probes read [probe_files/probe_tests](python-audit-probes.md),
 without loading unrelated advanced modes.
-For several already-justified faults sharing a baseline, use [batch mode](python-audit-advanced.md#several-already-justified-faults-one-baseline).
+For several justified faults or required test-specific process exits, use
+[batch mode](python-audit-advanced.md#several-already-justified-faults-one-baseline)
+to share recipe setup; different test selections still execute their own baselines.
 
 For an evidenced `src/` or other explicit project import path, see
 [copied import roots](python-audit-advanced.md#copied-import-roots). Do not install

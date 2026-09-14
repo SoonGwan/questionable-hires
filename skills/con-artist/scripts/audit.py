@@ -346,13 +346,13 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
 def audit_batch(root, spec, python=sys.executable, timeout=30):
     """Reuse a successful baseline only within this explicit local batch."""
     common_keys = {'files', 'imports', 'runner', 'tests', 'mutations', 'precheck', 'import_roots'}
-    fault_keys = {'target', 'old', 'new', 'probe', 'probe_when', 'probe_files', 'probe_tests'}
+    fault_keys = {'target', 'old', 'new', 'tests', 'probe', 'probe_when', 'probe_files', 'probe_tests'}
     mutations = spec.get('mutations')
     if set(spec) - common_keys or not isinstance(mutations, list) or not 1 <= len(mutations) <= 8:
         raise ValueError('Batch requires shared files/imports/runner/tests and 1–8 mutations')
     for fault in mutations:
         if not isinstance(fault, dict) or set(fault) - fault_keys or not {'target', 'old', 'new'} <= set(fault):
-            raise ValueError('Each mutation requires target/old/new and optional probe settings')
+            raise ValueError('Each mutation requires target/old/new and optional tests/probe settings')
     common = {key: value for key, value in spec.items() if key != 'mutations'}
     baseline, probe_baseline, observations = {}, {}, []
     baseline_indices = {}
