@@ -11,16 +11,21 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, resource `20ec916`
 
-New instruction candidate: [Friday result reuse](FRIDAY-RESULT-REUSE-01.md)
+Instruction `e0956d5`: [Friday result reuse](FRIDAY-RESULT-REUSE-01.md)
 moves the existing Python API/BLOB contract into the core interface so computed
 comparisons can reuse the first execution. Runtime remains `e3bc342`; 41 Friday
 tests pass, including the documented snippet with one SQLite connection and all
-binary current-value comparisons. Core context grows; model adoption/cost is
-unmeasured. Earlier model outputs and featured data remain unchanged.
+binary current-value comparisons. [Fresh screen](FRIDAY-RESULT-REUSE-MODEL-01-REVIEW.md)
+confirms one API execution with retained-row comparisons. Baseline 66,530 tokens/
+64.128s versus skill 92,665/65.436s (**+39.28% / +2.04%**), so efficiency is not
+accepted. Both required outcomes are supported, but verification work differs;
+one exposed pair is not causal/whole-bundle evidence. Both cells/resources/raw
+usage reconcile. Earlier model outputs and featured data remain unchanged.
 
 한국어: 첫 실행 결과로 값 비교까지 할 수 있도록 API 예제를 기본 안내로
-옮겼다. 실제 문서 예제는 DB 연결 한 번으로 바이트 비교까지 검증했지만,
-기본 안내가 길어지는 비용이 있어 모델의 선택·효율은 새 측정이 필요하다.
+옮겼다. 새 모델 실행에서도 API 결과 재사용과 중복 실행 제거를 확인했다.
+다만 토큰 39.28%, 시간 2.04% 증가로 효율 향상은 아니다. 이 과제만 계속
+최적화하지 않고 다른 스킬의 실사용 비용·실패 근거로 개선 범위를 넓힌다.
 
 Runtime `e3bc342`: [Friday phase defaults](FRIDAY-PHASE-DEFAULTS-01.md)
 allows omitted empty `files`/`sql`, correcting the observed API preparation
