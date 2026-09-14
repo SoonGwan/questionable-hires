@@ -11,18 +11,23 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
-Current unmeasured instruction candidate: [state-content checks](HOSTAGE-STATE-CONTENTS-01.md)
-address the preview aliasing blind spot below. Five native author-copy runs show
-field snapshots accept both correct state replacement and correct in-place
-updates, while detecting stale in-place success/error. Frozen original tests
-still reproduce the escape. Runtime assets unchanged; no fresh model evidence
-for the new instruction yet, so earlier costs/outcomes are not relabeled.
-Full current local validation: 476 tests passed in 65.156s, no failures/skips.
+[State-content model adoption](HOSTAGE-STATE-CONTENTS-MODEL-01-REVIEW.md), launch
+`8bad531`, resource `691f896`: one fresh skill-only session completes in 130.943s /
+171,403 total tokens. Actual generated snapshots compare state fields; original
+58/58 native passes. Twelve separate replays match: correct guarded mutable
+updates pass 58/58, stale in-place success/error fail 16/32 tests respectively.
+Raw/resources/originals/copy reconcile; no observed scope/capture exception.
+Some other faults hit individual deadlines; original-plus-broken replays use
+90-second process bounds. The model also rereads the full module after its header.
+Observed aliasing weakness is corrected in this output; no comparative efficiency
+claim, no broad completion. Earlier failed results remain unchanged. Full local
+preflight: 476 tests passed in 65.156s, no failures/skips.
 
-한국어: 현재 지침은 상태 객체 자체가 아니라 관련 필드 값을 전후 비교하도록
-보강했다. 작성자가 고친 테스트 복사본은 정상적인 두 구현 방식을 허용하고
-잘못된 내부 값 변경을 잡는다. 새 지침을 모델이 적용한 결과는 아직 없으므로
-이전 실패 기록과 성능 수치는 그대로 유지한다.
+한국어: 새 모델이 직접 작성한 테스트도 상태 필드의 전후 값을 비교했다.
+정상적인 내부 수정은 58개가 통과하고, 오래된 요청의 내용 덮어쓰기는 성공·오류
+경로에서 각각 16개·32개 실패로 잡아냈다. 이번에는 비교군 없는 동작 확인이며
+171,403토큰·130.943초를 썼다. 전체 구현 재읽기와 일부 느린 실패 진단이 남아
+있고, 이전 실패 기록이나 그래프를 새 성과로 바꾸지 않는다.
 
 [Two-stage preview transfer reviewed](HOSTAGE-JAVASCRIPT-PREVIEW-01-REVIEW.md),
 launch `4a064bc`, resource `f0b29dd`: baseline 109,445 tokens/214.251s; skill

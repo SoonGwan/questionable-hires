@@ -1,6 +1,9 @@
 # State-content assertions candidate — 2026-09-14
 
-Status: native correction validated; new skill instruction is not yet model-tested.
+Status: native correction and [fresh model adoption](HOSTAGE-STATE-CONTENTS-MODEL-01-REVIEW.md)
+validated for the observed aliasing defect. Resource `691f896` produces field
+snapshots; untouched generated tests detect in-place stale success/error while
+accepting correct mutable updates. One skill-only run is not cost comparison.
 
 The [preview transfer](HOSTAGE-JAVASCRIPT-PREVIEW-01-REVIEW.md) exposed a concrete
 blind spot: retained skill tests compared a state object with an alias to itself
@@ -38,9 +41,9 @@ Three Python checks, five native executions under 15-second process deadlines:
   or deadline failures. Every run discovers 54 tests with no skip/cancellation.
 
 Initial targeted validation: three checks passed in 0.521s. These are **author
-repairs**, not generated model adoption or performance improvements. A fresh
-session must still demonstrate that the revised skill produces sound assertions
-without losing other required coverage or increasing cost unacceptably. Preserve
+repairs**, not generated model adoption or performance improvements. The subsequent
+fresh model screen is reported separately; these local checks alone cannot prove
+sound generated assertions, preserved coverage or acceptable task cost. Preserve
 the earlier counterexample and historical timing; do not update featured charts.
 
 Full local validation: 476 tests passed in 65.156s, no failures/skips. Skill,
