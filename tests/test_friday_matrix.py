@@ -23,6 +23,59 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_phase_selection_executes_only_reachable_readers_without_stale_results(self):
+        recipe = {'phases': [
+            {'name': 'old', 'sql': 'CREATE TABLE t(old); INSERT INTO t VALUES(1);', 'checks': ['old']},
+            {'name': 'new', 'sql': 'ALTER TABLE t RENAME COLUMN old TO new; UPDATE t SET new=2;', 'checks': ['new']},
+            {'name': 'rollback', 'sql': 'ALTER TABLE t RENAME COLUMN new TO old;', 'checks': ['old']}],
+            'checks': {'old': 'SELECT old FROM t', 'new': 'SELECT new FROM t'}}
+        frozen = copy.deepcopy(recipe)
+        observed = []
+        real_connect = sqlite3.connect
+        def connect(*args, **kwargs):
+            db = real_connect(*args, **kwargs)
+            db.set_trace_callback(observed.append)
+            return db
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(helper.sqlite3, 'connect', connect):
+                result = helper.matrix(recipe, directory)
+            self.assertTrue(result['complete'])
+            self.assertEqual([sql for sql in observed if sql.startswith('SELECT')],
+                             ['SELECT old FROM t', 'SELECT new FROM t', 'SELECT old FROM t'])
+            for row, label, value in zip(result['phases'], ['old', 'new', 'old'], [1, 2, 2]):
+                self.assertEqual(row['selected_checks'], [label])
+                self.assertEqual(list(row['checks']), [label])
+                self.assertEqual(row['checks'][label]['rows'], [(value,)])
+            # Declaring the old consumer active during the new phase still fails.
+            recipe['phases'][1]['checks'] = ['new', 'old']
+            faulty = helper.matrix(recipe, directory)
+            self.assertFalse(faulty['phases'][1]['checks']['old']['ok'])
+            self.assertIn('no such column', faulty['phases'][1]['checks']['old']['error'])
+            recipe['phases'][1]['checks'] = ['new']
+            self.assertEqual(recipe, frozen)
+
+    def test_phase_selection_rejects_invalid_names_before_database_creation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for selected in ([], None, 'reader', ['missing'], ['reader', 'reader'], [1], [{}]):
+                with self.subTest(selected=selected), patch.object(helper.sqlite3, 'connect') as connect:
+                    with self.assertRaisesRegex(ValueError, 'phase checks'):
+                        helper.matrix({'phases': [{'name': 'checkpoint', 'checks': selected}],
+                                       'checks': {'reader': 'SELECT 1'}}, directory)
+                    connect.assert_not_called()
+
+    def test_phase_selection_keeps_default_shape_and_readonly_protection(self):
+        recipe = {'phases': [{'name': 'initial', 'sql': 'CREATE TABLE t(x); INSERT INTO t VALUES(1);'}],
+                  'checks': {'write': 'DELETE FROM t', 'read': 'SELECT x FROM t'}}
+        with tempfile.TemporaryDirectory() as directory:
+            default = helper.matrix(recipe, directory)
+            recipe['phases'][0]['checks'] = ['write', 'read']
+            self.assertEqual(default, helper.matrix(recipe, directory))
+            recipe['phases'][0]['checks'] = ['read', 'write']
+            selected = helper.matrix(recipe, directory)['phases'][0]
+            self.assertEqual(selected['selected_checks'], ['read', 'write'])
+            self.assertEqual(selected['checks']['read']['rows'], [(1,)])
+            self.assertFalse(selected['checks']['write']['ok'])
+
     def test_shared_reader_module_is_parsed_once_without_reusing_sql_observations(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

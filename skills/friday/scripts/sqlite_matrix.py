@@ -104,10 +104,15 @@ def matrix(spec, root, timeout=5):
     prepared = []
     for phase in phases:
         if (not isinstance(phase, dict) or "name" not in phase
-                or set(phase) - {"name", "files", "sql"}):
-            raise ValueError("each phase requires name; only files and sql are optional")
+                or set(phase) - {"name", "files", "sql", "checks"}):
+            raise ValueError("each phase requires name; only files, sql and checks are optional")
         if not isinstance(phase["name"], str) or not phase["name"]:
             raise ValueError("phase name must be nonempty text")
+        selected = phase.get('checks', list(checks))
+        if (not isinstance(selected, list) or not selected
+                or any(not isinstance(label, str) or label not in checks for label in selected)
+                or len(set(selected)) != len(selected)):
+            raise ValueError('phase checks must be a nonempty list of unique declared check names')
         files, sql = phase.get("files", []), phase.get("sql", "")
         if not isinstance(files, list) or not isinstance(sql, str):
             raise ValueError("files must be a list; sql must be text")
@@ -140,7 +145,7 @@ def matrix(spec, root, timeout=5):
                 raise ValueError("SQL exceeds 2 MB")
             chunks.append(data.decode("utf-8"))
         chunks.append(sql)
-        prepared.append((phase["name"], chunks))
+        prepared.append((phase["name"], chunks, selected))
 
     readonly = False
     allowed_reads = {sqlite3.SQLITE_SELECT, sqlite3.SQLITE_READ, sqlite3.SQLITE_FUNCTION,
@@ -166,8 +171,10 @@ def matrix(spec, root, timeout=5):
     if sources:
         output['reader_sources'] = sources
     try:
-        for name, chunks in prepared:
+        for name, chunks, selected in prepared:
             row = {"name": name, "checks": {}}
+            if selected != list(checks):
+                row['selected_checks'] = list(selected)
             output["phases"].append(row)
             try:
                 for sql in chunks:
@@ -183,7 +190,8 @@ def matrix(spec, root, timeout=5):
             if not output["complete"]:
                 break
             readonly = True
-            for label, query in checks.items():
+            for label in selected:
+                query = checks[label]
                 # SQLite's progress callback need not run for a short statement.
                 # Do not start another check after the shared budget is exhausted.
                 if time.monotonic() >= deadline:

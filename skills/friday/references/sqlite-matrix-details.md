@@ -10,7 +10,10 @@ are unchanged. Compare parsed observations, not whitespace in serialized output.
 ## Input shape and failure details
 
 The top-level recipe accepts exactly `phases` and `checks`; phase keys are `name`,
-optional `files` and optional `sql`. Unknown keys, nulls and wrong types reject.
+optional `files`, `sql` and `checks`. Phase `checks` selects a nonempty list of
+unique declared names in execution order; absent means all checks. Unknown names,
+keys, nulls and wrong types reject before SQL. A changed selection/order is retained
+as `selected_checks` in that phase; absent observations remain unrun, not safe.
 Literal-reader modules reject imports, functions, annotations, computed/conditional/
 chained assignments and reassignment. The selected scalar literal must be a string.
 Use actual runtime facilities for dynamic queries rather than simplifying code to
@@ -51,7 +54,7 @@ if a file grows after stat. All selected input is prepared before SQL begins.
 Within one matrix call, references to the same normalized Python path share one
 validated declaration snapshot and hash. Each selection still charges its source
 and query bytes against the same budget; this is not a larger-input escape hatch.
-All selected SQL checks still execute after every phase. No SQL results are
+Each phase's selected SQL checks execute on its current state. No SQL results are
 cached, and the next matrix call rereads files. This does not isolate concurrent
 filesystem changes; provenance describes the source snapshot actually read.
 

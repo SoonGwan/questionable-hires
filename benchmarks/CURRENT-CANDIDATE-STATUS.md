@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Friday consumer selection — 2026-09-15, parent `761a4b8`
+
+[Phase-specific checks](FRIDAY-PHASE-SELECTION-01.md) allow the optional SQLite
+matrix to execute explicitly named active readers per rollout/rollback phase.
+Defaults remain all readers; absent observations are unrun, not passes. Actual
+SQL tracing, fresh post-write/rollback values and an incompatible-reader control
+pass with the 39-test matrix suite. Model adoption and cost effects are unmeasured;
+this does not explain checkpoint 09's native-SQL cost or establish a broad gain.
+
+한국어: Friday의 선택형 도우미에 단계별 활성 조회 선택을 추가했다. 기존 기본값은
+유지하며 생략한 검사는 통과로 처리하지 않는다. 실제 SQL·쓰기 후 값·롤백·비호환
+대조군을 포함한 39개 검사는 통과했지만 모델 성능 개선은 아직 미측정이다.
+
 ## History collector checkpoint — 2026-09-15, parent `dd4982f`
 
 [Hunk lookup](HISTORY-HUNK-LOOKUP-01.md) replaces per-hunk scans with binary

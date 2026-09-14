@@ -43,6 +43,14 @@ Use reachable phases and actual queries, including new-version writes before
 rollback. Writes belong in phases, not checks. Successful SELECTs alone do not
 prove expected values or reader/writer compatibility.
 
+When the documented rollout activates different consumers at different stages,
+a phase can set `"checks": ["old reader"]` (or both names for coexistence).
+Omitting this field runs all declared checks, as above. Explicit selections must
+be nonempty, unique declared names; returned `selected_checks` records a changed
+selection/order. Unselected checks are unrun, never passes. Select from the actual
+rollout/rollback contract, not to suppress incompatibilities; rollback may require
+an older consumer to read data written by the newer one.
+
 Checks accept SQL strings or `{"python_file":"old_reader.py","constant":"QUERY"}`.
 Literal references never execute Python: only docstrings and unique simple scalar
 literal assignments are allowed, with a string query. Dynamic modules need their
