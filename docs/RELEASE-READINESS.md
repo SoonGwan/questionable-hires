@@ -1,5 +1,20 @@
 # Release readiness — development preview
 
+## 2026-09-15: current Linux archive gate fails
+
+Unmodified source archive `80360c3`, network-disabled Linux arm64/Python 3.12.3:
+**619 discovered, 11 failure entries, four skips, 34.900s**, exit 1. Catalog and
+localized-chart checks pass. [Full evidence and preceding failures](../benchmarks/LINUX-ARCHIVE-619-01.md)
+separate corrected cross-version test assumptions from Receipt native invocation's
+remaining incompatibility with the distro's default `sitecustomize`. No hooks are
+removed, provenance bypassed or failing behavior tests skipped. This supersedes
+the old passing archive as evidence for the current code: the release gate is red.
+Local container evidence only; no hosted CI, remote install or model-gain claim.
+
+한국어: 최신 배포본은 Linux 검증 미통과다. 플랫폼별 테스트 가정은 수정했지만
+Receipt와 Ubuntu 기본 시작 훅의 호환성 문제가 남아 있다. 과거 통과 결과로
+현재 배포 준비가 완료됐다고 표시하지 않는다.
+
 ## 2026-09-14: Linux archive `57d48fd`
 
 The unmodified source archive passes on network-disabled Linux arm64/Python
