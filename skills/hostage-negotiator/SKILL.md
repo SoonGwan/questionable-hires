@@ -15,6 +15,8 @@ For each supporting change, ask which acceptance condition fails without it. A s
 
 For stateful behavior, follow entry, completion and recovery through the existing owner. Preserve return values, errors and cleanup, including cancellation. Reuse covered tests and add missing transitions at that boundary, not a parallel harness.
 
+When asserting that stale or failed work leaves state unchanged, capture the relevant field values before releasing that work and compare them afterward. Retaining the state object itself can alias in-place mutations. Preserve payload/error references when identity is contractual; snapshot nested mutable contents only where the contract requires their stability.
+
 Async regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup.
 
 For Python asyncio callback tests without equivalent project support, read and copy the optional [controlled-call asset](assets/controlled_call.py); its module docstring contains the usage and limits. It replaces repeated entry/release gates, not application assertions. No separate reference is needed for this path.

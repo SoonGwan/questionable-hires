@@ -11,6 +11,19 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Current unmeasured instruction candidate: [state-content checks](HOSTAGE-STATE-CONTENTS-01.md)
+address the preview aliasing blind spot below. Five native author-copy runs show
+field snapshots accept both correct state replacement and correct in-place
+updates, while detecting stale in-place success/error. Frozen original tests
+still reproduce the escape. Runtime assets unchanged; no fresh model evidence
+for the new instruction yet, so earlier costs/outcomes are not relabeled.
+Full current local validation: 476 tests passed in 65.156s, no failures/skips.
+
+한국어: 현재 지침은 상태 객체 자체가 아니라 관련 필드 값을 전후 비교하도록
+보강했다. 작성자가 고친 테스트 복사본은 정상적인 두 구현 방식을 허용하고
+잘못된 내부 값 변경을 잡는다. 새 지침을 모델이 적용한 결과는 아직 없으므로
+이전 실패 기록과 성능 수치는 그대로 유지한다.
+
 [Two-stage preview transfer reviewed](HOSTAGE-JAVASCRIPT-PREVIEW-01-REVIEW.md),
 launch `4a064bc`, resource `f0b29dd`: baseline 109,445 tokens/214.251s; skill
 125,009/146.851s, **+14.22% tokens / −31.46% time**. Both implementations correct;
