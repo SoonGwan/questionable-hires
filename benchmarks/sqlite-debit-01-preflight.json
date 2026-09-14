@@ -1,0 +1,43 @@
+{
+  "records": [
+    {
+      "improved": false,
+      "faulty": false,
+      "exit_code": 0,
+      "output": "..                                                                       [100%]\n2 passed in 0.01s\n",
+      "source_unchanged": true,
+      "project_local_scratch_removed": true
+    },
+    {
+      "improved": false,
+      "faulty": true,
+      "exit_code": 0,
+      "output": "..                                                                       [100%]\n2 passed in 0.01s\n",
+      "source_unchanged": true,
+      "project_local_scratch_removed": true
+    },
+    {
+      "improved": true,
+      "faulty": false,
+      "exit_code": 0,
+      "output": "..                                                                       [100%]\n2 passed in 0.01s\n",
+      "source_unchanged": true,
+      "project_local_scratch_removed": true
+    },
+    {
+      "improved": true,
+      "faulty": true,
+      "exit_code": 1,
+      "output": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n________________________ test_acknowledges_debit[small] ________________________\n\ndatabase = PosixPath('<PROJECT>/ledger-test-fh19gxct/ledger.sqlite')\namount = 7\n\n    def test_acknowledges_debit(database, amount):\n        result = debit(database, \"alice\", amount)\n        assert result == {\"debited\": True, \"account\": \"alice\"}\n        with sqlite3.connect(database) as reader:\n            balances = dict(reader.execute(\"SELECT name, balance FROM accounts\"))\n>       assert balances == {\"alice\": 100 - amount, \"bob\": 250}\nE       AssertionError: assert {'alice': 100, 'bob': 250} == {'alice': 93, 'bob': 250}\nE         \nE         Omitting 1 identical items, use -vv to show\nE         Differing items:\nE         {'alice': 100} != {'alice': 93}\nE         Use -v to get more diff\n\ntests/test_debit.py:10: AssertionError\n_______________________ test_acknowledges_debit[larger] ________________________\n\ndatabase = PosixPath('<PROJECT>/ledger-test-rgbpavps/ledger.sqlite')\namount = 13\n\n    def test_acknowledges_debit(database, amount):\n        result = debit(database, \"alice\", amount)\n        assert result == {\"debited\": True, \"account\": \"alice\"}\n        with sqlite3.connect(database) as reader:\n            balances = dict(reader.execute(\"SELECT name, balance FROM accounts\"))\n>       assert balances == {\"alice\": 100 - amount, \"bob\": 250}\nE       AssertionError: assert {'alice': 100, 'bob': 250} == {'alice': 87, 'bob': 250}\nE         \nE         Omitting 1 identical items, use -vv to show\nE         Differing items:\nE         {'alice': 100} != {'alice': 87}\nE         Use -v to get more diff\n\ntests/test_debit.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_debit.py::test_acknowledges_debit[small] - AssertionError: ...\nFAILED tests/test_debit.py::test_acknowledges_debit[larger] - AssertionError:...\n2 failed in 0.03s\n",
+      "source_unchanged": true,
+      "project_local_scratch_removed": true
+    }
+  ],
+  "fixture_sha256": {
+    "ledger.py": "c30167e78078a905d9f2bef59a4d2853a7e53bf6e40d12f9710779abd119eae1",
+    "tests/conftest.py": "9a3a9100784bd70d115a3dbeed13b2b28b08eaaf06ef6a098eb30862a05d130a",
+    "tests/test_debit.py": "1763320ec35e7a914c45070e861ea21c1e2864230b3139547524c245c4948fdf",
+    "README.md": "0d568cf35b696bc0de9cd49bad49ea06c76e27060c3de76a807c952f79add7eb"
+  },
+  "limitation": "Author native preflight, not model performance evidence."
+}
