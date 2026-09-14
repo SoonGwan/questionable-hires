@@ -1,0 +1,145 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "sqlite-debit",
+  "skill": "con-artist",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "60e9349c5d72349c0c39ef3e589df1393f503c4d",
+  "skill_sha256": "9e90da39b816576ea310f339c4b70742408d7dd663405676f98b6d22f27e369e",
+  "skill_resources_sha256": "4c59b70f407719c39d118c5accdeae17ab5c60856f0060de317fe4c688813a29",
+  "elapsed_seconds": 86.613,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 116151,
+    "cached_input_tokens": 104576,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2449,
+    "reasoning_output_tokens": 283
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Use $con-artist at .agents/skills/con-artist/SKILL.md.\n\nAudit and improve tests/test_debit.py against the persisted-debit contract\nin README.md. Trace the test, native fixtures and actual SQLite transaction.\nDetermine whether the existing tests catch acknowledging a debit without durably\nchanging the balance. Use one narrow reachable transaction fault in disposable\nproject-local copies, preserving the real module and fixture execution. Run both\noriginal amount cases on correct and faulty code and record actual outcomes.\nStrengthen the test to check the debited account and unchanged other account from\na new database connection after debit returns, keeping the acknowledgment and\nboth amount cases. Run both improved cases on correct and faulty code. Report\nthe detecting assertion with actual/expected values and the limits of the audit.\n\nUse <PREINSTALLED_PYTHON> with -B and native pytest (-p no:cacheprovider). No installations,\nnetwork, environment changes, unrelated audits, commits or publication. Only\ntests/test_debit.py may change in the original project; preserve all other files\nand installed skill resources. Do not apply the deliberate fault to the original\nimplementation. All scratch and mutated copies must stay inside the project and\nbe removed after use. No separate report file is required.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "con-artist/SKILL.md": {
+      "kind": "file",
+      "sha256": "9e90da39b816576ea310f339c4b70742408d7dd663405676f98b6d22f27e369e",
+      "mode": 420
+    },
+    "con-artist/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-advanced.md": {
+      "kind": "file",
+      "sha256": "946296250908e7db99fac39b5b624ddae9b8a6906ec9838af13bfa09e9c92862",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-batch.md": {
+      "kind": "file",
+      "sha256": "338ebace94acef5fdb4e008283e3ad190eefd5ac2ddf3951c7e7491621515b29",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-probes.md": {
+      "kind": "file",
+      "sha256": "9bd26b21f4c388e6c80fceaa3719c3e7b898323d4acf220ca9b12fe77b8f5e32",
+      "mode": 420
+    },
+    "con-artist/references/python-audit.md": {
+      "kind": "file",
+      "sha256": "9b30ff543fde1b81d8408ae3b73f19bba2b28c33cb189819f6ecd4eb0ff9d579",
+      "mode": 420
+    },
+    "con-artist/references/python-context.md": {
+      "kind": "file",
+      "sha256": "de51571ff0e549a67f74689afcb017f0624df0ac7d2cb25e40c13d7690aece02",
+      "mode": 420
+    },
+    "con-artist/scripts/audit.py": {
+      "kind": "file",
+      "sha256": "c13b31abcc819f624b10a77d1da8def60da03c9188efd455158e7af3bbd8c745",
+      "mode": 420
+    },
+    "con-artist/scripts/context.py": {
+      "kind": "file",
+      "sha256": "e70360ef289c59daeaf458ea6370d18d48783deb853695c19aa370c7ee219f64",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "con-artist/SKILL.md": {
+      "kind": "file",
+      "sha256": "9e90da39b816576ea310f339c4b70742408d7dd663405676f98b6d22f27e369e",
+      "mode": 420
+    },
+    "con-artist/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-advanced.md": {
+      "kind": "file",
+      "sha256": "946296250908e7db99fac39b5b624ddae9b8a6906ec9838af13bfa09e9c92862",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-batch.md": {
+      "kind": "file",
+      "sha256": "338ebace94acef5fdb4e008283e3ad190eefd5ac2ddf3951c7e7491621515b29",
+      "mode": 420
+    },
+    "con-artist/references/python-audit-probes.md": {
+      "kind": "file",
+      "sha256": "9bd26b21f4c388e6c80fceaa3719c3e7b898323d4acf220ca9b12fe77b8f5e32",
+      "mode": 420
+    },
+    "con-artist/references/python-audit.md": {
+      "kind": "file",
+      "sha256": "9b30ff543fde1b81d8408ae3b73f19bba2b28c33cb189819f6ecd4eb0ff9d579",
+      "mode": 420
+    },
+    "con-artist/references/python-context.md": {
+      "kind": "file",
+      "sha256": "de51571ff0e549a67f74689afcb017f0624df0ac7d2cb25e40c13d7690aece02",
+      "mode": 420
+    },
+    "con-artist/scripts/audit.py": {
+      "kind": "file",
+      "sha256": "c13b31abcc819f624b10a77d1da8def60da03c9188efd455158e7af3bbd8c745",
+      "mode": 420
+    },
+    "con-artist/scripts/context.py": {
+      "kind": "file",
+      "sha256": "e70360ef289c59daeaf458ea6370d18d48783deb853695c19aa370c7ee219f64",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 407,
+    "mode": 420,
+    "sha256": "567a8a71135b4aadadaa4bd5684ab59d97374d773b2fe419261b967439c7b50a",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

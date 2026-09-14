@@ -1,0 +1,22 @@
+diff --git a/tests/test_debit.py b/tests/test_debit.py
+index 831eee9..f6cc2ed 100644
+--- a/tests/test_debit.py
++++ b/tests/test_debit.py
+@@ -1,6 +1,17 @@
++import sqlite3
++
+ from ledger import debit
+ 
+ 
+ def test_acknowledges_debit(database, amount):
+     result = debit(database, "alice", amount)
+     assert result == {"debited": True, "account": "alice"}
++
++    connection = sqlite3.connect(database)
++    try:
++        balances = dict(connection.execute("SELECT name, balance FROM accounts"))
++    finally:
++        connection.close()
++
++    assert balances["alice"] == 100 - amount
++    assert balances["bob"] == 250

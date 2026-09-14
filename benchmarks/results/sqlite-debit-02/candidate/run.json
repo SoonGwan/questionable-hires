@@ -1,0 +1,29 @@
+{
+  "revision": "2a176bcf8cc6b9ac311c09bda69d8a8010d94bbf",
+  "started_at": "2026-09-14T22:26:40.497691+00:00",
+  "schedule": [
+    "candidate",
+    "original"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 240,
+  "session_persistence_requested": true,
+  "case": {
+    "id": "sqlite-debit",
+    "skill": "con-artist",
+    "task": "Audit and improve tests/test_debit.py against the persisted-debit contract\nin README.md. Trace the test, native fixtures and actual SQLite transaction.\nDetermine whether the existing tests catch acknowledging a debit without durably\nchanging the balance. Use one narrow reachable transaction fault in disposable\nproject-local copies, preserving the real module and fixture execution. Run both\noriginal amount cases on correct and faulty code and record actual outcomes.\nStrengthen the test to check the debited account and unchanged other account from\na new database connection after debit returns, keeping the acknowledgment and\nboth amount cases. Run both improved cases on correct and faulty code. Report\nthe detecting assertion with actual/expected values and the limits of the audit.\n\nUse <PREINSTALLED_PYTHON> with -B and native pytest (-p no:cacheprovider). No installations,\nnetwork, environment changes, unrelated audits, commits or publication. Only\ntests/test_debit.py may change in the original project; preserve all other files\nand installed skill resources. Do not apply the deliberate fault to the original\nimplementation. All scratch and mutated copies must stay inside the project and\nbe removed after use. No separate report file is required.",
+    "files": {
+      "ledger.py": "import sqlite3\n\n\ndef debit(database, account, amount):\n    connection = sqlite3.connect(database)\n    try:\n        changed = connection.execute(\n            \"UPDATE accounts SET balance = balance - ? WHERE name = ?\",\n            (amount, account),\n        ).rowcount\n        connection.commit()\n        return {\"debited\": changed == 1, \"account\": account}\n    finally:\n        connection.close()\n",
+      "tests/conftest.py": "from pathlib import Path\nimport sqlite3\nimport tempfile\nimport pytest\n\n\n@pytest.fixture\ndef database():\n    with tempfile.TemporaryDirectory(prefix=\"ledger-test-\", dir=Path.cwd()) as folder:\n        path = Path(folder) / \"ledger.sqlite\"\n        with sqlite3.connect(path) as connection:\n            connection.execute(\"CREATE TABLE accounts (name TEXT PRIMARY KEY, balance INTEGER)\")\n            connection.executemany(\"INSERT INTO accounts VALUES (?, ?)\", [(\"alice\", 100), (\"bob\", 250)])\n        yield path\n\n\n@pytest.fixture(params=[7, 13], ids=[\"small\", \"larger\"])\ndef amount(request):\n    return request.param\n",
+      "tests/test_debit.py": "from ledger import debit\n\n\ndef test_acknowledges_debit(database, amount):\n    result = debit(database, \"alice\", amount)\n    assert result == {\"debited\": True, \"account\": \"alice\"}\n",
+      "README.md": "# Local ledger\n\nAuthored audit fixture, not a production financial application.\ndebit(database, account, amount) must persist the balance decrement before\nacknowledging it. Another connection opened after the call must observe the new\nbalance; other accounts remain unchanged. Accounts exist, amounts are positive\nintegers within the balance. Missing accounts, overdrafts, concurrency, migrations\nand monetary representation are outside this ticket.\n\nThe native pytest fixtures create a fresh database under the project cwd and\nremove it after each case. Preserve both amount cases and native fixture execution.\nRun the provided preinstalled Python with -B -m pytest -q -p no:cacheprovider\ntests/test_debit.py. No package installation is needed.\n"
+    }
+  },
+  "protocol_sha256": "a254594903d7f4ee107012bff5d6ad71cceb42ae2ff134e4e633581fac29dc38",
+  "condition": "candidate",
+  "skill_revision": "87adf2a0f3a9327689f07996e1249fa4b32ef3a7",
+  "skill_resources_sha256": "c428609a64c5820d60d72882dc6ca31740be62b1eef9d0bbc55998c290589084"
+}

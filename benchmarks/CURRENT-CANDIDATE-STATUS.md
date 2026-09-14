@@ -9,6 +9,28 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## SQLite entry routing screen — 2026-09-15, launch `2a176bc`
+
+[Reverse-order follow-up](results/sqlite-debit-02/README.md) compares `ed4a38a`
+and entry-only `87adf2a` on the same exposed synthetic task, candidate first.
+Both deliver byte-identical tests, all four required audit phases and the final
+native check, preserving production/resources and removing scratch. Candidate
+uses 4 versus 5 outer calls; 99,815 versus 118,600 tokens and 73.252 versus 86.613s
+(−15.84% / −15.43%). All 13 shell outputs/exits match original stored responses.
+
+Neither uses the helper. Reduced orchestration is observed, **not an established
+causal or general gain**: n=1, reused fixture, shared host/cache and visible
+variation for the exact unchanged `ed4a38a` resource remain. This screen supplies
+the previously missing execution evidence for the routing revision without
+proving the hoped-for effect. Keep the optional route; stop tuning this fixture
+for helper adoption per protocol and move to another material bottleneck.
+No further skill/runtime change, featured promotion or all-eight claim.
+
+한국어: 안내 수정본이 같은 결과를 내면서 도구 왕복과 기록상 비용을 줄였다.
+하지만 도우미 미사용·각 1회·같은 과제 재사용·기존 버전의 큰 실행 변동 때문에
+일반 성능 향상으로 확정하지 않는다. 이 과제의 채택 유도 튜닝은 중단한다.
+대표 그래프는 그대로이며 다른 실질적인 병목으로 이동한다.
+
 ## SQLite debit screen and routing follow-up — 2026-09-15, launch `eb6f41a`
 
 [Original execution review](results/sqlite-debit-01/README.md) compares Con Artist
