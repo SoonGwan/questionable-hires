@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Real HTTPX stream diagnosis — 2026-09-15, launch `a2546a2`
 
+Subsequent discovery candidate, parent `9d3ba59`: Exorcist now routes named APIs
+or errors to content search instead of treating them as filenames; supplied
+failure paths still take precedence and missing locations still allow inventory.
+This corrects the observed uninformative first filter without adding a helper or
+weakening diagnosis, controls, scope or stopping rules. Not model-measured yet;
+the comparison below remains tied to its original frozen resources.
+
+한국어: 후속 후보는 API·오류 이름이 주어졌을 때 해당 심볼을 내용 검색으로 먼저
+찾도록 보정했다. 이미 주어진 경로와 필요한 파일 탐색은 유지하며, 검증이나
+진단 범위를 줄이지 않는다. 이 문구 수정 자체의 비용 절감은 아직 측정하지
+않았고, 아래 결과를 새 후보의 효과로 옮겨 붙이지 않는다.
+
 [Full-checkout stream-preview comparison](results/httpx-stream-preview-01/README.md),
 Exorcist resources from `d90c1d4`: both reproduce three real Client/MockTransport
 paths and correctly distinguish cached content from stream exhaustion/closure.

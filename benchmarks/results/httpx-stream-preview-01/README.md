@@ -83,3 +83,13 @@ pass, including new persistence propagation/default and isolated-profile tests;
 their mocked model calls are not live model evidence. Metadata/link validation,
 featured synchronization and whitespace checks pass. These are scoped checks,
 not current hosted CI or whole-skill performance acceptance.
+
+## Subsequent discovery correction, not measured above
+
+After this run, Exorcist's first instruction distinguishes supplied paths from
+API/error names: find named symbols with content search, using filename discovery
+for missing locations. The observation motivating this change is the first filter
+returning unrelated images, not evidence that all discovery is wasteful. Controls,
+stopping criteria, native execution and scope stay intact; no helper is added.
+The correction follows skill-creator's evidence-backed, narrow-instruction rule.
+Its adoption and resource effect need new-task evidence, not this run's percentages.

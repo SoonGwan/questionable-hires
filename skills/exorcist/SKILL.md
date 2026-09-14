@@ -9,7 +9,7 @@ description: Diagnose an uncertain bug by designing experiments that distinguish
 
 ## Find the decision-changing observation
 
-Start at the reported failure using supplied paths or the repository file list. Reuse existing reproduction evidence; trace only until plausible causes diverge. Don't manufacture hypotheses for an established mechanism.
+Start at supplied failure paths. When a report gives API or error names instead of paths, locate those symbols with content search; use filename discovery for missing locations. Reuse existing reproduction evidence; trace only until plausible causes diverge. Don't manufacture hypotheses for an established mechanism.
 
 Observe that boundary in the actual implementation: submission versus persistence, dispatch versus completion, configuration versus effective state. Prefer existing observations or a recording dependency. Another layer recording the same value adds nothing unless its provenance is unresolved. A rewritten simulation or repeated success flag cannot establish an unobserved effect.
 
