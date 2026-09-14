@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Exorcist reporter diagnosis — 2026-09-15, launch `3c7721a`
+
+[Reporter lifecycle screen](results/reporter-diagnosis-01/README.md): unchanged
+Exorcist records −41.41% tokens / −44.07% time against one fresh baseline. Baseline
+repairs its own probe error; skill's leading diagnostic output is missing, so its
+full observation table is unverified. Recovered native failure/counts and original
+preservation are retained. Unequal work/incomplete capture: no accepted performance
+win. The collector now flags programmatic verbose-count mismatches using this exact
+retained case; 26 runner tests pass. Historical metadata and skills remain unchanged.
+
+한국어: 스킬 기록 비용은 낮았지만 기본 모델의 추가 오류 복구와 스킬 출력 누락이
+있어 성능 승리로 채택하지 않았다. 실제 실패·원본 보존과 누락 범위를 기록했다.
+Python 코드 내부 테스트의 출력 누락 후보를 놓치던 검증기를 수정했고 관련 26개
+테스트가 통과했다. 기존 수치·메타데이터와 스킬 지침은 그대로다.
+
 ## Con Artist conditional example — 2026-09-15, parent `eca85cd`
 
 [Proportional tooling candidate](CON-ARTIST-NATIVE-ROUTING-01.md), parent `03c5963`,

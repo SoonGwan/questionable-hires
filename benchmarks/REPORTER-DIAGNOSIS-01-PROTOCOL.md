@@ -1,5 +1,7 @@
 # Reporter lifecycle diagnosis 01 — 2026-09-15 KST
 
+Completed: [original evidence review](results/reporter-diagnosis-01/README.md).
+
 New Exorcist workflow: diagnose a reporter exception, not audit mutation sensitivity.
 The failure is extracted verbatim from actual baseline item_5 in
 [native screen 02](results/installer-native-02/README.md), revision `a5cfdd2`.
