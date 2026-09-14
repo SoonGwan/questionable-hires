@@ -27,6 +27,10 @@ For JavaScript Promise callbacks without equivalent support, use the optional [E
 
 After edits, batch remaining native tests, copy-integrity checks and final diff/status in one shell call when no intervening decision is needed. Use `&&` to stop on failure; later checks are then unrun. If every check must run regardless, retain each exit separately: a final successful status command must not hide a failed test or copy check. Do not recopy an existing helper merely to make its integrity check pass.
 
-Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse valid execution evidence; rerun only for changed relevant inputs, unresolved uncertainty or an explicit requirement. Missing output or undiscovered/skipped tests cannot support a pass. Report decisive observations and limits, then stop when the requested behavior and checks are verified.
+Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse valid evidence; rerun only for changed relevant inputs, unresolved uncertainty or an explicit requirement.
+
+If expected test output is absent, inspect an existing report attributable to that command and those inputs first. If the process is still running, observe that execution rather than start another. Without usable evidence, rerun only the missing, safely repeatable check within the authorized scope, capturing its native count/result and own exit. Do not replay a deployment or side-effectful workflow just to recover output. If verification remains unavailable, report the change as unverified—not passed. A later run is new evidence, not recovery of the original transcript; missing, undiscovered or skipped tests cannot support a pass.
+
+Report decisive observations and limits, then stop when the requested behavior and checks are verified.
 
 Preserve user changes and explicit requirements. Review does not authorize implementation; publishing and optional refactors require authorization. Keep humor optional.

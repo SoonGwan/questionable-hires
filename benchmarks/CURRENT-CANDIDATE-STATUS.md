@@ -11,6 +11,19 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Hostage [missing-evidence delivery candidate](HOSTAGE-MISSING-EVIDENCE-01.md),
+previous source `ccca07e`, makes the recovery branch explicit: attributable existing
+report, observe a live execution, safe scoped rerun, or unverified delivery. Never
+repeat deployment/side effects just to recover output or relabel later evidence as
+the original. The native retained six-test control demonstrates a green report
+becoming stale after input changes and six intended failures in a separate run.
+This is local evidence reasoning, not measured model adoption or a cost reduction.
+
+한국어: Hostage에 출력 누락 시 기존 보고서 확인·실행 중 작업 관찰·안전한 검사만
+재실행·미확인 보고의 선택을 명확히 했다. 실제 테스트 6개로 코드가 달라지면 과거
+성공 보고서가 현재 검증이 될 수 없음을 확인했다. 모델의 오판 감소나 비용 효과는
+아직 미측정이며 배포 등 부작용 있는 작업을 출력 복구 목적으로 반복하지 않는다.
+
 Read-only [installed-copy comparison](../docs/INSTALLATION-TEST.md#read-only-installation-comparison--2026-09-14),
 previous source `be6ddeb`: `scripts/install.py --check` identifies missing, changed
 bytes/modes and extra files without updating copies or replacing personal edits.
