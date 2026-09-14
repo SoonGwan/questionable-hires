@@ -58,6 +58,15 @@ def excerpt(lines, first, last):
     return '\n'.join(f'{i}: {lines[i - 1]}' for i in range(first, last + 1))
 
 
+def physical_lines(source):
+    # Python line numbers recognize LF, CRLF and CR, not all Unicode separators
+    # accepted by str.splitlines(). Keep those characters inside source literals.
+    lines = source.replace('\r\n', '\n').replace('\r', '\n').split('\n')
+    if lines[-1] == '':
+        lines.pop()
+    return lines
+
+
 def definition_at_line(tree, line):
     matches = []
     def visit(node, prefix=''):
@@ -99,7 +108,7 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
         cache = {}
     if path not in cache:
         source, digest = read(root, path, budget)
-        cache[path] = dict(source=source, digest=digest, lines=source.splitlines())
+        cache[path] = dict(source=source, digest=digest, lines=physical_lines(source))
     snapshot = cache[path]
     source, digest, lines = snapshot['source'], snapshot['digest'], snapshot['lines']
     result = dict(path=str(path), sha256=digest)

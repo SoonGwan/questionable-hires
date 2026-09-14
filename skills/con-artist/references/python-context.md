@@ -29,6 +29,9 @@ for that context. `--full` does not override explicit line selection.
 When the requested
 definition is known, select it directly (`service.py:Store.save`) rather than the
 whole implementation file. It includes decorators and original line numbers.
+Line numbers follow Python physical lines (LF, CRLF or CR). Unicode separators
+and control characters inside literals do not create extra source lines. Excerpts
+use LF between numbered lines; hashes still identify the original file bytes.
 Unqualified Python files over 200 lines return a definition/method index when
 that is smaller than full source; smaller files remain complete. Output labels
 `representation` and `bodies_omitted` explicitly. Read the needed bodies using

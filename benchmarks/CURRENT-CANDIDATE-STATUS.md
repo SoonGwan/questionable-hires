@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Current Con Artist runtime correction: [physical source lines](CON-ARTIST-PHYSICAL-LINES-01.md).
+Valid UTF-8 string separators previously shifted AST excerpts and silently
+omitted source. The collector now uses Python physical line boundaries while
+preserving raw hashes, cache and no-execution behavior. Targeted native Python
+checks pass; model adoption/cost for this revision are not yet measured. Other
+skill runtimes and historical results remain unchanged.
+Full current local suite: 480 tests passed in 65.191s, no failures/skips.
+
+한국어: 테스트 감사용 코드 수집기가 문자열 속 유니코드 구분 문자를 줄바꿈으로
+잘못 세어 코드를 잘라내던 오류를 고쳤다. 원본 해시와 읽기 전용 동작은 유지했다.
+로컬 재현·수정 검증이며, 새 버전의 모델 비용 개선을 주장하지 않는다.
+
 [State-content model adoption](HOSTAGE-STATE-CONTENTS-MODEL-01-REVIEW.md), launch
 `8bad531`, resource `691f896`: one fresh skill-only session completes in 130.943s /
 171,403 total tokens. Actual generated snapshots compare state fields; original

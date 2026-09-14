@@ -1,4 +1,5 @@
 import importlib.util
+import hashlib
 import json
 import shlex
 from pathlib import Path
@@ -16,6 +17,50 @@ spec.loader.exec_module(context)
 
 
 class AuditContextTests(unittest.TestCase):
+    def test_definition_locations_preserve_non_newline_unicode_and_control_characters(self):
+        for separator in ('\v', '\f', '\x1c', '\x1d', '\x1e', '\x85', '\u2028', '\u2029'):
+            with self.subTest(separator=repr(separator)):
+                physical = ["raise RuntimeError('must not execute')",
+                            "@decorate('a" + separator + "b')",
+                            'def selected():', "    text = 'c" + separator + "d'",
+                            '    return text']
+                source = '\n'.join(physical) + '\n'
+                compile(source, 'unicode_source.py', 'exec')
+                self.put('unicode_source.py', source)
+                result = context.collect(self.root, ['unicode_source.py:selected', 'unicode_source.py:5'])
+                expected = '\n'.join(f'{i}: {physical[i - 1]}' for i in range(2, 6))
+                for record in result['selected']:
+                    self.assertEqual(record['source'], expected)
+                    self.assertEqual(record['symbol'], 'selected')
+
+    def test_conftest_index_preserves_physical_top_level_lines(self):
+        source = "payload = 'a\u2028b'\n\ndef fixture():\n    return payload\n"
+        self.put('conftest.py', source)
+        result = context.collect(self.root, ['conftest.py:4'])
+        self.assertEqual(result['conftest_indexes'][0]['top_level'], ["1: payload = 'a\u2028b'"])
+        self.assertEqual(result['selected'][0]['source'], '3: def fixture():\n4:     return payload')
+
+    def test_physical_newlines_match_parser_with_and_without_final_newline(self):
+        physical = ['def selected():', "    text = 'a\u2028b'", '    return text']
+        for newline in ('\n', '\r\n', '\r'):
+            for final in (False, True):
+                with self.subTest(newline=repr(newline), final=final):
+                    source = newline.join(physical) + (newline if final else '')
+                    self.put('newlines.py', source)
+                    result = context.collect(self.root, ['newlines.py:3'])['selected'][0]
+                    self.assertEqual(result['source'], '\n'.join(f'{i}: {line}' for i, line in enumerate(physical, 1)))
+                    self.assertEqual(result['sha256'], hashlib.sha256(source.encode('utf-8')).hexdigest())
+                    self.assertEqual((self.root / 'newlines.py').read_bytes(), source.encode('utf-8'))
+                    with self.assertRaisesRegex(ValueError, 'exceeds file length'):
+                        context.collect(self.root, ['newlines.py:4'])
+
+    def test_unicode_in_literal_does_not_trigger_large_file_indexing(self):
+        source = "def selected():\n    return '" + '\u2028'.join(['part'] * 210) + "'\n"
+        self.put('short.py', source)
+        result = context.collect(self.root, ['short.py'])['selected'][0]
+        self.assertEqual(result['representation'], 'full_source')
+        self.assertEqual(result['source'], '1: def selected():\n2: ' + source.split('\n')[1])
+
     def test_compact_cli_retains_every_value_and_pretty_preserves_legacy_shape(self):
         self.put('tests/test_service.py', 'def test_service():\n    assert "한글" == "한글"\n')
         selectors = ['tests/test_service.py', 'service.py:Store.save']
