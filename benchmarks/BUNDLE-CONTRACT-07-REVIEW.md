@@ -160,3 +160,14 @@ Unlike skill, writes the full JSON and also prints it, and creates experiment
 notes. Baseline asserts every intermediate query result; this is diagnostic
 reproduction, not a product regression requiring a valid future fix to expose
 an older result. No observed capture/scope issue; reconciliation pending.
+
+## Boundary fix — baseline
+
+Completed: **80,180 tokens / 30.915s**, four shell calls. Adds the exact-18 test
+first and captures its intended False-is-not-true failure while 17/19 pass.
+Changes only `>` to `>=`; unchanged three assertions then pass with full native
+names and summary. The final shell uses semicolon-separated checks, so its
+overall exit does not independently preserve the test exit, but actual native
+three-pass output is present. Original neighboring tests are retained; two-file
+diff is scoped. Same implementation outcome as skill, with lower recorded cost
+in this pair. No observed capture/scope issue; reconciliation and replay pending.
