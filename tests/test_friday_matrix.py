@@ -2,6 +2,7 @@ import importlib.util
 import io
 import json
 import copy
+import hashlib
 import sqlite3
 from pathlib import Path
 import subprocess
@@ -22,6 +23,130 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_literal_references_execute_the_existing_release_fixture_without_custom_extraction(self):
+        fixtures = json.loads((SCRIPT.parents[3] / 'benchmarks/bundle-contract-v2-cases.json').read_text())
+        fixture = next(case for case in fixtures if case['id'] == 'rolling-schema')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name, source in fixture['files'].items():
+                (root / name).write_text(source)
+            recipe = {'phases': [
+                phase('initial', "INSERT INTO users VALUES (1, 'original'), (2, 'untouched');", ['001_initial.sql']),
+                phase('up', files=['002_up.sql']),
+                phase('writes', "UPDATE users SET display_name='updated' WHERE id=1; INSERT INTO users VALUES(3, 'new');"),
+                phase('down', files=['002_down.sql'])],
+                'checks': {label: {'python_file': label + '_reader.py', 'constant': 'QUERY'}
+                           for label in ('old', 'new')}}
+            process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--source', str(root), '--spec', '-'],
+                                     input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
+            self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+            result = json.loads(process.stdout)
+            self.assertTrue(result['complete'])
+            self.assertEqual([(p['checks']['old']['ok'], p['checks']['new']['ok']) for p in result['phases']],
+                             [(True, False), (False, True), (False, True), (True, False)])
+            self.assertEqual(result['phases'][3]['checks']['old']['rows'],
+                             [[1, 'updated'], [2, 'untouched'], [3, 'new']])
+            self.assertEqual({p.name: p.read_text() for p in root.iterdir()}, fixture['files'])
+
+    def test_literal_reader_references_match_native_sql_and_preserve_provenance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            old = b'"""Public reader declaration."""\r\nQUERY = "SELECT name FROM users ORDER BY id"\r\n'
+            new = 'QUERY = "SELECT display_name FROM users ORDER BY id"\n'
+            (root / 'old.py').write_bytes(old)
+            (root / 'new.py').write_text(new)
+            phases = [phase('before', "CREATE TABLE users(id, name); INSERT INTO users VALUES(1, 'old');"),
+                      phase('up', "ALTER TABLE users RENAME COLUMN name TO display_name; INSERT INTO users VALUES(2, '새 값');"),
+                      phase('down', 'ALTER TABLE users RENAME COLUMN display_name TO name;')]
+            recipe = {'phases': phases, 'checks': {
+                'old': {'python_file': 'old.py', 'constant': 'QUERY'},
+                'new': {'python_file': 'new.py', 'constant': 'QUERY'},
+                'inline': 'SELECT count(*) FROM users'}}
+            before = copy.deepcopy(recipe)
+            result = helper.matrix(recipe, root)
+            plain = copy.deepcopy(recipe)
+            plain['checks']['old'] = 'SELECT name FROM users ORDER BY id'
+            plain['checks']['new'] = 'SELECT display_name FROM users ORDER BY id'
+            self.assertEqual(result['phases'], helper.matrix(plain, root)['phases'])
+            self.assertEqual(result['phases'][2]['checks']['old']['rows'], [('old',), ('새 값',)])
+            self.assertEqual(result['reader_sources']['old']['sha256'], hashlib.sha256(old).hexdigest())
+            self.assertEqual(result['reader_sources']['old']['line'], 2)
+            self.assertEqual(result['reader_sources']['old']['query'], plain['checks']['old'])
+            self.assertEqual(recipe, before)
+            self.assertEqual((root / 'old.py').read_bytes(), old)
+            self.assertEqual((root / 'new.py').read_text(), new)
+            process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--source', str(root), '--spec', '-'],
+                                     input=json.dumps(recipe), capture_output=True, text=True, timeout=10)
+            self.assertEqual(process.returncode, 0, process.stderr)
+            self.assertEqual(json.loads(process.stdout), json.loads(helper.format_result(result)))
+
+    def test_literal_reader_rejects_dynamic_or_ambiguous_modules_without_execution(self):
+        variants = [
+            "QUERY = 'SELECT 1'\nQUERY = 'SELECT 2'\n",
+            "QUERY = 'SELECT 1'\nimport pathlib\npathlib.Path('sentinel').touch()\n",
+            "QUERY = 'SELECT 1'\nif True:\n    QUERY = 'SELECT 2'\n",
+            "OTHER = 'SELECT 1'\nQUERY = OTHER\n",
+            "QUERY = f'SELECT {1}'\n",
+            "def reader():\n    QUERY = 'SELECT 1'\n",
+            "QUERY: str = 'SELECT 1'\n",
+            "QUERY = OTHER = 'SELECT 1'\n",
+            'QUERY = 3\n', 'OTHER = "SELECT 1"\n', 'QUERY = (\n']
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for source in variants:
+                with self.subTest(source=source):
+                    source = source.replace("Path('sentinel')", 'Path(' + repr(str(root / 'sentinel')) + ')')
+                    (root / 'reader.py').write_text(source)
+                    with patch.object(helper.sqlite3, 'connect') as connect, self.assertRaises(ValueError):
+                        helper.matrix({'phases': [phase('before')], 'checks': {
+                            'reader': {'python_file': 'reader.py', 'constant': 'QUERY'}}}, root)
+                    connect.assert_not_called()
+                    self.assertEqual(sorted(path.name for path in root.iterdir()), ['reader.py'])
+
+    def test_literal_reader_references_enforce_paths_and_schema(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'reader.py').write_text('QUERY = "SELECT 1"\n')
+            (root / 'link.py').symlink_to(root / 'reader.py')
+            (root / 'nested').mkdir()
+            (root / 'dirlink').symlink_to(root / 'nested', target_is_directory=True)
+            (root / 'nested/query.py').write_text('QUERY = "SELECT 1"\n')
+            invalid = [{'python_file': name, 'constant': 'QUERY'} for name in
+                       ('../reader.py', str(root / 'reader.py'), 'link.py', 'dirlink/query.py', '.', 'missing.py')]
+            invalid += [{}, {'python_file': 'reader.py'}, {'python_file': 'reader.py', 'constant': ''},
+                        {'python_file': 3, 'constant': 'QUERY'},
+                        {'python_file': 'reader.py', 'constant': 'QUERY', 'execute': True}]
+            for reference in invalid:
+                with self.subTest(reference=reference), self.assertRaises(ValueError):
+                    helper.matrix({'phases': [phase('before')], 'checks': {'r': reference}}, root)
+
+    def test_literal_reader_input_budget_prevents_sql_execution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'reader.py').write_bytes(b'#' + b' ' * 999_970 + b'\nQUERY = "SELECT 1"\n')
+            reference = {'python_file': 'reader.py', 'constant': 'QUERY'}
+            recipe = {'phases': [phase('before')], 'checks': {'a': reference, 'b': reference, 'c': reference}}
+            with patch.object(helper.sqlite3, 'connect') as connect, \
+                    self.assertRaisesRegex(ValueError, 'SQL exceeds 2 MB'):
+                helper.matrix(recipe, root)
+            connect.assert_not_called()
+            (root / 'reader.py').write_bytes(b' ' * 1_000_001)
+            with patch.object(Path, 'open') as opened, patch.object(helper.sqlite3, 'connect') as connect, \
+                    self.assertRaisesRegex(ValueError, 'exceeds 1 MB'):
+                helper.matrix({'phases': [phase('before')], 'checks': {'a': reference}}, root)
+            opened.assert_not_called()
+            connect.assert_not_called()
+
+    def test_literal_reader_does_not_bypass_read_only_checks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'reader.py').write_text('QUERY = "DELETE FROM t"\n')
+            result = helper.matrix({'phases': [phase('before', 'CREATE TABLE t(x); INSERT INTO t VALUES (7);')],
+                                    'checks': {'write': {'python_file': 'reader.py', 'constant': 'QUERY'},
+                                               'read': 'SELECT x FROM t'}}, root)
+            self.assertFalse(result['phases'][0]['checks']['write']['ok'])
+            self.assertEqual(result['phases'][0]['checks']['read']['rows'], [(7,)])
+
     def test_reader_column_contract_is_visible_when_values_do_not_change(self):
         recipe = {'phases': [phase('old view', "CREATE VIEW reader AS SELECT 7 AS old_name;"),
                              phase('new view', "DROP VIEW reader; CREATE VIEW reader AS SELECT 7 AS new_name;")],

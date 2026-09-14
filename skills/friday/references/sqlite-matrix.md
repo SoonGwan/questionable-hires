@@ -21,7 +21,7 @@ JSON text (row arrays, BLOB `{"blob_hex": "..."}`) without rerunning SQL or chan
 the result. Plain `json.dumps(result)` fails on BLOBs. Invalid API inputs raise
 exceptions; the CLI instead reports them as exit 2.
 
-The recipe has exactly `phases` and `checks`. Each phase has a `name`, a list of relative SQL `files` (run in order), then inline `sql`. Checks map labels to single read-only SQL statements; they run after every phase against the same in-memory database. Example:
+The recipe has exactly `phases` and `checks`. Each phase has a `name`, a list of relative SQL `files` (run in order), then inline `sql`. Checks map labels to single read-only SQL statements or the literal-reader references below; they run after every phase against the same in-memory database. Example:
 
 ```json
 {
@@ -38,6 +38,22 @@ The recipe has exactly `phases` and `checks`. Each phase has a `name`, a list of
 ```
 
 Select actual consumer queries and representative writes from the project; this example is not a substitute for discovering their contracts. Choose only reachable phases, including new-version writes before rollback when relevant. Writer compatibility, expected values and which readers coexist remain review decisions: successful SELECT execution alone is not correctness. Do not run mutating checks; represent relevant writes as explicit phases.
+
+For Python query-declaration files, replace a check's SQL string with
+`{"python_file": "old_reader.py", "constant": "QUERY"}`. This works through the
+same CLI/API, avoiding a custom AST extraction loop. The file is never imported
+or executed. Only modules consisting of docstrings and unique, simple scalar
+literal assignments are accepted; the selected value must be a string. Imports,
+functions, annotations, computed expressions, conditional definitions, chained
+assignments and reassignment are rejected rather than guessed. Use actual runtime
+facilities when these are required, not a fabricated simplified reader module.
+
+`reader_sources` records each referenced label's relative file, constant name,
+line, original byte SHA-256 and extracted query. This establishes the inspected
+literal, not whether the application loads that module or replaces the binding
+at runtime; verify its real consumer. Invalid references fail preparation before
+any SQL, as CLI exit 2/API ValueError. SQL text still passes the same read-only
+authorization and output checks; referencing a file does not make a write safe.
 
 Result fields are `engine: "sqlite-memory"`, `complete`, and ordered `phases`.
 Each phase has `name` and `checks`, keyed by your query labels. A successful check
@@ -71,3 +87,9 @@ files are rejected before reading; individual reads are also bounded if a file
 grows after its size check. This bounds retained SQL input, not total process
 memory or concurrent filesystem side effects. SQL execution begins only after
 all selected inputs pass preparation.
+
+Referenced Python files use the same project-relative, nonsymlink and 1 MB limits.
+Their raw bytes **and** extracted UTF-8 query bytes count toward the shared 2 MB
+budget, including repeated references. Parsing is static and size-bounded, not a
+total-memory guarantee or filesystem race isolation. Inline-only recipes retain
+their existing result shape without a `reader_sources` field.

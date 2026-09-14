@@ -1,11 +1,61 @@
 #!/usr/bin/env python3
 """Execute a local SQLite compatibility matrix; never open a database file."""
 import argparse
+import ast
+import hashlib
 import json
 from pathlib import Path
 import sqlite3
 import sys
 import time
+
+
+def literal_reader(reference, root, remaining):
+    """Read a declaration-only module without importing or executing it."""
+    if (not isinstance(reference, dict) or set(reference) != {'python_file', 'constant'}
+            or not all(isinstance(value, str) and value for value in reference.values())):
+        raise ValueError('reader reference requires python_file and constant strings')
+    relative = Path(reference['python_file'])
+    if relative.is_absolute() or not relative.parts or '..' in relative.parts:
+        raise ValueError('reader file must be project-relative')
+    path = root / relative
+    if any(part.is_symlink() for part in [path, *path.parents]
+           if part != root and root in part.parents):
+        raise ValueError('symlink reader paths are not supported')
+    if not path.is_file() or path.stat().st_size > 1_000_000:
+        raise ValueError('reader file missing or exceeds 1 MB')
+    if path.stat().st_size > remaining:
+        raise ValueError('SQL exceeds 2 MB')
+    with path.open('rb') as stream:
+        source = stream.read(min(1_000_000, remaining) + 1)
+    if len(source) > 1_000_000:
+        raise ValueError('reader file exceeds 1 MB')
+    if len(source) > remaining:
+        raise ValueError('SQL exceeds 2 MB')
+    try:
+        tree = ast.parse(source, filename=relative.as_posix())
+    except (SyntaxError, ValueError, RecursionError) as error:
+        raise ValueError('cannot parse reader module: ' + str(error)) from error
+    constants = {}
+    for node in tree.body:
+        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant) and isinstance(node.value.value, str):
+            continue  # A module docstring has no query-binding side effect.
+        if (not isinstance(node, ast.Assign) or len(node.targets) != 1
+                or not isinstance(node.targets[0], ast.Name)
+                or not isinstance(node.value, ast.Constant)):
+            raise ValueError('reader module must contain only unique scalar literal assignments and docstrings')
+        name = node.targets[0].id
+        if name in constants:
+            raise ValueError('reader module reassigns a constant: ' + name)
+        constants[name] = (node.value.value, node.lineno)
+    selected = constants.get(reference['constant'])
+    if selected is None or not isinstance(selected[0], str):
+        raise ValueError('selected reader constant must be a literal SQL string')
+    query, line = selected
+    return query, len(source), {'python_file': relative.as_posix(),
+                               'constant': reference['constant'], 'line': line,
+                               'sha256': hashlib.sha256(source).hexdigest(),
+                               'query': query, 'kind': 'static literal, not runtime binding evidence'}
 
 
 def matrix(spec, root, timeout=5):
@@ -19,12 +69,23 @@ def matrix(spec, root, timeout=5):
         raise ValueError("provide 1..20 named read queries")
     if not 0 < timeout <= 30:
         raise ValueError("timeout must be in (0, 30]")
-    if any(not isinstance(k, str) or not isinstance(v, str) for k, v in checks.items()):
-        raise ValueError("checks map names to SQL strings")
-    total = sum(len(s.encode("utf-8")) for s in checks.values())
+    if any(not isinstance(k, str) or not isinstance(v, (str, dict)) for k, v in checks.items()):
+        raise ValueError("checks map names to SQL strings or literal reader references")
+    total = sum(len(s.encode("utf-8")) for s in checks.values() if isinstance(s, str))
     if total > 2_000_000:
         raise ValueError("SQL exceeds 2 MB")
     root = Path(root).resolve(strict=True)
+    resolved, sources = {}, {}
+    for label, value in checks.items():
+        if isinstance(value, str):
+            resolved[label] = value
+        else:
+            query, source_bytes, provenance = literal_reader(value, root, 2_000_000 - total)
+            total += source_bytes + len(query.encode('utf-8'))
+            if total > 2_000_000:
+                raise ValueError('SQL exceeds 2 MB')
+            resolved[label], sources[label] = query, provenance
+    checks = resolved
     prepared = []
     for phase in phases:
         if not isinstance(phase, dict) or set(phase) != {"name", "files", "sql"}:
@@ -85,6 +146,8 @@ def matrix(spec, root, timeout=5):
     deadline = time.monotonic() + timeout
     db.set_progress_handler(lambda: int(time.monotonic() >= deadline), 1000)
     output = {"engine": "sqlite-memory", "complete": True, "phases": []}
+    if sources:
+        output['reader_sources'] = sources
     try:
         for name, chunks in prepared:
             row = {"name": name, "checks": {}}
