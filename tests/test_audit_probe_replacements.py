@@ -16,7 +16,7 @@ SPEC.loader.exec_module(helper)
 
 class ProbeReplacementTests(unittest.TestCase):
     def setUp(self):
-        directory = tempfile.TemporaryDirectory(prefix='replacement-audit-', dir=ROOT / 'benchmarks/local-runs')
+        directory = tempfile.TemporaryDirectory(prefix='replacement-audit-', dir=ROOT / 'benchmarks')
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
         self.source = 'def save(values, value):\n    values.append(value)\n    return True\n'

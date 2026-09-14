@@ -15,7 +15,7 @@ def check():
     helper = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(helper)
     improved = (ROOT / 'benchmarks/results/conditional-store-01/candidate/conditional-store--skill--1/project/tests/test_submit.py').read_text()
-    with tempfile.TemporaryDirectory(prefix='existing-test-probe-', dir=ROOT / 'benchmarks/local-runs') as folder:
+    with tempfile.TemporaryDirectory(prefix='existing-test-probe-', dir=ROOT / 'benchmarks') as folder:
         project = Path(folder)
         for name, content in FILES.items():
             path = project / name

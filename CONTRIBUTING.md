@@ -28,6 +28,12 @@ Development dependencies are listed in `requirements-dev.txt`. Install them in
 your development environment if needed. These local checks do **not** invoke a
 model, install skills into your host, or publish a package:
 
+The development requirements include pytest for native fixture/collection checks.
+Those checks explicitly skip if the selected interpreter lacks pytest; skips are
+not passing compatibility evidence. Both CI jobs install the requirements before
+running tests. An existing project environment can run the focused group with
+`python -B -m unittest discover -s tests -p test_audit_pytest_replacements.py`.
+
 ```sh
 python3 scripts/validate.py
 python3 -B -m unittest discover -s tests -v
