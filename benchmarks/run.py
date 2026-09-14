@@ -30,16 +30,18 @@ def unittest_transcript_candidate(item):
     """
     command_text = item.get('command', '')
     output = item.get('aggregated_output', '')
-    if ('unittest' not in command_text
-            or not re.search(r'(?<![\w-])(?:-v|--verbose)(?![\w-])', command_text)):
-        return None
+    explicit_verbose = ('unittest' in command_text and
+                        re.search(r'(?<![\w-])(?:-v|--verbose)(?![\w-])', command_text))
     summaries = re.findall(r'^Ran (\d+) tests? in [^\n]+$', output, re.MULTILINE)
     if len(summaries) != 1:
         return None
     reported = int(summaries[0])
     # Standard verbose method headers, not failure-trace headings or subtest rows.
     observed = len(re.findall(r'^\S+ \([^\n]+\) \.\.\.(?: |$)', output, re.MULTILINE))
-    if observed < reported:
+    # Programmatic TextTestRunner calls need no CLI -v. Retained native verbose
+    # headers can establish a reviewable mismatch without guessing Python syntax.
+    # Quiet output with no headers and no explicit verbosity remains unclassified.
+    if (explicit_verbose or observed) and observed < reported:
         return dict(item_id=item.get('id'), reported_tests=reported,
                     observed_verbose_headers=observed,
                     interpretation='Possible partial transcript or nonstandard runner output; manual review required.')

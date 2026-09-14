@@ -13,6 +13,16 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_retained_programmatic_runner_partial_capture_is_reviewable(self):
+        path = runner.ROOT / 'benchmarks/results/reporter-diagnosis-01/reporter-lifecycle--skill--1/commands.json'
+        item = next(c for c in json.loads(path.read_text()) if c['id'] == 'item_8')
+        before = json.dumps(item, sort_keys=True)
+        candidate = runner.unittest_transcript_candidate(item)
+        self.assertIsNotNone(candidate)
+        self.assertEqual((candidate['reported_tests'], candidate['observed_verbose_headers']), (4, 1))
+        self.assertIn('manual review', candidate['interpretation'])
+        self.assertEqual(json.dumps(item, sort_keys=True), before)
+
     def test_cli_streams_survive_post_execution_git_failure(self):
         with tempfile.TemporaryDirectory(dir=runner.ROOT) as directory:
             root = Path(directory)
@@ -163,8 +173,15 @@ unittest.main(verbosity=2)
         self.assertEqual(candidates[0]['reported_tests'], 3)
         self.assertEqual(candidates[0]['observed_verbose_headers'], 1)
         self.assertEqual(partial['exit_code'], 1)
-        self.assertEqual(inspect(dict(partial, command='python3 -m unittest -q')), [])
-        self.assertEqual(inspect(dict(partial, command='python3 report.py')), [])
+        self.assertEqual(len(inspect(dict(partial, command='python3 -m unittest -q'))), 1)
+        self.assertEqual(len(inspect(dict(partial, command='python3 report.py'))), 1)
+        # Actual quiet native output has no verbose headers, unlike the changed
+        # command labels above; no claim about completeness follows from silence.
+        quiet = runner.subprocess.run([sys.executable, '-c', source.replace('verbosity=2', 'verbosity=0')],
+                                      text=True, capture_output=True, timeout=10)
+        self.assertEqual(quiet.returncode, 1)
+        self.assertEqual(inspect(dict(item, command='python3 report.py', aggregated_output=quiet.stderr)), [])
+        self.assertEqual(inspect(dict(item, command='python3 report.py')), [])
         self.assertEqual(inspect(dict(partial, aggregated_output=process.stderr * 2)), [])
 
     def test_partial_success_summary_is_review_candidate_not_failure(self):
