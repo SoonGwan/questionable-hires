@@ -1,9 +1,27 @@
 # SQLite matrix: result and budget details
 
 Use with the [core CLI/API interface](sqlite-matrix.md) when interpreting
-duplicate/empty-column output or diagnosing byte limits.
+binary/duplicate/empty-column output or diagnosing rejected inputs and byte limits.
 
 Invalid API inputs raise exceptions; CLI invalid inputs instead produce exit 2.
+
+## Input shape and failure details
+
+The top-level recipe accepts exactly `phases` and `checks`; phase keys are `name`,
+optional `files` and optional `sql`. Unknown keys, nulls and wrong types reject.
+Literal-reader modules reject imports, functions, annotations, computed/conditional/
+chained assignments and reassignment. The selected scalar literal must be a string.
+Use actual runtime facilities for dynamic queries rather than simplifying code to
+fit this reader. Migration failures add `migration_error` to the phase; budget
+exhaustion can add top-level `error`. Both leave `complete` false and stop the
+remaining sequence. Inspect the actual observed prefix, not a reconstructed success.
+
+## Binary results
+
+The API retains tuple rows and BLOB `bytes`; plain `json.dumps(result)` cannot
+encode those bytes. `format_result(result)` returns JSON with BLOB values encoded
+as `{"blob_hex":"..."}`, including empty bytes as `{"blob_hex":""}`. It does not
+change the result or rerun SQL. Reuse native bytes for value assertions.
 
 ## Column and empty-result contracts
 

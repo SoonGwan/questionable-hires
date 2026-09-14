@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Friday [core-guide candidate](FRIDAY-CORE-GUIDE-01.md), previous source `c1f639c`:
+routine reference 4,884 → 3,645 bytes (−25.37%); core plus details 7,387 → 7,205
+(−2.46%). Conditional BLOB/rejection diagnostics stay in the existing routed
+details file. CLI/API examples and 35 native matrix tests pass; runtime and skill
+entry unchanged. These are document bytes, not model token or performance gains.
+Actual adoption/read cost remains unmeasured; no historical/featured changes.
+
+한국어: Friday 기본 안내를 줄이고 조건부 상세 설명은 기존 문서로 옮겼다.
+기본 문서 크기는 25.37% 줄었지만 전체 문서는 2.46% 감소이며, 모델 토큰 절감률이
+아니다. 실제 예제를 포함한 SQLite 검사 35개가 통과했고 실행 코드는 변경하지 않았다.
+
 [Final batching model 01](HOSTAGE-FINAL-BATCH-MODEL-01-REVIEW.md), launch `d035f34`,
 resources `fc557ad`: 95,992 tokens / 94.261s, four shell calls, final checks in one
 failure-preserving call. Sequential dependent phases adopted. Original summary

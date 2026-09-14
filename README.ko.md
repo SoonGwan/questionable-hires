@@ -187,6 +187,7 @@ Store 검토는 연결 오류 후 시간 초과됐습니다. 모든 시도와 �
   [세 가지 판단을 요구한 개발 실험](benchmarks/results/necromancer-regions-01/README.md)에서 두 방식 모두 판단을 맞혔고, 스킬은 토큰 15.85%·시간 18.56% 감소를 기록했습니다. 추가 검증량 차이와 이미 노출된 단일 과제 때문에 일반화할 수 없으며, 선택형 이력 수집 도구는 사용하지 않았습니다.
 - **배포 생존 담당(`friday`):** 메모리 SQLite에서 마이그레이션·롤백 단계별 읽기 쿼리 검사를 재사용합니다. [사용법과 한계](skills/friday/references/sqlite-matrix.md). 쿼리 성공이 배포 준비 완료를 뜻하지 않으며, 다른 DB 엔진의 동작은 별도로 확인해야 합니다.
   [쿼리 선언 분석 재사용](benchmarks/FRIDAY-READER-SNAPSHOT-01.md)으로 같은 파일을 여러 번 읽고 분석하지 않습니다. 단계별 SQL 검사는 그대로 실행하며, 모델 비용 효과는 아직 미측정입니다.
+  [기본 안내 축약](benchmarks/FRIDAY-CORE-GUIDE-01.md)은 실행 예제와 제한을 유지하고 조건부 상세 설명을 분리합니다. 기본 문서 크기 25.37% 감소이며 모델 토큰 절감 수치는 아닙니다. 실행 코드는 그대로입니다.
   최신 [실행 결과 재사용 안내](benchmarks/FRIDAY-RESULT-REUSE-01.md)는 기존 Python API를 기본 문서에 배치했습니다. [새 모델 실험](benchmarks/FRIDAY-RESULT-REUSE-MODEL-01-REVIEW.md)에서도 한 번의 실행 결과로 값 비교까지 마쳤지만, 토큰 39.28%, 시간 2.04% 증가와 검증량 차이로 효율 향상을 입증하지는 못했습니다. 실행 코드는 `e3bc342` 그대로입니다.
   [빈 단계 항목 생략 지원](benchmarks/FRIDAY-PHASE-DEFAULTS-01.md)으로 재현된 API 입력 오류를 없애고 검증 조건은 유지했습니다. [새 단일 과제 실험](benchmarks/FRIDAY-PHASE-DEFAULTS-MODEL-01-REVIEW.md)에서도 첫 실행에 성공했지만 SQL 중복 실행과 함께 토큰 67.14%, 시간 3.12% 증가를 기록했습니다. 사용성 오류 수정이며 효율 향상의 증거는 아닙니다.
   이후 [두 과제 인터페이스 실험](benchmarks/FRIDAY-INTERFACE-MODEL-01-REVIEW.md)은 API 오류 수정·재실행을 포함해 전체 토큰 68.56%, 시간 8.41% 증가를 기록했습니다. 필요한 문서만 읽는 동작은 확인했지만 효율 개선은 아니며, 모든 시도를 보존했습니다.
