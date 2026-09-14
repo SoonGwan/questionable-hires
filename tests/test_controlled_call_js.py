@@ -8,6 +8,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ControlledCallJavaScriptTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which('node'), 'Node is required for native JavaScript verification')
+    def test_entry_before_task_settlement_and_failure_controls(self):
+        result = subprocess.run(['node', '--test', '--test-reporter=tap',
+                                 'tests/controlled_entry_js.test.mjs'], cwd=ROOT,
+                                capture_output=True, text=True, timeout=10)
+        output = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, output)
+        self.assertIn('# tests 6', output)
+        self.assertIn('# pass 6', output)
+        self.assertIn('# fail 0', output)
+
     @unittest.skipUnless(shutil.which('cmp'), 'cmp is required for the POSIX copy-check example')
     def test_copy_check_distinguishes_identical_changed_and_missing_support(self):
         asset = ROOT / 'skills/hostage-negotiator/assets/controlled_call.mjs'

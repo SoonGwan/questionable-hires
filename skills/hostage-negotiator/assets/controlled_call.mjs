@@ -6,6 +6,11 @@
  * const task = form.submit(save); // register rejection handling/cleanup now
  * const call = await save.started(1000); // actual entry, timeout in milliseconds
  * call.complete(result); // or call.fail(error); then await the application task
+ * If entry must precede task settlement, use save.startedBefore(task, 1000).
+ * It rejects early with code ERR_CALLBACK_NOT_ENTERED and an outcome containing
+ * status plus the exact value/reason if the task settles before entry is observed.
+ * Queued entry wins; this does not prove that an unrelated task caused the entry.
+ * The test chooses the relevant task and still asserts its result/state afterward.
  *
  * Each call has unique identity even for identical args. args and receiver keep
  * references, not snapshots. save.calls records all entries. released means a
@@ -76,20 +81,46 @@ function createControlledCall() {
   }
 
   callback.calls = calls;
-  callback.started = (timeoutMs = 1000) => {
+  function started(timeoutMs, task, observeTask = false) {
     if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > 30000) {
       throw new RangeError('timeoutMs must be in (0, 30000]');
     }
-    if (entries.length) return Promise.resolve(entries.shift());
     return new Promise((resolve, reject) => {
-      const waiter = { resolve, reject, timer: undefined };
-      waiter.timer = setTimeout(() => {
-        waiters.splice(waiters.indexOf(waiter), 1);
-        reject(new Error('Timed out waiting for callback entry'));
-      }, timeoutMs);
-      waiters.push(waiter);
+      let active = true;
+      const finish = (settle, value) => {
+        if (!active) return;
+        active = false;
+        clearTimeout(waiter.timer);
+        const index = waiters.indexOf(waiter);
+        if (index !== -1) waiters.splice(index, 1);
+        settle(value);
+      };
+      const waiter = {
+        resolve: value => finish(resolve, value),
+        reject: error => finish(reject, error),
+        timer: undefined,
+      };
+      if (observeTask) {
+        const ended = outcome => {
+          const error = new Error('Application task settled before expected callback entry');
+          error.code = 'ERR_CALLBACK_NOT_ENTERED';
+          error.outcome = outcome;
+          waiter.reject(error);
+        };
+        Promise.resolve(task).then(
+          value => ended({ status: 'fulfilled', value }),
+          reason => ended({ status: 'rejected', reason }));
+      }
+      if (entries.length) waiter.resolve(entries.shift());
+      else {
+        waiter.timer = setTimeout(() => waiter.reject(
+          new Error('Timed out waiting for callback entry')), timeoutMs);
+        waiters.push(waiter);
+      }
     });
-  };
+  }
+  callback.started = (timeoutMs = 1000) => started(timeoutMs);
+  callback.startedBefore = (task, timeoutMs = 1000) => started(timeoutMs, task, true);
   return {
     callback,
     closeEntries() {
@@ -133,6 +164,7 @@ export async function withControlledCalls(body, { timeoutMs = 1000 } = {}) {
       }
       callback.calls = controlled.calls;
       callback.started = (...args) => { requireOpen(); return controlled.started(...args); };
+      callback.startedBefore = (...args) => { requireOpen(); return controlled.startedBefore(...args); };
       owned.push({ callback, closeEntries });
       return callback;
     },

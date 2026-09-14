@@ -11,6 +11,19 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Current Hostage runtime addition: [task-aware callback entry](HOSTAGE-ENTRY-WAIT-01.md).
+Optional `startedBefore(task)` reports early task settlement instead of waiting
+for an impossible entry until timeout. Author-adapted retained tests preserve
+43/43 final passes and eight skipped-decode detections; fault diagnosis changes
+from 8.1120s to 0.1024s. First adaptation error is preserved; corrected native
+timing overlaps author regressions, n=1, no model adoption/cost or broad gain.
+Full current local suite: 483 passed in 67.999s, no failures/skips.
+
+한국어: 앱 작업이 끝났는데 콜백 진입을 계속 기다리던 비용을 줄이는 선택형 API를
+추가했다. 작성자 적용본은 정상 43개 통과·결함 8개 검출을 유지하면서 실패 진단이
+8.1120초에서 0.1024초로 줄었다. 첫 적용 스크립트 오류도 보존했다. 모델 전체
+성능 수치가 아니며, 새 API의 모델 채택·토큰 비용은 아직 미검증이다.
+
 Current Hostage [copy-check model review](HOSTAGE-COPY-CHECK-MODEL-01-REVIEW.md),
 launch `b2b213a`, resource `ee1fa12`: 148,517 tokens / 166.259s, one skill-only
 session. `cmp` succeeds as the final shell command, but full implementation is
