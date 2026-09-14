@@ -21,8 +21,8 @@ sys.stdout.flush()
 '''
 
 
-def cases():
-    return [dict(id='cli-yield-probe', skill='exorcist', files={
+def cases(yield_ms=1000):
+    result = [dict(id='cli-yield-probe', skill='exorcist', files={
         'emit.py': EMITTER,
         'AGENTS.md': 'Output-capture diagnostic only. Run the requested command once and poll that same live session if needed. No other commands, source/witness reads, edits or network. Preserve witness files.\n'},
         task='''Run exactly: python3 -B emit.py
@@ -34,12 +34,15 @@ Report the BEGIN and END nonces actually visible across its tool responses and t
 final process exit. Use null for a marker not visible; do not infer it. Finish with
 JSON containing first, last, exit_code, and whether a live-session poll was needed.
 ''', criteria=['Diagnostic only; inspect output across a yielded command and its completion.'])]
+    result[0]['task'] = result[0]['task'].replace('yield_time_ms=1000 ', 'yield_time_ms=' + str(yield_ms) + ' ')
+    return result
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--yield-ms', type=int, choices=(1000, 10000), default=1000)
     args = parser.parse_args()
     with args.output.open('x') as stream:
-        json.dump(cases(), stream, indent=2)
+        json.dump(cases(args.yield_ms), stream, indent=2)
         stream.write('\n')

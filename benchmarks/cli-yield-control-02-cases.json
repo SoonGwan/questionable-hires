@@ -1,0 +1,14 @@
+[
+  {
+    "id": "cli-yield-probe",
+    "skill": "exorcist",
+    "files": {
+      "emit.py": "import hashlib, json, sys, time, uuid\nfrom pathlib import Path\nfirst, last = uuid.uuid4().hex, uuid.uuid4().hex\nstart = 'BEGIN delayed ' + first + '\\n'\nend = 'END delayed ' + last + '\\n'\npayload = (start + end).encode()\nwith Path('witness-delayed.json').open('x') as stream:\n    json.dump(dict(mode='delayed', first=first, last=last, bytes=len(payload),\n                   sha256=hashlib.sha256(payload).hexdigest()), stream)\nsys.stdout.write(start)\nsys.stdout.flush()\ntime.sleep(2)\nsys.stdout.write(end)\nsys.stdout.flush()\n",
+      "AGENTS.md": "Output-capture diagnostic only. Run the requested command once and poll that same live session if needed. No other commands, source/witness reads, edits or network. Preserve witness files.\n"
+    },
+    "task": "Run exactly: python3 -B emit.py\nRequest yield_time_ms=10000 and max_output_tokens=20000 on the command tool if\nconfigurable. The process deliberately produces output before and after a two-second\nwait. If it returns a live session, poll that same session to completion; don't\nrestart it. Do not read emit.py or witness files, or use other commands/tools.\nReport the BEGIN and END nonces actually visible across its tool responses and the\nfinal process exit. Use null for a marker not visible; do not infer it. Finish with\nJSON containing first, last, exit_code, and whether a live-session poll was needed.\n",
+    "criteria": [
+      "Diagnostic only; inspect output across a yielded command and its completion."
+    ]
+  }
+]
