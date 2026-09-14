@@ -17,7 +17,11 @@ existing matrix CLI/API. Static file/hash/line evidence and strict rejection of
 dynamic modules preserve the boundary; runtime consumer binding is not inferred.
 28 native matrix tests pass, including the existing release fixture through CLI;
 the full local suite passes **438 tests in 77.427s**, no failures/skips.
-Model adoption/cost impact is unmeasured; historical results below are unchanged.
+[Model screen 01](FRIDAY-LITERAL-MODEL-01-REVIEW.md) now confirms CLI adoption:
+baseline 65,534 tokens/55.285s versus skill 72,134/41.615s (**+10.07% tokens,
+−24.73% time**). Both support the required outcomes, with unequal extra checks.
+All originals/resources reconcile. One exposed task at n=1 is mixed evidence,
+not causal or all-eight efficiency; historical/featured data stays unchanged.
 
 Newer **candidate `07fa9e2`**: [discovery routing screen](DISCOVERY-ROUTING-01-REVIEW.md)
 retains all four attempts. Atomic baseline 83,380 tokens/49.277s versus skill

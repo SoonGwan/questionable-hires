@@ -3,6 +3,11 @@
 Runtime resource `bef0937`. This is a locally verified capability addition,
 not a model-performance result or a change to historical measurements.
 
+Subsequent [model screen 01](FRIDAY-LITERAL-MODEL-01-REVIEW.md) confirms actual
+literal-reference adoption, with +10.07% tokens / −24.73% time on one exposed
+task and unequal extra verification. That mixed result is separate from the
+native validation described below; it is not a general savings claim.
+
 Checkpoint 06's rolling-schema sessions both manually parsed Python query
 declarations before executing the actual reader SQL. Friday's matrix now accepts
 `{"python_file": "old_reader.py", "constant": "QUERY"}` as a check value through
