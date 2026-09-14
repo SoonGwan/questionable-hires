@@ -19,9 +19,7 @@ When asserting that stale or failed work leaves state unchanged, capture the rel
 
 Async regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup.
 
-For Python asyncio callback tests without equivalent project support, read and copy the optional [controlled-call asset](assets/controlled_call.py); its module docstring contains the usage and limits. It replaces repeated entry/release gates, not application assertions. No separate reference is needed for this path.
-
-For JavaScript Promise callbacks without equivalent support, use the optional [ES-module asset](assets/controlled_call.mjs) instead. Read its opening usage comment first (`sed -n '1,/^ \*\//p' <asset-path>`), alongside the known application files, and copy the module into permitted test support. To check an unchanged copy, use `cmp <asset-path> <copy-path>` and its exit status rather than printing the module again. Inspect implementation when adapting it or resolving unclear behavior. The comment covers both plain calls and optional `withControlledCalls` lifecycle ownership. Read only the resource for the actual runtime; tests still own application assertions and external-resource cleanup.
+Without equivalent project support, use the optional [Python asyncio asset](assets/controlled_call.py) or [JavaScript Promise asset](assets/controlled_call.mjs), only for the actual runtime. Read Python's module docstring or JavaScript's opening usage comment alongside known application files; copy into permitted test support. Usage and limits live there, including optional JS lifecycle ownership. Inspect implementation for trust, adaptation or unclear behavior. Use `cmp <asset-path> <copy-path>` to check an unchanged copy, not another full read. Assets replace repeated entry/release gates, not application assertions or external-resource cleanup; no separate reference is needed.
 
 ## Deliver and stop
 
@@ -29,7 +27,7 @@ After edits, batch remaining native tests, copy-integrity checks and final diff/
 
 Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse valid evidence; rerun only for changed relevant inputs, unresolved uncertainty or an explicit requirement.
 
-If expected test output is absent, inspect an existing report attributable to that command and those inputs first. If the process is still running, observe that execution rather than start another. Without usable evidence, rerun only the missing, safely repeatable check within the authorized scope, capturing its native count/result and own exit. Do not replay a deployment or side-effectful workflow just to recover output. If verification remains unavailable, report the change as unverified—not passed. A later run is new evidence, not recovery of the original transcript; missing, undiscovered or skipped tests cannot support a pass.
+Before claiming tests passed, locate their native identities/count and results, not just the shell exit or trailing diff/status. Missing evidence: first inspect an existing report tied to that command and inputs; observe a still-running process instead of restarting it. Otherwise rerun only the missing, safely repeatable check in scope, capturing its result and own exit. Never replay a deployment or side-effectful workflow merely to recover output. If evidence remains unavailable, say unverified. A later run is new evidence, not a repaired transcript; missing, undiscovered or skipped tests cannot support a pass.
 
 Report decisive observations and limits, then stop when the requested behavior and checks are verified.
 

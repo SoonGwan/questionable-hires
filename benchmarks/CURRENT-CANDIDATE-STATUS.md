@@ -11,6 +11,16 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 09 — 2026-09-14, launch `3a7d972`
 
+[Hostage evidence/entry candidate 02](HOSTAGE-EVIDENCE-COMPACT-02.md), parent
+`a43f4bf`: require locating native test evidence before pass claims; combine
+runtime-specific asset routing without changing callbacks or task scope. Entry
+−351 bytes (−7.62%), 46 related author tests pass. Model adoption, reporting
+improvement and token savings are not yet measured; checkpoint 09 stays frozen.
+
+한국어: 폼 스킬의 통과 보고 기준을 실제 테스트 증거 확인으로 바꾸고 중복
+자원 안내를 줄였다. 안내 7.62% 감소, 관련 테스트 46개 통과지만 모델의 보고
+개선·토큰 절감 실측은 아직 없다. 기존 평가 수치는 유지한다.
+
 [Consolidated review](BUNDLE-CONTRACT-09-REVIEW.md): observed totals −13.65%
 tokens / −19.54% time, but four token regressions, two time regressions, unequal
 work and two original capture gaps. Final schema controls detect three actual
