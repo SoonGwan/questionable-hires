@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Refresh-owner checkpoint — 2026-09-15, launch `3c29443`
 
+[Optional native evidence retention](HOSTAGE-NATIVE-EVIDENCE-01.md), parent
+`b9cb260`: a conditional single-run recipe stores native argv/output/exit in a
+fresh permitted project directory when terminal capture is unreliable. Five
+actual local controls pass, including lost display, real assertion failure,
+empty discovery and preserved exit 37; 12 bundle tests pass. No CLI bug fix or
+model/token improvement is claimed. Existing report reuse and scope stay first.
+
+한국어: 출력 누락 때 같은 새 실행의 기록을 재실행 없이 읽는 선택적 방법을
+추가했다. 로컬 검사 5개·배포 묶음 12개 통과지만 CLI 원인 해결이나 모델 성능
+개선은 미검증이다. 기존 보고서 우선·파일 권한·개인정보 범위를 유지한다.
+
 [Adoption screen 03 results](HOSTAGE-REFRESH-03-REVIEW.md), launch `37322ce`,
 resources `6b6962c`: both sessions complete; whole-helper reads remain, one repeats
 final checks, and one dedicated test command has empty original CLI output despite

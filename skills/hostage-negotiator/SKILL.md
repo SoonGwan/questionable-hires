@@ -29,6 +29,8 @@ Review the diff against acceptance conditions, removing only your own unjustifie
 
 Before claiming tests passed, locate their native identities/count and results, not just the shell exit or trailing diff/status. Missing evidence: first inspect an existing report tied to that command and inputs; observe a still-running process instead of restarting it. Otherwise rerun only the missing, safely repeatable check in scope, capturing its result and own exit. Never replay a deployment or side-effectful workflow merely to recover output. If evidence remains unavailable, say unverified. A later run is new evidence, not a repaired transcript; missing, undiscovered or skipped tests cannot support a pass.
 
+When terminal capture is unreliable and local evidence files are permitted, use the [single-run native capture fallback](references/native-evidence.md); read retained results instead of rerunning solely for output.
+
 Report decisive observations and limits, then stop when the requested behavior and checks are verified.
 
 Preserve user changes and explicit requirements. Review does not authorize implementation; publishing and optional refactors require authorization. Keep humor optional.
