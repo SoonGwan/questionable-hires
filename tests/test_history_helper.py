@@ -39,16 +39,8 @@ class HistoryHelperTests(unittest.TestCase):
             root = Path(directory).resolve()
             target = root / 'growing.py'
             target.write_bytes(b'value = 1\n')
-            original_stat, original_open = Path.stat, Path.open
+            original_open = Path.open
             grew, requested = [], []
-
-            def stat_then_grow(path, *args, **kwargs):
-                result = original_stat(path, *args, **kwargs)
-                if path == target and kwargs.get('follow_symlinks', True) and not grew:
-                    grew.append(True)
-                    with open(target, 'ab') as stream:
-                        stream.write(b'#' * 3_000_000)
-                return result
 
             class Reader:
                 def __init__(self, stream):
@@ -62,11 +54,16 @@ class HistoryHelperTests(unittest.TestCase):
                     return self.stream.read(size)
 
             def tracked_open(path, *args, **kwargs):
+                # Grow after path resolution AND the size precheck. Path.resolve
+                # performs different stat calls across Python versions.
+                if path == target and args == ('rb',) and not grew:
+                    grew.append(True)
+                    with open(target, 'ab') as writer:
+                        writer.write(b'#' * 3_000_000)
                 stream = original_open(path, *args, **kwargs)
                 return Reader(stream) if path == target and args == ('rb',) else stream
 
-            with patch.object(Path, 'stat', new=stat_then_grow), \
-                    patch.object(Path, 'open', new=tracked_open), \
+            with patch.object(Path, 'open', new=tracked_open), \
                     patch.object(helper, 'git', return_value=subprocess.CompletedProcess([], 1, '', 'no history')) as git:
                 with self.assertRaisesRegex(ValueError, 'exceeds 2 MB'):
                     helper.trace(root, 'growing.py', 1, 1)

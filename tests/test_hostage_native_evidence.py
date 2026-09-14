@@ -54,15 +54,18 @@ class NativeEvidenceTests(unittest.TestCase):
     def test_actual_failure_survives_errexit_and_lost_display(self):
         self.run_check(False)
 
-    def test_zero_discovered_tests_remains_visible_despite_exit_zero(self):
+    def test_zero_discovered_tests_preserves_native_exit_and_empty_summary(self):
         with tempfile.TemporaryDirectory(prefix='capture-empty-', dir=ROOT / 'benchmarks') as temporary:
             project = Path(temporary)
+            direct = subprocess.run(['python3', '-B', '-m', 'unittest', 'discover', '-v'],
+                                    cwd=project, capture_output=True, text=True, timeout=15)
+            self.assertIn('Ran 0 tests', direct.stdout + direct.stderr)
             result = subprocess.run(['sh', '-ec', self.recipe()], cwd=project,
                                     stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, timeout=15)
-            self.assertEqual(result.returncode, 0)
+            self.assertEqual(result.returncode, direct.returncode)
             evidence, = project.glob('.test-evidence.*')
             self.assertIn('Ran 0 tests', (evidence / 'output.txt').read_text())
-            self.assertEqual((evidence / 'exit.txt').read_text(), '0\n')
+            self.assertEqual((evidence / 'exit.txt').read_text(), str(direct.returncode) + '\n')
 
     def test_missing_native_command_keeps_its_own_failure(self):
         with tempfile.TemporaryDirectory(prefix='capture-missing-', dir=ROOT / 'benchmarks') as temporary:
