@@ -9,6 +9,33 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Python probe structural matching — 2026-09-15, parent `37f827c`
+
+The [history-guide screen](results/history-guide-01/README.md) exposed the same
+format-sensitive AST assertion failure in both sessions. Necromancer now gives
+conditional guidance for AST substitutions: match fields or parsed structure,
+check intended match count, and still verify behavior. It does not mandate AST
+rewrites, add a runtime helper, or prescribe a specific task mutation.
+
+[Five author controls](../tests/test_python_probe_matching.py) reproduce the
+parenthesis mismatch, accept formatting/location differences, reject changed
+fields/order/context and missing/duplicate matches, then execute an actual caller
+whose behavior changes after a correctly matched removal. The last control keeps
+the deliberate `500 != 5` assertion failure: structural identity is not behavioral
+equivalence. New checks pass on macOS Python 3.9 and existing offline Linux Python
+3.12 (five each, 0.001s). All 15 Python probe/context/region tests pass on macOS
+(0.096s); skill metadata, local links and featured synchronization also pass.
+
+This follows Python's documented distinction between regenerated source and
+original formatting ([AST documentation](https://docs.python.org/3/library/ast.html#ast.unparse)).
+Local mechanics are verified, **model adoption and whole-task savings are not**.
+No new model session, retry of the exposed HTTPX task, or chart change.
+
+한국어: 두 모델이 실제로 겪은 AST 문자열 비교 실패를 재현하고, AST를 선택한
+경우에만 구조와 일치 개수를 확인하도록 안내를 추가했다. 형식 차이는 허용하지만
+잘못된 변경·중복은 거부하며, 올바른 구조 변경도 실제 동작 검증을 거치게 한다.
+로컬 검사 결과일 뿐 모델의 재실행 감소나 전체 성능 향상은 아직 미측정이다.
+
 ## History guide model screen — 2026-09-15, launch `9ccd466`
 
 [Real-HTTPX reused-task comparison](results/history-guide-01/README.md): original

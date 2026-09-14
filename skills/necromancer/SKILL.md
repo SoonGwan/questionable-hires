@@ -18,6 +18,8 @@ Separate two questions:
 
 When a behavioral probe recompiles extracted Python, preserve the original module's `__future__` settings rather than inheriting the probe's; annotations can otherwise fail or change meaning. Keep required bindings intact.
 
+For AST-based substitutions, match node fields or compare parsed trees with `ast.dump(..., include_attributes=False)`, not `ast.unparse` against handwritten formatting. Verify the intended match count before substitution; a structural match still needs behavioral checks.
+
 For missing attribution, use `git blame -L <start>,<end> -- <path>` and inspect the relevant before/after change. Reuse established facts; native Git is enough for one fact. Optional tools when they replace repeated work:
 
 - [History collector](references/focused-history.md): repeated attribution, renames or oversized patches.
