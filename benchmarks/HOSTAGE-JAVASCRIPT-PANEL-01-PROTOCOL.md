@@ -19,7 +19,8 @@ the complete new contract passes correct code. Removing guard, cleanup or signal
 forwarding produces native AssertionErrors, not a timeout/support exception.
 Three preflight tests pass in 0.326s on installed Node v24.16.0. New JS helper's
 seven native tests, independent-copy test and installer checks were previously
-validated. Full local suite must finish before model timing starts.
+validated. Full local preflight: 469 tests pass in 70.708s, no failures/skips.
+Repository validation and featured-language synchronization checks pass.
 
 Schedule two fresh serial Astra medium sessions, baseline and explicit skill,
 n=1 per arm, seed20260911, jobs1, 240 seconds/cell. This is a small adoption/

@@ -22,7 +22,8 @@ must not be relabeled as results for this resource.
 Prepared [JavaScript SubmitPanel screen](HOSTAGE-JAVASCRIPT-PANEL-01-PROTOCOL.md),
 fixture/preflight `a000672`: one explicit abort-ownership task with two existing
 tests, correct and deliberate guard/cleanup/signal fault controls. Three author
-tests pass; full repository preflight is running. No model session launched yet.
+tests pass; full repository preflight passes 469 tests in 70.708s, no failures/skips.
+The two-session baseline/skill screen is ready to launch.
 
 한국어: `8ca9e70`에서 JavaScript용 독립 호출 제어 도구를 추가했다. 실제 호출
 시작·중복 인자·응답 순서·실패 전달과 결함 검출을 Node에서 검증했다.
