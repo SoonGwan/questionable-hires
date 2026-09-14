@@ -11,6 +11,19 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Con Artist [core-guide candidate 01](CON-ARTIST-CORE-GUIDE-01.md), previous source
+`58d31fb`: routine guide 7,189 → 5,190 bytes (−27.81%), core plus advanced −9.27%.
+Repeated prose is compressed; cleanup mechanics remain in the routed advanced
+section. The executable recipe, binding/evidence/integrity limits and legitimate
+source inspection remain. 76 helper and 12 packaging tests pass, including the
+actual shipped recipe's positive/fault checks. Runtime/entry unchanged; model
+adoption and token savings are not yet measured for this edit.
+
+한국어: Con Artist 기본 안내를 27.81% 줄였고 상세 문서까지 합치면 9.27%
+감소했다. 필요한 결함·바인딩·실행 결과 검증은 유지했으며 실제 배포 예제를 포함한
+도구·패키징 테스트 88개가 통과했다. 문서 크기 감소이지 모델 토큰 절감률은 아니며,
+이번 수정의 모델 채택과 성능은 아직 미측정이다.
+
 [All-eight checkpoint 08](BUNDLE-CONTRACT-08-REVIEW.md), resources `ecff8a8`:
 all 18 scheduled sessions complete; summed tokens 747,430 baseline / 743,068 skill
 (−0.58%), process time 533.487s / 453.064s (−15.08%). Six pairs use more tokens,

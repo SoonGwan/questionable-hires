@@ -1,6 +1,9 @@
 # Python audit: bring the fault, not the plumbing
 
-Use the project's existing interpreter and actual installed skill path. Pass JSON on stdin: no recipe file or wrapper script is needed. This CLI is the normal interface; inspect implementation when review or troubleshooting requires it. Choose the actual task files and fault, not the example blindly.
+Run the CLI with the project's interpreter and actual installed skill path; pass
+JSON on stdin, without a recipe file or wrapper. This interface is sufficient for
+supported audits. Inspect source for a concrete trust, adaptation or troubleshooting
+question. Adapt the files, binding and behavioral fault to the actual project:
 
 ```sh
 /path/to/project/python /path/to/con-artist/scripts/audit.py --spec - <<'JSON'
@@ -18,70 +21,66 @@ Use the project's existing interpreter and actual installed skill path. Pass JSO
 JSON
 ```
 
-`files` selects relative files/directories including needed configuration. `imports` must include the affected implementation and resolve inside each copy. `old` must match `target` exactly once. `tests` supplies arguments for unittest or already-installed pytest. Optional `probe` is the same stronger assertion code for correct/faulty versions, not a replacement implementation. Omit it when only checking existing protection.
+`files` selects relative files/directories and needed configuration. Select small
+permitted packages/test directories together to preserve fixtures and imports;
+narrow for size, scope or sensitive data, not to reconstruct every dependency.
+`imports` includes the affected implementation and must resolve inside each copy.
+`old` matches `target` exactly once. `tests` supplies unittest or installed pytest
+arguments. Optional `probe` runs the same stronger assertion on correct/faulty
+code; omit when only checking existing protection.
 
-Unknown recipe fields are rejected before execution rather than ignored; for
-example, `probes` is not `probe`. Set execution options using CLI `--timeout`
-and `--python`, not JSON keys. The optional mode fields are described below.
+Unknown fields are rejected. Set interpreter/deadline through CLI `--python` and
+`--timeout`, not JSON keys. Each executed check uses a fresh project-local copy as
+its working directory, with listed imports before the precheck and native runner.
 
 For pytest, list implementation modules in `imports`, not selected test modules:
 pre-importing tests bypasses pytest's assertion rewriting and can lose useful
 expected/observed diagnostics. Let pytest collect its tests normally.
 
-Optional `precheck` runs after copied imports, before each check in that same
-process. Use it for required caller-binding checks, not a separate binding module.
-It establishes current bindings, not later calls or immunity to fixture rebinding;
-use native hooks for post-collection checks without pre-importing pytest tests.
-Precheck failure (check exit 6) is incomplete evidence, never a killed fault.
-Listed-import setup failure or early exit uses reserved check exit 7 and stops
-as incomplete even on a mutant; see [diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence).
+`precheck` verifies required bindings in that same process, not later calls or
+fixture rebinding; use native hooks for post-collection checks. Import/setup or
+precheck failures are incomplete evidence, never killed faults.
 
-For native fixture-based assertions, use `probe_files`/`probe_tests` from
-[probe execution](python-audit-advanced.md#stronger-probes), avoiding nested Python
-strings; that section also covers conditional execution. For several already-justified
-faults with one reusable baseline, read [batch mode](python-audit-advanced.md#several-already-justified-faults-one-baseline).
-Neither mode is needed just to assess one existing test against one fault.
+When probes are needed only if tests miss the fault, add `"probe_when": "survives"`.
+Omit it when the stronger assertion must be verified regardless. A nonzero mutant
+exit skips conditional probes; inspect the failure before calling it detection.
+For fixture-based native probes use [probe_files/probe_tests](python-audit-advanced.md#stronger-probes).
+For several already-justified faults sharing a baseline, use [batch mode](python-audit-advanced.md#several-already-justified-faults-one-baseline).
 
 For an evidenced `src/` or other explicit project import path, see
 [copied import roots](python-audit-advanced.md#copied-import-roots). Do not install
 the project or guess import paths merely to make a check green.
 
-For small, permitted package/test directories, select those directories plus required configuration rather than reconstructing their import dependencies file by file merely to minimize copy size. Directory selection preserves fixtures and support modules. Narrow the selection when size, scope, sensitive data or incompatible contents require it; do not copy a repository root, environment or unrelated data indiscriminately. The helper enforces its 20 MB input limit before execution.
+Read the returned evidence rather than rerunning completed checks:
 
-Each executed check gets a fresh project-local disposable copy with verified imports and the copy as its working directory. Batch mode can reuse successful correct-code observations as documented above. Listed imports execute before the selected test runner.
+- `Copied process:` and `Verified copied import:` report interpreter/copy path
+  and module path/SHA-256 in each child. Reuse these instead of duplicating hashes.
+  They do not prove function execution, code-object identity or later bindings.
+- `integrity` reports `selected_files`, `selected_original_bytes_and_modes_unchanged`
+  and `owned_scratch_removed` after checking them. This does not cover unselected
+  files, new original-tree files, later commands or coverage. Changes/removal
+  failures raise errors; originals are not silently restored.
 
-Each check prints `Copied process:` (interpreter and absolute copy directory)
-and `Verified copied import:` (module, relative file path and SHA-256) in that
-same process. Reuse this provenance instead of writing another file-hashing
-precheck. These are imported-file observations, not proof of function execution,
-code-object identity or later fixture bindings; use `precheck`/native hooks when
-those are required. Provenance shares the output tail limit and can be truncated.
+Single-audit JSON has `status` (`observed`/`incomplete`) and `checks`: `correct_tests`,
+`mutant_tests`, and executed `correct_probe`/`mutant_probe`. Each check has
+`exit_code`, `timed_out`, `output`, `output_truncated`. Inspect native counts and
+actual assertions/warnings, not just exit/status. `probe_skipped` means unvalidated
+conditional probes; missing checks/output are not passes. Batch reuse points to
+an earlier observation, not another execution.
 
-The single-audit CLI emits JSON with `status` (`observed` or `incomplete`) and `checks`. Check keys are `correct_tests`, `mutant_tests` and, when run, `correct_probe`, `mutant_probe`. Each contains `exit_code`, `timed_out`, `output`, and `output_truncated`. Batch reuse references an earlier observation instead of duplicating its output, as described in batch mode. Inspect the actual failure in `output`; neither `observed` nor a nonzero mutant exit establishes coverage. `probe_skipped`, when present, explains unvalidated conditional probes; absent checks are not passes.
+Correct-code failure/timeout stops as incomplete. CLI 0 means observations collected,
+not protection proved; CLI 2 means invalid/incomplete (possibly stderr only).
+Each check retains a 12,000-character output tail, replacing invalid UTF-8;
+provenance can also be truncated. Timeout defaults to 30 seconds/check, max 300.
 
-Correct-code failure or timeout stops as incomplete. CLI exit 0 means observations collected; exit 2 means invalid/incomplete evidence (invalid input may produce only stderr). Output retains a 12,000-character tail per check; invalid UTF-8 is replaced. Timeout defaults to 30 seconds per check; `--timeout` allows at most 300.
+Empty/skipped unittest suites (exit 5), precheck failure (6), import setup failure
+or early exit (7) are incomplete. Broken runner helpers can cause false passes;
+do not change warning policy to credit detection. Read [diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence)
+for these errors or cleanup trouble. Do not retry an unconfirmed child exit.
 
-`integrity` reports `selected_files`,
-`selected_original_bytes_and_modes_unchanged` and `owned_scratch_removed` only
-after those checks finish. Reuse this result instead of writing a second hash/
-cleanup check for the same selected inputs. It can accompany incomplete test
-evidence; it does not establish coverage, protect unselected files, inventory
-new original-tree files or cover later commands. Detected original changes or
-unconfirmed removal raise an error, never a successful integrity result; original
-changes are not silently restored.
-
-Empty/skipped unittest suites give check exit 5, not a valid baseline. Inspect
-actual assertion failures and warnings: broken runner helpers can cause errors or
-false passes. Do not change warning policy to credit a kill. For empty suites,
-precheck errors, assertion plumbing or cleanup failures, read
-[diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence).
-An unconfirmed child exit stops the audit; do not retry while it may remain.
-
-Required test/probe work must finish in the foreground. When the direct runner
-exits, remaining process-group members are killed and buffered output drained
-under the original deadline; inherited pipes no longer force a finished check
-to time out. Exit detection polls every 50 ms, subject to scheduling. Background
-jobs intended to survive the runner are unsupported; escaped groups are not
-contained. Tests still own assertions and orderly cleanup.
-
-Limits: POSIX, Python 3.9+, 20 MB selected inputs; no symlinks/Git internals/path traversal or namespace-package import checks. No dependency installation. This is **not a sandbox**: use trusted tests, local data and authorized actions only. Files outside the selection are not integrity-checked or restored. Use normal project facilities for other languages or unsupported layouts; don't repeat a valid baseline merely to adopt this helper mid-audit.
+Limits: POSIX, Python 3.9+, 20 MB inputs; no symlinks/Git internals/traversal or
+namespace-package import checks. No installation. Required work must finish in the
+foreground; surviving background jobs and escaped groups are unsupported. This is
+**not a sandbox**: trusted tests, local data and authorized actions only. Use project
+facilities for unsupported layouts/languages; don't repeat a valid baseline to adopt
+this helper mid-audit.

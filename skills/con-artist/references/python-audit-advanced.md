@@ -138,6 +138,13 @@ suite or change warning policy merely to credit a kill.
 
 ### Cleanup and interruption
 
+Required test/probe work must finish in the foreground. When the direct runner
+exits, remaining process-group members are killed and buffered output drained
+under the original deadline; inherited pipes no longer force a finished check
+to time out. Exit detection polls every 50 ms, subject to scheduling. Background
+jobs intended to survive the runner are unsupported; escaped groups are not
+contained. Tests still own assertions and orderly cleanup.
+
 Child-exit confirmation has a separate five-second cleanup wait. An unconfirmed
 exit stops the audit/batch with CLI exit 2 and an audit-not-established error,
 not collected evidence. Existing interruptions/errors propagate. This is not an
