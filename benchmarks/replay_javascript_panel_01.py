@@ -15,14 +15,15 @@ RESOURCE = '3949ef6'
 CASES_SHA = '20545c1e08faf86c67f228c935dce74e947fb1faf983dcce0becbe99290c199c'
 
 
-def replay(run, resource=RESOURCE):
+def replay(run, resource=RESOURCE, layout='panel-01'):
+    assert layout in ('panel-01', 'usage-first-01')
     manifest = json.loads((run / 'run.json').read_text())
     assert manifest['finished_at'] and len(manifest['schedule']) == 2
     source = subprocess.check_output(['git', 'show', resource + ':benchmarks/hostage-javascript-panel-cases.json'])
     assert hashlib.sha256(source).hexdigest() == CASES_SHA == manifest['cases_sha256']
     case = json.loads(source)[0]
     report = {'kind': 'author reconciliation and replay, not original model evidence',
-              'resource': resource, 'cells': [], 'checks': []}
+              'resource': resource, 'reviewed_layout': layout, 'cells': [], 'checks': []}
     for name in manifest['schedule']:
         cell = run / name
         meta = json.loads((cell / 'metadata.json').read_text())
@@ -37,7 +38,10 @@ def replay(run, resource=RESOURCE):
             assert hashlib.sha256(content).hexdigest() == entry['sha256']
         project = cell / 'project'
         before = inventory(project)
-        expected = set(case['files']) | {'panel.pending.test.mjs'}
+        usage_baseline = layout == 'usage-first-01' and meta['arm'] == 'baseline'
+        regression = 'panel.regression.test.mjs' if usage_baseline else 'panel.pending.test.mjs'
+        test_count = 6 if usage_baseline else 7
+        expected = set(case['files']) | {regression}
         if meta['arm'] == 'skill':
             expected.add('test-support/controlled_call.mjs')
             asset = subprocess.check_output(['git', 'show', resource + ':skills/hostage-negotiator/assets/controlled_call.mjs'])
@@ -69,10 +73,10 @@ def replay(run, resource=RESOURCE):
                 unchanged = all((scratch / path).read_bytes() == (project / path).read_bytes()
                                 for path in before if path != 'panel.mjs')
                 counts = {key: int(value) for key, value in re.findall(r'^# (tests|pass|fail|cancelled|skipped) (\d+)$', output, re.M)}
-                matched = (not timed_out and unchanged and counts.get('tests') == 7
+                matched = (not timed_out and unchanged and counts.get('tests') == test_count
                            and counts.get('cancelled') == counts.get('skipped') == 0
                            and code == int(variant != 'final')
-                           and (counts.get('pass') == 7 if variant == 'final' else counts.get('fail', 0) > 0))
+                           and (counts.get('pass') == test_count if variant == 'final' else counts.get('fail', 0) > 0))
                 report['checks'].append({'cell': name, 'variant': variant, 'command': command,
                     'exit_code': code, 'timed_out': timed_out, 'counts': counts,
                     'matched': matched, 'test_sources_unchanged': unchanged,
@@ -92,11 +96,12 @@ if __name__ == '__main__':
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--resource', default=RESOURCE,
-                        help='Frozen resource revision; same reviewed seven-test layout and fixture only')
+                        help='Frozen resource revision; unchanged fixture and explicit reviewed layout only')
+    parser.add_argument('--layout', choices=('panel-01', 'usage-first-01'), default='panel-01')
     args = parser.parse_args()
     if args.output.exists():
         parser.error('Refusing to overwrite an earlier author attempt')
-    report = replay(args.run.resolve(), args.resource)
+    report = replay(args.run.resolve(), args.resource, args.layout)
     with args.output.open('x') as output:
         json.dump(report, output, indent=2)
         output.write('\n')

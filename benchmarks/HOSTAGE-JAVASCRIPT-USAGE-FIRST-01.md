@@ -1,6 +1,10 @@
 # JavaScript usage-first candidate — 2026-09-14
 
-Unmeasured instruction candidate, following the [lifecycle screen](HOSTAGE-JAVASCRIPT-SCOPE-MODEL-01-REVIEW.md).
+Instruction candidate, following the [lifecycle screen](HOSTAGE-JAVASCRIPT-SCOPE-MODEL-01-REVIEW.md).
+Its [first model screen](HOSTAGE-JAVASCRIPT-USAGE-MODEL-01-REVIEW.md), resource
+`f0b29dd`, adopts the shorter read and preserves required regressions, but uses
+30.82% more total tokens / 6.75% less wall time than its fresh baseline. No general
+efficiency claim; this is one exposed authored pair, not independent confirmation.
 That run loaded the full module and took seven shell calls versus five baseline,
 with +10.80% total tokens. Existing instructions already requested batched reads;
 adding another generic batching rule would not address the observed full-source
@@ -32,7 +36,7 @@ seven original and ten lifecycle native tests. Skill validation passed.
 The entry grows slightly and the module gains three comment lines. This does
 not shrink the copied module. Only a model trace can show whether it chooses the
 shorter read, avoids compensating extra calls and preserves real task outcomes.
-No model performance number or featured graphic changes for this candidate.
+Historical model numbers and featured graphics remain unchanged.
 Before measuring, freeze its revision; use unchanged explicit contracts, retain
 all attempts and review implementation, tests, scope, original capture and raw
 cost. Exposed development pairs remain distinct from independent confirmation.

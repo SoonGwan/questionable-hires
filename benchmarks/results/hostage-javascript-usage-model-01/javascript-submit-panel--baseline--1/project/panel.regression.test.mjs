@@ -1,0 +1,207 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { SubmitPanel } from './panel.mjs';
+
+// Observe rejections immediately, including callbacks a broken panel never uses.
+function observe(promise) {
+  return Promise.resolve(promise).then(
+    value => ({ status: 'fulfilled', value }),
+    reason => ({ status: 'rejected', reason }),
+  );
+}
+
+async function within(promise) {
+  let timer;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error('operation exceeded 1 second')), 1000);
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function harness() {
+  const callbacks = [];
+  const tasks = [];
+  return {
+    callback() {
+      let resolve, reject;
+      const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
+      tasks.push(observe(promise));
+      const callback = { promise, resolve, reject };
+      callbacks.push(callback);
+      return callback;
+    },
+    submit(panel, save, signal) {
+      const task = observe(panel.submit(save, signal));
+      tasks.push(task);
+      return task;
+    },
+    async cleanup() {
+      for (const callback of callbacks) callback.resolve();
+      await within(Promise.all(tasks));
+    },
+  };
+}
+
+async function fulfilled(task, expected) {
+  const outcome = await within(task);
+  assert.equal(outcome.status, 'fulfilled');
+  assert.equal(outcome.value, expected);
+}
+
+async function rejected(task, expected) {
+  const outcome = await within(task);
+  assert.equal(outcome.status, 'rejected');
+  assert.equal(outcome.reason, expected);
+}
+
+test('pending is immediate, duplicates settle while save waits, and success permits reuse', async () => {
+  const h = harness();
+  try {
+    const panel = new SubmitPanel();
+    const signal = new AbortController().signal;
+    const save = h.callback();
+    const result = {};
+    let calls = 0, receivedSignal, pendingInSave;
+    assert.equal(panel.pending, false);
+    const first = h.submit(panel, received => {
+      calls++;
+      receivedSignal = received;
+      pendingInSave = panel.pending;
+      return save.promise;
+    }, signal);
+    assert.equal(calls, 1);
+    assert.equal(receivedSignal, signal);
+    assert.equal(pendingInSave, true);
+    assert.equal(panel.pending, true);
+
+    let duplicateCalls = 0;
+    const duplicate = () => { duplicateCalls++; return {}; };
+    await fulfilled(h.submit(panel, duplicate, signal), undefined);
+    assert.equal(duplicateCalls, 0);
+    assert.equal(panel.pending, true);
+    await fulfilled(h.submit(panel, duplicate, signal), undefined);
+    assert.equal(duplicateCalls, 0);
+    assert.equal(panel.pending, true);
+
+    save.resolve(result);
+    await fulfilled(first, result);
+    assert.equal(panel.pending, false);
+    const retryResult = {};
+    await fulfilled(h.submit(panel, () => retryResult), retryResult);
+    assert.equal(panel.pending, false);
+  } finally {
+    await h.cleanup();
+  }
+});
+
+test('separate instances can save concurrently and clear pending independently', async () => {
+  const h = harness();
+  try {
+    const a = new SubmitPanel(), b = new SubmitPanel();
+    const saveA = h.callback(), saveB = h.callback();
+    const resultA = {}, resultB = {};
+    let callsA = 0, callsB = 0;
+    assert.equal(a.pending, false);
+    assert.equal(b.pending, false);
+    const taskA = h.submit(a, () => { callsA++; return saveA.promise; });
+    const taskB = h.submit(b, () => { callsB++; return saveB.promise; });
+    assert.equal(callsA, 1);
+    assert.equal(callsB, 1);
+    assert.equal(a.pending, true);
+    assert.equal(b.pending, true);
+    saveB.resolve(resultB);
+    await fulfilled(taskB, resultB);
+    assert.equal(b.pending, false);
+    assert.equal(a.pending, true);
+    saveA.resolve(resultA);
+    await fulfilled(taskA, resultA);
+    assert.equal(a.pending, false);
+  } finally {
+    await h.cleanup();
+  }
+});
+
+test('async rejection and synchronous throw retain identity and each permit retry', async () => {
+  const h = harness();
+  try {
+    const panel = new SubmitPanel();
+    const save = h.callback();
+    const asyncError = new Error('asynchronous save failure');
+    const task = h.submit(panel, () => save.promise);
+    assert.equal(panel.pending, true);
+    save.reject(asyncError);
+    await rejected(task, asyncError);
+    assert.equal(panel.pending, false);
+
+    const retryResult = {};
+    await fulfilled(h.submit(panel, () => retryResult), retryResult);
+    assert.equal(panel.pending, false);
+
+    const syncError = new Error('synchronous save failure');
+    let pendingInSave;
+    const syncTask = h.submit(panel, () => {
+      pendingInSave = panel.pending;
+      throw syncError;
+    });
+    await rejected(syncTask, syncError);
+    assert.equal(pendingInSave, true);
+    assert.equal(panel.pending, false);
+    const retry = h.callback();
+    const retryTask = h.submit(panel, () => retry.promise);
+    assert.equal(panel.pending, true);
+    retry.resolve(retryResult);
+    await fulfilled(retryTask, retryResult);
+    assert.equal(panel.pending, false);
+  } finally {
+    await h.cleanup();
+  }
+});
+
+test('callback rejection on abort preserves reason and clears pending for retry', async () => {
+  const h = harness();
+  const controller = new AbortController();
+  let removeListener = () => {};
+  try {
+    const panel = new SubmitPanel();
+    const save = h.callback();
+    const reason = new Error('caller cancelled');
+    let receivedSignal;
+    const task = h.submit(panel, signal => {
+      receivedSignal = signal;
+      const onAbort = () => save.reject(signal.reason);
+      signal.addEventListener('abort', onAbort, { once: true });
+      removeListener = () => signal.removeEventListener('abort', onAbort);
+      return save.promise;
+    }, controller.signal);
+    assert.equal(receivedSignal, controller.signal);
+    assert.equal(controller.signal.aborted, false);
+    assert.equal(panel.pending, true);
+    controller.abort(reason);
+    await rejected(task, reason);
+    assert.equal(panel.pending, false);
+
+    const retry = h.callback();
+    const retrySignal = new AbortController().signal;
+    const result = {};
+    let receivedRetrySignal;
+    const retryTask = h.submit(panel, signal => {
+      receivedRetrySignal = signal;
+      return retry.promise;
+    }, retrySignal);
+    assert.equal(receivedRetrySignal, retrySignal);
+    assert.equal(panel.pending, true);
+    retry.resolve(result);
+    await fulfilled(retryTask, result);
+    assert.equal(panel.pending, false);
+    assert.equal(retrySignal.aborted, false);
+  } finally {
+    removeListener();
+    await h.cleanup();
+  }
+});

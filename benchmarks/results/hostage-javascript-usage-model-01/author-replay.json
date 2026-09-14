@@ -1,0 +1,256 @@
+{
+  "kind": "author reconciliation and replay, not original model evidence",
+  "resource": "f0b29dd",
+  "reviewed_layout": "usage-first-01",
+  "cells": [
+    {
+      "cell": "javascript-submit-panel--baseline--1",
+      "raw_resources_reconciled": true,
+      "total_tokens": 87491,
+      "elapsed_seconds": 92.97,
+      "inventory_sha256": {
+        "requirements.md": "c179539c183d4e2e8c65420d64a6166ea8b824a8194b544d61978a0584d1e86c",
+        "panel.regression.test.mjs": "f5948d99bfd02222e2970ebc213c870be5be367ac2300bf789f20d5244ad4845",
+        "panel.test.mjs": "c514802c47e093b169dd351c8be96c41ca9964c70a38ca6d2d0a5babe7d23ca8",
+        "panel.mjs": "356565a8d2ed0d36e7228c4c8e2037a2ff30e990ab280e7a61e60b7d316cef92"
+      }
+    },
+    {
+      "cell": "javascript-submit-panel--skill--1",
+      "raw_resources_reconciled": true,
+      "total_tokens": 114460,
+      "elapsed_seconds": 86.698,
+      "inventory_sha256": {
+        "requirements.md": "c179539c183d4e2e8c65420d64a6166ea8b824a8194b544d61978a0584d1e86c",
+        "panel.test.mjs": "c514802c47e093b169dd351c8be96c41ca9964c70a38ca6d2d0a5babe7d23ca8",
+        "panel.mjs": "356565a8d2ed0d36e7228c4c8e2037a2ff30e990ab280e7a61e60b7d316cef92",
+        "panel.pending.test.mjs": "c7872f3ec1260c83a23b2bc6d7f55016b1e09362106c8ea32965edd45fc1b18c",
+        "test-support/controlled_call.mjs": "a2600ffd9ef772ec3efd9113ba2b957ee25a05de0dc92dd186f0be85b71ffc42"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "cell": "javascript-submit-panel--baseline--1",
+      "variant": "final",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "matched": true,
+      "test_sources_unchanged": true,
+      "replacement_source": "export class SubmitPanel {\n  pending = false;\n\n  async submit(save, signal) {\n    if (this.pending) return undefined;\n\n    this.pending = true;\n    try {\n      return await save(signal);\n    } finally {\n      this.pending = false;\n    }\n  }\n}\n",
+      "output": "TAP version 13\n# Subtest: pending is immediate, duplicates settle while save waits, and success permits reuse\nok 1 - pending is immediate, duplicates settle while save waits, and success permits reuse\n  ---\n  duration_ms: 0.706125\n  type: 'test'\n  ...\n# Subtest: separate instances can save concurrently and clear pending independently\nok 2 - separate instances can save concurrently and clear pending independently\n  ---\n  duration_ms: 0.560583\n  type: 'test'\n  ...\n# Subtest: async rejection and synchronous throw retain identity and each permit retry\nok 3 - async rejection and synchronous throw retain identity and each permit retry\n  ---\n  duration_ms: 0.354292\n  type: 'test'\n  ...\n# Subtest: callback rejection on abort preserves reason and clears pending for retry\nok 4 - callback rejection on abort preserves reason and clears pending for retry\n  ---\n  duration_ms: 0.257292\n  type: 'test'\n  ...\n# Subtest: preserves result and signal identity\nok 5 - preserves result and signal identity\n  ---\n  duration_ms: 0.4055\n  type: 'test'\n  ...\n# Subtest: preserves callback rejection identity\nok 6 - preserves callback rejection identity\n  ---\n  duration_ms: 0.254167\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 48.562458\n"
+    },
+    {
+      "cell": "javascript-submit-panel--baseline--1",
+      "variant": "original",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "counts": {
+        "tests": 6,
+        "pass": 2,
+        "fail": 4,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "matched": true,
+      "test_sources_unchanged": true,
+      "replacement_source": "export class SubmitPanel {\n  async submit(save, signal) {\n    return await save(signal);\n  }\n}\n",
+      "output": "TAP version 13\n# Subtest: pending is immediate, duplicates settle while save waits, and success permits reuse\nnot ok 1 - pending is immediate, duplicates settle while save waits, and success permits reuse\n  ---\n  duration_ms: 0.988958\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:63:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:71:12)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.start (node:internal/test_runner/test:1177:17)\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\n  ...\n# Subtest: separate instances can save concurrently and clear pending independently\nnot ok 2 - separate instances can save concurrently and clear pending independently\n  ---\n  duration_ms: 0.182958\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:103:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:110:12)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:897:18)\n    Test.postRun (node:internal/test_runner/test:1447:19)\n    Test.run (node:internal/test_runner/test:1372:12)\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)\n  ...\n# Subtest: async rejection and synchronous throw retain identity and each permit retry\nnot ok 3 - async rejection and synchronous throw retain identity and each permit retry\n  ---\n  duration_ms: 0.69975\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:130:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - true\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:137:12)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:897:18)\n    Test.postRun (node:internal/test_runner/test:1447:19)\n    Test.run (node:internal/test_runner/test:1372:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: callback rejection on abort preserves reason and clears pending for retry\nnot ok 4 - callback rejection on abort preserves reason and clears pending for retry\n  ---\n  duration_ms: 0.275334\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:166:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - true\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:184:12)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:897:18)\n    Test.postRun (node:internal/test_runner/test:1447:19)\n    Test.run (node:internal/test_runner/test:1372:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: preserves result and signal identity\nok 5 - preserves result and signal identity\n  ---\n  duration_ms: 0.406084\n  type: 'test'\n  ...\n# Subtest: preserves callback rejection identity\nok 6 - preserves callback rejection identity\n  ---\n  duration_ms: 0.241125\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 2\n# fail 4\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 49.117792\n"
+    },
+    {
+      "cell": "javascript-submit-panel--baseline--1",
+      "variant": "missing_guard",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "counts": {
+        "tests": 6,
+        "pass": 5,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "matched": true,
+      "test_sources_unchanged": true,
+      "replacement_source": "export class SubmitPanel {\n  pending = false;\n\n  async submit(save, signal) {\n\n    this.pending = true;\n    try {\n      return await save(signal);\n    } finally {\n      this.pending = false;\n    }\n  }\n}\n",
+      "output": "TAP version 13\n# Subtest: pending is immediate, duplicates settle while save waits, and success permits reuse\nnot ok 1 - pending is immediate, duplicates settle while save waits, and success permits reuse\n  ---\n  duration_ms: 1.01825\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:63:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    {} !== undefined\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  actual:\n  operator: 'strictEqual'\n  stack: |-\n    fulfilled (file://<REPLAY>/panel.regression.test.mjs:54:10)\n    async TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:85:5)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)\n  ...\n# Subtest: separate instances can save concurrently and clear pending independently\nok 2 - separate instances can save concurrently and clear pending independently\n  ---\n  duration_ms: 0.583\n  type: 'test'\n  ...\n# Subtest: async rejection and synchronous throw retain identity and each permit retry\nok 3 - async rejection and synchronous throw retain identity and each permit retry\n  ---\n  duration_ms: 0.348\n  type: 'test'\n  ...\n# Subtest: callback rejection on abort preserves reason and clears pending for retry\nok 4 - callback rejection on abort preserves reason and clears pending for retry\n  ---\n  duration_ms: 0.27025\n  type: 'test'\n  ...\n# Subtest: preserves result and signal identity\nok 5 - preserves result and signal identity\n  ---\n  duration_ms: 0.408542\n  type: 'test'\n  ...\n# Subtest: preserves callback rejection identity\nok 6 - preserves callback rejection identity\n  ---\n  duration_ms: 0.247\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 5\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 48.260292\n"
+    },
+    {
+      "cell": "javascript-submit-panel--baseline--1",
+      "variant": "missing_cleanup",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "counts": {
+        "tests": 6,
+        "pass": 2,
+        "fail": 4,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "matched": true,
+      "test_sources_unchanged": true,
+      "replacement_source": "export class SubmitPanel {\n  pending = false;\n\n  async submit(save, signal) {\n    if (this.pending) return undefined;\n\n    this.pending = true;\n    try {\n      return await save(signal);\n    } finally {\n      // deliberately missing cleanup\n    }\n  }\n}\n",
+      "output": "TAP version 13\n# Subtest: pending is immediate, duplicates settle while save waits, and success permits reuse\nnot ok 1 - pending is immediate, duplicates settle while save waits, and success permits reuse\n  ---\n  duration_ms: 1.054291\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:63:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    true !== false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  actual: true\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:94:12)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)\n  ...\n# Subtest: separate instances can save concurrently and clear pending independently\nnot ok 2 - separate instances can save concurrently and clear pending independently\n  ---\n  duration_ms: 0.625209\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:103:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    true !== false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  actual: true\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:120:12)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: async rejection and synchronous throw retain identity and each permit retry\nnot ok 3 - async rejection and synchronous throw retain identity and each permit retry\n  ---\n  duration_ms: 0.208125\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:130:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    true !== false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  actual: true\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:140:12)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: callback rejection on abort preserves reason and clears pending for retry\nnot ok 4 - callback rejection on abort preserves reason and clears pending for retry\n  ---\n  duration_ms: 0.300041\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:166:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    true !== false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  actual: true\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:187:12)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: preserves result and signal identity\nok 5 - preserves result and signal identity\n  ---\n  duration_ms: 0.41\n  type: 'test'\n  ...\n# Subtest: preserves callback rejection identity\nok 6 - preserves callback rejection identity\n  ---\n  duration_ms: 0.242708\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 2\n# fail 4\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 49.211709\n"
+    },
+    {
+      "cell": "javascript-submit-panel--baseline--1",
+      "variant": "wrong_signal",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "counts": {
+        "tests": 6,
+        "pass": 3,
+        "fail": 3,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "matched": true,
+      "test_sources_unchanged": true,
+      "replacement_source": "export class SubmitPanel {\n  pending = false;\n\n  async submit(save, signal) {\n    if (this.pending) return undefined;\n\n    this.pending = true;\n    try {\n      return await save(undefined);\n    } finally {\n      this.pending = false;\n    }\n  }\n}\n",
+      "output": "TAP version 13\n# Subtest: pending is immediate, duplicates settle while save waits, and success permits reuse\nnot ok 1 - pending is immediate, duplicates settle while save waits, and success permits reuse\n  ---\n  duration_ms: 1.22125\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:63:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - AbortSignal {\n    -   Symbol(events.maxEventTargetListeners): 0,\n    -   Symbol(events.maxEventTargetListenersWarned): false,\n    -   Symbol(kAborted): false,\n    -   Symbol(kComposite): false,\n    -   Symbol(kEvents): SafeMap(0) {},\n    -   Symbol(kHandlers): SafeMap(0) {},\n    -   Symbol(kReason): undefined\n    - }\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:79:12)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.start (node:internal/test_runner/test:1177:17)\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\n  ...\n# Subtest: separate instances can save concurrently and clear pending independently\nok 2 - separate instances can save concurrently and clear pending independently\n  ---\n  duration_ms: 0.588542\n  type: 'test'\n  ...\n# Subtest: async rejection and synchronous throw retain identity and each permit retry\nok 3 - async rejection and synchronous throw retain identity and each permit retry\n  ---\n  duration_ms: 0.280583\n  type: 'test'\n  ...\n# Subtest: callback rejection on abort preserves reason and clears pending for retry\nnot ok 4 - callback rejection on abort preserves reason and clears pending for retry\n  ---\n  duration_ms: 0.343459\n  type: 'test'\n  location: '<REPLAY>/panel.regression.test.mjs:166:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - AbortSignal {\n    -   Symbol(events.maxEventTargetListeners): 0,\n    -   Symbol(events.maxEventTargetListenersWarned): false,\n    -   Symbol(kAborted): false,\n    -   Symbol(kComposite): false,\n    -   Symbol(kEvents): SafeMap(0) {},\n    -   Symbol(kHandlers): SafeMap(0) {},\n    -   Symbol(kReason): undefined\n    - }\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<REPLAY>/panel.regression.test.mjs:182:12)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:897:18)\n    Test.postRun (node:internal/test_runner/test:1447:19)\n    Test.run (node:internal/test_runner/test:1372:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: preserves result and signal identity\nnot ok 5 - preserves result and signal identity\n  ---\n  duration_ms: 0.99375\n  type: 'test'\n  location: '<REPLAY>/panel.test.mjs:5:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - AbortSignal {\n    -   Symbol(events.maxEventTargetListeners): 0,\n    -   Symbol(events.maxEventTargetListenersWarned): false,\n    -   Symbol(kAborted): false,\n    -   Symbol(kComposite): false,\n    -   Symbol(kEvents): SafeMap(0) {},\n    -   Symbol(kHandlers): SafeMap(0) {},\n    -   Symbol(kReason): undefined\n    - }\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.test.mjs:7:62\n    SubmitPanel.submit (file://<REPLAY>/panel.mjs:9:20)\n    TestContext.<anonymous> (file://<REPLAY>/panel.test.mjs:7:28)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.start (node:internal/test_runner/test:1177:17)\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\n  ...\n# Subtest: preserves callback rejection identity\nok 6 - preserves callback rejection identity\n  ---\n  duration_ms: 0.251792\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 3\n# fail 3\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 48.821541\n"
+    },
+    {
+      "cell": "javascript-submit-panel--skill--1",
+      "variant": "final",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "matched": true,
+      "test_sources_unchanged": true,
+      "replacement_source": "export class SubmitPanel {\n  pending = false;\n\n  async submit(save, signal) {\n    if (this.pending) return undefined;\n\n    this.pending = true;\n    try {\n      return await save(signal);\n    } finally {\n      this.pending = false;\n    }\n  }\n}\n",
+      "output": "TAP version 13\n# Subtest: pending surrounds save, suppresses duplicates, and preserves identities\nok 1 - pending surrounds save, suppresses duplicates, and preserves identities\n  ---\n  duration_ms: 0.871958\n  type: 'test'\n  ...\n# Subtest: different panel instances can save concurrently and settle independently\nok 2 - different panel instances can save concurrently and settle independently\n  ---\n  duration_ms: 0.595667\n  type: 'test'\n  ...\n# Subtest: asynchronous failure preserves the error and allows a successful retry\nok 3 - asynchronous failure preserves the error and allows a successful retry\n  ---\n  duration_ms: 0.432208\n  type: 'test'\n  ...\n# Subtest: synchronous callback throws remain promise rejections and allow retry\nok 4 - synchronous callback throws remain promise rejections and allow retry\n  ---\n  duration_ms: 0.246583\n  type: 'test'\n  ...\n# Subtest: callback rejection on abort preserves the reason, clears pending, and allows retry\nok 5 - callback rejection on abort preserves the reason, clears pending, and allows retry\n  ---\n  duration_ms: 0.324791\n  type: 'test'\n  ...\n# Subtest: preserves result and signal identity\nok 6 - preserves result and signal identity\n  ---\n  duration_ms: 0.426041\n  type: 'test'\n  ...\n# Subtest: preserves callback rejection identity\nok 7 - preserves callback rejection identity\n  ---\n  duration_ms: 0.2565\n  type: 'test'\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 52.453917\n"
+    },
+    {
+      "cell": "javascript-submit-panel--skill--1",
+      "variant": "original",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "counts": {
+        "tests": 7,
+        "pass": 2,
+        "fail": 5,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "matched": true,
+      "test_sources_unchanged": true,
+      "replacement_source": "export class SubmitPanel {\n  async submit(save, signal) {\n    return await save(signal);\n  }\n}\n",
+      "output": "TAP version 13\n# Subtest: pending surrounds save, suppresses duplicates, and preserves identities\nnot ok 1 - pending surrounds save, suppresses duplicates, and preserves identities\n  ---\n  duration_ms: 1.103625\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:6:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.pending.test.mjs:12:12\n    withControlledCalls (file://<REPLAY>/test-support/controlled_call.mjs:150:29)\n    TestContext.<anonymous> (file://<REPLAY>/panel.pending.test.mjs:7:9)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.start (node:internal/test_runner/test:1177:17)\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\n  ...\n# Subtest: different panel instances can save concurrently and settle independently\nnot ok 2 - different panel instances can save concurrently and settle independently\n  ---\n  duration_ms: 0.698708\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:33:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - true\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.pending.test.mjs:43:12\n    async wait (file://<REPLAY>/test-support/controlled_call.mjs:116:14)\n    async withControlledCalls (file://<REPLAY>/test-support/controlled_call.mjs:150:18)\n    async TestContext.<anonymous> (file://<REPLAY>/panel.pending.test.mjs:34:3)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: asynchronous failure preserves the error and allows a successful retry\nnot ok 3 - asynchronous failure preserves the error and allows a successful retry\n  ---\n  duration_ms: 0.20225\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:59:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - true\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.pending.test.mjs:65:12\n    async wait (file://<REPLAY>/test-support/controlled_call.mjs:116:14)\n    async withControlledCalls (file://<REPLAY>/test-support/controlled_call.mjs:150:18)\n    async TestContext.<anonymous> (file://<REPLAY>/panel.pending.test.mjs:60:3)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: synchronous callback throws remain promise rejections and allow retry\nnot ok 4 - synchronous callback throws remain promise rejections and allow retry\n  ---\n  duration_ms: 0.4545\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:82:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    The validation function is expected to return \"true\". Received false\n    \n    Caught error:\n    \n    AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - true\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    async file://<REPLAY>/panel.pending.test.mjs:94:5\n    async wait (file://<REPLAY>/test-support/controlled_call.mjs:116:14)\n    async withControlledCalls (file://<REPLAY>/test-support/controlled_call.mjs:150:18)\n    async TestContext.<anonymous> (file://<REPLAY>/panel.pending.test.mjs:83:3)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: callback rejection on abort preserves the reason, clears pending, and allows retry\nnot ok 5 - callback rejection on abort preserves the reason, clears pending, and allows retry\n  ---\n  duration_ms: 1001.605959\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:108:1'\n  failureType: 'testCodeFailure'\n  error: 'Timed out waiting for callback entry'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    Timeout._onTimeout (file://<REPLAY>/test-support/controlled_call.mjs:88:16)\n    listOnTimeout (node:internal/timers:605:17)\n    process.processTimers (node:internal/timers:541:7)\n  ...\n# Subtest: preserves result and signal identity\nok 6 - preserves result and signal identity\n  ---\n  duration_ms: 0.417541\n  type: 'test'\n  ...\n# Subtest: preserves callback rejection identity\nok 7 - preserves callback rejection identity\n  ---\n  duration_ms: 0.253041\n  type: 'test'\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 2\n# fail 5\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1066.522083\n"
+    },
+    {
+      "cell": "javascript-submit-panel--skill--1",
+      "variant": "missing_guard",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "counts": {
+        "tests": 7,
+        "pass": 6,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "matched": true,
+      "test_sources_unchanged": true,
+      "replacement_source": "export class SubmitPanel {\n  pending = false;\n\n  async submit(save, signal) {\n\n    this.pending = true;\n    try {\n      return await save(signal);\n    } finally {\n      this.pending = false;\n    }\n  }\n}\n",
+      "output": "TAP version 13\n# Subtest: pending surrounds save, suppresses duplicates, and preserves identities\nnot ok 1 - pending surrounds save, suppresses duplicates, and preserves identities\n  ---\n  duration_ms: 1008.285334\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:6:1'\n  failureType: 'testCodeFailure'\n  error: 'Controlled-call deadline exceeded'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    Timeout.<anonymous> (file://<REPLAY>/test-support/controlled_call.mjs:119:43)\n    listOnTimeout (node:internal/timers:605:17)\n    process.processTimers (node:internal/timers:541:7)\n  ...\n# Subtest: different panel instances can save concurrently and settle independently\nok 2 - different panel instances can save concurrently and settle independently\n  ---\n  duration_ms: 2.830541\n  type: 'test'\n  ...\n# Subtest: asynchronous failure preserves the error and allows a successful retry\nok 3 - asynchronous failure preserves the error and allows a successful retry\n  ---\n  duration_ms: 2.715542\n  type: 'test'\n  ...\n# Subtest: synchronous callback throws remain promise rejections and allow retry\nok 4 - synchronous callback throws remain promise rejections and allow retry\n  ---\n  duration_ms: 1.261917\n  type: 'test'\n  ...\n# Subtest: callback rejection on abort preserves the reason, clears pending, and allows retry\nok 5 - callback rejection on abort preserves the reason, clears pending, and allows retry\n  ---\n  duration_ms: 1.360875\n  type: 'test'\n  ...\n# Subtest: preserves result and signal identity\nok 6 - preserves result and signal identity\n  ---\n  duration_ms: 0.426584\n  type: 'test'\n  ...\n# Subtest: preserves callback rejection identity\nok 7 - preserves callback rejection identity\n  ---\n  duration_ms: 0.24875\n  type: 'test'\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 6\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1084.593416\n"
+    },
+    {
+      "cell": "javascript-submit-panel--skill--1",
+      "variant": "missing_cleanup",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "counts": {
+        "tests": 7,
+        "pass": 2,
+        "fail": 5,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "matched": true,
+      "test_sources_unchanged": true,
+      "replacement_source": "export class SubmitPanel {\n  pending = false;\n\n  async submit(save, signal) {\n    if (this.pending) return undefined;\n\n    this.pending = true;\n    try {\n      return await save(signal);\n    } finally {\n      // deliberately missing cleanup\n    }\n  }\n}\n",
+      "output": "TAP version 13\n# Subtest: pending surrounds save, suppresses duplicates, and preserves identities\nnot ok 1 - pending surrounds save, suppresses duplicates, and preserves identities\n  ---\n  duration_ms: 1.172209\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:6:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    true !== false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  actual: true\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.pending.test.mjs:29:12\n    async wait (file://<REPLAY>/test-support/controlled_call.mjs:116:14)\n    async withControlledCalls (file://<REPLAY>/test-support/controlled_call.mjs:150:18)\n    async TestContext.<anonymous> (file://<REPLAY>/panel.pending.test.mjs:7:3)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)\n  ...\n# Subtest: different panel instances can save concurrently and settle independently\nnot ok 2 - different panel instances can save concurrently and settle independently\n  ---\n  duration_ms: 0.300417\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:33:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    true !== false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  actual: true\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.pending.test.mjs:49:12\n    async wait (file://<REPLAY>/test-support/controlled_call.mjs:116:14)\n    async withControlledCalls (file://<REPLAY>/test-support/controlled_call.mjs:150:18)\n    async TestContext.<anonymous> (file://<REPLAY>/panel.pending.test.mjs:34:3)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: asynchronous failure preserves the error and allows a successful retry\nnot ok 3 - asynchronous failure preserves the error and allows a successful retry\n  ---\n  duration_ms: 0.444125\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:59:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    true !== false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  actual: true\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.pending.test.mjs:69:12\n    async wait (file://<REPLAY>/test-support/controlled_call.mjs:116:14)\n    async withControlledCalls (file://<REPLAY>/test-support/controlled_call.mjs:150:18)\n    async TestContext.<anonymous> (file://<REPLAY>/panel.pending.test.mjs:60:3)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: synchronous callback throws remain promise rejections and allow retry\nnot ok 4 - synchronous callback throws remain promise rejections and allow retry\n  ---\n  duration_ms: 0.29475\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:82:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    true !== false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  actual: true\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.pending.test.mjs:95:12\n    async wait (file://<REPLAY>/test-support/controlled_call.mjs:116:14)\n    async withControlledCalls (file://<REPLAY>/test-support/controlled_call.mjs:150:18)\n    async TestContext.<anonymous> (file://<REPLAY>/panel.pending.test.mjs:83:3)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: callback rejection on abort preserves the reason, clears pending, and allows retry\nnot ok 5 - callback rejection on abort preserves the reason, clears pending, and allows retry\n  ---\n  duration_ms: 0.331584\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:108:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    true !== false\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: false\n  actual: true\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.pending.test.mjs:131:14\n    async wait (file://<REPLAY>/test-support/controlled_call.mjs:116:14)\n    async withControlledCalls (file://<REPLAY>/test-support/controlled_call.mjs:150:18)\n    async TestContext.<anonymous> (file://<REPLAY>/panel.pending.test.mjs:109:3)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n  ...\n# Subtest: preserves result and signal identity\nok 6 - preserves result and signal identity\n  ---\n  duration_ms: 0.407458\n  type: 'test'\n  ...\n# Subtest: preserves callback rejection identity\nok 7 - preserves callback rejection identity\n  ---\n  duration_ms: 0.246833\n  type: 'test'\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 2\n# fail 5\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 52.803333\n"
+    },
+    {
+      "cell": "javascript-submit-panel--skill--1",
+      "variant": "wrong_signal",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "counts": {
+        "tests": 7,
+        "pass": 4,
+        "fail": 3,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "matched": true,
+      "test_sources_unchanged": true,
+      "replacement_source": "export class SubmitPanel {\n  pending = false;\n\n  async submit(save, signal) {\n    if (this.pending) return undefined;\n\n    this.pending = true;\n    try {\n      return await save(undefined);\n    } finally {\n      this.pending = false;\n    }\n  }\n}\n",
+      "output": "TAP version 13\n# Subtest: pending surrounds save, suppresses duplicates, and preserves identities\nnot ok 1 - pending surrounds save, suppresses duplicates, and preserves identities\n  ---\n  duration_ms: 1.337125\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:6:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - AbortSignal {\n    -   Symbol(events.maxEventTargetListeners): 0,\n    -   Symbol(events.maxEventTargetListenersWarned): false,\n    -   Symbol(kAborted): false,\n    -   Symbol(kComposite): false,\n    -   Symbol(kEvents): SafeMap(0) {},\n    -   Symbol(kHandlers): SafeMap(0) {},\n    -   Symbol(kReason): undefined\n    - }\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.pending.test.mjs:18:12\n    async wait (file://<REPLAY>/test-support/controlled_call.mjs:116:14)\n    async withControlledCalls (file://<REPLAY>/test-support/controlled_call.mjs:150:18)\n    async TestContext.<anonymous> (file://<REPLAY>/panel.pending.test.mjs:7:3)\n    async Test.run (node:internal/test_runner/test:1313:7)\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)\n  ...\n# Subtest: different panel instances can save concurrently and settle independently\nok 2 - different panel instances can save concurrently and settle independently\n  ---\n  duration_ms: 0.323125\n  type: 'test'\n  ...\n# Subtest: asynchronous failure preserves the error and allows a successful retry\nok 3 - asynchronous failure preserves the error and allows a successful retry\n  ---\n  duration_ms: 0.410416\n  type: 'test'\n  ...\n# Subtest: synchronous callback throws remain promise rejections and allow retry\nok 4 - synchronous callback throws remain promise rejections and allow retry\n  ---\n  duration_ms: 0.285625\n  type: 'test'\n  ...\n# Subtest: callback rejection on abort preserves the reason, clears pending, and allows retry\nnot ok 5 - callback rejection on abort preserves the reason, clears pending, and allows retry\n  ---\n  duration_ms: 1001.914958\n  type: 'test'\n  location: '<REPLAY>/panel.pending.test.mjs:108:1'\n  failureType: 'testCodeFailure'\n  error: 'Timed out waiting for callback entry'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    Timeout._onTimeout (file://<REPLAY>/test-support/controlled_call.mjs:88:16)\n    listOnTimeout (node:internal/timers:605:17)\n    process.processTimers (node:internal/timers:541:7)\n  ...\n# Subtest: preserves result and signal identity\nnot ok 6 - preserves result and signal identity\n  ---\n  duration_ms: 1.039292\n  type: 'test'\n  location: '<REPLAY>/panel.test.mjs:5:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    + actual - expected\n    \n    + undefined\n    - AbortSignal {\n    -   Symbol(events.maxEventTargetListeners): 0,\n    -   Symbol(events.maxEventTargetListenersWarned): false,\n    -   Symbol(kAborted): false,\n    -   Symbol(kComposite): false,\n    -   Symbol(kEvents): SafeMap(0) {},\n    -   Symbol(kHandlers): SafeMap(0) {},\n    -   Symbol(kReason): undefined\n    - }\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n  operator: 'strictEqual'\n  stack: |-\n    file://<REPLAY>/panel.test.mjs:7:62\n    SubmitPanel.submit (file://<REPLAY>/panel.mjs:9:20)\n    TestContext.<anonymous> (file://<REPLAY>/panel.test.mjs:7:28)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.start (node:internal/test_runner/test:1177:17)\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\n  ...\n# Subtest: preserves callback rejection identity\nok 7 - preserves callback rejection identity\n  ---\n  duration_ms: 0.247708\n  type: 'test'\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 4\n# fail 3\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1064.471\n"
+    }
+  ],
+  "all_matched": true,
+  "retained_projects_unchanged": true
+}
