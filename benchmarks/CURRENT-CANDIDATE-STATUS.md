@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Friday discovery follow-up — 2026-09-15, launch `04bfb78`
+
+[Entry-only follow-up](results/view-contract-02/README.md): original `45a2741`
+and candidate `dbbbba0` both complete five checkpoints/ten reader observations,
+preserve all inputs and correctly identify the blocker/recovery boundary.
+Candidate combines the initial inventory/read but then reads a helper guide and
+implementation: **+38.05% tokens / −9.41% time**, four versus three outer calls.
+It uses the matrix, not `assert_rows`; this is not an accepted end-to-end cost win.
+All eight shell outputs/exits match original stored responses and both exact
+entries are present before first tools. Reused synthetic task, n=1, fixed reversed
+order and shared host/cache limit attribution. Stop tuning this fixture; no new
+skill edit or chart promotion.
+
+한국어: 첫 호출 방식은 바뀌었으나 전체 토큰은 증가했다. 필요한 검토와 원본 보존은
+양쪽 모두 확인했고 초기 문맥·실제 응답도 대조했다. 이 과제의 문구 튜닝을 멈추고
+실제 전체 작업 병목과 아직 남은 배포 검증으로 이동한다. 대표 그래프는 유지한다.
+
 ## Recorded initial context audit — 2026-09-15, parent `dbbbba0`
 
 [Six-session post-run audit](CONTEXT-EXPOSURE-01.md) verifies exact frozen skill
