@@ -1,5 +1,11 @@
 # Local plugin installation check
 
+Current standalone CLI evidence is separate: [all-eight skills CLI installation](../benchmarks/SKILLS-CLI-INSTALL-01.md),
+source `45fe88e`, `skills@1.5.26`, 2026-09-14. All 38 selected resource files and
+modes match, seven Python entrypoints and both task-aware callback assets execute
+from a disposable project. It is not the historical plugin registration below
+or a remote authenticated installation.
+
 Executed with Codex CLI `0.153.4` on macOS, 2026-09-10 UTC (2026-09-11 in Seoul).
 
 ## Actual sequence

@@ -21,10 +21,12 @@ npx skills add SoonGwan/questionable-hires \
 ```
 
 This invokes the independent [Vercel Labs skills CLI](https://github.com/vercel-labs/skills).
-It was locally checked with `skills@1.5.26`: all eight skills were discovered and
-the complete four-file `mother-in-law` tree was copied into a disposable Codex
-project. This does not prove a remote unauthenticated install until the repository
-is public. Review third-party CLIs and skill contents before installation.
+The tested `skills@1.5.26` requires Node.js **22.20.0 or newer**. Our
+[current local CLI check](../benchmarks/SKILLS-CLI-INSTALL-01.md), source `45fe88e`,
+installs all eight hires and verifies all 38 resource files plus executable smoke
+checks in an isolated project. This tests the CLI entrypoint with a local source,
+not remote authentication or public availability. Review third-party CLIs and
+skill contents before installation; an unpinned CLI can change its requirements.
 
 ## Install into a project
 

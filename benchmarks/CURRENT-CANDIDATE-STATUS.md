@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Distribution check: [all-eight skills CLI install](SKILLS-CLI-INSTALL-01.md),
+source `45fe88e`, `skills@1.5.26`: all 38 files/modes match in a network-disabled
+disposable project. Seven Python entrypoints and installed Python/JS task-aware
+callbacks execute. The initial checker catalog-scope error is preserved. CLI
+package/dependencies were downloaded with lifecycle scripts disabled into ignored
+scratch only; no global install, host registration or remote-authentication claim.
+
+한국어: 실제 skills CLI로 임시 프로젝트에 8개를 설치해 38개 파일·권한 일치와
+실행 파일을 확인했다. 설치 안내에 테스트한 CLI의 Node 버전 요구사항을 명시했다.
+전역 설치·계정 설정·공개 전환은 하지 않았으며 모델 성능 수치와는 별개다.
+
 Release check at `57d48fd`: [network-disabled Linux source archive](LINUX-ARCHIVE-497-01.md)
 discovers 497 tests, 494 pass, three explicit Git-provenance skips, 28.060s.
 The first `7087e52` archive error is preserved; only the unavailable Friday
