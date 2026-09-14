@@ -196,6 +196,7 @@ def matrix(spec, root, timeout=5):
                 # Do not start another check after the shared budget is exhausted.
                 if time.monotonic() >= deadline:
                     break
+                cursor = None
                 try:
                     cursor = db.execute(query)
                     if cursor.description is None:
@@ -208,6 +209,11 @@ def matrix(spec, root, timeout=5):
                                              "truncated": len(rows) > 20}
                 except sqlite3.Error as error:
                     row["checks"][label] = {"ok": False, "error": str(error)}
+                finally:
+                    # A bounded fetch may leave this statement active. Release
+                    # its read lock before a following phase changes the schema.
+                    if cursor is not None:
+                        cursor.close()
             readonly = False
             if time.monotonic() >= deadline:
                 output["complete"] = False

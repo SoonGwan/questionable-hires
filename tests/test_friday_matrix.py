@@ -23,6 +23,67 @@ def phase(name, sql="", files=None):
 
 
 class MatrixTests(unittest.TestCase):
+    def test_bounded_reader_does_not_lock_following_table_replacement(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for count in (20, 21, 22, 100):
+                for failed_last_reader in (False, True):
+                    with self.subTest(count=count, failed_last_reader=failed_last_reader):
+                        checks = {'reader': 'SELECT id FROM records'}
+                        if failed_last_reader:
+                            checks['invalid'] = 'SELECT missing FROM records'
+                        recipe = {'phases': [
+                            phase('before', 'CREATE TABLE records(id); '
+                                  'WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL '
+                                  f'SELECT x+1 FROM n WHERE x<{count}) '
+                                  'INSERT INTO records SELECT x FROM n;'),
+                            phase('replacement', 'DROP TABLE records; CREATE TABLE records(id); '
+                                  'INSERT INTO records VALUES(101);')], 'checks': checks}
+                        result = helper.matrix(recipe, directory)
+                        self.assertTrue(result['complete'], result)
+                        before, after = result['phases']
+                        self.assertEqual(before['checks']['reader'], {
+                            'ok': True, 'columns': ['id'],
+                            'rows': [(i,) for i in range(1, 21)], 'truncated': count > 20})
+                        self.assertEqual(after['checks']['reader'], {
+                            'ok': True, 'columns': ['id'], 'rows': [(101,)], 'truncated': False})
+                        if failed_last_reader:
+                            for observed in (before, after):
+                                self.assertFalse(observed['checks']['invalid']['ok'])
+                                self.assertIn('no such column', observed['checks']['invalid']['error'])
+
+    def test_closing_bounded_reader_does_not_hide_real_migration_failure(self):
+        recipe = {'phases': [
+            phase('before', 'CREATE TABLE records(id); WITH RECURSIVE n(x) AS '
+                  '(VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<100) '
+                  'INSERT INTO records SELECT x FROM n;'),
+            phase('bad migration', 'DROP TABLE records; INSERT INTO missing VALUES(1);'),
+            phase('unreachable', 'CREATE TABLE records(id);')],
+            'checks': {'reader': 'SELECT id FROM records'}}
+        with tempfile.TemporaryDirectory() as directory:
+            result = helper.matrix(recipe, directory)
+        self.assertFalse(result['complete'])
+        self.assertEqual(len(result['phases']), 2)
+        self.assertEqual(result['phases'][1]['checks'], {})
+        self.assertIn('no such table: missing', result['phases'][1]['migration_error'])
+
+    def test_cli_bounded_reader_allows_next_migration(self):
+        recipe = {'phases': [
+            phase('before', 'CREATE TABLE records(id); WITH RECURSIVE n(x) AS '
+                  '(VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<100) '
+                  'INSERT INTO records SELECT x FROM n;'),
+            phase('replacement', 'DROP TABLE records; CREATE TABLE records(id); '
+                  'INSERT INTO records VALUES(101);')],
+            'checks': {'reader': 'SELECT id FROM records'}}
+        with tempfile.TemporaryDirectory() as directory:
+            process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--source', directory,
+                                      '--spec', '-'], input=json.dumps(recipe),
+                                     capture_output=True, text=True, timeout=10)
+        self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+        result = json.loads(process.stdout)
+        self.assertTrue(result['complete'])
+        self.assertTrue(result['phases'][0]['checks']['reader']['truncated'])
+        self.assertEqual(result['phases'][1]['checks']['reader']['rows'], [[101]])
+
     def test_phase_selection_executes_only_reachable_readers_without_stale_results(self):
         recipe = {'phases': [
             {'name': 'old', 'sql': 'CREATE TABLE t(old); INSERT INTO t VALUES(1);', 'checks': ['old']},

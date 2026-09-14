@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Friday cursor lifetime — 2026-09-15, parent `be44fb9`
+
+[Bounded-reader regression](FRIDAY-CURSOR-LIFETIME-01.md): the helper's unfinished
+reader could lock the next table replacement, misreporting a tool-induced failure
+as a migration error. Six actual assertion failures before the correction become
+42 passing helper tests after closing each cursor in `finally`. Boundary cases,
+an intervening invalid reader, a genuinely invalid migration and the CLI are
+covered. No extra skill-entry text, larger row cap or automatic retries. This is
+a correctness fix, not measured whole-task savings; frozen charts stay unchanged.
+
+한국어: 일부만 읽은 조회의 커서가 다음 테이블 교체를 막는 자체 잠금 오류를
+재현하고 수정했다. 수정 전 실제 단언 실패 6건을 확인했고 수정 후 관련 검사
+42개가 통과했다. 실제 마이그레이션 오류는 숨기지 않는다. 모델 성능 개선율은
+이번에 측정하지 않았으며 기존 수치·이미지는 바꾸지 않는다.
+
 ## Old/new Exorcist discovery screen — 2026-09-15, launch `6464e84`
 
 Restored source `adec236` passes the full local suite: **598 tests / 91.171s**,
