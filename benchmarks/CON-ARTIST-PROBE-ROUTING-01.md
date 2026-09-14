@@ -43,3 +43,7 @@ Next evidence is actual model routing and task outcomes after this change, not
 another byte count. Preserve the SQLite baseline's original output gap and all
 earlier adverse costs. This candidate does not establish all-eight performance
 or hosted release readiness.
+
+The subsequent [model screen](CON-ARTIST-PROBE-ROUTING-MODEL-01-REVIEW.md) adopts
+the focused path and retains the four native phases. Its descriptive cost changes
+are much smaller than the document-byte reduction and do not prove causality.

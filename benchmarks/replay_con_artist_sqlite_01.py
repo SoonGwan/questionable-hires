@@ -12,6 +12,11 @@ import sys
 import tempfile
 
 RESOURCE = '360775feaed941d7461bb3922f3f6902dbd7034c'
+PROFILES = {
+    'sqlite-01': (RESOURCE, [('baseline', 'item_5', 'PY'), ('skill', 'item_6', 'JSON')],
+                  'test_durability_audit.py'),
+    'probe-routing-01': ('bcc6713', [('skill', 'item_5', 'JSON')], 'test_persistence_audit.py'),
+}
 
 
 def frozen(path):
@@ -24,15 +29,19 @@ def inventory(root):
             for p in root.rglob('*') if p.is_file()}
 
 
-def replay(run):
+def replay(run, profile='sqlite-01'):
+    revision, selections, probe_name = PROFILES[profile]
+    resource = subprocess.check_output(['git', 'rev-parse', revision]).decode().strip()
+    def frozen(path):
+        return subprocess.check_output(['git', 'show', resource + ':' + path])
     manifest = json.loads((run / 'run.json').read_text())
-    assert manifest['finished_at'] and manifest['revision'] == RESOURCE
-    assert manifest['schedule'] == ['sqlite-commit-audit--baseline--1', 'sqlite-commit-audit--skill--1']
+    assert manifest['finished_at'] and manifest['revision'] == resource
+    assert manifest['schedule'] == [f'sqlite-commit-audit--{arm}--1' for arm, _, _ in selections]
     source = frozen('benchmarks/con-artist-sqlite-cases.json')
     assert hashlib.sha256(source).hexdigest() == manifest['cases_sha256']
     case = json.loads(source)[0]
-    report = dict(kind='separate exact-program author replay; not replacement model output', resource=RESOURCE, cells=[])
-    for arm, item_id, delimiter in [('baseline', 'item_5', 'PY'), ('skill', 'item_6', 'JSON')]:
+    report = dict(kind='separate exact-program author replay; not replacement model output', resource=resource, cells=[])
+    for arm, item_id, delimiter in selections:
         cell = run / f'sqlite-commit-audit--{arm}--1'
         meta = json.loads((cell / 'metadata.json').read_text())
         raw = (cell / 'stdout.original.jsonl').read_text()
@@ -45,7 +54,7 @@ def replay(run):
         for name, content in assets.items():
             entry = meta['installed_resources_before'][name]
             assert hashlib.sha256(content).hexdigest() == entry['sha256']
-            mode = subprocess.check_output(['git', 'ls-tree', RESOURCE, '--', 'skills/' + name]).split()[0]
+            mode = subprocess.check_output(['git', 'ls-tree', resource, '--', 'skills/' + name]).split()[0]
             assert stat.S_IMODE(int(mode, 8)) == entry['mode']
         before = inventory(cell / 'project')
         assert before == {p: (hashlib.sha256(s.encode()).hexdigest(), 0o644) for p, s in case['files'].items()}
@@ -56,7 +65,7 @@ def replay(run):
         body = body[:-len('\n' + delimiter)]
         if arm == 'skill':
             recipe = json.loads(body)  # Pass the original JSON bytes unchanged below.
-            probe_source = recipe['probe_files']['test_durability_audit.py']
+            probe_source = recipe['probe_files'][probe_name]
             binary = lambda s: [n.value.hex() for n in ast.walk(ast.parse(s))
                                 if isinstance(n, ast.Constant) and isinstance(n.value, bytes)]
             literals = dict(probe=binary(probe_source), fixture=binary(case['files']['test_receipts.py']))
@@ -98,10 +107,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--profile', choices=PROFILES, default='sqlite-01')
     args = parser.parse_args()
     if args.output.exists():
         parser.error('Refusing to overwrite an earlier attempt')
-    report = replay(args.run.resolve())
+    report = replay(args.run.resolve(), args.profile)
     with args.output.open('x') as stream:
         json.dump(report, stream, indent=2)
         stream.write('\n')

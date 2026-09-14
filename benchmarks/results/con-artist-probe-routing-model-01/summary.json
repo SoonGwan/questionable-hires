@@ -1,0 +1,128 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "sqlite-commit-audit",
+    "skill": "con-artist",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "6770f5e67f5ae986b23fe1dd3b9523fc7d3de8a7",
+    "skill_sha256": "5f25287be4928bd8534451b62a2218adfa9c4478fc8c49eb5035bf0524627c47",
+    "skill_resources_sha256": "1d62a20e2fc8c589173849fddaa7edef8d596e0d370d4d4a48a73263ec809879",
+    "elapsed_seconds": 46.178,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 95412,
+      "cached_input_tokens": 83584,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1043,
+      "reasoning_output_tokens": 9
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $con-artist at .agents/skills/con-artist/SKILL.md.\n\nAudit whether the existing receipt tests detect a lost commit in this upload\npath. Inspect the actual test, endpoint binding and ledger implementation. Execute\nthe existing native tests on correct code and an isolated reachable fault omitting\nthe ledger commit (keep acknowledgment and connection closing unchanged). Verify\nthe actual test's imported endpoint and that endpoint's writer binding in the same\nprocess as the checks, not just in a separate import-only process.\nIf the tests survive, execute the same stronger native assertion on both versions:\nread through a new SQLite connection after the actual upload call and compare the\ncomplete ordered rows, retaining the pre-existing row and exact new binary payload.\nShow correct code passing and the faulty code failing for missing committed data,\nnot setup/import failures. Preserve originals and remove owned disposable copies.\nCaptured commands/results are sufficient; no permanent harness/report is required.\nWork only inside this project: no services, dependencies, other skills, delegation,\npublishing or production repair.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "disabled_personal_skills": 9,
+    "execution": "host-workspace-write",
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "5f25287be4928bd8534451b62a2218adfa9c4478fc8c49eb5035bf0524627c47",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "9218ae6054f89e5406134068416f4c856c06d4238bdd8248de3e66856ae0675f",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "84d79080eaa7b85d30cd36447ba571ad4893198145ba8d159b9c62d3cc85451d",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "457fce67952000c3a372627e9968b0a9d084abac179378bc6e11604f8ded1d1f",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "92adbb6cfbcf8d254fc871bc1bf81a45ce819d33b444b54b2d8b579c52692950",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "1516f8d1af7c84412af7db80290e7c5217c8f6b7fc1ae0c17ea960537238eb4d",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "fe806318bcbfbd1e705a77c3d7d8973909a48a5fc2547377a4bf9084f62c49ec",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "5f25287be4928bd8534451b62a2218adfa9c4478fc8c49eb5035bf0524627c47",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "9218ae6054f89e5406134068416f4c856c06d4238bdd8248de3e66856ae0675f",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "84d79080eaa7b85d30cd36447ba571ad4893198145ba8d159b9c62d3cc85451d",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "457fce67952000c3a372627e9968b0a9d084abac179378bc6e11604f8ded1d1f",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "92adbb6cfbcf8d254fc871bc1bf81a45ce819d33b444b54b2d8b579c52692950",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "1516f8d1af7c84412af7db80290e7c5217c8f6b7fc1ae0c17ea960537238eb4d",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "fe806318bcbfbd1e705a77c3d7d8973909a48a5fc2547377a4bf9084f62c49ec",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    }
+  }
+]

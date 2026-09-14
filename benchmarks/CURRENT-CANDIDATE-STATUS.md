@@ -11,18 +11,31 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Con Artist [focused probe routing model 01](CON-ARTIST-PROBE-ROUTING-MODEL-01-REVIEW.md),
+launch `bcc6713`, resources `708c7a8`: 96,455 tokens / 46.178s, four shell calls.
+Actual project/common/focused-guide reads are captured, without advanced/source
+reads; all four native phases and unchanged-recipe replay match. Descriptive
+−3.42% tokens / −6.35% time versus previous skill, but still +11.96% tokens versus
+the earlier baseline. Different verification/output, exposed n=1 and shared cache
+prevent causal or baseline-superiority claims. Earlier baseline gap stays preserved.
+
+한국어: 모델이 실제 프로젝트와 기본·네이티브 안내만 읽고 네 단계 검증을 수행했다.
+96,455토큰·46.178초로 이전 스킬 실행보다 토큰 3.42%·시간 6.35% 낮았지만,
+이전 기본 실행보다는 토큰이 11.96% 많다. 작업량·단일 표본·공유 캐시 차이 때문에
+인과적 성능 개선이나 전체 우월성으로 주장하지 않는다. 원래 설정 재검증도 통과했다.
+
 Con Artist [native-probe routing candidate 01](CON-ARTIST-PROBE-ROUTING-01.md),
 previous source `bf571bc`: common + focused native-probe guide is 7,785 bytes,
 versus the previous 15,136-byte common/advanced read path (−48.57%). Total guide
 inventory increases 3.89%; this is not model-token reduction. Old deep links and
 conditional modes remain; runtime/entry unchanged. 12 packaging and 76 helper
 tests pass, including execution of the new shipped example with an intended
-native binary-row failure. Post-change model routing/performance is unmeasured.
+native binary-row failure. Subsequent routing and limited cost evidence is above.
 
 한국어: 네이티브 테스트 안내를 별도 문서로 분리했다. 필요한 두 문서만 읽으면
 문서량이 48.57% 줄지만 전체 문서는 3.89% 늘었다. 기존 링크·기능은 유지하며
 실제 배포 예제의 정상·결함 검사를 포함한 88개 테스트가 통과했다. 모델이 이 경로를
-선택하는지와 토큰·시간 개선은 아직 미측정이다.
+선택한 후속 모델 기록과 비용 비교의 한계는 위에 구분했다.
 
 Con Artist [SQLite transfer 01](CON-ARTIST-SQLITE-01-REVIEW.md), launch `360775f`,
 resources `8e3bdc4`: baseline 86,152 tokens / 69.112s; skill 99,868 / 49.308s
