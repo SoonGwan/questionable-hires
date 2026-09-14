@@ -34,10 +34,12 @@ Choose isolation by the context it preserves. In-memory substitution fits when t
 For compatible Python copy-based audits, use [the audit helper](references/python-audit.md)
 instead of rebuilding its copy/subprocess/cleanup orchestration. Adequate project
 audits and simpler valid substitutions take precedence; unsupported layouts need
-project facilities. Capture each phase's exit and inspect actual failures. Check
-copied imports and caller bindings in the test/probe process where practical;
-separate import-only processes do not prove what tests load. Inspect helper source
-when trust review, adaptation or troubleshooting requires it.
+project facilities. Capture each phase's exit and inspect actual failures. Establish
+the exercised path from copied-import evidence, traced bindings and defect-specific
+observations. Add binding instrumentation for an explicit requirement or unresolved
+dispatch, not to duplicate established evidence. Separate import-only processes do
+not prove what tests load. Inspect helper source for a concrete trust, adaptation
+or troubleshooting question.
 
 If tests survive, verify the same stronger assertion on correct and faulty code:
 pass the former, fail the latter for the intended effect, not merely success or

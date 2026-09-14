@@ -12,6 +12,44 @@ SPEC.loader.exec_module(helper)
 
 
 class DocumentedProbeTests(unittest.TestCase):
+    def test_actual_wrong_consumer_binding_still_requires_precheck(self):
+        with tempfile.TemporaryDirectory(prefix='audit-binding-', dir=ROOT / 'benchmarks') as temporary:
+            root = Path(temporary)
+            source = 'def save(store, record):\n    store.append(record)\n    return True\n'
+            for name in ('service.py', 'fallback.py'):
+                (root / name).write_text(source)
+            recipe = dict(files=['service.py', 'fallback.py', 'test_service.py'],
+                          imports=['service', 'test_service'], target='service.py',
+                          old='    store.append(record)\n', new='', runner='unittest',
+                          tests=['-v', 'test_service'],
+                          precheck="import service, test_service\nassert test_service.save is service.save, 'wrong consumer binding'\n")
+            for binding in ('service', 'fallback'):
+                with self.subTest(binding=binding):
+                    test = ('import unittest\nfrom ' + binding + ' import save\n'
+                            'class SaveTests(unittest.TestCase):\n'
+                            '    def test_saved_value(self):\n'
+                            '        s = []; save(s, "record"); self.assertEqual(s, ["record"])\n')
+                    (root / 'test_service.py').write_text(test)
+                    with patch.object(helper, 'execute', wraps=helper.execute) as executed:
+                        result = helper.audit(root, recipe)
+                    if binding == 'service':
+                        self.assertEqual(result['status'], 'observed')
+                        self.assertEqual(executed.call_count, 2)
+                        self.assertEqual(result['checks']['correct_tests']['exit_code'], 0)
+                        self.assertIn('Ran 1 test', result['checks']['correct_tests']['output'])
+                        self.assertEqual(result['checks']['mutant_tests']['exit_code'], 1)
+                        self.assertIn('AssertionError', result['checks']['mutant_tests']['output'])
+                    else:
+                        self.assertEqual(result['status'], 'incomplete')
+                        self.assertEqual(executed.call_count, 1)
+                        self.assertEqual(list(result['checks']), ['correct_tests'])
+                        self.assertEqual(result['checks']['correct_tests']['exit_code'], 6)
+                        self.assertIn('wrong consumer binding', result['checks']['correct_tests']['output'])
+                        self.assertNotIn('Ran 1 test', result['checks']['correct_tests']['output'])
+                    self.assertTrue(result['integrity']['owned_scratch_removed'])
+                    self.assertEqual((root / 'test_service.py').read_text(), test)
+                    self.assertTrue(all((root / name).read_text() == source for name in ('service.py', 'fallback.py')))
+
     def test_documented_recipe_preserves_detection_and_skips_only_optional_probes(self):
         guide = (ROOT / 'skills/con-artist/references/python-audit.md').read_text()
         recipe = json.loads(guide.split("<<'JSON'\n", 1)[1].split('\nJSON', 1)[0])

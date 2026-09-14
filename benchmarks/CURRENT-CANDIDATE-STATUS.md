@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Con Artist conditional example — 2026-09-15, parent `eca85cd`
 
+[Proportional provenance candidate](CON-ARTIST-PROVENANCE-01.md), parent `ec5d7d4`,
+clarifies that the unittest precheck example does not demand a pytest plugin.
+Extra binding instrumentation needs an explicit requirement or unresolved dispatch;
+established copied-import/behavior evidence is reused. Actual wrong-consumer
+controls still fail before tests, while correct binding retains native detection.
+Ninety targeted tests pass. Entry +143 bytes, optional guide +259; model uptake
+and net cost effects remain unmeasured. No helper logic or frozen result changes.
+
+한국어: 불필요한 진단 플러그인 생성을 줄이는 후보 지침을 반영했다. 잘못된 실제
+호출 연결은 계속 검출하며 관련 90개 검사가 통과했다. 지침 길이는 늘었고 모델
+비용 절감은 아직 검증하지 않았으므로 과거 성능 수치를 바꾸지 않는다.
+
 [HTTPX execution review](results/httpx-exception-example-01/README.md), launch
 `d14e03b`, resources `bec12d6`: both original native audits establish 24-pass
 correct / 4-fail mutant behavior. Skill costs increase **181.66% tokens / 67.95%

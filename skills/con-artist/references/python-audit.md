@@ -38,9 +38,12 @@ For pytest, list implementation modules in `imports`, not selected test modules:
 pre-importing tests bypasses pytest's assertion rewriting and can lose useful
 expected/observed diagnostics. Let pytest collect its tests normally.
 
-`precheck` verifies required bindings in that same process, not later calls or
-fixture rebinding; use native hooks for post-collection checks. Import/setup or
-precheck failures are incomplete evidence, never killed faults.
+`precheck` is optional: the unittest example illustrates checking an imported
+function binding. It does not require an equivalent pytest plugin. Use existing
+copied-import evidence and the traced behavioral path when they resolve the claim.
+Add same-process checks for required or unresolved bindings; a precheck cannot
+establish later fixture rebinding. Use a native hook only when that later binding
+matters. Import/setup or precheck failures are incomplete, never killed faults.
 
 The example validates a stronger assertion only if tests miss the fault, using
 `"probe_when": "survives"`. Omit that field (or use `"always"`) when the request
