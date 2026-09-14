@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Linux archive verification — 2026-09-15, source `73d27f5`
+
+[Current source-archive check](LINUX-ARCHIVE-655-01.md): Linux arm64/Python 3.12.3,
+655 discovered, **651 passed / 4 skipped**, 38.643s. Three skips need Git history;
+one needs ripgrep on PATH. Native Receipt checks previously failing on an older
+Linux revision now pass. Dependency-setup failures and an additional run with
+unknown terminal outcome remain disclosed. No source overlays or downloads.
+This is local compatibility evidence, not hosted CI or model performance;
+the broad improvement goal and featured chart remain unchanged.
+
+한국어: 현재 Linux 배포본 검사는 651개 통과·4개 생략이다. 이전 버전의 Linux
+실패 기록은 보존하고 현재 결과를 별도로 남겼다. 준비 실패와 결과 미확인 실행도
+공개하며, 이를 모델 성능 개선이나 호스팅 CI 통과로 계산하지 않는다.
+
 ## Friday discovery follow-up — 2026-09-15, launch `04bfb78`
 
 [Entry-only follow-up](results/view-contract-02/README.md): original `45a2741`

@@ -1,0 +1,34 @@
+8.3.4
+test_changed_conftest_replacement_invalidates_correct_probe_reuse (test_audit_pytest_replacements.PytestReplacementTests.test_changed_conftest_replacement_invalidates_correct_probe_reuse) ... FAIL
+test_cli_keeps_parametrized_autouse_fixtures_and_assertion_rewriting (test_audit_pytest_replacements.PytestReplacementTests.test_cli_keeps_parametrized_autouse_fixtures_and_assertion_rewriting) ... FAIL
+test_collection_error_in_proposed_test_is_incomplete_not_detection (test_audit_pytest_replacements.PytestReplacementTests.test_collection_error_in_proposed_test_is_incomplete_not_detection) ... ERROR
+
+======================================================================
+ERROR: test_collection_error_in_proposed_test_is_incomplete_not_detection (test_audit_pytest_replacements.PytestReplacementTests.test_collection_error_in_proposed_test_is_incomplete_not_detection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/test_audit_pytest_replacements.py", line 71, in test_collection_error_in_proposed_test_is_incomplete_not_detection
+    self.assertEqual(result['checks']['correct_probe']['exit_code'], 2)
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'correct_probe'
+
+======================================================================
+FAIL: test_changed_conftest_replacement_invalidates_correct_probe_reuse (test_audit_pytest_replacements.PytestReplacementTests.test_changed_conftest_replacement_invalidates_correct_probe_reuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/test_audit_pytest_replacements.py", line 84, in test_changed_conftest_replacement_invalidates_correct_probe_reuse
+    self.assertEqual(execute.call_count, 7)
+AssertionError: 1 != 7
+
+======================================================================
+FAIL: test_cli_keeps_parametrized_autouse_fixtures_and_assertion_rewriting (test_audit_pytest_replacements.PytestReplacementTests.test_cli_keeps_parametrized_autouse_fixtures_and_assertion_rewriting)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/test_audit_pytest_replacements.py", line 53, in test_cli_keeps_parametrized_autouse_fixtures_and_assertion_rewriting
+    self.assertEqual(process.returncode, 0, process.stderr)
+AssertionError: 2 != 0 : 
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.077s
+
+FAILED (failures=2, errors=1)
