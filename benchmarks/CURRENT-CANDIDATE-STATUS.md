@@ -11,6 +11,17 @@ it has not established a broad 20–30% gain.
 
 ## Latest reviewed checkpoint — 2026-09-14, launch `b2816cd`
 
+Hostage [final-check batching candidate](HOSTAGE-FINAL-BATCH-01.md) addresses three
+separate finalization calls in the keyed-import trace and masked intermediate
+statuses. Native controls exercise six unchanged retained tests, real cmp and Git:
+normal batch passes; test/copy/original-test/whitespace faults return nonzero,
+while semicolon chains end in zero. Initial cmp-message assertion error disclosed.
+No new runtime; instruction adoption and actual token/time gains remain unmeasured.
+
+한국어: 마지막 테스트·복사 확인·diff/status를 판단이 필요한 중간 단계가 없을 때
+한 호출로 묶도록 안내를 구체화했다. 실제 명령 검증에서 4종 실패를 최종 성공
+상태가 가리지 않음을 확인했다. 새 모델의 채택·토큰 절감은 아직 미측정이다.
+
 Python [dependent-phase guidance](HOSTAGE-DEPENDENT-PHASES-01.md), author control
 on `e8ab180` artifacts: unwrap only two continuing subtests around dependent
 phases. Twelve native runs preserve final/alternate passes and all four fault

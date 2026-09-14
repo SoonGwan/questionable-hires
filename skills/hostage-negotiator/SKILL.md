@@ -25,6 +25,8 @@ For JavaScript Promise callbacks without equivalent support, use the optional [E
 
 ## Deliver and stop
 
-Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse established verification; repeat when requested or when changed state, nondeterminism or a remaining uncertainty warrants it. When batching tests with diff/status, preserve the test's exit rather than the last command's success. Confirm required checks actually ran from their result output; missing output or undiscovered/skipped tests cannot support a pass claim. Inspect existing evidence first and rerun only the unresolved, safely repeatable check when needed. Report decisive observations and consequential limitations, separating inference. Stop when requested behavior and required checks are satisfied, without opportunistic cleanup.
+After edits, batch remaining native tests, copy-integrity checks and final diff/status in one shell call when no intervening decision is needed. Use `&&` to stop on failure; later checks are then unrun. If every check must run regardless, retain each exit separately: a final successful status command must not hide a failed test or copy check. Do not recopy an existing helper merely to make its integrity check pass.
+
+Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse valid execution evidence; rerun only for changed relevant inputs, unresolved uncertainty or an explicit requirement. Missing output or undiscovered/skipped tests cannot support a pass. Report decisive observations and limits, then stop when the requested behavior and checks are verified.
 
 Preserve user changes and explicit requirements. Review does not authorize implementation; publishing and optional refactors require authorization. Keep humor optional.
