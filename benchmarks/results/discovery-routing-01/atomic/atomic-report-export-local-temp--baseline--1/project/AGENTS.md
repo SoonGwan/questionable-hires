@@ -1,0 +1,2 @@
+Work only in this project. Read apps/reports/AGENTS.md before editing the exporter. Preserve existing tests; add focused coverage. Use python3 -B -m unittest discover -s tests -v from the root. Do not install dependencies.
+Test scratch directories must be created explicitly inside this project, including new tests. Do not change TMPDIR or launcher settings; give tempfile calls an explicit project-local dir.

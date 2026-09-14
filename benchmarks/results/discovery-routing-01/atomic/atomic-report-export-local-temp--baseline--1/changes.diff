@@ -1,0 +1,69 @@
+diff --git a/apps/reports/exporter.py b/apps/reports/exporter.py
+index 16e78a4..ab139d3 100644
+--- a/apps/reports/exporter.py
++++ b/apps/reports/exporter.py
+@@ -1,11 +1,23 @@
+ from pathlib import Path
++from tempfile import NamedTemporaryFile
+ 
+ 
+ def write_rows(destination, rows):
+     destination = Path(destination)
+     count = 0
+-    with destination.open("w", encoding="utf-8", newline="") as stream:
+-        for row in rows:
+-            stream.write(row + "\n")
+-            count += 1
++    temporary = None
++    try:
++        with NamedTemporaryFile(
++            mode="w", encoding="utf-8", newline="",
++            dir=destination.parent, delete=False,
++        ) as stream:
++            temporary = Path(stream.name)
++            for row in rows:
++                stream.write(row + "\n")
++                count += 1
++        temporary.replace(destination)
++        temporary = None
++    finally:
++        if temporary is not None:
++            temporary.unlink()
+     return count
+diff --git a/tests/test_export.py b/tests/test_export.py
+index 945546c..4c03661 100644
+--- a/tests/test_export.py
++++ b/tests/test_export.py
+@@ -5,6 +5,32 @@ from apps.reports.exporter import write_rows
+ 
+ 
+ class ExportTests(unittest.TestCase):
++    def test_iterator_failure_preserves_destination(self):
++        for exists in (True, False):
++            with self.subTest(destination_exists=exists):
++                with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parents[1]) as directory:
++                    path = Path(directory) / "report.txt"
++                    previous = b"previous\r\n\xff"
++                    if exists:
++                        path.write_bytes(previous)
++                    original_entries = set(Path(directory).iterdir())
++                    failure = RuntimeError("row iterator failed")
++
++                    def failing_rows():
++                        yield "Ada"
++                        yield "한글"
++                        raise failure
++
++                    with self.assertRaises(RuntimeError) as caught:
++                        write_rows(path, failing_rows())
++
++                    self.assertIs(caught.exception, failure)
++                    self.assertEqual(set(Path(directory).iterdir()), original_entries)
++                    if exists:
++                        self.assertEqual(path.read_bytes(), previous)
++                    else:
++                        self.assertFalse(path.exists())
++
+     def test_success_replaces_file(self):
+         with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parents[1]) as directory:
+             path = Path(directory) / "report.txt"

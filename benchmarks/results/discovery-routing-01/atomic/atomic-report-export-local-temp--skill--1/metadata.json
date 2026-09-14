@@ -1,0 +1,71 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "atomic-report-export-local-temp",
+  "skill": "hostage-negotiator",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "0d45e787ab81128df2ddcc777ef08714425e9e00",
+  "skill_sha256": "9528147cf360837b089be69f652c36102595ba2bdea2685cd71ca4754cfafa51",
+  "skill_resources_sha256": "f3305a2662d814763c2381aabe7860cec72896b2d4e006a440db7d7e6e723a45",
+  "elapsed_seconds": 87.526,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 88441,
+    "cached_input_tokens": 76928,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1127,
+    "reasoning_output_tokens": 118
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Use $hostage-negotiator at .agents/skills/hostage-negotiator/SKILL.md.\n\nMake apps/reports/exporter.py:write_rows preserve an existing destination if consuming the row iterator fails after yielding some rows. When the destination did not exist, failure must leave it absent. Re-raise the original exception object, remove any temporary output, and preserve existing successful output/count behavior. Keep this change focused and verify a defect-specific failure before fixing it, then unchanged assertions after. Read the project instructions and requirements; do not install dependencies or redesign the export API.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "disabled_personal_skills": 9,
+  "execution": "host-workspace-write",
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [
+      {
+        "item_id": "item_5",
+        "reported_tests": 3,
+        "observed_verbose_headers": 2,
+        "interpretation": "Possible partial transcript or nonstandard runner output; manual review required."
+      }
+    ],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "hostage-negotiator/SKILL.md": {
+      "kind": "file",
+      "sha256": "9528147cf360837b089be69f652c36102595ba2bdea2685cd71ca4754cfafa51",
+      "mode": 420
+    },
+    "hostage-negotiator/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "872db8d04d23327f713a45d5d98d41a5784f02e64a76c374c413c7e54643f18f",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "hostage-negotiator/SKILL.md": {
+      "kind": "file",
+      "sha256": "9528147cf360837b089be69f652c36102595ba2bdea2685cd71ca4754cfafa51",
+      "mode": 420
+    },
+    "hostage-negotiator/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "872db8d04d23327f713a45d5d98d41a5784f02e64a76c374c413c7e54643f18f",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  }
+}
