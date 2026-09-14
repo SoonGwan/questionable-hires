@@ -3,7 +3,9 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import unittest
+import venv
 from unittest.mock import patch
 
 import test_receipt_helper as fixture
@@ -19,7 +21,20 @@ class StartupHookTests(unittest.TestCase):
         fixture.ReceiptHelperTests.setUp(self)
         base = self.root / 'fixture-user-site'
         env = dict(os.environ, PYTHONUSERBASE=str(base), PYTHONNOUSERSITE='')
-        path = subprocess.check_output([sys.executable, '-B', '-c',
+        self.python = sys.executable
+        enabled = subprocess.check_output([self.python, '-B', '-c',
+                                           'import site; print(site.ENABLE_USER_SITE)'], env=env, text=True).strip()
+        if enabled == 'False':
+            # Ordinary isolated venvs intentionally disable user site. Exercise
+            # active hooks in a test-owned runtime, never reconfigure that venv.
+            runtime = tempfile.TemporaryDirectory(prefix='receipt-hook-runtime-')
+            self.addCleanup(runtime.cleanup)
+            venv.EnvBuilder(with_pip=False, system_site_packages=True).create(runtime.name)
+            self.python = str(Path(runtime.name) / 'bin/python')
+            enabled = subprocess.check_output([self.python, '-B', '-c',
+                                               'import site; print(site.ENABLE_USER_SITE)'], env=env, text=True).strip()
+        self.assertEqual(enabled, 'True', 'Active-hook fixture requires native user-site activation')
+        path = subprocess.check_output([self.python, '-B', '-c',
                                         'import site; print(site.getusersitepackages())'],
                                        env=env, text=True).strip()
         self.site_path = Path(path)
@@ -36,7 +51,7 @@ class StartupHookTests(unittest.TestCase):
 
     def compare(self):
         return helper.compare(self.root, dict(self.recipe, invocation='module',
-                              imports=['rule', 'test_rule'], guard_tree=True))
+                              imports=['rule', 'test_rule'], guard_tree=True), python=self.python)
 
     def test_both_hooks_run_once_in_order_before_checked_imports(self):
         (self.site_path / 'sitecustomize.py').write_text(
@@ -49,7 +64,7 @@ class StartupHookTests(unittest.TestCase):
             'assert builtins.receipt_hook_order == ["site"]\n'
             'assert "fixture-user-site" in sitecustomize.__file__\n'
             'builtins.receipt_hook_order.append("user")\nprint("USER-HOOK-RAN", flush=True)\n')
-        direct = subprocess.run([sys.executable, '-B', '-c',
+        direct = subprocess.run([self.python, '-B', '-c',
                                  'import builtins; assert builtins.receipt_hook_order == ["site", "user"]'],
                                 capture_output=True, text=True, timeout=10)
         self.assertEqual(direct.returncode, 0, direct.stderr)

@@ -132,14 +132,24 @@ class Probe(unittest.TestCase):
         site_path.mkdir(parents=True)
         original_hook = site_path/'usercustomize.py'
         original_hook.write_text('raise RuntimeError("original configured hook")\n')
+        enabled = subprocess.check_output([sys.executable, '-B', '-c',
+                                           'import site; print(site.ENABLE_USER_SITE)'], env=env, text=True).strip()
         with patch.dict(os.environ, {'PYTHONUSERBASE': str(user_base), 'PYTHONNOUSERSITE': ''}):
             result = helper.compare(self.root, dict(self.recipe, invocation='module'))
         check = result['checks']['before']
-        self.assertEqual(result['status'], 'incomplete')
-        self.assertEqual(list(result['checks']), ['before'])
-        self.assertEqual(check['exit_code'], 7)
-        self.assertIn('RuntimeError: original configured hook', check['output'])
-        self.assertFalse(check['provenance_ready'])
+        if enabled == 'True':
+            self.assertEqual(result['status'], 'incomplete')
+            self.assertEqual(list(result['checks']), ['before'])
+            self.assertEqual(check['exit_code'], 7)
+            self.assertIn('RuntimeError: original configured hook', check['output'])
+            self.assertFalse(check['provenance_ready'])
+        else:
+            self.assertEqual(enabled, 'False')
+            self.assertEqual(result['status'], 'observed')
+            self.assertEqual([c['exit_code'] for c in result['checks'].values()], [1, 0])
+            for phase in result['checks'].values():
+                self.assertTrue(phase['provenance_ready'])
+                self.assertNotIn('original configured hook', phase['output'])
         self.assertEqual(original_hook.read_text(), 'raise RuntimeError("original configured hook")\n')
 
     def test_timeout_and_output_bound_keep_existing_process_supervision(self):
