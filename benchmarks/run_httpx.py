@@ -25,6 +25,9 @@ AUTH_DESIGN_TASKS = {
 DIAGNOSIS_TASKS = {
     'redirect-auth': 'Diagnose this report against the HTTPX checkout: a GET with an explicit Authorization header follows a 302 from http://example.org/start to https://example.org:8443/end, but the redirected request has no Authorization. The reporter suspects a transport or cache issue because redirecting instead to https://example.org/end keeps it. Reproduce both outcomes locally without network access, identify the responsible mechanism, and recommend a safe next action. Include a same-origin normal control. Do not edit original source/tests, install dependencies, or globally disable credential protections.',
 }
+STREAM_DIAGNOSIS_TASKS = {
+    'response-preview': 'Diagnose this HTTPX report: a logging preview consumes response.iter_bytes() inside client.stream(), then application response.read() raises StreamConsumed. A preview using response.read() instead appears to work; an ordinary client.get response also remains readable after an iter_bytes preview. The reporter suspects premature pooled-connection closure. Reproduce all three paths offline with actual Client/MockTransport and the same nonempty body, recording preview bytes, later body or exception, consumption/closed state and underlying stream close calls. Explain which boundary distinguishes the outcomes and recommend a safe next action, including the memory tradeoff of buffering. Use actual HTTPX objects, not a simulation of their internals. Preserve original files; do not fix production, use network, install dependencies, commit or publish. Keep any disposable probes project-local and remove them; captured output and a scoped diagnosis suffice.',
+}
 DECODER_TASKS = {
     'text-finalization': 'Audit whether tests/test_decoders.py protects UTF-8 text-stream finalization when the stream ends with an incomplete multibyte sequence. Demonstrate sensitivity with one narrow isolated behavioral mutation. If coverage is missing, verify a focused assertion against correct and faulty behavior, including a valid multibyte sequence split across chunks as a normal control. If existing coverage detects the fault, identify the detecting check. Do not change original source or tests.',
     'line-crlf-split': 'Audit whether tests/test_decoders.py protects a CRLF line ending split across response chunks. Demonstrate sensitivity with one narrow isolated behavioral mutation of the CR carry-over behavior. If existing coverage detects the fault, identify the detecting assertion without demanding another test; otherwise verify a focused assertion against correct and faulty behavior. Include nearby unsplit CRLF behavior. Do not change original source or tests.',
@@ -62,7 +65,8 @@ def select_profile(profile, requested=None):
                 'cookies-audit': ('con-artist', COOKIE_TASKS),
                 'url-repr-audit': ('con-artist', URL_REPR_TASKS),
                 'header-equality-audit': ('con-artist', HEADER_EQUALITY_TASKS),
-                'cookie-design': ('landlord', COOKIE_DESIGN_TASKS)}
+                'cookie-design': ('landlord', COOKIE_DESIGN_TASKS),
+                'stream-diagnosis': ('exorcist', STREAM_DIAGNOSIS_TASKS)}
     if profile not in profiles:
         raise ValueError('Unknown profile')
     skill, available = profiles[profile]
@@ -124,11 +128,13 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit', 'cookies-audit', 'url-repr-audit', 'header-equality-audit', 'cookie-design'), default='audit')
+    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit', 'cookies-audit', 'url-repr-audit', 'header-equality-audit', 'cookie-design', 'stream-diagnosis'), default='audit')
     parser.add_argument('--case', action='append')
     parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
     parser.add_argument('--repeats', type=int, default=3)
     parser.add_argument('--skill-revision', default='bf420fe')
+    parser.add_argument('--persist-session', action='store_true',
+                        help='Retain matching session records for reviewed tool-response extraction')
     args = parser.parse_args()
     if args.repeats < 1:
         parser.error('repeats must be positive')
@@ -151,6 +157,9 @@ def main():
     if args.profile == 'diagnosis':
         checks = ['tests/client/test_redirects.py::test_cross_domain_redirect_with_auth_header',
                   'tests/client/test_redirects.py::test_same_domain_https_redirect_with_auth_header']
+    if args.profile == 'stream-diagnosis':
+        checks = ['tests/models/test_responses.py::test_read',
+                  'tests/models/test_responses.py::test_iter_bytes']
     if args.profile == 'auth-design':
         checks = ['tests/client/test_auth.py::test_sync_auth_reads_response_body',
                   'tests/client/test_auth.py::test_async_auth_reads_response_body',
@@ -176,6 +185,7 @@ def main():
     manifest = dict(upstream_revision=REVISION, revision=command(['git', 'rev-parse', 'HEAD'], ROOT),
                     codex_version=command(['codex', '--version'], ROOT), model='gpt-6-astra', effort='medium',
                     seed=20260912, timeout_seconds=360, jobs=1,
+                    session_persistence_requested=args.persist_session,
                     profile=args.profile, skill_name=skill_name, preflight_checks=checks,
                     interpreter_supplied=str(args.python), interpreter_effective=str(python),
                     skill_sha256=hashlib.sha256((snapshot / 'SKILL.md').read_bytes()).hexdigest(),
@@ -189,7 +199,8 @@ def main():
         instructions = f'\n\nUse the preinstalled interpreter {python} for all Python/pytest commands. Do not install dependencies. Keep disposable mutation copies and diagnostic artifacts inside this project, without modifying its existing files.'
         case = dict(id=name, skill=skill_name, task=tasks[name] + instructions)
         try:
-            result = run_cell(case, arm, repeat, output, 'gpt-6-astra', 'medium', 360, disabled, output / 'skills', source)
+            result = run_cell(case, arm, repeat, output, 'gpt-6-astra', 'medium', 360, disabled, output / 'skills', source,
+                              persist_session=args.persist_session)
         except Exception as error:
             manifest['runner_error'] = f'{type(error).__name__}: {error}'
             (output / 'run.json').write_text(json.dumps(manifest, indent=2) + '\n')

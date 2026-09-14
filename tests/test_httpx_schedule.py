@@ -21,6 +21,54 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_stream_diagnosis_is_distinct_and_preserves_old_diagnosis(self):
+        skill, tasks = runner.select_profile('stream-diagnosis')
+        self.assertEqual(skill, 'exorcist')
+        self.assertEqual(set(tasks), {'response-preview'})
+        self.assertEqual(set(runner.make_schedule(tasks, ['baseline', 'skill'], 1)),
+                         {('response-preview', 'baseline', 1), ('response-preview', 'skill', 1)})
+        self.assertEqual(runner.select_profile('diagnosis'), ('exorcist', runner.DIAGNOSIS_TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('stream-diagnosis', ['redirect-auth'])
+
+    def test_main_passes_explicit_persistence_to_each_cell_without_changing_default(self):
+        for persist in (False, True):
+            with self.subTest(persist=persist), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                source, output = root / 'source', root / 'run'
+                source.mkdir()
+                def command(args, cwd):
+                    if args[:3] == ['git', 'status', '--porcelain']:
+                        return ''
+                    return runner.REVISION
+                def freeze(repository, revision, destination, skill):
+                    destination.mkdir(parents=True)
+                    (destination / 'SKILL.md').write_text('frozen fixture')
+                    return {'SKILL.md': hashlib.sha256(b'frozen fixture').hexdigest()}
+                argv = ['run_httpx.py', '--source', str(source), '--python', sys.executable,
+                        '--output', str(output), '--profile', 'stream-diagnosis',
+                        '--arms', 'baseline', 'skill', '--repeats', '1']
+                if persist:
+                    argv.append('--persist-session')
+                with patch.object(sys, 'argv', argv), patch.object(runner, 'command', side_effect=command), \
+                        patch.object(runner, 'freeze_skill', side_effect=freeze), \
+                        patch.object(runner, 'disabled_skills', return_value=[]), \
+                        patch.object(runner.subprocess, 'run') as native, \
+                        patch.object(runner, 'run_cell', return_value={'completed': True}) as cell:
+                    runner.main()
+                self.assertEqual(cell.call_count, 2)
+                self.assertEqual({call.args[1] for call in cell.call_args_list}, {'baseline', 'skill'})
+                for call in cell.call_args_list:
+                    self.assertIs(call.kwargs['persist_session'], persist)
+                    self.assertEqual(call.args[4:7], ('gpt-6-astra', 'medium', 360))
+                self.assertEqual(native.call_count, 1)
+                self.assertEqual(native.call_args.args[0][-2:],
+                                 ['tests/models/test_responses.py::test_read',
+                                  'tests/models/test_responses.py::test_iter_bytes'])
+                manifest = json.loads((output / 'run.json').read_text())
+                self.assertIs(manifest['session_persistence_requested'], persist)
+                self.assertEqual(len(manifest['completed_cells']), 2)
+
     def test_cookie_design_is_distinct_and_preserves_audit_profile(self):
         skill, tasks = runner.select_profile('cookie-design')
         self.assertEqual(skill, 'landlord')
