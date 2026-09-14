@@ -1,0 +1,78 @@
+{
+  "revision": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+  "reachable_commits": 1499,
+  "shallow": false,
+  "tracked_files": 125,
+  "source_unchanged": true,
+  "native_output": "..                                                                       [100%]\n2 passed in 0.04s\n",
+  "native_stderr": "",
+  "earlier_middleware_revision": "206c5372a60cb2511cf5ac39c963ff76953c569f",
+  "earlier_middleware_sha256": "efd7d2948ab65ccdfa95b11057ab2d40788dc082d5579cbc7cb51eaa0b507b74",
+  "observations": {
+    "current": [
+      {
+        "method": "GET",
+        "body": "",
+        "length": null,
+        "transfer": null
+      },
+      {
+        "method": "GET",
+        "body": "",
+        "length": null,
+        "transfer": null
+      },
+      {
+        "method": "POST",
+        "body": "payload",
+        "length": "7",
+        "transfer": null
+      }
+    ],
+    "headers-only": [
+      {
+        "method": "GET",
+        "body": "",
+        "length": "7",
+        "transfer": null
+      },
+      {
+        "method": "GET",
+        "body": "",
+        "length": null,
+        "transfer": "chunked"
+      },
+      {
+        "method": "POST",
+        "body": "payload",
+        "length": "7",
+        "transfer": null
+      }
+    ],
+    "stream-only": [
+      {
+        "method": "GET",
+        "body": "payload",
+        "length": null,
+        "transfer": null
+      },
+      {
+        "method": "GET",
+        "body": "payload",
+        "length": null,
+        "transfer": null
+      },
+      {
+        "method": "POST",
+        "body": "payload",
+        "length": "7",
+        "transfer": null
+      }
+    ]
+  },
+  "deliberate_assertion_failures": {
+    "headers-only": "{'method': 'GET', 'body': '', 'length': '7', 'transfer': None} != {'method': 'GET', 'body': '', 'length': None, 'transfer': None}\n- {'body': '', 'length': '7', 'method': 'GET', 'transfer': None}\n?                        ^^^\n\n+ {'body': '', 'length': None, 'method': 'GET', 'transfer': None}\n?                        ^^^^\n",
+    "stream-only": "{'method': 'GET', 'body': 'payload', 'length': None, 'transfer': None} != {'method': 'GET', 'body': '', 'length': None, 'transfer': None}\n- {'body': 'payload', 'length': None, 'method': 'GET', 'transfer': None}\n?           -------\n\n+ {'body': '', 'length': None, 'method': 'GET', 'transfer': None}"
+  },
+  "limitation": "Author-only local MockTransport checks; no actual network, protocol framing validation or model result. Earlier presence disproves introduction at a later refactor; not proof of first-ever origin."
+}

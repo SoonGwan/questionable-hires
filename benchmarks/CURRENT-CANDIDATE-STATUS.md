@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Full-history transfer preflight — 2026-09-15, parent `97a9b72`
+
+[Frozen redirect review](HTTPX-REDIRECT-HISTORY-01-PROTOCOL.md) uses a separate
+full HTTPX history at the same pinned source (125 files, 1,499 ancestors). Native
+2-test controls and nine real Client/MockTransport observations pass the author
+preflight; deliberate failures retain actual/expected differences. Earlier
+middleware presence permits checking attribution versus introduction. Previous
+shallow checkouts remain untouched. **No model sessions yet**, no performance
+claim, and no featured changes. The next fixed pair is baseline then skill.
+
+한국어: 같은 코드의 전체 이력을 별도로 확보해 실제 저장소 기반 새 과제를 고정했다.
+기존 테스트와 정상·변경 동작의 사전 검증은 끝났지만 모델 성능 측정은 아직이다.
+기존 얕은 이력 실험과 수치는 그대로 보존한다.
+
 ## Distant history ranges — 2026-09-15, parent `671128e`
 
 Candidate `00981b0`: **609 tests / 93.865s**, full local regression passes with
