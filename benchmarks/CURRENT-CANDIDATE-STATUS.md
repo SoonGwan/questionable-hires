@@ -11,6 +11,18 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [output-choice follow-up](RECEIPT-GUIDE-COMPACT-01.md#output-choice-follow-up--2026-09-14-previous-source-da5b10e),
+previous source `da5b10e`: explicitly prefer existing compact JSON for agent use.
+The retained measured helper object is 6,036 bytes indented / 5,516 compact
+(−8.61%), with complete parsed equality. No runtime or integrity change; 47
+helper and 12 packaging tests pass. This is output arithmetic, not model token
+savings; instruction adoption and whole-task cost effects are not yet measured.
+
+한국어: Receipt가 이미 제공하는 압축 JSON을 에이전트 실행의 기본 선택으로
+명확히 안내했다. 보존된 실제 결과는 모든 필드를 유지하면서 6,036 → 5,516바이트
+(8.61% 감소)다. 실행 코드·원본 보존 검사는 바꾸지 않았고 관련 테스트 59개가
+통과했다. 출력 크기의 계산이며 새 안내의 실제 채택·전체 토큰 절감 증거는 아니다.
+
 Receipt [single-guide adoption 01](RECEIPT-GUIDE-MODEL-01-REVIEW.md), launch
 `885a1f5`, resources `723be6f`: 76,746 tokens / 49.094s. The compact guide and
 helper are used; original native evidence shows two defect-specific failures

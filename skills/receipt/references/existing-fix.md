@@ -62,7 +62,8 @@ JSON
 
 ## Read the evidence, not just the exit code
 
-JSON is compact; `--pretty` adds indentation without changing fields or captured output.
+Use default compact JSON for agent execution; it retains every field and native
+output. Reserve `--pretty` for a human-readable JSON request, not extra evidence.
 
 CLI 0 means observations collected, **not proof**. Inspect each actual assertion,
 requested test identity, before failure/after pass, copied-import evidence,
