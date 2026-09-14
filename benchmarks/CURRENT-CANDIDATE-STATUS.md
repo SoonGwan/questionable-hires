@@ -11,20 +11,35 @@ it has not established a broad 20–30% gain.
 
 ## Reviewed checkpoint 08 — 2026-09-14, launch `de3cbc0`
 
+Receipt [tree adoption 01](RECEIPT-TREE-MODEL-01-REVIEW.md), launch `eb16150`,
+resources `ec0cc28`: guard adopted without custom hash code/listing. 76,962 tokens /
+46.154s: −6.43% / −14.46% versus output-choice 01, but +0.28% / −5.99% versus
+guide 01. Original five-test native evidence is present. Separate replay matches
+native/selected fields, **not full tree identity**: retained post-collector Git
+state differs; original per-file inventory is unavailable. A leading command
+prefix is also missing. Exposed n=1/shared cache/unequal work, no general gain.
+
+한국어: 전체 변경 감지 기능을 사용했고 별도 해시 코드·목록은 만들지 않았다.
+76,962토큰·46.154초로 직전 대비 6.43%·14.46% 감소했지만 더 이전 안내 실행
+대비 토큰은 0.28% 증가했다. 원본 테스트 5개의 전후 증거는 확인됐다.
+별도 재실행은 테스트·선택 파일 결과가 일치하지만 전체 파일 지문은 다르다.
+수집 후 Git 상태를 재사용했고 원본 전체 파일별 지문이 없어 완전 동일성을
+주장할 수 없다. 선행 명령 출력 누락도 남아 있다. 단일 기존 과제로 일반화하지 않는다.
+
 Receipt [optional tree guard candidate](RECEIPT-TREE-GUARD-01.md), previous source
 `41b5f28`: requested whole-project preservation can use bounded internal inventories
 instead of a custom hash wrapper. Includes Git/ignored files, directories/modes
 and link text; no target traversal or restoration, not a sandbox. Nine actual
 native mutation subcases reject changes; eight guard tests plus 47 helper and 12
-packaging tests pass. Guide +896 bytes and two opt-in inventory reads; model
-adoption, wrapper removal and whole-task efficiency remain unmeasured.
+packaging tests pass. Guide +896 bytes and two opt-in inventory reads. Subsequent
+adoption is reviewed above; general whole-task efficiency remains unproven.
 
 한국어: 전체 원본 보존이 필요한 경우에만 켜는 변경 감지 기능을 추가했다.
 모델이 별도 해시 검사 코드를 만드는 대신 내부에서 제한된 범위로 비교한다.
 Git·무시된 파일·디렉터리 권한·링크 자체를 포함하며 링크 대상은 읽지 않는다.
 실제 테스트 실행 중 원본을 바꾸는 9종을 탐지했고 관련 테스트 67개가 통과했다.
 격리·복구 기능은 아니다. 안내는 896바이트 늘고 선택 시 전체 읽기가 추가된다.
-모델의 실제 채택·중복 코드 제거·토큰과 시간 절감은 아직 측정하지 않았다.
+후속 실행의 실제 채택·중복 코드 제거는 위에 기록했으며 일반적인 효율 개선은 미입증이다.
 
 Receipt [output-choice screen 01](RECEIPT-OUTPUT-CHOICE-01-REVIEW.md), launch
 `15a2e38`, resources `72e1ff2`: compact output adopted, but 82,253 tokens / 53.954s,

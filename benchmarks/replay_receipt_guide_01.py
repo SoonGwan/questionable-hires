@@ -25,12 +25,16 @@ def inventory(root):
 def main():
     global RUN, REV
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--profile', choices=['guide-01', 'output-choice-01'], default='guide-01')
+    parser.add_argument('--profile', choices=['guide-01', 'output-choice-01', 'tree-01'], default='guide-01')
     args = parser.parse_args()
     output_choice = args.profile == 'output-choice-01'
     if output_choice:
         RUN = ROOT / 'benchmarks/local-runs/receipt-output-choice-01'
         REV = '15a2e38'
+    tree_profile = args.profile == 'tree-01'
+    if tree_profile:
+        RUN = ROOT / 'benchmarks/local-runs/receipt-tree-model-01'
+        REV = 'eb16150'
     module = importlib.util.spec_from_file_location('runner', ROOT / 'benchmarks/run.py')
     runner = importlib.util.module_from_spec(module)
     module.loader.exec_module(runner)
@@ -62,14 +66,19 @@ def main():
     assert next(e['usage'] for e in reversed(events) if e['type'] == 'turn.completed') == meta['usage']
     item_id = 'item_7' if output_choice else 'item_5'
     item = next(e['item'] for e in events if e['type'] == 'item.completed' and e.get('item', {}).get('id') == item_id)
-    recipe = ast.literal_eval(re.search(r'spec = (\{.*?\n\})\n(?:result|print)', item['command'], re.S).group(1))
+    recipe = ast.literal_eval(re.search(r'spec = (\{.*?\n\})\n(?:result|print|commands)', item['command'], re.S).group(1))
     original, _ = json.JSONDecoder().raw_decode(item['aggregated_output'])
-    options = [] if output_choice else ['--pretty']
+    options = [] if output_choice or tree_profile else ['--pretty']
     assert ('--pretty' in item['command']) == bool(options)
     with tempfile.TemporaryDirectory(prefix='qh-receipt-replay-', dir=RUN) as folder:
         copy = Path(folder) / 'project'
         shutil.copytree(workspace, copy)
         copied_before = inventory(copy)
+        if tree_profile:
+            guard_spec = importlib.util.spec_from_file_location('frozen_guard', copy / '.agents/skills/receipt/scripts/compare.py')
+            guard = importlib.util.module_from_spec(guard_spec)
+            guard_spec.loader.exec_module(guard)
+            tree_before, tree_bytes = guard.tree_inventory(copy)
         process = subprocess.run(['python3', '-B', '.agents/skills/receipt/scripts/compare.py',
                                   '--source', '.', '--spec', '-', *options], cwd=copy,
                                  input=json.dumps(recipe), capture_output=True, text=True, timeout=40)
@@ -86,19 +95,37 @@ def main():
                 output = re.sub(r'\.receipt-[^/]+/', '.receipt-<COPY>/', output)
                 check['output'] = re.sub(r'Ran 5 tests in [0-9.]+s', 'Ran 5 tests in <TIME>s', output)
             return result
-        assert normalized(original, str(workspace)) == normalized(replay, str(copy))
+        original_normal = normalized(original, str(workspace))
+        replay_normal = normalized(replay, str(copy))
+        full_match = original_normal == replay_normal
+        guard_comparison = None
+        if tree_profile:
+            original_guard = original_normal.pop('tree_guard')
+            replay_guard = replay_normal.pop('tree_guard')
+            assert original_guard['unchanged'] and replay_guard['unchanged']
+            assert guard.tree_inventory(copy) == (tree_before, tree_bytes)
+            assert replay_guard['entries'] == len(tree_before)
+            assert replay_guard['file_bytes'] == tree_bytes
+            encoded = json.dumps(tree_before, sort_keys=True, separators=(',', ':')).encode()
+            assert replay_guard['inventory_sha256'] == hashlib.sha256(encoded).hexdigest()
+            guard_comparison = dict(original=original_guard, replay=replay_guard,
+                exact_match=original_guard == replay_guard,
+                limitation='Retained Git index is post-collector state; original full per-file inventory was not captured. Do not infer identical original/replay tree identity.')
+        assert original_normal == replay_normal
         assert inventory(copy) == copied_before
         safe_replay = json.loads(json.dumps(replay).replace(str(copy), '<REPLAY_PROJECT>'))
     assert inventory(workspace) == snapshot and inventory(cell / 'project') == project_snapshot
     report = {'kind': 'separate author recipe replay, not original model evidence',
               'profile': args.profile,
-              'recipe': recipe, 'exit_code': 0, 'observations_match': True,
+              'recipe': recipe, 'exit_code': 0, 'observations_match': full_match,
+              'native_and_selected_fields_match': True,
+              'tree_guard_comparison': guard_comparison,
               'normalization': 'only project/copy paths and native test durations',
               'raw_usage_resources_reconciled': True, 'original_inventories_unchanged': True,
               'replay': safe_replay}
     with (RUN / 'author-replay.json').open('x') as stream:
         stream.write(json.dumps(report, indent=2) + '\n')
-    print('Literal recipe replay matches native outcomes, fields and inventories.')
+    print('Literal recipe replay matches native/selected fields; complete result match:', full_match)
 
 
 if __name__ == '__main__':

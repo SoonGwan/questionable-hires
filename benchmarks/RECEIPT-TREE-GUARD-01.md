@@ -69,3 +69,7 @@ unmeasured. The next screen must preserve native suite, source identity, complet
 original-tree requirements and cleanup, and retain unnecessary duplicate work if
 it occurs. Do not extrapolate a cost win from compact result fields or passing
 local tests. No featured/historical measurements or charts change.
+
+Follow-up: [tree adoption 01](RECEIPT-TREE-MODEL-01-REVIEW.md) observes use without
+custom hashing, with mixed cost comparisons and a disclosed original/replay tree
+identity difference. The candidate's validation above predates that model run.
