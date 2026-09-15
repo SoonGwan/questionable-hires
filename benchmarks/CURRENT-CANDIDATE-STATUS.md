@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt selection native preflight — 2026-09-15, parent `ca3da48`
+
+[New authored matched workflow pair](RECEIPT-SELECTION-01-PREFLIGHT.md) varies
+existing native comparison support while retaining the same allocation history,
+five assertions and task criteria. Actual project-runner/helper controls reject
+the two intended defects, retain three passing controls, and pass all five after
+the fix. Source/modes and cleanup are checked. **No model session or gain claim.**
+This is one authored scenario under two support conditions, not two real projects
+or a replacement for broad eight-role and real-source evidence.
+
+한국어: 기존 비교 도구 유무를 나눈 새 작성 과제의 실제 정상/결함 대조를 통과했다.
+하나의 업무 시나리오를 짝지은 준비 단계이며 모델 성능이나 실제 프로젝트 성과는
+아직 아니다. 다음 실행 전 조건과 순서를 고정한다.
+
 ## Receipt tool-selection guidance — 2026-09-15, parent `6cf9fb1`
 
 [Selection-rule revision](RECEIPT-TOOL-SELECTION-01.md) removes the assumption
