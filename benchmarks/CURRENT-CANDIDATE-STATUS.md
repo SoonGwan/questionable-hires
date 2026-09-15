@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## HTTPX JSON three-session checkpoint — 2026-09-15, launch `fa86d62`
+
+[Original-session cost observations and pending review](HTTPX-JSON-01-CHECKPOINT.md):
+all three scheduled cells completed without timeout/replacement. Baseline/current/
+lean total tokens: 127,296 / 188,038 / 221,517; wall seconds: 100.476 / 80.399 /
+80.229. Lean costs more than current with essentially unchanged time; no candidate
+promotion. Complete scoring and privacy-safe evidence publication remain pending.
+Both skill sessions inspect substantial helper code, suggesting an interface/
+usability question for the next improvement, not proof of a causal token saving.
+
+한국어: 새 실제 코드 과제 3세션을 완료했다. 짧은 후보는 현재 스킬보다 토큰이
+17.8% 늘어 승격하지 않는다. 채점·증거 공개 검토를 마친 뒤 사용 인터페이스 개선을
+검토한다. 아직 전체 성능 향상 목표 달성이 아니며 대표 그래프는 그대로다.
+
 ## Receipt pytest loading correction — 2026-09-15, parent `99c25be`
 
 [Native regression and real HTTPX verification](RECEIPT-PYTEST-LOADING-01.md)
