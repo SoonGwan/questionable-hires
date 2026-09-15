@@ -1,0 +1,213 @@
+{
+  "session_id": "01a0a268-1478-7dc3-90a0-5bc1f5c47eee",
+  "source_bytes": 129942,
+  "source_sha256": "c36f1aafede6524293d435633d0e8c56acfc4f5ed9b6f2dc801925ee154adc9a",
+  "source_lines": 43,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "41c0854846df5573f5696f554bac043dcd13aceffc097d1f85a6fbde23599503",
+      "record": {
+        "timestamp": "2026-09-15T00:12:14.668Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0470adb4ad595167016aa88d5afa0487d0bb0e59141782fce1",
+          "status": "completed",
+          "call_id": "call_4Sjygb5fISJcIYgmoucM0wMK",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g '*receipt*' -g '*ledger*' -g '*upload*' -g '*test*' -g 'pyproject.toml' -g 'pytest.ini' -g 'SKILL.md' -g 'README*' -g 'setup.cfg' -g 'Makefile' -g 'tox.ini'\",\"max_output_tokens\":5000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/con-artist/SKILL.md\"}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a268-14bc-7543-92ed-603053a4644b",
+            "create_time": 1789431128.108863
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "28ffda3a7d2a758730849c32c623275754a20af6845684c66f7e8ceaaab99cc7",
+      "record": {
+        "timestamp": "2026-09-15T00:12:14.875Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a268-3a9b-7ba0-a064-145c189b70bc",
+          "call_id": "call_4Sjygb5fISJcIYgmoucM0wMK",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"9d6258\",\"wall_time_seconds\":0.00000275,\"exit_code\":0,\"original_token_count\":29,\"output\":\"<WORKSPACE>\\ntest_receipts.py\\ningest/ledger.py\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d16453\",\"wall_time_seconds\":0.000002708,\"exit_code\":0,\"original_token_count\":472,\"output\":\"---\\nname: con-artist\\ndescription: Audit whether tests detect broken behavior by tracing assertions and running narrow controlled mutations in an isolated workspace; use for test-quality reviews, not routine test execution.\\n---\\n\\n# Con Artist\\n\\n> Your mock is impressed with itself.\\n\\nUse supplied requirements, source and the project runner. Discover missing context inside the permitted root; batch independent reads and reuse unchanged evidence. Read more or run another check when it can change the decision or satisfies an explicit requirement.\\n\\nTrace the requested assertions to their actual effect and a reachable fault.\\nUse the native runner and correct-code baseline, then test a distinct meaningful\\nfault in an isolated copy or valid substitution. Preserve bindings/compiler context\\nand restore substitutions; wrong imports, syntax errors and equivalent mutations\\ndo not demonstrate sensitivity. Inspect the actual assertion and runner errors,\\nnot just a nonzero exit.\\n\\nIf the fault survives, check a stronger assertion on both correct and faulty code:\\npass the former, reject the intended effect in the latter. If detected, identify\\nthe detecting check and limit the claim to that fault. Without execution label\\nconcerns static. Apply improvements only when requested, never the deliberate fault.\\n\\nOptional [context](references/python-context.md), [isolated audits](references/python-audit.md)\\nand [native test replacements](references/python-audit-probes.md) replace missing\\nplumbing, not existing adequate support. Extra faults need distinct material\\nboundaries, not a search for a flattering mutation score.\\n\\nPreserve user changes and explicit requirements. Review or diagnosis does not authorize implementation or external actions. Report the decisive evidence and limits; stop when the requested outcome and checks are established, or identify the specific missing evidence.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a268-14bc-7543-92ed-603053a4644b",
+            "create_time": 1789431134.875497
+          }
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "9add02e1b23fa3fb3c0ef599bd6ef71e15e32ab910f4e2f7add94918dc8ba8a9",
+      "record": {
+        "timestamp": "2026-09-15T00:12:17.631Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0470adb4ad595167016aa88d60387487d0b7477aaf1b03f50f",
+          "status": "completed",
+          "call_id": "call_SyUmx39z8YTrMJfH6kZpKLXZ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"rg --files --hidden -g '!.git/**'; cat test_receipts.py ingest/ledger.py; git status --short\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a268-14bc-7543-92ed-603053a4644b",
+            "create_time": 1789431135.235214
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "8dd20b1118913daf779dd786beb3073a76d922f5987be16601a15b7f62b2af14",
+      "record": {
+        "timestamp": "2026-09-15T00:12:17.745Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a268-45d1-7613-9688-4023633248a7",
+          "call_id": "call_SyUmx39z8YTrMJfH6kZpKLXZ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"04aec8\",\"wall_time_seconds\":0.000001584,\"exit_code\":0,\"original_token_count\":497,\"output\":\"test_receipts.py\\n.agents/skills/con-artist/SKILL.md\\n.agents/skills/con-artist/scripts/context.py\\n.agents/skills/con-artist/scripts/audit.py\\n.agents/skills/con-artist/agents/openai.yaml\\n.agents/skills/con-artist/references/python-context.md\\n.agents/skills/con-artist/references/python-audit-advanced.md\\n.agents/skills/con-artist/references/python-audit-probes.md\\n.agents/skills/con-artist/references/python-audit.md\\n.agents/skills/con-artist/references/python-audit-batch.md\\ningest/endpoint.py\\ningest/__init__.py\\ningest/ledger.py\\nrequirements.md\\nimport sqlite3\\nimport tempfile\\nfrom pathlib import Path\\nimport unittest\\nfrom ingest.endpoint import handle_upload as accept\\n\\n\\nclass LedgerFixture(unittest.TestCase):\\n    def setUp(self):\\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-',\\n                                                  dir=Path(__file__).resolve().parent)\\n        self.addCleanup(self.scratch.cleanup)\\n        self.database = Path(self.scratch.name) / 'events.sqlite'\\n        connection = sqlite3.connect(self.database)\\n        try:\\n            connection.execute('CREATE TABLE events (id INTEGER PRIMARY KEY, payload BLOB NOT NULL)')\\n            connection.execute('INSERT INTO events VALUES (?, ?)', (10, b'previous'))\\n            connection.commit()\\n        finally:\\n            connection.close()\\n\\n\\nclass ReceiptTests(LedgerFixture):\\n    def test_acknowledges_binary_upload(self):\\n        self.assertEqual(accept(self.database, 20, b'\\\\x00\\\\xffnew'), {'accepted': 20})\\n\\n    def test_acknowledges_empty_upload(self):\\n        self.assertEqual(accept(self.database, 30, b''), {'accepted': 30})\\nimport sqlite3\\n\\n\\ndef write_event(database, event_id, payload):\\n    connection = sqlite3.connect(database)\\n    try:\\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\\n                           (event_id, payload))\\n        connection.commit()\\n    finally:\\n        connection.close()\\n    return {'accepted': event_id}\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a268-14bc-7543-92ed-603053a4644b",
+            "create_time": 1789431137.745851
+          }
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "8c16936cc966c5d23fa9cd3388cd8c3dca12136bcdf82a6d9e8ea3e01121747a",
+      "record": {
+        "timestamp": "2026-09-15T00:12:20.769Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0470adb4ad595167016aa88d63905487d0907a1f0f1fd8eeb7",
+          "status": "completed",
+          "call_id": "call_cNCM4uAX4JD81BDnwfjr7aU3",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat ingest/endpoint.py ingest/__init__.py requirements.md; ls -la\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a268-14bc-7543-92ed-603053a4644b",
+            "create_time": 1789431138.306094
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "d38ba98d6d23b1242c891cf2839b2c372379223095268d6b107059d8896834b8",
+      "record": {
+        "timestamp": "2026-09-15T00:12:20.874Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a268-520a-7700-845f-50cfb5a1a44d",
+          "call_id": "call_cNCM4uAX4JD81BDnwfjr7aU3",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6c244a\",\"wall_time_seconds\":0.000002625,\"exit_code\":0,\"original_token_count\":302,\"output\":\"from ingest.ledger import write_event as _record\\n\\n\\ndef handle_upload(database, event_id, payload):\\n    return _record(database, event_id, payload)\\nPython 3.9+ standard library; python3 -B -m unittest -v test_receipts.\\nSuccessful handle_upload must preserve the integer ID and exact bytes payload in\\nthe disk SQLite database, visible from a newly opened connection after it returns.\\nPreviously committed events must survive. The acknowledgment is not durability proof.\\nIDs are distinct positive integers and payloads are bytes, including empty/binary bytes.\\nNo networking or concurrent writers are in scope. Existing production/test files are\\nimmutable for this audit. Use disposable project-local copies, clean owned scratch,\\nand preserve all original bytes/modes. Do not install packages or change warnings.\\ntotal 16\\ndrwxr-xr-x@  7 admin  staff   224 Sep 15 09:12 .\\ndrwx------@  3 admin  staff    96 Sep 15 09:12 ..\\ndrwxr-xr-x@  3 admin  staff    96 Sep 15 09:12 .agents\\ndrwxr-xr-x@ 10 admin  staff   320 Sep 15 09:12 .git\\ndrwxr-xr-x@  5 admin  staff   160 Sep 15 09:12 ingest\\n-rw-r--r--@  1 admin  staff   662 Sep 15 09:12 requirements.md\\n-rw-r--r--@  1 admin  staff  1086 Sep 15 09:12 test_receipts.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a268-14bc-7543-92ed-603053a4644b",
+            "create_time": 1789431140.874482
+          }
+        }
+      }
+    },
+    {
+      "line": 34,
+      "line_sha256": "56ed252168413b3289ea22b4d5fee8193e59777706c34bbd35d759e38b763354",
+      "record": {
+        "timestamp": "2026-09-15T00:13:06.487Z",
+        "ordinal": 33,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0470adb4ad595167016aa88d6f6dd087d0b6d054b5f8eb5129",
+          "status": "completed",
+          "call_id": "call_9r92oUqTdiUeluZKBCwmpy8f",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nfrom pathlib import Path\\nimport hashlib\\nimport shutil\\nimport stat\\nimport subprocess\\nimport tempfile\\n\\nroot = Path.cwd().resolve()\\ndef snapshot():\\n    return {str(p.relative_to(root)): (hashlib.sha256(p.read_bytes()).hexdigest(), stat.S_IMODE(p.stat().st_mode))\\n            for p in root.rglob('*') if p.is_file() and '.git' not in p.relative_to(root).parts}\\nbefore = snapshot()\\ndriver = r'''\\nfrom pathlib import Path\\nimport inspect\\nimport sqlite3\\nimport sys\\nimport unittest\\nimport test_receipts\\nimport ingest.endpoint as endpoint\\nimport ingest.ledger as ledger\\n\\nroot = Path.cwd().resolve()\\nassert Path(test_receipts.__file__).resolve() == root / 'test_receipts.py'\\nassert Path(endpoint.__file__).resolve() == root / 'ingest/endpoint.py'\\nassert Path(ledger.__file__).resolve() == root / 'ingest/ledger.py'\\nassert test_receipts.accept is endpoint.handle_upload\\nassert test_receipts.accept.__globals__['_record'] is ledger.write_event\\nprint('BINDINGS VERIFIED:', root, flush=True)\\nprint('test_receipts.accept is endpoint.handle_upload; accept globals _record is ledger.write_event', flush=True)\\nprint('WRITER SOURCE:\\\\n' + inspect.getsource(ledger.write_event), flush=True)\\n\\nif sys.argv[1] == 'strong':\\n    def test_committed_ordered_rows_after_upload(self):\\n        self.assertEqual(test_receipts.accept(self.database, 20, b'\\\\x00\\\\xffnew'), {'accepted': 20})\\n        connection = sqlite3.connect(self.database)\\n        try:\\n            rows = connection.execute('SELECT id, payload FROM events ORDER BY id').fetchall()\\n        finally:\\n            connection.close()\\n        self.assertEqual(rows, [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')])\\n    test_receipts.ReceiptTests.test_committed_ordered_rows_after_upload = test_committed_ordered_rows_after_upload\\n\\ncalls = {'endpoint': 0, 'writer': 0}\\ndef profile(frame, event, arg):\\n    if event == 'call':\\n        if frame.f_code is endpoint.handle_upload.__code__:\\n            calls['endpoint'] += 1\\n        if frame.f_code is ledger.write_event.__code__:\\n            calls['writer'] += 1\\nsys.setprofile(profile)\\ntry:\\n    result = unittest.main(module=None, argv=['unittest', '-v', 'test_receipts'], exit=False).result\\nfinally:\\n    sys.setprofile(None)\\nexpected_calls = 3 if sys.argv[1] == 'strong' else 2\\nassert calls == {'endpoint': expected_calls, 'writer': expected_calls}, calls\\nprint('ACTUAL NATIVE TEST CALLS:', calls, flush=True)\\nsys.exit(0 if result.wasSuccessful() else 1)\\n'''\\ntry:\\n    with tempfile.TemporaryDirectory(prefix='.commit-audit-', dir=root) as scratch:\\n        scratch = Path(scratch)\\n        for variant in ('correct', 'faulty'):\\n            target = scratch / variant\\n            target.mkdir()\\n            shutil.copy2(root / 'test_receipts.py', target / 'test_receipts.py')\\n            shutil.copytree(root / 'ingest', target / 'ingest')\\n        ledger = scratch / 'faulty/ingest/ledger.py'\\n        source = ledger.read_text()\\n        assert source.count('        connection.commit()\\\\n') == 1\\n        ledger.write_text(source.replace('        connection.commit()\\\\n', ''))\\n        print('FAULT: delete only ledger connection.commit(); acknowledgment and finally/close unchanged.', flush=True)\\n        for check in ('existing', 'strong'):\\n            for variant in ('correct', 'faulty'):\\n                print('\\\\nCOMMAND: python3 -B -c <same binding-checked unittest driver> ' + check + ' (cwd=' + variant + ')', flush=True)\\n                completed = subprocess.run(['python3', '-B', '-c', driver, check], cwd=scratch / variant,\\n                                           text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)\\n                print(completed.stdout, end='', flush=True)\\n                print('EXIT:', completed.returncode, flush=True)\\n                expected = 1 if check == 'strong' and variant == 'faulty' else 0\\n                assert completed.returncode == expected, completed.stdout\\n                assert 'BINDINGS VERIFIED:' in completed.stdout\\n                assert 'ACTUAL NATIVE TEST CALLS:' in completed.stdout\\n                if expected:\\n                    assert 'FAIL: test_committed_ordered_rows_after_upload' in completed.stdout\\n                    assert 'FAILED (failures=1)' in completed.stdout\\n                    assert \\\"AssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (20, b'\\\\\\\\x00\\\\\\\\xffnew')]\\\" in completed.stdout\\n        scratch_path = scratch\\nfinally:\\n    assert snapshot() == before, 'Original file bytes or modes changed, or scratch remains'\\n    print('\\\\nPRESERVATION VERIFIED: original file hashes and modes unchanged; owned disposable copies removed.', flush=True)\\nPY\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a268-14bc-7543-92ed-603053a4644b",
+            "create_time": 1789431141.649918
+          }
+        }
+      }
+    },
+    {
+      "line": 37,
+      "line_sha256": "1869b92afd7b71fc5e3fa3130b19f4dd9c2b933ce2246012effee7e5adf691c9",
+      "record": {
+        "timestamp": "2026-09-15T00:13:06.854Z",
+        "ordinal": 36,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a269-05a6-7301-b58e-cd2e30ed60b6",
+          "call_id": "call_9r92oUqTdiUeluZKBCwmpy8f",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"9e55e7\",\"wall_time_seconds\":0.178133791,\"exit_code\":0,\"original_token_count\":1167,\"output\":\"FAULT: delete only ledger connection.commit(); acknowledgment and finally/close unchanged.\\n\\nCOMMAND: python3 -B -c <same binding-checked unittest driver> existing (cwd=correct)\\nBINDINGS VERIFIED: <WORKSPACE>/.commit-audit-6o1y96zy/correct\\ntest_receipts.accept is endpoint.handle_upload; accept globals _record is ledger.write_event\\nWRITER SOURCE:\\ndef write_event(database, event_id, payload):\\n    connection = sqlite3.connect(database)\\n    try:\\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\\n                           (event_id, payload))\\n        connection.commit()\\n    finally:\\n        connection.close()\\n    return {'accepted': event_id}\\n\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.006s\\n\\nOK\\nACTUAL NATIVE TEST CALLS: {'endpoint': 2, 'writer': 2}\\nEXIT: 0\\n\\nCOMMAND: python3 -B -c <same binding-checked unittest driver> existing (cwd=faulty)\\nBINDINGS VERIFIED: <WORKSPACE>/.commit-audit-6o1y96zy/faulty\\ntest_receipts.accept is endpoint.handle_upload; accept globals _record is ledger.write_event\\nWRITER SOURCE:\\ndef write_event(database, event_id, payload):\\n    connection = sqlite3.connect(database)\\n    try:\\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\\n                           (event_id, payload))\\n    finally:\\n        connection.close()\\n    return {'accepted': event_id}\\n\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.006s\\n\\nOK\\nACTUAL NATIVE TEST CALLS: {'endpoint': 2, 'writer': 2}\\nEXIT: 0\\n\\nCOMMAND: python3 -B -c <same binding-checked unittest driver> strong (cwd=correct)\\nBINDINGS VERIFIED: <WORKSPACE>/.commit-audit-6o1y96zy/correct\\ntest_receipts.accept is endpoint.handle_upload; accept globals _record is ledger.write_event\\nWRITER SOURCE:\\ndef write_event(database, event_id, payload):\\n    connection = sqlite3.connect(database)\\n    try:\\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\\n                           (event_id, payload))\\n        connection.commit()\\n    finally:\\n        connection.close()\\n    return {'accepted': event_id}\\n\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\\ntest_committed_ordered_rows_after_upload (test_receipts.ReceiptTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.008s\\n\\nOK\\nACTUAL NATIVE TEST CALLS: {'endpoint': 3, 'writer': 3}\\nEXIT: 0\\n\\nCOMMAND: python3 -B -c <same binding-checked unittest driver> strong (cwd=faulty)\\nBINDINGS VERIFIED: <WORKSPACE>/.commit-audit-6o1y96zy/faulty\\ntest_receipts.accept is endpoint.handle_upload; accept globals _record is ledger.write_event\\nWRITER SOURCE:\\ndef write_event(database, event_id, payload):\\n    connection = sqlite3.connect(database)\\n    try:\\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\\n                           (event_id, payload))\\n    finally:\\n        connection.close()\\n    return {'accepted': event_id}\\n\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\\ntest_committed_ordered_rows_after_upload (test_receipts.ReceiptTests) ... FAIL\\n\\n======================================================================\\nFAIL: test_committed_ordered_rows_after_upload (test_receipts.ReceiptTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<string>\\\", line 29, in test_committed_ordered_rows_after_upload\\nAssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')]\\n\\nSecond list contains 1 additional elements.\\nFirst extra element 1:\\n(20, b'\\\\x00\\\\xffnew')\\n\\n- [(10, b'previous')]\\n+ [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')]\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.009s\\n\\nFAILED (failures=1)\\nACTUAL NATIVE TEST CALLS: {'endpoint': 3, 'writer': 3}\\nEXIT: 1\\n\\nPRESERVATION VERIFIED: original file hashes and modes unchanged; owned disposable copies removed.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a268-14bc-7543-92ed-603053a4644b",
+            "create_time": 1789431186.854432
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

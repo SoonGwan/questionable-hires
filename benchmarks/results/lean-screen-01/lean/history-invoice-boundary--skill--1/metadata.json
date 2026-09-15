@@ -1,0 +1,126 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "history-invoice-boundary",
+  "skill": "necromancer",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "9b050b628b971c45ff80073172d26f262341ada0",
+  "skill_sha256": "9162d5d31d4a7eec253262d80cf2aa3ce04278c7c987567c7017fa19e9b8bad4",
+  "skill_resources_sha256": "d15ff53aa68e4eda3f257f7f28946c02efc0e8f229ccf714538983b162014c73",
+  "elapsed_seconds": 59.893,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 93097,
+    "cached_input_tokens": 79360,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1533,
+    "reasoning_output_tokens": 0
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Use $necromancer at .agents/skills/necromancer/SKILL.md.\n\nReview two proposed independent simplifications in amounts.amount_cents:\n(A) remove the isinstance(value, int) early return;\n(B) replace the final quantized return with return int(Decimal(value) * 100),\nleaving the early return unchanged. Do not combine the proposals.\nFor each, establish why the existing behavior was introduced from the actual\nrelevant commit change, then decide whether it is necessary under the current\nsupported invoice contract and caller. Verify current, A-only and B-only behavior\nthrough invoice.invoice_total for \"1.005\", \"-1.005\" and \"2.34\", comparing with\nthe required values. Cite the introducing commits and current call path. Give\nseparate recommendations, separating historical reason from current necessity.\nThis is review, not implementation: preserve all project files; no commits,\ndependency installs, network, publishing or external history fetching. Use -B\nfor Python. In-memory substitution is permitted. If you need scratch, keep it\ninside the project and remove it before finishing; captured output is enough.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "necromancer/SKILL.md": {
+      "kind": "file",
+      "sha256": "9162d5d31d4a7eec253262d80cf2aa3ce04278c7c987567c7017fa19e9b8bad4",
+      "mode": 420
+    },
+    "necromancer/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+      "mode": 420
+    },
+    "necromancer/references/focused-history-details.md": {
+      "kind": "file",
+      "sha256": "ab85f7679d3381f8c2b32fdc42f7af14e4e158d01005b58cbefcbe1b1666bffe",
+      "mode": 420
+    },
+    "necromancer/references/focused-history.md": {
+      "kind": "file",
+      "sha256": "82197558b96ad605014966df4b7f9fdfac46399d84ef3cabab8440fa8ed7db08",
+      "mode": 420
+    },
+    "necromancer/references/python-regions.md": {
+      "kind": "file",
+      "sha256": "69be417df178f230fa41b67db92028af4c1ffd110170b7a87064d0282d9d0114",
+      "mode": 420
+    },
+    "necromancer/scripts/python_regions.py": {
+      "kind": "file",
+      "sha256": "63898e304339775f5f7f46bfb2373567d9c23dad9583e6b70f5bf6ba3a258a95",
+      "mode": 420
+    },
+    "necromancer/scripts/trace.py": {
+      "kind": "file",
+      "sha256": "5116059d8f7cc2dc1ce0139a718656a64067657468c0d0ba670f00b019e821ed",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "necromancer/SKILL.md": {
+      "kind": "file",
+      "sha256": "9162d5d31d4a7eec253262d80cf2aa3ce04278c7c987567c7017fa19e9b8bad4",
+      "mode": 420
+    },
+    "necromancer/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+      "mode": 420
+    },
+    "necromancer/references/focused-history-details.md": {
+      "kind": "file",
+      "sha256": "ab85f7679d3381f8c2b32fdc42f7af14e4e158d01005b58cbefcbe1b1666bffe",
+      "mode": 420
+    },
+    "necromancer/references/focused-history.md": {
+      "kind": "file",
+      "sha256": "82197558b96ad605014966df4b7f9fdfac46399d84ef3cabab8440fa8ed7db08",
+      "mode": 420
+    },
+    "necromancer/references/python-regions.md": {
+      "kind": "file",
+      "sha256": "69be417df178f230fa41b67db92028af4c1ffd110170b7a87064d0282d9d0114",
+      "mode": 420
+    },
+    "necromancer/scripts/python_regions.py": {
+      "kind": "file",
+      "sha256": "63898e304339775f5f7f46bfb2373567d9c23dad9583e6b70f5bf6ba3a258a95",
+      "mode": 420
+    },
+    "necromancer/scripts/trace.py": {
+      "kind": "file",
+      "sha256": "5116059d8f7cc2dc1ce0139a718656a64067657468c0d0ba670f00b019e821ed",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 457,
+    "mode": 420,
+    "sha256": "0dca5717802b48451a59a6032f3c1a578c47113b6f0f58ce97deb5a7b2111045",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

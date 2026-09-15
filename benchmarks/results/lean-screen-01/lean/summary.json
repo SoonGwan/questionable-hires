@@ -1,0 +1,906 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "editor-snapshot-present",
+    "skill": "mother-in-law",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "6b29c12dfe0258e3c6cef8d357f01442617fb794",
+    "skill_sha256": "d37feb541b65462e7e270ec0c5f86e2ff3d57b6f87a18ef5e97c46d4fa7078db",
+    "skill_resources_sha256": "8042f84588517fa0135b17917ecb913f82ed6183528beff9c35271c8cf94e446",
+    "elapsed_seconds": 42.08,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 53696,
+      "cached_input_tokens": 46208,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1118,
+      "reasoning_output_tokens": 30
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $mother-in-law at .agents/skills/mother-in-law/SKILL.md.\n\nAdd native regression coverage for Editor.save in editor.py.\nRead test_editor.py and applicable project instructions. Existing test_support.py provides writes() with controlled entry, delayed serialization, and owned task cleanup.\n\nContract: persist receives a per-save snapshot of the full nested settings at\nsave entry. Later set_theme calls may edit live settings but must not mutate that\npending snapshot. Once the save completes, newer edits remain visible and dirty.\nWithout an intervening edit, completion marks the saved settings clean.\n\nPreserve the existing initial-state test. Add exactly two native test methods:\n(1) set a theme, save with no intervening edit, acknowledge, then verify stored\nsettings and clean state; (2) start saving one theme, change it again while persist\nis pending, inspect the still-pending payload, acknowledge, then inspect stored\nsettings, current settings and dirty state. Use independent expected values, not\nreferences that change alongside live state. Check the full nested payload, not\njust one scalar. The persist test double must record a deep copy of its argument\nAFTER acknowledgement, not eagerly on callback entry; this models delayed\nserialization and must not itself fix the application's snapshot behavior.\n\nExercise real Editor.save through the native framework with deterministic gates,\nactual callback-entry observation, bounded waits and failure-safe task cleanup.\nRun the resulting three-method suite once after writing tests. Keep real\nregression failures: do not modify production, skip, mark expectedFailure or\nweaken expectations. If an assertion fails, later dependent steps may unwind to\ncleanup; all required checkpoints must still exist and execute on conforming\nproduction. No browser, separate disposable probe or extra report is requested.\nRepair only test-authoring errors if needed; retain all attempts as evidence.\nReport native identities/results, demonstrated behavior, tested layer and limits.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "mother-in-law/SKILL.md": {
+        "kind": "file",
+        "sha256": "d37feb541b65462e7e270ec0c5f86e2ff3d57b6f87a18ef5e97c46d4fa7078db",
+        "mode": 420
+      },
+      "mother-in-law/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "e7ac9fbc8db01811c3b1a1ef776af05c13d641c4f93a5874a4d1c236d190a3ce",
+        "mode": 420
+      },
+      "mother-in-law/assets/controlled_fetch.py": {
+        "kind": "file",
+        "sha256": "d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c",
+        "mode": 420
+      },
+      "mother-in-law/references/browser.md": {
+        "kind": "file",
+        "sha256": "dbc70f7812433629a8904098b4e02cd7237f1274ad8206017e5c0869ab1086d7",
+        "mode": 420
+      },
+      "mother-in-law/references/component-probe.md": {
+        "kind": "file",
+        "sha256": "fa62d01619b2d8a51a12350134c9dd1eb6e8257b32543f6b1be89b8da633ac9d",
+        "mode": 420
+      },
+      "mother-in-law/references/native-tests.md": {
+        "kind": "file",
+        "sha256": "0f869f9131fc81e498cdb0010beb1dda22da1d97cc1de9889283caa0418bf211",
+        "mode": 420
+      },
+      "mother-in-law/scripts/sequence_probe.py": {
+        "kind": "file",
+        "sha256": "af071d203251131062f5c544d73e6109b8ccc14badb7108d2205b25b98d3cc2d",
+        "mode": 493
+      }
+    },
+    "installed_resources_after": {
+      "mother-in-law/SKILL.md": {
+        "kind": "file",
+        "sha256": "d37feb541b65462e7e270ec0c5f86e2ff3d57b6f87a18ef5e97c46d4fa7078db",
+        "mode": 420
+      },
+      "mother-in-law/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "e7ac9fbc8db01811c3b1a1ef776af05c13d641c4f93a5874a4d1c236d190a3ce",
+        "mode": 420
+      },
+      "mother-in-law/assets/controlled_fetch.py": {
+        "kind": "file",
+        "sha256": "d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c",
+        "mode": 420
+      },
+      "mother-in-law/references/browser.md": {
+        "kind": "file",
+        "sha256": "dbc70f7812433629a8904098b4e02cd7237f1274ad8206017e5c0869ab1086d7",
+        "mode": 420
+      },
+      "mother-in-law/references/component-probe.md": {
+        "kind": "file",
+        "sha256": "fa62d01619b2d8a51a12350134c9dd1eb6e8257b32543f6b1be89b8da633ac9d",
+        "mode": 420
+      },
+      "mother-in-law/references/native-tests.md": {
+        "kind": "file",
+        "sha256": "0f869f9131fc81e498cdb0010beb1dda22da1d97cc1de9889283caa0418bf211",
+        "mode": 420
+      },
+      "mother-in-law/scripts/sequence_probe.py": {
+        "kind": "file",
+        "sha256": "af071d203251131062f5c544d73e6109b8ccc14badb7108d2205b25b98d3cc2d",
+        "mode": 493
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 369,
+      "mode": 420,
+      "sha256": "2b7fa766d8d11f98867ca906c03720d8595e22b296f1c29bbd30297f8851bb58",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  },
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "history-invoice-boundary",
+    "skill": "necromancer",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "9b050b628b971c45ff80073172d26f262341ada0",
+    "skill_sha256": "9162d5d31d4a7eec253262d80cf2aa3ce04278c7c987567c7017fa19e9b8bad4",
+    "skill_resources_sha256": "d15ff53aa68e4eda3f257f7f28946c02efc0e8f229ccf714538983b162014c73",
+    "elapsed_seconds": 59.893,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 93097,
+      "cached_input_tokens": 79360,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1533,
+      "reasoning_output_tokens": 0
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $necromancer at .agents/skills/necromancer/SKILL.md.\n\nReview two proposed independent simplifications in amounts.amount_cents:\n(A) remove the isinstance(value, int) early return;\n(B) replace the final quantized return with return int(Decimal(value) * 100),\nleaving the early return unchanged. Do not combine the proposals.\nFor each, establish why the existing behavior was introduced from the actual\nrelevant commit change, then decide whether it is necessary under the current\nsupported invoice contract and caller. Verify current, A-only and B-only behavior\nthrough invoice.invoice_total for \"1.005\", \"-1.005\" and \"2.34\", comparing with\nthe required values. Cite the introducing commits and current call path. Give\nseparate recommendations, separating historical reason from current necessity.\nThis is review, not implementation: preserve all project files; no commits,\ndependency installs, network, publishing or external history fetching. Use -B\nfor Python. In-memory substitution is permitted. If you need scratch, keep it\ninside the project and remove it before finishing; captured output is enough.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "necromancer/SKILL.md": {
+        "kind": "file",
+        "sha256": "9162d5d31d4a7eec253262d80cf2aa3ce04278c7c987567c7017fa19e9b8bad4",
+        "mode": 420
+      },
+      "necromancer/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+        "mode": 420
+      },
+      "necromancer/references/focused-history-details.md": {
+        "kind": "file",
+        "sha256": "ab85f7679d3381f8c2b32fdc42f7af14e4e158d01005b58cbefcbe1b1666bffe",
+        "mode": 420
+      },
+      "necromancer/references/focused-history.md": {
+        "kind": "file",
+        "sha256": "82197558b96ad605014966df4b7f9fdfac46399d84ef3cabab8440fa8ed7db08",
+        "mode": 420
+      },
+      "necromancer/references/python-regions.md": {
+        "kind": "file",
+        "sha256": "69be417df178f230fa41b67db92028af4c1ffd110170b7a87064d0282d9d0114",
+        "mode": 420
+      },
+      "necromancer/scripts/python_regions.py": {
+        "kind": "file",
+        "sha256": "63898e304339775f5f7f46bfb2373567d9c23dad9583e6b70f5bf6ba3a258a95",
+        "mode": 420
+      },
+      "necromancer/scripts/trace.py": {
+        "kind": "file",
+        "sha256": "5116059d8f7cc2dc1ce0139a718656a64067657468c0d0ba670f00b019e821ed",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "necromancer/SKILL.md": {
+        "kind": "file",
+        "sha256": "9162d5d31d4a7eec253262d80cf2aa3ce04278c7c987567c7017fa19e9b8bad4",
+        "mode": 420
+      },
+      "necromancer/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+        "mode": 420
+      },
+      "necromancer/references/focused-history-details.md": {
+        "kind": "file",
+        "sha256": "ab85f7679d3381f8c2b32fdc42f7af14e4e158d01005b58cbefcbe1b1666bffe",
+        "mode": 420
+      },
+      "necromancer/references/focused-history.md": {
+        "kind": "file",
+        "sha256": "82197558b96ad605014966df4b7f9fdfac46399d84ef3cabab8440fa8ed7db08",
+        "mode": 420
+      },
+      "necromancer/references/python-regions.md": {
+        "kind": "file",
+        "sha256": "69be417df178f230fa41b67db92028af4c1ffd110170b7a87064d0282d9d0114",
+        "mode": 420
+      },
+      "necromancer/scripts/python_regions.py": {
+        "kind": "file",
+        "sha256": "63898e304339775f5f7f46bfb2373567d9c23dad9583e6b70f5bf6ba3a258a95",
+        "mode": 420
+      },
+      "necromancer/scripts/trace.py": {
+        "kind": "file",
+        "sha256": "5116059d8f7cc2dc1ce0139a718656a64067657468c0d0ba670f00b019e821ed",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 457,
+      "mode": 420,
+      "sha256": "0dca5717802b48451a59a6032f3c1a578c47113b6f0f58ce97deb5a7b2111045",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  },
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "ledger-delivery-b",
+    "skill": "receipt",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "562854580f33f36e06a2ee05755eb8d7737608d8",
+    "skill_sha256": "56a8f46cd5d8ca0869d78d2d84848617e40eeeadf507d3c334597e60c1065882",
+    "skill_resources_sha256": "a91112e48787004420447017e9efa0709f42024e78d878d86c814753fbbab740",
+    "elapsed_seconds": 34.884,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 79384,
+      "cached_input_tokens": 68096,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 726,
+      "reasoning_output_tokens": 9
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $receipt at .agents/skills/receipt/SKILL.md.\n\nVerify whether the committed duplicate-delivery change in ledger/delivery.py actually satisfies requirements.md. Compare HEAD^ and HEAD with the identical five current tests and schema, using real SQLite writes and fresh-connection balance reads, not a reimplementation or mocks. Observe defect-specific before failures, after outcomes and passing controls; an incomplete fix must be reported as incomplete, not repaired or called verified. Identify loaded revisions and copy-local imports. Follow AGENTS.md, preserve every original file and user change, and remove owned copies without retaining a harness or report.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "receipt/SKILL.md": {
+        "kind": "file",
+        "sha256": "56a8f46cd5d8ca0869d78d2d84848617e40eeeadf507d3c334597e60c1065882",
+        "mode": 420
+      },
+      "receipt/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+        "mode": 420
+      },
+      "receipt/references/existing-fix.md": {
+        "kind": "file",
+        "sha256": "7be39c3dec31166d3f411a72a90c4088a999bd6e13a1da84545f5183b68d13b1",
+        "mode": 420
+      },
+      "receipt/scripts/compare.py": {
+        "kind": "file",
+        "sha256": "2fb1f0ebedaa1304522c864ed68794f6ba4ef0a49b2370c1cd005a5f7dc89049",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "receipt/SKILL.md": {
+        "kind": "file",
+        "sha256": "56a8f46cd5d8ca0869d78d2d84848617e40eeeadf507d3c334597e60c1065882",
+        "mode": 420
+      },
+      "receipt/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+        "mode": 420
+      },
+      "receipt/references/existing-fix.md": {
+        "kind": "file",
+        "sha256": "7be39c3dec31166d3f411a72a90c4088a999bd6e13a1da84545f5183b68d13b1",
+        "mode": 420
+      },
+      "receipt/scripts/compare.py": {
+        "kind": "file",
+        "sha256": "2fb1f0ebedaa1304522c864ed68794f6ba4ef0a49b2370c1cd005a5f7dc89049",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 656,
+      "mode": 420,
+      "sha256": "97edfd645ba93d8e012191b1ef0ff85130dc5e264b0d561ca9820206837d4ace",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    },
+    "initial_tree": "c4c3c7008b4322e412c9c759ff6514aa9d93e74d",
+    "initial_working_files": {
+      "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "checks/test_delivery.py": "4571e36668f830a1b7f80d00eedd7f0452909774d68962efe84e35eafb693021",
+      "notes.txt": "f7e2fc94e87a988b62e2db88c4583e2429f75d1236da8558a7e1d2e7cdf4f320",
+      ".cache/owner.txt": "9461b774ec5cce3cc06265c8cdefbede06968f6bd7df2bf7b26579611d031d37"
+    }
+  },
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "refresh-owner-a",
+    "skill": "hostage-negotiator",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "a20bb0e928faaacb6c7bc78c5adbcd8a62302042",
+    "skill_sha256": "d2a8017ff268dea8af7f7459e63ff7bd7eeba24626e82c4b3815aa702ad660c6",
+    "skill_resources_sha256": "bf237fac5994dc3ca4dca2e7fe9a65db6b30ea1c28ad7d39ad10e3204ea2df96",
+    "elapsed_seconds": 110.105,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 94200,
+      "cached_input_tokens": 83712,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 3227,
+      "reasoning_output_tokens": 295
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $hostage-negotiator at .agents/skills/hostage-negotiator/SKILL.md.\n\nReview Preview.refresh against requirements.md and fix preview.py only if\nneeded. Add rerunnable standard-library unittest tests using actual Preview with\ncontrolled callbacks. Cover both completion orders, earlier failure/cancellation\nwhile latest remains pending, latest failure/cancellation and retry, synchronous\ncallback failure, result/error identity, prior display retention and instance isolation.\nBound behavior-dependent waits and clean up owned tasks; no timing sleeps. Use\npython3 -B -m unittest discover -v and report actual native results and the test\nprocess exit. Never infer passed tests solely from a later diff/status or prior prose.\nPreserve requirements and unrelated owner notes. Test support may be added inside\nthis project; no dependencies, network, external discovery, deployment or publishing.\nDo not serialize or suppress overlapping refresh calls to make the tests pass.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [
+        {
+          "item_id": "item_6",
+          "reported_tests": 5,
+          "observed_verbose_headers": 2,
+          "interpretation": "Possible partial transcript or nonstandard runner output; manual review required."
+        }
+      ],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "hostage-negotiator/SKILL.md": {
+        "kind": "file",
+        "sha256": "d2a8017ff268dea8af7f7459e63ff7bd7eeba24626e82c4b3815aa702ad660c6",
+        "mode": 420
+      },
+      "hostage-negotiator/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "872db8d04d23327f713a45d5d98d41a5784f02e64a76c374c413c7e54643f18f",
+        "mode": 420
+      },
+      "hostage-negotiator/assets/controlled_call.mjs": {
+        "kind": "file",
+        "sha256": "144bf5675fe7f03a0c4af57c6d6464d283b1109974f3891a66c397d357011846",
+        "mode": 420
+      },
+      "hostage-negotiator/assets/controlled_call.py": {
+        "kind": "file",
+        "sha256": "a8112c1bfd4e2962ace968dc48e6b6c61e295961d793034b07984678e6776303",
+        "mode": 420
+      },
+      "hostage-negotiator/references/async-callback.md": {
+        "kind": "file",
+        "sha256": "fe6513dec00cf5845d034aba7e629eb6ce570faeb993b857d867a1ad83b1c92e",
+        "mode": 420
+      },
+      "hostage-negotiator/references/native-evidence.md": {
+        "kind": "file",
+        "sha256": "317d7a635fac645cd7424c71fdc5a362d678de943b7bc1600e5312a0497bb91e",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "hostage-negotiator/SKILL.md": {
+        "kind": "file",
+        "sha256": "d2a8017ff268dea8af7f7459e63ff7bd7eeba24626e82c4b3815aa702ad660c6",
+        "mode": 420
+      },
+      "hostage-negotiator/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "872db8d04d23327f713a45d5d98d41a5784f02e64a76c374c413c7e54643f18f",
+        "mode": 420
+      },
+      "hostage-negotiator/assets/controlled_call.mjs": {
+        "kind": "file",
+        "sha256": "144bf5675fe7f03a0c4af57c6d6464d283b1109974f3891a66c397d357011846",
+        "mode": 420
+      },
+      "hostage-negotiator/assets/controlled_call.py": {
+        "kind": "file",
+        "sha256": "a8112c1bfd4e2962ace968dc48e6b6c61e295961d793034b07984678e6776303",
+        "mode": 420
+      },
+      "hostage-negotiator/references/async-callback.md": {
+        "kind": "file",
+        "sha256": "fe6513dec00cf5845d034aba7e629eb6ce570faeb993b857d867a1ad83b1c92e",
+        "mode": 420
+      },
+      "hostage-negotiator/references/native-evidence.md": {
+        "kind": "file",
+        "sha256": "317d7a635fac645cd7424c71fdc5a362d678de943b7bc1600e5312a0497bb91e",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 297,
+      "mode": 420,
+      "sha256": "2268f0fc7c4370e714527cddb765f5c410b87d8d341d6ea991d7d45c61400c5d",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  },
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "runner-environment-timing",
+    "skill": "exorcist",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "8871bdcc97009c427b32cf2b9b673cb916aae2ee",
+    "skill_sha256": "32fbca49cbe9e48ff8158fd4d230e1ba6341ed1e9f1d7dd13a02eb2cf9fae17e",
+    "skill_resources_sha256": "f18f2e7224bf98d85aa2f716898136b229d12e14835ba352ad74309cc96aefc7",
+    "elapsed_seconds": 50.386,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 86639,
+      "cached_input_tokens": 75520,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1248,
+      "reasoning_output_tokens": 27
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $exorcist at .agents/skills/exorcist/SKILL.md.\n\nThe worker's test makes three attempts although setUp sets REQUEST_RETRIES=0; the standalone command in incident.md makes one. A teammate suspects an intermittent cache problem. Diagnose the discrepancy with deterministic local evidence using the actual worker and test setup. Do not modify existing files or access external services. Python 3 and unittest are sufficient; do not install dependencies.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "exorcist/SKILL.md": {
+        "kind": "file",
+        "sha256": "32fbca49cbe9e48ff8158fd4d230e1ba6341ed1e9f1d7dd13a02eb2cf9fae17e",
+        "mode": 420
+      },
+      "exorcist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "7b32eff2aac69985ed633c2f8aa63ddaf4ff584230b1f3540ac82c91dc81b87a",
+        "mode": 420
+      },
+      "exorcist/references/bounded-probe.md": {
+        "kind": "file",
+        "sha256": "cdb0c90431dcc2c8be32dc842ee2357cd0fb2e0dee35c9f58803eebc4ea9e6be",
+        "mode": 420
+      },
+      "exorcist/scripts/run_probe.py": {
+        "kind": "file",
+        "sha256": "c52b5e17303b161acb5bb6130a56a821df3f7f6c54149d5d0f2ba31631285a89",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "exorcist/SKILL.md": {
+        "kind": "file",
+        "sha256": "32fbca49cbe9e48ff8158fd4d230e1ba6341ed1e9f1d7dd13a02eb2cf9fae17e",
+        "mode": 420
+      },
+      "exorcist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "7b32eff2aac69985ed633c2f8aa63ddaf4ff584230b1f3540ac82c91dc81b87a",
+        "mode": 420
+      },
+      "exorcist/references/bounded-probe.md": {
+        "kind": "file",
+        "sha256": "cdb0c90431dcc2c8be32dc842ee2357cd0fb2e0dee35c9f58803eebc4ea9e6be",
+        "mode": 420
+      },
+      "exorcist/scripts/run_probe.py": {
+        "kind": "file",
+        "sha256": "c52b5e17303b161acb5bb6130a56a821df3f7f6c54149d5d0f2ba31631285a89",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 297,
+      "mode": 420,
+      "sha256": "3deb62fc862fad7bd4412167494509ea0790c67d105d708f8e45ec8702202de7",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  },
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "sqlite-commit-audit",
+    "skill": "con-artist",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "6770f5e67f5ae986b23fe1dd3b9523fc7d3de8a7",
+    "skill_sha256": "380cbd55cc0d53ab5fe33473d53447df37310438369fdf3248f4e86bcdaab622",
+    "skill_resources_sha256": "7a478e58dff514daa1760beea44076dc825fabee1f64275d2e6b9ab866f5a983",
+    "elapsed_seconds": 70.118,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 90255,
+      "cached_input_tokens": 80640,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1928,
+      "reasoning_output_tokens": 199
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $con-artist at .agents/skills/con-artist/SKILL.md.\n\nAudit whether the existing receipt tests detect a lost commit in this upload\npath. Inspect the actual test, endpoint binding and ledger implementation. Execute\nthe existing native tests on correct code and an isolated reachable fault omitting\nthe ledger commit (keep acknowledgment and connection closing unchanged). Verify\nthe actual test's imported endpoint and that endpoint's writer binding in the same\nprocess as the checks, not just in a separate import-only process.\nIf the tests survive, execute the same stronger native assertion on both versions:\nread through a new SQLite connection after the actual upload call and compare the\ncomplete ordered rows, retaining the pre-existing row and exact new binary payload.\nShow correct code passing and the faulty code failing for missing committed data,\nnot setup/import failures. Preserve originals and remove owned disposable copies.\nCaptured commands/results are sufficient; no permanent harness/report is required.\nWork only inside this project: no services, dependencies, other skills, delegation,\npublishing or production repair.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "380cbd55cc0d53ab5fe33473d53447df37310438369fdf3248f4e86bcdaab622",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "946296250908e7db99fac39b5b624ddae9b8a6906ec9838af13bfa09e9c92862",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "338ebace94acef5fdb4e008283e3ad190eefd5ac2ddf3951c7e7491621515b29",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "9bd26b21f4c388e6c80fceaa3719c3e7b898323d4acf220ca9b12fe77b8f5e32",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "9b30ff543fde1b81d8408ae3b73f19bba2b28c33cb189819f6ecd4eb0ff9d579",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "de51571ff0e549a67f74689afcb017f0624df0ac7d2cb25e40c13d7690aece02",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "c13b31abcc819f624b10a77d1da8def60da03c9188efd455158e7af3bbd8c745",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "e70360ef289c59daeaf458ea6370d18d48783deb853695c19aa370c7ee219f64",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "380cbd55cc0d53ab5fe33473d53447df37310438369fdf3248f4e86bcdaab622",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "946296250908e7db99fac39b5b624ddae9b8a6906ec9838af13bfa09e9c92862",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "338ebace94acef5fdb4e008283e3ad190eefd5ac2ddf3951c7e7491621515b29",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "9bd26b21f4c388e6c80fceaa3719c3e7b898323d4acf220ca9b12fe77b8f5e32",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "9b30ff543fde1b81d8408ae3b73f19bba2b28c33cb189819f6ecd4eb0ff9d579",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "de51571ff0e549a67f74689afcb017f0624df0ac7d2cb25e40c13d7690aece02",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "c13b31abcc819f624b10a77d1da8def60da03c9188efd455158e7af3bbd8c745",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "e70360ef289c59daeaf458ea6370d18d48783deb853695c19aa370c7ee219f64",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 512,
+      "mode": 420,
+      "sha256": "240fad3265bf6b30eccb59ba2b2061e9312cba85e0bf7bfb87c3689e797f2c29",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  },
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "store-check-scope",
+    "skill": "landlord",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "b0ca4bf4c1c52c7a5a48c0fc8ac5ffc9ce93a3fd",
+    "skill_sha256": "cfe47b19b2ba1f623d49f5068732644e62e9096b6fb1b36f59aba923b0c20591",
+    "skill_resources_sha256": "4b5637f41551940d546ef618b10aa1439c149df4144fac221cb2491f2fb592cc",
+    "elapsed_seconds": 33.574,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 69108,
+      "cached_input_tokens": 57344,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 703,
+      "reasoning_output_tokens": 0
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $landlord at .agents/skills/landlord/SKILL.md.\n\nReview the proposal to remove Store and have service.save call Backend.put directly. Is that a worthwhile simplification under the existing contracts? Verify the relevant local behavior and explain the maintenance tradeoff. Do not edit original files or manufacture staging evidence. Do not install dependencies or use external services.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "landlord/SKILL.md": {
+        "kind": "file",
+        "sha256": "cfe47b19b2ba1f623d49f5068732644e62e9096b6fb1b36f59aba923b0c20591",
+        "mode": 420
+      },
+      "landlord/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "6584019c06446a90aa95d9896ebe67734920c5ff3b7f75b0c53d48a3b84f03dc",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "landlord/SKILL.md": {
+        "kind": "file",
+        "sha256": "cfe47b19b2ba1f623d49f5068732644e62e9096b6fb1b36f59aba923b0c20591",
+        "mode": 420
+      },
+      "landlord/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "6584019c06446a90aa95d9896ebe67734920c5ff3b7f75b0c53d48a3b84f03dc",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 529,
+      "mode": 420,
+      "sha256": "bfaddead10432059fd6addb8d1d327bdd6a16425191f297695ac7ada2472c106",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  },
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "view-contract",
+    "skill": "friday",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "fa4b7cc5795e0905c86aa82438ded5b8388c68d0",
+    "skill_sha256": "4dda5cc1b3b5de6d02cc232f467cd8b81bf9b8db4b1a9ff4f62f42fd684ce0c4",
+    "skill_resources_sha256": "87347ac9ecbd802f69022508137a1ebabbded1c53b09912a24cb0c56bae136a7",
+    "elapsed_seconds": 66.645,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 88534,
+      "cached_input_tokens": 79744,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1837,
+      "reasoning_output_tokens": 54
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $friday at .agents/skills/friday/SKILL.md.\n\nReview the rollout/rollback proposal in release.md.\nExecute the actual supplied SQL scripts and both literal reader queries at all\nfive checkpoints in one disposable in-memory sequence. Check ordered column\nlabels and complete row values, including BLOB bytes, against the consumer and\nwrite contracts. Distinguish inactive-reader errors from active incompatibilities.\nIdentify the first blocking step, what remains recoverable, whether new writes\nsurvive rollback and the smallest compatible mitigation. Do not mistake successful\nSELECT execution for consumer compatibility.\n\nPreserve all supplied files and installed skill resources. Do not fix or deploy\nthe proposal. No dependencies, network, environment changes, commits or external\nservices. If scratch files are needed, keep them inside the project and remove\nthem. Use python3 -B and existing local facilities. Report decisive commands,\nexpected/observed values and limits; no separate report file is required.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [
+        "item_3"
+      ],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "friday/SKILL.md": {
+        "kind": "file",
+        "sha256": "4dda5cc1b3b5de6d02cc232f467cd8b81bf9b8db4b1a9ff4f62f42fd684ce0c4",
+        "mode": 420
+      },
+      "friday/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "249f8e0037281cfa20440afcaf10c7cca4e4333b7b375e1310bea2f078d072d1",
+        "mode": 420
+      },
+      "friday/references/sqlite-matrix-details.md": {
+        "kind": "file",
+        "sha256": "03f0cb666fe2213f5c2b9ae817e90ddb312f3b7064ebfd89f15dded426de716e",
+        "mode": 420
+      },
+      "friday/references/sqlite-matrix.md": {
+        "kind": "file",
+        "sha256": "71a4e46504485f486bf8fd08e8ac3f024e06fc44a39c520e963552ac3104ac84",
+        "mode": 420
+      },
+      "friday/scripts/sqlite_matrix.py": {
+        "kind": "file",
+        "sha256": "5387c2b886bf3a79784618bf3bcb2c5927f1e3cb8e953dff5c3d29d35923b088",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "friday/SKILL.md": {
+        "kind": "file",
+        "sha256": "4dda5cc1b3b5de6d02cc232f467cd8b81bf9b8db4b1a9ff4f62f42fd684ce0c4",
+        "mode": 420
+      },
+      "friday/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "249f8e0037281cfa20440afcaf10c7cca4e4333b7b375e1310bea2f078d072d1",
+        "mode": 420
+      },
+      "friday/references/sqlite-matrix-details.md": {
+        "kind": "file",
+        "sha256": "03f0cb666fe2213f5c2b9ae817e90ddb312f3b7064ebfd89f15dded426de716e",
+        "mode": 420
+      },
+      "friday/references/sqlite-matrix.md": {
+        "kind": "file",
+        "sha256": "71a4e46504485f486bf8fd08e8ac3f024e06fc44a39c520e963552ac3104ac84",
+        "mode": 420
+      },
+      "friday/scripts/sqlite_matrix.py": {
+        "kind": "file",
+        "sha256": "5387c2b886bf3a79784618bf3bcb2c5927f1e3cb8e953dff5c3d29d35923b088",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 553,
+      "mode": 420,
+      "sha256": "f0c2ce6bf6bbc05f39b2a51ee1cf8a6e70e5fff84d3f1d2ba5460fbfaa00c273",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]

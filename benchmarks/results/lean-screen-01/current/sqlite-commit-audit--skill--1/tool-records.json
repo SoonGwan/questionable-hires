@@ -1,0 +1,213 @@
+{
+  "session_id": "01a0a266-e9f4-7083-8dda-32f9e0fc2ecc",
+  "source_bytes": 140104,
+  "source_sha256": "42e32a83377e9103e2e787dc6dd3c992c11570a62f0c6162519d27a67d9ddca7",
+  "source_lines": 43,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "e9033a24ad459e1797d18fe88bc3e749c1823eef2e2cc880577e34a7373646ea",
+      "record": {
+        "timestamp": "2026-09-15T00:10:56.832Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0c2d6edd60d40fa1016aa88d0d501c87d0a909cb565a6a9000",
+          "status": "completed",
+          "call_id": "call_vnC9CjIM2U1M6glsZJyl65ms",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g '*receipt*' -g '*ledger*' -g '*upload*' -g '*pytest*' -g 'pyproject.toml' -g 'setup.cfg' -g 'SKILL.md' -g 'README*' -g 'Makefile'\",\"max_output_tokens\":4000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/con-artist/SKILL.md\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a266-ea3b-7221-9d83-81f2f3edd455",
+            "create_time": 1789431051.054031
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "a97f4e88f93dc8c728f96129c357db21f4ec0a635c2d86c3026d6c87bbad485b",
+      "record": {
+        "timestamp": "2026-09-15T00:10:57.008Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a267-0a70-7210-b06f-0781d19d5a32",
+          "call_id": "call_vnC9CjIM2U1M6glsZJyl65ms",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3dbd57\",\"wall_time_seconds\":0.0000015,\"exit_code\":0,\"original_token_count\":29,\"output\":\"<WORKSPACE>\\ntest_receipts.py\\ningest/ledger.py\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6aed05\",\"wall_time_seconds\":0.000001459,\"exit_code\":0,\"original_token_count\":990,\"output\":\"---\\nname: con-artist\\ndescription: Audit whether tests detect broken behavior by tracing assertions and running narrow controlled mutations in an isolated workspace; use for test-quality reviews, not routine test execution.\\n---\\n\\n# Con Artist\\n\\n> Your mock is very impressed with itself.\\n\\n## Check what the test actually buys\\n\\nTrace the requested assertions far enough to establish the actual exercised effect\\nand select a reachable fault. Follow unresolved bindings, mocks and relevant setup;\\nreading every intermediate wrapper is not itself evidence. Reuse known instructions,\\nrunner and source context. Keep discovery inside the permitted project root; a\\nbroad suite need not become a reading list of unrelated tests.\\n\\nUse the evidenced runner and configuration; reuse a valid correct-code baseline.\\nChoose one meaningful fault at the requested boundary, such as acknowledging\\nwithout persisting. Preserve originals and compilation/binding context through\\nproject isolation, disposable module/package copies or a valid substitution;\\nrestore substitutions in reused processes. A wrong binding, rewritten simulation,\\nsyntax error or equivalent mutation cannot establish test sensitivity.\\n\\nInspect each phase's actual assertion and exit, not just a green baseline or a\\nnonzero mutant status. Runner errors/warnings can indicate broken assertion\\nplumbing, not a detected production fault. Establish provenance through copied\\nimports, traced bindings and defect-specific observations. Add instrumentation for\\nrequired or unresolved dispatch, not duplicate evidence; a separate import-only\\nprocess does not prove what the test process loads.\\n\\n## Use support only where it helps\\n\\n- Nearby known files: read relevant source/configuration directly. For scattered\\n  Python context, [the collector](references/python-context.md) locates definitions,\\n  ancestor instructions and fixtures. Select known bodies directly; indexes are\\n  navigation, not reviewed bodies or execution. Don't recollect equivalent context.\\n- Existing Python test improvements: consider [native test replacements](references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)\\n  when they remove custom copy/run/cleanup plumbing. One recipe checks original\\n  and proposed tests against correct/faulty code with the native runner and fixtures;\\n  applying the verified edit remains separate. No helper is needed for a simpler\\n  native workflow or an already-completed audit.\\n- Small self-contained audits: use the native runner in project-local copies or\\n  a valid substitution. Choose [the Python helper](references/python-audit.md) when\\n  its bounded processes, selected-input integrity checks or shared-baseline batches\\n  remove needed orchestration. Python compatibility alone is not a reason to adopt\\n  it or load its guide. Read implementation for a concrete trust/adaptation question.\\n- Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)\\n  covers false-pass assertion helpers and incomplete checks. It is not routine setup.\\n\\nIf tests survive, verify the same stronger assertion on correct and faulty code:\\npass the former, fail the latter for the intended effect, not merely success or\\ncontainer size. If killed, identify the detecting assertion or warning policy;\\nthis protects that fault, not every lifecycle path.\\n\\n## Deliver and stop\\n\\nGive decisive commands/results and the gap/proposed assertion or detecting check.\\nKeep a harness/report only for requested reuse or delivery. Without isolated\\nexecution, label the concern static. Apply test improvements only when requested,\\nnever the deliberate fault; an audit does not authorize publication.\\n\\nStop when the scoped claim and requested improvements are verified. Add faults\\nonly for distinct material boundaries, not to fish for survivors, chase a global\\nmutation score or remove every mock. Preserve user changes and explicit requirements.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a266-ea3b-7221-9d83-81f2f3edd455",
+            "create_time": 1789431057.008416
+          }
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "3c67c2f8f9bf5140b1f0c3fd5909de7133a8e700b6b80a3de518e4ea2ec2c8c7",
+      "record": {
+        "timestamp": "2026-09-15T00:11:01.850Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0c2d6edd60d40fa1016aa88d1418c487d0816c392363470f7a",
+          "status": "completed",
+          "call_id": "call_tA90bKWZvvGJS7ia5wsVjAQZ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"rg --files --hidden -g '!.git/**' -g '!.agents/skills/**' -g '!.codex/**'; cat test_receipts.py ingest/ledger.py\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a266-ea3b-7221-9d83-81f2f3edd455",
+            "create_time": 1789431059.056562
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "603607c3343afbabe85d90b4fbd0cbfffef30a325a5c7c091d7374e23edea1f0",
+      "record": {
+        "timestamp": "2026-09-15T00:11:01.951Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a267-1dbf-7e30-a5c0-abdbcc090e13",
+          "call_id": "call_tA90bKWZvvGJS7ia5wsVjAQZ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"098392\",\"wall_time_seconds\":0.000001541,\"exit_code\":0,\"original_token_count\":379,\"output\":\"test_receipts.py\\ningest/endpoint.py\\ningest/__init__.py\\ningest/ledger.py\\nrequirements.md\\nimport sqlite3\\nimport tempfile\\nfrom pathlib import Path\\nimport unittest\\nfrom ingest.endpoint import handle_upload as accept\\n\\n\\nclass LedgerFixture(unittest.TestCase):\\n    def setUp(self):\\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-',\\n                                                  dir=Path(__file__).resolve().parent)\\n        self.addCleanup(self.scratch.cleanup)\\n        self.database = Path(self.scratch.name) / 'events.sqlite'\\n        connection = sqlite3.connect(self.database)\\n        try:\\n            connection.execute('CREATE TABLE events (id INTEGER PRIMARY KEY, payload BLOB NOT NULL)')\\n            connection.execute('INSERT INTO events VALUES (?, ?)', (10, b'previous'))\\n            connection.commit()\\n        finally:\\n            connection.close()\\n\\n\\nclass ReceiptTests(LedgerFixture):\\n    def test_acknowledges_binary_upload(self):\\n        self.assertEqual(accept(self.database, 20, b'\\\\x00\\\\xffnew'), {'accepted': 20})\\n\\n    def test_acknowledges_empty_upload(self):\\n        self.assertEqual(accept(self.database, 30, b''), {'accepted': 30})\\nimport sqlite3\\n\\n\\ndef write_event(database, event_id, payload):\\n    connection = sqlite3.connect(database)\\n    try:\\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\\n                           (event_id, payload))\\n        connection.commit()\\n    finally:\\n        connection.close()\\n    return {'accepted': event_id}\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a266-ea3b-7221-9d83-81f2f3edd455",
+            "create_time": 1789431061.951967
+          }
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "6d38a2781d2a224d961507343be960619f8e6c686c91567d17936a8194fb2b6d",
+      "record": {
+        "timestamp": "2026-09-15T00:11:05.114Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0c2d6edd60d40fa1016aa88d177ce887d0b49ab4293d0f1649",
+          "status": "completed",
+          "call_id": "call_QxPPCEEJ8vOHRAtJVIYj2kJp",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat ingest/endpoint.py ingest/__init__.py requirements.md; rg --files --hidden -g AGENTS.md -g '!.git/**'; git status --short\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a266-ea3b-7221-9d83-81f2f3edd455",
+            "create_time": 1789431062.446823
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "6a547d9ec297824cfd4d10b046cbdae806e3c4e02f14114a8bc6083486576380",
+      "record": {
+        "timestamp": "2026-09-15T00:11:05.231Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a267-2a8f-73c1-8c31-daa7718d77bb",
+          "call_id": "call_QxPPCEEJ8vOHRAtJVIYj2kJp",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"dc5a3d\",\"wall_time_seconds\":0.000001542,\"exit_code\":0,\"original_token_count\":206,\"output\":\"from ingest.ledger import write_event as _record\\n\\n\\ndef handle_upload(database, event_id, payload):\\n    return _record(database, event_id, payload)\\nPython 3.9+ standard library; python3 -B -m unittest -v test_receipts.\\nSuccessful handle_upload must preserve the integer ID and exact bytes payload in\\nthe disk SQLite database, visible from a newly opened connection after it returns.\\nPreviously committed events must survive. The acknowledgment is not durability proof.\\nIDs are distinct positive integers and payloads are bytes, including empty/binary bytes.\\nNo networking or concurrent writers are in scope. Existing production/test files are\\nimmutable for this audit. Use disposable project-local copies, clean owned scratch,\\nand preserve all original bytes/modes. Do not install packages or change warnings.\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a266-ea3b-7221-9d83-81f2f3edd455",
+            "create_time": 1789431065.231894
+          }
+        }
+      }
+    },
+    {
+      "line": 34,
+      "line_sha256": "f583e02d783dbc991a815a3371ad75a6c08c8409c56bd584947152f4a837d083",
+      "record": {
+        "timestamp": "2026-09-15T00:11:55.926Z",
+        "ordinal": 33,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0c2d6edd60d40fa1016aa88d276bd887d0a25143517a98dc15",
+          "status": "completed",
+          "call_id": "call_CyR413iVTY43mXz5cAgKtFrm",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport subprocess\\nimport tempfile\\n\\nroot = Path.cwd()\\nfiles = [Path('test_receipts.py'), Path('requirements.md'), *sorted(Path('ingest').glob('*.py'))]\\ndef snapshot():\\n    return {str(p): (hashlib.sha256(p.read_bytes()).hexdigest(), p.stat().st_mode) for p in files}\\nbefore = snapshot()\\noriginal_test = (root / 'test_receipts.py').read_text()\\noriginal_ledger = (root / 'ingest/ledger.py').read_text()\\nassert original_ledger.count('        connection.commit()\\\\n') == 1\\nfaulty_ledger = original_ledger.replace('        connection.commit()\\\\n', '        # Audit fault: omit commit.\\\\n')\\nprovenance = '''\\n\\n# Disposable audit instrumentation; existing test assertions remain intact.\\ndef setUpModule():\\n    import sys\\n    import ingest.endpoint as endpoint\\n    import ingest.ledger as ledger\\n    expected = Path(__file__).resolve().parent\\n    for case in (ReceiptTests.test_acknowledges_binary_upload,\\n                 ReceiptTests.test_acknowledges_empty_upload):\\n        assert case.__globals__['accept'] is endpoint.handle_upload\\n    assert accept.__globals__['_record'] is ledger.write_event\\n    assert Path(accept.__code__.co_filename).resolve() == expected / 'ingest/endpoint.py'\\n    assert Path(ledger.write_event.__code__.co_filename).resolve() == expected / 'ingest/ledger.py'\\n    print('PROVENANCE: actual test accept is endpoint.handle_upload; endpoint _record is ledger.write_event', flush=True)\\n    print('LOADED:', accept.__code__.co_filename, ledger.write_event.__code__.co_filename, flush=True)\\n    global _audit_calls, _audit_old_profile\\n    _audit_calls = {'endpoint': 0, 'ledger': 0}\\n    _audit_old_profile = sys.getprofile()\\n    def trace(frame, event, arg):\\n        if event == 'call':\\n            if frame.f_code is accept.__code__:\\n                _audit_calls['endpoint'] += 1\\n            if frame.f_code is ledger.write_event.__code__:\\n                _audit_calls['ledger'] += 1\\n    sys.setprofile(trace)\\n\\n\\ndef tearDownModule():\\n    import sys\\n    sys.setprofile(_audit_old_profile)\\n    print('REACHED:', _audit_calls, flush=True)\\n    assert _audit_calls == {'endpoint': 2, 'ledger': 2}, _audit_calls\\n'''\\nstrong_test = original_test\\nfor event_id, payload in [(20, \\\"b'\\\\\\\\x00\\\\\\\\xffnew'\\\"), (30, \\\"b''\\\")]:\\n    line = f\\\"        self.assertEqual(accept(self.database, {event_id}, {payload}), {{'accepted': {event_id}}})\\\\n\\\"\\n    assert strong_test.count(line) == 1\\n    addition = f'''        connection = sqlite3.connect(self.database)\\n        try:\\n            rows = connection.execute('SELECT id, payload FROM events ORDER BY id').fetchall()\\n        finally:\\n            connection.close()\\n        self.assertEqual(rows, [(10, b'previous'), ({event_id}, {payload})])\\n'''\\n    strong_test = strong_test.replace(line, line + addition)\\nprint('STRONGER NATIVE ASSERTIONS (after the actual upload acknowledgment):', flush=True)\\nprint(strong_test[strong_test.index('class ReceiptTests'):], flush=True)\\nresults = {}\\nwith tempfile.TemporaryDirectory(prefix='.commit-audit-', dir=root) as tmp:\\n    for phase, test_source in [('existing', original_test), ('stronger', strong_test)]:\\n        for version, ledger_source in [('correct', original_ledger), ('faulty', faulty_ledger)]:\\n            work = Path(tmp) / f'{phase}-{version}'\\n            (work / 'ingest').mkdir(parents=True)\\n            for p in files:\\n                shutil.copy2(root / p, work / p)\\n            (work / 'ingest/ledger.py').write_text(ledger_source)\\n            (work / 'test_receipts.py').write_text(test_source + provenance)\\n            env = os.environ.copy()\\n            env.pop('PYTHONPATH', None)\\n            print(f'\\\\nCOMMAND: (cd {work} && python3 -B -m unittest -v test_receipts)', flush=True)\\n            result = subprocess.run(['python3', '-B', '-m', 'unittest', '-v', 'test_receipts'], cwd=work, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=30)\\n            print(result.stdout, end='', flush=True)\\n            print(f'EXIT: {result.returncode}', flush=True)\\n            results[(phase, version)] = result\\n    assert [results[k].returncode for k in [('existing','correct'), ('existing','faulty'), ('stronger','correct'), ('stronger','faulty')]] == [0, 0, 0, 1]\\n    failed = results[('stronger','faulty')].stdout\\n    assert 'FAILED (failures=2)' in failed and 'ERROR' not in failed\\n    assert \\\"Lists differ: [(10, b'previous')]\\\" in failed\\nassert snapshot() == before\\nassert not Path(tmp).exists()\\nprint('\\\\nVERIFIED: original bytes/modes unchanged; owned disposable copies removed.', flush=True)\\nPY\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a266-ea3b-7221-9d83-81f2f3edd455",
+            "create_time": 1789431065.693921
+          }
+        }
+      }
+    },
+    {
+      "line": 37,
+      "line_sha256": "74594c408054189598069f8e98fb392ff595320fa1d7e6af7e0e975eb695b4e1",
+      "record": {
+        "timestamp": "2026-09-15T00:11:56.264Z",
+        "ordinal": 36,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a267-f1e7-7b11-a0bf-cb59f2b79106",
+          "call_id": "call_CyR413iVTY43mXz5cAgKtFrm",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"690479\",\"wall_time_seconds\":0.14914575,\"exit_code\":0,\"original_token_count\":1471,\"output\":\"STRONGER NATIVE ASSERTIONS (after the actual upload acknowledgment):\\nclass ReceiptTests(LedgerFixture):\\n    def test_acknowledges_binary_upload(self):\\n        self.assertEqual(accept(self.database, 20, b'\\\\x00\\\\xffnew'), {'accepted': 20})\\n        connection = sqlite3.connect(self.database)\\n        try:\\n            rows = connection.execute('SELECT id, payload FROM events ORDER BY id').fetchall()\\n        finally:\\n            connection.close()\\n        self.assertEqual(rows, [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')])\\n\\n    def test_acknowledges_empty_upload(self):\\n        self.assertEqual(accept(self.database, 30, b''), {'accepted': 30})\\n        connection = sqlite3.connect(self.database)\\n        try:\\n            rows = connection.execute('SELECT id, payload FROM events ORDER BY id').fetchall()\\n        finally:\\n            connection.close()\\n        self.assertEqual(rows, [(10, b'previous'), (30, b'')])\\n\\n\\nCOMMAND: (cd <WORKSPACE>/.commit-audit-1hardddw/existing-correct && python3 -B -m unittest -v test_receipts)\\nPROVENANCE: actual test accept is endpoint.handle_upload; endpoint _record is ledger.write_event\\nLOADED: <WORKSPACE>/.commit-audit-1hardddw/existing-correct/ingest/endpoint.py <WORKSPACE>/.commit-audit-1hardddw/existing-correct/ingest/ledger.py\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\\nREACHED: {'endpoint': 2, 'ledger': 2}\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.006s\\n\\nOK\\nEXIT: 0\\n\\nCOMMAND: (cd <WORKSPACE>/.commit-audit-1hardddw/existing-faulty && python3 -B -m unittest -v test_receipts)\\nPROVENANCE: actual test accept is endpoint.handle_upload; endpoint _record is ledger.write_event\\nLOADED: <WORKSPACE>/.commit-audit-1hardddw/existing-faulty/ingest/endpoint.py <WORKSPACE>/.commit-audit-1hardddw/existing-faulty/ingest/ledger.py\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\\nREACHED: {'endpoint': 2, 'ledger': 2}\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.005s\\n\\nOK\\nEXIT: 0\\n\\nCOMMAND: (cd <WORKSPACE>/.commit-audit-1hardddw/stronger-correct && python3 -B -m unittest -v test_receipts)\\nPROVENANCE: actual test accept is endpoint.handle_upload; endpoint _record is ledger.write_event\\nLOADED: <WORKSPACE>/.commit-audit-1hardddw/stronger-correct/ingest/endpoint.py <WORKSPACE>/.commit-audit-1hardddw/stronger-correct/ingest/ledger.py\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\\nREACHED: {'endpoint': 2, 'ledger': 2}\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.006s\\n\\nOK\\nEXIT: 0\\n\\nCOMMAND: (cd <WORKSPACE>/.commit-audit-1hardddw/stronger-faulty && python3 -B -m unittest -v test_receipts)\\nPROVENANCE: actual test accept is endpoint.handle_upload; endpoint _record is ledger.write_event\\nLOADED: <WORKSPACE>/.commit-audit-1hardddw/stronger-faulty/ingest/endpoint.py <WORKSPACE>/.commit-audit-1hardddw/stronger-faulty/ingest/ledger.py\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests) ... FAIL\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... FAIL\\nREACHED: {'endpoint': 2, 'ledger': 2}\\n\\n======================================================================\\nFAIL: test_acknowledges_binary_upload (test_receipts.ReceiptTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.commit-audit-1hardddw/stronger-faulty/test_receipts.py\\\", line 31, in test_acknowledges_binary_upload\\n    self.assertEqual(rows, [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')])\\nAssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')]\\n\\nSecond list contains 1 additional elements.\\nFirst extra element 1:\\n(20, b'\\\\x00\\\\xffnew')\\n\\n- [(10, b'previous')]\\n+ [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')]\\n\\n======================================================================\\nFAIL: test_acknowledges_empty_upload (test_receipts.ReceiptTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.commit-audit-1hardddw/stronger-faulty/test_receipts.py\\\", line 40, in test_acknowledges_empty_upload\\n    self.assertEqual(rows, [(10, b'previous'), (30, b'')])\\nAssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (30, b'')]\\n\\nSecond list contains 1 additional elements.\\nFirst extra element 1:\\n(30, b'')\\n\\n- [(10, b'previous')]\\n+ [(10, b'previous'), (30, b'')]\\n?                   +++++++++++\\n\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.007s\\n\\nFAILED (failures=2)\\nEXIT: 1\\n\\nVERIFIED: original bytes/modes unchanged; owned disposable copies removed.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a266-ea3b-7221-9d83-81f2f3edd455",
+            "create_time": 1789431116.263978
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

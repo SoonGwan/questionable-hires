@@ -1,0 +1,26 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!__pycache__'\"' -g '\"'!*.pyc'\"'\"",
+    "aggregated_output": "<WORKSPACE>\nincident.md\ntest_worker.py\nworker.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'ls -la; cat incident.md worker.py test_worker.py'",
+    "aggregated_output": "total 24\ndrwxr-xr-x@  6 admin  staff  192 Sep 15 09:02 .\ndrwx------@  3 admin  staff   96 Sep 15 09:02 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 15 09:02 .git\n-rw-r--r--@  1 admin  staff  491 Sep 15 09:02 incident.md\n-rw-r--r--@  1 admin  staff  572 Sep 15 09:02 test_worker.py\n-rw-r--r--@  1 admin  staff  249 Sep 15 09:02 worker.py\nNo external mail provider is used in this reproduction. Run the test from a fresh process with REQUEST_RETRIES absent: python3 -m unittest -v test_worker. The contrasting standalone process sets REQUEST_RETRIES=0 before importing worker, then invokes deliver with a callback that records calls and raises RuntimeError. Its callback runs once. The application currently reads deployment environment at process startup; whether live configuration changes should be supported is not specified.\nimport os\n\nRETRIES = int(os.environ.get('REQUEST_RETRIES', '2'))\n\ndef deliver(send):\n    for attempt in range(RETRIES + 1):\n        try:\n            return send()\n        except RuntimeError:\n            if attempt == RETRIES:\n                raise\nimport os\nimport unittest\nfrom unittest.mock import patch\nimport worker\n\nclass DeliveryTests(unittest.TestCase):\n    def setUp(self):\n        self.environment = patch.dict(os.environ, {'REQUEST_RETRIES': '0'})\n        self.environment.start()\n        self.addCleanup(self.environment.stop)\n\n    def test_disabled_retries(self):\n        calls = []\n        def send():\n            calls.append('attempt')\n            raise RuntimeError('offline failure')\n        with self.assertRaises(RuntimeError):\n            worker.deliver(send)\n        self.assertEqual(len(calls), 1)\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"PYTHONDONTWRITEBYTECODE=1 python3 -B - <<'PY'\nimport os\nimport subprocess\nimport sys\n\nenv = os.environ.copy()\nenv.pop('REQUEST_RETRIES', None)\nenv['PYTHONDONTWRITEBYTECODE'] = '1'\nprint('=== Actual unittest in fresh process, REQUEST_RETRIES absent ===', flush=True)\np = subprocess.run([sys.executable, '-B', '-m', 'unittest', '-v', 'test_worker'], env=env)\nprint('unittest exit:', p.returncode, flush=True)\nprint('\\\\n=== Actual test setup: import, setUp, deliver, cleanup ===', flush=True)\nprobe = '''\nimport os\nimport test_worker\nworker = test_worker.worker\nprint('after test module import:', repr(os.environ.get('REQUEST_RETRIES')), 'worker.RETRIES:', worker.RETRIES)\ncase = test_worker.DeliveryTests('test_disabled_retries')\ncase.setUp()\ntry:\n    print('after actual setUp:', repr(os.environ.get('REQUEST_RETRIES')), 'worker.RETRIES:', worker.RETRIES)\n    calls = []\n    def send():\n        calls.append('attempt')\n        raise RuntimeError('offline failure')\n    try:\n        worker.deliver(send)\n    except RuntimeError as exc:\n        print('actual deliver callback count:', len(calls), 'exception:', str(exc))\nfinally:\n    case.doCleanups()\nprint('after actual cleanup:', repr(os.environ.get('REQUEST_RETRIES')), 'worker.RETRIES:', worker.RETRIES)\n'''\nsubprocess.run([sys.executable, '-B', '-c', probe], env=env, check=True)\nprint('\\\\n=== Standalone: REQUEST_RETRIES=0 before import ===', flush=True)\nstandalone = '''\nimport os\nimport worker\ncalls = []\ndef send():\n    calls.append('attempt')\n    raise RuntimeError('offline failure')\ntry:\n    worker.deliver(send)\nexcept RuntimeError:\n    pass\nprint('environment:', repr(os.environ.get('REQUEST_RETRIES')), 'worker.RETRIES:', worker.RETRIES, 'callback count:', len(calls))\nassert len(calls) == 1\n'''\nenv['REQUEST_RETRIES'] = '0'\nsubprocess.run([sys.executable, '-B', '-c', standalone], env=env, check=True)\nprint('\\\\n=== Actual unittest with REQUEST_RETRIES=0 before import ===', flush=True)\nsubprocess.run([sys.executable, '-B', '-m', 'unittest', '-v', 'test_worker'], env=env, check=True)\nPY\"",
+    "aggregated_output": "after test module import: None worker.RETRIES: 2\nafter actual setUp: '0' worker.RETRIES: 2\nactual deliver callback count: 3 exception: offline failure\nafter actual cleanup: None worker.RETRIES: 2\n\n=== Standalone: REQUEST_RETRIES=0 before import ===\nenvironment: '0' worker.RETRIES: 0 callback count: 1\n\n=== Actual unittest with REQUEST_RETRIES=0 before import ===\ntest_disabled_retries (test_worker.DeliveryTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

@@ -9,7 +9,31 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## All-eight screen frozen — 2026-09-15, candidate parent `1a95f12`
+## All-eight lean screen reviewed — 2026-09-15, launch `0eb77a3`
+
+[All 24 original sessions and review](results/lean-screen-01/README.md) completed
+without timeouts or replacement attempts. Full-task success: baseline **7/8**,
+current **8/8**, lean **7/8**. Both failed cells have an explicit parent-directory
+scope violation; their core functional work succeeds. All six Editor author
+controls and twelve Hostage author controls distinguish correct/faulty behavior.
+Four incomplete CLI outputs have decisive original sections in matching stored
+responses; both captures remain available, with no model retry.
+
+Lean's raw totals are −8.74% tokens / −2.73% time versus current, but +12.14% /
++2.62% versus baseline and worse scope success than current. **No aggregate win
+or all-eight promotion.** Receipt's single-task −28.12% tokens / −26.32% time
+versus current and Editor's −20.49% tokens versus baseline are development leads,
+not held-out evidence or broad improvement. Preserve adverse Exorcist/Hostage
+results, current shipped entries and featured charts; validate promising roles
+on independently specified new tasks before promotion.
+
+한국어: 24세션을 모두 완료했고 범위 준수 포함 성공은 무스킬 7/8, 현재 8/8,
+후보 7/8이다. 전체 후보는 현재보다 토큰 8.74% 절감에 그쳤고 무스킬보다 비용이
+높으며 범위 준수도 퇴행했다. Receipt·Editor의 유망한 단일 결과는 남기되 전체
+20~30% 개선으로 주장하지 않는다. 배포본과 대표 그래프는 유지하고 새 과제 검증으로
+이어간다. 누락된 CLI 앞부분은 저장된 원본 응답으로 확인했으며 재실행하지 않았다.
+
+## Historical freeze — 2026-09-15, candidate parent `1a95f12`
 
 [Frozen 8-task / 24-session protocol](LEAN-SCREEN-01-PROTOCOL.md) covers all roles
 with baseline/current/lean, one repeat and approximately balanced order. Selected

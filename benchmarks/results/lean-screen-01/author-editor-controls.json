@@ -1,0 +1,47 @@
+{
+  "limitation": "Author replay outside original model timing/evidence; only the copied production snapshot expression changes. Original delivered suites and snapshots remain unchanged.",
+  "rows": [
+    {
+      "condition": "baseline",
+      "variant": "original-shallow",
+      "exit_code": 1,
+      "output": "test_initial_state (test_editor.EditorTests) ... ok\ntest_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests) ... FAIL\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests) ... ok\n\n======================================================================\nFAIL: test_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_COPY>/test_editor.py\", line 60, in test_save_preserves_snapshot_and_keeps_newer_edit_dirty\n    self.assertEqual(payload, expected_saved)\nAssertionError: {'display': {'theme': 'blue'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}\n- {'alerts': ['mentions'], 'display': {'theme': 'blue'}}\n?                                                ^^^^\n\n+ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}\n?                                                ^^^^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.010s\n\nFAILED (failures=1)\n",
+      "delivered_test_sha256": "4638330a717397deed8fb0bcada75e80975a1cb75ad2e9dc1a75292481c746a1"
+    },
+    {
+      "condition": "baseline",
+      "variant": "correct-deep",
+      "exit_code": 0,
+      "output": "test_initial_state (test_editor.EditorTests) ... ok\ntest_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests) ... ok\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.010s\n\nOK\n",
+      "delivered_test_sha256": "4638330a717397deed8fb0bcada75e80975a1cb75ad2e9dc1a75292481c746a1"
+    },
+    {
+      "condition": "current",
+      "variant": "original-shallow",
+      "exit_code": 1,
+      "output": "test_initial_state (test_editor.EditorTests) ... ok\ntest_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests) ... FAIL\ntest_save_without_intervening_edit_marks_clean (test_editor.EditorTests) ... ok\n\n======================================================================\nFAIL: test_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_COPY>/test_editor.py\", line 59, in test_save_preserves_snapshot_and_newer_dirty_edit\n    self.assertEqual(payload, expected_saved)\nAssertionError: {'display': {'theme': 'solarized'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}\n- {'alerts': ['mentions'], 'display': {'theme': 'solarized'}}\n?                                                ^^^  ^^^^\n\n+ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}\n?                                                ^  ^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.011s\n\nFAILED (failures=1)\n",
+      "delivered_test_sha256": "12b6593fbd4c1e51269f5957588b8a861febb07424bdb254495e8e5710cb609a"
+    },
+    {
+      "condition": "current",
+      "variant": "correct-deep",
+      "exit_code": 0,
+      "output": "test_initial_state (test_editor.EditorTests) ... ok\ntest_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests) ... ok\ntest_save_without_intervening_edit_marks_clean (test_editor.EditorTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.010s\n\nOK\n",
+      "delivered_test_sha256": "12b6593fbd4c1e51269f5957588b8a861febb07424bdb254495e8e5710cb609a"
+    },
+    {
+      "condition": "lean",
+      "variant": "original-shallow",
+      "exit_code": 1,
+      "output": "test_initial_state (test_editor.EditorTests) ... ok\ntest_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests) ... FAIL\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests) ... ok\n\n======================================================================\nFAIL: test_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_COPY>/test_editor.py\", line 62, in test_save_preserves_snapshot_and_newer_dirty_edit\n    self.assertEqual(payload, expected_saved)\nAssertionError: {'display': {'theme': 'solarized'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}\n- {'alerts': ['mentions'], 'display': {'theme': 'solarized'}}\n?                                                ^^^  ^^^^\n\n+ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}\n?                                                ^  ^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.010s\n\nFAILED (failures=1)\n",
+      "delivered_test_sha256": "1a031ecd09634a6fa6748fa41f6b96a1cf9e8dee5123c83b0cd7564173f86eb3"
+    },
+    {
+      "condition": "lean",
+      "variant": "correct-deep",
+      "exit_code": 0,
+      "output": "test_initial_state (test_editor.EditorTests) ... ok\ntest_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests) ... ok\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.010s\n\nOK\n",
+      "delivered_test_sha256": "1a031ecd09634a6fa6748fa41f6b96a1cf9e8dee5123c83b0cd7564173f86eb3"
+    }
+  ]
+}
