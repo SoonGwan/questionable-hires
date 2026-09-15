@@ -12,7 +12,8 @@ paths only; select known directories directly. Selection size is not completenes
 ## Execute the comparison
 
 For supported Python layouts, use the helper's copying, same-process import
-checks and cleanup; inspect source only for adaptation/diagnosis. Use native
+checks and cleanup. Read implementation for a concrete trust, adaptation or
+diagnosis question. Use native
 isolation for unsupported runtimes, added/deleted implementations or retained copies.
 
 When verification must preserve Git metadata too, use
@@ -51,13 +52,11 @@ JSON
   copied/executed**. `originals` gives selected hashes/modes/unchanged status;
   `comparison_copies_removed` gives cleanup. Reuse those selected-file checks.
 - Optional `"guard_tree":true`: only for requested whole-project preservation
-  with all source reads authorized. Inventory Git/ignored files, directories
-  (including empty/root), bytes/modes and link text, not link targets. `tree_guard`
-  reports unchanged/counts/digest, not a full hash listing. Replaces snapshots
-  around native comparison, not diff review/later checks. Added/removed/changed
-  entries abort without restoration. No exclusions; special files/oversize fail
-  closed: 10,000 entries including root, 20 MB streamed per inventory, separate
-  from copying. Larger projects need another native method.
+  with all reads authorized. Checks Git/ignored entries, bytes/modes and link text
+  around comparison; changes abort without restoration. It excludes link targets,
+  timestamps/other metadata, concurrent or restored changes and other commands.
+  `tree_guard` reports counts/digest; limits are 10,000 entries/20 MB per inventory.
+  See [guard details](comparison-details.md#preservation-guards) for boundary questions.
 - Selections must be canonical project-relative, unique and disjoint after
   expansion; no root, Git internals, symlinks, empty directories or overlap.
   `fixed`/`vary` must be nonempty. Directory traversal: at most 10,000 entries.
@@ -67,24 +66,16 @@ JSON
   redirect global TMPDIR merely to localize checks or other launchers may pollute it.
 - Optional `"invocation":"module"`: for required `python -B -m unittest ...`,
   with `runner: "unittest"` and existing `tests`; no internal adapter needed.
-  Default `bootstrap` is unchanged. Temporary copy-local startup checks same-process
-  imports; results include `command`, `native_exit_code`, `provenance_ready`.
-  Timeout/output supervision remains. Only child-local lookup changes; descendants
-  don't inherit the probe. Existing system/user `sitecustomize` and enabled
-  `usercustomize` run in order before copied-import verification; their actual
-  modules are retained, not replaced with the probe. User-site disabling remains
-  effective. Hook errors (including early exit) stop comparison with check 7,
-  rather than continuing tests after a startup warning. Conventional hooks are
-  supported, not arbitrary startup rewrites: project-local customization,
-  disabled site initialization, or hooks depending on the exact startup stack or
-  replacing import machinery need native project setup. Do not remove hooks or
-  bypass provenance to make a comparison pass.
+  Default is `bootstrap`. Copy-local startup checks imports in the native test
+  process; inspect `command`, `native_exit_code` and `provenance_ready`.
+  Conventional existing system/user hooks are preserved. Project-local or unusual
+  startup customization needs native project setup, not a bypass; read
+  [startup compatibility](comparison-details.md#native-module-startup) when applicable.
 - Optional `"import_roots":["src"]` supports regular source-layout packages.
-  Select needed package initializers/support in `fixed` and implementations in
-  `vary`; each root must contain selected files. Ordered canonical directories
-  are prepended inside each copy before its root and reported in the result.
-  No inherited `PYTHONPATH`, editable install, build hook or installed metadata
-  is supplied. Use the native project setup when those are required.
+  Select initializers/support too; each root must contain selected files.
+  Ordered canonical roots precede each copy's root and appear in the result.
+  No inherited PYTHONPATH, editable install, build hook or installed metadata;
+  use native project setup when required.
 
 ## Read the evidence, not just the exit code
 
@@ -94,33 +85,21 @@ output. Reserve `--pretty` for a human-readable JSON request, not extra evidence
 CLI 0 means observations collected, **not proof**. Inspect each actual assertion,
 requested test identity, before failure/after pass, copied-import evidence,
 `exit_code`, `timed_out` and `output_truncated`. Help/version output is not execution.
-Bootstrap unittest: failure 1, empty/all-skipped 5, partial-skip success 0.
-Module mode preserves native exits: empty discovery may return 0 or 5 depending
-on Python, and all-skipped checks can return 0. Inspect counts/skips; no such result
-proves a passing regression. Missing startup provenance reserves check 7, retaining the native
-exit separately. Pytest keeps native exits. No mode proves requested coverage.
-Listed import exceptions (including `SystemExit(0)`) retain tracebacks and reserve
-check 7: CLI 2, no next comparison. Independent runner exit 7 is conservatively
-incomplete too. This does not catch `os._exit`, later early exits or adversarial
-execution; inspect actual tests.
+Skipped/empty checks do not establish a regression, even with native exit 0.
+Missing import/startup provenance or check exit 7 means incomplete: CLI 2, no next
+comparison. Preserve native errors, not just the wrapper status. See
+[exit interpretation](comparison-details.md#exit-interpretation) for runner-specific
+counts, import errors or early-exit diagnosis.
 
-Python 3.9+/POSIX, trusted tests only: **not a sandbox**. Project-local copies are
-removed; changed selected originals abort without restoration. Watch excludes new
-entries/arbitrary effects. Test paths/subprocesses can escape; snapshots aren't atomic.
-Tree guards do not cover link targets, ownership, timestamps, ACLs/xattrs, concurrent
-writes, changes restored between observations, or operations outside their interval.
+Python 3.9+/POSIX, trusted tests only: **not a sandbox**. Copies are removed;
+`originals` checks selected bytes/modes, not arbitrary effects or new entries.
+Test paths/subprocesses can escape; snapshots are not atomic. Guard limitations
+are detailed in [preservation guards](comparison-details.md#preservation-guards).
 
-Copying: shared 20 MB budget. Known overflow rejects before reading; reads stop at
-remaining budget + 1 byte, growth overflow aborts before tests, final integrity
-reads stop at original length + 1. Total memory is not bounded by these limits.
+Copying: shared 20 MB budget; overflow aborts before tests, not a partial comparison.
 Execution: 30 seconds/check (`--timeout` up to 300), last 12,000 output characters.
-Child exit has a separate five-second cleanup wait; unconfirmed exit means CLI 2,
-comparison not established and no next comparison. Other errors/interruptions
-propagate. Descendant termination is not guaranteed; do not retry automatically
-while a prior process may remain.
-
-Required work must finish in the foreground. After direct-runner exit, remaining
-process-group members are killed and buffered output drained under the original
-deadline; inherited pipes alone don't cause timeouts. Exit polling: 50 ms, subject
-to scheduling. Persistent background jobs are unsupported; tests still own
-assertions/cleanup and escaped groups aren't contained.
+Required work must finish in the foreground: remaining process-group members are
+killed after runner exit; persistent background jobs are unsupported. Cleanup can
+wait five more seconds; unconfirmed exit means incomplete, no next comparison.
+Do not retry automatically while prior work may remain. For budget, output or
+cleanup questions read [resource/process boundaries](comparison-details.md#resource-and-process-boundaries).

@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt reference disclosure — 2026-09-15, parent `98613b6`
+
+[Routine/conditional comparison guidance](RECEIPT-REFERENCE-02.md) separates
+advanced startup, exit and process/guard details while retaining essential
+authorization, preservation and execution rules. Entry metadata/body and helper
+code are unchanged. Receipt 95 tests and installation 20 tests pass, including
+literal documented commands with real before-failure/after-pass assertions.
+The routine guide is 19.55% smaller in bytes, but combined documentation is larger.
+**No measured model-token improvement**, lean-entry promotion or chart change.
+
+한국어: 일반 비교 안내와 조건부 상세 동작을 분리하고 실제 문서 명령·보존·설치
+검사를 통과했다. 진입 지침과 실행 코드는 그대로다. 기본 안내 길이 감소는 모델
+성능 개선 수치가 아니며 전체 문서량은 늘었다. 실제 새 과제 검증이 남아 있다.
+
 ## All-eight lean screen reviewed — 2026-09-15, launch `0eb77a3`
 
 [All 24 original sessions and review](results/lean-screen-01/README.md) completed
