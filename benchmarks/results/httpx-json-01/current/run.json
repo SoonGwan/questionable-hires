@@ -1,0 +1,38 @@
+{
+  "revision": "13394dc2491d9d85e0957ea7855ce1e7f330af3a",
+  "resource_revision": "13394dc2491d9d85e0957ea7855ce1e7f330af3a",
+  "source": "<PINNED_SOURCE>",
+  "case": {
+    "id": "httpx-json-commit",
+    "skill": "receipt",
+    "task": "Verify the encoder change in actual HTTPX commit 9fd6f0ca6616d0310a3ee0b0c6ef509a97995797\nagainst its parent 8e36f2bc685dfbe43cd7503bc1c422a6ed6e05a5. This is a retrospective verification, not a repair.\nCompare only httpx/_content.py from the two revisions, keeping the checkout's\ncurrent package support, test assertions and configuration identical. Do not\nclaim to reproduce each complete historical dependency environment.\n\nUse the existing interpreter <PREINSTALLED_PYTHON> with -B and native pytest -vv. Execute exactly\nthese five native test cases on each encoder version, with the original project\nconftest/configuration and no cache-provider artifacts:\ntests/test_content.py::test_empty_content[asyncio]\ntests/test_content.py::test_json_content[asyncio]\ntests/test_content.py::test_ensure_ascii_false_with_french_characters\ntests/test_content.py::test_separators_for_compact_json\ntests/test_content.py::test_allow_nan_false\n\nInspect the actual commit change, tests and relevant public Request/Response\npath. Report each required before/after result, defect-specific assertion values,\nthe passing control, full revision IDs and the test process's own exit. Establish\nthat the public HTTPX package and encoder load from the corresponding disposable\ncopy in the same native test process. Do not substitute a rewritten encoder,\nmocked response, import-only process or different assertions for this comparison.\n\nUse project-local copies and remove owned scratch before finishing. Preserve all\noriginal files, modes, user changes and installed skill resources. Captured results\nare sufficient; retain no report/harness. No dependency installs, network requests,\nexternal discovery, commits, publishing, global environment changes or production\nedits. Existing URLs in content tests are inert constructor values, not authorization\nto send requests. All needed dependencies are already installed.\n",
+    "criteria": [
+      "Identical five native tests/config/support against only the changed encoder.",
+      "Defect-specific before failures and after results, with passing empty-body control.",
+      "Same-process copy-local package and encoder import evidence with full revisions.",
+      "Original files/resources preserved; owned project-local scratch removed; scope respected."
+    ]
+  },
+  "identities": {
+    "run_httpx_json_01.py": "beb4df4be130259be5ad885dcbe40557252c249ae6835092a02cf9b2fe34c4c5",
+    "httpx_receipt_json_case.py": "d907aa5cfd1edd4a0ceb02eba6b213ccc1525868b64787ccae5b3f7842d07c06",
+    "lean_entries.py": "d1d1a90ecd195fb7608267c462123a5710aaa6765e5085e4e73eadf7904356a0",
+    "HTTPX-JSON-01-PROTOCOL.md": "ddb1a9a398b332a727de34d98bcc535e2388de20084a1808ab6aa5e471588b67",
+    "httpx-receipt-json-02-preflight.json": "43ec1159d85b7533dac7c94163d44637909cc6549316ac61b98ab14bb3bdeff5",
+    "run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c"
+  },
+  "schedule": [
+    "lean",
+    "baseline",
+    "current"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 360,
+  "session_persistence_requested": true,
+  "prepared_at": "2026-09-15T00:42:28.114433+00:00",
+  "completed_cells": [],
+  "condition": "current"
+}

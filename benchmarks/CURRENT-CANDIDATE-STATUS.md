@@ -9,7 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## HTTPX JSON three-session checkpoint — 2026-09-15, launch `fa86d62`
+## HTTPX JSON original evidence reviewed — 2026-09-15, launch `fa86d62`
+
+[All three original sessions and final review](results/httpx-json-01/README.md)
+satisfy the four explicit task criteria; all 125 original files/modes and skill
+resources are preserved. Native five-test comparisons expose four before defects
+plus a passing control and five after passes. Missing CLI native output is retained
+in the matching stored response; genuinely truncated broad reads remain disclosed.
+No replacement sessions or native author replays. Current/lean cost 47.7%/74.0%
+more tokens than baseline, despite about 20% lower observed wall times. At n=1,
+this is not a general speed claim or token-efficiency win. **No lean promotion.**
+
+한국어: 세 조건의 실제 테스트·출처·범위·원본 보존 검토를 완료하고 증거를
+공개했다. 무스킬도 요구사항을 충족했으며 두 스킬 조건은 토큰이 더 많았다.
+짧은 후보는 채택하지 않는다. 도우미를 반드시 쓰게 하는 선택 지침과 API 사용성을
+검토하되, 이 과제를 유리해질 때까지 반복하거나 대표 그래프를 변경하지 않는다.
+
+## Historical HTTPX JSON three-session checkpoint — 2026-09-15, launch `fa86d62`
 
 [Original-session cost observations and pending review](HTTPX-JSON-01-CHECKPOINT.md):
 all three scheduled cells completed without timeout/replacement. Baseline/current/

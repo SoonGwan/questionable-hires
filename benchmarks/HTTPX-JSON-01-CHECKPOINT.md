@@ -1,5 +1,9 @@
 # HTTPX JSON 01: three original sessions completed, review in progress
 
+Historical checkpoint. The [completed original-evidence review](results/httpx-json-01/README.md)
+now records all three task outcomes and exports the retained evidence. The
+observations below are preserved as the earlier, pre-review checkpoint.
+
 2026-09-15. [Frozen protocol](HTTPX-JSON-01-PROTOCOL.md), launch commit `fa86d62`,
 shipped resources `13394dc`, existing lean Receipt entry with identical support.
 All three scheduled Astra-medium sessions completed, no timeout/quota stop or
