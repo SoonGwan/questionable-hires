@@ -62,7 +62,9 @@ JSON
   `fixed`/`vary` must be nonempty. Directory traversal: at most 10,000 entries.
 - `imports` must resolve inside each native test process's copy. Use the project
   interpreter (default: launching Python; override `--python` if needed), unittest
-  or already-installed pytest. Child temp defaults are inside each copy: do not
+  or already-installed pytest. Pytest verifies imports after native collection,
+  before test bodies, preserving configuration and assertion rewriting.
+  Child temp defaults are inside each copy: do not
   redirect global TMPDIR merely to localize checks or other launchers may pollute it.
 - Optional `"invocation":"module"`: for required `python -B -m unittest ...`,
   with `runner: "unittest"` and existing `tests`; no internal adapter needed.

@@ -31,14 +31,22 @@ identities, assertions, counts/skips, copied imports and each check's own output
 | --- | --- |
 | Bootstrap unittest | Failure 1; empty/all-skipped 5; partial-skip success 0 |
 | Module unittest | Native exit preserved; empty discovery may return 0 or 5 depending on Python; all-skipped checks can return 0 |
-| Pytest | Native runner exits retained |
+| Pytest | Native exits retained; otherwise-success/failure 0/1 without collection-time import verification becomes incomplete 7 |
 | Missing startup provenance | Check 7; native exit retained separately; CLI 2; no next comparison |
-| Listed import exceptions, including `SystemExit(0)` | Traceback retained; check 7; CLI 2; no next comparison |
+| Import verification exceptions, including `SystemExit(0)` | Traceback retained; check 7; CLI 2; no next comparison |
 
 An independent runner exit 7 is conservatively incomplete too. No mode proves
 requested coverage. These checks do not catch `os._exit`, later early exits or
 adversarial execution; inspect actual tests. A setup/import error is not the
 requested defect's reproduction.
+
+Pytest owns configuration and test collection before listed imports are checked
+in that same process, before test bodies. This preserves native assertion
+rewriting, custom test filenames and configuration hooks. Import failures during
+native collection keep pytest's own failure code; they are not passing evidence.
+Collection and plugin code can execute before verification: trusted tests only,
+not a sandbox. Explicit `--assert=plain` remains plain; a collect-only result or
+all-skipped run still does not establish that the requested assertions executed.
 
 ## Preservation guards
 

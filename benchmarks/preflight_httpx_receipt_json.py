@@ -18,6 +18,8 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--verify-test-module', action='store_true',
+                        help='Also check native test-module provenance after collection')
     args = parser.parse_args()
     if args.output.exists():
         parser.error('Refuse existing output')
@@ -40,6 +42,8 @@ def main():
     recipe = dict(fixed=fixed, vary=['httpx/_content.py'], before=BEFORE, after=AFTER,
                   imports=['httpx', 'httpx._content'], runner='pytest',
                   tests=['-vv', '-p', 'no:cacheprovider', *TESTS])
+    if args.verify_test_module:
+        recipe['imports'].append('tests.test_content')
     with tempfile.TemporaryDirectory(prefix='json-commit-preflight-', dir=ROOT/'benchmarks/local-runs') as temporary:
         project = Path(temporary)/'project'
         shutil.copytree(source, project)
@@ -53,12 +57,16 @@ def main():
         assert "'19'" in original['output'] and "'18'" in original['output'], original
         assert 'Verified copied import: httpx._content' in original['output']
         assert 'Verified copied import: httpx._content' in fixed_result['output']
+        if args.verify_test_module:
+            for check in (original, fixed_result):
+                assert 'Verified copied import: tests.test_content' in check['output']
         assert not original['output_truncated'] and not fixed_result['output_truncated']
         assert result['originals']['unchanged'] and result['comparison_copies_removed']
         encoded = (json.dumps(result, indent=2).replace(str(project), '<AUTHOR_COPY>')
                    .replace(str(args.python.absolute()), '<PREINSTALLED_PYTHON>'))
     assert inventory() == before and not git('status', '--porcelain')
     report = dict(source_revision=HEAD, source_inventory=before, tests=list(TESTS),
+                  helper_sha256=hashlib.sha256(Path(helper.__file__).read_bytes()).hexdigest(),
                   recipe=recipe, observation=json.loads(encoded),
                   source_unchanged=True, author_copy_removed=not Path(temporary).exists(),
                   limitation='Native author preflight only; real upstream source/commit, current support held fixed. Not a model result or full historical environment recreation.')

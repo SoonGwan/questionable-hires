@@ -21,21 +21,42 @@ import time
 MAX_FIXED_ENTRIES = 10_000
 MAX_GUARD_BYTES = 20_000_000
 
-BOOTSTRAP = '''import importlib, json, pathlib, runpy, sys, traceback
+BOOTSTRAP = '''import importlib, json, pathlib, sys, traceback
 recipe = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
 sys.path[:0] = [str(root / name) for name in recipe.get('import_roots', [])] + [str(root)]
-try:
+def verify_imports():
     for name in recipe['imports']:
         module = importlib.import_module(name)
         location = getattr(module, '__file__', None)
         if not location or not pathlib.Path(location).resolve().is_relative_to(root):
             raise RuntimeError('Import escaped comparison copy: ' + name)
         print('Verified copied import:', name, flush=True)
+sys.argv = [recipe['runner']] + recipe['tests']
+if recipe['runner'] == 'pytest':
+    import pytest
+    class CopiedImports:
+        ready = False
+        def pytest_collection_finish(self, session):
+            # Let native collection/configuration load tests with assertion
+            # rewriting before checking the same process's module identities.
+            try:
+                verify_imports()
+            except BaseException:
+                traceback.print_exc()
+                pytest.exit('Comparison import verification failed', returncode=7)
+            self.ready = True
+    probe = CopiedImports()
+    code = pytest.main(recipe['tests'], plugins=[probe])
+    if not probe.ready and code in (0, 1):
+        print('Copied imports were not verified; comparison is incomplete.', flush=True)
+        code = 7
+    raise SystemExit(code)
+try:
+    verify_imports()
 except BaseException:
     traceback.print_exc()
     raise SystemExit(7)
-sys.argv = [recipe['runner']] + recipe['tests']
 if recipe['runner'] == 'unittest':
     import unittest
     result = unittest.main(module=None, exit=False).result
@@ -45,7 +66,6 @@ if recipe['runner'] == 'unittest':
         print('No non-skipped unittest tests ran; this is not passing regression evidence.', flush=True)
         raise SystemExit(5)
     raise SystemExit(0)
-runpy.run_module(recipe['runner'], run_name='__main__', alter_sys=True)
 '''
 
 

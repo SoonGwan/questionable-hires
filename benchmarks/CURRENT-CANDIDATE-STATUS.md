@@ -9,7 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Real HTTPX JSON preflight — 2026-09-15, parent `ddd7c5d`
+## Receipt pytest loading correction — 2026-09-15, parent `99c25be`
+
+[Native regression and real HTTPX verification](RECEIPT-PYTEST-LOADING-01.md)
+correct premature test-module imports: native pytest configuration/collection now
+precedes same-process copy provenance, before test bodies. Seven new native
+checks changed from four failures to all passing; the full Receipt suite passes
+102 tests. Real HTTPX retains four before failures/one control and five after
+passes with detailed values and test-module provenance; 125 source files/modes
+unchanged. **Reliability evidence only; no model session or performance claim.**
+
+한국어: pytest의 실제 상세 실패 값과 설정 실행 순서를 복구했다. 전체 Receipt
+102개 검사와 실제 HTTPX 대조·원본 보존을 통과했다. 모델 성능 향상 수치는 아직
+없고, 기존 그래프는 그대로 유지한다. 다음은 새 실소스 과제의 모델 비교다.
+
+## Historical real HTTPX JSON preflight — 2026-09-15, parent `ddd7c5d`
 
 [New actual-source task and controls](HTTPX-RECEIPT-JSON-01.md) verify the original
 encoder commit using five unchanged current upstream native tests/support:
