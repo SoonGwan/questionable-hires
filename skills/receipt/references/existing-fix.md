@@ -11,10 +11,14 @@ paths only; select known directories directly. Selection size is not completenes
 
 ## Execute the comparison
 
-For supported Python layouts, use the helper's copying, same-process import
-checks and cleanup. Read implementation for a concrete trust, adaptation or
-diagnosis question. Use native
-isolation for unsupported runtimes, added/deleted implementations or retained copies.
+Reuse a project-native comparison that already establishes the required isolation,
+assertions, loaded code and preservation. The Python helper is an option when its
+copying, same-process import checks and cleanup replace missing setup; supporting
+the language alone is not a reason to replace an adequate existing runner.
+Native isolation is also valid, and necessary for unsupported runtimes,
+added/deleted implementations or retained copies. Keep the same evidence requirements
+whichever path is chosen. Read implementation for a concrete trust, adaptation or
+diagnosis question; the CLI recipes below do not require importing the helper API.
 
 When verification must preserve Git metadata too, use
 `git --no-optional-locks -c diff.autoRefreshIndex=false` for status/diff review.

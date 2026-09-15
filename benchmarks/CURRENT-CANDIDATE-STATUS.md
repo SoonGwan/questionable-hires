@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt tool-selection guidance — 2026-09-15, parent `6cf9fb1`
+
+[Selection-rule revision](RECEIPT-TOOL-SELECTION-01.md) removes the assumption
+that every supported Python comparison should use the helper. Reuse an adequate
+project-native path; choose helper facilities for missing setup while retaining
+isolation, unchanged assertions, loaded-code identity and preservation. Executable
+helpers and other roles are unchanged. **Model impact is unmeasured**; this is not
+promotion of the adverse lean entry or a claimed token reduction.
+
+한국어: 지원되는 Python 작업이면 도우미를 쓰도록 하던 선택 기준을 수정했다.
+이미 충분한 프로젝트 절차는 재사용하고 부족한 준비 작업에 도우미를 사용한다.
+검증 기준은 유지하며, 수정본의 모델 성능은 아직 측정하지 않았다.
+
 ## HTTPX JSON original evidence reviewed — 2026-09-15, launch `fa86d62`
 
 [All three original sessions and final review](results/httpx-json-01/README.md)
