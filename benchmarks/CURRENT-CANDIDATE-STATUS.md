@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Real HTTPX JSON preflight — 2026-09-15, parent `ddd7c5d`
+
+[New actual-source task and controls](HTTPX-RECEIPT-JSON-01.md) verify the original
+encoder commit using five unchanged current upstream native tests/support:
+before four failures/one pass, after five passes. All 125 source files/modes are
+preserved; copies removed, no timeout or truncated decisive output. Initial
+preflights expose a helper limitation: importing test modules before pytest
+suppresses assertion rewriting. Preserve these observations and correct that
+behavior before model comparison. **No model calls or new performance claim.**
+
+한국어: 실제 HTTPX 수정의 정상/결함 대조를 완료했고, pytest 테스트를 미리
+import할 때 상세 실패 값이 사라지는 도우미 문제를 발견했다. 모델 비교 전
+이 문제를 회귀 검사와 함께 고친다. 기존 그래프·성과 주장은 바꾸지 않는다.
+
 ## Receipt reference disclosure — 2026-09-15, parent `98613b6`
 
 [Routine/conditional comparison guidance](RECEIPT-REFERENCE-02.md) separates
