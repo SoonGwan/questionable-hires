@@ -22,8 +22,11 @@ def select_regions(raw, names):
     except (SyntaxError, RecursionError) as error:
         raise ValueError('Source cannot be parsed by this Python runtime: ' + str(error)) from error
     # Python physical lines, not str.splitlines()'s extra Unicode separators.
-    lines = re.findall(r'[^\r\n]*(?:\r\n|\r|\n|$)', source)
+    # Keep offsets, not copies of every line. Bound each excerpt before slicing:
+    # overlapping large definitions must not allocate their full bodies first.
+    offsets = [match.start() for match in re.finditer(r'[^\r\n]*(?:\r\n|\r|\n|$)', source)]
     matches = []
+    remaining = 12000
 
     class Visitor(ast.NodeVisitor):
         def __init__(self):
@@ -35,15 +38,20 @@ def select_regions(raw, names):
             self.scope.pop()
 
         def visit_FunctionDef(self, node):
+            nonlocal remaining
             qualified = '.'.join([*self.scope, node.name])
             selected = [name for name in names if name in (node.name, qualified)]
             if selected:
                 if len(matches) >= 20:
                     raise ValueError('More than 20 matches; select narrower qualified names')
                 start = min([node.lineno] + [d.lineno for d in node.decorator_list])
+                first, end = offsets[start - 1], offsets[node.end_lineno]
+                kept = min(end - first, remaining)
                 matches.append(dict(name=qualified, selected_by=selected, start_line=start,
                                     end_line=node.end_lineno,
-                                    text=''.join(lines[start - 1:node.end_lineno])))
+                                    text=source[first:first + kept],
+                                    truncated=end - first > remaining))
+                remaining -= kept
             self.scope.append(node.name)
             self.generic_visit(node)
             self.scope.pop()
@@ -51,12 +59,6 @@ def select_regions(raw, names):
         visit_AsyncFunctionDef = visit_FunctionDef
 
     Visitor().visit(tree)
-    remaining = 12000
-    for match in matches:
-        text = match['text']
-        match['truncated'] = len(text) > remaining
-        match['text'] = text[:remaining]
-        remaining -= len(match['text'])
     found = {name for match in matches for name in match['selected_by']}
     missing = [name for name in names if name not in found]
     features = sorted({alias.name for node in tree.body if isinstance(node, ast.ImportFrom)

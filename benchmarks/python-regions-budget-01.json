@@ -1,0 +1,176 @@
+{
+  "kind": "Local select_regions microbenchmark, not model performance",
+  "python": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "before_revision": "d087a96",
+  "source_sha256": {
+    "before": "63898e304339775f5f7f46bfb2373567d9c23dad9583e6b70f5bf6ba3a258a95",
+    "after": "a6db803d6de99a319df8396f7a5e1af8577e3f10d31070bcbbe6ebbedb20857c"
+  },
+  "rows": [
+    {
+      "case": "small-complete",
+      "input_bytes": 53,
+      "input_sha256": "eb4451f5b4562478420f0129f5c8719641e33fcbabb62f83e2a14c1898b2695a",
+      "names": [
+        "first",
+        "second"
+      ],
+      "outputs_identical": true,
+      "output_sha256": "da4dcff5a467178001bdb1c623b0556410d5e56c097344d64e19c2d844d4f762",
+      "samples_seconds": {
+        "before": [
+          4.670799999999947e-05,
+          5.058399999999935e-05,
+          4.274999999999418e-05,
+          3.849999999999687e-05,
+          4.0375000000002215e-05,
+          3.783400000000048e-05,
+          4.049999999999887e-05
+        ],
+        "after": [
+          4.379199999999389e-05,
+          4.141600000000245e-05,
+          4.1333000000004505e-05,
+          3.899999999999737e-05,
+          3.9624999999994526e-05,
+          3.8375000000000214e-05,
+          4.070800000000041e-05
+        ]
+      },
+      "samples_peak_traced_bytes": {
+        "before": [
+          13357,
+          13357,
+          13357
+        ],
+        "after": [
+          13437,
+          13437,
+          13437
+        ]
+      },
+      "median_seconds": {
+        "before": 4.049999999999887e-05,
+        "after": 4.070800000000041e-05
+      },
+      "median_peak_traced_bytes": {
+        "before": 13357,
+        "after": 13437
+      }
+    },
+    {
+      "case": "large-single",
+      "input_bytes": 1800023,
+      "input_sha256": "c4df3310af912730f5d6203bf4df4764a5ce9dae6aaccc28b2a1e31f8eeb2246",
+      "names": [
+        "f"
+      ],
+      "outputs_identical": true,
+      "output_sha256": "7f7642ef1419813af2f057e23fe683e22711b2f9cd38f85ff00b265656758bf2",
+      "samples_seconds": {
+        "before": [
+          0.021032874999999993,
+          0.021186125,
+          0.020341957999999993,
+          0.02059691700000002,
+          0.020556416999999994,
+          0.01999270799999997,
+          0.01995475000000002
+        ],
+        "after": [
+          0.020048165999999992,
+          0.019858125000000004,
+          0.01972333400000001,
+          0.020264000000000004,
+          0.019871874999999983,
+          0.01984975,
+          0.019863792000000047
+        ]
+      },
+      "samples_peak_traced_bytes": {
+        "before": [
+          7222897,
+          7222897,
+          7222897
+        ],
+        "after": [
+          7212405,
+          7212405,
+          7212405
+        ]
+      },
+      "median_seconds": {
+        "before": 0.020556416999999994,
+        "after": 0.019863792000000047
+      },
+      "median_peak_traced_bytes": {
+        "before": 7222897,
+        "after": 7212405
+      }
+    },
+    {
+      "case": "large-overlap",
+      "input_bytes": 1800330,
+      "input_sha256": "f5ab7831ced1c1fc30dadde8c8ec09e6b65c212282f82691b94a0645023a3134",
+      "names": [
+        "f0",
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6",
+        "f7",
+        "f8",
+        "f9"
+      ],
+      "outputs_identical": true,
+      "output_sha256": "4ceb6d80be29983ce4814bfca169236ef6c8a2da71ed1e88a592d9cb9452379c",
+      "samples_seconds": {
+        "before": [
+          0.020462958999999947,
+          0.020687084000000078,
+          0.02063862500000002,
+          0.022438124999999975,
+          0.02503445900000001,
+          0.022100125000000026,
+          0.022215208999999958
+        ],
+        "after": [
+          0.019657207999999926,
+          0.019769166000000005,
+          0.01974191599999997,
+          0.02103129199999998,
+          0.022791791999999922,
+          0.02042816599999997,
+          0.021168708000000036
+        ]
+      },
+      "samples_peak_traced_bytes": {
+        "before": [
+          23454926,
+          23454926,
+          23454926
+        ],
+        "after": [
+          7228466,
+          7228466,
+          7228466
+        ]
+      },
+      "median_seconds": {
+        "before": 0.022100125000000026,
+        "after": 0.02042816599999997
+      },
+      "median_peak_traced_bytes": {
+        "before": 23454926,
+        "after": 7228466
+      }
+    }
+  ],
+  "warmup": "One equality-check invocation per arm/workload",
+  "timing_repetitions": 7,
+  "allocation_repetitions": 3,
+  "order": "Alternating before/after",
+  "limitations": "Synthetic inputs, shared warm host, one interpreter. Function includes decode/parse/hash/excerpt, not CLI startup or Git. tracemalloc is Python-traced peak allocation, not RSS/total memory. No model token/time or general speedup claim."
+}

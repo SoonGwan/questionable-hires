@@ -27,6 +27,9 @@ Limits: 2 MB UTF-8 input, 1–10 names, at most 20 matching definitions and 12,0
 characters of region text shared across matches. Missing names and truncated
 regions produce `complete: false` and exit 1; invalid/unsupported input exits 2.
 Later matches can have empty truncated text after the shared budget is exhausted.
+Excerpt text is sliced only up to the remaining allowance, using physical-line
+offsets rather than first copying complete overlapping bodies. Definitions and
+match limits are still checked after text space is exhausted; metadata is retained.
 Use a narrower selection or a focused source read rather than treating omissions
 as absence. No input code is executed or source files written; AST parsing is not
 a sandbox or a total-memory guarantee. This helper's effect on whole-task model

@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Necromancer excerpt allocation bounded earlier — 2026-09-20, parent `d087a96`
+
+[Local exact-output comparison](PYTHON-REGIONS-BUDGET-01.md) eliminates full-body
+copies before the shared excerpt limit. In a synthetic ten-overlap/1.8 MB case,
+peak Python-traced allocation falls **69.18%** and function time **7.57%**; small
+inputs change +0.51% time and 13,357→13,437 traced bytes. Results remain exactly
+equal. Ten region tests pass on Python 3.9/3.11; 44 related history tests pass.
+Region checks preserve physical lines, metadata and match-bound
+errors after exhaustion. This is not RSS, a total-memory bound or model token/time
+evidence. Entry-point guidance and all-eight performance claims remain unchanged.
+
+한국어: 큰 중첩 함수 발췌의 불필요한 전체 복사를 제거했다. 합성 사례의 추적
+메모리 피크는 69.18%, 함수 시간은 7.57% 줄고 반환 결과는 동일했다. 작은 입력의
+소폭 증가도 보존한다. 내부 최적화이며 모델 전체 개선이나 배포 완료 근거는 아니다.
+
 ## Con Artist known-input reading not adopted — 2026-09-20, resources `eeadccb`
 
 [Fresh original/candidate comparison](results/con-artist-read-01/README.md), launch
