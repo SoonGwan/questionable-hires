@@ -9,6 +9,28 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Optional native preservation support — 2026-09-20, parent `f4943e8`
+
+Repeated handwritten tree inventories in startup 01 motivate a small reusable
+context manager, [native preservation](../skills/receipt/references/native-preservation.md).
+It reuses the existing bounded inventory and checks once before/after caller-owned
+native work, preserving startup/runner selection. The existing comparison script
+is byte-identical. Six new local tests cover native CSV positive/negative outcomes,
+two inventories, exception propagation, changes without restoration, modes/links/
+Git/retained scratch and bound failures. Python 3.11 Receipt regression discovery
+passes **130 tests in 50.545s**; the six new tests were rerun after the final
+directory-root validation. Skill/repository and featured-language checks pass.
+Runner tests mock model calls, not additional performance samples.
+This is capability evidence, not measured
+model token/time improvement. It supplies no copying, execution, cleanup or
+same-process import proof; those obligations remain. Read-routing candidate is
+still not adopted. Featured charts and model-performance claims are unchanged.
+
+한국어: 실제 비교에서 반복 작성된 원본 검사만 재사용하는 선택적 도구를 추가했다.
+기존 비교 실행기는 변경하지 않고 시작·종료 각 1회 검사, 변경 감지·예외 전파와
+실제 정상·오류 테스트를 검증했다. 실행·복사·정리·import 증거를 대신하지 않으며
+모델 비용 절감은 아직 미측정이다. 읽기 안내 후보나 기존 차트는 반영하지 않았다.
+
 ## Receipt startup transfer reviewed — 2026-09-20, resources `ca668a4`
 
 [Three fresh sessions](results/receipt-startup-01/README.md), launch `f5acd6f`,

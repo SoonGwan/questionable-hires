@@ -22,6 +22,9 @@ customization, disabled site initialization, hooks depending on the exact startu
 stack or replacing import machinery need native project setup. Do not remove
 hooks or bypass provenance to make a comparison pass.
 
+When using that native setup, [preservation-only support](native-preservation.md)
+can replace a handwritten tree inventory without altering the startup hook.
+
 ## Exit interpretation
 
 CLI 0 means observations collected, not a verified fix. Inspect actual test

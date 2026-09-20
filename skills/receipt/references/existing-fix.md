@@ -20,6 +20,10 @@ added/deleted implementations or retained copies. Keep the same evidence require
 whichever path is chosen. Read implementation for a concrete trust, adaptation or
 diagnosis question; the CLI recipes below do not require importing the helper API.
 
+For a required project-native workflow that lacks original-tree checks, optional
+[native preservation support](native-preservation.md) reuses the guard without
+replacing that workflow. It does not supply copying, execution or import evidence.
+
 When verification must preserve Git metadata too, use
 `git --no-optional-locks -c diff.autoRefreshIndex=false` for status/diff review.
 This suppresses optional index refresh, not other command/driver side effects;
