@@ -9,7 +9,28 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Optional Python task ownership — 2026-09-20, parent `83c138b`
+## Buffer transfer 01 — 2026-09-20, resources `3083086`
+
+[Six fresh sessions](results/hostage-buffer-01/README.md), launch `ae3ee43`,
+compare no skill, previous `83c138b` and optional Python task ownership `3083086`
+on one newly authored task in faulty/conforming variants (not two independent
+tasks). All six satisfy task/scope; all clean production stays unchanged. Current
+adopts the helper in both sessions. Versus previous: summed tokens **−5.93%**,
+time **−5.43%**; versus no skill: **+80.97% tokens**, **−3.47% time**. No current/
+baseline pair reduces both. Twenty-four separate author controls confirm genuine
+fault detection, valid alternative acceptance and delivered production behavior.
+No replacements/exclusions; n=1, fixed order, shared cache, nonidentical extra
+checks and full asset reads limit interpretation. **Not an accepted overall
+efficiency win**, all-eight result or release approval. Historical charts stay
+tied to their original resources.
+
+한국어: 새 작업 관리 도구를 실제로 사용한 6회 비교와 별도 24개 대조 검증을
+끝냈다. 이전 스킬보다 합산 토큰 5.93%, 시간 5.43%가 줄었지만, 무스킬보다
+토큰 80.97% 증가·시간 3.47% 감소로 전체 효율 개선에는 미달한다. 모든 실행이
+요구사항·범위를 충족하고 정상 코드는 보존됐다. 한 과제의 두 변형을 각 1회씩
+측정한 개발 실험이며, 8개 전체 우월성이나 배포 승인 근거로 쓰지 않는다.
+
+## Optional Python task ownership — historical pre-measurement checkpoint, 2026-09-20, parent `83c138b`
 
 The all-eight screen showed Hostage repeatedly writing task lists, cancellation,
 draining and bounded outcome waits despite copying callback support. The same

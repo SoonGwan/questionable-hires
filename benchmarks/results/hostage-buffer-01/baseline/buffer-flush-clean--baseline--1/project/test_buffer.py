@@ -1,0 +1,273 @@
+import asyncio
+import unittest
+
+from buffer import Buffer
+
+
+class OpaqueItem:
+    def __eq__(self, other):
+        raise AssertionError("Buffer must preserve items without comparing them")
+
+
+class ControlledSend:
+    """Expose actual callback entry and let the test choose its outcome."""
+
+    def __init__(self):
+        self.entered = asyncio.Event()
+        self.outcome = asyncio.get_running_loop().create_future()
+        self.calls = []
+
+    async def __call__(self, batch):
+        self.calls.append(batch)
+        self.entered.set()
+        return await self.outcome
+
+
+class BufferContractTests(unittest.IsolatedAsyncioTestCase):
+    TIMEOUT = 2
+
+    async def asyncSetUp(self):
+        self.owned_tasks = []
+
+    async def asyncTearDown(self):
+        # Runs even after an assertion fails, including before callback entry.
+        for task in self.owned_tasks:
+            if not task.done():
+                task.cancel()
+        if self.owned_tasks:
+            await asyncio.wait_for(
+                asyncio.gather(*self.owned_tasks, return_exceptions=True),
+                self.TIMEOUT,
+            )
+
+    def start_flush(self, buffer, send):
+        task = asyncio.create_task(buffer.flush(send))
+        self.owned_tasks.append(task)
+        return task
+
+    async def entered(self, send):
+        await asyncio.wait_for(send.entered.wait(), self.TIMEOUT)
+        self.assertEqual(len(send.calls), 1)
+
+    async def completed(self, task):
+        return await asyncio.wait_for(task, self.TIMEOUT)
+
+    def assert_items(self, actual, expected):
+        self.assertIsInstance(actual, tuple)
+        self.assertEqual(len(actual), len(expected))
+        for item, original in zip(actual, expected):
+            self.assertIs(item, original)
+
+    def assert_suppressed(self, buffer):
+        calls = []
+
+        def forbidden_send(batch):
+            calls.append(batch)
+            raise AssertionError("Suppressed flush invoked send")
+
+        operation = buffer.flush(forbidden_send)
+        try:
+            # A suppressed flush must finish immediately, without suspending.
+            with self.assertRaises(StopIteration) as stopped:
+                operation.send(None)
+            self.assertIs(stopped.exception.value, False)
+        finally:
+            operation.close()
+        self.assertEqual(calls, [])
+        return calls
+
+    async def retry(self, buffer, expected):
+        send = ControlledSend()
+        task = self.start_flush(buffer, send)
+        await self.entered(send)
+        self.assertIs(buffer.busy, True)
+        self.assert_items(send.calls[0], expected)
+        self.assert_items(buffer.queued, ())
+        receipt = object()
+        send.outcome.set_result(receipt)
+        self.assertIs(await self.completed(task), receipt)
+        self.assertIs(buffer.busy, False)
+        self.assert_items(buffer.queued, ())
+        self.assertEqual(len(send.calls), 1)
+
+    async def test_empty_suppression_never_calls_send(self):
+        buffer = Buffer()
+        self.assertIs(buffer.busy, False)
+        self.assert_items(buffer.queued, ())
+        calls = self.assert_suppressed(buffer)
+        self.assertIs(buffer.busy, False)
+        item = OpaqueItem()
+        buffer.add(item)
+        self.assert_items(buffer.queued, (item,))
+        await self.retry(buffer, (item,))
+        self.assert_suppressed(buffer)
+        self.assertEqual(calls, [])
+
+    async def test_busy_suppression_preserves_active_flush_and_additions(self):
+        buffer = Buffer()
+        first, later = OpaqueItem(), OpaqueItem()
+        buffer.add(first)
+        send = ControlledSend()
+        task = self.start_flush(buffer, send)
+        await self.entered(send)
+        self.assertIs(buffer.busy, True)
+        self.assert_items(send.calls[0], (first,))
+        self.assert_items(buffer.queued, ())
+        empty_calls = self.assert_suppressed(buffer)
+        buffer.add(later)
+        queued_calls = self.assert_suppressed(buffer)
+        self.assert_items(buffer.queued, (later,))
+        self.assertIs(buffer.busy, True)
+        self.assertFalse(task.done())
+        self.assertFalse(send.outcome.done())
+        receipt = object()
+        send.outcome.set_result(receipt)
+        self.assertIs(await self.completed(task), receipt)
+        self.assertIs(buffer.busy, False)
+        self.assert_items(buffer.queued, (later,))
+        self.assertEqual(len(send.calls), 1)
+        await self.retry(buffer, (later,))
+        self.assertEqual(empty_calls, [])
+        self.assertEqual(queued_calls, [])
+
+    async def test_success_preserves_receipt_and_item_identity_with_additions(self):
+        for receipt in (object(), None, False, RuntimeError("opaque receipt")):
+            with self.subTest(receipt=receipt):
+                buffer = Buffer()
+                first, second, third, fourth = (OpaqueItem() for _ in range(4))
+                # Repeated references must remain repeated references.
+                batch = (first, second, first)
+                for item in batch:
+                    buffer.add(item)
+                self.assert_items(buffer.queued, batch)
+                send = ControlledSend()
+                task = self.start_flush(buffer, send)
+                await self.entered(send)
+                self.assertIs(buffer.busy, True)
+                self.assert_items(send.calls[0], batch)
+                self.assert_items(buffer.queued, ())
+                buffer.add(third)
+                buffer.add(fourth)
+                self.assert_items(buffer.queued, (third, fourth))
+                self.assert_items(send.calls[0], batch)
+                send.outcome.set_result(receipt)
+                self.assertIs(await self.completed(task), receipt)
+                self.assertIs(buffer.busy, False)
+                self.assert_items(buffer.queued, (third, fourth))
+                self.assertEqual(len(send.calls), 1)
+                await self.retry(buffer, (third, fourth))
+
+    async def test_async_failure_restores_in_order_and_preserves_error_identity(self):
+        buffer = Buffer()
+        first, second, third, fourth = (OpaqueItem() for _ in range(4))
+        buffer.add(first)
+        buffer.add(second)
+        send = ControlledSend()
+        task = self.start_flush(buffer, send)
+        await self.entered(send)
+        self.assertIs(buffer.busy, True)
+        self.assert_items(send.calls[0], (first, second))
+        self.assert_items(buffer.queued, ())
+        buffer.add(third)
+        buffer.add(fourth)
+        error = RuntimeError("async send failure")
+        send.outcome.set_exception(error)
+        with self.assertRaises(RuntimeError) as caught:
+            await self.completed(task)
+        self.assertIs(caught.exception, error)
+        self.assertIs(buffer.busy, False)
+        self.assert_items(buffer.queued, (first, second, third, fourth))
+        self.assertEqual(len(send.calls), 1)
+        await self.retry(buffer, (first, second, third, fourth))
+
+    async def test_task_cancellation_restores_in_order_and_allows_retry(self):
+        buffer = Buffer()
+        first, second, third, fourth = (OpaqueItem() for _ in range(4))
+        buffer.add(first)
+        buffer.add(second)
+        send = ControlledSend()
+        task = self.start_flush(buffer, send)
+        await self.entered(send)
+        self.assertIs(buffer.busy, True)
+        self.assert_items(send.calls[0], (first, second))
+        self.assert_items(buffer.queued, ())
+        buffer.add(third)
+        buffer.add(fourth)
+        task.cancel()
+        with self.assertRaises(asyncio.CancelledError):
+            await self.completed(task)
+        self.assertTrue(task.cancelled())
+        self.assertIs(buffer.busy, False)
+        self.assert_items(buffer.queued, (first, second, third, fourth))
+        self.assertEqual(len(send.calls), 1)
+        await self.retry(buffer, (first, second, third, fourth))
+
+    async def test_synchronous_failure_restores_callback_additions_and_error_identity(self):
+        buffer = Buffer()
+        first, second, third, fourth = (OpaqueItem() for _ in range(4))
+        buffer.add(first)
+        buffer.add(second)
+        error = ValueError("synchronous callback failure")
+        calls = []
+
+        def send(batch):
+            calls.append(batch)
+            self.assertIs(buffer.busy, True)
+            self.assert_items(buffer.queued, ())
+            buffer.add(third)
+            buffer.add(fourth)
+            self.assert_items(buffer.queued, (third, fourth))
+            raise error
+
+        task = self.start_flush(buffer, send)
+        with self.assertRaises(ValueError) as caught:
+            await self.completed(task)
+        self.assertIs(caught.exception, error)
+        self.assertEqual(len(calls), 1)
+        self.assert_items(calls[0], (first, second))
+        self.assertIs(buffer.busy, False)
+        self.assert_items(buffer.queued, (first, second, third, fourth))
+        await self.retry(buffer, (first, second, third, fourth))
+
+    async def test_independent_buffers_can_flush_and_recover_separately(self):
+        left, right = Buffer(), Buffer()
+        a, b, c, d = (OpaqueItem() for _ in range(4))
+        left.add(a)
+        self.assert_items(right.queued, ())
+        right.add(b)
+        left_send, right_send = ControlledSend(), ControlledSend()
+        left_task = self.start_flush(left, left_send)
+        await self.entered(left_send)
+        self.assertIs(right.busy, False)
+        self.assert_items(right.queued, (b,))
+        right_task = self.start_flush(right, right_send)
+        await self.entered(right_send)
+        self.assertIs(left.busy, True)
+        self.assertIs(right.busy, True)
+        self.assert_items(left_send.calls[0], (a,))
+        self.assert_items(right_send.calls[0], (b,))
+        left.add(c)
+        right.add(d)
+        left_task.cancel()
+        with self.assertRaises(asyncio.CancelledError):
+            await self.completed(left_task)
+        self.assertIs(left.busy, False)
+        self.assert_items(left.queued, (a, c))
+        self.assertIs(right.busy, True)
+        self.assert_items(right.queued, (d,))
+        self.assertFalse(right_task.done())
+        self.assertFalse(right_send.outcome.done())
+        await self.retry(left, (a, c))
+        receipt = object()
+        right_send.outcome.set_result(receipt)
+        self.assertIs(await self.completed(right_task), receipt)
+        self.assertIs(right.busy, False)
+        self.assert_items(right.queued, (d,))
+        self.assert_items(left.queued, ())
+        self.assertEqual(len(left_send.calls), 1)
+        self.assertEqual(len(right_send.calls), 1)
+        await self.retry(right, (d,))
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,0 +1,217 @@
+{
+  "session_id": "01a0beb5-2286-76a0-8565-6f53186279e7",
+  "source_bytes": 113608,
+  "source_sha256": "7890985eca21b7cfaf2d86986472b8ee37577f5079b634cbfe66ea079facd7b5",
+  "source_lines": 47,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "fa5b1c83e87abc2fc782214657f01c5d1b98e2745047ee09f78218c1766abb0f",
+      "record": {
+        "timestamp": "2026-09-20T12:05:44.314Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0cbee1af6b8c75d8016aafcc16a7fc87d097de080f0fccd5ad",
+          "status": "completed",
+          "call_id": "call_sMP2ybcPkUkuzF36gRE2oz8X",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '! .git'\",\"max_output_tokens\":4000}));\ntext(await tools.exec_command({cmd:\"cat requirements.md buffer.py AGENTS.md\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb5-22c8-7842-8754-3a08a5542597",
+            "create_time": 1789905940.588091
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "7eed52f5516ad894893560e9e3d826d41b208ea4188f381271ad775e67228394",
+      "record": {
+        "timestamp": "2026-09-20T12:05:44.514Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0beb5-3fc2-7760-8f42-62cf31292f27",
+          "call_id": "call_sMP2ybcPkUkuzF36gRE2oz8X",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"f33e8b\",\"wall_time_seconds\":0.000001417,\"exit_code\":0,\"original_token_count\":32,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nbuffer.py\\nnotes.txt\\nrequirements.md\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d082a6\",\"wall_time_seconds\":0.000001083,\"exit_code\":0,\"original_token_count\":537,\"output\":\"Buffer accepts opaque item objects; order and item identity matter.\\nqueued is the tuple of waiting items; its backing container identity is private.\\nadd appends synchronously, including while a flush is awaiting send.\\nflush on an idle nonempty buffer detaches exactly its current queued items and\\ninvokes the supplied send once with a tuple containing those exact objects.\\nbusy is True during that operation. While busy, another flush returns literal\\nFalse immediately without invoking its send or changing any buffer state.\\nAn idle empty flush also returns literal False without invoking send.\\nSuccessful send returns its exact receipt object (including None or False).\\nThat batch stays removed; items added while waiting remain queued in order.\\nOn synchronous send failure, async failure or application-task cancellation,\\nrestore the detached batch BEFORE all items added meanwhile, without loss or\\nduplication, then propagate the failure. Ordinary exception identity is preserved;\\ntask cancellation requires CancelledError propagation, not exception identity.\\nAfter either outcome busy is False and a new flush can proceed. Instances are\\nindependent. Internal counters/container identities are not public contracts.\\nCallbacks are cooperative asyncio operations, no I/O/threads. No automatic retry,\\nbackground flushing, item copying, deferred execution of suppressed calls or\\ncancellation of another flush.\\nclass Buffer:\\n    def __init__(self):\\n        self._items = []\\n        self.busy = False\\n\\n    @property\\n    def queued(self):\\n        return tuple(self._items)\\n\\n    def add(self, item):\\n        self._items.append(item)\\n\\n    async def flush(self, send):\\n        if self.busy or not self._items:\\n            return False\\n        batch, self._items = self._items, []\\n        self.busy = True\\n        try:\\n            return await send(tuple(batch))\\n        except BaseException:\\n            self._items[:0] = batch\\n            raise\\n        finally:\\n            self.busy = False\\nPython 3.9+ standard library. Read requirements.md. Only buffer.py and native tests/support may change; fix production only if needed. Preserve all other files.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb5-22c8-7842-8754-3a08a5542597",
+            "create_time": 1789905944.514367
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "198666f88f86212079ac800f1d38aa69f47ea01db2ac36cabc131f668d9dcffa",
+      "record": {
+        "timestamp": "2026-09-20T12:05:53.140Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0cbee1af6b8c75d8016aafcc20c3b887d087865a04381a0e78",
+          "status": "completed",
+          "call_id": "call_cEic0m2vpchXhgVVtuS65v8l",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git status --short; ls -la\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb5-22c8-7842-8754-3a08a5542597",
+            "create_time": 1789905944.974443
+          }
+        }
+      }
+    },
+    {
+      "line": 24,
+      "line_sha256": "360d8da161d0304fc4017c28e6d32b2c2d47feb1250a64a2b0b4ab25a663e746",
+      "record": {
+        "timestamp": "2026-09-20T12:05:53.256Z",
+        "ordinal": 23,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0beb5-61e8-7681-9634-26bd6503089d",
+          "call_id": "call_cEic0m2vpchXhgVVtuS65v8l",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d80ec2\",\"wall_time_seconds\":0.000001834,\"exit_code\":0,\"original_token_count\":99,\"output\":\"total 32\\ndrwxr-xr-x@  7 admin  staff   224 Sep 20 21:05 .\\ndrwx------@  3 admin  staff    96 Sep 20 21:05 ..\\ndrwxr-xr-x@ 10 admin  staff   320 Sep 20 21:05 .git\\n-rw-r--r--@  1 admin  staff   161 Sep 20 21:05 AGENTS.md\\n-rw-r--r--@  1 admin  staff   577 Sep 20 21:05 buffer.py\\n-rw-r--r--@  1 admin  staff    41 Sep 20 21:05 notes.txt\\n-rw-r--r--@  1 admin  staff  1409 Sep 20 21:05 requirements.md\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb5-22c8-7842-8754-3a08a5542597",
+            "create_time": 1789905953.256269
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "5def65e634cfec2eb3787d10252b8f61d0f05596f26e6669a693f60f9915b6ae",
+      "record": {
+        "timestamp": "2026-09-20T12:07:31.616Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0cbee1af6b8c75d8016aafcc2a172887d09118656ed1ee6d38",
+          "status": "completed",
+          "call_id": "call_f3NELMu6XY6nZbVtN0BkxHIJ",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Add File: <WORKSPACE>/test_buffer.py\\n+import asyncio\\n+import unittest\\n+\\n+from buffer import Buffer\\n+\\n+\\n+class OpaqueItem:\\n+    def __eq__(self, other):\\n+        raise AssertionError(\\\"Buffer must preserve items without comparing them\\\")\\n+\\n+\\n+class ControlledSend:\\n+    \\\"\\\"\\\"Expose actual callback entry and let the test choose its outcome.\\\"\\\"\\\"\\n+\\n+    def __init__(self):\\n+        self.entered = asyncio.Event()\\n+        self.outcome = asyncio.get_running_loop().create_future()\\n+        self.calls = []\\n+\\n+    async def __call__(self, batch):\\n+        self.calls.append(batch)\\n+        self.entered.set()\\n+        return await self.outcome\\n+\\n+\\n+class BufferContractTests(unittest.IsolatedAsyncioTestCase):\\n+    TIMEOUT = 2\\n+\\n+    async def asyncSetUp(self):\\n+        self.owned_tasks = []\\n+\\n+    async def asyncTearDown(self):\\n+        # Runs even after an assertion fails, including before callback entry.\\n+        for task in self.owned_tasks:\\n+            if not task.done():\\n+                task.cancel()\\n+        if self.owned_tasks:\\n+            await asyncio.wait_for(\\n+                asyncio.gather(*self.owned_tasks, return_exceptions=True),\\n+                self.TIMEOUT,\\n+            )\\n+\\n+    def start_flush(self, buffer, send):\\n+        task = asyncio.create_task(buffer.flush(send))\\n+        self.owned_tasks.append(task)\\n+        return task\\n+\\n+    async def entered(self, send):\\n+        await asyncio.wait_for(send.entered.wait(), self.TIMEOUT)\\n+        self.assertEqual(len(send.calls), 1)\\n+\\n+    async def completed(self, task):\\n+        return await asyncio.wait_for(task, self.TIMEOUT)\\n+\\n+    def assert_items(self, actual, expected):\\n+        self.assertIsInstance(actual, tuple)\\n+        self.assertEqual(len(actual), len(expected))\\n+        for item, original in zip(actual, expected):\\n+            self.assertIs(item, original)\\n+\\n+    def assert_suppressed(self, buffer):\\n+        calls = []\\n+\\n+        def forbidden_send(batch):\\n+            calls.append(batch)\\n+            raise AssertionError(\\\"Suppressed flush invoked send\\\")\\n+\\n+        operation = buffer.flush(forbidden_send)\\n+        try:\\n+            # A suppressed flush must finish immediately, without suspending.\\n+            with self.assertRaises(StopIteration) as stopped:\\n+                operation.send(None)\\n+            self.assertIs(stopped.exception.value, False)\\n+        finally:\\n+            operation.close()\\n+        self.assertEqual(calls, [])\\n+        return calls\\n+\\n+    async def retry(self, buffer, expected):\\n+        send = ControlledSend()\\n+        task = self.start_flush(buffer, send)\\n+        await self.entered(send)\\n+        self.assertIs(buffer.busy, True)\\n+        self.assert_items(send.calls[0], expected)\\n+        self.assert_items(buffer.queued, ())\\n+        receipt = object()\\n+        send.outcome.set_result(receipt)\\n+        self.assertIs(await self.completed(task), receipt)\\n+        self.assertIs(buffer.busy, False)\\n+        self.assert_items(buffer.queued, ())\\n+        self.assertEqual(len(send.calls), 1)\\n+\\n+    async def test_empty_suppression_never_calls_send(self):\\n+        buffer = Buffer()\\n+        self.assertIs(buffer.busy, False)\\n+        self.assert_items(buffer.queued, ())\\n+        calls = self.assert_suppressed(buffer)\\n+        self.assertIs(buffer.busy, False)\\n+        item = OpaqueItem()\\n+        buffer.add(item)\\n+        self.assert_items(buffer.queued, (item,))\\n+        await self.retry(buffer, (item,))\\n+        self.assert_suppressed(buffer)\\n+        self.assertEqual(calls, [])\\n+\\n+    async def test_busy_suppression_preserves_active_flush_and_additions(self):\\n+        buffer = Buffer()\\n+        first, later = OpaqueItem(), OpaqueItem()\\n+        buffer.add(first)\\n+        send = ControlledSend()\\n+        task = self.start_flush(buffer, send)\\n+        await self.entered(send)\\n+        self.assertIs(buffer.busy, True)\\n+        self.assert_items(send.calls[0], (first,))\\n+        self.assert_items(buffer.queued, ())\\n+        empty_calls = self.assert_suppressed(buffer)\\n+        buffer.add(later)\\n+        queued_calls = self.assert_suppressed(buffer)\\n+        self.assert_items(buffer.queued, (later,))\\n+        self.assertIs(buffer.busy, True)\\n+        self.assertFalse(task.done())\\n+        self.assertFalse(send.outcome.done())\\n+        receipt = object()\\n+        send.outcome.set_result(receipt)\\n+        self.assertIs(await self.completed(task), receipt)\\n+        self.assertIs(buffer.busy, False)\\n+        self.assert_items(buffer.queued, (later,))\\n+        self.assertEqual(len(send.calls), 1)\\n+        await self.retry(buffer, (later,))\\n+        self.assertEqual(empty_calls, [])\\n+        self.assertEqual(queued_calls, [])\\n+\\n+    async def test_success_preserves_receipt_and_item_identity_with_additions(self):\\n+        for receipt in (object(), None, False, RuntimeError(\\\"opaque receipt\\\")):\\n+            with self.subTest(receipt=receipt):\\n+                buffer = Buffer()\\n+                first, second, third, fourth = (OpaqueItem() for _ in range(4))\\n+                # Repeated references must remain repeated references.\\n+                batch = (first, second, first)\\n+                for item in batch:\\n+                    buffer.add(item)\\n+                self.assert_items(buffer.queued, batch)\\n+                send = ControlledSend()\\n+                task = self.start_flush(buffer, send)\\n+                await self.entered(send)\\n+                self.assertIs(buffer.busy, True)\\n+                self.assert_items(send.calls[0], batch)\\n+                self.assert_items(buffer.queued, ())\\n+                buffer.add(third)\\n+                buffer.add(fourth)\\n+                self.assert_items(buffer.queued, (third, fourth))\\n+                self.assert_items(send.calls[0], batch)\\n+                send.outcome.set_result(receipt)\\n+                self.assertIs(await self.completed(task), receipt)\\n+                self.assertIs(buffer.busy, False)\\n+                self.assert_items(buffer.queued, (third, fourth))\\n+                self.assertEqual(len(send.calls), 1)\\n+                await self.retry(buffer, (third, fourth))\\n+\\n+    async def test_async_failure_restores_in_order_and_preserves_error_identity(self):\\n+        buffer = Buffer()\\n+        first, second, third, fourth = (OpaqueItem() for _ in range(4))\\n+        buffer.add(first)\\n+        buffer.add(second)\\n+        send = ControlledSend()\\n+        task = self.start_flush(buffer, send)\\n+        await self.entered(send)\\n+        self.assertIs(buffer.busy, True)\\n+        self.assert_items(send.calls[0], (first, second))\\n+        self.assert_items(buffer.queued, ())\\n+        buffer.add(third)\\n+        buffer.add(fourth)\\n+        error = RuntimeError(\\\"async send failure\\\")\\n+        send.outcome.set_exception(error)\\n+        with self.assertRaises(RuntimeError) as caught:\\n+            await self.completed(task)\\n+        self.assertIs(caught.exception, error)\\n+        self.assertIs(buffer.busy, False)\\n+        self.assert_items(buffer.queued, (first, second, third, fourth))\\n+        self.assertEqual(len(send.calls), 1)\\n+        await self.retry(buffer, (first, second, third, fourth))\\n+\\n+    async def test_task_cancellation_restores_in_order_and_allows_retry(self):\\n+        buffer = Buffer()\\n+        first, second, third, fourth = (OpaqueItem() for _ in range(4))\\n+        buffer.add(first)\\n+        buffer.add(second)\\n+        send = ControlledSend()\\n+        task = self.start_flush(buffer, send)\\n+        await self.entered(send)\\n+        self.assertIs(buffer.busy, True)\\n+        self.assert_items(send.calls[0], (first, second))\\n+        self.assert_items(buffer.queued, ())\\n+        buffer.add(third)\\n+        buffer.add(fourth)\\n+        task.cancel()\\n+        with self.assertRaises(asyncio.CancelledError):\\n+            await self.completed(task)\\n+        self.assertTrue(task.cancelled())\\n+        self.assertIs(buffer.busy, False)\\n+        self.assert_items(buffer.queued, (first, second, third, fourth))\\n+        self.assertEqual(len(send.calls), 1)\\n+        await self.retry(buffer, (first, second, third, fourth))\\n+\\n+    async def test_synchronous_failure_restores_callback_additions_and_error_identity(self):\\n+        buffer = Buffer()\\n+        first, second, third, fourth = (OpaqueItem() for _ in range(4))\\n+        buffer.add(first)\\n+        buffer.add(second)\\n+        error = ValueError(\\\"synchronous callback failure\\\")\\n+        calls = []\\n+\\n+        def send(batch):\\n+            calls.append(batch)\\n+            self.assertIs(buffer.busy, True)\\n+            self.assert_items(buffer.queued, ())\\n+            buffer.add(third)\\n+            buffer.add(fourth)\\n+            self.assert_items(buffer.queued, (third, fourth))\\n+            raise error\\n+\\n+        task = self.start_flush(buffer, send)\\n+        with self.assertRaises(ValueError) as caught:\\n+            await self.completed(task)\\n+        self.assertIs(caught.exception, error)\\n+        self.assertEqual(len(calls), 1)\\n+        self.assert_items(calls[0], (first, second))\\n+        self.assertIs(buffer.busy, False)\\n+        self.assert_items(buffer.queued, (first, second, third, fourth))\\n+        await self.retry(buffer, (first, second, third, fourth))\\n+\\n+    async def test_independent_buffers_can_flush_and_recover_separately(self):\\n+        left, right = Buffer(), Buffer()\\n+        a, b, c, d = (OpaqueItem() for _ in range(4))\\n+        left.add(a)\\n+        self.assert_items(right.queued, ())\\n+        right.add(b)\\n+        left_send, right_send = ControlledSend(), ControlledSend()\\n+        left_task = self.start_flush(left, left_send)\\n+        await self.entered(left_send)\\n+        self.assertIs(right.busy, False)\\n+        self.assert_items(right.queued, (b,))\\n+        right_task = self.start_flush(right, right_send)\\n+        await self.entered(right_send)\\n+        self.assertIs(left.busy, True)\\n+        self.assertIs(right.busy, True)\\n+        self.assert_items(left_send.calls[0], (a,))\\n+        self.assert_items(right_send.calls[0], (b,))\\n+        left.add(c)\\n+        right.add(d)\\n+        left_task.cancel()\\n+        with self.assertRaises(asyncio.CancelledError):\\n+            await self.completed(left_task)\\n+        self.assertIs(left.busy, False)\\n+        self.assert_items(left.queued, (a, c))\\n+        self.assertIs(right.busy, True)\\n+        self.assert_items(right.queued, (d,))\\n+        self.assertFalse(right_task.done())\\n+        self.assertFalse(right_send.outcome.done())\\n+        await self.retry(left, (a, c))\\n+        receipt = object()\\n+        right_send.outcome.set_result(receipt)\\n+        self.assertIs(await self.completed(right_task), receipt)\\n+        self.assertIs(right.busy, False)\\n+        self.assert_items(right.queued, (d,))\\n+        self.assert_items(left.queued, ())\\n+        self.assertEqual(len(left_send.calls), 1)\\n+        self.assertEqual(len(right_send.calls), 1)\\n+        await self.retry(right, (d,))\\n+\\n+\\n+if __name__ == \\\"__main__\\\":\\n+    unittest.main()\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb5-22c8-7842-8754-3a08a5542597",
+            "create_time": 1789905953.862044
+          }
+        }
+      }
+    },
+    {
+      "line": 34,
+      "line_sha256": "ac6ba8ad71ee9f0bf47ccbe538af88085a39f4c74e79d6d4f0d6353d52af18db",
+      "record": {
+        "timestamp": "2026-09-20T12:07:31.865Z",
+        "ordinal": 33,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0beb6-e319-7992-9008-4d2e26ce296e",
+          "call_id": "call_f3NELMu6XY6nZbVtN0BkxHIJ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a4341d\",\"wall_time_seconds\":0.0000015,\"exit_code\":0,\"original_token_count\":201,\"output\":\"test_async_failure_restores_in_order_and_preserves_error_identity (test_buffer.BufferContractTests) ... ok\\ntest_busy_suppression_preserves_active_flush_and_additions (test_buffer.BufferContractTests) ... ok\\ntest_empty_suppression_never_calls_send (test_buffer.BufferContractTests) ... ok\\ntest_independent_buffers_can_flush_and_recover_separately (test_buffer.BufferContractTests) ... ok\\ntest_success_preserves_receipt_and_item_identity_with_additions (test_buffer.BufferContractTests) ... ok\\ntest_synchronous_failure_restores_callback_additions_and_error_identity (test_buffer.BufferContractTests) ... ok\\ntest_task_cancellation_restores_in_order_and_allows_retry (test_buffer.BufferContractTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 7 tests in 0.030s\\n\\nOK\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb5-22c8-7842-8754-3a08a5542597",
+            "create_time": 1789906051.865863
+          }
+        }
+      }
+    },
+    {
+      "line": 38,
+      "line_sha256": "d1d127738cae8723cc783967eb6366fbe4c908c6247498d6bb0e9f898e4ac192",
+      "record": {
+        "timestamp": "2026-09-20T12:07:34.964Z",
+        "ordinal": 37,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0cbee1af6b8c75d8016aafcc85a4d487d0ad3ebc768c571f4d",
+          "status": "completed",
+          "call_id": "call_NoWsyoaf5dc35FXVqhgvSBH2",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git status --short; git diff --exit-code -- buffer.py requirements.md AGENTS.md notes.txt; git diff --check\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb5-22c8-7842-8754-3a08a5542597",
+            "create_time": 1789906052.27882
+          }
+        }
+      }
+    },
+    {
+      "line": 41,
+      "line_sha256": "6bcb0f4cd3800de0605e3de51bba10b117d1cbd5f09545f4377ec7e7e389b93b",
+      "record": {
+        "timestamp": "2026-09-20T12:07:35.088Z",
+        "ordinal": 40,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0beb6-efb0-77f1-89cc-ef1f73181e8c",
+          "call_id": "call_NoWsyoaf5dc35FXVqhgvSBH2",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b8ae16\",\"wall_time_seconds\":0.000001584,\"exit_code\":0,\"original_token_count\":5,\"output\":\"?? test_buffer.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb5-22c8-7842-8754-3a08a5542597",
+            "create_time": 1789906055.088209
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

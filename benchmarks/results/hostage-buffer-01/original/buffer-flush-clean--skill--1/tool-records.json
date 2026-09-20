@@ -1,0 +1,307 @@
+{
+  "session_id": "01a0beb3-3015-7b63-b653-12f92b425d76",
+  "source_bytes": 170601,
+  "source_sha256": "c2489837425ca6c4a0a2fa455e9bcd3d5c31b27cc66d4937f347e23e4701d759",
+  "source_lines": 58,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "1a8ad63813351405d4b8dc4860f575a26edd0b218a6756af3884366434390242",
+      "record": {
+        "timestamp": "2026-09-20T12:03:36.559Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05f95d1c69b0e9fc016aafcb9680bc87d098efd78c0e5e5b3c",
+          "status": "completed",
+          "call_id": "call_PEPWOmSHs9cQivU9AJ2vGGfJ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; git status --short; cat AGENTS.md requirements.md buffer.py .agents/skills/hostage-negotiator/SKILL.md; rg --files --hidden -g '!.git' -g '!__pycache__'\",\"max_output_tokens\":9000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905811.751842
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "23c471f1d3bbf6c9c0dcd666b3383212bfa307c00a8edf9c74905f47d01cf4dc",
+      "record": {
+        "timestamp": "2026-09-20T12:03:36.720Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0beb3-4c90-7ed0-94d3-cd9b0078d2f2",
+          "call_id": "call_PEPWOmSHs9cQivU9AJ2vGGfJ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"595fef\",\"wall_time_seconds\":0.000001417,\"exit_code\":0,\"original_token_count\":1799,\"output\":\"<WORKSPACE>\\n?? .agents/\\nPython 3.9+ standard library. Read requirements.md. Only buffer.py and native tests/support may change; fix production only if needed. Preserve all other files.\\nBuffer accepts opaque item objects; order and item identity matter.\\nqueued is the tuple of waiting items; its backing container identity is private.\\nadd appends synchronously, including while a flush is awaiting send.\\nflush on an idle nonempty buffer detaches exactly its current queued items and\\ninvokes the supplied send once with a tuple containing those exact objects.\\nbusy is True during that operation. While busy, another flush returns literal\\nFalse immediately without invoking its send or changing any buffer state.\\nAn idle empty flush also returns literal False without invoking send.\\nSuccessful send returns its exact receipt object (including None or False).\\nThat batch stays removed; items added while waiting remain queued in order.\\nOn synchronous send failure, async failure or application-task cancellation,\\nrestore the detached batch BEFORE all items added meanwhile, without loss or\\nduplication, then propagate the failure. Ordinary exception identity is preserved;\\ntask cancellation requires CancelledError propagation, not exception identity.\\nAfter either outcome busy is False and a new flush can proceed. Instances are\\nindependent. Internal counters/container identities are not public contracts.\\nCallbacks are cooperative asyncio operations, no I/O/threads. No automatic retry,\\nbackground flushing, item copying, deferred execution of suppressed calls or\\ncancellation of another flush.\\nclass Buffer:\\n    def __init__(self):\\n        self._items = []\\n        self.busy = False\\n\\n    @property\\n    def queued(self):\\n        return tuple(self._items)\\n\\n    def add(self, item):\\n        self._items.append(item)\\n\\n    async def flush(self, send):\\n        if self.busy or not self._items:\\n            return False\\n        batch, self._items = self._items, []\\n        self.busy = True\\n        try:\\n            return await send(tuple(batch))\\n        except BaseException:\\n            self._items[:0] = batch\\n            raise\\n        finally:\\n            self.busy = False\\n---\\nname: hostage-negotiator\\ndescription: Keep a small requested change focused when optional refactors, architectural redesign, or unrelated cleanup threaten to expand its scope.\\n---\\n\\n# Hostage Negotiator\\n\\n> Release the button. The architecture stays.\\n\\n## Establish the terms\\n\\nRead supplied files, applicable project instructions and working-tree status together. Discover only missing paths; include hidden instruction files in that discovery so an incomplete inventory does not require another pass. Do not precede known-file reads with a separate directory listing. Search again for an unresolved dependency or instruction boundary. Use the project's runner.\\n\\nFor each supporting change, ask which acceptance condition fails without it. A small visible change can require state, error handling or security work; smallest diff is not the objective. Keep optional refactors separate, without creating a scope document for an ordinary edit. Ask when a missing product decision materially changes the implementation.\\n\\nFor stateful behavior, follow entry, completion and recovery through the existing owner. Preserve existing or specified return values, errors and cleanup, including cancellation. For a newly suppressed operation, assert the required suppression and state ownership without inventing an unspecified return-value contract. Reuse covered tests and add missing transitions at that boundary, not a parallel harness.\\n\\nAssert observable contracts, not incidental counter increments or token values. For stale or failed work, capture contractual field values before release and compare afterward; retaining the owner object can alias in-place mutations. Preserve payload/error identity and snapshot mutable contents only when contractual. Do not invent exception-identity requirements for task cancellation.\\n\\nAsync regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup. Keep callback helpers separate from framework methods: an async `fail` or `run` on a unittest TestCase can break assertions or execution; use distinct names or composed support.\\n\\nWithout equivalent project support, optionally copy the [Python asyncio asset](assets/controlled_call.py) or [JavaScript Promise asset](assets/controlled_call.mjs) for the actual runtime into permitted test support. Read its complete usage block alongside application files: `sed -n '1,/^\\\"\\\"\\\"$/p' <python-asset>` or `sed -n '1,/^ \\\\*\\\\//p' <js-asset>`. These include limits and optional JS lifecycle ownership; inspect implementation for trust, adaptation or unclear behavior. Assets replace entry/release gates, not application assertions or external-resource cleanup; no separate reference is needed.\\n\\n## Deliver and stop\\n\\nRun native tests in a dedicated command so results and process exit remain inspectable. Then combine remaining copy integrity (`cmp <asset> <copy>`), diff checks and scope status in one non-test call, preserving each needed exit. Inspect new code not already visible in your edit output; do not reprint a whole generated suite merely to confirm it exists. A later successful command is not test evidence; never recopy a helper to make its integrity check pass.\\n\\nReview the diff against acceptance conditions, removing only your own unjustified additions. Reuse valid evidence; rerun only for changed relevant inputs, unresolved uncertainty or an explicit requirement.\\n\\nBefore claiming tests passed, locate their native identities/count and results, not just the shell exit or trailing diff/status. Missing evidence: first inspect an existing report tied to that command and inputs; observe a still-running process instead of restarting it. Otherwise rerun only the missing, safely repeatable check in scope, capturing its result and own exit. Never replay a deployment or side-effectful workflow merely to recover output. If evidence remains unavailable, say unverified. A later run is new evidence, not a repaired transcript; missing, undiscovered or skipped tests cannot support a pass.\\n\\nWhen terminal capture is unreliable and local evidence files are permitted, use the [single-run native capture fallback](references/native-evidence.md); read retained results instead of rerunning solely for output.\\n\\nReport decisive observations and limits, then stop when the requested behavior and checks are verified.\\n\\nPreserve user changes and explicit requirements. Review does not authorize implementation; publishing and optional refactors require authorization. Keep humor optional.\\nAGENTS.md\\nbuffer.py\\n.agents/skills/hostage-negotiator/assets/controlled_call.mjs\\n.agents/skills/hostage-negotiator/assets/controlled_call.py\\n.agents/skills/hostage-negotiator/SKILL.md\\n.agents/skills/hostage-negotiator/agents/openai.yaml\\n.agents/skills/hostage-negotiator/references/native-evidence.md\\n.agents/skills/hostage-negotiator/references/async-callback.md\\nnotes.txt\\nrequirements.md\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905816.720957
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "e9f0aaadece56bc2457c239738012fdb83de9e8607cd8045935fcccfa8404d4c",
+      "record": {
+        "timestamp": "2026-09-20T12:03:39.731Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05f95d1c69b0e9fc016aafcb9ab24487d0904fe028bc1a77ad",
+          "status": "completed",
+          "call_id": "call_Z30wwcQJhkUhaGl1kLJgL07j",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat .agents/skills/hostage-negotiator/assets/controlled_call.py\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905817.153102
+          }
+        }
+      }
+    },
+    {
+      "line": 24,
+      "line_sha256": "f02f9cb8badd5cc879585c02d3d623737fcee799c76217f7e21e49949f0598ff",
+      "record": {
+        "timestamp": "2026-09-20T12:03:39.825Z",
+        "ordinal": 23,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0beb3-58b1-7891-ae0c-6cc3e5113dda",
+          "call_id": "call_Z30wwcQJhkUhaGl1kLJgL07j",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"660c4f\",\"wall_time_seconds\":0.000001416,\"exit_code\":0,\"original_token_count\":1347,\"output\":\"\\\"\\\"\\\"Controlled asyncio callbacks; copy into permitted test support only if needed.\\n\\nPrefer equivalent project fixtures. Use the real application owner and runner;\\nthe copied module needs no installed skill. No application implementation here.\\n\\nsave = ControlledCall() accepts any positional/keyword arguments, including none.\\nStart the application task with owned cleanup registered BEFORE waiting. Await\\nsave.started(timeout=1) for actual callback entry; it returns a unique Call.\\ncall.args/call.kwargs hold argument references, not deep snapshots. save.calls\\nrecords every entry, even identical arguments, for call-count assertions.\\n\\nIf entry must happen before a particular application task finishes, await\\nsave.started_before(task, timeout=1). Pass an already-owned asyncio Task/Future\\non this loop, not a coroutine. Missing entry raises EntryNotObserved early with\\nan outcome containing status and the exact value/error (or cancelled status).\\nQueued entry wins; this does not establish which task caused it. Tests still\\nassert arguments, state and task outcomes. Timeout/cancelling the waiter leaves\\nthe application task and unconsumed entries untouched.\\n\\ncall.complete(value) delivers that exact object (default None); call.fail(error)\\nraises that exact exception. Each call has its own response future. Sibling\\ncompletion/cancellation is independent. Completing a finished/cancelled handle\\nraises asyncio.InvalidStateError, exposing accidental double completion.\\n\\nAssert required pending state, duplicate suppression, instance isolation and\\nrecovery through the application; entry alone proves none of them. Cancel the\\napplication task to test cancellation, not just its response future. Test\\nsynchronous callback failure with an ordinary raising function, not this double.\\n\\nUse unittest subtests for independent scenarios, not dependent phases of one\\ncall: a failed fetch-phase assertion must unwind to owned cleanup, not continue\\ninto a persist phase whose entry/handle was never established.\\n\\nTests own tasks: cancel and drain them even if entry/assertions fail; started's\\ntimeout does not clean application tasks. Bound application waits too. Async\\ntimeouts cannot interrupt blocking code or guarantee termination of tasks that\\nresist cancellation; use process bounds when needed. This supplies no network,\\nthread, browser, transaction or production-runtime evidence.\\n\\\"\\\"\\\"\\nimport asyncio\\n\\n\\nclass EntryNotObserved(AssertionError):\\n    def __init__(self, outcome):\\n        self.outcome = outcome\\n        super().__init__('Application task ' + outcome['status'] +\\n                         ' before expected callback entry')\\n\\n\\nclass Call:\\n    def __init__(self, args, kwargs):\\n        self.args, self.kwargs = args, kwargs\\n        self.response = asyncio.get_running_loop().create_future()\\n\\n    def complete(self, value=None):\\n        self.response.set_result(value)\\n\\n    def fail(self, error):\\n        self.response.set_exception(error)\\n\\n\\nclass ControlledCall:\\n    def __init__(self):\\n        self.calls = []\\n        self._entered = asyncio.Queue()\\n        self._entry_changed = asyncio.Event()\\n\\n    async def __call__(self, *args, **kwargs):\\n        call = Call(args, kwargs)\\n        self.calls.append(call)\\n        self._entered.put_nowait(call)\\n        self._entry_changed.set()\\n        return await call.response\\n\\n    async def started(self, timeout=1):\\n        \\\"\\\"\\\"Return the next actual callback entry, not merely a scheduled task.\\n\\n        Timeout leaves application tasks untouched; their cleanup is test-owned.\\n        \\\"\\\"\\\"\\n        if not 0 < timeout <= 30:\\n            raise ValueError('timeout must be in (0, 30]')\\n        return await asyncio.wait_for(self._entered.get(), timeout)\\n\\n    async def started_before(self, task, timeout=1):\\n        \\\"\\\"\\\"Observe entry or task settlement without owning/cancelling that task.\\\"\\\"\\\"\\n        if not 0 < timeout <= 30:\\n            raise ValueError('timeout must be in (0, 30]')\\n        loop = asyncio.get_running_loop()\\n        if not isinstance(task, asyncio.Future) or task.get_loop() is not loop:\\n            raise TypeError('task must be an owned asyncio Task/Future on this loop')\\n        deadline = loop.time() + timeout\\n        while True:\\n            if not self._entered.empty():\\n                return self._entered.get_nowait()\\n            if task.done():\\n                if task.cancelled():\\n                    outcome = dict(status='cancelled')\\n                elif task.exception() is not None:\\n                    outcome = dict(status='failed', error=task.exception())\\n                else:\\n                    outcome = dict(status='completed', value=task.result())\\n                raise EntryNotObserved(outcome)\\n            self._entry_changed.clear()\\n            # Wait for notification, never dequeue in a cancellable child task.\\n            # Otherwise cancellation could lose an entry already taken by it.\\n            notice = asyncio.create_task(self._entry_changed.wait())\\n            try:\\n                done, _ = await asyncio.wait((notice, task), timeout=max(0, deadline - loop.time()),\\n                                             return_when=asyncio.FIRST_COMPLETED)\\n                if not done:\\n                    raise asyncio.TimeoutError('Timed out waiting for callback entry')\\n            finally:\\n                notice.cancel()\\n                await asyncio.gather(notice, return_exceptions=True)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905819.825867
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "4a859ccefad7ba7be50fd8612c586440c639ba0561899821664f27781082bfeb",
+      "record": {
+        "timestamp": "2026-09-20T12:05:16.307Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05f95d1c69b0e9fc016aafcba6e6f487d0b5a3af456beac77d",
+          "status": "completed",
+          "call_id": "call_VgFc8vmSnsWIQ7zq4zunsEGk",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Add File: <WORKSPACE>/test_buffer.py\\n+import asyncio\\n+import unittest\\n+\\n+from buffer import Buffer\\n+\\n+\\n+TIMEOUT = 1\\n+\\n+\\n+class ControlledSend:\\n+    \\\"\\\"\\\"Record actual callback entry and let the test choose its outcome.\\\"\\\"\\\"\\n+\\n+    def __init__(self):\\n+        self.calls = []\\n+        self.entered = asyncio.Event()\\n+        self.response = asyncio.get_running_loop().create_future()\\n+\\n+    async def __call__(self, batch):\\n+        self.calls.append(batch)\\n+        self.entered.set()\\n+        return await self.response\\n+\\n+    async def wait_for_entry(self):\\n+        await asyncio.wait_for(self.entered.wait(), TIMEOUT)\\n+\\n+\\n+class BufferTests(unittest.IsolatedAsyncioTestCase):\\n+    def own_flush(self, buffer, send):\\n+        task = asyncio.create_task(buffer.flush(send))\\n+        self.addAsyncCleanup(self.cancel_and_drain, task)\\n+        return task\\n+\\n+    async def cancel_and_drain(self, task):\\n+        if not task.done():\\n+            task.cancel()\\n+        await asyncio.wait_for(\\n+            asyncio.gather(task, return_exceptions=True), TIMEOUT\\n+        )\\n+\\n+    async def outcome(self, task):\\n+        return await asyncio.wait_for(asyncio.shield(task), TIMEOUT)\\n+\\n+    def assert_items(self, actual, expected):\\n+        self.assertIsInstance(actual, tuple)\\n+        self.assertEqual(len(actual), len(expected))\\n+        for item, original in zip(actual, expected):\\n+            self.assertIs(item, original)\\n+\\n+    async def assert_retry(self, buffer, expected):\\n+        send = ControlledSend()\\n+        task = self.own_flush(buffer, send)\\n+        await send.wait_for_entry()\\n+        self.assertEqual(len(send.calls), 1)\\n+        self.assert_items(send.calls[0], expected)\\n+        self.assert_items(buffer.queued, ())\\n+        self.assertIs(buffer.busy, True)\\n+        receipt = object()\\n+        send.response.set_result(receipt)\\n+        self.assertIs(await self.outcome(task), receipt)\\n+        self.assertIs(buffer.busy, False)\\n+        self.assert_items(buffer.queued, ())\\n+        self.assertEqual(len(send.calls), 1)\\n+\\n+    async def test_empty_suppresses_send_and_remains_usable(self):\\n+        buffer = Buffer()\\n+        calls = []\\n+\\n+        def forbidden_send(batch):\\n+            calls.append(batch)\\n+            raise AssertionError('empty flush invoked send')\\n+\\n+        for _ in range(2):\\n+            self.assertIs(\\n+                await self.outcome(self.own_flush(buffer, forbidden_send)), False\\n+            )\\n+            self.assert_items(buffer.queued, ())\\n+            self.assertIs(buffer.busy, False)\\n+        item = object()\\n+        buffer.add(item)\\n+        await self.assert_retry(buffer, (item,))\\n+        self.assertEqual(calls, [])\\n+\\n+    async def test_busy_suppresses_send_and_preserves_active_operation(self):\\n+        buffer = Buffer()\\n+        first, later, last = object(), object(), object()\\n+        buffer.add(first)\\n+        send = ControlledSend()\\n+        task = self.own_flush(buffer, send)\\n+        await send.wait_for_entry()\\n+        self.assert_items(send.calls[0], (first,))\\n+        self.assertIs(buffer.busy, True)\\n+        self.assert_items(buffer.queued, ())\\n+        calls = []\\n+\\n+        def forbidden_send(batch):\\n+            calls.append(batch)\\n+            raise AssertionError('busy flush invoked send')\\n+\\n+        # Suppress with both an empty waiting queue and newly queued items.\\n+        for additions in ((), (later, last)):\\n+            for item in additions:\\n+                buffer.add(item)\\n+            queued_before = buffer.queued\\n+            busy_before = buffer.busy\\n+            self.assertIs(\\n+                await self.outcome(self.own_flush(buffer, forbidden_send)), False\\n+            )\\n+            self.assert_items(buffer.queued, queued_before)\\n+            self.assertIs(buffer.busy, busy_before)\\n+            self.assertFalse(task.done())\\n+            self.assertFalse(send.response.done())\\n+            self.assertEqual(len(send.calls), 1)\\n+            self.assertEqual(calls, [])\\n+        receipt = object()\\n+        send.response.set_result(receipt)\\n+        self.assertIs(await self.outcome(task), receipt)\\n+        self.assertIs(buffer.busy, False)\\n+        self.assert_items(buffer.queued, (later, last))\\n+        await self.assert_retry(buffer, (later, last))\\n+        self.assertEqual(calls, [])\\n+        self.assertEqual(len(send.calls), 1)\\n+\\n+    async def check_success(self, receipt):\\n+        buffer = Buffer()\\n+        # Equal mutable objects and a repeated reference catch copying or deduping.\\n+        first, second, later, last = [], [], object(), object()\\n+        batch = (first, second, first)\\n+        for item in batch:\\n+            buffer.add(item)\\n+        send = ControlledSend()\\n+        task = self.own_flush(buffer, send)\\n+        await send.wait_for_entry()\\n+        self.assertEqual(len(send.calls), 1)\\n+        self.assert_items(send.calls[0], batch)\\n+        self.assertIs(buffer.busy, True)\\n+        self.assert_items(buffer.queued, ())\\n+        buffer.add(later)\\n+        buffer.add(last)\\n+        self.assert_items(buffer.queued, (later, last))\\n+        self.assertFalse(task.done())\\n+        send.response.set_result(receipt)\\n+        self.assertIs(await self.outcome(task), receipt)\\n+        self.assertIs(buffer.busy, False)\\n+        self.assert_items(buffer.queued, (later, last))\\n+        self.assertEqual(len(send.calls), 1)\\n+        await self.assert_retry(buffer, (later, last))\\n+\\n+    async def test_success_preserves_receipt_and_item_identity(self):\\n+        await self.check_success(object())\\n+\\n+    async def test_success_returns_none_receipt(self):\\n+        await self.check_success(None)\\n+\\n+    async def test_success_returns_false_receipt(self):\\n+        await self.check_success(False)\\n+\\n+    async def check_async_recovery(self, cancel):\\n+        buffer = Buffer()\\n+        first, second, later, last = [], [], object(), object()\\n+        batch = (first, second, first)\\n+        for item in batch:\\n+            buffer.add(item)\\n+        send = ControlledSend()\\n+        task = self.own_flush(buffer, send)\\n+        await send.wait_for_entry()\\n+        self.assert_items(send.calls[0], batch)\\n+        self.assertIs(buffer.busy, True)\\n+        self.assert_items(buffer.queued, ())\\n+        buffer.add(later)\\n+        buffer.add(last)\\n+        waiting_before = buffer.queued\\n+        self.assert_items(waiting_before, (later, last))\\n+        self.assertFalse(task.done())\\n+        if cancel:\\n+            task.cancel()\\n+            with self.assertRaises(asyncio.CancelledError):\\n+                await self.outcome(task)\\n+            self.assertTrue(task.cancelled())\\n+        else:\\n+            error = RuntimeError('send failed')\\n+            send.response.set_exception(error)\\n+            with self.assertRaises(RuntimeError) as caught:\\n+                await self.outcome(task)\\n+            self.assertIs(caught.exception, error)\\n+        restored = batch + waiting_before\\n+        self.assert_items(buffer.queued, restored)\\n+        self.assertIs(buffer.busy, False)\\n+        self.assertEqual(len(send.calls), 1)\\n+        await self.assert_retry(buffer, restored)\\n+        self.assertEqual(len(send.calls), 1)\\n+\\n+    async def test_async_failure_restores_in_order_and_allows_retry(self):\\n+        await self.check_async_recovery(cancel=False)\\n+\\n+    async def test_task_cancellation_restores_in_order_and_allows_retry(self):\\n+        await self.check_async_recovery(cancel=True)\\n+\\n+    async def test_synchronous_failure_preserves_error_and_queued_additions(self):\\n+        buffer = Buffer()\\n+        first, second, later, last = [], [], object(), object()\\n+        batch = (first, second, first)\\n+        for item in batch:\\n+            buffer.add(item)\\n+        error = ValueError('synchronous callback failure')\\n+        calls = []\\n+\\n+        def raising_send(items):\\n+            calls.append(items)\\n+            self.assert_items(items, batch)\\n+            self.assertIs(buffer.busy, True)\\n+            self.assert_items(buffer.queued, ())\\n+            buffer.add(later)\\n+            buffer.add(last)\\n+            self.assert_items(buffer.queued, (later, last))\\n+            raise error\\n+\\n+        with self.assertRaises(ValueError) as caught:\\n+            await self.outcome(self.own_flush(buffer, raising_send))\\n+        self.assertIs(caught.exception, error)\\n+        self.assertEqual(len(calls), 1)\\n+        restored = batch + (later, last)\\n+        self.assert_items(buffer.queued, restored)\\n+        self.assertIs(buffer.busy, False)\\n+        await self.assert_retry(buffer, restored)\\n+        self.assertEqual(len(calls), 1)\\n+\\n+    async def test_instances_keep_pending_work_and_recovery_independent(self):\\n+        left, right = Buffer(), Buffer()\\n+        left_item, right_item, left_later, right_later = (\\n+            object(), object(), object(), object()\\n+        )\\n+        left.add(left_item)\\n+        right.add(right_item)\\n+        left_send, right_send = ControlledSend(), ControlledSend()\\n+        left_task = self.own_flush(left, left_send)\\n+        await left_send.wait_for_entry()\\n+        self.assertIs(right.busy, False)\\n+        self.assert_items(right.queued, (right_item,))\\n+        right_task = self.own_flush(right, right_send)\\n+        await right_send.wait_for_entry()\\n+        self.assert_items(left_send.calls[0], (left_item,))\\n+        self.assert_items(right_send.calls[0], (right_item,))\\n+        left.add(left_later)\\n+        right.add(right_later)\\n+        right_waiting_before = right.queued\\n+        right_busy_before = right.busy\\n+        self.assertIs(right_busy_before, True)\\n+        left_task.cancel()\\n+        with self.assertRaises(asyncio.CancelledError):\\n+            await self.outcome(left_task)\\n+        self.assertIs(left.busy, False)\\n+        self.assert_items(left.queued, (left_item, left_later))\\n+        self.assert_items(right.queued, right_waiting_before)\\n+        self.assertIs(right.busy, right_busy_before)\\n+        self.assertFalse(right_task.done())\\n+        self.assertFalse(right_send.response.done())\\n+        await self.assert_retry(left, (left_item, left_later))\\n+        self.assertFalse(right_task.done())\\n+        receipt = object()\\n+        right_send.response.set_result(receipt)\\n+        self.assertIs(await self.outcome(right_task), receipt)\\n+        self.assertIs(right.busy, False)\\n+        self.assert_items(right.queued, (right_later,))\\n+        self.assert_items(left.queued, ())\\n+        await self.assert_retry(right, (right_later,))\\n+        self.assertEqual(len(left_send.calls), 1)\\n+        self.assertEqual(len(right_send.calls), 1)\\n+\\n+\\n+if __name__ == '__main__':\\n+    unittest.main()\\n*** End Patch\"));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905820.317311
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "3c0536ea72071e02eea2fb82a6e0206a0a8d6fc427539d162e5ffed0509730a0",
+      "record": {
+        "timestamp": "2026-09-20T12:05:16.405Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0beb4-d1f5-70a1-ba7e-20fa0770979d",
+          "call_id": "call_VgFc8vmSnsWIQ7zq4zunsEGk",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905916.405874
+          }
+        }
+      }
+    },
+    {
+      "line": 37,
+      "line_sha256": "f589fb7a7063c54019dc033acdef9b3136eec9f05490e16884074cc5ad9b4861",
+      "record": {
+        "timestamp": "2026-09-20T12:05:19.578Z",
+        "ordinal": 36,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05f95d1c69b0e9fc016aafcbfeb73887d0bbe4959dcea707b3",
+          "status": "completed",
+          "call_id": "call_XOyl0gzzL3Zj0PFtx3QvSh5a",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905916.912492
+          }
+        }
+      }
+    },
+    {
+      "line": 40,
+      "line_sha256": "fbc9505826703f66cb3d09a6239511fa8b69ee323f8981e23dcd3c0e5d518f63",
+      "record": {
+        "timestamp": "2026-09-20T12:05:19.779Z",
+        "ordinal": 39,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0beb4-df23-7eb0-8a0f-9f2ab3229458",
+          "call_id": "call_XOyl0gzzL3Zj0PFtx3QvSh5a",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"19a957\",\"wall_time_seconds\":0.00000125,\"exit_code\":0,\"original_token_count\":212,\"output\":\"test_async_failure_restores_in_order_and_allows_retry (test_buffer.BufferTests) ... ok\\ntest_busy_suppresses_send_and_preserves_active_operation (test_buffer.BufferTests) ... ok\\ntest_empty_suppresses_send_and_remains_usable (test_buffer.BufferTests) ... ok\\ntest_instances_keep_pending_work_and_recovery_independent (test_buffer.BufferTests) ... ok\\ntest_success_preserves_receipt_and_item_identity (test_buffer.BufferTests) ... ok\\ntest_success_returns_false_receipt (test_buffer.BufferTests) ... ok\\ntest_success_returns_none_receipt (test_buffer.BufferTests) ... ok\\ntest_synchronous_failure_preserves_error_and_queued_additions (test_buffer.BufferTests) ... ok\\ntest_task_cancellation_restores_in_order_and_allows_retry (test_buffer.BufferTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 9 tests in 0.045s\\n\\nOK\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905919.7793
+          }
+        }
+      }
+    },
+    {
+      "line": 42,
+      "line_sha256": "d5b8c889398b69e53575f5ec8fb031de700c9bc2d77f7b62394fc93a579747a7",
+      "record": {
+        "timestamp": "2026-09-20T12:05:23.010Z",
+        "ordinal": 41,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05f95d1c69b0e9fc016aafcc0175cc87d0a7ca83079d5362c4",
+          "status": "completed",
+          "call_id": "call_z251j4Tzr7eJ95j6AddAgVL5",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff --check; git diff --exit-code -- buffer.py requirements.md AGENTS.md notes.txt; git status --short; git ls-files --others --exclude-standard\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905920.200475
+          }
+        }
+      }
+    },
+    {
+      "line": 45,
+      "line_sha256": "60f3d7bf8f739c6d01033e33dfa092616aaba9a2cb9cf71bf4478920972f35ac",
+      "record": {
+        "timestamp": "2026-09-20T12:05:23.149Z",
+        "ordinal": 44,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0beb4-ec4d-7af1-a9ee-d73e1ba93220",
+          "call_id": "call_z251j4Tzr7eJ95j6AddAgVL5",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d74bd7\",\"wall_time_seconds\":0.000001333,\"exit_code\":0,\"original_token_count\":98,\"output\":\"?? .agents/\\n?? test_buffer.py\\n.agents/skills/hostage-negotiator/SKILL.md\\n.agents/skills/hostage-negotiator/agents/openai.yaml\\n.agents/skills/hostage-negotiator/assets/controlled_call.mjs\\n.agents/skills/hostage-negotiator/assets/controlled_call.py\\n.agents/skills/hostage-negotiator/references/async-callback.md\\n.agents/skills/hostage-negotiator/references/native-evidence.md\\ntest_buffer.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905923.149638
+          }
+        }
+      }
+    },
+    {
+      "line": 49,
+      "line_sha256": "2756b91e2148156daea037fd90dd7ac1097a80e9cfd347424a726a5fa045b73a",
+      "record": {
+        "timestamp": "2026-09-20T12:05:31.436Z",
+        "ordinal": 48,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05f95d1c69b0e9fc016aafcc06571487d0ae703dc5e12f2593",
+          "status": "completed",
+          "call_id": "call_PhnMDDlTR0hrrGDCsX99gzQ2",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport subprocess\\nchecks = (\\n    ['git', 'diff', '--check'],\\n    ['git', 'diff', '--no-index', '--check', '--', '/dev/null', 'test_buffer.py'],\\n    ['git', 'diff', '--exit-code', '--', 'buffer.py', 'requirements.md', 'AGENTS.md', 'notes.txt'],\\n)\\nfor command in checks:\\n    result = subprocess.run(command, capture_output=True, text=True)\\n    print(' '.join(command), '=> exit', result.returncode)\\n    if result.stdout or result.stderr:\\n        print(result.stdout + result.stderr, end='')\\nPY\",\"max_output_tokens\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905923.676523
+          }
+        }
+      }
+    },
+    {
+      "line": 52,
+      "line_sha256": "27d911f483e49338da0af775d56a909999c6c1acb0aab1d05b9d209c855f07fb",
+      "record": {
+        "timestamp": "2026-09-20T12:05:31.588Z",
+        "ordinal": 51,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0beb5-0d44-78a1-9159-96daeff0096f",
+          "call_id": "call_PhnMDDlTR0hrrGDCsX99gzQ2",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d692ca\",\"wall_time_seconds\":0.00000175,\"exit_code\":0,\"original_token_count\":44,\"output\":\"git diff --check => exit 0\\ngit diff --no-index --check -- /dev/null test_buffer.py => exit 1\\ngit diff --exit-code -- buffer.py requirements.md AGENTS.md notes.txt => exit 0\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0beb3-3062-76a0-84c6-768f5dca003d",
+            "create_time": 1789905931.5886
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
