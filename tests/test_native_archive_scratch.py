@@ -10,6 +10,35 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class NativeArchiveScratchTests(unittest.TestCase):
+    def test_repository_controls_run_in_archive_and_reject_changed_fixture(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            archive = Path(scratch) / 'archive'
+            project = 'benchmarks/results/con-artist-repository-01/baseline/repository-collector-cache--baseline--1/project/'
+            names = ('tests/test_con_artist_repository_case.py',
+                     'tests/con_artist_fixture_support.py',
+                     'benchmarks/con_artist_repository_case.py',
+                     project + 'skills/con-artist/scripts/context.py',
+                     project + 'tests/test_context_line_index.py')
+            for name in names:
+                target = archive / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / name, target)
+            command = [sys.executable, '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-v']
+            passed = subprocess.run(command, cwd=archive, capture_output=True, text=True, timeout=15)
+            self.assertEqual(passed.returncode, 0, passed.stdout + passed.stderr)
+            self.assertIn('Ran 3 tests', passed.stderr)
+            self.assertIn('OK (skipped=1)', passed.stderr)
+            self.assertRegex(passed.stderr,
+                r'test_retained_bytes_match_pinned_project_history_when_available[^\n]*\.\.\. skipped ')
+            self.assertRegex(passed.stderr,
+                r'test_actual_repository_tests_pass_and_reject_cross_call_cache[^\n]*\.\.\. ok')
+            self.assertFalse((archive / 'benchmarks/local-runs').exists())
+            fixture = archive / project / 'skills/con-artist/scripts/context.py'
+            fixture.write_bytes(fixture.read_bytes() + b'\n# altered retained source\n')
+            rejected = subprocess.run(command, cwd=archive, capture_output=True, text=True, timeout=15)
+            self.assertNotEqual(rejected.returncode, 0)
+            self.assertIn('Retained repository fixture identity changed', rejected.stderr)
+
     def test_native_controls_execute_without_git_or_local_runs(self):
         with tempfile.TemporaryDirectory() as scratch:
             archive = Path(scratch) / 'archive'

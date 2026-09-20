@@ -9,6 +9,8 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'benchmarks'))
 import run_con_artist_repository_01 as runner
+import con_artist_repository_case as fixture_module
+from con_artist_fixture_support import native_controls
 
 
 class ConArtistRepositoryRunnerTests(unittest.TestCase):
@@ -17,7 +19,8 @@ class ConArtistRepositoryRunnerTests(unittest.TestCase):
             runner.main()
 
     def test_real_native_startup_controls(self):
-        rows = runner.preflight()
+        with native_controls(fixture_module):
+            rows = runner.preflight()
         self.assertEqual([r['exit_code'] for r in rows if 'exit_code' in r], [0, 1])
 
     def test_schedule_and_exclusive_execution(self):
