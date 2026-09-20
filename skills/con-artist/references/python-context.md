@@ -64,7 +64,9 @@ Within one invocation, selectors and ancestor context reuse one read and at most
 one parse per relative file path; the input limit counts that file once.
 Multiple line selectors also reuse one definition-span traversal for that parsed
 file. Each still resolves the smallest enclosing definition and rejects ambiguity;
-named selectors do not build this line index. Nothing is cached across invocations.
+named selectors do not build this line index. Named selectors reuse a name map
+per visited statement scope, retaining all duplicate definitions for ambiguity
+checks. Nothing is cached across invocations.
 Definition discovery skips expression subtrees, which cannot contain definition
 statements; deep arithmetic/decorator expressions therefore do not consume its
 recursive walk budget. Parsing and nested statement scopes still have runtime limits.

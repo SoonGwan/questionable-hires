@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Named-scope reuse — 2026-09-20, parent `e20396f`
+
+[Collector change and real-source local profile](CONTEXT-NAMED-CACHE-01.md).
+Named selections reuse per-scope maps within one invocation; duplicate names
+remain ambiguous. Selecting eight methods walks the module/class twice instead
+of sixteen times. Full collection output is identical on three repository files.
+Multi-selection medians decrease about 1.8–6.0%; one single-selection median
+increases about 2.1%. These small warm-host timings are not model/token savings.
+32 audit-context and 14 context regression checks pass; no chart promotion.
+
+한국어: 함수 이름 여러 개를 찾는 반복 탐색을 줄였고 실제 파일 출력 대조와
+관련 회귀 검사를 통과했다. 속도 차이는 작고 단일 선택의 역효과도 보존했다.
+전체 모델 성능 목표는 여전히 미달이며 기존 비교 결과·그래프는 유지한다.
+
 ## Full local validation — 2026-09-20, source `5b10619`
 
 [Release-check details](RELEASE-CHECK-2026-09-20.md): Python 3.11.16 checkout

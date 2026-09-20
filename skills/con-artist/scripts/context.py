@@ -169,8 +169,15 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
                 symbol, node = definition_at_line(tree, symbol, snapshot['definition_spans'])
             else:
                 body = tree.body
+                scopes = snapshot.setdefault('scope_names', {})
                 for name in symbol.split('.'):
-                    matches = [n for n in scope_definitions(body) if n.name == name]
+                    key = id(body)  # The parsed tree owns these lists for this snapshot.
+                    if key not in scopes:
+                        names = {}
+                        for definition in scope_definitions(body):
+                            names.setdefault(definition.name, []).append(definition)
+                        scopes[key] = names
+                    matches = scopes[key].get(name, [])
                     if len(matches) != 1:
                         raise ValueError('Missing or ambiguous definition: ' + str(path) + ':' + symbol)
                     node = matches[0]
