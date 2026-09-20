@@ -31,13 +31,69 @@ Use unittest subtests for independent scenarios, not dependent phases of one
 call: a failed fetch-phase assertion must unwind to owned cleanup, not continue
 into a persist phase whose entry/handle was never established.
 
-Tests own tasks: cancel and drain them even if entry/assertions fail; started's
+Optional task ownership: in asyncSetUp, create tasks = OwnedTasks(timeout=1)
+and register self.addAsyncCleanup(tasks.close) BEFORE tasks.start(coroutine).
+Await tasks.wait(task) for its result/error (no cancellation-identity promise).
+Timeout or cancelling this wait leaves the task alive for assertions/cleanup.
+close cancels/drains only registered tasks, retrieves their exceptions, and
+rejects new starts. Assert expected outcomes before cleanup: close is not a
+test of application success. A cleanup timeout reports unfinished tasks; it
+does not claim they stopped. Retry close only to drain that same owner.
+
+Otherwise tests own cancellation/drain even if entry/assertions fail; started's
 timeout does not clean application tasks. Bound application waits too. Async
 timeouts cannot interrupt blocking code or guarantee termination of tasks that
 resist cancellation; use process bounds when needed. This supplies no network,
 thread, browser, transaction or production-runtime evidence.
 """
 import asyncio
+
+
+class OwnedTasks:
+    """Optional same-loop task support; no application assertions or global sweep."""
+    def __init__(self, timeout=1):
+        if not 0 < timeout <= 30:
+            raise ValueError('timeout must be in (0, 30]')
+        self.timeout = timeout
+        self._loop = asyncio.get_running_loop()
+        self._tasks = set()
+        self._closed = False
+
+    def _check_loop(self):
+        if asyncio.get_running_loop() is not self._loop:
+            raise RuntimeError('OwnedTasks must stay on its creating loop')
+
+    def start(self, coroutine):
+        self._check_loop()
+        if self._closed:
+            raise RuntimeError('OwnedTasks is closed; coroutine remains caller-owned')
+        task = asyncio.create_task(coroutine)
+        self._tasks.add(task)
+        return task
+
+    async def wait(self, task):
+        self._check_loop()
+        if task not in self._tasks:
+            raise ValueError('Task is not owned here')
+        done, _ = await asyncio.wait((task,), timeout=self.timeout)
+        if not done:
+            raise asyncio.TimeoutError('Owned task did not settle; still owned')
+        return task.result()
+
+    async def close(self):
+        self._check_loop()
+        self._closed = True
+        for task in self._tasks:
+            if not task.done():
+                task.cancel()
+        if not self._tasks:
+            return
+        done, pending = await asyncio.wait(self._tasks, timeout=self.timeout)
+        for task in done:
+            if not task.cancelled():
+                task.exception()  # Drain, not a substitute for test assertions.
+        if pending:
+            raise asyncio.TimeoutError('Owned task cleanup incomplete: %d pending' % len(pending))
 
 
 class EntryNotObserved(AssertionError):

@@ -122,7 +122,7 @@ use Node.js. Helpers do not install dependencies or run in the background.
 
 | Hire | Optional support / boundary |
 | --- | --- |
-| Hostage Negotiator | Controlled [Python calls](skills/hostage-negotiator/assets/controlled_call.py) or [JavaScript calls and cleanup](skills/hostage-negotiator/assets/controlled_call.mjs); optional [native evidence retention](skills/hostage-negotiator/references/native-evidence.md) for unreliable terminal capture. Tests own application assertions; the capture recipe supplies no browser evidence or process deadline. |
+| Hostage Negotiator | Controlled [Python calls and optional task cleanup](skills/hostage-negotiator/assets/controlled_call.py) or [JavaScript calls and cleanup](skills/hostage-negotiator/assets/controlled_call.mjs); optional [native evidence retention](skills/hostage-negotiator/references/native-evidence.md) for unreliable terminal capture. Tests own application assertions; the capture recipe supplies no browser evidence or process deadline. |
 | Con Artist | [Disposable Python test audits](skills/con-artist/references/python-audit.md) and [read-only context collection](skills/con-artist/references/python-context.md). Run trusted tests only; not a sandbox. |
 | Necromancer | [Focused Git history](skills/necromancer/references/focused-history.md). Attribution is evidence, not a decision to keep or delete code. |
 | Friday | [SQLite compatibility checks](skills/friday/references/sqlite-matrix.md). Not proof of production rollout safety or other DB engines. |

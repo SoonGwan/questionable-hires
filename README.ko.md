@@ -165,7 +165,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 
 | 스킬 | 선택형 도구와 적용 범위 |
 | --- | --- |
-| 범위 협상가 | [Python 호출 제어](skills/hostage-negotiator/assets/controlled_call.py) 또는 [JavaScript 호출·정리](skills/hostage-negotiator/assets/controlled_call.mjs), 출력 누락에 대비한 선택적 [테스트 증거 보존](skills/hostage-negotiator/references/native-evidence.md). 앱 검증은 테스트가 담당하며 증거 보존 방법은 브라우저 검증이나 실행 시간 제한을 제공하지 않습니다. |
+| 범위 협상가 | [Python 호출 제어·선택적 작업 정리](skills/hostage-negotiator/assets/controlled_call.py) 또는 [JavaScript 호출·정리](skills/hostage-negotiator/assets/controlled_call.mjs), 출력 누락에 대비한 선택적 [테스트 증거 보존](skills/hostage-negotiator/references/native-evidence.md). 앱 검증은 테스트가 담당하며 증거 보존 방법은 브라우저 검증이나 실행 시간 제한을 제공하지 않습니다. |
 | 테스트 사기 감별사 | [Python 테스트 결함 감사](skills/con-artist/references/python-audit.md)와 [읽기 전용 맥락 수집](skills/con-artist/references/python-context.md). 신뢰하는 테스트만 실행하며 샌드박스가 아닙니다. |
 | 레거시 고고학자 | [관련 Git 이력 수집](skills/necromancer/references/focused-history.md). 과거 이유를 찾았다고 유지·삭제 결론이 자동으로 정해지지는 않습니다. |
 | 배포 생존 담당 | [SQLite 호환성 확인](skills/friday/references/sqlite-matrix.md). 운영 배포나 다른 DB 엔진의 안전성을 증명하지 않습니다. |

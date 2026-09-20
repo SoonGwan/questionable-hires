@@ -9,6 +9,45 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Optional Python task ownership — 2026-09-20, parent `83c138b`
+
+The all-eight screen showed Hostage repeatedly writing task lists, cancellation,
+draining and bounded outcome waits despite copying callback support. The same
+standalone Python asset now optionally provides `OwnedTasks`: register `close`
+as async cleanup before `start`, then `wait` for application results. Existing
+callback APIs and application assertions remain unchanged. Waiting timeout or
+cancellation does not cancel application work; cleanup affects registered tasks
+only, reports unfinished tasks honestly and can drain the same owner later.
+Cooperative async deadlines are not process isolation or a blocking-code timeout.
+
+[Nine behavioral tests](../tests/test_owned_tasks_asset.py) cover exact results/
+ordinary exceptions, waiter timeout/cancellation, owned versus unrelated tasks,
+cleanup refusal/timeouts and native assertion preservation. A standalone-copy
+positive/negative unittest control retains the actual `'observed' != 'expected'`
+failure while cancelling/draining pending work. Another control replaces only
+the four plumbing methods in the retained nine-test Hostage suite; AST comparison
+preserves every application assertion. Correct and valid-counter-step versions
+pass; original faulty ownership still produces the same four assertion failures.
+Historical artifacts stay unchanged. Existing 16 callback and usage-read checks
+also pass; Python 3.9/3.11 support is exercised.
+
+Complete local regression discovery: **730 tests pass in 113.530s** with the
+declared Python 3.11 pytest/PyYAML environment. Skill/repository validation and
+featured-language synchronization checks pass. Runner unit tests mock model
+calls; this suite is not fresh model-performance evidence.
+
+This is a reusable implementation improvement, **not a measured model token/time
+gain**. The asset is larger, so indiscriminate full-source reading may increase
+cost. Fresh adoption/transfer evaluation remains required; no historical numbers
+or featured charts change. Prefer adequate project support and do not require this
+helper for ordinary edits.
+
+한국어: Hostage가 매번 작성하던 작업 목록·취소·회수·완료 대기를 선택형 Python
+API로 제공했다. 기존 콜백 API와 앱 검증은 유지한다. 정상/실패 네이티브 검사와
+기존 9개 테스트의 검증 내용을 그대로 둔 대조에서 실제 결함 검출·정상 대안 통과를
+확인했다. 원본 측정 자료는 수정하지 않았다. 도우미 자체는 커졌으므로 모델이
+채택하고 전체 비용도 줄이는지는 별도 측정 전이며, 성능 수치로 주장하지 않는다.
+
 ## All-eight current screen 02 — 2026-09-20, resources `62e5886`
 
 [Sixteen original sessions](results/all-eight-current-02/README.md), launch
