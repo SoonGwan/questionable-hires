@@ -1,0 +1,189 @@
+{
+  "resource_revision": "79678f2",
+  "identities": {
+    "benchmarks/hostage_modes_candidate.py": "27835c1089366ed7b6916ccc232a888acaf65744e47a52a5038ce8ad676248b0",
+    "benchmarks/run_hostage_modes_01.py": "21a2d55fa3d2d5e2be1512d7e501483fd4378b6e822f40c19e5f8ba64559aea5",
+    "benchmarks/hostage_refresh_cases.py": "20902b8848f665a41b9f638010b4277da5ec56203f558b18b57b68b38c034c90",
+    "benchmarks/korean_auto_cases.py": "864cc6a19e34ea4784572e7c7528797b565d94b048c4d61656caa2c6b11b5eee",
+    "benchmarks/cases.json": "08886cbdc308da829a4778a5124596723caf2f86e691335bb3f668667a7f43c4",
+    "benchmarks/HOSTAGE-MODES-01-PROTOCOL.md": "c317797f933ddaedc35f1b39280b95fbeed38032236d468685046a15a585d2db",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c"
+  },
+  "cases": [
+    {
+      "id": "ko-label-change",
+      "skill": "hostage-negotiator",
+      "task": "결제 버튼 문구를 Buy에서 Place order로 바꿔 줘. 동료가 상태 관리 시스템도 교체하자고 했지만 그건 선택 사항이고 이번 요청에는 포함되지 않아.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "checkout.html": "<!doctype html>\n<html lang=\"en\"><title>Checkout</title><form><button type=\"submit\">Buy</button></form></html>\n",
+        "state.js": "export function checkoutState() { return { pending: false }; }\n"
+      },
+      "criteria": [
+        "Changes only the requested label.",
+        "Does not replace the optional state system.",
+        "Does not invent unrelated implementation requirements."
+      ],
+      "source_case": "label-change",
+      "expected_primary": "hostage-negotiator",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "refresh-owner-a",
+      "skill": "hostage-negotiator",
+      "task": "Review Preview.refresh against requirements.md and fix preview.py only if\nneeded. Add rerunnable standard-library unittest tests using actual Preview with\ncontrolled callbacks. Cover both completion orders, earlier failure/cancellation\nwhile latest remains pending, latest failure/cancellation and retry, synchronous\ncallback failure, result/error identity, prior display retention and instance isolation.\nBound behavior-dependent waits and clean up owned tasks; no timing sleeps. Use\npython3 -B -m unittest discover -v and report actual native results and the test\nprocess exit. Never infer passed tests solely from a later diff/status or prior prose.\nPreserve requirements and unrelated owner notes. Test support may be added inside\nthis project; no dependencies, network, external discovery, deployment or publishing.\nDo not serialize or suppress overlapping refresh calls to make the tests pass.\n",
+      "files": {
+        "preview.py": "class Preview:\n    def __init__(self):\n        self.pending = False\n        self.value = None\n        self.generation = 0\n\n    async def refresh(self, key, fetch):\n        self.generation += 1\n        generation = self.generation\n        self.pending = True\n        try:\n            value = await fetch(key)\n            if generation == self.generation:\n                self.value = value\n            return value\n        finally:\n            self.pending = False\n",
+        "requirements.md": "Every refresh must invoke its supplied fetch(key), even while another\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\nEach call returns its own exact fetched object or propagates its own exception.\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\nfailure or cancellation cannot clear pending while the latest is unresolved.\nLatest settlement clears pending even if older calls remain running. Keep the prior\nvalue during loading and on failure/cancellation. Instances are independent.\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\n",
+        "notes.txt": "Owner draft: preserve this unrelated note.\n"
+      },
+      "criteria": [
+        "Preserve overlapping callback invocation and exact per-call results/errors.",
+        "Latest-started request alone owns pending/value across both orders and recovery.",
+        "Keep valid original behavior; change production only if a contract defect exists.",
+        "Retain bounded native tests and report actual evidence without scope expansion."
+      ]
+    }
+  ],
+  "schedule": [
+    {
+      "case": "ko-label-change",
+      "condition": "baseline"
+    },
+    {
+      "case": "ko-label-change",
+      "condition": "original"
+    },
+    {
+      "case": "ko-label-change",
+      "condition": "candidate"
+    },
+    {
+      "case": "refresh-owner-a",
+      "condition": "candidate"
+    },
+    {
+      "case": "refresh-owner-a",
+      "condition": "original"
+    },
+    {
+      "case": "refresh-owner-a",
+      "condition": "baseline"
+    }
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 300,
+  "repeats": 1,
+  "jobs": 1,
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "original": "3a901bfe3d463c0ffedc91a9e6ab27177326d7492670da7e63a4009cab567d67",
+    "candidate": "48a441dd38de60f0aca63737f50017711bc0adddca153e747cd5e81e617b6937"
+  },
+  "native_preflight": [
+    {
+      "label": "correct",
+      "exit_code": 0,
+      "output": "test_initial_state (test_preview.RefreshTests) ... ok\ntest_instances_independent (test_preview.RefreshTests) ... ok\ntest_latest_completes_before_old (test_preview.RefreshTests) ... ok\ntest_latest_error_cancel_and_retry (test_preview.RefreshTests) ... ok\ntest_old_settlement_cannot_clear_latest (test_preview.RefreshTests) ... ok\ntest_synchronous_callback_error (test_preview.RefreshTests) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.029s\n\nOK\n"
+    },
+    {
+      "label": "unconditional_cleanup",
+      "exit_code": 1,
+      "output": "test_initial_state (test_preview.RefreshTests) ... ok\ntest_instances_independent (test_preview.RefreshTests) ... ok\ntest_latest_completes_before_old (test_preview.RefreshTests) ... ok\ntest_latest_error_cancel_and_retry (test_preview.RefreshTests) ... ok\ntest_old_settlement_cannot_clear_latest (test_preview.RefreshTests) ... test_synchronous_callback_error (test_preview.RefreshTests) ... ok\n\n======================================================================\nFAIL: test_old_settlement_cannot_clear_latest (test_preview.RefreshTests) (mode='success')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_preview.py\", line 44, in test_old_settlement_cannot_clear_latest\n    self.assertIs(p.pending, True)\nAssertionError: False is not True\n\n======================================================================\nFAIL: test_old_settlement_cannot_clear_latest (test_preview.RefreshTests) (mode='failure')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_preview.py\", line 44, in test_old_settlement_cannot_clear_latest\n    self.assertIs(p.pending, True)\nAssertionError: False is not True\n\n======================================================================\nFAIL: test_old_settlement_cannot_clear_latest (test_preview.RefreshTests) (mode='cancel')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_preview.py\", line 44, in test_old_settlement_cannot_clear_latest\n    self.assertIs(p.pending, True)\nAssertionError: False is not True\n\n----------------------------------------------------------------------\nRan 6 tests in 0.028s\n\nFAILED (failures=3)\n"
+    }
+  ],
+  "completed_cells": [
+    {
+      "case": "ko-label-change",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 60548,
+        "cached_input_tokens": 53760,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 391,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 23.596
+    },
+    {
+      "case": "ko-label-change",
+      "condition": "original",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 67181,
+        "cached_input_tokens": 57856,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 478,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 24.084
+    },
+    {
+      "case": "ko-label-change",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 65432,
+        "cached_input_tokens": 55936,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 462,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 23.361
+    },
+    {
+      "case": "refresh-owner-a",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 138243,
+        "cached_input_tokens": 119808,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3412,
+        "reasoning_output_tokens": 204
+      },
+      "elapsed_seconds": 117.094
+    },
+    {
+      "case": "refresh-owner-a",
+      "condition": "original",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 114663,
+        "cached_input_tokens": 99712,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2767,
+        "reasoning_output_tokens": 88
+      },
+      "elapsed_seconds": 98.791
+    },
+    {
+      "case": "refresh-owner-a",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 100133,
+        "cached_input_tokens": 81280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2902,
+        "reasoning_output_tokens": 272
+      },
+      "elapsed_seconds": 103.658
+    }
+  ],
+  "prepared_at": "2026-09-20T11:03:30.288531+00:00",
+  "finished_at": "2026-09-20T11:10:34.233493+00:00"
+}

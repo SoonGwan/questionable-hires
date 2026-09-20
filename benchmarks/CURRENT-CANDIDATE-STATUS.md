@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Hostage mode-disclosure screen — 2026-09-20, launch `3632225`
+
+[Six original sessions and author controls](results/hostage-modes-01/README.md)
+compare baseline/current/isolated disclosure candidate on two exposed tasks.
+Functional and scope criteria pass in all cells; candidate summed cost is
+**12.13% more tokens / 14.31% more time** than original. Candidate's two initial
+native errors/repair costs remain included. It is **not promoted**. Separate
+controls find original's delivered tests reject a valid internal-counter variant;
+baseline/candidate accept it. This is a test overconstraint, not a production-fix
+failure or causal proof. No chart change or all-eight efficiency claim.
+
+한국어: 조건부 문서 분리 후보를 실제 비교했으나 전체 비용이 늘어 채택하지
+않았다. 기존 스킬이 만든 테스트의 정상 대안 오탐도 별도로 확인했다.
+실패·복구 비용을 보존하며 다음 개선은 실제 테스트 작성 문제를 대상으로 한다.
+
 ## Necromancer non-regular input rejection — 2026-09-20, parent `cb64211`
 
 The history collector checked file size but could block opening a named pipe

@@ -1,0 +1,219 @@
+diff --git a/preview.py b/preview.py
+index f56b4ff..2ce0584 100644
+--- a/preview.py
++++ b/preview.py
+@@ -14,4 +14,5 @@ class Preview:
+                 self.value = value
+             return value
+         finally:
+-            self.pending = False
++            if generation == self.generation:
++                self.pending = False
+diff --git a/test_preview.py b/test_preview.py
+new file mode 100644
+index 0000000..45ee5ac
+--- /dev/null
++++ b/test_preview.py
+@@ -0,0 +1,202 @@
++import asyncio
++import unittest
++
++from preview import Preview
++
++
++TIMEOUT = 2
++
++
++class ControlledFetch:
++    def __init__(self):
++        self.entered = asyncio.Queue()
++        self.result = asyncio.get_running_loop().create_future()
++
++    async def __call__(self, key):
++        self.entered.put_nowait(key)
++        return await self.result
++
++
++class PreviewTests(unittest.IsolatedAsyncioTestCase):
++    async def asyncSetUp(self):
++        self.tasks = []
++        self.preview = Preview()
++        self.prior = object()
++
++        async def initial(key):
++            return self.prior
++
++        self.assertIs(
++            await asyncio.wait_for(self.preview.refresh("initial", initial), TIMEOUT),
++            self.prior,
++        )
++
++    async def asyncTearDown(self):
++        for task in self.tasks:
++            if not task.done():
++                task.cancel()
++        if self.tasks:
++            await asyncio.wait_for(
++                asyncio.gather(*self.tasks, return_exceptions=True), TIMEOUT
++            )
++
++    async def start(self, preview=None):
++        preview = self.preview if preview is None else preview
++        fetch = ControlledFetch()
++        # Deliberately reuse the key, but supply a distinct callback each time.
++        task = asyncio.create_task(preview.refresh("same-key", fetch))
++        self.tasks.append(task)
++        key = await asyncio.wait_for(fetch.entered.get(), TIMEOUT)
++        self.assertEqual(key, "same-key")
++        self.assertTrue(preview.pending)
++        return task, fetch
++
++    async def settle(self, task):
++        return await asyncio.wait_for(asyncio.shield(task), TIMEOUT)
++
++    def assert_display(self, value, pending, preview=None):
++        preview = self.preview if preview is None else preview
++        self.assertIs(preview.value, value)
++        self.assertIs(preview.pending, pending)
++
++    async def test_earlier_success_then_latest_success(self):
++        earlier, first = await self.start()
++        latest, second = await self.start()
++        self.assert_display(self.prior, True)
++        first_value, second_value = object(), object()
++        first.result.set_result(first_value)
++        self.assertIs(await self.settle(earlier), first_value)
++        self.assertFalse(latest.done())
++        self.assert_display(self.prior, True)
++        second.result.set_result(second_value)
++        self.assertIs(await self.settle(latest), second_value)
++        self.assert_display(second_value, False)
++
++    async def test_latest_success_then_earlier_success(self):
++        earlier, first = await self.start()
++        latest, second = await self.start()
++        first_value, second_value = object(), object()
++        second.result.set_result(second_value)
++        self.assertIs(await self.settle(latest), second_value)
++        self.assertFalse(earlier.done())
++        self.assertFalse(first.result.cancelled())
++        self.assert_display(second_value, False)
++        first.result.set_result(first_value)
++        self.assertIs(await self.settle(earlier), first_value)
++        self.assert_display(second_value, False)
++
++    async def earlier_interrupted(self, cancel):
++        earlier, first = await self.start()
++        latest, second = await self.start()
++        if cancel:
++            earlier.cancel()
++            with self.assertRaises(asyncio.CancelledError):
++                await self.settle(earlier)
++        else:
++            error = RuntimeError("earlier failure")
++            first.result.set_exception(error)
++            with self.assertRaises(RuntimeError) as caught:
++                await self.settle(earlier)
++            self.assertIs(caught.exception, error)
++        self.assertFalse(latest.done())
++        self.assert_display(self.prior, True)
++        value = object()
++        second.result.set_result(value)
++        self.assertIs(await self.settle(latest), value)
++        self.assert_display(value, False)
++
++    async def test_earlier_failure_while_latest_pending(self):
++        await self.earlier_interrupted(cancel=False)
++
++    async def test_earlier_cancellation_while_latest_pending(self):
++        await self.earlier_interrupted(cancel=True)
++
++    async def latest_interrupted_and_retry(self, cancel):
++        earlier, first = await self.start()
++        latest, second = await self.start()
++        if cancel:
++            latest.cancel()
++            with self.assertRaises(asyncio.CancelledError):
++                await self.settle(latest)
++        else:
++            error = ValueError("latest failure")
++            second.result.set_exception(error)
++            with self.assertRaises(ValueError) as caught:
++                await self.settle(latest)
++            self.assertIs(caught.exception, error)
++        self.assertFalse(earlier.done())
++        self.assert_display(self.prior, False)
++        retry, third = await self.start()
++        self.assert_display(self.prior, True)
++        stale_value = object()
++        first.result.set_result(stale_value)
++        self.assertIs(await self.settle(earlier), stale_value)
++        self.assert_display(self.prior, True)
++        value = object()
++        third.result.set_result(value)
++        self.assertIs(await self.settle(retry), value)
++        self.assert_display(value, False)
++
++    async def test_latest_failure_and_retry(self):
++        await self.latest_interrupted_and_retry(cancel=False)
++
++    async def test_latest_cancellation_and_retry(self):
++        await self.latest_interrupted_and_retry(cancel=True)
++
++    async def test_synchronous_callback_failure_and_retry(self):
++        earlier, first = await self.start()
++        error = LookupError("synchronous failure")
++        calls = []
++
++        def fail(key):
++            calls.append(key)
++            self.assert_display(self.prior, True)
++            raise error
++
++        with self.assertRaises(LookupError) as caught:
++            await asyncio.wait_for(self.preview.refresh("sync", fail), TIMEOUT)
++        self.assertIs(caught.exception, error)
++        self.assertEqual(calls, ["sync"])
++        self.assert_display(self.prior, False)
++        self.assertFalse(earlier.done())
++        retry, third = await self.start()
++        value = object()
++        third.result.set_result(value)
++        self.assertIs(await self.settle(retry), value)
++        self.assert_display(value, False)
++        stale_value = object()
++        first.result.set_result(stale_value)
++        self.assertIs(await self.settle(earlier), stale_value)
++        self.assert_display(value, False)
++
++    async def test_instances_are_independent(self):
++        other = Preview()
++        self.assert_display(None, False, other)
++        earlier, first = await self.start()
++        foreign, foreign_fetch = await self.start(other)
++        latest, second = await self.start()
++        foreign_value = object()
++        foreign_fetch.result.set_result(foreign_value)
++        self.assertIs(await self.settle(foreign), foreign_value)
++        self.assert_display(foreign_value, False, other)
++        self.assert_display(self.prior, True)
++        foreign_retry, retry_fetch = await self.start(other)
++        value = object()
++        second.result.set_result(value)
++        self.assertIs(await self.settle(latest), value)
++        self.assert_display(value, False)
++        self.assert_display(foreign_value, True, other)
++        stale_value = object()
++        first.result.set_result(stale_value)
++        self.assertIs(await self.settle(earlier), stale_value)
++        self.assert_display(value, False)
++        self.assert_display(foreign_value, True, other)
++        retry_value = object()
++        retry_fetch.result.set_result(retry_value)
++        self.assertIs(await self.settle(foreign_retry), retry_value)
++        self.assert_display(retry_value, False, other)
++        self.assert_display(value, False)
++
++
++if __name__ == "__main__":
++    unittest.main()
