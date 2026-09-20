@@ -17,8 +17,10 @@ explicit criteria. Current/prior two-task totals: 130,151/188,874 tokens and
 3.63% tokens/4.31% time. Plain current exceeds baseline cost; preloaded current
 is slower than prior. Exact native-command requirements exclude helper observer
 flags, so no cell tests helper adoption. Original capture gaps are recovered from
-stored records, not replays. Public artifact export/privacy scan and exposure
-synthesis remain pending. No broad gain, release-readiness or featured change.
+stored records, not replays. [All six original artifacts](results/receipt-node-startup-01/README.md)
+are exported; privacy pattern scan passes. Four skill entries are observed in
+initial messages and tool output; private initial text is excluded. No broad
+gain, release-readiness or featured change.
 
 한국어: 기존 안내 대비 토큰은 줄었지만 무스킬 대비 차이는 작다. 각 1회의 관련
 합성 과제 결과이며 비교 도우미 자체를 사용하지 않아 전체 성능 개선으로 일반화하지 않는다.

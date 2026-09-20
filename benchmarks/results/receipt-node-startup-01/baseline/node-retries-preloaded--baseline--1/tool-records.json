@@ -1,0 +1,164 @@
+{
+  "session_id": "01a0c029-1bca-7342-9bed-b15e86396c11",
+  "source_bytes": 115367,
+  "source_sha256": "2dac7ec27d42b56a94a0cf6a90710aa4ea179d57af5271e3079585a4baa202be",
+  "source_lines": 39,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "cbabdf31075299b476fed63b35ab93ed441be1ffb7daf3b61d97fca4c7bf9a01",
+      "record": {
+        "timestamp": "2026-09-20T18:52:02.143Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0251f4152bc205e4016ab02b4ed18087d0a890328bf86c4e72",
+          "status": "completed",
+          "call_id": "call_Y24syECnzFgfx5FqFqAzSOGs",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '!.git/**' -g '!node_modules/**' -g '!.agents/**' -g '!.codex/**'\",\"max_output_tokens\":4000}));\ntext(await tools.exec_command({cmd:\"git status --porcelain=v1; git rev-parse HEAD HEAD^; git ls-files -s; cat AGENTS.md; cat policy.mjs; cat bootstrap.mjs; cat tests/policy.test.mjs\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c029-1c0e-76a1-ab65-6f7da51fbd97",
+            "create_time": 1789930316.725613
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "3cf74c42a87df358ec61c3335fdf4818e10e3e336c1bc5746a244827b53d5518",
+      "record": {
+        "timestamp": "2026-09-20T18:52:02.394Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c029-39da-7b63-a89e-ada423a9aec9",
+          "call_id": "call_Y24syECnzFgfx5FqFqAzSOGs",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"cde3ac\",\"wall_time_seconds\":0.000003167,\"exit_code\":0,\"original_token_count\":38,\"output\":\"<WORKSPACE>\\nbootstrap.mjs\\nAGENTS.md\\npolicy.mjs\\ntests/policy.test.mjs\\nnotes.txt\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a2985a\",\"wall_time_seconds\":0.000003167,\"exit_code\":0,\"original_token_count\":493,\"output\":\"?? tests/\\nfefd22edd69e88626975ad7226918a2ccc063563\\n003b6e42933fcbc2ce6fc1942a52a18a73d99b71\\n100644 b62a313eb34e2bafcf2455bf314566184eb29c62 0\\tAGENTS.md\\n100644 9b8079595092c737a41240004459542a7707a434 0\\tbootstrap.mjs\\n100644 8feabc1a1078785390af662eb023dbee84fdd71a 0\\tnotes.txt\\n100644 f5537d59cbd1683607ac97cd709d2c86bad8f711 0\\tpolicy.mjs\\nVerification only. Native invocation from each copied project root:\\nNODE_OPTIONS='--import ./bootstrap.mjs' node --test --test-reporter=tap tests/policy.test.mjs\\nUse the available Node executable, no installation/network/external services.\\nKeep this startup contract, actual implementation and the same current four tests\\nin both separate project-local disposable copies. Do not rewrite a simulation,\\ntest or bootstrap, substitute inline globals, or remove required preload/options.\\nThe origin export is diagnostic identity, not tamper-proof attestation.\\nPreserve all original bytes/modes, notes.txt, Git HEAD/index and installed skill\\nresources. Remove owned scratch and leave no new harness/report. No production\\nedits, commits, stashes, resets, other repositories or ancestor discovery.\\nconst defaults = globalThis.RUNTIME_DEFAULTS;\\nvoid defaults.retries;\\nexport const origin = import.meta.url;\\nexport function retries(options = {}) { return options.retries ?? defaults.retries; }\\nglobalThis.RUNTIME_DEFAULTS = Object.freeze({retries:3});\\nimport test from 'node:test';\\nimport assert from 'node:assert/strict';\\nimport {fileURLToPath} from 'node:url';\\nimport * as policy from '../policy.mjs';\\nconsole.log('ACTUAL_MODULE ' + JSON.stringify({path:fileURLToPath(policy.origin),pid:process.pid}));\\ntest('explicit zero disables retries', () => assert.equal(policy.retries({retries:0}), 0));\\ntest('explicit positive survives', () => assert.equal(policy.retries({retries:2}), 2));\\ntest('omitted value uses default', () => assert.equal(policy.retries(), 3));\\ntest('null uses default', () => assert.equal(policy.retries({retries:null}), 3));\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c029-1c0e-76a1-ab65-6f7da51fbd97",
+            "create_time": 1789930322.394051
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "1dc81d1538737384bbd2947d15cca9ccbc7a01d236ef0d52bb263f8bc5ff56fa",
+      "record": {
+        "timestamp": "2026-09-20T18:52:09.750Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0251f4152bc205e4016ab02b58b3fc87d09c17dc7651aa9a82",
+          "status": "completed",
+          "call_id": "call_hOHtMhQJznfHcHhrlyIjSLxl",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff HEAD^ HEAD -- policy.mjs bootstrap.mjs AGENTS.md; git show HEAD^:policy.mjs; node --version; command -v node\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c029-1c0e-76a1-ab65-6f7da51fbd97",
+            "create_time": 1789930322.845309
+          }
+        }
+      }
+    },
+    {
+      "line": 24,
+      "line_sha256": "ee26089e8a04b0eb1e6b998ffc943a6f514d9e32e64be64a136f10371c6af0d8",
+      "record": {
+        "timestamp": "2026-09-20T18:52:09.896Z",
+        "ordinal": 23,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c029-5728-7e63-ae5b-bf1f7c11570d",
+          "call_id": "call_hOHtMhQJznfHcHhrlyIjSLxl",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"e7bd17\",\"wall_time_seconds\":0.000001833,\"exit_code\":0,\"original_token_count\":164,\"output\":\"diff --git a/policy.mjs b/policy.mjs\\nindex 7c18948..f5537d5 100644\\n--- a/policy.mjs\\n+++ b/policy.mjs\\n@@ -1,4 +1,4 @@\\n const defaults = globalThis.RUNTIME_DEFAULTS;\\n void defaults.retries;\\n export const origin = import.meta.url;\\n-export function retries(options = {}) { return options.retries || defaults.retries; }\\n+export function retries(options = {}) { return options.retries ?? defaults.retries; }\\nconst defaults = globalThis.RUNTIME_DEFAULTS;\\nvoid defaults.retries;\\nexport const origin = import.meta.url;\\nexport function retries(options = {}) { return options.retries || defaults.retries; }\\nv24.16.0\\n<HOME>/.nvm/versions/node/v24.16.0/bin/node\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c029-1c0e-76a1-ab65-6f7da51fbd97",
+            "create_time": 1789930329.896529
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "bc9ce20c2d66583b917bfa3823c288cc70f2be7f16178047c1b5bf445dec5664",
+      "record": {
+        "timestamp": "2026-09-20T18:52:52.071Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0251f4152bc205e4016ab02b62865c87d08b6f652232e3cf19",
+          "status": "completed",
+          "call_id": "call_litWksZ2DAXV0mbJsn0dwjRF",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"node --input-type=module <<'NODE'\\nimport fs from 'node:fs';\\nimport path from 'node:path';\\nimport crypto from 'node:crypto';\\nimport {spawnSync} from 'node:child_process';\\nconst root=process.cwd();\\nconst hash=b=>crypto.createHash('sha256').update(b).digest('hex');\\nfunction snapshot(dir,prefix='') {\\n const out={};\\n for(const name of fs.readdirSync(dir).sort()) {\\n  const rel=path.join(prefix,name), abs=path.join(dir,name), s=fs.lstatSync(abs);\\n  out[rel]={mode:s.mode,...(s.isFile()?{sha256:hash(fs.readFileSync(abs))}:s.isSymbolicLink()?{link:fs.readlinkSync(abs)}:{})};\\n  if(s.isDirectory()) Object.assign(out,snapshot(abs,rel));\\n }\\n return out;\\n}\\nfunction git(args,encoding=null) {\\n const r=spawnSync('git',args,{cwd:root,encoding});\\n if(r.status!==0) throw new Error(String(r.stderr));\\n return r.stdout;\\n}\\nconst before=snapshot(root);\\nconst initialStatus=git(['status','--porcelain=v1'],'utf8');\\nconst revisions=['HEAD^','HEAD'].map(ref=>({ref,sha:git(['rev-parse',ref],'utf8').trim()}));\\nconst scratch=fs.mkdtempSync(path.join(root,'.policy-verification-'));\\ntry {\\n const testBytes=fs.readFileSync(path.join(root,'tests/policy.test.mjs'));\\n console.log('CURRENT_TEST_SHA256 '+hash(testBytes));\\n for(const {ref,sha} of revisions) {\\n  const copy=path.join(scratch,ref==='HEAD^'?'parent':'head');\\n  fs.mkdirSync(copy);\\n  const entries=git(['ls-tree','-rz',sha],'utf8').split('\\\\0').filter(Boolean);\\n  for(const entry of entries) {\\n   const match=/^(\\\\d+) (\\\\w+) ([0-9a-f]+)\\\\t([\\\\s\\\\S]+)$/.exec(entry);\\n   if(!match || match[2]!=='blob') throw new Error('Unsupported tree entry');\\n   const [,mode,,oid,rel]=match;\\n   const dest=path.join(copy,rel);\\n   fs.mkdirSync(path.dirname(dest),{recursive:true});\\n   const bytes=git(['cat-file','blob',oid]);\\n   if(mode==='120000') fs.symlinkSync(bytes.toString(),dest);\\n   else { fs.writeFileSync(dest,bytes); fs.chmodSync(dest,parseInt(mode,8)&0o777); }\\n  }\\n  fs.cpSync(path.join(root,'tests'),path.join(copy,'tests'),{recursive:true,preserveTimestamps:true});\\n  if(!fs.readFileSync(path.join(copy,'tests/policy.test.mjs')).equals(testBytes)) throw new Error('Tests differ');\\n  if(!fs.readFileSync(path.join(copy,'bootstrap.mjs')).equals(fs.readFileSync(path.join(root,'bootstrap.mjs')))) throw new Error('Bootstrap differs');\\n  console.log('VARIANT '+JSON.stringify({ref,revision:sha,cwd:copy,policySHA256:hash(fs.readFileSync(path.join(copy,'policy.mjs'))),testSHA256:hash(testBytes)}));\\n  const command=\\\"NODE_OPTIONS='--import ./bootstrap.mjs' node --test --test-reporter=tap tests/policy.test.mjs\\\";\\n  console.log('COMMAND '+command);\\n  const r=spawnSync('/bin/zsh',['-c',command],{cwd:copy,encoding:'utf8'});\\n  process.stdout.write(r.stdout||'');\\n  process.stdout.write(r.stderr||'');\\n  const line=(r.stdout||'').split('\\\\n').find(l=>l.startsWith('# ACTUAL_MODULE '));\\n  const identity=line?JSON.parse(line.slice('# ACTUAL_MODULE '.length)):null;\\n  const originMatches=identity?.path===path.join(copy,'policy.mjs');\\n  console.log('NATIVE_RESULT '+JSON.stringify({ref,exit:r.status,signal:r.signal,error:r.error?.message,identity,originMatches}));\\n  if(!originMatches || !Number.isInteger(identity.pid)) throw new Error('Missing copy identity');\\n }\\n} finally {\\n fs.rmSync(scratch,{recursive:true,force:true});\\n const after=snapshot(root);\\n const finalStatus=git(['status','--porcelain=v1'],'utf8');\\n console.log('PRESERVATION '+JSON.stringify({allOriginalBytesAndModesUnchanged:JSON.stringify(before)===JSON.stringify(after),gitStatusUnchanged:initialStatus===finalStatus,gitStatus:finalStatus,scratchRemoved:!fs.existsSync(scratch),head:git(['rev-parse','HEAD'],'utf8').trim()}));\\n if(JSON.stringify(before)!==JSON.stringify(after)||initialStatus!==finalStatus) process.exitCode=1;\\n}\\nNODE\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c029-1c0e-76a1-ab65-6f7da51fbd97",
+            "create_time": 1789930330.406053
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "5aab81a2eca3a2063ffb95fe002e060c04eb069435d68e463e949d04e7792e16",
+      "record": {
+        "timestamp": "2026-09-20T18:52:52.556Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c029-fdcc-7d43-9250-212656bbd87e",
+          "call_id": "call_litWksZ2DAXV0mbJsn0dwjRF",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.5 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"e9a2cf\",\"wall_time_seconds\":0.292115292,\"exit_code\":0,\"original_token_count\":998,\"output\":\"CURRENT_TEST_SHA256 af427a43121822372bf95566b0c6aebad9bb87170f5a67191fc6d54b497da152\\nVARIANT {\\\"ref\\\":\\\"HEAD^\\\",\\\"revision\\\":\\\"003b6e42933fcbc2ce6fc1942a52a18a73d99b71\\\",\\\"cwd\\\":\\\"<WORKSPACE>/.policy-verification-wuOyjB/parent\\\",\\\"policySHA256\\\":\\\"87b3714fb4c5b969d7012384c89ec28e28ffe064aef302568492e1814a0045da\\\",\\\"testSHA256\\\":\\\"af427a43121822372bf95566b0c6aebad9bb87170f5a67191fc6d54b497da152\\\"}\\nCOMMAND NODE_OPTIONS='--import ./bootstrap.mjs' node --test --test-reporter=tap tests/policy.test.mjs\\nTAP version 13\\n# ACTUAL_MODULE {\\\"path\\\":\\\"<WORKSPACE>/.policy-verification-wuOyjB/parent/policy.mjs\\\",\\\"pid\\\":12572}\\n# Subtest: explicit zero disables retries\\nnot ok 1 - explicit zero disables retries\\n  ---\\n  duration_ms: 0.806\\n  type: 'test'\\n  location: '<WORKSPACE>/.policy-verification-wuOyjB/parent/tests/policy.test.mjs:6:1'\\n  failureType: 'testCodeFailure'\\n  error: |-\\n    Expected values to be strictly equal:\\n    \\n    3 !== 0\\n    \\n  code: 'ERR_ASSERTION'\\n  name: 'AssertionError'\\n  expected: 0\\n  actual: 3\\n  operator: 'strictEqual'\\n  stack: |-\\n    TestContext.<anonymous> (file://<WORKSPACE>/.policy-verification-wuOyjB/parent/tests/policy.test.mjs:6:53)\\n    Test.runInAsyncScope (node:async_hooks:227:14)\\n    Test.run (node:internal/test_runner/test:1306:25)\\n    Test.start (node:internal/test_runner/test:1177:17)\\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\\n  ...\\n# Subtest: explicit positive survives\\nok 2 - explicit positive survives\\n  ---\\n  duration_ms: 0.097791\\n  type: 'test'\\n  ...\\n# Subtest: omitted value uses default\\nok 3 - omitted value uses default\\n  ---\\n  duration_ms: 0.0565\\n  type: 'test'\\n  ...\\n# Subtest: null uses default\\nok 4 - null uses default\\n  ---\\n  duration_ms: 0.495125\\n  type: 'test'\\n  ...\\n1..4\\n# tests 4\\n# suites 0\\n# pass 3\\n# fail 1\\n# cancelled 0\\n# skipped 0\\n# todo 0\\n# duration_ms 50.024459\\nNATIVE_RESULT {\\\"ref\\\":\\\"HEAD^\\\",\\\"exit\\\":1,\\\"signal\\\":null,\\\"identity\\\":{\\\"path\\\":\\\"<WORKSPACE>/.policy-verification-wuOyjB/parent/policy.mjs\\\",\\\"pid\\\":12572},\\\"originMatches\\\":true}\\nVARIANT {\\\"ref\\\":\\\"HEAD\\\",\\\"revision\\\":\\\"fefd22edd69e88626975ad7226918a2ccc063563\\\",\\\"cwd\\\":\\\"<WORKSPACE>/.policy-verification-wuOyjB/head\\\",\\\"policySHA256\\\":\\\"01f342bc01bdc2e89c1e81fbb299a67ae4df0e4a6d92d566641032a00de10153\\\",\\\"testSHA256\\\":\\\"af427a43121822372bf95566b0c6aebad9bb87170f5a67191fc6d54b497da152\\\"}\\nCOMMAND NODE_OPTIONS='--import ./bootstrap.mjs' node --test --test-reporter=tap tests/policy.test.mjs\\nTAP version 13\\n# ACTUAL_MODULE {\\\"path\\\":\\\"<WORKSPACE>/.policy-verification-wuOyjB/head/policy.mjs\\\",\\\"pid\\\":12614}\\n# Subtest: explicit zero disables retries\\nok 1 - explicit zero disables retries\\n  ---\\n  duration_ms: 0.4215\\n  type: 'test'\\n  ...\\n# Subtest: explicit positive survives\\nok 2 - explicit positive survives\\n  ---\\n  duration_ms: 0.067916\\n  type: 'test'\\n  ...\\n# Subtest: omitted value uses default\\nok 3 - omitted value uses default\\n  ---\\n  duration_ms: 0.055959\\n  type: 'test'\\n  ...\\n# Subtest: null uses default\\nok 4 - null uses default\\n  ---\\n  duration_ms: 0.455042\\n  type: 'test'\\n  ...\\n1..4\\n# tests 4\\n# suites 0\\n# pass 4\\n# fail 0\\n# cancelled 0\\n# skipped 0\\n# todo 0\\n# duration_ms 50.717417\\nNATIVE_RESULT {\\\"ref\\\":\\\"HEAD\\\",\\\"exit\\\":0,\\\"signal\\\":null,\\\"identity\\\":{\\\"path\\\":\\\"<WORKSPACE>/.policy-verification-wuOyjB/head/policy.mjs\\\",\\\"pid\\\":12614},\\\"originMatches\\\":true}\\nPRESERVATION {\\\"allOriginalBytesAndModesUnchanged\\\":true,\\\"gitStatusUnchanged\\\":true,\\\"gitStatus\\\":\\\"?? tests/\\\\n\\\",\\\"scratchRemoved\\\":true,\\\"head\\\":\\\"fefd22edd69e88626975ad7226918a2ccc063563\\\"}\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c029-1c0e-76a1-ab65-6f7da51fbd97",
+            "create_time": 1789930372.556544
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

@@ -1,0 +1,194 @@
+{
+  "resource_revisions": {
+    "original": "fcd523cdb6d3d88a40b17f1f94d360c18d2faa6f",
+    "current": "107a0cff0dd2fceee03fb74df96cc8d6326b0272"
+  },
+  "identities": {
+    "benchmarks/run_receipt_node_startup_01.py": "de2913a8ce8ac93e9b56281ce6bc8affee36645230ab1f0618b1b854d8d91e13",
+    "benchmarks/receipt_node_startup_cases.py": "216fb8cd00d4822edac80269de26f86b10f81813adec2e1185ec80a6e92c6297",
+    "benchmarks/RECEIPT-NODE-STARTUP-01-PROTOCOL.md": "7952da2a5846e9f1b061243af3521507830dbdcf0b8010b400c2c2db04dc7d4e",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c"
+  },
+  "cases": [
+    {
+      "id": "node-retries-plain",
+      "skill": "receipt",
+      "files": {
+        "policy.mjs": "const defaults = {retries:3};\nexport const origin = import.meta.url;\nexport function retries(options = {}) { return options.retries ?? defaults.retries; }\n",
+        "AGENTS.md": "Verification only. Native invocation from each copied project root:\nnode --test --test-reporter=tap tests/policy.test.mjs\nUse the available Node executable, no installation/network/external services.\nKeep this startup contract, actual implementation and the same current four tests\nin both separate project-local disposable copies. Do not rewrite a simulation,\ntest or bootstrap, substitute inline globals, or remove required preload/options.\nThe origin export is diagnostic identity, not tamper-proof attestation.\nPreserve all original bytes/modes, notes.txt, Git HEAD/index and installed skill\nresources. Remove owned scratch and leave no new harness/report. No production\nedits, commits, stashes, resets, other repositories or ancestor discovery.\n",
+        "notes.txt": "Preserve owner notes.\n"
+      },
+      "history": [
+        {
+          "message": "Original retry defaults",
+          "files": {
+            "policy.mjs": "const defaults = {retries:3};\nexport const origin = import.meta.url;\nexport function retries(options = {}) { return options.retries || defaults.retries; }\n",
+            "AGENTS.md": "Verification only. Native invocation from each copied project root:\nnode --test --test-reporter=tap tests/policy.test.mjs\nUse the available Node executable, no installation/network/external services.\nKeep this startup contract, actual implementation and the same current four tests\nin both separate project-local disposable copies. Do not rewrite a simulation,\ntest or bootstrap, substitute inline globals, or remove required preload/options.\nThe origin export is diagnostic identity, not tamper-proof attestation.\nPreserve all original bytes/modes, notes.txt, Git HEAD/index and installed skill\nresources. Remove owned scratch and leave no new harness/report. No production\nedits, commits, stashes, resets, other repositories or ancestor discovery.\n",
+            "notes.txt": "Preserve owner notes.\n"
+          }
+        },
+        {
+          "message": "Honor explicit retry disable",
+          "files": {
+            "policy.mjs": "const defaults = {retries:3};\nexport const origin = import.meta.url;\nexport function retries(options = {}) { return options.retries ?? defaults.retries; }\n"
+          }
+        }
+      ],
+      "working_files": {
+        "tests/policy.test.mjs": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport {fileURLToPath} from 'node:url';\nimport * as policy from '../policy.mjs';\nconsole.log('ACTUAL_MODULE ' + JSON.stringify({path:fileURLToPath(policy.origin),pid:process.pid}));\ntest('explicit zero disables retries', () => assert.equal(policy.retries({retries:0}), 0));\ntest('explicit positive survives', () => assert.equal(policy.retries({retries:2}), 2));\ntest('omitted value uses default', () => assert.equal(policy.retries(), 3));\ntest('null uses default', () => assert.equal(policy.retries({retries:null}), 3));\n"
+      },
+      "task": "Verify the existing policy.mjs fix by comparing HEAD^ and HEAD with\nthe identical current tests/policy.test.mjs in disposable project-local copies.\nThe supported input contract is omitted/null (default three retries), explicit\nzero (disable retries), and positive integer values. No other input behavior is\nspecified. Follow the exact native startup command in AGENTS.md for both variants.\nRun all four tests, report native identities/counts/exits and actual assertions,\nand distinguish missing setup from a defect reproduction. Identify full revisions\nand confirm the test-bound module origin/PID comes from the corresponding copy\ninside each native test process. Explain the supported mechanism. Preserve original\nfiles/modes, notes and Git state; remove scratch. Do not change code/tests/setup or\ninstall anything. Unavailable evidence remains unknown.",
+      "criteria": [
+        "Both revisions execute identical current four tests under the required native startup, preserving preload/configuration when present.",
+        "Before has the actual explicit-zero assertion failure (3 versus 0), with three neighboring controls passing and no setup error.",
+        "After passes four with native counts/exits; explanation identifies falsy fallback versus nullish default and does not invent unspecified input contracts.",
+        "Full revisions and actual native test-bound module copy-local origin/PID are evidenced, not a separate import-only check.",
+        "Original bytes/modes, notes, Git HEAD/index and installed resources unchanged; scratch removed, no code/test/setup edits or external activity."
+      ],
+      "provenance": {
+        "kind": "Related authored synthetic guide-transfer tasks, not real issues or independent holdouts",
+        "startup": "plain"
+      }
+    },
+    {
+      "id": "node-retries-preloaded",
+      "skill": "receipt",
+      "files": {
+        "policy.mjs": "const defaults = globalThis.RUNTIME_DEFAULTS;\nvoid defaults.retries;\nexport const origin = import.meta.url;\nexport function retries(options = {}) { return options.retries ?? defaults.retries; }\n",
+        "AGENTS.md": "Verification only. Native invocation from each copied project root:\nNODE_OPTIONS='--import ./bootstrap.mjs' node --test --test-reporter=tap tests/policy.test.mjs\nUse the available Node executable, no installation/network/external services.\nKeep this startup contract, actual implementation and the same current four tests\nin both separate project-local disposable copies. Do not rewrite a simulation,\ntest or bootstrap, substitute inline globals, or remove required preload/options.\nThe origin export is diagnostic identity, not tamper-proof attestation.\nPreserve all original bytes/modes, notes.txt, Git HEAD/index and installed skill\nresources. Remove owned scratch and leave no new harness/report. No production\nedits, commits, stashes, resets, other repositories or ancestor discovery.\n",
+        "notes.txt": "Preserve owner notes.\n",
+        "bootstrap.mjs": "globalThis.RUNTIME_DEFAULTS = Object.freeze({retries:3});\n"
+      },
+      "history": [
+        {
+          "message": "Original retry defaults",
+          "files": {
+            "policy.mjs": "const defaults = globalThis.RUNTIME_DEFAULTS;\nvoid defaults.retries;\nexport const origin = import.meta.url;\nexport function retries(options = {}) { return options.retries || defaults.retries; }\n",
+            "AGENTS.md": "Verification only. Native invocation from each copied project root:\nNODE_OPTIONS='--import ./bootstrap.mjs' node --test --test-reporter=tap tests/policy.test.mjs\nUse the available Node executable, no installation/network/external services.\nKeep this startup contract, actual implementation and the same current four tests\nin both separate project-local disposable copies. Do not rewrite a simulation,\ntest or bootstrap, substitute inline globals, or remove required preload/options.\nThe origin export is diagnostic identity, not tamper-proof attestation.\nPreserve all original bytes/modes, notes.txt, Git HEAD/index and installed skill\nresources. Remove owned scratch and leave no new harness/report. No production\nedits, commits, stashes, resets, other repositories or ancestor discovery.\n",
+            "notes.txt": "Preserve owner notes.\n",
+            "bootstrap.mjs": "globalThis.RUNTIME_DEFAULTS = Object.freeze({retries:3});\n"
+          }
+        },
+        {
+          "message": "Honor explicit retry disable",
+          "files": {
+            "policy.mjs": "const defaults = globalThis.RUNTIME_DEFAULTS;\nvoid defaults.retries;\nexport const origin = import.meta.url;\nexport function retries(options = {}) { return options.retries ?? defaults.retries; }\n"
+          }
+        }
+      ],
+      "working_files": {
+        "tests/policy.test.mjs": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport {fileURLToPath} from 'node:url';\nimport * as policy from '../policy.mjs';\nconsole.log('ACTUAL_MODULE ' + JSON.stringify({path:fileURLToPath(policy.origin),pid:process.pid}));\ntest('explicit zero disables retries', () => assert.equal(policy.retries({retries:0}), 0));\ntest('explicit positive survives', () => assert.equal(policy.retries({retries:2}), 2));\ntest('omitted value uses default', () => assert.equal(policy.retries(), 3));\ntest('null uses default', () => assert.equal(policy.retries({retries:null}), 3));\n"
+      },
+      "task": "Verify the existing policy.mjs fix by comparing HEAD^ and HEAD with\nthe identical current tests/policy.test.mjs in disposable project-local copies.\nThe supported input contract is omitted/null (default three retries), explicit\nzero (disable retries), and positive integer values. No other input behavior is\nspecified. Follow the exact native startup command in AGENTS.md for both variants.\nRun all four tests, report native identities/counts/exits and actual assertions,\nand distinguish missing setup from a defect reproduction. Identify full revisions\nand confirm the test-bound module origin/PID comes from the corresponding copy\ninside each native test process. Explain the supported mechanism. Preserve original\nfiles/modes, notes and Git state; remove scratch. Do not change code/tests/setup or\ninstall anything. Unavailable evidence remains unknown.",
+      "criteria": [
+        "Both revisions execute identical current four tests under the required native startup, preserving preload/configuration when present.",
+        "Before has the actual explicit-zero assertion failure (3 versus 0), with three neighboring controls passing and no setup error.",
+        "After passes four with native counts/exits; explanation identifies falsy fallback versus nullish default and does not invent unspecified input contracts.",
+        "Full revisions and actual native test-bound module copy-local origin/PID are evidenced, not a separate import-only check.",
+        "Original bytes/modes, notes, Git HEAD/index and installed resources unchanged; scratch removed, no code/test/setup edits or external activity."
+      ],
+      "provenance": {
+        "kind": "Related authored synthetic guide-transfer tasks, not real issues or independent holdouts",
+        "startup": "preloaded"
+      }
+    }
+  ],
+  "schedule": [
+    {
+      "case": "node-retries-plain",
+      "condition": "baseline"
+    },
+    {
+      "case": "node-retries-plain",
+      "condition": "original"
+    },
+    {
+      "case": "node-retries-plain",
+      "condition": "current"
+    },
+    {
+      "case": "node-retries-preloaded",
+      "condition": "current"
+    },
+    {
+      "case": "node-retries-preloaded",
+      "condition": "original"
+    },
+    {
+      "case": "node-retries-preloaded",
+      "condition": "baseline"
+    }
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 360,
+  "repeats": 1,
+  "jobs": 1,
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "original": "7d34a7613eec030802701c8669bb37161621b15a82d4c7dda51df588072c97b0",
+    "current": "d165623bbf5740fd3c28011c89417ec0f4c1181797d0e339ba083bf7b1875b3d"
+  },
+  "native_preflight": {
+    "node": "v24.16.0",
+    "controls": [
+      {
+        "case": "node-retries-plain",
+        "variant": "before",
+        "exit_code": 1,
+        "tests": 4,
+        "passed": 3,
+        "failed": 1,
+        "output": "TAP version 13\n# ACTUAL_MODULE {\"path\":\"<COPY>/policy.mjs\",\"pid\":\"<PID>\"}\n# Subtest: explicit zero disables retries\nnot ok 1 - explicit zero disables retries\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  location: '<COPY>/tests/policy.test.mjs:6:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    3 !== 0\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 0\n  actual: 3\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<COPY>/tests/policy.test.mjs:6:53)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.start (node:internal/test_runner/test:1177:17)\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\n  ...\n# Subtest: explicit positive survives\nok 2 - explicit positive survives\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: omitted value uses default\nok 3 - omitted value uses default\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: null uses default\nok 4 - null uses default\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 3\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms <DURATION>\n"
+      },
+      {
+        "case": "node-retries-plain",
+        "variant": "after",
+        "exit_code": 0,
+        "tests": 4,
+        "passed": 4,
+        "failed": 0,
+        "output": "TAP version 13\n# ACTUAL_MODULE {\"path\":\"<COPY>/policy.mjs\",\"pid\":\"<PID>\"}\n# Subtest: explicit zero disables retries\nok 1 - explicit zero disables retries\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: explicit positive survives\nok 2 - explicit positive survives\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: omitted value uses default\nok 3 - omitted value uses default\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: null uses default\nok 4 - null uses default\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms <DURATION>\n"
+      },
+      {
+        "case": "node-retries-preloaded",
+        "variant": "before",
+        "exit_code": 1,
+        "tests": 4,
+        "passed": 3,
+        "failed": 1,
+        "output": "TAP version 13\n# ACTUAL_MODULE {\"path\":\"<COPY>/policy.mjs\",\"pid\":\"<PID>\"}\n# Subtest: explicit zero disables retries\nnot ok 1 - explicit zero disables retries\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  location: '<COPY>/tests/policy.test.mjs:6:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    3 !== 0\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 0\n  actual: 3\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<COPY>/tests/policy.test.mjs:6:53)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.start (node:internal/test_runner/test:1177:17)\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\n  ...\n# Subtest: explicit positive survives\nok 2 - explicit positive survives\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: omitted value uses default\nok 3 - omitted value uses default\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: null uses default\nok 4 - null uses default\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 3\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms <DURATION>\n"
+      },
+      {
+        "case": "node-retries-preloaded",
+        "variant": "before",
+        "control": "missing preload is setup failure",
+        "exit_code": 1,
+        "observed": "TypeError before application identity",
+        "output": "TAP version 13\n# file://<COPY>/policy.mjs:2\n# void defaults.retries;\n#               ^\n# TypeError: Cannot read properties of undefined (reading 'retries')\n#     at file://<COPY>/policy.mjs:2:15\n#     at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n#     at async node:internal/modules/esm/loader:633:26\n#     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n# Node.js v24.16.0\n# Subtest: tests/policy.test.mjs\nnot ok 1 - tests/policy.test.mjs\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  location: '<COPY>/tests/policy.test.mjs:1:1'\n  failureType: 'testCodeFailure'\n  exitCode: 1\n  signal: ~\n  error: 'test failed'\n  code: 'ERR_TEST_FAILURE'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms <DURATION>\n"
+      },
+      {
+        "case": "node-retries-preloaded",
+        "variant": "after",
+        "exit_code": 0,
+        "tests": 4,
+        "passed": 4,
+        "failed": 0,
+        "output": "TAP version 13\n# ACTUAL_MODULE {\"path\":\"<COPY>/policy.mjs\",\"pid\":\"<PID>\"}\n# Subtest: explicit zero disables retries\nok 1 - explicit zero disables retries\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: explicit positive survives\nok 2 - explicit positive survives\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: omitted value uses default\nok 3 - omitted value uses default\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: null uses default\nok 4 - null uses default\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms <DURATION>\n"
+      },
+      {
+        "case": "node-retries-preloaded",
+        "variant": "after",
+        "control": "missing preload is setup failure",
+        "exit_code": 1,
+        "observed": "TypeError before application identity",
+        "output": "TAP version 13\n# file://<COPY>/policy.mjs:2\n# void defaults.retries;\n#               ^\n# TypeError: Cannot read properties of undefined (reading 'retries')\n#     at file://<COPY>/policy.mjs:2:15\n#     at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n#     at async node:internal/modules/esm/loader:633:26\n#     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n# Node.js v24.16.0\n# Subtest: tests/policy.test.mjs\nnot ok 1 - tests/policy.test.mjs\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  location: '<COPY>/tests/policy.test.mjs:1:1'\n  failureType: 'testCodeFailure'\n  exitCode: 1\n  signal: ~\n  error: 'test failed'\n  code: 'ERR_TEST_FAILURE'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms <DURATION>\n"
+      }
+    ],
+    "preservation": true,
+    "helper": "Plain succeeds; required custom startup rejects unchanged before execution"
+  },
+  "completed_cells": [],
+  "prepared_at": "2026-09-20T18:46:15.501668+00:00",
+  "stopped_after_limit": false
+}

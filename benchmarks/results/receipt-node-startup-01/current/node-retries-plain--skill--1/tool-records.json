@@ -1,0 +1,164 @@
+{
+  "session_id": "01a0c026-36bc-7760-b0ec-96d92758eb31",
+  "source_bytes": 131018,
+  "source_sha256": "22c397e14c8ff3781d6e2581c4a0745389deddd8c173c3e5ad8f7832e8d2db54",
+  "source_lines": 37,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "3a3e11115b5a7a0fdbd260e1765efe2a972c33afd3ead4a5941c9d903d8ab245",
+      "record": {
+        "timestamp": "2026-09-20T18:48:51.937Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d13835738a621c5016ab02a9166b087d0addb2811d0cdadeb",
+          "status": "completed",
+          "call_id": "call_7D0pHBBWfCs7TuwcqVV6fa8p",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '!.git' -g '!node_modules' -g '!\\\\.git/**'\",\"max_output_tokens\":4000}));\ntext(await tools.exec_command({cmd:\"cat AGENTS.md .agents/skills/receipt/SKILL.md .agents/skills/receipt/references/node-comparison.md\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c026-3705-7383-a017-51c89389ed42",
+            "create_time": 1789930127.051379
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "639f906c3b7c123a1c2af9de2d803e929f9ea228b51a6c0fc5b03093ece0f582",
+      "record": {
+        "timestamp": "2026-09-20T18:48:52.155Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c026-52bb-73c0-8ccd-b422af9125b0",
+          "call_id": "call_7D0pHBBWfCs7TuwcqVV6fa8p",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6e9c95\",\"wall_time_seconds\":0.000002916,\"exit_code\":0,\"original_token_count\":128,\"output\":\"<WORKSPACE>\\nAGENTS.md\\npolicy.mjs\\n.agents/skills/receipt/SKILL.md\\n.agents/skills/receipt/scripts/compare.py\\n.agents/skills/receipt/scripts/preserve.py\\n.agents/skills/receipt/agents/openai.yaml\\n.agents/skills/receipt/references/existing-fix.md\\n.agents/skills/receipt/references/node-comparison.md\\n.agents/skills/receipt/references/native-preservation.md\\n.agents/skills/receipt/references/comparison-details.md\\ntests/policy.test.mjs\\nnotes.txt\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"eea334\",\"wall_time_seconds\":0.000001584,\"exit_code\":0,\"original_token_count\":1658,\"output\":\"Verification only. Native invocation from each copied project root:\\nnode --test --test-reporter=tap tests/policy.test.mjs\\nUse the available Node executable, no installation/network/external services.\\nKeep this startup contract, actual implementation and the same current four tests\\nin both separate project-local disposable copies. Do not rewrite a simulation,\\ntest or bootstrap, substitute inline globals, or remove required preload/options.\\nThe origin export is diagnostic identity, not tamper-proof attestation.\\nPreserve all original bytes/modes, notes.txt, Git HEAD/index and installed skill\\nresources. Remove owned scratch and leave no new harness/report. No production\\nedits, commits, stashes, resets, other repositories or ancestor discovery.\\n---\\nname: receipt\\ndescription: Verify that a requested bug fix changes observable behavior with a failing-before, passing-after reproduction and honest execution evidence.\\n---\\n\\n# Receipt\\n\\n> You fixed it? Show me the receipt.\\n\\nReuse supplied guidance; discover missing instructions only within authorized roots, never through an out-of-scope ancestor sweep. Report inaccessible evidence instead of broadening access.\\n\\nFor a current bug, select a regression on the actual affected path using the documented runner. Reuse valid before evidence; otherwise observe the defect-specific failure, implement the requested fix, then rerun unchanged assertions/inputs. Preserve neighboring behavior and required coverage. Inspect history only for unresolved behavior or implementation.\\n\\nFor an already-present fix, compare isolated versions with the same current assertions/inputs and compatible runtime; identify the code loaded by the test process. Reuse an adequate project-native comparison instead of rebuilding it. Optional support for [Python](references/existing-fix.md) or [native Node tests](references/node-comparison.md) supplies copying, source checks and cleanup when those are missing. Choose by the required evidence and setup work, not merely by language support. Don't reverse patches in the user's working tree.\\n\\nA required suite running that regression with matching inputs/runtime supplies after evidence; don't repeat it separately. Skipped, undiscovered or differently configured tests don't qualify. Changed relevant inputs invalidate reused results.\\n\\nBatch final checks in one shell call, adapting the runner and paths:\\n\\n```sh\\npython3 -B -m unittest -v && git diff --check -- app.py test_app.py && git diff -- app.py test_app.py\\n```\\n\\n`&&` leaves later checks unrun after failure. If all must run, retain each exit explicitly, not just the shell's final status. Review untracked files separately; `git diff` omits them.\\n\\nSetup failures aren't defect reproduction; mocks don't prove unobserved effects. Preserve user changes and scope; verification alone authorizes neither implementation nor publication.\\n\\nReport the reviewed change, decisive before/after observations and commands, applicable revision identities and limits. Stop when the requested outcome and required checks are verified; no separate dossier or unrelated green checks.\\n# Existing fix with native Node tests\\n\\nUse when the project already runs `node --test` and lacks adequate isolated\\ncomparison. Requires Python 3.9+/POSIX and Node synchronous `registerHooks`\\n(verified on 24.16.0). This does not replace npm scripts, Jest/Vitest, builds or\\ncustom loaders. Nonempty `NODE_OPTIONS`, `NODE_PATH`, `NODE_COMPILE_CACHE` and\\nPython invocation/import options reject. Use project-native setup for unsupported\\nrequirements; do not remove configuration, upgrade or install merely to fit this.\\n\\n## Execute and reuse the evidence\\n\\nAdapt paths/revisions and the project Node executable (default: node on PATH):\\n\\n```sh\\npython3 /path/to/receipt/scripts/compare.py --source . --node /path/to/node --spec - <<'JSON'\\n{\\\"fixed\\\":[\\\"regression.test.mjs\\\"],\\\"vary\\\":[\\\"app.mjs\\\"],\\\"before\\\":\\\"HEAD^\\\",\\\"after\\\":\\\"HEAD\\\",\\\"imports\\\":[\\\"app.mjs\\\"],\\\"runner\\\":\\\"node\\\",\\\"tests\\\":[\\\"regression.test.mjs\\\"]}\\nJSON\\n```\\n\\n- `fixed`: current tests/configuration/support, files or explicit directories;\\n  `vary`: implementation files present in both versions. No root, symlink, Git\\n  internals, empty directories or overlaps; shared copy budget 20 MB.\\n- `tests`: fixed selected JS paths (.js/.cjs/.mjs), not flags/globs. `imports`:\\n  selected JS paths to observe, not package specifiers.\\n- Uncommitted after: `\\\"after\\\":{\\\"working_tree\\\":true}` freezes bytes/modes, not the\\n  index. Results already identify full commits or working-tree hashes.\\n- `watch:[\\\"notes.txt\\\"]` checks extra originals without copying them. For requested\\n  whole-project preservation with authorized whole-root reads, add `\\\"guard_tree\\\":true`.\\n  `tree_guard` covers bytes/modes, entries and link text including .git/HEAD/index\\n  around tests/cleanup, not other commands or concurrent/restored changes.\\n  Limits: 10,000 entries/20 MB per inventory.\\n\\nThe helper owns copying, execution, preservation and removal of its project-local\\n.receipt-* copies. `preserve.py` belongs to a different native workflow, not another\\nprerequisite/wrapper here. This recipe needs no implementation read; inspect source\\nfor a concrete trust, adaptation or error question. Reuse reported identities and\\nguard results. Use default compact JSON; `--pretty` is for requested human formatting.\\n\\n## Judge results\\n\\nInspect actual assertions, identities/counts/skips and `native_exit_code`: defect\\nfailure before, success after. CLI 0 only means observations collected.\\nMissing/mismatched/malformed/truncated provenance or timeout is incomplete; check\\n7 (CLI 2) or timeout stops further comparison. Setup errors and skipped tests are not proof.\\nInspect `originals`, optional `tree_guard` and `comparison_copies_removed` too.\\n\\nNative execution adds `--test-reporter=tap --import <observer>` to `node --test`.\\n`copied_loads` retains URL/PID/source hashes without pre-importing the application.\\nLoading is not evaluation, dispatch or every-worker coverage; retain actual\\ntest-bound observations when required. Trusted tests only, not a sandbox or\\ntamper-proof attestation. Changed originals abort without restoration.\\n\\nDefault: 30 seconds/check, last 12,000 output characters; cleanup can wait five\\nmore seconds. Remaining process-group members are killed even after normal exit;\\npersistent background work is unsupported. For unresolved boundary questions read\\n[preservation limits](comparison-details.md#preservation-guards); for overflow,\\ntimeout or cleanup errors read [process limits](comparison-details.md#resource-and-process-boundaries).\\nThese are conditional diagnostics; Python startup sections do not apply.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c026-3705-7383-a017-51c89389ed42",
+            "create_time": 1789930132.155922
+          }
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "0c3ec71a16a99d1e199126ae9fe4e3cb225dc66efa6bdd3278a320eadef794e6",
+      "record": {
+        "timestamp": "2026-09-20T18:48:57.888Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d13835738a621c5016ab02a9766a087d09fb44eb27bfde59b",
+          "status": "completed",
+          "call_id": "call_OIxW4EzHgWUJAKaLwVVagtPF",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat policy.mjs tests/policy.test.mjs .agents/skills/receipt/references/native-preservation.md; git status --porcelain=v1; git rev-parse HEAD HEAD^; git diff HEAD^ HEAD -- policy.mjs; command -v node; node --version; printenv NODE_OPTIONS NODE_PATH NODE_COMPILE_CACHE\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c026-3705-7383-a017-51c89389ed42",
+            "create_time": 1789930132.843293
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "2c88ee69e0f5f871a3aaf164ca3743edd353f8149e70f6e3dabe54a9c782b2c5",
+      "record": {
+        "timestamp": "2026-09-20T18:48:58.035Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c026-69b3-71e0-a448-85f169f684bc",
+          "call_id": "call_OIxW4EzHgWUJAKaLwVVagtPF",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"159828\",\"wall_time_seconds\":0,\"exit_code\":1,\"original_token_count\":907,\"output\":\"const defaults = {retries:3};\\nexport const origin = import.meta.url;\\nexport function retries(options = {}) { return options.retries ?? defaults.retries; }\\nimport test from 'node:test';\\nimport assert from 'node:assert/strict';\\nimport {fileURLToPath} from 'node:url';\\nimport * as policy from '../policy.mjs';\\nconsole.log('ACTUAL_MODULE ' + JSON.stringify({path:fileURLToPath(policy.origin),pid:process.pid}));\\ntest('explicit zero disables retries', () => assert.equal(policy.retries({retries:0}), 0));\\ntest('explicit positive survives', () => assert.equal(policy.retries({retries:2}), 2));\\ntest('omitted value uses default', () => assert.equal(policy.retries(), 3));\\ntest('null uses default', () => assert.equal(policy.retries({retries:null}), 3));\\n# Preserve originals around a project-native comparison\\n\\nPython 3.9+/POSIX. Use this optional API only when native project setup is required and an adequate\\npreservation check is missing. Existing `compare.py` already supplies a guard;\\ndo not wrap it in another guard. This API reuses that bounded inventory without\\nchanging the project's runner, environment or startup hooks.\\n\\nLoad `scripts/preserve.py` by its actual installed path using `importlib.util`:\\n\\n```python\\nspec = importlib.util.spec_from_file_location(\\\"receipt_preserve\\\", helper_path)\\nsupport = importlib.util.module_from_spec(spec)\\nspec.loader.exec_module(support)\\n```\\n\\nPlace the existing native comparison and its cleanup inside\\n`with support.preserved_tree(project_root) as preservation:`. Remove all owned\\ncopies inside that block, including failure paths, then inspect/print the report\\nafter normal context exit. Loading the module or entering an empty block does\\nnot execute tests. Run orchestration with bytecode writing disabled (`python -B`)\\nso importing support does not add cache files to the tree being preserved.\\n\\nThe guard performs exactly one bounded inventory before and one after the block.\\nIt starts with `unchanged: null`; successful comparison produces `unchanged: true`,\\nentry/byte counts and a digest. It includes Git/ignored entries, root/directory\\nmodes, regular-file bytes/modes and symlink text. It does not follow link targets.\\nUse only with authorized whole-root reads. Limits are 10,000 entries and 20 MB\\nstreamed per inventory; special files and overflow fail closed.\\n\\nChanged or retained entries raise without restoring anything. Caller exceptions\\nstill propagate when preservation passes; if both workflow and preservation\\nfail, the preservation error retains the original exception as its context.\\nUnknown/failed preservation is not a success report. An unchanged report says\\nnothing about test success: native commands/exits/assertions, identical inputs,\\nrevision identity and same-process import evidence remain the caller's job.\\nThis API neither copies revisions nor runs/supervises subprocesses nor cleans up.\\n\\nNot a sandbox or an atomic snapshot. No protection against outside-root effects,\\nconcurrent/restored changes, timestamps, ownership, ACLs/xattrs or changes outside\\nthe context interval. Do not broaden access or waive required checks to use it.\\n?? .agents/\\n?? tests/\\n6e4e4ece6400ec4b0aa65acea8988fbe70b8c6b5\\n62d7afb676b986d6905beb5ab177c4d3e3f702f1\\ndiff --git a/policy.mjs b/policy.mjs\\nindex 7e5bfc7..c8f268d 100644\\n--- a/policy.mjs\\n+++ b/policy.mjs\\n@@ -1,3 +1,3 @@\\n const defaults = {retries:3};\\n export const origin = import.meta.url;\\n-export function retries(options = {}) { return options.retries || defaults.retries; }\\n+export function retries(options = {}) { return options.retries ?? defaults.retries; }\\n<HOME>/.nvm/versions/node/v24.16.0/bin/node\\nv24.16.0\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c026-3705-7383-a017-51c89389ed42",
+            "create_time": 1789930138.035193
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "d66ae74ff8db7e10dbf92978587971f5fc90d627a299ebf057287f2c2b297f24",
+      "record": {
+        "timestamp": "2026-09-20T18:49:25.539Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d13835738a621c5016ab02aa0dcec87d0b4645837f3a9a3c9",
+          "status": "completed",
+          "call_id": "call_WdcQOa6T1fVKOIQzLm6ocbvi",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport os, sys, pathlib, importlib.util, subprocess, shutil, tempfile, hashlib, json\\nroot = pathlib.Path.cwd()\\nspec = importlib.util.spec_from_file_location('receipt_preserve', root / '.agents/skills/receipt/scripts/preserve.py')\\nsupport = importlib.util.module_from_spec(spec)\\nspec.loader.exec_module(support)\\ndef git(*args):\\n    return subprocess.check_output(['git', *args], cwd=root)\\nwith support.preserved_tree(root) as preservation:\\n    revs = {name:git('rev-parse', ref).decode().strip() for name,ref in [('before','HEAD^'),('after','HEAD')]}\\n    original_status = git('status','--porcelain=v1')\\n    scratch = pathlib.Path(tempfile.mkdtemp(prefix='.receipt-',dir=root))\\n    try:\\n        for name,rev in revs.items():\\n            dest = scratch / name\\n            shutil.copytree(root, dest, ignore=shutil.ignore_patterns('.git', scratch.name), copy_function=shutil.copy2)\\n            implementation = git('show', rev + ':policy.mjs')\\n            mode = int(git('ls-tree',rev,'policy.mjs').split()[0],8) & 0o777\\n            (dest/'policy.mjs').write_bytes(implementation)\\n            (dest/'policy.mjs').chmod(mode)\\n            tests = dest/'tests/policy.test.mjs'\\n            assert tests.read_bytes() == (root/'tests/policy.test.mjs').read_bytes()\\n            assert tests.stat().st_mode == (root/'tests/policy.test.mjs').stat().st_mode\\n            print(json.dumps({'variant':name,'revision':rev,'copy':str(dest),'test_sha256':hashlib.sha256(tests.read_bytes()).hexdigest(),'implementation_sha256':hashlib.sha256(implementation).hexdigest(),'implementation_mode':oct(mode),'command':'node --test --test-reporter=tap tests/policy.test.mjs'}),flush=True)\\n            result = subprocess.run(['node','--test','--test-reporter=tap','tests/policy.test.mjs'],cwd=dest,capture_output=True,text=True,timeout=30)\\n            print(result.stdout,end='')\\n            print(result.stderr,end='',file=sys.stderr)\\n            print(json.dumps({'variant':name,'native_exit_code':result.returncode}),flush=True)\\n    finally:\\n        shutil.rmtree(scratch)\\n    print(json.dumps({'comparison_copies_removed':not scratch.exists(),'git_status_unchanged':git('status','--porcelain=v1') == original_status}),flush=True)\\n    check = subprocess.run(['git','diff','--check'],cwd=root,capture_output=True,text=True)\\n    print(json.dumps({'diff_check_exit':check.returncode,'output':check.stdout+check.stderr}),flush=True)\\n    print('FINAL_STATUS\\\\n'+git('status','--porcelain=v1').decode(),end='')\\nprint(json.dumps({'preservation':preservation}),flush=True)\\nPY\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c026-3705-7383-a017-51c89389ed42",
+            "create_time": 1789930138.499229
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "f59ff861f48f1df3e12eee52028898862c1ace82a17d41428470ba418cd0fc64",
+      "record": {
+        "timestamp": "2026-09-20T18:49:26.004Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c026-d6f4-7a61-a903-315df2c9c330",
+          "call_id": "call_WdcQOa6T1fVKOIQzLm6ocbvi",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.5 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3bd0c7\",\"wall_time_seconds\":0.274556375,\"exit_code\":0,\"original_token_count\":923,\"output\":\"{\\\"variant\\\": \\\"before\\\", \\\"revision\\\": \\\"62d7afb676b986d6905beb5ab177c4d3e3f702f1\\\", \\\"copy\\\": \\\"<WORKSPACE>/.receipt-q7dysmv7/before\\\", \\\"test_sha256\\\": \\\"af427a43121822372bf95566b0c6aebad9bb87170f5a67191fc6d54b497da152\\\", \\\"implementation_sha256\\\": \\\"44b01f334fd9969761b929d83fd73bcced1ff9d8251d0fc0505dce24ce0e084a\\\", \\\"implementation_mode\\\": \\\"0o644\\\", \\\"command\\\": \\\"node --test --test-reporter=tap tests/policy.test.mjs\\\"}\\nTAP version 13\\n# ACTUAL_MODULE {\\\"path\\\":\\\"<WORKSPACE>/.receipt-q7dysmv7/before/policy.mjs\\\",\\\"pid\\\":10480}\\n# Subtest: explicit zero disables retries\\nnot ok 1 - explicit zero disables retries\\n  ---\\n  duration_ms: 0.800333\\n  type: 'test'\\n  location: '<WORKSPACE>/.receipt-q7dysmv7/before/tests/policy.test.mjs:6:1'\\n  failureType: 'testCodeFailure'\\n  error: |-\\n    Expected values to be strictly equal:\\n    \\n    3 !== 0\\n    \\n  code: 'ERR_ASSERTION'\\n  name: 'AssertionError'\\n  expected: 0\\n  actual: 3\\n  operator: 'strictEqual'\\n  stack: |-\\n    TestContext.<anonymous> (file://<WORKSPACE>/.receipt-q7dysmv7/before/tests/policy.test.mjs:6:53)\\n    Test.runInAsyncScope (node:async_hooks:227:14)\\n    Test.run (node:internal/test_runner/test:1306:25)\\n    Test.start (node:internal/test_runner/test:1177:17)\\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\\n  ...\\n# Subtest: explicit positive survives\\nok 2 - explicit positive survives\\n  ---\\n  duration_ms: 0.095209\\n  type: 'test'\\n  ...\\n# Subtest: omitted value uses default\\nok 3 - omitted value uses default\\n  ---\\n  duration_ms: 0.053792\\n  type: 'test'\\n  ...\\n# Subtest: null uses default\\nok 4 - null uses default\\n  ---\\n  duration_ms: 0.052625\\n  type: 'test'\\n  ...\\n1..4\\n# tests 4\\n# suites 0\\n# pass 3\\n# fail 1\\n# cancelled 0\\n# skipped 0\\n# todo 0\\n# duration_ms 52.491709\\n{\\\"variant\\\": \\\"before\\\", \\\"native_exit_code\\\": 1}\\n{\\\"variant\\\": \\\"after\\\", \\\"revision\\\": \\\"6e4e4ece6400ec4b0aa65acea8988fbe70b8c6b5\\\", \\\"copy\\\": \\\"<WORKSPACE>/.receipt-q7dysmv7/after\\\", \\\"test_sha256\\\": \\\"af427a43121822372bf95566b0c6aebad9bb87170f5a67191fc6d54b497da152\\\", \\\"implementation_sha256\\\": \\\"9be59601ca24b6cf9a0bd03af0683bbdedecff68d2e61adba5e39f10b6cb3de4\\\", \\\"implementation_mode\\\": \\\"0o644\\\", \\\"command\\\": \\\"node --test --test-reporter=tap tests/policy.test.mjs\\\"}\\nTAP version 13\\n# ACTUAL_MODULE {\\\"path\\\":\\\"<WORKSPACE>/.receipt-q7dysmv7/after/policy.mjs\\\",\\\"pid\\\":10484}\\n# Subtest: explicit zero disables retries\\nok 1 - explicit zero disables retries\\n  ---\\n  duration_ms: 0.422791\\n  type: 'test'\\n  ...\\n# Subtest: explicit positive survives\\nok 2 - explicit positive survives\\n  ---\\n  duration_ms: 0.06625\\n  type: 'test'\\n  ...\\n# Subtest: omitted value uses default\\nok 3 - omitted value uses default\\n  ---\\n  duration_ms: 0.055125\\n  type: 'test'\\n  ...\\n# Subtest: null uses default\\nok 4 - null uses default\\n  ---\\n  duration_ms: 0.05025\\n  type: 'test'\\n  ...\\n1..4\\n# tests 4\\n# suites 0\\n# pass 4\\n# fail 0\\n# cancelled 0\\n# skipped 0\\n# todo 0\\n# duration_ms 50.1355\\n{\\\"variant\\\": \\\"after\\\", \\\"native_exit_code\\\": 0}\\n{\\\"comparison_copies_removed\\\": true, \\\"git_status_unchanged\\\": true}\\n{\\\"diff_check_exit\\\": 0, \\\"output\\\": \\\"\\\"}\\nFINAL_STATUS\\n?? .agents/\\n?? tests/\\n{\\\"preservation\\\": {\\\"unchanged\\\": true, \\\"entries\\\": 60, \\\"file_bytes\\\": 63605, \\\"inventory_sha256\\\": \\\"983cf12ee2a481c7d9c51a8c9c4c4a844804cb1b5e4fe5e0dfcd2d843a033fbf\\\", \\\"scope\\\": \\\"source root including Git metadata; symlink targets not read\\\"}}\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c026-3705-7383-a017-51c89389ed42",
+            "create_time": 1789930166.00482
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

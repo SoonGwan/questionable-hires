@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {fileURLToPath} from 'node:url';
+import * as policy from '../policy.mjs';
+console.log('ACTUAL_MODULE ' + JSON.stringify({path:fileURLToPath(policy.origin),pid:process.pid}));
+test('explicit zero disables retries', () => assert.equal(policy.retries({retries:0}), 0));
+test('explicit positive survives', () => assert.equal(policy.retries({retries:2}), 2));
+test('omitted value uses default', () => assert.equal(policy.retries(), 3));
+test('null uses default', () => assert.equal(policy.retries({retries:null}), 3));
