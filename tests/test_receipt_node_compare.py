@@ -2,6 +2,7 @@
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -150,3 +151,14 @@ test('age boundary', () => { assert.equal(require('./app.cjs').accepted(18), tru
         self.assertEqual(result['checks']['before']['exit_code'], 1)
         self.assertEqual(result['checks']['after']['exit_code'], 0)
         self.assertEqual(helper.tree_inventory(self.root), before)
+
+    def test_documented_recipe_collects_native_evidence_and_optional_guard(self):
+        guide = (ROOT / 'skills/receipt/references/node-comparison.md').read_text()
+        recipe = json.loads(re.search(r"<<'JSON'\n(.*?)\nJSON", guide, re.S).group(1))
+        recipe['guard_tree'] = True  # Explicitly requested, not an automatic broader read.
+        result = self.compare(recipe)
+        self.assertEqual(result['status'], 'observed')
+        self.assertEqual([c['native_exit_code'] for c in result['checks'].values()], [1, 0])
+        self.assertTrue(all(c['provenance_ready'] for c in result['checks'].values()))
+        self.assertTrue(result['tree_guard']['unchanged'])
+        self.assertTrue(result['originals']['unchanged'])
