@@ -6,6 +6,7 @@ import ast
 import hashlib
 import json
 from pathlib import Path
+import re
 import stat
 import sys
 
@@ -87,7 +88,17 @@ def definition_at_line(tree, line):
     return matches[0][1:]
 
 
-def definition_index(body, source, prefix=''):
+def definition_index(body, source, prefix='', segments=None):
+    # AST columns are UTF-8 byte offsets. Split Python physical lines once,
+    # retaining original terminators; str.splitlines also splits literal data.
+    if segments is None:
+        segments = re.findall(rb'[^\r\n]*(?:\r\n|\r|\n|$)', source.encode('utf-8'))
+    def decorator_source(node):
+        first, last = node.lineno - 1, node.end_lineno - 1
+        if first == last:
+            return segments[first][node.col_offset:node.end_col_offset].decode('utf-8')
+        return (segments[first][node.col_offset:] + b''.join(segments[first+1:last]) +
+                segments[last][:node.end_col_offset]).decode('utf-8')
     records = []
     for node in body:
         if not isinstance(node, DEFINITIONS):
@@ -95,10 +106,10 @@ def definition_index(body, source, prefix=''):
         first, last = span(node)
         name = prefix + node.name
         records.append(dict(name=name, kind=type(node).__name__, first_line=first,
-                            last_line=last, decorators=[ast.get_source_segment(source, d)
+                            last_line=last, decorators=[decorator_source(d)
                                                         for d in node.decorator_list]))
         if isinstance(node, ast.ClassDef):
-            records.extend(definition_index(node.body, source, name + '.'))
+            records.extend(definition_index(node.body, source, name + '.', segments))
     return records
 
 

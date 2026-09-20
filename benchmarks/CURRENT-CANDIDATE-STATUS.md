@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist decorator indexing — 2026-09-20, parent `3a985e8`
+
+[Repeated whole-source scans removed](CONTEXT-DECORATORS-01.md) without changing
+collector output: physical UTF-8 lines are shared across decorator excerpts.
+For an authored 200-decorator input, whole-collector median decreases from
+0.957693s to 0.004842s across three local repetitions; returned objects match.
+Two new controls pass on Python 3.9/3.11, existing context 32/32 and packaging
+13/13 pass. **Local algorithm evidence, not model efficiency or a broad gain.**
+No extra instructions, helper-adoption requirement or featured-chart change.
+
+한국어: Python 문맥 수집기의 데코레이터별 전체 파일 재처리를 제거했다.
+같은 출력으로 실제 로컬 실행 시간이 줄었지만 모델 전체 성능 수치는 아니다.
+본문 지침을 늘리지 않았으며 기존 검증·범위·출력 계약을 유지했다.
+
 ## Original-response usage diagnostic — 2026-09-20
 
 [All ten original Korean sessions](SESSION-USAGE-PROFILE-01.md) reconcile 45

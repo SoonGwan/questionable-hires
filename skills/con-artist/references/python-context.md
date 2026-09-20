@@ -61,8 +61,10 @@ classes; inspect them when their semantics matter. Never execute extracted
 function text as a substitute for the implementation.
 
 Within one invocation, selectors and ancestor context reuse one read and at most
-one parse per relative file path; the input limit counts that file once. Output
-still retains each requested excerpt and its provenance. No cache survives the
+one parse per relative file path; the input limit counts that file once.
+Decorator indexing shares physical UTF-8 lines across definitions instead of
+rescanning the whole file for each decorator; original decorator text is retained.
+Output still retains each requested excerpt and its provenance. No cache survives the
 invocation, and different files are not an atomic filesystem snapshot.
 
 Reuse collected paths/content while files remain unchanged; don't add this call
