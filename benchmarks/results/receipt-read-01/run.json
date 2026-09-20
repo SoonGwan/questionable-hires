@@ -1,0 +1,401 @@
+{
+  "resource_revision": "ca668a474913062882745a1ba7ecb1ffc38fcf32",
+  "identities": {
+    "benchmarks/run_receipt_read_01.py": "c324b0bf8bd1d570df832bf732084495e4c43edc566c1989c5b8ded5ef93dd52",
+    "benchmarks/receipt_read_candidate.py": "2d09af1e51e9cabdbc6fddb8e3798055a1c74572d4239fb0a3c64d7b0c7c5434",
+    "benchmarks/receipt_ledger_cases.py": "bcbb8f0ddd2d942a15589268e43cfa283cc848b2f09c269b313f0d14846ca7ed",
+    "benchmarks/receipt-ledger-cases.json": "5aeac6200940dc4d29898920429aae684712afea753df12e7985862f5016b742",
+    "benchmarks/RECEIPT-READ-01-PROTOCOL.md": "237c76c3dfb09681a5af20d6c18e5ded8f11a11eb9b15ddd2edc17aaf4401c16",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "skills/receipt/scripts/compare.py": "a94b827a6fd346a93adbfb6ea4b3606d66b26f7e5201a035da7fc853978c2fe7"
+  },
+  "cases": [
+    {
+      "id": "ledger-delivery-a",
+      "skill": "receipt",
+      "files": {
+        "AGENTS.md": "Verify only; do not edit originals, commit, stash, reset or implement a fix. Use identical current checks.test_delivery and ledger/schema.sql against HEAD^ and HEAD in separate project-local copies. Run python3 -B -m unittest -v checks.test_delivery from each copy root. Confirm implementation imports belong to that copy. Standard library only; no dependency installation, external services or out-of-project discovery. Test databases must remain inside the respective copy and be removed by their normal cleanup. Preserve all originals, including ignored cache and unrelated notes; remove owned comparison copies and retain no extra harness/report.\n",
+        "requirements.md": "Events carry an existing account id, event id and signed integer cents. A first (account, event) delivery commits its delta and returns True; a retry with identical payload returns False and leaves the committed balance unchanged. The same event id on another account is independent. Distinct events with equal amounts both apply. Zero is valid. Sequential calls only; concurrency, changed retry payloads, unknown accounts, crash recovery and network delivery are outside this ticket. Tests must call the actual SQLite implementation and read balances through a fresh connection after each tested operation.\n",
+        ".gitignore": ".cache/\n",
+        "ledger/__init__.py": "",
+        "ledger/schema.sql": "CREATE TABLE accounts (id TEXT PRIMARY KEY, cents INTEGER NOT NULL);\nCREATE TABLE seen (account TEXT NOT NULL, event TEXT NOT NULL, PRIMARY KEY(account, event));\n",
+        "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        if not inserted:\n            return False\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return True\n",
+        "notes.txt": "Previous release notes.\n"
+      },
+      "history": [
+        {
+          "message": "Initial delivery handler",
+          "files": {
+            "AGENTS.md": "Verify only; do not edit originals, commit, stash, reset or implement a fix. Use identical current checks.test_delivery and ledger/schema.sql against HEAD^ and HEAD in separate project-local copies. Run python3 -B -m unittest -v checks.test_delivery from each copy root. Confirm implementation imports belong to that copy. Standard library only; no dependency installation, external services or out-of-project discovery. Test databases must remain inside the respective copy and be removed by their normal cleanup. Preserve all originals, including ignored cache and unrelated notes; remove owned comparison copies and retain no extra harness/report.\n",
+            "requirements.md": "Events carry an existing account id, event id and signed integer cents. A first (account, event) delivery commits its delta and returns True; a retry with identical payload returns False and leaves the committed balance unchanged. The same event id on another account is independent. Distinct events with equal amounts both apply. Zero is valid. Sequential calls only; concurrency, changed retry payloads, unknown accounts, crash recovery and network delivery are outside this ticket. Tests must call the actual SQLite implementation and read balances through a fresh connection after each tested operation.\n",
+            ".gitignore": ".cache/\n",
+            "ledger/__init__.py": "",
+            "ledger/schema.sql": "CREATE TABLE accounts (id TEXT PRIMARY KEY, cents INTEGER NOT NULL);\nCREATE TABLE seen (account TEXT NOT NULL, event TEXT NOT NULL, PRIMARY KEY(account, event));\n",
+            "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return True\n",
+            "notes.txt": "Previous release notes.\n"
+          }
+        },
+        {
+          "message": "Handle duplicate delivery",
+          "files": {
+            "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        if not inserted:\n            return False\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return True\n"
+          }
+        }
+      ],
+      "working_files": {
+        "checks/__init__.py": "",
+        "checks/test_delivery.py": "import sqlite3\nimport tempfile\nimport unittest\nfrom contextlib import closing\nfrom pathlib import Path\nfrom ledger.delivery import apply_event\n\nROOT = Path(__file__).resolve().parents[1]\n\nclass DeliveryTests(unittest.TestCase):\n    def setUp(self):\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-', dir=ROOT)\n        self.addCleanup(self.scratch.cleanup)\n        self.assertEqual(Path(self.scratch.name).parent, ROOT)\n        self.path = Path(self.scratch.name) / 'ledger.sqlite'\n        with closing(sqlite3.connect(self.path)) as db, db:\n            db.executescript((ROOT / 'ledger/schema.sql').read_text())\n            db.executemany('INSERT INTO accounts VALUES (?, ?)', [('a', 0), ('b', 0)])\n\n    def balance(self, account='a'):\n        with closing(sqlite3.connect(self.path)) as db:\n            return db.execute('SELECT cents FROM accounts WHERE id = ?', (account,)).fetchone()[0]\n\n    def test_retry_credit(self):\n        self.assertTrue(apply_event(self.path, 'a', 'credit', 125))\n        self.assertEqual(self.balance(), 125)\n        accepted = apply_event(self.path, 'a', 'credit', 125)\n        self.assertEqual((accepted, self.balance()), (False, 125))\n\n    def test_retry_debit(self):\n        self.assertTrue(apply_event(self.path, 'a', 'debit', -50))\n        self.assertEqual(self.balance(), -50)\n        accepted = apply_event(self.path, 'a', 'debit', -50)\n        self.assertEqual((accepted, self.balance()), (False, -50))\n\n    def test_same_event_different_accounts(self):\n        self.assertTrue(apply_event(self.path, 'a', 'shared', 10))\n        self.assertEqual((self.balance('a'), self.balance('b')), (10, 0))\n        self.assertTrue(apply_event(self.path, 'b', 'shared', 20))\n        self.assertEqual((self.balance('a'), self.balance('b')), (10, 20))\n\n    def test_distinct_events_same_amount(self):\n        self.assertTrue(apply_event(self.path, 'a', 'one', 7))\n        self.assertEqual(self.balance(), 7)\n        self.assertTrue(apply_event(self.path, 'a', 'two', 7))\n        self.assertEqual(self.balance(), 14)\n\n    def test_zero_delta_is_accepted(self):\n        self.assertTrue(apply_event(self.path, 'a', 'zero', 0))\n        self.assertEqual(self.balance(), 0)\n",
+        "notes.txt": "Unrelated owner draft: preserve exactly.\n",
+        ".cache/owner.txt": "Owner cache: preserve exactly.\n"
+      },
+      "task": "Verify whether the committed duplicate-delivery change in ledger/delivery.py actually satisfies requirements.md. Compare HEAD^ and HEAD with the identical five current tests and schema, using real SQLite writes and fresh-connection balance reads, not a reimplementation or mocks. Observe defect-specific before failures, after outcomes and passing controls; an incomplete fix must be reported as incomplete, not repaired or called verified. Identify loaded revisions and copy-local imports. Follow AGENTS.md, preserve every original file and user change, and remove owned copies without retaining a harness or report.",
+      "criteria": [
+        "All five current native tests and current schema execute against both revisions.",
+        "Before has two retry assertion failures and three passing controls.",
+        "Report actual after behavior, including any remaining incorrect balance despite False acknowledgement.",
+        "Copy-local implementation imports and full revision identities are evidenced.",
+        "Original bytes/modes and user changes preserved; project-local databases/copies cleaned; no extra harness/report."
+      ]
+    },
+    {
+      "id": "ledger-delivery-b",
+      "skill": "receipt",
+      "files": {
+        "AGENTS.md": "Verify only; do not edit originals, commit, stash, reset or implement a fix. Use identical current checks.test_delivery and ledger/schema.sql against HEAD^ and HEAD in separate project-local copies. Run python3 -B -m unittest -v checks.test_delivery from each copy root. Confirm implementation imports belong to that copy. Standard library only; no dependency installation, external services or out-of-project discovery. Test databases must remain inside the respective copy and be removed by their normal cleanup. Preserve all originals, including ignored cache and unrelated notes; remove owned comparison copies and retain no extra harness/report.\n",
+        "requirements.md": "Events carry an existing account id, event id and signed integer cents. A first (account, event) delivery commits its delta and returns True; a retry with identical payload returns False and leaves the committed balance unchanged. The same event id on another account is independent. Distinct events with equal amounts both apply. Zero is valid. Sequential calls only; concurrency, changed retry payloads, unknown accounts, crash recovery and network delivery are outside this ticket. Tests must call the actual SQLite implementation and read balances through a fresh connection after each tested operation.\n",
+        ".gitignore": ".cache/\n",
+        "ledger/__init__.py": "",
+        "ledger/schema.sql": "CREATE TABLE accounts (id TEXT PRIMARY KEY, cents INTEGER NOT NULL);\nCREATE TABLE seen (account TEXT NOT NULL, event TEXT NOT NULL, PRIMARY KEY(account, event));\n",
+        "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return bool(inserted)\n",
+        "notes.txt": "Previous release notes.\n"
+      },
+      "history": [
+        {
+          "message": "Initial delivery handler",
+          "files": {
+            "AGENTS.md": "Verify only; do not edit originals, commit, stash, reset or implement a fix. Use identical current checks.test_delivery and ledger/schema.sql against HEAD^ and HEAD in separate project-local copies. Run python3 -B -m unittest -v checks.test_delivery from each copy root. Confirm implementation imports belong to that copy. Standard library only; no dependency installation, external services or out-of-project discovery. Test databases must remain inside the respective copy and be removed by their normal cleanup. Preserve all originals, including ignored cache and unrelated notes; remove owned comparison copies and retain no extra harness/report.\n",
+            "requirements.md": "Events carry an existing account id, event id and signed integer cents. A first (account, event) delivery commits its delta and returns True; a retry with identical payload returns False and leaves the committed balance unchanged. The same event id on another account is independent. Distinct events with equal amounts both apply. Zero is valid. Sequential calls only; concurrency, changed retry payloads, unknown accounts, crash recovery and network delivery are outside this ticket. Tests must call the actual SQLite implementation and read balances through a fresh connection after each tested operation.\n",
+            ".gitignore": ".cache/\n",
+            "ledger/__init__.py": "",
+            "ledger/schema.sql": "CREATE TABLE accounts (id TEXT PRIMARY KEY, cents INTEGER NOT NULL);\nCREATE TABLE seen (account TEXT NOT NULL, event TEXT NOT NULL, PRIMARY KEY(account, event));\n",
+            "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return True\n",
+            "notes.txt": "Previous release notes.\n"
+          }
+        },
+        {
+          "message": "Handle duplicate delivery",
+          "files": {
+            "ledger/delivery.py": "import sqlite3\nfrom contextlib import closing\n\ndef apply_event(path, account, event, cents):\n    with closing(sqlite3.connect(path)) as db, db:\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\n        return bool(inserted)\n"
+          }
+        }
+      ],
+      "working_files": {
+        "checks/__init__.py": "",
+        "checks/test_delivery.py": "import sqlite3\nimport tempfile\nimport unittest\nfrom contextlib import closing\nfrom pathlib import Path\nfrom ledger.delivery import apply_event\n\nROOT = Path(__file__).resolve().parents[1]\n\nclass DeliveryTests(unittest.TestCase):\n    def setUp(self):\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-', dir=ROOT)\n        self.addCleanup(self.scratch.cleanup)\n        self.assertEqual(Path(self.scratch.name).parent, ROOT)\n        self.path = Path(self.scratch.name) / 'ledger.sqlite'\n        with closing(sqlite3.connect(self.path)) as db, db:\n            db.executescript((ROOT / 'ledger/schema.sql').read_text())\n            db.executemany('INSERT INTO accounts VALUES (?, ?)', [('a', 0), ('b', 0)])\n\n    def balance(self, account='a'):\n        with closing(sqlite3.connect(self.path)) as db:\n            return db.execute('SELECT cents FROM accounts WHERE id = ?', (account,)).fetchone()[0]\n\n    def test_retry_credit(self):\n        self.assertTrue(apply_event(self.path, 'a', 'credit', 125))\n        self.assertEqual(self.balance(), 125)\n        accepted = apply_event(self.path, 'a', 'credit', 125)\n        self.assertEqual((accepted, self.balance()), (False, 125))\n\n    def test_retry_debit(self):\n        self.assertTrue(apply_event(self.path, 'a', 'debit', -50))\n        self.assertEqual(self.balance(), -50)\n        accepted = apply_event(self.path, 'a', 'debit', -50)\n        self.assertEqual((accepted, self.balance()), (False, -50))\n\n    def test_same_event_different_accounts(self):\n        self.assertTrue(apply_event(self.path, 'a', 'shared', 10))\n        self.assertEqual((self.balance('a'), self.balance('b')), (10, 0))\n        self.assertTrue(apply_event(self.path, 'b', 'shared', 20))\n        self.assertEqual((self.balance('a'), self.balance('b')), (10, 20))\n\n    def test_distinct_events_same_amount(self):\n        self.assertTrue(apply_event(self.path, 'a', 'one', 7))\n        self.assertEqual(self.balance(), 7)\n        self.assertTrue(apply_event(self.path, 'a', 'two', 7))\n        self.assertEqual(self.balance(), 14)\n\n    def test_zero_delta_is_accepted(self):\n        self.assertTrue(apply_event(self.path, 'a', 'zero', 0))\n        self.assertEqual(self.balance(), 0)\n",
+        "notes.txt": "Unrelated owner draft: preserve exactly.\n",
+        ".cache/owner.txt": "Owner cache: preserve exactly.\n"
+      },
+      "task": "Verify whether the committed duplicate-delivery change in ledger/delivery.py actually satisfies requirements.md. Compare HEAD^ and HEAD with the identical five current tests and schema, using real SQLite writes and fresh-connection balance reads, not a reimplementation or mocks. Observe defect-specific before failures, after outcomes and passing controls; an incomplete fix must be reported as incomplete, not repaired or called verified. Identify loaded revisions and copy-local imports. Follow AGENTS.md, preserve every original file and user change, and remove owned copies without retaining a harness or report.",
+      "criteria": [
+        "All five current native tests and current schema execute against both revisions.",
+        "Before has two retry assertion failures and three passing controls.",
+        "Report actual after behavior, including any remaining incorrect balance despite False acknowledgement.",
+        "Copy-local implementation imports and full revision identities are evidenced.",
+        "Original bytes/modes and user changes preserved; project-local databases/copies cleaned; no extra harness/report."
+      ]
+    }
+  ],
+  "schedule": [
+    {
+      "case": "ledger-delivery-a",
+      "condition": "baseline"
+    },
+    {
+      "case": "ledger-delivery-a",
+      "condition": "original"
+    },
+    {
+      "case": "ledger-delivery-a",
+      "condition": "candidate"
+    },
+    {
+      "case": "ledger-delivery-b",
+      "condition": "candidate"
+    },
+    {
+      "case": "ledger-delivery-b",
+      "condition": "original"
+    },
+    {
+      "case": "ledger-delivery-b",
+      "condition": "baseline"
+    }
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 360,
+  "repeats": 1,
+  "jobs": 1,
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "original": "50e10147238f70c677fc8351bc9b1f5f9cac8ccc6670baaa04ec46f648f86700",
+    "candidate": "3d7e9b8e06d3c6282aa98d608a07c09b22d961bcf558f6f0176aa64fb7dddef1"
+  },
+  "native_preflight": [
+    {
+      "case": "ledger-delivery-a",
+      "comparison": {
+        "status": "observed",
+        "revisions": {
+          "before": "721139585aea166e10dd4e06fd6f35152e7fdc61",
+          "after": "547b2e89c7f99e13192ddc2ccb90f623a8234307"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: ledger.delivery {\"path\": \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-kitc3rsv/project/.receipt-hpi0v7i5/before/ledger/delivery.py\", \"pid\": 66012}\nVerified copied import: checks.test_delivery {\"path\": \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-kitc3rsv/project/.receipt-hpi0v7i5/before/checks/test_delivery.py\", \"pid\": 66012}\ntest_distinct_events_same_amount (checks.test_delivery.DeliveryTests) ... ok\ntest_retry_credit (checks.test_delivery.DeliveryTests) ... FAIL\ntest_retry_debit (checks.test_delivery.DeliveryTests) ... FAIL\ntest_same_event_different_accounts (checks.test_delivery.DeliveryTests) ... ok\ntest_zero_delta_is_accepted (checks.test_delivery.DeliveryTests) ... ok\n\n======================================================================\nFAIL: test_retry_credit (checks.test_delivery.DeliveryTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-kitc3rsv/project/.receipt-hpi0v7i5/before/checks/test_delivery.py\", line 28, in test_retry_credit\n    self.assertEqual((accepted, self.balance()), (False, 125))\nAssertionError: Tuples differ: (True, 250) != (False, 125)\n\nFirst differing element 0:\nTrue\nFalse\n\n- (True, 250)\n+ (False, 125)\n\n======================================================================\nFAIL: test_retry_debit (checks.test_delivery.DeliveryTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-kitc3rsv/project/.receipt-hpi0v7i5/before/checks/test_delivery.py\", line 34, in test_retry_debit\n    self.assertEqual((accepted, self.balance()), (False, -50))\nAssertionError: Tuples differ: (True, -100) != (False, -50)\n\nFirst differing element 0:\nTrue\nFalse\n\n- (True, -100)\n+ (False, -50)\n\n----------------------------------------------------------------------\nRan 5 tests in 0.017s\n\nFAILED (failures=2)\n",
+            "output_truncated": false,
+            "command": [
+              "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "checks.test_delivery"
+            ],
+            "invocation": "module",
+            "provenance_ready": true,
+            "native_exit_code": 1
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: ledger.delivery {\"path\": \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-kitc3rsv/project/.receipt-hpi0v7i5/after/ledger/delivery.py\", \"pid\": 66013}\nVerified copied import: checks.test_delivery {\"path\": \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-kitc3rsv/project/.receipt-hpi0v7i5/after/checks/test_delivery.py\", \"pid\": 66013}\ntest_distinct_events_same_amount (checks.test_delivery.DeliveryTests) ... ok\ntest_retry_credit (checks.test_delivery.DeliveryTests) ... ok\ntest_retry_debit (checks.test_delivery.DeliveryTests) ... ok\ntest_same_event_different_accounts (checks.test_delivery.DeliveryTests) ... ok\ntest_zero_delta_is_accepted (checks.test_delivery.DeliveryTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.016s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "checks.test_delivery"
+            ],
+            "invocation": "module",
+            "provenance_ready": true,
+            "native_exit_code": 0
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "checks/test_delivery.py": "4571e36668f830a1b7f80d00eedd7f0452909774d68962efe84e35eafb693021",
+          "ledger/schema.sql": "ede9ae52f39bc1e75538cfc6d702132c967dc19305d4cff0e3f2db72cc7f81f9",
+          "ledger/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 60,
+          "file_bytes": 8365,
+          "inventory_sha256": "96efde55f3ad775a7a3aed27e31dc48d514f7e342bb48e170f3fa8371b4af03b",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "checks/test_delivery.py": "4571e36668f830a1b7f80d00eedd7f0452909774d68962efe84e35eafb693021",
+            "ledger/schema.sql": "ede9ae52f39bc1e75538cfc6d702132c967dc19305d4cff0e3f2db72cc7f81f9",
+            "ledger/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ledger/delivery.py": "22837bd0109ce3dd525bda32f70ea2b4806b7ba3162b9b683020e702d30f2188"
+          },
+          "modes": {
+            "checks/__init__.py": 420,
+            "checks/test_delivery.py": 420,
+            "ledger/schema.sql": 420,
+            "ledger/__init__.py": 420,
+            "ledger/delivery.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      }
+    },
+    {
+      "case": "ledger-delivery-b",
+      "comparison": {
+        "status": "observed",
+        "revisions": {
+          "before": "721139585aea166e10dd4e06fd6f35152e7fdc61",
+          "after": "562854580f33f36e06a2ee05755eb8d7737608d8"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: ledger.delivery {\"path\": \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-v5d4l2kh/project/.receipt-pzb2kf9b/before/ledger/delivery.py\", \"pid\": 66035}\nVerified copied import: checks.test_delivery {\"path\": \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-v5d4l2kh/project/.receipt-pzb2kf9b/before/checks/test_delivery.py\", \"pid\": 66035}\ntest_distinct_events_same_amount (checks.test_delivery.DeliveryTests) ... ok\ntest_retry_credit (checks.test_delivery.DeliveryTests) ... FAIL\ntest_retry_debit (checks.test_delivery.DeliveryTests) ... FAIL\ntest_same_event_different_accounts (checks.test_delivery.DeliveryTests) ... ok\ntest_zero_delta_is_accepted (checks.test_delivery.DeliveryTests) ... ok\n\n======================================================================\nFAIL: test_retry_credit (checks.test_delivery.DeliveryTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-v5d4l2kh/project/.receipt-pzb2kf9b/before/checks/test_delivery.py\", line 28, in test_retry_credit\n    self.assertEqual((accepted, self.balance()), (False, 125))\nAssertionError: Tuples differ: (True, 250) != (False, 125)\n\nFirst differing element 0:\nTrue\nFalse\n\n- (True, 250)\n+ (False, 125)\n\n======================================================================\nFAIL: test_retry_debit (checks.test_delivery.DeliveryTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-v5d4l2kh/project/.receipt-pzb2kf9b/before/checks/test_delivery.py\", line 34, in test_retry_debit\n    self.assertEqual((accepted, self.balance()), (False, -50))\nAssertionError: Tuples differ: (True, -100) != (False, -50)\n\nFirst differing element 0:\nTrue\nFalse\n\n- (True, -100)\n+ (False, -50)\n\n----------------------------------------------------------------------\nRan 5 tests in 0.016s\n\nFAILED (failures=2)\n",
+            "output_truncated": false,
+            "command": [
+              "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "checks.test_delivery"
+            ],
+            "invocation": "module",
+            "provenance_ready": true,
+            "native_exit_code": 1
+          },
+          "after": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: ledger.delivery {\"path\": \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-v5d4l2kh/project/.receipt-pzb2kf9b/after/ledger/delivery.py\", \"pid\": 66036}\nVerified copied import: checks.test_delivery {\"path\": \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-v5d4l2kh/project/.receipt-pzb2kf9b/after/checks/test_delivery.py\", \"pid\": 66036}\ntest_distinct_events_same_amount (checks.test_delivery.DeliveryTests) ... ok\ntest_retry_credit (checks.test_delivery.DeliveryTests) ... FAIL\ntest_retry_debit (checks.test_delivery.DeliveryTests) ... FAIL\ntest_same_event_different_accounts (checks.test_delivery.DeliveryTests) ... ok\ntest_zero_delta_is_accepted (checks.test_delivery.DeliveryTests) ... ok\n\n======================================================================\nFAIL: test_retry_credit (checks.test_delivery.DeliveryTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-v5d4l2kh/project/.receipt-pzb2kf9b/after/checks/test_delivery.py\", line 28, in test_retry_credit\n    self.assertEqual((accepted, self.balance()), (False, 125))\nAssertionError: Tuples differ: (False, 250) != (False, 125)\n\nFirst differing element 1:\n250\n125\n\n- (False, 250)\n?           -\n\n+ (False, 125)\n?         +\n\n\n======================================================================\nFAIL: test_retry_debit (checks.test_delivery.DeliveryTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/read-preflight-v5d4l2kh/project/.receipt-pzb2kf9b/after/checks/test_delivery.py\", line 34, in test_retry_debit\n    self.assertEqual((accepted, self.balance()), (False, -50))\nAssertionError: Tuples differ: (False, -100) != (False, -50)\n\nFirst differing element 1:\n-100\n-50\n\n- (False, -100)\n?          ^^\n\n+ (False, -50)\n?          ^\n\n\n----------------------------------------------------------------------\nRan 5 tests in 0.018s\n\nFAILED (failures=2)\n",
+            "output_truncated": false,
+            "command": [
+              "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "checks.test_delivery"
+            ],
+            "invocation": "module",
+            "provenance_ready": true,
+            "native_exit_code": 1
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "checks/test_delivery.py": "4571e36668f830a1b7f80d00eedd7f0452909774d68962efe84e35eafb693021",
+          "ledger/schema.sql": "ede9ae52f39bc1e75538cfc6d702132c967dc19305d4cff0e3f2db72cc7f81f9",
+          "ledger/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 60,
+          "file_bytes": 8312,
+          "inventory_sha256": "4baff30f6aff40a210584d47b2200242fe70315cb0fe2a534726465d69aa8d15",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "checks/test_delivery.py": "4571e36668f830a1b7f80d00eedd7f0452909774d68962efe84e35eafb693021",
+            "ledger/schema.sql": "ede9ae52f39bc1e75538cfc6d702132c967dc19305d4cff0e3f2db72cc7f81f9",
+            "ledger/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ledger/delivery.py": "d7314da2a01f1a4775af141872601c235b298196320abe4e9a34f047dd3729e5"
+          },
+          "modes": {
+            "checks/__init__.py": 420,
+            "checks/test_delivery.py": 420,
+            "ledger/schema.sql": 420,
+            "ledger/__init__.py": 420,
+            "ledger/delivery.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      }
+    }
+  ],
+  "completed_cells": [
+    {
+      "case": "ledger-delivery-a",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 65883,
+        "cached_input_tokens": 58240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1756,
+        "reasoning_output_tokens": 124
+      },
+      "elapsed_seconds": 65.964
+    },
+    {
+      "case": "ledger-delivery-a",
+      "condition": "original",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 89117,
+        "cached_input_tokens": 68224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 870,
+        "reasoning_output_tokens": 11
+      },
+      "elapsed_seconds": 41.078
+    },
+    {
+      "case": "ledger-delivery-a",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 116514,
+        "cached_input_tokens": 95360,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 958,
+        "reasoning_output_tokens": 42
+      },
+      "elapsed_seconds": 41.604
+    },
+    {
+      "case": "ledger-delivery-b",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 117649,
+        "cached_input_tokens": 98688,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1058,
+        "reasoning_output_tokens": 43
+      },
+      "elapsed_seconds": 44.033
+    },
+    {
+      "case": "ledger-delivery-b",
+      "condition": "original",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 89525,
+        "cached_input_tokens": 71424,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 928,
+        "reasoning_output_tokens": 33
+      },
+      "elapsed_seconds": 40.155
+    },
+    {
+      "case": "ledger-delivery-b",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 68395,
+        "cached_input_tokens": 59904,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1820,
+        "reasoning_output_tokens": 102
+      },
+      "elapsed_seconds": 65.106
+    }
+  ],
+  "prepared_at": "2026-09-20T12:40:24.477083+00:00",
+  "stopped_after_limit": false,
+  "finished_at": "2026-09-20T12:45:46.725503+00:00"
+}

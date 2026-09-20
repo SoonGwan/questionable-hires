@@ -1,6 +1,9 @@
 # Receipt known-input read candidate — 2026-09-20
 
-Unpromoted hypothesis, resources `ca668a4`; no model-performance measurement yet.
+Historical pre-measurement design, resources `ca668a4`. Follow-up
+[read-order 01](results/receipt-read-01/README.md) rejected the candidate:
+tokens +30.89%, time +5.42% versus original. The proposal below is retained as
+written; production Receipt was not changed.
 In [all-eight current 02](results/all-eight-current-02/README.md), Receipt used
 104,717 tokens versus baseline 68,379 (+53.14%). Its first CLI command inventories
 paths already supplied in the task, followed by known-file reads. It also reads

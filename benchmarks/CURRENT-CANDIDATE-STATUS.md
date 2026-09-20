@@ -9,7 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Receipt known-input read hypothesis — 2026-09-20, resources `ca668a4`
+## Receipt read-order candidate rejected — 2026-09-20, resources `ca668a4`
+
+[Six fresh sessions](results/receipt-read-01/README.md), frozen launch `62234cf`,
+all satisfy task/scope, including correctly rejecting the partial fix. Candidate
+summed tokens **+30.89%**, time **+5.42%** versus original; **+71.33% / −34.66%**
+versus no skill. Candidate responses 10 versus original 8; original already
+combines first reads. Full helper/reference reads remain in all skill sessions.
+Native assertions, identities, preservation and cleanup were reviewed; weaker
+baseline import prechecks, capture exceptions and launcher warnings are disclosed.
+Two exposed variants of one task, n=1, fixed order/shared cache: not held-out or
+all-eight evidence. Candidate rejected; production Receipt and charts unchanged.
+
+한국어: 6개 새 세션은 요구사항·범위를 충족했지만 읽기 순서 후보는 기존보다
+토큰 30.89%·시간 5.42% 증가해 채택하지 않았다. 무스킬 대비 토큰 71.33% 증가,
+시간 34.66% 감소다. 추가 읽기 응답과 긴 구현 읽기가 남았으며 실제 검사·보존
+증거 및 캡처 한계도 기록했다. 실제 Receipt와 차트는 그대로 유지한다.
+
+## Receipt known-input read hypothesis — historical pre-measurement, 2026-09-20, resources `ca668a4`
 
 [Isolated candidate](RECEIPT-READ-CANDIDATE.md) changes only the first read/discovery
 paragraph after observed separate known-path inventory in all-eight current 02.

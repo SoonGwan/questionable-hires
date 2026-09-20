@@ -1,0 +1,164 @@
+{
+  "session_id": "01a0bed8-e8fb-7e61-ac35-9e383f8c1286",
+  "source_bytes": 130934,
+  "source_sha256": "f8fca80a9b70852789eb6444cd9916a3605acc84e3d2c1171a9aeb58db8a5cab",
+  "source_lines": 39,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "922372e8d18d5243117b0d92bb87ead8c5e834f6ff7c2c15d8bcf2b5424b9ba5",
+      "record": {
+        "timestamp": "2026-09-20T12:44:50.065Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_03635224b818796f016aafd5411c1087d0960ac6293acc0d5f",
+          "status": "completed",
+          "call_id": "call_Onkj164Pmy9fThySiNvgiHqv",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '!.git' -g '!__pycache__' -g '!*.pyc'\",\"max_output_tokens\":4000}));\ntext(await tools.exec_command({cmd:\"git status --short --ignored; git log -2 --format='%H %s'; cat AGENTS.md requirements.md checks/test_delivery.py ledger/schema.sql ledger/delivery.py\",\"max_output_tokens\":10000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bed8-e941-7380-aff2-cf66a280ca3b",
+            "create_time": 1789908285.91143
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "b802b621b6d91b473e9908715951ea3224a6fdc160a10c89e893861e58112a19",
+      "record": {
+        "timestamp": "2026-09-20T12:44:50.287Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bed9-0aef-7720-a910-fd9c97e64bfd",
+          "call_id": "call_Onkj164Pmy9fThySiNvgiHqv",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2edde4\",\"wall_time_seconds\":0.000002833,\"exit_code\":0,\"original_token_count\":57,\"output\":\"<WORKSPACE>\\nAGENTS.md\\n.gitignore\\nchecks/__init__.py\\nchecks/test_delivery.py\\nnotes.txt\\nledger/__init__.py\\nledger/schema.sql\\nledger/delivery.py\\nrequirements.md\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"20025f\",\"wall_time_seconds\":0.000003042,\"exit_code\":0,\"original_token_count\":1043,\"output\":\" M notes.txt\\n?? checks/\\n!! .cache/\\n562854580f33f36e06a2ee05755eb8d7737608d8 Handle duplicate delivery\\n721139585aea166e10dd4e06fd6f35152e7fdc61 Initial delivery handler\\nVerify only; do not edit originals, commit, stash, reset or implement a fix. Use identical current checks.test_delivery and ledger/schema.sql against HEAD^ and HEAD in separate project-local copies. Run python3 -B -m unittest -v checks.test_delivery from each copy root. Confirm implementation imports belong to that copy. Standard library only; no dependency installation, external services or out-of-project discovery. Test databases must remain inside the respective copy and be removed by their normal cleanup. Preserve all originals, including ignored cache and unrelated notes; remove owned comparison copies and retain no extra harness/report.\\nEvents carry an existing account id, event id and signed integer cents. A first (account, event) delivery commits its delta and returns True; a retry with identical payload returns False and leaves the committed balance unchanged. The same event id on another account is independent. Distinct events with equal amounts both apply. Zero is valid. Sequential calls only; concurrency, changed retry payloads, unknown accounts, crash recovery and network delivery are outside this ticket. Tests must call the actual SQLite implementation and read balances through a fresh connection after each tested operation.\\nimport sqlite3\\nimport tempfile\\nimport unittest\\nfrom contextlib import closing\\nfrom pathlib import Path\\nfrom ledger.delivery import apply_event\\n\\nROOT = Path(__file__).resolve().parents[1]\\n\\nclass DeliveryTests(unittest.TestCase):\\n    def setUp(self):\\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-', dir=ROOT)\\n        self.addCleanup(self.scratch.cleanup)\\n        self.assertEqual(Path(self.scratch.name).parent, ROOT)\\n        self.path = Path(self.scratch.name) / 'ledger.sqlite'\\n        with closing(sqlite3.connect(self.path)) as db, db:\\n            db.executescript((ROOT / 'ledger/schema.sql').read_text())\\n            db.executemany('INSERT INTO accounts VALUES (?, ?)', [('a', 0), ('b', 0)])\\n\\n    def balance(self, account='a'):\\n        with closing(sqlite3.connect(self.path)) as db:\\n            return db.execute('SELECT cents FROM accounts WHERE id = ?', (account,)).fetchone()[0]\\n\\n    def test_retry_credit(self):\\n        self.assertTrue(apply_event(self.path, 'a', 'credit', 125))\\n        self.assertEqual(self.balance(), 125)\\n        accepted = apply_event(self.path, 'a', 'credit', 125)\\n        self.assertEqual((accepted, self.balance()), (False, 125))\\n\\n    def test_retry_debit(self):\\n        self.assertTrue(apply_event(self.path, 'a', 'debit', -50))\\n        self.assertEqual(self.balance(), -50)\\n        accepted = apply_event(self.path, 'a', 'debit', -50)\\n        self.assertEqual((accepted, self.balance()), (False, -50))\\n\\n    def test_same_event_different_accounts(self):\\n        self.assertTrue(apply_event(self.path, 'a', 'shared', 10))\\n        self.assertEqual((self.balance('a'), self.balance('b')), (10, 0))\\n        self.assertTrue(apply_event(self.path, 'b', 'shared', 20))\\n        self.assertEqual((self.balance('a'), self.balance('b')), (10, 20))\\n\\n    def test_distinct_events_same_amount(self):\\n        self.assertTrue(apply_event(self.path, 'a', 'one', 7))\\n        self.assertEqual(self.balance(), 7)\\n        self.assertTrue(apply_event(self.path, 'a', 'two', 7))\\n        self.assertEqual(self.balance(), 14)\\n\\n    def test_zero_delta_is_accepted(self):\\n        self.assertTrue(apply_event(self.path, 'a', 'zero', 0))\\n        self.assertEqual(self.balance(), 0)\\nCREATE TABLE accounts (id TEXT PRIMARY KEY, cents INTEGER NOT NULL);\\nCREATE TABLE seen (account TEXT NOT NULL, event TEXT NOT NULL, PRIMARY KEY(account, event));\\nimport sqlite3\\nfrom contextlib import closing\\n\\ndef apply_event(path, account, event, cents):\\n    with closing(sqlite3.connect(path)) as db, db:\\n        inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\\n        db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\\n        return bool(inserted)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bed8-e941-7380-aff2-cf66a280ca3b",
+            "create_time": 1789908290.287516
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "90f4e9965592bd59a8740bd1d1aeeb7304a001cb75491202afbf132018ba2f20",
+      "record": {
+        "timestamp": "2026-09-20T12:44:55.711Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_03635224b818796f016aafd547efd487d0a8cc41a9bfd5f3e5",
+          "status": "completed",
+          "call_id": "call_Nl3G09jgQYPWFB4QZ6ipywwt",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff HEAD^ HEAD -- ledger/delivery.py; git ls-tree -r HEAD^; git ls-tree -r HEAD; cat .gitignore checks/__init__.py ledger/__init__.py\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bed8-e941-7380-aff2-cf66a280ca3b",
+            "create_time": 1789908292.740636
+          }
+        }
+      }
+    },
+    {
+      "line": 24,
+      "line_sha256": "11df9708ac1bbbc55f666615a265f9ca6cedc7f7235fcb6195dc08056553a03c",
+      "record": {
+        "timestamp": "2026-09-20T12:44:55.845Z",
+        "ordinal": 23,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bed9-20a5-7e70-b960-f4a897629ac2",
+          "call_id": "call_Nl3G09jgQYPWFB4QZ6ipywwt",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"22ac9d\",\"wall_time_seconds\":0.000001291,\"exit_code\":0,\"original_token_count\":363,\"output\":\"diff --git a/ledger/delivery.py b/ledger/delivery.py\\nindex 84d94dc..929c6cc 100644\\n--- a/ledger/delivery.py\\n+++ b/ledger/delivery.py\\n@@ -5,4 +5,4 @@ def apply_event(path, account, event, cents):\\n     with closing(sqlite3.connect(path)) as db, db:\\n         inserted = db.execute('INSERT OR IGNORE INTO seen VALUES (?, ?)', (account, event)).rowcount\\n         db.execute('UPDATE accounts SET cents = cents + ? WHERE id = ?', (cents, account))\\n-        return True\\n+        return bool(inserted)\\n100644 blob ceddaa37f12a86d3d1e7ffaa27838052e2d93d1e\\t.gitignore\\n100644 blob 90737c5a18aacbf07a0679d169d995f301224d1a\\tAGENTS.md\\n100644 blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391\\tledger/__init__.py\\n100644 blob 84d94dc861690c111bbb4637840e9f9b609412ec\\tledger/delivery.py\\n100644 blob 2883b1fe2194e336d72abda20c2b761602c7a492\\tledger/schema.sql\\n100644 blob c5e2c067141eb3e19ad5aa12b1f8e4d4e6671b6e\\tnotes.txt\\n100644 blob 1c117a03b5e927c6aa1f12abc674a0aacbfb9e1c\\trequirements.md\\n100644 blob ceddaa37f12a86d3d1e7ffaa27838052e2d93d1e\\t.gitignore\\n100644 blob 90737c5a18aacbf07a0679d169d995f301224d1a\\tAGENTS.md\\n100644 blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391\\tledger/__init__.py\\n100644 blob 929c6cc8bfc2d5eecf74f39ae068ad89bef45303\\tledger/delivery.py\\n100644 blob 2883b1fe2194e336d72abda20c2b761602c7a492\\tledger/schema.sql\\n100644 blob c5e2c067141eb3e19ad5aa12b1f8e4d4e6671b6e\\tnotes.txt\\n100644 blob 1c117a03b5e927c6aa1f12abc674a0aacbfb9e1c\\trequirements.md\\n.cache/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bed8-e941-7380-aff2-cf66a280ca3b",
+            "create_time": 1789908295.845452
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "a8aa7fa8678d0d2cb6269c60d6291ba09bf2cb711cac8f876b18fac361661935",
+      "record": {
+        "timestamp": "2026-09-20T12:45:33.646Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_03635224b818796f016aafd54e9fbc87d0abd1aaf09308ca89",
+          "status": "completed",
+          "call_id": "call_5zx7RNOG9l70TcCaFPhygz04",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport subprocess\\nimport tempfile\\n\\nroot = Path.cwd().resolve()\\ndef snapshot():\\n    result = {}\\n    for base, dirs, files in os.walk(root):\\n        for name in dirs + files:\\n            p = Path(base) / name\\n            rel = str(p.relative_to(root))\\n            st = p.lstat()\\n            if p.is_symlink():\\n                result[rel] = ('link', os.readlink(p), st.st_mode, st.st_mtime_ns)\\n            elif p.is_file():\\n                result[rel] = ('file', hashlib.sha256(p.read_bytes()).hexdigest(), st.st_mode, st.st_mtime_ns)\\n            else:\\n                result[rel] = ('dir', st.st_mode)\\n    return result\\n\\ndef git(*args):\\n    return subprocess.check_output(['git', *args], cwd=root)\\n\\noriginal = snapshot()\\ninputs = {name: (root / name).read_bytes() for name in ['checks/__init__.py', 'checks/test_delivery.py', 'ledger/schema.sql']}\\nowned = []\\nenv = os.environ.copy()\\nenv.pop('PYTHONPATH', None)\\nenv['PYTHONDONTWRITEBYTECODE'] = '1'\\ntry:\\n    for ref in ['HEAD^', 'HEAD']:\\n        revision = git('rev-parse', ref).decode().strip()\\n        copy = Path(tempfile.mkdtemp(prefix='.delivery-compare-', dir=root)).resolve()\\n        owned.append(copy)\\n        for entry in git('ls-tree', '-rz', '--full-tree', revision).split(b'\\\\0'):\\n            if not entry:\\n                continue\\n            metadata, rawname = entry.split(b'\\\\t', 1)\\n            mode, kind, oid = metadata.decode().split()\\n            assert kind == 'blob' and mode in ('100644', '100755')\\n            target = copy / rawname.decode()\\n            assert target.resolve().is_relative_to(copy)\\n            target.parent.mkdir(parents=True, exist_ok=True)\\n            target.write_bytes(git('cat-file', 'blob', oid))\\n            target.chmod(int(mode, 8) & 0o777)\\n        for name, data in inputs.items():\\n            target = copy / name\\n            target.parent.mkdir(parents=True, exist_ok=True)\\n            target.write_bytes(data)\\n            assert target.read_bytes() == data\\n        implementation = git('show', revision + ':ledger/delivery.py')\\n        assert (copy / 'ledger/delivery.py').read_bytes() == implementation\\n        print('\\\\nREVISION', ref, revision, 'COPY', copy, flush=True)\\n        for name, data in inputs.items():\\n            print('IDENTICAL CURRENT INPUT', name, hashlib.sha256(data).hexdigest(), flush=True)\\n        probe = '''from pathlib import Path\\nimport hashlib\\nimport ledger.delivery as delivery\\nimport checks.test_delivery as tests\\nimport unittest\\nroot = Path.cwd().resolve()\\nassert Path(delivery.__file__).resolve() == root / 'ledger/delivery.py'\\nassert Path(tests.__file__).resolve() == root / 'checks/test_delivery.py'\\nassert tests.apply_event is delivery.apply_event\\nassert Path(tests.apply_event.__code__.co_filename).resolve() == root / 'ledger/delivery.py'\\nassert tests.ROOT == root\\nassert unittest.defaultTestLoader.loadTestsFromModule(tests).countTestCases() == 5\\nprint('IMPLEMENTATION IMPORT', delivery.__file__)\\nprint('TEST IMPORT', tests.__file__)\\nprint('IMPLEMENTATION SHA256', hashlib.sha256(Path(delivery.__file__).read_bytes()).hexdigest())\\n'''\\n        subprocess.run(['python3', '-B', '-c', probe], cwd=copy, env=env, check=True)\\n        print('RUN python3 -B -m unittest -v checks.test_delivery', flush=True)\\n        result = subprocess.run(['python3', '-B', '-m', 'unittest', '-v', 'checks.test_delivery'], cwd=copy, env=env)\\n        print('TEST EXIT CODE', result.returncode, flush=True)\\n        leftovers = list(copy.rglob('.ledger-test-*')) + list(copy.rglob('*.sqlite')) + list(copy.rglob('__pycache__'))\\n        assert not leftovers, leftovers\\n        print('NORMAL TEST DATABASE CLEANUP CONFIRMED', flush=True)\\nfinally:\\n    for copy in owned:\\n        shutil.rmtree(copy)\\n    after = snapshot()\\n    assert after == original, 'Original tree changed: ' + repr([k for k in original.keys() | after.keys() if original.get(k) != after.get(k)])\\n    print('\\\\nOWNED COPIES REMOVED; ALL ORIGINAL FILE CONTENTS, MODES AND FILE MTIMES PRESERVED; NO HARNESS OR REPORT RETAINED', flush=True)\\nPY\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bed8-e941-7380-aff2-cf66a280ca3b",
+            "create_time": 1789908298.276398
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "d3707f959286173cfca157636616cb0973784dcbf615d0820b5963a3fea1be90",
+      "record": {
+        "timestamp": "2026-09-20T12:45:34.214Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bed9-b685-72d3-8314-d201613cb919",
+          "call_id": "call_5zx7RNOG9l70TcCaFPhygz04",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.6 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a1455b\",\"wall_time_seconds\":0.377357083,\"exit_code\":0,\"original_token_count\":1375,\"output\":\"\\nREVISION HEAD^ 721139585aea166e10dd4e06fd6f35152e7fdc61 COPY <WORKSPACE>/.delivery-compare-215gy7vu\\nIDENTICAL CURRENT INPUT checks/__init__.py e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\\nIDENTICAL CURRENT INPUT checks/test_delivery.py 4571e36668f830a1b7f80d00eedd7f0452909774d68962efe84e35eafb693021\\nIDENTICAL CURRENT INPUT ledger/schema.sql ede9ae52f39bc1e75538cfc6d702132c967dc19305d4cff0e3f2db72cc7f81f9\\nIMPLEMENTATION IMPORT <WORKSPACE>/.delivery-compare-215gy7vu/ledger/delivery.py\\nTEST IMPORT <WORKSPACE>/.delivery-compare-215gy7vu/checks/test_delivery.py\\nIMPLEMENTATION SHA256 d270fd369205129bd51716d0f6e3aa2b77f0cc7ff1242a2c2779348a214e0898\\nRUN python3 -B -m unittest -v checks.test_delivery\\ntest_distinct_events_same_amount (checks.test_delivery.DeliveryTests) ... ok\\ntest_retry_credit (checks.test_delivery.DeliveryTests) ... FAIL\\ntest_retry_debit (checks.test_delivery.DeliveryTests) ... FAIL\\ntest_same_event_different_accounts (checks.test_delivery.DeliveryTests) ... ok\\ntest_zero_delta_is_accepted (checks.test_delivery.DeliveryTests) ... ok\\n\\n======================================================================\\nFAIL: test_retry_credit (checks.test_delivery.DeliveryTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.delivery-compare-215gy7vu/checks/test_delivery.py\\\", line 28, in test_retry_credit\\n    self.assertEqual((accepted, self.balance()), (False, 125))\\nAssertionError: Tuples differ: (True, 250) != (False, 125)\\n\\nFirst differing element 0:\\nTrue\\nFalse\\n\\n- (True, 250)\\n+ (False, 125)\\n\\n======================================================================\\nFAIL: test_retry_debit (checks.test_delivery.DeliveryTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.delivery-compare-215gy7vu/checks/test_delivery.py\\\", line 34, in test_retry_debit\\n    self.assertEqual((accepted, self.balance()), (False, -50))\\nAssertionError: Tuples differ: (True, -100) != (False, -50)\\n\\nFirst differing element 0:\\nTrue\\nFalse\\n\\n- (True, -100)\\n+ (False, -50)\\n\\n----------------------------------------------------------------------\\nRan 5 tests in 0.018s\\n\\nFAILED (failures=2)\\nTEST EXIT CODE 1\\nNORMAL TEST DATABASE CLEANUP CONFIRMED\\n\\nREVISION HEAD 562854580f33f36e06a2ee05755eb8d7737608d8 COPY <WORKSPACE>/.delivery-compare-nmx5u160\\nIDENTICAL CURRENT INPUT checks/__init__.py e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\\nIDENTICAL CURRENT INPUT checks/test_delivery.py 4571e36668f830a1b7f80d00eedd7f0452909774d68962efe84e35eafb693021\\nIDENTICAL CURRENT INPUT ledger/schema.sql ede9ae52f39bc1e75538cfc6d702132c967dc19305d4cff0e3f2db72cc7f81f9\\nIMPLEMENTATION IMPORT <WORKSPACE>/.delivery-compare-nmx5u160/ledger/delivery.py\\nTEST IMPORT <WORKSPACE>/.delivery-compare-nmx5u160/checks/test_delivery.py\\nIMPLEMENTATION SHA256 d7314da2a01f1a4775af141872601c235b298196320abe4e9a34f047dd3729e5\\nRUN python3 -B -m unittest -v checks.test_delivery\\ntest_distinct_events_same_amount (checks.test_delivery.DeliveryTests) ... ok\\ntest_retry_credit (checks.test_delivery.DeliveryTests) ... FAIL\\ntest_retry_debit (checks.test_delivery.DeliveryTests) ... FAIL\\ntest_same_event_different_accounts (checks.test_delivery.DeliveryTests) ... ok\\ntest_zero_delta_is_accepted (checks.test_delivery.DeliveryTests) ... ok\\n\\n======================================================================\\nFAIL: test_retry_credit (checks.test_delivery.DeliveryTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.delivery-compare-nmx5u160/checks/test_delivery.py\\\", line 28, in test_retry_credit\\n    self.assertEqual((accepted, self.balance()), (False, 125))\\nAssertionError: Tuples differ: (False, 250) != (False, 125)\\n\\nFirst differing element 1:\\n250\\n125\\n\\n- (False, 250)\\n?           -\\n\\n+ (False, 125)\\n?         +\\n\\n\\n======================================================================\\nFAIL: test_retry_debit (checks.test_delivery.DeliveryTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.delivery-compare-nmx5u160/checks/test_delivery.py\\\", line 34, in test_retry_debit\\n    self.assertEqual((accepted, self.balance()), (False, -50))\\nAssertionError: Tuples differ: (False, -100) != (False, -50)\\n\\nFirst differing element 1:\\n-100\\n-50\\n\\n- (False, -100)\\n?          ^^\\n\\n+ (False, -50)\\n?          ^\\n\\n\\n----------------------------------------------------------------------\\nRan 5 tests in 0.018s\\n\\nFAILED (failures=2)\\nTEST EXIT CODE 1\\nNORMAL TEST DATABASE CLEANUP CONFIRMED\\n\\nOWNED COPIES REMOVED; ALL ORIGINAL FILE CONTENTS, MODES AND FILE MTIMES PRESERVED; NO HARNESS OR REPORT RETAINED\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bed8-e941-7380-aff2-cf66a280ca3b",
+            "create_time": 1789908334.213992
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
