@@ -10,6 +10,30 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class NativeArchiveScratchTests(unittest.TestCase):
+    def test_buffer_and_stale_patch_controls_execute_without_local_runs(self):
+        names = ('tests/test_hostage_stale_patch_case.py', 'tests/test_hostage_buffer_runner.py',
+                 'tests/native_fixture_support.py', 'benchmarks/hostage_stale_patch_case.py',
+                 'benchmarks/hostage_buffer_cases.py', 'benchmarks/run_hostage_buffer_01.py',
+                 'benchmarks/run.py')
+        with tempfile.TemporaryDirectory() as scratch:
+            archive = Path(scratch) / 'archive'
+            for name in names:
+                target = archive / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / name, target)
+            before = {p.relative_to(archive): p.read_bytes() for p in archive.rglob('*') if p.is_file()}
+            result = subprocess.run([sys.executable, '-B', '-m', 'unittest',
+                                     'test_hostage_stale_patch_case',
+                                     'test_hostage_buffer_runner.BufferRunnerTests.test_actual_positive_negative_and_valid_alternative_controls',
+                                     '-v'], cwd=archive / 'tests', capture_output=True, text=True, timeout=15)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn('Ran 3 tests', result.stderr)
+            self.assertNotIn('skipped', result.stderr)
+            self.assertFalse((archive / '.git').exists())
+            self.assertFalse((archive / 'benchmarks/local-runs').exists())
+            self.assertEqual({p.relative_to(archive): p.read_bytes()
+                              for p in archive.rglob('*') if p.is_file()}, before)
+
     def test_repository_controls_run_in_archive_and_reject_changed_fixture(self):
         with tempfile.TemporaryDirectory() as scratch:
             archive = Path(scratch) / 'archive'

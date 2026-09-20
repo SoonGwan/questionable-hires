@@ -9,6 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Missing-parent native preflights isolated — 2026-09-20, parent `581d0b4`
+
+The buffer and stale-patch native controls now receive an owned disposable root
+from test support, rather than assuming the developer's ignored local-runs exists.
+Frozen preflight implementations, model tasks and results remain unchanged.
+Buffer correct/faulty/valid-alternative exits remain 0/1/0; stale patch rejection
+and faulty/correct/alternative native checks remain 1/1/0/0. The three targeted
+tests pass locally and in a sparse archive without Git metadata or local-runs,
+with no skips, unchanged source bytes and verified scratch cleanup. All three
+native-archive regression tests pass. This addresses the two missing-parent errors
+in source-archive-check-02; other historical Git dependencies and the complete
+post-change archive run remain outstanding. No model performance claim changes.
+
+한국어: 버퍼·오래된 패치의 실제 대조 검사에 독립 임시 루트를 제공했다. 정상,
+결함, 허용 대안, 패치 거부를 모두 그대로 실행하며 새 압축본에서도 세 관련
+검사가 건너뜀 없이 통과했다. 원본 보존과 임시 폴더 정리도 확인했다. 나머지
+Git 의존성 해결과 전체 압축본 재검증은 아직 남아 있다.
+
 ## Archive-wide recheck and reading-runner separation — 2026-09-20, source `ad57bc2`
 
 [Exact remaining error inventory](source-archive-check-02.json): fresh full source

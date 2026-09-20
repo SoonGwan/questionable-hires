@@ -10,6 +10,8 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'benchmarks'))
 import run_hostage_buffer_01 as runner
 from hostage_buffer_cases import preflight
+import hostage_buffer_cases as fixture_module
+from native_fixture_support import isolated_preflight_root
 
 
 class BufferRunnerTests(unittest.TestCase):
@@ -18,7 +20,10 @@ class BufferRunnerTests(unittest.TestCase):
             runner.main()
 
     def test_actual_positive_negative_and_valid_alternative_controls(self):
-        self.assertEqual([r['exit_code'] for r in preflight()],[0,1,0])
+        with isolated_preflight_root(fixture_module, ROOT / 'benchmarks') as scratch:
+            self.assertEqual([r['exit_code'] for r in preflight()],[0,1,0])
+            self.assertEqual(list((scratch / 'benchmarks/local-runs').iterdir()), [])
+        self.assertFalse(scratch.exists())
 
     def test_schedule_and_no_reexecution(self):
         with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:

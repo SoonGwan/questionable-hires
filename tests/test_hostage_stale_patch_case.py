@@ -8,11 +8,16 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'benchmarks'))
 from hostage_stale_patch_case import preflight, cases, BROKEN, CORRECT
+import hostage_stale_patch_case as fixture_module
+from native_fixture_support import isolated_preflight_root
 
 
 class StalePatchTests(unittest.TestCase):
     def test_actual_rejection_and_native_assertion_controls(self):
-        rows=preflight()
+        with isolated_preflight_root(fixture_module, ROOT / 'benchmarks') as scratch:
+            rows=preflight()
+            self.assertEqual(list((scratch / 'benchmarks/local-runs').iterdir()), [])
+        self.assertFalse(scratch.exists())
         self.assertEqual([r['exit_code'] for r in rows],[1,1,0,0])
         self.assertIn('patch does not apply',rows[0]['output'])
         self.assertIn('AssertionError: 100 != 0',rows[1]['output'])
