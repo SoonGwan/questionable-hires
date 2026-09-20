@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Landlord discovery recheck — 2026-09-20, launch `00e1182`
+
+[Both original sessions](results/landlord-scope-02/README.md), resources `8141dfd`,
+pass their functional and project-only scope requirements. The prior formatter
+failure is not repeated; the configured consumer under examples is still followed
+and executed, with two native contract tests passing and staging left unknown.
+All ten CLI command results match stored outputs; originals/resources preserved.
+Two exposed tasks, n=1, no baseline: **not general compliance or an efficiency win**.
+
+한국어: 탐색 범위 수정 후 2개 과제 모두 기능·범위 기준을 통과했다. 설정으로
+연결된 examples 사용처를 놓치지 않고 실제 앱과 필요한 테스트를 실행했다.
+기존 실패 기록·대표 그래프는 유지하며 전체 8개 스킬 성능 목표는 아직 미달이다.
+
 ## Landlord discovery boundary correction — 2026-09-20
 
 Following the original Korean screen's out-of-scope ancestor search, Landlord now
