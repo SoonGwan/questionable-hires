@@ -9,6 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Node comparison pilot prepared — 2026-09-21, resources `310d483` / `8fa20dd`
+
+[Frozen protocol](RECEIPT-NODE-01-PROTOCOL.md): two related authored Node tasks,
+six serial baseline/original/current sessions, five explicit evidence/scope criteria.
+Independent native controls and helper controls agree: one actual split-payload
+assertion failure before, all four tests pass after, including three neighboring
+controls. Copies are project-local and removed; original tree/Git inventory is
+preserved. Five fixture/scheduler tests pass, including exact resource snapshots,
+tamper rejection, account-limit stop and exclusive execution. The local manifest
+retains full cases, controls and resource/input identities. Model execution/review
+remains pending; no performance claim or chart change.
+
+한국어: 합성 Node 과제 두 개와 총 6회 비교 조건을 고정했다. 직접 실행과 도우미
+실행의 정상·결함 대조, 원본 보존, 재실행 방지 검사가 통과했다. 실제 모델 비교와
+검토는 아직 남아 있으며 이 준비를 성능 개선 수치로 해석하지 않는다.
+
 ## Native Node comparison integrated — 2026-09-21, parent `310d483`
 
 [Receipt Node integration](RECEIPT-NODE-COMPARE-01.md) reuses existing bounded Git
