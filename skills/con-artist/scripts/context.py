@@ -5,6 +5,7 @@ import argparse
 import ast
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import stat
@@ -40,7 +41,17 @@ def read(root, path, budget):
         raise ValueError('Expected a regular file of at most 256000 bytes: ' + str(path))
     if budget[0] + info.st_size > MAX_INPUT:
         raise ValueError('Selected context exceeds 2000000 input bytes')
-    with source.open('rb') as stream:
+    # Validate the opened object, not only the path inspected above. Nonblocking
+    # open prevents a raced FIFO from waiting for a writer on supported systems.
+    flags = os.O_RDONLY | getattr(os, 'O_NONBLOCK', 0) | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_BINARY', 0)
+    descriptor = os.open(source, flags)
+    with os.fdopen(descriptor, 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        if (not stat.S_ISREG(opened.st_mode)
+                or (opened.st_dev, opened.st_ino) != (info.st_dev, info.st_ino)):
+            raise ValueError('Selected file changed while opening: ' + str(path))
+        if opened.st_size > MAX_FILE or budget[0] + opened.st_size > MAX_INPUT:
+            raise ValueError('Opened file exceeds context read budget: ' + str(path))
         data = stream.read(MAX_FILE + 1)
     if len(data) > MAX_FILE:
         raise ValueError('File exceeded read limit: ' + str(path))

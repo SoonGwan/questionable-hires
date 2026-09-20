@@ -79,5 +79,9 @@ Unsupported Python syntax in an indexed file also fails explicitly (`--full`
 can read a selected file without parsing it). Use native
 project tools for unsupported layouts; don't install dependencies for this tool.
 Files must be stable during reading; this is not a sandbox against concurrent
-filesystem changes. Output includes relative paths and source hashes; it may
+filesystem changes. The opened file's type and identity are checked against the
+inspected path before reading; where available, nonblocking/no-follow open flags
+reject a replaced FIFO or symlink without reading it. This is not an atomic
+snapshot or protection against parent-directory races or writes to the same file.
+Output includes relative paths and source hashes; it may
 contain private source/configuration and is not automatically safe to publish.

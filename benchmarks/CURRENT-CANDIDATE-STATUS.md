@@ -9,6 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist collector read replacement fixed — 2026-09-20, parent `b73e695`
+
+The read-only context collector checked a path before opening it. Deterministic
+post-stat replacement exposed a FIFO read timeout (2 seconds) and acceptance of
+a different regular file/symlink. It now opens with available nonblocking/no-follow
+flags and validates the opened descriptor's regular-file type, identity and size
+before reading. All three replacement probes reject without charging input;
+normal UTF-8 bytes/hash/budget behavior is unchanged. Parent-directory races and
+same-file concurrent writes remain outside its stable-input contract. This is a
+reliability fix, not model token/time or broad efficiency evidence. All 32 existing
+collector tests plus four decorator/replacement tests pass; skill/repository and
+featured-language checks pass. No benchmark chart or model result was relabelled.
+
+한국어: 코드 탐색 도구가 검사 직후 다른 파일로 바뀌면 FIFO에서 멈추거나 교체된
+내용을 읽는 문제를 재현해 수정했다. 열린 파일 자체를 확인하며 세 교체 대조와
+정상 원문·해시·용량 계산을 검증했다. 동시 변경 전체를 막는 샌드박스는 아니고,
+모델 성능 개선 수치로 주장하지 않는다.
+
 ## Native preservation adoption measured — 2026-09-20, resources `55fe666`
 
 [Three fresh sessions](results/receipt-preserve-01/README.md), launch `6bdf2bd`:
