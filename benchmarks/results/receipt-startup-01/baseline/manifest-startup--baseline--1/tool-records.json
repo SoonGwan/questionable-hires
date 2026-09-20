@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0bee8-fcfb-7e53-8a1f-8fc399535184",
+  "source_bytes": 103911,
+  "source_sha256": "0374509a0dbfe51e62502ed9615fa7dcb15dda430576db83e1dcfce9b31719e4",
+  "source_lines": 34,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "e0962a597673f6d941d76b6e5b845c3e5e45cf09c0377bad0605b79257064560",
+      "record": {
+        "timestamp": "2026-09-20T13:02:21.821Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0e496bb04d59c324016aafd95c000087d0bbbcd51e6c770989",
+          "status": "completed",
+          "call_id": "call_NPYvYSPr6FFH8X6WsntxFtej",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!__pycache__/**' -g '!.git/**' -g '!**/.git/**'; git status --short --ignored; git rev-parse HEAD HEAD^\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bee8-fd3c-7cc0-a8a0-70fa28e24340",
+            "create_time": 1789909337.685555
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "f351b5341b9d9aa11c7bba2d07c42dc0f45ffbafc8b3fc498ab47dd20748fb69",
+      "record": {
+        "timestamp": "2026-09-20T13:02:21.982Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bee9-171e-7250-be3c-a5e2d9710ee8",
+          "call_id": "call_NPYvYSPr6FFH8X6WsntxFtej",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"0c5bd6\",\"wall_time_seconds\":0.000003166,\"exit_code\":0,\"original_token_count\":76,\"output\":\"<WORKSPACE>\\nformat.json\\nAGENTS.md\\nsitecustomize.py\\ntest_manifest.py\\nmanifest.py\\nnotes.txt\\nrequirements.md\\n M notes.txt\\n?? test_manifest.py\\n!! .cache/\\nd973477c2b299730d2643a03f2ade52bb0c6e453\\ndc1a0044e39c1af367031fce15027b9276caf7d5\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bee8-fd3c-7cc0-a8a0-70fa28e24340",
+            "create_time": 1789909341.98251
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "a2f2c091cd193571742a28d07875a29c2d0f9c666c9f018d488998378973da89",
+      "record": {
+        "timestamp": "2026-09-20T13:02:26.361Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0e496bb04d59c324016aafd960814087d0a97c1a64601761c5",
+          "status": "completed",
+          "call_id": "call_aucXrR5CwKbJCMRdrhPcEPLP",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md requirements.md test_manifest.py sitecustomize.py format.json manifest.py; git diff HEAD^ HEAD -- manifest.py; git ls-tree -r --name-only HEAD; rg --files --hidden .cache\",\"max_output_tokens\":8000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bee8-fd3c-7cc0-a8a0-70fa28e24340",
+            "create_time": 1789909342.447252
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "8d89ac039d66c4c26e3a728ac5f0d980093483f032fd7133d8fcc3f572ab69af",
+      "record": {
+        "timestamp": "2026-09-20T13:02:26.490Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bee9-28ba-7432-b3e1-069861154bc7",
+          "call_id": "call_aucXrR5CwKbJCMRdrhPcEPLP",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"db8aec\",\"wall_time_seconds\":0.000001875,\"exit_code\":0,\"original_token_count\":793,\"output\":\"Verification only: preserve every original file and user change, including ignored cache. Compare HEAD^ and HEAD in disposable project-local copies using identical current test_manifest.py, sitecustomize.py and format.json. The supported native command from each copy root is PYTHONPATH=. python3 -B -m unittest -v test_manifest. Keep the project startup hook and configuration unchanged; do not replace it with a test monkeypatch, alternate delimiter or helper startup hook. Confirm implementation and startup imports in the native test process. Standard library only; no installs, external services, outside-project discovery, original edits or fix implementation. Remove owned copies; retain no extra harness or report.\\nparse_record accepts one valid CSV record string without a record terminator, using the delimiter initialized by the project startup hook from format.json. Double quotes enclose fields containing delimiters; doubled quotes represent one literal quote. Preserve empty fields and Unicode. Multiline records, invalid input, alternate delimiters and concurrent configuration changes are outside this ticket.\\nimport json\\nimport os\\nimport sys\\nfrom pathlib import Path\\nimport unittest\\nimport builtins\\nif 'sitecustomize' not in sys.modules:\\n    raise RuntimeError('Project startup hook did not execute before test import')\\nimport manifest\\nimport sitecustomize\\n\\nclass ManifestTests(unittest.TestCase):\\n    @classmethod\\n    def setUpClass(cls):\\n        root = Path.cwd().resolve()\\n        assert Path(manifest.__file__).resolve() == root / 'manifest.py'\\n        assert Path(sitecustomize.__file__).resolve() == root / 'sitecustomize.py'\\n        assert builtins.MANIFEST_DELIMITER == ';'\\n        print('NATIVE_IMPORTS ' + json.dumps(dict(pid=os.getpid(), implementation=manifest.__file__, startup=sitecustomize.__file__)), flush=True)\\n\\n    def test_quoted_separator(self):\\n        self.assertEqual(manifest.parse_record('a;\\\"b;c\\\";d'), ['a', 'b;c', 'd'])\\n\\n    def test_escaped_quote(self):\\n        self.assertEqual(manifest.parse_record('a;\\\"b\\\"\\\"c\\\";d'), ['a', 'b\\\"c', 'd'])\\n\\n    def test_plain_fields(self):\\n        self.assertEqual(manifest.parse_record('a;b;c'), ['a', 'b', 'c'])\\n\\n    def test_empty_fields(self):\\n        self.assertEqual(manifest.parse_record(';b;'), ['', 'b', ''])\\n\\n    def test_unicode(self):\\n        self.assertEqual(manifest.parse_record('\uc11c\uc6b8;\uac1c\ubc1c;\ud300'), ['\uc11c\uc6b8', '\uac1c\ubc1c', '\ud300'])\\nimport builtins\\nimport json\\nfrom pathlib import Path\\n\\nbuiltins.MANIFEST_DELIMITER = json.loads(Path(__file__).with_name('format.json').read_text())['delimiter']\\n{\\\"delimiter\\\":\\\";\\\"}\\nimport builtins\\nimport csv\\n\\ndef parse_record(record):\\n    return next(csv.reader([record], delimiter=builtins.MANIFEST_DELIMITER, strict=True))\\ndiff --git a/manifest.py b/manifest.py\\nindex 5550bdf..8933f3c 100644\\n--- a/manifest.py\\n+++ b/manifest.py\\n@@ -1,4 +1,5 @@\\n import builtins\\n+import csv\\n \\n def parse_record(record):\\n-    return record.split(builtins.MANIFEST_DELIMITER)\\n+    return next(csv.reader([record], delimiter=builtins.MANIFEST_DELIMITER, strict=True))\\n.gitignore\\nAGENTS.md\\nformat.json\\nmanifest.py\\nnotes.txt\\nrequirements.md\\nsitecustomize.py\\n.cache/owner.txt\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bee8-fd3c-7cc0-a8a0-70fa28e24340",
+            "create_time": 1789909346.490317
+          }
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "daf71f04344e6d4c878c5f281ec8cc496b52fe278fa9152e08b534573814a053",
+      "record": {
+        "timestamp": "2026-09-20T13:02:49.634Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0e496bb04d59c324016aafd9699cf887d083a0d483f38f798f",
+          "status": "completed",
+          "call_id": "call_ODlXwb7F7BLr7a7lnghyL4D3",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -I -B - <<'PY'\\nimport hashlib, os, pathlib, shutil, subprocess, tempfile\\nroot = pathlib.Path.cwd()\\ndef snapshot():\\n    return {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file() and '.git' not in p.relative_to(root).parts}\\nbefore = snapshot()\\nowned = pathlib.Path(tempfile.mkdtemp(prefix='.verify-', dir=root))\\ntry:\\n    shared = {name: (root / name).read_bytes() for name in ('test_manifest.py', 'sitecustomize.py', 'format.json')}\\n    for label, ref in [('before', 'HEAD^'), ('after', 'HEAD')]:\\n        revision = subprocess.check_output(['git', 'rev-parse', ref], cwd=root, text=True).strip()\\n        copy = owned / label\\n        copy.mkdir()\\n        names = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', revision], cwd=root, text=True).splitlines()\\n        for name in names:\\n            destination = copy / name\\n            destination.parent.mkdir(parents=True, exist_ok=True)\\n            destination.write_bytes(subprocess.check_output(['git', 'show', revision + ':' + name], cwd=root))\\n        for name, content in shared.items():\\n            (copy / name).write_bytes(content)\\n        print(label.upper(), revision, 'ROOT', copy, flush=True)\\n        for name in shared:\\n            print('SHARED_SHA256', name, hashlib.sha256((copy / name).read_bytes()).hexdigest(), flush=True)\\n        env = os.environ.copy()\\n        env['PYTHONPATH'] = '.'\\n        print('RUN PYTHONPATH=. python3 -B -m unittest -v test_manifest', flush=True)\\n        result = subprocess.run(['python3', '-B', '-m', 'unittest', '-v', 'test_manifest'], cwd=copy, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\\n        print(result.stdout, end='', flush=True)\\n        print('EXIT', result.returncode, flush=True)\\nfinally:\\n    shutil.rmtree(owned)\\nprint('ORIGINAL_FILES_UNCHANGED', snapshot() == before)\\nprint('OWNED_COPIES_REMOVED', not owned.exists())\\nPY\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bee8-fd3c-7cc0-a8a0-70fa28e24340",
+            "create_time": 1789909347.049272
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "787906cf8c3ea68f93d2751ee6d6e9493dfa08ec6cf005a4e33d241120c59835",
+      "record": {
+        "timestamp": "2026-09-20T13:02:50.229Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bee9-8575-7202-b377-17e88febc4e6",
+          "call_id": "call_ODlXwb7F7BLr7a7lnghyL4D3",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.6 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"369cde\",\"wall_time_seconds\":0.412528541,\"exit_code\":0,\"original_token_count\":960,\"output\":\"BEFORE dc1a0044e39c1af367031fce15027b9276caf7d5 ROOT <WORKSPACE>/.verify-_r5cqjgn/before\\nSHARED_SHA256 test_manifest.py f413c6ee3f2b6a17cc800d49215452d37c015ce17cf598dd663b1636f5d7b968\\nSHARED_SHA256 sitecustomize.py f1f8f8b60a6f4d83928e58365b51ec7e48da868b561b51ed4df8999c9023954b\\nSHARED_SHA256 format.json 717d713b44561a03040d8aba20e078f024aee7c7a2bc2db51c6ec0a5f14401c5\\nRUN PYTHONPATH=. python3 -B -m unittest -v test_manifest\\nNATIVE_IMPORTS {\\\"pid\\\": 75452, \\\"implementation\\\": \\\"<WORKSPACE>/.verify-_r5cqjgn/before/manifest.py\\\", \\\"startup\\\": \\\"<WORKSPACE>/.verify-_r5cqjgn/before/sitecustomize.py\\\"}\\ntest_empty_fields (test_manifest.ManifestTests) ... ok\\ntest_escaped_quote (test_manifest.ManifestTests) ... FAIL\\ntest_plain_fields (test_manifest.ManifestTests) ... ok\\ntest_quoted_separator (test_manifest.ManifestTests) ... FAIL\\ntest_unicode (test_manifest.ManifestTests) ... ok\\n\\n======================================================================\\nFAIL: test_escaped_quote (test_manifest.ManifestTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.verify-_r5cqjgn/before/test_manifest.py\\\", line 25, in test_escaped_quote\\n    self.assertEqual(manifest.parse_record('a;\\\"b\\\"\\\"c\\\";d'), ['a', 'b\\\"c', 'd'])\\nAssertionError: Lists differ: ['a', '\\\"b\\\"\\\"c\\\"', 'd'] != ['a', 'b\\\"c', 'd']\\n\\nFirst differing element 1:\\n'\\\"b\\\"\\\"c\\\"'\\n'b\\\"c'\\n\\n- ['a', '\\\"b\\\"\\\"c\\\"', 'd']\\n?        -  - -\\n\\n+ ['a', 'b\\\"c', 'd']\\n\\n======================================================================\\nFAIL: test_quoted_separator (test_manifest.ManifestTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.verify-_r5cqjgn/before/test_manifest.py\\\", line 22, in test_quoted_separator\\n    self.assertEqual(manifest.parse_record('a;\\\"b;c\\\";d'), ['a', 'b;c', 'd'])\\nAssertionError: Lists differ: ['a', '\\\"b', 'c\\\"', 'd'] != ['a', 'b;c', 'd']\\n\\nFirst differing element 1:\\n'\\\"b'\\n'b;c'\\n\\nFirst list contains 1 additional elements.\\nFirst extra element 3:\\n'd'\\n\\n- ['a', '\\\"b', 'c\\\"', 'd']\\n?        -   ------\\n\\n+ ['a', 'b;c', 'd']\\n?         ++\\n\\n\\n----------------------------------------------------------------------\\nRan 5 tests in 0.001s\\n\\nFAILED (failures=2)\\nEXIT 1\\nAFTER d973477c2b299730d2643a03f2ade52bb0c6e453 ROOT <WORKSPACE>/.verify-_r5cqjgn/after\\nSHARED_SHA256 test_manifest.py f413c6ee3f2b6a17cc800d49215452d37c015ce17cf598dd663b1636f5d7b968\\nSHARED_SHA256 sitecustomize.py f1f8f8b60a6f4d83928e58365b51ec7e48da868b561b51ed4df8999c9023954b\\nSHARED_SHA256 format.json 717d713b44561a03040d8aba20e078f024aee7c7a2bc2db51c6ec0a5f14401c5\\nRUN PYTHONPATH=. python3 -B -m unittest -v test_manifest\\nNATIVE_IMPORTS {\\\"pid\\\": 75462, \\\"implementation\\\": \\\"<WORKSPACE>/.verify-_r5cqjgn/after/manifest.py\\\", \\\"startup\\\": \\\"<WORKSPACE>/.verify-_r5cqjgn/after/sitecustomize.py\\\"}\\ntest_empty_fields (test_manifest.ManifestTests) ... ok\\ntest_escaped_quote (test_manifest.ManifestTests) ... ok\\ntest_plain_fields (test_manifest.ManifestTests) ... ok\\ntest_quoted_separator (test_manifest.ManifestTests) ... ok\\ntest_unicode (test_manifest.ManifestTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 5 tests in 0.000s\\n\\nOK\\nEXIT 0\\nORIGINAL_FILES_UNCHANGED True\\nOWNED_COPIES_REMOVED True\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bee8-fd3c-7cc0-a8a0-70fa28e24340",
+            "create_time": 1789909370.229669
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

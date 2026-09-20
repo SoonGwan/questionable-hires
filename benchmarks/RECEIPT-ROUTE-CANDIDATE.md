@@ -1,6 +1,10 @@
 # Receipt support routing candidate — 2026-09-20
 
 Isolated candidate from resources `ca668a4`. Production is unchanged.
+[Startup transfer 01](results/receipt-startup-01/README.md) passed compatibility
+selection but measured −1.58% tokens / +9.71% time versus original and higher
+cost than fresh no skill. Not adopted as an efficiency improvement; further
+read-prompt tuning on these cases is suspended.
 [Routing screen 01](results/receipt-route-01/README.md) observed −1.68% summed
 tokens / −5.78% time versus original, with mixed per-case cost and no fresh
 no-skill arm. Transfer/diagnosis checks remain before adoption. The following

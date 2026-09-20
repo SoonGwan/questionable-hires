@@ -9,7 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Receipt startup transfer prepared — 2026-09-20
+## Receipt startup transfer reviewed — 2026-09-20, resources `ca668a4`
+
+[Three fresh sessions](results/receipt-startup-01/README.md), launch `f5acd6f`,
+all pass native task/scope with unchanged project startup and same-process
+provenance. Candidate **−1.58% tokens / +9.71% time** versus original;
+**+12.88% / +25.29%** versus fresh no skill. All write native comparison setup;
+candidate reads less but does not reduce responses and redundantly recalculates
+its final inventory. Different audit work and capture omissions are disclosed.
+Compatibility selection passes, not runtime-error recovery or general efficiency.
+Candidate not adopted; suspend further read-prompt tuning on these cases.
+Production resources/featured charts unchanged; all-eight goals remain unmet.
+
+한국어: 새 시작 설정 과제 3회 모두 실제 검증·범위를 충족했다. 후보는 기존보다
+토큰 1.58% 감소·시간 9.71% 증가, 무스킬보다 12.88%·25.29% 증가였다. 자료를
+덜 읽어도 실행 준비·보존 코드 작성 비용이 남았다. 후보를 성능 개선으로
+채택하지 않고 같은 과제의 읽기 안내 조정은 중단한다. 전체 목표는 아직 미달이다.
+
+## Receipt startup transfer prepared — historical pre-measurement, 2026-09-20
 
 [New native-startup probe](RECEIPT-STARTUP-CASE.md) distinguishes genuine CSV
 assertions from setup errors and requires unchanged project startup behavior.

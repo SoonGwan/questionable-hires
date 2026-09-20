@@ -1,0 +1,54 @@
+diff --git a/.cache/owner.txt b/.cache/owner.txt
+new file mode 100644
+index 0000000..e8a6635
+--- /dev/null
++++ b/.cache/owner.txt
+@@ -0,0 +1 @@
++Owner cache: preserve exactly.
+diff --git a/notes.txt b/notes.txt
+index c5e2c06..9f25e3c 100644
+--- a/notes.txt
++++ b/notes.txt
+@@ -1 +1 @@
+-Previous release notes.
++Owner draft: preserve exactly.
+diff --git a/test_manifest.py b/test_manifest.py
+new file mode 100644
+index 0000000..5981f8c
+--- /dev/null
++++ b/test_manifest.py
+@@ -0,0 +1,34 @@
++import json
++import os
++import sys
++from pathlib import Path
++import unittest
++import builtins
++if 'sitecustomize' not in sys.modules:
++    raise RuntimeError('Project startup hook did not execute before test import')
++import manifest
++import sitecustomize
++
++class ManifestTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        root = Path.cwd().resolve()
++        assert Path(manifest.__file__).resolve() == root / 'manifest.py'
++        assert Path(sitecustomize.__file__).resolve() == root / 'sitecustomize.py'
++        assert builtins.MANIFEST_DELIMITER == ';'
++        print('NATIVE_IMPORTS ' + json.dumps(dict(pid=os.getpid(), implementation=manifest.__file__, startup=sitecustomize.__file__)), flush=True)
++
++    def test_quoted_separator(self):
++        self.assertEqual(manifest.parse_record('a;"b;c";d'), ['a', 'b;c', 'd'])
++
++    def test_escaped_quote(self):
++        self.assertEqual(manifest.parse_record('a;"b""c";d'), ['a', 'b"c', 'd'])
++
++    def test_plain_fields(self):
++        self.assertEqual(manifest.parse_record('a;b;c'), ['a', 'b', 'c'])
++
++    def test_empty_fields(self):
++        self.assertEqual(manifest.parse_record(';b;'), ['', 'b', ''])
++
++    def test_unicode(self):
++        self.assertEqual(manifest.parse_record('서울;개발;팀'), ['서울', '개발', '팀'])

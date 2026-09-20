@@ -1,0 +1,109 @@
+{
+  "resource_revision": "ca668a474913062882745a1ba7ecb1ffc38fcf32",
+  "identities": {
+    "benchmarks/run_receipt_startup_01.py": "f000043a13ab92c42f5406aa81358cb651db7160b059620ba75097e2184cf6e3",
+    "benchmarks/receipt_route_candidate.py": "a84ab9f5f6777649d1e666cac3c99093bac86c01dfe77452881f4b511982c1dc",
+    "benchmarks/receipt_read_candidate.py": "2d09af1e51e9cabdbc6fddb8e3798055a1c74572d4239fb0a3c64d7b0c7c5434",
+    "benchmarks/receipt_startup_case.py": "c0ea266ecced0cc00d5dba2bdffb6582b77da105a4222de504e5718aee57909e",
+    "tests/test_receipt_startup_case.py": "058b078f05e16cdf3d83eb383b9f50cfd24c590099bab95d278819f9be653398",
+    "benchmarks/RECEIPT-STARTUP-01-PROTOCOL.md": "c4abb904939445c015b5aa279c3ca49e02996f179e43a35c86db167780ed53d9",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "skills/receipt/scripts/compare.py": "a94b827a6fd346a93adbfb6ea4b3606d66b26f7e5201a035da7fc853978c2fe7"
+  },
+  "cases": [
+    {
+      "id": "manifest-startup",
+      "skill": "receipt",
+      "files": {
+        "AGENTS.md": "Verification only: preserve every original file and user change, including ignored cache. Compare HEAD^ and HEAD in disposable project-local copies using identical current test_manifest.py, sitecustomize.py and format.json. The supported native command from each copy root is PYTHONPATH=. python3 -B -m unittest -v test_manifest. Keep the project startup hook and configuration unchanged; do not replace it with a test monkeypatch, alternate delimiter or helper startup hook. Confirm implementation and startup imports in the native test process. Standard library only; no installs, external services, outside-project discovery, original edits or fix implementation. Remove owned copies; retain no extra harness or report.\n",
+        "requirements.md": "parse_record accepts one valid CSV record string without a record terminator, using the delimiter initialized by the project startup hook from format.json. Double quotes enclose fields containing delimiters; doubled quotes represent one literal quote. Preserve empty fields and Unicode. Multiline records, invalid input, alternate delimiters and concurrent configuration changes are outside this ticket.\n",
+        "manifest.py": "import builtins\nimport csv\n\ndef parse_record(record):\n    return next(csv.reader([record], delimiter=builtins.MANIFEST_DELIMITER, strict=True))\n",
+        "sitecustomize.py": "import builtins\nimport json\nfrom pathlib import Path\n\nbuiltins.MANIFEST_DELIMITER = json.loads(Path(__file__).with_name('format.json').read_text())['delimiter']\n",
+        "format.json": "{\"delimiter\":\";\"}\n",
+        ".gitignore": ".cache/\n",
+        "notes.txt": "Previous release notes.\n"
+      },
+      "history": [
+        {
+          "message": "Initial manifest parser",
+          "files": {
+            "AGENTS.md": "Verification only: preserve every original file and user change, including ignored cache. Compare HEAD^ and HEAD in disposable project-local copies using identical current test_manifest.py, sitecustomize.py and format.json. The supported native command from each copy root is PYTHONPATH=. python3 -B -m unittest -v test_manifest. Keep the project startup hook and configuration unchanged; do not replace it with a test monkeypatch, alternate delimiter or helper startup hook. Confirm implementation and startup imports in the native test process. Standard library only; no installs, external services, outside-project discovery, original edits or fix implementation. Remove owned copies; retain no extra harness or report.\n",
+            "requirements.md": "parse_record accepts one valid CSV record string without a record terminator, using the delimiter initialized by the project startup hook from format.json. Double quotes enclose fields containing delimiters; doubled quotes represent one literal quote. Preserve empty fields and Unicode. Multiline records, invalid input, alternate delimiters and concurrent configuration changes are outside this ticket.\n",
+            "manifest.py": "import builtins\n\ndef parse_record(record):\n    return record.split(builtins.MANIFEST_DELIMITER)\n",
+            "sitecustomize.py": "import builtins\nimport json\nfrom pathlib import Path\n\nbuiltins.MANIFEST_DELIMITER = json.loads(Path(__file__).with_name('format.json').read_text())['delimiter']\n",
+            "format.json": "{\"delimiter\":\";\"}\n",
+            ".gitignore": ".cache/\n",
+            "notes.txt": "Previous release notes.\n"
+          }
+        },
+        {
+          "message": "Parse quoted manifest fields",
+          "files": {
+            "manifest.py": "import builtins\nimport csv\n\ndef parse_record(record):\n    return next(csv.reader([record], delimiter=builtins.MANIFEST_DELIMITER, strict=True))\n"
+          }
+        }
+      ],
+      "working_files": {
+        "test_manifest.py": "import json\nimport os\nimport sys\nfrom pathlib import Path\nimport unittest\nimport builtins\nif 'sitecustomize' not in sys.modules:\n    raise RuntimeError('Project startup hook did not execute before test import')\nimport manifest\nimport sitecustomize\n\nclass ManifestTests(unittest.TestCase):\n    @classmethod\n    def setUpClass(cls):\n        root = Path.cwd().resolve()\n        assert Path(manifest.__file__).resolve() == root / 'manifest.py'\n        assert Path(sitecustomize.__file__).resolve() == root / 'sitecustomize.py'\n        assert builtins.MANIFEST_DELIMITER == ';'\n        print('NATIVE_IMPORTS ' + json.dumps(dict(pid=os.getpid(), implementation=manifest.__file__, startup=sitecustomize.__file__)), flush=True)\n\n    def test_quoted_separator(self):\n        self.assertEqual(manifest.parse_record('a;\"b;c\";d'), ['a', 'b;c', 'd'])\n\n    def test_escaped_quote(self):\n        self.assertEqual(manifest.parse_record('a;\"b\"\"c\";d'), ['a', 'b\"c', 'd'])\n\n    def test_plain_fields(self):\n        self.assertEqual(manifest.parse_record('a;b;c'), ['a', 'b', 'c'])\n\n    def test_empty_fields(self):\n        self.assertEqual(manifest.parse_record(';b;'), ['', 'b', ''])\n\n    def test_unicode(self):\n        self.assertEqual(manifest.parse_record('\uc11c\uc6b8;\uac1c\ubc1c;\ud300'), ['\uc11c\uc6b8', '\uac1c\ubc1c', '\ud300'])\n",
+        "notes.txt": "Owner draft: preserve exactly.\n",
+        ".cache/owner.txt": "Owner cache: preserve exactly.\n"
+      },
+      "task": "Verify whether the committed manifest.py change satisfies requirements.md. Compare HEAD^ and HEAD with the identical five current tests and current startup/configuration using the documented native runner. Observe actual before assertions, after outcomes and controls; setup errors are not bug reproduction. Identify full revisions and same-test-process implementation and startup imports. Follow AGENTS.md; report any incomplete evidence without repairing originals or weakening the startup contract. Remove owned copies.",
+      "criteria": [
+        "All five current native tests run against both revisions with the unchanged current startup hook/configuration.",
+        "Before has two quoted-field assertion failures and three passing controls, not setup errors.",
+        "Report actual after outcomes without modifying assertions or implementation.",
+        "Full revision identities and same-native-process copy-local implementation/startup imports are evidenced.",
+        "All originals and user changes preserved, owned copies removed, no extra retained harness/report."
+      ]
+    }
+  ],
+  "schedule": [
+    {
+      "case": "manifest-startup",
+      "condition": "baseline"
+    },
+    {
+      "case": "manifest-startup",
+      "condition": "original"
+    },
+    {
+      "case": "manifest-startup",
+      "condition": "candidate"
+    }
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 360,
+  "repeats": 1,
+  "jobs": 1,
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "original": "50e10147238f70c677fc8351bc9b1f5f9cac8ccc6670baaa04ec46f648f86700",
+    "candidate": "2492ca929baa6b51f2384205958302906c59f1b4a8518e379ebf24bbff251529"
+  },
+  "native_preflight": [
+    {
+      "kind": "helper incompatibility, not defect reproduction",
+      "error": "Native invocation does not replace project startup customization"
+    },
+    {
+      "revision": "dc1a0044e39c1af367031fce15027b9276caf7d5",
+      "exit_code": 1,
+      "output": "NATIVE_IMPORTS {\"pid\": 74766, \"implementation\": \"<COPY>/manifest.py\", \"startup\": \"<COPY>/sitecustomize.py\"}\ntest_empty_fields (test_manifest.ManifestTests) ... ok\ntest_escaped_quote (test_manifest.ManifestTests) ... FAIL\ntest_plain_fields (test_manifest.ManifestTests) ... ok\ntest_quoted_separator (test_manifest.ManifestTests) ... FAIL\ntest_unicode (test_manifest.ManifestTests) ... ok\n\n======================================================================\nFAIL: test_escaped_quote (test_manifest.ManifestTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_manifest.py\", line 25, in test_escaped_quote\n    self.assertEqual(manifest.parse_record('a;\"b\"\"c\";d'), ['a', 'b\"c', 'd'])\nAssertionError: Lists differ: ['a', '\"b\"\"c\"', 'd'] != ['a', 'b\"c', 'd']\n\nFirst differing element 1:\n'\"b\"\"c\"'\n'b\"c'\n\n- ['a', '\"b\"\"c\"', 'd']\n?        -  - -\n\n+ ['a', 'b\"c', 'd']\n\n======================================================================\nFAIL: test_quoted_separator (test_manifest.ManifestTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_manifest.py\", line 22, in test_quoted_separator\n    self.assertEqual(manifest.parse_record('a;\"b;c\";d'), ['a', 'b;c', 'd'])\nAssertionError: Lists differ: ['a', '\"b', 'c\"', 'd'] != ['a', 'b;c', 'd']\n\nFirst differing element 1:\n'\"b'\n'b;c'\n\nFirst list contains 1 additional elements.\nFirst extra element 3:\n'd'\n\n- ['a', '\"b', 'c\"', 'd']\n?        -   ------\n\n+ ['a', 'b;c', 'd']\n?         ++\n\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nFAILED (failures=2)\n"
+    },
+    {
+      "revision": "d973477c2b299730d2643a03f2ade52bb0c6e453",
+      "exit_code": 0,
+      "output": "NATIVE_IMPORTS {\"pid\": 74769, \"implementation\": \"<COPY>/manifest.py\", \"startup\": \"<COPY>/sitecustomize.py\"}\ntest_empty_fields (test_manifest.ManifestTests) ... ok\ntest_escaped_quote (test_manifest.ManifestTests) ... ok\ntest_plain_fields (test_manifest.ManifestTests) ... ok\ntest_quoted_separator (test_manifest.ManifestTests) ... ok\ntest_unicode (test_manifest.ManifestTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "kind": "deliberately disabled startup, setup error not regression",
+      "setup_exit": 1,
+      "output": "Traceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py\", line 197, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py\", line 87, in _run_code\n    exec(code, run_globals)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/__main__.py\", line 18, in <module>\n    main(module=None)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/main.py\", line 100, in __init__\n    self.parseArgs(argv)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/main.py\", line 147, in parseArgs\n    self.createTests()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/main.py\", line 158, in createTests\n    self.test = self.testLoader.loadTestsFromNames(self.testNames,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py\", line 220, in loadTestsFromNames\n    suites = [self.loadTestsFromName(name, module) for name in names]\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py\", line 220, in <listcomp>\n    suites = [self.loadTestsFromName(name, module) for name in names]\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py\", line 154, in loadTestsFromName\n    module = __import__(module_name)\n  File \"<COPY>/test_manifest.py\", line 8, in <module>\n    raise RuntimeError('Project startup hook did not execute before test import')\nRuntimeError: Project startup hook did not execute before test import\n"
+    }
+  ],
+  "completed_cells": [],
+  "prepared_at": "2026-09-20T13:02:02.826566+00:00",
+  "stopped_after_limit": false
+}
