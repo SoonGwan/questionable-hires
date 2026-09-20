@@ -9,7 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Optional native preservation support — 2026-09-20, parent `f4943e8`
+## Native preservation adoption measured — 2026-09-20, resources `55fe666`
+
+[Three fresh sessions](results/receipt-preserve-01/README.md), launch `6bdf2bd`:
+current genuinely uses the new guard, retains native startup/assertion evidence,
+cleans copies before guard exit and does not duplicate inventory. All task/scope
+criteria pass. Versus original `f4943e8`: **+24.04% tokens / +0.04% time**;
+versus no skill: **+42.02% / +12.14%**. A source-review response is added (5 vs 4).
+Different audit work and capture prefixes are disclosed. The optional utility
+works but does not establish model efficiency. Stop further Receipt tuning on
+this exposed small task; no chart/performance promotion or release approval.
+
+한국어: 새 도구가 실제로 사용되고 검증·보존을 통과했지만 이전 대비 토큰
+24.04% 증가·시간 0.04% 증가였다. 무스킬 대비로도 42.02%·12.14% 증가했다.
+선택적 기능의 동작과 성능 향상은 구분한다. 같은 작은 Receipt 과제 조정은
+중단하며 차트·전체 성능 주장은 그대로 유지한다.
+
+## Optional native preservation support — historical pre-measurement, 2026-09-20, parent `f4943e8`
 
 Repeated handwritten tree inventories in startup 01 motivate a small reusable
 context manager, [native preservation](../skills/receipt/references/native-preservation.md).
