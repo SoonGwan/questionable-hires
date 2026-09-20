@@ -4,7 +4,37 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
-## Updated checkout and source archive pass — 2026-09-21, source `a2d0002`
+## Updated checkout and source archive pass — 2026-09-21, source `e874ace`
+
+Full Python3.11 native discovery completed for the source containing the context
+output-budget correction and new Friday/HTTPX pilot support:
+
+- Checkout: **874 tests, 154.211 seconds, OK**, exit 0, no skips.
+- Fresh `git archive e874ace` outside any repository: **874 tests, 145.148 seconds,
+  OK (skipped=20)**, exit 0; neither `.git` nor `benchmarks/local-runs` is present.
+- Metadata/local-link validation and featured synchronization pass in both;
+  checkout whitespace check passes and the measured checkout was clean.
+- Local logs: `/tmp/qh-e874ace-checkout.log` and
+  `/tmp/qh-e874ace-archive.Gn8zFA/native-check.log`.
+
+The suites ran concurrently. These times are not an efficiency comparison and
+the result does not prove hosted installation, model performance or release approval.
+The 20 source-archive skips remain explicit history/provenance availability checks;
+no additional skip was introduced to accommodate the new changes.
+
+Latest hosted [run 35527095454](https://github.com/SoonGwan/questionable-hires/actions/runs/35527095454)
+at `e874ace` has four failed jobs with no executed steps. Source-archive check
+`106121045882` again attributes non-start to failed account payments or a spending
+limit. Billing/settings, repository visibility and workflows were not changed or
+retried. Repository remains **PRIVATE**, default branch **main**. Hosted validation
+requires owner action; broad whole-task efficiency remains unproven independently.
+
+한국어: 최신 소스 작업본 874개가 모두 통과했고, Git 없는 압축본도 20개 이력
+의존 검사를 명시적으로 건너뛴 채 통과했다. 회귀·배포 형태 검증 결과이며 성능
+향상이나 공개 배포 완료를 뜻하지 않는다. GitHub CI는 여전히 계정 문제로 실행 전
+실패하고 저장소는 비공개다. 계정 설정이나 공개 여부는 변경하지 않았다.
+
+## Historical checkout and source archive pass — 2026-09-21, source `a2d0002`
 
 Both full Python3.11 runs completed with `python -B -m unittest discover -s tests -q`:
 

@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Full regression checks refreshed — 2026-09-21, source `e874ace`
+
+[Release checkpoint](RELEASE-CHECK-2026-09-20.md): checkout **874 tests OK**;
+fresh Git-free source archive **874 tests OK (skipped=20)**. Metadata/link validation
+and featured synchronization pass. These verify regression/distribution behavior,
+not model gains. Hosted run `35527095454` has four non-started failed jobs due to
+account payment/spending-limit settings; no retry/settings/visibility change.
+Repository remains private; hosted validation and whole-task efficiency remain open.
+
+한국어: 최신 작업본·압축본 전체 검사가 통과했다. 모델 성능 개선 증거와는
+구분하며 원격 CI 계정 문제, 비공개 상태, 전체 효율 목표는 여전히 남아 있다.
+
 ## HTTPX upload diagnosis reviewed; no improvement — 2026-09-21, launch `026f532`
 
 [Both original executions](results/httpx-upload-replay-01/README.md) satisfy all
