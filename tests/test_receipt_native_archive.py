@@ -19,11 +19,11 @@ CHECKS = (
 
 
 class ReceiptNativeArchiveTests(unittest.TestCase):
-    def test_shipped_helper_matches_both_historical_resources(self):
+    def test_retained_helper_matches_both_historical_resources(self):
         require_history(self, ROOT, ['ca668a4', '55fe666'])
         for revision in ('ca668a4', '55fe666'):
             raw = subprocess.check_output(['git', 'show', revision + ':' + support.HELPER], cwd=ROOT)
-            self.assertEqual(raw, (ROOT / support.HELPER).read_bytes())
+            self.assertEqual(raw, (ROOT / support.RETAINED).read_bytes())
 
     def test_all_four_native_controls_run_without_history_and_reject_changed_helper(self):
         with tempfile.TemporaryDirectory() as scratch:
@@ -34,7 +34,7 @@ class ReceiptNativeArchiveTests(unittest.TestCase):
                     shutil.copy2(source, archive / 'benchmarks' / source.name)
             modules = [check.split('.')[0] for check in CHECKS]
             modules += ['test_receipt_read_candidate', 'test_receipt_route_candidate']
-            names = {support.HELPER, 'tests/receipt_native_support.py',
+            names = {support.HELPER, support.RETAINED, 'tests/receipt_native_support.py',
                      'skills/receipt/scripts/preserve.py',
                      'tests/receipt_snapshot_support.py', 'tests/runner_snapshot_support.py',
                      'tests/test_receipt_startup_case.py'}
@@ -57,7 +57,7 @@ class ReceiptNativeArchiveTests(unittest.TestCase):
             self.assertFalse((archive / 'benchmarks/local-runs').exists())
             self.assertEqual(before, {p.relative_to(archive): p.read_bytes()
                                      for p in archive.rglob('*') if p.is_file()})
-            helper = archive / support.HELPER
+            helper = archive / support.RETAINED
             helper.write_bytes(helper.read_bytes() + b'\n# changed native resource\n')
             rejected = subprocess.run(command, cwd=archive / 'tests', capture_output=True,
                                       text=True, timeout=30)

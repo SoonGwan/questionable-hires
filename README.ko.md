@@ -169,7 +169,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 | 테스트 사기 감별사 | [Python 테스트 결함 감사](skills/con-artist/references/python-audit.md)와 [읽기 전용 맥락 수집](skills/con-artist/references/python-context.md). 신뢰하는 테스트만 실행하며 샌드박스가 아닙니다. |
 | 레거시 고고학자 | [관련 Git 이력 수집](skills/necromancer/references/focused-history.md). 과거 이유를 찾았다고 유지·삭제 결론이 자동으로 정해지지는 않습니다. |
 | 배포 생존 담당 | [SQLite 호환성 확인](skills/friday/references/sqlite-matrix.md). 운영 배포나 다른 DB 엔진의 안전성을 증명하지 않습니다. |
-| 수정 검증관 | [Python 수정 전후 비교](skills/receipt/references/existing-fix.md). unittest 직접 실행·소스 식별·전후 결과를 지원하며, 용량 제한이 있는 프로젝트 전체 변경 감지를 프로젝트 고유 검증 과정에서도 재사용할 수 있습니다. |
+| 수정 검증관 | [Python 수정 전후 비교](skills/receipt/references/existing-fix.md). unittest 직접 실행·소스 식별·전후 결과를 지원하며, 동적 모듈 경로 확인과 용량 제한이 있는 프로젝트 전체 변경 감지를 선택할 수 있습니다. |
 | 가설 퇴마사 | [시간·출력 제한 진단 실행](skills/exorcist/references/bounded-probe.md). 백그라운드 서비스용이 아닙니다. |
 | 클릭 꼬투리 QA | [응답 순서 제어 검증](skills/mother-in-law/SKILL.md). 지원 인터페이스에 맞는 UI 없는 Python 컴포넌트용이며 기존 테스트가 우선입니다. |
 | 구조 관리인 | [구조 검토 지침](skills/landlord/SKILL.md). 별도 실행 도구는 포함하지 않습니다. |

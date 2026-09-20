@@ -9,6 +9,30 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Dynamic module verification capability — 2026-09-21, parent `ba6fedd`
+
+Receipt's optional `module_bindings` checks module-valued attributes against exact
+selected source paths inside the native test process. This addresses a capability
+gap observed in the pilot below without growing the main skill instructions.
+Six focused Python3.11 tests pass, including real before/after execution of the
+same eight repository tests (four original errors, then eight passes), wrong-path
+rejection, nested module attributes and pytest collection. This is author replay
+on known inputs, **not new model performance evidence**. Native `unittest -q`
+preserves all eight explicit selectors and full tracebacks within the existing
+output bound; verbose output exceeded that bound in an intermediate test.
+Historical controls retain their hash-verified old helper, not this new resource.
+Later rebinding, function identity and dispatch remain outside this path check.
+Final checkout regression: **857 tests, 153.883 seconds, OK** on Python3.11;
+Python3.9 focused checks: six tests, one pytest-dependency skip, otherwise OK.
+An intermediate full run had one failing verbose-output integration assertion;
+the final run uses the explicit native quiet invocation described above. Local
+correctness checks do not establish a model speedup or hosted release approval.
+
+한국어: 수정 검증관이 동적으로 불러온 모듈도 실제 테스트 프로세스 안에서
+선택한 파일과 일치하는지 확인하도록 개선했다. 실제 이슈의 동일한 8개 테스트로
+전후 검증을 확인했지만, 이미 알려진 입력을 개발자가 재실행한 결과이지 모델의
+토큰·시간 절감 실증은 아니다. 기존 실험과 그래프는 변경하지 않는다.
+
 ## Real issue verification pilot reviewed — 2026-09-21, launch `031b961`
 
 [Two original sessions and review](results/sequence-entry-01/README.md), Receipt

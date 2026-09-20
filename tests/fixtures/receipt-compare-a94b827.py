@@ -21,29 +21,7 @@ import time
 MAX_FIXED_ENTRIES = 10_000
 MAX_GUARD_BYTES = 20_000_000
 
-MODULE_BINDINGS = '''def verify_module_bindings(recipe, root):
-    for selector, relative in recipe.get('module_bindings', {}).items():
-        name, attributes = selector.split(':')
-        module = importlib.import_module(name)
-        for attribute in attributes.split('.'):
-            if not isinstance(module, types.ModuleType):
-                raise RuntimeError('Expected module binding: ' + selector)
-            module = vars(module).get(attribute)
-        if not isinstance(module, types.ModuleType):
-            raise RuntimeError('Expected module binding: ' + selector)
-        location = vars(module).get('__file__')
-        expected = (root / relative).resolve(strict=True)
-        if (not expected.is_relative_to(root) or not location
-                or pathlib.Path(location).resolve(strict=True) != expected):
-            raise RuntimeError('Module binding path mismatch: ' + selector)
-        print('Verified copied module binding:', selector, json.dumps({
-            'path': str(expected), 'pid': os.getpid()
-        }), flush=True)
-'''
-
-
-BOOTSTRAP = '''import importlib, json, os, pathlib, sys, traceback, types
-''' + MODULE_BINDINGS + '''
+BOOTSTRAP = '''import importlib, json, os, pathlib, sys, traceback
 recipe = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
 sys.path[:0] = [str(root / name) for name in recipe.get('import_roots', [])] + [str(root)]
@@ -56,7 +34,6 @@ def verify_imports():
         print('Verified copied import:', name, json.dumps({
             'path': str(pathlib.Path(location).resolve()), 'pid': os.getpid()
         }), flush=True)
-    verify_module_bindings(recipe, root)
 sys.argv = [recipe['runner']] + recipe['tests']
 if recipe['runner'] == 'pytest':
     import pytest
@@ -94,8 +71,7 @@ if recipe['runner'] == 'unittest':
 '''
 
 
-NATIVE_STARTUP = '''import importlib, json, os, pathlib, site, sys, traceback, types
-''' + MODULE_BINDINGS + '''
+NATIVE_STARTUP = '''import importlib, json, os, pathlib, site, sys, traceback
 def _receipt_startup():
     global probe, root
     probe = pathlib.Path(__file__).resolve().parent
@@ -134,7 +110,6 @@ def _receipt_startup():
             print('Verified copied import:', name, json.dumps({
                 'path': str(pathlib.Path(location).resolve()), 'pid': os.getpid()
             }), flush=True)
-        verify_module_bindings(recipe, root)
         (probe / 'ready').write_bytes(b'ready')
     except BaseException:
         traceback.print_exc()
@@ -332,7 +307,7 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     if os.name != 'posix' or not 0 < timeout <= 300:
         raise ValueError('Requires POSIX and a timeout in (0, 300]')
     required = {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}
-    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings'}:
+    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation'}:
         raise ValueError('Recipe requires fixed, vary, before, after, imports, runner and tests')
     if type(recipe.get('guard_tree', False)) is not bool:
         raise ValueError('guard_tree must be a boolean')
@@ -351,19 +326,6 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     recipe = dict(recipe, fixed=fixed_files(root, recipe['fixed']))
     watched = fixed_files(root, recipe.get('watch', []))
     names = recipe['fixed'] + recipe['vary']
-    bindings = recipe.get('module_bindings', {})
-    if not isinstance(bindings, dict) or len(bindings) > 100:
-        raise ValueError('module_bindings must map at most 100 module:attribute selectors to selected paths')
-    for selector, relative in bindings.items():
-        if not isinstance(selector, str) or selector.count(':') != 1:
-            raise ValueError('Expected a module:attribute binding selector')
-        module, attribute = selector.split(':')
-        if (module not in recipe['imports'] or not all(part.isidentifier() for part in module.split('.'))
-                or not all(part.isidentifier() for part in attribute.split('.'))):
-            raise ValueError('Module binding requires a declared import and dotted attribute identifiers')
-        checked_path(relative)
-        if relative not in names:
-            raise ValueError('Module binding path must be a fixed or varying selected file')
     if len(set(names + watched)) != len(names + watched):
         raise ValueError('fixed, vary and watch must be unique and disjoint')
     import_roots = recipe.get('import_roots', [])
@@ -520,9 +482,6 @@ only when whole-project preservation is requested and all source reads are allow
 before: commit expression. after: commit expression or {"working_tree":true}.
 Working-tree after freezes current bytes/modes once, not the index or a commit.
 imports: modules that must load inside each copy. runner: unittest or pytest.
-module_bindings (optional): {"test_loader:component":"plugin.py"} verifies a
-module-valued attribute's exact selected path in the same test process. The base
-module must be declared in imports. Not function identity or later dispatch proof.
 Verified copied import lines include JSON path/pid from that native process at
 import time; they do not prove later monkey-patching cannot change behavior.
 invocation (optional): module runs Python -B -m unittest with these tests using

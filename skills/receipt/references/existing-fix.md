@@ -74,6 +74,15 @@ JSON
   before test bodies, preserving configuration and assertion rewriting.
   Child temp defaults are inside each copy: do not
   redirect global TMPDIR merely to localize checks or other launchers may pollute it.
+- For a dynamically loaded module held by a declared import, optional
+  `"module_bindings":{"test_loader:component":"plugin.py"}` checks that module's
+  `__file__` against the selected fixed/varying file in the same native process.
+  `test_loader` must also be in `imports`. Dotted attributes traverse module
+  dictionaries only: no expressions, properties, arbitrary objects or function
+  identity checks. Missing/wrong bindings produce incomplete evidence before
+  tests, not regression failures. Checks occur before unittest execution or after
+  pytest collection; fixtures/later reassignment and actual dispatch require
+  project-native assertions. Plain `imports` verifies modules, not their attributes.
 - Optional `"invocation":"module"`: for required `python -B -m unittest ...`,
   with `runner: "unittest"` and existing `tests`; no internal adapter needed.
   Default is `bootstrap`. Copy-local startup checks imports in the native test
