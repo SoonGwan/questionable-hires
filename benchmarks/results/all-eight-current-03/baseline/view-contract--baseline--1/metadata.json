@@ -1,0 +1,54 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "view-contract",
+  "skill": "friday",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "fa4b7cc5795e0905c86aa82438ded5b8388c68d0",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 66.942,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 63774,
+    "cached_input_tokens": 57344,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1920,
+    "reasoning_output_tokens": 230
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Review the rollout/rollback proposal in release.md.\nExecute the actual supplied SQL scripts and both literal reader queries at all\nfive checkpoints in one disposable in-memory sequence. Check ordered column\nlabels and complete row values, including BLOB bytes, against the consumer and\nwrite contracts. Distinguish inactive-reader errors from active incompatibilities.\nIdentify the first blocking step, what remains recoverable, whether new writes\nsurvive rollback and the smallest compatible mitigation. Do not mistake successful\nSELECT execution for consumer compatibility.\n\nPreserve all supplied files and installed skill resources. Do not fix or deploy\nthe proposal. No dependencies, network, environment changes, commits or external\nservices. If scratch files are needed, keep them inside the project and remove\nthem. Use python3 -B and existing local facilities. Report decisive commands,\nexpected/observed values and limits; no separate report file is required.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 553,
+    "mode": 420,
+    "sha256": "2c829518c58ccc2ca41773388ecfb84f499faf9094de1a5ecce26b6ee90ae986",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

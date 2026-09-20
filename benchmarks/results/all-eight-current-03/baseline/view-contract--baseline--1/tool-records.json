@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0bf3f-6a88-7d70-b28e-86c1f55c4319",
+  "source_bytes": 104141,
+  "source_sha256": "6bfb6eef509e3f7f6e7aa2975dbfeb0d3674b061b9a0c2ca9e2baadcd33abad1",
+  "source_lines": 34,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "1b777d1f25bb0448068c650e78a2e1927d879088698d2cbf255597af56a4a947",
+      "record": {
+        "timestamp": "2026-09-20T14:36:45.288Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_09188df5714053aa016aafef7bf5d487d0a50c6847c52270c5",
+          "status": "completed",
+          "call_id": "call_0c1dBsOWWihEslRnqiUadv50",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!**/.git/**' -g '!**/__pycache__/**'\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3f-6acf-7a01-8b36-331cb88ef495",
+            "create_time": 1789915001.631628
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "bf52e3237e2d98120a4c0503fc3c27b965310e041975ca5a26939d804c98b4f2",
+      "record": {
+        "timestamp": "2026-09-20T14:36:45.423Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bf3f-81ef-7910-ba60-ce75be498d65",
+          "call_id": "call_0c1dBsOWWihEslRnqiUadv50",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ed8a41\",\"wall_time_seconds\":0.000001625,\"exit_code\":0,\"original_token_count\":41,\"output\":\"<WORKSPACE>\\n002_up.sql\\n002_down.sql\\nrelease.md\\n001_schema.sql\\nreaders.py\\n003_new_writes.sql\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3f-6acf-7a01-8b36-331cb88ef495",
+            "create_time": 1789915005.42377
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "64f2a2b0dd17ea5a8ecfec4087bfdde0b62630d575960516fc19af559cb5969e",
+      "record": {
+        "timestamp": "2026-09-20T14:36:48.861Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_09188df5714053aa016aafef7f1fa487d09fe9a421f32ae8c6",
+          "status": "completed",
+          "call_id": "call_zEa1iFmBZrgqr6TelNuWuXgE",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; for f in release.md readers.py 001_schema.sql 002_up.sql 003_new_writes.sql 002_down.sql; do cat \\\"$f\\\"; done\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3f-6acf-7a01-8b36-331cb88ef495",
+            "create_time": 1789915005.789125
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "9083dc348e1da6966d1f55542cfa4df75aa27113b5de6c85a4e9397614cff2d4",
+      "record": {
+        "timestamp": "2026-09-20T14:36:48.958Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bf3f-8fbe-7701-8ce3-d0bfb9b43bfd",
+          "call_id": "call_zEa1iFmBZrgqr6TelNuWuXgE",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"5f65d1\",\"wall_time_seconds\":0.000002084,\"exit_code\":0,\"original_token_count\":557,\"output\":\"total 48\\ndrwxr-xr-x@  9 admin  staff   288 Sep 20 23:36 .\\ndrwx------@  3 admin  staff    96 Sep 20 23:36 ..\\ndrwxr-xr-x@ 10 admin  staff   320 Sep 20 23:36 .git\\n-rw-r--r--@  1 admin  staff   233 Sep 20 23:36 001_schema.sql\\n-rw-r--r--@  1 admin  staff    99 Sep 20 23:36 002_down.sql\\n-rw-r--r--@  1 admin  staff    90 Sep 20 23:36 002_up.sql\\n-rw-r--r--@  1 admin  staff   105 Sep 20 23:36 003_new_writes.sql\\n-rw-r--r--@  1 admin  staff   111 Sep 20 23:36 readers.py\\n-rw-r--r--@  1 admin  staff  1066 Sep 20 23:36 release.md\\n# View rollout proposal\\n\\nThis is a SQL-only authored local release-review fixture. Application writers,\\nconcurrent connections, crash recovery and other database engines are out of scope.\\nConsumers execute the literal queries in readers.py. OLD maps by returned column\\nnames and requires ordered columns [id, label, payload]. NEW requires\\n[id, title, payload]. Both require exact full ordered rows and binary payloads.\\nNo application code is supplied or needed to execute these specified SQL contracts.\\n\\nOrder: (1) apply 001_schema.sql, OLD active; (2) apply 002_up.sql with OLD still\\nactive; (3) apply 003_new_writes.sql while OLD and NEW coexist; (4) drain NEW and\\nrestart OLD without a schema change; (5) apply 002_down.sql with OLD active.\\nAll committed representative updates/inserts must remain visible after rollback.\\nNo zero-downtime promises beyond this explicit sequence, no staging authorization.\\n\\nReview this proposal as supplied; do not modify SQL or reader contracts. A missing\\ninactive reader is an observation, not by itself a blocker at that phase.\\nOLD = 'SELECT * FROM public_items ORDER BY id'\\nNEW = 'SELECT id, title, payload FROM public_items ORDER BY id'\\nCREATE TABLE items(id INTEGER PRIMARY KEY, title TEXT NOT NULL, payload BLOB NOT NULL);\\nINSERT INTO items VALUES(1, '\uccab \ud56d\ubaa9', x'00ff'), (2, 'keep', x'');\\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\\nDROP VIEW public_items;\\nCREATE VIEW public_items AS SELECT id, title, payload FROM items;\\nUPDATE items SET title='updated', payload=x'fe00' WHERE id=1;\\nINSERT INTO items VALUES(3, 'new', x'80');\\nDROP VIEW public_items;\\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3f-6acf-7a01-8b36-331cb88ef495",
+            "create_time": 1789915008.958941
+          }
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "ea38dcf15442cf7c431c4d149af51e8c29a8226b119bb022047bf4d14469b2b3",
+      "record": {
+        "timestamp": "2026-09-20T14:37:22.732Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_09188df5714053aa016aafef8bc1d087d0898f525e5570bf6d",
+          "status": "completed",
+          "call_id": "call_HsAazweBPIQIpkdJrghlnYF2",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport hashlib\\nfrom pathlib import Path\\nimport runpy\\nimport sqlite3\\n\\nfiles = sorted(p for p in Path('.').iterdir() if p.is_file())\\nbefore = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in files}\\nreaders = runpy.run_path('readers.py')\\nqueries = {name: readers[name] for name in ('OLD', 'NEW')}\\nlabels = {'OLD': ('id', 'label', 'payload'), 'NEW': ('id', 'title', 'payload')}\\ninitial = [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nwritten = [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nphases = [\\n    (1, '001_schema.sql', {'OLD'}, initial),\\n    (2, '002_up.sql', {'OLD'}, initial),\\n    (3, '003_new_writes.sql', {'OLD', 'NEW'}, written),\\n    (4, None, {'OLD'}, written),\\n    (5, '002_down.sql', {'OLD'}, written),\\n]\\ncon = sqlite3.connect(':memory:')\\nprint('Python sqlite3 / SQLite', sqlite3.sqlite_version)\\nprint('Literal readers:', queries)\\nprint('Expected labels:', labels)\\nfor checkpoint, script, active, expected_rows in phases:\\n    if script:\\n        con.executescript(Path(script).read_text())\\n        con.commit()\\n    assert not con.in_transaction\\n    print('\\\\nCHECKPOINT', checkpoint, script or '(no SQL: drain NEW, restart OLD)', 'active=', sorted(active))\\n    print('Expected complete ordered rows:', repr(expected_rows))\\n    backing = con.execute('SELECT id, title, payload FROM items ORDER BY id').fetchall()\\n    assert backing == expected_rows\\n    assert all(type(row[2]) is bytes for row in backing)\\n    print('Committed backing rows:', repr(backing))\\n    for name, query in queries.items():\\n        status = 'active' if name in active else 'inactive'\\n        try:\\n            cursor = con.execute(query)\\n            observed_labels = tuple(col[0] for col in cursor.description)\\n            rows = cursor.fetchall()\\n            exact_rows = rows == expected_rows and all(type(row[2]) is bytes for row in rows)\\n            compatible = observed_labels == labels[name] and exact_rows\\n            print(name, status, 'labels=', observed_labels, 'rows=', repr(rows),\\n                  'payload_hex=', [row[2].hex() for row in rows], 'compatible=', compatible)\\n            assert exact_rows\\n            assert observed_labels == labels['OLD' if checkpoint in (1, 5) else 'NEW']\\n            assert compatible == (name == ('OLD' if checkpoint in (1, 5) else 'NEW'))\\n        except sqlite3.OperationalError as error:\\n            print(name, status, 'ERROR:', str(error))\\n            assert name == 'NEW' and checkpoint in (1, 5)\\n            assert str(error) == 'no such column: title'\\n    print('View:', con.execute(\\\"SELECT sql FROM sqlite_master WHERE type='view' AND name='public_items'\\\").fetchone()[0])\\ncon.close()\\nafter = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in files}\\nassert before == after\\nprint('\\\\nPASS: all five checkpoint observations match assertions; supplied file hashes unchanged.')\\nPY\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3f-6acf-7a01-8b36-331cb88ef495",
+            "create_time": 1789915009.457573
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "0f54782a6cb1d8393e8e413fd611d851bfc1119b6d3a5efc8c67a268e2746111",
+      "record": {
+        "timestamp": "2026-09-20T14:37:22.859Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bf40-142b-7801-a9ea-79f2bfa23c7a",
+          "call_id": "call_HsAazweBPIQIpkdJrghlnYF2",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"bdf885\",\"wall_time_seconds\":0.000001625,\"exit_code\":0,\"original_token_count\":810,\"output\":\"Python sqlite3 / SQLite 3.51.0\\nLiteral readers: {'OLD': 'SELECT * FROM public_items ORDER BY id', 'NEW': 'SELECT id, title, payload FROM public_items ORDER BY id'}\\nExpected labels: {'OLD': ('id', 'label', 'payload'), 'NEW': ('id', 'title', 'payload')}\\n\\nCHECKPOINT 1 001_schema.sql active= ['OLD']\\nExpected complete ordered rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nCommitted backing rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nOLD active labels= ('id', 'label', 'payload') rows= [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] payload_hex= ['00ff', ''] compatible= True\\nNEW inactive ERROR: no such column: title\\nView: CREATE VIEW public_items AS SELECT id, title AS label, payload FROM items\\n\\nCHECKPOINT 2 002_up.sql active= ['OLD']\\nExpected complete ordered rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nCommitted backing rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nOLD active labels= ('id', 'title', 'payload') rows= [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] payload_hex= ['00ff', ''] compatible= False\\nNEW inactive labels= ('id', 'title', 'payload') rows= [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] payload_hex= ['00ff', ''] compatible= True\\nView: CREATE VIEW public_items AS SELECT id, title, payload FROM items\\n\\nCHECKPOINT 3 003_new_writes.sql active= ['NEW', 'OLD']\\nExpected complete ordered rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nCommitted backing rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nOLD active labels= ('id', 'title', 'payload') rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] payload_hex= ['fe00', '', '80'] compatible= False\\nNEW active labels= ('id', 'title', 'payload') rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] payload_hex= ['fe00', '', '80'] compatible= True\\nView: CREATE VIEW public_items AS SELECT id, title, payload FROM items\\n\\nCHECKPOINT 4 (no SQL: drain NEW, restart OLD) active= ['OLD']\\nExpected complete ordered rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nCommitted backing rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nOLD active labels= ('id', 'title', 'payload') rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] payload_hex= ['fe00', '', '80'] compatible= False\\nNEW inactive labels= ('id', 'title', 'payload') rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] payload_hex= ['fe00', '', '80'] compatible= True\\nView: CREATE VIEW public_items AS SELECT id, title, payload FROM items\\n\\nCHECKPOINT 5 002_down.sql active= ['OLD']\\nExpected complete ordered rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nCommitted backing rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nOLD active labels= ('id', 'label', 'payload') rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] payload_hex= ['fe00', '', '80'] compatible= True\\nNEW inactive ERROR: no such column: title\\nView: CREATE VIEW public_items AS SELECT id, title AS label, payload FROM items\\n\\nPASS: all five checkpoint observations match assertions; supplied file hashes unchanged.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3f-6acf-7a01-8b36-331cb88ef495",
+            "create_time": 1789915042.85914
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

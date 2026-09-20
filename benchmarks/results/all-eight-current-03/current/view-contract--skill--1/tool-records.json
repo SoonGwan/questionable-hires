@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0bf3e-8102-77e3-9bd1-98655f1781b5",
+  "source_bytes": 142702,
+  "source_sha256": "731c53024bf45350d5635ff4fc16578ab07106f86ccda3e3677137add5043f00",
+  "source_lines": 37,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "ef50f497fb56b5e031f68c8060657b5618554583423e43b762cae9b444023c58",
+      "record": {
+        "timestamp": "2026-09-20T14:35:45.631Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_028d3441f2fb1075016aafef40315c87d0a3820e8acfb796f8",
+          "status": "completed",
+          "call_id": "call_ohxnJclaxXwCELYffwqhl3sU",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '!.git'; cat .agents/skills/friday/SKILL.md release.md\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3e-814c-7ff0-92f0-55c591057158",
+            "create_time": 1789914941.897423
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "424223ff60b4b0cb8781f22aac0f7cd55be6fab82195f4b803bb6c72cb7d339b",
+      "record": {
+        "timestamp": "2026-09-20T14:35:45.775Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bf3e-98ef-7472-aa76-792984eea913",
+          "call_id": "call_ohxnJclaxXwCELYffwqhl3sU",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"59c777\",\"wall_time_seconds\":0.000003916,\"exit_code\":0,\"original_token_count\":1251,\"output\":\"<WORKSPACE>\\n002_up.sql\\n002_down.sql\\nrelease.md\\n.agents/skills/friday/SKILL.md\\n.agents/skills/friday/scripts/sqlite_matrix.py\\n.agents/skills/friday/agents/openai.yaml\\n.agents/skills/friday/references/sqlite-matrix.md\\n.agents/skills/friday/references/sqlite-matrix-details.md\\n001_schema.sql\\nreaders.py\\n003_new_writes.sql\\n---\\nname: friday\\ndescription: Review a planned deployment or release diff for rollback feasibility, mixed-version compatibility, migrations, and configuration readiness without deploying it.\\n---\\n\\n# Friday\\n\\n> Can Monday-you undo this?\\n\\n## Read Monday's incident report early\\n\\nWhen discovery is needed, combine it with reading supplied release notes/contracts and available project instructions, then batch the discovered relevant inputs. Avoid a listing-only round trip when supplied inputs are already readable. Keep Git internals out of file discovery (for example, `rg --files --hidden -g '!.git'`); use Git commands for relevant history. Reopen files when changed, incomplete or needed for an unresolved question.\\n\\nUse the release diff and documented rollout/rollback order to identify reachable states, old/new artifacts, configuration and consumers. Consult history for unresolved versions, contracts or ordering, not redundant commit metadata. Do not impose rolling deployment or zero downtime on another strategy.\\n\\nFor each reachable state, check active readers/writers against data and configuration, including new-version writes before rollback. Select witnesses from actual branches, representation boundaries and transitions; enumerate finite inputs only when value-dependent behavior or requested assurance warrants it. Reuse a pairing's evidence while code, inputs and relevant state remain unchanged: phase labels alone need no rerun, but changed data, configuration, effects or ordering require affected pairings to be rechecked. Include queued/external effects when their contract changes.\\n\\nCombine compatible coverage obligations into representative sequences instead of multiplying every value by every version/operation. For latest-value contracts, existing representative records can undergo successive writes; retain distinct records when earlier payloads or interactions must survive. Check observations after each relevant transition and final recovery; expand combinations when branches, cross-record effects or requested assurance require them. Fewer witnesses must not mean reusing stale observations.\\n\\nCode rollback is not data recovery: down migrations can lose data, and backups need restore evidence. Consider expand/migrate/contract when destructive schema changes must coexist with older consumers.\\n\\nFind the first incompatible/irreversible step and last recoverable state; tie blockers to the smallest compatible ordering or prerequisite. Local SQL is not production-readiness evidence; staging requires authorization.\\n\\nChoose execution from the contract: exercise actual application writers, transactions and connections when they matter. For repeated SQL-only SQLite reader checks, use the optional [in-memory matrix](references/sqlite-matrix.md); read its guide only for that path, and implementation for trust/adaptation/troubleshooting. Use existing runners for simple checks. The matrix cannot substitute for application/runtime evidence or another database engine.\\n\\n## Deliver and stop\\n\\nLead with ready, ready with conditions, or blocked by evidence. Missing runtime/configuration evidence is unknown, not safe. Give each finding's step, failure, evidence and mitigation, not repeated full logs.\\n\\nStop when scoped compatibility and recovery paths are assessed; no generic infrastructure audit. Preserve user changes and requirements. Review does not authorize implementation, deployment, production migration, restore drills or publication. If asked to fix, verify the scoped correction without releasing it.\\n# View rollout proposal\\n\\nThis is a SQL-only authored local release-review fixture. Application writers,\\nconcurrent connections, crash recovery and other database engines are out of scope.\\nConsumers execute the literal queries in readers.py. OLD maps by returned column\\nnames and requires ordered columns [id, label, payload]. NEW requires\\n[id, title, payload]. Both require exact full ordered rows and binary payloads.\\nNo application code is supplied or needed to execute these specified SQL contracts.\\n\\nOrder: (1) apply 001_schema.sql, OLD active; (2) apply 002_up.sql with OLD still\\nactive; (3) apply 003_new_writes.sql while OLD and NEW coexist; (4) drain NEW and\\nrestart OLD without a schema change; (5) apply 002_down.sql with OLD active.\\nAll committed representative updates/inserts must remain visible after rollback.\\nNo zero-downtime promises beyond this explicit sequence, no staging authorization.\\n\\nReview this proposal as supplied; do not modify SQL or reader contracts. A missing\\ninactive reader is an observation, not by itself a blocker at that phase.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3e-814c-7ff0-92f0-55c591057158",
+            "create_time": 1789914945.775244
+          }
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "e4c8298cf68d5068b8433cc31b9e410213d669efb967bfe3be9199482e85b2c0",
+      "record": {
+        "timestamp": "2026-09-20T14:35:50.935Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_028d3441f2fb1075016aafef452f9487d0b2f5abbd935a5bcf",
+          "status": "completed",
+          "call_id": "call_KWnujxYz6rcT6dBzkAOcBEy2",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat 001_schema.sql 002_up.sql 003_new_writes.sql 002_down.sql readers.py .agents/skills/friday/references/sqlite-matrix.md\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3e-814c-7ff0-92f0-55c591057158",
+            "create_time": 1789914946.478535
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "d2de5c5e942242f4764f29b408762b749b74029246acc502042cc0e7a9a15763",
+      "record": {
+        "timestamp": "2026-09-20T14:35:51.021Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bf3e-ad6d-7280-9874-62b1119b8e27",
+          "call_id": "call_KWnujxYz6rcT6dBzkAOcBEy2",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"784376\",\"wall_time_seconds\":0.000001917,\"exit_code\":0,\"original_token_count\":1443,\"output\":\"CREATE TABLE items(id INTEGER PRIMARY KEY, title TEXT NOT NULL, payload BLOB NOT NULL);\\nINSERT INTO items VALUES(1, '\uccab \ud56d\ubaa9', x'00ff'), (2, 'keep', x'');\\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\\nDROP VIEW public_items;\\nCREATE VIEW public_items AS SELECT id, title, payload FROM items;\\nUPDATE items SET title='updated', payload=x'fe00' WHERE id=1;\\nINSERT INTO items VALUES(3, 'new', x'80');\\nDROP VIEW public_items;\\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\\nOLD = 'SELECT * FROM public_items ORDER BY id'\\nNEW = 'SELECT id, title, payload FROM public_items ORDER BY id'\\n# Local SQLite transition checks\\n\\nPython 3.9+ helper for repeated SQL-only SQLite reader checks. Use existing\\nrunners for simple checks and actual runtime facilities for other engines,\\napplication writers, transactions or multiple connections\u2014not this matrix.\\n\\nFor printed observations, run\\n`python3 <skill-dir>/scripts/sqlite_matrix.py --source <project> --spec -`\\nwith recipe JSON on stdin (or a recipe path instead of `-`). For value assertions,\\nuse the same recipe through the API and reuse its result:\\n\\n```python\\nimport runpy\\nhelper = runpy.run_path('<skill-dir>/scripts/sqlite_matrix.py')\\nmatrix, format_result = helper['matrix'], helper['format_result']\\nresult = matrix(recipe, project_root, timeout=5)\\nprint(format_result(result))\\n```\\n\\nRows retain tuples/BLOB bytes; `format_result` encodes JSON without rerunning SQL\\nor changing the result. Inspect implementation only for trust/adaptation/troubleshooting.\\n\\nRecipe: `phases` and `checks`. Each named phase runs relative SQL `files` in order,\\nthen inline `sql` (defaults: `[]` and `\\\"\\\"`; name alone is a read checkpoint).\\nNamed checks run after every phase in the same in-memory database. Adapt to the\\nactual release:\\n\\n```json\\n{\\n  \\\"phases\\\": [\\n    {\\\"name\\\": \\\"before\\\", \\\"files\\\": [\\\"schema.sql\\\"], \\\"sql\\\": \\\"INSERT INTO users VALUES (1, 'old');\\\"},\\n    {\\\"name\\\": \\\"up + new data\\\", \\\"files\\\": [\\\"up.sql\\\"], \\\"sql\\\": \\\"INSERT INTO users VALUES (2, 'new');\\\"},\\n    {\\\"name\\\": \\\"down\\\", \\\"files\\\": [\\\"down.sql\\\"]}\\n  ],\\n  \\\"checks\\\": {\\n    \\\"old reader\\\": \\\"SELECT id, name FROM users ORDER BY id\\\",\\n    \\\"new reader\\\": \\\"SELECT id, display_name FROM users ORDER BY id\\\"\\n  }\\n}\\n```\\n\\nUse reachable phases and actual queries, including new-version writes before\\nrollback. Writes belong in phases, not checks. Successful SELECTs alone do not\\nprove expected values or reader/writer compatibility.\\n\\nWhen the documented rollout activates different consumers at different stages,\\na phase can set `\\\"checks\\\": [\\\"old reader\\\"]` (or both names for coexistence).\\nOmitting this field runs all declared checks, as above. Explicit selections must\\nbe nonempty, unique declared names; returned `selected_checks` records a changed\\nselection/order. Unselected checks are unrun, never passes. Select from the actual\\nrollout/rollback contract, not to suppress incompatibilities; rollback may require\\nan older consumer to read data written by the newer one.\\n\\nChecks accept SQL strings or `{\\\"python_file\\\":\\\"old_reader.py\\\",\\\"constant\\\":\\\"QUERY\\\"}`.\\nLiteral references never execute Python: only docstrings and unique simple scalar\\nliteral assignments are allowed, with a string query. Dynamic modules need their\\nactual runtime, not a fabricated simplified module.\\n\\n`reader_sources` gives file, constant, line, byte SHA-256 and query: static provenance,\\nnot runtime binding. Invalid references fail before SQL; queries remain read-only.\\n\\nRead `complete` first. Ordered `phases` contain `name` and named `checks`: success\\nhas `ok`, ordered `columns`, `rows`, `truncated`; failure has `ok:false` and `error`,\\nnot rows. Missing phases/checks are unrun. Truncated rows cannot prove full equality.\\n\\nCompare rows and column labels to the actual contract after checking completion,\\nsuccess and truncation. Reuse results for assertions/reporting; rerun only for\\nmissing observations, changed state or required independent evidence. Errors are\\nnot empty successful results; zero-row SELECTs still need interpretation.\\n\\nOptional `assert_rows(result, phase_index, check, columns=..., rows=...)` combines\\nthose guards for one selected observation (zero-based phase index). It raises with\\nthe phase/check and expected/observed values on mismatch, even under `python -O`.\\nIt rejects incomplete matrices, failed/unrun checks and truncated rows. Call it\\nonly for required value assertions; it does not assert unselected outcomes or\\ndeployment readiness. Expected SQL failures still need explicit error checks.\\nUse the native API result for BLOB bytes. Ordering is significant; the helper does\\nnot sort rows, collapse duplicate columns or infer SQLite storage types from Python\\nvalue equality. Choose actual expected values, not values copied from the result.\\n\\nFor the example's initial old-reader contract, after collecting `result` once:\\n\\n```python\\nassert_rows = helper['assert_rows']\\nassert_rows(result, 0, 'old reader', columns=['id', 'name'], rows=[(1, 'old')])\\n```\\n\\nCLI 0 means execution completed, **not** all readers pass or deployment is safe.\\nCLI 1 means incomplete migration/budget execution; 2 invalid input. Failed\\nmigrations stop; partial state is not the next successful phase.\\n\\nOnly `:memory:`; attach/detach, PRAGMA, extension loading and writes through checks\\nare denied. Files must be regular, nonsymlink, project-relative. Limits: 20 phases/\\nqueries, 20 rows/check, 1 MB/file, 2 MB input, 5-second SQL budget (`--timeout`, max 30).\\nUnsupported operations need other evidence, not rewritten migrations.\\n\\nRead [details](sqlite-matrix-details.md) for BLOB JSON, duplicate/empty-column\\nsemantics, input rejection or budget diagnostics. This is not a sandbox: no total\\nmemory/race isolation, live locking, network or production-readiness guarantees.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3e-814c-7ff0-92f0-55c591057158",
+            "create_time": 1789914951.021311
+          }
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "befeac8755af88263d3e2c6a961c7f44692f24b9ac379a16ecab033d82e50005",
+      "record": {
+        "timestamp": "2026-09-20T14:36:14.629Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_028d3441f2fb1075016aafef49a5f887d0831d9291a7d1d499",
+          "status": "completed",
+          "call_id": "call_tUjcCTIL8IXYkldANGFrPLBv",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport runpy\\nfrom pathlib import Path\\nh = runpy.run_path('.agents/skills/friday/scripts/sqlite_matrix.py')\\nrecipe = {\\n 'phases': [\\n  {'name':'1 initial', 'files':['001_schema.sql']},\\n  {'name':'2 up', 'files':['002_up.sql']},\\n  {'name':'3 new writes', 'files':['003_new_writes.sql']},\\n  {'name':'4 OLD restart'},\\n  {'name':'5 down', 'files':['002_down.sql']},\\n ],\\n 'checks': {name:{'python_file':'readers.py','constant':name} for name in ('OLD','NEW')}\\n}\\nr = h['matrix'](recipe, Path.cwd(), timeout=5)\\nprint(h['format_result'](r))\\ninitial = [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nwritten = [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nif not r['complete'] or len(r['phases']) != 5:\\n raise AssertionError('Incomplete sequence')\\nfor i, phase in enumerate(r['phases']):\\n expected_rows = initial if i < 2 else written\\n for name in ('OLD','NEW'):\\n  observation = phase['checks'][name]\\n  if name == 'NEW' and i in (0,4):\\n   if observation['ok'] or 'no such column: title' not in observation['error']:\\n    raise AssertionError(observation)\\n   print(f'CHECK {i+1} {name}: expected inactive error confirmed')\\n   continue\\n  observed_columns = ['id', 'label' if i in (0,4) else 'title', 'payload']\\n  h['assert_rows'](r, i, name, columns=observed_columns, rows=expected_rows)\\n  if any(type(row[2]) is not bytes for row in observation['rows']):\\n   raise AssertionError('Nonbinary payload')\\n  contract_columns = ['id', 'label' if name == 'OLD' else 'title', 'payload']\\n  try:\\n   h['assert_rows'](r, i, name, columns=contract_columns, rows=expected_rows)\\n  except AssertionError as e:\\n   if not (name == 'OLD' and i in (1,2,3)):\\n    raise\\n   print(f'CONTRACT {i+1} {name}: expected incompatibility confirmed: {e}')\\n  else:\\n   if name == 'OLD' and i in (1,2,3):\\n    raise AssertionError('Expected label mismatch missing')\\n   print(f'CONTRACT {i+1} {name}: PASS (all columns, complete rows, bytes)')\\nprint('All ten observations verified; rollout blocked at step 2; latest writes survive step 5.')\\nPY\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3e-814c-7ff0-92f0-55c591057158",
+            "create_time": 1789914951.439393
+          }
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "ae4cc0320186e496e18ef32b76c865560a3999f098afff3096882818ab1c0311",
+      "record": {
+        "timestamp": "2026-09-20T14:36:14.770Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bf3f-0a32-7651-9248-46f26ec922ee",
+          "call_id": "call_tUjcCTIL8IXYkldANGFrPLBv",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"709a5d\",\"wall_time_seconds\":0.000001958,\"exit_code\":0,\"original_token_count\":778,\"output\":\"{\\\"engine\\\":\\\"sqlite-memory\\\",\\\"complete\\\":true,\\\"phases\\\":[{\\\"name\\\":\\\"1 initial\\\",\\\"checks\\\":{\\\"OLD\\\":{\\\"ok\\\":true,\\\"rows\\\":[[1,\\\"\\\\uccab \\\\ud56d\\\\ubaa9\\\",{\\\"blob_hex\\\":\\\"00ff\\\"}],[2,\\\"keep\\\",{\\\"blob_hex\\\":\\\"\\\"}]],\\\"columns\\\":[\\\"id\\\",\\\"label\\\",\\\"payload\\\"],\\\"truncated\\\":false},\\\"NEW\\\":{\\\"ok\\\":false,\\\"error\\\":\\\"no such column: title\\\"}}},{\\\"name\\\":\\\"2 up\\\",\\\"checks\\\":{\\\"OLD\\\":{\\\"ok\\\":true,\\\"rows\\\":[[1,\\\"\\\\uccab \\\\ud56d\\\\ubaa9\\\",{\\\"blob_hex\\\":\\\"00ff\\\"}],[2,\\\"keep\\\",{\\\"blob_hex\\\":\\\"\\\"}]],\\\"columns\\\":[\\\"id\\\",\\\"title\\\",\\\"payload\\\"],\\\"truncated\\\":false},\\\"NEW\\\":{\\\"ok\\\":true,\\\"rows\\\":[[1,\\\"\\\\uccab \\\\ud56d\\\\ubaa9\\\",{\\\"blob_hex\\\":\\\"00ff\\\"}],[2,\\\"keep\\\",{\\\"blob_hex\\\":\\\"\\\"}]],\\\"columns\\\":[\\\"id\\\",\\\"title\\\",\\\"payload\\\"],\\\"truncated\\\":false}}},{\\\"name\\\":\\\"3 new writes\\\",\\\"checks\\\":{\\\"OLD\\\":{\\\"ok\\\":true,\\\"rows\\\":[[1,\\\"updated\\\",{\\\"blob_hex\\\":\\\"fe00\\\"}],[2,\\\"keep\\\",{\\\"blob_hex\\\":\\\"\\\"}],[3,\\\"new\\\",{\\\"blob_hex\\\":\\\"80\\\"}]],\\\"columns\\\":[\\\"id\\\",\\\"title\\\",\\\"payload\\\"],\\\"truncated\\\":false},\\\"NEW\\\":{\\\"ok\\\":true,\\\"rows\\\":[[1,\\\"updated\\\",{\\\"blob_hex\\\":\\\"fe00\\\"}],[2,\\\"keep\\\",{\\\"blob_hex\\\":\\\"\\\"}],[3,\\\"new\\\",{\\\"blob_hex\\\":\\\"80\\\"}]],\\\"columns\\\":[\\\"id\\\",\\\"title\\\",\\\"payload\\\"],\\\"truncated\\\":false}}},{\\\"name\\\":\\\"4 OLD restart\\\",\\\"checks\\\":{\\\"OLD\\\":{\\\"ok\\\":true,\\\"rows\\\":[[1,\\\"updated\\\",{\\\"blob_hex\\\":\\\"fe00\\\"}],[2,\\\"keep\\\",{\\\"blob_hex\\\":\\\"\\\"}],[3,\\\"new\\\",{\\\"blob_hex\\\":\\\"80\\\"}]],\\\"columns\\\":[\\\"id\\\",\\\"title\\\",\\\"payload\\\"],\\\"truncated\\\":false},\\\"NEW\\\":{\\\"ok\\\":true,\\\"rows\\\":[[1,\\\"updated\\\",{\\\"blob_hex\\\":\\\"fe00\\\"}],[2,\\\"keep\\\",{\\\"blob_hex\\\":\\\"\\\"}],[3,\\\"new\\\",{\\\"blob_hex\\\":\\\"80\\\"}]],\\\"columns\\\":[\\\"id\\\",\\\"title\\\",\\\"payload\\\"],\\\"truncated\\\":false}}},{\\\"name\\\":\\\"5 down\\\",\\\"checks\\\":{\\\"OLD\\\":{\\\"ok\\\":true,\\\"rows\\\":[[1,\\\"updated\\\",{\\\"blob_hex\\\":\\\"fe00\\\"}],[2,\\\"keep\\\",{\\\"blob_hex\\\":\\\"\\\"}],[3,\\\"new\\\",{\\\"blob_hex\\\":\\\"80\\\"}]],\\\"columns\\\":[\\\"id\\\",\\\"label\\\",\\\"payload\\\"],\\\"truncated\\\":false},\\\"NEW\\\":{\\\"ok\\\":false,\\\"error\\\":\\\"no such column: title\\\"}}}],\\\"reader_sources\\\":{\\\"OLD\\\":{\\\"python_file\\\":\\\"readers.py\\\",\\\"constant\\\":\\\"OLD\\\",\\\"line\\\":1,\\\"sha256\\\":\\\"dc74d76c3f9ee700db37a44c1350463f4ce2403eb90d6d772a9673248b659b93\\\",\\\"query\\\":\\\"SELECT * FROM public_items ORDER BY id\\\",\\\"kind\\\":\\\"static literal, not runtime binding evidence\\\"},\\\"NEW\\\":{\\\"python_file\\\":\\\"readers.py\\\",\\\"constant\\\":\\\"NEW\\\",\\\"line\\\":2,\\\"sha256\\\":\\\"dc74d76c3f9ee700db37a44c1350463f4ce2403eb90d6d772a9673248b659b93\\\",\\\"query\\\":\\\"SELECT id, title, payload FROM public_items ORDER BY id\\\",\\\"kind\\\":\\\"static literal, not runtime binding evidence\\\"}}}\\nCONTRACT 1 OLD: PASS (all columns, complete rows, bytes)\\nCHECK 1 NEW: expected inactive error confirmed\\nCONTRACT 2 OLD: expected incompatibility confirmed: phase 1 ('2 up'), check 'OLD': columns expected ['id', 'label', 'payload'], observed ['id', 'title', 'payload']\\nCONTRACT 2 NEW: PASS (all columns, complete rows, bytes)\\nCONTRACT 3 OLD: expected incompatibility confirmed: phase 2 ('3 new writes'), check 'OLD': columns expected ['id', 'label', 'payload'], observed ['id', 'title', 'payload']\\nCONTRACT 3 NEW: PASS (all columns, complete rows, bytes)\\nCONTRACT 4 OLD: expected incompatibility confirmed: phase 3 ('4 OLD restart'), check 'OLD': columns expected ['id', 'label', 'payload'], observed ['id', 'title', 'payload']\\nCONTRACT 4 NEW: PASS (all columns, complete rows, bytes)\\nCONTRACT 5 OLD: PASS (all columns, complete rows, bytes)\\nCHECK 5 NEW: expected inactive error confirmed\\nAll ten observations verified; rollout blocked at step 2; latest writes survive step 5.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf3e-814c-7ff0-92f0-55c591057158",
+            "create_time": 1789914974.770027
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'! .git'\"' -g 'AGENTS.md' -g 'requirements.md' -g '*.py' -g '*notes*' -g 'README*'\"",
+    "aggregated_output": "<WORKSPACE>\nnotes.txt\nrequirements.md\npreview.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat requirements.md preview.py notes.txt'",
+    "aggregated_output": "Every refresh must invoke its supplied fetch(key), even while another\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\nEach call returns its own exact fetched object or propagates its own exception.\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\nfailure or cancellation cannot clear pending while the latest is unresolved.\nLatest settlement clears pending even if older calls remain running. Keep the prior\nvalue during loading and on failure/cancellation. Instances are independent.\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\nclass Preview:\n    def __init__(self):\n        self.pending = False\n        self.value = None\n        self.generation = 0\n\n    async def refresh(self, key, fetch):\n        self.generation += 1\n        generation = self.generation\n        self.pending = True\n        try:\n            value = await fetch(key)\n            if generation == self.generation:\n                self.value = value\n            return value\n        finally:\n            self.pending = False\nOwner draft: preserve this unrelated note.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_3",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git status --short; ls -la'",
+    "aggregated_output": "total 24\ndrwxr-xr-x@  6 admin  staff  192 Sep 20 23:31 .\ndrwx------@  3 admin  staff   96 Sep 20 23:31 ..\ndrwxr-xr-x@ 10 admin  staff  320 Sep 20 23:31 .git\n-rw-r--r--@  1 admin  staff   43 Sep 20 23:31 notes.txt\n-rw-r--r--@  1 admin  staff  464 Sep 20 23:31 preview.py\n-rw-r--r--@  1 admin  staff  719 Sep 20 23:31 requirements.md\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest discover -v'",
+    "aggregated_output": "test_earlier_failure_or_cancellation_leaves_latest_pending (test_preview.PreviewTests) ... test_instances_are_independent (test_preview.PreviewTests) ... ok\ntest_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests) ... ok\ntest_success_in_both_completion_orders (test_preview.PreviewTests) ... test_synchronous_callback_failure_and_overlapping_retry (test_preview.PreviewTests) ... FAIL\n\n======================================================================\nFAIL: test_earlier_failure_or_cancellation_leaves_latest_pending (test_preview.PreviewTests) (cancel=False)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_preview.py\", line 125, in test_earlier_failure_or_cancellation_leaves_latest_pending\n    self.assertTrue(preview.pending)\nAssertionError: False is not true\n\n======================================================================\nFAIL: test_earlier_failure_or_cancellation_leaves_latest_pending (test_preview.PreviewTests) (cancel=True)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_preview.py\", line 125, in test_earlier_failure_or_cancellation_leaves_latest_pending\n    self.assertTrue(preview.pending)\nAssertionError: False is not true\n\n======================================================================\nFAIL: test_success_in_both_completion_orders (test_preview.PreviewTests) (latest_first=False)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_preview.py\", line 102, in test_success_in_both_completion_orders\n    self.assertTrue(preview.pending)\nAssertionError: False is not true\n\n======================================================================\nFAIL: test_synchronous_callback_failure_and_overlapping_retry (test_preview.PreviewTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<WORKSPACE>/test_preview.py\", line 195, in test_synchronous_callback_failure_and_overlapping_retry\n    self.assertTrue(preview.pending)\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 5 tests in 0.034s\n\nFAILED (failures=4)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_9",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest discover -v'",
+    "aggregated_output": "test_earlier_failure_or_cancellation_leaves_latest_pending (test_preview.PreviewTests) ... ok\ntest_instances_are_independent (test_preview.PreviewTests) ... ok\ntest_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests) ... ok\ntest_success_in_both_completion_orders (test_preview.PreviewTests) ... ok\ntest_synchronous_callback_failure_and_overlapping_retry (test_preview.PreviewTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.036s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_10",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --check; git diff --stat; git status --short'",
+    "aggregated_output": " preview.py | 3 ++-\n 1 file changed, 2 insertions(+), 1 deletion(-)\n M preview.py\n?? test_preview.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

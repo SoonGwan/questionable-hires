@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## All-eight screen 03 reviewed — 2026-09-20, resources `ee5eb28`
+
+[All sixteen original sessions and reviewed report](results/all-eight-current-03/README.md).
+Both arms meet all eight full-task/scope requirements. Current totals679,970tokens /
+486.364s versus fresh baseline565,025 / 504.577s: **+20.34% tokens, −3.61% time**.
+Every skill pair costs more tokens; none reduces both metrics. This is not an
+accepted bundle efficiency win. Eight exposed authored tasks, n=1, shared host/cache
+and unequal extra checks remain limitations. Three CLI prefix omissions are verified
+against original recorded calls; all usage counters reconcile. Separate Editor and
+Hostage author controls pass without replacing model evidence. No chart promotion,
+release approval, unchanged rerun or additional Receipt tuning on ledger/startup.
+
+한국어: 16개 새 세션 검토 완료. 양쪽 8/8 작업·범위 충족이지만 스킬 토큰은
+20.34% 증가, 시간은 3.61% 감소했다. 모든 문제에서 토큰이 늘었고 두 지표가
+함께 개선된 문제는 없다. 원본 증거와 불리한 결과를 공개하며 전체 성능 향상이나
+배포 완료로 주장하지 않는다. 다음 변경은 다른 현실적인 작업의 병목에 근거해야 한다.
+
 ## All-eight screen 03 prepared — historical pre-measurement, 2026-09-20
 
 [Frozen protocol](ALL-EIGHT-CURRENT-03-PROTOCOL.md), skill resource `ee5eb28`.
