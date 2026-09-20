@@ -9,7 +9,34 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Friday output pilot prepared — 2026-09-21, candidate `eaac566`
+## Friday output pilot execution complete; publication review pending — 2026-09-21
+
+All six scheduled sessions from launch `5d68166` completed without timeout or retry.
+Original session usage reconciles, and every recorded shell output/exit matches CLI
+capture. Original files/modes, HEAD/index and installed resources are unchanged;
+no extra project files remain. Raw-observation records in all three conditions
+match all ten reader observations, rollback storage and source provenance.
+
+| Output mode | Baseline tokens / seconds | Original tokens / seconds | Candidate tokens / seconds |
+|---|---:|---:|---:|
+| Contracts | 80,694 / 60.689 | 70,176 / 60.958 | 70,460 / 60.303 |
+| Raw observations | 74,179 / 104.474 | 104,526 / 82.473 | 92,194 / 71.464 |
+
+These are recorded costs, **not attributed improvements**. Neither candidate
+session has a recorded read of the modified guide. The raw-observation original
+reads the guide and full helper, then writes its own SQLite verification; candidate
+writes its own without those reads. None of the six uses the matrix helper.
+Do not credit this guide edit for different discovery/work. Production stays
+unchanged; reviewed public artifacts and detailed exposure review remain pending.
+All originals are retained privately under `benchmarks/local-runs/friday-output-01`.
+Before model launch, snapshot verification caught and corrected an omitted trailing
+blank line in UI metadata; no model attempt had started and no frozen input changed.
+
+한국어: 6회 실행을 모두 마쳤고 원본 출력·토큰·파일 보존과 요청한 JSON 값을
+대조했다. 후보는 수정된 가이드를 읽지 않았으므로 비용 차이를 수정 효과라고
+주장하지 않는다. 공개용 증거 검토가 남아 있으며 실제 스킬과 그래프는 그대로다.
+
+## Friday output pilot prepared — historical pre-run, 2026-09-21, candidate `eaac566`
 
 [Frozen six-cell protocol](FRIDAY-OUTPUT-01-PROTOCOL.md) uses two related authored
 stock-review tasks differing in requested output. Native controls establish the
