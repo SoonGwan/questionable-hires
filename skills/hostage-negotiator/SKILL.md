@@ -23,7 +23,7 @@ Without equivalent project support, optionally copy the [Python asyncio asset](a
 
 ## Deliver and stop
 
-Run native tests in a dedicated command so results and process exit remain inspectable. Then combine remaining copy integrity (`cmp <asset> <copy>`), diff checks and scope status in one non-test call, preserving each needed exit. Inspect new code not already visible in your edit output; do not reprint a whole generated suite merely to confirm it exists. A later successful command is not test evidence; never recopy a helper to make its integrity check pass.
+Run native tests in a dedicated shell command with its own results and process exit. A dedicated command need not be a separate model turn: when an edit succeeds, run the relevant test command immediately in the same tool interaction if sequencing is supported. Wait for the edit result first; do not test a failed or pending edit, run edits and tests concurrently, or replace a test exit with a later command exit. Inspect a failing test before choosing a fix. Keep before/after evidence separate; batching changes transport, not the checks or their order. Then combine remaining copy integrity (`cmp <asset> <copy>`), diff checks and scope status in one non-test call, preserving each needed exit. Inspect new code not already visible in your edit output; do not reprint a whole generated suite merely to confirm it exists. A later successful command is not test evidence; never recopy a helper to make its integrity check pass.
 
 Review the diff against acceptance conditions, removing only your own unjustified additions. Reuse valid evidence; rerun only for changed relevant inputs, unresolved uncertainty or an explicit requirement.
 

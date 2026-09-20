@@ -9,7 +9,37 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Edit/test roundtrip 01 — 2026-09-20, unpromoted candidate from `3083086`
+## Optional edit/test sequencing adopted — 2026-09-20, parent `b94e395`
+
+The exact candidate sentence measured in roundtrip 01 is now adopted in Hostage;
+assets, remaining guidance and invocation policy are unchanged. It allows
+successful edits and dedicated tests within one sequential tool interaction,
+preserving each outcome, failure inspection and all checks. This is an optional
+transport improvement, not mandatory batching or an overall efficiency claim.
+Shipped Hostage resources exactly match the measured candidate snapshot. Local
+Python 3.11 regression discovery passes **741 tests in 115.317s**; skill/repository
+validation and featured-language synchronization checks pass. Runner tests mock
+model calls; this local suite is not 741 additional model-performance samples.
+
+[Stale patch 01](results/hostage-stale-patch-01/README.md), launch `b94e395`, adds
+three fresh no-skill/original/candidate sessions on a different explicit recovery
+task with existing tests. All preserve the rejected patch exit 1, successfully
+repair before testing, pass four unchanged native tests once and preserve owner
+files and the audit. Nine separate author controls behave as expected. Candidate
+does NOT batch here: tokens **+0.17%** and time **+0.29%** versus original;
+**+12.27% / +1.47%** versus baseline. It provides recovery evidence, not transferred
+efficiency or proof of failed-edit gating within one batched call. The prior
+buffer result remains narrow, n=1 and not a fresh no-skill comparison. Featured
+charts are unchanged; all-eight performance/release goals remain unmet.
+
+한국어: 앞서 측정한 편집→테스트 순차 실행 안내만 실제 Hostage 스킬에 반영했다.
+검증·실패 확인·개별 종료 코드를 유지하며 강제 적용하지 않는다. 후속 3회 실패
+복구 비교에서는 모두 수정 성공 후 테스트 4개를 통과했지만 후보가 호출을
+묶지 않아 기존 대비 토큰 0.17%·시간 0.29% 증가, 무스킬 대비 12.27%·1.47%
+증가였다. 별도 대조 9개도 정상 동작했다. 한 호출 안의 편집 실패 처리까지
+입증한 것은 아니며 전체 성능 개선·배포 완료 주장이나 기존 차트 변경은 없다.
+
+## Edit/test roundtrip 01 — historical pre-adoption checkpoint, 2026-09-20, candidate from `3083086`
 
 [Four fresh sessions](results/hostage-roundtrip-01/README.md), launch `eea866f`,
 compare existing instructions with sequential edit/test transport guidance.
