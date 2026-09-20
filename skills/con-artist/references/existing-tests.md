@@ -35,6 +35,22 @@ For installed pytest, use `runner: "pytest"` and its native test arguments in bo
 test lists. Configuration/collection precede copy-import verification; fixtures run
 normally afterward. No automatic package installation or custom plugin is required.
 
+When the audit requires the test's imported function binding in the same process,
+the helper already supports this without a `sitecustomize.py` or startup hook.
+For the example above, include `test_service` in `imports` and add:
+
+```json
+"precheck": "import service, test_service\nassert test_service.save is service.save\nprint('Verified test binding: test_service.save is service.save', flush=True)\n"
+```
+
+Adapt the actual consumer alias, not just the implementation module name. This
+checks the loaded binding before native tests/probes, not later fixture rebinding
+or call counts. Existing runtime observations may already be sufficient; do not
+add a precheck or tracer merely to repeat them. A failed precheck is incomplete
+evidence, not a detected behavioral fault. For a discovered test module outside
+the copy root, use the project's evidenced [import roots](python-audit-advanced.md#copied-import-roots)
+so the verified module is the one the native runner actually uses.
+
 Read all four named `checks`: `correct_tests`, `mutant_tests`, `correct_probe`,
 `mutant_probe`. Each retains native output/exit, timeout and truncation. A passing
 correct check and a defect-specific faulty assertion establish sensitivity;

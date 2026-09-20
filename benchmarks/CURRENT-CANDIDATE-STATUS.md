@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Existing audit support clarified — 2026-09-21, parent `730df4c`
+
+[Author-side native support validation](PUBLICATION-AUDIT-SUPPORT-01.md) exercises
+the existing helper on retained publication files: four valid native comparisons,
+wrong-binding precheck rejection and malformed stronger-source incomplete handling.
+The existing-test guide now makes optional same-process binding setup directly
+discoverable. No new runtime helper/entrypoint rule, model run, efficiency claim
+or change to the rejected discovery candidate. Three new checks pass on Python3.11
+and3.9; 13 build and two documented-probe checks pass on3.11.
+
+한국어: 기존 도구의 같은 프로세스 바인딩 확인을 네이티브 비교 예제에 연결했고
+실제 정상·결함·잘못된 바인딩·문법 오류 대조를 검증했다. 작성자 측 검증이며
+모델 채택·토큰 절감은 아직 입증되지 않았다. 실행 기능이나 대표 그래프는 유지한다.
+
 ## Discovery comparison reviewed — 2026-09-21, launch `e9a59c6`
 
 [Six original sessions and full review](results/con-artist-discovery-01/README.md),
