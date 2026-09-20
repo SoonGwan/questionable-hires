@@ -9,6 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Buffer schedule and limit guard work in archives — 2026-09-20, parent `1d5e3c0`
+
+Buffer scheduling tests use explicit synthetic resources while a separate real
+history check compares every file and permission in both pinned skill snapshots.
+Tests retain the six-slot order, changed-input rejection before the execution
+marker and exclusive execution; an added account-limit case verifies one retained
+incomplete cell with no replacement/restart. All five checkout tests pass. Combined
+sparse archive discovery now has twenty tests: fifteen actual native/schedule/
+tamper/limit checks run, five historical-resource checks explicitly skip. All four
+archive wrapper regressions pass. Frozen runners, model tasks and measured results
+are unchanged. Other archive Git dependencies remain; this is verification
+reproducibility, not measured skill efficiency or release completion.
+
+한국어: 버퍼 비교 실행 순서·변조 거부·중복 실행 방지 검사를 Git과 분리했고,
+한도 감지 시 한 번만 기록하고 중단하는 검사도 추가했다. 로컬 5개가 통과하며
+통합 압축본에서는 동작 검사 15개가 실행되고 출처 대조 5개만 건너뛴다.
+실제 성능 수치나 배포 완료 주장은 바꾸지 않았다.
+
 ## Missing-parent native preflights isolated — 2026-09-20, parent `581d0b4`
 
 The buffer and stale-patch native controls now receive an owned disposable root

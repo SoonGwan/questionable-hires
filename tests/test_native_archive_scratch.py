@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class NativeArchiveScratchTests(unittest.TestCase):
     def test_buffer_and_stale_patch_controls_execute_without_local_runs(self):
         names = ('tests/test_hostage_stale_patch_case.py', 'tests/test_hostage_buffer_runner.py',
-                 'tests/native_fixture_support.py', 'benchmarks/hostage_stale_patch_case.py',
+                 'tests/native_fixture_support.py', 'tests/runner_snapshot_support.py', 'benchmarks/hostage_stale_patch_case.py',
                  'benchmarks/hostage_buffer_cases.py', 'benchmarks/run_hostage_buffer_01.py',
                  'benchmarks/run.py')
         with tempfile.TemporaryDirectory() as scratch:
