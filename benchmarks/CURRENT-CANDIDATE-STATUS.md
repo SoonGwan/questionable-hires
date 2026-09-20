@@ -23,6 +23,10 @@ Normal Git/history fixtures remain covered. This is stable-input validation,
 not a sandbox against a concurrent file replacement; existing Git-output memory
 limitations remain documented. No model latency/token or broad performance claim.
 
+Complete local regression discovery after the change: **714 tests, all passing**
+in 110.238s with the declared Python 3.11 pytest/PyYAML environment. Benchmark
+runner unit tests use mocked model calls; this is not another model experiment.
+
 한국어: 이력 도우미가 named pipe 입력에서 Git 실행 전 멈추는 문제를 실제로
 재현하고 수정했다. 일반 파일이 아니면 열기 전에 명확히 거절하며, 이력 관련
 44개 검사가 통과했다. 입력 파일을 바꾸지 않고 기존 정상 동작도 유지한다.
