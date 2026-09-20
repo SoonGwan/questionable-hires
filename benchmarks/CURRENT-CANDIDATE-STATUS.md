@@ -9,7 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Discovery comparison launched — 2026-09-21, launch `e9a59c6`
+## Discovery comparison reviewed — 2026-09-21, launch `e9a59c6`
+
+[Six original sessions and full review](results/con-artist-discovery-01/README.md),
+resources `6592959`. Every arm fulfills both final audit/scope contracts, but the
+candidate is **not adopted**: unknown-path +29.21% tokens/+37.13% time versus
+original fails its frozen gate; known-path −27.46%/−35.27% includes original
+syntax-error repair. Candidate tracing repair and all native reruns remain in
+cost. Candidate aggregate versus baseline is +24.09% tokens/+6.76% time. Five CLI
+prefix omissions were checked against original stored results; all counters
+reconcile. One authored project with path-disclosure variants, n=1—not two
+independent projects or causal savings. No same-task retuning or chart promotion.
+
+한국어: 6개 완료·최종 감사 조건 충족. 후보는 경로 미상에서 더 비싸고 느려
+미채택했다. 경로 제공의 유리한 결과만 고르지 않고 양쪽 오류 복구 비용을
+보존했다. 후보 합계도 무스킬보다 토큰 24.09%·시간 6.76% 증가했다. 전체 성능
+목표는 미달이며 배포용 지침과 대표 그래프는 유지한다.
+
+## Discovery comparison launched — historical pre-review, 2026-09-21, launch `e9a59c6`
 
 The [six-cell discovery protocol](CON-ARTIST-DISCOVERY-01-PROTOCOL.md) is frozen
 with resources `6592959`. Eight fixture/runner tests pass, including actual native

@@ -1,0 +1,1 @@
+Audit only. Native runner: python3 -B -m unittest discover -s checks -v. No dependencies/services, delegation, publication, or production/test repair. Use only disposable copies inside this project for deliberate faults and stronger checks. Keep original bytes/modes, including notes.txt. Remove owned scratch after execution. No permanent harness/report is requested.

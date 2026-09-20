@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0bf59-7eeb-7e70-8ae5-4734c05d1cdd",
+  "source_bytes": 129406,
+  "source_sha256": "0cfc9960d973bc6bb953013754c0cf1b7259a6d3317fedeb755addd4e46a1cf2",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "a089f759258b17c61bbabedd2b170679f247303758fdb334dfdfc77bd53a0560",
+      "record": {
+        "timestamp": "2026-09-20T15:05:14.403Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_039fa02975b7e9c9016aaff6295db087d0b4b41a7722556bcb",
+          "status": "completed",
+          "call_id": "call_N7lzTU0tif7GoDhN6R5osT6Z",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files -g '! .git' -g '!__pycache__/**'\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf59-7f37-7233-995f-a145ca5450b8",
+            "create_time": 1789916710.718417
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "02360ed769f781e195c4339d0000e0c69e4314c90f4ac75d083953121052a72e",
+      "record": {
+        "timestamp": "2026-09-20T15:05:14.559Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bf59-963f-7040-ad76-d76073077b43",
+          "call_id": "call_N7lzTU0tif7GoDhN6R5osT6Z",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b86dbf\",\"wall_time_seconds\":0.000002917,\"exit_code\":0,\"original_token_count\":40,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nengine.py\\nbridge.py\\nchecks/test_engine.py\\nnotes.txt\\nrequirements.md\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf59-7f37-7233-995f-a145ca5450b8",
+            "create_time": 1789916714.5593
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "5405fe76afe7a9555438a5af2552733020719a27e104cb4243e9012b56573813",
+      "record": {
+        "timestamp": "2026-09-20T15:05:17.132Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_039fa02975b7e9c9016aaff62c333887d0867a55c09e43f839",
+          "status": "completed",
+          "call_id": "call_fgwbJVZvkn2KbUCB2XYR2kWy",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md engine.py bridge.py checks/test_engine.py requirements.md notes.txt\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf59-7f37-7233-995f-a145ca5450b8",
+            "create_time": 1789916715.247724
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "8b82ef8e74cdbdbf66239dc97a1ed4c91830f7de5cb6422c627a501e487f0853",
+      "record": {
+        "timestamp": "2026-09-20T15:05:17.217Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bf59-a0a1-7633-a29e-859adcd3f1fd",
+          "call_id": "call_fgwbJVZvkn2KbUCB2XYR2kWy",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"4f75c9\",\"wall_time_seconds\":0.000002125,\"exit_code\":0,\"original_token_count\":512,\"output\":\"Audit only. Native runner: python3 -B -m unittest discover -s checks -v. No dependencies/services, delegation, publication, or production/test repair. Use only disposable copies inside this project for deliberate faults and stronger checks. Keep original bytes/modes, including notes.txt. Remove owned scratch after execution. No permanent harness/report is requested.\\nimport json\\nfrom pathlib import Path\\n\\n\\ndef install(destination, payload):\\n    destination = Path(destination)\\n    staged = destination.with_name(destination.name + '.pending')\\n    try:\\n        staged.write_bytes((json.dumps(payload, ensure_ascii=False, sort_keys=True) + '\\\\n').encode('utf-8'))\\n        staged.replace(destination)\\n        return {'published': payload['version']}\\n    finally:\\n        staged.unlink(missing_ok=True)\\nfrom engine import install as _install\\n\\n\\ndef refresh(path, payload):\\n    return _install(path, payload)\\nimport tempfile\\nfrom pathlib import Path\\nimport unittest\\nfrom bridge import refresh as publish\\n\\nROOT = Path(__file__).resolve().parents[1]\\n\\n\\nclass SuccessTests(unittest.TestCase):\\n    def setUp(self):\\n        scratch = tempfile.TemporaryDirectory(dir=ROOT)\\n        self.addCleanup(scratch.cleanup)\\n        self.target = Path(scratch.name) / 'active.json'\\n        self.target.write_bytes(b'previous manifest\\\\n')\\n\\n    def test_success(self):\\n        self.assertEqual(publish(self.target, {'version': 2, 'routes': ['/']}), {'published': 2})\\n\\n    def test_unicode_success(self):\\n        self.assertEqual(publish(self.target, {'version': 3, 'routes': ['/\uc11c\uc6b8', '/caf\u00e9']}), {'published': 3})\\nPublishing a generated routing manifest returns the published version. Before returning success, replace the destination with the complete UTF-8 JSON payload: sort_keys=True, ensure_ascii=False, standard json.dumps separators, and a final LF. Remove the sibling .pending file on completion. Acknowledgment alone is not publication. This audit concerns omitted final replacement, not crash durability or concurrent writers.\\nOwner draft: preserve exactly.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf59-7f37-7233-995f-a145ca5450b8",
+            "create_time": 1789916717.217468
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "d116cdb80bb91a162d7d77754412d365e4b6cd5206b18b5688ba398a85a5ad6c",
+      "record": {
+        "timestamp": "2026-09-20T15:06:17.333Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_039fa02975b7e9c9016aaff645435c87d0b249a6c25a76227e",
+          "status": "completed",
+          "call_id": "call_XGcUDdWUpkC3UEYpzAk6N4Sq",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nfrom pathlib import Path\\nimport hashlib\\nimport shutil\\nimport stat\\nimport subprocess\\nimport tempfile\\n\\nroot = Path.cwd()\\ndef inventory():\\n    return {str(p.relative_to(root)): (stat.S_IMODE(p.stat().st_mode), hashlib.sha256(p.read_bytes()).hexdigest()) for p in root.rglob('*') if p.is_file()}\\nbefore = inventory()\\nrunner = ['python3', '-B', '-m', 'unittest', 'discover', '-s', 'checks', '-v']\\ndef run(label, directory):\\n    result = subprocess.run(runner, cwd=directory, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\\n    print('\\\\n=== ' + label + ' ===', flush=True)\\n    print(result.stdout, end='', flush=True)\\n    print('PROCESS EXIT:', result.returncode, flush=True)\\n    return result.returncode\\n\\ntrace = '''import sys\\nimport bridge\\nimport engine\\nimport test_engine\\nfrom pathlib import Path\\n\\nprint('BINDING: test_engine.publish is bridge.refresh =', test_engine.publish is bridge.refresh, flush=True)\\nprint('BINDING: bridge._install is engine.install =', bridge._install is engine.install, flush=True)\\nprint('ENTRYPOINT:', test_engine.publish.__module__, test_engine.publish.__name__, test_engine.publish.__code__.co_filename, flush=True)\\nprint('WRITER:', bridge._install.__module__, bridge._install.__name__, bridge._install.__code__.co_filename, flush=True)\\n\\ndef observe(frame, event, arg):\\n    if frame.f_code is bridge.refresh.__code__:\\n        if event == 'call':\\n            print('TRACE actual refresh call; globals[_install] is engine.install =', frame.f_globals['_install'] is engine.install, flush=True)\\n        elif event == 'return':\\n            target = Path(frame.f_locals['path'])\\n            print('TRACE refresh returned', repr(arg), 'destination =', repr(target.read_bytes()), 'pending_exists =', target.with_name(target.name + '.pending').exists(), flush=True)\\n    elif frame.f_code is bridge._install.__code__ and event == 'call':\\n        print('TRACE actual writer call:', frame.f_code.co_filename, frame.f_code.co_name, flush=True)\\n\\nsys.setprofile(observe)\\n'''\\nstrong = '''import tempfile\\nfrom pathlib import Path\\nimport unittest\\nimport test_engine\\n\\nROOT = Path(__file__).resolve().parents[1]\\n\\nclass PublicationBytesTests(unittest.TestCase):\\n    def test_reopened_unicode_publication(self):\\n        with tempfile.TemporaryDirectory(dir=ROOT) as scratch:\\n            target = Path(scratch) / 'active.json'\\n            old = b'previous DIFFERENT manifest\\\\\\\\n'\\n            target.write_bytes(old)\\n            payload = {'version': 7, 'routes': ['/\uc11c\uc6b8', '/caf\u00e9'], 'label': '\uacbd\ub85c'}\\n            expected = ('{\\\"label\\\": \\\"\uacbd\ub85c\\\", \\\"routes\\\": [\\\"/\uc11c\uc6b8\\\", \\\"/caf\u00e9\\\"], \\\"version\\\": 7}\\\\\\\\n').encode('utf-8')\\n            self.assertNotEqual(old, expected)\\n            acknowledgment = test_engine.publish(target, payload)\\n            self.assertEqual(acknowledgment, {'published': 7})\\n            self.assertFalse(target.with_name(target.name + '.pending').exists(), 'pending file must be removed')\\n            with target.open('rb') as destination:\\n                actual = destination.read()\\n            self.assertEqual(actual, expected, 'destination must contain complete documented UTF-8 JSON bytes')\\n'''\\n\\nexits = {}\\nscratch = None\\ntry:\\n    exits['original existing tests'] = run('original existing tests', root)\\n    scratch = Path(tempfile.mkdtemp(prefix='.publication-audit-', dir=root))\\n    for name in ('correct', 'fault'):\\n        copy = scratch / name\\n        copy.mkdir()\\n        (copy / 'checks').mkdir()\\n        for filename in ('AGENTS.md', 'engine.py', 'bridge.py', 'requirements.md', 'notes.txt', 'checks/test_engine.py'):\\n            shutil.copy2(root / filename, copy / filename)\\n        if name == 'fault':\\n            writer = copy / 'engine.py'\\n            content = writer.read_bytes()\\n            needle = b'        staged.replace(destination)\\\\n'\\n            assert content.count(needle) == 1\\n            writer.write_bytes(content.replace(needle, b'        # Audit fault: final replacement omitted.\\\\n'))\\n        (copy / 'checks/test_00_trace.py').write_text(trace, encoding='utf-8')\\n        exits[name + ' existing tests with trace'] = run(name + ' existing tests with same-process trace', copy)\\n    assert exits['original existing tests'] == 0\\n    assert exits['correct existing tests with trace'] == 0\\n    assert exits['fault existing tests with trace'] == 0\\n    for name in ('correct', 'fault'):\\n        copy = scratch / name\\n        (copy / 'checks/test_publication_audit.py').write_text(strong, encoding='utf-8')\\n        exits[name + ' stronger tests'] = run(name + ' same stronger native assertion', copy)\\n    assert exits['correct stronger tests'] == 0\\n    assert exits['fault stronger tests'] == 1\\nfinally:\\n    if scratch is not None:\\n        shutil.rmtree(scratch)\\n    after = inventory()\\n    print('\\\\nORIGINAL FILE BYTES/MODES AND FILE INVENTORY UNCHANGED:', before == after, flush=True)\\n    print('OWNED SCRATCH REMOVED:', scratch is None or not scratch.exists(), flush=True)\\n    if before != after:\\n        print('CHANGED PATHS:', sorted(p for p in before.keys() | after.keys() if before.get(p) != after.get(p)), flush=True)\\n    assert before == after\\nprint('EXIT SUMMARY:', exits)\\nPY\",\"max_output_tokens\":9000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf59-7f37-7233-995f-a145ca5450b8",
+            "create_time": 1789916717.909525
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "864a460f9eba4f0a3627b9fc6853ac0631a449a6b911c11cbd3b461c051c4bee",
+      "record": {
+        "timestamp": "2026-09-20T15:06:17.778Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bf5a-8d32-7353-aab4-5ed2a1d70d1b",
+          "call_id": "call_XGcUDdWUpkC3UEYpzAk6N4Sq",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"24f6bc\",\"wall_time_seconds\":0.258982875,\"exit_code\":0,\"original_token_count\":1928,\"output\":\"\\n=== original existing tests ===\\ntest_success (test_engine.SuccessTests) ... ok\\ntest_unicode_success (test_engine.SuccessTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.002s\\n\\nOK\\nPROCESS EXIT: 0\\n\\n=== correct existing tests with same-process trace ===\\nBINDING: test_engine.publish is bridge.refresh = True\\nBINDING: bridge._install is engine.install = True\\nENTRYPOINT: bridge refresh <WORKSPACE>/.publication-audit-8jtsawjq/correct/bridge.py\\nWRITER: engine install <WORKSPACE>/.publication-audit-8jtsawjq/correct/engine.py\\ntest_success (test_engine.SuccessTests) ... TRACE actual refresh call; globals[_install] is engine.install = True\\nTRACE actual writer call: <WORKSPACE>/.publication-audit-8jtsawjq/correct/engine.py install\\nTRACE refresh returned {'published': 2} destination = b'{\\\"routes\\\": [\\\"/\\\"], \\\"version\\\": 2}\\\\n' pending_exists = False\\nok\\ntest_unicode_success (test_engine.SuccessTests) ... TRACE actual refresh call; globals[_install] is engine.install = True\\nTRACE actual writer call: <WORKSPACE>/.publication-audit-8jtsawjq/correct/engine.py install\\nTRACE refresh returned {'published': 3} destination = b'{\\\"routes\\\": [\\\"/\\\\xec\\\\x84\\\\x9c\\\\xec\\\\x9a\\\\xb8\\\", \\\"/caf\\\\xc3\\\\xa9\\\"], \\\"version\\\": 3}\\\\n' pending_exists = False\\nok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.003s\\n\\nOK\\nPROCESS EXIT: 0\\n\\n=== fault existing tests with same-process trace ===\\nBINDING: test_engine.publish is bridge.refresh = True\\nBINDING: bridge._install is engine.install = True\\nENTRYPOINT: bridge refresh <WORKSPACE>/.publication-audit-8jtsawjq/fault/bridge.py\\nWRITER: engine install <WORKSPACE>/.publication-audit-8jtsawjq/fault/engine.py\\ntest_success (test_engine.SuccessTests) ... TRACE actual refresh call; globals[_install] is engine.install = True\\nTRACE actual writer call: <WORKSPACE>/.publication-audit-8jtsawjq/fault/engine.py install\\nTRACE refresh returned {'published': 2} destination = b'previous manifest\\\\n' pending_exists = False\\nok\\ntest_unicode_success (test_engine.SuccessTests) ... TRACE actual refresh call; globals[_install] is engine.install = True\\nTRACE actual writer call: <WORKSPACE>/.publication-audit-8jtsawjq/fault/engine.py install\\nTRACE refresh returned {'published': 3} destination = b'previous manifest\\\\n' pending_exists = False\\nok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.002s\\n\\nOK\\nPROCESS EXIT: 0\\n\\n=== correct same stronger native assertion ===\\nBINDING: test_engine.publish is bridge.refresh = True\\nBINDING: bridge._install is engine.install = True\\nENTRYPOINT: bridge refresh <WORKSPACE>/.publication-audit-8jtsawjq/correct/bridge.py\\nWRITER: engine install <WORKSPACE>/.publication-audit-8jtsawjq/correct/engine.py\\ntest_success (test_engine.SuccessTests) ... TRACE actual refresh call; globals[_install] is engine.install = True\\nTRACE actual writer call: <WORKSPACE>/.publication-audit-8jtsawjq/correct/engine.py install\\nTRACE refresh returned {'published': 2} destination = b'{\\\"routes\\\": [\\\"/\\\"], \\\"version\\\": 2}\\\\n' pending_exists = False\\nok\\ntest_unicode_success (test_engine.SuccessTests) ... TRACE actual refresh call; globals[_install] is engine.install = True\\nTRACE actual writer call: <WORKSPACE>/.publication-audit-8jtsawjq/correct/engine.py install\\nTRACE refresh returned {'published': 3} destination = b'{\\\"routes\\\": [\\\"/\\\\xec\\\\x84\\\\x9c\\\\xec\\\\x9a\\\\xb8\\\", \\\"/caf\\\\xc3\\\\xa9\\\"], \\\"version\\\": 3}\\\\n' pending_exists = False\\nok\\ntest_reopened_unicode_publication (test_publication_audit.PublicationBytesTests) ... TRACE actual refresh call; globals[_install] is engine.install = True\\nTRACE actual writer call: <WORKSPACE>/.publication-audit-8jtsawjq/correct/engine.py install\\nTRACE refresh returned {'published': 7} destination = b'{\\\"label\\\": \\\"\\\\xea\\\\xb2\\\\xbd\\\\xeb\\\\xa1\\\\x9c\\\", \\\"routes\\\": [\\\"/\\\\xec\\\\x84\\\\x9c\\\\xec\\\\x9a\\\\xb8\\\", \\\"/caf\\\\xc3\\\\xa9\\\"], \\\"version\\\": 7}\\\\n' pending_exists = False\\nok\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.003s\\n\\nOK\\nPROCESS EXIT: 0\\n\\n=== fault same stronger native assertion ===\\nBINDING: test_engine.publish is bridge.refresh = True\\nBINDING: bridge._install is engine.install = True\\nENTRYPOINT: bridge refresh <WORKSPACE>/.publication-audit-8jtsawjq/fault/bridge.py\\nWRITER: engine install <WORKSPACE>/.publication-audit-8jtsawjq/fault/engine.py\\ntest_success (test_engine.SuccessTests) ... TRACE actual refresh call; globals[_install] is engine.install = True\\nTRACE actual writer call: <WORKSPACE>/.publication-audit-8jtsawjq/fault/engine.py install\\nTRACE refresh returned {'published': 2} destination = b'previous manifest\\\\n' pending_exists = False\\nok\\ntest_unicode_success (test_engine.SuccessTests) ... TRACE actual refresh call; globals[_install] is engine.install = True\\nTRACE actual writer call: <WORKSPACE>/.publication-audit-8jtsawjq/fault/engine.py install\\nTRACE refresh returned {'published': 3} destination = b'previous manifest\\\\n' pending_exists = False\\nok\\ntest_reopened_unicode_publication (test_publication_audit.PublicationBytesTests) ... TRACE actual refresh call; globals[_install] is engine.install = True\\nTRACE actual writer call: <WORKSPACE>/.publication-audit-8jtsawjq/fault/engine.py install\\nTRACE refresh returned {'published': 7} destination = b'previous DIFFERENT manifest\\\\n' pending_exists = False\\nFAIL\\n\\n======================================================================\\nFAIL: test_reopened_unicode_publication (test_publication_audit.PublicationBytesTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.publication-audit-8jtsawjq/fault/checks/test_publication_audit.py\\\", line 22, in test_reopened_unicode_publication\\n    self.assertEqual(actual, expected, 'destination must contain complete documented UTF-8 JSON bytes')\\nAssertionError: b'previous DIFFERENT manifest\\\\n' != b'{\\\"label\\\": \\\"\\\\xea\\\\xb2\\\\xbd\\\\xeb\\\\xa1\\\\x9c\\\", \\\"ro[65 chars]7}\\\\n' : destination must contain complete documented UTF-8 JSON bytes\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.005s\\n\\nFAILED (failures=1)\\nPROCESS EXIT: 1\\n\\nORIGINAL FILE BYTES/MODES AND FILE INVENTORY UNCHANGED: True\\nOWNED SCRATCH REMOVED: True\\nEXIT SUMMARY: {'original existing tests': 0, 'correct existing tests with trace': 0, 'fault existing tests with trace': 0, 'correct stronger tests': 0, 'fault stronger tests': 1}\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bf59-7f37-7233-995f-a145ca5450b8",
+            "create_time": 1789916777.778181
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

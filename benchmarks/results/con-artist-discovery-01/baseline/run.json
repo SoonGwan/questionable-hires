@@ -1,0 +1,161 @@
+{
+  "resource_revision": "6592959af6a2132adab845e72e50b63e20c02169",
+  "cases": [
+    {
+      "id": "manifest-discovery-unknown",
+      "skill": "con-artist",
+      "files": {
+        "engine.py": "import json\nfrom pathlib import Path\n\n\ndef install(destination, payload):\n    destination = Path(destination)\n    staged = destination.with_name(destination.name + '.pending')\n    try:\n        staged.write_bytes((json.dumps(payload, ensure_ascii=False, sort_keys=True) + '\\n').encode('utf-8'))\n        staged.replace(destination)\n        return {'published': payload['version']}\n    finally:\n        staged.unlink(missing_ok=True)\n",
+        "bridge.py": "from engine import install as _install\n\n\ndef refresh(path, payload):\n    return _install(path, payload)\n",
+        "checks/test_engine.py": "import tempfile\nfrom pathlib import Path\nimport unittest\nfrom bridge import refresh as publish\n\nROOT = Path(__file__).resolve().parents[1]\n\n\nclass SuccessTests(unittest.TestCase):\n    def setUp(self):\n        scratch = tempfile.TemporaryDirectory(dir=ROOT)\n        self.addCleanup(scratch.cleanup)\n        self.target = Path(scratch.name) / 'active.json'\n        self.target.write_bytes(b'previous manifest\\n')\n\n    def test_success(self):\n        self.assertEqual(publish(self.target, {'version': 2, 'routes': ['/']}), {'published': 2})\n\n    def test_unicode_success(self):\n        self.assertEqual(publish(self.target, {'version': 3, 'routes': ['/\uc11c\uc6b8', '/caf\u00e9']}), {'published': 3})\n",
+        "AGENTS.md": "Audit only. Native runner: python3 -B -m unittest discover -s checks -v. No dependencies/services, delegation, publication, or production/test repair. Use only disposable copies inside this project for deliberate faults and stronger checks. Keep original bytes/modes, including notes.txt. Remove owned scratch after execution. No permanent harness/report is requested.\n",
+        "requirements.md": "Publishing a generated routing manifest returns the published version. Before returning success, replace the destination with the complete UTF-8 JSON payload: sort_keys=True, ensure_ascii=False, standard json.dumps separators, and a final LF. Remove the sibling .pending file on completion. Acknowledgment alone is not publication. This audit concerns omitted final replacement, not crash durability or concurrent writers.\n",
+        "notes.txt": "Owner draft: preserve exactly.\n"
+      },
+      "task": "Audit whether the existing success tests detect a missing final replacement when publishing the routing manifest. Trace the actual tested entrypoint and writer binding in the same process as the checks. Run the existing native tests on correct code and an isolated fault that omits final replacement but preserves acknowledgment and pending-file cleanup. If they survive, run the same stronger native assertion on both versions: reopen the destination after the actual call and compare complete bytes for a Unicode payload against the documented format, with an existing destination seeded to different bytes. Confirm pending-file cleanup. Explain actual assertions and exits, distinguishing missing publication from setup errors. Follow AGENTS.md; preserve originals and remove disposable copies. Do not apply a production or test edit.",
+      "criteria": [
+        "Both original native success tests execute on correct and isolated omitted-replacement code.",
+        "The deliberate fault omits only final replacement, retaining acknowledgment and cleanup.",
+        "Same-process evidence links the tested entrypoint and writer to the copied implementation.",
+        "Stronger native assertion uses the actual call and reopened full Unicode bytes with distinct preexisting content; correct passes and faulty fails for publication, not setup.",
+        "Cleanup is checked; original bytes/modes/owner notes remain intact and owned copies are removed."
+      ]
+    },
+    {
+      "id": "manifest-discovery-known",
+      "skill": "con-artist",
+      "files": {
+        "engine.py": "import json\nfrom pathlib import Path\n\n\ndef install(destination, payload):\n    destination = Path(destination)\n    staged = destination.with_name(destination.name + '.pending')\n    try:\n        staged.write_bytes((json.dumps(payload, ensure_ascii=False, sort_keys=True) + '\\n').encode('utf-8'))\n        staged.replace(destination)\n        return {'published': payload['version']}\n    finally:\n        staged.unlink(missing_ok=True)\n",
+        "bridge.py": "from engine import install as _install\n\n\ndef refresh(path, payload):\n    return _install(path, payload)\n",
+        "checks/test_engine.py": "import tempfile\nfrom pathlib import Path\nimport unittest\nfrom bridge import refresh as publish\n\nROOT = Path(__file__).resolve().parents[1]\n\n\nclass SuccessTests(unittest.TestCase):\n    def setUp(self):\n        scratch = tempfile.TemporaryDirectory(dir=ROOT)\n        self.addCleanup(scratch.cleanup)\n        self.target = Path(scratch.name) / 'active.json'\n        self.target.write_bytes(b'previous manifest\\n')\n\n    def test_success(self):\n        self.assertEqual(publish(self.target, {'version': 2, 'routes': ['/']}), {'published': 2})\n\n    def test_unicode_success(self):\n        self.assertEqual(publish(self.target, {'version': 3, 'routes': ['/\uc11c\uc6b8', '/caf\u00e9']}), {'published': 3})\n",
+        "AGENTS.md": "Audit only. Native runner: python3 -B -m unittest discover -s checks -v. No dependencies/services, delegation, publication, or production/test repair. Use only disposable copies inside this project for deliberate faults and stronger checks. Keep original bytes/modes, including notes.txt. Remove owned scratch after execution. No permanent harness/report is requested.\n",
+        "requirements.md": "Publishing a generated routing manifest returns the published version. Before returning success, replace the destination with the complete UTF-8 JSON payload: sort_keys=True, ensure_ascii=False, standard json.dumps separators, and a final LF. Remove the sibling .pending file on completion. Acknowledgment alone is not publication. This audit concerns omitted final replacement, not crash durability or concurrent writers.\n",
+        "notes.txt": "Owner draft: preserve exactly.\n"
+      },
+      "task": "Audit whether the existing success tests detect a missing final replacement when publishing the routing manifest. Trace the actual tested entrypoint and writer binding in the same process as the checks. Run the existing native tests on correct code and an isolated fault that omits final replacement but preserves acknowledgment and pending-file cleanup. If they survive, run the same stronger native assertion on both versions: reopen the destination after the actual call and compare complete bytes for a Unicode payload against the documented format, with an existing destination seeded to different bytes. Confirm pending-file cleanup. Explain actual assertions and exits, distinguishing missing publication from setup errors. Follow AGENTS.md; preserve originals and remove disposable copies. Do not apply a production or test edit. Relevant paths: checks/test_engine.py, bridge.py, engine.py, requirements.md.",
+      "criteria": [
+        "Both original native success tests execute on correct and isolated omitted-replacement code.",
+        "The deliberate fault omits only final replacement, retaining acknowledgment and cleanup.",
+        "Same-process evidence links the tested entrypoint and writer to the copied implementation.",
+        "Stronger native assertion uses the actual call and reopened full Unicode bytes with distinct preexisting content; correct passes and faulty fails for publication, not setup.",
+        "Cleanup is checked; original bytes/modes/owner notes remain intact and owned copies are removed."
+      ]
+    }
+  ],
+  "identities": {
+    "run_con_artist_discovery_01.py": "482b20e795db7cf19df4054571828ca25dd5ac0b0fbad6344c8473142c60d0ed",
+    "con_artist_discovery_case.py": "292a609f7f807bcdf98fc4642a3a198763bd0acddeb11066e87a6cfd45e9a741",
+    "con_artist_discovery_candidate.py": "ca3f48616698ab2521a40e8c42aab8b84bc00b027911a6825314c44b6f10f768",
+    "run_con_artist_repository_01.py": "ac2a5f34b113423911b5f2abcb6a0196486c15e07f86ce51b34455bcbfd9773a",
+    "run_hostage_buffer_01.py": "31e0eae795f56a088588a8d2132ad3142c9f8e09806522a1504d290245e81f09",
+    "run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "CON-ARTIST-DISCOVERY-01-PROTOCOL.md": "04469726bb4a266b8cfad8e9c09c7b7aaa2d29ff386f3f08a6d8532b0e9c51da"
+  },
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 360,
+  "repeats": 1,
+  "jobs": 1,
+  "session_persistence_requested": true,
+  "schedule": [
+    {
+      "case": "manifest-discovery-unknown",
+      "condition": "baseline"
+    },
+    {
+      "case": "manifest-discovery-unknown",
+      "condition": "original"
+    },
+    {
+      "case": "manifest-discovery-unknown",
+      "condition": "candidate"
+    },
+    {
+      "case": "manifest-discovery-known",
+      "condition": "candidate"
+    },
+    {
+      "case": "manifest-discovery-known",
+      "condition": "original"
+    },
+    {
+      "case": "manifest-discovery-known",
+      "condition": "baseline"
+    }
+  ],
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "original": "a07ae012206c59d632e95b725783f05393dd5a475e666825b481672a4a11e52a",
+    "candidate": "5115e93e73c3cf8b8be609148753090e66af05acc665b4f29cb64fadfc0bf656"
+  },
+  "native_preflight": [
+    {
+      "stronger": false,
+      "faulty": false,
+      "exit_code": 0,
+      "output": "AUTHOR_BINDINGS_VERIFIED\nAUTHOR_SCRATCH_VERIFIED 2\ntest_success (test_engine.SuccessTests.test_success) ... ok\ntest_unicode_success (test_engine.SuccessTests.test_unicode_success) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\n",
+      "source_sha256": {
+        "requirements.md": "bdef9eb0c9cd8b016d197611a0843f5712758b24d79b4a0d82ef006f84d210c1",
+        "notes.txt": "a2350b1cf18456cd6541323cdc1742b3a264736e80f8e256fc2ec4c8baf8fccd",
+        "bridge.py": "530063758ab5a364146753148731a985511a111d909437fea186d1f04de56124",
+        "engine.py": "39f03b3cfd621d1f64f4ec0073b2fed01f33e896c258e69f0b53232ec45fcc33",
+        "AGENTS.md": "71635acbdb597faab31dae588a02a4adda6ea969e9d28e2946f22001b00a2122",
+        "checks/test_engine.py": "0bc28c567a665267d7259da5a589f44a2c9d8b94fe6c66224ed2e0d9928b7a51"
+      },
+      "source_preserved": true,
+      "scratch_removed": true
+    },
+    {
+      "stronger": false,
+      "faulty": true,
+      "exit_code": 0,
+      "output": "AUTHOR_BINDINGS_VERIFIED\nAUTHOR_SCRATCH_VERIFIED 2\ntest_success (test_engine.SuccessTests.test_success) ... ok\ntest_unicode_success (test_engine.SuccessTests.test_unicode_success) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\n",
+      "source_sha256": {
+        "requirements.md": "bdef9eb0c9cd8b016d197611a0843f5712758b24d79b4a0d82ef006f84d210c1",
+        "notes.txt": "a2350b1cf18456cd6541323cdc1742b3a264736e80f8e256fc2ec4c8baf8fccd",
+        "bridge.py": "530063758ab5a364146753148731a985511a111d909437fea186d1f04de56124",
+        "engine.py": "2f1a8cce43c5850fa886366bf174a8f44f6c5fe8a8fb796d1ee7311bef03068f",
+        "AGENTS.md": "71635acbdb597faab31dae588a02a4adda6ea969e9d28e2946f22001b00a2122",
+        "checks/test_engine.py": "0bc28c567a665267d7259da5a589f44a2c9d8b94fe6c66224ed2e0d9928b7a51"
+      },
+      "source_preserved": true,
+      "scratch_removed": true
+    },
+    {
+      "stronger": true,
+      "faulty": false,
+      "exit_code": 0,
+      "output": "AUTHOR_BINDINGS_VERIFIED\nAUTHOR_PUBLICATION_BYTES b'{\"routes\": [\"/\\xec\\x84\\x9c\\xec\\x9a\\xb8\", \"/caf\\xc3\\xa9\"], \"version\": 3}\\n' b'{\"routes\": [\"/\\xec\\x84\\x9c\\xec\\x9a\\xb8\", \"/caf\\xc3\\xa9\"], \"version\": 3}\\n'\nAUTHOR_SCRATCH_VERIFIED 3\ntest_actual_published_bytes (test_engine.SuccessTests.test_actual_published_bytes) ... ok\ntest_success (test_engine.SuccessTests.test_success) ... ok\ntest_unicode_success (test_engine.SuccessTests.test_unicode_success) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.002s\n\nOK\n",
+      "source_sha256": {
+        "requirements.md": "bdef9eb0c9cd8b016d197611a0843f5712758b24d79b4a0d82ef006f84d210c1",
+        "notes.txt": "a2350b1cf18456cd6541323cdc1742b3a264736e80f8e256fc2ec4c8baf8fccd",
+        "bridge.py": "530063758ab5a364146753148731a985511a111d909437fea186d1f04de56124",
+        "engine.py": "39f03b3cfd621d1f64f4ec0073b2fed01f33e896c258e69f0b53232ec45fcc33",
+        "AGENTS.md": "71635acbdb597faab31dae588a02a4adda6ea969e9d28e2946f22001b00a2122",
+        "checks/test_engine.py": "66a9165b66b1d9468377d05067c26265248ace2cb9e1874e21a132e080d83c2b"
+      },
+      "source_preserved": true,
+      "scratch_removed": true
+    },
+    {
+      "stronger": true,
+      "faulty": true,
+      "exit_code": 1,
+      "output": "AUTHOR_BINDINGS_VERIFIED\nAUTHOR_PUBLICATION_BYTES b'previous manifest\\n' b'{\"routes\": [\"/\\xec\\x84\\x9c\\xec\\x9a\\xb8\", \"/caf\\xc3\\xa9\"], \"version\": 3}\\n'\nAUTHOR_SCRATCH_VERIFIED 3\ntest_actual_published_bytes (test_engine.SuccessTests.test_actual_published_bytes) ... FAIL\ntest_success (test_engine.SuccessTests.test_success) ... ok\ntest_unicode_success (test_engine.SuccessTests.test_unicode_success) ... ok\n\n======================================================================\nFAIL: test_actual_published_bytes (test_engine.SuccessTests.test_actual_published_bytes)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/checks/test_engine.py\", line 29, in test_actual_published_bytes\n    self.assertEqual(actual, expected)\nAssertionError: b'previous manifest\\n' != b'{\"routes\": [\"/\\xec\\x84\\x9c\\xec\\x9a\\xb8\", \"/caf\\xc3\\xa9\"], \"version\": 3}\\n'\n\n----------------------------------------------------------------------\nRan 3 tests in 0.002s\n\nFAILED (failures=1)\n",
+      "source_sha256": {
+        "requirements.md": "bdef9eb0c9cd8b016d197611a0843f5712758b24d79b4a0d82ef006f84d210c1",
+        "notes.txt": "a2350b1cf18456cd6541323cdc1742b3a264736e80f8e256fc2ec4c8baf8fccd",
+        "bridge.py": "530063758ab5a364146753148731a985511a111d909437fea186d1f04de56124",
+        "engine.py": "2f1a8cce43c5850fa886366bf174a8f44f6c5fe8a8fb796d1ee7311bef03068f",
+        "AGENTS.md": "71635acbdb597faab31dae588a02a4adda6ea969e9d28e2946f22001b00a2122",
+        "checks/test_engine.py": "66a9165b66b1d9468377d05067c26265248ace2cb9e1874e21a132e080d83c2b"
+      },
+      "source_preserved": true,
+      "scratch_removed": true
+    }
+  ],
+  "completed_cells": [],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-20T15:04:54.169645+00:00",
+  "condition": "baseline"
+}
