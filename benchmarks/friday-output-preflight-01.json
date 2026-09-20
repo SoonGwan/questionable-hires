@@ -1,0 +1,670 @@
+{
+  "observations": {
+    "engine": "sqlite-memory",
+    "complete": true,
+    "phases": [
+      {
+        "name": "initial",
+        "checks": {
+          "OLD": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                10
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          },
+          "NEW": {
+            "ok": false,
+            "error": "no such column: reserved"
+          }
+        }
+      },
+      {
+        "name": "up",
+        "checks": {
+          "OLD": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                10
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          },
+          "NEW": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                10
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "writes",
+        "checks": {
+          "OLD": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                7
+              ],
+              [
+                "B",
+                3
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          },
+          "NEW": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                7
+              ],
+              [
+                "B",
+                3
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "old restart",
+        "checks": {
+          "OLD": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                7
+              ],
+              [
+                "B",
+                3
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          },
+          "NEW": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                7
+              ],
+              [
+                "B",
+                3
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "down",
+        "checks": {
+          "OLD": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                12
+              ],
+              [
+                "B",
+                4
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          },
+          "NEW": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                7
+              ],
+              [
+                "B",
+                3
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          }
+        }
+      }
+    ],
+    "reader_sources": {
+      "OLD": {
+        "python_file": "readers.py",
+        "constant": "OLD",
+        "line": 1,
+        "sha256": "287b462e071eacdc325fbcf800d1c62f9ccb5c1ce397665a10207f39b8ad3183",
+        "query": "SELECT sku, units FROM legacy_stock ORDER BY sku",
+        "kind": "static literal, not runtime binding evidence"
+      },
+      "NEW": {
+        "python_file": "readers.py",
+        "constant": "NEW",
+        "line": 2,
+        "sha256": "287b462e071eacdc325fbcf800d1c62f9ccb5c1ce397665a10207f39b8ad3183",
+        "query": "SELECT sku, quantity-reserved AS units FROM stock ORDER BY sku",
+        "kind": "static literal, not runtime binding evidence"
+      }
+    }
+  },
+  "controls": [
+    {
+      "phase": 0,
+      "check": "OLD",
+      "outcome": "contract pass"
+    },
+    {
+      "phase": 0,
+      "check": "NEW",
+      "outcome": "expected inactive error",
+      "detail": "no such column: reserved"
+    },
+    {
+      "phase": 1,
+      "check": "OLD",
+      "outcome": "contract pass"
+    },
+    {
+      "phase": 1,
+      "check": "NEW",
+      "outcome": "contract pass"
+    },
+    {
+      "phase": 2,
+      "check": "OLD",
+      "outcome": "expected contract failure",
+      "detail": "phase 2 ('writes'), check 'OLD': rows expected [('A', 12), ('B', 4), ('C', 0)], observed [('A', 7), ('B', 3), ('C', 0)]"
+    },
+    {
+      "phase": 2,
+      "check": "NEW",
+      "outcome": "contract pass"
+    },
+    {
+      "phase": 3,
+      "check": "OLD",
+      "outcome": "expected contract failure",
+      "detail": "phase 3 ('old restart'), check 'OLD': rows expected [('A', 12), ('B', 4), ('C', 0)], observed [('A', 7), ('B', 3), ('C', 0)]"
+    },
+    {
+      "phase": 3,
+      "check": "NEW",
+      "outcome": "contract pass"
+    },
+    {
+      "phase": 4,
+      "check": "OLD",
+      "outcome": "contract pass"
+    },
+    {
+      "phase": 4,
+      "check": "NEW",
+      "outcome": "contract pass"
+    }
+  ],
+  "survival": {
+    "engine": "sqlite-memory",
+    "complete": true,
+    "phases": [
+      {
+        "name": "initial",
+        "checks": {
+          "stored": {
+            "ok": false,
+            "error": "no such column: reserved"
+          }
+        }
+      },
+      {
+        "name": "up",
+        "checks": {
+          "stored": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                10,
+                0
+              ],
+              [
+                "C",
+                0,
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "quantity",
+              "reserved"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "writes",
+        "checks": {
+          "stored": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                12,
+                5
+              ],
+              [
+                "B",
+                4,
+                1
+              ],
+              [
+                "C",
+                0,
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "quantity",
+              "reserved"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "old restart",
+        "checks": {
+          "stored": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                12,
+                5
+              ],
+              [
+                "B",
+                4,
+                1
+              ],
+              [
+                "C",
+                0,
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "quantity",
+              "reserved"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "down",
+        "checks": {
+          "stored": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                12,
+                5
+              ],
+              [
+                "B",
+                4,
+                1
+              ],
+              [
+                "C",
+                0,
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "quantity",
+              "reserved"
+            ],
+            "truncated": false
+          }
+        }
+      }
+    ]
+  },
+  "compatible_proposal": {
+    "engine": "sqlite-memory",
+    "complete": true,
+    "phases": [
+      {
+        "name": "initial",
+        "checks": {
+          "OLD": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                10
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          },
+          "NEW": {
+            "ok": false,
+            "error": "no such column: reserved"
+          }
+        }
+      },
+      {
+        "name": "up",
+        "checks": {
+          "OLD": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                10
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          },
+          "NEW": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                10
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "writes",
+        "checks": {
+          "OLD": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                12
+              ],
+              [
+                "B",
+                4
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          },
+          "NEW": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                7
+              ],
+              [
+                "B",
+                3
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "old restart",
+        "checks": {
+          "OLD": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                12
+              ],
+              [
+                "B",
+                4
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          },
+          "NEW": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                7
+              ],
+              [
+                "B",
+                3
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          }
+        }
+      },
+      {
+        "name": "down",
+        "checks": {
+          "OLD": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                12
+              ],
+              [
+                "B",
+                4
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          },
+          "NEW": {
+            "ok": true,
+            "rows": [
+              [
+                "A",
+                7
+              ],
+              [
+                "B",
+                3
+              ],
+              [
+                "C",
+                0
+              ]
+            ],
+            "columns": [
+              "sku",
+              "units"
+            ],
+            "truncated": false
+          }
+        }
+      }
+    ],
+    "reader_sources": {
+      "OLD": {
+        "python_file": "readers.py",
+        "constant": "OLD",
+        "line": 1,
+        "sha256": "287b462e071eacdc325fbcf800d1c62f9ccb5c1ce397665a10207f39b8ad3183",
+        "query": "SELECT sku, units FROM legacy_stock ORDER BY sku",
+        "kind": "static literal, not runtime binding evidence"
+      },
+      "NEW": {
+        "python_file": "readers.py",
+        "constant": "NEW",
+        "line": 2,
+        "sha256": "287b462e071eacdc325fbcf800d1c62f9ccb5c1ce397665a10207f39b8ad3183",
+        "query": "SELECT sku, quantity-reserved AS units FROM stock ORDER BY sku",
+        "kind": "static literal, not runtime binding evidence"
+      }
+    }
+  },
+  "originals_preserved": true
+}

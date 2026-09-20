@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Friday output pilot prepared — 2026-09-21, candidate `eaac566`
+
+[Frozen six-cell protocol](FRIDAY-OUTPUT-01-PROTOCOL.md) uses two related authored
+stock-review tasks differing in requested output. Native controls establish the
+same-column semantic incompatibility at new writes, inactive-reader failure, full
+rollback storage survival and a compatible positive control. Inputs and original
+preflight matrices are retained; four construction/control tests pass. No model
+sessions or production changes at this checkpoint, and no efficiency claim.
+
+한국어: 새 SQL 과제 두 종류와 정상·실패 대조를 실제 실행해 고정했다.
+원본 출력 요청을 누락하는 후보를 걸러낼 기준을 포함하며 아직 모델 결과는 없다.
+
 ## Friday output candidate prepared — 2026-09-21, base `75f6b4f`
 
 [Guide-only candidate](FRIDAY-OUTPUT-CANDIDATE-01.md) separates native contract

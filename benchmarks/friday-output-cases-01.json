@@ -1,0 +1,50 @@
+[
+  {
+    "id": "stock-contracts",
+    "skill": "friday",
+    "files": {
+      "001.sql": "CREATE TABLE stock(sku TEXT PRIMARY KEY, quantity INTEGER NOT NULL);\nINSERT INTO stock VALUES ('A',10),('C',0);\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\n",
+      "002.sql": "ALTER TABLE stock ADD COLUMN reserved INTEGER NOT NULL DEFAULT 0;\nDROP VIEW legacy_stock;\nCREATE VIEW legacy_stock AS SELECT sku, quantity-reserved AS units FROM stock;\n",
+      "003.sql": "UPDATE stock SET quantity=12, reserved=5 WHERE sku='A';\nINSERT INTO stock VALUES ('B',4,1);\n",
+      "004.sql": "DROP VIEW legacy_stock;\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\n",
+      "readers.py": "OLD = 'SELECT sku, units FROM legacy_stock ORDER BY sku'\nNEW = 'SELECT sku, quantity-reserved AS units FROM stock ORDER BY sku'\n",
+      "release.md": "# Stock release contract\nThis is an authored SQL-only SQLite review. Literal queries in readers.py define\nthe complete consumers; no application runtime, concurrent transactions, crash\nrecovery or other engine is in scope. No dependencies or external services.\n\nOLD requires ordered columns [sku, units], one complete row per SKU in lexical\norder, where units is total quantity, including reserved stock. NEW requires the\nsame columns/order but units is quantity minus reserved. Neither permits omitting\nzero values. Expected total quantities initially are A=10, C=0; after writes,\nA=12, B=4, C=0. Reservations after writes are A=5, B=1, C=0.\n\nReview this exact order: (1) 001.sql, OLD active; (2) 002.sql, OLD active;\n(3) 003.sql, OLD and NEW active; (4) drain NEW and restart OLD with no SQL;\n(5) 004.sql, OLD active. Evaluate both literal queries at all five phases,\nincluding inactive consumers, but inactive errors alone are not blockers.\nAll quantities and reservations written at step 3 must survive step 5. No\nzero-downtime or deployment authorization beyond this proposed sequence is implied.\nDo not change SQL, contracts, files or Git state. Any necessary scratch must be\nproject-local and removed; prefer in-memory execution. Report scoped limitations.\n"
+    },
+    "task": "Read release.md and review the exact SQL proposal without fixing or deploying it. Execute the actual supplied SQL and both literal readers at every phase. Compare full ordered columns/rows with the explicit contracts, including zero values and committed quantity/reservation survival after rollback. Identify the first incompatible step, last compatible checkpoint and a scoped mitigation; distinguish inactive-reader errors from active failures. Preserve supplied files and Git state, leave no scratch, and use no dependencies/external services. Give a concise evidence-backed decision with phase/check outcomes and decisive expected/observed mismatches. A full raw matrix is not requested; keep the verification reproducible and identify the reader file/constants used.",
+    "criteria": [
+      "Actual five-phase SQL execution with both literal queries at each phase; full ordered columns/rows and zero-valued SKU checked against contracts.",
+      "Find semantic OLD failure after new writes at step 3, continuing through step 4, not at step 2; step 2 is last compatible checkpoint. NEW step-1 error is inactive.",
+      "Verify down restores OLD totals and retains quantities/reservations, with supported mitigation and SQL-only limitations.",
+      "Preserve supplied files, Git HEAD/index and skill resources; no external activity or leftover scratch.",
+      "Give a concise evidence-backed decision with phase/check outcomes and decisive expected/observed mismatches. A full raw matrix is not requested; keep the verification reproducible and identify the reader file/constants used."
+    ],
+    "provenance": {
+      "kind": "Related authored synthetic tasks, not independent real-world holdouts",
+      "output_contract": "contracts"
+    }
+  },
+  {
+    "id": "stock-observations",
+    "skill": "friday",
+    "files": {
+      "001.sql": "CREATE TABLE stock(sku TEXT PRIMARY KEY, quantity INTEGER NOT NULL);\nINSERT INTO stock VALUES ('A',10),('C',0);\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\n",
+      "002.sql": "ALTER TABLE stock ADD COLUMN reserved INTEGER NOT NULL DEFAULT 0;\nDROP VIEW legacy_stock;\nCREATE VIEW legacy_stock AS SELECT sku, quantity-reserved AS units FROM stock;\n",
+      "003.sql": "UPDATE stock SET quantity=12, reserved=5 WHERE sku='A';\nINSERT INTO stock VALUES ('B',4,1);\n",
+      "004.sql": "DROP VIEW legacy_stock;\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\n",
+      "readers.py": "OLD = 'SELECT sku, units FROM legacy_stock ORDER BY sku'\nNEW = 'SELECT sku, quantity-reserved AS units FROM stock ORDER BY sku'\n",
+      "release.md": "# Stock release contract\nThis is an authored SQL-only SQLite review. Literal queries in readers.py define\nthe complete consumers; no application runtime, concurrent transactions, crash\nrecovery or other engine is in scope. No dependencies or external services.\n\nOLD requires ordered columns [sku, units], one complete row per SKU in lexical\norder, where units is total quantity, including reserved stock. NEW requires the\nsame columns/order but units is quantity minus reserved. Neither permits omitting\nzero values. Expected total quantities initially are A=10, C=0; after writes,\nA=12, B=4, C=0. Reservations after writes are A=5, B=1, C=0.\n\nReview this exact order: (1) 001.sql, OLD active; (2) 002.sql, OLD active;\n(3) 003.sql, OLD and NEW active; (4) drain NEW and restart OLD with no SQL;\n(5) 004.sql, OLD active. Evaluate both literal queries at all five phases,\nincluding inactive consumers, but inactive errors alone are not blockers.\nAll quantities and reservations written at step 3 must survive step 5. No\nzero-downtime or deployment authorization beyond this proposed sequence is implied.\nDo not change SQL, contracts, files or Git state. Any necessary scratch must be\nproject-local and removed; prefer in-memory execution. Report scoped limitations.\n"
+    },
+    "task": "Read release.md and review the exact SQL proposal without fixing or deploying it. Execute the actual supplied SQL and both literal readers at every phase. Compare full ordered columns/rows with the explicit contracts, including zero values and committed quantity/reservation survival after rollback. Identify the first incompatible step, last compatible checkpoint and a scoped mitigation; distinguish inactive-reader errors from active failures. Preserve supplied files and Git state, leave no scratch, and use no dependencies/external services. Also print a complete machine-readable JSON observation record to command output: ordered phases with names, each reader's ordered columns and full rows or actual error, and completion/truncation information. Include reader provenance (file, constant, source line, byte SHA-256, exact SQL). Do not replace this requested raw record with only pass/fail summaries. Final answer may summarize and point to the recorded command output.",
+    "criteria": [
+      "Actual five-phase SQL execution with both literal queries at each phase; full ordered columns/rows and zero-valued SKU checked against contracts.",
+      "Find semantic OLD failure after new writes at step 3, continuing through step 4, not at step 2; step 2 is last compatible checkpoint. NEW step-1 error is inactive.",
+      "Verify down restores OLD totals and retains quantities/reservations, with supported mitigation and SQL-only limitations.",
+      "Preserve supplied files, Git HEAD/index and skill resources; no external activity or leftover scratch.",
+      "Also print a complete machine-readable JSON observation record to command output: ordered phases with names, each reader's ordered columns and full rows or actual error, and completion/truncation information. Include reader provenance (file, constant, source line, byte SHA-256, exact SQL). Do not replace this requested raw record with only pass/fail summaries. Final answer may summarize and point to the recorded command output."
+    ],
+    "provenance": {
+      "kind": "Related authored synthetic tasks, not independent real-world holdouts",
+      "output_contract": "observations"
+    }
+  }
+]
