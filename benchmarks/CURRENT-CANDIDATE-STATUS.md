@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Node startup-transfer controls — 2026-09-21, parent `107a0cf`
+
+[Native preflight](RECEIPT-NODE-STARTUP-PREFLIGHT-01.md) checks two related authored
+cases: ordinary Node and required preload. Both reproduce one actual assertion
+before and pass four tests after. Removing preload causes a distinct setup failure
+in both versions; the helper rejects this unsupported startup without stripping
+it. Original tree/Git state and cleanup are checked. These are fixture controls,
+not model outcomes: scheduling, resource freezing and original-session review
+remain pending. No token-efficiency claim or featured/chart change.
+
+한국어: 안내를 줄여도 필수 실행 설정을 생략하지 않는지 확인할 대조 과제를
+검증했다. 아직 모델 성능 개선 결과가 아니며 기존 불리한 결과도 유지한다.
+
 ## Node routine guide clarified — 2026-09-21, parent `fcd523c`
 
 [Guide candidate](RECEIPT-NODE-GUIDE-01.md) makes the built-in Git/tree guard,
