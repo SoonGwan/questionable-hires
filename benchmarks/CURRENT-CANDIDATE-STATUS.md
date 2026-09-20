@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Original-response usage diagnostic — 2026-09-20
+
+[All ten original Korean sessions](SESSION-USAGE-PROFILE-01.md) reconcile 45
+recorded response usages with cumulative counters and CLI totals. Input comprises
+730,880 of 740,315 total tokens; cached input is a subset, not an extra charge.
+This changes optimization priority toward demonstrated redundant post-load work,
+not answer shortening or document-byte claims. An extra skill body shares the
+first outer output and does not imply an extra response. No model rerun, resource
+change, pricing estimate, causal improvement or chart promotion.
+
+한국어: 응답별 사용량을 원본 누적·최종 수치와 대조해 비용 구조를 확인했다.
+중복 문서 제거를 호출 감소로 오해하지 않고 실제 불필요한 작업을 개선 대상으로
+삼는다. 이번 진단 자체는 성능 개선 수치가 아니며 전체 목표는 아직 미달이다.
+
 ## Landlord discovery recheck — 2026-09-20, launch `00e1182`
 
 [Both original sessions](results/landlord-scope-02/README.md), resources `8141dfd`,
