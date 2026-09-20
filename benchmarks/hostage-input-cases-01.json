@@ -1,0 +1,48 @@
+[
+  {
+    "id": "sender-opaque",
+    "skill": "hostage-negotiator",
+    "files": {
+      "sender.py": "class Sender:\n    def __init__(self):\n        self.pending = False\n\n    async def send(self, payload, deliver):\n        if self.pending:\n            return None\n        self.pending = True\n        result = await deliver(payload)\n        self.pending = False\n        return result\n",
+      "test_sender.py": "import unittest\nfrom sender import Sender\n\nclass Smoke(unittest.IsolatedAsyncioTestCase):\n    async def test_success(self):\n        sender = Sender()\n        result = object()\n        async def deliver(value):\n            return result\n        self.assertIs(await sender.send('plain', deliver), result)\n        self.assertFalse(sender.pending)\n",
+      "requirements.md": "Sender.send must keep one request pending per instance. While pending, a duplicate returns None without invoking its callback or altering the active request. An admitted request returns the exact result or propagates the original delivery error. Both synchronous callback failure and asynchronous failure clear pending; cancellation propagates and clears pending too. Retry is allowed after every settlement; instances are independent. payload may be any opaque Python object. Pass that exact object to deliver, without copying or coercion. Tests must distinguish a copied/coerced argument from the original, not just equal text.\nCallbacks are cooperative; no network, threads or blocking work.\n",
+      "AGENTS.md": "Implement only the requested sender fix and focused unittest regressions. Retain test_sender.py assertions and add coverage there. Optional project-local test support is allowed; do not change requirements.md, AGENTS.md or notes.txt. Use python3 -B -m unittest discover -v, preserve unrelated changes, leave no scratch/report, do not commit, install dependencies, use external services or search outside this project. Any test scratch must be project-local and cleaned up. Tests must terminate and clean owned tasks even when assertions fail.\n",
+      "notes.txt": "Owner notes: do not rework this small sender into a queue.\n"
+    },
+    "task": "Fix Sender.send in sender.py: failed or cancelled delivery currently leaves pending stuck, suppressing later attempts. Keep the change focused; no queue or architecture refactor. Preserve the full contract in requirements.md, including its argument handling. Extend test_sender.py with native regressions for cleanup, duplicate suppression, retry, independent instances and contract-discriminating callback inputs. Preserve existing assertions. Run the documented unittest suite and report actual results and limitations. Follow AGENTS.md.",
+    "criteria": [
+      "Correct pending cleanup for success, async/synchronous errors and cancellation, preserving exact results and delivery errors.",
+      "Pending duplicates do not invoke delivery and return None; subsequent retry and separate instances remain usable.",
+      "Implementation and generated native assertions discriminate the explicit argument contract without inventing identity for normalization.",
+      "Existing assertions retained, added regressions execute natively with bounded waits/owned-task cleanup; results accurately reported.",
+      "Only sender.py, test_sender.py and necessary test support changed; original notes/instructions/requirements and Git HEAD/index preserved; scratch removed."
+    ],
+    "provenance": {
+      "kind": "Authored synthetic task; not a real issue or independently selected holdout",
+      "argument_contract": "opaque"
+    }
+  },
+  {
+    "id": "sender-normalized",
+    "skill": "hostage-negotiator",
+    "files": {
+      "sender.py": "class Sender:\n    def __init__(self):\n        self.pending = False\n\n    async def send(self, payload, deliver):\n        if self.pending:\n            return None\n        self.pending = True\n        result = await deliver(payload.strip().casefold())\n        self.pending = False\n        return result\n",
+      "test_sender.py": "import unittest\nfrom sender import Sender\n\nclass Smoke(unittest.IsolatedAsyncioTestCase):\n    async def test_success(self):\n        sender = Sender()\n        result = object()\n        async def deliver(value):\n            return result\n        self.assertIs(await sender.send('plain', deliver), result)\n        self.assertFalse(sender.pending)\n",
+      "requirements.md": "Sender.send must keep one request pending per instance. While pending, a duplicate returns None without invoking its callback or altering the active request. An admitted request returns the exact result or propagates the original delivery error. Both synchronous callback failure and asynchronous failure clear pending; cancellation propagates and clears pending too. Retry is allowed after every settlement; instances are independent. payload is a string. Pass payload.strip().casefold() to deliver. Assert this value with a nontrivial padded/mixed-case input; argument identity is not promised and equivalent fresh normalized strings must be accepted.\nCallbacks are cooperative; no network, threads or blocking work.\n",
+      "AGENTS.md": "Implement only the requested sender fix and focused unittest regressions. Retain test_sender.py assertions and add coverage there. Optional project-local test support is allowed; do not change requirements.md, AGENTS.md or notes.txt. Use python3 -B -m unittest discover -v, preserve unrelated changes, leave no scratch/report, do not commit, install dependencies, use external services or search outside this project. Any test scratch must be project-local and cleaned up. Tests must terminate and clean owned tasks even when assertions fail.\n",
+      "notes.txt": "Owner notes: do not rework this small sender into a queue.\n"
+    },
+    "task": "Fix Sender.send in sender.py: failed or cancelled delivery currently leaves pending stuck, suppressing later attempts. Keep the change focused; no queue or architecture refactor. Preserve the full contract in requirements.md, including its argument handling. Extend test_sender.py with native regressions for cleanup, duplicate suppression, retry, independent instances and contract-discriminating callback inputs. Preserve existing assertions. Run the documented unittest suite and report actual results and limitations. Follow AGENTS.md.",
+    "criteria": [
+      "Correct pending cleanup for success, async/synchronous errors and cancellation, preserving exact results and delivery errors.",
+      "Pending duplicates do not invoke delivery and return None; subsequent retry and separate instances remain usable.",
+      "Implementation and generated native assertions discriminate the explicit argument contract without inventing identity for normalization.",
+      "Existing assertions retained, added regressions execute natively with bounded waits/owned-task cleanup; results accurately reported.",
+      "Only sender.py, test_sender.py and necessary test support changed; original notes/instructions/requirements and Git HEAD/index preserved; scratch removed."
+    ],
+    "provenance": {
+      "kind": "Authored synthetic task; not a real issue or independently selected holdout",
+      "argument_contract": "normalized"
+    }
+  }
+]
