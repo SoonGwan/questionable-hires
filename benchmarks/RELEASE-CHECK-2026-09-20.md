@@ -4,6 +4,34 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
+## Full recheck at `5b10619` — 2026-09-20
+
+Python 3.11.16, `python -B -m unittest discover -s tests -q`:
+
+- Existing checkout: **806 tests, 144.152 seconds, OK**, exit 0.
+- Fresh `git archive HEAD` extracted outside the checkout, without Git metadata
+  or pre-existing local-runs: **806 tests, 128.325 seconds, 28 errors, 10 skips**,
+  exit 1. Native log retained locally at
+  `/tmp/qh-source-check.7cF8OL/native-check.log` (temporary, not a published artifact).
+- Remaining errors belong to the historical all-eight runner (2), Hostage modes
+  candidate/runner (3), Hostage roundtrip candidate (3), HTTPX probe (3), Korean
+  auto runner (2), lean schedule (1), Receipt preserve runner (3), Receipt read
+  candidate/runner (4), Receipt route candidate/runner (4), and Receipt startup
+  runner (3). They still attempt Git access from the source archive. This is an
+  unresolved source-distribution validation defect, not 28 observed skill failures.
+
+This recheck includes the expression-depth correction and the accumulated
+native-control/schedule isolation changes. It does not change frozen model
+results, prove token savings, or establish hosted CI/remote installation success.
+No hosted check was rerun in this recheck. The earlier hosted failure below is
+historical, not a newly verified account status.
+
+한국어: `5b10619` 전체 재검증에서 개발 체크아웃은 806개 모두 통과했다.
+Git 없는 새 소스 압축본은 같은 806개 중 오류 28개·건너뜀 10개로 실패했다.
+남은 오류는 과거 커밋을 읽는 검사에 있으며, 실제 스킬 오류 28개라는 뜻은
+아니다. 그래도 압축본 검증은 미완료다. 모델 성능·원격 설치·호스팅 CI 통과로
+해석하지 않으며 기존 성능 그래프는 바꾸지 않는다.
+
 ## Observed checks before the scratch-parent repair
 
 - Existing checkout, Python 3.11.16, `python -B -m unittest discover -s tests -v`:

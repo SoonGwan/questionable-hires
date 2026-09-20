@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Full local validation — 2026-09-20, source `5b10619`
+
+[Release-check details](RELEASE-CHECK-2026-09-20.md): Python 3.11.16 checkout
+passes all 806 tests (144.152s). A fresh source archive discovers the same 806
+but fails with 28 Git-dependent errors and 10 skips (128.325s). Native collector
+fixes have no detected checkout-suite regression; source-archive validation
+remains unfinished. Neither result establishes model efficiency or hosted release
+readiness. Screen03 remains the measured whole-task result; charts are unchanged.
+
+한국어: 수정 후 전체 체크아웃 806개 통과. Git 없는 소스 압축본은 오류 28개·
+건너뜀 10개로 검증 미완료다. 회귀 검사 결과와 모델 성능을 구분하며, 토큰이
+증가한 Screen03 결과나 기존 그래프를 유리한 수치로 대체하지 않는다.
+
 ## Context expression-depth failure fixed — 2026-09-20, parent `812ff14`
 
 [Failure, correction and regression evidence](CONTEXT-EXPRESSION-DEPTH-01.md).
