@@ -56,6 +56,11 @@ timeout. `--max-commits` accepts 1–5 (default 3); patches are capped at 12,000
 characters each. These are not total-memory or total-runtime limits. For excluded
 layouts or decisive omitted evidence, use focused native Git and state the limit.
 
+The opened descriptor is checked for regular-file type, size and identity before
+reading. Where supported, nonblocking/no-follow open flags reject a file replaced
+by a pipe or symlink without waiting. This is not a concurrent filesystem snapshot
+or a sandbox: same-file edits during collection can still change the evidence.
+
 Read [implementation and API details](focused-history-details.md) only for Python
 integration, exact excerpt/encoding semantics, or troubleshooting. Routine CLI
 use needs no implementation read; inspect source when trust or adaptation requires it.

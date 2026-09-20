@@ -39,7 +39,7 @@ class HistoryHelperTests(unittest.TestCase):
             root = Path(directory).resolve()
             target = root / 'growing.py'
             target.write_bytes(b'value = 1\n')
-            original_open = Path.open
+            original_fdopen = helper.os.fdopen
             grew, requested = [], []
 
             class Reader:
@@ -51,19 +51,18 @@ class HistoryHelperTests(unittest.TestCase):
                     self.stream.close()
                 def read(self, size=-1):
                     requested.append(size)
-                    return self.stream.read(size)
-
-            def tracked_open(path, *args, **kwargs):
-                # Grow after path resolution AND the size precheck. Path.resolve
-                # performs different stat calls across Python versions.
-                if path == target and args == ('rb',) and not grew:
+                    # Grow after both the pathname and opened-descriptor checks.
                     grew.append(True)
                     with open(target, 'ab') as writer:
                         writer.write(b'#' * 3_000_000)
-                stream = original_open(path, *args, **kwargs)
-                return Reader(stream) if path == target and args == ('rb',) else stream
+                    return self.stream.read(size)
+                def fileno(self):
+                    return self.stream.fileno()
 
-            with patch.object(Path, 'open', new=tracked_open), \
+            def tracked_open(fd, *args, **kwargs):
+                return Reader(original_fdopen(fd, *args, **kwargs))
+
+            with patch.object(helper.os, 'fdopen', new=tracked_open), \
                     patch.object(helper, 'git', return_value=subprocess.CompletedProcess([], 1, '', 'no history')) as git:
                 with self.assertRaisesRegex(ValueError, 'exceeds 2 MB'):
                     helper.trace(root, 'growing.py', 1, 1)

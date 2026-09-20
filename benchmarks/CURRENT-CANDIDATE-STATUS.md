@@ -9,7 +9,25 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Full regression checks refreshed — 2026-09-21, source `e874ace`
+## History read replacement guard — 2026-09-21, parent `d1987f6`
+
+Necromancer now validates the opened descriptor's type, identity and size, with
+nonblocking/no-follow flags where supported. Before the change, a POSIX post-stat
+FIFO replacement timed out after two seconds; regular-file and symlink replacements
+reached Git collection with the wrong current-source bytes. The new regression
+rejects all three before Git. Existing exact-size, UTF-8/LF and bounded-growth
+contracts remain covered. Python 3.11's extra `resolve()` stat required targeting
+the test injection at the collector's explicit precheck, not path resolution.
+All 45 history tests pass on Python 3.9 and 3.11 (the corrected injection also
+passes separately on 3.9); metadata/link validation and featured-sync checks pass.
+This is a reliability fix, not a model efficiency result or a concurrent snapshot
+guarantee. Production skill instructions and frozen benchmark charts are unchanged.
+
+한국어: 파일 확인 직후 대상이 바뀌면 멈추거나 다른 내용을 읽던 이력 도우미를
+수정했다. 파일을 실제로 연 뒤 종류·동일성·크기를 확인한다. 동일 파일의 동시
+수정까지 막는 기능은 아니며, 전체 모델 성능 개선률이나 그래프 수치는 변경하지 않는다.
+
+## Full regression checks refreshed — historical, 2026-09-21, source `e874ace`
 
 [Release checkpoint](RELEASE-CHECK-2026-09-20.md): checkout **874 tests OK**;
 fresh Git-free source archive **874 tests OK (skipped=20)**. Metadata/link validation

@@ -5,6 +5,7 @@ import ast
 from bisect import bisect_left
 from collections import deque
 import json
+import os
 from pathlib import Path
 import re
 import stat
@@ -206,7 +207,15 @@ def trace_ranges(repo, filename, ranges, max_commits=3):
         raise ValueError('Selected source must be a regular file')
     if info.st_size > 2_000_000:
         raise ValueError('Selected file exceeds 2 MB; use focused native tools')
-    with target.open('rb') as stream:
+    flags = os.O_RDONLY | getattr(os, 'O_NONBLOCK', 0) | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_BINARY', 0)
+    with os.fdopen(os.open(target, flags), 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        if not stat.S_ISREG(opened.st_mode):
+            raise ValueError('Selected source must be a regular file')
+        if (opened.st_dev, opened.st_ino) != (info.st_dev, info.st_ino):
+            raise ValueError('Selected source changed while opening; retry collection')
+        if opened.st_size > 2_000_000:
+            raise ValueError('Selected file exceeds 2 MB; use focused native tools')
         current = stream.read(2_000_001)
     if len(current) > 2_000_000:
         raise ValueError('Selected file exceeds 2 MB while reading; use focused native tools')
