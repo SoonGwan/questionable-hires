@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Node guide transfer prepared — 2026-09-21, resources `fcd523c` / `107a0cf`
+
+[Frozen protocol](RECEIPT-NODE-STARTUP-01-PROTOCOL.md) schedules six serial cells
+over the two startup tasks, comparing baseline/prior/current. The resource diff
+is only the Node guide. Seven native/scheduler tests pass, including resource
+tamper rejection, exact Git snapshots, account-limit stop and exclusive execution.
+Preparation retains full cases, native outputs and input/resource digests. Model
+execution and review remain pending; there is no new cost result or chart change.
+
+한국어: 안내만 다른 두 버전과 무스킬 비교 조건을 고정했다. 대조 실행과 실행기
+검사는 통과했지만 실제 모델 비용·요구사항 검토는 아직 남아 있다.
+
 ## Node startup-transfer controls — 2026-09-21, parent `107a0cf`
 
 [Native preflight](RECEIPT-NODE-STARTUP-PREFLIGHT-01.md) checks two related authored
