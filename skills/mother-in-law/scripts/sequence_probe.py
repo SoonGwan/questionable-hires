@@ -29,7 +29,7 @@ def load_class(source, class_name, root):
 async def sequence(factory, method_name, state_name, queries, order, failure=None,
                    error_state_name=None, sequential=False, retain_while_pending=False):
     target = factory()
-    pending, entered, tasks = {}, asyncio.Queue(), []
+    pending, tasks = {}, []
     errors, unexpected_errors, checkpoints, failed_checkpoints = [], [], [], []
     retained = 'seed result'
 
@@ -42,20 +42,27 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
                 'phase': phase, 'query': query, 'state': observed,
                 'expected_state': retained})))
 
-    async def fetch(query):
-        future = asyncio.get_running_loop().create_future()
-        pending[query] = future
-        entered.put_nowait(query)
-        return await future
-
     async def start(query):
+        loop = asyncio.get_running_loop()
+        entry, stopped = loop.create_future(), object()
+
+        async def fetch(submitted):
+            future = loop.create_future()
+            pending[submitted] = future
+            entry.set_result(submitted)
+            return await future
+
+        def finished(completed):
+            if not entry.done():
+                entry.set_result(stopped)
+
         method = getattr(target, method_name)
         task = asyncio.create_task(method(query, fetch))
         tasks.append(task)
-        entry = asyncio.create_task(entered.get())
+        task.add_done_callback(finished)
         try:
-            await asyncio.wait((task, entry), return_when=asyncio.FIRST_COMPLETED)
-            if not entry.done():
+            submitted = await entry
+            if submitted is stopped:
                 if task.cancelled():
                     outcome = 'was cancelled'
                 else:
@@ -64,12 +71,12 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
                                if error is not None else 'returned')
                 raise ValueError(f'{method_name}({query!r}) {outcome} before controlled fetch entry; '
                                  'this probe cannot establish the requested sequence')
-            if entry.result() != query:
+            if submitted != query:
                 raise AssertionError('submission order changed')
         finally:
+            task.remove_done_callback(finished)
             if not entry.done():
                 entry.cancel()
-            await asyncio.gather(entry, return_exceptions=True)
 
     try:
         if retain_while_pending:

@@ -9,6 +9,39 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Component entry scheduling overhead removed — 2026-09-21, parent `87513cb`
+
+The immediate-termination fix introduced a separate queue-wait task for every
+request. A per-request future now receives either fetch entry or component
+completion; its callback is detached on exit. Basic two-case execution creates
+four component tasks instead of eight component-plus-waiter tasks. Early return,
+exception/cancellation diagnostics and owned-task cleanup remain covered. Wrong
+query submission still rejects; cooperative setup before fetch remains supported.
+
+[Reproducible local profile](profile_sequence_entry.py),
+[all samples and source hashes](sequence-entry-profile-01.json): 12 position-rotated
+batches of 300 probes for each of three implementations on each of two synthetic
+components. Every result equals the pre-fix output; the guarded control passes
+both cases and the unguarded control fails stale ownership. Median seconds/probe:
+
+| Component | Before termination fix (`8804ee4`) | Task race (`87513cb`) | Future signal |
+| --- | ---: | ---: | ---: |
+| Guarded | 0.000292808 | 0.000477678 | 0.000286483 |
+| Unguarded | 0.000290381 | 0.000469720 | 0.000283993 |
+
+This removes about 0.19ms (40%) relative to the immediately preceding helper
+implementation, returning close to pre-fix scheduling cost while retaining its
+new diagnostic behavior. **Not a 40% skill/model/task speedup**: in-process synthetic
+components only, shared warm host, no CLI startup or model/token measurement.
+Related Python3.11 checks: **39 tests, 1.160 seconds, OK**. Python3.9 component and
+entry checks: **28 tests, 0.750 seconds, OK**. No new prompt rule or chart promotion.
+
+한국어: 조기 종료 감지는 유지하면서 요청마다 추가했던 대기 태스크를 없앴다.
+기본 검사 태스크는 8개에서 실제 요청 4개로 줄었다. 정상·결함 대조의 출력은
+동일하며 직전 도구 버전 대비 약 0.19ms의 추가 비용을 제거했다. 약 40%는 이 작은
+함수의 로컬 측정값일 뿐 스킬 전체 속도나 토큰 절감률이 아니다. 관련 39개 검사가
+통과했고 대표 그래프와 과거 모델 결과는 유지한다.
+
 ## Component probe entry termination — 2026-09-21, parent `8804ee4`
 
 The optional Mother-in-law component probe now races controlled fetch entry against

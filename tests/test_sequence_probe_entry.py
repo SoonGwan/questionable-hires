@@ -6,11 +6,34 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from test_mother_in_law_sequence_probe import probe, GuardedSearch
 
 
 class EntryTests(unittest.IsolatedAsyncioTestCase):
+    async def test_normal_probe_creates_only_component_tasks(self):
+        with patch.object(probe.asyncio, 'create_task', wraps=asyncio.create_task) as create:
+            cases = await probe.probe(GuardedSearch, 'run', 'result', 'old', 'new', None)
+        self.assertTrue(all(case['passed'] for case in cases))
+        self.assertEqual(create.call_count, 4)
+
+    async def test_wrong_query_is_rejected_and_owned_task_cleaned(self):
+        finished = []
+        before = asyncio.all_tasks()
+
+        class WrongQuery:
+            async def run(self, query, fetch):
+                try:
+                    await fetch('unexpected')
+                finally:
+                    finished.append(query)
+
+        with self.assertRaisesRegex(AssertionError, 'submission order changed'):
+            await probe.sequence(WrongQuery, 'run', 'result', ['old', 'new'], [0, 1])
+        self.assertEqual(finished, ['old'])
+        self.assertEqual(asyncio.all_tasks(), before)
+
     async def test_cooperative_setup_before_fetch_still_completes(self):
         class Delayed(GuardedSearch):
             async def run(self, query, fetch):
