@@ -27,6 +27,9 @@ class RunnerArchiveTests(unittest.TestCase):
             'benchmarks/CON-ARTIST-REPOSITORY-01-PROTOCOL.md',
             'benchmarks/results/con-artist-repository-01/baseline/repository-collector-cache--baseline--1/project/skills/con-artist/scripts/context.py',
             'benchmarks/results/con-artist-repository-01/baseline/repository-collector-cache--baseline--1/project/tests/test_context_line_index.py',
+            'tests/test_con_artist_read_runner.py', 'benchmarks/run_con_artist_read_01.py',
+            'benchmarks/con_artist_read_candidate.py', 'benchmarks/con_artist_sqlite_cases.py',
+            'benchmarks/CON-ARTIST-READ-01-PROTOCOL.md',
         )
         with tempfile.TemporaryDirectory() as scratch:
             archive = Path(scratch) / 'archive'
@@ -39,16 +42,20 @@ class RunnerArchiveTests(unittest.TestCase):
                                      '-s', 'tests', '-p', 'test_*runner.py', '-v'],
                                     cwd=archive, capture_output=True, text=True, timeout=15)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            self.assertIn('Ran 10 tests', result.stderr)
-            self.assertIn('OK (skipped=3)', result.stderr)
-            self.assertEqual(result.stderr.count('No project-owned Git history;'), 3)
+            self.assertIn('Ran 15 tests', result.stderr)
+            self.assertIn('OK (skipped=4)', result.stderr)
+            self.assertEqual(result.stderr.count('No project-owned Git history;'), 4)
             for name in ('test_changed_snapshot_rejects_before_execution',
                          'test_prepare_has_no_model_calls_then_executes_each_slot_once',
                          'test_changed_resources_reject_before_model_or_marker',
                          'test_prepare_and_execute_once_with_all_six_original_slots',
                          'test_real_native_startup_controls',
                          'test_schedule_and_exclusive_execution',
-                         'test_changed_current_rejected_before_calls'):
+                         'test_changed_current_rejected_before_calls',
+                         'test_native_controls_reach_real_assertions',
+                         'test_only_entrypoint_changes_and_exclusive_order',
+                         'test_changed_resource_prevents_execution',
+                         'test_reviser_rejects_missing_duplicate_and_revised_anchor'):
                 self.assertRegex(result.stderr, name + r'[^\n]*\.\.\. ok')
             self.assertEqual({p.relative_to(archive): p.read_bytes()
                               for p in archive.rglob('*') if p.is_file()}, before)

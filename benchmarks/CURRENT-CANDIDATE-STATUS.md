@@ -9,6 +9,25 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Archive-wide recheck and reading-runner separation — 2026-09-20, source `ad57bc2`
+
+[Exact remaining error inventory](source-archive-check-02.json): fresh full source
+archive discovers 790 tests, **37 errors / 7 skips** in 115.380 seconds. Thirty-five
+errors still depend on Git history; two native preflights assume local-runs exists.
+This is a failed whole-source check, not a pass inferred from smaller regressions.
+The two Con Artist reading-runner errors in that inventory are addressed afterward:
+its real paragraph rewriter now runs against explicit synthetic test resources,
+while a separate pinned-resource test retains whole-tree byte/mode comparisons.
+Missing/duplicate/already-revised anchors are rejected. Fifteen related checkout
+tests pass; sparse archive discovery executes 11 checks and explicitly skips four
+historical-resource checks. Full-archive post-change counts are not yet measured;
+the 37-error inventory applies to the stated source, not the newer worktree.
+
+한국어: 소스 압축본 전체를 다시 검사한 결과 790개 중 오류 37개·건너뜀 7개였다.
+오류 목록과 원인을 보존했다. 이후 Con Artist 읽기 비교 실행기의 Git 의존성을
+분리했고 관련 15개가 통과했다. 축소 압축본에서도 11개 동작 검사가 실행되지만
+전체 최신 오류 수를 재측정한 것은 아니며 배포 준비 완료로 주장하지 않는다.
+
 ## Repository schedule archive checks retained — 2026-09-20, parent `1243028`
 
 The Con Artist repository comparison now separates synthetic scheduling resources
