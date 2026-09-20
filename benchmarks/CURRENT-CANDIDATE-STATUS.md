@@ -9,7 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Node guide transfer launched — 2026-09-21, launch `8212a19`
+## Node guide transfer reviewed — 2026-09-21, launch `8212a19`
+
+[Reviewed checkpoint](RECEIPT-NODE-STARTUP-01-REVIEW.md): all six cells meet five
+explicit criteria. Current/prior two-task totals: 130,151/188,874 tokens and
+123.673/131.417 seconds (−31.09%/−5.89%). Against baseline, reductions are only
+3.63% tokens/4.31% time. Plain current exceeds baseline cost; preloaded current
+is slower than prior. Exact native-command requirements exclude helper observer
+flags, so no cell tests helper adoption. Original capture gaps are recovered from
+stored records, not replays. Public artifact export/privacy scan and exposure
+synthesis remain pending. No broad gain, release-readiness or featured change.
+
+한국어: 기존 안내 대비 토큰은 줄었지만 무스킬 대비 차이는 작다. 각 1회의 관련
+합성 과제 결과이며 비교 도우미 자체를 사용하지 않아 전체 성능 개선으로 일반화하지 않는다.
+
+## Node guide transfer launched — historical, 2026-09-21, launch `8212a19`
 
 The frozen six-cell schedule is running. Plain-task baseline and prior completed
 at 66,234 / 94,602 total recorded tokens and 53.816 / 66.308 seconds respectively;
