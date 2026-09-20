@@ -27,6 +27,9 @@ Python3.9 focused checks: six tests, one pytest-dependency skip, otherwise OK.
 An intermediate full run had one failing verbose-output integration assertion;
 the final run uses the explicit native quiet invocation described above. Local
 correctness checks do not establish a model speedup or hosted release approval.
+Fresh source archive at `16c09f9`: eight focused dynamic-module/native-archive
+tests complete in 9.000 seconds, OK with one absent-history provenance skip.
+This is a targeted archive check, not a rerun of the entire archive suite.
 
 한국어: 수정 검증관이 동적으로 불러온 모듈도 실제 테스트 프로세스 안에서
 선택한 파일과 일치하는지 확인하도록 개선했다. 실제 이슈의 동일한 8개 테스트로
