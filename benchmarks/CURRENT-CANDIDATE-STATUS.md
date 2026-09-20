@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Artifact audit original evidence reviewed — 2026-09-20, launch `90e6aee`
+
+[Three original model sessions](results/artifact-audit-01/README.md) all satisfy
+the frozen task and deliver identical native tests. Candidate uses 38.91% fewer
+tokens / 14.31% less wall time than baseline, but 20.53% more / 13.74% more than
+original. Baseline observer-repair costs remain included. **Neither skill session
+used the changed helper or references**, so this does not establish the patch's
+performance impact. One authored diagnostic task, n=1, fixed order/shared host;
+no representative-chart or broad performance promotion.
+
+한국어: 새 모델 비교 3세션의 원본 검토·공개를 완료했다. 수정 후는 무스킬보다
+비용이 적었으나 수정 전보다 많았다. 두 스킬 세션 모두 바뀐 도우미를 쓰지 않아
+패치 효과를 입증하지 못했다. 정상 작업·추가 실패·복구 비용을 모두 보존하며,
+8개 역할 전체의 실제 성능 목표는 아직 미달이다.
+
 ## Con Artist native pytest lifecycle — 2026-09-20, parent `9c0c458`
 
 [Demonstrated failures, implementation and validation](CON-ARTIST-PYTEST-LOADING-01.md)

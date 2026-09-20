@@ -1,0 +1,55 @@
+{
+  "revision": "7c9659254b852182dcb6eeaf7ab29a655f92b186",
+  "resource_revisions": {
+    "original": "9c0c4583073e70e0162261faf301d4fe5fa01b76",
+    "candidate": "7c9659254b852182dcb6eeaf7ab29a655f92b186"
+  },
+  "prepared_at": "2026-09-20T10:16:36.699728+00:00",
+  "cases": [
+    {
+      "id": "artifact-manifest-audit",
+      "skill": "con-artist",
+      "files": {
+        "manifest.py": "import json\nimport os\n\nFORMAT = os.environ[\"QH_ARTIFACT_FORMAT\"]\nif FORMAT != \"json\":\n    raise ValueError(\"unsupported manifest format\")\n\ndef write_manifest(path, artifacts):\n    rows = [{\"name\": item[\"name\"], \"sha256\": item[\"sha256\"]} for item in artifacts]\n    path.write_text(json.dumps(rows, ensure_ascii=False), encoding=\"utf-8\")\n    return len(rows)\n",
+        "conftest.py": "from pathlib import Path\nimport os\nimport tempfile\nimport pytest\n\ndef pytest_configure(config):\n    os.environ[\"QH_ARTIFACT_FORMAT\"] = \"json\"\n\n@pytest.fixture\ndef destination():\n    with tempfile.TemporaryDirectory(prefix=\".manifest-test-\", dir=Path(__file__).resolve().parent) as scratch:\n        yield Path(scratch) / \"manifest.json\"\n\n@pytest.fixture(params=[\n    [{\"name\": \"release.zip\", \"sha256\": \"a\" * 64}],\n    [{\"name\": \"\ud55c\uae00.zip\", \"sha256\": \"b\" * 64}, {\"name\": \"\ud55c\uae00.zip\", \"sha256\": \"c\" * 64}],\n])\ndef artifacts(request):\n    return request.param\n",
+        "checks_manifest.py": "import json\nfrom manifest import write_manifest\n\ndef test_manifest(destination, artifacts):\n    assert write_manifest(destination, artifacts) == len(artifacts)\n    assert destination.is_file()\n\ndef test_empty(destination):\n    assert write_manifest(destination, []) == 0\n    assert json.loads(destination.read_text(encoding=\"utf-8\")) == []\n",
+        "pytest.ini": "[pytest]\npython_files = checks_*.py\nfilterwarnings = error\n",
+        "README.md": "# Artifact manifest contract\n\nUse the preinstalled interpreter `<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python`; pytest is already installed.\nNative suite: `<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B -m pytest -vv -s -p no:cacheprovider checks_manifest.py`.\nconftest configures the format before importing the application; retain native\nconfiguration, both parametrizations and the empty control. Test scratch is\nproject-local and fixture-owned. No network or global temporary-directory changes.\n\nInputs are finite lists of records with exactly name and sha256 string fields;\nsha256 is a 64-character lowercase hexadecimal digest. Preserve record order,\nduplicate names, Unicode names and exact digests in UTF-8 JSON. Empty lists are valid.\nReturn the number of written records. Other types/keys, concurrent writers and\ncrash recovery are outside this contract. Do not change production or fixtures.\n"
+      },
+      "task": "Audit whether the existing manifest tests detect losing artifact digests.\nIn disposable project-local copies, introduce only the fault that writes an empty\nsha256 string for each nonempty record while preserving names, order and count.\nRun the unchanged full native suite on correct and faulty implementations and\ninspect actual assertions/results, not just process exits. If it misses the fault,\nstrengthen checks_manifest.py at its existing test path, preserving both native\nparametrizations, the empty control, configuration and fixtures; demonstrate the\nsame improved native tests passing correct code and rejecting the specified fault.\nOnly checks_manifest.py may be changed in the delivered project. No production,\nfixture, configuration or installed-resource edits; no commits, network, installs\nor discovery outside this project. The documented preinstalled interpreter may be\nexecuted. Preserve original bytes/modes outside that allowed test edit. Remove owned\nscratch at completion and leave no extra audit/report/harness files. Report native\ncounts/exits and actual defect-specific expected/observed values for all four checks,\nplus evidence of the implementation loaded in those test processes. Any adequate\nnative isolation or available tool is valid; no particular helper is required.",
+      "criteria": [
+        "Original full native suite on correct and specified faulty implementation; native fixtures/configuration retained.",
+        "Same strengthened native suite passes correct code and fails the intended digest-loss effect with actual expected/observed values.",
+        "Native counts, exits and same-process loaded implementation provenance for each of four checks; setup errors are not detection.",
+        "Only existing test file changed; project scope, original other bytes/modes/resources preserved; owned scratch removed; no extra deliverables."
+      ]
+    }
+  ],
+  "schedule": [
+    "original",
+    "baseline",
+    "candidate"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 360,
+  "session_persistence_requested": true,
+  "identities": {
+    "benchmarks/artifact_audit_case.py": "aefebde021ed1cb9e56771e45eb0dd78eaba5ad12ce516e906d966d319d92ec3",
+    "tests/test_artifact_audit_case.py": "fa4ffc3be5f35935e6cc6be081fb4ad9c91ce7e8162d30b7a971d5549533877e",
+    "benchmarks/run_artifact_audit_01.py": "24cec3e9fecf73ed392564459aec72f00e0116f6d000989fc17de8d80f879332",
+    "benchmarks/ARTIFACT-AUDIT-01-PROTOCOL.md": "3553bdacba694eedda46e1f74839b0ecf4590d6e1e45568dbda34c97d7ccfc70",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c"
+  },
+  "native_preflight": {
+    "exit_code": 0,
+    "output": "test_native_four_way_controls_and_helper_preservation (test_artifact_audit_case.ArtifactAuditCaseTests.test_native_four_way_controls_and_helper_preservation) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 1.183s\n\nOK\n",
+    "python": "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+    "python_version": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "8.3.4"
+  },
+  "completed_cells": [],
+  "condition": "baseline"
+}

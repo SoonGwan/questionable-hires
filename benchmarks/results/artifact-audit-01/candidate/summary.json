@@ -1,0 +1,148 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "artifact-manifest-audit",
+    "skill": "con-artist",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "49f23bb890a94deb2a964ae645cb39ccd946148b",
+    "skill_sha256": "13e799f457cafbe723751b5f2a908ffe857e89861fdd2a0fa13d5cb98898c876",
+    "skill_resources_sha256": "4ec6f13478ec5d5a216b6f91bd7de6f2a7f228b21af7bfe9bf559513f6777908",
+    "elapsed_seconds": 98.885,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 122626,
+      "cached_input_tokens": 107008,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2641,
+      "reasoning_output_tokens": 196
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $con-artist at .agents/skills/con-artist/SKILL.md.\n\nAudit whether the existing manifest tests detect losing artifact digests.\nIn disposable project-local copies, introduce only the fault that writes an empty\nsha256 string for each nonempty record while preserving names, order and count.\nRun the unchanged full native suite on correct and faulty implementations and\ninspect actual assertions/results, not just process exits. If it misses the fault,\nstrengthen checks_manifest.py at its existing test path, preserving both native\nparametrizations, the empty control, configuration and fixtures; demonstrate the\nsame improved native tests passing correct code and rejecting the specified fault.\nOnly checks_manifest.py may be changed in the delivered project. No production,\nfixture, configuration or installed-resource edits; no commits, network, installs\nor discovery outside this project. The documented preinstalled interpreter may be\nexecuted. Preserve original bytes/modes outside that allowed test edit. Remove owned\nscratch at completion and leave no extra audit/report/harness files. Report native\ncounts/exits and actual defect-specific expected/observed values for all four checks,\nplus evidence of the implementation loaded in those test processes. Any adequate\nnative isolation or available tool is valid; no particular helper is required.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "13e799f457cafbe723751b5f2a908ffe857e89861fdd2a0fa13d5cb98898c876",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "946296250908e7db99fac39b5b624ddae9b8a6906ec9838af13bfa09e9c92862",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "338ebace94acef5fdb4e008283e3ad190eefd5ac2ddf3951c7e7491621515b29",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "b59ec6c7a7fdee139a22af61d0f338439fed7a724903ecb2a2517daa9c532ec7",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "af0c23cee227d095ce3802d791dd61d3ded55021240a99503b197a0f08ee4714",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "de51571ff0e549a67f74689afcb017f0624df0ac7d2cb25e40c13d7690aece02",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "78410ce5725bd7aaf46c067c0a178077fd2e9e3654b712d8f17be8098b6cdd6a",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "e70360ef289c59daeaf458ea6370d18d48783deb853695c19aa370c7ee219f64",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "13e799f457cafbe723751b5f2a908ffe857e89861fdd2a0fa13d5cb98898c876",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "946296250908e7db99fac39b5b624ddae9b8a6906ec9838af13bfa09e9c92862",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "338ebace94acef5fdb4e008283e3ad190eefd5ac2ddf3951c7e7491621515b29",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "b59ec6c7a7fdee139a22af61d0f338439fed7a724903ecb2a2517daa9c532ec7",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "af0c23cee227d095ce3802d791dd61d3ded55021240a99503b197a0f08ee4714",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "de51571ff0e549a67f74689afcb017f0624df0ac7d2cb25e40c13d7690aece02",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "78410ce5725bd7aaf46c067c0a178077fd2e9e3654b712d8f17be8098b6cdd6a",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "e70360ef289c59daeaf458ea6370d18d48783deb853695c19aa370c7ee219f64",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 465,
+      "mode": 420,
+      "sha256": "7641be7af161ed2188979ba2d9a352bc30425c953f3f20c40b555be0f0f8a471",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]

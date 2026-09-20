@@ -1,0 +1,56 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "artifact-manifest-audit",
+    "skill": "con-artist",
+    "arm": "baseline",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "49f23bb890a94deb2a964ae645cb39ccd946148b",
+    "skill_sha256": null,
+    "skill_resources_sha256": null,
+    "elapsed_seconds": 115.405,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 201924,
+      "cached_input_tokens": 179328,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 3142,
+      "reasoning_output_tokens": 343
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Audit whether the existing manifest tests detect losing artifact digests.\nIn disposable project-local copies, introduce only the fault that writes an empty\nsha256 string for each nonempty record while preserving names, order and count.\nRun the unchanged full native suite on correct and faulty implementations and\ninspect actual assertions/results, not just process exits. If it misses the fault,\nstrengthen checks_manifest.py at its existing test path, preserving both native\nparametrizations, the empty control, configuration and fixtures; demonstrate the\nsame improved native tests passing correct code and rejecting the specified fault.\nOnly checks_manifest.py may be changed in the delivered project. No production,\nfixture, configuration or installed-resource edits; no commits, network, installs\nor discovery outside this project. The documented preinstalled interpreter may be\nexecuted. Preserve original bytes/modes outside that allowed test edit. Remove owned\nscratch at completion and leave no extra audit/report/harness files. Report native\ncounts/exits and actual defect-specific expected/observed values for all four checks,\nplus evidence of the implementation loaded in those test processes. Any adequate\nnative isolation or available tool is valid; no particular helper is required.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {},
+    "installed_resources_after": {},
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 465,
+      "mode": 420,
+      "sha256": "7d79a25c6532f2260000e4498a4ddf8aa01f6b48028a42bee36ec109cd4c7e53",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]

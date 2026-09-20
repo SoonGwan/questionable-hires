@@ -1,0 +1,217 @@
+{
+  "session_id": "01a0be51-8f0e-7430-8424-da0c0198b9f3",
+  "source_bytes": 201688,
+  "source_sha256": "69a22c53b93f1ca379f8c8923cf95d949d0c3c82bc8ed52e5de9c2790371409b",
+  "source_lines": 48,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "d47cb89dff32cac1389b22bf0576dad6088300932c65ca06ecb2aaa4b13ebf5d",
+      "record": {
+        "timestamp": "2026-09-20T10:16:58.379Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_068b384377c4d1ea016aafb298a09c87d0bdc2131d85624eb2",
+          "status": "completed",
+          "call_id": "call_TEWHPDyTmNPCiKSjFMg67eAp",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '! .git' -g '!**/.git/**'\",\"max_output_tokens\":5000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/con-artist/SKILL.md\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be51-8f59-7a50-98ca-7539e20c8f67",
+            "create_time": 1789899414.270699
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "3d6957bea04c936581baba7e5cd4dd705a0dcbe50fb6d79a0d90a5cf1ae44bd3",
+      "record": {
+        "timestamp": "2026-09-20T10:16:58.593Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be51-abe1-77e2-ae4c-e32ae29625e4",
+          "call_id": "call_TEWHPDyTmNPCiKSjFMg67eAp",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"24cf85\",\"wall_time_seconds\":0.000001708,\"exit_code\":0,\"original_token_count\":151,\"output\":\"<WORKSPACE>\\nchecks_manifest.py\\nREADME.md\\n.agents/skills/con-artist/SKILL.md\\n.agents/skills/con-artist/scripts/context.py\\n.agents/skills/con-artist/scripts/audit.py\\n.agents/skills/con-artist/agents/openai.yaml\\n.agents/skills/con-artist/references/python-context.md\\n.agents/skills/con-artist/references/python-audit-advanced.md\\n.agents/skills/con-artist/references/python-audit-probes.md\\n.agents/skills/con-artist/references/python-audit.md\\n.agents/skills/con-artist/references/python-audit-batch.md\\nmanifest.py\\npytest.ini\\nconftest.py\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"dbad2d\",\"wall_time_seconds\":0.00000225,\"exit_code\":0,\"original_token_count\":990,\"output\":\"---\\nname: con-artist\\ndescription: Audit whether tests detect broken behavior by tracing assertions and running narrow controlled mutations in an isolated workspace; use for test-quality reviews, not routine test execution.\\n---\\n\\n# Con Artist\\n\\n> Your mock is very impressed with itself.\\n\\n## Check what the test actually buys\\n\\nTrace the requested assertions far enough to establish the actual exercised effect\\nand select a reachable fault. Follow unresolved bindings, mocks and relevant setup;\\nreading every intermediate wrapper is not itself evidence. Reuse known instructions,\\nrunner and source context. Keep discovery inside the permitted project root; a\\nbroad suite need not become a reading list of unrelated tests.\\n\\nUse the evidenced runner and configuration; reuse a valid correct-code baseline.\\nChoose one meaningful fault at the requested boundary, such as acknowledging\\nwithout persisting. Preserve originals and compilation/binding context through\\nproject isolation, disposable module/package copies or a valid substitution;\\nrestore substitutions in reused processes. A wrong binding, rewritten simulation,\\nsyntax error or equivalent mutation cannot establish test sensitivity.\\n\\nInspect each phase's actual assertion and exit, not just a green baseline or a\\nnonzero mutant status. Runner errors/warnings can indicate broken assertion\\nplumbing, not a detected production fault. Establish provenance through copied\\nimports, traced bindings and defect-specific observations. Add instrumentation for\\nrequired or unresolved dispatch, not duplicate evidence; a separate import-only\\nprocess does not prove what the test process loads.\\n\\n## Use support only where it helps\\n\\n- Nearby known files: read relevant source/configuration directly. For scattered\\n  Python context, [the collector](references/python-context.md) locates definitions,\\n  ancestor instructions and fixtures. Select known bodies directly; indexes are\\n  navigation, not reviewed bodies or execution. Don't recollect equivalent context.\\n- Existing Python test improvements: consider [native test replacements](references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)\\n  when they remove custom copy/run/cleanup plumbing. One recipe checks original\\n  and proposed tests against correct/faulty code with the native runner and fixtures;\\n  applying the verified edit remains separate. No helper is needed for a simpler\\n  native workflow or an already-completed audit.\\n- Small self-contained audits: use the native runner in project-local copies or\\n  a valid substitution. Choose [the Python helper](references/python-audit.md) when\\n  its bounded processes, selected-input integrity checks or shared-baseline batches\\n  remove needed orchestration. Python compatibility alone is not a reason to adopt\\n  it or load its guide. Read implementation for a concrete trust/adaptation question.\\n- Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)\\n  covers false-pass assertion helpers and incomplete checks. It is not routine setup.\\n\\nIf tests survive, verify the same stronger assertion on correct and faulty code:\\npass the former, fail the latter for the intended effect, not merely success or\\ncontainer size. If killed, identify the detecting assertion or warning policy;\\nthis protects that fault, not every lifecycle path.\\n\\n## Deliver and stop\\n\\nGive decisive commands/results and the gap/proposed assertion or detecting check.\\nKeep a harness/report only for requested reuse or delivery. Without isolated\\nexecution, label the concern static. Apply test improvements only when requested,\\nnever the deliberate fault; an audit does not authorize publication.\\n\\nStop when the scoped claim and requested improvements are verified. Add faults\\nonly for distinct material boundaries, not to fish for survivors, chase a global\\nmutation score or remove every mock. Preserve user changes and explicit requirements.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be51-8f59-7a50-98ca-7539e20c8f67",
+            "create_time": 1789899418.593503
+          }
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "2d35cbcdceac7872cc3db674b8025addd60e35a98d58c3554025449a54a1020e",
+      "record": {
+        "timestamp": "2026-09-20T10:17:01.411Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_068b384377c4d1ea016aafb29cb84487d083be8f92da25340a",
+          "status": "completed",
+          "call_id": "call_Do5P7fkddyv8tppDYrZrjh4j",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat README.md manifest.py checks_manifest.py pytest.ini conftest.py\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be51-8f59-7a50-98ca-7539e20c8f67",
+            "create_time": 1789899419.532641
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "321907092bdbe1519b33ff18feba660c7100d0f1072d406c181506580f9d6eaf",
+      "record": {
+        "timestamp": "2026-09-20T10:17:01.517Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be51-b74d-7e31-a10e-3cfe1cdeb1a6",
+          "call_id": "call_Do5P7fkddyv8tppDYrZrjh4j",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"398361\",\"wall_time_seconds\":0.000003333,\"exit_code\":0,\"original_token_count\":585,\"output\":\"# Artifact manifest contract\\n\\nUse the preinstalled interpreter `<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python`; pytest is already installed.\\nNative suite: `<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B -m pytest -vv -s -p no:cacheprovider checks_manifest.py`.\\nconftest configures the format before importing the application; retain native\\nconfiguration, both parametrizations and the empty control. Test scratch is\\nproject-local and fixture-owned. No network or global temporary-directory changes.\\n\\nInputs are finite lists of records with exactly name and sha256 string fields;\\nsha256 is a 64-character lowercase hexadecimal digest. Preserve record order,\\nduplicate names, Unicode names and exact digests in UTF-8 JSON. Empty lists are valid.\\nReturn the number of written records. Other types/keys, concurrent writers and\\ncrash recovery are outside this contract. Do not change production or fixtures.\\nimport json\\nimport os\\n\\nFORMAT = os.environ[\\\"QH_ARTIFACT_FORMAT\\\"]\\nif FORMAT != \\\"json\\\":\\n    raise ValueError(\\\"unsupported manifest format\\\")\\n\\ndef write_manifest(path, artifacts):\\n    rows = [{\\\"name\\\": item[\\\"name\\\"], \\\"sha256\\\": item[\\\"sha256\\\"]} for item in artifacts]\\n    path.write_text(json.dumps(rows, ensure_ascii=False), encoding=\\\"utf-8\\\")\\n    return len(rows)\\nimport json\\nfrom manifest import write_manifest\\n\\ndef test_manifest(destination, artifacts):\\n    assert write_manifest(destination, artifacts) == len(artifacts)\\n    assert destination.is_file()\\n\\ndef test_empty(destination):\\n    assert write_manifest(destination, []) == 0\\n    assert json.loads(destination.read_text(encoding=\\\"utf-8\\\")) == []\\n[pytest]\\npython_files = checks_*.py\\nfilterwarnings = error\\nfrom pathlib import Path\\nimport os\\nimport tempfile\\nimport pytest\\n\\ndef pytest_configure(config):\\n    os.environ[\\\"QH_ARTIFACT_FORMAT\\\"] = \\\"json\\\"\\n\\n@pytest.fixture\\ndef destination():\\n    with tempfile.TemporaryDirectory(prefix=\\\".manifest-test-\\\", dir=Path(__file__).resolve().parent) as scratch:\\n        yield Path(scratch) / \\\"manifest.json\\\"\\n\\n@pytest.fixture(params=[\\n    [{\\\"name\\\": \\\"release.zip\\\", \\\"sha256\\\": \\\"a\\\" * 64}],\\n    [{\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"b\\\" * 64}, {\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"c\\\" * 64}],\\n])\\ndef artifacts(request):\\n    return request.param\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be51-8f59-7a50-98ca-7539e20c8f67",
+            "create_time": 1789899421.517055
+          }
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "dc665c3a78b52d7a1aaa25a222c95a1129223d452e1b9bd61a24f9af92fe3711",
+      "record": {
+        "timestamp": "2026-09-20T10:17:46.423Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_068b384377c4d1ea016aafb2ab099087d09e2e83fcea651c97",
+          "status": "completed",
+          "call_id": "call_x1q3z0E6ccy0i9dzPEHlkrdL",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B - <<'PY'\\nfrom pathlib import Path\\nimport hashlib, json, stat\\nroot = Path.cwd()\\nsnapshot = {str(p.relative_to(root)): [hashlib.sha256(p.read_bytes()).hexdigest(), stat.S_IMODE(p.stat().st_mode)] for p in root.rglob('*') if p.is_file()}\\nscratch = root / '.digest-audit'\\nscratch.mkdir()\\n(scratch / 'before.json').write_text(json.dumps(snapshot))\\nprint(json.dumps(snapshot, indent=2))\\nPY\",\"max_output_tokens\":2000}));\ntext(await tools.exec_command({cmd:\"cat > .digest-audit/observer.py <<'PY'\\nimport hashlib\\nimport json\\nfrom pathlib import Path\\nimport sys\\n\\n\\ndef observe(frame, event, arg):\\n    if event == 'return' and frame.f_code.co_name == 'write_manifest':\\n        source = Path(frame.f_code.co_filename).resolve()\\n        print('AUDIT_OBSERVATION ' + json.dumps({\\n            'implementation': str(source),\\n            'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),\\n            'expected': frame.f_locals['artifacts'],\\n            'observed': json.loads(frame.f_locals['path'].read_text(encoding='utf-8')),\\n            'returned': arg,\\n        }, ensure_ascii=False), flush=True)\\n\\n\\ndef pytest_sessionstart(session):\\n    sys.setprofile(observe)\\n\\n\\ndef pytest_sessionfinish(session, exitstatus):\\n    sys.setprofile(None)\\nPY\\ncat > .digest-audit/run.py <<'PY'\\nfrom pathlib import Path\\nimport hashlib\\nimport json\\nimport os\\nimport shutil\\nimport subprocess\\nimport sys\\n\\nroot = Path(__file__).resolve().parent.parent\\nscratch = root / '.digest-audit'\\noriginal = (root / 'checks_manifest.py').read_text()\\nproposed = original.replace('    assert destination.is_file()\\\\n', '    assert destination.is_file()\\\\n    assert json.loads(destination.read_text(encoding=\\\"utf-8\\\")) == artifacts\\\\n')\\nassert proposed != original\\nproduction = (root / 'manifest.py').read_text()\\nneedle = '\\\"sha256\\\": item[\\\"sha256\\\"]'\\nassert production.count(needle) == 1\\nfaulty = production.replace(needle, '\\\"sha256\\\": \\\"\\\"')\\nresults = []\\nfor phase, test_text, impl in [\\n    ('original-correct', original, production),\\n    ('original-faulty', original, faulty),\\n    ('improved-correct', proposed, production),\\n    ('improved-faulty', proposed, faulty),\\n]:\\n    copy = scratch / phase\\n    copy.mkdir()\\n    for filename in ('manifest.py', 'checks_manifest.py', 'conftest.py', 'pytest.ini', 'README.md'):\\n        shutil.copy2(root / filename, copy / filename)\\n    (copy / 'checks_manifest.py').write_text(test_text)\\n    (copy / 'manifest.py').write_text(impl)\\n    env = os.environ.copy()\\n    env['PYTHONPATH'] = str(scratch)\\n    env['PYTHONDONTWRITEBYTECODE'] = '1'\\n    cmd = [sys.executable, '-B', '-m', 'pytest', '-vv', '-s', '-p', 'no:cacheprovider', '-p', 'observer', 'checks_manifest.py']\\n    result = subprocess.run(cmd, cwd=copy, env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)\\n    (scratch / (phase + '.log')).write_text(result.stdout)\\n    observations = [json.loads(line.split('AUDIT_OBSERVATION ', 1)[1]) for line in result.stdout.splitlines() if 'AUDIT_OBSERVATION ' in line]\\n    assert len(observations) == 3, result.stdout\\n    for obs in observations:\\n        assert obs['implementation'] == str(copy / 'manifest.py')\\n        assert obs['source_sha256'] == hashlib.sha256(impl.encode()).hexdigest()\\n        expected = obs['expected']\\n        assert obs['returned'] == len(expected)\\n        assert obs['observed'] == ([dict(row, sha256='') for row in expected] if phase.endswith('faulty') else expected)\\n    results.append((phase, result.returncode))\\n    print('\\\\nPHASE', phase, 'EXIT', result.returncode, flush=True)\\n    print(result.stdout, flush=True)\\nassert results == [('original-correct', 0), ('original-faulty', 0), ('improved-correct', 0), ('improved-faulty', 1)], results\\n(scratch / 'proposed.py').write_text(proposed)\\nPY\\n<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B .digest-audit/run.py\",\"max_output_tokens\":8000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be51-8f59-7a50-98ca-7539e20c8f67",
+            "create_time": 1789899422.438712
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "8ee4fe49dfe9d8ff5ed01ac9468d40b1915e6ea1ef19d13b8133908768ec0d16",
+      "record": {
+        "timestamp": "2026-09-20T10:17:47.216Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be52-69d0-7f71-9552-0787fdfdb9c8",
+          "call_id": "call_x1q3z0E6ccy0i9dzPEHlkrdL",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.8 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"04b327\",\"wall_time_seconds\":0.000001542,\"exit_code\":0,\"original_token_count\":900,\"output\":\"{\\n  \\\"conftest.py\\\": [\\n    \\\"b98dbc6eeffa106791183a3eb624195537ec8777cd3344a66676c92804c08d04\\\",\\n    420\\n  ],\\n  \\\"pytest.ini\\\": [\\n    \\\"6fdbfcb737743e46897ddc37e7557a41ed5fd694c2fdd48a2c5d925821702772\\\",\\n    420\\n  ],\\n  \\\"manifest.py\\\": [\\n    \\\"f8eaac61656a4ea2508fc566a049377a9cc6c8b31969a35b81d0952ce5974476\\\",\\n    420\\n  ],\\n  \\\"README.md\\\": [\\n    \\\"e6785697189bf4989f1708bf94251fa33c3c7e42dfca00fbc44affb3b8bce23a\\\",\\n    420\\n  ],\\n  \\\"checks_manifest.py\\\": [\\n    \\\"6316572bde405ff618b31d95b21539b2d6812bf00d48b68e3f16ab7a8447205a\\\",\\n    420\\n  ],\\n  \\\".agents/skills/con-artist/SKILL.md\\\": [\\n    \\\"13e799f457cafbe723751b5f2a908ffe857e89861fdd2a0fa13d5cb98898c876\\\",\\n    420\\n  ],\\n  \\\".agents/skills/con-artist/references/python-audit-batch.md\\\": [\\n    \\\"338ebace94acef5fdb4e008283e3ad190eefd5ac2ddf3951c7e7491621515b29\\\",\\n    420\\n  ],\\n  \\\".agents/skills/con-artist/references/python-audit.md\\\": [\\n    \\\"9b30ff543fde1b81d8408ae3b73f19bba2b28c33cb189819f6ecd4eb0ff9d579\\\",\\n    420\\n  ],\\n  \\\".agents/skills/con-artist/references/python-audit-probes.md\\\": [\\n    \\\"9bd26b21f4c388e6c80fceaa3719c3e7b898323d4acf220ca9b12fe77b8f5e32\\\",\\n    420\\n  ],\\n  \\\".agents/skills/con-artist/references/python-audit-advanced.md\\\": [\\n    \\\"946296250908e7db99fac39b5b624ddae9b8a6906ec9838af13bfa09e9c92862\\\",\\n    420\\n  ],\\n  \\\".agents/skills/con-artist/references/python-context.md\\\": [\\n    \\\"de51571ff0e549a67f74689afcb017f0624df0ac7d2cb25e40c13d7690aece02\\\",\\n    420\\n  ],\\n  \\\".agents/skills/con-artist/agents/openai.yaml\\\": [\\n    \\\"269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc\\\",\\n    420\\n  ],\\n  \\\".agents/skills/con-artist/scripts/audit.py\\\": [\\n    \\\"c13b31abcc819f624b10a77d1da8def60da03c9188efd455158e7af3bbd8c745\\\",\\n    420\\n  ],\\n  \\\".agents/skills/con-artist/scripts/context.py\\\": [\\n    \\\"e70360ef289c59daeaf458ea6370d18d48783deb853695c19aa370c7ee219f64\\\",\\n    420\\n  ],\\n  \\\".git/config\\\": [\\n    \\\"3e8a487a6b3b71a70ac6b82387b4bb0b56f01568237bee0efc6eb89f98d24caa\\\",\\n    420\\n  ],\\n  \\\".git/HEAD\\\": [\\n    \\\"28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80\\\",\\n    420\\n  ],\\n  \\\".git/index\\\": [\\n    \\\"bb66f7388beabbee040140a0f3a16f098aee339611e587d27e69e4726b3c3431\\\",\\n    420\\n  ],\\n  \\\".git/COMMIT_EDITMSG\\\": [\\n    \\\"4d1d2c615e23bc2c41453e73a234537373ddb1683cf54fb5843747d608e835e9\\\",\\n    420\\n  ],\\n  \\\".git/objects/59/7555c218cbbada2ff9e8b771f332f7205d2e9e\\\": [\\n    \\\"c0e3fc21ee51fa0fe524bba0af046e84f4c863a3342533445e2bbcc603e4e262\\\",\\n    292\\n  ],\\n  \\\".git/objects/ad/42e7d5e375232c4444443d5c72d687b6a0715e\\\": [\\n    \\\"2719ccc3e77cb04c36ab76573e052baaa47d580b40a40d91b6bf95b11ac8c362\\\",\\n    292\\n  ],\\n  \\\".git/objects/81/de4ede8c4912777ea41c8d81957ddd566d0b39\\\": [\\n    \\\"a5f23e63304dca07e2ebe7c00d1098f9d9fe3d58a1ba43b44aea634962f1b8dc\\\",\\n    292\\n  ],\\n  \\\".git/objects/99/6a19f18d6f026d360b23c4164ee51a52c1c193\\\": [\\n    \\\"da9150cda4487a40d571187e12e0ade2b4bd21ee1cdfce2d2394c9f609208add\\\",\\n    292\\n  ],\\n  \\\".git/objects/c3/407b3a3bbb4e9460780293893ff3bce33cfd4d\\\": [\\n    \\\"c81155d074beeba76c7ca3e3fa5e4b5b10f8044cde51e8fa33646cf77964592c\\\",\\n    292\\n  ],\\n  \\\".git/objects/79/73ca47924d36783055b0f6bb15a33b7c20a92a\\\": [\\n    \\\"ed95dc48082d5b838fb7d38af2b5bd718a7196cd5bd297aa74c248cd800f4953\\\",\\n    292\\n  ],\\n  \\\".git/objects/49/f23bb890a94deb2a964ae645cb39ccd946148b\\\": [\\n    \\\"2dbe8d9456210e0aeee8590a19b779e61d60bd7795f58cd178b45ec730d87aed\\\",\\n    292\\n  ],\\n  \\\".git/logs/HEAD\\\": [\\n    \\\"a7960508b55b8d41e73ac66bad34c5b447b47bc8469816e5f551e3660b1ecbf6\\\",\\n    420\\n  ],\\n  \\\".git/logs/refs/heads/main\\\": [\\n    \\\"a7960508b55b8d41e73ac66bad34c5b447b47bc8469816e5f551e3660b1ecbf6\\\",\\n    420\\n  ],\\n  \\\".git/refs/heads/main\\\": [\\n    \\\"36086b2056ff959ac47422ec5977d1c777e4fcf5b69ba687b275ab4d4c53450d\\\",\\n    420\\n  ]\\n}\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ba5a3c\",\"wall_time_seconds\":0.506164375,\"exit_code\":0,\"original_token_count\":3251,\"output\":\"\\nPHASE original-correct EXIT 0\\n============================= test session starts ==============================\\nplatform darwin -- Python 3.11.16, pytest-8.3.4, pluggy-1.6.0 -- <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\\nrootdir: <WORKSPACE>/.digest-audit/original-correct\\nconfigfile: pytest.ini\\ncollecting ... collected 3 items\\n\\nchecks_manifest.py::test_manifest[artifacts0] AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/original-correct/manifest.py\\\", \\\"source_sha256\\\": \\\"f8eaac61656a4ea2508fc566a049377a9cc6c8b31969a35b81d0952ce5974476\\\", \\\"expected\\\": [{\\\"name\\\": \\\"release.zip\\\", \\\"sha256\\\": \\\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\"}], \\\"observed\\\": [{\\\"name\\\": \\\"release.zip\\\", \\\"sha256\\\": \\\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\"}], \\\"returned\\\": 1}\\nPASSED\\nchecks_manifest.py::test_manifest[artifacts1] AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/original-correct/manifest.py\\\", \\\"source_sha256\\\": \\\"f8eaac61656a4ea2508fc566a049377a9cc6c8b31969a35b81d0952ce5974476\\\", \\\"expected\\\": [{\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\\\"}, {\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\\\"}], \\\"observed\\\": [{\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\\\"}, {\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\\\"}], \\\"returned\\\": 2}\\nPASSED\\nchecks_manifest.py::test_empty AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/original-correct/manifest.py\\\", \\\"source_sha256\\\": \\\"f8eaac61656a4ea2508fc566a049377a9cc6c8b31969a35b81d0952ce5974476\\\", \\\"expected\\\": [], \\\"observed\\\": [], \\\"returned\\\": 0}\\nPASSED\\n\\n============================== 3 passed in 0.01s ===============================\\n\\n\\nPHASE original-faulty EXIT 0\\n============================= test session starts ==============================\\nplatform darwin -- Python 3.11.16, pytest-8.3.4, pluggy-1.6.0 -- <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\\nrootdir: <WORKSPACE>/.digest-audit/original-faulty\\nconfigfile: pytest.ini\\ncollecting ... collected 3 items\\n\\nchecks_manifest.py::test_manifest[artifacts0] AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/original-faulty/manifest.py\\\", \\\"source_sha256\\\": \\\"9b10709a2fd975d20d393badfcc3be0459405db736f77078ee7b91434881cc4b\\\", \\\"expected\\\": [{\\\"name\\\": \\\"release.zip\\\", \\\"sha256\\\": \\\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\"}], \\\"observed\\\": [{\\\"name\\\": \\\"release.zip\\\", \\\"sha256\\\": \\\"\\\"}], \\\"returned\\\": 1}\\nPASSED\\nchecks_manifest.py::test_manifest[artifacts1] AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/original-faulty/manifest.py\\\", \\\"source_sha256\\\": \\\"9b10709a2fd975d20d393badfcc3be0459405db736f77078ee7b91434881cc4b\\\", \\\"expected\\\": [{\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\\\"}, {\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\\\"}], \\\"observed\\\": [{\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"\\\"}, {\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"\\\"}], \\\"returned\\\": 2}\\nPASSED\\nchecks_manifest.py::test_empty AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/original-faulty/manifest.py\\\", \\\"source_sha256\\\": \\\"9b10709a2fd975d20d393badfcc3be0459405db736f77078ee7b91434881cc4b\\\", \\\"expected\\\": [], \\\"observed\\\": [], \\\"returned\\\": 0}\\nPASSED\\n\\n============================== 3 passed in 0.01s ===============================\\n\\n\\nPHASE improved-correct EXIT 0\\n============================= test session starts ==============================\\nplatform darwin -- Python 3.11.16, pytest-8.3.4, pluggy-1.6.0 -- <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\\nrootdir: <WORKSPACE>/.digest-audit/improved-correct\\nconfigfile: pytest.ini\\ncollecting ... collected 3 items\\n\\nchecks_manifest.py::test_manifest[artifacts0] AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/improved-correct/manifest.py\\\", \\\"source_sha256\\\": \\\"f8eaac61656a4ea2508fc566a049377a9cc6c8b31969a35b81d0952ce5974476\\\", \\\"expected\\\": [{\\\"name\\\": \\\"release.zip\\\", \\\"sha256\\\": \\\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\"}], \\\"observed\\\": [{\\\"name\\\": \\\"release.zip\\\", \\\"sha256\\\": \\\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\"}], \\\"returned\\\": 1}\\nPASSED\\nchecks_manifest.py::test_manifest[artifacts1] AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/improved-correct/manifest.py\\\", \\\"source_sha256\\\": \\\"f8eaac61656a4ea2508fc566a049377a9cc6c8b31969a35b81d0952ce5974476\\\", \\\"expected\\\": [{\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\\\"}, {\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\\\"}], \\\"observed\\\": [{\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\\\"}, {\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\\\"}], \\\"returned\\\": 2}\\nPASSED\\nchecks_manifest.py::test_empty AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/improved-correct/manifest.py\\\", \\\"source_sha256\\\": \\\"f8eaac61656a4ea2508fc566a049377a9cc6c8b31969a35b81d0952ce5974476\\\", \\\"expected\\\": [], \\\"observed\\\": [], \\\"returned\\\": 0}\\nPASSED\\n\\n============================== 3 passed in 0.01s ===============================\\n\\n\\nPHASE improved-faulty EXIT 1\\n============================= test session starts ==============================\\nplatform darwin -- Python 3.11.16, pytest-8.3.4, pluggy-1.6.0 -- <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\\nrootdir: <WORKSPACE>/.digest-audit/improved-faulty\\nconfigfile: pytest.ini\\ncollecting ... collected 3 items\\n\\nchecks_manifest.py::test_manifest[artifacts0] AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/improved-faulty/manifest.py\\\", \\\"source_sha256\\\": \\\"9b10709a2fd975d20d393badfcc3be0459405db736f77078ee7b91434881cc4b\\\", \\\"expected\\\": [{\\\"name\\\": \\\"release.zip\\\", \\\"sha256\\\": \\\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\\"}], \\\"observed\\\": [{\\\"name\\\": \\\"release.zip\\\", \\\"sha256\\\": \\\"\\\"}], \\\"returned\\\": 1}\\nFAILED\\nchecks_manifest.py::test_manifest[artifacts1] AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/improved-faulty/manifest.py\\\", \\\"source_sha256\\\": \\\"9b10709a2fd975d20d393badfcc3be0459405db736f77078ee7b91434881cc4b\\\", \\\"expected\\\": [{\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\\\"}, {\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\\\"}], \\\"observed\\\": [{\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"\\\"}, {\\\"name\\\": \\\"\ud55c\uae00.zip\\\", \\\"sha256\\\": \\\"\\\"}], \\\"returned\\\": 2}\\nFAILED\\nchecks_manifest.py::test_empty AUDIT_OBSERVATION {\\\"implementation\\\": \\\"<WORKSPACE>/.digest-audit/improved-faulty/manifest.py\\\", \\\"source_sha256\\\": \\\"9b10709a2fd975d20d393badfcc3be0459405db736f77078ee7b91434881cc4b\\\", \\\"expected\\\": [], \\\"observed\\\": [], \\\"returned\\\": 0}\\nPASSED\\n\\n=================================== FAILURES ===================================\\n__________________________ test_manifest[artifacts0] ___________________________\\n\\ndestination = PosixPath('<WORKSPACE>/.digest-audit/improved-faulty/.manifest-test-bikztcd6/manifest.json')\\nartifacts = [{'name': 'release.zip', 'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}]\\n\\n    def test_manifest(destination, artifacts):\\n        assert write_manifest(destination, artifacts) == len(artifacts)\\n        assert destination.is_file()\\n>       assert json.loads(destination.read_text(encoding=\\\"utf-8\\\")) == artifacts\\nE       AssertionError: assert [{'name': 'release.zip', 'sha256': ''}] == [{'name': 'release.zip', 'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}]\\nE         \\nE         At index 0 diff: {'name': 'release.zip', 'sha256': ''} != {'name': 'release.zip', 'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}\\nE         \\nE         Full diff:\\nE           [\\nE               {\\nE                   'name': 'release.zip',\\nE         -         'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',\\nE         +         'sha256': '',\\nE               },\\nE           ]\\n\\nchecks_manifest.py:7: AssertionError\\n__________________________ test_manifest[artifacts1] ___________________________\\n\\ndestination = PosixPath('<WORKSPACE>/.digest-audit/improved-faulty/.manifest-test-dhe7s0bj/manifest.json')\\nartifacts = [{'name': '\ud55c\uae00.zip', 'sha256': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}, {'name': '\ud55c\uae00.zip', 'sha256': 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc'}]\\n\\n    def test_manifest(destination, artifacts):\\n        assert write_manifest(destination, artifacts) == len(artifacts)\\n        assert destination.is_file()\\n>       assert json.loads(destination.read_text(encoding=\\\"utf-8\\\")) == artifacts\\nE       AssertionError: assert [{'name': '\ud55c\uae00.zip', 'sha256': ''}, {'name': '\ud55c\uae00.zip', 'sha256': ''}] == [{'name': '\ud55c\uae00.zip', 'sha256': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}, {'name': '\ud55c\uae00.zip', 'sha256': 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc'}]\\nE         \\nE         At index 0 diff: {'name': '\ud55c\uae00.zip', 'sha256': ''} != {'name': '\ud55c\uae00.zip', 'sha256': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}\\nE         \\nE         Full diff:\\nE           [\\nE               {\\nE                   'name': '\ud55c\uae00.zip',\\nE         -         'sha256': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',\\nE         +         'sha256': '',\\nE               },\\nE               {\\nE                   'name': '\ud55c\uae00.zip',\\nE         -         'sha256': 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc',\\nE         +         'sha256': '',\\nE               },\\nE           ]\\n\\nchecks_manifest.py:7: AssertionError\\n=========================== short test summary info ============================\\nFAILED checks_manifest.py::test_manifest[artifacts0] - AssertionError: assert [{'name': 'release.zip', 'sha256': ''}] == [{'name': 'release.zip', 'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}]\\n  \\n  At index 0 diff: {'name': 'release.zip', 'sha256': ''} != {'name': 'release.zip', 'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}\\n  \\n  Full diff:\\n    [\\n        {\\n            'name': 'release.zip',\\n  -         'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',\\n  +         'sha256': '',\\n        },\\n    ]\\nFAILED checks_manifest.py::test_manifest[artifacts1] - AssertionError: assert [{'name': '\ud55c\uae00.zip', 'sha256': ''}, {'name': '\ud55c\uae00.zip', 'sha256': ''}] == [{'name': '\ud55c\uae00.zip', 'sha256': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}, {'name': '\ud55c\uae00.zip', 'sha256': 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc'}]\\n  \\n  At index 0 diff: {'name': '\ud55c\uae00.zip', 'sha256': ''} != {'name': '\ud55c\uae00.zip', 'sha256': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}\\n  \\n  Full diff:\\n    [\\n        {\\n            'name': '\ud55c\uae00.zip',\\n  -         'sha256': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',\\n  +         'sha256': '',\\n        },\\n        {\\n            'name': '\ud55c\uae00.zip',\\n  -         'sha256': 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc',\\n  +         'sha256': '',\\n        },\\n    ]\\n========================= 2 failed, 1 passed in 0.04s ==========================\\n\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be51-8f59-7a50-98ca-7539e20c8f67",
+            "create_time": 1789899467.216662
+          }
+        }
+      }
+    },
+    {
+      "line": 39,
+      "line_sha256": "24c7c49e19e0f83c74e6f3c9dea32237d73fc1d43d06d01356a110b0d2437e75",
+      "record": {
+        "timestamp": "2026-09-20T10:18:00.765Z",
+        "ordinal": 38,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_068b384377c4d1ea016aafb2cf66dc87d0beca7ac4e920767c",
+          "status": "completed",
+          "call_id": "call_VSGBhf2voYJ5qH7I6MzXfrqw",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B - <<'PY'\\nfrom pathlib import Path\\nimport hashlib\\nimport json\\nimport shutil\\nimport stat\\nroot = Path.cwd()\\nscratch = root / '.digest-audit'\\nbefore = json.loads((scratch / 'before.json').read_text())\\nproposal = (scratch / 'proposed.py').read_bytes()\\nassert proposal == (scratch / 'improved-correct/checks_manifest.py').read_bytes()\\nassert proposal == (scratch / 'improved-faulty/checks_manifest.py').read_bytes()\\n(root / 'checks_manifest.py').write_bytes(proposal)\\nshutil.rmtree(scratch)\\nafter = {str(p.relative_to(root)): [hashlib.sha256(p.read_bytes()).hexdigest(), stat.S_IMODE(p.stat().st_mode)] for p in root.rglob('*') if p.is_file()}\\nassert before.keys() == after.keys()\\nchanges = [name for name in before if before[name] != after[name]]\\nassert changes == ['checks_manifest.py'], changes\\nassert before['checks_manifest.py'][1] == after['checks_manifest.py'][1]\\nprint('Only changed file: checks_manifest.py; mode preserved. All other file bytes/modes unchanged; no extra files or owned scratch remain.')\\nprint(proposal.decode())\\nPY\",\"max_output_tokens\":1500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be51-8f59-7a50-98ca-7539e20c8f67",
+            "create_time": 1789899467.937164
+          }
+        }
+      }
+    },
+    {
+      "line": 42,
+      "line_sha256": "9317ec49701606c35b8b601b2175f004fe3de6e10e3927d378da62657484e8c5",
+      "record": {
+        "timestamp": "2026-09-20T10:18:00.903Z",
+        "ordinal": 41,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be52-9f47-7f02-a840-a916183d4605",
+          "call_id": "call_VSGBhf2voYJ5qH7I6MzXfrqw",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"4c4b02\",\"wall_time_seconds\":0.000001416,\"exit_code\":0,\"original_token_count\":138,\"output\":\"Only changed file: checks_manifest.py; mode preserved. All other file bytes/modes unchanged; no extra files or owned scratch remain.\\nimport json\\nfrom manifest import write_manifest\\n\\ndef test_manifest(destination, artifacts):\\n    assert write_manifest(destination, artifacts) == len(artifacts)\\n    assert destination.is_file()\\n    assert json.loads(destination.read_text(encoding=\\\"utf-8\\\")) == artifacts\\n\\ndef test_empty(destination):\\n    assert write_manifest(destination, []) == 0\\n    assert json.loads(destination.read_text(encoding=\\\"utf-8\\\")) == []\\n\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be51-8f59-7a50-98ca-7539e20c8f67",
+            "create_time": 1789899480.90375
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
