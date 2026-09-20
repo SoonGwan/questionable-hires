@@ -22,8 +22,9 @@ original-test checks or the source project. Existing paths, selected-file
 collisions and traversal are refused before execution. Inputs plus probe files
 share the 20 MB limit. Native runner exit status, including collection errors, is
 preserved automatically; inspect actual failures and test counts. Normal JSON
-escaping applies. Each probe copy is its working directory; listed imports and
-the same-process precheck precede the native runner.
+escaping applies. Each probe copy is its working directory. Import verification
+and the same-process precheck precede test bodies; for pytest they follow native
+configuration/collection, but precede fixture setup.
 
 `probe_when: "survives"` runs both probes only if mutant tests exit 0. A nonzero
 mutant exit skips them with `probe_skipped`; inspect its failure rather than
@@ -32,8 +33,9 @@ Omit this option (default `"always"`) when the probe must be verified regardless
 of coverage. A timeout or failing correct check still stops as incomplete.
 
 For installed pytest, supply pytest test arguments and retain its fixture/collection
-behavior. Do not pre-import test modules into `imports`; that bypasses assertion
-rewriting. Inline `probe` code executes as `__main__`; if it calls `pytest.main`,
+behavior. Native file probes verify listed imports after collection to retain
+assertion rewriting. Inline `probe` code executes as `__main__` with direct imports
+and no native pytest setup; if it calls `pytest.main`,
 propagate the exit with `raise SystemExit(pytest.main([...]))`, not an ignored
 return. Native file probes already handle that propagation. Probe-created files
 do not carry over to another check.

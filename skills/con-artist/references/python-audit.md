@@ -35,11 +35,13 @@ code; omit when only checking existing protection.
 
 Unknown fields are rejected. Set interpreter/deadline through CLI `--python` and
 `--timeout`, not JSON keys. Each executed check uses a fresh project-local copy as
-its working directory, with listed imports before the precheck and native runner.
+its working directory. Listed imports are verified before the precheck.
 
-For pytest, list implementation modules in `imports`, not selected test modules:
-pre-importing tests bypasses pytest's assertion rewriting and can lose useful
-expected/observed diagnostics. Let pytest collect its tests normally.
+For native pytest checks, configuration and collection precede import verification
+and the precheck, before test bodies. Selected test modules can therefore be listed
+without bypassing native assertion rewriting. This does not run fixtures before
+the precheck. Inline `probe` code uses direct import/precheck execution, not pytest
+configuration or fixtures; use native probe files/replacements when those matter.
 
 `precheck` is optional: the unittest example illustrates checking an imported
 function binding. It does not require an equivalent pytest plugin. Use existing
@@ -86,8 +88,9 @@ Each check retains a 12,000-character output tail, replacing invalid UTF-8;
 provenance can also be truncated. Timeout defaults to 30 seconds/check, max 300.
 
 Empty/skipped unittest suites (exit 5), precheck failure (6), import setup failure
-or early exit (7) are incomplete. Broken runner helpers can cause false passes;
-do not change warning policy to credit detection. Read [diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence)
+or early exit (7) are incomplete. Broken runner helpers can cause false passes.
+Pytest help/version without a verification session is incomplete too, not a baseline.
+Do not change warning policy to credit detection. Read [diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence)
 for these errors or cleanup trouble. Do not retry an unconfirmed child exit.
 
 Limits: POSIX, Python 3.9+, 20 MB inputs; no symlinks/Git internals/traversal or

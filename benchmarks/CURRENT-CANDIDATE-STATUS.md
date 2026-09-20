@@ -9,6 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist native pytest lifecycle — 2026-09-20, parent `9c0c458`
+
+[Demonstrated failures, implementation and validation](CON-ARTIST-PYTEST-LOADING-01.md)
+correct premature module imports, lost assertion details and version-only false
+baselines. Native configuration/collection now precede copy verification/prechecks;
+fixtures remain later and inline probes retain direct execution. Seven new native
+controls cover these boundaries. Full discovery: 691 passes plus two missing-YAML
+module-load errors; after installing the declared dependency, all three omitted
+tests pass separately. Not one green full-suite invocation. **Model impact remains
+unmeasured**; no all-eight rewrite or featured-chart promotion.
+
+한국어: Con Artist의 실제 pytest 실행 순서와 미실행 결과 분류를 고쳤다.
+새 정상·실패 대조를 포함해 691개가 통과했고, 의존성 누락으로 불러오지 못한
+모듈의 검사 3개는 설치 후 별도로 통과했다. 성능 수치로 과장하지 않으며,
+나머지 역할도 단순히 지침이 짧아진다는 이유로 기존 경량 후보를 채택하지 않는다.
+
 ## Receipt native import evidence — 2026-09-20, parent `8647f8a`
 
 [Direct import path/PID output and executed controls](RECEIPT-IMPORT-EVIDENCE-01.md)

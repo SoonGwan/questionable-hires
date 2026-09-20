@@ -16,36 +16,53 @@ import tempfile
 import time
 
 
-BOOTSTRAP = '''import hashlib, importlib, json, pathlib, runpy, sys
+BOOTSTRAP = '''import hashlib, importlib, json, pathlib, sys, traceback
 spec = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
 sys.path[:0] = [str(root / name) for name in spec['import_roots']] + [str(root)]
 print('Copied process:', json.dumps({'python': sys.executable, 'cwd': str(root)}, separators=(',', ':')), flush=True)
-try:
-    for name in spec['imports']:
-        module = importlib.import_module(name)
-        location = getattr(module, '__file__', None)
-        if not location or not pathlib.Path(location).resolve().is_relative_to(root):
-            raise RuntimeError('Import escaped copy: ' + name + ': ' + str(location))
-        location = pathlib.Path(location).resolve()
-        print('Verified copied import:', name, json.dumps({
-            'path': str(location.relative_to(root)),
-            'sha256': hashlib.sha256(location.read_bytes()).hexdigest()
-        }, separators=(',', ':')), flush=True)
-except BaseException:
-    import traceback
-    print('Import setup failed; not mutation evidence.', flush=True)
-    traceback.print_exc()
-    raise SystemExit(7)
-if spec.get('precheck'):
+def verify_setup():
     try:
-        exec(compile(spec['precheck'], '<audit-precheck>', 'exec'), {'__name__': '__audit_precheck__'})
+        for name in spec['imports']:
+            module = importlib.import_module(name)
+            location = getattr(module, '__file__', None)
+            if not location or not pathlib.Path(location).resolve().is_relative_to(root):
+                raise RuntimeError('Import escaped copy: ' + name + ': ' + str(location))
+            location = pathlib.Path(location).resolve()
+            print('Verified copied import:', name, json.dumps({
+                'path': str(location.relative_to(root)),
+                'sha256': hashlib.sha256(location.read_bytes()).hexdigest()
+            }, separators=(',', ':')), flush=True)
     except BaseException:
-        import traceback
-        print('Precheck failed; not mutation evidence.', flush=True)
+        print('Import setup failed; not mutation evidence.', flush=True)
         traceback.print_exc()
-        raise SystemExit(6)
-    print('Precheck completed in check process.', flush=True)
+        raise SystemExit(7)
+    if spec.get('precheck'):
+        try:
+            exec(compile(spec['precheck'], '<audit-precheck>', 'exec'), {'__name__': '__audit_precheck__'})
+        except BaseException:
+            print('Precheck failed; not mutation evidence.', flush=True)
+            traceback.print_exc()
+            raise SystemExit(6)
+        print('Precheck completed in check process.', flush=True)
+if spec['probe'] is None and spec['runner'] == 'pytest':
+    sys.argv = [spec['runner']] + spec['tests']
+    import pytest
+    class CopiedSetup:
+        ready = False
+        def pytest_collection_finish(self, session):
+            try:
+                verify_setup()
+            except SystemExit as error:
+                pytest.exit('Audit setup incomplete', returncode=error.code)
+            self.ready = True
+    plugin = CopiedSetup()
+    code = pytest.main(spec['tests'], plugins=[plugin])
+    if not plugin.ready and code in (0, 1):
+        print('Copied imports were not verified; audit is incomplete.', flush=True)
+        code = 7
+    raise SystemExit(code)
+verify_setup()
 if spec['probe'] is not None:
     sys.argv = ['audit-probe']
     exec(compile(spec['probe'], '<audit-probe>', 'exec'), {'__name__': '__main__'})
@@ -60,7 +77,6 @@ else:
             print('No non-skipped unittest tests ran; this is not passing audit evidence.', flush=True)
             raise SystemExit(5)
         raise SystemExit(0)
-    runpy.run_module(spec['runner'], run_name='__main__', alter_sys=True)
 '''
 
 
