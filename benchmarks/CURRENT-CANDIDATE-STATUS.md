@@ -9,7 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## HTTPX upload diagnosis executed; review pending — 2026-09-21, launch `026f532`
+## HTTPX upload diagnosis reviewed; no improvement — 2026-09-21, launch `026f532`
+
+[Both original executions](results/httpx-upload-replay-01/README.md) satisfy all
+five criteria; skill costs +1.43% tokens / +7.42% time. Both reproduce full byte
+loss/replay across four actual-library paths with correct mechanisms and scoped
+mitigations. All 125 original files/modes, HEAD/index and resources are preserved.
+Baseline's empty final CLI output is recovered from its original stored response,
+not a rerun; all other captures match. Usage/exposure and privacy review completed.
+No concrete diagnostic failure justifies a new universal instruction. Exorcist
+and featured charts remain unchanged; broad efficiency is still unproven.
+
+한국어: 두 조건 모두 실제 진단을 충족했지만 스킬의 비용이 더 컸다. 누락된
+CLI 출력은 원본 세션으로 확인했다. 새 범용 규칙이나 개선률 주장은 추가하지 않는다.
+
+## HTTPX upload diagnosis executed — historical pre-review, 2026-09-21, launch `026f532`
 
 Both frozen sessions completed without timeout or account-limit stop; original
 sessions/tool records, usage and exposure profiles are retained privately under
