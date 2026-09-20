@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Repository-code audit transfer prepared — 2026-09-20, source `716493b`
+
+[Unchanged repository collector/tests](CON-ARTIST-REPOSITORY-CASE.md) form a
+whole-task test-sensitivity audit. Correct native four-test suite passes; an
+author-only cross-call cache fault triggers actual assertions. Test bytes remain
+unchanged; observed scratch creation/cleanup is project-local. No model results
+yet. This is this thread's real repository code with an authored request, not an
+external held-out project. Do not transfer local microbenchmark percentages to
+model performance. Full all-eight objective remains open.
+
+한국어: 실제 저장소 소스와 테스트로 모델 작업 전체를 평가할 과제를 준비했다.
+정상·결함 대조와 임시 파일 범위를 확인했으며 모델 측정은 아직 없다. 외부
+독립 평가로 포장하거나 내부 도구의 개선율을 모델 전체 성능으로 사용하지 않는다.
+
 ## Con Artist repeated line traversal reduced — 2026-09-20, parent `ff474e5`
 
 [Local collector comparison](CONTEXT-LINES-01.md) reuses definition spans for
