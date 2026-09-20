@@ -13,6 +13,42 @@ spec.loader.exec_module(builder)
 
 
 class BuildTests(unittest.TestCase):
+    def test_bundled_existing_test_recipe_runs_all_four_native_checks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            scratch = Path(directory).resolve()
+            plugin = builder.build(scratch / 'bundle with spaces')
+            project = scratch / 'project'
+            project.mkdir()
+            (project / 'service.py').write_text(
+                'def save(values, value):\n    values.append(value)\n    return True\n')
+            test = project / 'test_service.py'
+            test.write_text('import unittest\nfrom service import save\n'
+                            'class Tests(unittest.TestCase):\n'
+                            '    def test_saved(self):\n'
+                            '        self.assertTrue(save([], "item"))\n')
+            test.chmod(0o600)
+            before = {p.name: (p.read_bytes(), p.stat().st_mode & 0o777)
+                      for p in project.iterdir()}
+            guide = (plugin / 'skills/con-artist/references/existing-tests.md').read_text()
+            recipe = json.loads(guide.split("<<'JSON'\n", 1)[1].split('\nJSON', 1)[0])
+            process = subprocess.run([sys.executable, '-I', '-B',
+                str(plugin / 'skills/con-artist/scripts/audit.py'), '--source', str(project), '--spec', '-'],
+                input=json.dumps(recipe), text=True, capture_output=True, timeout=15)
+            self.assertEqual(process.returncode, 0, process.stderr)
+            result = json.loads(process.stdout)
+            self.assertEqual(result['status'], 'observed')
+            self.assertEqual({name: c['exit_code'] for name, c in result['checks'].items()},
+                dict(correct_tests=0, mutant_tests=0, correct_probe=0, mutant_probe=1))
+            for check in result['checks'].values():
+                self.assertIn('Ran 1 test', check['output'])
+                self.assertIn('Verified copied import: service', check['output'])
+                self.assertFalse(check['timed_out'] or check['output_truncated'])
+            self.assertIn("[] != ['item']", result['checks']['mutant_probe']['output'])
+            self.assertTrue(result['integrity']['owned_scratch_removed'])
+            self.assertTrue(result['integrity']['selected_original_bytes_and_modes_unchanged'])
+            self.assertEqual(before, {p.name: (p.read_bytes(), p.stat().st_mode & 0o777)
+                                      for p in project.iterdir()})
+
     def test_bundled_con_artist_documented_recipes_with_real_example_files(self):
         with tempfile.TemporaryDirectory() as directory:
             scratch = Path(directory).resolve()

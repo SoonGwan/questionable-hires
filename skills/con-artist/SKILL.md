@@ -35,7 +35,7 @@ process does not prove what the test process loads.
   Python context, [the collector](references/python-context.md) locates definitions,
   ancestor instructions and fixtures. Select known bodies directly; indexes are
   navigation, not reviewed bodies or execution. Don't recollect equivalent context.
-- Existing Python test improvements: consider [native test replacements](references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)
+- Existing Python test improvements: consider [the complete four-check recipe](references/existing-tests.md)
   when they remove custom copy/run/cleanup plumbing. One recipe checks original
   and proposed tests against correct/faulty code with the native runner and fixtures;
   applying the verified edit remains separate. No helper is needed for a simpler

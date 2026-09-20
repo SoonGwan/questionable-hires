@@ -9,6 +9,30 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist single-reference native improvement path — 2026-09-20, parent `5912139`
+
+The optional existing-test route now links to a [self-contained four-check recipe](../skills/con-artist/references/existing-tests.md),
+instead of a subsection requiring the common and native-probe references together.
+Those two complete references total 10,528 bytes; the routine guide is 3,545 bytes.
+This is document-size accounting, **not measured model token/time savings**.
+The helper, skill metadata and native-workflow choice are unchanged. Advanced
+options remain available on demand. No attempt to force tool adoption or rerun
+the exposed manifest/SQLite tasks until their totals look better.
+
+The actual recipe extracted from a built bundle runs all four native comparisons:
+original correct/faulty both pass; proposed correct passes and proposed faulty
+fails on `[] != ['item']`. Original bytes/0600 test mode and cleanup are verified.
+All 13 packaging tests pass (3.827s), as do 21 install tests (2.642s), repository
+validation, whitespace and featured-sync checks. This follows progressive
+disclosure: retain the execution contract while loading only task-relevant detail.
+Fresh model impact remains unmeasured; all-eight performance is still unproven.
+
+한국어: 기존 테스트 보강의 선택적 경로를 두 문서 대신 완결된 실행 예시 한 문서로
+연결했다. 읽을 수 있는 문서량 감소이지 실제 모델 비용 감소 수치는 아니다.
+배포 번들의 예시를 실제 실행해 정상/결함 네 조합과 원본·모드 보존·정리를 확인했고,
+패키징 13개·설치 21개 검사가 통과했다. 도우미 사용을 강제하거나 기존 과제를
+유리한 수치가 나올 때까지 반복하지 않으며 대표 그래프도 유지한다.
+
 ## Artifact audit original evidence reviewed — 2026-09-20, launch `90e6aee`
 
 [Three original model sessions](results/artifact-audit-01/README.md) all satisfy
