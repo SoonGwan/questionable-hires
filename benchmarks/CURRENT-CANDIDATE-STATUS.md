@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## All-eight screen 03 prepared — historical pre-measurement, 2026-09-20
+
+[Frozen protocol](ALL-EIGHT-CURRENT-03-PROTOCOL.md), skill resource `ee5eb28`.
+The existing eight-task native preflight passes, including actual faulty controls;
+the runner's balanced 16-slot schedule, pre-execution tamper guard and exclusive
+account-limit stop pass three unit tests. Sixteen fresh baseline/current sessions
+are prepared to check the accumulated four-role changes, with four unchanged-role
+sentinels. No model results are claimed at preparation. This reuses the exposed
+development tasks, not independent validation, and is not permission to tune
+Receipt again on ledger/startup or rerun until favorable. All scheduled outcomes
+must be retained and reviewed; no automatic chart/release update follows.
+
+한국어: `ee5eb28` 버전으로 8개 스킬·16개 새 세션 비교를 준비했다. 실제 결함
+대조를 포함한 사전 검사와 실행기 검사 3개가 통과했다. 준비 시점에는 모델
+성능 결과가 없으며, 기존 노출 문제 재검증임을 명시한다. Receipt 재튜닝이나
+유리할 때까지 재시도하지 않고 모든 결과를 검토한다.
+
 ## Expression-pruned Python excerpts — 2026-09-20, parent `b8b2f3f`
 
 [Report and raw samples](PYTHON-REGIONS-TRAVERSAL-01.md): Necromancer's helper
