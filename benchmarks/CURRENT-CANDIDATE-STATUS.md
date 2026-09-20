@@ -9,6 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist known-input reading not adopted — 2026-09-20, resources `eeadccb`
+
+[Fresh original/candidate comparison](results/con-artist-read-01/README.md), launch
+`b9c29e9`, keeps runtime/support unchanged and adjusts only initial read guidance.
+SQLite transfer task: **−17.28% tokens / +4.56% time**, responses 5→4; both arms
+pass all four criteria and scope. Candidate groups source reads but still begins
+with listings. Original also strengthens the empty-payload case; candidate keeps
+only the required binary-row strengthening, so work is not identical. Original
+native records recover CLI-omitted first phases without rerunning. One exposed
+authored case, n=1, fixed order/shared host, no fresh no-skill baseline. Fails the
+frozen both-costs-decrease gate: not adopted, no same-case retuning or chart change.
+
+한국어: 첫 읽기 지침 후보는 토큰 17.28% 감소·시간 4.56% 증가였다. 검증 기준과
+원본 보존은 모두 통과했지만 추가 검사량도 달라 일반 성능 향상으로 볼 수 없다.
+사전에 정한 채택 기준을 충족하지 않아 현재 스킬을 유지하고 결과만 보존한다.
+
 ## Repository-code audit measured — 2026-09-20, resources `ee51757`
 
 [Two fresh sessions](results/con-artist-repository-01/README.md), launch `3ca7b4d`,

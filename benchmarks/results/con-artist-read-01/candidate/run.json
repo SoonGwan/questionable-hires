@@ -1,0 +1,94 @@
+{
+  "resource_revisions": {
+    "original": "eeadccbe177bdb0e5f6698fcadb53374497fd446",
+    "candidate": "eeadccbe177bdb0e5f6698fcadb53374497fd446"
+  },
+  "identities": {
+    "benchmarks/run_con_artist_read_01.py": "b063154f9c3e1a9b75c39d7de89e7608531ef6cec6908b60ae9be36979f5e08b",
+    "benchmarks/con_artist_read_candidate.py": "e258aa98bb9934a65b10556a977b0083cd4ee086863885ed593a166762d6952b",
+    "benchmarks/con_artist_sqlite_cases.py": "2bec026bdff1d4a8636e909915559724ba67ae0d7afc2c08ce69007968f78f7e",
+    "benchmarks/run_con_artist_repository_01.py": "ac2a5f34b113423911b5f2abcb6a0196486c15e07f86ce51b34455bcbfd9773a",
+    "benchmarks/CON-ARTIST-READ-01-PROTOCOL.md": "9c1284dca273b97efb06e23280086ce86f29bfeb6a2eeb8a92ccfd37d1fadd32",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c"
+  },
+  "cases": [
+    {
+      "id": "sqlite-commit-audit",
+      "skill": "con-artist",
+      "task": "Audit whether the existing receipt tests detect a lost commit in this upload\npath. Inspect the actual test, endpoint binding and ledger implementation. Execute\nthe existing native tests on correct code and an isolated reachable fault omitting\nthe ledger commit (keep acknowledgment and connection closing unchanged). Verify\nthe actual test's imported endpoint and that endpoint's writer binding in the same\nprocess as the checks, not just in a separate import-only process.\nIf the tests survive, execute the same stronger native assertion on both versions:\nread through a new SQLite connection after the actual upload call and compare the\ncomplete ordered rows, retaining the pre-existing row and exact new binary payload.\nShow correct code passing and the faulty code failing for missing committed data,\nnot setup/import failures. Preserve originals and remove owned disposable copies.\nCaptured commands/results are sufficient; no permanent harness/report is required.\nWork only inside this project: no services, dependencies, other skills, delegation,\npublishing or production repair.",
+      "files": {
+        "ingest/__init__.py": "",
+        "ingest/ledger.py": "import sqlite3\n\n\ndef write_event(database, event_id, payload):\n    connection = sqlite3.connect(database)\n    try:\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\n                           (event_id, payload))\n        connection.commit()\n    finally:\n        connection.close()\n    return {'accepted': event_id}\n",
+        "ingest/endpoint.py": "from ingest.ledger import write_event as _record\n\n\ndef handle_upload(database, event_id, payload):\n    return _record(database, event_id, payload)\n",
+        "test_receipts.py": "import sqlite3\nimport tempfile\nfrom pathlib import Path\nimport unittest\nfrom ingest.endpoint import handle_upload as accept\n\n\nclass LedgerFixture(unittest.TestCase):\n    def setUp(self):\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-',\n                                                  dir=Path(__file__).resolve().parent)\n        self.addCleanup(self.scratch.cleanup)\n        self.database = Path(self.scratch.name) / 'events.sqlite'\n        connection = sqlite3.connect(self.database)\n        try:\n            connection.execute('CREATE TABLE events (id INTEGER PRIMARY KEY, payload BLOB NOT NULL)')\n            connection.execute('INSERT INTO events VALUES (?, ?)', (10, b'previous'))\n            connection.commit()\n        finally:\n            connection.close()\n\n\nclass ReceiptTests(LedgerFixture):\n    def test_acknowledges_binary_upload(self):\n        self.assertEqual(accept(self.database, 20, b'\\x00\\xffnew'), {'accepted': 20})\n\n    def test_acknowledges_empty_upload(self):\n        self.assertEqual(accept(self.database, 30, b''), {'accepted': 30})\n",
+        "requirements.md": "Python 3.9+ standard library; python3 -B -m unittest -v test_receipts.\nSuccessful handle_upload must preserve the integer ID and exact bytes payload in\nthe disk SQLite database, visible from a newly opened connection after it returns.\nPreviously committed events must survive. The acknowledgment is not durability proof.\nIDs are distinct positive integers and payloads are bytes, including empty/binary bytes.\nNo networking or concurrent writers are in scope. Existing production/test files are\nimmutable for this audit. Use disposable project-local copies, clean owned scratch,\nand preserve all original bytes/modes. Do not install packages or change warnings.\n"
+      },
+      "criteria": [
+        "Actual source inspection and same-process test-to-endpoint-to-ledger binding evidence.",
+        "Correct and missing-commit native tests execute; syntax/setup failures are not sensitivity.",
+        "Same stronger native row assertion passes correct code and rejects lost binary row through a fresh connection.",
+        "Pre-existing row and originals preserved; owned project-local scratch removed."
+      ]
+    }
+  ],
+  "schedule": [
+    {
+      "case": "sqlite-commit-audit",
+      "condition": "original"
+    },
+    {
+      "case": "sqlite-commit-audit",
+      "condition": "candidate"
+    }
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 360,
+  "repeats": 1,
+  "jobs": 1,
+  "resource_digests": {
+    "original": "a2e8ac5a6805369c944b5321980252f01846bfc0a0eb3c033a8c8557a6108bb5",
+    "candidate": "f0dd6669b967f2cd6a18aa93b81d7cae9283277ce7bfe0212e1f069ad15a9136"
+  },
+  "native_preflight": [
+    {
+      "faulty": false,
+      "module": "test_receipts",
+      "test_count": 2,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "scratch_removed": true,
+      "output": "test_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.006s\n\nOK\n"
+    },
+    {
+      "faulty": false,
+      "module": "test_durable",
+      "test_count": 1,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "scratch_removed": true,
+      "output": "test_committed_rows (test_durable.DurableRows) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nOK\n"
+    },
+    {
+      "faulty": true,
+      "module": "test_receipts",
+      "test_count": 2,
+      "exit_code": 0,
+      "expected_exit": 0,
+      "scratch_removed": true,
+      "output": "test_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.006s\n\nOK\n"
+    },
+    {
+      "faulty": true,
+      "module": "test_durable",
+      "test_count": 1,
+      "exit_code": 1,
+      "expected_exit": 1,
+      "scratch_removed": true,
+      "output": "test_committed_rows (test_durable.DurableRows) ... FAIL\n\n======================================================================\nFAIL: test_committed_rows (test_durable.DurableRows)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_durable.py\", line 13, in test_committed_rows\n    self.assertEqual(rows, [(10, b'previous'), (20, b'\\x00\\xffnew')])\nAssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (20, b'\\x00\\xffnew')]\n\nSecond list contains 1 additional elements.\nFirst extra element 1:\n(20, b'\\x00\\xffnew')\n\n- [(10, b'previous')]\n+ [(10, b'previous'), (20, b'\\x00\\xffnew')]\n\n----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nFAILED (failures=1)\n"
+    }
+  ],
+  "completed_cells": [],
+  "prepared_at": "2026-09-20T13:40:03.946023+00:00",
+  "stopped_after_limit": false
+}
