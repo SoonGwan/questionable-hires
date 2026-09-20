@@ -1,0 +1,9 @@
+diff --git a/options.py b/options.py
+--- a/options.py
++++ b/options.py
+@@ -1,3 +1,4 @@
+ def page_limit(options):
+     """Return the configured page limit without changing options."""
+-    return options.get('limit', 100)
++    value = options.get('limit')
++    return 100 if value is None else value

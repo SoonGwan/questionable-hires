@@ -1,0 +1,311 @@
+{
+  "session_id": "01a0bec9-093b-7163-96a0-9d5f7096f424",
+  "source_bytes": 85351,
+  "source_sha256": "450f05f39534f6968ba568caad45917f782884733b83545c034ef690e2be0c41",
+  "source_lines": 52,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "236d1ebe4cd962c6411941cce01af3d7c652149e8a30ae8ed8df5c12e4bf2dd9",
+      "record": {
+        "timestamp": "2026-09-20T12:27:27.372Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_062ffad2a351537a016aafd130ab0087d09578b9c3bee9a1fd",
+          "status": "completed",
+          "call_id": "call_1ObcfCMydLxY7ynbFewBEL3S",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git apply requested.patch\",max_output_tokens:2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907246.255474
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "0edfb9431d9da7d305ba59e399d00cd5595d399e6667eb8e9c4cc9bff7377e14",
+      "record": {
+        "timestamp": "2026-09-20T12:27:27.523Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bec9-21a3-7583-a8e5-6833cf93e7dc",
+          "call_id": "call_1ObcfCMydLxY7ynbFewBEL3S",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ce01d6\",\"wall_time_seconds\":0.000002875,\"exit_code\":1,\"original_token_count\":19,\"output\":\"error: patch failed: options.py:1\\nerror: options.py: patch does not apply\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907247.523094
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "bd68d6b7b70b6a01b313a1ba71b5a0483a99c79592807401825ad51a4004069b",
+      "record": {
+        "timestamp": "2026-09-20T12:27:31.668Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_062ffad2a351537a016aafd1344f2087d08590ac4a17787f0a",
+          "status": "completed",
+          "call_id": "call_UnAbFd78mGAFHocaolPUKM2V",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!test-invocations.jsonl'; git status --short; cat requirements.md options.py requested.patch\",max_output_tokens:6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907250.099956
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "5a8e3e816a86cda19d28108e7190d14cead7b5a4b3009d49ae1018958dfa91a3",
+      "record": {
+        "timestamp": "2026-09-20T12:27:31.787Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bec9-324b-7e81-b9b3-365d5dfc1a65",
+          "call_id": "call_UnAbFd78mGAFHocaolPUKM2V",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"1a02c3\",\"wall_time_seconds\":0.000001708,\"exit_code\":0,\"original_token_count\":243,\"output\":\"<WORKSPACE>\\nrequested.patch\\nAGENTS.md\\nnotes.txt\\ntest_options.py\\nrequirements.md\\noptions.py\\npage_limit accepts a normal dict with a missing limit, None, or a\\nnonnegative integer. Missing/None mean default 100; explicit zero means zero;\\npositive integers are returned unchanged. Preserve all input entries/references.\\nNo requirements for bools, negative numbers or other invalid inputs. Use Python\\n3.9+ stdlib and the existing native unittest suite, without modifying it.\\ndef page_limit(options):\\n    \\\"\\\"\\\"Return the configured page limit without changing options.\\\"\\\"\\\"\\n    return options.get('limit') or 100\\ndiff --git a/options.py b/options.py\\n--- a/options.py\\n+++ b/options.py\\n@@ -1,3 +1,4 @@\\n def page_limit(options):\\n     \\\"\\\"\\\"Return the configured page limit without changing options.\\\"\\\"\\\"\\n-    return options.get('limit', 100)\\n+    value = options.get('limit')\\n+    return 100 if value is None else value\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907251.787242
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "eb2e89d2427bde9ddd8ee2de338b215d20e3d6dad2a96c9a87e949ab8cc14f5f",
+      "record": {
+        "timestamp": "2026-09-20T12:27:40.506Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_062ffad2a351537a016aafd13aedd087d080e0b88c77351dba",
+          "status": "completed",
+          "call_id": "call_N5J2iSjvjh3yqEJhKcBvTwWV",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md\",max_output_tokens:1000}));\ntext(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/options.py\\n@@\\n-    return options.get('limit') or 100\\n+    value = options.get('limit')\\n+    return 100 if value is None else value\\n*** End Patch\"));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907254.458345
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "58a56d76a7bbadecf61f4c84842052da6416c259057374dfbc7062cb292fd703",
+      "record": {
+        "timestamp": "2026-09-20T12:27:40.685Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bec9-550d-7ee2-b50b-f36752f8fd58",
+          "call_id": "call_N5J2iSjvjh3yqEJhKcBvTwWV",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d8fa8f\",\"wall_time_seconds\":0.00000175,\"exit_code\":0,\"original_token_count\":22,\"output\":\"Follow requirements.md and task scope. Keep existing tests and owner files unchanged.\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907260.685497
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "cb62330269f566985dc17d5d41b1f3a0826edc9220c6c30ab1e3f8f4bc9dc5dc",
+      "record": {
+        "timestamp": "2026-09-20T12:27:43.409Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_062ffad2a351537a016aafd140735887d0a936c8de6ad27045",
+          "status": "completed",
+          "call_id": "call_IGF1qpnBV6X9g7xSZojEtHSw",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff -- options.py; cat options.py\",max_output_tokens:1500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907263.260765
+          }
+        }
+      }
+    },
+    {
+      "line": 36,
+      "line_sha256": "39f19500476c8ee07852732c1607a487a1afb72bec69c3446314a3dc2f3af0f3",
+      "record": {
+        "timestamp": "2026-09-20T12:27:43.519Z",
+        "ordinal": 35,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bec9-601f-7642-9e82-4239bcb4455f",
+          "call_id": "call_IGF1qpnBV6X9g7xSZojEtHSw",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"bbb4f1\",\"wall_time_seconds\":0.000001625,\"exit_code\":0,\"original_token_count\":126,\"output\":\"diff --git a/options.py b/options.py\\nindex 63b0822..38fd727 100644\\n--- a/options.py\\n+++ b/options.py\\n@@ -1,3 +1,4 @@\\n def page_limit(options):\\n     \\\"\\\"\\\"Return the configured page limit without changing options.\\\"\\\"\\\"\\n-    return options.get('limit') or 100\\n+    value = options.get('limit')\\n+    return 100 if value is None else value\\ndef page_limit(options):\\n    \\\"\\\"\\\"Return the configured page limit without changing options.\\\"\\\"\\\"\\n    value = options.get('limit')\\n    return 100 if value is None else value\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907263.519798
+          }
+        }
+      }
+    },
+    {
+      "line": 38,
+      "line_sha256": "ac62dbc01ce86b596c4c2db021fdab4a4a92aeb7fc4d482a78ee920c33b62d9c",
+      "record": {
+        "timestamp": "2026-09-20T12:27:46.803Z",
+        "ordinal": 37,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_062ffad2a351537a016aafd144595887d09d0396bef0461294",
+          "status": "completed",
+          "call_id": "call_3HCkFmnmdBxYT8U7MqciDtdD",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",max_output_tokens:3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907266.096527
+          }
+        }
+      }
+    },
+    {
+      "line": 41,
+      "line_sha256": "16a35758e6558740820170a1e1e6741f398e2d86fe60df6722d27e7d05fcf20b",
+      "record": {
+        "timestamp": "2026-09-20T12:27:46.938Z",
+        "ordinal": 40,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bec9-6d7a-7980-854e-cef506f9baa4",
+          "call_id": "call_3HCkFmnmdBxYT8U7MqciDtdD",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"780ca0\",\"wall_time_seconds\":0.0000015,\"exit_code\":0,\"original_token_count\":87,\"output\":\"test_missing_defaults (test_options.PageLimitTests) ... ok\\ntest_none_defaults (test_options.PageLimitTests) ... ok\\ntest_positive_and_input_preservation (test_options.PageLimitTests) ... ok\\ntest_zero_is_explicit (test_options.PageLimitTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.000s\\n\\nOK\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907266.938714
+          }
+        }
+      }
+    },
+    {
+      "line": 43,
+      "line_sha256": "ff6b93e7b68a9a383a560ae12af9835ffa190e32716625e4177a32ea338566cd",
+      "record": {
+        "timestamp": "2026-09-20T12:27:49.772Z",
+        "ordinal": 42,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_062ffad2a351537a016aafd146e8c487d0a23df17b7a5e6954",
+          "status": "completed",
+          "call_id": "call_ZgeMNFnIiF1LafWk16pnWFmQ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git status --short; git diff --check\",max_output_tokens:1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907269.813107
+          }
+        }
+      }
+    },
+    {
+      "line": 46,
+      "line_sha256": "9d7b93d6e70d8ac37916d3b594c146554bdddbb0f1863abbbc488570dde4a3cb",
+      "record": {
+        "timestamp": "2026-09-20T12:27:49.893Z",
+        "ordinal": 45,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bec9-7905-7932-bf58-f8787cea9d8c",
+          "call_id": "call_ZgeMNFnIiF1LafWk16pnWFmQ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ddc57a\",\"wall_time_seconds\":0.000001375,\"exit_code\":0,\"original_token_count\":10,\"output\":\" M options.py\\n?? test-invocations.jsonl\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bec9-0981-76b1-b250-8e214bf1746a",
+            "create_time": 1789907269.893274
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
