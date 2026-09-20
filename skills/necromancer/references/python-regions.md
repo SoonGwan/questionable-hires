@@ -30,6 +30,8 @@ Later matches can have empty truncated text after the shared budget is exhausted
 Excerpt text is sliced only up to the remaining allowance, using physical-line
 offsets rather than first copying complete overlapping bodies. Definitions and
 match limits are still checked after text space is exhausted; metadata is retained.
+Discovery traverses statement containers, including exception handlers and match
+cases, but skips expression subtrees, which cannot contain function statements.
 Use a narrower selection or a focused source read rather than treating omissions
 as absence. No input code is executed or source files written; AST parsing is not
 a sandbox or a total-memory guarantee. This helper's effect on whole-task model

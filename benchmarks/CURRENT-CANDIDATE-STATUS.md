@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Expression-pruned Python excerpts — 2026-09-20, parent `b8b2f3f`
+
+[Report and raw samples](PYTHON-REGIONS-TRAVERSAL-01.md): Necromancer's helper
+skips AST expression subtrees while retaining all statement containers. Five
+synthetic inputs produce identical results. Local median time changes range from
+−41.27% (expression-heavy configuration) to +0.95% (large string); traced allocation
+peaks are unchanged. Fourteen tests pass on Python 3.11, twelve run/two unsupported
+syntax checks skip on Python 3.9. All 85 per-file function selections across eleven
+shipped helpers match the prior implementation. This is helper-only evidence, not
+whole-task model efficiency or a featured benchmark update.
+
+한국어: 함수 추출기의 불필요한 수식 순회를 줄였다. 합성 입력별 로컬 실행 시간은
+약 41% 감소부터 약 1% 증가까지였고 메모리 피크는 동일했다. 실제 스킬 코드의
+85개 선택 결과도 이전과 같았다. 전체 모델 성능 개선으로 주장하지 않는다.
+
 ## Stale-patch schedule guards work in archives — 2026-09-20, parent `8290df6`
 
 Three stale-patch schedule checks now use labeled synthetic resources, exercising

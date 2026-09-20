@@ -30,12 +30,12 @@ def workloads():
     yield 'large-overlap', nested.encode(), [f'f{i}' for i in range(10)]
 
 
-def measure():
-    sources = {'before': subprocess.check_output(['git', 'show', BEFORE + ':' + RELATIVE], cwd=ROOT),
+def measure(before=BEFORE, cases=None):
+    sources = {'before': subprocess.check_output(['git', 'show', before + ':' + RELATIVE], cwd=ROOT),
                'after': (ROOT / RELATIVE).read_bytes()}
     modules = {name: load(name, source) for name, source in sources.items()}
     rows = []
-    for identity, raw, names in workloads():
+    for identity, raw, names in (workloads() if cases is None else cases):
         outputs = {name: module.select_regions(raw, names) for name, module in modules.items()}
         assert outputs['before'] == outputs['after']
         timings = {name: [] for name in modules}
@@ -64,7 +64,7 @@ def measure():
             median_seconds={k: statistics.median(v) for k, v in timings.items()},
             median_peak_traced_bytes={k: statistics.median(v) for k, v in peaks.items()}))
     return dict(kind='Local select_regions microbenchmark, not model performance', python=sys.version,
-        before_revision=BEFORE, source_sha256={k: hashlib.sha256(v).hexdigest() for k, v in sources.items()},
+        before_revision=before, source_sha256={k: hashlib.sha256(v).hexdigest() for k, v in sources.items()},
         rows=rows, warmup='One equality-check invocation per arm/workload',
         timing_repetitions=7, allocation_repetitions=3, order='Alternating before/after',
         limitations='Synthetic inputs, shared warm host, one interpreter. Function includes decode/parse/hash/excerpt, not CLI startup or Git. tracemalloc is Python-traced peak allocation, not RSS/total memory. No model token/time or general speedup claim.')

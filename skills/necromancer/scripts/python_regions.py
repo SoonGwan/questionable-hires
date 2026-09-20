@@ -32,6 +32,14 @@ def select_regions(raw, names):
         def __init__(self):
             self.scope = []
 
+        def generic_visit(self, node):
+            # A Python expression cannot contain a class/function statement.
+            # Keep statement containers (handlers, match cases, etc.) traversable,
+            # but do not walk unrelated expression trees or decorator/default code.
+            for child in ast.iter_child_nodes(node):
+                if not isinstance(child, ast.expr):
+                    self.visit(child)
+
         def visit_ClassDef(self, node):
             self.scope.append(node.name)
             self.generic_visit(node)
