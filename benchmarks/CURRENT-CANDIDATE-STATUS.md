@@ -9,6 +9,25 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Landlord discovery boundary correction — 2026-09-20
+
+Following the original Korean screen's out-of-scope ancestor search, Landlord now
+explicitly bounds instruction discovery and consumer expansion to authorized roots;
+missing local instructions do not grant parent traversal. Report inaccessible
+evidence instead. This replaces ambiguous discovery guidance without restricting
+authorized cross-project review. The measured `2990f44` result remains 9/10;
+**this correction's behavioral and cost impact is not yet measured**. No routing
+metadata change based on Receipt's single extra read, and no featured update.
+
+Local validation: full discovery completed **705 tests, all passing** in 113.567s
+with the declared pytest/PyYAML environment. After the entry edit, packaging's
+13 tests, the skill validator, repository validator and featured-sync check pass.
+These validate local mechanics and packaging, not model compliance with the edit.
+
+한국어: 실제 관찰된 상위 폴더 검색을 근거로 Landlord의 지침 탐색 범위를
+명확히 했다. 허용 범위 밖 근거는 한계로 보고하도록 하며, 이 수정의 효과는
+아직 별도 측정 전이다. 기존 실패를 통과로 바꾸거나 대표 수치를 수정하지 않는다.
+
 ## Korean automatic-selection screen — 2026-09-20, launch `ad3fbdb`
 
 [Ten original sessions](results/korean-auto-01/README.md), resources `2990f44`:
