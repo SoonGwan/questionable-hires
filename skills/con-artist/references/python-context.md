@@ -82,7 +82,9 @@ Neither collector exit 0 nor a source hash is execution evidence.
 
 Python 3.9+, UTF-8 regular files only, no imports/subprocesses/writes. Symlinks,
 traversal and Git internals are refused. Maximum 256 KB per file, 2 MB total input and 100,000
-output characters; invalid/oversized context exits 2 with no partial stdout.
+output characters, including the final newline, measured in the requested JSON
+format. Compact output may fit when `--pretty` does not; neither truncates source.
+Invalid/oversized context exits 2 with no partial stdout.
 Unsupported Python syntax in an indexed file also fails explicitly (`--full`
 can read a selected file without parsing it). Use native
 project tools for unsupported layouts; don't install dependencies for this tool.

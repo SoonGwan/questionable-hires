@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Context output budget corrected — 2026-09-21, parent `278ace9`
+
+Con Artist's collector checked pretty-printed size even for compact CLI output,
+rejecting a reproduced valid 100,000-character response. It now checks the
+requested format including the terminating newline; oversized output still exits
+2 without partial stdout. Source, hashes and fields are unchanged. The new
+CLI regression failed against the parent and passes after the fix; the companion
+API test initially errored because the new optional format argument did not exist.
+All 56 context-related tests pass on Python 3.11; both new boundary tests also
+pass on Python 3.9. Skill/repository validation and featured synchronization pass.
+This removes a demonstrated unnecessary rejection, not a measured model token or
+time gain. Historical charts and the full-suite checkpoint below are unchanged.
+
+한국어: 압축 출력은 한도 안인데 들여쓰기 기준으로 잘못 거부하던 오류를
+고쳤다. 출력 내용은 유지하고 실제 형식과 마지막 줄바꿈으로 한도를 검사한다.
+관련 테스트를 통과했지만 모델 전체의 토큰·시간 개선률을 측정한 것은 아니다.
+
 ## Full local release checks refreshed — 2026-09-21, source `a2d0002`
 
 [Release checkpoint](RELEASE-CHECK-2026-09-20.md): full checkout **867 tests OK**;

@@ -206,7 +206,12 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
     return result
 
 
-def collect(root, selectors, full=False):
+def encode(result, pretty=False):
+    return json.dumps(result, ensure_ascii=False, indent=2 if pretty else None,
+                      separators=None if pretty else (',', ':'))
+
+
+def collect(root, selectors, full=False, *, pretty=False):
     root = Path(root).resolve(strict=True)
     if not root.is_dir() or not 1 <= len(selectors) <= 8:
         raise ValueError('Provide a project directory and 1–8 file[:definition-or-line] selectors')
@@ -246,9 +251,8 @@ def collect(root, selectors, full=False):
                   conftest_indexes=conftests,
                   selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache) for path, symbol in selected],
                   limitation='Read-only navigation, not execution or complete dependency/config discovery. Only selected-path ancestors inside the supplied root are checked. Host instructions still apply; inspect additional dependencies when needed. Files must remain stable while reading.')
-    encoded = json.dumps(result, ensure_ascii=False, indent=2)
-    if len(encoded) > MAX_OUTPUT:
-        raise ValueError('Context exceeds 100000 characters; narrow selectors or use project tools. No partial context emitted.')
+    if len(encode(result, pretty)) + 1 > MAX_OUTPUT:  # CLI's terminating newline
+        raise ValueError(f'Context exceeds {MAX_OUTPUT} characters; narrow selectors or use project tools. No partial context emitted.')
     return result
 
 
@@ -262,12 +266,11 @@ def main():
     parser.add_argument('selectors', nargs='+', metavar='FILE[:DEFINITION_OR_LINE]')
     args = parser.parse_args()
     try:
-        result = collect(args.root, args.selectors, full=args.full)
+        result = collect(args.root, args.selectors, full=args.full, pretty=args.pretty)
     except (OSError, ValueError, SyntaxError, RecursionError) as error:
         print(json.dumps(dict(status='incomplete', error=str(error))), file=sys.stderr)
         return 2
-    print(json.dumps(result, ensure_ascii=False, indent=2 if args.pretty else None,
-                     separators=None if args.pretty else (',', ':')))
+    print(encode(result, args.pretty))
     return 0
 
 
