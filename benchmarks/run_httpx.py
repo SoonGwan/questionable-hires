@@ -28,6 +28,27 @@ DIAGNOSIS_TASKS = {
 STREAM_DIAGNOSIS_TASKS = {
     'response-preview': 'Diagnose this HTTPX report: a logging preview consumes response.iter_bytes() inside client.stream(), then application response.read() raises StreamConsumed. A preview using response.read() instead appears to work; an ordinary client.get response also remains readable after an iter_bytes preview. The reporter suspects premature pooled-connection closure. Reproduce all three paths offline with actual Client/MockTransport and the same nonempty body, recording preview bytes, later body or exception, consumption/closed state and underlying stream close calls. Explain which boundary distinguishes the outcomes and recommend a safe next action, including the memory tradeoff of buffering. Use actual HTTPX objects, not a simulation of their internals. Preserve original files; do not fix production, use network, install dependencies, commit or publish. Keep any disposable probes project-local and remove them; captured output and a scoped diagnosis suffice.',
 }
+UPLOAD_REPLAY_TASKS = {
+    'upload-replay': '''Diagnose this HTTPX report in this checkout: a multipart POST
+with a one-pass, non-seekable binary upload appears to survive a 307 redirect in
+MockTransport tests, but the reporter sees missing file content on replay through
+a transport that consumes request.stream directly. They suspect redirect method
+conversion or a transport/cache problem. Reproduce offline with the actual Client,
+multipart encoder and redirect path; do not replace those with a simulation.
+Use fresh identical nonempty uploads, a fixed multipart boundary and one same-origin
+307 from /start to /end. Compare MockTransport with a minimal local BaseTransport
+that consumes request.stream without calling request.read. Include a seekable
+binary upload and an explicitly buffered request as controls with the latter
+transport. For every path record both request methods, complete body bytes or an
+equivalent lossless encoding, lengths, stream types and content/transfer headers,
+and response status/history. Compare actual replay equality, not status alone.
+Trace the discrepancy to the supplied implementation, distinguish observed local
+transport behavior from unknown network behavior, and recommend a scoped caller
+strategy including buffering/replay tradeoffs. Diagnosis only: preserve original
+files and Git state; no library fix, network, installs, commits or publication.
+Keep any scratch project-local and remove it. Captured output and a concise
+evidence-backed diagnosis suffice; no retained report is required.''',
+}
 QUERY_BUILD_TASKS = {
     'query-build': '''Diagnose an HTTPX report: Client.build_request seems to lose query
 values already embedded in a URL after an adapter starts passing params or the
@@ -88,7 +109,8 @@ def select_profile(profile, requested=None):
                 'header-equality-audit': ('con-artist', HEADER_EQUALITY_TASKS),
                 'cookie-design': ('landlord', COOKIE_DESIGN_TASKS),
                 'stream-diagnosis': ('exorcist', STREAM_DIAGNOSIS_TASKS),
-                'query-build-diagnosis': ('exorcist', QUERY_BUILD_TASKS)}
+                'query-build-diagnosis': ('exorcist', QUERY_BUILD_TASKS),
+                'upload-replay-diagnosis': ('exorcist', UPLOAD_REPLAY_TASKS)}
     if profile not in profiles:
         raise ValueError('Unknown profile')
     skill, available = profiles[profile]
@@ -150,7 +172,7 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--python', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit', 'cookies-audit', 'url-repr-audit', 'header-equality-audit', 'cookie-design', 'stream-diagnosis', 'query-build-diagnosis'), default='audit')
+    parser.add_argument('--profile', choices=('audit', 'design', 'diagnosis', 'auth-design', 'decoder-audit', 'queryparams-audit', 'headers-audit', 'cookies-audit', 'url-repr-audit', 'header-equality-audit', 'cookie-design', 'stream-diagnosis', 'query-build-diagnosis', 'upload-replay-diagnosis'), default='audit')
     parser.add_argument('--case', action='append')
     parser.add_argument('--arms', nargs='+', choices=('baseline', 'control', 'skill'), default=['baseline', 'control', 'skill'])
     parser.add_argument('--repeats', type=int, default=3)
@@ -185,6 +207,9 @@ def main():
     if args.profile == 'query-build-diagnosis':
         checks = ['tests/client/test_queryparams.py::test_client_queryparams',
                   'tests/client/test_queryparams.py::test_client_queryparams_echo']
+    if args.profile == 'upload-replay-diagnosis':
+        checks = ['tests/test_multipart.py::test_multipart_encode_non_seekable_filelike',
+                  'tests/test_multipart.py::test_multipart_rewinds_files']
     if args.profile == 'auth-design':
         checks = ['tests/client/test_auth.py::test_sync_auth_reads_response_body',
                   'tests/client/test_auth.py::test_async_auth_reads_response_body',

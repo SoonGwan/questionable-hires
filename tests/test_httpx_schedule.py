@@ -21,6 +21,16 @@ finally:
 
 
 class HTTPXScheduleTests(unittest.TestCase):
+    def test_upload_replay_profile_is_separate_and_schedules_one_pair(self):
+        skill, tasks = runner.select_profile('upload-replay-diagnosis')
+        self.assertEqual(skill, 'exorcist')
+        self.assertEqual(set(tasks), {'upload-replay'})
+        self.assertEqual(set(runner.make_schedule(tasks, ['baseline', 'skill'], 1)),
+                         {('upload-replay', 'baseline', 1), ('upload-replay', 'skill', 1)})
+        self.assertEqual(runner.select_profile('stream-diagnosis'), ('exorcist', runner.STREAM_DIAGNOSIS_TASKS))
+        with self.assertRaises(ValueError):
+            runner.select_profile('upload-replay-diagnosis', ['response-preview'])
+
     def test_query_build_diagnosis_keeps_previous_profiles_separate(self):
         skill, tasks = runner.select_profile('query-build-diagnosis')
         self.assertEqual(skill, 'exorcist')
