@@ -1,0 +1,56 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "repository-collector-cache",
+    "skill": "con-artist",
+    "arm": "baseline",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "2abc690b15fdfe546793049dfa41fcd29886b1ef",
+    "skill_sha256": null,
+    "skill_resources_sha256": null,
+    "elapsed_seconds": 133.236,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 96810,
+      "cached_input_tokens": 83200,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 3645,
+      "reasoning_output_tokens": 320
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Audit whether the existing tests detect erroneous reuse of collector context across separate collect calls. Trace the real collector/test binding, establish a correct-code baseline, then introduce one meaningful cross-invocation cache-reuse fault in an isolated copy and run the same four tests. Report which assertions detect it or what remains unprotected. Do not implement a production fix or change the tests. Follow AGENTS.md and preserve all original files; retain no harness or report.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {},
+    "installed_resources_after": {},
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 769,
+      "mode": 420,
+      "sha256": "728c17e269c28a784cdf7876a53d8c356440e88440f866dd9678c37179edea99",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]

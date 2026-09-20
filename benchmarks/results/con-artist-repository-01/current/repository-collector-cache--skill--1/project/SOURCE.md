@@ -1,0 +1,1 @@
+The collector and test file are unchanged snapshots from questionable-hires commit 716493b. This audit request is authored for evaluation; it is not an external issue or held-out project. The four existing tests use unittest.

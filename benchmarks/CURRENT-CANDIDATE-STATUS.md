@@ -9,7 +9,25 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Repository-code audit transfer prepared — 2026-09-20, source `716493b`
+## Repository-code audit measured — 2026-09-20, resources `ee51757`
+
+[Two fresh sessions](results/con-artist-repository-01/README.md), launch `3ca7b4d`,
+task source `716493b`: all five task criteria and scope pass in both arms. Current
+uses **+11.45% tokens / −31.48% time** versus no skill. Baseline repairs an extra
+scratch-empty assertion and repeats correct tests; faults, copy contents and
+instrumentation differ. Both detect actual persistent-cache faults with unchanged
+tests. Current traces native-process binding; baseline prechecks separately.
+Neither invokes the installed collector, so this does not measure its optimized
+line traversal. Own-repository authored task, n=1, shared host/cache, fixed order;
+not held-out, causal or broad performance evidence. Keep all attempts/capture
+exceptions. No chart promotion; all-eight objective remains open.
+
+한국어: 실제 저장소 코드 과제에서 양쪽 모두 검증·보존을 통과했다. 스킬은
+토큰 11.45% 증가·시간 31.48% 감소였으나 무스킬의 추가 검사 수정·재실행과
+다른 결함·추적 방식이 포함돼 순수 성능 향상으로 단정할 수 없다. 설치된 탐색
+도구는 사용되지 않았다. 내부 최적화 수치를 모델 전체 개선으로 옮기지 않는다.
+
+## Repository-code audit prepared — historical pre-measurement, 2026-09-20, source `716493b`
 
 [Unchanged repository collector/tests](CON-ARTIST-REPOSITORY-CASE.md) form a
 whole-task test-sensitivity audit. Correct native four-test suite passes; an
