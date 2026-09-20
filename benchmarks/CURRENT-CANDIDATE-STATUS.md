@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Loader transfer pilot prepared — 2026-09-21, resources `ba6fedd` / `253273d`
+
+[Frozen six-cell protocol](RECEIPT-BINDING-01-PROTOCOL.md) compares baseline,
+pre-change Receipt and current Receipt on two authored rounding-verification tasks
+with dynamic versus ordinary module loading. Three prelaunch tests pass (0.625s):
+frozen input identity, matching obligations and actual prepared-project controls.
+Both loaders expose two midpoint assertion failures before and four passes after,
+with same-process copy paths and preserved originals. This is author preflight,
+not model performance evidence; the tasks are synthetic and related, not real
+issues or independently selected holdouts. No featured result is changed.
+
+한국어: 동적 로딩·일반 import 두 과제에서 무스킬·이전·현재 버전을 비교할
+입력과 기준을 고정했다. 실제 정상·결함 대조까지 확인했으며 아직 모델 성능
+결과는 없다. 직접 작성한 연관 과제라는 한계를 명시하고 기존 그래프는 유지한다.
+
 ## Dynamic module verification capability — 2026-09-21, parent `ba6fedd`
 
 Receipt's optional `module_bindings` checks module-valued attributes against exact

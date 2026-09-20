@@ -1,0 +1,88 @@
+[
+  {
+    "id": "rounding-dynamic",
+    "skill": "receipt",
+    "files": {
+      "rounding.py": "from decimal import Decimal, ROUND_HALF_UP\n\ndef cents(value):\n    return Decimal(value).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)\n",
+      "AGENTS.md": "Verification only. Compare HEAD^ and HEAD in separate project-local disposable copies with identical current tests/test_rounding.py and exactly the four tests in selected-tests.json. Use this Python interpreter and unittest; tests/ is an import root. In each actual test process verify that test_rounding.component.__file__ resolves to rounding.py inside that copy, not the original tree or the other copy. Preserve original bytes/modes, notes.txt and Git state. Remove owned scratch and leave no new harness or report. Do not edit implementation or tests, commit, stash, reset, install dependencies, access other repositories, external services or search ancestor directories.\n",
+      "selected-tests.json": "[\n  \"test_rounding.RoundingTests.test_positive_half_cent\",\n  \"test_rounding.RoundingTests.test_negative_half_cent\",\n  \"test_rounding.RoundingTests.test_non_tie\",\n  \"test_rounding.RoundingTests.test_exact_cent\"\n]\n",
+      "notes.txt": "Owner scratch notes; preserve bytes and modes.\n"
+    },
+    "history": [
+      {
+        "message": "Original rounding behavior",
+        "files": {
+          "rounding.py": "from decimal import Decimal, ROUND_HALF_EVEN\n\ndef cents(value):\n    return Decimal(value).quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)\n",
+          "AGENTS.md": "Verification only. Compare HEAD^ and HEAD in separate project-local disposable copies with identical current tests/test_rounding.py and exactly the four tests in selected-tests.json. Use this Python interpreter and unittest; tests/ is an import root. In each actual test process verify that test_rounding.component.__file__ resolves to rounding.py inside that copy, not the original tree or the other copy. Preserve original bytes/modes, notes.txt and Git state. Remove owned scratch and leave no new harness or report. Do not edit implementation or tests, commit, stash, reset, install dependencies, access other repositories, external services or search ancestor directories.\n",
+          "selected-tests.json": "[\n  \"test_rounding.RoundingTests.test_positive_half_cent\",\n  \"test_rounding.RoundingTests.test_negative_half_cent\",\n  \"test_rounding.RoundingTests.test_non_tie\",\n  \"test_rounding.RoundingTests.test_exact_cent\"\n]\n",
+          "notes.txt": "Owner scratch notes; preserve bytes and modes.\n"
+        }
+      },
+      {
+        "message": "Honor midpoint rounding contract",
+        "files": {
+          "rounding.py": "from decimal import Decimal, ROUND_HALF_UP\n\ndef cents(value):\n    return Decimal(value).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)\n"
+        }
+      }
+    ],
+    "working_files": {
+      "tests/test_rounding.py": "import importlib.util\nfrom pathlib import Path\nspec = importlib.util.spec_from_file_location('rounding_plugin', Path(__file__).resolve().parents[1] / 'rounding.py')\ncomponent = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(component)\nfrom decimal import Decimal\nimport unittest\n\nclass RoundingTests(unittest.TestCase):\n    def test_positive_half_cent(self):\n        self.assertEqual(component.cents('1.005'), Decimal('1.01'))\n    def test_negative_half_cent(self):\n        self.assertEqual(component.cents('-1.005'), Decimal('-1.01'))\n    def test_non_tie(self):\n        self.assertEqual(component.cents('1.004'), Decimal('1.00'))\n    def test_exact_cent(self):\n        self.assertEqual(component.cents('2.30'), Decimal('2.30'))\n"
+    },
+    "task": "Verify the existing fix in rounding.py. This project requires decimal cent rounding with exact half-cent ties away from zero, including negative adjustments. Compare HEAD^ and HEAD with the unchanged current tests/test_rounding.py and all four identities in selected-tests.json. Establish the before defect and after result, including non-tie and exact-cent controls. Identify both full revisions and prove the actual test-bound component comes from the corresponding copy inside that native test process. Follow AGENTS.md: preserve originals and Git state, remove scratch, and do not change code or tests.",
+    "criteria": [
+      "Identical current test bytes and exactly all four selected native identities run for both versions.",
+      "Before has two actual midpoint assertion failures, with non-tie and exact-cent controls passing; no setup errors.",
+      "After passes all four; native exits/counts and any incomplete evidence are accurately reported.",
+      "Both full revisions and test-bound component exact copy-local path are evidenced in each native test process.",
+      "Original bytes/modes and Git state preserved, no code/test edits, owned copies removed and no leftover harness/report."
+    ],
+    "provenance": {
+      "kind": "Authored synthetic transfer task, not a real issue or untouched external repository",
+      "loader": "dynamic",
+      "shared_behavior": "Same assertions and implementation; loader form differs"
+    }
+  },
+  {
+    "id": "rounding-ordinary",
+    "skill": "receipt",
+    "files": {
+      "rounding.py": "from decimal import Decimal, ROUND_HALF_UP\n\ndef cents(value):\n    return Decimal(value).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)\n",
+      "AGENTS.md": "Verification only. Compare HEAD^ and HEAD in separate project-local disposable copies with identical current tests/test_rounding.py and exactly the four tests in selected-tests.json. Use this Python interpreter and unittest; tests/ is an import root. In each actual test process verify that test_rounding.component.__file__ resolves to rounding.py inside that copy, not the original tree or the other copy. Preserve original bytes/modes, notes.txt and Git state. Remove owned scratch and leave no new harness or report. Do not edit implementation or tests, commit, stash, reset, install dependencies, access other repositories, external services or search ancestor directories.\n",
+      "selected-tests.json": "[\n  \"test_rounding.RoundingTests.test_positive_half_cent\",\n  \"test_rounding.RoundingTests.test_negative_half_cent\",\n  \"test_rounding.RoundingTests.test_non_tie\",\n  \"test_rounding.RoundingTests.test_exact_cent\"\n]\n",
+      "notes.txt": "Owner scratch notes; preserve bytes and modes.\n"
+    },
+    "history": [
+      {
+        "message": "Original rounding behavior",
+        "files": {
+          "rounding.py": "from decimal import Decimal, ROUND_HALF_EVEN\n\ndef cents(value):\n    return Decimal(value).quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)\n",
+          "AGENTS.md": "Verification only. Compare HEAD^ and HEAD in separate project-local disposable copies with identical current tests/test_rounding.py and exactly the four tests in selected-tests.json. Use this Python interpreter and unittest; tests/ is an import root. In each actual test process verify that test_rounding.component.__file__ resolves to rounding.py inside that copy, not the original tree or the other copy. Preserve original bytes/modes, notes.txt and Git state. Remove owned scratch and leave no new harness or report. Do not edit implementation or tests, commit, stash, reset, install dependencies, access other repositories, external services or search ancestor directories.\n",
+          "selected-tests.json": "[\n  \"test_rounding.RoundingTests.test_positive_half_cent\",\n  \"test_rounding.RoundingTests.test_negative_half_cent\",\n  \"test_rounding.RoundingTests.test_non_tie\",\n  \"test_rounding.RoundingTests.test_exact_cent\"\n]\n",
+          "notes.txt": "Owner scratch notes; preserve bytes and modes.\n"
+        }
+      },
+      {
+        "message": "Honor midpoint rounding contract",
+        "files": {
+          "rounding.py": "from decimal import Decimal, ROUND_HALF_UP\n\ndef cents(value):\n    return Decimal(value).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)\n"
+        }
+      }
+    ],
+    "working_files": {
+      "tests/test_rounding.py": "import rounding as component\nfrom decimal import Decimal\nimport unittest\n\nclass RoundingTests(unittest.TestCase):\n    def test_positive_half_cent(self):\n        self.assertEqual(component.cents('1.005'), Decimal('1.01'))\n    def test_negative_half_cent(self):\n        self.assertEqual(component.cents('-1.005'), Decimal('-1.01'))\n    def test_non_tie(self):\n        self.assertEqual(component.cents('1.004'), Decimal('1.00'))\n    def test_exact_cent(self):\n        self.assertEqual(component.cents('2.30'), Decimal('2.30'))\n"
+    },
+    "task": "Verify the existing fix in rounding.py. This project requires decimal cent rounding with exact half-cent ties away from zero, including negative adjustments. Compare HEAD^ and HEAD with the unchanged current tests/test_rounding.py and all four identities in selected-tests.json. Establish the before defect and after result, including non-tie and exact-cent controls. Identify both full revisions and prove the actual test-bound component comes from the corresponding copy inside that native test process. Follow AGENTS.md: preserve originals and Git state, remove scratch, and do not change code or tests.",
+    "criteria": [
+      "Identical current test bytes and exactly all four selected native identities run for both versions.",
+      "Before has two actual midpoint assertion failures, with non-tie and exact-cent controls passing; no setup errors.",
+      "After passes all four; native exits/counts and any incomplete evidence are accurately reported.",
+      "Both full revisions and test-bound component exact copy-local path are evidenced in each native test process.",
+      "Original bytes/modes and Git state preserved, no code/test edits, owned copies removed and no leftover harness/report."
+    ],
+    "provenance": {
+      "kind": "Authored synthetic transfer task, not a real issue or untouched external repository",
+      "loader": "ordinary",
+      "shared_behavior": "Same assertions and implementation; loader form differs"
+    }
+  }
+]
