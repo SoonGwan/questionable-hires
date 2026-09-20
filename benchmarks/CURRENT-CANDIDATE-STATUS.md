@@ -9,6 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Real issue verification pilot prepared — 2026-09-21, parent `9f0cd19`
+
+[Frozen two-cell protocol](SEQUENCE-ENTRY-01-PROTOCOL.md) compares no-skill and
+Receipt verification on one extracted real repository bug, resources `9f0cd19`.
+Implementation/test bytes match the previous author replay; history/instructions
+are authored and the issue is already known. Exact prepared-project controls
+observe four expired waits before and eight passes after, with same-process loaded
+paths, preserved originals and removed copies. Two provenance/native checks pass
+on Python3.11. No model outcome, accepted speedup, production skill change or chart
+promotion at this preparation checkpoint.
+
+한국어: 실제 버그의 전후 검증을 무스킬·Receipt 두 세션으로 비교할 입력과 기준을
+고정했다. 추출 코드·테스트는 실제 파일이지만 이력·지시문은 작성한 것이며 이미
+알려진 이슈다. 실제 프로젝트 준비 절차의 정상·결함 대조까지 확인했고 모델
+성능 향상 결과는 아직 없다.
+
 ## Component entry scheduling overhead removed — 2026-09-21, parent `87513cb`
 
 The immediate-termination fix introduced a separate queue-wait task for every
