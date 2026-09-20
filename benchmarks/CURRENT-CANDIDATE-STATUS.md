@@ -9,6 +9,34 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Hostage assertion-boundary correction — 2026-09-20, parent `75cae2c`
+
+Following the [original disclosure-screen evidence](results/hostage-modes-01/README.md),
+the production entry now distinguishes observable contracts from incidental
+counter/token values, avoids invented cancellation-exception identity requirements,
+and keeps callback helpers separate from unittest runner/assertion methods.
+State snapshots, contractual payload/error identity, bounded waits and owned-task
+cleanup remain. The unsuccessful disclosure split is still not promoted.
+
+[Native controls](../tests/test_hostage_assertion_boundaries.py) execute the actual
+retained original test suite in disposable copies: original/correct passes,
+original/valid-counter-step fails at `6 != 5`, repaired/correct and repaired/valid
+both pass, repaired/broken-owner still fails at `False != True`. Each runs eight
+tests. Separate native method-collision controls distinguish a TypeError from the
+intended `'observed' != 'expected'` assertion failure. Historical artifacts are
+unchanged. Two new test methods pass on Python 3.9 and 3.11; 21 controlled-call
+tests and 13 packaging tests also pass, as do skill/repository validators.
+
+These are **author controls establishing the proposed test-construction remedy**,
+not proof that the new prose changes model behavior or reduces tokens/time. Do
+not replace the original failed alternative result or rerun the exposed tasks
+until the costs look favorable. Fresh model impact remains unmeasured.
+
+한국어: 실제로 발견한 정상 구현 오탐·테스트 메서드 충돌을 근거로 스킬 지침을
+수정했다. 임시 복사본에서 관측 가능한 상태만 검증하도록 바꾸면 정상 대안은
+통과하면서 실제 결함은 계속 잡히는 것을 확인했다. 원본 결과는 변경하지 않았다.
+모델이 새 지침을 따르는지와 전체 성능 개선은 아직 측정 전이다.
+
 ## Hostage mode-disclosure screen — 2026-09-20, launch `3632225`
 
 [Six original sessions and author controls](results/hostage-modes-01/README.md)

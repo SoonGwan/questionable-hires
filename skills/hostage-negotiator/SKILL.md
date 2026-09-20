@@ -15,9 +15,9 @@ For each supporting change, ask which acceptance condition fails without it. A s
 
 For stateful behavior, follow entry, completion and recovery through the existing owner. Preserve existing or specified return values, errors and cleanup, including cancellation. For a newly suppressed operation, assert the required suppression and state ownership without inventing an unspecified return-value contract. Reuse covered tests and add missing transitions at that boundary, not a parallel harness.
 
-When asserting that stale or failed work leaves state unchanged, capture the relevant field values before releasing that work and compare them afterward. Retaining the state object itself can alias in-place mutations. Preserve payload/error references when identity is contractual; snapshot nested mutable contents only where the contract requires their stability.
+Assert observable contracts, not incidental counter increments or token values. For stale or failed work, capture contractual field values before release and compare afterward; retaining the owner object can alias in-place mutations. Preserve payload/error identity and snapshot mutable contents only when contractual. Do not invent exception-identity requirements for task cancellation.
 
-Async regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup.
+Async regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup. Keep callback helpers separate from framework methods: an async `fail` or `run` on a unittest TestCase can break assertions or execution; use distinct names or composed support.
 
 Without equivalent project support, optionally copy the [Python asyncio asset](assets/controlled_call.py) or [JavaScript Promise asset](assets/controlled_call.mjs) for the actual runtime into permitted test support. Read its complete usage block alongside application files: `sed -n '1,/^"""$/p' <python-asset>` or `sed -n '1,/^ \*\//p' <js-asset>`. These include limits and optional JS lifecycle ownership; inspect implementation for trust, adaptation or unclear behavior. Assets replace entry/release gates, not application assertions or external-resource cleanup; no separate reference is needed.
 
