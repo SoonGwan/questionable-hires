@@ -9,6 +9,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'benchmarks'))
 import run_receipt_preserve_01 as runner
+from receipt_native_support import native_controls
 
 
 class ReceiptPreserveRunnerTests(unittest.TestCase):
@@ -17,7 +18,10 @@ class ReceiptPreserveRunnerTests(unittest.TestCase):
             runner.main()
 
     def test_real_native_startup_controls(self):
-        rows = runner.preflight()
+        with native_controls(runner) as scratch:
+            rows = runner.preflight()
+            self.assertEqual(list((scratch/'benchmarks/local-runs').iterdir()), [])
+        self.assertFalse(scratch.exists())
         self.assertEqual([r['exit_code'] for r in rows if 'exit_code' in r], [1, 0])
 
     def test_schedule_and_exclusive_execution(self):

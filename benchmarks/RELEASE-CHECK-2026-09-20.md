@@ -4,6 +4,39 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
+## Full archive recheck and Receipt native controls — 2026-09-21, parent `954c685`
+
+The previously launched fresh archive of `954c685` completed on Python3.11.16:
+**843 tests, 126.868 seconds, 14 errors, 16 skips**, exit 1. Local temporary log:
+`/tmp/qh-roundtrip-source.JBaj0y/native-check.log`. All remaining errors are Receipt
+preserve (3), read (4), route (4) and startup (3) checks. This is an observed full
+run, not subtraction from targeted results; source-distribution validation is
+still incomplete.
+
+The subsequent change separates four native preflights from historical Git
+availability. Their shipped `compare.py` bytes have SHA256
+`a94b827a6fd346a93adbfb6ea4b3606d66b26f7e5201a035da7fc853978c2fe7`;
+a separate real-history test compares them with both `ca668a4` and `55fe666`.
+The native controls execute unchanged in owned temporary roots, including real
+before/after tests, complete/partial fixes, helper incompatibility, deliberately
+disabled startup, source preservation and cleanup. No native result is mocked.
+Supplying verified bytes to the preflight's Git-content lookup is explicitly not
+a claim that archive-local Git history exists.
+
+Four native checks pass in **2.806 seconds**. Two additional checks pass in
+**3.305 seconds**: pinned-byte provenance and an independent Git-free source copy
+that actually runs all four controls without skips. The archive check verifies
+no source changes or leftover scratch, then modifies the disposable helper and
+confirms all four controls reject its changed identity. Frozen runners, fixtures
+and model evidence remain unchanged. This does not establish a post-change full
+archive error count or model performance gain.
+
+한국어: `954c685` 압축본 전체 843개 검사에서 오류 14개·건너뛰기 16개가 확인됐다.
+이후 Receipt 네이티브 대조 4개를 Git 이력과 분리해 실제 실행을 유지했다. 별도
+Git 없는 소스에서도 정상·결함·잘못된 시작 설정 대조가 실행되고, 도구 변조 시
+4개 모두 거부된다. 전체 압축본의 수정 후 오류 수나 모델 성능 개선은 아직
+새로 주장하지 않는다.
+
 ## Roundtrip and HTTPX schedule isolation — 2026-09-21, parent `ec4a538`
 
 The rejected Hostage roundtrip candidate and historical HTTPX probe tests now use
