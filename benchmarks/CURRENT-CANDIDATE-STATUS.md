@@ -9,6 +9,25 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Necromancer non-regular input rejection — 2026-09-20, parent `cb64211`
+
+The history collector checked file size but could block opening a named pipe
+before its Git timeout applied. A real POSIX FIFO without a writer reproduced
+the hang and exceeded the test's two-second process deadline. The directory
+control also showed an attempted open. Both controls failed before the fix.
+
+The collector now checks regular-file type before opening or invoking Git.
+Both controls and all 44 history-related tests pass (14.766s). FIFO identity and
+mode are preserved; stdout is empty and the CLI exits 2 with an explicit error.
+Normal Git/history fixtures remain covered. This is stable-input validation,
+not a sandbox against a concurrent file replacement; existing Git-output memory
+limitations remain documented. No model latency/token or broad performance claim.
+
+한국어: 이력 도우미가 named pipe 입력에서 Git 실행 전 멈추는 문제를 실제로
+재현하고 수정했다. 일반 파일이 아니면 열기 전에 명확히 거절하며, 이력 관련
+44개 검사가 통과했다. 입력 파일을 바꾸지 않고 기존 정상 동작도 유지한다.
+실제 오류 방지 개선이며 전체 스킬의 성능 향상 수치로 주장하지 않는다.
+
 ## Con Artist decorator indexing — 2026-09-20, parent `3a985e8`
 
 [Repeated whole-source scans removed](CONTEXT-DECORATORS-01.md) without changing

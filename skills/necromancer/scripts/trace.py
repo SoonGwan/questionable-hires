@@ -7,6 +7,7 @@ from collections import deque
 import json
 from pathlib import Path
 import re
+import stat
 import subprocess
 
 
@@ -200,7 +201,10 @@ def trace_ranges(repo, filename, ranges, max_commits=3):
             break
         if parent.is_symlink():
             raise ValueError('Symlinked parent directories are unsupported')
-    if target.stat().st_size > 2_000_000:
+    info = target.stat()
+    if not stat.S_ISREG(info.st_mode):
+        raise ValueError('Selected source must be a regular file')
+    if info.st_size > 2_000_000:
         raise ValueError('Selected file exceeds 2 MB; use focused native tools')
     with target.open('rb') as stream:
         current = stream.read(2_000_001)

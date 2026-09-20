@@ -13,7 +13,8 @@ native result. The collector has no persistent result cache.
 
 ## Source reads and line boundaries
 
-Known oversized current files are rejected before reading. The read stops at
+Non-regular sources (including named pipes) and known oversized current files
+are rejected before opening or running Git. The read stops at
 2 MB plus one detection byte; growth beyond the limit is rejected before Git
 collection. This bounds that read, not total memory or Git output, and does not
 provide a snapshot of concurrently edited files.
