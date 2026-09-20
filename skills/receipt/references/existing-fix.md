@@ -1,5 +1,8 @@
 # Receipt for an existing fix
 
+This guide covers Python. For an existing `node --test` project, read only the
+[native Node comparison guide](node-comparison.md) instead.
+
 Compare isolated implementations with **the same current assertions/inputs** and
 comparable dependencies/configuration; reuse valid evidence. Identify loaded
 revisions. Setup/old-interface failures are not defect reproduction. Preserve

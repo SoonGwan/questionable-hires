@@ -9,7 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Native Node comparison feasibility — 2026-09-21, parent `4d13328`
+## Native Node comparison integrated — 2026-09-21, parent `310d483`
+
+[Receipt Node integration](RECEIPT-NODE-COMPARE-01.md) reuses existing bounded Git
+collection, isolated copies, preservation and foreground execution. ESM committed
+and CommonJS working-tree comparisons preserve one current failing-before/passing-
+after assertion. Missing/malformed/truncated load evidence and timeouts stop further
+comparison. Eight integration tests pass on Python 3.9 / Node 24.16.0. Node-specific
+checks are included in 159 passing Receipt tests under Python 3.11. Metadata/link,
+skill and featured-sync checks also pass. Node-specific
+guidance and both README languages describe support and limits. No model cost gain
+or release-readiness claim; native-project performance evaluation remains open.
+
+한국어: Node 기본 테스트의 격리 비교가 실제로 연결됐고 실패·누락 처리와 원본
+보존을 검증했다. 새 기능을 토큰·시간 개선으로 해석하지 않으며 그래프는 그대로다.
+
+## Native Node comparison feasibility — historical, 2026-09-21, parent `4d13328`
 
 [Receipt load-observation preflight](RECEIPT-NODE-LOAD-PREFLIGHT-01.md): 3 tests
 exercise 12 native Node v24.16.0 commands, keeping ESM/CommonJS pass/fail and

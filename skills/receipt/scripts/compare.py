@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare committed or uncommitted Python fixes with frozen working-tree tests.
+"""Compare committed or uncommitted fixes with frozen working-tree tests.
 
 Trusted local tests only. This is not a security sandbox.
 """
@@ -20,6 +20,19 @@ import time
 
 MAX_FIXED_ENTRIES = 10_000
 MAX_GUARD_BYTES = 20_000_000
+
+NODE_OBSERVER = '''import { registerHooks } from 'node:module';
+import { createHash } from 'node:crypto';
+const selected = new Set(JSON.parse(process.env.RECEIPT_NODE_MODULE_URLS));
+registerHooks({load(url, context, nextLoad) {
+  const result = nextLoad(url, context);
+  if (selected.has(url)) {
+    const hash = result.source == null ? null : createHash('sha256').update(result.source).digest('hex');
+    console.error('Receipt copied load: ' + JSON.stringify({url, pid: process.pid, sha256: hash}));
+  }
+  return result;
+}});
+'''
 
 MODULE_BINDINGS = '''def verify_module_bindings(recipe, root):
     for selector, relative in recipe.get('module_bindings', {}).items():
@@ -223,6 +236,18 @@ def run_check(python, root, recipe, timeout):
         marker = probe / 'ready'
         env['PYTHONPATH'] = os.pathsep.join([str(probe), *(str(root / name) for name in recipe.get('import_roots', [])), str(root)])
         args = [str(python), '-B', '-m', recipe['runner'], *recipe['tests']]
+    result = capture_check(args, root, env, timeout)
+    if marker is not None:
+        ready = marker.is_file() and not marker.is_symlink() and read_limited(marker, 5) == b'ready'
+        result.update(command=args, invocation='module', provenance_ready=ready,
+                      native_exit_code=result['exit_code'])
+        if not ready and not result['timed_out']:
+            result['exit_code'] = 7
+    return result
+
+
+def capture_check(args, root, env, timeout):
+    """Shared bounded foreground execution; callers interpret native evidence."""
     process = subprocess.Popen(args,
         cwd=root, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT, start_new_session=True)
@@ -271,12 +296,43 @@ def run_check(python, root, recipe, timeout):
             # Preserve the original interruption/error rather than replacing it.
     result = dict(exit_code=process.returncode, timed_out=timed_out,
                   output=output, output_truncated=size > 12000)
-    if marker is not None:
-        ready = marker.is_file() and not marker.is_symlink() and read_limited(marker, 5) == b'ready'
-        result.update(command=args, invocation='module', provenance_ready=ready,
-                      native_exit_code=process.returncode)
-        if not ready and not timed_out:
-            result['exit_code'] = 7
+    return result
+
+
+def run_node_check(node, root, recipe, timeout):
+    # Do not pre-import application code: observe the native test's own loads.
+    probe = Path(tempfile.mkdtemp(prefix='.receipt-node-', dir=root))
+    hook = probe / 'observe.mjs'
+    hook.write_text(NODE_OBSERVER, encoding='utf-8')
+    expected = {(root / name).as_uri(): hashlib.sha256((root / name).read_bytes()).hexdigest()
+                for name in recipe['imports']}
+    env = dict(os.environ, TMPDIR=str(root), TMP=str(root), TEMP=str(root),
+               RECEIPT_NODE_MODULE_URLS=json.dumps(list(expected)))
+    args = [str(node), '--test', '--test-reporter=tap', '--import', str(hook),
+            *(str(root / name) for name in recipe['tests'])]
+    result = capture_check(args, root, env, timeout)
+    loads, malformed = [], False
+    for line in result['output'].splitlines():
+        prefix = 'Receipt copied load: '
+        if prefix not in line:
+            continue
+        try:
+            record = json.loads(line.split(prefix, 1)[1])
+            if (not isinstance(record, dict) or record.get('url') not in expected
+                    or record.get('sha256') != expected[record['url']]
+                    or type(record.get('pid')) is not int or record['pid'] <= 0):
+                malformed = True
+            else:
+                loads.append(record)
+        except (ValueError, TypeError):
+            malformed = True
+    ready = (not malformed and not result['output_truncated']
+             and {record['url'] for record in loads} == set(expected))
+    result.update(command=args, invocation='node-test', native_exit_code=result['exit_code'],
+                  provenance_ready=ready, copied_loads=loads,
+                  provenance_limitation='Loader results only; not successful evaluation, dispatch or test coverage.')
+    if not ready and not result['timed_out']:
+        result['exit_code'] = 7
     return result
 
 
@@ -327,7 +383,7 @@ def tree_inventory(root):
     return inventory, total
 
 
-def compare(root, recipe, python=sys.executable, timeout=30):
+def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
     root = Path(root).resolve(strict=True)
     if os.name != 'posix' or not 0 < timeout <= 300:
         raise ValueError('Requires POSIX and a timeout in (0, 300]')
@@ -342,8 +398,13 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     for key in ('fixed', 'vary', 'imports', 'tests'):
         if not isinstance(recipe[key], list) or not recipe[key] or not all(isinstance(v, str) and v for v in recipe[key]):
             raise ValueError(key + ' must be a nonempty string list')
-    if recipe['runner'] not in ('unittest', 'pytest'):
-        raise ValueError('Use unittest or installed pytest')
+    if recipe['runner'] not in ('unittest', 'pytest', 'node'):
+        raise ValueError('Use unittest, installed pytest or native node')
+    if recipe['runner'] == 'node':
+        if any(key in recipe for key in ('invocation', 'import_roots', 'module_bindings')):
+            raise ValueError('Node does not support Python invocation/import options')
+        if any(os.environ.get(key) for key in ('NODE_OPTIONS', 'NODE_PATH', 'NODE_COMPILE_CACHE')):
+            raise ValueError('Node custom startup/search/cache settings require project-native comparison')
     if recipe.get('invocation', 'bootstrap') not in ('bootstrap', 'module'):
         raise ValueError('invocation must be bootstrap or module')
     if recipe.get('invocation') == 'module' and recipe['runner'] != 'unittest':
@@ -351,6 +412,15 @@ def compare(root, recipe, python=sys.executable, timeout=30):
     recipe = dict(recipe, fixed=fixed_files(root, recipe['fixed']))
     watched = fixed_files(root, recipe.get('watch', []))
     names = recipe['fixed'] + recipe['vary']
+    if recipe['runner'] == 'node':
+        for key in ('imports', 'tests'):
+            if len(set(recipe[key])) != len(recipe[key]):
+                raise ValueError('Node ' + key + ' must be unique selected file paths')
+            for name in recipe[key]:
+                path = checked_path(name)
+                selected = recipe['fixed'] if key == 'tests' else names
+                if name not in selected or path.suffix not in ('.js', '.cjs', '.mjs'):
+                    raise ValueError('Node ' + key + ' requires selected JS files, not flags/globs/module names')
     bindings = recipe.get('module_bindings', {})
     if not isinstance(bindings, dict) or len(bindings) > 100:
         raise ValueError('module_bindings must map at most 100 module:attribute selectors to selected paths')
@@ -475,7 +545,8 @@ def compare(root, recipe, python=sys.executable, timeout=30):
                     target.parent.mkdir(parents=True, exist_ok=True)
                     target.write_bytes(content)
                     target.chmod(file_modes[name])
-                check = run_check(python, directory, recipe, timeout)
+                check = (run_node_check(node, directory, recipe, timeout) if recipe['runner'] == 'node'
+                         else run_check(python, directory, recipe, timeout))
                 result['checks'][label] = check
                 if check['timed_out'] or check['exit_code'] == 7:
                     result['status'] = 'incomplete'
@@ -519,7 +590,13 @@ the comparison; no link traversal. 10000 entries/20 MB read per inventory. Opt i
 only when whole-project preservation is requested and all source reads are allowed.
 before: commit expression. after: commit expression or {"working_tree":true}.
 Working-tree after freezes current bytes/modes once, not the index or a commit.
-imports: modules that must load inside each copy. runner: unittest or pytest.
+imports: modules that must load inside each copy. runner: unittest, pytest or node.
+Node mode: imports are selected .js/.cjs/.mjs paths; tests are fixed JS paths,
+not flags/globs. Runs node --test --test-reporter=tap with an observation preload.
+Requires synchronous registerHooks; verified on Node 24.16.0. Custom NODE_OPTIONS,
+NODE_PATH or NODE_COMPILE_CACHE and Python invocation/import options are rejected.
+Node copied_loads record source hashes/PIDs, not evaluation or coverage; truncated
+or missing provenance is incomplete. Use --node to select the project executable.
 module_bindings (optional): {"test_loader:component":"plugin.py"} verifies a
 module-valued attribute's exact selected path in the same test process. The base
 module must be declared in imports. Not function identity or later dispatch proof.
@@ -545,6 +622,7 @@ Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
     parser.add_argument('--spec', required=True, help='JSON file or - for stdin')
     parser.add_argument('--source', default='.', help='Git project root (default: current directory)')
     parser.add_argument('--python', default=sys.executable, help='Check interpreter (default: this Python)')
+    parser.add_argument('--node', default='node', help='Node executable for runner=node (default: node)')
     parser.add_argument('--pretty', action='store_true',
                         help='Indent JSON for human reading; default is compact lossless JSON')
     parser.add_argument('--timeout', type=float, default=30,
@@ -558,7 +636,7 @@ Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
                 raw = stream.read(1_000_001)
         if len(raw.encode('utf-8')) > 1_000_000:
             raise ValueError('Recipe exceeds 1 MB')
-        result = compare(args.source, json.loads(raw), args.python, args.timeout)
+        result = compare(args.source, json.loads(raw), args.python, args.timeout, node=args.node)
     except (ValueError, OSError, RuntimeError, subprocess.TimeoutExpired) as error:
         parser.exit(2, 'Comparison not established: ' + str(error) + '\n')
     print(json.dumps(result, indent=2) if args.pretty else json.dumps(result, separators=(',', ':')))
