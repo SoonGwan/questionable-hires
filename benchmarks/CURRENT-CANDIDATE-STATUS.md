@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt support-routing hypothesis — 2026-09-20, resources `ca668a4`
+
+[Isolated routing candidate](RECEIPT-ROUTE-CANDIDATE.md) moves resource-selection
+guidance before eager bulk reads. It does not include the rejected read-order
+rewrite. Runtime and evidence safeguards are unchanged; implementation review
+for concrete questions remains allowed. Unmeasured and not adopted. Behavioral
+validation must include necessary diagnosis, not merely smaller routine context.
+
+한국어: 자료를 한꺼번에 읽기 전에 선택 기준을 먼저 주는 후보를 분리했다.
+기각된 첫 읽기 변경은 포함하지 않고 필요한 구현 검토·진단은 유지한다.
+실제 스킬 반영과 성능 주장은 아직 없으며 진단 상황까지 검증해야 한다.
+
 ## Receipt read-order candidate rejected — 2026-09-20, resources `ca668a4`
 
 [Six fresh sessions](results/receipt-read-01/README.md), frozen launch `62234cf`,
