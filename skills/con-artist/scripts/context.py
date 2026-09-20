@@ -79,18 +79,25 @@ def physical_lines(source):
     return lines
 
 
-def definition_at_line(tree, line):
-    matches = []
+def definition_spans(tree):
+    records = []
     def visit(node, prefix=''):
         if isinstance(node, DEFINITIONS):
             name = prefix + node.name
             first, last = span(node)
-            if first <= line <= last:
-                matches.append((last - first, name, node))
+            records.append((first, last, name, node))
             prefix = name + '.'
         for child in ast.iter_child_nodes(node):
             visit(child, prefix)
     visit(tree)
+    return records
+
+
+def definition_at_line(tree, line, spans=None):
+    if spans is None:
+        spans = definition_spans(tree)
+    matches = [(last - first, name, node) for first, last, name, node in spans
+               if first <= line <= last]
     if not matches:
         raise ValueError('Line is outside a Python definition; select the full file for module context')
     matches.sort(key=lambda item: item[0])
@@ -154,7 +161,9 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
                 if symbol > len(lines):
                     raise ValueError('Selected line exceeds file length: ' + str(path))
                 result['requested_line'] = symbol
-                symbol, node = definition_at_line(tree, symbol)
+                if 'definition_spans' not in snapshot:
+                    snapshot['definition_spans'] = definition_spans(tree)
+                symbol, node = definition_at_line(tree, symbol, snapshot['definition_spans'])
             else:
                 body = tree.body
                 for name in symbol.split('.'):

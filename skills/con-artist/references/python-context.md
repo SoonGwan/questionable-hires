@@ -62,6 +62,9 @@ function text as a substitute for the implementation.
 
 Within one invocation, selectors and ancestor context reuse one read and at most
 one parse per relative file path; the input limit counts that file once.
+Multiple line selectors also reuse one definition-span traversal for that parsed
+file. Each still resolves the smallest enclosing definition and rejects ambiguity;
+named selectors do not build this line index. Nothing is cached across invocations.
 Decorator indexing shares physical UTF-8 lines across definitions instead of
 rescanning the whole file for each decorator; original decorator text is retained.
 Output still retains each requested excerpt and its provenance. No cache survives the

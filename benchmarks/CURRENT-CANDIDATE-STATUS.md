@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist repeated line traversal reduced — 2026-09-20, parent `ff474e5`
+
+[Local collector comparison](CONTEXT-LINES-01.md) reuses definition spans for
+multiple line selectors within one parsed source. All outputs remain identical.
+Eight-selector synthetic workloads: median 8.873→2.095 ms (50 definitions) and
+84.294→18.879 ms (500), **−76.38% / −77.60%**. One-selector changes are −2.93% /
++1.47%. Seven local repetitions, warm shared host; no model-call/token or general
+speedup claim. Forty collector-related tests pass, including ambiguity and stale
+source checks. Named selection/entrypoint guidance and featured charts unchanged.
+
+한국어: 같은 파일의 여러 줄 위치를 찾는 반복 탐색을 제거했다. 로컬 8개 선택
+측정은 76~78% 단축·출력 동일이며 관련 테스트 40개가 통과했다. 1개 선택은
+거의 변화가 없고 증가도 있었다. 모델 전체 성능 개선이 아닌 도구 내부 최적화다.
+
 ## Con Artist collector read replacement fixed — 2026-09-20, parent `b73e695`
 
 The read-only context collector checked a path before opening it. Deterministic

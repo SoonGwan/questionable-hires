@@ -1,0 +1,160 @@
+{
+  "kind": "Local function microbenchmark, not model performance",
+  "before_revision": "ff474e5",
+  "source_sha256": {
+    "before": "c50390cf5782897467aa4d7570544fc80c2d4a11e1c7063d32dec951c5d39e21",
+    "after": "ef2d38d549e7e33b894df4c4eb5156391c752a2e8d3d6bcab9ccc9a53aad3fcd"
+  },
+  "repetitions": 7,
+  "warmup": "One equality-check invocation per arm/workload before timing",
+  "order": "Alternates before/after within each workload",
+  "rows": [
+    {
+      "definitions": 50,
+      "selectors": [
+        "module.py:4"
+      ],
+      "input_sha256": "f8305e20223dac12bac960cfe20341e68fbc06ecc4db1e77a312055ab600f656",
+      "output_sha256": "6aabd0a5ecfa9b47d9660be89bf70f5add8b49d3f7b8c3cf3b576fcc6d6287e2",
+      "outputs_identical": true,
+      "samples_seconds": {
+        "before": [
+          0.002114084000000002,
+          0.0019764580000000004,
+          0.0020010419999999945,
+          0.001970334000000004,
+          0.002030083000000002,
+          0.001973208000000004,
+          0.001979084000000006
+        ],
+        "after": [
+          0.0018955000000000014,
+          0.0019284169999999948,
+          0.0019148749999999964,
+          0.0019210409999999983,
+          0.0019417919999999977,
+          0.0019843749999999966,
+          0.001909291999999993
+        ]
+      },
+      "median_seconds": {
+        "before": 0.001979084000000006,
+        "after": 0.0019210409999999983
+      }
+    },
+    {
+      "definitions": 50,
+      "selectors": [
+        "module.py:4",
+        "module.py:40",
+        "module.py:76",
+        "module.py:112",
+        "module.py:148",
+        "module.py:184",
+        "module.py:220",
+        "module.py:256"
+      ],
+      "input_sha256": "f8305e20223dac12bac960cfe20341e68fbc06ecc4db1e77a312055ab600f656",
+      "output_sha256": "4591e72d6a72ee022cd4d2033a827b5a8c7b107cccac9f15cec6e1ea7832c1a4",
+      "outputs_identical": true,
+      "samples_seconds": {
+        "before": [
+          0.008959915999999998,
+          0.008776209000000007,
+          0.008947290999999996,
+          0.008662209000000004,
+          0.008872500000000005,
+          0.008686833000000005,
+          0.008920541000000004
+        ],
+        "after": [
+          0.0021689579999999986,
+          0.0021922919999999985,
+          0.0021487919999999966,
+          0.002076792000000008,
+          0.0020953750000000104,
+          0.0020675,
+          0.0020880000000000065
+        ]
+      },
+      "median_seconds": {
+        "before": 0.008872500000000005,
+        "after": 0.0020953750000000104
+      }
+    },
+    {
+      "definitions": 500,
+      "selectors": [
+        "module.py:4"
+      ],
+      "input_sha256": "05e2eda6f4cd50a9b0bd133c09c692553f86e8b3abdda878032165f0c0533751",
+      "output_sha256": "0bb45ab323b7cc68d5bd897537239a6a7b08a29e3b05cc38c330eea4ebbfbb0d",
+      "outputs_identical": true,
+      "samples_seconds": {
+        "before": [
+          0.019156334000000025,
+          0.018511208999999973,
+          0.018176749999999964,
+          0.018594833000000033,
+          0.018022499999999997,
+          0.018630833000000013,
+          0.01809937500000003
+        ],
+        "after": [
+          0.018783083000000006,
+          0.020603125,
+          0.017704916999999987,
+          0.021575457999999992,
+          0.017630582999999977,
+          0.019481042000000004,
+          0.017889458000000025
+        ]
+      },
+      "median_seconds": {
+        "before": 0.018511208999999973,
+        "after": 0.018783083000000006
+      }
+    },
+    {
+      "definitions": 500,
+      "selectors": [
+        "module.py:4",
+        "module.py:376",
+        "module.py:748",
+        "module.py:1120",
+        "module.py:1492",
+        "module.py:1864",
+        "module.py:2236",
+        "module.py:2608"
+      ],
+      "input_sha256": "05e2eda6f4cd50a9b0bd133c09c692553f86e8b3abdda878032165f0c0533751",
+      "output_sha256": "b4bdcde9894f8aad29c490128975d458d68d3bfeda60edaf33ba2f4be36802e5",
+      "outputs_identical": true,
+      "samples_seconds": {
+        "before": [
+          0.084294125,
+          0.08399545800000008,
+          0.08336504200000006,
+          0.08442095799999993,
+          0.08371450000000003,
+          0.08502008299999986,
+          0.08532008400000013
+        ],
+        "after": [
+          0.017989333000000052,
+          0.019844916000000046,
+          0.017938750000000003,
+          0.019665790999999988,
+          0.018009208000000054,
+          0.01979949999999997,
+          0.018879416000000093
+        ]
+      },
+      "median_seconds": {
+        "before": 0.084294125,
+        "after": 0.018879416000000093
+      }
+    }
+  ],
+  "limitations": "Synthetic definition files, warm shared host/filesystem, one interpreter. Includes collect parsing/reading/output-bound serialization, not CLI startup or model calls. No statistical/general speedup claim."
+}
