@@ -32,6 +32,11 @@ class RunnerArchiveTests(unittest.TestCase):
             'benchmarks/CON-ARTIST-READ-01-PROTOCOL.md',
             'tests/test_hostage_buffer_runner.py', 'tests/native_fixture_support.py',
             'benchmarks/HOSTAGE-BUFFER-01-PROTOCOL.md',
+            'tests/test_hostage_stale_patch_runner.py',
+            'benchmarks/run_hostage_stale_patch_01.py',
+            'benchmarks/hostage_stale_patch_case.py',
+            'benchmarks/hostage_roundtrip_candidate.py',
+            'benchmarks/HOSTAGE-STALE-PATCH-01-PROTOCOL.md',
         )
         with tempfile.TemporaryDirectory() as scratch:
             archive = Path(scratch) / 'archive'
@@ -44,9 +49,9 @@ class RunnerArchiveTests(unittest.TestCase):
                                      '-s', 'tests', '-p', 'test_*runner.py', '-v'],
                                     cwd=archive, capture_output=True, text=True, timeout=15)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            self.assertIn('Ran 20 tests', result.stderr)
-            self.assertIn('OK (skipped=5)', result.stderr)
-            self.assertEqual(result.stderr.count('No project-owned Git history;'), 5)
+            self.assertIn('Ran 24 tests', result.stderr)
+            self.assertIn('OK (skipped=6)', result.stderr)
+            self.assertEqual(result.stderr.count('No project-owned Git history;'), 6)
             for name in ('test_changed_snapshot_rejects_before_execution',
                          'test_prepare_has_no_model_calls_then_executes_each_slot_once',
                          'test_changed_resources_reject_before_model_or_marker',
@@ -61,6 +66,9 @@ class RunnerArchiveTests(unittest.TestCase):
                          'test_actual_positive_negative_and_valid_alternative_controls',
                          'test_changed_candidate_rejected_before_model',
                          'test_limit_stops_without_replacement_or_restart',
+                         'test_prepare_exclusive_execution_and_all_arms',
+                         'test_changed_candidate_rejected_before_execution',
+                         'test_account_limit_stops_without_replacements',
                          'test_schedule_and_no_reexecution'):
                 self.assertRegex(result.stderr, name + r'[^\n]*\.\.\. ok')
             self.assertEqual({p.relative_to(archive): p.read_bytes()

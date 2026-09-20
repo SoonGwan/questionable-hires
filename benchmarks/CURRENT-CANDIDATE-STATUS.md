@@ -9,6 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Stale-patch schedule guards work in archives — 2026-09-20, parent `8290df6`
+
+Three stale-patch schedule checks now use labeled synthetic resources, exercising
+the actual candidate paragraph rewrite, digest rejection, exclusive execution and
+account-limit stop without Git history. A separate pinned-resource check retains
+the actual original/candidate entry-only comparison. Eight targeted checkout and
+archive-wrapper tests pass; combined sparse archive discovery runs eighteen checks
+and explicitly skips six historical checks (24 total). Frozen runners, native
+patch-rejection controls and model results are unchanged. This is reproducibility
+work, not a skill-performance gain; full archive verification remains outstanding.
+
+한국어: 오래된 패치 비교의 실행 순서·변조 거부·한도 중단 검사가 Git 없는
+압축본에서도 실행된다. 실제 고정 버전 비교는 별도로 유지했다. 관련 검사
+8개가 통과했고 축소 압축본에서는 18개 실행·출처 대조 6개 건너뜀이다.
+전체 성능 향상이나 배포 준비 완료로 해석하지 않는다.
+
 ## Buffer schedule and limit guard work in archives — 2026-09-20, parent `1d5e3c0`
 
 Buffer scheduling tests use explicit synthetic resources while a separate real
