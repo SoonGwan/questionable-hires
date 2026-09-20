@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Conditional-detail candidate screened locally — 2026-09-21, source `104e010`
+
+[HTTPX cost diagnosis and unadopted candidate](EXORCIST-DISCLOSURE-CANDIDATE.md):
+equal response counts and less source output do not yield lower total tokens.
+The exact accounting is +4,105 first-input term −2,773 later-input term +142
+output = +1,474 tokens, not causal attribution. A conditional runner-detail
+candidate saves only 356 entrypoint bytes and may require an extra guide read.
+Two transformation tests and 15 runner tests pass; no new model run or production
+adoption. This does not establish the requested whole-task improvement.
+
+한국어: 탐색량을 무조건 줄이라는 규칙을 추가할 근거는 없었다. 선택적 설명
+분리 후보는 효과가 미검증이고 추가 읽기 비용도 있어 배포본에 적용하지 않았다.
+유리한 결과를 얻기 위해 같은 과제를 반복 실행하거나 그래프를 바꾸지 않는다.
+
 ## History read replacement guard — 2026-09-21, parent `d1987f6`
 
 Necromancer now validates the opened descriptor's type, identity and size, with
