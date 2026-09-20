@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt startup transfer prepared — 2026-09-20
+
+[New native-startup probe](RECEIPT-STARTUP-CASE.md) distinguishes genuine CSV
+assertions from setup errors and requires unchanged project startup behavior.
+Local native preflight: before two failures/three controls, after five passes;
+disabled startup is a distinct RuntimeError, and the helper rejects replacing
+project hooks. Original tree/copy cleanup checks pass. No model result yet;
+routing candidate remains unadopted and performance claims/charts unchanged.
+
+한국어: 프로젝트 시작 설정이 필요한 새 과제의 실제 정상·오류 대조 검증을
+마쳤다. 버그 assertion과 설정 누락 오류를 구분하며 원본 보존·정리도 확인했다.
+모델 측정 전이므로 성능 개선이나 실제 스킬 반영을 주장하지 않는다.
+
 ## Receipt support-routing screen — 2026-09-20, resources `ca668a4`
 
 [Four fresh sessions](results/receipt-route-01/README.md), launch `5f05ae5`:
