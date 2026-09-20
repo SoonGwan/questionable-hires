@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Real HTTPX upload replay boundary preflight — 2026-09-21
+
+[Actual-checkout observations](HTTPX-UPLOAD-REPLAY-01.md) establish a new diagnostic
+boundary at pinned HTTPX `26d48e0`: MockTransport buffers a one-pass multipart body,
+masking payload loss on an unbuffered 307 replay. Four native paths preserve/reject
+the expected complete bytes; seekable and explicitly buffered controls replay
+correctly, and a false equality claim fails by assertion. Source files are unchanged.
+No model run, skill edit, network test or efficiency claim; setup failures and
+local-transport limitations are disclosed before any comparison is frozen.
+
+한국어: 실제 라이브러리의 테스트 전송 방식이 업로드 재전송 문제를 가리는
+사례를 네 경로로 확인했다. 아직 스킬 성과가 아니라 새 실전 진단 과제의 근거다.
+
 ## Friday output pilot reviewed; candidate not adopted — 2026-09-21
 
 [All six reviewed sessions](results/friday-output-01/README.md) meet their five
