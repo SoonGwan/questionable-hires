@@ -4,6 +4,43 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
+## Checkout and source archive pass — 2026-09-21, source `b78d4d4`
+
+Both previously launched full runs completed on Python3.11.16, with
+`python -B -m unittest discover -s tests -q`:
+
+- Checkout: **848 tests, 147.830 seconds, OK**, exit 0; no skipped tests.
+- Fresh committed source archive: **848 tests, 138.010 seconds, OK (skipped=20)**,
+  exit 0. The 20 history-dependent checks cannot compare absent Git objects;
+  synthetic behavior and native controls execute independently, as described below.
+- Temporary local logs: `/tmp/qh-b78d4d4-checkout.log` and
+  `/tmp/qh-receipt-source.vcUfiM/native-check.log`. They are not published artifacts.
+- These concurrent local runs establish correctness at this source, not a relative
+  performance comparison between checkout and archive.
+
+After launch, an additional installed-helper regression was added (not included
+in the 848-test totals). It installs Mother-in-law in a disposable project and
+executes the installed script with isolated Python: guarded behavior exits 0,
+stale overwrite exits 1, and pre-fetch setup failure exits 2 with its cause before
+the two-second outer deadline. Installed bytes/modes and project source remain
+unchanged; no leftover files. Both installed-recent-helper tests pass in **0.803
+seconds**. Metadata/link validation and featured synchronization also pass.
+
+Hosted CI is **not green**. Fresh inspection of
+[run 35520919370](https://github.com/SoonGwan/questionable-hires/actions/runs/35520919370)
+at `b78d4d4` shows all four jobs failed before any steps. The source-archive job's
+annotation reports failed account payments or a spending limit requiring attention.
+No billing/settings changes or workflow retries were made. This account-level
+issue must be resolved by the owner before hosted validation can establish a pass.
+Local success does not establish remote installation, publication readiness or
+the outstanding whole-task model-efficiency objective.
+
+한국어: `b78d4d4`에서 개발 체크아웃 848개와 Git 없는 압축본 848개 검사가 모두
+통과했다. 압축본에서는 과거 이력 대조 20개만 건너뛰며 실제 동작 검사는 유지한다.
+이후 추가한 설치형 도구 검사도 정상·결함·미완료를 구분하고 원본을 보존했다.
+GitHub CI는 계정 결제 또는 지출 한도 문제로 실행 전 실패했다. 계정 설정은
+변경하지 않았으며 원격 CI 통과·배포 승인·모델 전체 성능 향상을 뜻하지 않는다.
+
 ## Receipt copy/rewrite/schedule isolation — 2026-09-21, parent `bc4edd8`
 
 Receipt read/route candidate transforms and read/route/startup/preserve schedule

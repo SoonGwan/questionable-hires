@@ -1,5 +1,6 @@
 """Keep recent installed-helper executions in the ordinary offline test suite."""
 import importlib.util
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -13,6 +14,54 @@ SPEC.loader.exec_module(checker)
 
 
 class InstalledRecentHelperTests(unittest.TestCase):
+    def test_installed_sequence_probe_preserves_behavior_and_incomplete_diagnostics(self):
+        with tempfile.TemporaryDirectory(prefix='installed-sequence-', dir=ROOT / 'benchmarks') as temporary:
+            project = Path(temporary)
+            installed = project / '.agents/skills'
+            setup = subprocess.run([sys.executable, '-I', '-B', str(ROOT / 'scripts/install.py'),
+                '--dest', str(installed), '--skill', 'mother-in-law'], cwd=project,
+                capture_output=True, text=True, timeout=15)
+            self.assertEqual(setup.returncode, 0, setup.stderr)
+            inventory = checker.inventory(installed)
+            source = project / 'component.py'
+            source.write_text('''class Guarded:
+    def __init__(self):
+        self.result, self.generation = None, 0
+    async def run(self, query, fetch):
+        self.generation += 1
+        generation = self.generation
+        value = await fetch(query)
+        if generation == self.generation:
+            self.result = value
+class Unguarded:
+    result = None
+    async def run(self, query, fetch):
+        self.result = await fetch(query)
+class BrokenSetup:
+    async def run(self, query, fetch):
+        raise RuntimeError('request setup failed')
+''')
+            source.chmod(0o600)
+            before = source.read_bytes(), source.stat().st_mode & 0o777
+            for name, expected in (('Guarded', 0), ('Unguarded', 1), ('BrokenSetup', 2)):
+                with self.subTest(component=name):
+                    process = subprocess.run([sys.executable, '-I', '-B',
+                        str(installed / 'mother-in-law/scripts/sequence_probe.py'),
+                        '--root', str(project), '--source', 'component.py', '--class-name', name],
+                        cwd=project, capture_output=True, text=True, timeout=2)
+                    self.assertEqual(process.returncode, expected, process.stdout + process.stderr)
+                    self.assertEqual(process.stderr, '')
+                    evidence = json.loads(process.stdout)
+                    self.assertEqual(evidence['complete'], expected != 2)
+                    if expected == 2:
+                        self.assertIn('RuntimeError: request setup failed', evidence['error'])
+                    else:
+                        self.assertEqual([c['passed'] for c in evidence['cases']],
+                                         [True, expected == 0])
+            self.assertEqual((source.read_bytes(), source.stat().st_mode & 0o777), before)
+            self.assertEqual(checker.inventory(installed), inventory)
+            self.assertEqual({p.name for p in project.iterdir()}, {'.agents', 'component.py'})
+
     def test_installed_regions_and_native_receipt_execute_without_checkout_imports(self):
         with tempfile.TemporaryDirectory(prefix='installed-recent-', dir=ROOT / 'benchmarks') as temporary:
             project = Path(temporary)
