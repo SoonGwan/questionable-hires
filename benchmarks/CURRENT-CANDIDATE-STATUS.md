@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Repository schedule archive checks retained — 2026-09-20, parent `1243028`
+
+The Con Artist repository comparison now separates synthetic scheduling resources
+from the actual pinned resource export. Its schedule, exclusive execution and
+tamper-before-marker guards run with retained native case bytes without Git;
+the real snapshot test verifies every exported file and permission against the
+pinned Git blobs. Four checkout tests pass. Combined sparse archive coverage now
+discovers ten tests: seven native/schedule/tamper checks execute and three genuine
+historical-resource checks explicitly skip. No originals change or local-runs
+directory is required. This fixes that runner's archive dependency, not all
+remaining archive errors or overall skill-performance evidence.
+
+한국어: Con Artist 저장소 비교 실행기의 Git 의존성을 분리했다. 로컬 4개가
+통과했고 통합 압축본 검사에서는 실제 동작 7개가 실행되고 과거 출처 대조
+3개만 명시적으로 건너뛴다. 스냅샷은 전체 파일 내용과 권한을 Git 원본과 비교했다.
+전체 압축본 문제 해결이나 모델 성능 향상을 의미하지 않는다.
+
 ## Two comparison schedules separated from provenance — 2026-09-20, parent `c7ac16d`
 
 Artifact-audit and Receipt-selection scheduling tests now use explicitly synthetic
