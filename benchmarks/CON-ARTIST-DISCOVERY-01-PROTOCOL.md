@@ -50,9 +50,11 @@ exporting private initial messages.
 Compare total input+output tokens (cache once), wall time and recorded responses
 for **both** path variants. Inspect whether speculative discovery actually changes;
 do not label every inventory or extra check waste. Candidate adoption requires
-full criteria on both variants, reduced tokens and time on the unknown-path task,
+full criteria on both variants, reduced tokens and time versus original on the unknown-path task,
 and no more than 5% increase in either metric on the known-path control. This is a
-development decision rule, not significance or a promised gain. A passing screen
+development decision rule, not significance or a promised gain. The known-path
+5% tolerance also compares candidate to original; no-skill results remain the
+absolute reference and must be reported separately. A passing screen
 only justifies distinct-task confirmation, not automatic production adoption or a
 chart/release claim. If adverse or mixed, retain it and stop same-task tuning.
 
