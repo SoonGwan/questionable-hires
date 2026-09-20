@@ -1,0 +1,213 @@
+{
+  "session_id": "01a0bfc2-1a98-79a3-b51d-1b88966a8521",
+  "source_bytes": 98624,
+  "source_sha256": "c2a75ec978b4afb8b43453d9b514d40d660493633550ac8ffd5d8a86a808678f",
+  "source_lines": 44,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "59d5fb4517cf951921ef1a907c5f7341675807196250636facfadfb30c61ec65",
+      "record": {
+        "timestamp": "2026-09-20T16:59:30.324Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0ac7d1cda80536ba016ab010f30a1487d084ef7fafc5933ab6",
+          "status": "completed",
+          "call_id": "call_Q3wVyBiU1yqE1yIEM8qsWUxl",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!__pycache__' -g '!.git' ; git status --short\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfc2-1ae3-7f71-ba8e-a007dff7b11d",
+            "create_time": 1789923568.86097
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "eb496c6112dadaf87b7bb1b0bf00cbe20ca61c833333c584e65a2ca62a92075f",
+      "record": {
+        "timestamp": "2026-09-20T16:59:30.470Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfc2-3326-7052-a3c4-30641db429e4",
+          "call_id": "call_Q3wVyBiU1yqE1yIEM8qsWUxl",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ada2b7\",\"wall_time_seconds\":0.000003417,\"exit_code\":0,\"original_token_count\":36,\"output\":\"<WORKSPACE>\\nAGENTS.md\\ntest_sender.py\\nnotes.txt\\nrequirements.md\\nsender.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfc2-1ae3-7f71-ba8e-a007dff7b11d",
+            "create_time": 1789923570.470272
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "96a17f35363c5d63b483f0702ed80207db128d7e0a30eb1945d205d7e732f834",
+      "record": {
+        "timestamp": "2026-09-20T16:59:33.136Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0ac7d1cda80536ba016ab010f63b8c87d088eb7d0dafe4cac1",
+          "status": "completed",
+          "call_id": "call_czGnadWcizfU8iD1glvDjiTE",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md requirements.md sender.py test_sender.py\",\"max_output_tokens\":8000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfc2-1ae3-7f71-ba8e-a007dff7b11d",
+            "create_time": 1789923573.016349
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "a723b249aeeefe810193b217b2b5d03092785b94259eca5c33447efac898f94d",
+      "record": {
+        "timestamp": "2026-09-20T16:59:33.241Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfc2-3df9-73f1-a1f9-52f7bfcc570e",
+          "call_id": "call_czGnadWcizfU8iD1glvDjiTE",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"deb872\",\"wall_time_seconds\":0.000004,\"exit_code\":0,\"original_token_count\":477,\"output\":\"Implement only the requested sender fix and focused unittest regressions. Retain test_sender.py assertions and add coverage there. Optional project-local test support is allowed; do not change requirements.md, AGENTS.md or notes.txt. Use python3 -B -m unittest discover -v, preserve unrelated changes, leave no scratch/report, do not commit, install dependencies, use external services or search outside this project. Any test scratch must be project-local and cleaned up. Tests must terminate and clean owned tasks even when assertions fail.\\nSender.send must keep one request pending per instance. While pending, a duplicate returns None without invoking its callback or altering the active request. An admitted request returns the exact result or propagates the original delivery error. Both synchronous callback failure and asynchronous failure clear pending; cancellation propagates and clears pending too. Retry is allowed after every settlement; instances are independent. payload is a string. Pass payload.strip().casefold() to deliver. Assert this value with a nontrivial padded/mixed-case input; argument identity is not promised and equivalent fresh normalized strings must be accepted.\\nCallbacks are cooperative; no network, threads or blocking work.\\nclass Sender:\\n    def __init__(self):\\n        self.pending = False\\n\\n    async def send(self, payload, deliver):\\n        if self.pending:\\n            return None\\n        self.pending = True\\n        result = await deliver(payload.strip().casefold())\\n        self.pending = False\\n        return result\\nimport unittest\\nfrom sender import Sender\\n\\nclass Smoke(unittest.IsolatedAsyncioTestCase):\\n    async def test_success(self):\\n        sender = Sender()\\n        result = object()\\n        async def deliver(value):\\n            return result\\n        self.assertIs(await sender.send('plain', deliver), result)\\n        self.assertFalse(sender.pending)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfc2-1ae3-7f71-ba8e-a007dff7b11d",
+            "create_time": 1789923573.241921
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "ea0995f2b38de46178fad1611f079921ea1281bc155883b3ca7f168c86d0fa19",
+      "record": {
+        "timestamp": "2026-09-20T17:00:35.644Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0ac7d1cda80536ba016ab01100f7fc87d0bfc0564ebddd570c",
+          "status": "completed",
+          "call_id": "call_2f19m7y1v6m6uE0E56d4LNAs",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/sender.py\\n@@\\n-        result = await deliver(payload.strip().casefold())\\n-        self.pending = False\\n-        return result\\n+        try:\\n+            return await deliver(payload.strip().casefold())\\n+        finally:\\n+            self.pending = False\\n*** Update File: <WORKSPACE>/test_sender.py\\n@@\\n-import unittest\\n+import asyncio\\n+import unittest\\n@@\\n         self.assertIs(await sender.send('plain', deliver), result)\\n         self.assertFalse(sender.pending)\\n+\\n+    async def assert_retry(self, sender):\\n+        result = object()\\n+        calls = []\\n+\\n+        async def deliver(value):\\n+            calls.append(value)\\n+            self.assertTrue(sender.pending)\\n+            return result\\n+\\n+        self.assertIs(await sender.send('  ReTrY  ', deliver), result)\\n+        self.assertEqual(calls, ['retry'])\\n+        self.assertFalse(sender.pending)\\n+\\n+    async def test_callback_receives_normalized_value(self):\\n+        sender = Sender()\\n+        result = object()\\n+        calls = []\\n+\\n+        async def deliver(value):\\n+            # Compare values: equivalent freshly created strings are valid.\\n+            expected = ''.join(['str', 'asse'])\\n+            self.assertEqual(value, expected)\\n+            calls.append(value)\\n+            self.assertTrue(sender.pending)\\n+            return result\\n+\\n+        self.assertIs(await sender.send(' \\\\tStRa\u00dfe\\\\n ', deliver), result)\\n+        self.assertEqual(calls, ['strasse'])\\n+        self.assertFalse(sender.pending)\\n+        await self.assert_retry(sender)\\n+\\n+    async def test_synchronous_failure_clears_pending_and_allows_retry(self):\\n+        sender = Sender()\\n+        error = RuntimeError('synchronous delivery failure')\\n+        calls = []\\n+\\n+        def deliver(value):\\n+            calls.append(value)\\n+            self.assertTrue(sender.pending)\\n+            raise error\\n+\\n+        with self.assertRaises(RuntimeError) as caught:\\n+            await sender.send('  FaIL  ', deliver)\\n+        self.assertIs(caught.exception, error)\\n+        self.assertEqual(calls, ['fail'])\\n+        self.assertFalse(sender.pending)\\n+        await self.assert_retry(sender)\\n+\\n+    async def test_asynchronous_failure_clears_pending_and_allows_retry(self):\\n+        sender = Sender()\\n+        error = RuntimeError('asynchronous delivery failure')\\n+        calls = []\\n+\\n+        async def deliver(value):\\n+            calls.append(value)\\n+            await asyncio.sleep(0)\\n+            self.assertTrue(sender.pending)\\n+            raise error\\n+\\n+        with self.assertRaises(RuntimeError) as caught:\\n+            await sender.send('  FaIL  ', deliver)\\n+        self.assertIs(caught.exception, error)\\n+        self.assertEqual(calls, ['fail'])\\n+        self.assertFalse(sender.pending)\\n+        await self.assert_retry(sender)\\n+\\n+    async def test_cancellation_clears_pending_and_allows_retry(self):\\n+        sender = Sender()\\n+        entered = asyncio.Event()\\n+        release = asyncio.Event()\\n+        cleaned = asyncio.Event()\\n+\\n+        async def deliver(value):\\n+            try:\\n+                entered.set()\\n+                await release.wait()\\n+            finally:\\n+                cleaned.set()\\n+\\n+        task = asyncio.create_task(sender.send('cancel', deliver))\\n+        try:\\n+            await asyncio.wait_for(entered.wait(), 1)\\n+            self.assertTrue(sender.pending)\\n+            task.cancel()\\n+            with self.assertRaises(asyncio.CancelledError):\\n+                await asyncio.wait_for(task, 1)\\n+            self.assertTrue(task.cancelled())\\n+            self.assertTrue(cleaned.is_set())\\n+            self.assertFalse(sender.pending)\\n+            await self.assert_retry(sender)\\n+        finally:\\n+            task.cancel()\\n+            await asyncio.gather(task, return_exceptions=True)\\n+\\n+    async def test_duplicate_does_not_invoke_callback_or_alter_active_request(self):\\n+        sender = Sender()\\n+        entered = asyncio.Event()\\n+        release = asyncio.Event()\\n+        result = object()\\n+        calls = []\\n+        duplicate_calls = []\\n+\\n+        async def deliver(value):\\n+            calls.append(value)\\n+            entered.set()\\n+            await release.wait()\\n+            return result\\n+\\n+        def duplicate(value):\\n+            duplicate_calls.append(value)\\n+            raise AssertionError('duplicate callback invoked')\\n+\\n+        task = asyncio.create_task(sender.send('  AcTiVe  ', deliver))\\n+        try:\\n+            await asyncio.wait_for(entered.wait(), 1)\\n+            for _ in range(2):\\n+                self.assertIsNone(await asyncio.wait_for(\\n+                    sender.send('duplicate', duplicate), 1))\\n+                self.assertEqual(duplicate_calls, [])\\n+                self.assertTrue(sender.pending)\\n+                self.assertFalse(task.done())\\n+                self.assertEqual(calls, ['active'])\\n+            release.set()\\n+            self.assertIs(await asyncio.wait_for(task, 1), result)\\n+            self.assertFalse(sender.pending)\\n+            await self.assert_retry(sender)\\n+        finally:\\n+            task.cancel()\\n+            await asyncio.gather(task, return_exceptions=True)\\n+\\n+    async def test_instances_have_independent_pending_requests(self):\\n+        first, second = Sender(), Sender()\\n+        entered = [asyncio.Event(), asyncio.Event()]\\n+        release = [asyncio.Event(), asyncio.Event()]\\n+        results = [object(), object()]\\n+\\n+        async def deliver(index, value):\\n+            self.assertEqual(value, ['first', 'second'][index])\\n+            entered[index].set()\\n+            await release[index].wait()\\n+            return results[index]\\n+\\n+        tasks = [\\n+            asyncio.create_task(first.send(' FIRST ', lambda v: deliver(0, v))),\\n+            asyncio.create_task(second.send(' SECOND ', lambda v: deliver(1, v))),\\n+        ]\\n+        try:\\n+            for event in entered:\\n+                await asyncio.wait_for(event.wait(), 1)\\n+            self.assertTrue(first.pending)\\n+            self.assertTrue(second.pending)\\n+            release[0].set()\\n+            self.assertIs(await asyncio.wait_for(tasks[0], 1), results[0])\\n+            self.assertFalse(first.pending)\\n+            self.assertTrue(second.pending)\\n+            self.assertFalse(tasks[1].done())\\n+            await self.assert_retry(first)\\n+            self.assertTrue(second.pending)\\n+            release[1].set()\\n+            self.assertIs(await asyncio.wait_for(tasks[1], 1), results[1])\\n+            self.assertFalse(second.pending)\\n+            await self.assert_retry(second)\\n+        finally:\\n+            for task in tasks:\\n+                task.cancel()\\n+            await asyncio.gather(*tasks, return_exceptions=True)\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfc2-1ae3-7f71-ba8e-a007dff7b11d",
+            "create_time": 1789923575.734457
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "6e71a3a804ee0af5e087e327f6fcdf7f0f6e727856f7568ed7cb26bc1dbc237a",
+      "record": {
+        "timestamp": "2026-09-20T17:00:36.017Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfc3-3331-7f03-a764-effe0c77001f",
+          "call_id": "call_2f19m7y1v6m6uE0E56d4LNAs",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"67d674\",\"wall_time_seconds\":0.000003583,\"exit_code\":0,\"original_token_count\":155,\"output\":\"test_asynchronous_failure_clears_pending_and_allows_retry (test_sender.Smoke) ... ok\\ntest_callback_receives_normalized_value (test_sender.Smoke) ... ok\\ntest_cancellation_clears_pending_and_allows_retry (test_sender.Smoke) ... ok\\ntest_duplicate_does_not_invoke_callback_or_alter_active_request (test_sender.Smoke) ... ok\\ntest_instances_have_independent_pending_requests (test_sender.Smoke) ... ok\\ntest_success (test_sender.Smoke) ... ok\\ntest_synchronous_failure_clears_pending_and_allows_retry (test_sender.Smoke) ... ok\\n\\n----------------------------------------------------------------------\\nRan 7 tests in 0.019s\\n\\nOK\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfc2-1ae3-7f71-ba8e-a007dff7b11d",
+            "create_time": 1789923636.017255
+          }
+        }
+      }
+    },
+    {
+      "line": 35,
+      "line_sha256": "565f94059af5ddeda00c4b21e2113be4a8eb7be80f650ea6b80793d52780ed90",
+      "record": {
+        "timestamp": "2026-09-20T17:00:40.041Z",
+        "ordinal": 34,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0ac7d1cda80536ba016ab0113885a487d086d55b0ec438673a",
+          "status": "completed",
+          "call_id": "call_Se9S9ca6A4cZDh73Uum8pxgJ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff --check; git diff --stat; git status --short\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfc2-1ae3-7f71-ba8e-a007dff7b11d",
+            "create_time": 1789923638.553905
+          }
+        }
+      }
+    },
+    {
+      "line": 38,
+      "line_sha256": "ef701d4c60ef5e0ed1a636576c6d94149215f868cb325b6741bde81ae62d816b",
+      "record": {
+        "timestamp": "2026-09-20T17:00:40.158Z",
+        "ordinal": 37,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfc3-435e-7131-a896-dd4bce3292bb",
+          "call_id": "call_Se9S9ca6A4cZDh73Uum8pxgJ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"84f3f8\",\"wall_time_seconds\":0.000001416,\"exit_code\":0,\"original_token_count\":48,\"output\":\" sender.py      |   7 +--\\n test_sender.py | 168 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++\\n 2 files changed, 172 insertions(+), 3 deletions(-)\\n M sender.py\\n M test_sender.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfc2-1ae3-7f71-ba8e-a007dff7b11d",
+            "create_time": 1789923640.158749
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

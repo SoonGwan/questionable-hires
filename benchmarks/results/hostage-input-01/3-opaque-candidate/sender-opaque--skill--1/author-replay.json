@@ -1,0 +1,42 @@
+{
+  "kind": "Post-run author replay, not original model execution or model cost",
+  "mode": "opaque",
+  "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "source_files": {
+    "sender.py": {
+      "sha256": "c8c69aa6fc727d71b03d140ae724cf8587697996a3bec29f923e6a36f0ca1849",
+      "mode": 420
+    },
+    "requirements.md": {
+      "sha256": "c14961a0129ea24cb5b9a01d8f1a120981b296f0fa502c2355d98f2b33e08ddd",
+      "mode": 420
+    },
+    "notes.txt": {
+      "sha256": "aba921a52b812088e41f2dec8a91f0a579f580cdadab09c5bbcf5743df16c28c",
+      "mode": 420
+    },
+    "test_sender.py": {
+      "sha256": "a97932c78d1c9841465c11a4a735fdecb1a83cc11fc59dcb09cecaf80d2b57af",
+      "mode": 420
+    },
+    "AGENTS.md": {
+      "sha256": "fe54b9d10fb060854c4dd9d72866d4aa98f9517838d3e6a33c6bf3c4742a40c7",
+      "mode": 420
+    }
+  },
+  "rows": [
+    {
+      "variant": "healthy",
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "test_opaque_payload_identity (test_sender.Smoke.test_opaque_payload_identity) ... ok\ntest_pending_lifecycle (test_sender.Smoke.test_pending_lifecycle) ... ok\ntest_success (test_sender.Smoke.test_success) ... ok\ntest_synchronous_failure_clears_pending_and_allows_retry (test_sender.Smoke.test_synchronous_failure_clears_pending_and_allows_retry) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.010s\n\nOK\n"
+    },
+    {
+      "variant": "argument_copy",
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "test_opaque_payload_identity (test_sender.Smoke.test_opaque_payload_identity) ... \n  test_opaque_payload_identity (test_sender.Smoke.test_opaque_payload_identity) (payload_type='object') ... FAIL\n  test_opaque_payload_identity (test_sender.Smoke.test_opaque_payload_identity) (payload_type='dict') ... FAIL\n  test_opaque_payload_identity (test_sender.Smoke.test_opaque_payload_identity) (payload_type='list') ... FAIL\n  test_opaque_payload_identity (test_sender.Smoke.test_opaque_payload_identity) (payload_type='Text') ... FAIL\ntest_pending_lifecycle (test_sender.Smoke.test_pending_lifecycle) ... \n  test_pending_lifecycle (test_sender.Smoke.test_pending_lifecycle) (settlement='success') ... FAIL\n  test_pending_lifecycle (test_sender.Smoke.test_pending_lifecycle) (settlement='failure') ... FAIL\n  test_pending_lifecycle (test_sender.Smoke.test_pending_lifecycle) (settlement='cancellation') ... FAIL\ntest_success (test_sender.Smoke.test_success) ... ok\ntest_synchronous_failure_clears_pending_and_allows_retry (test_sender.Smoke.test_synchronous_failure_clears_pending_and_allows_retry) ... FAIL\n\n======================================================================\nFAIL: test_opaque_payload_identity (test_sender.Smoke.test_opaque_payload_identity) (payload_type='object')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_sender.py\", line 30, in test_opaque_payload_identity\n    self.assertIs(received[0], payload)\nAssertionError: <object object at 0x1045dc870> is not <object object at 0x1045dc820>\n\n======================================================================\nFAIL: test_opaque_payload_identity (test_sender.Smoke.test_opaque_payload_identity) (payload_type='dict')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_sender.py\", line 30, in test_opaque_payload_identity\n    self.assertIs(received[0], payload)\nAssertionError: {'items': []} is not {'items': []}\n\n======================================================================\nFAIL: test_opaque_payload_identity (test_sender.Smoke.test_opaque_payload_identity) (payload_type='list')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_sender.py\", line 30, in test_opaque_payload_identity\n    self.assertIs(received[0], payload)\nAssertionError: [<object object at 0x1045dc7e0>] is not [<object object at 0x1045dc7e0>]\n\n======================================================================\nFAIL: test_opaque_payload_identity (test_sender.Smoke.test_opaque_payload_identity) (payload_type='Text')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_sender.py\", line 30, in test_opaque_payload_identity\n    self.assertIs(received[0], payload)\nAssertionError: ' padded ' is not ' padded '\n\n======================================================================\nFAIL: test_pending_lifecycle (test_sender.Smoke.test_pending_lifecycle) (settlement='success')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_sender.py\", line 92, in test_pending_lifecycle\n    self.assertIs(received[0], payload)\nAssertionError: {'opaque': <object object at 0x1045dc820>} is not {'opaque': <object object at 0x1045dc820>}\n\n======================================================================\nFAIL: test_pending_lifecycle (test_sender.Smoke.test_pending_lifecycle) (settlement='failure')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_sender.py\", line 92, in test_pending_lifecycle\n    self.assertIs(received[0], payload)\nAssertionError: {'opaque': <object object at 0x1045dc7e0>} is not {'opaque': <object object at 0x1045dc7e0>}\n\n======================================================================\nFAIL: test_pending_lifecycle (test_sender.Smoke.test_pending_lifecycle) (settlement='cancellation')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_sender.py\", line 92, in test_pending_lifecycle\n    self.assertIs(received[0], payload)\nAssertionError: {'opaque': <object object at 0x1045dc820>} is not {'opaque': <object object at 0x1045dc820>}\n\n======================================================================\nFAIL: test_synchronous_failure_clears_pending_and_allows_retry (test_sender.Smoke.test_synchronous_failure_clears_pending_and_allows_retry)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<HOME>/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<HOME>/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<HOME>/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 654, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<COPY>/test_sender.py\", line 47, in test_synchronous_failure_clears_pending_and_allows_retry\n    self.assertIs(received[0], payload)\nAssertionError: <object object at 0x1045dc820> is not <object object at 0x1045dc830>\n\n----------------------------------------------------------------------\nRan 4 tests in 0.007s\n\nFAILED (failures=8)\n"
+    }
+  ],
+  "limitation": "Callback-boundary mutations; inspect assertion failures versus support errors. Not exhaustive coverage or automatic task scoring."
+}

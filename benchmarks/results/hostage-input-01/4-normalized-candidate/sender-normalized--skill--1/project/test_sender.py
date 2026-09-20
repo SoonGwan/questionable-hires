@@ -1,0 +1,154 @@
+import asyncio
+import unittest
+from sender import Sender
+
+class Smoke(unittest.IsolatedAsyncioTestCase):
+    async def test_success(self):
+        sender = Sender()
+        result = object()
+        async def deliver(value):
+            return result
+        self.assertIs(await sender.send('plain', deliver), result)
+        self.assertFalse(sender.pending)
+
+class SenderRegressions(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.tasks = []
+        self.addAsyncCleanup(self.drain_tasks)
+
+    def start_task(self, coroutine):
+        task = asyncio.create_task(coroutine)
+        self.tasks.append(task)
+        return task
+
+    async def drain_tasks(self):
+        for task in self.tasks:
+            if not task.done():
+                task.cancel()
+        await asyncio.wait_for(
+            asyncio.gather(*self.tasks, return_exceptions=True), timeout=1
+        )
+
+    async def assert_retry(self, sender):
+        result = []
+        calls = []
+
+        async def deliver(value):
+            calls.append(value)
+            self.assertTrue(sender.pending)
+            return result
+
+        self.assertIs(
+            await asyncio.wait_for(sender.send(' \tStraße MiXeD\n', deliver), 1),
+            result,
+        )
+        self.assertEqual(calls, ['strasse mixed'])
+        self.assertFalse(sender.pending)
+
+    async def test_synchronous_failure_clears_pending_and_allows_retry(self):
+        sender = Sender()
+        error = RuntimeError('synchronous delivery failure')
+        calls = []
+
+        def deliver(value):
+            calls.append(value)
+            self.assertTrue(sender.pending)
+            raise error
+
+        with self.assertRaises(RuntimeError) as raised:
+            await asyncio.wait_for(sender.send(' \tStraße MiXeD\n', deliver), 1)
+        self.assertIs(raised.exception, error)
+        self.assertEqual(calls, ['strasse mixed'])
+        self.assertFalse(sender.pending)
+        await self.assert_retry(sender)
+
+    async def exercise_settlement(self, settlement):
+        sender = Sender()
+        entered = asyncio.Event()
+        release = asyncio.Event()
+        calls = []
+        result = []
+        error = RuntimeError('asynchronous delivery failure')
+
+        async def deliver(value):
+            calls.append(value)
+            entered.set()
+            await release.wait()
+            if settlement == 'failure':
+                raise error
+            return result
+
+        task = self.start_task(sender.send(' \tStraße MiXeD\n', deliver))
+        await asyncio.wait_for(entered.wait(), 1)
+        self.assertTrue(sender.pending)
+        self.assertFalse(task.done())
+        self.assertEqual(calls, ['strasse mixed'])
+        before = (sender.pending, list(calls), task.done())
+        duplicate_calls = []
+
+        async def duplicate(value):
+            duplicate_calls.append(value)
+
+        for payload in ('different', ' \tStraße MiXeD\n'):
+            self.assertIsNone(
+                await asyncio.wait_for(sender.send(payload, duplicate), 1)
+            )
+            self.assertEqual(duplicate_calls, [])
+            self.assertEqual((sender.pending, calls, task.done()), before)
+
+        if settlement == 'cancelled':
+            task.cancel()
+            with self.assertRaises(asyncio.CancelledError):
+                await asyncio.wait_for(task, 1)
+        else:
+            release.set()
+            if settlement == 'failure':
+                with self.assertRaises(RuntimeError) as raised:
+                    await asyncio.wait_for(task, 1)
+                self.assertIs(raised.exception, error)
+            else:
+                self.assertIs(await asyncio.wait_for(task, 1), result)
+        self.assertFalse(sender.pending)
+        self.assertEqual(calls, ['strasse mixed'])
+        await self.assert_retry(sender)
+
+    async def test_success_suppresses_duplicates_and_allows_retry(self):
+        await self.exercise_settlement('success')
+
+    async def test_async_failure_suppresses_duplicates_and_allows_retry(self):
+        await self.exercise_settlement('failure')
+
+    async def test_cancellation_suppresses_duplicates_and_allows_retry(self):
+        await self.exercise_settlement('cancelled')
+
+    async def test_instances_are_independent(self):
+        first, second = Sender(), Sender()
+        entered = [asyncio.Event(), asyncio.Event()]
+        release = [asyncio.Event(), asyncio.Event()]
+        results = [object(), object()]
+        calls = []
+
+        async def deliver(index, value):
+            calls.append((index, value))
+            entered[index].set()
+            await release[index].wait()
+            return results[index]
+
+        first_task = self.start_task(first.send(' FIRST ', lambda v: deliver(0, v)))
+        await asyncio.wait_for(entered[0].wait(), 1)
+        second_task = self.start_task(second.send(' SECOND ', lambda v: deliver(1, v)))
+        await asyncio.wait_for(entered[1].wait(), 1)
+        self.assertTrue(first.pending)
+        self.assertTrue(second.pending)
+        self.assertEqual(calls, [(0, 'first'), (1, 'second')])
+        release[0].set()
+        self.assertIs(await asyncio.wait_for(first_task, 1), results[0])
+        self.assertFalse(first.pending)
+        self.assertTrue(second.pending)
+        self.assertFalse(second_task.done())
+        await self.assert_retry(first)
+        self.assertTrue(second.pending)
+        release[1].set()
+        self.assertIs(await asyncio.wait_for(second_task, 1), results[1])
+        self.assertFalse(second.pending)
+        await self.assert_retry(second)

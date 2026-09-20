@@ -1,0 +1,154 @@
+diff --git a/sender.py b/sender.py
+index 2256da9..9bb35a0 100644
+--- a/sender.py
++++ b/sender.py
+@@ -6,6 +6,7 @@ class Sender:
+         if self.pending:
+             return None
+         self.pending = True
+-        result = await deliver(payload)
+-        self.pending = False
+-        return result
++        try:
++            return await deliver(payload)
++        finally:
++            self.pending = False
+diff --git a/test_sender.py b/test_sender.py
+index 05f6da8..1c6d62e 100644
+--- a/test_sender.py
++++ b/test_sender.py
+@@ -1,3 +1,4 @@
++import asyncio
+ import unittest
+ from sender import Sender
+ 
+@@ -9,3 +10,129 @@ class Smoke(unittest.IsolatedAsyncioTestCase):
+             return result
+         self.assertIs(await sender.send('plain', deliver), result)
+         self.assertFalse(sender.pending)
++
++    async def assert_retry(self, sender):
++        payload, result = object(), object()
++
++        async def deliver(value):
++            self.assertIs(value, payload)
++            self.assertTrue(sender.pending)
++            return result
++
++        self.assertIs(await asyncio.wait_for(sender.send(payload, deliver), 1), result)
++        self.assertFalse(sender.pending)
++
++    async def start_delivery(self, sender):
++        payload = object()
++        entered = asyncio.Event()
++        release = asyncio.get_running_loop().create_future()
++
++        async def deliver(value):
++            self.assertIs(value, payload)
++            self.assertTrue(sender.pending)
++            entered.set()
++            return await release
++
++        task = asyncio.create_task(sender.send(payload, deliver))
++
++        async def cleanup():
++            task.cancel()
++            await asyncio.wait_for(asyncio.gather(task, return_exceptions=True), 1)
++
++        self.addAsyncCleanup(cleanup)
++        await asyncio.wait_for(entered.wait(), 1)
++        self.assertTrue(sender.pending)
++        return task, release
++
++    async def test_synchronous_failure_clears_pending_and_allows_retry(self):
++        sender = Sender()
++        payload, error = object(), RuntimeError('synchronous delivery failure')
++
++        def deliver(value):
++            self.assertIs(value, payload)
++            self.assertTrue(sender.pending)
++            raise error
++
++        with self.assertRaises(RuntimeError) as caught:
++            await asyncio.wait_for(sender.send(payload, deliver), 1)
++        self.assertIs(caught.exception, error)
++        self.assertFalse(sender.pending)
++        await self.assert_retry(sender)
++
++    async def test_asynchronous_failure_clears_pending_and_allows_retry(self):
++        sender = Sender()
++        task, release = await self.start_delivery(sender)
++        error = RuntimeError('asynchronous delivery failure')
++        release.set_exception(error)
++        with self.assertRaises(RuntimeError) as caught:
++            await asyncio.wait_for(task, 1)
++        self.assertIs(caught.exception, error)
++        self.assertFalse(sender.pending)
++        await self.assert_retry(sender)
++
++    async def test_cancellation_clears_pending_and_allows_retry(self):
++        sender = Sender()
++        task, release = await self.start_delivery(sender)
++        task.cancel()
++        with self.assertRaises(asyncio.CancelledError):
++            await asyncio.wait_for(task, 1)
++        self.assertFalse(sender.pending)
++        await self.assert_retry(sender)
++
++    async def test_duplicate_preserves_active_delivery_and_allows_later_retry(self):
++        sender = Sender()
++        task, release = await self.start_delivery(sender)
++        pending_before = sender.pending
++        callbacks = []
++
++        def duplicate(value):
++            callbacks.append(value)
++            self.fail('duplicate callback must not be invoked')
++
++        self.assertIsNone(await asyncio.wait_for(sender.send(object(), duplicate), 1))
++        self.assertEqual(callbacks, [])
++        self.assertIs(sender.pending, pending_before)
++        self.assertFalse(task.done())
++        self.assertFalse(release.done())
++        result = object()
++        release.set_result(result)
++        self.assertIs(await asyncio.wait_for(task, 1), result)
++        self.assertFalse(sender.pending)
++        await self.assert_retry(sender)
++
++    async def test_instances_have_independent_pending_state(self):
++        first, second = Sender(), Sender()
++        first_task, first_release = await self.start_delivery(first)
++        second_task, second_release = await self.start_delivery(second)
++        second_pending = second.pending
++        first_result, second_result = object(), object()
++        first_release.set_result(first_result)
++        self.assertIs(await asyncio.wait_for(first_task, 1), first_result)
++        self.assertFalse(first.pending)
++        self.assertIs(second.pending, second_pending)
++        self.assertFalse(second_task.done())
++        self.assertFalse(second_release.done())
++        await self.assert_retry(first)
++        second_release.set_result(second_result)
++        self.assertIs(await asyncio.wait_for(second_task, 1), second_result)
++        self.assertFalse(second.pending)
++        await self.assert_retry(second)
++
++    async def test_callback_receives_exact_opaque_payload(self):
++        class Text(str):
++            pass
++
++        sender = Sender()
++        for payload in (object(), {'key': []}, [object()], Text('text'), b'bytes', None, 0):
++            with self.subTest(payload_type=type(payload).__name__):
++                result = object()
++
++                async def deliver(value):
++                    self.assertIs(value, payload)
++                    self.assertTrue(sender.pending)
++                    return result
++
++                self.assertIs(
++                    await asyncio.wait_for(sender.send(payload, deliver), 1), result
++                )
++                self.assertFalse(sender.pending)

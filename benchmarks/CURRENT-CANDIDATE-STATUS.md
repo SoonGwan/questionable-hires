@@ -9,7 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Hostage input pilot prepared — 2026-09-21, parent `563d68a`
+## Hostage input pilot reviewed; candidate not adopted — 2026-09-21, launch `4fb980f`
+
+[All six sessions and author controls](results/hostage-input-01/README.md): all
+conditions fulfill the reviewed contracts and reject the argument faults. Candidate
+summed cost versus original is **−14.27% tokens / −2.38% time**, but versus baseline
+is **+5.28% tokens / −0.50% time**. Opaque candidate tokens increase 26.57% versus
+original; normalized decrease 38.63%, with different helper adoption/work. No
+additional contract detection is observed; candidate stays unadopted. Original
+native outputs, preserved assertions/files/index/resources, counters and exposure
+reviewed; all CLI/stored shell outputs match. Fifteen separate author replays retain
+actual assertion failures and consequential bounded-wait errors, not model gains.
+No model retries, input changes or featured-chart promotion.
+
+한국어: 후보의 합계 수치만 보면 좋아 보이지만 과제별 방향이 다르고 무스킬보다
+토큰을 더 썼다. 추가 탐지 효과도 없어 이번 후보는 채택하지 않는다. 기존 스킬을
+유지하고 원래 실행과 개발자 재검증을 분리해 결과를 공개했다.
+
+## Hostage input pilot prepared — historical pre-review, 2026-09-21, parent `563d68a`
 
 [Frozen two-task/six-cell protocol](HOSTAGE-INPUT-01-PROTOCOL.md) contrasts opaque
 passthrough with required normalization while fixing a real-behavior cleanup bug

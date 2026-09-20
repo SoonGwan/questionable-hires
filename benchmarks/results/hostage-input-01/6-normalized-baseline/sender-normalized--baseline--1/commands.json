@@ -1,0 +1,34 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '\"'!__pycache__'\"' -g '\"'!.git'\"' ; git status --short\"",
+    "aggregated_output": "<WORKSPACE>\nAGENTS.md\ntest_sender.py\nnotes.txt\nrequirements.md\nsender.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat AGENTS.md requirements.md sender.py test_sender.py'",
+    "aggregated_output": "Implement only the requested sender fix and focused unittest regressions. Retain test_sender.py assertions and add coverage there. Optional project-local test support is allowed; do not change requirements.md, AGENTS.md or notes.txt. Use python3 -B -m unittest discover -v, preserve unrelated changes, leave no scratch/report, do not commit, install dependencies, use external services or search outside this project. Any test scratch must be project-local and cleaned up. Tests must terminate and clean owned tasks even when assertions fail.\nSender.send must keep one request pending per instance. While pending, a duplicate returns None without invoking its callback or altering the active request. An admitted request returns the exact result or propagates the original delivery error. Both synchronous callback failure and asynchronous failure clear pending; cancellation propagates and clears pending too. Retry is allowed after every settlement; instances are independent. payload is a string. Pass payload.strip().casefold() to deliver. Assert this value with a nontrivial padded/mixed-case input; argument identity is not promised and equivalent fresh normalized strings must be accepted.\nCallbacks are cooperative; no network, threads or blocking work.\nclass Sender:\n    def __init__(self):\n        self.pending = False\n\n    async def send(self, payload, deliver):\n        if self.pending:\n            return None\n        self.pending = True\n        result = await deliver(payload.strip().casefold())\n        self.pending = False\n        return result\nimport unittest\nfrom sender import Sender\n\nclass Smoke(unittest.IsolatedAsyncioTestCase):\n    async def test_success(self):\n        sender = Sender()\n        result = object()\n        async def deliver(value):\n            return result\n        self.assertIs(await sender.send('plain', deliver), result)\n        self.assertFalse(sender.pending)\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'python3 -B -m unittest discover -v'",
+    "aggregated_output": "test_asynchronous_failure_clears_pending_and_allows_retry (test_sender.Smoke) ... ok\ntest_callback_receives_normalized_value (test_sender.Smoke) ... ok\ntest_cancellation_clears_pending_and_allows_retry (test_sender.Smoke) ... ok\ntest_duplicate_does_not_invoke_callback_or_alter_active_request (test_sender.Smoke) ... ok\ntest_instances_have_independent_pending_requests (test_sender.Smoke) ... ok\ntest_success (test_sender.Smoke) ... ok\ntest_synchronous_failure_clears_pending_and_allows_retry (test_sender.Smoke) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.019s\n\nOK\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'git diff --check; git diff --stat; git status --short'",
+    "aggregated_output": " sender.py      |   7 +--\n test_sender.py | 168 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n 2 files changed, 172 insertions(+), 3 deletions(-)\n M sender.py\n M test_sender.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]
