@@ -9,6 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Two comparison schedules separated from provenance — 2026-09-20, parent `c7ac16d`
+
+Artifact-audit and Receipt-selection scheduling tests now use explicitly synthetic
+resource snapshots and revision labels. They still exercise the unchanged runner's
+real digests, input-change gate, exclusive execution marker, frozen order and
+session settings; model calls/preflight are mocked as before. Unexpected Git calls
+are rejected by the test adapter. Separate checkout tests retain the real pinned
+resource comparison rather than dropping it. Six local checks pass. A new sparse
+source archive runs all four schedule/tamper checks and skips only the two genuine
+historical-resource checks. Its files remain unchanged and no local-runs directory
+is required. The archive regression also passes. These synthetic unit executions
+are not benchmark sessions or performance evidence. Other archive issues remain.
+
+한국어: Artifact-audit·Receipt-selection 실행기의 순서·중복 실행 방지·변조 거부
+검사를 출처 확인과 분리했다. 로컬 6개가 통과하고 Git 없는 압축본에서도 실제
+스케줄 검사 4개가 실행된다. 과거 커밋 대조 2개만 명시적으로 건너뛴다. 합성
+단위 테스트를 모델 성능 수치로 사용하지 않으며 다른 압축본 문제는 남아 있다.
+
 ## Repository native controls survive source archives — 2026-09-20, parent `22db7c6`
 
 Con Artist repository-case tests now supply SHA-256-checked retained source/test

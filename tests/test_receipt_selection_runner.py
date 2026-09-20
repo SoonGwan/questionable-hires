@@ -8,11 +8,14 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'benchmarks'))
 import run_receipt_selection_01 as probe
+from runner_snapshot_support import controlled_resources, require_history
+
+CHANGED = {'receipt/SKILL.md', 'receipt/references/existing-fix.md'}
 
 
 class ReceiptSelectionRunnerTests(unittest.TestCase):
     def test_prepare_and_execute_once_with_all_six_original_slots(self):
-        with tempfile.TemporaryDirectory() as temporary:
+        with controlled_resources(probe, 'receipt', CHANGED), tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)/'probe'
             result = dict(completed=True, timed_out=False, limit_detected=False,
                           usage={}, elapsed_seconds=1)
@@ -36,7 +39,7 @@ class ReceiptSelectionRunnerTests(unittest.TestCase):
                     self.assertTrue(call.kwargs['persist_session'])
 
     def test_changed_resources_reject_before_model_or_marker(self):
-        with tempfile.TemporaryDirectory() as temporary:
+        with controlled_resources(probe, 'receipt', CHANGED), tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)/'probe'
             with patch.object(probe, 'OUTPUT', output), \
                     patch.object(probe, 'preflight', return_value={'exit_code': 0}), \
@@ -49,3 +52,15 @@ class ReceiptSelectionRunnerTests(unittest.TestCase):
                         probe.main()
                 execute.assert_not_called()
                 self.assertFalse((output/'execution-started.json').exists())
+
+    def test_pinned_resources_retain_expected_real_changes(self):
+        require_history(self, ROOT, probe.REVISIONS.values())
+        with tempfile.TemporaryDirectory() as scratch:
+            manifests = []
+            for condition in ('original', 'candidate'):
+                target = Path(scratch) / condition
+                probe.snapshot(target, probe.REVISIONS[condition])
+                manifests.append(probe.run.resource_manifest(target / 'skills'))
+            original, candidate = manifests
+            self.assertEqual(set(original), set(candidate))
+            self.assertEqual({p for p in original if original[p] != candidate[p]}, CHANGED)
