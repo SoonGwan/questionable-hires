@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt known-input read hypothesis — 2026-09-20, resources `ca668a4`
+
+[Isolated candidate](RECEIPT-READ-CANDIDATE.md) changes only the first read/discovery
+paragraph after observed separate known-path inventory in all-eight current 02.
+Helper/runtime, native evidence and scope safeguards stay byte-identical. This
+is not yet measured or adopted; resource-isolation tests are not proof of fewer
+model calls. Preserve unresolved-path discovery and concrete implementation review.
+
+한국어: Receipt의 알려진 파일 조회·읽기를 함께 처리하는 후보를 분리했다.
+도구와 증거·범위 기준은 바꾸지 않았다. 성능은 아직 미측정이며 실제 스킬에는
+반영하지 않았다. 필요한 검색과 구현 검토를 생략하게 하는 변경은 아니다.
+
 ## Optional edit/test sequencing adopted — 2026-09-20, parent `b94e395`
 
 The exact candidate sentence measured in roundtrip 01 is now adopted in Hostage;
