@@ -1,0 +1,111 @@
+{
+  "session_id": "01a0be67-643b-7ad0-96f9-b7e50189157d",
+  "source_bytes": 60449,
+  "source_sha256": "d3230aa8290ef5b5de62b5ef53712ac919a062e996756db32e42e4faebce6009",
+  "source_lines": 27,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "d7cdab7be7ab28e91836d4ea80715b94a81cda9f15fbd3f67459376118166a3c",
+      "record": {
+        "timestamp": "2026-09-20T10:40:50.767Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0599788ffa8083ce016aafb831535c87d0aef77337e7d7a7b4",
+          "status": "completed",
+          "call_id": "call_fozyD0kGlTZOoNhzvS5ox8bk",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g AGENTS.md -g README.md; git status --short; rg -n 'Instlal' README.md\",max_output_tokens:2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be67-6480-7352-9ee5-0e3e735d2b73",
+            "create_time": 1789900845.919274
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "8608bebe7e513e718fe80a893c59ef2f4240f519a2d79131a8da16c1cac3c454",
+      "record": {
+        "timestamp": "2026-09-20T10:40:50.933Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be67-86f4-7401-8163-a1b2ad27433f",
+          "call_id": "call_fozyD0kGlTZOoNhzvS5ox8bk",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"0b0347\",\"wall_time_seconds\":0.000003041,\"exit_code\":0,\"original_token_count\":40,\"output\":\"<WORKSPACE>\\nREADME.md\\n?? .agents/\\n3:Instlal dependencies with the project setup command.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be67-6480-7352-9ee5-0e3e735d2b73",
+            "create_time": 1789900850.932973
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "ce458e69e4e4cf5899bec5e4b61e0cfbb05eeb68954669809a5125a892a02b89",
+      "record": {
+        "timestamp": "2026-09-20T10:40:55.001Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0599788ffa8083ce016aafb83492d487d09c7c4040e9021289",
+          "status": "completed",
+          "call_id": "call_ZXg3tbXEkGMP8o4fO2Ve64AB",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 - <<'PY'\\nfrom pathlib import Path\\np = Path('README.md')\\nbefore = p.read_bytes()\\nafter = before.replace(b'Instlal', b'Install')\\np.write_bytes(after)\\nPY\\n git diff -- README.md\\n git status --short\",max_output_tokens:2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be67-6480-7352-9ee5-0e3e735d2b73",
+            "create_time": 1789900851.43989
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "7941564951931b3897105aef96cba035c7dfed5a7961226b4dbabf65d5de063d",
+      "record": {
+        "timestamp": "2026-09-20T10:40:55.155Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be67-9773-7703-a471-10307e70ae9c",
+          "call_id": "call_ZXg3tbXEkGMP8o4fO2Ve64AB",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"8b8b22\",\"wall_time_seconds\":0.0000015,\"exit_code\":0,\"original_token_count\":64,\"output\":\"diff --git a/README.md b/README.md\\nindex bea8aa9..ffcc307 100644\\n--- a/README.md\\n+++ b/README.md\\n@@ -1,3 +1,3 @@\\n # Demo\\n \\n-Instlal dependencies with the project setup command.\\n+Install dependencies with the project setup command.\\n M README.md\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be67-6480-7352-9ee5-0e3e735d2b73",
+            "create_time": 1789900855.155846
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

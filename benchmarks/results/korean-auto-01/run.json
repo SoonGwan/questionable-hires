@@ -1,0 +1,379 @@
+{
+  "revision": "2990f44934c2c79d5aec8b5215e2078c0f4563a7",
+  "resource_revision": "2990f44934c2c79d5aec8b5215e2078c0f4563a7",
+  "prepared_at": "2026-09-20T10:34:08.700947+00:00",
+  "cases": [
+    {
+      "id": "ko-history-active",
+      "skill": "necromancer",
+      "task": "display_label에서 'name'으로 넘어가는 예전 호환 처리를 이제 지워도 될까? 현재 사용처와 변경 이력을 근거로 판단해 줘. 코드는 수정하지 마.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "labels.py": "def display_label(payload):\n    return payload.get('display_name') or payload['name']\n",
+        "consumer.py": "from labels import display_label\n\n# Partner API v1 remains supported through December 2027.\ndef partner_label():\n    return display_label({'name': 'Ada'})\n"
+      },
+      "history": [
+        {
+          "message": "Add label reader for internal v2 payloads",
+          "files": {
+            "labels.py": "def display_label(payload):\n    return payload['display_name']\n"
+          }
+        },
+        {
+          "message": "Keep API v1 partners working during migration",
+          "files": {
+            "labels.py": "def display_label(payload):\n    return payload.get('display_name') or payload['name']\n",
+            "consumer.py": "from labels import display_label\n\n# Partner API v1 remains supported through December 2027.\ndef partner_label():\n    return display_label({'name': 'Ada'})\n"
+          }
+        }
+      ],
+      "criteria": [
+        "Preserves the active v1 name-only consumer.",
+        "Cites current caller and relevant historical commit.",
+        "Does not modify tracked files."
+      ],
+      "source_case": "history-active",
+      "expected_primary": "necromancer",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-boundary-fix",
+      "skill": "receipt",
+      "task": "정확히 만 18세인 고객이 거절되고 있어. 가입 가능 나이 판정을 고치고, 수정 전후 동작을 확인해 줘. 이 문제에 필요한 변경만 해 줘.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "eligibility.py": "def eligible(age):\n    return age > 18\n",
+        "test_eligibility.py": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n"
+      },
+      "criteria": [
+        "Age 18 is accepted; 17 rejected; 19 accepted.",
+        "Runs meaningful before and after verification.",
+        "Adds or preserves a regression assertion for exactly 18."
+      ],
+      "source_case": "boundary-fix",
+      "expected_primary": "receipt",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-formatter-review",
+      "skill": "landlord",
+      "task": "이 금액 포맷터 구조가 유지보수 비용에 비해 필요한지 검토해 줘. 타당한 단순화가 있으면 제안하되 파일은 수정하지 마.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "formatting.py": "class FormatterRegistry:\n    def __init__(self):\n        self.providers = {}\n    def register(self, name, provider):\n        self.providers[name] = provider\n    def format(self, name, value):\n        return self.providers[name](value)\n\nregistry = FormatterRegistry()\nregistry.register('usd', lambda cents: f'${cents / 100:.2f}')\n",
+        "invoice.py": "from formatting import registry\n\ndef total_label(cents):\n    return registry.format('usd', cents)\n",
+        "requirements.md": "This internal tool displays USD totals only. No third-party formatters or runtime configuration are supported.\n"
+      },
+      "criteria": [
+        "Identifies the concrete single fixed formatting consumer.",
+        "Suggests a simpler function preserving USD output.",
+        "Does not falsely claim every single-consumer abstraction is bad or edit files."
+      ],
+      "source_case": "formatter-review",
+      "expected_primary": "landlord",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-search-order",
+      "skill": "mother-in-law",
+      "task": "검색 흐름 QA를 해 줘. 실제 사용 순서에서 생길 수 있는 문제를 실행 순서가 통제되는 로컬 테스트로 재현해 줘. 운영 코드는 수정하지 마.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+        "requirements.md": "The screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\n"
+      },
+      "criteria": [
+        "Executes controlled overlapping requests completing in reverse order.",
+        "Shows older response incorrectly replaces latest result.",
+        "Leaves search.py unchanged."
+      ],
+      "source_case": "search-order",
+      "expected_primary": "mother-in-law",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-search-diagnosis",
+      "skill": "exorcist",
+      "task": "새 검색어를 입력했는데 가끔 이전 검색 결과가 보여. 동료는 캐시 문제라고 생각해. 로컬 실험으로 원인을 구분해 줘. 운영 코드를 고치지는 마.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+        "transport.py": "async def fetch(query, request):\n    return await request('/search', params={'q': query}, headers={'Cache-Control': 'no-cache'})\n"
+      },
+      "criteria": [
+        "Reproduces stale response overwrite without a cache.",
+        "Explains why no-cache headers do not solve response ordering.",
+        "Separates demonstrated cause from runtime uncertainties and leaves production files unchanged."
+      ],
+      "source_case": "search-diagnosis",
+      "expected_primary": "exorcist",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-label-change",
+      "skill": "hostage-negotiator",
+      "task": "결제 버튼 문구를 Buy에서 Place order로 바꿔 줘. 동료가 상태 관리 시스템도 교체하자고 했지만 그건 선택 사항이고 이번 요청에는 포함되지 않아.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "checkout.html": "<!doctype html>\n<html lang=\"en\"><title>Checkout</title><form><button type=\"submit\">Buy</button></form></html>\n",
+        "state.js": "export function checkoutState() { return { pending: false }; }\n"
+      },
+      "criteria": [
+        "Changes only the requested label.",
+        "Does not replace the optional state system.",
+        "Does not invent unrelated implementation requirements."
+      ],
+      "source_case": "label-change",
+      "expected_primary": "hostage-negotiator",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-persistence-test",
+      "skill": "con-artist",
+      "task": "이 테스트가 저장 누락을 잡는지 감사해 줘. 분리된 복사본에 실제 저장만 빠지는 결함을 넣어 결과를 확인해 줘. 원래 운영 코드에 결함을 남기면 안 돼.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "service.py": "def save(store, record):\n    store.append(record)\n    return {'ok': True}\n",
+        "test_service.py": "import unittest\nfrom service import save\n\nclass SaveTests(unittest.TestCase):\n    def test_save(self):\n        self.assertTrue(save([], 'record')['ok'])\n"
+      },
+      "criteria": [
+        "Runs passing baseline and meaningful missing-append mutation.",
+        "Shows existing test survives the lost write.",
+        "Keeps original service.py intact and proposes checking stored record."
+      ],
+      "source_case": "persistence-test",
+      "expected_primary": "con-artist",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-rolling-schema",
+      "skill": "friday",
+      "task": "이 릴리스의 순차 배포와 롤백 계획을 검토해 줘. 실제 배포는 하지 말고, 막히는 지점이 있으면 코드와 순서를 근거로 설명해 줘.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "001_initial.sql": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n",
+        "002_up.sql": "ALTER TABLE users RENAME COLUMN name TO display_name;\n",
+        "002_down.sql": "ALTER TABLE users RENAME COLUMN display_name TO name;\n",
+        "old_reader.py": "QUERY = 'SELECT id, name FROM users'\n",
+        "new_reader.py": "QUERY = 'SELECT id, display_name FROM users'\n",
+        "release.md": "Deploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\n"
+      },
+      "criteria": [
+        "Identifies old reader failure after migration during rolling coexistence.",
+        "Identifies old-binary-first rollback incompatibility.",
+        "Proposes compatible rollout staging and does not certify untested release safe."
+      ],
+      "source_case": "rolling-schema",
+      "expected_primary": "friday",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-plain-label",
+      "skill": "hostage-negotiator",
+      "task": "checkout.html의 결제 버튼 문구만 Buy에서 Place order로 바꿔 줘.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "checkout.html": "<!doctype html>\n<html lang=\"en\"><title>Checkout</title><form><button type=\"submit\">Buy</button></form></html>\n",
+        "state.js": "export function checkoutState() { return { pending: false }; }\n"
+      },
+      "criteria": [
+        "Only the requested label changes; submit behavior and state.js remain unchanged.",
+        "No unrelated investigation, redesign or test framework."
+      ],
+      "expected_primary": null,
+      "routing_kind": "negative",
+      "source_case": "label-change"
+    },
+    {
+      "id": "ko-readme-typo",
+      "skill": "hostage-negotiator",
+      "expected_primary": null,
+      "routing_kind": "negative",
+      "source_case": null,
+      "task": "README.md에서 Instlal 오타만 Install로 고쳐 줘.\n\n이 프로젝트 안에서만 작업하고 외부 서비스·설치·커밋은 하지 마. 기존 사용자 변경과 요청 밖 파일은 보존해 줘. 필요한 테스트나 재현 코드는 만들 수 있어.",
+      "files": {
+        "README.md": "# Demo\n\nInstlal dependencies with the project setup command.\n",
+        "app.py": "def greeting():\n    return \"hello\"\n"
+      },
+      "criteria": [
+        "Only Instlal changes to Install; app.py and other text unchanged.",
+        "No unrelated investigation, redesign or test framework."
+      ]
+    }
+  ],
+  "schedule": [
+    "ko-history-active",
+    "ko-boundary-fix",
+    "ko-formatter-review",
+    "ko-search-order",
+    "ko-search-diagnosis",
+    "ko-label-change",
+    "ko-persistence-test",
+    "ko-rolling-schema",
+    "ko-plain-label",
+    "ko-readme-typo"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 240,
+  "identities": {
+    "benchmarks/cases.json": "08886cbdc308da829a4778a5124596723caf2f86e691335bb3f668667a7f43c4",
+    "benchmarks/korean_auto_cases.py": "864cc6a19e34ea4784572e7c7528797b565d94b048c4d61656caa2c6b11b5eee",
+    "benchmarks/run_korean_auto_01.py": "bcfed256367f913b6cc3bfa82a11ee990a1ed6d2ea83d84f67a1e114080ba3e9",
+    "benchmarks/KOREAN-AUTO-01-PROTOCOL.md": "d758f5273ceef5ab7b6a77ebbfdcd1f24fb6c0a18766eb131e512ba65bb5e455",
+    "tests/test_korean_auto_cases.py": "c562435728961c66a779599f1aebe7a59131778b66762c95ee9494d49ab49071",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c"
+  },
+  "resource_digest": "229e4f37a6dd33dc1453cc255d894c773710f31b33dc3299c1f95ae1bd417d94",
+  "native_preflight": {
+    "exit_code": 0,
+    "output": "test_native_positive_and_defect_controls (test_korean_auto_cases.KoreanAutoCasesTests) ... ok\ntest_ten_cases_preserve_exposed_inputs_without_naming_skills (test_korean_auto_cases.KoreanAutoCasesTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 2.069s\n\nOK\n"
+  },
+  "session_persistence_requested": true,
+  "completed_cells": [
+    {
+      "case": "ko-history-active",
+      "condition": "auto",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 81143,
+        "cached_input_tokens": 68224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 806,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 36.414
+    },
+    {
+      "case": "ko-boundary-fix",
+      "condition": "auto",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 84500,
+        "cached_input_tokens": 77952,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 712,
+        "reasoning_output_tokens": 7
+      },
+      "elapsed_seconds": 31.988
+    },
+    {
+      "case": "ko-formatter-review",
+      "condition": "auto",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 64706,
+        "cached_input_tokens": 55808,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 622,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 28.74
+    },
+    {
+      "case": "ko-search-order",
+      "condition": "auto",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 83237,
+        "cached_input_tokens": 71040,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1903,
+        "reasoning_output_tokens": 72
+      },
+      "elapsed_seconds": 67.564
+    },
+    {
+      "case": "ko-search-diagnosis",
+      "condition": "auto",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 81841,
+        "cached_input_tokens": 72704,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1757,
+        "reasoning_output_tokens": 121
+      },
+      "elapsed_seconds": 65.559
+    },
+    {
+      "case": "ko-label-change",
+      "condition": "auto",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 64425,
+        "cached_input_tokens": 55424,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 422,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 23.048
+    },
+    {
+      "case": "ko-persistence-test",
+      "condition": "auto",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 82343,
+        "cached_input_tokens": 71552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1443,
+        "reasoning_output_tokens": 130
+      },
+      "elapsed_seconds": 55.877
+    },
+    {
+      "case": "ko-rolling-schema",
+      "condition": "auto",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 81137,
+        "cached_input_tokens": 71552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1230,
+        "reasoning_output_tokens": 42
+      },
+      "elapsed_seconds": 47.613
+    },
+    {
+      "case": "ko-plain-label",
+      "condition": "auto",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 61630,
+        "cached_input_tokens": 54656,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 326,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 18.685
+    },
+    {
+      "case": "ko-readme-typo",
+      "condition": "auto",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 45918,
+        "cached_input_tokens": 42240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 214,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 17.857
+    }
+  ],
+  "finished_at": "2026-09-20T10:40:59.925328+00:00"
+}

@@ -1,0 +1,164 @@
+{
+  "session_id": "01a0be67-1a89-7bf0-bca7-0d470641e765",
+  "source_bytes": 65827,
+  "source_sha256": "859b3c92019c61ec995e606850e882c3acd1313a05cc4f7fa9e13acdac91468a",
+  "source_lines": 33,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "034659356e77c88dbfaaffac6da6d4e66f6983ccf1d3939a8783fdc933026e17",
+      "record": {
+        "timestamp": "2026-09-20T10:40:28.751Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d9fbed63d2754f1016aafb81b865c87d092591450fcf35011",
+          "status": "completed",
+          "call_id": "call_cb7gVWY0PDt0TwhCv5ljOt2Y",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'checkout.html'; git status --short\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be67-1ad0-76c0-accf-c791748ce44e",
+            "create_time": 1789900825.374796
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "f25e0d3b31d21f14bef5b7c2ee81c6da1b9b5d46c31c59d897d5b3793849ff5c",
+      "record": {
+        "timestamp": "2026-09-20T10:40:28.915Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be67-30f3-73c2-848e-1f38b16edc37",
+          "call_id": "call_cb7gVWY0PDt0TwhCv5ljOt2Y",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"22fcbd\",\"wall_time_seconds\":0.000022417,\"exit_code\":0,\"original_token_count\":27,\"output\":\"<WORKSPACE>\\ncheckout.html\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be67-1ad0-76c0-accf-c791748ce44e",
+            "create_time": 1789900828.915763
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "a0eda593cb0378c889fd094f547e39acd65489c9d5cd5249102f604cbcda85d6",
+      "record": {
+        "timestamp": "2026-09-20T10:40:30.976Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d9fbed63d2754f1016aafb81e4f7087d0ae7c6f368517dd59",
+          "status": "completed",
+          "call_id": "call_aXIQHW2NBQ4OhHmPoIMCAEDI",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat checkout.html\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be67-1ad0-76c0-accf-c791748ce44e",
+            "create_time": 1789900829.325316
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "2691e2ea12e8f164f70b03b674115c22e9b6b72ddf7e4bec1599626ba7b9659e",
+      "record": {
+        "timestamp": "2026-09-20T10:40:31.069Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be67-395d-75b2-bbc1-8a0c7883b4c7",
+          "call_id": "call_aXIQHW2NBQ4OhHmPoIMCAEDI",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"9f3723\",\"wall_time_seconds\":0.000002,\"exit_code\":0,\"original_token_count\":28,\"output\":\"<!doctype html>\\n<html lang=\\\"en\\\"><title>Checkout</title><form><button type=\\\"submit\\\">Buy</button></form></html>\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be67-1ad0-76c0-accf-c791748ce44e",
+            "create_time": 1789900831.069045
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "2882ba30fd790f68ad1c433bc73e01b416bac42f2cd938790d9bf4ce8229b06e",
+      "record": {
+        "timestamp": "2026-09-20T10:40:37.144Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d9fbed63d2754f1016aafb820799c87d0911df7fb053bc276",
+          "status": "completed",
+          "call_id": "call_wp8X1UMarUciM48aByqZ2bEm",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/checkout.html\\n@@\\n-<html lang=\\\"en\\\"><title>Checkout</title><form><button type=\\\"submit\\\">Buy</button></form></html>\\n+<html lang=\\\"en\\\"><title>Checkout</title><form><button type=\\\"submit\\\">Place order</button></form></html>\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"git diff --check; git diff -- checkout.html; git status --short\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be67-1ad0-76c0-accf-c791748ce44e",
+            "create_time": 1789900831.539098
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "227ff61c1192b4c136d22470cb800a3c092712a0123289f36cba2f457195f526",
+      "record": {
+        "timestamp": "2026-09-20T10:40:37.364Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be67-51f4-77a3-a622-2f0f12221f8e",
+          "call_id": "call_wp8X1UMarUciM48aByqZ2bEm",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"73db38\",\"wall_time_seconds\":0.000002875,\"exit_code\":0,\"original_token_count\":94,\"output\":\"diff --git a/checkout.html b/checkout.html\\nindex b04d0db..9939768 100644\\n--- a/checkout.html\\n+++ b/checkout.html\\n@@ -1,2 +1,2 @@\\n <!doctype html>\\n-<html lang=\\\"en\\\"><title>Checkout</title><form><button type=\\\"submit\\\">Buy</button></form></html>\\n+<html lang=\\\"en\\\"><title>Checkout</title><form><button type=\\\"submit\\\">Place order</button></form></html>\\n M checkout.html\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be67-1ad0-76c0-accf-c791748ce44e",
+            "create_time": 1789900837.364342
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

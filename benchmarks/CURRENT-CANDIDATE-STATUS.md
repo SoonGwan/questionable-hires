@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Korean automatic-selection screen — 2026-09-20, launch `ad3fbdb`
+
+[Ten original sessions](results/korean-auto-01/README.md), resources `2990f44`:
+all eight intended bodies observed; no full-body exposure in either plain-edit
+control. Functional criteria 10/10, task plus scope **9/10**: Landlord searched
+outside the authorized project. Receipt also read an arguably unnecessary second
+skill. All attempts retained. No baseline arm; exposed authored fixtures, n=1;
+**no efficiency or generalization claim**, and no featured-chart change.
+
+한국어: 한국어 자동 선택 10세션을 검토했다. 기능은 모두 충족했지만 프로젝트
+밖 탐색 1건 때문에 범위 포함 통과는 9/10이다. 단순 수정 2개는 스킬 본문을
+읽지 않았다. 중복 읽기·탐색 범위가 개선 후보이며 성능 향상으로 과장하지 않는다.
+
 ## Con Artist single-reference native improvement path — 2026-09-20, parent `5912139`
 
 The optional existing-test route now links to a [self-contained four-check recipe](../skills/con-artist/references/existing-tests.md),

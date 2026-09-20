@@ -1,0 +1,209 @@
+{
+  "session_id": "01a0be66-5fcf-7450-b96e-76ca24acea77",
+  "source_bytes": 99458,
+  "source_sha256": "52bf563e9490fcdc043fbe78029efa552c5d7b517b988bb22996392ef2e40c3d",
+  "source_lines": 39,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "3ea918fff034a8e2b33c054d1fa30036c0c33a10a39dc51dcbb7e4a2ccb714dc",
+      "record": {
+        "timestamp": "2026-09-20T10:39:43.109Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0f993e2fd5d82859016aafb7ecc0b087d094e69edec5d54e3c",
+          "status": "completed",
+          "call_id": "call_0bkftZq1wb2OUh18D9oyiQ16",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g '*deploy*' -g '*release*' -g '*rollback*' -g 'package.json' -g '*migration*'; git status --short; cat .agents/skills/friday/SKILL.md\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be66-6015-7391-8030-9e1425d1740d",
+            "create_time": 1789900777.578015
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "32364e4c7ec878bb94534ede9aac66f759bedc10d6650186b52ab59d3c1d1453",
+      "record": {
+        "timestamp": "2026-09-20T10:39:43.265Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be66-7ea0-7372-9bae-27fec3c0e1a8",
+          "call_id": "call_0bkftZq1wb2OUh18D9oyiQ16",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"41ad81\",\"wall_time_seconds\":0.000002833,\"exit_code\":0,\"original_token_count\":914,\"output\":\"<WORKSPACE>\\nrelease.md\\n?? .agents/\\n---\\nname: friday\\ndescription: Review a planned deployment or release diff for rollback feasibility, mixed-version compatibility, migrations, and configuration readiness without deploying it.\\n---\\n\\n# Friday\\n\\n> Can Monday-you undo this?\\n\\n## Read Monday's incident report early\\n\\nWhen discovery is needed, combine it with reading supplied release notes/contracts and available project instructions, then batch the discovered relevant inputs. Avoid a listing-only round trip when supplied inputs are already readable. Keep Git internals out of file discovery (for example, `rg --files --hidden -g '!.git'`); use Git commands for relevant history. Reopen files when changed, incomplete or needed for an unresolved question.\\n\\nUse the release diff and documented rollout/rollback order to identify reachable states, old/new artifacts, configuration and consumers. Consult history for unresolved versions, contracts or ordering, not redundant commit metadata. Do not impose rolling deployment or zero downtime on another strategy.\\n\\nFor each reachable state, check active readers/writers against data and configuration, including new-version writes before rollback. Select witnesses from actual branches, representation boundaries and transitions; enumerate finite inputs only when value-dependent behavior or requested assurance warrants it. Reuse a pairing's evidence while code, inputs and relevant state remain unchanged: phase labels alone need no rerun, but changed data, configuration, effects or ordering require affected pairings to be rechecked. Include queued/external effects when their contract changes.\\n\\nCombine compatible coverage obligations into representative sequences instead of multiplying every value by every version/operation. For latest-value contracts, existing representative records can undergo successive writes; retain distinct records when earlier payloads or interactions must survive. Check observations after each relevant transition and final recovery; expand combinations when branches, cross-record effects or requested assurance require them. Fewer witnesses must not mean reusing stale observations.\\n\\nCode rollback is not data recovery: down migrations can lose data, and backups need restore evidence. Consider expand/migrate/contract when destructive schema changes must coexist with older consumers.\\n\\nFind the first incompatible/irreversible step and last recoverable state; tie blockers to the smallest compatible ordering or prerequisite. Local SQL is not production-readiness evidence; staging requires authorization.\\n\\nChoose execution from the contract: exercise actual application writers, transactions and connections when they matter. For repeated SQL-only SQLite reader checks, use the optional [in-memory matrix](references/sqlite-matrix.md); read its guide only for that path, and implementation for trust/adaptation/troubleshooting. Use existing runners for simple checks. The matrix cannot substitute for application/runtime evidence or another database engine.\\n\\n## Deliver and stop\\n\\nLead with ready, ready with conditions, or blocked by evidence. Missing runtime/configuration evidence is unknown, not safe. Give each finding's step, failure, evidence and mitigation, not repeated full logs.\\n\\nStop when scoped compatibility and recovery paths are assessed; no generic infrastructure audit. Preserve user changes and requirements. Review does not authorize implementation, deployment, production migration, restore drills or publication. If asked to fix, verify the scoped correction without releasing it.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be66-6015-7391-8030-9e1425d1740d",
+            "create_time": 1789900783.264995
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "7886a8e9360e051b308f6a8439063853ade39582672d5ae6a60c157e9a33c25d",
+      "record": {
+        "timestamp": "2026-09-20T10:39:46.742Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0f993e2fd5d82859016aafb7f0b6a887d0b070b48a971a2f97",
+          "status": "completed",
+          "call_id": "call_xaGfjVYoGvfmOUoz4MCFBuQN",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"rg --files --hidden -g '!.git' -g '!.agents/**'; cat release.md; git log --oneline -5; rg --files --hidden -g 'AGENTS.md' -g '!.git'\",\"max_output_tokens\":8000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be66-6015-7391-8030-9e1425d1740d",
+            "create_time": 1789900783.759609
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "9526a78d430f3a6b85b42c9cec70acceed9e3dfc33d09eeff3a989f39760fd33",
+      "record": {
+        "timestamp": "2026-09-20T10:39:46.868Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be66-8cb4-75b3-b15a-ffcbfaf201c0",
+          "call_id": "call_xaGfjVYoGvfmOUoz4MCFBuQN",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"097648\",\"wall_time_seconds\":0.000001583,\"exit_code\":1,\"original_token_count\":87,\"output\":\"old_reader.py\\n002_up.sql\\n001_initial.sql\\nnew_reader.py\\n002_down.sql\\nrelease.md\\nDeploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\\n7b0b5fe Initial application\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be66-6015-7391-8030-9e1425d1740d",
+            "create_time": 1789900786.868726
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "4a2e4a6638d62145e7e04b80475f34f840e377a6c7851859ad43812a0fd767c7",
+      "record": {
+        "timestamp": "2026-09-20T10:39:51.069Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0f993e2fd5d82859016aafb7f4c00487d093404a57ae632a7b",
+          "status": "completed",
+          "call_id": "call_WKYl1hTgLNwxLCFsZCK26Yre",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git ls-files; nl -ba release.md; nl -ba 001_initial.sql; nl -ba 002_up.sql; nl -ba 002_down.sql; nl -ba old_reader.py; nl -ba new_reader.py; git diff; git show HEAD:old_reader.py\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be66-6015-7391-8030-9e1425d1740d",
+            "create_time": 1789900787.404565
+          }
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "25dee8113b1a5310bd46dab0a419e78b2916d5f5f708f902bad030c5e08492c5",
+      "record": {
+        "timestamp": "2026-09-20T10:39:51.197Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be66-9d9d-76a0-9463-4130bf2066c3",
+          "call_id": "call_WKYl1hTgLNwxLCFsZCK26Yre",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d43160\",\"wall_time_seconds\":0.000001459,\"exit_code\":0,\"original_token_count\":164,\"output\":\"001_initial.sql\\n002_down.sql\\n002_up.sql\\nnew_reader.py\\nold_reader.py\\nrelease.md\\n     1\\tDeploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\\n     1\\tCREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\\n     1\\tALTER TABLE users RENAME COLUMN name TO display_name;\\n     1\\tALTER TABLE users RENAME COLUMN display_name TO name;\\n     1\\tQUERY = 'SELECT id, name FROM users'\\n     1\\tQUERY = 'SELECT id, display_name FROM users'\\nQUERY = 'SELECT id, name FROM users'\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be66-6015-7391-8030-9e1425d1740d",
+            "create_time": 1789900791.197022
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "ddaf4d535aba38f9befdf520691e767293d346e30bde9e604f5868ab28c55e61",
+      "record": {
+        "timestamp": "2026-09-20T10:40:05.168Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0f993e2fd5d82859016aafb7fa35b487d08ed0064796885fec",
+          "status": "completed",
+          "call_id": "call_tNs8VDUjUa3cjxV7fISCwfDw",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 - <<'PY'\\nimport pathlib\\nimport runpy\\nimport sqlite3\\n\\nroot = pathlib.Path('.')\\nqueries = {name: runpy.run_path(str(root / (name + '_reader.py')))['QUERY'] for name in ('old', 'new')}\\ndb = sqlite3.connect(':memory:')\\ndb.executescript((root / '001_initial.sql').read_text())\\ndb.execute('INSERT INTO users (id, name) VALUES (?, ?)', (1, 'Original'))\\ndef observe(stage):\\n    print(stage)\\n    for version, query in queries.items():\\n        try:\\n            print(' ', version, 'OK', db.execute(query).fetchall())\\n        except sqlite3.Error as exc:\\n            print(' ', version, 'ERROR', str(exc))\\nobserve('Initial schema')\\ndb.executescript((root / '002_up.sql').read_text())\\nobserve('After up / mixed rollout / old restarted before down')\\n# No application writer is provided: model a write to the new schema only.\\ndb.execute('INSERT INTO users (id, display_name) VALUES (?, ?)', (2, 'Written after up'))\\nobserve('After new-schema SQL write / before down')\\ndb.executescript((root / '002_down.sql').read_text())\\nobserve('After down / including new-schema data')\\nassert db.execute(queries['old']).fetchall() == [(1, 'Original'), (2, 'Written after up')]\\nprint('SQLite version:', sqlite3.sqlite_version)\\nPY\\n git status --short\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be66-6015-7391-8030-9e1425d1740d",
+            "create_time": 1789900791.758588
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "a5414af7b220279a347b037d1ce74de918c25be089417f366a2afd3eb6e1e6cb",
+      "record": {
+        "timestamp": "2026-09-20T10:40:05.310Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be66-d4be-7031-abbd-ca0eb1a66577",
+          "call_id": "call_tNs8VDUjUa3cjxV7fISCwfDw",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"f256c8\",\"wall_time_seconds\":0.000001292,\"exit_code\":0,\"original_token_count\":123,\"output\":\"Initial schema\\n  old OK [(1, 'Original')]\\n  new ERROR no such column: display_name\\nAfter up / mixed rollout / old restarted before down\\n  old ERROR no such column: name\\n  new OK [(1, 'Original')]\\nAfter new-schema SQL write / before down\\n  old ERROR no such column: name\\n  new OK [(1, 'Original'), (2, 'Written after up')]\\nAfter down / including new-schema data\\n  old OK [(1, 'Original'), (2, 'Written after up')]\\n  new ERROR no such column: display_name\\nSQLite version: 3.51.0\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be66-6015-7391-8030-9e1425d1740d",
+            "create_time": 1789900805.310314
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

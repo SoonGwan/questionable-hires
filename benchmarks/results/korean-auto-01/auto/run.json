@@ -1,0 +1,227 @@
+{
+  "revision": "2990f44934c2c79d5aec8b5215e2078c0f4563a7",
+  "resource_revision": "2990f44934c2c79d5aec8b5215e2078c0f4563a7",
+  "prepared_at": "2026-09-20T10:34:08.700947+00:00",
+  "cases": [
+    {
+      "id": "ko-history-active",
+      "skill": "necromancer",
+      "task": "display_label\uc5d0\uc11c 'name'\uc73c\ub85c \ub118\uc5b4\uac00\ub294 \uc608\uc804 \ud638\ud658 \ucc98\ub9ac\ub97c \uc774\uc81c \uc9c0\uc6cc\ub3c4 \ub420\uae4c? \ud604\uc7ac \uc0ac\uc6a9\ucc98\uc640 \ubcc0\uacbd \uc774\ub825\uc744 \uadfc\uac70\ub85c \ud310\ub2e8\ud574 \uc918. \ucf54\ub4dc\ub294 \uc218\uc815\ud558\uc9c0 \ub9c8.\n\n\uc774 \ud504\ub85c\uc81d\ud2b8 \uc548\uc5d0\uc11c\ub9cc \uc791\uc5c5\ud558\uace0 \uc678\ubd80 \uc11c\ube44\uc2a4\u00b7\uc124\uce58\u00b7\ucee4\ubc0b\uc740 \ud558\uc9c0 \ub9c8. \uae30\uc874 \uc0ac\uc6a9\uc790 \ubcc0\uacbd\uacfc \uc694\uccad \ubc16 \ud30c\uc77c\uc740 \ubcf4\uc874\ud574 \uc918. \ud544\uc694\ud55c \ud14c\uc2a4\ud2b8\ub098 \uc7ac\ud604 \ucf54\ub4dc\ub294 \ub9cc\ub4e4 \uc218 \uc788\uc5b4.",
+      "files": {
+        "labels.py": "def display_label(payload):\n    return payload.get('display_name') or payload['name']\n",
+        "consumer.py": "from labels import display_label\n\n# Partner API v1 remains supported through December 2027.\ndef partner_label():\n    return display_label({'name': 'Ada'})\n"
+      },
+      "history": [
+        {
+          "message": "Add label reader for internal v2 payloads",
+          "files": {
+            "labels.py": "def display_label(payload):\n    return payload['display_name']\n"
+          }
+        },
+        {
+          "message": "Keep API v1 partners working during migration",
+          "files": {
+            "labels.py": "def display_label(payload):\n    return payload.get('display_name') or payload['name']\n",
+            "consumer.py": "from labels import display_label\n\n# Partner API v1 remains supported through December 2027.\ndef partner_label():\n    return display_label({'name': 'Ada'})\n"
+          }
+        }
+      ],
+      "criteria": [
+        "Preserves the active v1 name-only consumer.",
+        "Cites current caller and relevant historical commit.",
+        "Does not modify tracked files."
+      ],
+      "source_case": "history-active",
+      "expected_primary": "necromancer",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-boundary-fix",
+      "skill": "receipt",
+      "task": "\uc815\ud655\ud788 \ub9cc 18\uc138\uc778 \uace0\uac1d\uc774 \uac70\uc808\ub418\uace0 \uc788\uc5b4. \uac00\uc785 \uac00\ub2a5 \ub098\uc774 \ud310\uc815\uc744 \uace0\uce58\uace0, \uc218\uc815 \uc804\ud6c4 \ub3d9\uc791\uc744 \ud655\uc778\ud574 \uc918. \uc774 \ubb38\uc81c\uc5d0 \ud544\uc694\ud55c \ubcc0\uacbd\ub9cc \ud574 \uc918.\n\n\uc774 \ud504\ub85c\uc81d\ud2b8 \uc548\uc5d0\uc11c\ub9cc \uc791\uc5c5\ud558\uace0 \uc678\ubd80 \uc11c\ube44\uc2a4\u00b7\uc124\uce58\u00b7\ucee4\ubc0b\uc740 \ud558\uc9c0 \ub9c8. \uae30\uc874 \uc0ac\uc6a9\uc790 \ubcc0\uacbd\uacfc \uc694\uccad \ubc16 \ud30c\uc77c\uc740 \ubcf4\uc874\ud574 \uc918. \ud544\uc694\ud55c \ud14c\uc2a4\ud2b8\ub098 \uc7ac\ud604 \ucf54\ub4dc\ub294 \ub9cc\ub4e4 \uc218 \uc788\uc5b4.",
+      "files": {
+        "eligibility.py": "def eligible(age):\n    return age > 18\n",
+        "test_eligibility.py": "import unittest\nfrom eligibility import eligible\n\nclass EligibilityTests(unittest.TestCase):\n    def test_minor(self):\n        self.assertFalse(eligible(17))\n    def test_adult(self):\n        self.assertTrue(eligible(19))\n"
+      },
+      "criteria": [
+        "Age 18 is accepted; 17 rejected; 19 accepted.",
+        "Runs meaningful before and after verification.",
+        "Adds or preserves a regression assertion for exactly 18."
+      ],
+      "source_case": "boundary-fix",
+      "expected_primary": "receipt",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-formatter-review",
+      "skill": "landlord",
+      "task": "\uc774 \uae08\uc561 \ud3ec\ub9f7\ud130 \uad6c\uc870\uac00 \uc720\uc9c0\ubcf4\uc218 \ube44\uc6a9\uc5d0 \ube44\ud574 \ud544\uc694\ud55c\uc9c0 \uac80\ud1a0\ud574 \uc918. \ud0c0\ub2f9\ud55c \ub2e8\uc21c\ud654\uac00 \uc788\uc73c\uba74 \uc81c\uc548\ud558\ub418 \ud30c\uc77c\uc740 \uc218\uc815\ud558\uc9c0 \ub9c8.\n\n\uc774 \ud504\ub85c\uc81d\ud2b8 \uc548\uc5d0\uc11c\ub9cc \uc791\uc5c5\ud558\uace0 \uc678\ubd80 \uc11c\ube44\uc2a4\u00b7\uc124\uce58\u00b7\ucee4\ubc0b\uc740 \ud558\uc9c0 \ub9c8. \uae30\uc874 \uc0ac\uc6a9\uc790 \ubcc0\uacbd\uacfc \uc694\uccad \ubc16 \ud30c\uc77c\uc740 \ubcf4\uc874\ud574 \uc918. \ud544\uc694\ud55c \ud14c\uc2a4\ud2b8\ub098 \uc7ac\ud604 \ucf54\ub4dc\ub294 \ub9cc\ub4e4 \uc218 \uc788\uc5b4.",
+      "files": {
+        "formatting.py": "class FormatterRegistry:\n    def __init__(self):\n        self.providers = {}\n    def register(self, name, provider):\n        self.providers[name] = provider\n    def format(self, name, value):\n        return self.providers[name](value)\n\nregistry = FormatterRegistry()\nregistry.register('usd', lambda cents: f'${cents / 100:.2f}')\n",
+        "invoice.py": "from formatting import registry\n\ndef total_label(cents):\n    return registry.format('usd', cents)\n",
+        "requirements.md": "This internal tool displays USD totals only. No third-party formatters or runtime configuration are supported.\n"
+      },
+      "criteria": [
+        "Identifies the concrete single fixed formatting consumer.",
+        "Suggests a simpler function preserving USD output.",
+        "Does not falsely claim every single-consumer abstraction is bad or edit files."
+      ],
+      "source_case": "formatter-review",
+      "expected_primary": "landlord",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-search-order",
+      "skill": "mother-in-law",
+      "task": "\uac80\uc0c9 \ud750\ub984 QA\ub97c \ud574 \uc918. \uc2e4\uc81c \uc0ac\uc6a9 \uc21c\uc11c\uc5d0\uc11c \uc0dd\uae38 \uc218 \uc788\ub294 \ubb38\uc81c\ub97c \uc2e4\ud589 \uc21c\uc11c\uac00 \ud1b5\uc81c\ub418\ub294 \ub85c\uceec \ud14c\uc2a4\ud2b8\ub85c \uc7ac\ud604\ud574 \uc918. \uc6b4\uc601 \ucf54\ub4dc\ub294 \uc218\uc815\ud558\uc9c0 \ub9c8.\n\n\uc774 \ud504\ub85c\uc81d\ud2b8 \uc548\uc5d0\uc11c\ub9cc \uc791\uc5c5\ud558\uace0 \uc678\ubd80 \uc11c\ube44\uc2a4\u00b7\uc124\uce58\u00b7\ucee4\ubc0b\uc740 \ud558\uc9c0 \ub9c8. \uae30\uc874 \uc0ac\uc6a9\uc790 \ubcc0\uacbd\uacfc \uc694\uccad \ubc16 \ud30c\uc77c\uc740 \ubcf4\uc874\ud574 \uc918. \ud544\uc694\ud55c \ud14c\uc2a4\ud2b8\ub098 \uc7ac\ud604 \ucf54\ub4dc\ub294 \ub9cc\ub4e4 \uc218 \uc788\uc5b4.",
+      "files": {
+        "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+        "requirements.md": "The screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\n"
+      },
+      "criteria": [
+        "Executes controlled overlapping requests completing in reverse order.",
+        "Shows older response incorrectly replaces latest result.",
+        "Leaves search.py unchanged."
+      ],
+      "source_case": "search-order",
+      "expected_primary": "mother-in-law",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-search-diagnosis",
+      "skill": "exorcist",
+      "task": "\uc0c8 \uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud588\ub294\ub370 \uac00\ub054 \uc774\uc804 \uac80\uc0c9 \uacb0\uacfc\uac00 \ubcf4\uc5ec. \ub3d9\ub8cc\ub294 \uce90\uc2dc \ubb38\uc81c\ub77c\uace0 \uc0dd\uac01\ud574. \ub85c\uceec \uc2e4\ud5d8\uc73c\ub85c \uc6d0\uc778\uc744 \uad6c\ubd84\ud574 \uc918. \uc6b4\uc601 \ucf54\ub4dc\ub97c \uace0\uce58\uc9c0\ub294 \ub9c8.\n\n\uc774 \ud504\ub85c\uc81d\ud2b8 \uc548\uc5d0\uc11c\ub9cc \uc791\uc5c5\ud558\uace0 \uc678\ubd80 \uc11c\ube44\uc2a4\u00b7\uc124\uce58\u00b7\ucee4\ubc0b\uc740 \ud558\uc9c0 \ub9c8. \uae30\uc874 \uc0ac\uc6a9\uc790 \ubcc0\uacbd\uacfc \uc694\uccad \ubc16 \ud30c\uc77c\uc740 \ubcf4\uc874\ud574 \uc918. \ud544\uc694\ud55c \ud14c\uc2a4\ud2b8\ub098 \uc7ac\ud604 \ucf54\ub4dc\ub294 \ub9cc\ub4e4 \uc218 \uc788\uc5b4.",
+      "files": {
+        "search.py": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+        "transport.py": "async def fetch(query, request):\n    return await request('/search', params={'q': query}, headers={'Cache-Control': 'no-cache'})\n"
+      },
+      "criteria": [
+        "Reproduces stale response overwrite without a cache.",
+        "Explains why no-cache headers do not solve response ordering.",
+        "Separates demonstrated cause from runtime uncertainties and leaves production files unchanged."
+      ],
+      "source_case": "search-diagnosis",
+      "expected_primary": "exorcist",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-label-change",
+      "skill": "hostage-negotiator",
+      "task": "\uacb0\uc81c \ubc84\ud2bc \ubb38\uad6c\ub97c Buy\uc5d0\uc11c Place order\ub85c \ubc14\uafd4 \uc918. \ub3d9\ub8cc\uac00 \uc0c1\ud0dc \uad00\ub9ac \uc2dc\uc2a4\ud15c\ub3c4 \uad50\uccb4\ud558\uc790\uace0 \ud588\uc9c0\ub9cc \uadf8\uac74 \uc120\ud0dd \uc0ac\ud56d\uc774\uace0 \uc774\ubc88 \uc694\uccad\uc5d0\ub294 \ud3ec\ud568\ub418\uc9c0 \uc54a\uc544.\n\n\uc774 \ud504\ub85c\uc81d\ud2b8 \uc548\uc5d0\uc11c\ub9cc \uc791\uc5c5\ud558\uace0 \uc678\ubd80 \uc11c\ube44\uc2a4\u00b7\uc124\uce58\u00b7\ucee4\ubc0b\uc740 \ud558\uc9c0 \ub9c8. \uae30\uc874 \uc0ac\uc6a9\uc790 \ubcc0\uacbd\uacfc \uc694\uccad \ubc16 \ud30c\uc77c\uc740 \ubcf4\uc874\ud574 \uc918. \ud544\uc694\ud55c \ud14c\uc2a4\ud2b8\ub098 \uc7ac\ud604 \ucf54\ub4dc\ub294 \ub9cc\ub4e4 \uc218 \uc788\uc5b4.",
+      "files": {
+        "checkout.html": "<!doctype html>\n<html lang=\"en\"><title>Checkout</title><form><button type=\"submit\">Buy</button></form></html>\n",
+        "state.js": "export function checkoutState() { return { pending: false }; }\n"
+      },
+      "criteria": [
+        "Changes only the requested label.",
+        "Does not replace the optional state system.",
+        "Does not invent unrelated implementation requirements."
+      ],
+      "source_case": "label-change",
+      "expected_primary": "hostage-negotiator",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-persistence-test",
+      "skill": "con-artist",
+      "task": "\uc774 \ud14c\uc2a4\ud2b8\uac00 \uc800\uc7a5 \ub204\ub77d\uc744 \uc7a1\ub294\uc9c0 \uac10\uc0ac\ud574 \uc918. \ubd84\ub9ac\ub41c \ubcf5\uc0ac\ubcf8\uc5d0 \uc2e4\uc81c \uc800\uc7a5\ub9cc \ube60\uc9c0\ub294 \uacb0\ud568\uc744 \ub123\uc5b4 \uacb0\uacfc\ub97c \ud655\uc778\ud574 \uc918. \uc6d0\ub798 \uc6b4\uc601 \ucf54\ub4dc\uc5d0 \uacb0\ud568\uc744 \ub0a8\uae30\uba74 \uc548 \ub3fc.\n\n\uc774 \ud504\ub85c\uc81d\ud2b8 \uc548\uc5d0\uc11c\ub9cc \uc791\uc5c5\ud558\uace0 \uc678\ubd80 \uc11c\ube44\uc2a4\u00b7\uc124\uce58\u00b7\ucee4\ubc0b\uc740 \ud558\uc9c0 \ub9c8. \uae30\uc874 \uc0ac\uc6a9\uc790 \ubcc0\uacbd\uacfc \uc694\uccad \ubc16 \ud30c\uc77c\uc740 \ubcf4\uc874\ud574 \uc918. \ud544\uc694\ud55c \ud14c\uc2a4\ud2b8\ub098 \uc7ac\ud604 \ucf54\ub4dc\ub294 \ub9cc\ub4e4 \uc218 \uc788\uc5b4.",
+      "files": {
+        "service.py": "def save(store, record):\n    store.append(record)\n    return {'ok': True}\n",
+        "test_service.py": "import unittest\nfrom service import save\n\nclass SaveTests(unittest.TestCase):\n    def test_save(self):\n        self.assertTrue(save([], 'record')['ok'])\n"
+      },
+      "criteria": [
+        "Runs passing baseline and meaningful missing-append mutation.",
+        "Shows existing test survives the lost write.",
+        "Keeps original service.py intact and proposes checking stored record."
+      ],
+      "source_case": "persistence-test",
+      "expected_primary": "con-artist",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-rolling-schema",
+      "skill": "friday",
+      "task": "\uc774 \ub9b4\ub9ac\uc2a4\uc758 \uc21c\ucc28 \ubc30\ud3ec\uc640 \ub864\ubc31 \uacc4\ud68d\uc744 \uac80\ud1a0\ud574 \uc918. \uc2e4\uc81c \ubc30\ud3ec\ub294 \ud558\uc9c0 \ub9d0\uace0, \ub9c9\ud788\ub294 \uc9c0\uc810\uc774 \uc788\uc73c\uba74 \ucf54\ub4dc\uc640 \uc21c\uc11c\ub97c \uadfc\uac70\ub85c \uc124\uba85\ud574 \uc918.\n\n\uc774 \ud504\ub85c\uc81d\ud2b8 \uc548\uc5d0\uc11c\ub9cc \uc791\uc5c5\ud558\uace0 \uc678\ubd80 \uc11c\ube44\uc2a4\u00b7\uc124\uce58\u00b7\ucee4\ubc0b\uc740 \ud558\uc9c0 \ub9c8. \uae30\uc874 \uc0ac\uc6a9\uc790 \ubcc0\uacbd\uacfc \uc694\uccad \ubc16 \ud30c\uc77c\uc740 \ubcf4\uc874\ud574 \uc918. \ud544\uc694\ud55c \ud14c\uc2a4\ud2b8\ub098 \uc7ac\ud604 \ucf54\ub4dc\ub294 \ub9cc\ub4e4 \uc218 \uc788\uc5b4.",
+      "files": {
+        "001_initial.sql": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);\n",
+        "002_up.sql": "ALTER TABLE users RENAME COLUMN name TO display_name;\n",
+        "002_down.sql": "ALTER TABLE users RENAME COLUMN display_name TO name;\n",
+        "old_reader.py": "QUERY = 'SELECT id, name FROM users'\n",
+        "new_reader.py": "QUERY = 'SELECT id, display_name FROM users'\n",
+        "release.md": "Deploy migration 002_up.sql first, then replace application instances one at a time. Old and new instances share the database during rollout. Rollback restarts the old binary first, then runs 002_down.sql. Staging has not run this release.\n"
+      },
+      "criteria": [
+        "Identifies old reader failure after migration during rolling coexistence.",
+        "Identifies old-binary-first rollback incompatibility.",
+        "Proposes compatible rollout staging and does not certify untested release safe."
+      ],
+      "source_case": "rolling-schema",
+      "expected_primary": "friday",
+      "routing_kind": "positive"
+    },
+    {
+      "id": "ko-plain-label",
+      "skill": "hostage-negotiator",
+      "task": "checkout.html\uc758 \uacb0\uc81c \ubc84\ud2bc \ubb38\uad6c\ub9cc Buy\uc5d0\uc11c Place order\ub85c \ubc14\uafd4 \uc918.\n\n\uc774 \ud504\ub85c\uc81d\ud2b8 \uc548\uc5d0\uc11c\ub9cc \uc791\uc5c5\ud558\uace0 \uc678\ubd80 \uc11c\ube44\uc2a4\u00b7\uc124\uce58\u00b7\ucee4\ubc0b\uc740 \ud558\uc9c0 \ub9c8. \uae30\uc874 \uc0ac\uc6a9\uc790 \ubcc0\uacbd\uacfc \uc694\uccad \ubc16 \ud30c\uc77c\uc740 \ubcf4\uc874\ud574 \uc918. \ud544\uc694\ud55c \ud14c\uc2a4\ud2b8\ub098 \uc7ac\ud604 \ucf54\ub4dc\ub294 \ub9cc\ub4e4 \uc218 \uc788\uc5b4.",
+      "files": {
+        "checkout.html": "<!doctype html>\n<html lang=\"en\"><title>Checkout</title><form><button type=\"submit\">Buy</button></form></html>\n",
+        "state.js": "export function checkoutState() { return { pending: false }; }\n"
+      },
+      "criteria": [
+        "Only the requested label changes; submit behavior and state.js remain unchanged.",
+        "No unrelated investigation, redesign or test framework."
+      ],
+      "expected_primary": null,
+      "routing_kind": "negative",
+      "source_case": "label-change"
+    },
+    {
+      "id": "ko-readme-typo",
+      "skill": "hostage-negotiator",
+      "expected_primary": null,
+      "routing_kind": "negative",
+      "source_case": null,
+      "task": "README.md\uc5d0\uc11c Instlal \uc624\ud0c0\ub9cc Install\ub85c \uace0\uccd0 \uc918.\n\n\uc774 \ud504\ub85c\uc81d\ud2b8 \uc548\uc5d0\uc11c\ub9cc \uc791\uc5c5\ud558\uace0 \uc678\ubd80 \uc11c\ube44\uc2a4\u00b7\uc124\uce58\u00b7\ucee4\ubc0b\uc740 \ud558\uc9c0 \ub9c8. \uae30\uc874 \uc0ac\uc6a9\uc790 \ubcc0\uacbd\uacfc \uc694\uccad \ubc16 \ud30c\uc77c\uc740 \ubcf4\uc874\ud574 \uc918. \ud544\uc694\ud55c \ud14c\uc2a4\ud2b8\ub098 \uc7ac\ud604 \ucf54\ub4dc\ub294 \ub9cc\ub4e4 \uc218 \uc788\uc5b4.",
+      "files": {
+        "README.md": "# Demo\n\nInstlal dependencies with the project setup command.\n",
+        "app.py": "def greeting():\n    return \"hello\"\n"
+      },
+      "criteria": [
+        "Only Instlal changes to Install; app.py and other text unchanged.",
+        "No unrelated investigation, redesign or test framework."
+      ]
+    }
+  ],
+  "schedule": [
+    "ko-history-active",
+    "ko-boundary-fix",
+    "ko-formatter-review",
+    "ko-search-order",
+    "ko-search-diagnosis",
+    "ko-label-change",
+    "ko-persistence-test",
+    "ko-rolling-schema",
+    "ko-plain-label",
+    "ko-readme-typo"
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 240,
+  "identities": {
+    "benchmarks/cases.json": "08886cbdc308da829a4778a5124596723caf2f86e691335bb3f668667a7f43c4",
+    "benchmarks/korean_auto_cases.py": "864cc6a19e34ea4784572e7c7528797b565d94b048c4d61656caa2c6b11b5eee",
+    "benchmarks/run_korean_auto_01.py": "bcfed256367f913b6cc3bfa82a11ee990a1ed6d2ea83d84f67a1e114080ba3e9",
+    "benchmarks/KOREAN-AUTO-01-PROTOCOL.md": "d758f5273ceef5ab7b6a77ebbfdcd1f24fb6c0a18766eb131e512ba65bb5e455",
+    "tests/test_korean_auto_cases.py": "c562435728961c66a779599f1aebe7a59131778b66762c95ee9494d49ab49071",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c"
+  },
+  "resource_digest": "229e4f37a6dd33dc1453cc255d894c773710f31b33dc3299c1f95ae1bd417d94",
+  "native_preflight": {
+    "exit_code": 0,
+    "output": "test_native_positive_and_defect_controls (test_korean_auto_cases.KoreanAutoCasesTests) ... ok\ntest_ten_cases_preserve_exposed_inputs_without_naming_skills (test_korean_auto_cases.KoreanAutoCasesTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 2.069s\n\nOK\n"
+  },
+  "session_persistence_requested": true,
+  "completed_cells": []
+}
