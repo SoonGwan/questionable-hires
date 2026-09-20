@@ -9,6 +9,30 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## All-eight current screen 02 — 2026-09-20, resources `62e5886`
+
+[Sixteen original sessions](results/all-eight-current-02/README.md), launch
+`8b0c0a7`, compare the current bundle with fresh no-skill controls on the same
+eight exposed development tasks. Full task/scope: **8/8 each**. Current summed
+tokens **+22.94%**, time **−5.58%**; no pair reduces both. Receipt +53.14% tokens
+and Hostage +98.48% are retained, not hidden by favorable time results. This is
+not an accepted overall efficiency win, held-out result or release confirmation.
+
+Twelve separate author controls validate delivered Editor/Hostage suites against
+faults and conforming alternatives. Current Hostage avoids the observed internal
+counter assertion and test-method collision, but that reliability does not cancel
+its higher cost. Six CLI omissions have decisive matching original stored outputs;
+manual review also catches an empty-output mechanical false match. All attempts,
+repairs, original artifacts and limitations remain accessible. Featured charts
+are unchanged. Next work targets actual support-reading/preparation overhead,
+not another unchanged run of this exposed set or generic instruction additions.
+
+한국어: 최신 묶음과 무스킬을 8과제·16새 세션으로 비교했다. 양쪽 모두 8/8이지만
+스킬은 합산 토큰 +22.94%, 시간 −5.58%로 전체 성능 목표에 미달했다. Hostage의
+테스트 작성 문제는 이번에 재발하지 않았고 정상 대안 대조도 통과했으나, 비용
+증가까지 숨기지는 않는다. 원본 출력 누락과 대조 도구 한계도 보존했다. 대표
+그래프·배포 우위 주장은 변경하지 않고, 관측된 추가 읽기와 준비 비용을 개선한다.
+
 ## Hostage assertion-boundary correction — 2026-09-20, parent `75cae2c`
 
 Following the [original disclosure-screen evidence](results/hostage-modes-01/README.md),

@@ -1,0 +1,209 @@
+{
+  "session_id": "01a0be8d-cca4-7e61-9a0e-f3dd0f7f18b5",
+  "source_bytes": 126083,
+  "source_sha256": "6b3bdcd6159ff4f3794c6856b7c5f6c3ce8d3d519dcf450bc6ef288dcfc53ce0",
+  "source_lines": 37,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "632be0847d65816fd5c76f136f59515511c53e5cf736b92b8ad693dfee7e4e27",
+      "record": {
+        "timestamp": "2026-09-20T11:22:45.441Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_098cc1b7984d5575016aafc203efbc87d0bf3fdd55a349fb34",
+          "status": "completed",
+          "call_id": "call_Y9alJIiP8n6mGpCWSGeIAQAY",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!__pycache__' -g '!.git'; git status --short; git log --oneline --all --decorate\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be8d-cce7-7d03-b8ea-d1f28ca57536",
+            "create_time": 1789903361.782982
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "b087443ce8a5b8d377a32490483e167aaf0ee86e13a14a02f24ceb510bd4ef39",
+      "record": {
+        "timestamp": "2026-09-20T11:22:45.611Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be8d-e5eb-79a0-aabd-ccd350532f93",
+          "call_id": "call_Y9alJIiP8n6mGpCWSGeIAQAY",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"c115bf\",\"wall_time_seconds\":0.000002208,\"exit_code\":0,\"original_token_count\":96,\"output\":\"<WORKSPACE>\\namounts.py\\ninvoice.py\\ntest_invoice.py\\nAGENTS.md\\nrequirements.md\\n9b050b6 (HEAD -> main) Retire batch importer and normalize at invoice boundary\\nee9689a Accept integer minor units from the batch importer\\n1d38dfc Preserve half-cent invoice rounding, including credits\\n65ca867 Initial invoice formatting\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be8d-cce7-7d03-b8ea-d1f28ca57536",
+            "create_time": 1789903365.611802
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "8ee450056afc17a136b6a9df772ac1ab420c16b9c9c1503aba567305da8113fc",
+      "record": {
+        "timestamp": "2026-09-20T11:22:49.397Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_098cc1b7984d5575016aafc207f85887d0a8447e71e8b06f26",
+          "status": "completed",
+          "call_id": "call_o3N3HIh8bpENhFptM4LpSJWf",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git show HEAD:AGENTS.md; git show HEAD:amounts.py; git show HEAD:invoice.py; git show HEAD:requirements.md; git show HEAD:test_invoice.py; git log -p --all -- amounts.py invoice.py requirements.md test_invoice.py\",\"max_output_tokens\":11000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be8d-cce7-7d03-b8ea-d1f28ca57536",
+            "create_time": 1789903366.148132
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "ea4e12e0d1e817e3b351d920a8a352d1f1d828f37485f8cdc9bf048b271e614d",
+      "record": {
+        "timestamp": "2026-09-20T11:22:49.560Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be8d-f558-72e1-812e-67e413ad083c",
+          "call_id": "call_o3N3HIh8bpENhFptM4LpSJWf",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"876c96\",\"wall_time_seconds\":0.0000015,\"exit_code\":0,\"original_token_count\":1250,\"output\":\"Read-only review. Do not edit, commit or install anything. Use Python's\\nstandard library and local Git. Run Python with -B to avoid bytecode artifacts.\\nIn-memory substitution for behavioral checks is allowed; preserve project files.\\nDo not access external services. Temporary files, if necessary, must stay inside\\nthis project and be removed when finished. Captured test output is sufficient;\\ndo not create a separate evidence report unless needed for missing output.\\nfrom decimal import Decimal, ROUND_HALF_UP\\n\\n\\ndef amount_cents(value):\\n    if isinstance(value, int):\\n        return value\\n    return int((Decimal(value) * 100).quantize(Decimal(\\\"1\\\"), rounding=ROUND_HALF_UP))\\nfrom decimal import Decimal\\nfrom amounts import amount_cents\\n\\n\\ndef invoice_total(amount):\\n    if not isinstance(amount, str):\\n        raise TypeError(\\\"invoice amounts must be decimal strings\\\")\\n    return amount_cents(Decimal(amount))\\ninvoice.invoice_total is the only supported entrypoint. Amounts are finite\\ndecimal strings in major units, including negatives and fractional cents. Return\\ninteger cents by rounding half away from zero. amounts.amount_cents is private.\\nThe integer-minor-unit batch importer is retired; no plugins, alternate callers\\nor supported external imports of amounts exist. Preserve this contract.\\nimport unittest\\nfrom invoice import invoice_total\\n\\n\\nclass InvoiceTests(unittest.TestCase):\\n    def test_positive_half_cent(self):\\n        self.assertEqual(invoice_total(\\\"1.005\\\"), 101)\\n\\n    def test_negative_half_cent(self):\\n        self.assertEqual(invoice_total(\\\"-1.005\\\"), -101)\\n\\n    def test_exact_cents(self):\\n        self.assertEqual(invoice_total(\\\"2.34\\\"), 234)\\ncommit 9b050b628b971c45ff80073172d26f262341ada0\\nAuthor: Fixture Author <fixture@example.invalid>\\nDate:   Sun Jan 4 12:00:00 2026 +0000\\n\\n    Retire batch importer and normalize at invoice boundary\\n\\ndiff --git a/invoice.py b/invoice.py\\nindex 03861d7..1d2fab6 100644\\n--- a/invoice.py\\n+++ b/invoice.py\\n@@ -1,5 +1,8 @@\\n+from decimal import Decimal\\n from amounts import amount_cents\\n \\n \\n def invoice_total(amount):\\n-    return amount_cents(amount)\\n+    if not isinstance(amount, str):\\n+        raise TypeError(\\\"invoice amounts must be decimal strings\\\")\\n+    return amount_cents(Decimal(amount))\\ndiff --git a/requirements.md b/requirements.md\\nnew file mode 100644\\nindex 0000000..bb7d855\\n--- /dev/null\\n+++ b/requirements.md\\n@@ -0,0 +1,5 @@\\n+invoice.invoice_total is the only supported entrypoint. Amounts are finite\\n+decimal strings in major units, including negatives and fractional cents. Return\\n+integer cents by rounding half away from zero. amounts.amount_cents is private.\\n+The integer-minor-unit batch importer is retired; no plugins, alternate callers\\n+or supported external imports of amounts exist. Preserve this contract.\\ndiff --git a/test_invoice.py b/test_invoice.py\\nnew file mode 100644\\nindex 0000000..82ca0e4\\n--- /dev/null\\n+++ b/test_invoice.py\\n@@ -0,0 +1,13 @@\\n+import unittest\\n+from invoice import invoice_total\\n+\\n+\\n+class InvoiceTests(unittest.TestCase):\\n+    def test_positive_half_cent(self):\\n+        self.assertEqual(invoice_total(\\\"1.005\\\"), 101)\\n+\\n+    def test_negative_half_cent(self):\\n+        self.assertEqual(invoice_total(\\\"-1.005\\\"), -101)\\n+\\n+    def test_exact_cents(self):\\n+        self.assertEqual(invoice_total(\\\"2.34\\\"), 234)\\n\\ncommit ee9689a28e043cc57317c118786ce7f5b1f213b4\\nAuthor: Fixture Author <fixture@example.invalid>\\nDate:   Sat Jan 3 12:00:00 2026 +0000\\n\\n    Accept integer minor units from the batch importer\\n\\ndiff --git a/amounts.py b/amounts.py\\nindex cc3c4c6..a1b806d 100644\\n--- a/amounts.py\\n+++ b/amounts.py\\n@@ -2,4 +2,6 @@ from decimal import Decimal, ROUND_HALF_UP\\n \\n \\n def amount_cents(value):\\n+    if isinstance(value, int):\\n+        return value\\n     return int((Decimal(value) * 100).quantize(Decimal(\\\"1\\\"), rounding=ROUND_HALF_UP))\\n\\ncommit 1d38dfc0c1a1255c8f9a5f8dd8aaab9c58a58d34\\nAuthor: Fixture Author <fixture@example.invalid>\\nDate:   Fri Jan 2 12:00:00 2026 +0000\\n\\n    Preserve half-cent invoice rounding, including credits\\n\\ndiff --git a/amounts.py b/amounts.py\\nindex 7ea1965..cc3c4c6 100644\\n--- a/amounts.py\\n+++ b/amounts.py\\n@@ -1,5 +1,5 @@\\n-from decimal import Decimal\\n+from decimal import Decimal, ROUND_HALF_UP\\n \\n \\n def amount_cents(value):\\n-    return int(Decimal(value) * 100)\\n+    return int((Decimal(value) * 100).quantize(Decimal(\\\"1\\\"), rounding=ROUND_HALF_UP))\\n\\ncommit 65ca86702b887824eb02e93f13c4ee0f566cf73b\\nAuthor: Fixture Author <fixture@example.invalid>\\nDate:   Thu Jan 1 12:00:00 2026 +0000\\n\\n    Initial invoice formatting\\n\\ndiff --git a/amounts.py b/amounts.py\\nnew file mode 100644\\nindex 0000000..7ea1965\\n--- /dev/null\\n+++ b/amounts.py\\n@@ -0,0 +1,5 @@\\n+from decimal import Decimal\\n+\\n+\\n+def amount_cents(value):\\n+    return int(Decimal(value) * 100)\\ndiff --git a/invoice.py b/invoice.py\\nnew file mode 100644\\nindex 0000000..03861d7\\n--- /dev/null\\n+++ b/invoice.py\\n@@ -0,0 +1,5 @@\\n+from amounts import amount_cents\\n+\\n+\\n+def invoice_total(amount):\\n+    return amount_cents(amount)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be8d-cce7-7d03-b8ea-d1f28ca57536",
+            "create_time": 1789903369.560369
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "5345ae67bdfc436774fb653b740c2546ed4afb30c123a7ce6ce442da820a2e6e",
+      "record": {
+        "timestamp": "2026-09-20T11:23:10.372Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_098cc1b7984d5575016aafc20bd19887d09e9dc6c0dadcd85d",
+          "status": "completed",
+          "call_id": "call_0YfNURlz4XiUKJzElkCkj8vK",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git show ee9689a; git show 1d38dfc; git show 9b050b6; python -B - <<'PY'\\nfrom pathlib import Path\\nimport hashlib\\nimport unittest\\nimport invoice\\n\\nfiles = [p for p in Path('.').rglob('*') if p.is_file() and '.git' not in p.parts]\\nbefore = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}\\nfor name in ('amounts.py', 'invoice.py', 'requirements.md'):\\n    print(f'--- {name} ---')\\n    for number, line in enumerate(Path(name).read_text().splitlines(), 1):\\n        print(f'{number}: {line}')\\nsource = Path('amounts.py').read_text()\\nearly = '    if isinstance(value, int):\\\\n        return value\\\\n'\\nquantized = '    return int((Decimal(value) * 100).quantize(Decimal(\\\"1\\\"), rounding=ROUND_HALF_UP))'\\nassert source.count(early) == source.count(quantized) == 1\\nvariants = {\\n    'current': source,\\n    'A-only': source.replace(early, ''),\\n    'B-only': source.replace(quantized, '    return int(Decimal(value) * 100)'),\\n}\\noriginal = invoice.amount_cents\\ntry:\\n    for label, variant in variants.items():\\n        scope = {}\\n        exec(compile(variant, f'<{label}>', 'exec'), scope)\\n        invoice.amount_cents = scope['amount_cents']\\n        print(f'--- {label}: via invoice.invoice_total ---', flush=True)\\n        for value, required in [('1.005', 101), ('-1.005', -101), ('2.34', 234)]:\\n            actual = invoice.invoice_total(value)\\n            print(f'{value!r}: actual={actual}, required={required}, {\\\"PASS\\\" if actual == required else \\\"FAIL\\\"}', flush=True)\\n        suite = unittest.defaultTestLoader.loadTestsFromName('test_invoice')\\n        result = unittest.TextTestRunner(verbosity=1).run(suite)\\n        print(f'{label}: tests={result.testsRun}, failures={len(result.failures)}, errors={len(result.errors)}', flush=True)\\nfinally:\\n    invoice.amount_cents = original\\nafter = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('.').rglob('*') if p.is_file() and '.git' not in p.parts}\\nassert before == after\\nprint('Project file contents and file list unchanged.')\\nPY\\n git status --short\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be8d-cce7-7d03-b8ea-d1f28ca57536",
+            "create_time": 1789903370.291837
+          }
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "426c790841684596d76c792f006f49f9b83cb1d49fa3ef1d0a71c49a9c9c64b5",
+      "record": {
+        "timestamp": "2026-09-20T11:23:10.514Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be8e-4732-7ad3-af50-27a0e2c29672",
+          "call_id": "call_0YfNURlz4XiUKJzElkCkj8vK",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b1e23c\",\"wall_time_seconds\":0.00000175,\"exit_code\":0,\"original_token_count\":836,\"output\":\"commit ee9689a28e043cc57317c118786ce7f5b1f213b4\\nAuthor: Fixture Author <fixture@example.invalid>\\nDate:   Sat Jan 3 12:00:00 2026 +0000\\n\\n    Accept integer minor units from the batch importer\\n\\ndiff --git a/amounts.py b/amounts.py\\nindex cc3c4c6..a1b806d 100644\\n--- a/amounts.py\\n+++ b/amounts.py\\n@@ -2,4 +2,6 @@ from decimal import Decimal, ROUND_HALF_UP\\n \\n \\n def amount_cents(value):\\n+    if isinstance(value, int):\\n+        return value\\n     return int((Decimal(value) * 100).quantize(Decimal(\\\"1\\\"), rounding=ROUND_HALF_UP))\\ncommit 1d38dfc0c1a1255c8f9a5f8dd8aaab9c58a58d34\\nAuthor: Fixture Author <fixture@example.invalid>\\nDate:   Fri Jan 2 12:00:00 2026 +0000\\n\\n    Preserve half-cent invoice rounding, including credits\\n\\ndiff --git a/amounts.py b/amounts.py\\nindex 7ea1965..cc3c4c6 100644\\n--- a/amounts.py\\n+++ b/amounts.py\\n@@ -1,5 +1,5 @@\\n-from decimal import Decimal\\n+from decimal import Decimal, ROUND_HALF_UP\\n \\n \\n def amount_cents(value):\\n-    return int(Decimal(value) * 100)\\n+    return int((Decimal(value) * 100).quantize(Decimal(\\\"1\\\"), rounding=ROUND_HALF_UP))\\ncommit 9b050b628b971c45ff80073172d26f262341ada0\\nAuthor: Fixture Author <fixture@example.invalid>\\nDate:   Sun Jan 4 12:00:00 2026 +0000\\n\\n    Retire batch importer and normalize at invoice boundary\\n\\ndiff --git a/AGENTS.md b/AGENTS.md\\nnew file mode 100644\\nindex 0000000..04daac8\\n--- /dev/null\\n+++ b/AGENTS.md\\n@@ -0,0 +1,6 @@\\n+Read-only review. Do not edit, commit or install anything. Use Python's\\n+standard library and local Git. Run Python with -B to avoid bytecode artifacts.\\n+In-memory substitution for behavioral checks is allowed; preserve project files.\\n+Do not access external services. Temporary files, if necessary, must stay inside\\n+this project and be removed when finished. Captured test output is sufficient;\\n+do not create a separate evidence report unless needed for missing output.\\ndiff --git a/invoice.py b/invoice.py\\nindex 03861d7..1d2fab6 100644\\n--- a/invoice.py\\n+++ b/invoice.py\\n@@ -1,5 +1,8 @@\\n+from decimal import Decimal\\n from amounts import amount_cents\\n \\n \\n def invoice_total(amount):\\n-    return amount_cents(amount)\\n+    if not isinstance(amount, str):\\n+        raise TypeError(\\\"invoice amounts must be decimal strings\\\")\\n+    return amount_cents(Decimal(amount))\\ndiff --git a/requirements.md b/requirements.md\\nnew file mode 100644\\nindex 0000000..bb7d855\\n--- /dev/null\\n+++ b/requirements.md\\n@@ -0,0 +1,5 @@\\n+invoice.invoice_total is the only supported entrypoint. Amounts are finite\\n+decimal strings in major units, including negatives and fractional cents. Return\\n+integer cents by rounding half away from zero. amounts.amount_cents is private.\\n+The integer-minor-unit batch importer is retired; no plugins, alternate callers\\n+or supported external imports of amounts exist. Preserve this contract.\\ndiff --git a/test_invoice.py b/test_invoice.py\\nnew file mode 100644\\nindex 0000000..82ca0e4\\n--- /dev/null\\n+++ b/test_invoice.py\\n@@ -0,0 +1,13 @@\\n+import unittest\\n+from invoice import invoice_total\\n+\\n+\\n+class InvoiceTests(unittest.TestCase):\\n+    def test_positive_half_cent(self):\\n+        self.assertEqual(invoice_total(\\\"1.005\\\"), 101)\\n+\\n+    def test_negative_half_cent(self):\\n+        self.assertEqual(invoice_total(\\\"-1.005\\\"), -101)\\n+\\n+    def test_exact_cents(self):\\n+        self.assertEqual(invoice_total(\\\"2.34\\\"), 234)\\nzsh:1: command not found: python\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be8d-cce7-7d03-b8ea-d1f28ca57536",
+            "create_time": 1789903390.5147
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "abb6a975391ecfcdd5ec745d42ca733c2d8bc0500b7ab7af4049b2b6ce03abd0",
+      "record": {
+        "timestamp": "2026-09-20T11:23:26.857Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_098cc1b7984d5575016aafc2210e0487d0a22b3c275c6ada58",
+          "status": "completed",
+          "call_id": "call_KA5PjUEOkxiRbgyTTOLSwOLH",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nfrom pathlib import Path\\nimport hashlib\\nimport unittest\\nimport invoice\\n\\ndef snapshot():\\n    return {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('.').rglob('*') if p.is_file() and '.git' not in p.parts}\\nbefore = snapshot()\\nsource = Path('amounts.py').read_text()\\nearly = '    if isinstance(value, int):\\\\n        return value\\\\n'\\nquantized = '    return int((Decimal(value) * 100).quantize(Decimal(\\\"1\\\"), rounding=ROUND_HALF_UP))'\\nassert source.count(early) == source.count(quantized) == 1\\nvariants = {'current': source, 'A-only': source.replace(early, ''), 'B-only': source.replace(quantized, '    return int(Decimal(value) * 100)')}\\noriginal = invoice.amount_cents\\ntry:\\n    for label, variant in variants.items():\\n        scope = {}\\n        exec(compile(variant, f'<{label}>', 'exec'), scope)\\n        invoice.amount_cents = scope['amount_cents']\\n        print(f'--- {label}: via invoice.invoice_total ---', flush=True)\\n        for value, required in [('1.005', 101), ('-1.005', -101), ('2.34', 234)]:\\n            actual = invoice.invoice_total(value)\\n            print(f'{value!r}: actual={actual}, required={required}, {\\\"PASS\\\" if actual == required else \\\"FAIL\\\"}', flush=True)\\n        result = unittest.TextTestRunner(verbosity=1).run(unittest.defaultTestLoader.loadTestsFromName('test_invoice'))\\n        print(f'{label}: tests={result.testsRun}, failures={len(result.failures)}, errors={len(result.errors)}', flush=True)\\nfinally:\\n    invoice.amount_cents = original\\nassert before == snapshot()\\nprint('Project file contents and file list unchanged.')\\nPY\\n git status --short\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be8d-cce7-7d03-b8ea-d1f28ca57536",
+            "create_time": 1789903391.638406
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "f1a138724d83585bbfcc7e7176d0a93fab791a37316904e54746b9e59b2fdd6e",
+      "record": {
+        "timestamp": "2026-09-20T11:23:27.006Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0be8e-879e-7552-bb3b-efceace0b902",
+          "call_id": "call_KA5PjUEOkxiRbgyTTOLSwOLH",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3634de\",\"wall_time_seconds\":0.000001542,\"exit_code\":0,\"original_token_count\":473,\"output\":\"--- current: via invoice.invoice_total ---\\n'1.005': actual=101, required=101, PASS\\n'-1.005': actual=-101, required=-101, PASS\\n'2.34': actual=234, required=234, PASS\\n..current: tests=3, failures=0, errors=0\\n.\\n----------------------------------------------------------------------\\nRan 3 tests in 0.000s\\n\\nOK\\n--- A-only: via invoice.invoice_total ---\\n'1.005': actual=101, required=101, PASS\\n'-1.005': actual=-101, required=-101, PASS\\n'2.34': actual=234, required=234, PASS\\n...A-only: tests=3, failures=0, errors=0\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.000s\\n\\nOK\\n--- B-only: via invoice.invoice_total ---\\n'1.005': actual=100, required=101, FAIL\\n'-1.005': actual=-100, required=-101, FAIL\\n'2.34': actual=234, required=234, PASS\\n.FF\\n======================================================================\\nFAIL: test_negative_half_cent (test_invoice.InvoiceTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_invoice.py\\\", line 10, in test_negative_half_cent\\n    self.assertEqual(invoice_total(\\\"-1.005\\\"), -101)\\nAssertionError: -100 != -101\\n\\n======================================================================\\nFAIL: test_positive_half_cent (test_invoice.InvoiceTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_invoice.py\\\", line 7, in test_positive_half_cent\\n    self.assertEqual(invoice_total(\\\"1.005\\\"), 101)\\nAssertionError: 100 != 101\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.000s\\n\\nB-only: tests=3, failures=2, errors=0\\nFAILED (failures=2)\\nProject file contents and file list unchanged.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0be8d-cce7-7d03-b8ea-d1f28ca57536",
+            "create_time": 1789903407.006198
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

@@ -1,0 +1,54 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "editor-snapshot-present",
+  "skill": "mother-in-law",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "6b29c12dfe0258e3c6cef8d357f01442617fb794",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 42.604,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 63626,
+    "cached_input_tokens": 57984,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1096,
+    "reasoning_output_tokens": 35
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Add native regression coverage for Editor.save in editor.py.\nRead test_editor.py and applicable project instructions. Existing test_support.py provides writes() with controlled entry, delayed serialization, and owned task cleanup.\n\nContract: persist receives a per-save snapshot of the full nested settings at\nsave entry. Later set_theme calls may edit live settings but must not mutate that\npending snapshot. Once the save completes, newer edits remain visible and dirty.\nWithout an intervening edit, completion marks the saved settings clean.\n\nPreserve the existing initial-state test. Add exactly two native test methods:\n(1) set a theme, save with no intervening edit, acknowledge, then verify stored\nsettings and clean state; (2) start saving one theme, change it again while persist\nis pending, inspect the still-pending payload, acknowledge, then inspect stored\nsettings, current settings and dirty state. Use independent expected values, not\nreferences that change alongside live state. Check the full nested payload, not\njust one scalar. The persist test double must record a deep copy of its argument\nAFTER acknowledgement, not eagerly on callback entry; this models delayed\nserialization and must not itself fix the application's snapshot behavior.\n\nExercise real Editor.save through the native framework with deterministic gates,\nactual callback-entry observation, bounded waits and failure-safe task cleanup.\nRun the resulting three-method suite once after writing tests. Keep real\nregression failures: do not modify production, skip, mark expectedFailure or\nweaken expectations. If an assertion fails, later dependent steps may unwind to\ncleanup; all required checkpoints must still exist and execute on conforming\nproduction. No browser, separate disposable probe or extra report is requested.\nRepair only test-authoring errors if needed; retain all attempts as evidence.\nReport native identities/results, demonstrated behavior, tested layer and limits.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 369,
+    "mode": 420,
+    "sha256": "c32dc0b7f80ec3d5c8575cd381377ad4aaae5ff25a072dbc5fab6841c2b56d25",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}
