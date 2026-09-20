@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Native Node comparison feasibility — 2026-09-21, parent `4d13328`
+
+[Receipt load-observation preflight](RECEIPT-NODE-LOAD-PREFLIGHT-01.md): 3 tests
+exercise 12 native Node v24.16.0 commands, keeping ESM/CommonJS pass/fail and
+test-before-application initialization in controlled fixtures. Load hashes/PIDs
+match the actual test process; wrong-binding and evaluation-error controls prove
+that native success or a load record alone is insufficient. This targets a real
+unsupported comparison workflow, not another entrypoint wording reduction.
+No production Node helper, model efficiency result or chart update yet; isolation,
+environment compatibility and complete native comparison remain integration gates.
+
+한국어: Node 기본 테스트를 바꾸지 않고 실제 로딩 출처를 관측하는 사전 검증이
+통과했다. 아직 Node 지원 배포나 성능 향상 입증은 아니며, 완전한 비교 도구를
+만들기 위한 조건과 한계를 별도 기록했다.
+
 ## Conditional-detail candidate screened locally — 2026-09-21, source `104e010`
 
 [HTTPX cost diagnosis and unadopted candidate](EXORCIST-DISCLOSURE-CANDIDATE.md):
