@@ -5,12 +5,22 @@ import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'benchmarks'))
-from receipt_read_candidate import snapshot, revise, BEFORE, AFTER
+from receipt_read_candidate import snapshot, revise, BEFORE, AFTER, RESOURCE
 from run import resource_manifest
+from receipt_snapshot_support import controlled_snapshots
+from runner_snapshot_support import require_history
 
 
 class ReceiptReadCandidateTests(unittest.TestCase):
     def test_only_known_input_guidance_changes_and_runtime_stays_identical(self):
+        with controlled_snapshots():
+            self.check_snapshots()
+
+    def test_real_pinned_read_candidate(self):
+        require_history(self, ROOT, [RESOURCE])
+        self.check_snapshots()
+
+    def check_snapshots(self):
         with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             root=Path(scratch)
             snapshot(root/'original')

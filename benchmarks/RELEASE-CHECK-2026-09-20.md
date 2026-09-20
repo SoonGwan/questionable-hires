@@ -4,6 +4,32 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
+## Receipt copy/rewrite/schedule isolation — 2026-09-21, parent `bc4edd8`
+
+Receipt read/route candidate transforms and read/route/startup/preserve schedule
+tests now use explicitly synthetic Git objects while exercising the unchanged
+copy/rewrite and runner logic. Real pinned read/route transformations and every
+preserve snapshot byte/mode remain separate historical checks. Native controls
+continue to run from hash-verified shipped code; no model/native result is mocked
+as part of those native checks. Scheduling-only model calls remain mocked.
+
+Related validation on Python3.11.16: **21 tests, 7.141 seconds, OK**. The independent
+Git-free source wrapper now executes all six Receipt modules: **19 nested tests,
+16 execute and three history-only checks skip**. This includes all four real
+native preflights, both instruction transformations, schedule/exclusive execution
+and tamper rejection. The wrapper verifies source preservation, scratch cleanup,
+and rejection of a changed native helper. An initial sparse-copy check caught an
+omitted `preserve.py` identity input; the wrapper now includes that actual file.
+
+Frozen runners, fixtures, published measurements and production skills are
+unchanged. Full checkout and source-archive suites must still be rerun before
+claiming the previous remaining errors are resolved globally.
+
+한국어: 남아 있던 Receipt 후보 변환·실행 순서 검사를 Git 이력과 분리했고 관련
+21개 검사가 통과했다. Git 없는 소스의 19개 중 실제 동작 16개가 실행되고 과거
+파일 대조 3개만 건너뛴다. 전체 재검사 전이므로 오류 0개나 배포 준비 완료를
+아직 주장하지 않는다. 기존 측정값과 배포용 스킬은 변경하지 않았다.
+
 ## Full archive recheck and Receipt native controls — 2026-09-21, parent `954c685`
 
 The previously launched fresh archive of `954c685` completed on Python3.11.16:

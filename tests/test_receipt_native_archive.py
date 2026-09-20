@@ -32,21 +32,27 @@ class ReceiptNativeArchiveTests(unittest.TestCase):
             for source in (ROOT / 'benchmarks').iterdir():
                 if source.is_file() and source.suffix in {'.py', '.json', '.md'}:
                     shutil.copy2(source, archive / 'benchmarks' / source.name)
+            modules = [check.split('.')[0] for check in CHECKS]
+            modules += ['test_receipt_read_candidate', 'test_receipt_route_candidate']
             names = {support.HELPER, 'tests/receipt_native_support.py',
+                     'skills/receipt/scripts/preserve.py',
+                     'tests/receipt_snapshot_support.py', 'tests/runner_snapshot_support.py',
                      'tests/test_receipt_startup_case.py'}
-            names.update('tests/' + check.split('.')[0] + '.py' for check in CHECKS)
+            names.update('tests/' + module + '.py' for module in modules)
             for name in names:
                 target = archive / name
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(ROOT / name, target)
             before = {p.relative_to(archive): p.read_bytes() for p in archive.rglob('*') if p.is_file()}
-            command = [sys.executable, '-B', '-m', 'unittest', *CHECKS, '-v']
+            command = [sys.executable, '-B', '-m', 'unittest', *modules, '-v']
             result = subprocess.run(command, cwd=archive / 'tests', capture_output=True,
                                     text=True, timeout=30)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            self.assertIn('Ran 4 tests', result.stderr)
-            self.assertNotIn('skipped', result.stderr)
-            self.assertEqual(result.stderr.count('... ok'), 4)
+            self.assertIn('Ran 19 tests', result.stderr)
+            self.assertIn('OK (skipped=3)', result.stderr)
+            self.assertEqual(result.stderr.count('... ok'), 16)
+            for check in CHECKS:
+                self.assertRegex(result.stderr, check.split('.')[-1] + r'[^\n]*\.\.\. ok')
             self.assertFalse((archive / '.git').exists())
             self.assertFalse((archive / 'benchmarks/local-runs').exists())
             self.assertEqual(before, {p.relative_to(archive): p.read_bytes()
