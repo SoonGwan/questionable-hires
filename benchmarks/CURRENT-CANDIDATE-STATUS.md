@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Input-cost diagnosis — 2026-09-20, measured resources `ee5eb28`
+
+[Reconciled response-level analysis](ALL-EIGHT-03-INPUT-COSTS.md) of screen03:
+input +115,452, output −507, recorded responses 34→36. Six pairs retain the same
+response count but still cost more. Arithmetic decomposition is not causal savings.
+An observed Con Artist speculative filename-search detour motivates a future
+path-unknown discovery candidate on a different task with a known-path control.
+No new model run, production instruction change, chart or improvement claim.
+
+한국어: 답변 길이가 아니라 입력 누적과 탐색 우회를 우선 조사한다. 원본 사용량과
+전체 합계를 대조했으며, 다음 변경 범위를 경로 미상 감사의 탐색으로 좁혔다.
+분석 결과는 절감 실적이 아니며 실제 작업·범위·검증 조건을 유지한다.
+
 ## Named-scope reuse — 2026-09-20, parent `e20396f`
 
 [Collector change and real-source local profile](CONTEXT-NAMED-CACHE-01.md).
