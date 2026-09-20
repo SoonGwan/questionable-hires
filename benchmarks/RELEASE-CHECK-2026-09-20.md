@@ -4,6 +4,33 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
+## Bundle checks isolated from Git history — 2026-09-21, parent `d5c37e2`
+
+All-eight current02 and Korean automatic-selection scheduling/tamper tests now
+exercise the unchanged runner's snapshot logic with explicitly synthetic eight-role
+Git object fixtures. They do not use invented historical evidence. Real pinned
+snapshot bytes/modes are checked separately when the owned Git history exists.
+Lean rewriting similarly runs an eight-entry/frontmatter/support-mode test without
+history; its real pinned-resource comparison remains separate.
+
+An independent fresh source-copy regression (no `.git`, no `local-runs`) discovers
+nine selected checks: six behavior checks execute, three history-only checks skip
+explicitly. It asserts actual passed test identities, snapshot source preservation,
+and absence of leftover scratch. Native checkout validation across those modules
+and both archive wrappers: **11 tests, 5.818 seconds, OK** on Python3.11.16.
+The real historical checks execute in this checkout. Frozen model runners, cases,
+results and production skills were not changed, and no model calls were made.
+
+This repairs the five failing checks in these three modules from the `5b10619`
+inventory; it does not establish a new remaining full-archive error count. A fresh
+complete archive run is still required; do not subtract targeted results from the
+older full-suite totals or call the release ready.
+
+한국어: 8개 묶음·한국어 자동 선택·경량 후보의 동작 검사와 실제 과거 커밋 대조를
+분리했다. Git 없는 별도 소스에서 동작 6개를 실행하고 이력 전용 3개만 명시적으로
+건너뛴다. 개발 체크아웃에서는 실제 이력 대조까지 포함한 관련 11개가 통과했다.
+전체 압축본의 남은 오류 수나 모델 성능 개선은 아직 새로 주장하지 않는다.
+
 ## Full recheck at `5b10619` — 2026-09-20
 
 Python 3.11.16, `python -B -m unittest discover -s tests -q`:
