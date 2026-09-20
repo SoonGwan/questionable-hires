@@ -30,6 +30,16 @@ def git_lines(text):
     return rows
 
 
+def iter_git_lines(text):
+    """Iterate LF rows without allocating a second full patch line list."""
+    start = 0
+    while start < len(text):
+        end = text.find('\n', start + 65536)
+        end = len(text) if end < 0 else end + 1
+        yield from git_lines(text[start:end])
+        start = end
+
+
 def parse_blame(output):
     rows, current = [], None
     for line in git_lines(output):
@@ -101,7 +111,7 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
         row_count += 1
 
     old = new = old_left = new_left = None
-    for line in git_lines(body):
+    for line in iter_git_lines(body):
         match = (re.fullmatch(r'@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@.*', line)
                  if line.startswith('@@ -') else None)
         if match:

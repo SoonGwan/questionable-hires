@@ -38,7 +38,9 @@ the excerpt uses at most 8,000; `truncated` remains true. Ambiguous parses or
 selected rows exceeding the allowance retain the ordinary capped fallback.
 
 The parser validates the complete patch but retains numbered-row data only near
-selected locations. The helper still captures full Git output and patch text
+selected locations. LF rows are split in roughly 64K-character chunks through
+the next newline, avoiding a second full-patch list; a single long row can exceed
+that chunk size. The helper still captures full Git output and patch text
 internally: excerpting reduces displayed output, not subprocess-memory use.
 
 Patch collection disables terminal colors and fixes `a/` and `b/` prefixes for

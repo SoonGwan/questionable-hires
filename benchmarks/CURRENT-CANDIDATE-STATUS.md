@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## History excerpt allocation reduced — 2026-09-21, parent `0154324`
+
+[Local allocation probe](HISTORY-PATCH-MEMORY-01.md) keeps complete patch
+validation/output while splitting rows in chunks instead of a full extra list.
+On the authored 40,000-row input, traced excerpt-call peak falls from 3,131,915
+to 940,928 bytes; timing median is about 1% higher, not a speed win. Full Git
+output remains captured. All 49 history tests pass under Python 3.9/3.11,
+including output equivalence and malformed-tail controls. No model gain,
+entrypoint/featured change or full-goal completion claim.
+
+한국어: 큰 패치 처리의 중간 메모리 할당을 줄이고 동작 동일성을 검증했다.
+도우미 내부 개선이며 전체 모델 성능·토큰 절감으로 해석하지 않는다.
+
 ## Full local regression refreshed — 2026-09-21, source `f21db2b`
 
 [Release checks](RELEASE-CHECK-2026-09-20.md): checkout Python 3.11.16 runs 901
