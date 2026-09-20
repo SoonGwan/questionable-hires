@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Full local release checks refreshed — 2026-09-21, source `a2d0002`
+
+[Release checkpoint](RELEASE-CHECK-2026-09-20.md): full checkout **867 tests OK**;
+fresh Git-free source archive **867 tests OK (skipped=20)**. Metadata/link validation
+and featured synchronization pass in both. This is distribution/correctness evidence,
+not a model efficiency gain. Fresh hosted CI run `35524718593` fails before steps
+because of account payment/spending-limit settings; no retry or settings change.
+Repository remains private. Hosted validation and broad performance goals remain open.
+
+한국어: 최신 소스 전체와 Git 없는 배포 압축본 검증을 다시 통과했다. 원격 CI는
+계정 문제로 실행되지 않으며, 로컬 통과가 전체 성능 목표 달성을 뜻하지 않는다.
+
 ## Hostage input pilot reviewed; candidate not adopted — 2026-09-21, launch `4fb980f`
 
 [All six sessions and author controls](results/hostage-input-01/README.md): all

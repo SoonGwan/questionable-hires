@@ -4,7 +4,40 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
-## Checkout and source archive pass — 2026-09-21, source `b78d4d4`
+## Updated checkout and source archive pass — 2026-09-21, source `a2d0002`
+
+Both full Python3.11 runs completed with `python -B -m unittest discover -s tests -q`:
+
+- Checkout: **867 tests, 161.689 seconds, OK**, exit 0; no skips.
+- Fresh committed source archive: **867 tests, 151.549 seconds, OK (skipped=20)**,
+  exit 0. The archive has neither `.git` nor `benchmarks/local-runs`; absent-history
+  checks are described in the historical isolation checkpoints below.
+- Checkout and archive both pass metadata/document-link validation and featured
+  benchmark synchronization. Checkout also passes `git diff --check` and is clean.
+- Local logs: `/tmp/qh-a2d0002-checkout.log` and
+  `/tmp/qh-a2d0002-archive.PY7lxa/native-check.log`; not published evidence files.
+
+These are correctness/distribution checks, not model performance measurements.
+The two suites ran concurrently; their runtimes are not a checkout/archive speed
+comparison. This source includes the dynamic Receipt binding support and the
+reviewed, unadopted Hostage input candidate experiment.
+
+Fresh GitHub inspection at this source: [run 35524718593](https://github.com/SoonGwan/questionable-hires/actions/runs/35524718593)
+has four failed jobs, each with no executed steps. Source-archive check
+`106114769361` reports failed account payments or a spending limit requiring
+attention. No workflow retry, billing/settings change or visibility mutation was
+performed. Owner action remains necessary for hosted validation; it is not a
+test-code failure established by CI. The repository remains **private**, default
+branch **main**, MIT license. This does not prove unauthenticated remote install
+or approve public release. Broad all-eight token/time improvement remains unproven.
+
+한국어: `a2d0002`의 개발 체크아웃 867개 검사는 모두 통과했고, Git 없는
+압축본도 867개 중 20개를 건너뛰고 나머지가 통과했다. 양쪽의 문서·메타데이터·
+그래프 동기화도 확인했다. GitHub CI는 결제·지출 한도 문제로 실행 전 실패하며
+계정 설정은 변경하지 않았다. 저장소는 여전히 비공개다. 로컬 검증 통과를 모델
+성능 향상, 원격 설치 성공 또는 공개 배포 승인으로 표현하지 않는다.
+
+## Checkout and source archive pass — historical, 2026-09-21, source `b78d4d4`
 
 Both previously launched full runs completed on Python3.11.16, with
 `python -B -m unittest discover -s tests -q`:
