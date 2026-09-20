@@ -9,7 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Receipt support-routing hypothesis — 2026-09-20, resources `ca668a4`
+## Receipt support-routing screen — 2026-09-20, resources `ca668a4`
+
+[Four fresh sessions](results/receipt-route-01/README.md), launch `5f05ae5`:
+candidate summed tokens **−1.68%**, time **−5.78%** versus original. All task/scope
+criteria pass. Both candidates omit helper source reads, but complete-case cost
+rises with an extra response and partial-case still reads all detailed guidance.
+Small mixed result, not a broad efficiency win; no fresh no-skill arm. Exposed
+task/two variants, n=1, fixed order/shared cache. Captures and native evidence
+reviewed. Candidate remains isolated pending transfer and diagnosis validation;
+production Receipt and featured charts unchanged.
+
+한국어: 자료 선택 후보 4회 비교는 합산 토큰 1.68%·시간 5.78% 감소였고 판정·
+범위를 모두 충족했다. 그러나 한 경우 토큰이 증가했고 다른 경우 상세 문서를
+전체 읽어 큰 개선으로 보지 않는다. 다른 과제·진단 검증 전까지 미반영이다.
+
+## Receipt support-routing hypothesis — historical pre-measurement, 2026-09-20, resources `ca668a4`
 
 [Isolated routing candidate](RECEIPT-ROUTE-CANDIDATE.md) moves resource-selection
 guidance before eager bulk reads. It does not include the rejected read-order

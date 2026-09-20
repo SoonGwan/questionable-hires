@@ -1,6 +1,10 @@
 # Receipt support routing candidate — 2026-09-20
 
-Unmeasured, isolated candidate from resources `ca668a4`. Production is unchanged.
+Isolated candidate from resources `ca668a4`. Production is unchanged.
+[Routing screen 01](results/receipt-route-01/README.md) observed −1.68% summed
+tokens / −5.78% time versus original, with mixed per-case cost and no fresh
+no-skill arm. Transfer/diagnosis checks remain before adoption. The following
+design is the historical pre-measurement rationale.
 [Read-order 01](results/receipt-read-01/README.md) rejected its first-read rewrite;
 this candidate does **not** include that rejected rewrite.
 
