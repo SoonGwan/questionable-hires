@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Context expression-depth failure fixed — 2026-09-20, parent `812ff14`
+
+[Failure, correction and regression evidence](CONTEXT-EXPRESSION-DEPTH-01.md).
+Con Artist's static collector could not select an available definition in a valid
+3KB file because unrelated arithmetic exhausted its recursive AST walk. Named and
+line discovery now skip expression subtrees, retaining statement scopes/ambiguity.
+43 relevant tests pass on Python3.11; seven depth/line checks on Python3.9; 95
+definition selections across eleven shipped helpers retain identical output.
+This repairs a demonstrated navigation failure, not a new whole-task speed claim.
+Screen03's adverse aggregate and its resources remain unchanged.
+
+한국어: 긴 수식 때문에 정상 함수 탐색까지 실패하던 코드 수집기를 수정했다.
+중첩 정의·모호성은 유지하며 회귀 검사와 기존 출력 대조를 통과했다. 전체 모델
+성능 개선을 의미하지 않으며 앞선 비교의 불리한 결과는 그대로 보존한다.
+
 ## All-eight screen 03 reviewed — 2026-09-20, resources `ee5eb28`
 
 [All sixteen original sessions and reviewed report](results/all-eight-current-03/README.md).

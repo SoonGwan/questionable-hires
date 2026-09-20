@@ -88,7 +88,10 @@ def definition_spans(tree):
             records.append((first, last, name, node))
             prefix = name + '.'
         for child in ast.iter_child_nodes(node):
-            visit(child, prefix)
+            # Expressions cannot contain definition statements. Traversing a
+            # deeply nested value must not break an unrelated source selector.
+            if not isinstance(child, ast.expr):
+                visit(child, prefix)
     visit(tree)
     return records
 
@@ -136,7 +139,7 @@ def scope_definitions(body):
     for node in body:
         if isinstance(node, DEFINITIONS):
             yield node
-        else:
+        elif not isinstance(node, ast.expr):
             yield from scope_definitions(ast.iter_child_nodes(node))
 
 

@@ -65,6 +65,9 @@ one parse per relative file path; the input limit counts that file once.
 Multiple line selectors also reuse one definition-span traversal for that parsed
 file. Each still resolves the smallest enclosing definition and rejects ambiguity;
 named selectors do not build this line index. Nothing is cached across invocations.
+Definition discovery skips expression subtrees, which cannot contain definition
+statements; deep arithmetic/decorator expressions therefore do not consume its
+recursive walk budget. Parsing and nested statement scopes still have runtime limits.
 Decorator indexing shares physical UTF-8 lines across definitions instead of
 rescanning the whole file for each decorator; original decorator text is retained.
 Output still retains each requested excerpt and its provenance. No cache survives the
