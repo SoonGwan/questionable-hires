@@ -20,9 +20,14 @@ added/deleted implementations or retained copies. Keep the same evidence require
 whichever path is chosen. Read implementation for a concrete trust, adaptation or
 diagnosis question; the CLI recipes below do not require importing the helper API.
 
-For a required project-native workflow that lacks original-tree checks, optional
-[native preservation support](native-preservation.md) reuses the guard without
-replacing that workflow. It does not supply copying, execution or import evidence.
+The helper creates `.receipt-*` scratch **under `--source`**, with separate
+`before`/`after` copies, and cleans up its owned copies on exit. Confirm
+`comparison_copies_removed` in the result; cleanup failure is not success.
+Tests run from their respective copies; only child environments receive the
+copy-local import/temp setup. This does not contain trusted test side effects.
+`guard_tree` below already covers preservation around the comparison: no separate
+preservation wrapper is needed. The recipes and option contracts here are enough
+for supported use; follow detail links for an unresolved compatibility question.
 
 When verification must preserve Git metadata too, use
 `git --no-optional-locks -c diff.autoRefreshIndex=false` for status/diff review.
@@ -94,7 +99,9 @@ JSON
   Select initializers/support too; each root must contain selected files.
   Ordered canonical roots precede each copy's root and appear in the result.
   No inherited PYTHONPATH, editable install, build hook or installed metadata;
-  use native project setup when required.
+  use native project setup when required. Only when that native workflow lacks
+  preservation, [preservation-only support](native-preservation.md) supplies the
+  bounded guard without replacing the runner; it does not copy or execute tests.
 
 ## Read the evidence, not just the exit code
 

@@ -9,6 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt execution contract clarified — 2026-09-21, parent `f3322c7`
+
+The existing-fix guide now states the source-local scratch/copy/cleanup contract
+before the recipes and moves preservation-only support to the unsupported-native
+workflow branch. The previous pilot included source searches for temporary-copy
+placement and broad reads of preservation support even when using comparison.
+This is a narrow documentation hypothesis: helper behavior, required evidence,
+entrypoint and source-inspection permission are unchanged. It does **not** claim
+fewer reads/tokens, and no exposed loader task is rerun or rescored for this edit.
+Ten focused checks pass: literal committed/uncommitted guide commands, native
+invocation and six dynamic-binding checks (8 tests, 7.184s), plus actual child-local
+temporary paths and cleanup-failure handling (2 tests, 0.755s). Metadata/links,
+skill validation and featured synchronization pass; no model or hosted CI claim.
+
+한국어: 임시 비교 폴더의 생성 위치·정리 계약을 예제 앞에 명시하고, 별도 보존
+도구 안내는 자체 실행 환경이 필요한 경우로 옮겼다. 실제 검증이나 소스 검토를
+생략하지 않으며, 이 안내 변경의 토큰 절감 효과는 아직 측정하지 않았다.
+
 ## Loader transfer pilot reviewed — 2026-09-21, launch `567167d`
 
 [Six original sessions and review](results/receipt-binding-01/README.md): old
