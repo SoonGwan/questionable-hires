@@ -1,0 +1,130 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "node-decoder-esm-committed",
+  "skill": "receipt",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "deaa42d06ba5a5ea476db830993d3115555d6f01",
+  "skill_sha256": "9d23a053d6fe21985b95ca8f16f9e9a805af2e97aa95cfe5d354ee0fc2f21433",
+  "skill_resources_sha256": "14b19fa49a3440774677640a0008d78a72ccf7860d2c81687d4b52d20e1e532f",
+  "elapsed_seconds": 75.147,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 70773,
+    "cached_input_tokens": 61440,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2178,
+    "reasoning_output_tokens": 119
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Use $receipt at .agents/skills/receipt/SKILL.md.\n\nVerify the existing fix in decoder.mjs, comparing HEAD^ and HEAD in isolated\ncopies using the identical current tests/decoder.test.mjs. The contract is a\ntwo-byte unsigned big-endian byte length followed by arbitrary binary payload.\npush must retain incomplete frames across chunks, emit every complete frame in\norder and support zero-length payloads; empty input alone emits no new frame.\nRun all four current native tests for both versions and report their own exits,\nidentities and actual assertions, distinguishing setup errors from a reproduced\ndefect. Identify source revisions (or working-tree byte identity), confirm the\ntest-bound module's reported origin lies in its corresponding copy within that\nnative process, and explain the mechanism supported by the observed results.\nFollow AGENTS.md: preserve original files/modes and Git state, remove all scratch,\ndo not change code/tests or install anything. Missing evidence remains unknown.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "receipt/SKILL.md": {
+      "kind": "file",
+      "sha256": "9d23a053d6fe21985b95ca8f16f9e9a805af2e97aa95cfe5d354ee0fc2f21433",
+      "mode": 420
+    },
+    "receipt/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+      "mode": 420
+    },
+    "receipt/references/comparison-details.md": {
+      "kind": "file",
+      "sha256": "2768ffb84d012861cfaca6eca9d23cb43a3f600abd49e7277e093abdad86635f",
+      "mode": 420
+    },
+    "receipt/references/existing-fix.md": {
+      "kind": "file",
+      "sha256": "89cc16a3c9c492161f16a9a4e900481b0bc45876a2f24e139438e2123fb0a23f",
+      "mode": 420
+    },
+    "receipt/references/native-preservation.md": {
+      "kind": "file",
+      "sha256": "6deace77612a94e44c8a2f62dda15ec42c862edd609c95bd3ca71ae37346e7aa",
+      "mode": 420
+    },
+    "receipt/scripts/compare.py": {
+      "kind": "file",
+      "sha256": "0524aac0f415c4f2277a4df17493b095cfd0959bdb5bb764e4f0af5bcd132c2c",
+      "mode": 420
+    },
+    "receipt/scripts/preserve.py": {
+      "kind": "file",
+      "sha256": "e7d71b43ed3c089d873820149ea429978c814ab4a72d9915af4851fcf7679be1",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "receipt/SKILL.md": {
+      "kind": "file",
+      "sha256": "9d23a053d6fe21985b95ca8f16f9e9a805af2e97aa95cfe5d354ee0fc2f21433",
+      "mode": 420
+    },
+    "receipt/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "36aca5ff6c5bb512ddfb60ab810fa4ecc7efb5d59f267b61e7e8db887718f92e",
+      "mode": 420
+    },
+    "receipt/references/comparison-details.md": {
+      "kind": "file",
+      "sha256": "2768ffb84d012861cfaca6eca9d23cb43a3f600abd49e7277e093abdad86635f",
+      "mode": 420
+    },
+    "receipt/references/existing-fix.md": {
+      "kind": "file",
+      "sha256": "89cc16a3c9c492161f16a9a4e900481b0bc45876a2f24e139438e2123fb0a23f",
+      "mode": 420
+    },
+    "receipt/references/native-preservation.md": {
+      "kind": "file",
+      "sha256": "6deace77612a94e44c8a2f62dda15ec42c862edd609c95bd3ca71ae37346e7aa",
+      "mode": 420
+    },
+    "receipt/scripts/compare.py": {
+      "kind": "file",
+      "sha256": "0524aac0f415c4f2277a4df17493b095cfd0959bdb5bb764e4f0af5bcd132c2c",
+      "mode": 420
+    },
+    "receipt/scripts/preserve.py": {
+      "kind": "file",
+      "sha256": "e7d71b43ed3c089d873820149ea429978c814ab4a72d9915af4851fcf7679be1",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 289,
+    "mode": 420,
+    "sha256": "f7c76095858abd0487e17364637a2921cab1ad07c35cf89f3bc2f0177b8ddb8e",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "initial_tree": "bf9d6d8a2bd668a731601164e72beb71f2024328",
+  "initial_working_files": {
+    "tests/decoder.test.mjs": "775e7b3a602145b4219a38c5f406b8d911ed73b53f8fee8bc5901f79963bc2ca"
+  }
+}

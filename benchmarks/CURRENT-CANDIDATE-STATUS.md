@@ -9,7 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Node pilot launched — 2026-09-21, launch `0cddd83`
+## Node pilot reviewed: time/token tradeoff — 2026-09-21, launch `0cddd83`
+
+[All six original attempts](results/receipt-node-01/README.md) meet five explicit
+criteria on two related authored tasks; current uses the new helper in both.
+Two-task sums: baseline 136,272 tokens / 127.150 seconds; prior 147,482 / 154.967;
+current 210,841 / 93.600. Current versus baseline is **+54.72% tokens / −26.39% time**,
+versus prior **+42.96% / −39.60%**. Small, shared-host, unblinded descriptive results,
+not broad or causal gains. Four CLI prefixes are recovered from matching original
+tool records, not replays. Original files/modes, staged entries, HEAD and resources
+are preserved; no scratch. Private initial messages are not exported; scan passes.
+Retain Node support as verified functionality, not token efficiency. The overall
+cost target remains unmet, and featured charts remain tied to their frozen results.
+
+한국어: 실제 비교 도구 사용과 요구사항 충족은 확인됐다. 다만 무스킬 대비 시간은
+줄고 토큰은 크게 늘어 목표는 아직 미달이다. 불리한 수치와 원본 증거도 공개하며
+기능 추가를 전체 성능 개선이나 배포 준비 완료로 주장하지 않는다.
+
+## Node pilot launched — historical, 2026-09-21, launch `0cddd83`
 
 The frozen six-cell schedule has started. At this in-flight checkpoint the ESM
 baseline completed (67,925 recorded total tokens / 60.264 seconds); original-skill

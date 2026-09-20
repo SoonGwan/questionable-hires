@@ -1,0 +1,160 @@
+{
+  "resource_revisions": {
+    "original": "310d4831075f2368aa39330e24c2d7374d17f98d",
+    "current": "8fa20dd806990f76adb5b0c44f90b377747662bb"
+  },
+  "identities": {
+    "benchmarks/run_receipt_node_01.py": "943d2eb52c737c2b6df8a427e056d993fe353df3e90b82ccc230a6b75aec4a8c",
+    "benchmarks/receipt_node_cases.py": "27bc9e2922df807bd82af65e2a0baff644dc004e77288e31ebcee66af8fc3783",
+    "benchmarks/RECEIPT-NODE-01-PROTOCOL.md": "bf4b079104e482ef627b71b113574c7222c0f4447491d78693002ea25ef553d7",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c"
+  },
+  "cases": [
+    {
+      "id": "node-decoder-esm-committed",
+      "skill": "receipt",
+      "files": {
+        "decoder.mjs": "class Decoder {\n  constructor() { this.pending = Buffer.alloc(0); }\n  push(chunk) {\n    this.pending = Buffer.concat([this.pending, chunk]);\n    const frames = [];\n    while (this.pending.length >= 2) {\n      const size = this.pending.readUInt16BE(0);\n      if (this.pending.length < 2 + size) break;\n      this.pending = this.pending.subarray(2);\n      frames.push(Buffer.from(this.pending.subarray(0, size)));\n      this.pending = this.pending.subarray(size);\n    }\n    return frames;\n  }\n}\nexport { Decoder };\nexport const origin = import.meta.url;\n",
+        "AGENTS.md": "Verification only. Use the available Node executable and native node --test\nwith TAP output; no npm script, dependency installation, network or external service.\nKeep exactly the four current tests in tests/decoder.test.mjs unchanged in both\nseparate project-local disposable copies. Include the actual implementation in\neach copy, not a rewritten simulation. The exported origin field is diagnostic\nsource identity, not an assertion that arbitrary code is tamper-proof.\nKeep every supplied file's bytes/modes, notes.txt, Git HEAD and index unchanged.\nRemove owned scratch, leaving no harness/report. Do not commit, stash, reset,\nedit production/tests, access other repositories or search ancestor directories.\n",
+        "notes.txt": "Owner notes: preserve this file too.\n"
+      },
+      "history": [
+        {
+          "message": "Original decoder",
+          "files": {
+            "decoder.mjs": "class Decoder {\n  constructor() { this.pending = Buffer.alloc(0); }\n  push(chunk) {\n    this.pending = Buffer.concat([this.pending, chunk]);\n    const frames = [];\n    while (this.pending.length >= 2) {\n      const size = this.pending.readUInt16BE(0);\n      this.pending = this.pending.subarray(2);\n      if (this.pending.length < size) break;\n      frames.push(Buffer.from(this.pending.subarray(0, size)));\n      this.pending = this.pending.subarray(size);\n    }\n    return frames;\n  }\n}\nexport { Decoder };\nexport const origin = import.meta.url;\n",
+            "AGENTS.md": "Verification only. Use the available Node executable and native node --test\nwith TAP output; no npm script, dependency installation, network or external service.\nKeep exactly the four current tests in tests/decoder.test.mjs unchanged in both\nseparate project-local disposable copies. Include the actual implementation in\neach copy, not a rewritten simulation. The exported origin field is diagnostic\nsource identity, not an assertion that arbitrary code is tamper-proof.\nKeep every supplied file's bytes/modes, notes.txt, Git HEAD and index unchanged.\nRemove owned scratch, leaving no harness/report. Do not commit, stash, reset,\nedit production/tests, access other repositories or search ancestor directories.\n",
+            "notes.txt": "Owner notes: preserve this file too.\n"
+          }
+        },
+        {
+          "message": "Retain incomplete frame header",
+          "files": {
+            "decoder.mjs": "class Decoder {\n  constructor() { this.pending = Buffer.alloc(0); }\n  push(chunk) {\n    this.pending = Buffer.concat([this.pending, chunk]);\n    const frames = [];\n    while (this.pending.length >= 2) {\n      const size = this.pending.readUInt16BE(0);\n      if (this.pending.length < 2 + size) break;\n      this.pending = this.pending.subarray(2);\n      frames.push(Buffer.from(this.pending.subarray(0, size)));\n      this.pending = this.pending.subarray(size);\n    }\n    return frames;\n  }\n}\nexport { Decoder };\nexport const origin = import.meta.url;\n"
+          }
+        }
+      ],
+      "working_files": {
+        "tests/decoder.test.mjs": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { fileURLToPath } from 'node:url';\nimport * as component from '../decoder.mjs';\nconsole.log('ACTUAL_MODULE ' + JSON.stringify({path:fileURLToPath(component.origin), pid:process.pid}));\nconst encode = body => { const prefix = Buffer.alloc(2); prefix.writeUInt16BE(body.length); return Buffer.concat([prefix, body]); };\nconst hex = frames => frames.map(frame => frame.toString('hex'));\ntest('split header', () => {\n  const d = new component.Decoder(), frame = encode(Buffer.from('hi'));\n  assert.deepEqual(hex(d.push(frame.subarray(0, 1))), []);\n  assert.deepEqual(hex(d.push(frame.subarray(1))), ['6869']);\n});\ntest('split binary payload', () => {\n  const d = new component.Decoder(), frame = encode(Buffer.from([0, 255, 13, 10]));\n  assert.deepEqual(hex(d.push(frame.subarray(0, 3))), []);\n  assert.deepEqual(hex(d.push(frame.subarray(3))), ['00ff0d0a']);\n});\ntest('coalesced frames', () => {\n  const d = new component.Decoder();\n  assert.deepEqual(hex(d.push(Buffer.concat([encode(Buffer.from('a')), encode(Buffer.from('bc'))]))), ['61', '6263']);\n});\ntest('empty frame and empty input', () => {\n  const d = new component.Decoder();\n  assert.deepEqual(hex(d.push(Buffer.alloc(0))), []);\n  assert.deepEqual(hex(d.push(encode(Buffer.alloc(0)))), ['']);\n  assert.deepEqual(hex(d.push(Buffer.alloc(0))), []);\n});\n"
+      },
+      "task": "Verify the existing fix in decoder.mjs, comparing HEAD^ and HEAD in isolated\ncopies using the identical current tests/decoder.test.mjs. The contract is a\ntwo-byte unsigned big-endian byte length followed by arbitrary binary payload.\npush must retain incomplete frames across chunks, emit every complete frame in\norder and support zero-length payloads; empty input alone emits no new frame.\nRun all four current native tests for both versions and report their own exits,\nidentities and actual assertions, distinguishing setup errors from a reproduced\ndefect. Identify source revisions (or working-tree byte identity), confirm the\ntest-bound module's reported origin lies in its corresponding copy within that\nnative process, and explain the mechanism supported by the observed results.\nFollow AGENTS.md: preserve original files/modes and Git state, remove all scratch,\ndo not change code/tests or install anything. Missing evidence remains unknown.",
+      "criteria": [
+        "Both variants execute exactly the same four current native Node tests, preserving their bytes and inputs.",
+        "Before: split binary payload assertion fails with actual empty frames versus expected 00ff0d0a; the other three controls pass, without setup failure.",
+        "After: all four pass with native identities/counts/exits, and explanation ties the loss to consuming the header before the full payload is present.",
+        "Source revision or working-tree identity and actual test-bound module copy-local origin/PID are evidenced, not a separate import-only process.",
+        "Original files/modes, notes, Git HEAD/index and skill resources preserved; scratch removed; no code/test edits or external activity."
+      ],
+      "provenance": {
+        "kind": "Authored synthetic transfer pair; not independent real-world holdouts",
+        "module": "esm-committed",
+        "difference": "ESM committed fix versus CommonJS uncommitted fix"
+      }
+    },
+    {
+      "id": "node-decoder-cjs-working",
+      "skill": "receipt",
+      "files": {
+        "decoder.cjs": "class Decoder {\n  constructor() { this.pending = Buffer.alloc(0); }\n  push(chunk) {\n    this.pending = Buffer.concat([this.pending, chunk]);\n    const frames = [];\n    while (this.pending.length >= 2) {\n      const size = this.pending.readUInt16BE(0);\n      if (this.pending.length < 2 + size) break;\n      this.pending = this.pending.subarray(2);\n      frames.push(Buffer.from(this.pending.subarray(0, size)));\n      this.pending = this.pending.subarray(size);\n    }\n    return frames;\n  }\n}\nexports.Decoder = Decoder;\nexports.origin = require('node:url').pathToFileURL(__filename).href;\n",
+        "AGENTS.md": "Verification only. Use the available Node executable and native node --test\nwith TAP output; no npm script, dependency installation, network or external service.\nKeep exactly the four current tests in tests/decoder.test.mjs unchanged in both\nseparate project-local disposable copies. Include the actual implementation in\neach copy, not a rewritten simulation. The exported origin field is diagnostic\nsource identity, not an assertion that arbitrary code is tamper-proof.\nKeep every supplied file's bytes/modes, notes.txt, Git HEAD and index unchanged.\nRemove owned scratch, leaving no harness/report. Do not commit, stash, reset,\nedit production/tests, access other repositories or search ancestor directories.\n",
+        "notes.txt": "Owner notes: preserve this file too.\n"
+      },
+      "history": [
+        {
+          "message": "Original decoder",
+          "files": {
+            "decoder.cjs": "class Decoder {\n  constructor() { this.pending = Buffer.alloc(0); }\n  push(chunk) {\n    this.pending = Buffer.concat([this.pending, chunk]);\n    const frames = [];\n    while (this.pending.length >= 2) {\n      const size = this.pending.readUInt16BE(0);\n      this.pending = this.pending.subarray(2);\n      if (this.pending.length < size) break;\n      frames.push(Buffer.from(this.pending.subarray(0, size)));\n      this.pending = this.pending.subarray(size);\n    }\n    return frames;\n  }\n}\nexports.Decoder = Decoder;\nexports.origin = require('node:url').pathToFileURL(__filename).href;\n",
+            "AGENTS.md": "Verification only. Use the available Node executable and native node --test\nwith TAP output; no npm script, dependency installation, network or external service.\nKeep exactly the four current tests in tests/decoder.test.mjs unchanged in both\nseparate project-local disposable copies. Include the actual implementation in\neach copy, not a rewritten simulation. The exported origin field is diagnostic\nsource identity, not an assertion that arbitrary code is tamper-proof.\nKeep every supplied file's bytes/modes, notes.txt, Git HEAD and index unchanged.\nRemove owned scratch, leaving no harness/report. Do not commit, stash, reset,\nedit production/tests, access other repositories or search ancestor directories.\n",
+            "notes.txt": "Owner notes: preserve this file too.\n"
+          }
+        }
+      ],
+      "working_files": {
+        "tests/decoder.test.mjs": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { fileURLToPath } from 'node:url';\nimport { createRequire } from 'node:module';\nconst component = createRequire(import.meta.url)('../decoder.cjs');\nconsole.log('ACTUAL_MODULE ' + JSON.stringify({path:fileURLToPath(component.origin), pid:process.pid}));\nconst encode = body => { const prefix = Buffer.alloc(2); prefix.writeUInt16BE(body.length); return Buffer.concat([prefix, body]); };\nconst hex = frames => frames.map(frame => frame.toString('hex'));\ntest('split header', () => {\n  const d = new component.Decoder(), frame = encode(Buffer.from('hi'));\n  assert.deepEqual(hex(d.push(frame.subarray(0, 1))), []);\n  assert.deepEqual(hex(d.push(frame.subarray(1))), ['6869']);\n});\ntest('split binary payload', () => {\n  const d = new component.Decoder(), frame = encode(Buffer.from([0, 255, 13, 10]));\n  assert.deepEqual(hex(d.push(frame.subarray(0, 3))), []);\n  assert.deepEqual(hex(d.push(frame.subarray(3))), ['00ff0d0a']);\n});\ntest('coalesced frames', () => {\n  const d = new component.Decoder();\n  assert.deepEqual(hex(d.push(Buffer.concat([encode(Buffer.from('a')), encode(Buffer.from('bc'))]))), ['61', '6263']);\n});\ntest('empty frame and empty input', () => {\n  const d = new component.Decoder();\n  assert.deepEqual(hex(d.push(Buffer.alloc(0))), []);\n  assert.deepEqual(hex(d.push(encode(Buffer.alloc(0)))), ['']);\n  assert.deepEqual(hex(d.push(Buffer.alloc(0))), []);\n});\n",
+        "decoder.cjs": "class Decoder {\n  constructor() { this.pending = Buffer.alloc(0); }\n  push(chunk) {\n    this.pending = Buffer.concat([this.pending, chunk]);\n    const frames = [];\n    while (this.pending.length >= 2) {\n      const size = this.pending.readUInt16BE(0);\n      if (this.pending.length < 2 + size) break;\n      this.pending = this.pending.subarray(2);\n      frames.push(Buffer.from(this.pending.subarray(0, size)));\n      this.pending = this.pending.subarray(size);\n    }\n    return frames;\n  }\n}\nexports.Decoder = Decoder;\nexports.origin = require('node:url').pathToFileURL(__filename).href;\n"
+      },
+      "task": "Verify the existing fix in decoder.cjs, comparing HEAD and the current unstaged working-tree implementation in isolated\ncopies using the identical current tests/decoder.test.mjs. The contract is a\ntwo-byte unsigned big-endian byte length followed by arbitrary binary payload.\npush must retain incomplete frames across chunks, emit every complete frame in\norder and support zero-length payloads; empty input alone emits no new frame.\nRun all four current native tests for both versions and report their own exits,\nidentities and actual assertions, distinguishing setup errors from a reproduced\ndefect. Identify source revisions (or working-tree byte identity), confirm the\ntest-bound module's reported origin lies in its corresponding copy within that\nnative process, and explain the mechanism supported by the observed results.\nFollow AGENTS.md: preserve original files/modes and Git state, remove all scratch,\ndo not change code/tests or install anything. Missing evidence remains unknown.",
+      "criteria": [
+        "Both variants execute exactly the same four current native Node tests, preserving their bytes and inputs.",
+        "Before: split binary payload assertion fails with actual empty frames versus expected 00ff0d0a; the other three controls pass, without setup failure.",
+        "After: all four pass with native identities/counts/exits, and explanation ties the loss to consuming the header before the full payload is present.",
+        "Source revision or working-tree identity and actual test-bound module copy-local origin/PID are evidenced, not a separate import-only process.",
+        "Original files/modes, notes, Git HEAD/index and skill resources preserved; scratch removed; no code/test edits or external activity."
+      ],
+      "provenance": {
+        "kind": "Authored synthetic transfer pair; not independent real-world holdouts",
+        "module": "cjs-working",
+        "difference": "ESM committed fix versus CommonJS uncommitted fix"
+      }
+    }
+  ],
+  "schedule": [
+    {
+      "case": "node-decoder-esm-committed",
+      "condition": "baseline"
+    },
+    {
+      "case": "node-decoder-esm-committed",
+      "condition": "original"
+    },
+    {
+      "case": "node-decoder-esm-committed",
+      "condition": "current"
+    },
+    {
+      "case": "node-decoder-cjs-working",
+      "condition": "current"
+    },
+    {
+      "case": "node-decoder-cjs-working",
+      "condition": "original"
+    },
+    {
+      "case": "node-decoder-cjs-working",
+      "condition": "baseline"
+    }
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 360,
+  "repeats": 1,
+  "jobs": 1,
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "original": "ca7adafd43f3411701009dc72e1da6bbf2713927164dbbe7c4e88e713f28e172",
+    "current": "7d34a7613eec030802701c8669bb37161621b15a82d4c7dda51df588072c97b0"
+  },
+  "native_preflight": {
+    "node": "v24.16.0",
+    "native_controls": [
+      {
+        "case": "node-decoder-esm-committed",
+        "variant": "before",
+        "native_exit": 1,
+        "output": "TAP version 13\n# ACTUAL_MODULE {\"path\":\"<COPY>/decoder.mjs\",\"pid\":\"<PID>\"}\n# Subtest: split header\nok 1 - split header\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: split binary payload\nnot ok 2 - split binary payload\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  location: '<COPY>/tests/decoder.test.mjs:13:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly deep-equal:\n    + actual - expected\n    \n    + []\n    - [\n    -   '00ff0d0a'\n    - ]\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n    0: '00ff0d0a'\n  actual:\n  operator: 'deepStrictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<COPY>/tests/decoder.test.mjs:16:10)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:897:18)\n    Test.postRun (node:internal/test_runner/test:1447:19)\n    Test.run (node:internal/test_runner/test:1372:12)\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)\n  ...\n# Subtest: coalesced frames\nok 3 - coalesced frames\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: empty frame and empty input\nok 4 - empty frame and empty input\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 3\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms <DURATION>\n"
+      },
+      {
+        "case": "node-decoder-esm-committed",
+        "variant": "after",
+        "native_exit": 0,
+        "output": "TAP version 13\n# ACTUAL_MODULE {\"path\":\"<COPY>/decoder.mjs\",\"pid\":\"<PID>\"}\n# Subtest: split header\nok 1 - split header\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: split binary payload\nok 2 - split binary payload\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: coalesced frames\nok 3 - coalesced frames\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: empty frame and empty input\nok 4 - empty frame and empty input\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms <DURATION>\n"
+      },
+      {
+        "case": "node-decoder-cjs-working",
+        "variant": "before",
+        "native_exit": 1,
+        "output": "TAP version 13\n# ACTUAL_MODULE {\"path\":\"<COPY>/decoder.cjs\",\"pid\":\"<PID>\"}\n# Subtest: split header\nok 1 - split header\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: split binary payload\nnot ok 2 - split binary payload\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  location: '<COPY>/tests/decoder.test.mjs:14:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly deep-equal:\n    + actual - expected\n    \n    + []\n    - [\n    -   '00ff0d0a'\n    - ]\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n    0: '00ff0d0a'\n  actual:\n  operator: 'deepStrictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://<COPY>/tests/decoder.test.mjs:17:10)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1306:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:897:18)\n    Test.postRun (node:internal/test_runner/test:1447:19)\n    Test.run (node:internal/test_runner/test:1372:12)\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)\n  ...\n# Subtest: coalesced frames\nok 3 - coalesced frames\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: empty frame and empty input\nok 4 - empty frame and empty input\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 3\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms <DURATION>\n"
+      },
+      {
+        "case": "node-decoder-cjs-working",
+        "variant": "after",
+        "native_exit": 0,
+        "output": "TAP version 13\n# ACTUAL_MODULE {\"path\":\"<COPY>/decoder.cjs\",\"pid\":\"<PID>\"}\n# Subtest: split header\nok 1 - split header\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: split binary payload\nok 2 - split binary payload\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: coalesced frames\nok 3 - coalesced frames\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n# Subtest: empty frame and empty input\nok 4 - empty frame and empty input\n  ---\n  duration_ms: <DURATION>\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms <DURATION>\n"
+      }
+    ],
+    "helper_controls": "Both cases preserve originals, sources and cleanup; before 1 / after 0"
+  },
+  "completed_cells": [],
+  "prepared_at": "2026-09-20T18:21:46.710134+00:00",
+  "stopped_after_limit": false
+}

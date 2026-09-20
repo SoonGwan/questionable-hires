@@ -1,0 +1,209 @@
+{
+  "session_id": "01a0c010-4997-7c13-bed8-0b6a552f6e20",
+  "source_bytes": 171161,
+  "source_sha256": "1da8b7d12dfcd63ce88df37bdcf882c5f2a73bc7f8af1a800a418a90d4bee165",
+  "source_lines": 42,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "7fd118d02b745fbb4a6a14a9aa5c44fdb083eb82b4e6ac6cd9d90973f744f36a",
+      "record": {
+        "timestamp": "2026-09-20T18:24:54.935Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05fc3b6e0e7e0a63016ab024f70e5887d0bd74345649c74e94",
+          "status": "completed",
+          "call_id": "call_0OiNHejv7ENzgus5SC3WlTNP",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '!.git' -g '!node_modules'; cat .agents/skills/receipt/SKILL.md; cat .agents/skills/receipt/references/node-comparison.md\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c010-49e0-7531-a37d-0fc23a24a7c7",
+            "create_time": 1789928692.115837
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "feccd0fc0d5e10936a16edd37346a0e258b34ad14646988f59d35c70eb9d4a9d",
+      "record": {
+        "timestamp": "2026-09-20T18:24:55.060Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c010-6514-7211-9a9e-763bcdd5e1ed",
+          "call_id": "call_0OiNHejv7ENzgus5SC3WlTNP",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"de44e1\",\"wall_time_seconds\":0.000002209,\"exit_code\":0,\"original_token_count\":1783,\"output\":\"<WORKSPACE>\\ndecoder.mjs\\nAGENTS.md\\n.agents/skills/receipt/SKILL.md\\n.agents/skills/receipt/scripts/compare.py\\n.agents/skills/receipt/scripts/preserve.py\\n.agents/skills/receipt/agents/openai.yaml\\n.agents/skills/receipt/references/existing-fix.md\\n.agents/skills/receipt/references/node-comparison.md\\n.agents/skills/receipt/references/native-preservation.md\\n.agents/skills/receipt/references/comparison-details.md\\ntests/decoder.test.mjs\\nnotes.txt\\n---\\nname: receipt\\ndescription: Verify that a requested bug fix changes observable behavior with a failing-before, passing-after reproduction and honest execution evidence.\\n---\\n\\n# Receipt\\n\\n> You fixed it? Show me the receipt.\\n\\nReuse supplied guidance; discover missing instructions only within authorized roots, never through an out-of-scope ancestor sweep. Report inaccessible evidence instead of broadening access.\\n\\nFor a current bug, select a regression on the actual affected path using the documented runner. Reuse valid before evidence; otherwise observe the defect-specific failure, implement the requested fix, then rerun unchanged assertions/inputs. Preserve neighboring behavior and required coverage. Inspect history only for unresolved behavior or implementation.\\n\\nFor an already-present fix, compare isolated versions with the same current assertions/inputs and compatible runtime; identify the code loaded by the test process. Reuse an adequate project-native comparison instead of rebuilding it. Optional support for [Python](references/existing-fix.md) or [native Node tests](references/node-comparison.md) supplies copying, source checks and cleanup when those are missing. Choose by the required evidence and setup work, not merely by language support. Don't reverse patches in the user's working tree.\\n\\nA required suite running that regression with matching inputs/runtime supplies after evidence; don't repeat it separately. Skipped, undiscovered or differently configured tests don't qualify. Changed relevant inputs invalidate reused results.\\n\\nBatch final checks in one shell call, adapting the runner and paths:\\n\\n```sh\\npython3 -B -m unittest -v && git diff --check -- app.py test_app.py && git diff -- app.py test_app.py\\n```\\n\\n`&&` leaves later checks unrun after failure. If all must run, retain each exit explicitly, not just the shell's final status. Review untracked files separately; `git diff` omits them.\\n\\nSetup failures aren't defect reproduction; mocks don't prove unobserved effects. Preserve user changes and scope; verification alone authorizes neither implementation nor publication.\\n\\nReport the reviewed change, decisive before/after observations and commands, applicable revision identities and limits. Stop when the requested outcome and required checks are verified; no separate dossier or unrelated green checks.\\n# Existing fix with native Node tests\\n\\nUse only when the project already uses `node --test` and lacks adequate isolated\\nbefore/after comparison. This mode reuses the same bounded copying, preservation\\nand foreground process supervision as the Python comparison; it does not replace\\nnpm scripts, Jest/Vitest, build steps or custom loaders. Native workflow remains\\nnecessary for unsupported setup. No package installation is performed.\\n\\nRequires Python 3.9+/POSIX for the collector and Node synchronous `registerHooks`;\\nnative behavior is verified on Node 24.16.0. Select the project's Node executable\\nwith `--node` (default `node` on PATH). Missing hooks produce incomplete provenance,\\nnot a passing regression. Do not upgrade a project merely to use this helper.\\n\\nAdapt paths/revisions in one invocation:\\n\\n```sh\\npython3 /path/to/receipt/scripts/compare.py --source . --node /path/to/node --spec - <<'JSON'\\n{\\\"fixed\\\":[\\\"regression.test.mjs\\\"],\\\"vary\\\":[\\\"app.mjs\\\"],\\\"before\\\":\\\"HEAD^\\\",\\\"after\\\":\\\"HEAD\\\",\\\"imports\\\":[\\\"app.mjs\\\"],\\\"runner\\\":\\\"node\\\",\\\"tests\\\":[\\\"regression.test.mjs\\\"]}\\nJSON\\n```\\n\\n`fixed` includes current tests, package configuration and required local support;\\nexplicit directories are expanded, including hidden files. `vary` lists existing\\nimplementation files in both versions. For an uncommitted fix use\\n`\\\"after\\\":{\\\"working_tree\\\":true}`: current bytes/modes, not staged content. Tests\\nare fixed selected `.js`/`.cjs`/`.mjs` files, never flags, globs or varying files.\\n`imports` names selected JS **paths**, not package/module specifiers; select the\\nactual affected modules whose loading must be observed. No early application\\nimports are added. Native tests load their own modules normally, including static\\nESM import, dynamic import and CommonJS require in the verified paths.\\n\\nEach command is `node --test --test-reporter=tap --import <observer> <test paths>`\\nfrom its respective copy. Child temp defaults point inside that copy. The observer\\nrecords selected module URL, PID and returned source SHA-256 in the native process;\\n`copied_loads` retains these records. No matching record, hash mismatch, malformed\\nrecord or truncated output leaves `provenance_ready=false`: check 7, CLI 2, no after\\nexecution. Native status is separately retained in `native_exit_code`. A timeout\\nalso stops the comparison. Tests and assertions can already have run before a\\nmissing-load result is detected; this is not a pre-execution security gate.\\n\\n**A load is not evaluation or dispatch.** Initialization may throw after loading;\\na loaded module may not exercise the affected function. Records require at least\\none load per selected path, not coverage in every test worker. Later hooks/reassignment\\ncan change behavior. Check the actual native test identities/counts/skips and\\ndefect-specific failure before, success after. CLI 0 means observations collected,\\nnot proof of the fix. A setup error, empty or skipped test is not that evidence.\\nThis is trusted-test observation, not tamper-proof attestation or a sandbox.\\n\\nNonempty `NODE_OPTIONS`, `NODE_PATH` or `NODE_COMPILE_CACHE` is rejected rather\\nthan silently discarded. Python `invocation`, `import_roots`, `module_bindings`\\nare unsupported in this mode. Package maps/custom transformations, inherited\\npreloads, other Node versions and runtime-required flags need project-native\\nverification; do not remove required configuration to fit this helper.\\n\\nInspect `originals` and `comparison_copies_removed`; do not add a duplicate guard.\\nOptional `watch` checks extra selected originals without executing/copying them.\\nUse `guard_tree:true` only for requested whole-project preservation with all reads\\nauthorized. Copies under `.receipt-*` inside `--source` are cleaned on exit;\\nchanged originals abort without restoration. Git identity, working-tree hashes,\\nshared 20 MB copy budget, selected path restrictions and bounded tree checks apply.\\nDefault deadline is 30 seconds/check (`--timeout` up to 300), retaining the last\\n12,000 output characters. Remaining process-group members are killed even after\\nnormal exit; no persistent background work. Cleanup may wait five more seconds.\\nSee [resource and preservation limits](comparison-details.md) when those boundaries\\nmatter. None of these checks establishes model token/time savings.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c010-49e0-7531-a37d-0fc23a24a7c7",
+            "create_time": 1789928695.060813
+          }
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "64fa0ef1e109640440ce8a3c37707e9565ccd85f8f22bc99a33283f4a96b8a45",
+      "record": {
+        "timestamp": "2026-09-20T18:25:00.178Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05fc3b6e0e7e0a63016ab024fac16c87d0b3c17f6d6f589291",
+          "status": "completed",
+          "call_id": "call_xbrzTtWLKrkcb865ireHKKhe",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md decoder.mjs tests/decoder.test.mjs .agents/skills/receipt/references/native-preservation.md; git log -2 --format='%H %s'; git diff -- decoder.mjs tests/decoder.test.mjs; git show HEAD^:decoder.mjs; command -v node; node --version; rg -n 'origin|observer|guard_tree|originals|git|status' .agents/skills/receipt/scripts/compare.py\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c010-49e0-7531-a37d-0fc23a24a7c7",
+            "create_time": 1789928697.422192
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "b06e4dcf21c652d1a1aaa1748960699e79eb2c88b59a1658b1f960eb751abcb0",
+      "record": {
+        "timestamp": "2026-09-20T18:25:00.346Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c010-79ba-7880-ad26-fe92cd1bc390",
+          "call_id": "call_xbrzTtWLKrkcb865ireHKKhe",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3d1dd3\",\"wall_time_seconds\":0.000001583,\"exit_code\":0,\"original_token_count\":2068,\"output\":\"Verification only. Use the available Node executable and native node --test\\nwith TAP output; no npm script, dependency installation, network or external service.\\nKeep exactly the four current tests in tests/decoder.test.mjs unchanged in both\\nseparate project-local disposable copies. Include the actual implementation in\\neach copy, not a rewritten simulation. The exported origin field is diagnostic\\nsource identity, not an assertion that arbitrary code is tamper-proof.\\nKeep every supplied file's bytes/modes, notes.txt, Git HEAD and index unchanged.\\nRemove owned scratch, leaving no harness/report. Do not commit, stash, reset,\\nedit production/tests, access other repositories or search ancestor directories.\\nclass Decoder {\\n  constructor() { this.pending = Buffer.alloc(0); }\\n  push(chunk) {\\n    this.pending = Buffer.concat([this.pending, chunk]);\\n    const frames = [];\\n    while (this.pending.length >= 2) {\\n      const size = this.pending.readUInt16BE(0);\\n      if (this.pending.length < 2 + size) break;\\n      this.pending = this.pending.subarray(2);\\n      frames.push(Buffer.from(this.pending.subarray(0, size)));\\n      this.pending = this.pending.subarray(size);\\n    }\\n    return frames;\\n  }\\n}\\nexport { Decoder };\\nexport const origin = import.meta.url;\\nimport test from 'node:test';\\nimport assert from 'node:assert/strict';\\nimport { fileURLToPath } from 'node:url';\\nimport * as component from '../decoder.mjs';\\nconsole.log('ACTUAL_MODULE ' + JSON.stringify({path:fileURLToPath(component.origin), pid:process.pid}));\\nconst encode = body => { const prefix = Buffer.alloc(2); prefix.writeUInt16BE(body.length); return Buffer.concat([prefix, body]); };\\nconst hex = frames => frames.map(frame => frame.toString('hex'));\\ntest('split header', () => {\\n  const d = new component.Decoder(), frame = encode(Buffer.from('hi'));\\n  assert.deepEqual(hex(d.push(frame.subarray(0, 1))), []);\\n  assert.deepEqual(hex(d.push(frame.subarray(1))), ['6869']);\\n});\\ntest('split binary payload', () => {\\n  const d = new component.Decoder(), frame = encode(Buffer.from([0, 255, 13, 10]));\\n  assert.deepEqual(hex(d.push(frame.subarray(0, 3))), []);\\n  assert.deepEqual(hex(d.push(frame.subarray(3))), ['00ff0d0a']);\\n});\\ntest('coalesced frames', () => {\\n  const d = new component.Decoder();\\n  assert.deepEqual(hex(d.push(Buffer.concat([encode(Buffer.from('a')), encode(Buffer.from('bc'))]))), ['61', '6263']);\\n});\\ntest('empty frame and empty input', () => {\\n  const d = new component.Decoder();\\n  assert.deepEqual(hex(d.push(Buffer.alloc(0))), []);\\n  assert.deepEqual(hex(d.push(encode(Buffer.alloc(0)))), ['']);\\n  assert.deepEqual(hex(d.push(Buffer.alloc(0))), []);\\n});\\n# Preserve originals around a project-native comparison\\n\\nPython 3.9+/POSIX. Use this optional API only when native project setup is required and an adequate\\npreservation check is missing. Existing `compare.py` already supplies a guard;\\ndo not wrap it in another guard. This API reuses that bounded inventory without\\nchanging the project's runner, environment or startup hooks.\\n\\nLoad `scripts/preserve.py` by its actual installed path using `importlib.util`:\\n\\n```python\\nspec = importlib.util.spec_from_file_location(\\\"receipt_preserve\\\", helper_path)\\nsupport = importlib.util.module_from_spec(spec)\\nspec.loader.exec_module(support)\\n```\\n\\nPlace the existing native comparison and its cleanup inside\\n`with support.preserved_tree(project_root) as preservation:`. Remove all owned\\ncopies inside that block, including failure paths, then inspect/print the report\\nafter normal context exit. Loading the module or entering an empty block does\\nnot execute tests. Run orchestration with bytecode writing disabled (`python -B`)\\nso importing support does not add cache files to the tree being preserved.\\n\\nThe guard performs exactly one bounded inventory before and one after the block.\\nIt starts with `unchanged: null`; successful comparison produces `unchanged: true`,\\nentry/byte counts and a digest. It includes Git/ignored entries, root/directory\\nmodes, regular-file bytes/modes and symlink text. It does not follow link targets.\\nUse only with authorized whole-root reads. Limits are 10,000 entries and 20 MB\\nstreamed per inventory; special files and overflow fail closed.\\n\\nChanged or retained entries raise without restoring anything. Caller exceptions\\nstill propagate when preservation passes; if both workflow and preservation\\nfail, the preservation error retains the original exception as its context.\\nUnknown/failed preservation is not a success report. An unchanged report says\\nnothing about test success: native commands/exits/assertions, identical inputs,\\nrevision identity and same-process import evidence remain the caller's job.\\nThis API neither copies revisions nor runs/supervises subprocesses nor cleans up.\\n\\nNot a sandbox or an atomic snapshot. No protection against outside-root effects,\\nconcurrent/restored changes, timestamps, ownership, ACLs/xattrs or changes outside\\nthe context interval. Do not broaden access or waive required checks to use it.\\ndeaa42d06ba5a5ea476db830993d3115555d6f01 Retain incomplete frame header\\na69f3ea386eca20974476288825fe842825207d7 Original decoder\\nclass Decoder {\\n  constructor() { this.pending = Buffer.alloc(0); }\\n  push(chunk) {\\n    this.pending = Buffer.concat([this.pending, chunk]);\\n    const frames = [];\\n    while (this.pending.length >= 2) {\\n      const size = this.pending.readUInt16BE(0);\\n      this.pending = this.pending.subarray(2);\\n      if (this.pending.length < size) break;\\n      frames.push(Buffer.from(this.pending.subarray(0, size)));\\n      this.pending = this.pending.subarray(size);\\n    }\\n    return frames;\\n  }\\n}\\nexport { Decoder };\\nexport const origin = import.meta.url;\\n<HOME>/.nvm/versions/node/v24.16.0/bin/node\\nv24.16.0\\n139:        # receives the original hooks instead of silently shadowing them.\\n165:    if not name or str(path) != name or path.is_absolute() or path == Path('.') or any(p in ('.git', '..') for p in path.parts):\\n210:def git(root, *args, input=None):\\n214:    result = subprocess.run(['git', '--no-pager', '--literal-pathspecs', '-c', 'core.fsmonitor=false', '-C', str(root), *args],\\n296:            # Preserve the original interruption/error rather than replacing it.\\n391:    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings'}:\\n393:    if type(recipe.get('guard_tree', False)) is not bool:\\n394:        raise ValueError('guard_tree must be a boolean')\\n451:    if Path(git(root, 'rev-parse', '--show-toplevel').decode().strip()).resolve() != root:\\n453:    originals, modes = {}, {}\\n466:        originals[name] = read_limited(path, 20_000_000 - total)\\n467:        total += len(originals[name])\\n479:            variants[label] = ({name: originals[name] for name in names},\\n484:        sha = git(root, 'rev-parse', '--verify', '--end-of-options', ref + '^{commit}').decode().strip()\\n486:        files = {name: originals[name] for name in names}\\n489:        tree = git(root, 'ls-tree', '-l', '-z', sha, '--', *recipe['vary'])\\n514:            stream = io.BytesIO(git(root, 'cat-file', '--batch',\\n530:    result = dict(status='observed', revisions=revisions, checks={}, import_roots=list(import_roots),\\n531:                  fixed_sha256={name: hashlib.sha256(originals[name]).hexdigest() for name in recipe['fixed']},\\n535:            sha256={name: hashlib.sha256(originals[name]).hexdigest() for name in recipe['vary']},\\n537:    guarded = tree_inventory(root) if recipe.get('guard_tree', False) else None\\n552:                    result['status'] = 'incomplete'\\n555:        changed = [name for name, content in originals.items() if (root/name).is_symlink()\\n559:            raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))\\n572:    result['originals'] = dict(unchanged=True,\\n573:        sha256={name: hashlib.sha256(content).hexdigest() for name, content in originals.items()},\\n587:watch (optional): originals to check but not copy or execute; files/directories.\\n588:guard_tree (optional boolean): inventory all source entries including Git around\\n617:Exit 2 means comparison not established. Copies are cleaned; selected originals\\n643:    return 0 if result['status'] == 'observed' else 2\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c010-49e0-7531-a37d-0fc23a24a7c7",
+            "create_time": 1789928700.346527
+          }
+        }
+      }
+    },
+    {
+      "line": 24,
+      "line_sha256": "0ac35b2d76a4d4f23e6a67a7aa547dc92199ed8beeef7c2cd6ad3f2dde1363b7",
+      "record": {
+        "timestamp": "2026-09-20T18:25:07.616Z",
+        "ordinal": 23,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05fc3b6e0e7e0a63016ab02501819c87d093d7ab7385b4be58",
+          "status": "completed",
+          "call_id": "call_dZQQUn1CVNBzcUGFsxzyqRip",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B .agents/skills/receipt/scripts/compare.py --source . --node <HOME>/.nvm/versions/node/v24.16.0/bin/node --spec - <<'JSON'\\n{\\\"fixed\\\":[\\\"tests/decoder.test.mjs\\\"],\\\"vary\\\":[\\\"decoder.mjs\\\"],\\\"before\\\":\\\"HEAD^\\\",\\\"after\\\":\\\"HEAD\\\",\\\"imports\\\":[\\\"decoder.mjs\\\"],\\\"runner\\\":\\\"node\\\",\\\"tests\\\":[\\\"tests/decoder.test.mjs\\\"],\\\"guard_tree\\\":true,\\\"watch\\\":[\\\"notes.txt\\\"]}\\nJSON\",\"max_output_tokens\":8500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c010-49e0-7531-a37d-0fc23a24a7c7",
+            "create_time": 1789928702.719436
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "c3ed8fb6827cb58a1d80ff006823355ccba0bec4426cfb9a691c9c514d0aca61",
+      "record": {
+        "timestamp": "2026-09-20T18:25:08.017Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c010-97b1-7d71-846e-efdd6e780001",
+          "call_id": "call_dZQQUn1CVNBzcUGFsxzyqRip",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"5366fc\",\"wall_time_seconds\":0.210769,\"exit_code\":0,\"original_token_count\":1449,\"output\":\"{\\\"status\\\":\\\"observed\\\",\\\"revisions\\\":{\\\"before\\\":\\\"a69f3ea386eca20974476288825fe842825207d7\\\",\\\"after\\\":\\\"deaa42d06ba5a5ea476db830993d3115555d6f01\\\"},\\\"checks\\\":{\\\"before\\\":{\\\"exit_code\\\":1,\\\"timed_out\\\":false,\\\"output\\\":\\\"TAP version 13\\\\n# Receipt copied load: {\\\\\\\"url\\\\\\\":\\\\\\\"file://<WORKSPACE>/.receipt-dylnwvqd/before/decoder.mjs\\\\\\\",\\\\\\\"pid\\\\\\\":2044,\\\\\\\"sha256\\\\\\\":\\\\\\\"8c536b58b122f7ff3b01d3978d9284ce7721b94a74b7114848f0d2fedb4950cf\\\\\\\"}\\\\n# ACTUAL_MODULE {\\\\\\\"path\\\\\\\":\\\\\\\"<WORKSPACE>/.receipt-dylnwvqd/before/decoder.mjs\\\\\\\",\\\\\\\"pid\\\\\\\":2044}\\\\n# Subtest: split header\\\\nok 1 - split header\\\\n  ---\\\\n  duration_ms: 0.803791\\\\n  type: 'test'\\\\n  ...\\\\n# Subtest: split binary payload\\\\nnot ok 2 - split binary payload\\\\n  ---\\\\n  duration_ms: 0.645375\\\\n  type: 'test'\\\\n  location: '<WORKSPACE>/.receipt-dylnwvqd/before/tests/decoder.test.mjs:13:1'\\\\n  failureType: 'testCodeFailure'\\\\n  error: |-\\\\n    Expected values to be strictly deep-equal:\\\\n    + actual - expected\\\\n    \\\\n    + []\\\\n    - [\\\\n    -   '00ff0d0a'\\\\n    - ]\\\\n    \\\\n  code: 'ERR_ASSERTION'\\\\n  name: 'AssertionError'\\\\n  expected:\\\\n    0: '00ff0d0a'\\\\n  actual:\\\\n  operator: 'deepStrictEqual'\\\\n  stack: |-\\\\n    TestContext.<anonymous> (file://<WORKSPACE>/.receipt-dylnwvqd/before/tests/decoder.test.mjs:16:10)\\\\n    Test.runInAsyncScope (node:async_hooks:227:14)\\\\n    Test.run (node:internal/test_runner/test:1306:25)\\\\n    Test.processPendingSubtests (node:internal/test_runner/test:897:18)\\\\n    Test.postRun (node:internal/test_runner/test:1447:19)\\\\n    Test.run (node:internal/test_runner/test:1372:12)\\\\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)\\\\n  ...\\\\n# Subtest: coalesced frames\\\\nok 3 - coalesced frames\\\\n  ---\\\\n  duration_ms: 0.10475\\\\n  type: 'test'\\\\n  ...\\\\n# Subtest: empty frame and empty input\\\\nok 4 - empty frame and empty input\\\\n  ---\\\\n  duration_ms: 0.091458\\\\n  type: 'test'\\\\n  ...\\\\n1..4\\\\n# tests 4\\\\n# suites 0\\\\n# pass 3\\\\n# fail 1\\\\n# cancelled 0\\\\n# skipped 0\\\\n# todo 0\\\\n# duration_ms 54.322666\\\\n\\\",\\\"output_truncated\\\":false,\\\"command\\\":[\\\"<HOME>/.nvm/versions/node/v24.16.0/bin/node\\\",\\\"--test\\\",\\\"--test-reporter=tap\\\",\\\"--import\\\",\\\"<WORKSPACE>/.receipt-dylnwvqd/before/.receipt-node-gc44kedj/observe.mjs\\\",\\\"<WORKSPACE>/.receipt-dylnwvqd/before/tests/decoder.test.mjs\\\"],\\\"invocation\\\":\\\"node-test\\\",\\\"native_exit_code\\\":1,\\\"provenance_ready\\\":true,\\\"copied_loads\\\":[{\\\"url\\\":\\\"file://<WORKSPACE>/.receipt-dylnwvqd/before/decoder.mjs\\\",\\\"pid\\\":2044,\\\"sha256\\\":\\\"8c536b58b122f7ff3b01d3978d9284ce7721b94a74b7114848f0d2fedb4950cf\\\"}],\\\"provenance_limitation\\\":\\\"Loader results only; not successful evaluation, dispatch or test coverage.\\\"},\\\"after\\\":{\\\"exit_code\\\":0,\\\"timed_out\\\":false,\\\"output\\\":\\\"TAP version 13\\\\n# Receipt copied load: {\\\\\\\"url\\\\\\\":\\\\\\\"file://<WORKSPACE>/.receipt-dylnwvqd/after/decoder.mjs\\\\\\\",\\\\\\\"pid\\\\\\\":2046,\\\\\\\"sha256\\\\\\\":\\\\\\\"64063aa4d891788b48f44e5ad46bbd175dfd07960b3afb161ac609d1dcab49c5\\\\\\\"}\\\\n# ACTUAL_MODULE {\\\\\\\"path\\\\\\\":\\\\\\\"<WORKSPACE>/.receipt-dylnwvqd/after/decoder.mjs\\\\\\\",\\\\\\\"pid\\\\\\\":2046}\\\\n# Subtest: split header\\\\nok 1 - split header\\\\n  ---\\\\n  duration_ms: 0.744\\\\n  type: 'test'\\\\n  ...\\\\n# Subtest: split binary payload\\\\nok 2 - split binary payload\\\\n  ---\\\\n  duration_ms: 0.104584\\\\n  type: 'test'\\\\n  ...\\\\n# Subtest: coalesced frames\\\\nok 3 - coalesced frames\\\\n  ---\\\\n  duration_ms: 0.091\\\\n  type: 'test'\\\\n  ...\\\\n# Subtest: empty frame and empty input\\\\nok 4 - empty frame and empty input\\\\n  ---\\\\n  duration_ms: 0.084334\\\\n  type: 'test'\\\\n  ...\\\\n1..4\\\\n# tests 4\\\\n# suites 0\\\\n# pass 4\\\\n# fail 0\\\\n# cancelled 0\\\\n# skipped 0\\\\n# todo 0\\\\n# duration_ms 52.546458\\\\n\\\",\\\"output_truncated\\\":false,\\\"command\\\":[\\\"<HOME>/.nvm/versions/node/v24.16.0/bin/node\\\",\\\"--test\\\",\\\"--test-reporter=tap\\\",\\\"--import\\\",\\\"<WORKSPACE>/.receipt-dylnwvqd/after/.receipt-node-3arzqtqx/observe.mjs\\\",\\\"<WORKSPACE>/.receipt-dylnwvqd/after/tests/decoder.test.mjs\\\"],\\\"invocation\\\":\\\"node-test\\\",\\\"native_exit_code\\\":0,\\\"provenance_ready\\\":true,\\\"copied_loads\\\":[{\\\"url\\\":\\\"file://<WORKSPACE>/.receipt-dylnwvqd/after/decoder.mjs\\\",\\\"pid\\\":2046,\\\"sha256\\\":\\\"64063aa4d891788b48f44e5ad46bbd175dfd07960b3afb161ac609d1dcab49c5\\\"}],\\\"provenance_limitation\\\":\\\"Loader results only; not successful evaluation, dispatch or test coverage.\\\"}},\\\"import_roots\\\":[],\\\"fixed_sha256\\\":{\\\"tests/decoder.test.mjs\\\":\\\"775e7b3a602145b4219a38c5f406b8d911ed73b53f8fee8bc5901f79963bc2ca\\\"},\\\"limitation\\\":\\\"Inspect assertion failures and import provenance; exit codes alone do not prove the fix.\\\",\\\"tree_guard\\\":{\\\"unchanged\\\":true,\\\"entries\\\":58,\\\"file_bytes\\\":66076,\\\"inventory_sha256\\\":\\\"396a713cedc053e7e6f48606d04ef00e914a0f6d7f91ba996b3ff54b0a2cc647\\\",\\\"scope\\\":\\\"source root including Git metadata; symlink targets not read\\\"},\\\"originals\\\":{\\\"unchanged\\\":true,\\\"sha256\\\":{\\\"tests/decoder.test.mjs\\\":\\\"775e7b3a602145b4219a38c5f406b8d911ed73b53f8fee8bc5901f79963bc2ca\\\",\\\"decoder.mjs\\\":\\\"64063aa4d891788b48f44e5ad46bbd175dfd07960b3afb161ac609d1dcab49c5\\\",\\\"notes.txt\\\":\\\"222b3c2d66a1586edc5756f0151cb9c87fb9824cc0d0dcb0f2f581aed968a7c1\\\"},\\\"modes\\\":{\\\"tests/decoder.test.mjs\\\":420,\\\"decoder.mjs\\\":420,\\\"notes.txt\\\":420},\\\"watch_only\\\":[\\\"notes.txt\\\"]},\\\"comparison_copies_removed\\\":true}\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c010-49e0-7531-a37d-0fc23a24a7c7",
+            "create_time": 1789928708.017706
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "b758ca0c088bb1e8ab531ed925e814758239ea0002ae20946849bd1e28e01e0d",
+      "record": {
+        "timestamp": "2026-09-20T18:25:15.717Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05fc3b6e0e7e0a63016ab0250a767487d0b75ea0219ce48a3f",
+          "status": "completed",
+          "call_id": "call_jgjltBtoKoSmY6lAb0n8CEUn",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff --check -- decoder.mjs tests/decoder.test.mjs\\ncheck_exit=$?\\ngit diff -- decoder.mjs tests/decoder.test.mjs\\ndiff_exit=$?\\nGIT_OPTIONAL_LOCKS=0 git status --short --untracked-files=all\\nstatus_exit=$?\\nprintf 'diff_check_exit=%s diff_exit=%s status_exit=%s\\\\n' \\\"$check_exit\\\" \\\"$diff_exit\\\" \\\"$status_exit\\\"\",\"max_output_tokens\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c010-49e0-7531-a37d-0fc23a24a7c7",
+            "create_time": 1789928710.349683
+          }
+        }
+      }
+    },
+    {
+      "line": 36,
+      "line_sha256": "674d6ac44f806365e5c86031991bc8a26c0ec17602bf13ae62b135e99525e232",
+      "record": {
+        "timestamp": "2026-09-20T18:25:15.856Z",
+        "ordinal": 35,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c010-b650-7221-afbb-ce77fb64eb84",
+          "call_id": "call_jgjltBtoKoSmY6lAb0n8CEUn",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"22ee4e\",\"wall_time_seconds\":0.000001792,\"exit_code\":0,\"original_token_count\":118,\"output\":\"?? .agents/skills/receipt/SKILL.md\\n?? .agents/skills/receipt/agents/openai.yaml\\n?? .agents/skills/receipt/references/comparison-details.md\\n?? .agents/skills/receipt/references/existing-fix.md\\n?? .agents/skills/receipt/references/native-preservation.md\\n?? .agents/skills/receipt/references/node-comparison.md\\n?? .agents/skills/receipt/scripts/compare.py\\n?? .agents/skills/receipt/scripts/preserve.py\\n?? tests/decoder.test.mjs\\ndiff_check_exit=0 diff_exit=0 status_exit=0\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c010-49e0-7531-a37d-0fc23a24a7c7",
+            "create_time": 1789928715.856114
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

@@ -1,0 +1,119 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "node-decoder-cjs-working",
+    "skill": "receipt",
+    "arm": "baseline",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "36bc8c44ffbbb459790fa2d62eae9b9c8e3a4e63",
+    "skill_sha256": null,
+    "skill_resources_sha256": null,
+    "elapsed_seconds": 66.886,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 66396,
+      "cached_input_tokens": 55552,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1951,
+      "reasoning_output_tokens": 77
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Verify the existing fix in decoder.cjs, comparing HEAD and the current unstaged working-tree implementation in isolated\ncopies using the identical current tests/decoder.test.mjs. The contract is a\ntwo-byte unsigned big-endian byte length followed by arbitrary binary payload.\npush must retain incomplete frames across chunks, emit every complete frame in\norder and support zero-length payloads; empty input alone emits no new frame.\nRun all four current native tests for both versions and report their own exits,\nidentities and actual assertions, distinguishing setup errors from a reproduced\ndefect. Identify source revisions (or working-tree byte identity), confirm the\ntest-bound module's reported origin lies in its corresponding copy within that\nnative process, and explain the mechanism supported by the observed results.\nFollow AGENTS.md: preserve original files/modes and Git state, remove all scratch,\ndo not change code/tests or install anything. Missing evidence remains unknown.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {},
+    "installed_resources_after": {},
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 289,
+      "mode": 420,
+      "sha256": "daae5473ab59dfea24ed1caa6136d55ff22eb40f6fc81f2d6a192312105c0e66",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    },
+    "initial_tree": "772758fb93eee1df2e338e195008dcfef853f54a",
+    "initial_working_files": {
+      "tests/decoder.test.mjs": "ade3786e4445be58b52660d172d2a73c00ae55a99b646862985ad6e576a82afb",
+      "decoder.cjs": "80e0b073fe75fe684f55293b3f895f56fba91453d743c2685b60b39b478c65a1"
+    }
+  },
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "node-decoder-esm-committed",
+    "skill": "receipt",
+    "arm": "baseline",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "deaa42d06ba5a5ea476db830993d3115555d6f01",
+    "skill_sha256": null,
+    "skill_resources_sha256": null,
+    "elapsed_seconds": 60.264,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 66188,
+      "cached_input_tokens": 55552,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1737,
+      "reasoning_output_tokens": 79
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Verify the existing fix in decoder.mjs, comparing HEAD^ and HEAD in isolated\ncopies using the identical current tests/decoder.test.mjs. The contract is a\ntwo-byte unsigned big-endian byte length followed by arbitrary binary payload.\npush must retain incomplete frames across chunks, emit every complete frame in\norder and support zero-length payloads; empty input alone emits no new frame.\nRun all four current native tests for both versions and report their own exits,\nidentities and actual assertions, distinguishing setup errors from a reproduced\ndefect. Identify source revisions (or working-tree byte identity), confirm the\ntest-bound module's reported origin lies in its corresponding copy within that\nnative process, and explain the mechanism supported by the observed results.\nFollow AGENTS.md: preserve original files/modes and Git state, remove all scratch,\ndo not change code/tests or install anything. Missing evidence remains unknown.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {},
+    "installed_resources_after": {},
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 289,
+      "mode": 420,
+      "sha256": "374b478d8d2df5dd3e6b6aa267aa4cded89cc38d7b57bcbb5f637e517932e884",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    },
+    "initial_tree": "bf9d6d8a2bd668a731601164e72beb71f2024328",
+    "initial_working_files": {
+      "tests/decoder.test.mjs": "775e7b3a602145b4219a38c5f406b8d911ed73b53f8fee8bc5901f79963bc2ca"
+    }
+  }
+]

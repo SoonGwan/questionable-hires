@@ -1,0 +1,33 @@
+diff --git a/tests/decoder.test.mjs b/tests/decoder.test.mjs
+new file mode 100644
+index 0000000..fa618f7
+--- /dev/null
++++ b/tests/decoder.test.mjs
+@@ -0,0 +1,27 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { fileURLToPath } from 'node:url';
++import * as component from '../decoder.mjs';
++console.log('ACTUAL_MODULE ' + JSON.stringify({path:fileURLToPath(component.origin), pid:process.pid}));
++const encode = body => { const prefix = Buffer.alloc(2); prefix.writeUInt16BE(body.length); return Buffer.concat([prefix, body]); };
++const hex = frames => frames.map(frame => frame.toString('hex'));
++test('split header', () => {
++  const d = new component.Decoder(), frame = encode(Buffer.from('hi'));
++  assert.deepEqual(hex(d.push(frame.subarray(0, 1))), []);
++  assert.deepEqual(hex(d.push(frame.subarray(1))), ['6869']);
++});
++test('split binary payload', () => {
++  const d = new component.Decoder(), frame = encode(Buffer.from([0, 255, 13, 10]));
++  assert.deepEqual(hex(d.push(frame.subarray(0, 3))), []);
++  assert.deepEqual(hex(d.push(frame.subarray(3))), ['00ff0d0a']);
++});
++test('coalesced frames', () => {
++  const d = new component.Decoder();
++  assert.deepEqual(hex(d.push(Buffer.concat([encode(Buffer.from('a')), encode(Buffer.from('bc'))]))), ['61', '6263']);
++});
++test('empty frame and empty input', () => {
++  const d = new component.Decoder();
++  assert.deepEqual(hex(d.push(Buffer.alloc(0))), []);
++  assert.deepEqual(hex(d.push(encode(Buffer.alloc(0)))), ['']);
++  assert.deepEqual(hex(d.push(Buffer.alloc(0))), []);
++});
