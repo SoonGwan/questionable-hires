@@ -9,7 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Node guide transfer prepared — 2026-09-21, resources `fcd523c` / `107a0cf`
+## Node guide transfer launched — 2026-09-21, launch `8212a19`
+
+The frozen six-cell schedule is running. Plain-task baseline and prior completed
+at 66,234 / 94,602 total recorded tokens and 53.816 / 66.308 seconds respectively;
+current is in progress at this checkpoint. Original records are retained privately.
+The baseline's five criteria were reviewed against original evidence; remaining
+reviews and comparisons are pending. These are in-flight observations, not gains.
+No chart, featured pointer or release-readiness claim changes.
+
+한국어: 고정한 비교를 실행 중이며 첫 두 조건의 원본 기록을 보존했다. 현재
+수정본 실행과 전체 검토가 남아 있어 아직 개선률이나 배포 준비 완료를 주장하지 않는다.
+
+## Node guide transfer prepared — historical, 2026-09-21, resources `fcd523c` / `107a0cf`
 
 [Frozen protocol](RECEIPT-NODE-STARTUP-01-PROTOCOL.md) schedules six serial cells
 over the two startup tasks, comparing baseline/prior/current. The resource diff
