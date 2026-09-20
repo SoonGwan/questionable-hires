@@ -9,7 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## HTTPX upload diagnosis comparison prepared — 2026-09-21, resource `9c03f56`
+## HTTPX upload diagnosis executed; review pending — 2026-09-21, launch `026f532`
+
+Both frozen sessions completed without timeout or account-limit stop; original
+sessions/tool records, usage and exposure profiles are retained privately under
+`benchmarks/local-runs/httpx-upload-replay-01`. CLI counters record skill **104,299
+tokens / 81.269 seconds**, baseline **102,825 / 75.652**. Both answers describe
+actual four-path reproduction, but native evidence, scope and capture review are
+still pending; completion is not yet a criterion-success judgment. No performance
+win is established and no production skill or featured graph changes.
+
+한국어: 두 실행이 끝났으며 원본 기록을 보존했다. 기록된 비용은 스킬 쪽이
+더 컸고, 실제 검증·파일 보존·출력 대조를 마치기 전에는 성공 판정을 확정하지 않는다.
+
+## HTTPX upload diagnosis comparison prepared — historical pre-run, 2026-09-21, resource `9c03f56`
 
 [Frozen paired protocol](HTTPX-UPLOAD-REPLAY-01-PROTOCOL.md) compares current
 Exorcist and baseline on the actual multipart/redirect boundary, five explicit
