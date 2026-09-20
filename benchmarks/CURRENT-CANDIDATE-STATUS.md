@@ -9,6 +9,29 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Component probe entry termination — 2026-09-21, parent `8804ee4`
+
+The optional Mother-in-law component probe now races controlled fetch entry against
+completion of the component call. A return, exception or cancellation before entry
+produces immediate incomplete evidence with its reason instead of waiting for the
+global timeout and losing the cause. Cached/short-circuit paths are not classified
+as behavioral failures; use project-specific checks for unsupported interfaces.
+Owned request and queue-wait tasks are cleaned on incomplete execution or timeout.
+
+Before the change, five of six new regression checks errored: four async checks
+hit their 0.5-second outer deadlines and the CLI exceeded its two-second deadline
+with the default five-second probe timeout. After the change, all seven new checks
+and 19 existing component checks pass: **26 tests, 0.810 seconds, Python3.11.16**.
+The additional check covers cooperative setup before fetch; 11 native fixture
+checks also pass. The six-check version plus 19 existing checks passes Python3.9.
+These are author-side correctness checks, not model runs or a whole-task speedup.
+No entrypoint expansion, historical result change or featured chart promotion.
+
+한국어: 선택형 상호작용 도구가 요청 진입 전 종료·예외·취소를 즉시 미완료로
+보고하도록 수정했다. 캐시 반환 같은 지원 밖 동작을 제품 결함으로 단정하지 않는다.
+정상·지연 진입과 정리 동작을 포함해 관련 26개 검사가 통과했다. 불필요한 타임아웃과
+원인 손실을 없앤 도구 수정이며, 모델 전체 성능이나 토큰 절감 실증은 아니다.
+
 ## Existing audit support clarified — 2026-09-21, parent `730df4c`
 
 [Author-side native support validation](PUBLICATION-AUDIT-SUPPORT-01.md) exercises

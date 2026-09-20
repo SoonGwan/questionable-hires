@@ -35,7 +35,10 @@ rendered-UI or general state-machine coverage. Do not enable it when clearing or
 displaying intermediate results is permitted. Default behavior is unchanged.
 
 Exit 1 means a checked behavior failed, 0 means targeted checks passed, and 2
-warrants inspection. `--error-state ATTRIBUTE` requires JSON-serializable state
+warrants inspection. Returning, raising or cancelling before controlled fetch entry
+produces incomplete evidence immediately, with the reason; it is not a behavioral
+failure or proof that a cached/short-circuiting component is broken. Such paths need
+project-specific checks. `--error-state ATTRIBUTE` requires JSON-serializable state
 where falsy means clear and truthy means displayed. It checks errors on success,
 current failure, recovery and stale failure. Failure output retains the failing
 checkpoint. The tested layer is the local async component, not rendered UI.

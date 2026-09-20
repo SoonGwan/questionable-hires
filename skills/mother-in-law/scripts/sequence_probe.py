@@ -50,9 +50,26 @@ async def sequence(factory, method_name, state_name, queries, order, failure=Non
 
     async def start(query):
         method = getattr(target, method_name)
-        tasks.append(asyncio.create_task(method(query, fetch)))
-        if await entered.get() != query:
-            raise AssertionError('submission order changed')
+        task = asyncio.create_task(method(query, fetch))
+        tasks.append(task)
+        entry = asyncio.create_task(entered.get())
+        try:
+            await asyncio.wait((task, entry), return_when=asyncio.FIRST_COMPLETED)
+            if not entry.done():
+                if task.cancelled():
+                    outcome = 'was cancelled'
+                else:
+                    error = task.exception()
+                    outcome = ('raised ' + type(error).__name__ + ': ' + str(error)
+                               if error is not None else 'returned')
+                raise ValueError(f'{method_name}({query!r}) {outcome} before controlled fetch entry; '
+                                 'this probe cannot establish the requested sequence')
+            if entry.result() != query:
+                raise AssertionError('submission order changed')
+        finally:
+            if not entry.done():
+                entry.cancel()
+            await asyncio.gather(entry, return_exceptions=True)
 
     try:
         if retain_while_pending:
