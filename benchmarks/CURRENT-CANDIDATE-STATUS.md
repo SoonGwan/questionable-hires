@@ -9,7 +9,25 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Receipt selection native preflight — 2026-09-15, parent `ca3da48`
+## Receipt selection original evidence reviewed — 2026-09-20, launch `627c830`
+
+[All six original sessions and review](results/receipt-selection-01/README.md)
+satisfy the frozen task criteria. Candidate `ca3da48` versus original `6cf9fb1`
+uses 25.9% fewer tokens with existing native support, but 19.6% more without it.
+Summed token/time differences are −0.84%/−12.98%; candidate still uses 55.9%
+more tokens than baseline. One authored scenario, two support conditions, n=1,
+fixed serial order/shared host: **no broad performance claim or chart promotion**.
+Original stored responses recover four incomplete CLI captures without reruns.
+Next capability investigation: direct loaded-code provenance in helper output,
+motivated by observed post-execution implementation reads; not an instruction to
+skip justified inspection or a claim that this alone will reduce model cost.
+
+한국어: 원본 6세션 검토·증거 공개를 완료했다. 수정본은 한 조건에서는 개선됐지만
+다른 조건에서는 토큰이 늘었고, 무스킬보다 전체 토큰이 많았다. 내부 코드를 읽어
+확인하던 실행 출처 정보를 결과에서 직접 제공할 수 있는지 검토한다. 8개 역할의
+실제 성능 목표는 아직 미달이며 대표 그래프는 그대로다.
+
+## Historical Receipt selection native preflight — 2026-09-15, parent `ca3da48`
 
 [New authored matched workflow pair](RECEIPT-SELECTION-01-PREFLIGHT.md) varies
 existing native comparison support while retaining the same allocation history,
@@ -23,7 +41,7 @@ or a replacement for broad eight-role and real-source evidence.
 하나의 업무 시나리오를 짝지은 준비 단계이며 모델 성능이나 실제 프로젝트 성과는
 아직 아니다. 다음 실행 전 조건과 순서를 고정한다.
 
-## Receipt tool-selection guidance — 2026-09-15, parent `6cf9fb1`
+## Historical Receipt tool-selection guidance — 2026-09-15, parent `6cf9fb1`
 
 [Selection-rule revision](RECEIPT-TOOL-SELECTION-01.md) removes the assumption
 that every supported Python comparison should use the helper. Reuse an adequate

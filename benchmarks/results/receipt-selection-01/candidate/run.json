@@ -1,0 +1,110 @@
+{
+  "revision": "0c4ba15e7f7123087cede39bc7b92a04acbd0b9d",
+  "resource_revisions": {
+    "original": "6cf9fb10feb72d7ef59cb057f5447a5d470e9269",
+    "candidate": "ca3da489fb93c6432aeff1594ed244997b505987"
+  },
+  "prepared_at": "2026-09-15T01:01:34.924997+00:00",
+  "cases": [
+    {
+      "id": "allocation-native-present",
+      "skill": "receipt",
+      "task": "Verify the latest committed allocation fix against its parent. This is verification only, not permission to edit production code.\nCompare only allocation.py from HEAD^ and HEAD under the same current test_allocation.py and Python runtime. Run the complete five-test native unittest suite on each version, retain actual failure values and each test process exit, and explain which behaviors the change fixes versus the passing controls. Identify full revisions and the copied allocation module in each native test process.\nUse existing project facilities when useful, or construct the missing comparison. No particular helper is required. Work only inside this project using Python 3 and standard library; no installs, external discovery, network, commits or global environment changes. Put owned scratch inside this project and remove it before finishing. Preserve all original files/modes, user changes and installed skill resources; retain no added report or harness. Do not change assertions or substitute a rewritten implementation. Captured evidence is sufficient.\n",
+      "history": [
+        {
+          "message": "Add allocation service and native checks",
+          "files": {
+            "allocation.py": "def reserve(stock, lines):\n    \"\"\"Return remaining stock; reject invalid/insufficient orders atomically.\"\"\"\n    totals = {}\n    for sku, quantity in lines:\n        if quantity <= 0 or sku not in stock:\n            raise ValueError(\"invalid order\")\n        totals[sku] = quantity\n    if any(quantity > stock[sku] for sku, quantity in totals.items()):\n        raise ValueError(\"insufficient stock\")\n    result = dict(stock)\n    for sku, quantity in totals.items():\n        result[sku] -= quantity\n    return result\n",
+            "test_allocation.py": "import unittest\nfrom allocation import reserve\n\nclass AllocationTests(unittest.TestCase):\n    def test_duplicate_lines_accumulate(self):\n        stock = {\"a\": 8, \"b\": 4}\n        self.assertEqual(reserve(stock, [(\"a\", 2), (\"a\", 3)]), {\"a\": 3, \"b\": 4})\n        self.assertEqual(stock, {\"a\": 8, \"b\": 4})\n\n    def test_aggregate_shortage_is_atomic(self):\n        stock = {\"a\": 8, \"b\": 4}\n        with self.assertRaisesRegex(ValueError, \"insufficient stock\"):\n            reserve(stock, [(\"b\", 1), (\"a\", 5), (\"a\", 4)])\n        self.assertEqual(stock, {\"a\": 8, \"b\": 4})\n\n    def test_distinct_lines_control(self):\n        self.assertEqual(reserve({\"a\": 8, \"b\": 4}, [(\"a\", 2), (\"b\", 3)]), {\"a\": 6, \"b\": 1})\n\n    def test_empty_order_control(self):\n        stock = {\"a\": 8}\n        result = reserve(stock, [])\n        self.assertEqual(result, stock)\n        self.assertIsNot(result, stock)\n\n    def test_invalid_order_control(self):\n        for lines in [[(\"a\", 0)], [(\"a\", -1)], [(\"missing\", 1)]]:\n            with self.subTest(lines=lines), self.assertRaisesRegex(ValueError, \"invalid order\"):\n                reserve({\"a\": 8}, lines)\n",
+            "README.md": "# Allocation service\n\n`reserve` returns a new stock mapping. Duplicate SKU lines accumulate;\ninvalid or insufficient orders raise ValueError without mutating input.\nStock maps SKU strings to nonnegative integer counts. Lines are a finite list\nof (SKU string, integer quantity) pairs; nonpositive quantities and unknown SKUs\nare invalid. Empty orders are valid. Other input types are outside this contract.\nNative suite: `python3 -B -m unittest -v test_allocation`. Standard library only.\n\nExisting comparison command: `python3 -B tools/compare_allocation.py HEAD^ HEAD`.\nIt freezes current tests, loads historical implementations in project-local copies,\nreports native exits/imports, checks preservation and removes its copies.\n",
+            "tools/compare_allocation.py": "\"\"\"Project comparison: identical current tests against two allocation revisions.\n\nRun from project root: python3 -B tools/compare_allocation.py BEFORE AFTER\nExit 0 means captured observations, not proof of correctness. No installations.\n\"\"\"\nimport hashlib\nimport json\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport tempfile\n\ndef inventory(root):\n    return {str(p.relative_to(root)): (hashlib.sha256(p.read_bytes()).hexdigest(), p.stat().st_mode & 0o777)\n            for p in root.rglob(\"*\") if p.is_file() and \".git\" not in p.relative_to(root).parts}\n\nroot = Path.cwd()\noriginal = inventory(root)\nrevisions = {label: subprocess.check_output(\n    [\"git\", \"rev-parse\", revision + \"^{commit}\"], text=True).strip()\n    for label, revision in zip((\"before\", \"after\"), sys.argv[1:])}\nif len(revisions) != 2 or len(sys.argv) != 3:\n    raise SystemExit(\"Usage: compare_allocation.py BEFORE AFTER\")\nchecks = {}\nbootstrap = \"\"\"import allocation, pathlib, sys, unittest\nroot = pathlib.Path.cwd().resolve()\nassert pathlib.Path(allocation.__file__).resolve() == root / 'allocation.py'\nprint('NATIVE COPIED IMPORT:', allocation.__file__, flush=True)\nunittest.main(module=None, argv=['unittest', '-v', 'test_allocation'])\n\"\"\"\nwith tempfile.TemporaryDirectory(prefix=\".allocation-compare-\", dir=root) as temporary:\n    for label, revision in revisions.items():\n        copy = Path(temporary)/label\n        copy.mkdir()\n        (copy/\"test_allocation.py\").write_bytes((root/\"test_allocation.py\").read_bytes())\n        implementation = subprocess.check_output([\"git\", \"show\", revision + \":allocation.py\"])\n        (copy/\"allocation.py\").write_bytes(implementation)\n        process = subprocess.run([sys.executable, \"-B\", \"-c\", bootstrap], cwd=copy,\n                                 capture_output=True, text=True, timeout=15)\n        checks[label] = dict(revision=revision, implementation_sha256=hashlib.sha256(implementation).hexdigest(),\n                             exit_code=process.returncode, output=process.stdout+process.stderr)\nunchanged = inventory(root) == original\nreport = dict(checks=checks, originals_unchanged=unchanged,\n              comparison_copies_removed=not Path(temporary).exists(),\n              current_tests_sha256=hashlib.sha256((root/\"test_allocation.py\").read_bytes()).hexdigest())\nprint(json.dumps(report))\nif not unchanged:\n    raise SystemExit(2)\n"
+          }
+        },
+        {
+          "message": "Accumulate repeated order lines",
+          "files": {
+            "allocation.py": "def reserve(stock, lines):\n    \"\"\"Return remaining stock; reject invalid/insufficient orders atomically.\"\"\"\n    totals = {}\n    for sku, quantity in lines:\n        if quantity <= 0 or sku not in stock:\n            raise ValueError(\"invalid order\")\n        totals[sku] = totals.get(sku, 0) + quantity\n    if any(quantity > stock[sku] for sku, quantity in totals.items()):\n        raise ValueError(\"insufficient stock\")\n    result = dict(stock)\n    for sku, quantity in totals.items():\n        result[sku] -= quantity\n    return result\n"
+          }
+        }
+      ],
+      "criteria": [
+        "Same five native tests and current inputs on the two actual allocation revisions.",
+        "Actual before/after defect values and controls with native process exits.",
+        "Full revisions and same-process copy-local allocation import evidence.",
+        "Originals/resources preserved; owned scratch project-local and removed; scope respected."
+      ]
+    },
+    {
+      "id": "allocation-native-absent",
+      "skill": "receipt",
+      "task": "Verify the latest committed allocation fix against its parent. This is verification only, not permission to edit production code.\nCompare only allocation.py from HEAD^ and HEAD under the same current test_allocation.py and Python runtime. Run the complete five-test native unittest suite on each version, retain actual failure values and each test process exit, and explain which behaviors the change fixes versus the passing controls. Identify full revisions and the copied allocation module in each native test process.\nUse existing project facilities when useful, or construct the missing comparison. No particular helper is required. Work only inside this project using Python 3 and standard library; no installs, external discovery, network, commits or global environment changes. Put owned scratch inside this project and remove it before finishing. Preserve all original files/modes, user changes and installed skill resources; retain no added report or harness. Do not change assertions or substitute a rewritten implementation. Captured evidence is sufficient.\n",
+      "history": [
+        {
+          "message": "Add allocation service and native checks",
+          "files": {
+            "allocation.py": "def reserve(stock, lines):\n    \"\"\"Return remaining stock; reject invalid/insufficient orders atomically.\"\"\"\n    totals = {}\n    for sku, quantity in lines:\n        if quantity <= 0 or sku not in stock:\n            raise ValueError(\"invalid order\")\n        totals[sku] = quantity\n    if any(quantity > stock[sku] for sku, quantity in totals.items()):\n        raise ValueError(\"insufficient stock\")\n    result = dict(stock)\n    for sku, quantity in totals.items():\n        result[sku] -= quantity\n    return result\n",
+            "test_allocation.py": "import unittest\nfrom allocation import reserve\n\nclass AllocationTests(unittest.TestCase):\n    def test_duplicate_lines_accumulate(self):\n        stock = {\"a\": 8, \"b\": 4}\n        self.assertEqual(reserve(stock, [(\"a\", 2), (\"a\", 3)]), {\"a\": 3, \"b\": 4})\n        self.assertEqual(stock, {\"a\": 8, \"b\": 4})\n\n    def test_aggregate_shortage_is_atomic(self):\n        stock = {\"a\": 8, \"b\": 4}\n        with self.assertRaisesRegex(ValueError, \"insufficient stock\"):\n            reserve(stock, [(\"b\", 1), (\"a\", 5), (\"a\", 4)])\n        self.assertEqual(stock, {\"a\": 8, \"b\": 4})\n\n    def test_distinct_lines_control(self):\n        self.assertEqual(reserve({\"a\": 8, \"b\": 4}, [(\"a\", 2), (\"b\", 3)]), {\"a\": 6, \"b\": 1})\n\n    def test_empty_order_control(self):\n        stock = {\"a\": 8}\n        result = reserve(stock, [])\n        self.assertEqual(result, stock)\n        self.assertIsNot(result, stock)\n\n    def test_invalid_order_control(self):\n        for lines in [[(\"a\", 0)], [(\"a\", -1)], [(\"missing\", 1)]]:\n            with self.subTest(lines=lines), self.assertRaisesRegex(ValueError, \"invalid order\"):\n                reserve({\"a\": 8}, lines)\n",
+            "README.md": "# Allocation service\n\n`reserve` returns a new stock mapping. Duplicate SKU lines accumulate;\ninvalid or insufficient orders raise ValueError without mutating input.\nStock maps SKU strings to nonnegative integer counts. Lines are a finite list\nof (SKU string, integer quantity) pairs; nonpositive quantities and unknown SKUs\nare invalid. Empty orders are valid. Other input types are outside this contract.\nNative suite: `python3 -B -m unittest -v test_allocation`. Standard library only.\n"
+          }
+        },
+        {
+          "message": "Accumulate repeated order lines",
+          "files": {
+            "allocation.py": "def reserve(stock, lines):\n    \"\"\"Return remaining stock; reject invalid/insufficient orders atomically.\"\"\"\n    totals = {}\n    for sku, quantity in lines:\n        if quantity <= 0 or sku not in stock:\n            raise ValueError(\"invalid order\")\n        totals[sku] = totals.get(sku, 0) + quantity\n    if any(quantity > stock[sku] for sku, quantity in totals.items()):\n        raise ValueError(\"insufficient stock\")\n    result = dict(stock)\n    for sku, quantity in totals.items():\n        result[sku] -= quantity\n    return result\n"
+          }
+        }
+      ],
+      "criteria": [
+        "Same five native tests and current inputs on the two actual allocation revisions.",
+        "Actual before/after defect values and controls with native process exits.",
+        "Full revisions and same-process copy-local allocation import evidence.",
+        "Originals/resources preserved; owned scratch project-local and removed; scope respected."
+      ]
+    }
+  ],
+  "schedule": [
+    {
+      "case": "allocation-native-present",
+      "condition": "baseline"
+    },
+    {
+      "case": "allocation-native-present",
+      "condition": "original"
+    },
+    {
+      "case": "allocation-native-present",
+      "condition": "candidate"
+    },
+    {
+      "case": "allocation-native-absent",
+      "condition": "candidate"
+    },
+    {
+      "case": "allocation-native-absent",
+      "condition": "original"
+    },
+    {
+      "case": "allocation-native-absent",
+      "condition": "baseline"
+    }
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "repeats": 1,
+  "jobs": 1,
+  "timeout_seconds": 360,
+  "session_persistence_requested": true,
+  "identities": {
+    "benchmarks/receipt_selection_cases.py": "d4b95cf95423f7f6035d596d44027b84e7458de23b49eddaf4377085fee48d50",
+    "benchmarks/run_receipt_selection_01.py": "3ea9e8278779b3f758ace1e3b772992da54fdb6aed31135aab6b7852ed88dd9b",
+    "benchmarks/RECEIPT-SELECTION-01-PROTOCOL.md": "584ade52094b9e310944be914581dd6ff0ef52d44ace54e09cf334bbe96ba105",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "tests/test_receipt_selection_cases.py": "4e189dc984e94dd1cbcd8531e1a8f880b36180aed2c127cd1cc2bc2fe3cf68c7"
+  },
+  "native_preflight": {
+    "exit_code": 0,
+    "output": "test_matched_pair_varies_support_not_implementation_or_assertions (test_receipt_selection_cases.ReceiptSelectionCasesTests) ... ok\ntest_native_and_helper_reject_real_defects_and_pass_same_fixed_tests (test_receipt_selection_cases.ReceiptSelectionCasesTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.829s\n\nOK\n"
+  },
+  "completed_cells": [],
+  "condition": "candidate"
+}

@@ -1,0 +1,307 @@
+{
+  "session_id": "01a0a298-10d3-79c1-9197-1197a1b372c6",
+  "source_bytes": 216218,
+  "source_sha256": "93d17b9a4410a116c412ebe62af0a730b189ed35790b8eda7cc4465659cfb6d6",
+  "source_lines": 56,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "4086e231d0fd6bb897d139437ec89f3238e6b6fa6a66ce9a746b57a4c2f05cbc",
+      "record": {
+        "timestamp": "2026-09-15T01:04:37.515Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0828f296e01f5cbd016aa899a3c46087d0bac54a94282f2001",
+          "status": "completed",
+          "call_id": "call_HtAOeGHK5wHaf5P8mG9dC7oc",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '! .git' -g '!.git/**'; git status --porcelain=v1; cat .agents/skills/receipt/SKILL.md\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434273.287705
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "e01b0f41ff57b517d15adf64b551a859963787f97471cf632f43b897f66b0fc7",
+      "record": {
+        "timestamp": "2026-09-15T01:04:37.670Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a298-2f26-70b1-8f22-18140f5e5a00",
+          "call_id": "call_HtAOeGHK5wHaf5P8mG9dC7oc",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"8cfc1e\",\"wall_time_seconds\":0.000004833,\"exit_code\":0,\"original_token_count\":667,\"output\":\"<WORKSPACE>\\nallocation.py\\nREADME.md\\ntest_allocation.py\\n.agents/skills/receipt/SKILL.md\\n.agents/skills/receipt/scripts/compare.py\\n.agents/skills/receipt/agents/openai.yaml\\n.agents/skills/receipt/references/existing-fix.md\\n.agents/skills/receipt/references/comparison-details.md\\n?? .agents/\\n---\\nname: receipt\\ndescription: Verify that a requested bug fix changes observable behavior with a failing-before, passing-after reproduction and honest execution evidence.\\n---\\n\\n# Receipt\\n\\n> You fixed it? Show me the receipt.\\n\\nReuse supplied guidance; discover missing instructions only within authorized roots, never through an out-of-scope ancestor sweep. Report inaccessible evidence instead of broadening access.\\n\\nFor a current bug, select a regression on the actual affected path using the documented runner. Reuse valid before evidence; otherwise observe the defect-specific failure, implement the requested fix, then rerun unchanged assertions/inputs. Preserve neighboring behavior and required coverage. Inspect history only for unresolved behavior or implementation.\\n\\nFor an already-present fix, compare isolated versions with the same current assertions/inputs and compatible runtime; identify the code loaded by the test process. Reuse an adequate project-native comparison instead of rebuilding it. The optional [Python comparison helper](references/existing-fix.md) supplies copying, import checks and cleanup when those are missing. Choose by the required evidence and setup work, not merely by language support. Don't reverse patches in the user's working tree.\\n\\nA required suite running that regression with matching inputs/runtime supplies after evidence; don't repeat it separately. Skipped, undiscovered or differently configured tests don't qualify. Changed relevant inputs invalidate reused results.\\n\\nBatch final checks in one shell call, adapting the runner and paths:\\n\\n```sh\\npython3 -B -m unittest -v && git diff --check -- app.py test_app.py && git diff -- app.py test_app.py\\n```\\n\\n`&&` leaves later checks unrun after failure. If all must run, retain each exit explicitly, not just the shell's final status. Review untracked files separately; `git diff` omits them.\\n\\nSetup failures aren't defect reproduction; mocks don't prove unobserved effects. Preserve user changes and scope; verification alone authorizes neither implementation nor publication.\\n\\nReport the reviewed change, decisive before/after observations and commands, applicable revision identities and limits. Stop when the requested outcome and required checks are verified; no separate dossier or unrelated green checks.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434277.670956
+          }
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "ccda67124c69e460b018e84d8d8777f32b1f6c214d20d21056acdd8a143548f6",
+      "record": {
+        "timestamp": "2026-09-15T01:04:41.570Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0828f296e01f5cbd016aa899a7c95087d08dbd646a31e18014",
+          "status": "completed",
+          "call_id": "call_slRLAXCbyXCgFveWhIOGCk5I",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat README.md allocation.py test_allocation.py; git rev-parse HEAD^ HEAD; git diff HEAD^ HEAD -- allocation.py; cat .agents/skills/receipt/references/existing-fix.md\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434278.144938
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "ab30233354a43f042353e058457a9c1a6c2d5eb0fd07bf573ee804b2973bd719",
+      "record": {
+        "timestamp": "2026-09-15T01:04:41.670Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a298-3ec6-79a0-a430-cd23cb37dd28",
+          "call_id": "call_slRLAXCbyXCgFveWhIOGCk5I",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"945522\",\"wall_time_seconds\":0.000001583,\"exit_code\":0,\"original_token_count\":2400,\"output\":\"# Allocation service\\n\\n`reserve` returns a new stock mapping. Duplicate SKU lines accumulate;\\ninvalid or insufficient orders raise ValueError without mutating input.\\nStock maps SKU strings to nonnegative integer counts. Lines are a finite list\\nof (SKU string, integer quantity) pairs; nonpositive quantities and unknown SKUs\\nare invalid. Empty orders are valid. Other input types are outside this contract.\\nNative suite: `python3 -B -m unittest -v test_allocation`. Standard library only.\\ndef reserve(stock, lines):\\n    \\\"\\\"\\\"Return remaining stock; reject invalid/insufficient orders atomically.\\\"\\\"\\\"\\n    totals = {}\\n    for sku, quantity in lines:\\n        if quantity <= 0 or sku not in stock:\\n            raise ValueError(\\\"invalid order\\\")\\n        totals[sku] = totals.get(sku, 0) + quantity\\n    if any(quantity > stock[sku] for sku, quantity in totals.items()):\\n        raise ValueError(\\\"insufficient stock\\\")\\n    result = dict(stock)\\n    for sku, quantity in totals.items():\\n        result[sku] -= quantity\\n    return result\\nimport unittest\\nfrom allocation import reserve\\n\\nclass AllocationTests(unittest.TestCase):\\n    def test_duplicate_lines_accumulate(self):\\n        stock = {\\\"a\\\": 8, \\\"b\\\": 4}\\n        self.assertEqual(reserve(stock, [(\\\"a\\\", 2), (\\\"a\\\", 3)]), {\\\"a\\\": 3, \\\"b\\\": 4})\\n        self.assertEqual(stock, {\\\"a\\\": 8, \\\"b\\\": 4})\\n\\n    def test_aggregate_shortage_is_atomic(self):\\n        stock = {\\\"a\\\": 8, \\\"b\\\": 4}\\n        with self.assertRaisesRegex(ValueError, \\\"insufficient stock\\\"):\\n            reserve(stock, [(\\\"b\\\", 1), (\\\"a\\\", 5), (\\\"a\\\", 4)])\\n        self.assertEqual(stock, {\\\"a\\\": 8, \\\"b\\\": 4})\\n\\n    def test_distinct_lines_control(self):\\n        self.assertEqual(reserve({\\\"a\\\": 8, \\\"b\\\": 4}, [(\\\"a\\\", 2), (\\\"b\\\", 3)]), {\\\"a\\\": 6, \\\"b\\\": 1})\\n\\n    def test_empty_order_control(self):\\n        stock = {\\\"a\\\": 8}\\n        result = reserve(stock, [])\\n        self.assertEqual(result, stock)\\n        self.assertIsNot(result, stock)\\n\\n    def test_invalid_order_control(self):\\n        for lines in [[(\\\"a\\\", 0)], [(\\\"a\\\", -1)], [(\\\"missing\\\", 1)]]:\\n            with self.subTest(lines=lines), self.assertRaisesRegex(ValueError, \\\"invalid order\\\"):\\n                reserve({\\\"a\\\": 8}, lines)\\nd4e02e4ef3a633cc2ea6070fea6edcc713b89be5\\n794c3f550bfe28216384b6d12c4f9dd10e3648ce\\ndiff --git a/allocation.py b/allocation.py\\nindex 4772fca..50bcbef 100644\\n--- a/allocation.py\\n+++ b/allocation.py\\n@@ -4,7 +4,7 @@ def reserve(stock, lines):\\n     for sku, quantity in lines:\\n         if quantity <= 0 or sku not in stock:\\n             raise ValueError(\\\"invalid order\\\")\\n-        totals[sku] = quantity\\n+        totals[sku] = totals.get(sku, 0) + quantity\\n     if any(quantity > stock[sku] for sku, quantity in totals.items()):\\n         raise ValueError(\\\"insufficient stock\\\")\\n     result = dict(stock)\\n# Receipt for an existing fix\\n\\nCompare isolated implementations with **the same current assertions/inputs** and\\ncomparable dependencies/configuration; reuse valid evidence. Identify loaded\\nrevisions. Setup/old-interface failures are not defect reproduction. Preserve\\nentrypoint scope and stopping rules; do not install dependencies. Retrospective\\ncomparison does not satisfy a requirement to observe failure before editing.\\n\\nSelect support/configuration from actual test imports/inputs. List unresolved\\npaths only; select known directories directly. Selection size is not completeness.\\n\\n## Execute the comparison\\n\\nReuse a project-native comparison that already establishes the required isolation,\\nassertions, loaded code and preservation. The Python helper is an option when its\\ncopying, same-process import checks and cleanup replace missing setup; supporting\\nthe language alone is not a reason to replace an adequate existing runner.\\nNative isolation is also valid, and necessary for unsupported runtimes,\\nadded/deleted implementations or retained copies. Keep the same evidence requirements\\nwhichever path is chosen. Read implementation for a concrete trust, adaptation or\\ndiagnosis question; the CLI recipes below do not require importing the helper API.\\n\\nWhen verification must preserve Git metadata too, use\\n`git --no-optional-locks -c diff.autoRefreshIndex=false` for status/diff review.\\nThis suppresses optional index refresh, not other command/driver side effects;\\nit does not make mutating commands read-only or change persistent Git settings.\\n\\nAdapt **one** example's paths/tests/revisions; HEAD/HEAD^ are placeholders.\\nNeither writes a recipe, commits, stashes nor reverses user patches.\\n\\nCommitted fix:\\n\\n```sh\\npython3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'\\n{\\\"fixed\\\":[\\\"test_parser.py\\\"],\\\"vary\\\":[\\\"parser.py\\\"],\\\"before\\\":\\\"HEAD^\\\",\\\"after\\\":\\\"HEAD\\\",\\\"imports\\\":[\\\"parser\\\"],\\\"runner\\\":\\\"unittest\\\",\\\"tests\\\":[\\\"-v\\\",\\\"test_parser\\\"]}\\nJSON\\n```\\n\\nAlready-present uncommitted fix:\\n\\n```sh\\npython3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'\\n{\\\"fixed\\\":[\\\"test_parser.py\\\"],\\\"vary\\\":[\\\"parser.py\\\"],\\\"before\\\":\\\"HEAD\\\",\\\"after\\\":{\\\"working_tree\\\":true},\\\"imports\\\":[\\\"parser\\\"],\\\"runner\\\":\\\"unittest\\\",\\\"tests\\\":[\\\"-v\\\",\\\"test_parser\\\"]}\\nJSON\\n```\\n\\n- `fixed`: required, permitted current tests/data/config/dependencies, files or\\n  directories including hidden leaves. Frozen once for both copies; leaf hashes\\n  appear in `fixed_sha256`.\\n- `vary`: implementation files, required in both variants. `before`/string `after`\\n  resolve and report full commit IDs; no separate revision lookup is needed.\\n  Working-tree `after` freezes current bytes/modes, **not staged content**;\\n  `revisions.after=null`, `working_tree_after` hashes/modes identify selected files,\\n  not a commit or whole-repository snapshot.\\n- Optional `\\\"watch\\\":[\\\"notes.txt\\\"]`: existing files/directories checked, **not\\n  copied/executed**. `originals` gives selected hashes/modes/unchanged status;\\n  `comparison_copies_removed` gives cleanup. Reuse those selected-file checks.\\n- Optional `\\\"guard_tree\\\":true`: only for requested whole-project preservation\\n  with all reads authorized. Checks Git/ignored entries, bytes/modes and link text\\n  around comparison; changes abort without restoration. It excludes link targets,\\n  timestamps/other metadata, concurrent or restored changes and other commands.\\n  `tree_guard` reports counts/digest; limits are 10,000 entries/20 MB per inventory.\\n  See [guard details](comparison-details.md#preservation-guards) for boundary questions.\\n- Selections must be canonical project-relative, unique and disjoint after\\n  expansion; no root, Git internals, symlinks, empty directories or overlap.\\n  `fixed`/`vary` must be nonempty. Directory traversal: at most 10,000 entries.\\n- `imports` must resolve inside each native test process's copy. Use the project\\n  interpreter (default: launching Python; override `--python` if needed), unittest\\n  or already-installed pytest. Pytest verifies imports after native collection,\\n  before test bodies, preserving configuration and assertion rewriting.\\n  Child temp defaults are inside each copy: do not\\n  redirect global TMPDIR merely to localize checks or other launchers may pollute it.\\n- Optional `\\\"invocation\\\":\\\"module\\\"`: for required `python -B -m unittest ...`,\\n  with `runner: \\\"unittest\\\"` and existing `tests`; no internal adapter needed.\\n  Default is `bootstrap`. Copy-local startup checks imports in the native test\\n  process; inspect `command`, `native_exit_code` and `provenance_ready`.\\n  Conventional existing system/user hooks are preserved. Project-local or unusual\\n  startup customization needs native project setup, not a bypass; read\\n  [startup compatibility](comparison-details.md#native-module-startup) when applicable.\\n- Optional `\\\"import_roots\\\":[\\\"src\\\"]` supports regular source-layout packages.\\n  Select initializers/support too; each root must contain selected files.\\n  Ordered canonical roots precede each copy's root and appear in the result.\\n  No inherited PYTHONPATH, editable install, build hook or installed metadata;\\n  use native project setup when required.\\n\\n## Read the evidence, not just the exit code\\n\\nUse default compact JSON for agent execution; it retains every field and native\\noutput. Reserve `--pretty` for a human-readable JSON request, not extra evidence.\\n\\nCLI 0 means observations collected, **not proof**. Inspect each actual assertion,\\nrequested test identity, before failure/after pass, copied-import evidence,\\n`exit_code`, `timed_out` and `output_truncated`. Help/version output is not execution.\\nSkipped/empty checks do not establish a regression, even with native exit 0.\\nMissing import/startup provenance or check exit 7 means incomplete: CLI 2, no next\\ncomparison. Preserve native errors, not just the wrapper status. See\\n[exit interpretation](comparison-details.md#exit-interpretation) for runner-specific\\ncounts, import errors or early-exit diagnosis.\\n\\nPython 3.9+/POSIX, trusted tests only: **not a sandbox**. Copies are removed;\\n`originals` checks selected bytes/modes, not arbitrary effects or new entries.\\nTest paths/subprocesses can escape; snapshots are not atomic. Guard limitations\\nare detailed in [preservation guards](comparison-details.md#preservation-guards).\\n\\nCopying: shared 20 MB budget; overflow aborts before tests, not a partial comparison.\\nExecution: 30 seconds/check (`--timeout` up to 300), last 12,000 output characters.\\nRequired work must finish in the foreground: remaining process-group members are\\nkilled after runner exit; persistent background jobs are unsupported. Cleanup can\\nwait five more seconds; unconfirmed exit means incomplete, no next comparison.\\nDo not retry automatically while prior work may remain. For budget, output or\\ncleanup questions read [resource/process boundaries](comparison-details.md#resource-and-process-boundaries).\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434281.670378
+          }
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "3530d36a97051bdb48bef8e30dee249f5d97a67a0c1f8e93a27d1e248089b558",
+      "record": {
+        "timestamp": "2026-09-15T01:04:47.351Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0828f296e01f5cbd016aa899ad93f487d0b258330e15390dd3",
+          "status": "completed",
+          "call_id": "call_YQIY8aurAS2kp5kc5XEuSOVZ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"rg -n 'TemporaryDirectory|mkdtemp|tempfile|source|guard_tree' .agents/skills/receipt/scripts/compare.py\",\"max_output_tokens\":2500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434282.656887
+          }
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "cdb0eae90290121f8f51b9ff5e69d29b6e99a128c91e6143edd3f14d746b026d",
+      "record": {
+        "timestamp": "2026-09-15T01:04:47.453Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a298-555d-7961-8448-4e1a86a4d202",
+          "call_id": "call_YQIY8aurAS2kp5kc5XEuSOVZ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"678709\",\"wall_time_seconds\":0.00000325,\"exit_code\":0,\"original_token_count\":268,\"output\":\"18:import tempfile\\n192:        probe = Path(tempfile.mkdtemp(prefix='.receipt-startup-', dir=root))\\n306:    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation'}:\\n308:    if type(recipe.get('guard_tree', False)) is not bool:\\n309:        raise ValueError('guard_tree must be a boolean')\\n340:        raise ValueError('source must be the repository root')\\n425:    guarded = tree_inventory(root) if recipe.get('guard_tree', False) else None\\n427:        with tempfile.TemporaryDirectory(prefix='.receipt-', dir=root) as scratch:\\n458:                scope='source root including Git metadata; symlink targets not read')\\n475:guard_tree (optional boolean): inventory all source entries including Git around\\n477:only when whole-project preservation is requested and all source reads are allowed.\\n499:    parser.add_argument('--source', default='.', help='Git project root (default: current directory)')\\n514:        result = compare(args.source, json.loads(raw), args.python, args.timeout)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434287.453243
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "75739309379cf4f0b82e6baa3e8ed51ac465c871aa35d92e0f8e0df13cf77969",
+      "record": {
+        "timestamp": "2026-09-15T01:04:53.134Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0828f296e01f5cbd016aa899b1b15887d08dff2d0758ee32db",
+          "status": "completed",
+          "call_id": "call_sEvwnKhJRw1rhjtzIue4Xj7E",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B .agents/skills/receipt/scripts/compare.py --source . --spec - <<'JSON'\\n{\\\"fixed\\\":[\\\"test_allocation.py\\\"],\\\"vary\\\":[\\\"allocation.py\\\"],\\\"before\\\":\\\"HEAD^\\\",\\\"after\\\":\\\"HEAD\\\",\\\"imports\\\":[\\\"allocation\\\"],\\\"runner\\\":\\\"unittest\\\",\\\"tests\\\":[\\\"-v\\\",\\\"test_allocation\\\"],\\\"invocation\\\":\\\"module\\\",\\\"guard_tree\\\":true}\\nJSON\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434288.035386
+          }
+        }
+      }
+    },
+    {
+      "line": 34,
+      "line_sha256": "1f1d438c6b9ad9ad365fe47e6fe586fc3bc0bc499247cd659bae3fcb8e521a2c",
+      "record": {
+        "timestamp": "2026-09-15T01:04:53.417Z",
+        "ordinal": 33,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a298-6ca9-7f22-a2c5-3fac53a01e0c",
+          "call_id": "call_sEvwnKhJRw1rhjtzIue4Xj7E",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"43788b\",\"wall_time_seconds\":0.091636,\"exit_code\":0,\"original_token_count\":909,\"output\":\"{\\\"status\\\":\\\"observed\\\",\\\"revisions\\\":{\\\"before\\\":\\\"d4e02e4ef3a633cc2ea6070fea6edcc713b89be5\\\",\\\"after\\\":\\\"794c3f550bfe28216384b6d12c4f9dd10e3648ce\\\"},\\\"checks\\\":{\\\"before\\\":{\\\"exit_code\\\":1,\\\"timed_out\\\":false,\\\"output\\\":\\\"Verified copied import: allocation\\\\ntest_aggregate_shortage_is_atomic (test_allocation.AllocationTests) ... FAIL\\\\ntest_distinct_lines_control (test_allocation.AllocationTests) ... ok\\\\ntest_duplicate_lines_accumulate (test_allocation.AllocationTests) ... FAIL\\\\ntest_empty_order_control (test_allocation.AllocationTests) ... ok\\\\ntest_invalid_order_control (test_allocation.AllocationTests) ... ok\\\\n\\\\n======================================================================\\\\nFAIL: test_aggregate_shortage_is_atomic (test_allocation.AllocationTests)\\\\n----------------------------------------------------------------------\\\\nTraceback (most recent call last):\\\\n  File \\\\\\\"<WORKSPACE>/.receipt-v_h7tnfp/before/test_allocation.py\\\\\\\", line 13, in test_aggregate_shortage_is_atomic\\\\n    reserve(stock, [(\\\\\\\"b\\\\\\\", 1), (\\\\\\\"a\\\\\\\", 5), (\\\\\\\"a\\\\\\\", 4)])\\\\nAssertionError: ValueError not raised\\\\n\\\\n======================================================================\\\\nFAIL: test_duplicate_lines_accumulate (test_allocation.AllocationTests)\\\\n----------------------------------------------------------------------\\\\nTraceback (most recent call last):\\\\n  File \\\\\\\"<WORKSPACE>/.receipt-v_h7tnfp/before/test_allocation.py\\\\\\\", line 7, in test_duplicate_lines_accumulate\\\\n    self.assertEqual(reserve(stock, [(\\\\\\\"a\\\\\\\", 2), (\\\\\\\"a\\\\\\\", 3)]), {\\\\\\\"a\\\\\\\": 3, \\\\\\\"b\\\\\\\": 4})\\\\nAssertionError: {'a': 5, 'b': 4} != {'a': 3, 'b': 4}\\\\n- {'a': 5, 'b': 4}\\\\n?       ^\\\\n\\\\n+ {'a': 3, 'b': 4}\\\\n?       ^\\\\n\\\\n\\\\n----------------------------------------------------------------------\\\\nRan 5 tests in 0.001s\\\\n\\\\nFAILED (failures=2)\\\\n\\\",\\\"output_truncated\\\":false,\\\"command\\\":[\\\"/Applications/Xcode.app/Contents/Developer/usr/bin/python3\\\",\\\"-B\\\",\\\"-m\\\",\\\"unittest\\\",\\\"-v\\\",\\\"test_allocation\\\"],\\\"invocation\\\":\\\"module\\\",\\\"provenance_ready\\\":true,\\\"native_exit_code\\\":1},\\\"after\\\":{\\\"exit_code\\\":0,\\\"timed_out\\\":false,\\\"output\\\":\\\"Verified copied import: allocation\\\\ntest_aggregate_shortage_is_atomic (test_allocation.AllocationTests) ... ok\\\\ntest_distinct_lines_control (test_allocation.AllocationTests) ... ok\\\\ntest_duplicate_lines_accumulate (test_allocation.AllocationTests) ... ok\\\\ntest_empty_order_control (test_allocation.AllocationTests) ... ok\\\\ntest_invalid_order_control (test_allocation.AllocationTests) ... ok\\\\n\\\\n----------------------------------------------------------------------\\\\nRan 5 tests in 0.000s\\\\n\\\\nOK\\\\n\\\",\\\"output_truncated\\\":false,\\\"command\\\":[\\\"/Applications/Xcode.app/Contents/Developer/usr/bin/python3\\\",\\\"-B\\\",\\\"-m\\\",\\\"unittest\\\",\\\"-v\\\",\\\"test_allocation\\\"],\\\"invocation\\\":\\\"module\\\",\\\"provenance_ready\\\":true,\\\"native_exit_code\\\":0}},\\\"import_roots\\\":[],\\\"fixed_sha256\\\":{\\\"test_allocation.py\\\":\\\"2d3396e78c88a29a3ee4447bde44d2754334c3878a5a54c78ecbb0571882a5d3\\\"},\\\"limitation\\\":\\\"Inspect assertion failures and import provenance; exit codes alone do not prove the fix.\\\",\\\"tree_guard\\\":{\\\"unchanged\\\":true,\\\"entries\\\":49,\\\"file_bytes\\\":47035,\\\"inventory_sha256\\\":\\\"f73149957a0e022365beccaaadc5cd7c7ca09fcb7a358f4ea9ea48e7922d863f\\\",\\\"scope\\\":\\\"source root including Git metadata; symlink targets not read\\\"},\\\"originals\\\":{\\\"unchanged\\\":true,\\\"sha256\\\":{\\\"test_allocation.py\\\":\\\"2d3396e78c88a29a3ee4447bde44d2754334c3878a5a54c78ecbb0571882a5d3\\\",\\\"allocation.py\\\":\\\"090169c6d5b965a51b22bde3f771198946fc12d4ecbc2b76de612ed8b2fc33c3\\\"},\\\"modes\\\":{\\\"test_allocation.py\\\":420,\\\"allocation.py\\\":420},\\\"watch_only\\\":[]},\\\"comparison_copies_removed\\\":true}\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434293.41738
+          }
+        }
+      }
+    },
+    {
+      "line": 38,
+      "line_sha256": "436123d169d82a56ea577dbf9050a971a4aea13cd8298beb1fac3c24acbf9184",
+      "record": {
+        "timestamp": "2026-09-15T01:05:02.202Z",
+        "ordinal": 37,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0828f296e01f5cbd016aa899b92f9c87d09ce8520824b7b176",
+          "status": "completed",
+          "call_id": "call_HUUsHrVRGntXYlcFtaBNTNUR",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"sed -n '100,215p' .agents/skills/receipt/scripts/compare.py; sed -n '350,465p' .agents/skills/receipt/scripts/compare.py; python3 -B --version; git --no-optional-locks -c diff.autoRefreshIndex=false diff --check -- allocation.py test_allocation.py; git --no-optional-locks -c diff.autoRefreshIndex=false diff -- allocation.py test_allocation.py; git --no-optional-locks -c diff.autoRefreshIndex=false status --porcelain=v1; python3 -B - <<'PY'\\nfrom pathlib import Path\\nprint('Remaining owned scratch:', list(Path('.').glob('.receipt-*')))\\nPY\",\"max_output_tokens\":4800}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434293.912569
+          }
+        }
+      }
+    },
+    {
+      "line": 41,
+      "line_sha256": "989dbb016487a604c48fbb6d75b58eae9105b22fbca891220c934601886ff0ae",
+      "record": {
+        "timestamp": "2026-09-15T01:05:02.366Z",
+        "ordinal": 40,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a298-8f9e-7230-9fb2-27a80232e677",
+          "call_id": "call_HUUsHrVRGntXYlcFtaBNTNUR",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"e263e1\",\"wall_time_seconds\":0.000001833,\"exit_code\":0,\"original_token_count\":2997,\"output\":\"        # receives the original hooks instead of silently shadowing them.\\n        if sys.argv[:1] != ['-m']:\\n            return\\n        for name in recipe['imports']:\\n            module = importlib.import_module(name)\\n            location = getattr(module, '__file__', None)\\n            if not location or not pathlib.Path(location).resolve().is_relative_to(root):\\n                raise RuntimeError('Import escaped comparison copy: ' + name)\\n            print('Verified copied import:', name, flush=True)\\n        (probe / 'ready').write_bytes(b'ready')\\n    except BaseException:\\n        traceback.print_exc()\\n        sys.stdout.flush()\\n        sys.stderr.flush()\\n        os._exit(7)\\n_receipt_startup()\\n'''\\n\\n\\ndef checked_path(name):\\n    if not isinstance(name, str):\\n        raise ValueError('Expected a project-relative file')\\n    path = Path(name)\\n    if not name or str(path) != name or path.is_absolute() or path == Path('.') or any(p in ('.git', '..') for p in path.parts):\\n        raise ValueError('Expected a project-relative file')\\n    return path\\n\\n\\ndef fixed_files(root, selections):\\n    \\\"\\\"\\\"Expand explicit working-tree support directories without following links.\\\"\\\"\\\"\\n    files, visited = [], 0\\n    for name in selections:\\n        relative = checked_path(name)\\n        path = root / relative\\n        if any(p.is_symlink() for p in [path, *path.parents] if root in p.parents):\\n            raise ValueError('Symlink inputs are unsupported')\\n        pending, selected = [path], []\\n        while pending:\\n            item = pending.pop()\\n            visited += 1\\n            if visited > MAX_FIXED_ENTRIES:\\n                raise ValueError('Fixed selections exceed 10000 filesystem entries')\\n            relative = checked_path(item.relative_to(root).as_posix())\\n            info = item.lstat()\\n            if stat.S_ISLNK(info.st_mode):\\n                raise ValueError('Symlink inputs are unsupported')\\n            if stat.S_ISDIR(info.st_mode):\\n                populated = False\\n                with os.scandir(item) as entries:\\n                    for entry in entries:\\n                        populated = True\\n                        if visited + len(pending) >= MAX_FIXED_ENTRIES:\\n                            raise ValueError('Fixed selections exceed 10000 filesystem entries')\\n                        pending.append(Path(entry.path))\\n                if not populated:\\n                    raise ValueError('Empty fixed directories are unsupported')\\n            elif stat.S_ISREG(info.st_mode):\\n                selected.append(relative.as_posix())\\n            else:\\n                raise ValueError('Fixed inputs must be regular files or directories')\\n        if not selected:\\n            raise ValueError('Fixed directory contains no regular files')\\n        files.extend(sorted(selected))\\n    if len(files) != len(set(files)):\\n        raise ValueError('Fixed selections overlap')\\n    return files\\n\\n\\ndef git(root, *args, input=None):\\n    env = dict(os.environ, GIT_OPTIONAL_LOCKS='0')\\n    for key in ('GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_OBJECT_DIRECTORY', 'GIT_ALTERNATE_OBJECT_DIRECTORIES'):\\n        env.pop(key, None)\\n    result = subprocess.run(['git', '--no-pager', '--literal-pathspecs', '-c', 'core.fsmonitor=false', '-C', str(root), *args],\\n                            env=env, input=input, capture_output=True, timeout=20)\\n    if result.returncode:\\n        raise ValueError('Git could not resolve a requested local revision or file')\\n    return result.stdout\\n\\n\\ndef run_check(python, root, recipe, timeout):\\n    env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', TMPDIR=str(root),\\n               TMP=str(root), TEMP=str(root))\\n    env.pop('PYTHONPATH', None)\\n    env.pop('PYTHONOPTIMIZE', None)\\n    args = [str(python), '-B', '-c', BOOTSTRAP, json.dumps(recipe)]\\n    marker = None\\n    if recipe.get('invocation', 'bootstrap') == 'module':\\n        for directory in [root, *(root / name for name in recipe.get('import_roots', []))]:\\n            if any((directory / name).exists() for name in\\n                   ('sitecustomize', 'sitecustomize.py', 'sitecustomize.pyc',\\n                    'usercustomize', 'usercustomize.py', 'usercustomize.pyc')):\\n                raise ValueError('Native invocation does not replace project startup customization')\\n        probe = Path(tempfile.mkdtemp(prefix='.receipt-startup-', dir=root))\\n        (probe / 'sitecustomize.py').write_text('recipe = ' + repr(recipe) + '\\\\n' + NATIVE_STARTUP)\\n        marker = probe / 'ready'\\n        env['PYTHONPATH'] = os.pathsep.join([str(probe), *(str(root / name) for name in recipe.get('import_roots', [])), str(root)])\\n        args = [str(python), '-B', '-m', recipe['runner'], *recipe['tests']]\\n    process = subprocess.Popen(args,\\n        cwd=root, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,\\n        stderr=subprocess.STDOUT, start_new_session=True)\\n    deadline = time.monotonic() + timeout\\n    decoder = codecs.getincrementaldecoder('utf-8')(errors='replace')\\n    output, size, timed_out = '', 0, False\\n    group_stopped = False\\n    def stop_group():\\n        nonlocal group_stopped\\n        if not group_stopped:\\n            try:\\n                os.killpg(process.pid, signal.SIGKILL)\\n            except ProcessLookupError:\\n                pass\\n            group_stopped = True\\n    try:\\n        with selectors.DefaultSelector() as selector:\\n            selector.register(process.stdout, selectors.EVENT_READ)\\n            while selector.get_map():\\n        if length > 20_000_000:\\n            raise ValueError('Input missing or exceeds 20 MB')\\n        if total + length > 20_000_000:\\n            raise ValueError('Inputs exceed 20 MB')\\n        originals[name] = read_limited(path, 20_000_000 - total)\\n        total += len(originals[name])\\n        if total > 20_000_000:\\n            raise ValueError('Inputs exceed 20 MB')\\n        modes[name] = path.stat().st_mode & 0o777\\n    variants, revisions = {}, {}\\n    varying_names = set(recipe['vary'])\\n    blobs = {}  # Immutable object content; never reuse mutable working inputs.\\n    for label in ('before', 'after'):\\n        ref = recipe[label]\\n        if (label == 'after' and isinstance(ref, dict) and set(ref) == {'working_tree'}\\n                and ref['working_tree'] is True):\\n            revisions[label] = None\\n            variants[label] = ({name: originals[name] for name in names},\\n                               {name: modes[name] for name in names})\\n            continue\\n        if not isinstance(ref, str) or not ref or ref.startswith('-') or '\\\\n' in ref:\\n            raise ValueError('Invalid revision')\\n        sha = git(root, 'rev-parse', '--verify', '--end-of-options', ref + '^{commit}').decode().strip()\\n        revisions[label] = sha\\n        files = {name: originals[name] for name in names}\\n        variant_modes = {name: modes[name] for name in names}\\n        # One literal-path tree query per revision, not one process per file.\\n        tree = git(root, 'ls-tree', '-l', '-z', sha, '--', *recipe['vary'])\\n        entries = {}\\n        for entry in tree.split(b'\\\\0'):\\n            if not entry:\\n                continue\\n            metadata, recorded_name = entry.split(b'\\\\t', 1)\\n            name = recorded_name.decode()\\n            if name in entries or name not in varying_names:\\n                raise ValueError('Ambiguous historical file selection')\\n            entries[name] = metadata.split()\\n        missing = {}\\n        for name in recipe['vary']:\\n            if name not in entries:\\n                raise ValueError('Implementation missing at requested revision')\\n            mode, kind, oid, size = entries[name]\\n            if kind != b'blob' or mode not in (b'100644', b'100755'):\\n                raise ValueError('Implementation must be a regular Git file')\\n            length = int(size)\\n            total += length\\n            if total > 20_000_000:\\n                raise ValueError('Comparison snapshots exceed 20 MB')\\n            if oid not in blobs:\\n                missing[oid] = length\\n        if missing:\\n            # Request only size-checked immutable objects, not paths or revisions.\\n            stream = io.BytesIO(git(root, 'cat-file', '--batch',\\n                                   input=b''.join(oid + b'\\\\n' for oid in missing)))\\n            for oid, length in missing.items():\\n                if stream.readline().split() != [oid, b'blob', str(length).encode()]:\\n                    raise ValueError('Unexpected historical blob header')\\n                content = stream.read(length)\\n                if len(content) != length or stream.read(1) != b'\\\\n':\\n                    raise ValueError('Incomplete historical blob')\\n                blobs[oid] = content\\n            if stream.read(1):\\n                raise ValueError('Unexpected historical blob data')\\n        for name in recipe['vary']:\\n            mode, kind, oid, size = entries[name]\\n            files[name] = blobs[oid]\\n            variant_modes[name] = 0o755 if mode == b'100755' else 0o644\\n        variants[label] = (files, variant_modes)\\n    result = dict(status='observed', revisions=revisions, checks={}, import_roots=list(import_roots),\\n                  fixed_sha256={name: hashlib.sha256(originals[name]).hexdigest() for name in recipe['fixed']},\\n                  limitation='Inspect assertion failures and import provenance; exit codes alone do not prove the fix.')\\n    if revisions['after'] is None:\\n        result['working_tree_after'] = dict(\\n            sha256={name: hashlib.sha256(originals[name]).hexdigest() for name in recipe['vary']},\\n            modes={name: modes[name] for name in recipe['vary']})\\n    guarded = tree_inventory(root) if recipe.get('guard_tree', False) else None\\n    try:\\n        with tempfile.TemporaryDirectory(prefix='.receipt-', dir=root) as scratch:\\n            for label, (files, file_modes) in variants.items():\\n                directory = Path(scratch) / label\\n                directory.mkdir()\\n                for name, content in files.items():\\n                    target = directory / name\\n                    target.parent.mkdir(parents=True, exist_ok=True)\\n                    target.write_bytes(content)\\n                    target.chmod(file_modes[name])\\n                check = run_check(python, directory, recipe, timeout)\\n                result['checks'][label] = check\\n                if check['timed_out'] or check['exit_code'] == 7:\\n                    result['status'] = 'incomplete'\\n                    break\\n    finally:\\n        changed = [name for name, content in originals.items() if (root/name).is_symlink()\\n                   or not (root/name).is_file() or read_limited(root/name, len(content)) != content\\n                   or (root/name).stat().st_mode & 0o777 != modes[name]]\\n        if changed:\\n            raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))\\n        if guarded is not None:\\n            current, _ = tree_inventory(root)\\n            previous, byte_count = guarded\\n            differences = sorted(name for name in previous.keys() | current.keys()\\n                                 if previous.get(name) != current.get(name))\\n            if differences:\\n                raise RuntimeError('Project tree changed; not restored (' + str(len(differences))\\n                                   + ' paths): ' + ', '.join(differences[:20]))\\n            encoded = json.dumps(previous, sort_keys=True, separators=(',', ':')).encode()\\n            result['tree_guard'] = dict(unchanged=True, entries=len(previous),\\n                file_bytes=byte_count, inventory_sha256=hashlib.sha256(encoded).hexdigest(),\\n                scope='source root including Git metadata; symlink targets not read')\\n    result['originals'] = dict(unchanged=True,\\n        sha256={name: hashlib.sha256(content).hexdigest() for name, content in originals.items()},\\n        modes=modes, watch_only=watched)\\n    result['comparison_copies_removed'] = True\\n    return result\\n\\n\\nPython 3.9.6\\n?? .agents/\\nRemaining owned scratch: []\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434302.36669
+          }
+        }
+      }
+    },
+    {
+      "line": 47,
+      "line_sha256": "2fa8b84409589c9d9fb00a607e383ba1bc273f8be5b74b64306f2bd9d0844109",
+      "record": {
+        "timestamp": "2026-09-15T01:05:14.137Z",
+        "ordinal": 46,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0828f296e01f5cbd016aa899c4b27887d0b14412f3598160d4",
+          "status": "completed",
+          "call_id": "call_vjLSqKv6z9feo7pgQZ5zJ6jJ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport subprocess\\nfrom pathlib import Path\\nbase = ['git', '--no-optional-locks', '-c', 'diff.autoRefreshIndex=false']\\nfor args in [['diff', '--check', '--', 'allocation.py', 'test_allocation.py'], ['diff', '--', 'allocation.py', 'test_allocation.py'], ['status', '--porcelain=v1']]:\\n    result = subprocess.run(base + args, capture_output=True, text=True)\\n    print('COMMAND:', ' '.join(base + args))\\n    print('EXIT:', result.returncode)\\n    print(result.stdout + result.stderr, end='')\\nprint('Remaining owned scratch:', list(Path('.').glob('.receipt-*')))\\nPY\",\"max_output_tokens\":1200}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434302.882462
+          }
+        }
+      }
+    },
+    {
+      "line": 50,
+      "line_sha256": "82e7dec5be1ddb283386472f0e20eecf57615de95e3cbbf72e8098fce6b14d1b",
+      "record": {
+        "timestamp": "2026-09-15T01:05:14.302Z",
+        "ordinal": 49,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a298-be3e-7872-9e81-6c703cd04058",
+          "call_id": "call_vjLSqKv6z9feo7pgQZ5zJ6jJ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"f6759d\",\"wall_time_seconds\":0.000002209,\"exit_code\":0,\"original_token_count\":92,\"output\":\"COMMAND: git --no-optional-locks -c diff.autoRefreshIndex=false diff --check -- allocation.py test_allocation.py\\nEXIT: 0\\nCOMMAND: git --no-optional-locks -c diff.autoRefreshIndex=false diff -- allocation.py test_allocation.py\\nEXIT: 0\\nCOMMAND: git --no-optional-locks -c diff.autoRefreshIndex=false status --porcelain=v1\\nEXIT: 0\\n?? .agents/\\nRemaining owned scratch: []\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a298-1119-7be3-ac25-3dfa52d00130",
+            "create_time": 1789434314.302742
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

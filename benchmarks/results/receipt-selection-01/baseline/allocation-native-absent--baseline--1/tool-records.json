@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0a299-d20e-7fd3-93df-e8746b838458",
+  "source_bytes": 107883,
+  "source_sha256": "b5f4adef6a24bf975d17823bbc253a57e0c611cc0e490d7c61bc7e7d7632bf8d",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "ef708e2bd3f9ad8097aa1e1baf2d9b63df17a7297f7b0f2736258277fb79bcd7",
+      "record": {
+        "timestamp": "2026-09-15T01:06:32.019Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_04a1ac185d9bcbfa016aa89a162c9887d0bd9184ccb251aa99",
+          "status": "completed",
+          "call_id": "call_GpLti3dRRBZQaAfT3pYUbRkL",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '!.git' -g '!__pycache__'; git status --short; git rev-parse HEAD HEAD^; git diff HEAD^ HEAD -- allocation.py\",max_output_tokens:6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a299-d254-7542-ad38-0e1d0e7c2d56",
+            "create_time": 1789434387.359953
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "cc5c800d545d0157bf7ec8472c809d61eca6652eb319164b57abbb4f611624e7",
+      "record": {
+        "timestamp": "2026-09-15T01:06:32.198Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a299-ee86-7de3-88aa-e974be54e758",
+          "call_id": "call_GpLti3dRRBZQaAfT3pYUbRkL",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"559e13\",\"wall_time_seconds\":0.000002792,\"exit_code\":0,\"original_token_count\":181,\"output\":\"<WORKSPACE>\\nallocation.py\\nREADME.md\\ntest_allocation.py\\n794c3f550bfe28216384b6d12c4f9dd10e3648ce\\nd4e02e4ef3a633cc2ea6070fea6edcc713b89be5\\ndiff --git a/allocation.py b/allocation.py\\nindex 4772fca..50bcbef 100644\\n--- a/allocation.py\\n+++ b/allocation.py\\n@@ -4,7 +4,7 @@ def reserve(stock, lines):\\n     for sku, quantity in lines:\\n         if quantity <= 0 or sku not in stock:\\n             raise ValueError(\\\"invalid order\\\")\\n-        totals[sku] = quantity\\n+        totals[sku] = totals.get(sku, 0) + quantity\\n     if any(quantity > stock[sku] for sku, quantity in totals.items()):\\n         raise ValueError(\\\"insufficient stock\\\")\\n     result = dict(stock)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a299-d254-7542-ad38-0e1d0e7c2d56",
+            "create_time": 1789434392.198646
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "8bf7ff63bca2825aaa8aa33867ee64fb372c2e353a796f0d4c259a7fc08cab13",
+      "record": {
+        "timestamp": "2026-09-15T01:06:37.364Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_04a1ac185d9bcbfa016aa89a1b988487d09fe6db8faff7d225",
+          "status": "completed",
+          "call_id": "call_9SQBtQQ5aMhaP1CMueL25rmK",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat README.md allocation.py test_allocation.py; git ls-files --stage; python3 --version; rg --files --hidden -g 'AGENTS.md' -g '!.git' .\",max_output_tokens:6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a299-d254-7542-ad38-0e1d0e7c2d56",
+            "create_time": 1789434392.817911
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "01b88c065118afa44824ecdea5a2c2168ab66619936f8b19714fd67461b8b99d",
+      "record": {
+        "timestamp": "2026-09-15T01:06:37.491Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a29a-0333-7ec2-8cda-bb0e3e1031bc",
+          "call_id": "call_9SQBtQQ5aMhaP1CMueL25rmK",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"36ffc5\",\"wall_time_seconds\":0.000001375,\"exit_code\":1,\"original_token_count\":590,\"output\":\"# Allocation service\\n\\n`reserve` returns a new stock mapping. Duplicate SKU lines accumulate;\\ninvalid or insufficient orders raise ValueError without mutating input.\\nStock maps SKU strings to nonnegative integer counts. Lines are a finite list\\nof (SKU string, integer quantity) pairs; nonpositive quantities and unknown SKUs\\nare invalid. Empty orders are valid. Other input types are outside this contract.\\nNative suite: `python3 -B -m unittest -v test_allocation`. Standard library only.\\ndef reserve(stock, lines):\\n    \\\"\\\"\\\"Return remaining stock; reject invalid/insufficient orders atomically.\\\"\\\"\\\"\\n    totals = {}\\n    for sku, quantity in lines:\\n        if quantity <= 0 or sku not in stock:\\n            raise ValueError(\\\"invalid order\\\")\\n        totals[sku] = totals.get(sku, 0) + quantity\\n    if any(quantity > stock[sku] for sku, quantity in totals.items()):\\n        raise ValueError(\\\"insufficient stock\\\")\\n    result = dict(stock)\\n    for sku, quantity in totals.items():\\n        result[sku] -= quantity\\n    return result\\nimport unittest\\nfrom allocation import reserve\\n\\nclass AllocationTests(unittest.TestCase):\\n    def test_duplicate_lines_accumulate(self):\\n        stock = {\\\"a\\\": 8, \\\"b\\\": 4}\\n        self.assertEqual(reserve(stock, [(\\\"a\\\", 2), (\\\"a\\\", 3)]), {\\\"a\\\": 3, \\\"b\\\": 4})\\n        self.assertEqual(stock, {\\\"a\\\": 8, \\\"b\\\": 4})\\n\\n    def test_aggregate_shortage_is_atomic(self):\\n        stock = {\\\"a\\\": 8, \\\"b\\\": 4}\\n        with self.assertRaisesRegex(ValueError, \\\"insufficient stock\\\"):\\n            reserve(stock, [(\\\"b\\\", 1), (\\\"a\\\", 5), (\\\"a\\\", 4)])\\n        self.assertEqual(stock, {\\\"a\\\": 8, \\\"b\\\": 4})\\n\\n    def test_distinct_lines_control(self):\\n        self.assertEqual(reserve({\\\"a\\\": 8, \\\"b\\\": 4}, [(\\\"a\\\", 2), (\\\"b\\\", 3)]), {\\\"a\\\": 6, \\\"b\\\": 1})\\n\\n    def test_empty_order_control(self):\\n        stock = {\\\"a\\\": 8}\\n        result = reserve(stock, [])\\n        self.assertEqual(result, stock)\\n        self.assertIsNot(result, stock)\\n\\n    def test_invalid_order_control(self):\\n        for lines in [[(\\\"a\\\", 0)], [(\\\"a\\\", -1)], [(\\\"missing\\\", 1)]]:\\n            with self.subTest(lines=lines), self.assertRaisesRegex(ValueError, \\\"invalid order\\\"):\\n                reserve({\\\"a\\\": 8}, lines)\\n100644 722210c6d8d8a142769f4286d007b0c6f11bb021 0\\tREADME.md\\n100644 50bcbef81c4a4010428536fa017f305d72349321 0\\tallocation.py\\n100644 17d817f179cc11dfc85fd56e05431589fc62d35c 0\\ttest_allocation.py\\nPython 3.9.6\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a299-d254-7542-ad38-0e1d0e7c2d56",
+            "create_time": 1789434397.491058
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "a553fb70e56a240e330fc6e962bb482d4704a69fe75823fc5507c6af0a1c4053",
+      "record": {
+        "timestamp": "2026-09-15T01:07:19.923Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_04a1ac185d9bcbfa016aa89a2ad06c87d0a59f1f9a7753d2f0",
+          "status": "completed",
+          "call_id": "call_ZlnmUuphzjGI7liJQGgG1MiY",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport stat\\nimport subprocess\\nimport sys\\nimport tempfile\\n\\nroot = Path.cwd()\\ndef digest(data):\\n    return hashlib.sha256(data).hexdigest()\\ndef snapshot():\\n    result = {}\\n    for p in root.rglob('*'):\\n        s = p.lstat()\\n        rel = str(p.relative_to(root))\\n        if p.is_symlink():\\n            result[rel] = (s.st_mode, os.readlink(p))\\n        elif p.is_file():\\n            result[rel] = (s.st_mode, digest(p.read_bytes()))\\n        else:\\n            result[rel] = (s.st_mode, None)\\n    return result\\nbefore = snapshot()\\ntest_bytes = (root / 'test_allocation.py').read_bytes()\\nrevisions = {label: subprocess.check_output(['git', 'rev-parse', ref], text=True).strip() for label, ref in [('parent', 'HEAD^'), ('head', 'HEAD')]}\\nscratch = Path(tempfile.mkdtemp(prefix='.allocation-verification-', dir=root))\\ntry:\\n    probe = scratch / 'probe'\\n    probe.mkdir()\\n    (probe / 'sitecustomize.py').write_text('''import atexit\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport sys\\n\\ndef report():\\n    module = sys.modules.get(\\\"allocation\\\")\\n    tests = sys.modules.get(\\\"test_allocation\\\")\\n    print(\\\"PROCESS_EVIDENCE revision=\\\" + os.environ[\\\"VERIFY_REVISION\\\"], flush=True)\\n    print(\\\"PROCESS_EVIDENCE python=\\\" + sys.version.replace(\\\"\\\\\\\\n\\\", \\\" \\\"), flush=True)\\n    print(\\\"PROCESS_EVIDENCE executable=\\\" + sys.executable, flush=True)\\n    for label, loaded in [(\\\"allocation\\\", module), (\\\"test_allocation\\\", tests)]:\\n        if loaded is None:\\n            print(\\\"PROCESS_EVIDENCE \\\" + label + \\\" NOT LOADED\\\", flush=True)\\n            continue\\n        path = Path(loaded.__file__).resolve()\\n        print(\\\"PROCESS_EVIDENCE \\\" + label + \\\"=\\\" + str(path), flush=True)\\n        print(\\\"PROCESS_EVIDENCE \\\" + label + \\\"_sha256=\\\" + hashlib.sha256(path.read_bytes()).hexdigest(), flush=True)\\n    if module is not None:\\n        print(\\\"PROCESS_EVIDENCE reserve_code=\\\" + module.reserve.__code__.co_filename, flush=True)\\natexit.register(report)\\n''')\\n    print('CURRENT_TEST_SHA256=' + digest(test_bytes), flush=True)\\n    for label, revision in revisions.items():\\n        case = scratch / label\\n        case.mkdir()\\n        allocation = subprocess.check_output(['git', 'show', revision + ':allocation.py'])\\n        (case / 'allocation.py').write_bytes(allocation)\\n        (case / 'test_allocation.py').write_bytes(test_bytes)\\n        env = os.environ.copy()\\n        env['PYTHONPATH'] = str(probe)\\n        env['VERIFY_REVISION'] = revision\\n        print('\\\\nVERSION=' + label + ' REVISION=' + revision, flush=True)\\n        print('EXPECTED_ALLOCATION_SHA256=' + digest(allocation), flush=True)\\n        command = [sys.executable, '-B', '-m', 'unittest', '-v', 'test_allocation']\\n        print('COMMAND=' + repr(command), flush=True)\\n        completed = subprocess.run(command, cwd=case, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\\n        print(completed.stdout, end='', flush=True)\\n        print('NATIVE_TEST_PROCESS_EXIT=' + str(completed.returncode), flush=True)\\nfinally:\\n    shutil.rmtree(scratch)\\n    after = snapshot()\\n    print('\\\\nSCRATCH_REMOVED=' + str(not scratch.exists()), flush=True)\\n    print('ORIGINAL_PATHS_CONTENTS_MODES_PRESERVED=' + str(before == after), flush=True)\\n    if before != after:\\n        print('DIFFERENCES=' + repr([p for p in before.keys() | after.keys() if before.get(p) != after.get(p)]), flush=True)\\n        raise RuntimeError('Project snapshot mismatch')\\nPY\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a299-d254-7542-ad38-0e1d0e7c2d56",
+            "create_time": 1789434398.038603
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "d3ec6ce479fda93d744a40977c924747222e0f8643f9f1512412caf87397b384",
+      "record": {
+        "timestamp": "2026-09-15T01:07:20.174Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0a29a-a9ee-7cc3-a6e9-9f4ed0513ae5",
+          "call_id": "call_ZlnmUuphzjGI7liJQGgG1MiY",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"bbef9b\",\"wall_time_seconds\":0.060547792,\"exit_code\":0,\"original_token_count\":1195,\"output\":\"CURRENT_TEST_SHA256=2d3396e78c88a29a3ee4447bde44d2754334c3878a5a54c78ecbb0571882a5d3\\n\\nVERSION=parent REVISION=d4e02e4ef3a633cc2ea6070fea6edcc713b89be5\\nEXPECTED_ALLOCATION_SHA256=6c50070a983d2bebb6c486bf9da99e338eb7c34c34ff36ec27fc901de1aaed86\\nCOMMAND=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-B', '-m', 'unittest', '-v', 'test_allocation']\\ntest_aggregate_shortage_is_atomic (test_allocation.AllocationTests) ... FAIL\\ntest_distinct_lines_control (test_allocation.AllocationTests) ... ok\\ntest_duplicate_lines_accumulate (test_allocation.AllocationTests) ... FAIL\\ntest_empty_order_control (test_allocation.AllocationTests) ... ok\\ntest_invalid_order_control (test_allocation.AllocationTests) ... ok\\n\\n======================================================================\\nFAIL: test_aggregate_shortage_is_atomic (test_allocation.AllocationTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.allocation-verification-1kf4da4a/parent/test_allocation.py\\\", line 13, in test_aggregate_shortage_is_atomic\\n    reserve(stock, [(\\\"b\\\", 1), (\\\"a\\\", 5), (\\\"a\\\", 4)])\\nAssertionError: ValueError not raised\\n\\n======================================================================\\nFAIL: test_duplicate_lines_accumulate (test_allocation.AllocationTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.allocation-verification-1kf4da4a/parent/test_allocation.py\\\", line 7, in test_duplicate_lines_accumulate\\n    self.assertEqual(reserve(stock, [(\\\"a\\\", 2), (\\\"a\\\", 3)]), {\\\"a\\\": 3, \\\"b\\\": 4})\\nAssertionError: {'a': 5, 'b': 4} != {'a': 3, 'b': 4}\\n- {'a': 5, 'b': 4}\\n?       ^\\n\\n+ {'a': 3, 'b': 4}\\n?       ^\\n\\n\\n----------------------------------------------------------------------\\nRan 5 tests in 0.001s\\n\\nFAILED (failures=2)\\nPROCESS_EVIDENCE revision=d4e02e4ef3a633cc2ea6070fea6edcc713b89be5\\nPROCESS_EVIDENCE python=3.9.6 (default, Apr 17 2026, 18:15:52)  [Clang 21.0.0 (clang-2100.1.1.101)]\\nPROCESS_EVIDENCE executable=/Applications/Xcode.app/Contents/Developer/usr/bin/python3\\nPROCESS_EVIDENCE allocation=<WORKSPACE>/.allocation-verification-1kf4da4a/parent/allocation.py\\nPROCESS_EVIDENCE allocation_sha256=6c50070a983d2bebb6c486bf9da99e338eb7c34c34ff36ec27fc901de1aaed86\\nPROCESS_EVIDENCE test_allocation=<WORKSPACE>/.allocation-verification-1kf4da4a/parent/test_allocation.py\\nPROCESS_EVIDENCE test_allocation_sha256=2d3396e78c88a29a3ee4447bde44d2754334c3878a5a54c78ecbb0571882a5d3\\nPROCESS_EVIDENCE reserve_code=<WORKSPACE>/.allocation-verification-1kf4da4a/parent/allocation.py\\nNATIVE_TEST_PROCESS_EXIT=1\\n\\nVERSION=head REVISION=794c3f550bfe28216384b6d12c4f9dd10e3648ce\\nEXPECTED_ALLOCATION_SHA256=090169c6d5b965a51b22bde3f771198946fc12d4ecbc2b76de612ed8b2fc33c3\\nCOMMAND=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-B', '-m', 'unittest', '-v', 'test_allocation']\\ntest_aggregate_shortage_is_atomic (test_allocation.AllocationTests) ... ok\\ntest_distinct_lines_control (test_allocation.AllocationTests) ... ok\\ntest_duplicate_lines_accumulate (test_allocation.AllocationTests) ... ok\\ntest_empty_order_control (test_allocation.AllocationTests) ... ok\\ntest_invalid_order_control (test_allocation.AllocationTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 5 tests in 0.000s\\n\\nOK\\nPROCESS_EVIDENCE revision=794c3f550bfe28216384b6d12c4f9dd10e3648ce\\nPROCESS_EVIDENCE python=3.9.6 (default, Apr 17 2026, 18:15:52)  [Clang 21.0.0 (clang-2100.1.1.101)]\\nPROCESS_EVIDENCE executable=/Applications/Xcode.app/Contents/Developer/usr/bin/python3\\nPROCESS_EVIDENCE allocation=<WORKSPACE>/.allocation-verification-1kf4da4a/head/allocation.py\\nPROCESS_EVIDENCE allocation_sha256=090169c6d5b965a51b22bde3f771198946fc12d4ecbc2b76de612ed8b2fc33c3\\nPROCESS_EVIDENCE test_allocation=<WORKSPACE>/.allocation-verification-1kf4da4a/head/test_allocation.py\\nPROCESS_EVIDENCE test_allocation_sha256=2d3396e78c88a29a3ee4447bde44d2754334c3878a5a54c78ecbb0571882a5d3\\nPROCESS_EVIDENCE reserve_code=<WORKSPACE>/.allocation-verification-1kf4da4a/head/allocation.py\\nNATIVE_TEST_PROCESS_EXIT=0\\n\\nSCRATCH_REMOVED=True\\nORIGINAL_PATHS_CONTENTS_MODES_PRESERVED=True\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0a299-d254-7542-ad38-0e1d0e7c2d56",
+            "create_time": 1789434440.174414
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
