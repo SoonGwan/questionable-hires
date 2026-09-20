@@ -23,6 +23,6 @@ class SequenceEntryCaseTests(unittest.TestCase):
     def test_exact_extracted_project_native_controls(self):
         rows = fixture.preflight()
         self.assertEqual([row['exit_code'] for row in rows], [1, 0])
-        self.assertEqual(rows[0]['output'].count('\nTimeoutError\n'), 4)
+        self.assertEqual(rows[0]['output'].count('TimeoutError\n'), 4)
         self.assertIn('Ran 8 tests', rows[1]['output'])
         self.assertIn('\nOK\n', rows[1]['output'])

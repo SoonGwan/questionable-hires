@@ -28,6 +28,11 @@ No new test instrumentation is supplied to the model as an answer. The author
 bootstrap used for preflight is not a project input. A model may use suitable
 native setup or optional Receipt support; helper adoption is not a pass condition.
 
+Before model launch, the author preflight's timeout-output check was made compatible
+with Python3.9's qualified exception name. The task, source, tests and expected four
+expired waits did not change. The initial Python3.9 parser failure is not a model
+attempt or an implementation failure; two checks then pass in 3.082 seconds.
+
 ## Review and cost
 
 Review all five frozen criteria from original native outputs, loaded paths,

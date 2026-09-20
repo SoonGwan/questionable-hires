@@ -88,7 +88,8 @@ def preflight():
                 output = result.stdout + result.stderr
                 assert result.returncode == expected and 'Ran 8 tests' in output, output
                 assert 'ACTUAL_COMPONENT_PATH ' + str(copy / IMPLEMENTATION) in output
-                assert ('FAILED (errors=4)' in output and output.count('\nTimeoutError\n') == 4) if expected else '\nOK\n' in output
+                assert (('FAILED (errors=4)' in output and output.count('TimeoutError\n') == 4)
+                        if expected else '\nOK\n' in output), output
                 rows.append(dict(condition=condition, exit_code=result.returncode,
                                  output=output.replace(str(copy), '<COPY>')))
         assert helper.tree_inventory(project) == inventory
