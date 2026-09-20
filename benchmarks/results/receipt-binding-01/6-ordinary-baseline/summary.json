@@ -1,0 +1,60 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "rounding-ordinary",
+    "skill": "receipt",
+    "arm": "baseline",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "f112e2647e333b7b11d0f12471990b6fd0d35748",
+    "skill_sha256": null,
+    "skill_resources_sha256": null,
+    "elapsed_seconds": 70.498,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 64797,
+      "cached_input_tokens": 58112,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1996,
+      "reasoning_output_tokens": 160
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Verify the existing fix in rounding.py. This project requires decimal cent rounding with exact half-cent ties away from zero, including negative adjustments. Compare HEAD^ and HEAD with the unchanged current tests/test_rounding.py and all four identities in selected-tests.json. Establish the before defect and after result, including non-tie and exact-cent controls. Identify both full revisions and prove the actual test-bound component comes from the corresponding copy inside that native test process. Follow AGENTS.md: preserve originals and Git state, remove scratch, and do not change code or tests.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {},
+    "installed_resources_after": {},
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 377,
+      "mode": 420,
+      "sha256": "3dec952a4b326384d212886f1565eea67f72fc99c4d902c1b2f03710f9599d3d",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    },
+    "initial_tree": "051a71749bb97ec0439ecb9b0baf7504622f8315",
+    "initial_working_files": {
+      "tests/test_rounding.py": "6ed10cc27788f88b72cbaeed50ac678273b0d351474af888225673d9b40e5d68"
+    }
+  }
+]

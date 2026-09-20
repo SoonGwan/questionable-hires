@@ -9,7 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Loader transfer pilot prepared — 2026-09-21, resources `ba6fedd` / `253273d`
+## Loader transfer pilot reviewed — 2026-09-21, launch `567167d`
+
+[Six original sessions and review](results/receipt-binding-01/README.md): old
+Receipt `ba6fedd` versus current `253273d`, two authored loader tasks, n=1 per
+condition. All six meet five reviewed criteria; current adopts the new helper in
+both tasks, old builds custom comparisons. Current summed cost versus old:
+**−7.03% tokens / −31.74% time**; versus baseline: **+17.64% tokens / −35.31%
+time**. The latter remains mixed, not the whole-task efficiency target. Native
+results, loaded paths, snapshots, index, resources, counters and exposure reviewed;
+four CLI prefix omissions and one stored source-read truncation disclosed. No
+retries, exclusions, same-task retuning or featured promotion. Next focus is
+remaining source/context exploration overhead without dropping required evidence.
+
+한국어: 개선 버전은 이전보다 토큰·시간이 모두 줄었고 실제 도구도 사용했다.
+그러나 무스킬보다 토큰을 더 써 목표에는 아직 미달이다. 제한적인 2개 과제의
+결과와 출력 누락을 함께 공개하며 전체 우위로 일반화하지 않는다.
+
+## Loader transfer pilot prepared — historical pre-review, 2026-09-21, resources `ba6fedd` / `253273d`
 
 [Frozen six-cell protocol](RECEIPT-BINDING-01-PROTOCOL.md) compares baseline,
 pre-change Receipt and current Receipt on two authored rounding-verification tasks

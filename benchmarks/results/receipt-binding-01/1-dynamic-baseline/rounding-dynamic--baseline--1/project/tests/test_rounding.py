@@ -1,0 +1,17 @@
+import importlib.util
+from pathlib import Path
+spec = importlib.util.spec_from_file_location('rounding_plugin', Path(__file__).resolve().parents[1] / 'rounding.py')
+component = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(component)
+from decimal import Decimal
+import unittest
+
+class RoundingTests(unittest.TestCase):
+    def test_positive_half_cent(self):
+        self.assertEqual(component.cents('1.005'), Decimal('1.01'))
+    def test_negative_half_cent(self):
+        self.assertEqual(component.cents('-1.005'), Decimal('-1.01'))
+    def test_non_tie(self):
+        self.assertEqual(component.cents('1.004'), Decimal('1.00'))
+    def test_exact_cent(self):
+        self.assertEqual(component.cents('2.30'), Decimal('2.30'))

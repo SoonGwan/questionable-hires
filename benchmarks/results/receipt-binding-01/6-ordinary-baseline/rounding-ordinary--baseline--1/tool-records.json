@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0bfac-3909-7f81-b832-33016fa89ea6",
+  "source_bytes": 105619,
+  "source_sha256": "4fd5c3e9d7a5801683c1e9e04b28d625a7cf7d50c31d6750fa354e4ab483cd0f",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "363f8d982035005b9191e0bdcafd675b2379aef5a15b6cc4ceb48de184621212",
+      "record": {
+        "timestamp": "2026-09-20T16:35:37.696Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0f83db492601478b016ab00b56eec087d090055de694c3af6f",
+          "status": "completed",
+          "call_id": "call_0frtaCRMST6vArDnvFh43Gnb",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'selected-tests.json' -g 'test_rounding.py' -g 'rounding.py' -g '*python*' -g 'notes.txt'; git status --porcelain=v1; git rev-parse HEAD^ HEAD; cat AGENTS.md selected-tests.json tests/test_rounding.py rounding.py\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfac-3952-79f0-b250-b5b9f5c080a4",
+            "create_time": 1789922132.257372
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "a35f37165d6d4c2c5c6f12f481eac4e27aac2146e00dc023ac840a81a71d4b53",
+      "record": {
+        "timestamp": "2026-09-20T16:35:37.874Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfac-5712-7992-ab05-d5f9edd1612f",
+          "call_id": "call_0frtaCRMST6vArDnvFh43Gnb",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b5a97f\",\"wall_time_seconds\":0.000003834,\"exit_code\":0,\"original_token_count\":451,\"output\":\"<WORKSPACE>\\nselected-tests.json\\nAGENTS.md\\nrounding.py\\ntests/test_rounding.py\\nnotes.txt\\n?? tests/\\n341f10beb9c0e0e941c70573c08216ba5fdaaaaa\\nf112e2647e333b7b11d0f12471990b6fd0d35748\\nVerification only. Compare HEAD^ and HEAD in separate project-local disposable copies with identical current tests/test_rounding.py and exactly the four tests in selected-tests.json. Use this Python interpreter and unittest; tests/ is an import root. In each actual test process verify that test_rounding.component.__file__ resolves to rounding.py inside that copy, not the original tree or the other copy. Preserve original bytes/modes, notes.txt and Git state. Remove owned scratch and leave no new harness or report. Do not edit implementation or tests, commit, stash, reset, install dependencies, access other repositories, external services or search ancestor directories.\\n[\\n  \\\"test_rounding.RoundingTests.test_positive_half_cent\\\",\\n  \\\"test_rounding.RoundingTests.test_negative_half_cent\\\",\\n  \\\"test_rounding.RoundingTests.test_non_tie\\\",\\n  \\\"test_rounding.RoundingTests.test_exact_cent\\\"\\n]\\nimport rounding as component\\nfrom decimal import Decimal\\nimport unittest\\n\\nclass RoundingTests(unittest.TestCase):\\n    def test_positive_half_cent(self):\\n        self.assertEqual(component.cents('1.005'), Decimal('1.01'))\\n    def test_negative_half_cent(self):\\n        self.assertEqual(component.cents('-1.005'), Decimal('-1.01'))\\n    def test_non_tie(self):\\n        self.assertEqual(component.cents('1.004'), Decimal('1.00'))\\n    def test_exact_cent(self):\\n        self.assertEqual(component.cents('2.30'), Decimal('2.30'))\\nfrom decimal import Decimal, ROUND_HALF_UP\\n\\ndef cents(value):\\n    return Decimal(value).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfac-3952-79f0-b250-b5b9f5c080a4",
+            "create_time": 1789922137.874089
+          }
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "4385b95f877d5b7b3812a274043b154d9eec4cd41dc143da82ada973ec1c96f2",
+      "record": {
+        "timestamp": "2026-09-20T16:35:43.714Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0f83db492601478b016ab00b5e6d9087d0ac3a90ba89c5724b",
+          "status": "completed",
+          "call_id": "call_9vIVyqqfgorzU80RZxw1xLv1",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"command -v python python3; git diff HEAD^ HEAD -- rounding.py; rg --files --hidden -g '!.git/**'\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfac-3952-79f0-b250-b5b9f5c080a4",
+            "create_time": 1789922138.388311
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "517a32d7b2a227bf821ef67853bf72e84716c7a3020a4793fb5bda1ac4ec09c2",
+      "record": {
+        "timestamp": "2026-09-20T16:35:43.819Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfac-6e4b-7c73-b11b-c43f7a273d27",
+          "call_id": "call_9vIVyqqfgorzU80RZxw1xLv1",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2b9057\",\"wall_time_seconds\":0.000001625,\"exit_code\":0,\"original_token_count\":120,\"output\":\"/usr/bin/python3\\ndiff --git a/rounding.py b/rounding.py\\nindex df16f53..c2636cf 100644\\n--- a/rounding.py\\n+++ b/rounding.py\\n@@ -1,4 +1,4 @@\\n-from decimal import Decimal, ROUND_HALF_EVEN\\n+from decimal import Decimal, ROUND_HALF_UP\\n \\n def cents(value):\\n-    return Decimal(value).quantize(Decimal('0.01'), rounding=ROUND_HALF_EVEN)\\n+    return Decimal(value).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)\\nselected-tests.json\\nAGENTS.md\\nrounding.py\\ntests/test_rounding.py\\nnotes.txt\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfac-3952-79f0-b250-b5b9f5c080a4",
+            "create_time": 1789922143.819748
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "40e67574922974fc772b215ea81cc4dc7699e57f351c085308244d70d40ca27e",
+      "record": {
+        "timestamp": "2026-09-20T16:36:25.880Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0f83db492601478b016ab00b661dc887d0b3aaabd2a827908f",
+          "status": "completed",
+          "call_id": "call_FyynanAPdYai45OHmz5bo7yB",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"/usr/bin/python3 -B - <<'PY'\\nimport hashlib, io, json, os, pathlib, shutil, stat, subprocess, sys, tarfile, tempfile\\nroot = pathlib.Path.cwd().resolve()\\nenv = dict(os.environ, GIT_OPTIONAL_LOCKS='0', PYTHONDONTWRITEBYTECODE='1')\\ndef git(*args):\\n    return subprocess.check_output(['git', *args], cwd=root, env=env)\\ndef snapshot():\\n    result = {}\\n    for base, dirs, files in os.walk(root):\\n        for name in dirs + files:\\n            p = pathlib.Path(base) / name\\n            s = p.lstat()\\n            data = os.readlink(p) if p.is_symlink() else (hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else None)\\n            result[str(p.relative_to(root))] = (stat.S_IMODE(s.st_mode), data)\\n    return result\\noriginal = snapshot()\\nstatus = git('status', '--porcelain=v1', '--untracked-files=all')\\nrevisions = [git('rev-parse', ref).decode().strip() for ref in ('HEAD^', 'HEAD')]\\ncurrent_test = (root / 'tests/test_rounding.py').read_bytes()\\ntest_mode = stat.S_IMODE((root / 'tests/test_rounding.py').stat().st_mode)\\nselected = json.loads((root / 'selected-tests.json').read_text())\\nassert len(selected) == len(set(selected)) == 4\\nprint('Interpreter:', sys.executable, sys.version, flush=True)\\nprint('Current test SHA256:', hashlib.sha256(current_test).hexdigest(), flush=True)\\nscratch = pathlib.Path(tempfile.mkdtemp(prefix='.rounding-verification-', dir=root))\\nrunner = r'''\\nimport hashlib, importlib, json, pathlib, sys, unittest\\ncopy = pathlib.Path(sys.argv[1]).resolve()\\noriginal = pathlib.Path(sys.argv[2]).resolve()\\nother = pathlib.Path(sys.argv[3]).resolve()\\nselected = json.loads(sys.argv[4])\\nsys.path[:0] = [str(copy / 'tests'), str(copy)]\\nmodule = importlib.import_module('test_rounding')\\nactual = pathlib.Path(module.component.__file__).resolve()\\nexpected = (copy / 'rounding.py').resolve()\\nassert actual == expected, (actual, expected)\\nassert actual != original / 'rounding.py'\\nassert actual != other / 'rounding.py'\\nassert pathlib.Path(module.__file__).resolve() == copy / 'tests/test_rounding.py'\\nprint('TEST PROCESS', 'revision=' + sys.argv[5], 'component=' + str(actual), flush=True)\\nprint('TEST PROCESS test SHA256=' + hashlib.sha256(pathlib.Path(module.__file__).read_bytes()).hexdigest(), flush=True)\\nsuite = unittest.defaultTestLoader.loadTestsFromNames(selected)\\ndef identities(item):\\n    if isinstance(item, unittest.TestSuite):\\n        return [name for child in item for name in identities(child)]\\n    return [item.id()]\\nassert identities(suite) == selected, identities(suite)\\nassert suite.countTestCases() == 4\\nresult = unittest.TextTestRunner(verbosity=2, stream=sys.stdout).run(suite)\\nassert pathlib.Path(module.component.__file__).resolve() == expected\\nprint('TEST PROCESS post-run component path verified:', expected, flush=True)\\nsys.exit(0 if result.wasSuccessful() else 1)\\n'''\\ntry:\\n    copies = [scratch / 'before', scratch / 'after']\\n    for revision, copy in zip(revisions, copies):\\n        copy.mkdir()\\n        archive = git('archive', '--format=tar', revision)\\n        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:\\n            tar.extractall(copy)\\n        (copy / 'tests').mkdir(exist_ok=True)\\n        test = copy / 'tests/test_rounding.py'\\n        test.write_bytes(current_test)\\n        test.chmod(test_mode)\\n        assert test.read_bytes() == current_test\\n        assert (copy / 'rounding.py').read_bytes() == git('show', revision + ':rounding.py')\\n    for i, (revision, copy) in enumerate(zip(revisions, copies)):\\n        print('\\\\nREVISION', revision, flush=True)\\n        p = subprocess.run([sys.executable, '-I', '-B', '-c', runner, str(copy), str(root), str(copies[1-i]), json.dumps(selected), revision], cwd=copy, env=env)\\n        print('Process exit:', p.returncode, flush=True)\\n        assert p.returncode == (1 if i == 0 else 0)\\nfinally:\\n    shutil.rmtree(scratch)\\n    final = snapshot()\\n    assert final == original, 'Original bytes/modes or paths changed: ' + repr([k for k in set(original) | set(final) if original.get(k) != final.get(k)])\\n    assert git('status', '--porcelain=v1', '--untracked-files=all') == status\\n    assert [git('rev-parse', ref).decode().strip() for ref in ('HEAD^', 'HEAD')] == revisions\\n    assert snapshot() == original\\n    print('\\\\nPRESERVATION VERIFIED: all original file bytes, modes, paths (including notes.txt and .git), Git status and revisions unchanged; scratch removed.', flush=True)\\nPY\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfac-3952-79f0-b250-b5b9f5c080a4",
+            "create_time": 1789922144.32356
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "5d350d5bd5793a7bbd570a8ac6c92bf2e13fbfe6be5a38a4a2c5c47b06543a0a",
+      "record": {
+        "timestamp": "2026-09-20T16:36:26.407Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfad-14a7-7bf0-88d7-14b3c48527db",
+          "call_id": "call_FyynanAPdYai45OHmz5bo7yB",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.5 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"72d3fe\",\"wall_time_seconds\":0.346856,\"exit_code\":0,\"original_token_count\":805,\"output\":\"Interpreter: /Applications/Xcode.app/Contents/Developer/usr/bin/python3 3.9.6 (default, Apr 17 2026, 18:15:52) \\n[Clang 21.0.0 (clang-2100.1.1.101)]\\nCurrent test SHA256: 6ed10cc27788f88b72cbaeed50ac678273b0d351474af888225673d9b40e5d68\\n\\nREVISION 341f10beb9c0e0e941c70573c08216ba5fdaaaaa\\nTEST PROCESS revision=341f10beb9c0e0e941c70573c08216ba5fdaaaaa component=<WORKSPACE>/.rounding-verification-bfjgi6uy/before/rounding.py\\nTEST PROCESS test SHA256=6ed10cc27788f88b72cbaeed50ac678273b0d351474af888225673d9b40e5d68\\ntest_positive_half_cent (test_rounding.RoundingTests) ... FAIL\\ntest_negative_half_cent (test_rounding.RoundingTests) ... FAIL\\ntest_non_tie (test_rounding.RoundingTests) ... ok\\ntest_exact_cent (test_rounding.RoundingTests) ... ok\\n\\n======================================================================\\nFAIL: test_positive_half_cent (test_rounding.RoundingTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.rounding-verification-bfjgi6uy/before/tests/test_rounding.py\\\", line 7, in test_positive_half_cent\\n    self.assertEqual(component.cents('1.005'), Decimal('1.01'))\\nAssertionError: Decimal('1.00') != Decimal('1.01')\\n\\n======================================================================\\nFAIL: test_negative_half_cent (test_rounding.RoundingTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.rounding-verification-bfjgi6uy/before/tests/test_rounding.py\\\", line 9, in test_negative_half_cent\\n    self.assertEqual(component.cents('-1.005'), Decimal('-1.01'))\\nAssertionError: Decimal('-1.00') != Decimal('-1.01')\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.000s\\n\\nFAILED (failures=2)\\nTEST PROCESS post-run component path verified: <WORKSPACE>/.rounding-verification-bfjgi6uy/before/rounding.py\\nProcess exit: 1\\n\\nREVISION f112e2647e333b7b11d0f12471990b6fd0d35748\\nTEST PROCESS revision=f112e2647e333b7b11d0f12471990b6fd0d35748 component=<WORKSPACE>/.rounding-verification-bfjgi6uy/after/rounding.py\\nTEST PROCESS test SHA256=6ed10cc27788f88b72cbaeed50ac678273b0d351474af888225673d9b40e5d68\\ntest_positive_half_cent (test_rounding.RoundingTests) ... ok\\ntest_negative_half_cent (test_rounding.RoundingTests) ... ok\\ntest_non_tie (test_rounding.RoundingTests) ... ok\\ntest_exact_cent (test_rounding.RoundingTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.000s\\n\\nOK\\nTEST PROCESS post-run component path verified: <WORKSPACE>/.rounding-verification-bfjgi6uy/after/rounding.py\\nProcess exit: 0\\n\\nPRESERVATION VERIFIED: all original file bytes, modes, paths (including notes.txt and .git), Git status and revisions unchanged; scratch removed.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfac-3952-79f0-b250-b5b9f5c080a4",
+            "create_time": 1789922186.407902
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
