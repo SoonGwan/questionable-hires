@@ -4,6 +4,32 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
+## Full archive recheck and mode-test isolation — 2026-09-21, parent `7f09841`
+
+A fresh Git-free archive of `7f09841` completed **827 tests in 126.651 seconds:
+23 errors, 13 skips**, exit 1, on Python3.11.16. The local log is
+`/tmp/qh-bundle-source.05wj5L/native-check.log` (temporary, not published).
+Remaining errors are Hostage modes (3), Hostage roundtrip (3), HTTPX probe (3),
+Receipt preserve (3), Receipt read (4), Receipt route (4), and Receipt startup (3).
+These are source-distribution validation failures, not measured model failures.
+
+The subsequent mode-test change exercises the unchanged snapshot/split logic with
+explicit synthetic Git objects. It checks preserved metadata/assets, rebased links,
+missing/duplicate relocation anchors, tamper rejection, exclusive execution, and
+retention of an incomplete limit-hit cell without restart. The actual historical
+resource comparison remains a separate check, executed when owned history exists.
+No frozen runner, fixture, model result, or production skill was modified.
+
+Targeted checkout validation: **7 tests in 0.785 seconds, OK** on Python3.11.16.
+This includes an independent Git-free wrapper with **15 nested tests: 11 behavior
+checks execute and four history-only checks explicitly skip**. The targeted result
+does not establish a new full-archive error count or prove model cost savings.
+
+한국어: `7f09841`의 전체 압축본 검사 827개에서 오류 23개·이력 전용 건너뛰기
+13개가 확인됐다. 이후 모드 후보 검사의 Git 의존성을 분리했고 관련 7개가 통과했다.
+별도 Git 없는 소스에서도 동작 검사 11개는 실제 실행된다. 과거 모델 결과와 배포용
+스킬은 바꾸지 않았으며, 전체 배포 준비 완료나 모델 성능 향상을 뜻하지 않는다.
+
 ## Bundle checks isolated from Git history — 2026-09-21, parent `d5c37e2`
 
 All-eight current02 and Korean automatic-selection scheduling/tamper tests now

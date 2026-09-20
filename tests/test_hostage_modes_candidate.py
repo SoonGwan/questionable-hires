@@ -5,12 +5,29 @@ import tempfile
 import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'benchmarks'))
-from hostage_modes_candidate import snapshot
+from hostage_modes_candidate import snapshot, split_entry, RESOURCE
 from run import resource_manifest
+from hostage_modes_fixture_support import controlled_modes, ENTRY
+from runner_snapshot_support import require_history
 
 
 class HostageModesCandidateTests(unittest.TestCase):
     def test_resource_split_preserves_assets_metadata_and_links(self):
+        with controlled_modes():
+            self.check_split()
+
+    def test_real_pinned_resource_split(self):
+        require_history(self, ROOT, [RESOURCE])
+        self.check_split()
+
+    def test_missing_and_duplicate_relocation_anchors_rejected(self):
+        for body in (ENTRY.replace('For stateful behavior,',''),
+                     ENTRY.replace('## Deliver and stop',''),
+                     ENTRY.replace('Without equivalent project support,','Without equivalent project support, Without equivalent project support,')):
+            with self.subTest(body=body), self.assertRaises(ValueError):
+                split_entry(body)
+
+    def check_split(self):
         with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             root=Path(scratch)
             snapshot(root/'original')
