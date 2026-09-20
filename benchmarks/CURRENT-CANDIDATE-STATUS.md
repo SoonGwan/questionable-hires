@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Full local regression refreshed — 2026-09-21, source `f21db2b`
+
+[Release checks](RELEASE-CHECK-2026-09-20.md): checkout Python 3.11.16 runs 901
+tests successfully with no skips; fresh Git-free source archive runs 901 with
+22 skips and no failures. Both pass metadata/link and featured synchronization
+checks. No skill behavior change or new model-performance claim. Hosted run
+35530668619 again has no executed steps because of account payments/spending
+limits. Repository remains private; account settings and visibility are unchanged.
+
+한국어: 최신 전체 회귀검사를 작업본과 소스 압축본에서 확인했다. 로컬 검증은
+통과했지만 모델 성능 목표와 계정 문제로 실행되지 못하는 원격 CI는 별도 미해결이다.
+
 ## Node guide transfer reviewed — 2026-09-21, launch `8212a19`
 
 [Reviewed checkpoint](RECEIPT-NODE-STARTUP-01-REVIEW.md): all six cells meet five

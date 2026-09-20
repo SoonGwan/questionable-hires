@@ -4,7 +4,35 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
-## Updated checkout and source archive pass — 2026-09-21, source `e874ace`
+## Updated checkout and source archive pass — 2026-09-21, source `f21db2b`
+
+Python 3.11.16 native discovery (`python -B -m unittest discover -s tests`)
+completed against the source containing Node support and both reviewed Node pilots:
+
+- Checkout: **901 tests, 164.894 seconds, OK**, exit 0, no skips.
+- Fresh `git archive f21db2b`: **901 tests, 153.012 seconds, OK (skipped=22)**,
+  exit 0, with neither `.git` nor `benchmarks/local-runs` present.
+- Metadata/local-link validation and featured synchronization pass in both;
+  checkout whitespace check passes. No skill code was changed for these checks.
+
+Archive location: `/tmp/qh-release-f21db2b.LCsPnT`. Terminal sessions 4539 and
+79448 returned terminal exit 0; no rerun repaired their output. The suites ran
+concurrently, so their times are not a performance comparison. Source-archive
+history snapshot checks remain conditional; do not report skipped checks as passes.
+This does not establish model efficiency or hosted installation.
+
+Hosted [run 35530668619](https://github.com/SoonGwan/questionable-hires/actions/runs/35530668619)
+at this source has four failed jobs with no executed steps. Source-archive check
+`106130571235` reports failed account payments or a spending limit preventing
+startup. Billing/settings, visibility and workflows were not changed or retried.
+The repository remains **PRIVATE**, default branch **main**. Hosted checks require
+owner action; that is separate from the unresolved whole-task performance goal.
+
+한국어: 최신 작업본은 901개 검사 모두 통과했고, Git 없는 소스 압축본은 22개를
+건너뛰고 나머지가 통과했다. 기능 회귀 검증이며 모델 성능 향상을 뜻하지 않는다.
+GitHub CI는 결제·지출 한도 문제로 실행 전 실패하며 계정이나 공개 설정은 그대로다.
+
+## Historical checkout and source archive pass — 2026-09-21, source `e874ace`
 
 Full Python3.11 native discovery completed for the source containing the context
 output-budget correction and new Friday/HTTPX pilot support:
