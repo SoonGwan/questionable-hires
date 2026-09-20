@@ -9,6 +9,28 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Edit/test roundtrip 01 — 2026-09-20, unpromoted candidate from `3083086`
+
+[Four fresh sessions](results/hostage-roundtrip-01/README.md), launch `eea866f`,
+compare existing instructions with sequential edit/test transport guidance.
+Both arms satisfy both exposed buffer variants. Candidate summed tokens
+**−20.51%**, process time **−22.11%** versus previous skill; responses **15→12**.
+Fault candidate actually batches creation/before tests and patch/after tests
+without losing native exits. Clean candidate repairs generated test code before
+first execution; original clean adds an exit-verification round trip. Preserve
+these costs and differing extra checks. All 16 separate author controls behave
+as expected. No fresh no-skill arm, n=1, one task/two variants, fixed order and
+shared host/cache: not an all-eight/no-skill win or causal 20% guarantee.
+Candidate stays isolated pending different-task and failed-edit evidence;
+production skills and featured charts are unchanged.
+
+한국어: 편집 직후 같은 도구 호출에서 테스트하도록 안내한 후보는 이번 4회
+비교에서 기존 스킬보다 합산 토큰 20.51%, 시간 22.11% 감소를 관측했다. 실제
+응답은 15→12회, 요구사항·범위는 모두 충족했다. 테스트 자체 수정과 검사 종료
+코드 재확인 비용도 포함했다. 별도 16개 대조 검사도 정상 동작했다. 다만 한
+과제의 두 변형·각 1회이며 무스킬 비교가 아니다. 편집 실패와 다른 과제 검증이
+남아 있어 아직 배포 스킬에는 반영하지 않았고 전체 목표도 완료되지 않았다.
+
 ## Buffer transfer 01 — 2026-09-20, resources `3083086`
 
 [Six fresh sessions](results/hostage-buffer-01/README.md), launch `ae3ee43`,

@@ -1,0 +1,96 @@
+{
+  "resource_revision": "30830860d5bcdbac8a1b492ffea62fb2e42a8f56",
+  "identities": {
+    "run_hostage_roundtrip_01.py": "3905568747dd0d46c5bd704838fdaebdce553f17df61208d294f26852e4c0580",
+    "hostage_roundtrip_candidate.py": "5fd8f25d9af0ab93f357dd9bea44996c82d2030dbfb391e1d7b53d88315eb83c",
+    "run_hostage_buffer_01.py": "31e0eae795f56a088588a8d2132ad3142c9f8e09806522a1504d290245e81f09",
+    "hostage_buffer_cases.py": "eb91351a899c786c224fe6fbfe432335b59da81a5b024639dbed2c0f3add992c",
+    "HOSTAGE-ROUNDTRIP-01-PROTOCOL.md": "d137cb666ed0cd7bf0c38e4c5f61c92f3df6ee93c1f8b60d4ca865a025152a90",
+    "run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c"
+  },
+  "cases": [
+    {
+      "id": "buffer-flush-fault",
+      "skill": "hostage-negotiator",
+      "task": "Review buffer.py against requirements.md and fix only real contract defects.\nAdd rerunnable native unittest tests using the actual Buffer and controlled send\ncallbacks. Cover empty and busy suppression without calling send; success with\nconcurrent additions; async failure and cancellation with ordered restoration and\nretry; synchronous callback failure with queued additions; receipt/item/ordinary\nerror identity; independent buffers. Observe actual callback entry, bound waits,\nand cancel/drain owned tasks even when assertions fail. No timing sleeps.\nRun python3 -B -m unittest discover -v; report native results and test-process exit.\nPreserve requirements.md, AGENTS.md and unrelated owner notes. If implementation\nalready conforms, leave buffer.py unchanged. Test support may be added locally.\nNo installs, network, external discovery, delegation, commits or publishing.\nKeep any scratch project-local and remove it; no separate report is requested.\n",
+      "files": {
+        "buffer.py": "class Buffer:\n    def __init__(self):\n        self._items = []\n        self.busy = False\n\n    @property\n    def queued(self):\n        return tuple(self._items)\n\n    def add(self, item):\n        self._items.append(item)\n\n    async def flush(self, send):\n        if self.busy or not self._items:\n            return False\n        batch, self._items = self._items, []\n        self.busy = True\n        try:\n            return await send(tuple(batch))\n        except BaseException:\n            self._items[:] = batch\n            raise\n        finally:\n            self.busy = False\n",
+        "requirements.md": "Buffer accepts opaque item objects; order and item identity matter.\nqueued is the tuple of waiting items; its backing container identity is private.\nadd appends synchronously, including while a flush is awaiting send.\nflush on an idle nonempty buffer detaches exactly its current queued items and\ninvokes the supplied send once with a tuple containing those exact objects.\nbusy is True during that operation. While busy, another flush returns literal\nFalse immediately without invoking its send or changing any buffer state.\nAn idle empty flush also returns literal False without invoking send.\nSuccessful send returns its exact receipt object (including None or False).\nThat batch stays removed; items added while waiting remain queued in order.\nOn synchronous send failure, async failure or application-task cancellation,\nrestore the detached batch BEFORE all items added meanwhile, without loss or\nduplication, then propagate the failure. Ordinary exception identity is preserved;\ntask cancellation requires CancelledError propagation, not exception identity.\nAfter either outcome busy is False and a new flush can proceed. Instances are\nindependent. Internal counters/container identities are not public contracts.\nCallbacks are cooperative asyncio operations, no I/O/threads. No automatic retry,\nbackground flushing, item copying, deferred execution of suppressed calls or\ncancellation of another flush.\n",
+        "notes.txt": "Owner draft: retain this line unchanged.\n",
+        "AGENTS.md": "Python 3.9+ standard library. Read requirements.md. Only buffer.py and native tests/support may change; fix production only if needed. Preserve all other files.\n"
+      },
+      "criteria": [
+        "Empty/busy flush suppression preserves state without invoking send.",
+        "Success removes only its batch, returns exact receipt and retains newer items.",
+        "Async failure, cancellation and synchronous failure restore old-before-new, permit retry and preserve ordinary error identity.",
+        "Real callbacks, item identity, independent owners and bounded failure-safe tests.",
+        "Native evidence, original user files/scope preserved; conforming production unchanged."
+      ]
+    },
+    {
+      "id": "buffer-flush-clean",
+      "skill": "hostage-negotiator",
+      "task": "Review buffer.py against requirements.md and fix only real contract defects.\nAdd rerunnable native unittest tests using the actual Buffer and controlled send\ncallbacks. Cover empty and busy suppression without calling send; success with\nconcurrent additions; async failure and cancellation with ordered restoration and\nretry; synchronous callback failure with queued additions; receipt/item/ordinary\nerror identity; independent buffers. Observe actual callback entry, bound waits,\nand cancel/drain owned tasks even when assertions fail. No timing sleeps.\nRun python3 -B -m unittest discover -v; report native results and test-process exit.\nPreserve requirements.md, AGENTS.md and unrelated owner notes. If implementation\nalready conforms, leave buffer.py unchanged. Test support may be added locally.\nNo installs, network, external discovery, delegation, commits or publishing.\nKeep any scratch project-local and remove it; no separate report is requested.\n",
+      "files": {
+        "buffer.py": "class Buffer:\n    def __init__(self):\n        self._items = []\n        self.busy = False\n\n    @property\n    def queued(self):\n        return tuple(self._items)\n\n    def add(self, item):\n        self._items.append(item)\n\n    async def flush(self, send):\n        if self.busy or not self._items:\n            return False\n        batch, self._items = self._items, []\n        self.busy = True\n        try:\n            return await send(tuple(batch))\n        except BaseException:\n            self._items[:0] = batch\n            raise\n        finally:\n            self.busy = False\n",
+        "requirements.md": "Buffer accepts opaque item objects; order and item identity matter.\nqueued is the tuple of waiting items; its backing container identity is private.\nadd appends synchronously, including while a flush is awaiting send.\nflush on an idle nonempty buffer detaches exactly its current queued items and\ninvokes the supplied send once with a tuple containing those exact objects.\nbusy is True during that operation. While busy, another flush returns literal\nFalse immediately without invoking its send or changing any buffer state.\nAn idle empty flush also returns literal False without invoking send.\nSuccessful send returns its exact receipt object (including None or False).\nThat batch stays removed; items added while waiting remain queued in order.\nOn synchronous send failure, async failure or application-task cancellation,\nrestore the detached batch BEFORE all items added meanwhile, without loss or\nduplication, then propagate the failure. Ordinary exception identity is preserved;\ntask cancellation requires CancelledError propagation, not exception identity.\nAfter either outcome busy is False and a new flush can proceed. Instances are\nindependent. Internal counters/container identities are not public contracts.\nCallbacks are cooperative asyncio operations, no I/O/threads. No automatic retry,\nbackground flushing, item copying, deferred execution of suppressed calls or\ncancellation of another flush.\n",
+        "notes.txt": "Owner draft: retain this line unchanged.\n",
+        "AGENTS.md": "Python 3.9+ standard library. Read requirements.md. Only buffer.py and native tests/support may change; fix production only if needed. Preserve all other files.\n"
+      },
+      "criteria": [
+        "Empty/busy flush suppression preserves state without invoking send.",
+        "Success removes only its batch, returns exact receipt and retains newer items.",
+        "Async failure, cancellation and synchronous failure restore old-before-new, permit retry and preserve ordinary error identity.",
+        "Real callbacks, item identity, independent owners and bounded failure-safe tests.",
+        "Native evidence, original user files/scope preserved; conforming production unchanged."
+      ]
+    }
+  ],
+  "schedule": [
+    {
+      "case": "buffer-flush-fault",
+      "condition": "original"
+    },
+    {
+      "case": "buffer-flush-fault",
+      "condition": "candidate"
+    },
+    {
+      "case": "buffer-flush-clean",
+      "condition": "candidate"
+    },
+    {
+      "case": "buffer-flush-clean",
+      "condition": "original"
+    }
+  ],
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 360,
+  "repeats": 1,
+  "jobs": 1,
+  "resource_digests": {
+    "original": "279a1bed5867b822da3f1e869222ac827a0cff780c133dc51d0944cd54199ab6",
+    "candidate": "42e5d2923b09dfcf2581e57663511299d744e3c723ca3ecdd7979199bce5be54"
+  },
+  "native_preflight": [
+    {
+      "variant": "correct",
+      "exit_code": 0,
+      "output": "test_async_failure_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_cancellation_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_empty_busy_and_success_with_new_items (test_buffer.BufferContract) ... ok\ntest_instances_remain_independent (test_buffer.BufferContract) ... ok\ntest_mutable_item_identity_and_falsy_receipts (test_buffer.BufferContract) ... ok\ntest_synchronous_failure_with_addition_and_retry (test_buffer.BufferContract) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.025s\n\nOK\n"
+    },
+    {
+      "variant": "faulty",
+      "exit_code": 1,
+      "output": "test_async_failure_restores_before_new_items (test_buffer.BufferContract) ... FAIL\ntest_cancellation_restores_before_new_items (test_buffer.BufferContract) ... FAIL\ntest_empty_busy_and_success_with_new_items (test_buffer.BufferContract) ... ok\ntest_instances_remain_independent (test_buffer.BufferContract) ... ok\ntest_mutable_item_identity_and_falsy_receipts (test_buffer.BufferContract) ... ok\ntest_synchronous_failure_with_addition_and_retry (test_buffer.BufferContract) ... FAIL\n\n======================================================================\nFAIL: test_async_failure_restores_before_new_items (test_buffer.BufferContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<PREFLIGHT>/test_buffer.py\", line 69, in test_async_failure_restores_before_new_items\n    await self.restore_and_retry(False)\n  File \"<PREFLIGHT>/test_buffer.py\", line 59, in restore_and_retry\n    self.assertEqual(owner.queued, (first, second, newer))\nAssertionError: Tuples differ: ('old-first', 'old-second') != ('old-first', 'old-second', 'newer')\n\nSecond tuple contains 1 additional elements.\nFirst extra element 2:\n'newer'\n\n- ('old-first', 'old-second')\n+ ('old-first', 'old-second', 'newer')\n?                           +++++++++\n\n\n======================================================================\nFAIL: test_cancellation_restores_before_new_items (test_buffer.BufferContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<PREFLIGHT>/test_buffer.py\", line 72, in test_cancellation_restores_before_new_items\n    await self.restore_and_retry(True)\n  File \"<PREFLIGHT>/test_buffer.py\", line 59, in restore_and_retry\n    self.assertEqual(owner.queued, (first, second, newer))\nAssertionError: Tuples differ: ('old-first', 'old-second') != ('old-first', 'old-second', 'newer')\n\nSecond tuple contains 1 additional elements.\nFirst extra element 2:\n'newer'\n\n- ('old-first', 'old-second')\n+ ('old-first', 'old-second', 'newer')\n?                           +++++++++\n\n\n======================================================================\nFAIL: test_synchronous_failure_with_addition_and_retry (test_buffer.BufferContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<PREFLIGHT>/test_buffer.py\", line 89, in test_synchronous_failure_with_addition_and_retry\n    self.assertEqual(owner.queued, (first, newer))\nAssertionError: Tuples differ: ('old',) != ('old', 'newer')\n\nSecond tuple contains 1 additional elements.\nFirst extra element 1:\n'newer'\n\n- ('old',)\n+ ('old', 'newer')\n\n----------------------------------------------------------------------\nRan 6 tests in 0.021s\n\nFAILED (failures=3)\n"
+    },
+    {
+      "variant": "valid_container_replacement",
+      "exit_code": 0,
+      "output": "test_async_failure_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_cancellation_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_empty_busy_and_success_with_new_items (test_buffer.BufferContract) ... ok\ntest_instances_remain_independent (test_buffer.BufferContract) ... ok\ntest_mutable_item_identity_and_falsy_receipts (test_buffer.BufferContract) ... ok\ntest_synchronous_failure_with_addition_and_retry (test_buffer.BufferContract) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.025s\n\nOK\n"
+    }
+  ],
+  "completed_cells": [],
+  "prepared_at": "2026-09-20T12:13:00.743432+00:00",
+  "stopped_after_limit": false
+}

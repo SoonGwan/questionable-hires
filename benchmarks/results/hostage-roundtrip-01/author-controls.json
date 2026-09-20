@@ -1,0 +1,214 @@
+{
+  "kind": "Separate author replay, not original model evidence",
+  "rows": [
+    {
+      "case": "buffer-flush-fault",
+      "condition": "original",
+      "variant": "correct",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_order_and_retries (test_buffer.BufferTests) ... ok\ntest_buffers_remain_independent_during_cancellation_and_retry (test_buffer.BufferTests) ... ok\ntest_busy_suppresses_send_without_changing_active_flush (test_buffer.BufferTests) ... ok\ntest_cancellation_restores_order_and_retries (test_buffer.BufferTests) ... ok\ntest_empty_suppresses_send_and_allows_later_flush (test_buffer.BufferTests) ... ok\ntest_success_preserves_receipt_and_concurrent_item_identity (test_buffer.BufferTests) ... ok\ntest_synchronous_callback_failure_preserves_additions_and_error (test_buffer.BufferTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.034s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-fault",
+      "condition": "original",
+      "variant": "faulty",
+      "exit_code": 1,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 1,
+      "output": "test_async_failure_restores_order_and_retries (test_buffer.BufferTests) ... FAIL\ntest_buffers_remain_independent_during_cancellation_and_retry (test_buffer.BufferTests) ... FAIL\ntest_busy_suppresses_send_without_changing_active_flush (test_buffer.BufferTests) ... ok\ntest_cancellation_restores_order_and_retries (test_buffer.BufferTests) ... FAIL\ntest_empty_suppresses_send_and_allows_later_flush (test_buffer.BufferTests) ... ok\ntest_success_preserves_receipt_and_concurrent_item_identity (test_buffer.BufferTests) ... ok\ntest_synchronous_callback_failure_preserves_additions_and_error (test_buffer.BufferTests) ... FAIL\n\n======================================================================\nFAIL: test_async_failure_restores_order_and_retries (test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 124, in test_async_failure_restores_order_and_retries\n    self.assertItems(buffer.queued, expected)\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 2 != 4\n\n======================================================================\nFAIL: test_buffers_remain_independent_during_cancellation_and_retry (test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 185, in test_buffers_remain_independent_during_cancellation_and_retry\n    self.assertItems(left.queued, (left_item, left_extra))\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 1 != 2\n\n======================================================================\nFAIL: test_cancellation_restores_order_and_retries (test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 141, in test_cancellation_restores_order_and_retries\n    self.assertItems(buffer.queued, expected)\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 2 != 4\n\n======================================================================\nFAIL: test_synchronous_callback_failure_preserves_additions_and_error (test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 167, in test_synchronous_callback_failure_preserves_additions_and_error\n    self.assertItems(buffer.queued, (first, second, third, fourth))\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 2 != 4\n\n----------------------------------------------------------------------\nRan 7 tests in 0.029s\n\nFAILED (failures=4)\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-fault",
+      "condition": "original",
+      "variant": "valid_container_replacement",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_order_and_retries (test_buffer.BufferTests) ... ok\ntest_buffers_remain_independent_during_cancellation_and_retry (test_buffer.BufferTests) ... ok\ntest_busy_suppresses_send_without_changing_active_flush (test_buffer.BufferTests) ... ok\ntest_cancellation_restores_order_and_retries (test_buffer.BufferTests) ... ok\ntest_empty_suppresses_send_and_allows_later_flush (test_buffer.BufferTests) ... ok\ntest_success_preserves_receipt_and_concurrent_item_identity (test_buffer.BufferTests) ... ok\ntest_synchronous_callback_failure_preserves_additions_and_error (test_buffer.BufferTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.034s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-fault",
+      "condition": "original",
+      "variant": "author_oracle",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "6"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_cancellation_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_empty_busy_and_success_with_new_items (test_buffer.BufferContract) ... ok\ntest_instances_remain_independent (test_buffer.BufferContract) ... ok\ntest_mutable_item_identity_and_falsy_receipts (test_buffer.BufferContract) ... ok\ntest_synchronous_failure_with_addition_and_retry (test_buffer.BufferContract) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.025s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-fault",
+      "condition": "candidate",
+      "variant": "correct",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_in_order_and_retries (test_buffer.BufferTests) ... ok\ntest_busy_suppresses_send_and_preserves_active_flush (test_buffer.BufferTests) ... ok\ntest_cancellation_restores_in_order_and_retries (test_buffer.BufferTests) ... ok\ntest_empty_suppresses_send (test_buffer.BufferTests) ... ok\ntest_independent_buffers_during_cancellation_and_retry (test_buffer.BufferTests) ... ok\ntest_success_preserves_receipt_and_concurrent_item_identity (test_buffer.BufferTests) ... ok\ntest_synchronous_failure_restores_callback_additions_and_retries (test_buffer.BufferTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.034s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-fault",
+      "condition": "candidate",
+      "variant": "faulty",
+      "exit_code": 1,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 1,
+      "output": "test_async_failure_restores_in_order_and_retries (test_buffer.BufferTests) ... FAIL\ntest_busy_suppresses_send_and_preserves_active_flush (test_buffer.BufferTests) ... ok\ntest_cancellation_restores_in_order_and_retries (test_buffer.BufferTests) ... FAIL\ntest_empty_suppresses_send (test_buffer.BufferTests) ... ok\ntest_independent_buffers_during_cancellation_and_retry (test_buffer.BufferTests) ... FAIL\ntest_success_preserves_receipt_and_concurrent_item_identity (test_buffer.BufferTests) ... ok\ntest_synchronous_failure_restores_callback_additions_and_retries (test_buffer.BufferTests) ... FAIL\n\n======================================================================\nFAIL: test_async_failure_restores_in_order_and_retries (test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 137, in test_async_failure_restores_in_order_and_retries\n    await self.check_async_recovery(cancel=False)\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 127, in check_async_recovery\n    self.assertItems(buffer.queued, detached + waiting)\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 2 != 4\n\n======================================================================\nFAIL: test_cancellation_restores_in_order_and_retries (test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 140, in test_cancellation_restores_in_order_and_retries\n    await self.check_async_recovery(cancel=True)\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 127, in check_async_recovery\n    self.assertItems(buffer.queued, detached + waiting)\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 2 != 4\n\n======================================================================\nFAIL: test_independent_buffers_during_cancellation_and_retry (test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 187, in test_independent_buffers_during_cancellation_and_retry\n    self.assertItems(left.queued, (a, c))\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 1 != 2\n\n======================================================================\nFAIL: test_synchronous_failure_restores_callback_additions_and_retries (test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 165, in test_synchronous_failure_restores_callback_additions_and_retries\n    self.assertItems(buffer.queued, (first, second, third, fourth))\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 2 != 4\n\n----------------------------------------------------------------------\nRan 7 tests in 0.029s\n\nFAILED (failures=4)\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-fault",
+      "condition": "candidate",
+      "variant": "valid_container_replacement",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_in_order_and_retries (test_buffer.BufferTests) ... ok\ntest_busy_suppresses_send_and_preserves_active_flush (test_buffer.BufferTests) ... ok\ntest_cancellation_restores_in_order_and_retries (test_buffer.BufferTests) ... ok\ntest_empty_suppresses_send (test_buffer.BufferTests) ... ok\ntest_independent_buffers_during_cancellation_and_retry (test_buffer.BufferTests) ... ok\ntest_success_preserves_receipt_and_concurrent_item_identity (test_buffer.BufferTests) ... ok\ntest_synchronous_failure_restores_callback_additions_and_retries (test_buffer.BufferTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.034s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-fault",
+      "condition": "candidate",
+      "variant": "author_oracle",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "6"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_cancellation_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_empty_busy_and_success_with_new_items (test_buffer.BufferContract) ... ok\ntest_instances_remain_independent (test_buffer.BufferContract) ... ok\ntest_mutable_item_identity_and_falsy_receipts (test_buffer.BufferContract) ... ok\ntest_synchronous_failure_with_addition_and_retry (test_buffer.BufferContract) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.024s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-clean",
+      "condition": "candidate",
+      "variant": "correct",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_in_order_and_allows_retry (tests.test_buffer.BufferTests) ... ok\ntest_buffers_are_independent_during_cancellation_and_success (tests.test_buffer.BufferTests) ... ok\ntest_busy_suppresses_send_and_preserves_active_operation (tests.test_buffer.BufferTests) ... ok\ntest_empty_suppresses_send (tests.test_buffer.BufferTests) ... ok\ntest_success_preserves_receipts_and_concurrent_item_identity (tests.test_buffer.BufferTests) ... ok\ntest_synchronous_failure_restores_before_callback_additions (tests.test_buffer.BufferTests) ... ok\ntest_task_cancellation_restores_in_order_and_allows_retry (tests.test_buffer.BufferTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.035s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-clean",
+      "condition": "candidate",
+      "variant": "faulty",
+      "exit_code": 1,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 1,
+      "output": "test_async_failure_restores_in_order_and_allows_retry (tests.test_buffer.BufferTests) ... FAIL\ntest_buffers_are_independent_during_cancellation_and_success (tests.test_buffer.BufferTests) ... FAIL\ntest_busy_suppresses_send_and_preserves_active_operation (tests.test_buffer.BufferTests) ... ok\ntest_empty_suppresses_send (tests.test_buffer.BufferTests) ... ok\ntest_success_preserves_receipts_and_concurrent_item_identity (tests.test_buffer.BufferTests) ... ok\ntest_synchronous_failure_restores_before_callback_additions (tests.test_buffer.BufferTests) ... FAIL\ntest_task_cancellation_restores_in_order_and_allows_retry (tests.test_buffer.BufferTests) ... FAIL\n\n======================================================================\nFAIL: test_async_failure_restores_in_order_and_allows_retry (tests.test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/tests/test_buffer.py\", line 146, in test_async_failure_restores_in_order_and_allows_retry\n    await self.check_interrupted_flush(cancel=False)\n  File \"<AUTHOR_CONTROL>/tests/test_buffer.py\", line 139, in check_interrupted_flush\n    self.assertItems(buffer.queued, original + (later, last))\n  File \"<AUTHOR_CONTROL>/tests/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 3 != 5\n\n======================================================================\nFAIL: test_buffers_are_independent_during_cancellation_and_success (tests.test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/tests/test_buffer.py\", line 199, in test_buffers_are_independent_during_cancellation_and_success\n    self.assertItems(left.queued, (a, c))\n  File \"<AUTHOR_CONTROL>/tests/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 1 != 2\n\n======================================================================\nFAIL: test_synchronous_failure_restores_before_callback_additions (tests.test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/tests/test_buffer.py\", line 175, in test_synchronous_failure_restores_before_callback_additions\n    self.assertItems(buffer.queued, (first, second, later, last))\n  File \"<AUTHOR_CONTROL>/tests/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 2 != 4\n\n======================================================================\nFAIL: test_task_cancellation_restores_in_order_and_allows_retry (tests.test_buffer.BufferTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/tests/test_buffer.py\", line 149, in test_task_cancellation_restores_in_order_and_allows_retry\n    await self.check_interrupted_flush(cancel=True)\n  File \"<AUTHOR_CONTROL>/tests/test_buffer.py\", line 139, in check_interrupted_flush\n    self.assertItems(buffer.queued, original + (later, last))\n  File \"<AUTHOR_CONTROL>/tests/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 3 != 5\n\n----------------------------------------------------------------------\nRan 7 tests in 0.030s\n\nFAILED (failures=4)\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-clean",
+      "condition": "candidate",
+      "variant": "valid_container_replacement",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_in_order_and_allows_retry (tests.test_buffer.BufferTests) ... ok\ntest_buffers_are_independent_during_cancellation_and_success (tests.test_buffer.BufferTests) ... ok\ntest_busy_suppresses_send_and_preserves_active_operation (tests.test_buffer.BufferTests) ... ok\ntest_empty_suppresses_send (tests.test_buffer.BufferTests) ... ok\ntest_success_preserves_receipts_and_concurrent_item_identity (tests.test_buffer.BufferTests) ... ok\ntest_synchronous_failure_restores_before_callback_additions (tests.test_buffer.BufferTests) ... ok\ntest_task_cancellation_restores_in_order_and_allows_retry (tests.test_buffer.BufferTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.035s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-clean",
+      "condition": "candidate",
+      "variant": "author_oracle",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "6"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_cancellation_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_empty_busy_and_success_with_new_items (test_buffer.BufferContract) ... ok\ntest_instances_remain_independent (test_buffer.BufferContract) ... ok\ntest_mutable_item_identity_and_falsy_receipts (test_buffer.BufferContract) ... ok\ntest_synchronous_failure_with_addition_and_retry (test_buffer.BufferContract) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.025s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-clean",
+      "condition": "original",
+      "variant": "correct",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_in_order_and_allows_retry (test_buffer.BufferContractTests) ... ok\ntest_buffers_are_independent_during_cancellation_and_retry (test_buffer.BufferContractTests) ... ok\ntest_busy_suppression_preserves_active_operation (test_buffer.BufferContractTests) ... ok\ntest_empty_suppression_never_calls_send (test_buffer.BufferContractTests) ... ok\ntest_success_preserves_receipt_and_concurrent_item_identity (test_buffer.BufferContractTests) ... ok\ntest_synchronous_failure_restores_callback_additions (test_buffer.BufferContractTests) ... ok\ntest_task_cancellation_restores_in_order_and_allows_retry (test_buffer.BufferContractTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.033s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-clean",
+      "condition": "original",
+      "variant": "faulty",
+      "exit_code": 1,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 1,
+      "output": "test_async_failure_restores_in_order_and_allows_retry (test_buffer.BufferContractTests) ... FAIL\ntest_buffers_are_independent_during_cancellation_and_retry (test_buffer.BufferContractTests) ... FAIL\ntest_busy_suppression_preserves_active_operation (test_buffer.BufferContractTests) ... ok\ntest_empty_suppression_never_calls_send (test_buffer.BufferContractTests) ... ok\ntest_success_preserves_receipt_and_concurrent_item_identity (test_buffer.BufferContractTests) ... ok\ntest_synchronous_failure_restores_callback_additions (test_buffer.BufferContractTests) ... FAIL\ntest_task_cancellation_restores_in_order_and_allows_retry (test_buffer.BufferContractTests) ... FAIL\n\n======================================================================\nFAIL: test_async_failure_restores_in_order_and_allows_retry (test_buffer.BufferContractTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 155, in test_async_failure_restores_in_order_and_allows_retry\n    await self.check_async_recovery(cancel=False)\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 149, in check_async_recovery\n    self.assertItems(buffer.queued, detached + waiting)\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 3 != 5\n\n======================================================================\nFAIL: test_buffers_are_independent_during_cancellation_and_retry (test_buffer.BufferContractTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 205, in test_buffers_are_independent_during_cancellation_and_retry\n    self.assertItems(left.queued, (left_item, left_added))\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 1 != 2\n\n======================================================================\nFAIL: test_synchronous_failure_restores_callback_additions (test_buffer.BufferContractTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 185, in test_synchronous_failure_restores_callback_additions\n    self.assertItems(buffer.queued, (first, second, third, fourth))\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 2 != 4\n\n======================================================================\nFAIL: test_task_cancellation_restores_in_order_and_allows_retry (test_buffer.BufferContractTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 158, in test_task_cancellation_restores_in_order_and_allows_retry\n    await self.check_async_recovery(cancel=True)\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 149, in check_async_recovery\n    self.assertItems(buffer.queued, detached + waiting)\n  File \"<AUTHOR_CONTROL>/test_buffer.py\", line 15, in assertItems\n    self.assertEqual(len(actual), len(expected))\nAssertionError: 3 != 5\n\n----------------------------------------------------------------------\nRan 7 tests in 0.028s\n\nFAILED (failures=4)\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-clean",
+      "condition": "original",
+      "variant": "valid_container_replacement",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "7"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_in_order_and_allows_retry (test_buffer.BufferContractTests) ... ok\ntest_buffers_are_independent_during_cancellation_and_retry (test_buffer.BufferContractTests) ... ok\ntest_busy_suppression_preserves_active_operation (test_buffer.BufferContractTests) ... ok\ntest_empty_suppression_never_calls_send (test_buffer.BufferContractTests) ... ok\ntest_success_preserves_receipt_and_concurrent_item_identity (test_buffer.BufferContractTests) ... ok\ntest_synchronous_failure_restores_callback_additions (test_buffer.BufferContractTests) ... ok\ntest_task_cancellation_restores_in_order_and_allows_retry (test_buffer.BufferContractTests) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.033s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    },
+    {
+      "case": "buffer-flush-clean",
+      "condition": "original",
+      "variant": "author_oracle",
+      "exit_code": 0,
+      "timed_out": false,
+      "native_counts": [
+        "6"
+      ],
+      "expected_exit": 0,
+      "output": "test_async_failure_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_cancellation_restores_before_new_items (test_buffer.BufferContract) ... ok\ntest_empty_busy_and_success_with_new_items (test_buffer.BufferContract) ... ok\ntest_instances_remain_independent (test_buffer.BufferContract) ... ok\ntest_mutable_item_identity_and_falsy_receipts (test_buffer.BufferContract) ... ok\ntest_synchronous_failure_with_addition_and_retry (test_buffer.BufferContract) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.024s\n\nOK\n",
+      "scratch_sources_unchanged": true
+    }
+  ],
+  "originals_unchanged": true
+}
