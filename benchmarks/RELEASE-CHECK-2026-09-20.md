@@ -4,6 +4,27 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
+## Roundtrip and HTTPX schedule isolation — 2026-09-21, parent `ec4a538`
+
+The rejected Hostage roundtrip candidate and historical HTTPX probe tests now use
+explicitly synthetic Git objects for resource-copy/rewrite, execution-order,
+exclusive-run and tamper-rejection behavior. Roundtrip additionally checks bad
+rewrite anchors and retained incomplete limit-hit cells. Neither frozen runner
+nor the original HTTPX source validator/native preflight was changed. Real pinned
+resource comparisons remain separate checks and execute in the full checkout.
+
+Targeted Python3.11 validation: **11 tests, 1.047 seconds, OK**. The included fresh
+Git-free source-copy wrapper runs 25 nested tests: **19 behavior checks execute,
+six history-only comparisons skip explicitly**. It checks passed test identities,
+unchanged source bytes and no leftover scratch. No model calls were made; synthetic
+token/time values in mocked scheduling tests are not performance measurements.
+This is not yet a fresh full-archive error count or release approval.
+
+한국어: 과거 roundtrip·HTTPX 실행기 검사의 Git 의존성을 분리했고 관련 11개가
+통과했다. Git 없는 별도 소스에서도 동작 검사 19개가 실행되며 과거 파일 대조
+6개만 명시적으로 건너뛴다. 기존 모델 측정·실행기·실제 HTTPX 검증은 바꾸지
+않았다. 전체 압축본 재검사나 배포 승인, 성능 향상 수치는 아니다.
+
 ## Checkout recheck — 2026-09-21, source `fab7824`
 
 Python3.11.16, `python -B -m unittest discover -s tests -q`: **830 tests in
