@@ -160,7 +160,7 @@ class NativeOwnedTaskTests(unittest.TestCase):
         variants = [('correct', fixed, 0),
                     ('broken', fixed.replace(guard, '            self.pending = False'), 1),
                     ('valid_counter_step', fixed.replace('self.generation += 1', 'self.generation += 2'), 0)]
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             project = Path(scratch)
             shutil.copy2(ASSET, project/'controlled_call.py')
             (project/'test_preview.py').write_text(revised)
@@ -209,7 +209,7 @@ class Native(unittest.IsolatedAsyncioTestCase):
 if __name__ == '__main__':
     unittest.main(verbosity=2)
 '''
-        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks') as scratch:
             project = Path(scratch)
             shutil.copy2(ASSET, project / 'controlled_call.py')
             for expected, exit_code in (('observed', 0), ('expected', 1)):

@@ -21,7 +21,7 @@ class BufferRunnerTests(unittest.TestCase):
         self.assertEqual([r['exit_code'] for r in preflight()],[0,1,0])
 
     def test_schedule_and_no_reexecution(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:
             self.invoke()
             cell.assert_not_called()
             manifest=json.loads((runner.OUTPUT/'run.json').read_text())
@@ -34,7 +34,7 @@ class BufferRunnerTests(unittest.TestCase):
             self.assertEqual(cell.call_count,6)
 
     def test_changed_candidate_rejected_before_model(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'run_cell') as cell:
             self.invoke()
             (runner.OUTPUT/'current/skills/hostage-negotiator/assets/controlled_call.py').write_text('changed')
             with self.assertRaisesRegex(ValueError,'Frozen'): self.invoke(True)

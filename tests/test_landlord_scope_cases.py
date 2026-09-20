@@ -13,7 +13,7 @@ from landlord_scope_cases import cases
 class LandlordScopeCasesTests(unittest.TestCase):
     def test_contract_controls_preserve_originals(self):
         for case in cases():
-            with self.subTest(case=case['id']), tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks/local-runs') as scratch:
+            with self.subTest(case=case['id']), tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks') as scratch:
                 project = Path(scratch)
                 for name, body in case['files'].items():
                     path = project / name

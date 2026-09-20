@@ -21,7 +21,7 @@ class HostageAssertionBoundaryTests(unittest.TestCase):
         self.assertEqual(original.count(old),1)
         repaired=original.replace(old,'        self.assertFalse(self.preview.pending)\n        self.assertIs(self.preview.value, before[1])')
         alternative=SOURCE.replace('self.generation += 1','self.generation += 2')
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             root=Path(scratch)
             (root/'controlled_call.py').write_bytes((evidence/'controlled_call.py').read_bytes())
             for label,tests,implementation,code in (
@@ -52,7 +52,7 @@ class Checks(unittest.IsolatedAsyncioTestCase):
     def test_contract(self):
         self.assertEqual("observed", "expected")
 '''
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             root=Path(scratch)
             for repaired in (False,True):
                 with self.subTest(repaired=repaired):

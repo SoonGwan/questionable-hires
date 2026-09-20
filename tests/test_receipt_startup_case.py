@@ -18,7 +18,7 @@ def preflight():
     helper = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(helper)
     rows = []
-    with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks/local-runs') as scratch:
+    with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks') as scratch:
         project = Path(scratch) / 'project'
         run.prepare(case(), project)
         original = helper.tree_inventory(project)

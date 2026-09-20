@@ -20,7 +20,7 @@ class RoundtripTests(unittest.TestCase):
             runner.main()
 
     def test_only_transport_sentence_changes_in_isolated_candidate(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             root=Path(scratch)
             snapshot(root/'original')
             snapshot(root/'candidate',candidate=True)
@@ -33,7 +33,7 @@ class RoundtripTests(unittest.TestCase):
                              (root/'original'/relative).read_text())
 
     def test_execution_is_exclusive_and_retains_all_scheduled_cells(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:
             self.invoke()
             cell.assert_not_called()
             cell.return_value=dict(completed=True,timed_out=False,limit_detected=False,usage={},elapsed_seconds=1)
@@ -46,7 +46,7 @@ class RoundtripTests(unittest.TestCase):
             self.assertEqual(cell.call_count,4)
 
     def test_changed_resource_rejected_before_calls(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'run_cell') as cell:
             self.invoke()
             entry=runner.OUTPUT/'candidate/skills/hostage-negotiator/SKILL.md'
             entry.write_text(entry.read_text()+'modified')

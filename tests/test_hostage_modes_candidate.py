@@ -11,7 +11,7 @@ from run import resource_manifest
 
 class HostageModesCandidateTests(unittest.TestCase):
     def test_resource_split_preserves_assets_metadata_and_links(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             root=Path(scratch)
             snapshot(root/'original')
             snapshot(root/'candidate',candidate=True)

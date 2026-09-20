@@ -17,7 +17,7 @@ class HostageModesRunnerTests(unittest.TestCase):
             runner.main()
 
     def test_prepare_has_no_model_calls_and_execute_is_exclusive(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:
             self.invoke()
             cell.assert_not_called()
             cell.return_value=dict(completed=True,timed_out=False,limit_detected=False,usage={},elapsed_seconds=1)
@@ -31,7 +31,7 @@ class HostageModesRunnerTests(unittest.TestCase):
             self.assertEqual(cell.call_count,6)
 
     def test_changed_resource_rejected_before_model_call(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'run_cell') as cell:
             self.invoke()
             entry=runner.OUTPUT/'candidate/skills/hostage-negotiator/SKILL.md'
             entry.write_text(entry.read_text()+'changed')

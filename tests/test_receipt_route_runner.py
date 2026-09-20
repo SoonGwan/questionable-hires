@@ -21,7 +21,7 @@ class ReceiptRouteRunnerTests(unittest.TestCase):
         self.assertEqual([r['comparison']['checks']['after']['exit_code'] for r in rows], [0, 1])
 
     def test_schedule_and_exclusive_execution(self):
-        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks/local-runs') as scratch, patch.object(runner, 'OUTPUT', Path(scratch) / 'run'), patch.object(runner, 'preflight', return_value=[]), patch.object(runner.run, 'disabled_skills', return_value=[]), patch.object(runner.run, 'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks') as scratch, patch.object(runner, 'OUTPUT', Path(scratch) / 'run'), patch.object(runner, 'preflight', return_value=[]), patch.object(runner.run, 'disabled_skills', return_value=[]), patch.object(runner.run, 'run_cell') as cell:
             self.invoke()
             cell.assert_not_called()
             cell.return_value = dict(completed=True, timed_out=False, limit_detected=False, usage={}, elapsed_seconds=1)
@@ -35,7 +35,7 @@ class ReceiptRouteRunnerTests(unittest.TestCase):
             self.assertEqual(cell.call_count, 4)
 
     def test_changed_candidate_rejected_before_calls(self):
-        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks/local-runs') as scratch, patch.object(runner, 'OUTPUT', Path(scratch) / 'run'), patch.object(runner, 'preflight', return_value=[]), patch.object(runner.run, 'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks') as scratch, patch.object(runner, 'OUTPUT', Path(scratch) / 'run'), patch.object(runner, 'preflight', return_value=[]), patch.object(runner.run, 'run_cell') as cell:
             self.invoke()
             entry = runner.OUTPUT / 'candidate/skills/receipt/SKILL.md'
             entry.write_text(entry.read_text() + 'changed')

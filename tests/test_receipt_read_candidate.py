@@ -11,7 +11,7 @@ from run import resource_manifest
 
 class ReceiptReadCandidateTests(unittest.TestCase):
     def test_only_known_input_guidance_changes_and_runtime_stays_identical(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             root=Path(scratch)
             snapshot(root/'original')
             snapshot(root/'candidate',candidate=True)

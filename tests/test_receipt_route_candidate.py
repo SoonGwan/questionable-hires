@@ -11,7 +11,7 @@ from run import resource_manifest
 
 class ReceiptRouteCandidateTests(unittest.TestCase):
     def test_only_instruction_routing_changes_not_runtime_or_evidence(self):
-        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks') as scratch:
             root = Path(scratch)
             snapshot(root / 'original')
             snapshot(root / 'candidate', candidate=True)

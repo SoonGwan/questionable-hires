@@ -18,7 +18,7 @@ class StalePatchTests(unittest.TestCase):
         self.assertIn('AssertionError: 100 != 0',rows[1]['output'])
 
     def test_audit_preserves_failed_and_correct_invocations(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             project=Path(scratch)
             for name,content in cases()[0]['files'].items():
                 (project/name).write_text(content)

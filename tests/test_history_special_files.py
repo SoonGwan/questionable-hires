@@ -17,7 +17,7 @@ spec.loader.exec_module(helper)
 class HistorySpecialFileTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(os,'mkfifo'),'Requires POSIX named pipes')
     def test_native_fifo_rejected_without_waiting_for_a_writer(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             fifo=Path(scratch)/'source.py'
             os.mkfifo(fifo)
             before=fifo.stat()
@@ -33,7 +33,7 @@ class HistorySpecialFileTests(unittest.TestCase):
             self.assertEqual(fifo.stat().st_mode,before.st_mode)
 
     def test_directory_rejected_before_open_or_git(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch:
             (Path(scratch)/'directory').mkdir()
             with patch.object(Path,'open',side_effect=AssertionError('Special file must not be opened')),patch.object(helper,'git') as git:
                 with self.assertRaisesRegex(ValueError,'regular file'):

@@ -25,7 +25,7 @@ class ConArtistReadRunnerTests(unittest.TestCase):
         self.assertTrue(all(row['scratch_removed'] for row in rows))
 
     def test_only_entrypoint_changes_and_exclusive_order(self):
-        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks/local-runs') as scratch, patch.object(runner, 'OUTPUT', Path(scratch) / 'run'), patch.object(runner, 'preflight', return_value=[]), patch.object(runner.run, 'disabled_skills', return_value=[]), patch.object(runner.run, 'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks') as scratch, patch.object(runner, 'OUTPUT', Path(scratch) / 'run'), patch.object(runner, 'preflight', return_value=[]), patch.object(runner.run, 'disabled_skills', return_value=[]), patch.object(runner.run, 'run_cell') as cell:
             self.invoke()
             cell.assert_not_called()
             roots = [runner.OUTPUT / condition / 'skills' for condition in runner.CONDITIONS]
@@ -45,7 +45,7 @@ class ConArtistReadRunnerTests(unittest.TestCase):
             self.assertEqual(cell.call_count, 2)
 
     def test_changed_resource_prevents_execution(self):
-        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks/local-runs') as scratch, patch.object(runner, 'OUTPUT', Path(scratch) / 'run'), patch.object(runner, 'preflight', return_value=[]), patch.object(runner.run, 'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks') as scratch, patch.object(runner, 'OUTPUT', Path(scratch) / 'run'), patch.object(runner, 'preflight', return_value=[]), patch.object(runner.run, 'run_cell') as cell:
             self.invoke()
             entry = runner.OUTPUT / 'candidate/skills/con-artist/SKILL.md'
             entry.write_text(entry.read_text() + '\nchanged\n')

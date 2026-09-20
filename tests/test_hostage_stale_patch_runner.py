@@ -17,7 +17,7 @@ class StaleRunnerTests(unittest.TestCase):
             runner.main()
 
     def test_prepare_exclusive_execution_and_all_arms(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:
             self.invoke()
             cell.assert_not_called()
             cell.return_value=dict(completed=True,timed_out=False,limit_detected=False,usage={},elapsed_seconds=1)
@@ -29,7 +29,7 @@ class StaleRunnerTests(unittest.TestCase):
             self.assertEqual(cell.call_count,3)
 
     def test_changed_candidate_rejected_before_execution(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'run_cell') as cell:
             self.invoke()
             entry=runner.OUTPUT/'candidate/skills/hostage-negotiator/SKILL.md'
             entry.write_text(entry.read_text()+'changed')
@@ -37,7 +37,7 @@ class StaleRunnerTests(unittest.TestCase):
             cell.assert_not_called()
 
     def test_account_limit_stops_without_replacements(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks/local-runs') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:
+        with tempfile.TemporaryDirectory(dir=ROOT/'benchmarks') as scratch,patch.object(runner,'OUTPUT',Path(scratch)/'run'),patch.object(runner,'preflight',return_value=[]),patch.object(runner.run,'disabled_skills',return_value=[]),patch.object(runner.run,'run_cell') as cell:
             self.invoke()
             cell.return_value=dict(completed=False,timed_out=False,limit_detected=True,usage={},elapsed_seconds=1)
             self.invoke(True)

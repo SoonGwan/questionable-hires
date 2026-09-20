@@ -9,6 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Release validation exposes archive gaps — 2026-09-20, checked source `21ed1a4`
+
+[Full check and partial repair](RELEASE-CHECK-2026-09-20.md): existing checkout
+passes 783 tests, including deterministic standalone packaging/offline install.
+Fresh source archive fails with 56 errors and 3 skips, including missing ignored
+scratch parents and Git-dependent comparisons. Twenty test modules now use an
+existing tracked scratch parent; a sparse archive regression runs 12 native checks
+without Git/local-runs. All 55 changed-module/archive checks pass. Remaining
+historical-source and schedule isolation must be repaired and full archive checks
+rerun; no release approval. Hosted jobs did not start because of account payment/
+spending-limit settings, not a completed test failure. Owner action is needed for
+hosted verification; local implementation work can continue. No performance claim.
+
+한국어: 기존 폴더 783개 통과와 달리 소스 압축본은 56개 오류로 실패했다.
+로컬 임시 폴더 의존성을 일부 수정하고 변경 관련 55개를 통과했지만 Git 이력
+의존 검사 분리·압축본 전체 재검증이 남아 있다. 원격 검사는 결제/한도 문제로
+시작되지 않아 별도 해결이 필요하다. 배포 완료나 성능 향상을 주장하지 않는다.
+
 ## Necromancer excerpt allocation bounded earlier — 2026-09-20, parent `d087a96`
 
 [Local exact-output comparison](PYTHON-REGIONS-BUDGET-01.md) eliminates full-body
