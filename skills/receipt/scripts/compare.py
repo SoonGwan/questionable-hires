@@ -21,7 +21,7 @@ import time
 MAX_FIXED_ENTRIES = 10_000
 MAX_GUARD_BYTES = 20_000_000
 
-BOOTSTRAP = '''import importlib, json, pathlib, sys, traceback
+BOOTSTRAP = '''import importlib, json, os, pathlib, sys, traceback
 recipe = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
 sys.path[:0] = [str(root / name) for name in recipe.get('import_roots', [])] + [str(root)]
@@ -31,7 +31,9 @@ def verify_imports():
         location = getattr(module, '__file__', None)
         if not location or not pathlib.Path(location).resolve().is_relative_to(root):
             raise RuntimeError('Import escaped comparison copy: ' + name)
-        print('Verified copied import:', name, flush=True)
+        print('Verified copied import:', name, json.dumps({
+            'path': str(pathlib.Path(location).resolve()), 'pid': os.getpid()
+        }), flush=True)
 sys.argv = [recipe['runner']] + recipe['tests']
 if recipe['runner'] == 'pytest':
     import pytest
@@ -69,7 +71,7 @@ if recipe['runner'] == 'unittest':
 '''
 
 
-NATIVE_STARTUP = '''import importlib, os, pathlib, site, sys, traceback
+NATIVE_STARTUP = '''import importlib, json, os, pathlib, site, sys, traceback
 def _receipt_startup():
     global probe, root
     probe = pathlib.Path(__file__).resolve().parent
@@ -105,7 +107,9 @@ def _receipt_startup():
             location = getattr(module, '__file__', None)
             if not location or not pathlib.Path(location).resolve().is_relative_to(root):
                 raise RuntimeError('Import escaped comparison copy: ' + name)
-            print('Verified copied import:', name, flush=True)
+            print('Verified copied import:', name, json.dumps({
+                'path': str(pathlib.Path(location).resolve()), 'pid': os.getpid()
+            }), flush=True)
         (probe / 'ready').write_bytes(b'ready')
     except BaseException:
         traceback.print_exc()
@@ -478,6 +482,8 @@ only when whole-project preservation is requested and all source reads are allow
 before: commit expression. after: commit expression or {"working_tree":true}.
 Working-tree after freezes current bytes/modes once, not the index or a commit.
 imports: modules that must load inside each copy. runner: unittest or pytest.
+Verified copied import lines include JSON path/pid from that native process at
+import time; they do not prove later monkey-patching cannot change behavior.
 invocation (optional): module runs Python -B -m unittest with these tests using
 a temporary same-process startup probe; bootstrap is the existing default.
 Module mode keeps native unittest exits; empty discovery can return 0 or 5

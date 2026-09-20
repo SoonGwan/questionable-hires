@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt native import evidence — 2026-09-20, parent `8647f8a`
+
+[Direct import path/PID output and executed controls](RECEIPT-IMPORT-EVIDENCE-01.md)
+make native loaded-code location inspectable without inferring it from helper
+implementation. All 109 Receipt tests pass with installed pytest; 21 installation
+tests pass. Actual native process identities match the reported identities across
+unittest bootstrap/module and pytest; original failure/pass and preservation
+remain. **Model token/time impact is unmeasured** and added output has a cost.
+This capability improvement does not satisfy the eight-role performance objective.
+
+한국어: 실행 결과에 실제 모듈 경로·프로세스 ID를 추가하고 네이티브 테스트의 값과
+일치함을 검증했다. Receipt 109개·설치 21개 검사 통과는 기능 증거이며 모델 성능
+수치가 아니다. 새 과제에서 추가 확인 작업과 전체 비용이 줄어드는지 측정해야 한다.
+
 ## Receipt selection original evidence reviewed — 2026-09-20, launch `627c830`
 
 [All six original sessions and review](results/receipt-selection-01/README.md)

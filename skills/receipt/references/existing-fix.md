@@ -91,6 +91,9 @@ output. Reserve `--pretty` for a human-readable JSON request, not extra evidence
 CLI 0 means observations collected, **not proof**. Inspect each actual assertion,
 requested test identity, before failure/after pass, copied-import evidence,
 `exit_code`, `timed_out` and `output_truncated`. Help/version output is not execution.
+Each `Verified copied import:` line includes the resolved module `path` and native
+process `pid`. This records import-time location, not proof against subsequent
+monkey-patching; a truncated line is unavailable evidence, not permission to infer it.
 Skipped/empty checks do not establish a regression, even with native exit 0.
 Missing import/startup provenance or check exit 7 means incomplete: CLI 2, no next
 comparison. Preserve native errors, not just the wrapper status. See

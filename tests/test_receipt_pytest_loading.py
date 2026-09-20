@@ -1,5 +1,6 @@
 """Exercise real pytest loading and provenance, not a mocked runner."""
 import importlib.util
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -60,6 +61,25 @@ class ReceiptPytestLoadingTests(unittest.TestCase):
         self.assertEqual(result['exit_code'], 1, result['output'])
         self.assertIn('assert 19 == 18', result['output'])
         self.assertIn('1 failed, 1 passed', result['output'])
+
+    def test_import_evidence_matches_collected_module_and_native_process(self):
+        test = self.root / 'checks_rule.py'
+        test.write_text(test.read_text() + '\nimport json, os, rule\n'
+                        'def test_identity():\n'
+                        '    print("NATIVE_IDENTITY " + json.dumps({"path": rule.__file__, '
+                        '"pid": os.getpid()}), flush=True)\n')
+        result = self.run_native()
+        self.assertEqual(result['exit_code'], 1, result['output'])
+        self.assertIn('1 failed, 2 passed', result['output'])
+        prefix = 'Verified copied import: rule '
+        evidence = [json.loads(line[len(prefix):]) for line in result['output'].splitlines()
+                    if line.startswith(prefix)]
+        self.assertEqual(len(evidence), 1, result['output'])
+        self.assertEqual(evidence[0]['path'], str((self.root / 'rule.py').resolve()))
+        # Pytest's verbose test label may precede the print on the same line.
+        native = [json.loads(line.split('NATIVE_IDENTITY ', 1)[1])
+                  for line in result['output'].splitlines() if 'NATIVE_IDENTITY {' in line]
+        self.assertEqual(evidence, native)
 
     def test_explicit_plain_assertions_are_not_forced_to_rewrite(self):
         result = self.run_native(tests=self.recipe['tests'] + ['--assert=plain'])
