@@ -4,6 +4,18 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
+## Checkout recheck — 2026-09-21, source `fab7824`
+
+Python3.11.16, `python -B -m unittest discover -s tests -q`: **830 tests in
+141.759 seconds, OK**, exit 0. Working tree clean after test cleanup. Validation
+also passes for all eight hires, UI metadata, plugin references, issue forms and
+local documentation links; featured benchmark synchronization passes unchanged.
+This is checkout validation, not a full source-archive rerun or model benchmark.
+
+한국어: `fab7824` 개발 체크아웃의 전체 830개 검사가 통과했다. 8개 스킬 구조와
+문서 링크·대표 벤치마크 동기화도 통과했다. 압축본 전체 재검사나 모델 성능 검증을
+대신하는 결과는 아니다.
+
 ## Full archive recheck and mode-test isolation — 2026-09-21, parent `7f09841`
 
 A fresh Git-free archive of `7f09841` completed **827 tests in 126.651 seconds:
