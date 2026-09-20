@@ -1,0 +1,209 @@
+{
+  "session_id": "01a0bfd7-6b3d-7ab2-91e5-082bfadbc3ee",
+  "source_bytes": 100994,
+  "source_sha256": "da3ca560ceaa645b829da73166476928509f3988b3fd441f97e6db9c22a249f0",
+  "source_lines": 39,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "d8338c9bd906d016f144cd38142314db95503e7c67a12fe3a1159785dad0f475",
+      "record": {
+        "timestamp": "2026-09-20T17:22:46.210Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0029ee725ccb3ded016ab01667263087d0adb7b09a1eb3c4a3",
+          "status": "completed",
+          "call_id": "call_QwTem476lMAgK0KMxuqtQPZm",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '! .git' -g '!*lock*'\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd7-6b84-7200-bc66-c0f827abe734",
+            "create_time": 1789924965.081263
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "b46ab15bd373df8205898232c1fd1229fda6a0f713010cf5789ef6d749715ad7",
+      "record": {
+        "timestamp": "2026-09-20T17:22:46.376Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfd7-7fe8-7d91-a31a-68fe4a4d7cef",
+          "call_id": "call_QwTem476lMAgK0KMxuqtQPZm",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ea2503\",\"wall_time_seconds\":0.000003792,\"exit_code\":0,\"original_token_count\":34,\"output\":\"<WORKSPACE>\\n004.sql\\n001.sql\\nrelease.md\\n003.sql\\n002.sql\\nreaders.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd7-6b84-7200-bc66-c0f827abe734",
+            "create_time": 1789924966.376398
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "e641a9538dc2fef7247f1cfabc0e6193a524bf69ed1d3ffb6303eb0cb8d029cb",
+      "record": {
+        "timestamp": "2026-09-20T17:22:50.166Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0029ee725ccb3ded016ab0166a57b887d0b5117a211341cea5",
+          "status": "completed",
+          "call_id": "call_NKyCktEzMKiBDl6ZmmsItQ91",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat release.md readers.py 001.sql 002.sql 003.sql 004.sql; git status --porcelain=v1; rg --files --hidden -g AGENTS.md -g '!.git/**'\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd7-6b84-7200-bc66-c0f827abe734",
+            "create_time": 1789924968.79897
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "625b015991875f6bc503c3135c7757857b09d0abf81390f40004ffd2c6bf629f",
+      "record": {
+        "timestamp": "2026-09-20T17:22:50.267Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfd7-8f1b-7980-b8db-24ea490dd30b",
+          "call_id": "call_NKyCktEzMKiBDl6ZmmsItQ91",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a71e68\",\"wall_time_seconds\":0.000001542,\"exit_code\":1,\"original_token_count\":483,\"output\":\"# Stock release contract\\nThis is an authored SQL-only SQLite review. Literal queries in readers.py define\\nthe complete consumers; no application runtime, concurrent transactions, crash\\nrecovery or other engine is in scope. No dependencies or external services.\\n\\nOLD requires ordered columns [sku, units], one complete row per SKU in lexical\\norder, where units is total quantity, including reserved stock. NEW requires the\\nsame columns/order but units is quantity minus reserved. Neither permits omitting\\nzero values. Expected total quantities initially are A=10, C=0; after writes,\\nA=12, B=4, C=0. Reservations after writes are A=5, B=1, C=0.\\n\\nReview this exact order: (1) 001.sql, OLD active; (2) 002.sql, OLD active;\\n(3) 003.sql, OLD and NEW active; (4) drain NEW and restart OLD with no SQL;\\n(5) 004.sql, OLD active. Evaluate both literal queries at all five phases,\\nincluding inactive consumers, but inactive errors alone are not blockers.\\nAll quantities and reservations written at step 3 must survive step 5. No\\nzero-downtime or deployment authorization beyond this proposed sequence is implied.\\nDo not change SQL, contracts, files or Git state. Any necessary scratch must be\\nproject-local and removed; prefer in-memory execution. Report scoped limitations.\\nOLD = 'SELECT sku, units FROM legacy_stock ORDER BY sku'\\nNEW = 'SELECT sku, quantity-reserved AS units FROM stock ORDER BY sku'\\nCREATE TABLE stock(sku TEXT PRIMARY KEY, quantity INTEGER NOT NULL);\\nINSERT INTO stock VALUES ('A',10),('C',0);\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\nALTER TABLE stock ADD COLUMN reserved INTEGER NOT NULL DEFAULT 0;\\nDROP VIEW legacy_stock;\\nCREATE VIEW legacy_stock AS SELECT sku, quantity-reserved AS units FROM stock;\\nUPDATE stock SET quantity=12, reserved=5 WHERE sku='A';\\nINSERT INTO stock VALUES ('B',4,1);\\nDROP VIEW legacy_stock;\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd7-6b84-7200-bc66-c0f827abe734",
+            "create_time": 1789924970.267928
+          }
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "b497824714efa48571a13ca929632efd8257627d33d67a808c71c33f158c6bb2",
+      "record": {
+        "timestamp": "2026-09-20T17:22:55.820Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0029ee725ccb3ded016ab016702d0c87d0bdd29c7e6d68895a",
+          "status": "completed",
+          "call_id": "call_9tx5SZnnUsWZiaBBZqw46lWq",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"for f in 001.sql 002.sql 003.sql 004.sql; do printf '\\\\n%s\\\\n' \\\"$f\\\"; cat \\\"$f\\\"; done; git status --porcelain=v1 --untracked-files=all; ls -a\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd7-6b84-7200-bc66-c0f827abe734",
+            "create_time": 1789924972.601451
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "382796ddd756cd35b62370da04794121027b0cc88948d073329a2cc3788be71c",
+      "record": {
+        "timestamp": "2026-09-20T17:22:55.947Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfd7-a54b-7d71-a8eb-464ee6d9b5c3",
+          "call_id": "call_9tx5SZnnUsWZiaBBZqw46lWq",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"408180\",\"wall_time_seconds\":0.000001875,\"exit_code\":0,\"original_token_count\":160,\"output\":\"\\n001.sql\\nCREATE TABLE stock(sku TEXT PRIMARY KEY, quantity INTEGER NOT NULL);\\nINSERT INTO stock VALUES ('A',10),('C',0);\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\n\\n002.sql\\nALTER TABLE stock ADD COLUMN reserved INTEGER NOT NULL DEFAULT 0;\\nDROP VIEW legacy_stock;\\nCREATE VIEW legacy_stock AS SELECT sku, quantity-reserved AS units FROM stock;\\n\\n003.sql\\nUPDATE stock SET quantity=12, reserved=5 WHERE sku='A';\\nINSERT INTO stock VALUES ('B',4,1);\\n\\n004.sql\\nDROP VIEW legacy_stock;\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\n.\\n..\\n.git\\n001.sql\\n002.sql\\n003.sql\\n004.sql\\nreaders.py\\nrelease.md\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd7-6b84-7200-bc66-c0f827abe734",
+            "create_time": 1789924975.947869
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "8158a84292e807116176297eb74d0c59cf0eb4f9fe687871d4c2d99be53afc97",
+      "record": {
+        "timestamp": "2026-09-20T17:23:22.492Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0029ee725ccb3ded016ab01673592087d0a53a355168353fed",
+          "status": "completed",
+          "call_id": "call_tIKE2XsamgnT9Dog8p88iCA2",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport hashlib, pathlib, sqlite3, subprocess\\nroot = pathlib.Path('.')\\ndef snapshot():\\n    return {str(p): hashlib.sha256(p.read_bytes()).hexdigest()\\n            for p in root.rglob('*') if p.is_file()}\\nbefore = snapshot()\\ngit_before = subprocess.check_output(['git','status','--porcelain=v1','--untracked-files=all'])\\nreaders = {}\\nexec(compile(pathlib.Path('readers.py').read_text(), 'readers.py', 'exec'), readers)\\nprint('SQLite', sqlite3.sqlite_version)\\nprint('Reader source: readers.py; constants:', {k: readers[k] for k in ('OLD','NEW')})\\ndb = sqlite3.connect(':memory:')\\ncolumns = ['sku','units']\\ninitial = [('A',10),('C',0)]\\ntotals = [('A',12),('B',4),('C',0)]\\navailable = [('A',7),('B',3),('C',0)]\\nwritten = [('A',12,5),('B',4,1),('C',0,0)]\\ncommitted = None\\nfor phase, filename, active in [(1,'001.sql',('OLD',)), (2,'002.sql',('OLD',)), (3,'003.sql',('OLD','NEW')), (4,None,('OLD',)), (5,'004.sql',('OLD',))]:\\n    if filename:\\n        db.executescript(pathlib.Path(filename).read_text())\\n        db.commit()\\n    print('\\\\nPHASE', phase, filename or 'no SQL: drain NEW / restart OLD', 'active=', active, 'in_transaction=', db.in_transaction)\\n    for name in ('OLD','NEW'):\\n        expected = initial if phase < 3 else totals if name == 'OLD' else available\\n        try:\\n            cur = db.execute(readers[name])\\n            got_columns = [c[0] for c in cur.description]\\n            got_rows = cur.fetchall()\\n            print(name, 'ACTIVE' if name in active else 'inactive', 'PASS' if (got_columns,got_rows)==(columns,expected) else 'FAIL', 'expected=',(columns,expected), 'observed=',(got_columns,got_rows))\\n        except sqlite3.Error as e:\\n            print(name, 'ACTIVE' if name in active else 'inactive', 'ERROR', str(e), 'expected=',(columns,expected))\\n    cur = db.execute('SELECT * FROM stock ORDER BY sku')\\n    state_columns = [c[0] for c in cur.description]\\n    state = cur.fetchall()\\n    expected_state = [('A',10),('C',0)] if phase==1 else [('A',10,0),('C',0,0)] if phase==2 else written\\n    expected_columns = ['sku','quantity'] if phase==1 else ['sku','quantity','reserved']\\n    print('STORAGE', 'PASS' if (state_columns,state)==(expected_columns,expected_state) else 'FAIL', state_columns, state)\\n    if phase == 3:\\n        committed = state\\n        assert not db.in_transaction\\n    if phase == 5:\\n        print('COMMITTED WRITE SURVIVAL', 'PASS' if state==committed==written else 'FAIL')\\ndb.close()\\ngit_after = subprocess.check_output(['git','status','--porcelain=v1','--untracked-files=all'])\\nassert before == snapshot(), 'Filesystem changed'\\nassert git_before == git_after, 'Git status changed'\\nprint('\\\\nPRESERVATION PASS: all file hashes (including .git) and Git status unchanged; no scratch files')\\nPY\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd7-6b84-7200-bc66-c0f827abe734",
+            "create_time": 1789924978.311418
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "686ae0489aefab33935d6e0249d685013f81cd9b969a0276e3686509ae4850e3",
+      "record": {
+        "timestamp": "2026-09-20T17:23:22.637Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfd8-0d8d-7fb1-87d8-82ef59e91258",
+          "call_id": "call_tIKE2XsamgnT9Dog8p88iCA2",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"7d53b1\",\"wall_time_seconds\":0.000001542,\"exit_code\":0,\"original_token_count\":576,\"output\":\"SQLite 3.51.0\\nReader source: readers.py; constants: {'OLD': 'SELECT sku, units FROM legacy_stock ORDER BY sku', 'NEW': 'SELECT sku, quantity-reserved AS units FROM stock ORDER BY sku'}\\n\\nPHASE 1 001.sql active= ('OLD',) in_transaction= False\\nOLD ACTIVE PASS expected= (['sku', 'units'], [('A', 10), ('C', 0)]) observed= (['sku', 'units'], [('A', 10), ('C', 0)])\\nNEW inactive ERROR no such column: reserved expected= (['sku', 'units'], [('A', 10), ('C', 0)])\\nSTORAGE PASS ['sku', 'quantity'] [('A', 10), ('C', 0)]\\n\\nPHASE 2 002.sql active= ('OLD',) in_transaction= False\\nOLD ACTIVE PASS expected= (['sku', 'units'], [('A', 10), ('C', 0)]) observed= (['sku', 'units'], [('A', 10), ('C', 0)])\\nNEW inactive PASS expected= (['sku', 'units'], [('A', 10), ('C', 0)]) observed= (['sku', 'units'], [('A', 10), ('C', 0)])\\nSTORAGE PASS ['sku', 'quantity', 'reserved'] [('A', 10, 0), ('C', 0, 0)]\\n\\nPHASE 3 003.sql active= ('OLD', 'NEW') in_transaction= False\\nOLD ACTIVE FAIL expected= (['sku', 'units'], [('A', 12), ('B', 4), ('C', 0)]) observed= (['sku', 'units'], [('A', 7), ('B', 3), ('C', 0)])\\nNEW ACTIVE PASS expected= (['sku', 'units'], [('A', 7), ('B', 3), ('C', 0)]) observed= (['sku', 'units'], [('A', 7), ('B', 3), ('C', 0)])\\nSTORAGE PASS ['sku', 'quantity', 'reserved'] [('A', 12, 5), ('B', 4, 1), ('C', 0, 0)]\\n\\nPHASE 4 no SQL: drain NEW / restart OLD active= ('OLD',) in_transaction= False\\nOLD ACTIVE FAIL expected= (['sku', 'units'], [('A', 12), ('B', 4), ('C', 0)]) observed= (['sku', 'units'], [('A', 7), ('B', 3), ('C', 0)])\\nNEW inactive PASS expected= (['sku', 'units'], [('A', 7), ('B', 3), ('C', 0)]) observed= (['sku', 'units'], [('A', 7), ('B', 3), ('C', 0)])\\nSTORAGE PASS ['sku', 'quantity', 'reserved'] [('A', 12, 5), ('B', 4, 1), ('C', 0, 0)]\\n\\nPHASE 5 004.sql active= ('OLD',) in_transaction= False\\nOLD ACTIVE PASS expected= (['sku', 'units'], [('A', 12), ('B', 4), ('C', 0)]) observed= (['sku', 'units'], [('A', 12), ('B', 4), ('C', 0)])\\nNEW inactive PASS expected= (['sku', 'units'], [('A', 7), ('B', 3), ('C', 0)]) observed= (['sku', 'units'], [('A', 7), ('B', 3), ('C', 0)])\\nSTORAGE PASS ['sku', 'quantity', 'reserved'] [('A', 12, 5), ('B', 4, 1), ('C', 0, 0)]\\nCOMMITTED WRITE SURVIVAL PASS\\n\\nPRESERVATION PASS: all file hashes (including .git) and Git status unchanged; no scratch files\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd7-6b84-7200-bc66-c0f827abe734",
+            "create_time": 1789925002.637264
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

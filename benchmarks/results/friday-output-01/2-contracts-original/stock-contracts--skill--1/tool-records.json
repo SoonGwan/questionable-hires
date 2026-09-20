@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0bfd8-59bb-7643-9c06-2de0ca720d76",
+  "source_bytes": 116231,
+  "source_sha256": "270780b67ab8eb726e553a3f7dafb0623f27d4ea2710d989e1be183ed7b5b963",
+  "source_lines": 35,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "ea7a356160cae8334367da43a83aae1354d2a0925276dd2abf745706721a8e69",
+      "record": {
+        "timestamp": "2026-09-20T17:23:49.189Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05a10d340333916f016ab016a5a01c87d0965f53815221d4ac",
+          "status": "completed",
+          "call_id": "call_d6UQnDzJkhX7BluKSKFdjqty",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '!.git'; cat release.md .agents/skills/friday/SKILL.md; git status --porcelain=v1\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd8-5a01-7220-ae01-fefb86f7de47",
+            "create_time": 1789925026.041037
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "719200340669c025844fd57d74a2ad61f5e88358591bec36872073c1ff7c9a71",
+      "record": {
+        "timestamp": "2026-09-20T17:23:49.363Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfd8-75f3-7c71-a5aa-0fdd52b6ba14",
+          "call_id": "call_d6UQnDzJkhX7BluKSKFdjqty",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"1f86aa\",\"wall_time_seconds\":0.000001584,\"exit_code\":0,\"original_token_count\":1297,\"output\":\"<WORKSPACE>\\n004.sql\\n001.sql\\nrelease.md\\n003.sql\\n002.sql\\n.agents/skills/friday/SKILL.md\\n.agents/skills/friday/scripts/sqlite_matrix.py\\n.agents/skills/friday/agents/openai.yaml\\n.agents/skills/friday/references/sqlite-matrix.md\\n.agents/skills/friday/references/sqlite-matrix-details.md\\nreaders.py\\n# Stock release contract\\nThis is an authored SQL-only SQLite review. Literal queries in readers.py define\\nthe complete consumers; no application runtime, concurrent transactions, crash\\nrecovery or other engine is in scope. No dependencies or external services.\\n\\nOLD requires ordered columns [sku, units], one complete row per SKU in lexical\\norder, where units is total quantity, including reserved stock. NEW requires the\\nsame columns/order but units is quantity minus reserved. Neither permits omitting\\nzero values. Expected total quantities initially are A=10, C=0; after writes,\\nA=12, B=4, C=0. Reservations after writes are A=5, B=1, C=0.\\n\\nReview this exact order: (1) 001.sql, OLD active; (2) 002.sql, OLD active;\\n(3) 003.sql, OLD and NEW active; (4) drain NEW and restart OLD with no SQL;\\n(5) 004.sql, OLD active. Evaluate both literal queries at all five phases,\\nincluding inactive consumers, but inactive errors alone are not blockers.\\nAll quantities and reservations written at step 3 must survive step 5. No\\nzero-downtime or deployment authorization beyond this proposed sequence is implied.\\nDo not change SQL, contracts, files or Git state. Any necessary scratch must be\\nproject-local and removed; prefer in-memory execution. Report scoped limitations.\\n---\\nname: friday\\ndescription: Review a planned deployment or release diff for rollback feasibility, mixed-version compatibility, migrations, and configuration readiness without deploying it.\\n---\\n\\n# Friday\\n\\n> Can Monday-you undo this?\\n\\n## Read Monday's incident report early\\n\\nWhen discovery is needed, combine it with reading supplied release notes/contracts and available project instructions, then batch the discovered relevant inputs. Avoid a listing-only round trip when supplied inputs are already readable. Keep Git internals out of file discovery (for example, `rg --files --hidden -g '!.git'`); use Git commands for relevant history. Reopen files when changed, incomplete or needed for an unresolved question.\\n\\nUse the release diff and documented rollout/rollback order to identify reachable states, old/new artifacts, configuration and consumers. Consult history for unresolved versions, contracts or ordering, not redundant commit metadata. Do not impose rolling deployment or zero downtime on another strategy.\\n\\nFor each reachable state, check active readers/writers against data and configuration, including new-version writes before rollback. Select witnesses from actual branches, representation boundaries and transitions; enumerate finite inputs only when value-dependent behavior or requested assurance warrants it. Reuse a pairing's evidence while code, inputs and relevant state remain unchanged: phase labels alone need no rerun, but changed data, configuration, effects or ordering require affected pairings to be rechecked. Include queued/external effects when their contract changes.\\n\\nCombine compatible coverage obligations into representative sequences instead of multiplying every value by every version/operation. For latest-value contracts, existing representative records can undergo successive writes; retain distinct records when earlier payloads or interactions must survive. Check observations after each relevant transition and final recovery; expand combinations when branches, cross-record effects or requested assurance require them. Fewer witnesses must not mean reusing stale observations.\\n\\nCode rollback is not data recovery: down migrations can lose data, and backups need restore evidence. Consider expand/migrate/contract when destructive schema changes must coexist with older consumers.\\n\\nFind the first incompatible/irreversible step and last recoverable state; tie blockers to the smallest compatible ordering or prerequisite. Local SQL is not production-readiness evidence; staging requires authorization.\\n\\nChoose execution from the contract: exercise actual application writers, transactions and connections when they matter. For repeated SQL-only SQLite reader checks, use the optional [in-memory matrix](references/sqlite-matrix.md); read its guide only for that path, and implementation for trust/adaptation/troubleshooting. Use existing runners for simple checks. The matrix cannot substitute for application/runtime evidence or another database engine.\\n\\n## Deliver and stop\\n\\nLead with ready, ready with conditions, or blocked by evidence. Missing runtime/configuration evidence is unknown, not safe. Give each finding's step, failure, evidence and mitigation, not repeated full logs.\\n\\nStop when scoped compatibility and recovery paths are assessed; no generic infrastructure audit. Preserve user changes and requirements. Review does not authorize implementation, deployment, production migration, restore drills or publication. If asked to fix, verify the scoped correction without releasing it.\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd8-5a01-7220-ae01-fefb86f7de47",
+            "create_time": 1789925029.363652
+          }
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "08666dd2f451df9c4dd57e09f942b526e343d2b0f1fd56d3d1ca953fa591c58f",
+      "record": {
+        "timestamp": "2026-09-20T17:23:53.088Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05a10d340333916f016ab016a94ce087d09ee845f9f0fce258",
+          "status": "completed",
+          "call_id": "call_8MFUeLD7C3g2pXb3yl4Kfm2V",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat 001.sql 002.sql 003.sql 004.sql readers.py; git diff --stat; git ls-files; rg --files --hidden -g AGENTS.md -g '!.git' .\",\"max_output_tokens\":8000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd8-5a01-7220-ae01-fefb86f7de47",
+            "create_time": 1789925031.781254
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "4787f2465ff569b7eda7dd1c3fa4470277a8c0cd15fb0133324d07c7a649dba5",
+      "record": {
+        "timestamp": "2026-09-20T17:23:53.229Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfd8-850d-7c83-bf32-063579c54e6f",
+          "call_id": "call_8MFUeLD7C3g2pXb3yl4Kfm2V",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"db0bb2\",\"wall_time_seconds\":0.000001708,\"exit_code\":1,\"original_token_count\":180,\"output\":\"CREATE TABLE stock(sku TEXT PRIMARY KEY, quantity INTEGER NOT NULL);\\nINSERT INTO stock VALUES ('A',10),('C',0);\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\nALTER TABLE stock ADD COLUMN reserved INTEGER NOT NULL DEFAULT 0;\\nDROP VIEW legacy_stock;\\nCREATE VIEW legacy_stock AS SELECT sku, quantity-reserved AS units FROM stock;\\nUPDATE stock SET quantity=12, reserved=5 WHERE sku='A';\\nINSERT INTO stock VALUES ('B',4,1);\\nDROP VIEW legacy_stock;\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\nOLD = 'SELECT sku, units FROM legacy_stock ORDER BY sku'\\nNEW = 'SELECT sku, quantity-reserved AS units FROM stock ORDER BY sku'\\n001.sql\\n002.sql\\n003.sql\\n004.sql\\nreaders.py\\nrelease.md\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd8-5a01-7220-ae01-fefb86f7de47",
+            "create_time": 1789925033.229656
+          }
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "17b9a2e632b83634066f4bb6fa5dc22c2fec2dbd2caa4adfbb05a6cea1e0724f",
+      "record": {
+        "timestamp": "2026-09-20T17:24:26.407Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05a10d340333916f016ab016b3164c87d08118dd0b0212dd4f",
+          "status": "completed",
+          "call_id": "call_UwicTKokblKO9w54WsuvWWdt",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport ast, hashlib, pathlib, sqlite3, subprocess\\nroot = pathlib.Path('.')\\ndef snapshot():\\n    return {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file() and '.git' not in p.parts}\\ndef git_state():\\n    return subprocess.check_output(['git','status','--porcelain=v1']), subprocess.check_output(['git','diff','--binary']), subprocess.check_output(['git','diff','--cached','--binary'])\\nbefore, git_before = snapshot(), git_state()\\nqueries = {n.targets[0].id: ast.literal_eval(n.value) for n in ast.parse(pathlib.Path('readers.py').read_text()).body if isinstance(n, ast.Assign)}\\nfor name in ['001.sql','002.sql','003.sql','004.sql']:\\n    print(name, repr(pathlib.Path(name).read_text()))\\nprint('SQLite', sqlite3.sqlite_version, 'readers.py constants', queries)\\ndb = sqlite3.connect(':memory:')\\nexpected_columns = ['sku','units']\\ninitial = [('A',10),('C',0)]\\ntotals = [('A',12),('B',4),('C',0)]\\navailable = [('A',7),('B',3),('C',0)]\\nresults = []\\nfor phase, script, active in [(1,'001.sql',{'OLD'}),(2,'002.sql',{'OLD'}),(3,'003.sql',{'OLD','NEW'}),(4,None,{'OLD'}),(5,'004.sql',{'OLD'})]:\\n    if script:\\n        db.executescript(pathlib.Path(script).read_text())\\n        db.commit()\\n    assert not db.in_transaction\\n    print('PHASE',phase,'SQL',script or '(none)', 'committed',not db.in_transaction)\\n    for name in ['OLD','NEW']:\\n        expected = initial if phase < 3 else totals if name == 'OLD' else available\\n        try:\\n            cursor = db.execute(queries[name])\\n            columns, rows = [d[0] for d in cursor.description], cursor.fetchall()\\n            passed = columns == expected_columns and rows == expected\\n            result = 'PASS' if passed else 'MISMATCH'\\n            print(name,'ACTIVE' if name in active else 'inactive',result,'columns=',columns,'rows=',rows,'expected=',expected)\\n        except sqlite3.Error as error:\\n            result = 'ERROR'\\n            print(name,'ACTIVE' if name in active else 'inactive',result,str(error),'expected columns=',expected_columns,'rows=',expected)\\n        results.append((phase,name,result))\\n    if phase >= 2:\\n        raw = db.execute('SELECT sku, quantity, reserved FROM stock ORDER BY sku').fetchall()\\n        expected_raw = [('A',10,0),('C',0,0)] if phase == 2 else [('A',12,5),('B',4,1),('C',0,0)]\\n        assert raw == expected_raw, (phase, raw, expected_raw)\\n        print('quantity/reservation check PASS', raw)\\nassert results == [(1,'OLD','PASS'),(1,'NEW','ERROR'),(2,'OLD','PASS'),(2,'NEW','PASS'),(3,'OLD','MISMATCH'),(3,'NEW','PASS'),(4,'OLD','MISMATCH'),(4,'NEW','PASS'),(5,'OLD','PASS'),(5,'NEW','PASS')], results\\ndb.close()\\nassert snapshot() == before, 'Project files changed'\\nassert git_state() == git_before, 'Git state changed'\\nprint('VERIFIED: all 10 literal reader executions; full ordered columns/rows; zero rows; committed quantities/reservations; project files and Git state unchanged; no scratch created.')\\nPY\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd8-5a01-7220-ae01-fefb86f7de47",
+            "create_time": 1789925035.739937
+          }
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "27705e4d670460bf8b63c15377d62f8d88ad5ebdb2bc4fdea7db13d4b688f166",
+      "record": {
+        "timestamp": "2026-09-20T17:24:26.610Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfd9-0772-76c2-baa5-a94e7a7e76a2",
+          "call_id": "call_UwicTKokblKO9w54WsuvWWdt",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ab8d4c\",\"wall_time_seconds\":0.012008375,\"exit_code\":0,\"original_token_count\":635,\"output\":\"001.sql \\\"CREATE TABLE stock(sku TEXT PRIMARY KEY, quantity INTEGER NOT NULL);\\\\nINSERT INTO stock VALUES ('A',10),('C',0);\\\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\\\n\\\"\\n002.sql 'ALTER TABLE stock ADD COLUMN reserved INTEGER NOT NULL DEFAULT 0;\\\\nDROP VIEW legacy_stock;\\\\nCREATE VIEW legacy_stock AS SELECT sku, quantity-reserved AS units FROM stock;\\\\n'\\n003.sql \\\"UPDATE stock SET quantity=12, reserved=5 WHERE sku='A';\\\\nINSERT INTO stock VALUES ('B',4,1);\\\\n\\\"\\n004.sql 'DROP VIEW legacy_stock;\\\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\\\n'\\nSQLite 3.51.0 readers.py constants {'OLD': 'SELECT sku, units FROM legacy_stock ORDER BY sku', 'NEW': 'SELECT sku, quantity-reserved AS units FROM stock ORDER BY sku'}\\nPHASE 1 SQL 001.sql committed True\\nOLD ACTIVE PASS columns= ['sku', 'units'] rows= [('A', 10), ('C', 0)] expected= [('A', 10), ('C', 0)]\\nNEW inactive ERROR no such column: reserved expected columns= ['sku', 'units'] rows= [('A', 10), ('C', 0)]\\nPHASE 2 SQL 002.sql committed True\\nOLD ACTIVE PASS columns= ['sku', 'units'] rows= [('A', 10), ('C', 0)] expected= [('A', 10), ('C', 0)]\\nNEW inactive PASS columns= ['sku', 'units'] rows= [('A', 10), ('C', 0)] expected= [('A', 10), ('C', 0)]\\nquantity/reservation check PASS [('A', 10, 0), ('C', 0, 0)]\\nPHASE 3 SQL 003.sql committed True\\nOLD ACTIVE MISMATCH columns= ['sku', 'units'] rows= [('A', 7), ('B', 3), ('C', 0)] expected= [('A', 12), ('B', 4), ('C', 0)]\\nNEW ACTIVE PASS columns= ['sku', 'units'] rows= [('A', 7), ('B', 3), ('C', 0)] expected= [('A', 7), ('B', 3), ('C', 0)]\\nquantity/reservation check PASS [('A', 12, 5), ('B', 4, 1), ('C', 0, 0)]\\nPHASE 4 SQL (none) committed True\\nOLD ACTIVE MISMATCH columns= ['sku', 'units'] rows= [('A', 7), ('B', 3), ('C', 0)] expected= [('A', 12), ('B', 4), ('C', 0)]\\nNEW inactive PASS columns= ['sku', 'units'] rows= [('A', 7), ('B', 3), ('C', 0)] expected= [('A', 7), ('B', 3), ('C', 0)]\\nquantity/reservation check PASS [('A', 12, 5), ('B', 4, 1), ('C', 0, 0)]\\nPHASE 5 SQL 004.sql committed True\\nOLD ACTIVE PASS columns= ['sku', 'units'] rows= [('A', 12), ('B', 4), ('C', 0)] expected= [('A', 12), ('B', 4), ('C', 0)]\\nNEW inactive PASS columns= ['sku', 'units'] rows= [('A', 7), ('B', 3), ('C', 0)] expected= [('A', 7), ('B', 3), ('C', 0)]\\nquantity/reservation check PASS [('A', 12, 5), ('B', 4, 1), ('C', 0, 0)]\\nVERIFIED: all 10 literal reader executions; full ordered columns/rows; zero rows; committed quantities/reservations; project files and Git state unchanged; no scratch created.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfd8-5a01-7220-ae01-fefb86f7de47",
+            "create_time": 1789925066.610186
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

@@ -1,0 +1,209 @@
+{
+  "session_id": "01a0bfda-3612-7482-a72c-4ea955eb84c8",
+  "source_bytes": 184378,
+  "source_sha256": "b3251789a9f875437cd5164ef48c4492c1bc215fcb7c536c35a2b2cce2a6edce",
+  "source_lines": 42,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "1532dd1734973d7d6755330c83c2ec1645af8bf131c4194b1ef76a2125788e9d",
+      "record": {
+        "timestamp": "2026-09-20T17:25:49.966Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_07b804ec654f13fb016ab0171e687087d099d1c4e7629da727",
+          "status": "completed",
+          "call_id": "call_JlQ9uZWfUpxeEfGfcfZnaOuS",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; cat .agents/skills/friday/SKILL.md release.md; rg --files --hidden -g '!.git'; git status --porcelain=v1\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfda-3658-7041-b1e0-79e5f5cc41bb",
+            "create_time": 1789925147.963723
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "3251f6affb67b7bc5fb1a9614a597e82acab797e9185382d9ed7c10589107713",
+      "record": {
+        "timestamp": "2026-09-20T17:25:50.132Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfda-4db4-76c1-a1aa-f25b6628169f",
+          "call_id": "call_JlQ9uZWfUpxeEfGfcfZnaOuS",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a07aae\",\"wall_time_seconds\":0.000005167,\"exit_code\":0,\"original_token_count\":1297,\"output\":\"<WORKSPACE>\\n---\\nname: friday\\ndescription: Review a planned deployment or release diff for rollback feasibility, mixed-version compatibility, migrations, and configuration readiness without deploying it.\\n---\\n\\n# Friday\\n\\n> Can Monday-you undo this?\\n\\n## Read Monday's incident report early\\n\\nWhen discovery is needed, combine it with reading supplied release notes/contracts and available project instructions, then batch the discovered relevant inputs. Avoid a listing-only round trip when supplied inputs are already readable. Keep Git internals out of file discovery (for example, `rg --files --hidden -g '!.git'`); use Git commands for relevant history. Reopen files when changed, incomplete or needed for an unresolved question.\\n\\nUse the release diff and documented rollout/rollback order to identify reachable states, old/new artifacts, configuration and consumers. Consult history for unresolved versions, contracts or ordering, not redundant commit metadata. Do not impose rolling deployment or zero downtime on another strategy.\\n\\nFor each reachable state, check active readers/writers against data and configuration, including new-version writes before rollback. Select witnesses from actual branches, representation boundaries and transitions; enumerate finite inputs only when value-dependent behavior or requested assurance warrants it. Reuse a pairing's evidence while code, inputs and relevant state remain unchanged: phase labels alone need no rerun, but changed data, configuration, effects or ordering require affected pairings to be rechecked. Include queued/external effects when their contract changes.\\n\\nCombine compatible coverage obligations into representative sequences instead of multiplying every value by every version/operation. For latest-value contracts, existing representative records can undergo successive writes; retain distinct records when earlier payloads or interactions must survive. Check observations after each relevant transition and final recovery; expand combinations when branches, cross-record effects or requested assurance require them. Fewer witnesses must not mean reusing stale observations.\\n\\nCode rollback is not data recovery: down migrations can lose data, and backups need restore evidence. Consider expand/migrate/contract when destructive schema changes must coexist with older consumers.\\n\\nFind the first incompatible/irreversible step and last recoverable state; tie blockers to the smallest compatible ordering or prerequisite. Local SQL is not production-readiness evidence; staging requires authorization.\\n\\nChoose execution from the contract: exercise actual application writers, transactions and connections when they matter. For repeated SQL-only SQLite reader checks, use the optional [in-memory matrix](references/sqlite-matrix.md); read its guide only for that path, and implementation for trust/adaptation/troubleshooting. Use existing runners for simple checks. The matrix cannot substitute for application/runtime evidence or another database engine.\\n\\n## Deliver and stop\\n\\nLead with ready, ready with conditions, or blocked by evidence. Missing runtime/configuration evidence is unknown, not safe. Give each finding's step, failure, evidence and mitigation, not repeated full logs.\\n\\nStop when scoped compatibility and recovery paths are assessed; no generic infrastructure audit. Preserve user changes and requirements. Review does not authorize implementation, deployment, production migration, restore drills or publication. If asked to fix, verify the scoped correction without releasing it.\\n# Stock release contract\\nThis is an authored SQL-only SQLite review. Literal queries in readers.py define\\nthe complete consumers; no application runtime, concurrent transactions, crash\\nrecovery or other engine is in scope. No dependencies or external services.\\n\\nOLD requires ordered columns [sku, units], one complete row per SKU in lexical\\norder, where units is total quantity, including reserved stock. NEW requires the\\nsame columns/order but units is quantity minus reserved. Neither permits omitting\\nzero values. Expected total quantities initially are A=10, C=0; after writes,\\nA=12, B=4, C=0. Reservations after writes are A=5, B=1, C=0.\\n\\nReview this exact order: (1) 001.sql, OLD active; (2) 002.sql, OLD active;\\n(3) 003.sql, OLD and NEW active; (4) drain NEW and restart OLD with no SQL;\\n(5) 004.sql, OLD active. Evaluate both literal queries at all five phases,\\nincluding inactive consumers, but inactive errors alone are not blockers.\\nAll quantities and reservations written at step 3 must survive step 5. No\\nzero-downtime or deployment authorization beyond this proposed sequence is implied.\\nDo not change SQL, contracts, files or Git state. Any necessary scratch must be\\nproject-local and removed; prefer in-memory execution. Report scoped limitations.\\n004.sql\\n001.sql\\nrelease.md\\n003.sql\\n002.sql\\n.agents/skills/friday/SKILL.md\\n.agents/skills/friday/scripts/sqlite_matrix.py\\n.agents/skills/friday/agents/openai.yaml\\n.agents/skills/friday/references/sqlite-matrix.md\\n.agents/skills/friday/references/sqlite-matrix-details.md\\nreaders.py\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfda-3658-7041-b1e0-79e5f5cc41bb",
+            "create_time": 1789925150.132569
+          }
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "5742bc85bd15db9a1b36da58fe0171df82eeac88fceb46ea5378e8ed33058e2f",
+      "record": {
+        "timestamp": "2026-09-20T17:25:53.659Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_07b804ec654f13fb016ab01721efb887d0a4ec9498d9178d07",
+          "status": "completed",
+          "call_id": "call_xkpFObGNaky5pKWltBJLUQCD",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat 001.sql 002.sql 003.sql 004.sql readers.py; git diff --stat; rg --files --hidden -g 'AGENTS.md' -g '!.git'\",\"max_output_tokens\":10000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfda-3658-7041-b1e0-79e5f5cc41bb",
+            "create_time": 1789925152.505177
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "485926f3b7f31842902687a558d7b232f19d4d72438006962a87ae13151a8b29",
+      "record": {
+        "timestamp": "2026-09-20T17:25:53.787Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfda-5bfb-7b91-b048-068ef595a4a6",
+          "call_id": "call_xkpFObGNaky5pKWltBJLUQCD",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2eb5a0\",\"wall_time_seconds\":0.000002,\"exit_code\":1,\"original_token_count\":167,\"output\":\"CREATE TABLE stock(sku TEXT PRIMARY KEY, quantity INTEGER NOT NULL);\\nINSERT INTO stock VALUES ('A',10),('C',0);\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\nALTER TABLE stock ADD COLUMN reserved INTEGER NOT NULL DEFAULT 0;\\nDROP VIEW legacy_stock;\\nCREATE VIEW legacy_stock AS SELECT sku, quantity-reserved AS units FROM stock;\\nUPDATE stock SET quantity=12, reserved=5 WHERE sku='A';\\nINSERT INTO stock VALUES ('B',4,1);\\nDROP VIEW legacy_stock;\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\nOLD = 'SELECT sku, units FROM legacy_stock ORDER BY sku'\\nNEW = 'SELECT sku, quantity-reserved AS units FROM stock ORDER BY sku'\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfda-3658-7041-b1e0-79e5f5cc41bb",
+            "create_time": 1789925153.787036
+          }
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "44fe6f7e34f8a0169278a5d4ede50d7ca79d17ee2fedffed2d4ef1183894ca79",
+      "record": {
+        "timestamp": "2026-09-20T17:25:57.671Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_07b804ec654f13fb016ab017263d1887d0b4f406b850451e37",
+          "status": "completed",
+          "call_id": "call_bt7MSh01uJAmVyViUEY2FCRq",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"for f in 001.sql 002.sql 003.sql 004.sql; do head -v -n 100 \\\"$f\\\"; done\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfda-3658-7041-b1e0-79e5f5cc41bb",
+            "create_time": 1789925156.185769
+          }
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "2e6e56fdaef0337144826f444e0413642ee3d819aa494779232de14a8963081c",
+      "record": {
+        "timestamp": "2026-09-20T17:25:57.783Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfda-6b97-7dd1-be3c-1dc9723cc0fa",
+          "call_id": "call_bt7MSh01uJAmVyViUEY2FCRq",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6a1d12\",\"wall_time_seconds\":0.000001875,\"exit_code\":1,\"original_token_count\":71,\"output\":\"head: invalid option -- v\\nusage: head [-n lines | -c bytes] [file ...]\\nhead: invalid option -- v\\nusage: head [-n lines | -c bytes] [file ...]\\nhead: invalid option -- v\\nusage: head [-n lines | -c bytes] [file ...]\\nhead: invalid option -- v\\nusage: head [-n lines | -c bytes] [file ...]\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfda-3658-7041-b1e0-79e5f5cc41bb",
+            "create_time": 1789925157.783718
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "dfdebb1854f449c3cdf74e56859d707776d61e6aac6dbffe048c37386a4940a9",
+      "record": {
+        "timestamp": "2026-09-20T17:26:43.096Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_07b804ec654f13fb016ab0172c9ddc87d0805df55c5d09fa0f",
+          "status": "completed",
+          "call_id": "call_7Vs0vhBofMEDTxuIixfBHNYE",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport ast, hashlib, json, pathlib, sqlite3, subprocess\\nroot = pathlib.Path('.')\\ndef sha(b): return hashlib.sha256(b).hexdigest()\\ndef snapshot():\\n    return {str(p): sha(p.read_bytes()) for p in sorted(root.rglob('*')) if p.is_file()}\\ndef git_state():\\n    return {arg: subprocess.check_output(['git'] + arg.split()).decode() for arg in ['status --porcelain=v1 --untracked-files=all', 'diff --binary', 'diff --cached --binary', 'rev-parse HEAD']}\\nbefore, git_before = snapshot(), git_state()\\nsource = pathlib.Path('readers.py').read_bytes()\\nreader_sql, provenance = {}, []\\nfor node in ast.parse(source, filename='readers.py').body:\\n    if isinstance(node, ast.Assign):\\n        for target in node.targets:\\n            if isinstance(target, ast.Name) and target.id in ('OLD', 'NEW'):\\n                sql = ast.literal_eval(node.value)\\n                reader_sql[target.id] = sql\\n                provenance.append({'file': 'readers.py', 'constant': target.id, 'source_line': node.lineno, 'file_byte_sha256': sha(source), 'sql_utf8_byte_sha256': sha(sql.encode('utf-8')), 'exact_sql': sql})\\nassert list(reader_sql) == ['OLD', 'NEW']\\nconn = sqlite3.connect(':memory:')\\nphases = []\\nplan = [('001.sql', ['OLD']), ('002.sql', ['OLD']), ('003.sql', ['OLD', 'NEW']), (None, ['OLD']), ('004.sql', ['OLD'])]\\ndef observe(sql):\\n    try:\\n        cur = conn.execute(sql)\\n        rows = [list(row) for row in cur.fetchall()]\\n        return {'columns': [d[0] for d in cur.description], 'rows': rows, 'error': None, 'complete': True, 'truncated': False}\\n    except sqlite3.Error as exc:\\n        return {'columns': None, 'rows': None, 'error': {'type': type(exc).__name__, 'message': str(exc), 'sqlite_errorcode': getattr(exc, 'sqlite_errorcode', None), 'sqlite_errorname': getattr(exc, 'sqlite_errorname', None)}, 'complete': True, 'truncated': False}\\nfor step, (file, active) in enumerate(plan, 1):\\n    phase = {'step': step, 'name': file or 'drain NEW and restart OLD with no SQL', 'active_readers': active}\\n    if file:\\n        raw = pathlib.Path(file).read_bytes()\\n        phase['proposal'] = {'file': file, 'byte_sha256': sha(raw), 'exact_sql': raw.decode()}\\n        conn.executescript(raw.decode())\\n        conn.commit()\\n    else:\\n        phase['proposal'] = None\\n    phase['transaction_open_after_commit'] = conn.in_transaction\\n    phase['readers'] = {}\\n    for name, sql in reader_sql.items():\\n        expected = ([['A', 10], ['C', 0]] if step < 3 else [['A', 12], ['B', 4], ['C', 0]]) if name == 'OLD' else ([['A', 10], ['C', 0]] if step < 3 else [['A', 7], ['B', 3], ['C', 0]])\\n        result = observe(sql)\\n        result['active'] = name in active\\n        result['contract'] = {'columns': ['sku', 'units'], 'rows': expected}\\n        result['matches_contract'] = result['error'] is None and result['columns'] == ['sku', 'units'] and result['rows'] == expected\\n        result['active_failure'] = result['active'] and not result['matches_contract']\\n        phase['readers'][name] = result\\n    phase['committed_stock'] = observe('SELECT * FROM stock ORDER BY sku')\\n    phase['active_contracts_satisfied'] = all(not r['active_failure'] for r in phase['readers'].values())\\n    phases.append(phase)\\nexpected_stock = {'columns': ['sku', 'quantity', 'reserved'], 'rows': [['A', 12, 5], ['B', 4, 1], ['C', 0, 0]]}\\nsurvival = { 'expected': expected_stock, 'matches_after_step_3': all(phases[2]['committed_stock'][k] == v for k, v in expected_stock.items()), 'matches_after_step_5': all(phases[4]['committed_stock'][k] == v for k, v in expected_stock.items())}\\nconn.close()\\nafter, git_after = snapshot(), git_state()\\nrecord = {'format': 'friday-sql-observations-v1', 'engine': {'name': 'SQLite', 'version': sqlite3.sqlite_version, 'database': ':memory:'}, 'execution': 'Exact supplied SQL scripts in order, committed after each script; both literal readers separately executed at each phase, including no-SQL phase 4; all result rows fetched.', 'reader_provenance': provenance, 'phases': phases, 'committed_quantity_and_reservation_survival': survival, 'preservation': {'all_project_file_bytes_unchanged_including_git': before == after, 'git_state_unchanged': git_before == git_after, 'initial_git_status': git_before['status --porcelain=v1 --untracked-files=all'], 'scratch_created': False}, 'completion': {'complete': True, 'expected_phase_count': 5, 'recorded_phase_count': len(phases), 'expected_reader_observation_count': 10, 'recorded_reader_observation_count': sum(len(p['readers']) for p in phases), 'truncated': False, 'rows_omitted': 0}}\\nprint(json.dumps(record, indent=2))\\nassert before == after and git_before == git_after\\nassert survival['matches_after_step_3'] and survival['matches_after_step_5']\\nPY\",\"max_output_tokens\":14000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfda-3658-7041-b1e0-79e5f5cc41bb",
+            "create_time": 1789925160.156187
+          }
+        }
+      }
+    },
+    {
+      "line": 36,
+      "line_sha256": "5f7073437e51b55843b2c436ac84adc95fe6a850f1400cdf6d74c0ea8f409805",
+      "record": {
+        "timestamp": "2026-09-20T17:26:43.328Z",
+        "ordinal": 35,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0bfdb-1d80-7f01-a400-80e8e5deade3",
+          "call_id": "call_7Vs0vhBofMEDTxuIixfBHNYE",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3615f3\",\"wall_time_seconds\":0.036553791,\"exit_code\":0,\"original_token_count\":3715,\"output\":\"{\\n  \\\"format\\\": \\\"friday-sql-observations-v1\\\",\\n  \\\"engine\\\": {\\n    \\\"name\\\": \\\"SQLite\\\",\\n    \\\"version\\\": \\\"3.51.0\\\",\\n    \\\"database\\\": \\\":memory:\\\"\\n  },\\n  \\\"execution\\\": \\\"Exact supplied SQL scripts in order, committed after each script; both literal readers separately executed at each phase, including no-SQL phase 4; all result rows fetched.\\\",\\n  \\\"reader_provenance\\\": [\\n    {\\n      \\\"file\\\": \\\"readers.py\\\",\\n      \\\"constant\\\": \\\"OLD\\\",\\n      \\\"source_line\\\": 1,\\n      \\\"file_byte_sha256\\\": \\\"287b462e071eacdc325fbcf800d1c62f9ccb5c1ce397665a10207f39b8ad3183\\\",\\n      \\\"sql_utf8_byte_sha256\\\": \\\"0a60265aa24df050bb1ca0a92d806b16795170e04ffb241e56e5d47f8bb7138f\\\",\\n      \\\"exact_sql\\\": \\\"SELECT sku, units FROM legacy_stock ORDER BY sku\\\"\\n    },\\n    {\\n      \\\"file\\\": \\\"readers.py\\\",\\n      \\\"constant\\\": \\\"NEW\\\",\\n      \\\"source_line\\\": 2,\\n      \\\"file_byte_sha256\\\": \\\"287b462e071eacdc325fbcf800d1c62f9ccb5c1ce397665a10207f39b8ad3183\\\",\\n      \\\"sql_utf8_byte_sha256\\\": \\\"dc30c4e16589bd56c94dd6370c182c655c2db41bdb8b65afb937b93565f3add2\\\",\\n      \\\"exact_sql\\\": \\\"SELECT sku, quantity-reserved AS units FROM stock ORDER BY sku\\\"\\n    }\\n  ],\\n  \\\"phases\\\": [\\n    {\\n      \\\"step\\\": 1,\\n      \\\"name\\\": \\\"001.sql\\\",\\n      \\\"active_readers\\\": [\\n        \\\"OLD\\\"\\n      ],\\n      \\\"proposal\\\": {\\n        \\\"file\\\": \\\"001.sql\\\",\\n        \\\"byte_sha256\\\": \\\"b759b407c828503ca6f427b9189c0c27fc52d45f756f3e576d1ffe940dafd36d\\\",\\n        \\\"exact_sql\\\": \\\"CREATE TABLE stock(sku TEXT PRIMARY KEY, quantity INTEGER NOT NULL);\\\\nINSERT INTO stock VALUES ('A',10),('C',0);\\\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\\\n\\\"\\n      },\\n      \\\"transaction_open_after_commit\\\": false,\\n      \\\"readers\\\": {\\n        \\\"OLD\\\": {\\n          \\\"columns\\\": [\\n            \\\"sku\\\",\\n            \\\"units\\\"\\n          ],\\n          \\\"rows\\\": [\\n            [\\n              \\\"A\\\",\\n              10\\n            ],\\n            [\\n              \\\"C\\\",\\n              0\\n            ]\\n          ],\\n          \\\"error\\\": null,\\n          \\\"complete\\\": true,\\n          \\\"truncated\\\": false,\\n          \\\"active\\\": true,\\n          \\\"contract\\\": {\\n            \\\"columns\\\": [\\n              \\\"sku\\\",\\n              \\\"units\\\"\\n            ],\\n            \\\"rows\\\": [\\n              [\\n                \\\"A\\\",\\n                10\\n              ],\\n              [\\n                \\\"C\\\",\\n                0\\n              ]\\n            ]\\n          },\\n          \\\"matches_contract\\\": true,\\n          \\\"active_failure\\\": false\\n        },\\n        \\\"NEW\\\": {\\n          \\\"columns\\\": null,\\n          \\\"rows\\\": null,\\n          \\\"error\\\": {\\n            \\\"type\\\": \\\"OperationalError\\\",\\n            \\\"message\\\": \\\"no such column: reserved\\\",\\n            \\\"sqlite_errorcode\\\": null,\\n            \\\"sqlite_errorname\\\": null\\n          },\\n          \\\"complete\\\": true,\\n          \\\"truncated\\\": false,\\n          \\\"active\\\": false,\\n          \\\"contract\\\": {\\n            \\\"columns\\\": [\\n              \\\"sku\\\",\\n              \\\"units\\\"\\n            ],\\n            \\\"rows\\\": [\\n              [\\n                \\\"A\\\",\\n                10\\n              ],\\n              [\\n                \\\"C\\\",\\n                0\\n              ]\\n            ]\\n          },\\n          \\\"matches_contract\\\": false,\\n          \\\"active_failure\\\": false\\n        }\\n      },\\n      \\\"committed_stock\\\": {\\n        \\\"columns\\\": [\\n          \\\"sku\\\",\\n          \\\"quantity\\\"\\n        ],\\n        \\\"rows\\\": [\\n          [\\n            \\\"A\\\",\\n            10\\n          ],\\n          [\\n            \\\"C\\\",\\n            0\\n          ]\\n        ],\\n        \\\"error\\\": null,\\n        \\\"complete\\\": true,\\n        \\\"truncated\\\": false\\n      },\\n      \\\"active_contracts_satisfied\\\": true\\n    },\\n    {\\n      \\\"step\\\": 2,\\n      \\\"name\\\": \\\"002.sql\\\",\\n      \\\"active_readers\\\": [\\n        \\\"OLD\\\"\\n      ],\\n      \\\"proposal\\\": {\\n        \\\"file\\\": \\\"002.sql\\\",\\n        \\\"byte_sha256\\\": \\\"b782b863d2c04c6a532c8baa080d592e35e81e8ce566718fd4e3f02f7ac888b4\\\",\\n        \\\"exact_sql\\\": \\\"ALTER TABLE stock ADD COLUMN reserved INTEGER NOT NULL DEFAULT 0;\\\\nDROP VIEW legacy_stock;\\\\nCREATE VIEW legacy_stock AS SELECT sku, quantity-reserved AS units FROM stock;\\\\n\\\"\\n      },\\n      \\\"transaction_open_after_commit\\\": false,\\n      \\\"readers\\\": {\\n        \\\"OLD\\\": {\\n          \\\"columns\\\": [\\n            \\\"sku\\\",\\n            \\\"units\\\"\\n          ],\\n          \\\"rows\\\": [\\n            [\\n              \\\"A\\\",\\n              10\\n            ],\\n            [\\n              \\\"C\\\",\\n              0\\n            ]\\n          ],\\n          \\\"error\\\": null,\\n          \\\"complete\\\": true,\\n          \\\"truncated\\\": false,\\n          \\\"active\\\": true,\\n          \\\"contract\\\": {\\n            \\\"columns\\\": [\\n              \\\"sku\\\",\\n              \\\"units\\\"\\n            ],\\n            \\\"rows\\\": [\\n              [\\n                \\\"A\\\",\\n                10\\n              ],\\n              [\\n                \\\"C\\\",\\n                0\\n              ]\\n            ]\\n          },\\n          \\\"matches_contract\\\": true,\\n          \\\"active_failure\\\": false\\n        },\\n        \\\"NEW\\\": {\\n          \\\"columns\\\": [\\n            \\\"sku\\\",\\n            \\\"units\\\"\\n          ],\\n          \\\"rows\\\": [\\n            [\\n              \\\"A\\\",\\n              10\\n            ],\\n            [\\n              \\\"C\\\",\\n              0\\n            ]\\n          ],\\n          \\\"error\\\": null,\\n          \\\"complete\\\": true,\\n          \\\"truncated\\\": false,\\n          \\\"active\\\": false,\\n          \\\"contract\\\": {\\n            \\\"columns\\\": [\\n              \\\"sku\\\",\\n              \\\"units\\\"\\n            ],\\n            \\\"rows\\\": [\\n              [\\n                \\\"A\\\",\\n                10\\n              ],\\n              [\\n                \\\"C\\\",\\n                0\\n              ]\\n            ]\\n          },\\n          \\\"matches_contract\\\": true,\\n          \\\"active_failure\\\": false\\n        }\\n      },\\n      \\\"committed_stock\\\": {\\n        \\\"columns\\\": [\\n          \\\"sku\\\",\\n          \\\"quantity\\\",\\n          \\\"reserved\\\"\\n        ],\\n        \\\"rows\\\": [\\n          [\\n            \\\"A\\\",\\n            10,\\n            0\\n          ],\\n          [\\n            \\\"C\\\",\\n            0,\\n            0\\n          ]\\n        ],\\n        \\\"error\\\": null,\\n        \\\"complete\\\": true,\\n        \\\"truncated\\\": false\\n      },\\n      \\\"active_contracts_satisfied\\\": true\\n    },\\n    {\\n      \\\"step\\\": 3,\\n      \\\"name\\\": \\\"003.sql\\\",\\n      \\\"active_readers\\\": [\\n        \\\"OLD\\\",\\n        \\\"NEW\\\"\\n      ],\\n      \\\"proposal\\\": {\\n        \\\"file\\\": \\\"003.sql\\\",\\n        \\\"byte_sha256\\\": \\\"73813b85a105f398f45ee6067a913cc0a6e298b51717328c2f68b0ac9a5720c5\\\",\\n        \\\"exact_sql\\\": \\\"UPDATE stock SET quantity=12, reserved=5 WHERE sku='A';\\\\nINSERT INTO stock VALUES ('B',4,1);\\\\n\\\"\\n      },\\n      \\\"transaction_open_after_commit\\\": false,\\n      \\\"readers\\\": {\\n        \\\"OLD\\\": {\\n          \\\"columns\\\": [\\n            \\\"sku\\\",\\n            \\\"units\\\"\\n          ],\\n          \\\"rows\\\": [\\n            [\\n              \\\"A\\\",\\n              7\\n            ],\\n            [\\n              \\\"B\\\",\\n              3\\n            ],\\n            [\\n              \\\"C\\\",\\n              0\\n            ]\\n          ],\\n          \\\"error\\\": null,\\n          \\\"complete\\\": true,\\n          \\\"truncated\\\": false,\\n          \\\"active\\\": true,\\n          \\\"contract\\\": {\\n            \\\"columns\\\": [\\n              \\\"sku\\\",\\n              \\\"units\\\"\\n            ],\\n            \\\"rows\\\": [\\n              [\\n                \\\"A\\\",\\n                12\\n              ],\\n              [\\n                \\\"B\\\",\\n                4\\n              ],\\n              [\\n                \\\"C\\\",\\n                0\\n              ]\\n            ]\\n          },\\n          \\\"matches_contract\\\": false,\\n          \\\"active_failure\\\": true\\n        },\\n        \\\"NEW\\\": {\\n          \\\"columns\\\": [\\n            \\\"sku\\\",\\n            \\\"units\\\"\\n          ],\\n          \\\"rows\\\": [\\n            [\\n              \\\"A\\\",\\n              7\\n            ],\\n            [\\n              \\\"B\\\",\\n              3\\n            ],\\n            [\\n              \\\"C\\\",\\n              0\\n            ]\\n          ],\\n          \\\"error\\\": null,\\n          \\\"complete\\\": true,\\n          \\\"truncated\\\": false,\\n          \\\"active\\\": true,\\n          \\\"contract\\\": {\\n            \\\"columns\\\": [\\n              \\\"sku\\\",\\n              \\\"units\\\"\\n            ],\\n            \\\"rows\\\": [\\n              [\\n                \\\"A\\\",\\n                7\\n              ],\\n              [\\n                \\\"B\\\",\\n                3\\n              ],\\n              [\\n                \\\"C\\\",\\n                0\\n              ]\\n            ]\\n          },\\n          \\\"matches_contract\\\": true,\\n          \\\"active_failure\\\": false\\n        }\\n      },\\n      \\\"committed_stock\\\": {\\n        \\\"columns\\\": [\\n          \\\"sku\\\",\\n          \\\"quantity\\\",\\n          \\\"reserved\\\"\\n        ],\\n        \\\"rows\\\": [\\n          [\\n            \\\"A\\\",\\n            12,\\n            5\\n          ],\\n          [\\n            \\\"B\\\",\\n            4,\\n            1\\n          ],\\n          [\\n            \\\"C\\\",\\n            0,\\n            0\\n          ]\\n        ],\\n        \\\"error\\\": null,\\n        \\\"complete\\\": true,\\n        \\\"truncated\\\": false\\n      },\\n      \\\"active_contracts_satisfied\\\": false\\n    },\\n    {\\n      \\\"step\\\": 4,\\n      \\\"name\\\": \\\"drain NEW and restart OLD with no SQL\\\",\\n      \\\"active_readers\\\": [\\n        \\\"OLD\\\"\\n      ],\\n      \\\"proposal\\\": null,\\n      \\\"transaction_open_after_commit\\\": false,\\n      \\\"readers\\\": {\\n        \\\"OLD\\\": {\\n          \\\"columns\\\": [\\n            \\\"sku\\\",\\n            \\\"units\\\"\\n          ],\\n          \\\"rows\\\": [\\n            [\\n              \\\"A\\\",\\n              7\\n            ],\\n            [\\n              \\\"B\\\",\\n              3\\n            ],\\n            [\\n              \\\"C\\\",\\n              0\\n            ]\\n          ],\\n          \\\"error\\\": null,\\n          \\\"complete\\\": true,\\n          \\\"truncated\\\": false,\\n          \\\"active\\\": true,\\n          \\\"contract\\\": {\\n            \\\"columns\\\": [\\n              \\\"sku\\\",\\n              \\\"units\\\"\\n            ],\\n            \\\"rows\\\": [\\n              [\\n                \\\"A\\\",\\n                12\\n              ],\\n              [\\n                \\\"B\\\",\\n                4\\n              ],\\n              [\\n                \\\"C\\\",\\n                0\\n              ]\\n            ]\\n          },\\n          \\\"matches_contract\\\": false,\\n          \\\"active_failure\\\": true\\n        },\\n        \\\"NEW\\\": {\\n          \\\"columns\\\": [\\n            \\\"sku\\\",\\n            \\\"units\\\"\\n          ],\\n          \\\"rows\\\": [\\n            [\\n              \\\"A\\\",\\n              7\\n            ],\\n            [\\n              \\\"B\\\",\\n              3\\n            ],\\n            [\\n              \\\"C\\\",\\n              0\\n            ]\\n          ],\\n          \\\"error\\\": null,\\n          \\\"complete\\\": true,\\n          \\\"truncated\\\": false,\\n          \\\"active\\\": false,\\n          \\\"contract\\\": {\\n            \\\"columns\\\": [\\n              \\\"sku\\\",\\n              \\\"units\\\"\\n            ],\\n            \\\"rows\\\": [\\n              [\\n                \\\"A\\\",\\n                7\\n              ],\\n              [\\n                \\\"B\\\",\\n                3\\n              ],\\n              [\\n                \\\"C\\\",\\n                0\\n              ]\\n            ]\\n          },\\n          \\\"matches_contract\\\": true,\\n          \\\"active_failure\\\": false\\n        }\\n      },\\n      \\\"committed_stock\\\": {\\n        \\\"columns\\\": [\\n          \\\"sku\\\",\\n          \\\"quantity\\\",\\n          \\\"reserved\\\"\\n        ],\\n        \\\"rows\\\": [\\n          [\\n            \\\"A\\\",\\n            12,\\n            5\\n          ],\\n          [\\n            \\\"B\\\",\\n            4,\\n            1\\n          ],\\n          [\\n            \\\"C\\\",\\n            0,\\n            0\\n          ]\\n        ],\\n        \\\"error\\\": null,\\n        \\\"complete\\\": true,\\n        \\\"truncated\\\": false\\n      },\\n      \\\"active_contracts_satisfied\\\": false\\n    },\\n    {\\n      \\\"step\\\": 5,\\n      \\\"name\\\": \\\"004.sql\\\",\\n      \\\"active_readers\\\": [\\n        \\\"OLD\\\"\\n      ],\\n      \\\"proposal\\\": {\\n        \\\"file\\\": \\\"004.sql\\\",\\n        \\\"byte_sha256\\\": \\\"f2d9910995a13d4af6277a2fac1adf890fe32d2606e9db7f678e05dfad9774c1\\\",\\n        \\\"exact_sql\\\": \\\"DROP VIEW legacy_stock;\\\\nCREATE VIEW legacy_stock AS SELECT sku, quantity AS units FROM stock;\\\\n\\\"\\n      },\\n      \\\"transaction_open_after_commit\\\": false,\\n      \\\"readers\\\": {\\n        \\\"OLD\\\": {\\n          \\\"columns\\\": [\\n            \\\"sku\\\",\\n            \\\"units\\\"\\n          ],\\n          \\\"rows\\\": [\\n            [\\n              \\\"A\\\",\\n              12\\n            ],\\n            [\\n              \\\"B\\\",\\n              4\\n            ],\\n            [\\n              \\\"C\\\",\\n              0\\n            ]\\n          ],\\n          \\\"error\\\": null,\\n          \\\"complete\\\": true,\\n          \\\"truncated\\\": false,\\n          \\\"active\\\": true,\\n          \\\"contract\\\": {\\n            \\\"columns\\\": [\\n              \\\"sku\\\",\\n              \\\"units\\\"\\n            ],\\n            \\\"rows\\\": [\\n              [\\n                \\\"A\\\",\\n                12\\n              ],\\n              [\\n                \\\"B\\\",\\n                4\\n              ],\\n              [\\n                \\\"C\\\",\\n                0\\n              ]\\n            ]\\n          },\\n          \\\"matches_contract\\\": true,\\n          \\\"active_failure\\\": false\\n        },\\n        \\\"NEW\\\": {\\n          \\\"columns\\\": [\\n            \\\"sku\\\",\\n            \\\"units\\\"\\n          ],\\n          \\\"rows\\\": [\\n            [\\n              \\\"A\\\",\\n              7\\n            ],\\n            [\\n              \\\"B\\\",\\n              3\\n            ],\\n            [\\n              \\\"C\\\",\\n              0\\n            ]\\n          ],\\n          \\\"error\\\": null,\\n          \\\"complete\\\": true,\\n          \\\"truncated\\\": false,\\n          \\\"active\\\": false,\\n          \\\"contract\\\": {\\n            \\\"columns\\\": [\\n              \\\"sku\\\",\\n              \\\"units\\\"\\n            ],\\n            \\\"rows\\\": [\\n              [\\n                \\\"A\\\",\\n                7\\n              ],\\n              [\\n                \\\"B\\\",\\n                3\\n              ],\\n              [\\n                \\\"C\\\",\\n                0\\n              ]\\n            ]\\n          },\\n          \\\"matches_contract\\\": true,\\n          \\\"active_failure\\\": false\\n        }\\n      },\\n      \\\"committed_stock\\\": {\\n        \\\"columns\\\": [\\n          \\\"sku\\\",\\n          \\\"quantity\\\",\\n          \\\"reserved\\\"\\n        ],\\n        \\\"rows\\\": [\\n          [\\n            \\\"A\\\",\\n            12,\\n            5\\n          ],\\n          [\\n            \\\"B\\\",\\n            4,\\n            1\\n          ],\\n          [\\n            \\\"C\\\",\\n            0,\\n            0\\n          ]\\n        ],\\n        \\\"error\\\": null,\\n        \\\"complete\\\": true,\\n        \\\"truncated\\\": false\\n      },\\n      \\\"active_contracts_satisfied\\\": true\\n    }\\n  ],\\n  \\\"committed_quantity_and_reservation_survival\\\": {\\n    \\\"expected\\\": {\\n      \\\"columns\\\": [\\n        \\\"sku\\\",\\n        \\\"quantity\\\",\\n        \\\"reserved\\\"\\n      ],\\n      \\\"rows\\\": [\\n        [\\n          \\\"A\\\",\\n          12,\\n          5\\n        ],\\n        [\\n          \\\"B\\\",\\n          4,\\n          1\\n        ],\\n        [\\n          \\\"C\\\",\\n          0,\\n          0\\n        ]\\n      ]\\n    },\\n    \\\"matches_after_step_3\\\": true,\\n    \\\"matches_after_step_5\\\": true\\n  },\\n  \\\"preservation\\\": {\\n    \\\"all_project_file_bytes_unchanged_including_git\\\": true,\\n    \\\"git_state_unchanged\\\": true,\\n    \\\"initial_git_status\\\": \\\"?? .agents/skills/friday/SKILL.md\\\\n?? .agents/skills/friday/agents/openai.yaml\\\\n?? .agents/skills/friday/references/sqlite-matrix-details.md\\\\n?? .agents/skills/friday/references/sqlite-matrix.md\\\\n?? .agents/skills/friday/scripts/sqlite_matrix.py\\\\n\\\",\\n    \\\"scratch_created\\\": false\\n  },\\n  \\\"completion\\\": {\\n    \\\"complete\\\": true,\\n    \\\"expected_phase_count\\\": 5,\\n    \\\"recorded_phase_count\\\": 5,\\n    \\\"expected_reader_observation_count\\\": 10,\\n    \\\"recorded_reader_observation_count\\\": 10,\\n    \\\"truncated\\\": false,\\n    \\\"rows_omitted\\\": 0\\n  }\\n}\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0bfda-3658-7041-b1e0-79e5f5cc41bb",
+            "create_time": 1789925203.328915
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

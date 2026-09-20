@@ -9,7 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Friday output pilot execution complete; publication review pending — 2026-09-21
+## Friday output pilot reviewed; candidate not adopted — 2026-09-21
+
+[All six reviewed sessions](results/friday-output-01/README.md) meet their five
+criteria; original captures, counters, raw observations/provenance and preservation
+are verified. Candidate sums versus original are −6.90% tokens / −8.13% time;
+versus baseline +5.02% tokens / −20.22% time. These are **not attributed gains**:
+exact modified-guide exposure is unobserved in both candidate sessions, while
+raw-output original reads its guide and full helper before writing its own checks.
+No condition uses the matrix helper. All evidence is retained, private initial
+messages omitted, privacy scan passed. Candidate remains unadopted; no graph change.
+
+한국어: 6회 원본 증거 검토를 끝냈지만 수정 효과는 입증되지 않아 채택하지
+않는다. 수치가 유리한 부분도 사용 경로 차이와 함께 공개하며 일반화하지 않는다.
+
+## Friday output pilot execution complete — historical pre-publication, 2026-09-21
 
 All six scheduled sessions from launch `5d68166` completed without timeout or retry.
 Original session usage reconciles, and every recorded shell output/exit matches CLI
