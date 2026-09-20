@@ -9,7 +9,24 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Real issue verification pilot prepared — 2026-09-21, parent `9f0cd19`
+## Real issue verification pilot reviewed — 2026-09-21, launch `031b961`
+
+[Two original sessions and review](results/sequence-entry-01/README.md), Receipt
+resources `9f0cd19`: both fulfill all five task/scope criteria, but skill tokens
+increase **40.50%** (92,431 → 129,866), time **14.90%** (76.357 → 87.738 seconds),
+and responses four → five. Receipt investigates helper compatibility for dynamic
+`probe.__file__` verification and then constructs a native comparison; neither arm
+uses the helper. Two CLI prefix omissions are recovered from original stored tool
+outputs, without reruns. Native results, original bytes/modes/Git state, cleanup,
+resource preservation, counters and exposure were reviewed. No efficiency win,
+same-task retuning or featured-chart promotion. One extracted known issue, n=1.
+
+한국어: 실제 이슈 비교도 두 실행 모두 검증은 성공했지만 Receipt의 토큰·시간이
+증가했다. 동적 모듈 경로 확인에 대한 도구 호환성 탐색 후 별도 네이티브 비교를
+작성했다. 다음 개선 단서는 얻었으나 전체 성능 목표는 아직 미달이다. 불리한
+결과와 원본 출력 누락을 공개하고 대표 그래프는 바꾸지 않는다.
+
+## Real issue verification pilot prepared — historical pre-review, 2026-09-21, parent `9f0cd19`
 
 [Frozen two-cell protocol](SEQUENCE-ENTRY-01-PROTOCOL.md) compares no-skill and
 Receipt verification on one extracted real repository bug, resources `9f0cd19`.
