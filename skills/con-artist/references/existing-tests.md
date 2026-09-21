@@ -35,6 +35,14 @@ For installed pytest, use `runner: "pytest"` and its native test arguments in bo
 test lists. Configuration/collection precede copy-import verification; fixtures run
 normally afterward. No automatic package installation or custom plugin is required.
 
+If the task also requires preserving unselected files, new paths and Git metadata,
+and reading the whole project is permitted, add `"guard_project": true` to the
+recipe. It inventories the source root before execution and after scratch cleanup;
+no separate hash wrapper is needed. This optional guard is bounded to 10,000
+entries and 20 MB per inventory. It records symlinks without reading their targets;
+external Git/worktree metadata is outside its scope. Changes raise without being
+restored. It is not a sandbox, atomic snapshot or protection from concurrent edits.
+
 When the audit requires the test's imported function binding in the same process,
 the helper already supports this without a `sitecustomize.py` or startup hook.
 For the example above, include `test_service` in `imports` and add:
@@ -62,7 +70,9 @@ or requested binding/effect. Use native observations rather than rerunning for l
 `status: "incomplete"` or CLI 2 means the comparison was not established; missing
 checks are unrun. CLI 0 means observations collected, not that the mutation was
 detected. `integrity` confirms selected original bytes/modes and owned-scratch
-cleanup, not arbitrary effects or unselected files. After verifying the proposed
+cleanup. With the optional guard, `integrity.project_guard` additionally reports
+whole-root preservation; without it, unselected files are not covered. Neither
+mode proves arbitrary external effects absent. After verifying the proposed
 tests, apply only the authorized test edit and retain unchanged tested bytes.
 
 Boundaries: trusted local tests, Python 3.9+/POSIX, no sandbox; no symlink inputs,

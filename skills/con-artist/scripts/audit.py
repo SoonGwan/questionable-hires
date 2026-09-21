@@ -5,15 +5,62 @@ This is a test runner, not a security sandbox. Run only trusted local tests.
 """
 import argparse
 import codecs
+import hashlib
 import json
 import os
 from pathlib import Path
 import signal
 import selectors
+import stat
 import subprocess
 import sys
 import tempfile
 import time
+
+MAX_GUARD_ENTRIES = 10000
+MAX_GUARD_BYTES = 20_000_000
+
+
+def project_inventory(root):
+    """Bounded hashes/modes including Git; link targets are never traversed."""
+    inventory, pending, total = {}, [root], 0
+    while pending:
+        path = pending.pop()
+        name = path.relative_to(root).as_posix()
+        info = path.lstat()
+        mode = stat.S_IMODE(info.st_mode)
+        if len(inventory) >= MAX_GUARD_ENTRIES:
+            raise ValueError('Project guard exceeds 10000 entries')
+        if stat.S_ISLNK(info.st_mode):
+            inventory[name] = ('symlink', mode, os.readlink(path))
+        elif stat.S_ISDIR(info.st_mode):
+            inventory[name] = ('directory', mode)
+            with os.scandir(path) as entries:
+                for entry in entries:
+                    if len(inventory) + len(pending) >= MAX_GUARD_ENTRIES:
+                        raise ValueError('Project guard exceeds 10000 entries')
+                    pending.append(Path(entry.path))
+        elif stat.S_ISREG(info.st_mode):
+            if info.st_size > MAX_GUARD_BYTES - total:
+                raise ValueError('Project guard exceeds 20 MB per inventory')
+            digest = hashlib.sha256()
+            descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+            with os.fdopen(descriptor, 'rb') as stream:
+                opened = os.fstat(stream.fileno())
+                if not stat.S_ISREG(opened.st_mode) or (opened.st_dev, opened.st_ino) != (info.st_dev, info.st_ino):
+                    raise ValueError('Project guard file changed while opening')
+                while True:
+                    chunk = stream.read(min(65536, MAX_GUARD_BYTES - total + 1))
+                    if not chunk:
+                        break
+                    total += len(chunk)
+                    if total > MAX_GUARD_BYTES:
+                        raise ValueError('Project guard exceeds 20 MB per inventory')
+                    digest.update(chunk)
+            inventory[name] = ('file', mode, digest.hexdigest())
+        else:
+            raise ValueError('Project guard supports files, directories and symlinks only')
+    return inventory, total
 
 
 BOOTSTRAP = '''import hashlib, importlib, json, pathlib, sys, traceback
@@ -204,13 +251,15 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     if not isinstance(spec, dict):
         raise ValueError('Audit recipe must be a JSON object')
     allowed = {'files', 'imports', 'runner', 'tests', 'target', 'old', 'new',
-               'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_tests', 'precheck', 'import_roots'}
+               'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_tests', 'precheck', 'import_roots', 'guard_project'}
     unknown = set(spec) - allowed
     if unknown:
         raise ValueError('Unknown audit fields: ' + ', '.join(sorted(map(str, unknown))) +
                          '. Use CLI --timeout/--python for execution settings.')
     if os.name != 'posix':
         raise ValueError('This helper currently supports POSIX process cleanup only')
+    if not isinstance(spec.get('guard_project', False), bool):
+        raise ValueError('guard_project must be a boolean')
     if not 0 < timeout <= 300:
         raise ValueError('timeout must be between 0 and 300 seconds per check')
     for key in ('files', 'imports', 'tests'):
@@ -290,8 +339,9 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     if original.count(old) != 1:
         raise ValueError('Mutation text must match exactly once')
     faulty = original.replace(old, new, 1).encode('utf-8')
+    guarded = project_inventory(root) if spec.get('guard_project', False) else None
     identity = (files, modes, spec['imports'], spec['tests'], spec.get('precheck'), import_roots,
-                spec.get('runner', 'unittest'), str(python), timeout, dict(os.environ))
+                spec.get('runner', 'unittest'), str(python), timeout, dict(os.environ), guarded)
     reused = _baseline is not None and _baseline.get('identity') == identity
     probe_identity = (identity, spec.get('probe'), probe_files, spec.get('probe_tests'), probe_replacements)
     probe_reused = False
@@ -369,6 +419,14 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                    if not original_matches(root / name, content, modes[name])]
         if changed:
             raise RuntimeError('Selected originals changed during audit; not restored: ' + ', '.join(changed))
+        if guarded is not None:
+            current, _ = project_inventory(root)
+            previous, _ = guarded
+            differences = sorted(name for name in previous.keys() | current.keys()
+                                 if previous.get(name) != current.get(name))
+            if differences:
+                raise RuntimeError('Project tree changed during audit; not restored (' + str(len(differences))
+                                   + ' paths): ' + ', '.join(differences[:20]))
         if output is not None:
             # Both normal and early returns leave the context manager before
             # reaching this finally block. Never report removal from intent alone.
@@ -378,11 +436,15 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                 selected_files=len(files),
                 selected_original_bytes_and_modes_unchanged=True,
                 owned_scratch_removed=True)
+            if guarded is not None:
+                output['integrity']['project_guard'] = dict(
+                    unchanged=True, entries=len(guarded[0]), file_bytes=guarded[1],
+                    scope='source root including Git metadata; symlink targets not read')
 
 
 def audit_batch(root, spec, python=sys.executable, timeout=30):
     """Reuse a successful baseline only within this explicit local batch."""
-    common_keys = {'files', 'imports', 'runner', 'tests', 'mutations', 'precheck', 'import_roots'}
+    common_keys = {'files', 'imports', 'runner', 'tests', 'mutations', 'precheck', 'import_roots', 'guard_project'}
     fault_keys = {'target', 'old', 'new', 'tests', 'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_tests'}
     mutations = spec.get('mutations')
     if set(spec) - common_keys or not isinstance(mutations, list) or not 1 <= len(mutations) <= 8:

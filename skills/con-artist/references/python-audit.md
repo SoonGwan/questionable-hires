@@ -75,6 +75,18 @@ Read the returned evidence rather than rerunning completed checks:
   files, new original-tree files, later commands or coverage. Changes/removal
   failures raise errors; originals are not silently restored.
 
+For tasks that require whole-project preservation, optional `"guard_project": true`
+adds `integrity.project_guard` after a successful before/after inventory check.
+Authorize reading the entire source root first. It covers bytes/modes, added or
+removed paths, directories, symlink identities and in-root Git metadata, not
+external link targets or effects. It hashes rather than copies unselected files;
+the `files` selection still determines execution-copy contents. Limits: 10,000
+entries and 20 MB per inventory. Special files, raced file replacements and
+over-budget trees fail explicitly. Default off: no unselected-tree reads or guard
+claim. Changes are reported without restoration, including on incomplete checks;
+inventory failure is not successful preservation. Stable trusted projects only,
+not race isolation or a sandbox. In batch mode the flag is a shared recipe field.
+
 Single-audit JSON has `status` (`observed`/`incomplete`) and `checks`: `correct_tests`,
 `mutant_tests`, and executed `correct_probe`/`mutant_probe`. Each check has
 `exit_code`, `timed_out`, `output`, `output_truncated`. Inspect native counts and

@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Audit preservation support added — 2026-09-21, parent `f157b76`
+
+[Native capability controls](AUDIT-PROJECT-GUARD-01.md): optional recipe field
+`guard_project` checks the complete authorized source root before/after audit
+cleanup, including notes/new paths/in-root Git files. Nine focused tests cover
+native assertions, preservation violations, limits, race refusal and CLI/batch
+behavior. Default off; no cross-skill dependency or automatic restoration. This
+can replace custom preservation plumbing but model adoption/cost is unmeasured.
+Both README capability descriptions updated; no featured or broad gain claim.
+
+한국어: 최근 실행에서 반복 작성된 전체 원본 보존 코드를 대체할 수 있는
+선택 기능을 추가했다. 정상·결함 동작과 변경 감지는 검증했지만 모델 효율은
+별도 검증이 필요하다. 전체 성능 목표는 여전히 미달이다.
+
 ## Installed archive verified — 2026-09-21, resources `61f30db`
 
 [Standalone checkpoint](../docs/STANDALONE-ARCHIVE.md):52-file archive is85,769
