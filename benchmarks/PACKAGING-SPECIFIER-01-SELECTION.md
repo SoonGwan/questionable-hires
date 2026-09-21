@@ -84,5 +84,10 @@ The exporter rejects changed inventories/content/modes, symlinks and overwrites.
 Seven controls additionally exercise real `run.prepare` workspace construction
 and its exact source bytes/modes. macOS Python3.9.6:7/7 pass in0.330s. These are
 input/packaging controls, not model performance or new upstream test executions.
+A fresh `git archive b6c47e4` without repository history or local-run artifacts
+also passes7/7 under Python3.9.6 in0.342s, with no skips. This archive check uses
+the committed snapshot and creates its own synthetic Git workspace; it does not
+silently import source from the original checkout. The complete repository suite
+was not rerun for this input-only addition.
 The forthcoming scheduler must still freeze runtime/resource/settings identities
 and enforce one attempt per cell before model launch.
