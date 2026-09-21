@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Non-adjacent audit baseline work identified — 2026-09-21, parent `4e99345`
+
+[Three native observations](AUDIT-SELECTION-REUSE-01.md) show normal-baseline
+executions2/3/8 for A-A-B/A-B-A/eight alternating selections, with all3/3/8 mutant
+checks retained and expected assertions observed. Existing cache remembers only
+the last selection. A bounded batch-local map is a concrete implementation lead,
+not a measured improvement. Source identity revalidation, direct observation
+references, unchanged mutant execution and retained-memory bounds are required.
+No production, model-performance or graph change yet.
+
+한국어: 테스트 선택이 돌아올 때 반복되는 정상 검사를 실제 실행으로 확인했다.
+입력·검증 범위를 유지하며 줄일 여지는 있으나 아직 개선 수치를 주장하지 않는다.
+
 ## Source-archive checkpoint — 2026-09-21, resource `ac1d17c`
 
 A fresh `git archive` of `ac1d17c45a98295b0b6e3aa693261470cddc8fdb`, extracted
