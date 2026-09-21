@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Hostage conditional comparison prepared — 2026-09-21, resource `a1f420e`
+
+[Frozen two-task protocol](HOSTAGE-CONDITIONAL-01-PROTOCOL.md) covers a synchronous
+selection change and shared-fetch caller cancellation. Correct author controls
+pass; API-compatible empty-selection fault and native cancellation fault fail
+real assertions. Five preflight/runner tests pass Python3.9/3.11. Six original
+sessions scheduled with prior/baseline/candidate reversed across task pairs.
+Authored tasks, not real-repository holdout. No reviewed model result yet; production
+and charts unchanged. Solutions/oracles are author-only, absent from model inputs.
+
+한국어: 동기식·비동기식 두 과제의 정상·결함 대조와 실행 조건을 고정했다.
+6개 새 세션을 비교하며, 준비 검사 통과를 스킬 성능 향상으로 계산하지 않는다.
+
 ## Hostage conditional candidate prepared — 2026-09-21, parent `51dd30e`
 
 [Separate candidate and rejection risks](HOSTAGE-CONDITIONAL-01.md) moves three
