@@ -272,9 +272,15 @@ is a regression control, not an independent test set.
 
 ## Release and publication boundary
 
+Local source`c329fb7`,2026-09-21: [complete macOS regression](RELEASE-VALIDATION-C329FB7.md)
+passes1,101/1,101 in checkout and1,076pass/25skip in a fresh source archive on
+Python3.11.16. Archive validation/featured sync pass. No current Linux matrix or
+model-cost claim. 한국어: 현재 작업본과 배포 압축본 전체 검사 완료. 건너뛴 검사는
+통과로 세지 않으며, 원격 CI나 성능 실증을 대체하지 않는다.
+
 Hosted checkpoint inspected2026-09-21:
-[run35584332665](https://github.com/SoonGwan/questionable-hires/actions/runs/35584332665)
-at`faab9e2` has no executed steps in all four jobs; the Python3.11 annotation
+[run35590793017](https://github.com/SoonGwan/questionable-hires/actions/runs/35590793017)
+at`c329fb7` has no executed steps in all four jobs; the Python3.11 annotation
 cites payments/spending limit. Local results do not
 establish hosted validation. Do not change billing/visibility without owner
 direction; scoped local work can continue.
