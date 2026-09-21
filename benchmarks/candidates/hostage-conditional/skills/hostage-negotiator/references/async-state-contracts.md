@@ -1,0 +1,7 @@
+# Async and overlapping state changes
+
+Assert observable contracts, not incidental counter increments or token values. For stale or failed work, capture contractual field values before release and compare afterward; retaining the owner object can alias in-place mutations. Preserve payload/error identity and snapshot mutable contents only when contractual. Do not invent exception-identity requirements for task cancellation.
+
+Async regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup. Keep callback helpers separate from framework methods: an async `fail` or `run` on a unittest TestCase can break assertions or execution; use distinct names or composed support.
+
+Without equivalent project support, optionally copy the [Python asyncio asset](../assets/controlled_call.py) or [JavaScript Promise asset](../assets/controlled_call.mjs) for the actual runtime into permitted test support. Read its complete usage block alongside application files: `sed -n '1,/^"""$/p' <python-asset>` or `sed -n '1,/^ \*\//p' <js-asset>`. These include limits and optional task lifecycle ownership to replace custom start/wait/drain plumbing; inspect implementation for trust, adaptation or unclear behavior. Assets do not replace application assertions or external-resource cleanup; no separate reference is needed.

@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Hostage conditional candidate prepared — 2026-09-21, parent `51dd30e`
+
+[Separate candidate and rejection risks](HOSTAGE-CONDITIONAL-01.md) moves three
+async/state-specific paragraphs to a conditional guide without changing runtime
+assets or shared evidence/scope requirements. Entry711→572 words, but entry+guide
+is753: not measured tokens or a savings claim. Quick validation, local links and
+asset byte comparisons pass. Production unchanged. Fresh synchronous and async
+controls are required before adoption; no new model execution or graph update.
+
+한국어: 비동기 전용 설명을 필요할 때 읽는 실험 후보를 분리했다. 기본 본문은
+짧지만 추가 안내까지 읽으면 오히려 길어진다. 두 유형의 실측 전에는 채택하지 않는다.
+
 ## JavaScript cleanup counterpart verified — 2026-09-21, source `a7c92b0`
 
 [Native follow-up](HOSTAGE-CLEANUP-RETRY-01.md#javascript-follow-up--2026-09-21-parent-a7c92b0):
