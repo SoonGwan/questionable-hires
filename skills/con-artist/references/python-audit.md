@@ -111,3 +111,11 @@ foreground; surviving background jobs and escaped groups are unsupported. This i
 **not a sandbox**: trusted tests, local data and authorized actions only. Use project
 facilities for unsupported layouts/languages; don't repeat a valid baseline to adopt
 this helper mid-audit.
+
+Selected-input copying and final byte/mode comparison validate the opened regular
+file's identity and mode with nonblocking/no-follow opens. A replacement pipe,
+symlink or different file between inspection and open is rejected instead of
+waiting or accepting replacement bytes. Reads remain bounded if the same file
+grows. This is not a concurrent snapshot: parent-directory races and edits to the
+same open file are not isolated, and unchanged bytes/modes do not prove unchanged
+identity throughout execution. Input collection has no whole-operation deadline.

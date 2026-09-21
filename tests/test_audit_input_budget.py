@@ -1,4 +1,5 @@
 import importlib.util
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -16,27 +17,28 @@ class AuditInputBudgetTests(unittest.TestCase):
             source = Path(temporary) / 'data.bin'
             source.write_bytes(b'x')
             mode = source.stat().st_mode & 0o777
-            real_open, reads = Path.open, []
+            real_open, real_fdopen, reads = os.open, os.fdopen, []
             class Reader:
+                def __init__(self, descriptor, mode):
+                    self.stream = real_fdopen(descriptor, mode)
                 def __enter__(self):
-                    self.stream = real_open(source, 'rb')
                     return self
+                def fileno(self):
+                    return self.stream.fileno()
                 def read(self, size=-1):
                     reads.append(size)
                     return self.stream.read(size)
                 def __exit__(self, *args):
                     self.stream.close()
             def growing_open(path, *args, **kwargs):
-                if path == source and args == ('rb',):
-                    with real_open(source, 'wb') as stream:
-                        stream.write(b'x' * 20_000_001)
-                    return Reader()
+                if path == source:
+                    source.write_bytes(b'x' * 20_000_001)
                 return real_open(path, *args, **kwargs)
-            with patch.object(Path, 'open', growing_open):
+            with patch.object(helper.os, 'open', growing_open), patch.object(helper.os, 'fdopen', Reader):
                 self.assertFalse(helper.original_matches(source, b'x', mode))
             self.assertEqual(reads, [2])
             self.assertEqual(source.stat().st_size, 20_000_001)
-            with patch.object(Path, 'open') as opened:
+            with patch.object(helper.os, 'open') as opened:
                 self.assertFalse(helper.original_matches(source, b'x', mode))
                 opened.assert_not_called()
 
@@ -45,24 +47,25 @@ class AuditInputBudgetTests(unittest.TestCase):
             root = Path(temporary)
             source = root / 'data.bin'
             source.write_bytes(b'x')
-            real_open = Path.open
+            real_open, real_fdopen = os.open, os.fdopen
             reads = []
             class Reader:
+                def __init__(self, descriptor, mode):
+                    self.stream = real_fdopen(descriptor, mode)
                 def __enter__(self):
-                    self.stream = real_open(source, 'rb')
                     return self
+                def fileno(self):
+                    return self.stream.fileno()
                 def read(self, size=-1):
                     reads.append(size)
                     return self.stream.read(size)
                 def __exit__(self, *args):
                     self.stream.close()
             def growing_open(path, *args, **kwargs):
-                if path == source and args == ('rb',):
-                    with real_open(source, 'wb') as stream:
-                        stream.write(b'x' * 20_000_001)
-                    return Reader()
+                if path == source:
+                    source.write_bytes(b'x' * 20_000_001)
                 return real_open(path, *args, **kwargs)
-            with patch.object(Path, 'open', growing_open):
+            with patch.object(helper.os, 'open', growing_open), patch.object(helper.os, 'fdopen', Reader):
                 with self.assertRaisesRegex(ValueError, '20 MB'):
                     helper.snapshot(root, ['data.bin'])
             self.assertEqual(reads, [20_000_001])
@@ -74,13 +77,12 @@ class AuditInputBudgetTests(unittest.TestCase):
             first, second = root / 'first.bin', root / 'second.bin'
             first.write_bytes(b'x')
             second.write_bytes(b'y' * 10_000_000)
-            real_open = Path.open
+            real_open = os.open
             def growing_open(path, *args, **kwargs):
-                if path == first and args == ('rb',):
-                    with real_open(first, 'wb') as stream:
-                        stream.write(b'x' * 10_000_001)
+                if path == first:
+                    first.write_bytes(b'x' * 10_000_001)
                 return real_open(path, *args, **kwargs)
-            with patch.object(Path, 'open', growing_open):
+            with patch.object(helper.os, 'open', growing_open):
                 with self.assertRaisesRegex(ValueError, '20 MB'):
                     helper.snapshot(root, ['first.bin', 'second.bin'])
 

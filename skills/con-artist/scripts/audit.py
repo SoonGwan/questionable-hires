@@ -134,6 +134,18 @@ def relative(name):
     return path
 
 
+def read_selected(path, info, limit):
+    """Read the inspected regular file, bounded even if it grows afterward."""
+    flags = os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW
+    with os.fdopen(os.open(path, flags), 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        if (not stat.S_ISREG(opened.st_mode)
+                or (opened.st_dev, opened.st_ino) != (info.st_dev, info.st_ino)
+                or stat.S_IMODE(opened.st_mode) != stat.S_IMODE(info.st_mode)):
+            raise ValueError('Selected input changed while opening')
+        return stream.read(limit + 1)
+
+
 def snapshot(root, names):
     files = {}
     total = 0
@@ -157,12 +169,12 @@ def snapshot(root, names):
                     raise ValueError('Input too large for this small-audit helper: ' + key)
                 if key not in files:
                     remaining = 20_000_000 - total
-                    if item.stat().st_size > remaining:
+                    inspected = item.stat()
+                    if inspected.st_size > remaining:
                         raise ValueError('Selected inputs exceed 20 MB; use the project audit facilities')
                     # The file can grow after stat. Bound allocation and charge
                     # actual bytes, not the earlier size observation.
-                    with item.open('rb') as stream:
-                        content = stream.read(remaining + 1)
+                    content = read_selected(item, inspected, remaining)
                     if len(content) > remaining:
                         raise ValueError('Selected inputs exceed 20 MB; use the project audit facilities')
                     total += len(content)
@@ -177,8 +189,10 @@ def original_matches(path, content, mode):
     status = path.stat()
     if status.st_size != len(content) or status.st_mode & 0o777 != mode:
         return False
-    with path.open('rb') as stream:
-        return stream.read(len(content) + 1) == content
+    try:
+        return read_selected(path, status, len(content)) == content
+    except (OSError, ValueError):
+        return False
 
 
 def execute(python, directory, spec, probe, timeout):

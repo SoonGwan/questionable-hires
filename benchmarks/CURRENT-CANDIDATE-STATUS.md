@@ -9,6 +9,17 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Con Artist selected-input opens corrected — 2026-09-21, parent `06353c6`
+
+[Native before/after probes](AUDIT-SELECTED-READ-01.md) reproduce two FIFO hangs and
+four accepted file/symlink replacements in snapshot/final-comparison reads. Opened
+descriptors now validate type, identity and mode without waiting on replaced FIFOs.
+Six replacement cases reject; byte-budget/growth checks remain intact. Bilingual
+capability descriptions updated; no entry/chart change or model-efficiency claim.
+
+한국어: 선택 파일 읽기의 실제 멈춤·교체 오인 문제를 수정했다. 전체 모델 성능 목표는
+여전히 미달이며, 이번 변경은 도구 신뢰성 개선으로만 기록한다.
+
 ## Native full-inspection route not adopted — 2026-09-21, parent `2ff4490`
 
 [Four-case accounting and original attempts](NATIVE-INSPECTION-03.md) includes
