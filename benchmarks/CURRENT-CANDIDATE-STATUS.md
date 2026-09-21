@@ -58,6 +58,11 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [Slugify history preparation](SLUGIFY-HISTORY-01-PREFLIGHT.md), checkout
+  `79fb2e2`: nine native current/deletion controls and full-history attribution
+  pass. New review task on the already-used project; no model sessions or skill
+  change. Current compatibility and historical intent remain separate.
+  한국어: 이력 검토 사전 검증이며 새로운 성능 향상 수치는 아니다.
 - [Hostage entry-wait cancellation correction](HOSTAGE-ENTRY-CANCEL-01.md),
   parent `b9a2900`: plain callback-entry wait no longer swallows cancellation
   overlapping queue wakeup in the tested Python3.9/3.11 runtimes. Both reproduce

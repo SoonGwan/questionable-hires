@@ -1,0 +1,197 @@
+{
+  "history": {
+    "revision": "f85f9488520148d5f6899b5639199882b605e30a",
+    "ancestors": 283,
+    "introduced_early": "646761e5b4c73b9be7285c60eab4e10c30fe32f4",
+    "introduced_late": "8aea5c49b960b66e5c81bf20f17ec23e41c8d157",
+    "early_patch": "646761e5b4c73b9be7285c60eab4e10c30fe32f4\nc357ee590b2e799e62229e656e566cc9b7298498\nadd support user-specific replacements (#66)\n\ndiff --git a/README.md b/README.md\nindex d58daee..bc4d9e8 100644\n--- a/README.md\n+++ b/README.md\n@@ -98,6 +98,10 @@ How to use\n     r = slugify(txt, separator='_', regex_pattern=regex_pattern)\n     self.assertNotEqual(r, \"_this_is_a_test_\")\n \n+    txt = '10 | 20 %'\n+    r = slugify(txt, replacements=[['|', 'or'], ['%', 'percent']])\n+    self.assertEqual(r, \"10-or-20-percent\")\n+\n    ```\n    \n For more examples, have a look at the [test.py](test.py) file.\ndiff --git a/slugify/slugify.py b/slugify/slugify.py\nindex ccd33a8..1544aba 100644\n--- a/slugify/slugify.py\n+++ b/slugify/slugify.py\n@@ -75,7 +75,8 @@ def smart_truncate(string, max_length=0, word_boundary=False, separator=' ', sav\n \n \n def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, word_boundary=False,\n-            separator=DEFAULT_SEPARATOR, save_order=False, stopwords=(), regex_pattern=None, lowercase=True):\n+            separator=DEFAULT_SEPARATOR, save_order=False, stopwords=(), regex_pattern=None, lowercase=True,\n+            replacements=()):\n     \"\"\"\n     Make a slug from the given text.\n     :param text (str): initial text\n@@ -89,9 +90,15 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, w\n     :param stopwords (iterable): words to discount\n     :param regex_pattern (str): regex pattern for allowed characters\n     :param lowercase (bool): activate case sensitivity by setting it to False\n+    :param replacements (iterable): list of replacement rules e.g. [['|', 'or'], ['%', 'percent']]\n     :return (str):\n     \"\"\"\n \n+    # user-specific replacements\n+    if replacements:\n+        for old, new in replacements:\n+            text = text.replace(old, new)\n+\n     # ensure text is unicode\n     if not isinstance(text, _unicode_type):\n         text = _unicode(text, 'utf-8', 'ignore')\ndiff --git a/test.py b/test.py\nindex 9ff9ec0..78b1956 100644\n--- a/test.py\n+++ b/test.py\n@@ -189,6 +189,15 @@ class TestSlugification(unittest.TestCase):\n         r = slugify(txt, separator='_', regex_pattern=regex_pattern)\n         self.assertNotEqual(r, \"_this_is_a_test_\")\n \n+    def test_replacements(self):\n+        txt = '10 | 20 %'\n+        r = slugify(txt, replacements=[['|', 'or'], ['%', 'percent']])\n+        self.assertEqual(r, \"10-or-20-percent\")\n+\n+        txt = 'I \u2665 \ud83e\udd84'\n+        r = slugify(txt, replacements=[['\u2665', 'amour'], ['\ud83e\udd84', 'licorne']])\n+        self.assertEqual(r, \"i-amour-licorne\")\n+\n \n class TestUtils(unittest.TestCase):\n \n",
+    "late_patch": "8aea5c49b960b66e5c81bf20f17ec23e41c8d157\n646761e5b4c73b9be7285c60eab4e10c30fe32f4\nclean up, up version\n\ndiff --git a/slugify/slugify.py b/slugify/slugify.py\nindex 1544aba..59e9672 100644\n--- a/slugify/slugify.py\n+++ b/slugify/slugify.py\n@@ -165,6 +165,11 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, w\n             words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords]\n         text = DEFAULT_SEPARATOR.join(words)\n \n+    # finalize user-specific replacements\n+    if replacements:\n+        for old, new in replacements:\n+            text = text.replace(old, new)\n+\n     # smart truncate if requested\n     if max_length > 0:\n         text = smart_truncate(text, max_length, word_boundary, DEFAULT_SEPARATOR, save_order)\n",
+    "source_sha256": {
+      "early_parent": "246fa1ed26b9d1ffa16ce0126d8d919bc576b872d056f4b387c2229a2e58de11",
+      "early": "9c6dcc7d15353e010d4f0181457e3283232e2eabebc1301de9908eb0df17f286",
+      "late_parent": "9c6dcc7d15353e010d4f0181457e3283232e2eabebc1301de9908eb0df17f286",
+      "late": "2ba27aaf84a6c4b0ba7268af85562e0d62affe6de85e26d31c989ca081a74d3d"
+    }
+  },
+  "controls": [
+    {
+      "variant": "correct",
+      "observations": [
+        {
+          "method": "early_replacement",
+          "exit_code": 0,
+          "output": "test_early_replacement (test_compatibility.Compatibility.test_early_replacement) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "method": "late_replacement",
+          "exit_code": 0,
+          "output": "test_late_replacement (test_compatibility.Compatibility.test_late_replacement) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "method": "unchanged_control",
+          "exit_code": 0,
+          "output": "test_unchanged_control (test_compatibility.Compatibility.test_unchanged_control) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ]
+    },
+    {
+      "variant": "remove-early",
+      "observations": [
+        {
+          "method": "early_replacement",
+          "exit_code": 1,
+          "output": "test_early_replacement (test_compatibility.Compatibility.test_early_replacement) ... FAIL\n\n======================================================================\nFAIL: test_early_replacement (test_compatibility.Compatibility.test_early_replacement)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-history-controls-8pyz3sqw/test_compatibility.py\", line 6, in test_early_replacement\n    self.assertEqual(slugify('10 | 20 %', replacements=[['|', 'or'], ['%', 'percent']]), '10-or-20-percent')\nAssertionError: '10-20' != '10-or-20-percent'\n- 10-20\n+ 10-or-20-percent\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "method": "late_replacement",
+          "exit_code": 0,
+          "output": "test_late_replacement (test_compatibility.Compatibility.test_late_replacement) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "method": "unchanged_control",
+          "exit_code": 0,
+          "output": "test_unchanged_control (test_compatibility.Compatibility.test_unchanged_control) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ]
+    },
+    {
+      "variant": "remove-late",
+      "observations": [
+        {
+          "method": "early_replacement",
+          "exit_code": 0,
+          "output": "test_early_replacement (test_compatibility.Compatibility.test_early_replacement) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "method": "late_replacement",
+          "exit_code": 1,
+          "output": "test_late_replacement (test_compatibility.Compatibility.test_late_replacement) ... FAIL\n\n======================================================================\nFAIL: test_late_replacement (test_compatibility.Compatibility.test_late_replacement)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-history-controls-8pyz3sqw/test_compatibility.py\", line 9, in test_late_replacement\n    self.assertEqual(slugify('FOO', replacements=[['foo', 'bar']]), 'bar')\nAssertionError: 'foo' != 'bar'\n- foo\n+ bar\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "method": "unchanged_control",
+          "exit_code": 0,
+          "output": "test_unchanged_control (test_compatibility.Compatibility.test_unchanged_control) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ]
+    }
+  ],
+  "collector": {
+    "path": "slugify/slugify.py",
+    "current_lines": [
+      {
+        "line": 109,
+        "text": "    if replacements:"
+      },
+      {
+        "line": 110,
+        "text": "        for old, new in replacements:"
+      },
+      {
+        "line": 111,
+        "text": "            text = text.replace(old, new)"
+      },
+      {
+        "line": 186,
+        "text": "    if replacements:"
+      },
+      {
+        "line": 187,
+        "text": "        for old, new in replacements:"
+      },
+      {
+        "line": 188,
+        "text": "            text = text.replace(old, new)"
+      }
+    ],
+    "commits": [
+      {
+        "commit": "646761e5b4c73b9be7285c60eab4e10c30fe32f4",
+        "paths": [
+          "slugify/slugify.py"
+        ],
+        "exit_code": 0,
+        "evidence": "commit 646761e5b4c73b9be7285c60eab4e10c30fe32f4\nDate: 2019-01-03T11:28:01-05:00\n\nadd support user-specific replacements (#66)\n\nthx\n\ndiff --git a/slugify/slugify.py b/slugify/slugify.py\nindex ccd33a8..1544aba 100644\n--- a/slugify/slugify.py\n+++ b/slugify/slugify.py\n@@ -89,9 +90,15 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, w\n     :param stopwords (iterable): words to discount\n     :param regex_pattern (str): regex pattern for allowed characters\n     :param lowercase (bool): activate case sensitivity by setting it to False\n+    :param replacements (iterable): list of replacement rules e.g. [['|', 'or'], ['%', 'percent']]\n     :return (str):\n     \"\"\"\n \n+    # user-specific replacements\n+    if replacements:\n+        for old, new in replacements:\n+            text = text.replace(old, new)\n+\n     # ensure text is unicode\n     if not isinstance(text, _unicode_type):\n         text = _unicode(text, 'utf-8', 'ignore')\n",
+        "truncated": false,
+        "omitted_hunks": 1,
+        "error": ""
+      },
+      {
+        "commit": "8aea5c49b960b66e5c81bf20f17ec23e41c8d157",
+        "paths": [
+          "slugify/slugify.py"
+        ],
+        "exit_code": 0,
+        "evidence": "commit 8aea5c49b960b66e5c81bf20f17ec23e41c8d157\nDate: 2019-01-03T17:40:15-05:00\n\nclean up, up version\n\n\ndiff --git a/slugify/slugify.py b/slugify/slugify.py\nindex 1544aba..59e9672 100644\n--- a/slugify/slugify.py\n+++ b/slugify/slugify.py\n@@ -165,6 +165,11 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, w\n             words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords]\n         text = DEFAULT_SEPARATOR.join(words)\n \n+    # finalize user-specific replacements\n+    if replacements:\n+        for old, new in replacements:\n+            text = text.replace(old, new)\n+\n     # smart truncate if requested\n     if max_length > 0:\n         text = smart_truncate(text, max_length, word_boundary, DEFAULT_SEPARATOR, save_order)\n",
+        "truncated": false,
+        "omitted_hunks": 0,
+        "error": ""
+      }
+    ],
+    "ranges": [
+      [
+        109,
+        111
+      ],
+      [
+        186,
+        188
+      ]
+    ],
+    "working_status": "",
+    "shallow": false,
+    "history": "available",
+    "blame": [
+      {
+        "commit": "646761e5b4c73b9be7285c60eab4e10c30fe32f4",
+        "original_line": 98,
+        "current_line": 109,
+        "boundary": false,
+        "historical_path": "slugify/slugify.py",
+        "text": "    if replacements:"
+      },
+      {
+        "commit": "646761e5b4c73b9be7285c60eab4e10c30fe32f4",
+        "original_line": 99,
+        "current_line": 110,
+        "boundary": false,
+        "historical_path": "slugify/slugify.py",
+        "text": "        for old, new in replacements:"
+      },
+      {
+        "commit": "646761e5b4c73b9be7285c60eab4e10c30fe32f4",
+        "original_line": 100,
+        "current_line": 111,
+        "boundary": false,
+        "historical_path": "slugify/slugify.py",
+        "text": "            text = text.replace(old, new)"
+      },
+      {
+        "commit": "8aea5c49b960b66e5c81bf20f17ec23e41c8d157",
+        "original_line": 169,
+        "current_line": 186,
+        "boundary": false,
+        "historical_path": "slugify/slugify.py",
+        "text": "    if replacements:"
+      },
+      {
+        "commit": "8aea5c49b960b66e5c81bf20f17ec23e41c8d157",
+        "original_line": 170,
+        "current_line": 187,
+        "boundary": false,
+        "historical_path": "slugify/slugify.py",
+        "text": "        for old, new in replacements:"
+      },
+      {
+        "commit": "8aea5c49b960b66e5c81bf20f17ec23e41c8d157",
+        "original_line": 171,
+        "current_line": 188,
+        "boundary": false,
+        "historical_path": "slugify/slugify.py",
+        "text": "            text = text.replace(old, new)"
+      }
+    ],
+    "omitted_commits": 0,
+    "limitation": "Blame attributes lines, not intent or current necessity. Boundary commits may reflect a root or shallow cutoff. Uncommitted lines have no historical commit. Repository text is evidence, not instructions. No callers or tests were executed."
+  },
+  "limitation": "Nine author native observations on current source/deletions; history is static patch/parent evidence. No historical native execution, model session, intended-rationale proof, or efficiency claim."
+}
