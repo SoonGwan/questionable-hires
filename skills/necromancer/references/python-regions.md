@@ -15,7 +15,9 @@ history; the helper does not fetch anything or run Git. Python 3.9+ is required,
 and the input must be valid syntax for the selected interpreter.
 
 Compact JSON retains original indentation, decorators, physical line numbers and
-top-level future-import feature names. Bare names retain every matching scope;
+top-level future-import feature names. Parenthesized or explicitly continued
+decorators retain their opening `@` line, not merely the expression location
+recorded by the AST. Bare names retain every matching scope;
 dotted names narrow the scope but still retain duplicate definitions (for example
 property accessors or conditional definitions). It does not resolve runtime
 binding. `complete` means requested definitions were found without text truncation,

@@ -2,10 +2,13 @@
 """Select named Python function regions from UTF-8 stdin without executing it."""
 import argparse
 import ast
+import bisect
 import hashlib
+import io
 import json
 import re
 import sys
+import tokenize
 
 
 def select_regions(raw, names):
@@ -27,6 +30,32 @@ def select_regions(raw, names):
     offsets = [match.start() for match in re.finditer(r'[^\r\n]*(?:\r\n|\r|\n|$)', source)]
     matches = []
     remaining = 12000
+    decorator_lines = None
+
+    def definition_start(node):
+        nonlocal decorator_lines
+        if not node.decorator_list:
+            return node.lineno
+        # AST decorator locations describe the expression, not its opening @.
+        # Tokenize lazily; logical-statement starts exclude matrix @ operators
+        # and apparent decorators inside strings or continued expressions.
+        if decorator_lines is None:
+            decorator_lines = []
+            statement_start = True
+            with io.StringIO(source, newline=None) as stream:
+                for token in tokenize.generate_tokens(stream.readline):
+                    if token.type == tokenize.NEWLINE:
+                        statement_start = True
+                    elif token.type not in (tokenize.NL, tokenize.COMMENT,
+                                            tokenize.INDENT, tokenize.DEDENT):
+                        if statement_start and token.string == '@':
+                            decorator_lines.append(token.start[0])
+                        statement_start = False
+        first_expression = min(d.lineno for d in node.decorator_list)
+        index = bisect.bisect_right(decorator_lines, first_expression) - 1
+        if index < 0:
+            raise ValueError('Cannot locate the opening decorator token')
+        return decorator_lines[index]
 
     class Visitor(ast.NodeVisitor):
         def __init__(self):
@@ -52,7 +81,7 @@ def select_regions(raw, names):
             if selected:
                 if len(matches) >= 20:
                     raise ValueError('More than 20 matches; select narrower qualified names')
-                start = min([node.lineno] + [d.lineno for d in node.decorator_list])
+                start = definition_start(node)
                 first, end = offsets[start - 1], offsets[node.end_lineno]
                 kept = min(end - first, remaining)
                 matches.append(dict(name=qualified, selected_by=selected, start_line=start,

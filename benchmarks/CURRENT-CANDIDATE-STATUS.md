@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-21, routing clarification based on `36c3d94`**.
+Decision checkpoint **2026-09-21, decorator repair based on `7d67eff`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -37,6 +37,10 @@ or recoverable savings.
 
 These changes are implemented; their model-cost effect is not established:
 
+- [Complete decorator excerpts](PYTHON-REGIONS-DECORATORS-01.md), parent`7d67eff`:
+  multiline decorator openings no longer disappear from supposedly complete
+  regions. Four new regression tests fail before repair; all18 region tests pass
+  on3.11 afterward. This repairs source evidence, not model efficiency.
 - Con Artist entrypoint now mentions localized exact edits in its existing
   optional four-check recipe route. In transfer01, predecessor/current entrypoints
   were identical and all four skill sessions stopped at that body without reading
