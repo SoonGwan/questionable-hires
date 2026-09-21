@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-22, external solver adapter `6a9fd17`**.
+Decision checkpoint **2026-09-22, exact solver execution path `54e3b2c`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -30,6 +30,12 @@ execute tools with recorded OOM; session02 writes/reads the expected file after
 moving to a separate8GiB VM/container6GiB. Both attempts retained, not skill
 evidence. Requests combined path/final protocol remain; zero selected-issue
 model attempts. Unrelated default Colima/MySQL are unchanged.
+[Exact mounted-source path](SWE-LITE-PILOT-01-FINAL-ENVIRONMENT.md): Requests
+passes142 native checks on internal-only and API-mode networking; pytest passes77
+after restoring the project-local temporary-directory config boundary. Prior
+7fail/70pass attempt retained, no test/source rewrite. The
+[four-cell protocol](SWE-LITE-PILOT-01-PROTOCOL.md) fixes resource`8ee6c56`,
+Astra/medium and360s inner/380s outer limits before selected-issue model execution.
 
 한국어: 두 외부 과제의 기준 채점과 실행 이미지 검증까지 완료했다. 실제 모델 비교와
 접근 경계 검증은 아직 남아 있다. 과거 실패 기록·그래프·개선율 주장은 변경하지 않았다.

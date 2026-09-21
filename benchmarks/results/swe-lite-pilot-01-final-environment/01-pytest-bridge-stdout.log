@@ -1,0 +1,444 @@
+PROJECT_LOCAL_TEMP_VERIFIED
+FRESH_IMPORT /testbed/src/pytest/__init__.py
+{"project": "pytest", "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]", "source": "/testbed/src/pytest/__init__.py", "tree": "877d433795f3d7288b9edd5696724bb2d8e47f88", "commits": 1, "cli": "codex-cli 0.153.4", "installer_sha256": "dd4282a1a3c8188f792513f2f16afb852e63ce3b98dbbc67684f716ebcc1e862"}
+QH_PUBLIC_SOURCE_BINDINGS=77
+.............F.......F...............................F....F.F.........F. [ 93%]
+..F..                                                                    [100%]
+=================================== FAILURES ===================================
+_________________________ TestXFail.test_xfail_xpassed _________________________
+
+self = <test_skipping.TestXFail object at 0x7ffffdc11be0>
+testdir = <Testdir local('/testbed/.git/qh-tmp/pytest-of-root/pytest-0/test_xfail_xpassed0')>
+
+    def test_xfail_xpassed(self, testdir):
+        item = testdir.getitem(
+            """
+            import pytest
+            @pytest.mark.xfail(reason="this is an xfail")
+            def test_func():
+                assert 1
+        """
+        )
+        reports = runtestprotocol(item, log=False)
+        assert len(reports) == 3
+        callreport = reports[1]
+>       assert callreport.passed
+E       AssertionError: assert False
+E        +  where False = <TestReport '.git/qh-tmp/pytest-of-root/pytest-0/test_xfail_xpassed0/test_xfail_xpassed.py::test_func' when='call' outcome='failed'>.passed
+
+/testbed/testing/test_skipping.py:186: AssertionError
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1
+rootdir: /testbed, configfile: pyproject.toml
+collected 0 items
+
+============================ no tests ran in 0.00s =============================
+__________________________ TestXFail.test_xfail_xpass __________________________
+
+self = <test_skipping.TestXFail object at 0x7ffffd8ec910>
+testdir = <Testdir local('/testbed/.git/qh-tmp/pytest-of-root/pytest-0/test_xfail_xpass0')>
+
+    def test_xfail_xpass(self, testdir):
+        p = testdir.makepyfile(
+            test_one="""
+            import pytest
+            @pytest.mark.xfail
+            def test_that():
+                assert 1
+        """
+        )
+        result = testdir.runpytest(p, "-rX")
+>       result.stdout.fnmatch_lines(["*XPASS*test_that*", "*1 xpassed*"])
+E       Failed: nomatch: '*XPASS*test_that*'
+E           and: '============================= test session starts =============================='
+E           and: 'platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1'
+E           and: 'rootdir: /testbed, configfile: pyproject.toml'
+E           and: 'collected 1 item'
+E           and: ''
+E           and: 'test_one.py F                                                            [100%]'
+E           and: ''
+E           and: '=================================== FAILURES ==================================='
+E           and: '__________________________________ test_that ___________________________________'
+E           and: '[XPASS(strict)] '
+E           and: '============================== 1 failed in 0.01s ==============================='
+E       remains unmatched: '*XPASS*test_that*'
+
+/testbed/testing/test_skipping.py:319: Failed
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1
+rootdir: /testbed, configfile: pyproject.toml
+collected 1 item
+
+test_one.py F                                                            [100%]
+
+=================================== FAILURES ===================================
+__________________________________ test_that ___________________________________
+[XPASS(strict)] 
+============================== 1 failed in 0.01s ===============================
+________ TestSkipif.test_skipif_reporting_multiple[xfail-XPASS-xpassed] ________
+
+self = <test_skipping.TestSkipif object at 0x7ffffc782430>
+testdir = <Testdir local('/testbed/.git/qh-tmp/pytest-of-root/pytest-0/test_skipif_reporting_multiple1')>
+marker = 'xfail', msg1 = 'XPASS', msg2 = 'xpassed'
+
+    @pytest.mark.parametrize(
+        "marker, msg1, msg2",
+        [("skipif", "SKIP", "skipped"), ("xfail", "XPASS", "xpassed")],
+    )
+    def test_skipif_reporting_multiple(self, testdir, marker, msg1, msg2):
+        testdir.makepyfile(
+            test_foo="""
+            import pytest
+            @pytest.mark.{marker}(False, reason='first_condition')
+            @pytest.mark.{marker}(True, reason='second_condition')
+            def test_foobar():
+                assert 1
+        """.format(
+                marker=marker
+            )
+        )
+        result = testdir.runpytest("-s", "-rsxX")
+>       result.stdout.fnmatch_lines(
+            [
+                "*{msg1}*test_foo.py*second_condition*".format(msg1=msg1),
+                "*1 {msg2}*".format(msg2=msg2),
+            ]
+        )
+E       Failed: nomatch: '*XPASS*test_foo.py*second_condition*'
+E           and: '============================= test session starts =============================='
+E           and: 'platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1'
+E           and: 'rootdir: /testbed, configfile: pyproject.toml'
+E           and: 'collected 1 item'
+E           and: ''
+E           and: 'test_foo.py F'
+E           and: ''
+E           and: '=================================== FAILURES ==================================='
+E           and: '_________________________________ test_foobar __________________________________'
+E           and: '[XPASS(strict)] second_condition'
+E           and: '============================== 1 failed in 0.01s ==============================='
+E       remains unmatched: '*XPASS*test_foo.py*second_condition*'
+
+/testbed/testing/test_skipping.py:710: Failed
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1
+rootdir: /testbed, configfile: pyproject.toml
+collected 1 item
+
+test_foo.py F
+
+=================================== FAILURES ===================================
+_________________________________ test_foobar __________________________________
+[XPASS(strict)] second_condition
+============================== 1 failed in 0.01s ===============================
+_______________________________ test_reportchars _______________________________
+
+testdir = <Testdir local('/testbed/.git/qh-tmp/pytest-of-root/pytest-0/test_reportchars0')>
+
+    def test_reportchars(testdir):
+        testdir.makepyfile(
+            """
+            import pytest
+            def test_1():
+                assert 0
+            @pytest.mark.xfail
+            def test_2():
+                assert 0
+            @pytest.mark.xfail
+            def test_3():
+                pass
+            def test_4():
+                pytest.skip("four")
+        """
+        )
+        result = testdir.runpytest("-rfxXs")
+>       result.stdout.fnmatch_lines(
+            ["FAIL*test_1*", "XFAIL*test_2*", "XPASS*test_3*", "SKIP*four*"]
+        )
+E       Failed: nomatch: 'FAIL*test_1*'
+E           and: '============================= test session starts =============================='
+E           and: 'platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1'
+E           and: 'rootdir: /testbed, configfile: pyproject.toml'
+E           and: 'collected 4 items'
+E           and: ''
+E           and: 'test_reportchars.py FxFs                                                 [100%]'
+E           and: ''
+E           and: '=================================== FAILURES ==================================='
+E           and: '____________________________________ test_1 ____________________________________'
+E           and: ''
+E           and: '    def test_1():'
+E           and: '>       assert 0'
+E           and: 'E       assert 0'
+E           and: ''
+E           and: 'test_reportchars.py:3: AssertionError'
+E           and: '____________________________________ test_3 ____________________________________'
+E           and: '[XPASS(strict)] '
+E           and: '=========================== short test summary info ============================'
+E       fnmatch: 'FAIL*test_1*'
+E          with: 'FAILED test_reportchars.py::test_1 - assert 0'
+E       nomatch: 'XFAIL*test_2*'
+E           and: 'FAILED test_reportchars.py::test_3'
+E       fnmatch: 'XFAIL*test_2*'
+E          with: 'XFAIL test_reportchars.py::test_2'
+E       nomatch: 'XPASS*test_3*'
+E           and: 'SKIPPED [1] test_reportchars.py:11: four'
+E           and: '=================== 2 failed, 1 skipped, 1 xfailed in 0.02s ===================='
+E       remains unmatched: 'XPASS*test_3*'
+
+/testbed/testing/test_skipping.py:826: Failed
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1
+rootdir: /testbed, configfile: pyproject.toml
+collected 4 items
+
+test_reportchars.py FxFs                                                 [100%]
+
+=================================== FAILURES ===================================
+____________________________________ test_1 ____________________________________
+
+    def test_1():
+>       assert 0
+E       assert 0
+
+test_reportchars.py:3: AssertionError
+____________________________________ test_3 ____________________________________
+[XPASS(strict)] 
+=========================== short test summary info ============================
+FAILED test_reportchars.py::test_1 - assert 0
+FAILED test_reportchars.py::test_3
+XFAIL test_reportchars.py::test_2
+SKIPPED [1] test_reportchars.py:11: four
+=================== 2 failed, 1 skipped, 1 xfailed in 0.02s ====================
+_____________________________ test_reportchars_all _____________________________
+
+testdir = <Testdir local('/testbed/.git/qh-tmp/pytest-of-root/pytest-0/test_reportchars_all0')>
+
+    def test_reportchars_all(testdir):
+        testdir.makepyfile(
+            """
+            import pytest
+            def test_1():
+                assert 0
+            @pytest.mark.xfail
+            def test_2():
+                assert 0
+            @pytest.mark.xfail
+            def test_3():
+                pass
+            def test_4():
+                pytest.skip("four")
+            @pytest.fixture
+            def fail():
+                assert 0
+            def test_5(fail):
+                pass
+        """
+        )
+        result = testdir.runpytest("-ra")
+>       result.stdout.fnmatch_lines(
+            [
+                "SKIP*four*",
+                "XFAIL*test_2*",
+                "XPASS*test_3*",
+                "ERROR*test_5*",
+                "FAIL*test_1*",
+            ]
+        )
+E       Failed: nomatch: 'SKIP*four*'
+E           and: '============================= test session starts =============================='
+E           and: 'platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1'
+E           and: 'rootdir: /testbed, configfile: pyproject.toml'
+E           and: 'collected 5 items'
+E           and: ''
+E           and: 'test_reportchars_all.py FxFsE                                            [100%]'
+E           and: ''
+E           and: '==================================== ERRORS ===================================='
+E           and: '___________________________ ERROR at setup of test_5 ___________________________'
+E           and: ''
+E           and: '    @pytest.fixture'
+E           and: '    def fail():'
+E           and: '>       assert 0'
+E           and: 'E       assert 0'
+E           and: ''
+E           and: 'test_reportchars_all.py:14: AssertionError'
+E           and: '=================================== FAILURES ==================================='
+E           and: '____________________________________ test_1 ____________________________________'
+E           and: ''
+E           and: '    def test_1():'
+E           and: '>       assert 0'
+E           and: 'E       assert 0'
+E           and: ''
+E           and: 'test_reportchars_all.py:3: AssertionError'
+E           and: '____________________________________ test_3 ____________________________________'
+E           and: '[XPASS(strict)] '
+E           and: '=========================== short test summary info ============================'
+E       fnmatch: 'SKIP*four*'
+E          with: 'SKIPPED [1] test_reportchars_all.py:11: four'
+E       fnmatch: 'XFAIL*test_2*'
+E          with: 'XFAIL test_reportchars_all.py::test_2'
+E       nomatch: 'XPASS*test_3*'
+E           and: 'ERROR test_reportchars_all.py::test_5 - assert 0'
+E           and: 'FAILED test_reportchars_all.py::test_1 - assert 0'
+E           and: 'FAILED test_reportchars_all.py::test_3'
+E           and: '=============== 2 failed, 1 skipped, 1 xfailed, 1 error in 0.02s ==============='
+E       remains unmatched: 'XPASS*test_3*'
+
+/testbed/testing/test_skipping.py:868: Failed
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1
+rootdir: /testbed, configfile: pyproject.toml
+collected 5 items
+
+test_reportchars_all.py FxFsE                                            [100%]
+
+==================================== ERRORS ====================================
+___________________________ ERROR at setup of test_5 ___________________________
+
+    @pytest.fixture
+    def fail():
+>       assert 0
+E       assert 0
+
+test_reportchars_all.py:14: AssertionError
+=================================== FAILURES ===================================
+____________________________________ test_1 ____________________________________
+
+    def test_1():
+>       assert 0
+E       assert 0
+
+test_reportchars_all.py:3: AssertionError
+____________________________________ test_3 ____________________________________
+[XPASS(strict)] 
+=========================== short test summary info ============================
+SKIPPED [1] test_reportchars_all.py:11: four
+XFAIL test_reportchars_all.py::test_2
+ERROR test_reportchars_all.py::test_5 - assert 0
+FAILED test_reportchars_all.py::test_1 - assert 0
+FAILED test_reportchars_all.py::test_3
+=============== 2 failed, 1 skipped, 1 xfailed, 1 error in 0.02s ===============
+_______________________________ test_xfail_item ________________________________
+
+testdir = <Testdir local('/testbed/.git/qh-tmp/pytest-of-root/pytest-0/test_xfail_item0')>
+
+    def test_xfail_item(testdir):
+        # Ensure pytest.xfail works with non-Python Item
+        testdir.makeconftest(
+            """
+            import pytest
+    
+            class MyItem(pytest.Item):
+                nodeid = 'foo'
+                def runtest(self):
+                    pytest.xfail("Expected Failure")
+    
+            def pytest_collect_file(path, parent):
+                return MyItem("foo", parent)
+        """
+        )
+        result = testdir.inline_run()
+        passed, skipped, failed = result.listoutcomes()
+>       assert not failed
+E       AssertionError: assert not [<CollectReport '' lenresult=0 outcome='failed'>]
+
+/testbed/testing/test_skipping.py:1081: AssertionError
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1
+rootdir: /testbed, configfile: pyproject.toml
+collected 0 items / 1 error
+
+==================================== ERRORS ====================================
+________________________ ERROR collecting test session _________________________
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/hooks.py:286: in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/manager.py:93: in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/manager.py:337: in traced_hookexec
+    return outcome.get_result()
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/manager.py:335: in <lambda>
+    outcome = _Result.from_call(lambda: oldcall(hook, hook_impls, kwargs))
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/manager.py:84: in <lambda>
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+conftest.py:9: in pytest_collect_file
+    return MyItem("foo", parent)
+/testbed/src/_pytest/nodes.py:95: in __call__
+    warnings.warn(NODE_USE_FROM_PARENT.format(name=self.__name__), stacklevel=2)
+E   pytest.PytestDeprecationWarning: Direct construction of MyItem has been deprecated, please use MyItem.from_parent.
+E   See https://docs.pytest.org/en/latest/deprecations.html#node-construction-changed-to-node-from-parent for more details.
+=========================== short test summary info ============================
+ERROR ../../../../.. - pytest.PytestDeprecationWarning: Direct construction o...
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+=============================== 1 error in 0.11s ===============================
+_____________________________ test_mark_xfail_item _____________________________
+
+testdir = <Testdir local('/testbed/.git/qh-tmp/pytest-of-root/pytest-0/test_mark_xfail_item0')>
+
+    def test_mark_xfail_item(testdir):
+        # Ensure pytest.mark.xfail works with non-Python Item
+        testdir.makeconftest(
+            """
+            import pytest
+    
+            class MyItem(pytest.Item):
+                nodeid = 'foo'
+                def setup(self):
+                    marker = pytest.mark.xfail("1 == 2", reason="Expected failure - false")
+                    self.add_marker(marker)
+                    marker = pytest.mark.xfail(True, reason="Expected failure - true")
+                    self.add_marker(marker)
+                def runtest(self):
+                    assert False
+    
+            def pytest_collect_file(path, parent):
+                return MyItem("foo", parent)
+        """
+        )
+        result = testdir.inline_run()
+        passed, skipped, failed = result.listoutcomes()
+>       assert not failed
+E       AssertionError: assert not [<CollectReport '' lenresult=0 outcome='failed'>]
+
+/testbed/testing/test_skipping.py:1161: AssertionError
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1
+rootdir: /testbed, configfile: pyproject.toml
+collected 0 items / 1 error
+
+==================================== ERRORS ====================================
+________________________ ERROR collecting test session _________________________
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/hooks.py:286: in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/manager.py:93: in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/manager.py:337: in traced_hookexec
+    return outcome.get_result()
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/manager.py:335: in <lambda>
+    outcome = _Result.from_call(lambda: oldcall(hook, hook_impls, kwargs))
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/manager.py:84: in <lambda>
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+conftest.py:14: in pytest_collect_file
+    return MyItem("foo", parent)
+/testbed/src/_pytest/nodes.py:95: in __call__
+    warnings.warn(NODE_USE_FROM_PARENT.format(name=self.__name__), stacklevel=2)
+E   pytest.PytestDeprecationWarning: Direct construction of MyItem has been deprecated, please use MyItem.from_parent.
+E   See https://docs.pytest.org/en/latest/deprecations.html#node-construction-changed-to-node-from-parent for more details.
+=========================== short test summary info ============================
+ERROR ../../../../.. - pytest.PytestDeprecationWarning: Direct construction o...
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+=============================== 1 error in 0.06s ===============================
+=========================== short test summary info ============================
+FAILED testing/test_skipping.py::TestXFail::test_xfail_xpassed - AssertionErr...
+FAILED testing/test_skipping.py::TestXFail::test_xfail_xpass - Failed: nomatc...
+FAILED testing/test_skipping.py::TestSkipif::test_skipif_reporting_multiple[xfail-XPASS-xpassed]
+FAILED testing/test_skipping.py::test_reportchars - Failed: nomatch: 'FAIL*te...
+FAILED testing/test_skipping.py::test_reportchars_all - Failed: nomatch: 'SKI...
+FAILED testing/test_skipping.py::test_xfail_item - AssertionError: assert not...
+FAILED testing/test_skipping.py::test_mark_xfail_item - AssertionError: asser...
+7 failed, 70 passed in 3.97s
+QH_PUBLIC_NATIVE_EXIT=ExitCode.TESTS_FAILED
