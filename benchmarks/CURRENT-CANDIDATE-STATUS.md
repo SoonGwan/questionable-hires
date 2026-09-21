@@ -336,6 +336,15 @@ is a regression control, not an independent test set.
 
 ## Release and publication boundary
 
+Local source`d97e971`,2026-09-21: [combined macOS regression](RELEASE-VALIDATION-D97E971.md)
+passes1,131/1,131 in checkout; fresh archive1,104pass/27skip/0failures,
+Python3.11.16. Both validators and featured sync pass. The initial premature
+archive invocation executed no tests and is disclosed. Hosted run35598445820
+has no executed steps; its annotation cites payments/spending limit. No current
+Linux matrix, new model measurement or release approval follows.
+한국어: 최근 수정이 합쳐진 전체 작업본·압축본 검증 완료. 준비 오류와 건너뛴
+검사를 공개하며 원격 성공·모델 성능 향상과 구분한다.
+
 Local source`c329fb7`,2026-09-21: [complete macOS regression](RELEASE-VALIDATION-C329FB7.md)
 passes1,101/1,101 in checkout and1,076pass/25skip in a fresh source archive on
 Python3.11.16. Archive validation/featured sync pass. No current Linux matrix or
