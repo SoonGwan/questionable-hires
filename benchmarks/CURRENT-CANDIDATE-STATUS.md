@@ -9,6 +9,27 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Full checkout regression — 2026-09-21, source `572bea9`
+
+Python3.11.16: `python -B -m unittest discover -s tests` passes **950 tests in
+161.946seconds**, no skips/failures. Includes the added context output/group,
+isolated Landlord candidate and frozen packaging-runner checks. Repository/link
+validation, featured/localization synchronization check and diff whitespace checks
+also pass; worktree was clean after execution. No model comparison ran concurrently.
+This supersedes the historical928-test local checkout checkpoint, not its frozen
+source or model results. It is not a whole-task efficiency or release-success claim.
+
+Hosted [run35558393887](https://github.com/SoonGwan/questionable-hires/actions/runs/35558393887)
+at the same commit reports four failed jobs with **zero executed steps**. The
+Python3.12 job annotation says account payment/spending-limit conditions prevented
+startup. Thus hosted Python3.9/3.11/3.12 and source-archive validation remain
+unexecuted, not passing and not evidence of failing code. Billing/visibility were
+not changed. The local result does not substitute for those environments.
+
+한국어: 현재 소스의 로컬 전체950개 검사를 통과했다. GitHub CI는 계정 결제·
+지출 한도 문제로 시작되지 않았으며, 이를 코드 실패나 CI 통과로 표현하지 않는다.
+전체 스킬의 실증 성능 개선 목표는 여전히 미달이다.
+
 ## Packaging design reviewed — 2026-09-21, resource `a545a53`
 
 [Original three-arm review](PACKAGING-DESIGN-01-REVIEW.md): all5 criteria pass in
