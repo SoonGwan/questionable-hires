@@ -1,0 +1,145 @@
+{
+  "source_sha256": "b137e837ec5bb8b79ce58ed701fbcd0794ae474823ab17f401826388f01cc602",
+  "tests_sha256": "5b6c0f75d947f9f5847f06689afed5331fdebf59b72a911369da2521fb5ae0c0",
+  "rows": [
+    {
+      "variant": "correct",
+      "selected": [
+        {
+          "selector": "test_edits.EditTests.test_multiple_edits",
+          "exit_code": 0,
+          "output": "test_multiple_edits (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_edits.EditTests.test_overlap",
+          "exit_code": 0,
+          "output": "test_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness",
+        "exit_code": 0,
+        "output": "test_original_coordinates (test_witness.Witnesses) ... ok\ntest_overlap (test_witness.Witnesses) ... ok\ntest_preserve_failure (test_witness.Witnesses) ... ok\ntest_preserve_success (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+      },
+      "failure_preservation": {
+        "selector": "test_witness.Witnesses.test_preserve_failure",
+        "exit_code": 0,
+        "output": "test_preserve_failure (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "controls": {
+        "selector": "test_edits",
+        "exit_code": 0,
+        "output": "test_controls (test_edits.EditTests) ... ok\ntest_multiple_edits (test_edits.EditTests) ... ok\ntest_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+      }
+    },
+    {
+      "variant": "equivalent",
+      "selected": [
+        {
+          "selector": "test_edits.EditTests.test_multiple_edits",
+          "exit_code": 0,
+          "output": "test_multiple_edits (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_edits.EditTests.test_overlap",
+          "exit_code": 0,
+          "output": "test_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness",
+        "exit_code": 0,
+        "output": "test_original_coordinates (test_witness.Witnesses) ... ok\ntest_overlap (test_witness.Witnesses) ... ok\ntest_preserve_failure (test_witness.Witnesses) ... ok\ntest_preserve_success (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+      },
+      "failure_preservation": {
+        "selector": "test_witness.Witnesses.test_preserve_failure",
+        "exit_code": 0,
+        "output": "test_preserve_failure (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "controls": {
+        "selector": "test_edits",
+        "exit_code": 0,
+        "output": "test_controls (test_edits.EditTests) ... ok\ntest_multiple_edits (test_edits.EditTests) ... ok\ntest_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+      }
+    },
+    {
+      "variant": "forward-application",
+      "selected": [
+        {
+          "selector": "test_edits.EditTests.test_multiple_edits",
+          "exit_code": 0,
+          "output": "test_multiple_edits (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_edits.EditTests.test_overlap",
+          "exit_code": 0,
+          "output": "test_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_original_coordinates",
+        "exit_code": 1,
+        "output": "test_original_coordinates (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_original_coordinates (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 6, in test_original_coordinates\n    self.assertEqual(apply_edits(\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\", [(5, 7, \"XY\"), (1, 3, \"Q\")]), \"\u03b1Q\u03b4\u03b5XY\u03b8\")\nAssertionError: '\u03b1Q\u03b4\u03b5\u03b6XY' != '\u03b1Q\u03b4\u03b5XY\u03b8'\n- \u03b1Q\u03b4\u03b5\u03b6XY\n?     -\n+ \u03b1Q\u03b4\u03b5XY\u03b8\n?       +\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "failure_preservation": {
+        "selector": "test_witness.Witnesses.test_preserve_failure",
+        "exit_code": 0,
+        "output": "test_preserve_failure (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "controls": null
+    },
+    {
+      "variant": "overlap-accepted",
+      "selected": [
+        {
+          "selector": "test_edits.EditTests.test_multiple_edits",
+          "exit_code": 0,
+          "output": "test_multiple_edits (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_edits.EditTests.test_overlap",
+          "exit_code": 1,
+          "output": "test_overlap (test_edits.EditTests) ... FAIL\n\n======================================================================\nFAIL: test_overlap (test_edits.EditTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 13, in test_overlap\n    apply_edits(\"abcdef\", [(3, 5, \"Y\"), (1, 4, \"X\")])\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_overlap",
+        "exit_code": 1,
+        "output": "test_overlap (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_overlap (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 23, in test_overlap\n    apply_edits(\"abcdef\", [(3, 5, \"Y\"), (1, 4, \"X\")])\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "failure_preservation": {
+        "selector": "test_witness.Witnesses.test_preserve_failure",
+        "exit_code": 1,
+        "output": "test_preserve_failure (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_preserve_failure (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 18, in test_preserve_failure\n    apply_edits(\"abcdef\", edits)\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "controls": null
+    },
+    {
+      "variant": "caller-sorted",
+      "selected": [
+        {
+          "selector": "test_edits.EditTests.test_multiple_edits",
+          "exit_code": 0,
+          "output": "test_multiple_edits (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_edits.EditTests.test_overlap",
+          "exit_code": 0,
+          "output": "test_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_preserve_success",
+        "exit_code": 1,
+        "output": "test_preserve_success (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_preserve_success (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 12, in test_preserve_success\n    self.assertEqual(edits, before)\nAssertionError: Lists differ: [(1, 3, 'Q'), (5, 7, 'XY')] != [(5, 7, 'XY'), (1, 3, 'Q')]\n\nFirst differing element 0:\n(1, 3, 'Q')\n(5, 7, 'XY')\n\n- [(1, 3, 'Q'), (5, 7, 'XY')]\n+ [(5, 7, 'XY'), (1, 3, 'Q')]\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "failure_preservation": {
+        "selector": "test_witness.Witnesses.test_preserve_failure",
+        "exit_code": 1,
+        "output": "test_preserve_failure (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_preserve_failure (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 19, in test_preserve_failure\n    self.assertEqual(edits, before)\nAssertionError: Lists differ: [(1, 4, 'X'), (3, 5, 'Y')] != [(3, 5, 'Y'), (1, 4, 'X')]\n\nFirst differing element 0:\n(1, 4, 'X')\n(3, 5, 'Y')\n\n- [(1, 4, 'X'), (3, 5, 'Y')]\n+ [(3, 5, 'Y'), (1, 4, 'X')]\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "controls": null
+    }
+  ],
+  "limitation": "Author-created native controls, not model outcomes or independent holdout. Witnesses and exact fault patches are not in task inputs."
+}

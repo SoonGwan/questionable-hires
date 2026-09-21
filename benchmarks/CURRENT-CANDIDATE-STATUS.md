@@ -19,6 +19,12 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
+Prepared checkpoint2026-09-21: [native edit-audit protocol](EDIT-AUDIT-01-PROTOCOL.md)
+compares `04bf934`/`e6aa16e` and no-skill baseline on a new authored project with
+two requests, six fixed sessions. [Native controls](results/edit-audit-01-preflight.json)
+pass correct/equivalent code and reject intended faults. Preparation is not model
+performance evidence; no result or featured change is claimed yet.
+
 Transfer checkpoint2026-09-21, launch`557a021`: all six dependency-plan sessions
 reviewed; originals/scope preserved. Prior's instrumentation repair and capture
 prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토를
