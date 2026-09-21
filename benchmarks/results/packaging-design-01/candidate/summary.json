@@ -1,0 +1,98 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "packaging-name-policy-design",
+    "skill": "landlord",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "64c0b4142e9e2445485a405ad5b0bf5e4c73b3db",
+    "skill_sha256": "d9b808ae1a3e3d559d78c56d6909cb82060524b3633d1ad336c974daf402fca7",
+    "skill_resources_sha256": "5e8eea6ab937245c5c2471e0581bbef9baef394fa9efc9dc26cfd70eb2ac90e9",
+    "elapsed_seconds": 61.405,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 80367,
+      "cached_input_tokens": 63104,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1580,
+      "reasoning_output_tokens": 10
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $landlord at .agents/skills/landlord/SKILL.md.\n\nReview this proposed consolidation in packaging/utils.py:\nreplace parse_wheel_filename's explicit name validation and its following\ncanonicalize_name(name_part) with canonicalize_name(name_part, validate=True).\nIn parse_sdist_filename, retain the empty-name check but change its name\nnormalization call to canonicalize_name(name_part, validate=True) too.\nEverything else stays unchanged. Would you accept this as a behavior-preserving\ndeduplication? Recommend keep, simplify or remove with source references, a viable\nalternative, and one concrete future policy change traced through both consumers.\n\nObserve actual native parser results or exception types for wheel filenames:\ndemo_pkg-1.0-py3-none-any.whl; demo__pkg-1.0-py3-none-any.whl;\n\u00e9clair-1.0-py3-none-any.whl; _demo-1.0-py3-none-any.whl;\nand sdist filenames: demo-pkg-1.0.tar.gz; demo__pkg-1.0.zip;\n\u00e9clair-1.0.tar.gz; -1.0.zip. Confirm imports bind to this local source,\nnot the interpreter's installed copy. Preserve all normal controls and record\nreturned names/versions or concrete exception classes. Explain which observed\ncontracts the proposal would change. You may analyze the proposal statically;\napplying it in an owned disposable copy is optional. Do not confuse inferred\nproposal effects with executed results or normalize outputs in a way that hides\nexceptions. Source is an installed distribution snapshot, not an upstream clone:\nno upstream tests or historical revision are supplied; do not claim those ran.\n\nReview only. Work inside the project; originals, modes, Git HEAD/index and skill\nresources must remain unchanged. Remove owned local scratch on success/failure.\nNo network, dependencies, production edits, commits, resets or publication.\nUse the supplied Python with -B. Static source context and runtime evidence have\ndifferent roles; do not infer a spec violation solely from accepted input.\nPreinstalled Python: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "landlord/SKILL.md": {
+        "kind": "file",
+        "sha256": "d9b808ae1a3e3d559d78c56d6909cb82060524b3633d1ad336c974daf402fca7",
+        "mode": 420
+      },
+      "landlord/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "a078025d0bb8c3467b55568dac34c7c8905f1906a0f16d113143770679cdcb37",
+        "mode": 420
+      },
+      "landlord/references/python-context.md": {
+        "kind": "file",
+        "sha256": "94d98ea708def68fde63fb6d626183c2c076eff4d891438721dcee5a996e1f13",
+        "mode": 420
+      },
+      "landlord/scripts/context.py": {
+        "kind": "file",
+        "sha256": "42115f9607ff9c838df3f849a1d828e333253162bc6471b195cda17b2a86f37a",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "landlord/SKILL.md": {
+        "kind": "file",
+        "sha256": "d9b808ae1a3e3d559d78c56d6909cb82060524b3633d1ad336c974daf402fca7",
+        "mode": 420
+      },
+      "landlord/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "a078025d0bb8c3467b55568dac34c7c8905f1906a0f16d113143770679cdcb37",
+        "mode": 420
+      },
+      "landlord/references/python-context.md": {
+        "kind": "file",
+        "sha256": "94d98ea708def68fde63fb6d626183c2c076eff4d891438721dcee5a996e1f13",
+        "mode": 420
+      },
+      "landlord/scripts/context.py": {
+        "kind": "file",
+        "sha256": "42115f9607ff9c838df3f849a1d828e333253162bc6471b195cda17b2a86f37a",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 2463,
+      "mode": 420,
+      "sha256": "48a6035ab88378ea052c2313ad878afa6642bed55d9fef1c336ebaa3cb392f61",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]

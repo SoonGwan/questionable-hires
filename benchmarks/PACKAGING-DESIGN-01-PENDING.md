@@ -1,4 +1,7 @@
-# Packaging design01 — original sessions completed, review pending
+# Packaging design01 — historical pending checkpoint
+
+Review is now complete: [review and decision](PACKAGING-DESIGN-01-REVIEW.md).
+The following records the pre-review state, not outstanding work.
 
 2026-09-21. Frozen protocol: [PACKAGING-DESIGN-01-PROTOCOL.md](PACKAGING-DESIGN-01-PROTOCOL.md).
 Launch `d9a9a6e`; skill resources `a545a53`. All three scheduled original sessions

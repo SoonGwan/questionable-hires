@@ -1,4 +1,8 @@
-# Landlord context candidate — preparation only
+# Landlord context candidate — historical preparation
+
+The [packaging transfer review](PACKAGING-DESIGN-01-REVIEW.md) did not establish
+collector adoption or grounds for production promotion. This document preserves
+the original preparation; the candidate remains separate and frozen.
 
 2026-09-21. Production parent `bf1a2eb`. Candidate directory:
 `benchmarks/candidates/landlord-context/skills/landlord`.

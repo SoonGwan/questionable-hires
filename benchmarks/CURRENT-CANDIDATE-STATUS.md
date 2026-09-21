@@ -9,7 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Packaging design sessions complete, review pending — 2026-09-21
+## Packaging design reviewed — 2026-09-21, resource `a545a53`
+
+[Original three-arm review](PACKAGING-DESIGN-01-REVIEW.md): all5 criteria pass in
+each arm; eight native inputs each, all11 shell outputs match original records,
+26 files/modes and Git staged entries/HEAD/resources unchanged. Candidate versus
+prior:−8.25% tokens/−7.53% time; versus baseline:+7.72%/+4.00%. Collector unused,
+so no attributable tool benefit or promotion. Keep production and featured charts
+unchanged. Single author-selected task,n=1,fixed order/shared cache; goal unmet.
+
+한국어: 세 조건 모두 과제 기준은 충족했지만 후보의 도구 사용은 없었다.
+기존보다 저렴하고 무스킬보다 비싼 혼재 결과를 그대로 공개하며 배포판은 유지한다.
+
+## Historical pending review — packaging design, 2026-09-21
 
 [Original process measurements](PACKAGING-DESIGN-01-PENDING.md), launch `d9a9a6e`,
 resources `a545a53`: baseline76073tokens/59.042seconds, candidate81947/61.405,
