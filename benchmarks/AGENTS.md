@@ -9,6 +9,11 @@
   both a passing check and a deliberate failing assertion. Verify that failure
   output preserves the relevant actual/expected values, rather than reporting a
   support-code exception. Nominal green tests alone are not a harness preflight.
+- For native Python fixtures, also import the public package entrypoint in a
+  fresh process using the same source path/interpreter as the model task.
+  A unittest selector can retry a failed test-module import and use cached
+  submodules while the package itself still cannot import. Check required
+  generated metadata explicitly; a passing native test is not bootstrap proof.
 - Define input, payload and failure contracts before calling a fixture clean.
   Do not count a reasonable finding under an underspecified contract as an
   agent false positive merely because the author did not intend it.
