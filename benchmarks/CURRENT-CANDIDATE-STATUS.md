@@ -1,7 +1,7 @@
 # Current candidate: whole-task performance remains unproven
 
-Checkpoint **2026-09-21, last model resource `a3dee3b`; empty-mutant correction
-based on `bd238f1`**. This is a decision index, not a new
+Checkpoint **2026-09-21, last model resource `a3dee3b`; module-invocation support
+based on `04bf934`**. This is a decision index, not a new
 measurement. [Full chronological history](CANDIDATE-HISTORY-2026-09-21.md) preserves
 every preceding checkpoint, including adverse results and preparation notes.
 Use dated reports for exact tasks, resources, scope and capture limitations.
@@ -37,11 +37,15 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [Con Artist module invocation](AUDIT-MODULE-01.md), parent `04bf934`: optional
+  instrumented `python -B -m unittest` checks preserve native result evidence,
+  probes and batch reuse. Twelve controls pass on Python3.9/3.11, including the
+  reused planner fixture. No new model session or token/time improvement claim.
 - [Con Artist empty-mutant correction](AUDIT-EMPTY-MUTANT-01.md), parent `bd238f1`:
   five real-process control failures now stop as incomplete, including native
   probes and batches. Four Python3.11 test methods pass; Python3.9 skips the
-  pytest-dependent method. Exact `python -m unittest` invocation remains
-  unsupported and is disclosed in both README languages. No model-cost claim.
+  pytest-dependent method. Module invocation was unsupported at that checkpoint;
+  the separately validated capability above follows it. No model-cost claim.
 - [Receipt selected-read correction](RECEIPT-SELECTED-READ-01.md),`a3dee3b`:
   reproduced FIFO blocking plus accepted link/regular replacements; all three
   now reject at the observed open boundary. Python3.11 Receipt175/build13 and

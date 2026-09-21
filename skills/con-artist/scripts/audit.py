@@ -63,8 +63,7 @@ def project_inventory(root):
     return inventory, total
 
 
-BOOTSTRAP = '''import hashlib, importlib, json, pathlib, sys, traceback
-spec = json.loads(sys.argv[1])
+SETUP = '''import hashlib, importlib, json, pathlib, sys, traceback
 root = pathlib.Path.cwd().resolve()
 sys.path[:0] = [str(root / name) for name in spec['import_roots']] + [str(root)]
 print('Copied process:', json.dumps({'python': sys.executable, 'cwd': str(root)}, separators=(',', ':')), flush=True)
@@ -92,6 +91,11 @@ def verify_setup():
             traceback.print_exc()
             raise SystemExit(6)
         print('Precheck completed in check process.', flush=True)
+'''
+
+BOOTSTRAP = '''import json, sys
+spec = json.loads(sys.argv[1])
+''' + SETUP + '''
 if spec['probe'] is None and spec['runner'] == 'pytest':
     sys.argv = [spec['runner']] + spec['tests']
     import pytest
@@ -202,7 +206,23 @@ def execute(python, directory, spec, probe, timeout):
     payload = dict(imports=spec['imports'], runner=spec.get('runner', 'unittest'),
                    tests=spec['tests'], probe=probe, precheck=spec.get('precheck'),
                    import_roots=spec.get('import_roots', []))
-    process = subprocess.Popen([python, '-B', '-c', BOOTSTRAP, json.dumps(payload)],
+    command = [python, '-B', '-c', BOOTSTRAP, json.dumps(payload)]
+    marker = None
+    if spec.get('invocation', 'bootstrap') == 'module':
+        paths = [directory / name for name in payload['import_roots']] + [directory]
+        for path in paths:
+            if any((path / name).exists() for name in
+                   ('sitecustomize', 'sitecustomize.py', 'sitecustomize.pyc',
+                    'usercustomize', 'usercustomize.py', 'usercustomize.pyc')):
+                raise ValueError('Module invocation does not replace project startup customization')
+        adapter = Path(tempfile.mkdtemp(prefix='.audit-startup-', dir=directory))
+        marker = adapter / 'result.json'
+        startup = Path(__file__).with_name('unittest_startup.py').read_text()
+        (adapter / 'sitecustomize.py').write_text(
+            'spec = ' + repr(payload) + '\nsetup_source = ' + repr(SETUP) + '\n' + startup)
+        env['PYTHONPATH'] = os.pathsep.join([str(adapter), *map(str, paths)])
+        command = [python, '-B', '-m', 'unittest', *spec['tests']]
+    process = subprocess.Popen(command,
                                cwd=directory, env=env, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
                                start_new_session=True)
@@ -256,8 +276,28 @@ def execute(python, directory, spec, probe, timeout):
             if pending_error is None:
                 raise RuntimeError('Child exit unconfirmed after 5-second cleanup wait; audit not established') from error
             # Preserve an existing interruption/error; do not start another check.
-    return dict(exit_code=process.returncode, timed_out=timed_out,
-                output=output, output_truncated=characters > 12000)
+    result = dict(exit_code=process.returncode, timed_out=timed_out,
+                  output=output, output_truncated=characters > 12000)
+    if marker is not None:
+        evidence = None
+        try:
+            info = marker.lstat()
+            evidence = json.loads(read_selected(marker, info, 2048))
+            if (set(evidence) != {'tests', 'skipped', 'successful'}
+                    or type(evidence['tests']) is not int or type(evidence['skipped']) is not int
+                    or type(evidence['successful']) is not bool
+                    or not 0 <= evidence['skipped'] <= evidence['tests']):
+                evidence = None
+        except (OSError, ValueError, TypeError):
+            evidence = None
+        result.update(command=command, invocation='module',
+                      native_exit_code=process.returncode, suite_observation=evidence)
+        if not timed_out:
+            if evidence is None:
+                result['exit_code'] = 7
+            elif evidence['successful'] and evidence['tests'] == evidence['skipped']:
+                result['exit_code'] = 5
+    return result
 
 
 def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _probe_baseline=None,
@@ -266,7 +306,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     if not isinstance(spec, dict):
         raise ValueError('Audit recipe must be a JSON object')
     allowed = {'files', 'imports', 'runner', 'tests', 'target', 'old', 'new',
-               'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_tests', 'precheck', 'import_roots', 'guard_project'}
+               'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_tests', 'precheck', 'import_roots', 'guard_project', 'invocation'}
     unknown = set(spec) - allowed
     if unknown:
         raise ValueError('Unknown audit fields: ' + ', '.join(sorted(map(str, unknown))) +
@@ -283,6 +323,10 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
             raise ValueError(key + ' must be a nonempty string list')
     if spec.get('runner', 'unittest') not in ('unittest', 'pytest'):
         raise ValueError('Use unittest or the already installed pytest')
+    if spec.get('invocation', 'bootstrap') not in ('bootstrap', 'module'):
+        raise ValueError('invocation must be bootstrap or module')
+    if spec.get('invocation') == 'module' and (spec.get('runner', 'unittest') != 'unittest' or 'probe' in spec):
+        raise ValueError('Module invocation requires unittest and native probe files, not inline probes')
     if 'probe' in spec and not isinstance(spec['probe'], str):
         raise ValueError('probe must be Python assertion code')
     if 'precheck' in spec and not isinstance(spec['precheck'], str):
@@ -356,7 +400,8 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     faulty = original.replace(old, new, 1).encode('utf-8')
     guarded = project_inventory(root) if spec.get('guard_project', False) else None
     identity = (files, modes, spec['imports'], spec['tests'], spec.get('precheck'), import_roots,
-                spec.get('runner', 'unittest'), str(python), timeout, dict(os.environ), guarded)
+                spec.get('runner', 'unittest'), str(python), timeout, dict(os.environ), guarded,
+                spec.get('invocation', 'bootstrap'))
     reused = _baseline is not None and _baseline.get('identity') == identity
     selected_baseline = None
     if _selection_baselines is not None:
@@ -472,7 +517,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
 
 def audit_batch(root, spec, python=sys.executable, timeout=30):
     """Reuse a successful baseline only within this explicit local batch."""
-    common_keys = {'files', 'imports', 'runner', 'tests', 'mutations', 'precheck', 'import_roots', 'guard_project'}
+    common_keys = {'files', 'imports', 'runner', 'tests', 'mutations', 'precheck', 'import_roots', 'guard_project', 'invocation'}
     fault_keys = {'target', 'old', 'new', 'tests', 'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_tests'}
     mutations = spec.get('mutations')
     if set(spec) - common_keys or not isinstance(mutations, list) or not 1 <= len(mutations) <= 8:

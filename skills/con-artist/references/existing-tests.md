@@ -35,6 +35,10 @@ For installed pytest, use `runner: "pytest"` and its native test arguments in bo
 test lists. Configuration/collection precede copy-import verification; fixtures run
 normally afterward. No automatic package installation or custom plugin is required.
 
+For exact `python -B -m unittest` checks, add `"invocation": "module"` and read
+the [instrumentation and startup limits](python-audit-advanced.md#native-unittest-module-invocation).
+The default uses `unittest.main` in a bootstrap, not module invocation.
+
 If the task also requires preserving unselected files, new paths and Git metadata,
 and reading the whole project is permitted, add `"guard_project": true` to the
 recipe. It inventories the source root before execution and after scratch cleanup;
@@ -44,7 +48,7 @@ external Git/worktree metadata is outside its scope. Changes raise without being
 restored. It is not a sandbox, atomic snapshot or protection from concurrent edits.
 
 When the audit requires the test's imported function binding in the same process,
-the helper already supports this without a `sitecustomize.py` or startup hook.
+the helper already supports this without writing your own startup hook.
 For the example above, include `test_service` in `imports` and add:
 
 ```json

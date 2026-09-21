@@ -37,9 +37,10 @@ Unknown fields are rejected. Set interpreter/deadline through CLI `--python` and
 `--timeout`, not JSON keys. Each executed check uses a fresh project-local copy as
 its working directory. Listed imports are verified before the precheck.
 
-Unittest uses a Python bootstrap calling `unittest.main`, not `python -m unittest`.
-If the task requires that exact module invocation or its startup lifecycle, use
-project facilities instead; this helper does not satisfy that requirement.
+Unittest defaults to a Python bootstrap calling `unittest.main`. For required
+`python -B -m unittest` execution, set `"invocation": "module"` and read the
+[module-mode contract](python-audit-advanced.md#native-unittest-module-invocation).
+This optional mode supports native test/probe files, not inline probes or pytest.
 
 For native pytest checks, configuration and collection precede import verification
 and the precheck, before test bodies. Selected test modules can therefore be listed

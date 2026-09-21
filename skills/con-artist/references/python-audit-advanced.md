@@ -36,6 +36,38 @@ steps, package metadata, compiled extensions or namespace-package validation.
 Use project facilities when those are required. The helper still removes inherited
 PYTHONPATH, so unrelated ambient source trees cannot serve as an implicit recipe.
 
+## Native unittest module invocation
+
+Use `"invocation": "module"` only when the required runner is
+`python -B -m unittest <tests...>`. Default `"bootstrap"` remains unchanged;
+pytest and inline `probe` code cannot use module mode. For stronger assertions,
+use `probe_files` or `probe_replacements` with `probe_tests`. Batch mode shares
+`invocation`, and changing it invalidates reusable baselines.
+
+The child really executes `-m unittest` from its disposable copy. A temporary
+startup adapter wraps `unittest.TestProgram.runTests` to verify copied imports
+and the optional precheck after native test loading and before test execution,
+then record the actual native result. This is instrumented execution, not an
+untouched interpreter: it changes the method identity and installs copy-local
+import roots. Use project facilities if uninstrumented startup, custom runner
+internals, or exact method identity are required. Import evidence does not prove
+later function bindings; retain justified same-process prechecks.
+
+Interpreter site/user customization runs before checked imports; disabled user
+site remains disabled. The adapter removes itself from import lookup and child
+environment inheritance. Selected project-local `sitecustomize`/`usercustomize`
+modules are rejected rather than replaced. No package installation is performed.
+
+Each executed check adds `command`, `invocation`, `native_exit_code` and
+`suite_observation` (`tests`, `skipped`, `successful`). Ordinary pass/failure keeps
+the native exit. A successful empty/all-skipped suite maps to check exit 5;
+missing/invalid completed-suite evidence maps to 7, including help-only and early
+zero exits. Timeouts stay timeouts. The original native exit and captured output
+remain available; import/precheck errors without a completed suite also map to 7.
+These fields do not automatically classify assertion failures as detected faults.
+Support runs inside the owned scratch tree and is removed with it. This is not a
+sandbox or protection against tests deliberately forging observation files.
+
 ## Diagnostics and incomplete evidence
 
 Input collection bounds each read to the remaining 20 MB selection budget plus

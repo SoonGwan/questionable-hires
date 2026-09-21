@@ -27,7 +27,7 @@ Returning to an earlier selection (A→B→A) reuses its original successful obs
 not only the immediately previous selection. One shared selected-input context is
 retained for up to eight normal-result entries, not a source copy per selection.
 Every audit still rereads/validates current inputs; any change to the shared identity,
-including runner, precheck or optional project-guard state, clears those entries.
+including runner, invocation mode, precheck or optional project-guard state, clears those entries.
 This does not cache failed checks, skip mutants or change requested audit order.
 An identical stronger probe also reuses its successful correct-code observation
 under those same conditions; changing the probe, new files or replacement contents
