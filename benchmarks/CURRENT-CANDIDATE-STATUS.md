@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Proposal boundary comparison prepared — 2026-09-21, resource `e17e13d`
+
+[Four-cell protocol](AUDIT-PROPOSAL-01-PROTOCOL.md) compares prior/current skills
+on the unchanged cachetools proposal request and an explicitly verified-assertion
+variant. Existing source/native correct/equivalent/fault controls pass again;
+five runner checks cover frozen-input rejection, complete schedule, no restart,
+account-limit retention and independent task data. No model outcomes yet.
+This reuses the observed development case, not an independent holdout; each
+request will be reported separately and extra checks remain in full costs.
+
+한국어: 제안만 요청한 과제와 실제 입증까지 요청한 과제의4회 비교를 준비했다.
+기존 사례 재사용이며 준비 단계 결과를 성능 향상으로 계산하지 않는다.
+
 ## Proposal-versus-repair boundary — 2026-09-21, parent `740948e`
 
 Con Artist's entry now distinguishes a demonstrated test gap from a verified
