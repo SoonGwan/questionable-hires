@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-21, working resource `2baf118`**.
+Decision checkpoint **2026-09-21, working resource `9a84635`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -89,15 +89,16 @@ Do not rerun a completed experiment until it becomes favorable.
 
 ## Release and publication boundary
 
-[Complete macOS checkpoint](RELEASE-VALIDATION-D97E971.md), source`d97e971`:
-1,131checkout passes; archive1,104passes/27skips/0failures on Python3.11.16.
-[Linux checkpoint](AUDIT-EMPTY-NATIVE-01.md), source`c8fd471`:
-1,087passes/26historical skips/0failures on Python3.12. These both **predate the
-working resource above**; recent focused checks do not replace a current full matrix.
+[Combined local checkpoint](RELEASE-VALIDATION-9A84635.md), source`9a84635`:
+1,155checkout passes on macOS/Python3.11.16; Linux/Python3.12.3 archive
+1,127passes/28historical skips/0failures. Logs retained; overlapping durations
+are not speed comparisons. This is not the complete hosted version matrix.
+Earlier [macOS](RELEASE-VALIDATION-D97E971.md) and
+[Linux](AUDIT-EMPTY-NATIVE-01.md) checkpoints retain their original revisions.
 
-Hosted [run35598445820](https://github.com/SoonGwan/questionable-hires/actions/runs/35598445820)
-at`d97e971` had no executed steps; its annotation cited payments/spending limit.
-That is a dated observation, not a fresh poll of today's remote state.
+Hosted [run35604299489](https://github.com/SoonGwan/questionable-hires/actions/runs/35604299489)
+at`9a84635`, rechecked2026-09-21, has four terminal failures with no executed
+steps; its Python3.11 annotation cites payments/spending limit alternatives.
 Do not change billing or visibility without owner direction.
 
 Keep [featured.json](featured.json) tied to its frozen evidence. No result here
