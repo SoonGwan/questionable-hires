@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Caller-sized context — 2026-09-21, parent `adf6590`
+
+The collector now accepts `--max-output` / `max_output` to lower the complete
+JSON character ceiling, including the final newline. It never drops ancestor
+instructions or truncates source to fit; exceeding the bound emits no stdout.
+Default100000 and prior representation choices are unchanged. Three added tests
+cover exact compact/pretty CLI boundaries with Unicode and definition groups,
+invalid API bounds before reads, and ancestor-context preservation. The29 context
+tests and32 audit-context tests pass Python3.9. This is a capability check, not
+model adoption, token-budget assurance or a whole-task performance result.
+Both README capability descriptions agree; frozen featured graphs are unchanged.
+
+한국어: 호출별 전체 출력 크기를 제한할 수 있게 했다. 초과하면 필수 맥락을
+버리거나 소스를 자르지 않고 실패한다. 문자 수 제한이며 토큰 절감의 실증은 아니다.
+
 ## Complete definition groups — 2026-09-21, parent `75a46c9`
 
 [Collector capability check](CONTEXT-DEFINITION-GROUPS-01.md): optional

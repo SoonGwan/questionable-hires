@@ -10,6 +10,48 @@ from test_audit_context import context, SCRIPT
 
 
 class OutputBudgetTests(unittest.TestCase):
+    def test_custom_limit_exact_boundary_and_formats(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            root = Path(scratch)
+            (root / 'app.py').write_text('def answer():\n    return "한글"\n', encoding='utf-8')
+            for pretty in (False, True):
+                result = context.collect(root, ['app.py:answer'], pretty=pretty, all_matches=True)
+                size = len(context.encode(result, pretty)) + 1
+                self.assertEqual(context.collect(root, ['app.py:answer'], pretty=pretty,
+                                 all_matches=True, max_output=size), result)
+                command = [sys.executable, '-B', str(SCRIPT), '--root', str(root),
+                           '--all-matches', '--max-output', str(size), 'app.py:answer']
+                if pretty:
+                    command.append('--pretty')
+                passed = subprocess.run(command, capture_output=True, text=True, timeout=10)
+                self.assertEqual(passed.returncode, 0, passed.stderr)
+                self.assertEqual(len(passed.stdout), size)
+                self.assertEqual(json.loads(passed.stdout), result)
+                command[command.index('--max-output') + 1] = str(size - 1)
+                failed = subprocess.run(command, capture_output=True, text=True, timeout=10)
+                self.assertEqual(failed.returncode, 2)
+                self.assertEqual(failed.stdout, '')
+                self.assertIn(str(size - 1), json.loads(failed.stderr)['error'])
+
+    def test_invalid_limits_fail_before_reading(self):
+        for limit in (True, False, 0, -1, 100001, 1.5, '1000'):
+            with self.subTest(limit=limit), patch.object(context, 'read') as read:
+                with self.assertRaisesRegex(ValueError, 'max_output'):
+                    context.collect('/does-not-exist', ['app.py'], max_output=limit)
+                read.assert_not_called()
+
+    def test_ancestor_context_is_not_dropped_to_fit(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            root = Path(scratch)
+            (root / 'app.py').write_text('answer = 42\n')
+            result = context.collect(root, ['app.py'])
+            size = len(context.encode(result)) + 1
+            (root / 'AGENTS.md').write_text('Follow this project instruction.\n')
+            with self.assertRaisesRegex(ValueError, 'No partial context'):
+                context.collect(root, ['app.py'], max_output=size)
+            complete = context.collect(root, ['app.py'])
+            self.assertIn('Follow this project instruction.', complete['instructions'][0]['source'])
+
     def test_actual_cli_boundary_and_no_partial_output(self):
         with tempfile.TemporaryDirectory() as scratch:
             root = Path(scratch)

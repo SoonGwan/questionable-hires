@@ -108,6 +108,14 @@ traversal and Git internals are refused. Maximum 256 KB per file, 2 MB total inp
 output characters, including the final newline, measured in the requested JSON
 format. Compact output may fit when `--pretty` does not; neither truncates source.
 Invalid/oversized context exits 2 with no partial stdout.
+Use `--max-output 12000` to lower the complete output ceiling for a constrained
+tool response; this counts Unicode characters, **not tokens or UTF-8 bytes**.
+The Python API accepts the same bound as `max_output=12000`. Allowed bounds are
+1–100000; the default remains 100000. Ancestor instructions and configuration
+count toward the bound and are never silently dropped. If the complete result
+does not fit, narrow selectors or use project tools; a lower bound does not
+truncate source or change the chosen representation. Allow room for other output
+in the enclosing tool response; a character bound cannot guarantee token-budget fit.
 Unsupported Python syntax in an indexed file also fails explicitly (`--full`
 can read a selected file without parsing it). Use native
 project tools for unsupported layouts; don't install dependencies for this tool.
