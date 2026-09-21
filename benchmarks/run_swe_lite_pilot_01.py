@@ -171,7 +171,7 @@ def execute(output, auth_file):
     try:
         subprocess.run(['openssl','x509','-checkend','86400','-noout','-in',
             str(ROOT/'benchmarks/local-runs/swe-lite-tls-01/server.pem')],check=True,capture_output=True)
-        environment.docker('exec',environment.SERVICE,'python','-c',
+        environment.docker('exec',environment.SERVICE,'python3','-c',
             'import time, urllib.request, urllib.error\n'
             'deadline=time.monotonic()+15\n'
             'while True:\n'
@@ -227,6 +227,11 @@ def execute(output, auth_file):
                     break
     except Exception as error:
         manifest['stopped_reason'] = type(error).__name__
+        if isinstance(error,subprocess.CalledProcessError):
+            (output/'runner-error.original.json').write_text(json.dumps(dict(
+                returncode=error.returncode, command=error.cmd,
+                stdout=(error.stdout or b'').decode(errors='replace') if isinstance(error.stdout,bytes) else error.stdout,
+                stderr=(error.stderr or b'').decode(errors='replace') if isinstance(error.stderr,bytes) else error.stderr),indent=2)+'\n')
         for row in manifest['cells']:
             if row['status'] == 'running':
                 row.update(status='runner_error', error_type=type(error).__name__)

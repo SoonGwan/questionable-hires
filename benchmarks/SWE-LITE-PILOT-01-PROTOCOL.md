@@ -124,3 +124,14 @@ and rerun this pair until a favorable percentage appears.
 실행 전에 고정하고, 실패/비용 증가/미실행 항목을 숨기지 않는다. 공개 이슈의 학습
 오염 가능성과 비강제 네트워크 제한을 명시한다. 두 쌍만으로 전체20–30% 개선을
 주장하지 않으며, 결과를 본 뒤 같은 문제를 독립 검증처럼 반복하지 않는다.
+
+## Pre-model launch correction
+
+The first execution envelope (`swe-lite-pilot-01`, runner`cb05006`) stopped during
+HTTP service readiness: that service image has `python3`, not `python` (exit127).
+All four cells remain unrun; no selected issue reached a model. Retain its
+execution marker/manifest; never resume or overwrite it. A new exclusive
+`swe-lite-pilot-01-launch02` envelope uses the corrected readiness executable and
+retains process-error details. The selected issues, schedule, prompts, resource,
+models, limits and scoring contract are unchanged. This is a disclosed pre-model
+infrastructure correction, not a retry of an unsuccessful model answer.

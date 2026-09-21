@@ -77,7 +77,7 @@ class PilotRunnerTests(unittest.TestCase):
                     prompt=pilot.expected_prompt(case,arm))
             with mock.patch.object(pilot,'frozen',return_value={'identity':'synthetic'}), \
                     mock.patch.object(pilot,'git',return_value=b'synthetic-revision'), \
-                    mock.patch.object(pilot.environment,'docker'), \
+                    mock.patch.object(pilot.environment,'docker') as docker, \
                     mock.patch.object(pilot.subprocess,'run'), \
                     mock.patch.object(pilot,'container_launcher',side_effect=launch), \
                     mock.patch.object(pilot.run,'run_cell',side_effect=cell), \
@@ -92,6 +92,8 @@ class PilotRunnerTests(unittest.TestCase):
                 with self.assertRaises(FileExistsError):
                     pilot.execute(output,auth)
                 self.assertEqual(len(invoked),count)
+                readiness = [call for call in docker.call_args_list if call.args[:1] == ('exec',)]
+                self.assertEqual(readiness[0].args[2], 'python3')
             self.assertFalse(list(root.glob('qh-pilot-auth-*')))
             return json.loads((output/'run.json').read_text()),invoked
 
