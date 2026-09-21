@@ -9,6 +9,17 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Native first-look candidate — 2026-09-21, parent `95820be`
+
+[Separate v2 prototype](NATIVE-NODE-FIRST-LOOK-02.md) omits ordinary pass identities
+explicitly and prioritizes exceptional results. Passing205 tests or skipping205
+tests cannot exhaust the separate failure-display allowance. Ten native checks
+cover native failures, cancellation, limits and incomplete evidence. No model-cost
+claim: necessary raw inspection may erase display savings. Not shipped or featured.
+
+한국어: 정상 로그의 표시 비용을 줄이는 별도 시제품을 검사했다. 실제 검증에 필요한
+원본 확인 비용까지 포함한 개선은 미입증이며, 배포 스킬·그래프는 그대로다.
+
 ## Native log-display feasibility — 2026-09-21, parent `785369c`
 
 [Both native observations](NATIVE-NODE-REPORTER-01.md): same-run dual reporters
