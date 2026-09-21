@@ -9,6 +9,17 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Completion-boundary candidate prepared — 2026-09-21, parent `d971cc2`
+
+[Separate narrow candidate](HOSTAGE-COMPLETION-BOUNDARY-01.md) replaces one existing
+stateful-work paragraph to distinguish completion from deferred cleanup. It keeps
+production resources otherwise unchanged; no new guide or universal fixture is
+added. Packaging validation is not model evidence. No new sessions, promotion or
+featured-chart change; fresh transfer work and a synchronous control are needed.
+
+한국어: 확인된 실패를 바탕으로 문단 하나만 수정한 별도 후보를 준비했다. 아직
+새 과제의 모델 실측은 없으며 배포본을 바꾸거나 성능 향상을 주장하지 않는다.
+
 ## Conditional comparison reviewed; candidate rejected — 2026-09-21
 
 [Full six-attempt review and original evidence](HOSTAGE-CONDITIONAL-01-REVIEW.md),
