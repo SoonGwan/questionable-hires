@@ -29,6 +29,12 @@ extra work and separate author native controls remain disclosed. No chart change
 한국어:16회 상세 검토 완료. 범위 포함7/8 대8/8이나 일반 품질 우위로 주장하지 않는다.
 합산 토큰20.39% 증가·시간5.17% 감소로 비용 목표에는 미달했다.
 
+[Regression04 input accounting](ALL-EIGHT-04-INPUT-COSTS.md) reconciles all16
+original profiles:36→39responses, input+122,197/output−612tokens. Extra reads,
+different native coverage and already-unsuccessful routing approaches are
+distinguished; no new instruction edit, model run or claimed saving.
+한국어: 추가 비용을 원본 응답별로 확인했으며 유효한 검증을 낭비로 분류하지 않았다.
+
 Local correction2026-09-21, parent`d5eab87`: [native exit consistency](AUDIT-EXIT-CONSISTENCY-01.md)
 reproduces two shutdown/result contradictions before the fix and now stops them
 as incomplete, preserving native evidence. Python3.11 audit111/111 pass; no new
