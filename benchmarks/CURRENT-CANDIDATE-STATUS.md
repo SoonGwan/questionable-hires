@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Landlord optional collector candidate — 2026-09-21, parent `bf1a2eb`
+
+[Preparation and validation](LANDLORD-CONTEXT-01.md): a separate self-contained
+candidate adds an optional collector route for known unread Python definitions.
+The vendored helper matches Con Artist at `bf1a2eb`; it needs no other skill.
+An isolated-copy integration test passes Python3.9/3.11, including complete groups,
+ancestor instructions and exact output bounds. Production Landlord is unchanged.
+No model comparison/adoption or whole-task efficiency result yet; no graph change.
+
+한국어: Landlord에 선택형 소스 수집 도구를 포함한 독립 실험 후보를 준비했다.
+단독 실행은 검증했지만 모델 성능 비교 전이므로 배포용 스킬은 바꾸지 않았다.
+
 ## Caller-sized context — 2026-09-21, parent `adf6590`
 
 The collector now accepts `--max-output` / `max_output` to lower the complete
