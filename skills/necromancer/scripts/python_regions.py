@@ -19,7 +19,9 @@ def select_regions(raw, names):
                    or not all(part.isidentifier() for part in name.split('.')) for name in names)):
         raise ValueError('Select 1–10 function names or qualified names')
     names = list(dict.fromkeys(names))
-    source = raw.decode('utf-8')
+    # A leading UTF-8 signature is an encoding marker, not Python source text.
+    # Keep raw bytes for identity/budgets; remove only that initial marker.
+    source = raw.decode('utf-8-sig')
     try:
         tree = ast.parse(source)
     except (SyntaxError, RecursionError) as error:

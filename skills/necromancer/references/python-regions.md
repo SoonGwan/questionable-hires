@@ -13,6 +13,8 @@ Check the Git producer's errors and the pipeline status. The source SHA-256
 identifies stdin bytes, **not** their revision or provenance. Use verified local
 history; the helper does not fetch anything or run Git. Python 3.9+ is required,
 and the input must be valid syntax for the selected interpreter.
+An optional leading UTF-8 BOM is accepted and omitted from excerpt text; byte
+counts and source hashes still identify the original input including the BOM.
 
 Compact JSON retains original indentation, decorators, physical line numbers and
 top-level future-import feature names. Parenthesized or explicitly continued

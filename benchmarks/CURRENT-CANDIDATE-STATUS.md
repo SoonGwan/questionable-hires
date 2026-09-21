@@ -69,6 +69,11 @@ or recoverable savings.
 
 These changes are implemented; their model-cost effect is not established:
 
+- [Python excerpt BOM compatibility](PYTHON-REGIONS-BOM-01.md), parent`f91b652`:
+  native-valid UTF-8 signature files no longer fail selection. Original byte
+  hashes/budgets and physical lines remain;20 region tests pass in checkout/archive.
+  한국어: UTF-8 BOM 입력 거부 수정이며 모델 비용 절감 실측은 아니다.
+
 - [Receipt multiple-before](RECEIPT-MULTIPLE-BEFORE-01.md), parent`efc1439`:
   optional unittest multi-version comparison executes current once, preserving
   each historical result and shared snapshot limits. Author native control4→3

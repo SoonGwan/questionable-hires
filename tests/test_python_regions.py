@@ -13,6 +13,32 @@ spec.loader.exec_module(helper)
 
 
 class PythonRegionTests(unittest.TestCase):
+    def test_utf8_signature_keeps_physical_lines_and_original_byte_identity(self):
+        text = ('# heading\r\nfrom __future__ import annotations\r\n'
+                '@decorate\r\ndef selected(value: Missing):\r\n    return value\r\n')
+        raw = b'\xef\xbb\xbf' + text.encode('utf-8')
+        compile(raw, 'signature_fixture.py', 'exec', dont_inherit=True)
+        result = helper.select_regions(raw, ['selected'])
+        self.assertTrue(result['complete'])
+        self.assertEqual(result['module_future_features'], ['annotations'])
+        self.assertEqual(result['source_sha256'], hashlib.sha256(raw).hexdigest())
+        self.assertEqual(result['source_bytes'], len(raw))
+        self.assertEqual(result['regions'][0]['start_line'], 3)
+        self.assertEqual(result['regions'][0]['text'],
+                         '@decorate\r\ndef selected(value: Missing):\r\n    return value\r\n')
+
+    def test_cli_signature_at_first_definition_and_interior_signature_rejection(self):
+        source = b'\xef\xbb\xbfdef f():\n    return 1\n'
+        result = subprocess.run([sys.executable, '-B', str(SCRIPT), '--name', 'f'],
+                                input=source, capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        region = json.loads(result.stdout)['regions'][0]
+        self.assertEqual(region['start_line'], 1)
+        self.assertEqual(region['text'], 'def f():\n    return 1\n')
+        for raw in (b'# heading\n' + source, b'\xef\xbb\xbf' + source):
+            with self.subTest(raw=raw), self.assertRaises(ValueError):
+                helper.select_regions(raw, ['f'])
+
     def test_scopes_decorators_duplicates_and_no_execution(self):
         source = ('from __future__ import annotations\nraise RuntimeError("must not execute")\n'
                   'class First:\n    @property\n    def value(self):\n        return 1\n'
