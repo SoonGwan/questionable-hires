@@ -57,6 +57,8 @@ Python3.9.6: both new tests pass in0.330s. Repository/link validation, featured
 synchronization and whitespace checks pass. These checks are not a complete
 current release matrix or hosted CI result. Entry instructions and frozen model
 measurements/charts are unchanged; whole-task efficiency remains unproven.
+Build13 tests pass in3.051s. A fresh source archive at`94a1527`, without Git or
+local-run state, passes both new controls on Python3.11.16 in0.302s with no skips.
 
 한국어: 선택하지 않은 패치 구간까지 복사하던 중간 할당을 없앴다. 반환 근거와
 생략 개수는 동일하며 큰 희소 선택 예제의 함수 내부 메모리·실행 시간은 줄었다.
