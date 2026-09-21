@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Click defaults transfer prepared — 2026-09-21, resources `4416263` / `1ae3ee0`
+
+[Frozen protocol](CLICK-DEFAULTS-01-PROTOCOL.md) compares output-budget guidance
+on a new default-resolution design proposal in pinned Click source. Native author
+controls: correct7 existing +8 new checks pass; proposal1/7 and2/8 fail actual
+value/source assertions. This is fixture validation, not a model result. Four
+runner/freeze/limit tests pass Python3.9/3.11. Three original sessions are scheduled
+current/baseline/prior; no repeated exposed design task or concurrent author suite.
+Same Click project was previously used for an unrelated Context audit; not a holdout.
+
+한국어: 새 기본값 설계 과제로 출력 예산 지침을 비교할 조건을 고정했다.
+정상·결함 사전 검증은 통과했지만 모델 성능 결과는 아직 없다. 이전에 사용한
+Click 프로젝트의 다른 과제이므로 독립 검증이라고 과장하지 않는다.
+
 ## Landlord combined-output correction — 2026-09-21, predecessor `4416263`
 
 [Recorded truncation analysis](LANDLORD-READ-BUDGET-01.md) shows all three runtime
