@@ -139,6 +139,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Routing correction2026-09-21, parent`644c12f`:
+[pytest batch entry](AUDIT-PYTEST-BATCH-ROUTE-01.md) distinguishes the existing
+pytest/common batch interface from unittest-only module mode. Built-skill native
+survival/detection controls pass; Python3.11 audit113/113. Runtime unchanged,
+model adoption/cost unmeasured. 한국어: pytest 경로 안내를 보완했으며 성능 수치가 아니다.
+
 Measurement correction2026-09-21, parent`1cb7a25`:
 [initial index capture](INITIAL-INDEX-CAPTURE-01.md) retains before-model and
 before-collector byte/mode identities outside model timing. Missing capture is

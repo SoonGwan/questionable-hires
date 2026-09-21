@@ -40,7 +40,11 @@ process does not prove what the test process loads.
   and proposed tests against correct/faulty code with the native runner and fixtures;
   applying the verified edit remains separate. No helper is needed for a simpler
   native workflow or an already-completed audit.
-- Several independent Python faults or required test selections: the [native unittest batch recipe](references/native-unittest-batch.md)
+- Several independent Python faults or required test selections: choose the matching runner.
+  For pytest, use the [common CLI contract](references/python-audit.md) with
+  [batch fields](references/python-audit-batch.md), `"runner": "pytest"` and the default
+  bootstrap invocation; `"invocation": "module"` is unittest-only.
+  For required `python -B -m unittest`, the [native unittest batch recipe](references/native-unittest-batch.md)
   provides actual `python -B -m unittest` execution, same-process binding prechecks,
   copy cleanup and reusable correct observations without writing your own startup script.
   Consider it when those facilities remove needed orchestration. One fault's
