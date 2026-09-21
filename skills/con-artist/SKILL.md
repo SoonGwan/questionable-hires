@@ -50,10 +50,7 @@ process does not prove what the test process loads.
 
 If tests survive, verify the same stronger assertion on correct and faulty code:
 pass the former, fail the latter for the intended effect, not merely success or
-container size. Assert the requested behavioral contract; extra constraints on
-incidental representation or object identity can reject valid implementations.
-Keep identity/order checks when they are part of that contract. If killed,
-identify the detecting assertion or warning policy;
+container size. If killed, identify the detecting assertion or warning policy;
 this protects that fault, not every lifecycle path.
 
 ## Deliver and stop

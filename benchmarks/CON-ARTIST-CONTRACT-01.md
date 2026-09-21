@@ -1,6 +1,15 @@
 # Con Artist contract-focused assertion candidate
 
-2026-09-21, parent `903e7c8`. Instruction-only candidate, **unmeasured**.
+2026-09-21, parent `903e7c8`. Historical instruction-only candidate.
+
+Disposition: [six-cell transfer review](CONTRACT-AUDIT-01-REVIEW.md) found no
+observed decision or token advantage. The extra paragraph is removed and the
+entrypoint restored byte-for-byte to `903e7c8`. The candidate remains available
+at `19d63ec`; all original measurements remain intact. This rejects an unproven
+optimization, not the general value of contract-based testing.
+
+The design rationale below records the pre-experiment proposal, not a current
+unmeasured-status claim.
 
 The [Click pair](CLICK-CONTEXT-01-REVIEW.md) supplies a concrete failure:
 the skill-side added test rejected correct code on an incidental traceback
