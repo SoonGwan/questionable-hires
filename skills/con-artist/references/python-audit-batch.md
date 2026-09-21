@@ -32,8 +32,12 @@ This does not cache failed checks, skip mutants or change requested audit order.
 An identical stronger probe also reuses its successful correct-code observation
 under those same conditions; changing the probe, new files or replacement contents
 runs a new correct-code check.
-Probe caching remains a single most-recent observation; the non-adjacent map applies
-only to normal test baselines. Neither cache establishes external-state freshness.
+Returning to an earlier identical probe also reuses its original observation,
+provided the shared identity (including normal test arguments) has not changed.
+Probe retention is limited to eight successful entries and20 MB of probe text/file
+contents in total; oldest entries are evicted when needed. Eviction means a fresh
+correct-code check, not missing evidence. These limits do not bound total process
+memory, result logs or the shared input snapshot. Neither cache establishes external-state freshness.
 Each mutant test and mutant probe still runs in a fresh copy, as does every
 non-reused correct check. Nothing is cached across
 invocations. External services, changing dependencies, clock/random behavior and

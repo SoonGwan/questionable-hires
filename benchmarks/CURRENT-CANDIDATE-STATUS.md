@@ -139,6 +139,14 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Local optimization2026-09-21, parent`cb9cde1`:
+[non-adjacent stronger-probe cache](AUDIT-PROBE-CACHE-02.md) reuses a returning
+identical successful probe under unchanged context, with bounded retention.
+Authored A-B-A processes10→9, alternating-eight25→19, adjacent control9→9;
+all mutants still execute. Native invariants and eviction controls pass.
+Not model-token/time evidence or a general24% gain; charts remain frozen.
+한국어: 반복 강화 검사의 중복 정상 실행을 줄였으며 실제 모델 비용 효과는 미측정이다.
+
 Routing correction2026-09-21, parent`644c12f`:
 [pytest batch entry](AUDIT-PYTEST-BATCH-ROUTE-01.md) distinguishes the existing
 pytest/common batch interface from unittest-only module mode. Built-skill native

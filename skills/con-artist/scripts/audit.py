@@ -425,7 +425,15 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
         selection = tuple(spec['tests'])
         selected_baseline = _selection_baselines['checks'].get(selection)
         reused = selected_baseline is not None
-    probe_identity = (identity, spec.get('probe'), probe_files, spec.get('probe_tests'), probe_replacements)
+    probe_identity = (spec.get('probe'), probe_files, tuple(spec.get('probe_tests', [])), probe_replacements)
+    selected_probe = None
+    if _probe_baseline is not None:
+        # Keep one source context, not one source snapshot per stronger probe.
+        # Normal test arguments remain part of this conservative reuse boundary.
+        if _probe_baseline.get('context') != identity:
+            _probe_baseline.update(context=identity, entries=[], payload_bytes=0)
+        selected_probe = next((entry for entry in _probe_baseline['entries']
+                               if entry['identity'] == probe_identity), None)
     probe_reused = False
     results = {}
     order = [('correct', 'tests'), ('correct', 'probe'), ('mutant', 'tests'), ('mutant', 'probe')]
@@ -441,9 +449,9 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                 if variant == 'correct' and check == 'tests' and reused:
                     results['correct_tests'] = dict((selected_baseline or _baseline)['result'])
                     continue
-                if variant == 'correct' and check == 'probe' and _probe_baseline is not None \
-                        and _probe_baseline.get('identity') == probe_identity:
-                    results['correct_probe'] = dict(_probe_baseline['result'])
+                if variant == 'correct' and check == 'probe' and selected_probe is not None:
+                    results['correct_probe'] = dict(selected_probe['result'])
+                    _probe_baseline['reused_index'] = selected_probe['observation_index']
                     probe_reused = True
                     continue
                 # Each check starts from the same inputs, not prior test side effects.
@@ -487,7 +495,20 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                     _selection_baselines['checks'][selection] = dict(
                         result=dict(result), observation_index=_selection_baselines['index'])
                 if variant == 'correct' and check == 'probe' and _probe_baseline is not None:
-                    _probe_baseline.update(identity=probe_identity, result=dict(result))
+                    payload_bytes = (len(spec.get('probe', '').encode('utf-8'))
+                                     + sum(map(len, probe_files.values()))
+                                     + sum(map(len, probe_replacements.values())))
+                    # Bound retained probe content across entries, in addition
+                    # to the existing per-audit input bound. Eviction only reruns
+                    # a correct check; it never discards mutant observations.
+                    if payload_bytes <= 20_000_000:
+                        entries = _probe_baseline['entries']
+                        while entries and (len(entries) >= 8 or
+                                _probe_baseline['payload_bytes'] + payload_bytes > 20_000_000):
+                            _probe_baseline['payload_bytes'] -= entries.pop(0)['payload_bytes']
+                        entries.append(dict(identity=probe_identity, result=dict(result),
+                            observation_index=_probe_baseline.get('index'), payload_bytes=payload_bytes))
+                        _probe_baseline['payload_bytes'] += payload_bytes
                 if probe_when == 'survives' and variant == 'mutant' and check == 'tests' and result['exit_code'] != 0:
                     skipped = 'Mutant tests exited nonzero; inspect their failure before any coverage claim. Proposed probe was not validated.'
         output = dict(status='observed', checks=results,
@@ -543,10 +564,10 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
             raise ValueError('Each mutation requires target/old/new and optional tests/probe settings')
     common = {key: value for key, value in spec.items() if key != 'mutations'}
     selection_baselines, probe_baseline, observations = {}, {}, []
-    baseline_indices = {}
     for fault in mutations:
         try:
             selection_baselines['index'] = len(observations)
+            probe_baseline['index'] = len(observations)
             recipe = dict(common, **fault)
             result = audit(root, recipe, python, timeout,
                            _selection_baselines=selection_baselines, _probe_baseline=probe_baseline)
@@ -566,12 +587,10 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
                 # Point directly to the execution, not another reused reference.
                 check = result['checks'][name]
                 index = (selection_baselines['checks'][tuple(recipe['tests'])]['observation_index']
-                         if name == 'correct_tests' else baseline_indices[name])
+                         if name == 'correct_tests' else probe_baseline['reused_index'])
                 result['checks'][name] = dict(
                     exit_code=check['exit_code'], timed_out=check['timed_out'],
                     observation_ref=f'#/audits/{index}/checks/{name}')
-            else:
-                baseline_indices[name] = len(observations)
         observations.append(result)
         if result['status'] != 'observed':
             break
