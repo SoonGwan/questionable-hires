@@ -9,6 +9,17 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Native log-display feasibility — 2026-09-21, parent `785369c`
+
+[Both native observations](NATIVE-NODE-REPORTER-01.md): same-run dual reporters
+reduce a repeated-failure display from22,663 to14,161 bytes, but expand a passing
+control from2,534 to8,256 bytes. This is not token/time/model evidence. Prototype
+is not adopted as default; full native diagnostics remain required. Both original
+observations and redacted outputs retained. No production or graph change.
+
+한국어: 실패 로그 축약의 가능성은 있으나 정상 로그가 약3.3배로 늘어 기본 기능으로
+넣지 않았다. 실제 모델 성능 향상은 아직 입증되지 않았고 수치를 부풀리지 않는다.
+
 ## EventEmitter cost decomposition — 2026-09-21, parent `43c814e`
 
 [All-arm accounting](EVENTEMITTER-INPUT-COSTS-01.md) reconciles six existing profiles
