@@ -62,7 +62,8 @@ the contract requires them. No cache survives another CLI invocation.
 `command`, `native_exit_code` and `suite_observation` retain module-mode evidence.
 Empty/all-skipped suites map to check exit5; missing completed-suite evidence,
 including setup failure/help-only/early zero exit, maps to7. CLI0 means observations
-collected, not a killed fault; CLI2/`incomplete` means evidence is not established.
+collected only when native exit and suite success agree; disagreement also maps to7.
+This is not a killed-fault verdict; CLI2/`incomplete` means evidence is not established.
 Timeouts, missing checks, setup errors and bare nonzero exits are not detection.
 Inspect the intended assertion; a failed normal check stops later work.
 

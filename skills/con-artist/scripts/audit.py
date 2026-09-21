@@ -300,6 +300,9 @@ def execute(python, directory, spec, probe, timeout):
         if not timed_out:
             if evidence is None:
                 result['exit_code'] = 7
+            elif evidence['successful'] != (process.returncode == 0):
+                result['exit_code'] = 7
+                result['incomplete_reason'] = 'Native exit status disagrees with completed unittest result; inspect shutdown/runner behavior.'
             elif evidence['successful'] and evidence['tests'] == evidence['skipped']:
                 result['exit_code'] = 5
     return result

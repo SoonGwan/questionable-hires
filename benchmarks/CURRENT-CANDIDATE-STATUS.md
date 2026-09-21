@@ -20,6 +20,11 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
+Local correction2026-09-21, parent`d5eab87`: [native exit consistency](AUDIT-EXIT-CONSISTENCY-01.md)
+reproduces two shutdown/result contradictions before the fix and now stops them
+as incomplete, preserving native evidence. Python3.11 audit111/111 pass; no new
+model-cost evidence. 한국어: 실행 판정의 실제 결함 수정이며 성능 향상 수치가 아니다.
+
 Local change2026-09-21, parent`bf936a4`: [audit JSON formatting](AUDIT-OUTPUT-COMPACT-01.md)
 preserves every value with compact default/legacy `--pretty`. Three retained
 report objects shrink13.49–14.55% in bytes;109 Python3.11 audit tests pass.

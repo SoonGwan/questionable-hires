@@ -183,6 +183,30 @@ class ModuleInvocationTests(unittest.TestCase):
         self.assertEqual(mutant['native_exit_code'], 0)
         self.assertEqual(mutant['suite_observation'], dict(tests=1, skipped=1, successful=True))
 
+    def test_shutdown_exit_cannot_hide_failed_native_suite(self):
+        (self.root / 'test_service.py').write_text(self.source +
+            '\nimport atexit, os\natexit.register(os._exit, 0)\n')
+        report = self.observe()
+        self.assertEqual(report['status'], 'incomplete')
+        mutant = report['checks']['mutant_tests']
+        self.assertEqual(mutant['native_exit_code'], 0)
+        self.assertFalse(mutant['suite_observation']['successful'])
+        self.assertEqual(mutant['exit_code'], 7)
+        self.assertIn('disagrees', mutant['incomplete_reason'])
+        self.assertIn('AssertionError: 0 != 1', mutant['output'])
+
+    def test_shutdown_failure_is_not_a_detected_production_fault(self):
+        source = self.source.replace('self.assertEqual(value(), 1)', 'self.assertGreaterEqual(value(), 0)')
+        (self.root / 'test_service.py').write_text(source +
+            '\nimport atexit, os\nif value() == 0: atexit.register(os._exit, 1)\n')
+        report = self.observe()
+        self.assertEqual(report['status'], 'incomplete')
+        mutant = report['checks']['mutant_tests']
+        self.assertEqual(mutant['native_exit_code'], 1)
+        self.assertTrue(mutant['suite_observation']['successful'])
+        self.assertEqual(mutant['exit_code'], 7)
+        self.assertIn('disagrees', mutant['incomplete_reason'])
+
     def test_eight_alternating_selections_keep_all_mutants_in_ten_processes(self):
         fault = {key: self.recipe[key] for key in ('target', 'old', 'new')}
         common = {key: value for key, value in self.recipe.items() if key not in fault}

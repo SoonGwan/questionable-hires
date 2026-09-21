@@ -62,7 +62,10 @@ Each executed check adds `command`, `invocation`, `native_exit_code` and
 `suite_observation` (`tests`, `skipped`, `successful`). Ordinary pass/failure keeps
 the native exit. A successful empty/all-skipped suite maps to check exit 5;
 missing/invalid completed-suite evidence maps to 7, including help-only and early
-zero exits. Timeouts stay timeouts. The original native exit and captured output
+zero exits. Disagreement between native exit success and the completed suite's
+`successful` value also maps to7, with `incomplete_reason`; shutdown behavior
+must not turn a failed suite into a passing baseline or a passing suite into
+fault-detection evidence. Timeouts stay timeouts. The original native exit and captured output
 remain available; import/precheck errors without a completed suite also map to 7.
 These fields do not automatically classify assertion failures as detected faults.
 Support runs inside the owned scratch tree and is removed with it. This is not a
