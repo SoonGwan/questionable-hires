@@ -43,6 +43,13 @@ benchmark or justify a general 20–30% efficiency claim.
 
 No new model sessions have run for this resource. Adoption remains undecided.
 
+Local regression checkpoint: Python3.11.16,962 tests in164.018s,OK, using the
+working tree committed as `89c5172` during execution (no source changes during
+the suite). This includes helper, runner and evidence checks, not new model calls.
+Repository validation and featured synchronization checks pass. Hosted Actions
+run35560502395 could not start its four jobs because of the account payment/limit
+annotation; a local pass must not be relabeled as hosted release validation.
+
 한국어: 작업 완료와 지연된 정리 사이의 재진입을 구별하도록 기존 문단 하나만
 바꾼 후보다. 이미 본 과제를 다시 풀어 좋은 점수로 교체하지 않는다. 다른 과제의
 실측 전에는 효과를 주장하거나 배포본·대표 그래프에 반영하지 않는다.

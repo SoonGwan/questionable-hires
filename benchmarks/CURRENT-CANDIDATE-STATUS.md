@@ -11,6 +11,15 @@ it has not established a broad 20–30% gain.
 
 ## Completion-boundary candidate prepared — 2026-09-21, parent `d971cc2`
 
+Local validation checkpoint: Python3.11.16 ran **962 tests in164.018s, OK** on the
+working tree containing this candidate (committed as `89c5172` during the run;
+source contents unchanged). Repository validation, candidate frontmatter and
+featured synchronization checks pass. This is local regression evidence, not a
+new model comparison. Hosted run[35560502395](https://github.com/SoonGwan/questionable-hires/actions/runs/35560502395)
+at `89c5172` failed before any steps in all four jobs; the annotation reports
+failed payments/spending limit. No billing settings were changed; hosted release
+validation is still not green.
+
 [Separate narrow candidate](HOSTAGE-COMPLETION-BOUNDARY-01.md) replaces one existing
 stateful-work paragraph to distinguish completion from deferred cleanup. It keeps
 production resources otherwise unchanged; no new guide or universal fixture is
