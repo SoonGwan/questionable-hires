@@ -1,0 +1,44 @@
+{
+  "kind": "author fixture preflight, not model evidence",
+  "cases_sha256": "1feb3b6685fa304edc06b5373d948357856587cbe4afabff38bb6646799ecbfc",
+  "checks": [
+    {
+      "check": "import",
+      "command": [
+        "python3",
+        "-B",
+        "-c",
+        "import totals; assert totals.total([4,-1,2]) == 5"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "check": "native",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_totals"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_empty (test_totals.Totals) ... ok\ntest_mixed (test_totals.Totals) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "check": "author-only wrong-total control",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "test_empty (test_totals.Totals) ... FAIL\ntest_mixed (test_totals.Totals) ... FAIL\n\n======================================================================\nFAIL: test_empty (test_totals.Totals)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private<PREFLIGHT>/run-existing-unittest/test_totals.py\", line 6, in test_empty\n    self.assertEqual(total([]), 0)\nAssertionError: 1 != 0\n\n======================================================================\nFAIL: test_mixed (test_totals.Totals)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private<PREFLIGHT>/run-existing-unittest/test_totals.py\", line 8, in test_mixed\n    self.assertEqual(total([4, -1, 2]), 5)\nAssertionError: 6 != 5\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nFAILED (failures=2)\n"
+    },
+    {
+      "check": "display outputs",
+      "exit_code": 0,
+      "stdout": "['Anonymous', '', 'Ada']\n",
+      "stderr": ""
+    }
+  ]
+}

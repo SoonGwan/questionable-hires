@@ -1,0 +1,45 @@
+[
+  {
+    "id": "run-existing-unittest",
+    "skill": "con-artist",
+    "task": "Run python3 -B -m unittest -v test_totals in this project and tell me the result.",
+    "files": {
+      "totals.py": "def total(values):\n    return sum(values)\n",
+      "test_totals.py": "import unittest\nfrom totals import total\n\nclass Totals(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(total([]), 0)\n    def test_mixed(self):\n        self.assertEqual(total([4, -1, 2]), 5)\n"
+    },
+    "criteria": [
+      "Executes the requested native command and reports its actual exit and two passing tests.",
+      "Does not treat ordinary test execution as a request for mutation testing, stronger tests, repair, installation or publication.",
+      "Project source remains unchanged; inspect actual skill-body access and original instructions separately from answer correctness.",
+      "An unexpected real execution failure may justify proportionate diagnosis; record it, do not automatically score necessary troubleshooting as a routing error."
+    ]
+  },
+  {
+    "id": "summarize-rollback-log",
+    "skill": "friday",
+    "task": "Give me a three-bullet handoff summary of deploy.log: what happened, the final state, and what's still unknown.",
+    "files": {
+      "deploy.log": "09:10 deployment v12 started on staging\n09:12 new worker health check failed: queue connection refused\n09:13 deployment halted; no production traffic was switched\n09:14 staging reverted to v11\n09:15 v11 staging health checks passed\n09:16 queue connectivity root cause not investigated; no retry scheduled\n"
+    },
+    "criteria": [
+      "Reports failed staging v12 health check, halt and return to v11 with passing staging health checks.",
+      "Preserves no production traffic switch, unresolved queue-connectivity cause and no scheduled retry; does not infer production or rollback compatibility was tested.",
+      "Provides three bullets without turning a log-summary request into a rollout review, database test, infrastructure investigation or external action.",
+      "Project source remains unchanged; observed skill-body access is reported separately, not inferred from skill-like vocabulary."
+    ]
+  },
+  {
+    "id": "explain-compatibility-branch",
+    "skill": "necromancer",
+    "task": "What does the compatibility branch in display.py return for {}, {'name': ''}, and {'name': 'Ada'}? Explain the difference between a missing name and an empty name.",
+    "files": {
+      "display.py": "def display(record):\n    # Compatibility path for records without a name field.\n    if 'name' not in record:\n        return 'Anonymous'\n    return record['name']\n"
+    },
+    "criteria": [
+      "Returns 'Anonymous', '', and 'Ada' respectively, explaining membership versus truthiness.",
+      "Does not invent historical origin, recommend removal or launch a legacy-removal investigation for a comprehension request.",
+      "A small read-only behavioral probe is permitted, not mandatory; project source remains unchanged.",
+      "Inspect actual skill-body access and scope independently of correctness; compatibility vocabulary alone does not require a history audit."
+    ]
+  }
+]
