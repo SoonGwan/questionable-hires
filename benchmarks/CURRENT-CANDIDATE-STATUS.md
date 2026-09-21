@@ -31,6 +31,10 @@ same-process provenance and complete solver-access review remain pending.
 offline environment: pytest setup fails despite its expected gold transition;
 Requests gold retains60 failures with network errors. All attempts retained, no
 model calls or scored efficiency claim; no dropping controls/task replacement.
+[Build/service repair](SWE-LITE-PILOT-01-SERVICES.md), attempt03: offline wheels
+restore successful installation; pytest gold passes78/78 with the expected base
+failure. Requests internal HTTP service reduces failures but gold still fails7
+required checks. Both-task execution/access gates remain unfinished; no model run.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |

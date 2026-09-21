@@ -1,0 +1,27 @@
+{
+  "name": "qh-swelite-httpbin-health-01",
+  "image": "sha256:f4ede93d2747ddc21d276572cbd2e1df5ea60df8d5d99247f073797bab3e539f",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-21T14:46:15.910080153Z",
+    "FinishedAt": "2026-09-21T14:46:16.429793082Z"
+  },
+  "command": [
+    "-B",
+    "-c",
+    "import json,urllib.request; r=urllib.request.urlopen(\"http://httpbin/get\",timeout=10); print(r.status, json.load(r)[\"url\"])"
+  ],
+  "entrypoint": [
+    "/opt/miniconda3/envs/testbed/bin/python"
+  ],
+  "network": "qh-swelite-services-01",
+  "ports": {}
+}
