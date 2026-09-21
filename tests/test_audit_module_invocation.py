@@ -52,6 +52,35 @@ class ModuleInvocationTests(unittest.TestCase):
             self.assertIn('Precheck completed in check process.', check['output'])
         self.assertIn('AssertionError: 0 != 1', report['checks']['mutant_tests']['output'])
 
+    def test_cached_child_of_failed_package_is_not_complete_setup(self):
+        package = self.root / 'demo'
+        package.mkdir()
+        (package / '__init__.py').write_text('from . import util\nfrom .generated import version\n')
+        (package / 'util.py').write_text('value = 17\n')
+        (self.root / 'test_partial.py').write_text('from demo.util import value\nimport unittest\n'
+            'class Probe(unittest.TestCase):\n    def test_value(self): self.assertEqual(value, 17)\n')
+        recipe = dict(files=['demo', 'test_partial.py'], imports=['demo.util', 'test_partial'],
+            target='demo/util.py', old='value = 17', new='value = 18',
+            tests=['test_partial.Probe.test_value', '-v'], invocation='module')
+        before = helper.snapshot(self.root, recipe['files'])
+        report = helper.audit(self.root, recipe)
+        self.assertEqual(report['status'], 'incomplete', report)
+        self.assertEqual(list(report['checks']), ['correct_tests'])
+        self.assertEqual(report['checks']['correct_tests']['exit_code'], 7)
+        self.assertIn('Incomplete package import: demo.util: missing demo', report['checks']['correct_tests']['output'])
+        self.assertEqual(helper.snapshot(self.root, recipe['files']), before)
+        self.assertEqual(list(self.root.glob('.con-artist-*')), [])
+
+        # A complete normal package still runs the actual correct/faulty assertions.
+        (package / 'generated.py').write_text("version = '1.0'\n")
+        before = helper.snapshot(self.root, recipe['files'])
+        report = helper.audit(self.root, recipe)
+        self.assertEqual(report['status'], 'observed')
+        self.assertEqual([r['exit_code'] for r in report['checks'].values()], [0, 1])
+        self.assertIn('AssertionError: 18 != 17', report['checks']['mutant_tests']['output'])
+        self.assertEqual(helper.snapshot(self.root, recipe['files']), before)
+        self.assertEqual(list(self.root.glob('.con-artist-*')), [])
+
     def test_native_probes_and_repeated_batch_reuse(self):
         fault = {key: self.recipe[key] for key in ('target', 'old', 'new')}
         common = {key: value for key, value in self.recipe.items() if key not in fault}
@@ -65,6 +94,26 @@ class ModuleInvocationTests(unittest.TestCase):
         for audit in report['audits']:
             self.assertEqual(audit['checks']['mutant_probe']['exit_code'], 1)
             self.assertIn('AssertionError: 0 != 1', audit['checks']['mutant_probe']['output'])
+
+    def test_missing_intermediate_package_is_also_incomplete(self):
+        inner = self.root / 'outer/inner'
+        inner.mkdir(parents=True)
+        (inner.parent / '__init__.py').write_text('')
+        (inner / '__init__.py').write_text('from . import util\nfrom .generated import version\n')
+        (inner / 'util.py').write_text('value = 17\n')
+        (self.root / 'test_partial.py').write_text('from outer.inner.util import value\nimport unittest\n'
+            'class Probe(unittest.TestCase):\n    def test_value(self): self.assertEqual(value, 17)\n')
+        recipe = dict(files=['outer', 'test_partial.py'], imports=['outer.inner.util', 'test_partial'],
+            target='outer/inner/util.py', old='value = 17', new='value = 18',
+            tests=['test_partial.Probe.test_value', '-v'], invocation='module')
+        before = helper.snapshot(self.root, recipe['files'])
+        report = helper.audit(self.root, recipe)
+        self.assertEqual(report['status'], 'incomplete')
+        self.assertEqual(list(report['checks']), ['correct_tests'])
+        self.assertEqual(report['checks']['correct_tests']['exit_code'], 7)
+        self.assertIn('missing outer.inner', report['checks']['correct_tests']['output'])
+        self.assertEqual(helper.snapshot(self.root, recipe['files']), before)
+        self.assertEqual(list(self.root.glob('.con-artist-*')), [])
 
     def test_empty_skipped_and_help_are_not_passing_baselines(self):
         for source, tests, code in [('import unittest\n', ['test_service'], 5),

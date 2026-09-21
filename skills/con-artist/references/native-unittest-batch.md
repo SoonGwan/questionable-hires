@@ -36,7 +36,10 @@ process exits. Use a suite when its native method results suffice; separate exit
 require separate selections. Do not batch steps whose next action depends on results.
 
 Each executed check runs `python -B -m unittest <tests...>` in a fresh project-local
-copy. Listed imports must resolve inside it. Optional `precheck` verifies a required
+copy. Listed imports must resolve inside it. Qualified listed imports also require
+their parent packages in the import cache; a child left behind by failed package
+initialization is incomplete, not bootstrap proof. This does not independently
+verify a cold public-package import. Optional `precheck` verifies a required
 or unresolved binding in that test process after loading and before execution;
 it does not prove later rebinding, call counts or behavioral effects. An internal
 startup adapter observes the real runner; you need not write your own hook.

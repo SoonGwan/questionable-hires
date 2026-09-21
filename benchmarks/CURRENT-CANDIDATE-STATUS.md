@@ -72,6 +72,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Checkpoint2026-09-21: [partial-package import correction](AUDIT-PARTIAL-IMPORT-01.md)
+rejects cached listed submodules whose parent package is absent after failed
+initialization. Local failing-first reproduction and valid-package control; no
+new model measurement or efficiency claim. 한국어: 패키지 초기화 실패를 정상 감사로
+오인하던 결함을 수정했다. 전체 성능 향상 수치로 환산하지 않는다.
+
 - [Native bootstrap controls](URLLIB3-HISTORY-01.md): author diagnostics and
   two regression tests reproduce unittest import recovery hiding missing package
   metadata; the preparation rule now requires a separate fresh package import.

@@ -71,6 +71,11 @@ def verify_setup():
     try:
         for name in spec['imports']:
             module = importlib.import_module(name)
+            parts = name.split('.')
+            for end in range(1, len(parts)):
+                parent = '.'.join(parts[:end])
+                if sys.modules.get(parent) is None:
+                    raise RuntimeError('Incomplete package import: ' + name + ': missing ' + parent)
             location = getattr(module, '__file__', None)
             if not location or not pathlib.Path(location).resolve().is_relative_to(root):
                 raise RuntimeError('Import escaped copy: ' + name + ': ' + str(location))
