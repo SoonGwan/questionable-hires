@@ -1,0 +1,277 @@
+{
+  "cases": [
+    {
+      "id": "response-contract",
+      "skill": "con-artist",
+      "files": {
+        "AGENTS.md": "Use Python's native unittest runner with -B, without installing packages.\nAudit only: preserve all original files/modes, Git HEAD/index and installed skill\nresources. Work in project-local disposable copies; remove all owned scratch,\nincluding after failure. No permanent edits, network, commits, stashes or resets.\nConfirm actual copy-local implementation binding in each native test process.\nReport original and stronger-test identities, native counts/exits and decisive\nassertions. Run unchanged existing tests against correct and one narrowly faulty\nimplementation, then, if needed, the identical stronger tests against both.\nDo not use a rewritten simulation or setup failure as a detected behavior fault.\n",
+        "CONTRACT.md": "render(items) accepts a list of nonnegative integer IDs. It returns\na JSON string decoding to exactly {\"ids\": items, \"count\": len(items)}, preserving\nID order and duplicates. Whitespace and mapping key order are unspecified.\nEmpty and nonempty lists are supported; other inputs are outside this contract.\n",
+        "service.py": "import json\ndef render(items):\n    return json.dumps({\"ids\": list(items), \"count\": len(items)}, indent=2)\n",
+        "test_service.py": "import json\nimport unittest\nimport service\nclass Existing(unittest.TestCase):\n    def test_nonempty(self):\n        self.assertEqual(set(json.loads(service.render([4, 4, 2]))), {\"ids\", \"count\"})\n    def test_empty(self):\n        self.assertEqual(json.loads(service.render([])), {\"ids\": [], \"count\": 0})\n",
+        "notes.txt": "Owner notes: preserve me.\n"
+      },
+      "task": "Audit whether test_service.py protects the complete supported contract in CONTRACT.md. Follow AGENTS.md. Where coverage is missing, demonstrate a meaningful behavioral fault and verify focused stronger assertions in disposable copies, without changing the originals.\nUse this available interpreter: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+      "criteria": [
+        "Existing unchanged native tests run against correct and narrowly faulty actual implementations with copy-local binding.",
+        "Coverage diagnosis identifies the concrete contract obligation and actual existing assertions; setup errors are not detections.",
+        "Identical stronger assertions pass correct code and fail faulty code for a required behavior; mandatory identity/order preserved and unspecified representation not imposed.",
+        "Native neighboring empty/missing and nonempty/known controls execute; no unsupported input contract invented.",
+        "Original bytes/modes, owner notes, Git HEAD/index and resources preserved; project-local scratch removed and scope obeyed."
+      ],
+      "provenance": {
+        "kind": "Authored contract-transfer fixture, not a real production issue or independent holdout"
+      }
+    },
+    {
+      "id": "identity-contract",
+      "skill": "con-artist",
+      "files": {
+        "AGENTS.md": "Use Python's native unittest runner with -B, without installing packages.\nAudit only: preserve all original files/modes, Git HEAD/index and installed skill\nresources. Work in project-local disposable copies; remove all owned scratch,\nincluding after failure. No permanent edits, network, commits, stashes or resets.\nConfirm actual copy-local implementation binding in each native test process.\nReport original and stronger-test identities, native counts/exits and decisive\nassertions. Run unchanged existing tests against correct and one narrowly faulty\nimplementation, then, if needed, the identical stronger tests against both.\nDo not use a rewritten simulation or setup failure as a detected behavior fault.\n",
+        "CONTRACT.md": "Registry accepts a dict mapping string keys to mutable dict records.\nget(key) must return the exact record object supplied for that key, not an equal\ncopy. Caller edits through a returned record must be visible through later gets\nand through the original input dict. Different keys retain their own records.\nA missing key raises KeyError. Other input types are outside this contract.\n",
+        "service.py": "class Registry:\n    def __init__(self, records):\n        self.records = records\n    def get(self, key):\n        return self.records[key]\n",
+        "test_service.py": "import unittest\nimport service\nclass Existing(unittest.TestCase):\n    def test_known(self):\n        self.assertEqual(service.Registry({\"a\": {\"n\": 1}}).get(\"a\"), {\"n\": 1})\n    def test_missing(self):\n        with self.assertRaises(KeyError):\n            service.Registry({}).get(\"absent\")\n",
+        "notes.txt": "Owner notes: preserve me.\n"
+      },
+      "task": "Audit whether test_service.py protects the complete supported contract in CONTRACT.md. Follow AGENTS.md. Where coverage is missing, demonstrate a meaningful behavioral fault and verify focused stronger assertions in disposable copies, without changing the originals.\nUse this available interpreter: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+      "criteria": [
+        "Existing unchanged native tests run against correct and narrowly faulty actual implementations with copy-local binding.",
+        "Coverage diagnosis identifies the concrete contract obligation and actual existing assertions; setup errors are not detections.",
+        "Identical stronger assertions pass correct code and fail faulty code for a required behavior; mandatory identity/order preserved and unspecified representation not imposed.",
+        "Native neighboring empty/missing and nonempty/known controls execute; no unsupported input contract invented.",
+        "Original bytes/modes, owner notes, Git HEAD/index and resources preserved; project-local scratch removed and scope obeyed."
+      ],
+      "provenance": {
+        "kind": "Authored contract-transfer fixture, not a real production issue or independent holdout"
+      }
+    }
+  ],
+  "identities": {
+    "run_contract_audit_01.py": "5cf15d8bf2aa5accf255b71bf7fa6d3851dab72fca726722398a78689a7c7f73",
+    "contract_audit_cases.py": "7286f23e6dba5bc45137ef2e302864c0346ae6f65cef0040cce752f9cacfbb63",
+    "run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "run_httpx.py": "d7e7433e459562872f5db9d7bd4d171276de4864baad11aa2a7cc30b076aedb0",
+    "CONTRACT-AUDIT-01-PROTOCOL.md": "ede0d14d32c9adb56dcf94ed5efdd10bdd4af2c8845f1ad8549b0d78dfdb12eb"
+  },
+  "schedule": [
+    [
+      0,
+      "baseline"
+    ],
+    [
+      0,
+      "prior"
+    ],
+    [
+      0,
+      "current"
+    ],
+    [
+      1,
+      "current"
+    ],
+    [
+      1,
+      "prior"
+    ],
+    [
+      1,
+      "baseline"
+    ]
+  ],
+  "resource_revisions": {
+    "prior": "903e7c8",
+    "current": "19d63ec"
+  },
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "prior": "0fdce6457dee9c237cbc3c87d97b18486813de796b8fa6cd5b70886e6174a025",
+    "current": "80f8540d789aad6878d1ded9c9f9faeb60ef2324ed844f646ae45e6fcd00c4c2"
+  },
+  "native_preflight": [
+    {
+      "case": "response-contract",
+      "variant": "source",
+      "suite": "existing",
+      "exit_code": 0,
+      "output": "test_empty (test_service.Existing.test_empty) ... ok\ntest_nonempty (test_service.Existing.test_nonempty) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case": "response-contract",
+      "variant": "source",
+      "suite": "oracle",
+      "exit_code": 0,
+      "output": "test_empty (test_service.Contract.test_empty) ... ok\ntest_nonempty (test_service.Contract.test_nonempty) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case": "response-contract",
+      "variant": "faulty",
+      "suite": "existing",
+      "exit_code": 0,
+      "output": "test_empty (test_service.Existing.test_empty) ... ok\ntest_nonempty (test_service.Existing.test_nonempty) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case": "response-contract",
+      "variant": "faulty",
+      "suite": "oracle",
+      "exit_code": 1,
+      "output": "test_empty (test_service.Contract.test_empty) ... ok\ntest_nonempty (test_service.Contract.test_nonempty) ... FAIL\n\n======================================================================\nFAIL: test_nonempty (test_service.Contract.test_nonempty)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_service.py\", line 8, in test_nonempty\n    self.assertEqual(json.loads(service.render([4, 4, 2])), {\"ids\": [4, 4, 2], \"count\": 3})\nAssertionError: {'ids': [4, 4, 2], 'count': 0} != {'ids': [4, 4, 2], 'count': 3}\n- {'count': 0, 'ids': [4, 4, 2]}\n?           ^\n\n+ {'count': 3, 'ids': [4, 4, 2]}\n?           ^\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "case": "response-contract",
+      "variant": "alternate",
+      "suite": "existing",
+      "exit_code": 0,
+      "output": "test_empty (test_service.Existing.test_empty) ... ok\ntest_nonempty (test_service.Existing.test_nonempty) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case": "response-contract",
+      "variant": "alternate",
+      "suite": "oracle",
+      "exit_code": 0,
+      "output": "test_empty (test_service.Contract.test_empty) ... ok\ntest_nonempty (test_service.Contract.test_nonempty) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case": "identity-contract",
+      "variant": "source",
+      "suite": "existing",
+      "exit_code": 0,
+      "output": "test_known (test_service.Existing.test_known) ... ok\ntest_missing (test_service.Existing.test_missing) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case": "identity-contract",
+      "variant": "source",
+      "suite": "oracle",
+      "exit_code": 0,
+      "output": "test_known (test_service.Contract.test_known) ... ok\ntest_missing (test_service.Contract.test_missing) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case": "identity-contract",
+      "variant": "faulty",
+      "suite": "existing",
+      "exit_code": 0,
+      "output": "test_known (test_service.Existing.test_known) ... ok\ntest_missing (test_service.Existing.test_missing) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case": "identity-contract",
+      "variant": "faulty",
+      "suite": "oracle",
+      "exit_code": 1,
+      "output": "test_known (test_service.Contract.test_known) ... FAIL\ntest_missing (test_service.Contract.test_missing) ... ok\n\n======================================================================\nFAIL: test_known (test_service.Contract.test_known)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_service.py\", line 10, in test_known\n    self.assertIs(value, records[\"a\"])\nAssertionError: {'n': 1} is not {'n': 1}\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "case": "identity-contract",
+      "variant": "alternate",
+      "suite": "existing",
+      "exit_code": 0,
+      "output": "test_known (test_service.Existing.test_known) ... ok\ntest_missing (test_service.Existing.test_missing) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case": "identity-contract",
+      "variant": "alternate",
+      "suite": "oracle",
+      "exit_code": 0,
+      "output": "test_known (test_service.Contract.test_known) ... ok\ntest_missing (test_service.Contract.test_missing) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    }
+  ],
+  "python_version": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 360,
+  "repeats": 1,
+  "jobs": 1,
+  "completed_cells": [
+    {
+      "case": "response-contract",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 64962,
+        "cached_input_tokens": 54016,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2512,
+        "reasoning_output_tokens": 516
+      },
+      "elapsed_seconds": 86.745
+    },
+    {
+      "case": "response-contract",
+      "condition": "prior",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 72146,
+        "cached_input_tokens": 57216,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2229,
+        "reasoning_output_tokens": 374
+      },
+      "elapsed_seconds": 84.645
+    },
+    {
+      "case": "response-contract",
+      "condition": "current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 72580,
+        "cached_input_tokens": 62336,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2210,
+        "reasoning_output_tokens": 378
+      },
+      "elapsed_seconds": 96.441
+    },
+    {
+      "case": "identity-contract",
+      "condition": "current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 71844,
+        "cached_input_tokens": 62080,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2139,
+        "reasoning_output_tokens": 268
+      },
+      "elapsed_seconds": 73.568
+    },
+    {
+      "case": "identity-contract",
+      "condition": "prior",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 71634,
+        "cached_input_tokens": 61952,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2297,
+        "reasoning_output_tokens": 377
+      },
+      "elapsed_seconds": 80.822
+    },
+    {
+      "case": "identity-contract",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 65071,
+        "cached_input_tokens": 54656,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2603,
+        "reasoning_output_tokens": 493
+      },
+      "elapsed_seconds": 94.5
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T02:06:33.795289+00:00",
+  "finished_at": "2026-09-21T02:15:32.880996+00:00"
+}

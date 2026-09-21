@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0c1bd-d3ea-7c93-a963-63ae12b72c65",
+  "source_bytes": 115172,
+  "source_sha256": "b2f3189074534dfddb2129265c6eb1603dde85bf2ed5dc90e70d8455f3e73e18",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "305f3f7770405a4d18922c436baa3fadbdcb5cb3c193b06c180a5f16a30bbf60",
+      "record": {
+        "timestamp": "2026-09-21T02:14:07.691Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_011be4c4a7ea14ba016ab092ee60c487d0be04f2fad60fdb02",
+          "status": "completed",
+          "call_id": "call_pSb52bs7vRysop1TEdMYgvip",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!__pycache__' -g '!*.pyc' -g '!\\\\.git'\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bd-d434-7b72-a20e-33fc651cf36a",
+            "create_time": 1789956841.27273
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "2b60e24bf339753cce234b7e1b3f0b96059451ceaced5b44196ab103823867c9",
+      "record": {
+        "timestamp": "2026-09-21T02:14:07.838Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c1bd-f8de-75b0-9b6b-a7a03b281e84",
+          "call_id": "call_pSb52bs7vRysop1TEdMYgvip",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"615e7e\",\"wall_time_seconds\":0.000003584,\"exit_code\":0,\"original_token_count\":36,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nCONTRACT.md\\nnotes.txt\\ntest_service.py\\nservice.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bd-d434-7b72-a20e-33fc651cf36a",
+            "create_time": 1789956847.838244
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "671f6162e512820ee3a06275f366030c823f8526ac04770c8054db7997bd04b4",
+      "record": {
+        "timestamp": "2026-09-21T02:14:11.967Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_011be4c4a7ea14ba016ab092f2fb1c87d096e12f37049d2db5",
+          "status": "completed",
+          "call_id": "call_vUmOjDVVhoUau7e5Pg0bYXq4",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md CONTRACT.md service.py test_service.py notes.txt\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bd-d434-7b72-a20e-33fc651cf36a",
+            "create_time": 1789956848.286935
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "3fd8c516148e0cdad3995cb453e95e81b5d918634ff383f0f6ba488c6f93569e",
+      "record": {
+        "timestamp": "2026-09-21T02:14:12.067Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c1be-0962-7b42-8984-f0f8b68cb4d5",
+          "call_id": "call_vUmOjDVVhoUau7e5Pg0bYXq4",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"fdf557\",\"wall_time_seconds\":0.000001625,\"exit_code\":0,\"original_token_count\":387,\"output\":\"Use Python's native unittest runner with -B, without installing packages.\\nAudit only: preserve all original files/modes, Git HEAD/index and installed skill\\nresources. Work in project-local disposable copies; remove all owned scratch,\\nincluding after failure. No permanent edits, network, commits, stashes or resets.\\nConfirm actual copy-local implementation binding in each native test process.\\nReport original and stronger-test identities, native counts/exits and decisive\\nassertions. Run unchanged existing tests against correct and one narrowly faulty\\nimplementation, then, if needed, the identical stronger tests against both.\\nDo not use a rewritten simulation or setup failure as a detected behavior fault.\\nRegistry accepts a dict mapping string keys to mutable dict records.\\nget(key) must return the exact record object supplied for that key, not an equal\\ncopy. Caller edits through a returned record must be visible through later gets\\nand through the original input dict. Different keys retain their own records.\\nA missing key raises KeyError. Other input types are outside this contract.\\nclass Registry:\\n    def __init__(self, records):\\n        self.records = records\\n    def get(self, key):\\n        return self.records[key]\\nimport unittest\\nimport service\\nclass Existing(unittest.TestCase):\\n    def test_known(self):\\n        self.assertEqual(service.Registry({\\\"a\\\": {\\\"n\\\": 1}}).get(\\\"a\\\"), {\\\"n\\\": 1})\\n    def test_missing(self):\\n        with self.assertRaises(KeyError):\\n            service.Registry({}).get(\\\"absent\\\")\\nOwner notes: preserve me.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bd-d434-7b72-a20e-33fc651cf36a",
+            "create_time": 1789956852.066981
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "45fc08fcd6e3d622584b557bc1f744734b1eba5a45ee17161dd79ffe2eac7580",
+      "record": {
+        "timestamp": "2026-09-21T02:15:19.055Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_011be4c4a7ea14ba016ab09308514087d08302a965b345a88d",
+          "status": "completed",
+          "call_id": "call_wWzpGnEDorUzALmMiMRq42LY",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B - <<'PY'\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport stat\\nimport subprocess\\nimport sys\\nimport tempfile\\n\\nroot = Path.cwd().resolve()\\ndef snapshot():\\n    result = {}\\n    for path in sorted(root.rglob('*')):\\n        info = path.lstat()\\n        rel = str(path.relative_to(root))\\n        content = os.readlink(path) if path.is_symlink() else hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None\\n        result[rel] = (stat.S_IFMT(info.st_mode), stat.S_IMODE(info.st_mode), content)\\n    result['.'] = (stat.S_IFDIR, stat.S_IMODE(root.stat().st_mode), None)\\n    return result\\n\\ndef digest(path):\\n    return hashlib.sha256(path.read_bytes()).hexdigest()\\n\\nbefore = snapshot()\\nscratch = Path(tempfile.mkdtemp(prefix='.audit-', dir=root))\\ntry:\\n    stronger = '''import unittest\\nimport service\\n\\nclass Stronger(unittest.TestCase):\\n    def test_exact_supplied_objects(self):\\n        first = {\\\"n\\\": 1}\\n        equal_but_distinct = {\\\"n\\\": 1}\\n        empty = {}\\n        records = {\\\"a\\\": first, \\\"b\\\": equal_but_distinct, \\\"empty\\\": empty, \\\"alias\\\": first}\\n        registry = service.Registry(records)\\n        for key in records:\\n            self.assertIs(registry.get(key), records[key], key)\\n        self.assertIs(registry.get(\\\"a\\\"), registry.get(\\\"alias\\\"))\\n        self.assertIsNot(registry.get(\\\"a\\\"), registry.get(\\\"b\\\"))\\n\\n    def test_returned_edits_visible_everywhere(self):\\n        records = {\\\"a\\\": {\\\"n\\\": 1, \\\"remove\\\": True}}\\n        registry = service.Registry(records)\\n        returned = registry.get(\\\"a\\\")\\n        returned[\\\"n\\\"] = 7\\n        returned[\\\"added\\\"] = \\\"visible\\\"\\n        del returned[\\\"remove\\\"]\\n        expected = {\\\"n\\\": 7, \\\"added\\\": \\\"visible\\\"}\\n        self.assertEqual(registry.get(\\\"a\\\"), expected)\\n        self.assertEqual(records[\\\"a\\\"], expected)\\n\\n    def test_keys_keep_their_own_records(self):\\n        records = {\\\"a\\\": {\\\"n\\\": 1}, \\\"b\\\": {\\\"n\\\": 2}}\\n        registry = service.Registry(records)\\n        registry.get(\\\"a\\\")[\\\"n\\\"] = 9\\n        self.assertEqual(registry.get(\\\"b\\\"), {\\\"n\\\": 2})\\n        self.assertIs(registry.get(\\\"b\\\"), records[\\\"b\\\"])\\n        self.assertEqual(registry.get(\\\"a\\\"), {\\\"n\\\": 9})\\n        self.assertIs(registry.get(\\\"a\\\"), records[\\\"a\\\"])\\n\\n    def test_missing_in_populated_registry(self):\\n        records = {\\\"a\\\": {\\\"n\\\": 1}}\\n        registry = service.Registry(records)\\n        with self.assertRaises(KeyError):\\n            registry.get(\\\"absent\\\")\\n        self.assertEqual(records, {\\\"a\\\": {\\\"n\\\": 1}})\\n'''\\n    binding = '''import hashlib\\nimport importlib\\nfrom pathlib import Path\\nimport service\\n\\nhere = Path(__file__).resolve().parent\\nexpected = here / \\\"service.py\\\"\\nassert Path(service.__file__).resolve() == expected, service.__file__\\nassert Path(service.Registry.get.__code__.co_filename).resolve() == expected\\nassert service.Registry.get.__globals__ is service.__dict__\\nfor name in (\\\"test_service\\\", \\\"test_stronger\\\"):\\n    module = importlib.import_module(name)\\n    assert Path(module.__file__).resolve() == here / (name + \\\".py\\\")\\n    assert module.service is service\\nprint(\\\"BINDING:\\\", expected, \\\"get code:\\\", service.Registry.get.__code__.co_filename,\\n      \\\"sha256:\\\", hashlib.sha256(expected.read_bytes()).hexdigest(), flush=True)\\n'''\\n    original = (root / 'service.py').read_text()\\n    assert original.count('return self.records[key]') == 1\\n    faulty = original.replace('return self.records[key]', 'return dict(self.records[key])')\\n    copies = {}\\n    for name in ('correct', 'faulty'):\\n        target = scratch / name\\n        target.mkdir()\\n        for filename in ('AGENTS.md', 'CONTRACT.md', 'service.py', 'test_service.py', 'notes.txt'):\\n            shutil.copy2(root / filename, target / filename)\\n        if name == 'faulty':\\n            (target / 'service.py').write_text(faulty)\\n        (target / 'test_stronger.py').write_text(stronger)\\n        (target / 'binding_check.py').write_text(binding)\\n        assert (target / 'test_service.py').read_bytes() == (root / 'test_service.py').read_bytes()\\n        copies[name] = target\\n    print('ORIGINAL test_service.py SHA256', digest(root / 'test_service.py'), flush=True)\\n    print('ORIGINAL service.py SHA256', digest(root / 'service.py'), flush=True)\\n    print('STRONGER test_stronger.py SHA256', digest(copies['correct'] / 'test_stronger.py'), flush=True)\\n    assert digest(copies['correct'] / 'test_stronger.py') == digest(copies['faulty'] / 'test_stronger.py')\\n    for suite in ('test_service', 'test_stronger'):\\n        for name, target in copies.items():\\n            command = [sys.executable, '-B', '-m', 'unittest', '-v', 'binding_check', suite]\\n            print('\\\\nRUN', name, ' '.join(command), flush=True)\\n            env = dict(os.environ)\\n            env.pop('PYTHONPATH', None)\\n            result = subprocess.run(command, cwd=target, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\\n            print(result.stdout, end='', flush=True)\\n            print('NATIVE EXIT', result.returncode, flush=True)\\n            expected_exit = 1 if (suite, name) == ('test_stronger', 'faulty') else 0\\n            assert result.returncode == expected_exit\\nfinally:\\n    shutil.rmtree(scratch)\\n    after = snapshot()\\n    changed = [key for key in before.keys() | after.keys() if before.get(key) != after.get(key)]\\n    print('\\\\nPRESERVATION:', 'PASS' if not changed else changed, flush=True)\\n    print('SCRATCH REMOVED:', not scratch.exists(), flush=True)\\n    assert not changed, changed\\nPY\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bd-d434-7b72-a20e-33fc651cf36a",
+            "create_time": 1789956852.558173
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "a42ff0327d0d6c3b5046d311601a03a22a4c8a5a977a73a2e8a58b8b7d3d9ca5",
+      "record": {
+        "timestamp": "2026-09-21T02:15:19.380Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c1bf-1054-7f11-92c7-472a803dce8e",
+          "call_id": "call_wWzpGnEDorUzALmMiMRq42LY",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"e85878\",\"wall_time_seconds\":0.140045083,\"exit_code\":0,\"original_token_count\":1376,\"output\":\"ORIGINAL test_service.py SHA256 8113731bfbd5e0ab1a6944a154f286c7458491ed56a99def1b75bfd3203ef477\\nORIGINAL service.py SHA256 9fb89c0226d61255a8f32d898c41d6b27bd3c2ba7a929fff28676c1934c9b599\\nSTRONGER test_stronger.py SHA256 e45e8ade09b1e969d427b12baec4ab48411b286da80be2e157407ac0fe5c8338\\n\\nRUN correct <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B -m unittest -v binding_check test_service\\nBINDING: <WORKSPACE>/.audit-kxkke_ew/correct/service.py get code: <WORKSPACE>/.audit-kxkke_ew/correct/service.py sha256: 9fb89c0226d61255a8f32d898c41d6b27bd3c2ba7a929fff28676c1934c9b599\\ntest_known (test_service.Existing.test_known) ... ok\\ntest_missing (test_service.Existing.test_missing) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nOK\\nNATIVE EXIT 0\\n\\nRUN faulty <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B -m unittest -v binding_check test_service\\nBINDING: <WORKSPACE>/.audit-kxkke_ew/faulty/service.py get code: <WORKSPACE>/.audit-kxkke_ew/faulty/service.py sha256: 48f817acc9924d0142c45dd1be7fb696c745b8d73bd553ea0480e4403ee5c339\\ntest_known (test_service.Existing.test_known) ... ok\\ntest_missing (test_service.Existing.test_missing) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nOK\\nNATIVE EXIT 0\\n\\nRUN correct <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B -m unittest -v binding_check test_stronger\\nBINDING: <WORKSPACE>/.audit-kxkke_ew/correct/service.py get code: <WORKSPACE>/.audit-kxkke_ew/correct/service.py sha256: 9fb89c0226d61255a8f32d898c41d6b27bd3c2ba7a929fff28676c1934c9b599\\ntest_exact_supplied_objects (test_stronger.Stronger.test_exact_supplied_objects) ... ok\\ntest_keys_keep_their_own_records (test_stronger.Stronger.test_keys_keep_their_own_records) ... ok\\ntest_missing_in_populated_registry (test_stronger.Stronger.test_missing_in_populated_registry) ... ok\\ntest_returned_edits_visible_everywhere (test_stronger.Stronger.test_returned_edits_visible_everywhere) ... ok\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.000s\\n\\nOK\\nNATIVE EXIT 0\\n\\nRUN faulty <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B -m unittest -v binding_check test_stronger\\nBINDING: <WORKSPACE>/.audit-kxkke_ew/faulty/service.py get code: <WORKSPACE>/.audit-kxkke_ew/faulty/service.py sha256: 48f817acc9924d0142c45dd1be7fb696c745b8d73bd553ea0480e4403ee5c339\\ntest_exact_supplied_objects (test_stronger.Stronger.test_exact_supplied_objects) ... FAIL\\ntest_keys_keep_their_own_records (test_stronger.Stronger.test_keys_keep_their_own_records) ... FAIL\\ntest_missing_in_populated_registry (test_stronger.Stronger.test_missing_in_populated_registry) ... ok\\ntest_returned_edits_visible_everywhere (test_stronger.Stronger.test_returned_edits_visible_everywhere) ... FAIL\\n\\n======================================================================\\nFAIL: test_exact_supplied_objects (test_stronger.Stronger.test_exact_supplied_objects)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-kxkke_ew/faulty/test_stronger.py\\\", line 12, in test_exact_supplied_objects\\n    self.assertIs(registry.get(key), records[key], key)\\nAssertionError: {'n': 1} is not {'n': 1} : a\\n\\n======================================================================\\nFAIL: test_keys_keep_their_own_records (test_stronger.Stronger.test_keys_keep_their_own_records)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-kxkke_ew/faulty/test_stronger.py\\\", line 32, in test_keys_keep_their_own_records\\n    self.assertIs(registry.get(\\\"b\\\"), records[\\\"b\\\"])\\nAssertionError: {'n': 2} is not {'n': 2}\\n\\n======================================================================\\nFAIL: test_returned_edits_visible_everywhere (test_stronger.Stronger.test_returned_edits_visible_everywhere)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-kxkke_ew/faulty/test_stronger.py\\\", line 24, in test_returned_edits_visible_everywhere\\n    self.assertEqual(registry.get(\\\"a\\\"), expected)\\nAssertionError: {'n': 1, 'remove': True} != {'n': 7, 'added': 'visible'}\\n- {'n': 1, 'remove': True}\\n+ {'added': 'visible', 'n': 7}\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.001s\\n\\nFAILED (failures=3)\\nNATIVE EXIT 1\\n\\nPRESERVATION: PASS\\nSCRATCH REMOVED: True\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bd-d434-7b72-a20e-33fc651cf36a",
+            "create_time": 1789956919.380889
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

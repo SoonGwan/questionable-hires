@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Contract candidate rejected — 2026-09-21, measured `19d63ec`
+
+[Six-cell review](CONTRACT-AUDIT-01-REVIEW.md): every arm meets both tasks'
+five obligations, including required identity and flexible representation. Token
+sums135,148 baseline /148,306 prior /148,773 candidate. No candidate token or
+decision advantage; additional author regression load also invalidates clean
+latency interpretation. Reject the added entrypoint paragraph, preserve all
+original evidence, and restore prior instructions. No featured or release claim.
+
+한국어: 필수 검증은 유지됐지만 추가 문장의 효과는 관찰되지 않았다. 토큰이
+이전보다0.31%, 무스킬보다10.08% 많아 최적화 후보로 채택하지 않는다.
+
 ## Checkout regression refreshed — 2026-09-21, source `6daafcb`
 
 [Release-check checkpoint](RELEASE-CHECK-2026-09-20.md): Python 3.11 passes

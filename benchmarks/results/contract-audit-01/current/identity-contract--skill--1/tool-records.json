@@ -1,0 +1,164 @@
+{
+  "session_id": "01a0c1bb-775e-7b90-8332-5b69a9081c4a",
+  "source_bytes": 145084,
+  "source_sha256": "f402d413bed812d4fc624f8bcb0eaf07861bde00e68c12c965c7cdb2b87f5ef7",
+  "source_lines": 38,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "1ca26163d54b5696bb9fd0112be350725b470c41f3aa51a32c00c173db0394f6",
+      "record": {
+        "timestamp": "2026-09-21T02:11:32.089Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_012c7ac45136d807016ab09251190487d0bb72440ea6bcb432",
+          "status": "completed",
+          "call_id": "call_PQXOiZhvIPTNWKryDh5gA5qn",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files -g 'AGENTS.md' -g 'CONTRACT.md' -g '*service*' -g 'SKILL.md' -g 'pyproject.toml' -g 'setup.cfg'\",\"max_output_tokens\":4000}));\ntext(await tools.exec_command({cmd:\"cat AGENTS.md CONTRACT.md test_service.py .agents/skills/con-artist/SKILL.md\",\"max_output_tokens\":10000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bb-77a8-71c3-82af-b1973634e8d4",
+            "create_time": 1789956686.594541
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "f950c55c7a0662578268907bd87c17b589a1fa73ca9ed761cee1e266c6d3211e",
+      "record": {
+        "timestamp": "2026-09-21T02:11:32.263Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c1bb-9927-7510-baa3-28e42918d6ae",
+          "call_id": "call_PQXOiZhvIPTNWKryDh5gA5qn",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"c0b9f2\",\"wall_time_seconds\":0.000005667,\"exit_code\":0,\"original_token_count\":33,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nCONTRACT.md\\ntest_service.py\\nservice.py\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a05dd6\",\"wall_time_seconds\":0.000003042,\"exit_code\":0,\"original_token_count\":1376,\"output\":\"Use Python's native unittest runner with -B, without installing packages.\\nAudit only: preserve all original files/modes, Git HEAD/index and installed skill\\nresources. Work in project-local disposable copies; remove all owned scratch,\\nincluding after failure. No permanent edits, network, commits, stashes or resets.\\nConfirm actual copy-local implementation binding in each native test process.\\nReport original and stronger-test identities, native counts/exits and decisive\\nassertions. Run unchanged existing tests against correct and one narrowly faulty\\nimplementation, then, if needed, the identical stronger tests against both.\\nDo not use a rewritten simulation or setup failure as a detected behavior fault.\\nRegistry accepts a dict mapping string keys to mutable dict records.\\nget(key) must return the exact record object supplied for that key, not an equal\\ncopy. Caller edits through a returned record must be visible through later gets\\nand through the original input dict. Different keys retain their own records.\\nA missing key raises KeyError. Other input types are outside this contract.\\nimport unittest\\nimport service\\nclass Existing(unittest.TestCase):\\n    def test_known(self):\\n        self.assertEqual(service.Registry({\\\"a\\\": {\\\"n\\\": 1}}).get(\\\"a\\\"), {\\\"n\\\": 1})\\n    def test_missing(self):\\n        with self.assertRaises(KeyError):\\n            service.Registry({}).get(\\\"absent\\\")\\n---\\nname: con-artist\\ndescription: Audit whether tests detect broken behavior by tracing assertions and running narrow controlled mutations in an isolated workspace; use for test-quality reviews, not routine test execution.\\n---\\n\\n# Con Artist\\n\\n> Your mock is very impressed with itself.\\n\\n## Check what the test actually buys\\n\\nTrace the requested assertions far enough to establish the actual exercised effect\\nand select a reachable fault. Follow unresolved bindings, mocks and relevant setup;\\nreading every intermediate wrapper is not itself evidence. Reuse known instructions,\\nrunner and source context. Keep discovery inside the permitted project root; a\\nbroad suite need not become a reading list of unrelated tests.\\n\\nUse the evidenced runner and configuration; reuse a valid correct-code baseline.\\nChoose one meaningful fault at the requested boundary, such as acknowledging\\nwithout persisting. Preserve originals and compilation/binding context through\\nproject isolation, disposable module/package copies or a valid substitution;\\nrestore substitutions in reused processes. A wrong binding, rewritten simulation,\\nsyntax error or equivalent mutation cannot establish test sensitivity.\\n\\nInspect each phase's actual assertion and exit, not just a green baseline or a\\nnonzero mutant status. Runner errors/warnings can indicate broken assertion\\nplumbing, not a detected production fault. Establish provenance through copied\\nimports, traced bindings and defect-specific observations. Add instrumentation for\\nrequired or unresolved dispatch, not duplicate evidence; a separate import-only\\nprocess does not prove what the test process loads.\\n\\n## Use support only where it helps\\n\\n- Nearby known files: read relevant source/configuration directly. For scattered\\n  Python context, [the collector](references/python-context.md) locates definitions,\\n  ancestor instructions and fixtures. Select known bodies directly; indexes are\\n  navigation, not reviewed bodies or execution. Don't recollect equivalent context.\\n- Existing Python test improvements: consider [the complete four-check recipe](references/existing-tests.md)\\n  when they remove custom copy/run/cleanup plumbing. One recipe checks original\\n  and proposed tests against correct/faulty code with the native runner and fixtures;\\n  applying the verified edit remains separate. No helper is needed for a simpler\\n  native workflow or an already-completed audit.\\n- Small self-contained audits: use the native runner in project-local copies or\\n  a valid substitution. Choose [the Python helper](references/python-audit.md) when\\n  its bounded processes, selected-input integrity checks or shared-baseline batches\\n  remove needed orchestration. Python compatibility alone is not a reason to adopt\\n  it or load its guide. Read implementation for a concrete trust/adaptation question.\\n- Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)\\n  covers false-pass assertion helpers and incomplete checks. It is not routine setup.\\n\\nIf tests survive, verify the same stronger assertion on correct and faulty code:\\npass the former, fail the latter for the intended effect, not merely success or\\ncontainer size. Assert the requested behavioral contract; extra constraints on\\nincidental representation or object identity can reject valid implementations.\\nKeep identity/order checks when they are part of that contract. If killed,\\nidentify the detecting assertion or warning policy;\\nthis protects that fault, not every lifecycle path.\\n\\n## Deliver and stop\\n\\nGive decisive commands/results and the gap/proposed assertion or detecting check.\\nKeep a harness/report only for requested reuse or delivery. Without isolated\\nexecution, label the concern static. Apply test improvements only when requested,\\nnever the deliberate fault; an audit does not authorize publication.\\n\\nStop when the scoped claim and requested improvements are verified. Add faults\\nonly for distinct material boundaries, not to fish for survivors, chase a global\\nmutation score or remove every mock. Preserve user changes and explicit requirements.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bb-77a8-71c3-82af-b1973634e8d4",
+            "create_time": 1789956692.263837
+          }
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "2d3814aa787c7bcad1f6a6346ef14740813f8344537f24e6ab83bbc38a591156",
+      "record": {
+        "timestamp": "2026-09-21T02:11:35.432Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_012c7ac45136d807016ab09255fb3c87d08b0f7a598c5d2d6a",
+          "status": "completed",
+          "call_id": "call_tT8NQfMW9gFz2nrgpvpderUy",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat service.py && rg --files --hidden -g '!.git/**' -g '!.agents/**' -g '!.codex/**'\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bb-77a8-71c3-82af-b1973634e8d4",
+            "create_time": 1789956692.706451
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "d96c62a16258c8afa80db04c1bf6d46d7fabd12308346000fb1f58f6de18ef56",
+      "record": {
+        "timestamp": "2026-09-21T02:11:35.502Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c1bb-a5ce-7213-9586-401dc3241167",
+          "call_id": "call_tT8NQfMW9gFz2nrgpvpderUy",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a274a8\",\"wall_time_seconds\":0.000001583,\"exit_code\":0,\"original_token_count\":49,\"output\":\"class Registry:\\n    def __init__(self, records):\\n        self.records = records\\n    def get(self, key):\\n        return self.records[key]\\nAGENTS.md\\nCONTRACT.md\\nnotes.txt\\ntest_service.py\\nservice.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bb-77a8-71c3-82af-b1973634e8d4",
+            "create_time": 1789956695.502335
+          }
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "a9013eda7a2508e74a061b34c4c3219a28b0737aff9175558a895bf680b8f77f",
+      "record": {
+        "timestamp": "2026-09-21T02:12:24.902Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_012c7ac45136d807016ab09262d3c487d0b8637ab1cc707215",
+          "status": "completed",
+          "call_id": "call_jRSiffhwI3yPw419fCmLjbB3",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B - <<'PY'\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport stat\\nimport subprocess\\nimport sys\\nimport tempfile\\n\\nroot = Path.cwd()\\ndef snapshot():\\n    result = {}\\n    for path in sorted(root.rglob('*')):\\n        relative = str(path.relative_to(root))\\n        info = path.lstat()\\n        mode = stat.S_IMODE(info.st_mode)\\n        if path.is_symlink():\\n            result[relative] = ('link', mode, os.readlink(path))\\n        elif path.is_file():\\n            result[relative] = ('file', mode, hashlib.sha256(path.read_bytes()).hexdigest())\\n        elif path.is_dir():\\n            result[relative] = ('dir', mode)\\n    return result\\n\\nbefore = snapshot()\\nscratch = Path(tempfile.mkdtemp(prefix='.contract-audit-', dir=root))\\nstronger = '''import unittest\\nimport service\\n\\nclass Contract(unittest.TestCase):\\n    def test_exact_supplied_record(self):\\n        record = {\\\"n\\\": 1}\\n        registry = service.Registry({\\\"a\\\": record})\\n        self.assertIs(registry.get(\\\"a\\\"), record)\\n\\n    def test_returned_edits_remain_visible(self):\\n        records = {\\\"a\\\": {\\\"n\\\": 1}}\\n        registry = service.Registry(records)\\n        returned = registry.get(\\\"a\\\")\\n        returned[\\\"n\\\"] = 9\\n        returned[\\\"added\\\"] = True\\n        for destination, observed in ((\\\"later get\\\", registry.get(\\\"a\\\")),\\n                                      (\\\"original input\\\", records[\\\"a\\\"])):\\n            with self.subTest(destination=destination):\\n                self.assertEqual(observed, {\\\"n\\\": 9, \\\"added\\\": True})\\n\\n    def test_different_keys_retain_their_records(self):\\n        records = {\\\"a\\\": {\\\"n\\\": 1}, \\\"b\\\": {\\\"n\\\": 2}}\\n        registry = service.Registry(records)\\n        registry.get(\\\"a\\\")[\\\"n\\\"] = 9\\n        with self.subTest(effect=\\\"other record unchanged\\\"):\\n            self.assertEqual(registry.get(\\\"b\\\"), {\\\"n\\\": 2})\\n        for key in (\\\"b\\\", \\\"a\\\", \\\"b\\\"):\\n            with self.subTest(key=key):\\n                self.assertIs(registry.get(key), records[key])\\n\\n    def test_missing_key_in_populated_registry(self):\\n        registry = service.Registry({\\\"a\\\": {\\\"n\\\": 1}})\\n        with self.assertRaises(KeyError):\\n            registry.get(\\\"absent\\\")\\n'''\\nrunner = '''import hashlib, pathlib, runpy, service, sys\\nexpected = pathlib.Path.cwd() / \\\"service.py\\\"\\nactual = pathlib.Path(service.__file__).resolve()\\nassert actual == expected.resolve(), (actual, expected)\\nassert pathlib.Path(service.Registry.get.__code__.co_filename).resolve() == expected.resolve()\\nprint(\\\"BOUND\\\", actual, \\\"get code:\\\", service.Registry.get.__code__.co_filename,\\n      \\\"sha256:\\\", hashlib.sha256(actual.read_bytes()).hexdigest(), flush=True)\\nrunpy.run_module(\\\"unittest\\\", run_name=\\\"__main__\\\")\\n'''\\ntry:\\n    for variant in ('correct', 'faulty'):\\n        destination = scratch / variant\\n        destination.mkdir()\\n        for name in ('service.py', 'test_service.py'):\\n            shutil.copy2(root / name, destination / name)\\n        (destination / 'test_contract.py').write_text(stronger)\\n    faulty = scratch / 'faulty' / 'service.py'\\n    source = faulty.read_text()\\n    assert source.count('return self.records[key]') == 1\\n    faulty.write_text(source.replace('return self.records[key]', 'return dict(self.records[key])'))\\n    for name in ('test_service.py', 'test_contract.py'):\\n        correct_bytes = (scratch / 'correct' / name).read_bytes()\\n        assert correct_bytes == (scratch / 'faulty' / name).read_bytes()\\n        if name == 'test_service.py':\\n            assert correct_bytes == (root / name).read_bytes()\\n        print('TEST IDENTITY', name, hashlib.sha256(correct_bytes).hexdigest(), flush=True)\\n    for variant, modules, expected_exit in (\\n        ('correct', ['test_service'], 0),\\n        ('faulty', ['test_service'], 0),\\n        ('correct', ['test_service', 'test_contract'], 0),\\n        ('faulty', ['test_service', 'test_contract'], 1),\\n    ):\\n        command = [sys.executable, '-B', '-c', runner, '-v', *modules]\\n        print('\\\\nRUN', variant, 'native unittest -v', ' '.join(modules), flush=True)\\n        result = subprocess.run(command, cwd=scratch / variant, text=True,\\n                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,\\n                                timeout=30)\\n        print(result.stdout, end='', flush=True)\\n        print('NATIVE EXIT', result.returncode, flush=True)\\n        assert result.returncode == expected_exit, result.returncode\\nfinally:\\n    shutil.rmtree(scratch)\\n    after = snapshot()\\n    assert before == after, 'Original project content/mode inventory changed'\\n    print('\\\\nINTEGRITY: all original file bytes, modes, symlinks and directory modes unchanged; Git and skill resources included where present. Owned scratch removed.', flush=True)\\nPY\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bb-77a8-71c3-82af-b1973634e8d4",
+            "create_time": 1789956695.955312
+          }
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "8839c6db8ac0ad9221e22f11a7e7ad52534939b94ffe6af1b58bd922974bc9f9",
+      "record": {
+        "timestamp": "2026-09-21T02:12:25.197Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c1bc-67ed-78b2-af49-425f7e1b6c03",
+          "call_id": "call_jRSiffhwI3yPw419fCmLjbB3",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"21e07e\",\"wall_time_seconds\":0.1236235,\"exit_code\":0,\"original_token_count\":1966,\"output\":\"TEST IDENTITY test_service.py 8113731bfbd5e0ab1a6944a154f286c7458491ed56a99def1b75bfd3203ef477\\nTEST IDENTITY test_contract.py 9352ede7bcabeeb3aff7b31b31b9e55223c7eb522f2d1cf144f259cfb3141c74\\n\\nRUN correct native unittest -v test_service\\nBOUND <WORKSPACE>/.contract-audit-u3fk3wqt/correct/service.py get code: <WORKSPACE>/.contract-audit-u3fk3wqt/correct/service.py sha256: 9fb89c0226d61255a8f32d898c41d6b27bd3c2ba7a929fff28676c1934c9b599\\ntest_known (test_service.Existing.test_known) ... ok\\ntest_missing (test_service.Existing.test_missing) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nOK\\nNATIVE EXIT 0\\n\\nRUN faulty native unittest -v test_service\\nBOUND <WORKSPACE>/.contract-audit-u3fk3wqt/faulty/service.py get code: <WORKSPACE>/.contract-audit-u3fk3wqt/faulty/service.py sha256: 48f817acc9924d0142c45dd1be7fb696c745b8d73bd553ea0480e4403ee5c339\\ntest_known (test_service.Existing.test_known) ... ok\\ntest_missing (test_service.Existing.test_missing) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nOK\\nNATIVE EXIT 0\\n\\nRUN correct native unittest -v test_service test_contract\\nBOUND <WORKSPACE>/.contract-audit-u3fk3wqt/correct/service.py get code: <WORKSPACE>/.contract-audit-u3fk3wqt/correct/service.py sha256: 9fb89c0226d61255a8f32d898c41d6b27bd3c2ba7a929fff28676c1934c9b599\\ntest_known (test_service.Existing.test_known) ... ok\\ntest_missing (test_service.Existing.test_missing) ... ok\\ntest_different_keys_retain_their_records (test_contract.Contract.test_different_keys_retain_their_records) ... ok\\ntest_exact_supplied_record (test_contract.Contract.test_exact_supplied_record) ... ok\\ntest_missing_key_in_populated_registry (test_contract.Contract.test_missing_key_in_populated_registry) ... ok\\ntest_returned_edits_remain_visible (test_contract.Contract.test_returned_edits_remain_visible) ... ok\\n\\n----------------------------------------------------------------------\\nRan 6 tests in 0.000s\\n\\nOK\\nNATIVE EXIT 0\\n\\nRUN faulty native unittest -v test_service test_contract\\nBOUND <WORKSPACE>/.contract-audit-u3fk3wqt/faulty/service.py get code: <WORKSPACE>/.contract-audit-u3fk3wqt/faulty/service.py sha256: 48f817acc9924d0142c45dd1be7fb696c745b8d73bd553ea0480e4403ee5c339\\ntest_known (test_service.Existing.test_known) ... ok\\ntest_missing (test_service.Existing.test_missing) ... ok\\ntest_different_keys_retain_their_records (test_contract.Contract.test_different_keys_retain_their_records) ... \\n  test_different_keys_retain_their_records (test_contract.Contract.test_different_keys_retain_their_records) (key='b') ... FAIL\\n  test_different_keys_retain_their_records (test_contract.Contract.test_different_keys_retain_their_records) (key='a') ... FAIL\\n  test_different_keys_retain_their_records (test_contract.Contract.test_different_keys_retain_their_records) (key='b') ... FAIL\\ntest_exact_supplied_record (test_contract.Contract.test_exact_supplied_record) ... FAIL\\ntest_missing_key_in_populated_registry (test_contract.Contract.test_missing_key_in_populated_registry) ... ok\\ntest_returned_edits_remain_visible (test_contract.Contract.test_returned_edits_remain_visible) ... \\n  test_returned_edits_remain_visible (test_contract.Contract.test_returned_edits_remain_visible) (destination='later get') ... FAIL\\n  test_returned_edits_remain_visible (test_contract.Contract.test_returned_edits_remain_visible) (destination='original input') ... FAIL\\n\\n======================================================================\\nFAIL: test_different_keys_retain_their_records (test_contract.Contract.test_different_keys_retain_their_records) (key='b')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.contract-audit-u3fk3wqt/faulty/test_contract.py\\\", line 29, in test_different_keys_retain_their_records\\n    self.assertIs(registry.get(key), records[key])\\nAssertionError: {'n': 2} is not {'n': 2}\\n\\n======================================================================\\nFAIL: test_different_keys_retain_their_records (test_contract.Contract.test_different_keys_retain_their_records) (key='a')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.contract-audit-u3fk3wqt/faulty/test_contract.py\\\", line 29, in test_different_keys_retain_their_records\\n    self.assertIs(registry.get(key), records[key])\\nAssertionError: {'n': 1} is not {'n': 1}\\n\\n======================================================================\\nFAIL: test_different_keys_retain_their_records (test_contract.Contract.test_different_keys_retain_their_records) (key='b')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.contract-audit-u3fk3wqt/faulty/test_contract.py\\\", line 29, in test_different_keys_retain_their_records\\n    self.assertIs(registry.get(key), records[key])\\nAssertionError: {'n': 2} is not {'n': 2}\\n\\n======================================================================\\nFAIL: test_exact_supplied_record (test_contract.Contract.test_exact_supplied_record)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.contract-audit-u3fk3wqt/faulty/test_contract.py\\\", line 8, in test_exact_supplied_record\\n    self.assertIs(registry.get(\\\"a\\\"), record)\\nAssertionError: {'n': 1} is not {'n': 1}\\n\\n======================================================================\\nFAIL: test_returned_edits_remain_visible (test_contract.Contract.test_returned_edits_remain_visible) (destination='later get')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.contract-audit-u3fk3wqt/faulty/test_contract.py\\\", line 19, in test_returned_edits_remain_visible\\n    self.assertEqual(observed, {\\\"n\\\": 9, \\\"added\\\": True})\\nAssertionError: {'n': 1} != {'n': 9, 'added': True}\\n- {'n': 1}\\n+ {'added': True, 'n': 9}\\n\\n======================================================================\\nFAIL: test_returned_edits_remain_visible (test_contract.Contract.test_returned_edits_remain_visible) (destination='original input')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.contract-audit-u3fk3wqt/faulty/test_contract.py\\\", line 19, in test_returned_edits_remain_visible\\n    self.assertEqual(observed, {\\\"n\\\": 9, \\\"added\\\": True})\\nAssertionError: {'n': 1} != {'n': 9, 'added': True}\\n- {'n': 1}\\n+ {'added': True, 'n': 9}\\n\\n----------------------------------------------------------------------\\nRan 6 tests in 0.001s\\n\\nFAILED (failures=6)\\nNATIVE EXIT 1\\n\\nINTEGRITY: all original file bytes, modes, symlinks and directory modes unchanged; Git and skill resources included where present. Owned scratch removed.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1bb-77a8-71c3-82af-b1973634e8d4",
+            "create_time": 1789956745.19781
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
