@@ -118,6 +118,14 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Correction2026-09-21, parent`e86720f`: [empty native unittest status](AUDIT-EMPTY-NATIVE-01.md).
+Full Linux Python3.12 archive:1,085pass/26skip/1failure. The audit helper confused
+native empty-suite exit5 with a shutdown contradiction; both already stopped as
+incomplete. Corrected classification passes112 macOS Python3.11 audit tests.
+Corrected full Linux check pending; original failure retained. No model-cost claim.
+한국어: Linux 전체 검사에서 발견한 빈 테스트 결과의 진단 오류를 수정했다.
+실패 원본은 보존했으며 수정본의 전체 Linux 검증은 아직 남아 있다.
+
 Candidate2026-09-21, parent`f7ecb45`: [audit phase versus batch routing](AUDIT-PHASE-ROUTING-01.md)
 distinguishes one fault's four verification phases from independent batch work.
 Single/multiple-fault execution contracts unchanged;107audit tests pass. Model

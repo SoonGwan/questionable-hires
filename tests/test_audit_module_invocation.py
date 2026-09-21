@@ -139,6 +139,28 @@ class ModuleInvocationTests(unittest.TestCase):
                 check = report['checks']['correct_tests']
                 self.assertTrue(check['timed_out'] or check['exit_code'] == 7)
 
+    def test_empty_exit_five_is_no_coverage_but_other_shutdown_failures_conflict(self):
+        # Exercise the native 3.12 empty-suite status on older interpreters too.
+        for skipped, native, expected in [(False, 5, 5), (False, 1, 7),
+                                          (True, 5, 7), (True, 1, 7)]:
+            with self.subTest(skipped=skipped, native=native):
+                source = 'import unittest, atexit, os\n'
+                source += 'atexit.register(lambda: os._exit(' + str(native) + '))\n'
+                if skipped:
+                    source += ('@unittest.skip("not run")\nclass Tests(unittest.TestCase):\n'
+                               '    def test_skipped(self): self.fail()\n')
+                (self.root / 'test_service.py').write_text(source)
+                report = self.observe(dict(self.recipe, precheck=''))
+                self.assertEqual(report['status'], 'incomplete')
+                self.assertEqual(list(report['checks']), ['correct_tests'])
+                check = report['checks']['correct_tests']
+                self.assertEqual(check['native_exit_code'], native)
+                self.assertEqual(check['exit_code'], expected)
+                self.assertEqual(check['suite_observation'],
+                                 dict(tests=int(skipped), skipped=int(skipped), successful=True))
+                self.assertEqual('incomplete_reason' in check, expected == 7)
+                self.assertIn('Ran ' + str(int(skipped)) + ' test', check['output'])
+
     def test_invocation_changes_invalidate_reused_baseline(self):
         (self.root / 'test_service.py').write_text('import unittest\nfrom service import value\n'
             'class Tests(unittest.TestCase):\n    def test_value(self): self.assertEqual(value(), 1)\n')
