@@ -55,6 +55,11 @@ or recoverable savings.
 
 These changes are implemented; their model-cost effect is not established:
 
+- [Isolated scratch02](SWE-LITE-SCRATCH-02.md), parent`551dce3`: optional
+  container-private scratch avoids the pytest ancestor-config rootdir defect.
+  Native base replay184pass versus legacy181pass/3fail;23 runner checks pass
+  in checkout/archive. Old scheduler unchanged; future task scope must explicitly
+  permit scratch. This is environment validation, not a new model efficiency result.
 - [Complete decorator excerpts](PYTHON-REGIONS-DECORATORS-01.md), parent`7d67eff`:
   multiline decorator openings no longer disappear from supposedly complete
   regions. Four new regression tests fail before repair; all18 region tests pass

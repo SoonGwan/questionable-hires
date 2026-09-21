@@ -1,0 +1,61 @@
+/testbed/src/pytest/__init__.py
+/testbed/.git/qh-tmp/tmpasblc63k
+........................................................................ [ 37%]
+........................................sssssss......................... [ 74%]
+......s..............F......Fx.............F.....s                       [100%]
+=================================== FAILURES ===================================
+_____________ TestExecutionNonForked.test_logstart_logfinish_hooks _____________
+/testbed/testing/test_runner.py:269: in test_logstart_logfinish_hooks
+    assert rep.nodeid == "test_logstart_logfinish_hooks.py::test_func"
+E   AssertionError: assert 'native/test_...py::test_func' == 'test_logstar...py::test_func'
+E     - test_logstart_logfinish_hooks.py::test_func
+E     + native/test_logstart_logfinish_hooks0/test_logstart_logfinish_hooks.py::test_func
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1
+rootdir: /testbed/.git/qh-tmp, configfile: pytest.ini
+collected 1 item
+
+test_logstart_logfinish_hooks.py .                                       [100%]
+
+============================== 1 passed in 0.00s ===============================
+____________________ TestSessionReports.test_collect_result ____________________
+/testbed/testing/test_runner.py:441: in test_collect_result
+    assert locinfo[0] == col.fspath.basename
+E   AssertionError: assert 'native/test_...ect_result.py' == 'test_collect_result.py'
+E     - test_collect_result.py
+E     + native/test_collect_result0/test_collect_result.py
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1
+rootdir: /testbed/.git/qh-tmp, configfile: pytest.ini
+collected 0 items
+
+============================ no tests ran in 0.00s =============================
+__________________________ test_current_test_env_var ___________________________
+/testbed/testing/test_runner.py:928: in test_current_test_env_var
+    assert pytest_current_test_vars == [
+E   AssertionError: assert [('setup', 'n... (teardown)')] == [('setup', 't... (teardown)')]
+E     At index 0 diff: ('setup', 'native/test_current_test_env_var0/test_current_test_env_var.py::test (setup)') != ('setup', 'test_current_test_env_var.py::test (setup)')
+E     Full diff:
+E       [
+E        ('setup',
+E     -   'test_current_test_env_var.py::test (setup)'),
+E     +   'native/test_current_test_env_var0/test_current_test_env_var.py::test '
+E     +   '(setup)'),...
+E     
+E     ...Full output truncated (10 lines hidden), use '-vv' to show
+----------------------------- Captured stdout call -----------------------------
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-5.4.1.dev593+ge6e300e72.d20260815, py-1.11.0, pluggy-0.13.1
+rootdir: /testbed/.git/qh-tmp, configfile: pytest.ini
+collected 1 item
+
+test_current_test_env_var.py .                                           [100%]
+
+============================== 1 passed in 0.00s ===============================
+=========================== short test summary info ============================
+FAILED testing/test_runner.py::TestExecutionNonForked::test_logstart_logfinish_hooks
+FAILED testing/test_runner.py::TestSessionReports::test_collect_result - Asse...
+FAILED testing/test_runner.py::test_current_test_env_var - AssertionError: as...
+3 failed, 181 passed, 9 skipped, 1 xfailed in 5.43s

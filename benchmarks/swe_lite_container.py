@@ -15,6 +15,18 @@ import sys
 import uuid
 
 
+def scratch_arguments(mode):
+    """V2 requires the task to authorize /qh-scratch in addition to /testbed.
+
+    Never silently migrate a frozen project-only task to a broader scope.
+    """
+    if mode == 'project-config-v1':
+        return '/testbed/.git/qh-tmp', []
+    if mode == 'isolated-v2':
+        return '/qh-scratch', ['--tmpfs', '/qh-scratch:rw,nosuid,nodev,mode=0700']
+    raise ValueError('Unknown scratch mode')
+
+
 def network_arguments(project, network):
     # Docker's special 'none' network cannot be combined with another network.
     # For offline Requests checks use only the internal fixture network instead.
@@ -52,7 +64,8 @@ def translated_args(workspace, args):
 
 
 def container_launcher(image, auth_file, state, project, network='none', timeout=360,
-                       context='default', memory_gib=2):
+                       context='default', memory_gib=2, scratch_mode='project-config-v1'):
+    scratch_arguments(scratch_mode)
     if not re.fullmatch(r'sha256:[0-9a-f]{64}', image):
         raise ValueError('Use an immutable local image ID')
     if project not in ('requests', 'pytest') or network not in ('none', 'bridge'):
@@ -77,27 +90,30 @@ def container_launcher(image, auth_file, state, project, network='none', timeout
         if workspace == auth_file or workspace in auth_file.parents:
             raise ValueError('Credentials must not be inside project')
         translated = translated_args(workspace, args)
-        # Native pytest self-tests previously ran in system temp, outside the
-        # repository's strict warning/options config. Keep that config boundary
-        # when providing project-local temp; do not rewrite the native tests.
-        scratch = workspace / '.git/qh-tmp'
-        scratch.mkdir(parents=True, exist_ok=False)
-        (scratch / 'pytest.ini').write_text('[pytest]\n')
+        # Preserve pilot01's frozen behavior, including its documented rootdir
+        # confound. V2 puts scratch outside ancestor project-config discovery.
+        if scratch_mode == 'project-config-v1':
+            scratch = workspace / '.git/qh-tmp'
+            scratch.mkdir(parents=True, exist_ok=False)
+            (scratch / 'pytest.ini').write_text('[pytest]\n')
         return [sys.executable, str(Path(__file__).resolve()), '--image', image,
             '--auth-file', str(auth_file), '--state', str(state),
             '--workspace', str(workspace), '--project', project, '--network', network,
             '--context', context, '--memory-gib', str(memory_gib),
+            '--scratch-mode', scratch_mode,
             '--timeout', str(timeout), '--', *translated]
     return launch
 
 
 def execute(args):
+    scratch_path, scratch_mounts = scratch_arguments(args.scratch_mode)
     name = 'qh-swe-solver-' + uuid.uuid4().hex
     owner = uuid.uuid4().hex
     state = args.state.resolve()
     lifecycle = dict(name=name, network=args.network, project=args.project,
                      context=args.context, memory_gib=args.memory_gib,
-                     command_timeout=args.timeout, interrupted=False)
+                     command_timeout=args.timeout, interrupted=False,
+                     scratch_mode=args.scratch_mode, scratch_path=scratch_path)
     prefix = ['docker', '--context', args.context]
     def docker(*argv, check=True):
         return subprocess.run([*prefix, *argv], text=True, capture_output=True,
@@ -116,16 +132,17 @@ def execute(args):
             '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
             '--memory', str(args.memory_gib) + 'g', '--cpus', '2', '--pids-limit', '256',
             '--tmpfs', '/run/codex-home:rw,noexec,nosuid,nodev,mode=0700',
+            *scratch_mounts,
             '--mount', f'type=bind,src={args.auth_file},dst=/run/codex-auth.json,readonly',
             '--mount', f'type=bind,src={args.workspace},dst=/testbed',
             '--mount', f'type=bind,src={state / "sessions"},dst=/run/codex-home/sessions',
             '-e', 'CODEX_HOME=/run/codex-home',
-            '-e', 'TMPDIR=/testbed/.git/qh-tmp',
+            '-e', 'TMPDIR=' + scratch_path,
             '-e', 'PYTEST_DISABLE_PLUGIN_AUTOLOAD=1',
             '-e', 'PYTHONPATH=' + ('/testbed' if args.project == 'requests' else '/testbed/src'),
             '-e', 'HTTPBIN_URL=http://httpbin/', '--workdir', '/testbed',
             '--entrypoint', '/bin/sh', args.image, '-c',
-            'set -eu; mkdir -p /testbed/.git/qh-tmp; '
+            'set -eu; mkdir -p "$TMPDIR"; '
             'install -m 600 /run/codex-auth.json /run/codex-home/auth.json; '
             'exec timeout --signal=TERM --kill-after=3 "$@"',
             'sh', str(args.timeout), *args.command,
@@ -179,6 +196,8 @@ if __name__ == '__main__':
     parser.add_argument('--timeout', type=int, required=True)
     parser.add_argument('--context', required=True)
     parser.add_argument('--memory-gib', type=int, required=True)
+    parser.add_argument('--scratch-mode', choices=['project-config-v1', 'isolated-v2'],
+                        default='project-config-v1')
     parser.add_argument('command', nargs=argparse.REMAINDER)
     options = parser.parse_args()
     if options.command[:1] == ['--']:

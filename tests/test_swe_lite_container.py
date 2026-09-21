@@ -1,8 +1,10 @@
 import importlib.util
+import json
 from pathlib import Path
 import tempfile
 from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('swe_container', ROOT / 'benchmarks/swe_lite_container.py')
@@ -12,6 +14,63 @@ IMAGE = 'sha256:' + 'a' * 64
 
 
 class ContainerAdapterTests(unittest.TestCase):
+    def test_execute_passes_isolated_scratch_to_container_and_lifecycle(self):
+        calls = []
+        owner = None
+        removed = False
+        def docker(command, **kwargs):
+            nonlocal owner, removed
+            calls.append(command)
+            action = command[3]
+            if action == 'create':
+                owner = command[command.index('--label') + 1].split('=', 1)[1]
+                return SimpleNamespace(returncode=0, stdout='container-id', stderr='')
+            if action == 'rm':
+                removed = True
+            if action == 'inspect':
+                if removed:
+                    return SimpleNamespace(returncode=1, stdout='',
+                        stderr='Error: No such object: ' + command[4])
+                return SimpleNamespace(returncode=0, stderr='', stdout=json.dumps([{
+                    'State': {'ExitCode': 0, 'OOMKilled': False},
+                    'Config': {'Labels': {'qh.solver.owner': owner}},
+                    'Mounts': [], 'NetworkSettings': {'Networks': {}}}]))
+            return SimpleNamespace(returncode=0, stdout='', stderr='')
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            args = SimpleNamespace(state=root, scratch_mode='isolated-v2',
+                network='none', project='pytest', context='synthetic', memory_gib=6,
+                timeout=60, auth_file=root/'auth.json', workspace=root/'project',
+                image=IMAGE, command=['python', '-c', 'print(1)'])
+            with patch.object(runner.subprocess, 'run', side_effect=docker), \
+                    patch.object(runner.subprocess, 'call', return_value=0):
+                self.assertEqual(runner.execute(args), 0)
+            command = calls[0]
+            self.assertIn('TMPDIR=/qh-scratch', command)
+            self.assertIn('/qh-scratch:rw,nosuid,nodev,mode=0700', command)
+            self.assertNotIn('TMPDIR=/testbed/.git/qh-tmp', command)
+            lifecycle = json.loads((root/'lifecycle.json').read_text())
+            self.assertEqual(lifecycle['scratch_path'], '/qh-scratch')
+            self.assertEqual(lifecycle['scratch_mode'], 'isolated-v2')
+            self.assertTrue(lifecycle['removed'])
+
+    def test_isolated_scratch_has_no_project_config_or_host_mount(self):
+        self.assertEqual(runner.scratch_arguments('isolated-v2'),
+            ('/qh-scratch', ['--tmpfs', '/qh-scratch:rw,nosuid,nodev,mode=0700']))
+        self.assertEqual(runner.scratch_arguments('project-config-v1'),
+            ('/testbed/.git/qh-tmp', []))
+        with self.assertRaises(ValueError):
+            runner.scratch_arguments('unknown')
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp).resolve()
+            auth = root / 'auth.json'
+            auth.write_text('{}')
+            launch = runner.container_launcher(IMAGE, auth, root / 'state', 'pytest',
+                scratch_mode='isolated-v2')
+            command = launch(root / 'project', self.args(root / 'project'))
+            self.assertEqual(command[command.index('--scratch-mode') + 1], 'isolated-v2')
+            self.assertFalse((root / 'project/.git/qh-tmp').exists())
+
     def test_offline_requests_uses_only_fixture_network(self):
         self.assertEqual(runner.network_arguments('requests', 'none'),
             ['--network', 'qh-swelite-contract-01', '--ip', '10.255.255.5'])
