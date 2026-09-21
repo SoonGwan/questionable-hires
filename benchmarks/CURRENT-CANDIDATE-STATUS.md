@@ -1,6 +1,7 @@
 # Current candidate: whole-task performance remains unproven
 
-Checkpoint **2026-09-21, last model resource `92afe96`, history launch `27558d1`**.
+Checkpoint **2026-09-21, last model resource `f53cb65`, urllib3 launch `6cf747f`**.
+The measured section-read candidate is subsequently withdrawn, not relabeled.
 This is a decision index, not a new
 measurement. [Full chronological history](CANDIDATE-HISTORY-2026-09-21.md) preserves
 every preceding checkpoint, including adverse results and preparation notes.
@@ -18,6 +19,13 @@ hosted-check success or public-release approval is claimed here.
 과거 실험과 불리한 결과는 이력 문서에 그대로 보존했다.
 
 ## Model evidence that governs claims
+
+Reviewed checkpoint2026-09-21: [urllib3 history](URLLIB3-HISTORY-01.md) retains
+all three attempts. Prior/baseline5/5, candidate4/5 (non-ancestor history read).
+Candidate versus prior−4.34% tokens/+4.56% time; versus baseline+39.55%/+26.14%.
+Missing generated metadata affects all arms; import-retry preflight weakness and
+capture/manifest omissions disclosed. Withdraw the candidate; no efficiency claim.
+한국어: 수정본의 범위 위반·비용 증가와 준비 결함을 보존하고 후보 문구를 철회했다.
 
 Reviewed checkpoint2026-09-21: [slugify history review](SLUGIFY-HISTORY-01.md)
 retains both original attempts; both5/5. Current versus baseline tokens+34.32%,
@@ -64,16 +72,15 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
-- [urllib3 history preparation](URLLIB3-HISTORY-01-PREFLIGHT.md), candidate
-  `f53cb65`:15 native author controls and ancestor checks pass on a new pinned
-  project. Distinguishes retry predicate results from actual network retries;
-  no model sessions, installations or efficiency claim.
-  한국어: 다른 프로젝트의 사전 검증이며 수정 스킬의 절감 효과는 아직 미측정이다.
-- [Necromancer section-read correction](NECROMANCER-SECTION-READ-01.md): clarify
-  relevant contract/test sections with enclosing logic and scope-driven widening;
-  helpers and probe safeguards unchanged. Motivated by the adverse history pair
-  above, not yet measured as a model efficiency improvement.
-  한국어: 큰 파일의 관련 부분부터 읽도록 안내를 수정했으며 절감 효과는 미측정이다.
+- [Native bootstrap controls](URLLIB3-HISTORY-01.md): author diagnostics and
+  two regression tests reproduce unittest import recovery hiding missing package
+  metadata; the preparation rule now requires a separate fresh package import.
+  Existing15 preflight assertions remain real, not cold-bootstrap proof.
+  한국어: 실제 준비 취약점을 재현하고 검사 규칙을 보완했다. 모델 성능 수치와 구분한다.
+- [Necromancer section-read candidate](NECROMANCER-SECTION-READ-01.md),`f53cb65`,
+  withdrawn after the model result above. Prior entrypoint wording restored;
+  helpers/probe safeguards unchanged. No favorable retry or chart promotion.
+  한국어: 채택 조건을 충족하지 못한 문구는 원복하고 원본 측정은 보존했다.
 - [Slugify history preparation](SLUGIFY-HISTORY-01-PREFLIGHT.md), checkout
   `79fb2e2`: nine native current/deletion controls and full-history attribution
   pass. New review task on the already-used project; no model sessions or skill

@@ -9,7 +9,7 @@ description: Trace the purpose of suspicious legacy code using current callers, 
 
 ## Follow the haunting
 
-Read known implementation and relevant consumer/contract sections together, including enclosing logic. For large tests/docs, locate the affected behavior before reading its enclosing section; widen for unresolved context or the requested scope. Discover only missing locations; search unresolved bindings before expanding scope. Text matches in examples or generated/vendor copies need a supported loading or consumer path to establish a live dependency. A narrow search cannot establish absence of other callers.
+Read known implementation and consumer/contract files together, including enclosing logic. Discover only missing locations; search unresolved bindings before expanding scope. Text matches in examples or generated/vendor copies need a supported loading or consumer path to establish a live dependency. A narrow search cannot establish absence of other callers.
 
 Separate two questions:
 

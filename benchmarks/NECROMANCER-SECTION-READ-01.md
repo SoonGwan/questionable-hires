@@ -1,5 +1,9 @@
 # Relevant-section read correction — 2026-09-21
 
+**Subsequently withdrawn:** [urllib3 history01](URLLIB3-HISTORY-01.md) did not
+meet acceptance conditions. The entrypoint/README wording is restored; this
+document preserves the candidate rationale and pre-measurement validation.
+
 **Instruction candidate, not a measured efficiency improvement.** Edit parent
 `09d43d3`. Parent evidence
 is [Slugify history01](SLUGIFY-HISTORY-01.md), resource `92afe96`: both5/5,
