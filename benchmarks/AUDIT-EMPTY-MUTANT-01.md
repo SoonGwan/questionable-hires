@@ -33,6 +33,13 @@ Python3.9.6: three pass, pytest control skipped because pytest is not installed
 Single-audit controls check selected bytes and scratch removal; batch verifies
 only two child executions and no later audit, plus scratch removal.
 
+Full-checkout follow-up at `31b1479`: Python3.11.16 ran all **1,023 tests in
+174.348s**, no failures or skips (`python -B -m unittest discover -s tests`).
+This includes the prior Receipt selected-read correction and the new plan-audit
+fixture/runner tests. Repository validation, skill quick validation, localized
+featured-sync check and whitespace check pass. This is local checkout validation,
+not a source-archive rerun, hosted CI success, model benchmark or release approval.
+
 ## Separate invocation finding
 
 Code inspection confirms the helper launches Python `-B -c` and calls
