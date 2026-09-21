@@ -49,6 +49,38 @@ tokens and time. Two pairs cannot show a reliable20–30% general gain. Improvem
 may follow concrete failure mechanisms, but used cases become development cases;
 do not repeatedly tune and report the same cases as fresh validation.
 
+## Selection result after policy commit0378759
+
+All300 unique identities were examined in three100-row responses, each with the
+required revision header. Eligible counts: Requests6, pytest17. The fixed rule
+selected these instances before their problem statements were inspected:
+
+| Instance | Base commit | Version |
+| --- | --- | --- |
+| `psf__requests-2317` | `091991be0da19de9108dbe5e3752917fea3d7fdc` |2.4|
+| `pytest-dev__pytest-7432` | `e6e300e729dd33956e5448d8be9a0b1540b4e53a` |5.4|
+
+Requests environment setup commit equals its base; pytest environment setup is
+`678c1a0745f1cf175c442c719906a1f13e496910`. Selection hashes respectively:
+`241f2e547fb788d0ca42319f24c3bf7a211db0d5bd589aa8fe91beca43912de8` and
+`1d432edde3043d7cca25c36a1a855ed159b547454cb721486278c57c0c571eba`.
+Page-body SHA-256, offsets0/100/200:
+
+```
+570fce982377ed7dc237cb54536942d7489f510cc3228dc550bec7da3db38aff
+b3686b4e5f54395616eacb7d4d62af0d13b530f20f2b35bca6b0e9ea4cb7a230
+afc2c3547115cfcd926cbc085c43b7a530a54a6ffeb5287e40644c0625232254
+```
+
+Answer-bearing fields were received by the loader but neither printed nor saved;
+the solving context has not inspected them. Selected issue text was inspected
+only after selection. The projected record remains local pending redistribution
+license review, SHA-256
+`d906940879ab70be1d5b472b1a8610a1aaf199bd1298f0a3b8d705610d246b5a`.
+No gold correctness check, native environment preflight, model call or scored
+result has occurred. These older versions need environment feasibility checks;
+current Python compatibility must not be assumed or repaired into a different task.
+
 ## Sources and limitations
 
 [Official dataset structure](https://www.swebench.com/SWE-bench/guides/datasets/)

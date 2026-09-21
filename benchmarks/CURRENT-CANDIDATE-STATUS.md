@@ -16,6 +16,11 @@ readiness. No public-release approval or successful hosted matrix is claimed.
 
 ## Model evidence that governs claims
 
+[External-issue pilot selection](SWE-LITE-PILOT-01-SELECTION.md) freezes two
+SWE-bench Lite instance identities by a predeclared hash rule, without inspecting
+solution patches. Environment/license/scoring gates are pending; no model calls
+or new performance result. Public tasks are not proven uncontaminated holdout.
+
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |
 | [Probe-edit transfer01](PROBE-EDIT-TRANSFER-01-REVIEW.md), current`aed8a27` |6cells; current vs baseline full tokens−7.87%/time+67.29%, prefix+10.43%/+0.74%. Current costs more tokens/time than predecessor on both. All scoped native checks succeed; helper unused. | No API adoption or efficiency benefit; no promotion. |
