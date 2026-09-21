@@ -1,0 +1,164 @@
+{
+  "session_id": "01a0c3a9-b101-7b10-8168-26bf4fb7faa2",
+  "source_bytes": 95817,
+  "source_sha256": "48757443f51e1c41d6e11c66ab702ac95f691850350da03d262decb111046826",
+  "source_lines": 37,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "21dae9dac166422704d768a447ab53dcae7f51eb6f59cba0ba9f003ac50f0849",
+      "record": {
+        "timestamp": "2026-09-21T11:11:21.508Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_075d95b69ab31613016ab110d8100c87d0b9465536dbfb5542",
+          "status": "completed",
+          "call_id": "call_i3O5eWnceVlco0doItJnN11k",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files -g 'AGENTS.md' -g '*.py' -g 'pyproject.toml' -g 'README*'\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3a9-b141-73a1-b7c4-b0c1029af90d",
+            "create_time": 1789989077.144771
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "f21722d533080709fcb88aff9f8cf19a5058772247578f08862681e141117430",
+      "record": {
+        "timestamp": "2026-09-21T11:11:21.672Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3a9-d248-7b52-9f1d-ac11f41612ff",
+          "call_id": "call_i3O5eWnceVlco0doItJnN11k",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"0fee84\",\"wall_time_seconds\":0.000003625,\"exit_code\":0,\"original_token_count\":52,\"output\":\"<WORKSPACE>\\nAGENTS.md\\neditor.py\\ntest_editor.py\\ntest_support.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3a9-b141-73a1-b7c4-b0c1029af90d",
+            "create_time": 1789989081.672639
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "43be91a4b2fde57ed3945dd6fb9af7eea7728bc3129d6344afb131fa7e877f7c",
+      "record": {
+        "timestamp": "2026-09-21T11:11:24.462Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_075d95b69ab31613016ab110db759487d0bccb77bed4d9cefa",
+          "status": "completed",
+          "call_id": "call_CUVERAF9tjdtZnFbZq3b6wq3",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md editor.py test_editor.py test_support.py\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3a9-b141-73a1-b7c4-b0c1029af90d",
+            "create_time": 1789989082.273543
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "801df2e8eebf3a243c40c402811eeb019db49cb043f08049dec35d3f3c5027cf",
+      "record": {
+        "timestamp": "2026-09-21T11:11:24.549Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3a9-dd85-7503-bebd-c35a35327d26",
+          "call_id": "call_CUVERAF9tjdtZnFbZq3b6wq3",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"0ba015\",\"wall_time_seconds\":0.000002,\"exit_code\":0,\"original_token_count\":554,\"output\":\"Native Python unittest, standard library only. QA, not a production fix. Preserve existing files except additions to test_editor.py; new test-support Python files are allowed. No network, installs, delegation or report files. Keep any scratch project-local and remove it.\\nfrom copy import deepcopy\\n\\n\\nclass Editor:\\n    def __init__(self, settings, persist):\\n        self.settings = deepcopy(settings)\\n        self.persist = persist\\n        self.revision = 0\\n        self.saved_revision = 0\\n\\n    @property\\n    def dirty(self):\\n        return self.revision != self.saved_revision\\n\\n    def set_theme(self, theme):\\n        self.settings['display']['theme'] = theme\\n        self.revision += 1\\n\\n    async def save(self):\\n        revision = self.revision\\n        payload = dict(self.settings)\\n        await self.persist(payload)\\n        self.saved_revision = revision\\nimport unittest\\nfrom editor import Editor\\n\\n\\nclass EditorTests(unittest.IsolatedAsyncioTestCase):\\n    async def test_initial_state(self):\\n        settings = {'display': {'theme': 'light'}, 'alerts': ['mentions']}\\n        editor = Editor(settings, None)\\n        self.assertEqual(editor.settings, settings)\\n        self.assertFalse(editor.dirty)\\n        editor.set_theme('dark')\\n        self.assertEqual(settings['display']['theme'], 'light')\\nimport asyncio\\nfrom contextlib import asynccontextmanager\\nfrom copy import deepcopy\\n\\n\\n@asynccontextmanager\\nasync def writes():\\n    \\\"\\\"\\\"Owned tasks, actual callback entry, delayed serialization; no I/O.\\\"\\\"\\\"\\n    entered = asyncio.Queue()\\n    tasks, stored = [], []\\n\\n    async def persist(payload):\\n        release = asyncio.get_running_loop().create_future()\\n        entered.put_nowait((payload, release))\\n        await release\\n        stored.append(deepcopy(payload))\\n\\n    def start(coroutine):\\n        task = asyncio.create_task(coroutine)\\n        tasks.append(task)\\n        return task\\n\\n    async def next_write():\\n        return await asyncio.wait_for(entered.get(), 1)\\n\\n    try:\\n        yield persist, start, next_write, stored\\n    finally:\\n        for task in tasks:\\n            if not task.done():\\n                task.cancel()\\n        await asyncio.wait_for(asyncio.gather(*tasks, return_exceptions=True), 1)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3a9-b141-73a1-b7c4-b0c1029af90d",
+            "create_time": 1789989084.549557
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "98cf4f31cf86371ddcf43223267e950bbad96896d19806fac7c1132a51d19bae",
+      "record": {
+        "timestamp": "2026-09-21T11:11:51.732Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_075d95b69ab31613016ab110e2d91487d08cc0b8a25b83bc0a",
+          "status": "completed",
+          "call_id": "call_qoExpXebFDc7gfNWWfs7BkTM",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/test_editor.py\\n@@\\n import unittest\\n from editor import Editor\\n+import asyncio\\n+from test_support import writes\\n@@\\n         editor.set_theme('dark')\\n         self.assertEqual(settings['display']['theme'], 'light')\\n+\\n+    async def test_save_without_intervening_edit_marks_settings_clean(self):\\n+        async with writes() as (persist, start, next_write, stored):\\n+            editor = Editor(\\n+                {'display': {'theme': 'light'}, 'alerts': ['mentions']},\\n+                persist,\\n+            )\\n+            expected = {'display': {'theme': 'dark'}, 'alerts': ['mentions']}\\n+            editor.set_theme('dark')\\n+            self.assertTrue(editor.dirty)\\n+\\n+            saving = start(editor.save())\\n+            payload, acknowledge = await next_write()\\n+            self.assertFalse(saving.done())\\n+            self.assertFalse(acknowledge.done())\\n+            self.assertEqual(stored, [])\\n+            self.assertEqual(payload, expected)\\n+            self.assertTrue(editor.dirty)\\n+\\n+            acknowledge.set_result(None)\\n+            await asyncio.wait_for(saving, 1)\\n+            self.assertEqual(stored, [expected])\\n+            self.assertEqual(editor.settings, expected)\\n+            self.assertFalse(editor.dirty)\\n+\\n+    async def test_save_preserves_snapshot_and_keeps_newer_edit_dirty(self):\\n+        async with writes() as (persist, start, next_write, stored):\\n+            editor = Editor(\\n+                {'display': {'theme': 'light'}, 'alerts': ['mentions']},\\n+                persist,\\n+            )\\n+            expected_saved = {\\n+                'display': {'theme': 'dark'}, 'alerts': ['mentions'],\\n+            }\\n+            expected_current = {\\n+                'display': {'theme': 'solarized'}, 'alerts': ['mentions'],\\n+            }\\n+            editor.set_theme('dark')\\n+            saving = start(editor.save())\\n+            payload, acknowledge = await next_write()\\n+            self.assertEqual(payload, expected_saved)\\n+\\n+            editor.set_theme('solarized')\\n+            self.assertFalse(saving.done())\\n+            self.assertFalse(acknowledge.done())\\n+            self.assertEqual(stored, [])\\n+            self.assertEqual(payload, expected_saved)\\n+\\n+            acknowledge.set_result(None)\\n+            await asyncio.wait_for(saving, 1)\\n+            self.assertEqual(stored, [expected_saved])\\n+            self.assertEqual(editor.settings, expected_current)\\n+            self.assertTrue(editor.dirty)\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v test_editor\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3a9-b141-73a1-b7c4-b0c1029af90d",
+            "create_time": 1789989084.994179
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "bcc4e4a24911e17425db9256f96fbe42fc8e4a3f80ceef6f39052d21e6acb6e9",
+      "record": {
+        "timestamp": "2026-09-21T11:11:51.998Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3aa-48be-7bc1-bfe8-adfba37377c2",
+          "call_id": "call_qoExpXebFDc7gfNWWfs7BkTM",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"f82bd3\",\"wall_time_seconds\":0.000003125,\"exit_code\":1,\"original_token_count\":525,\"output\":\"test_initial_state (test_editor.EditorTests) ... ok\\ntest_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests) ... FAIL\\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests) ... ok\\n\\n======================================================================\\nFAIL: test_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\\\", line 65, in _callTestMethod\\n    self._callMaybeAsync(method)\\n  File \\\"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\\\", line 88, in _callMaybeAsync\\n    return self._asyncioTestLoop.run_until_complete(fut)\\n  File \\\"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\\\", line 642, in run_until_complete\\n    return future.result()\\n  File \\\"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\\\", line 102, in _asyncioLoopRunner\\n    ret = await awaitable\\n  File \\\"<WORKSPACE>/test_editor.py\\\", line 61, in test_save_preserves_snapshot_and_keeps_newer_edit_dirty\\n    self.assertEqual(payload, expected_saved)\\nAssertionError: {'display': {'theme': 'solarized'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}\\n- {'alerts': ['mentions'], 'display': {'theme': 'solarized'}}\\n?                                                ^^^  ^^^^\\n\\n+ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}\\n?                                                ^  ^\\n\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.011s\\n\\nFAILED (failures=1)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3a9-b141-73a1-b7c4-b0c1029af90d",
+            "create_time": 1789989111.998809
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

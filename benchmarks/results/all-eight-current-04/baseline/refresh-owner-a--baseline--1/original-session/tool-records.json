@@ -1,0 +1,213 @@
+{
+  "session_id": "01a0c3ad-c4d6-7803-9aa5-702678f90fb7",
+  "source_bytes": 104929,
+  "source_sha256": "b7591f80080c04038f2ae7bab4047d83601ab7eeee793a323faea142eab96ed7",
+  "source_lines": 44,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "6a1db170c108ed02b64bd20177b6f3a74219f19a5072634c7bfb55f6c4a71b80",
+      "record": {
+        "timestamp": "2026-09-21T11:16:02.497Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0989cc11d3bb66b6016ab111f04ec887d0990341d72079af29",
+          "status": "completed",
+          "call_id": "call_GSZlcgHnkJaCNC9tAei7FE5K",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!\\\\.git' -g 'AGENTS.md' -g 'requirements.md' -g '*preview*' -g '*.py' -g '*notes*'\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3ad-c520-79b2-b916-b96c645b61c6",
+            "create_time": 1789989358.165312
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "199e9f16cac010b4d544787e1b010413666223c3137600516baa2c9070e14049",
+      "record": {
+        "timestamp": "2026-09-21T11:16:02.664Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3ae-1be8-7ba2-ae2f-eb3505124404",
+          "call_id": "call_GSZlcgHnkJaCNC9tAei7FE5K",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3063ba\",\"wall_time_seconds\":0.000002208,\"exit_code\":0,\"original_token_count\":47,\"output\":\"<WORKSPACE>\\nnotes.txt\\nrequirements.md\\npreview.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3ad-c520-79b2-b916-b96c645b61c6",
+            "create_time": 1789989362.664823
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "a661d8bebf1c7ff42c2f1cea42e1cee83c0dc1bc76214299ff0992df85270eb4",
+      "record": {
+        "timestamp": "2026-09-21T11:16:05.541Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0989cc11d3bb66b6016ab111f47d1887d0861e4c32aaddeb0b",
+          "status": "completed",
+          "call_id": "call_iiLGYYWT5DGpExqlpTVTu2da",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; cat requirements.md preview.py notes.txt; git status --short\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3ad-c520-79b2-b916-b96c645b61c6",
+            "create_time": 1789989363.445456
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "dd7bfc4d1adf61d1115cf7cfce91c3b2cf2476ff204809198a88f059203263e7",
+      "record": {
+        "timestamp": "2026-09-21T11:16:05.651Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3ae-2793-7821-9e4d-cbc1f45edd72",
+          "call_id": "call_iiLGYYWT5DGpExqlpTVTu2da",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"51228e\",\"wall_time_seconds\":0.000001875,\"exit_code\":0,\"original_token_count\":390,\"output\":\"total 24\\ndrwxr-xr-x@  6 admin  staff  192 Sep 21 20:15 .\\ndrwxr-xr-x@  3 admin  staff   96 Sep 21 20:15 ..\\ndrwxr-xr-x@ 10 admin  staff  320 Sep 21 20:15 .git\\n-rw-r--r--@  1 admin  staff   43 Sep 21 20:15 notes.txt\\n-rw-r--r--@  1 admin  staff  464 Sep 21 20:15 preview.py\\n-rw-r--r--@  1 admin  staff  719 Sep 21 20:15 requirements.md\\nEvery refresh must invoke its supplied fetch(key), even while another\\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\\nEach call returns its own exact fetched object or propagates its own exception.\\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\\nfailure or cancellation cannot clear pending while the latest is unresolved.\\nLatest settlement clears pending even if older calls remain running. Keep the prior\\nvalue during loading and on failure/cancellation. Instances are independent.\\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\\nclass Preview:\\n    def __init__(self):\\n        self.pending = False\\n        self.value = None\\n        self.generation = 0\\n\\n    async def refresh(self, key, fetch):\\n        self.generation += 1\\n        generation = self.generation\\n        self.pending = True\\n        try:\\n            value = await fetch(key)\\n            if generation == self.generation:\\n                self.value = value\\n            return value\\n        finally:\\n            self.pending = False\\nOwner draft: preserve this unrelated note.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3ad-c520-79b2-b916-b96c645b61c6",
+            "create_time": 1789989365.651111
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "c86602ed8d05763ced05e3b466937b36c960f649be38832b066e1b69d15eae6f",
+      "record": {
+        "timestamp": "2026-09-21T11:17:27.624Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0989cc11d3bb66b6016ab11200693487d084861757aa9d27f8",
+          "status": "completed",
+          "call_id": "call_LqxBTb4RlYJIMHJVButkTgZ5",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/preview.py\\n@@\\n         finally:\\n-            self.pending = False\\n+            if generation == self.generation:\\n+                self.pending = False\\n*** Add File: <WORKSPACE>/test_preview.py\\n+import asyncio\\n+import unittest\\n+\\n+from preview import Preview\\n+\\n+\\n+TIMEOUT = 2\\n+\\n+\\n+class ControlledFetch:\\n+    def __init__(self):\\n+        self.called = asyncio.Event()\\n+        self.result = asyncio.get_running_loop().create_future()\\n+        self.keys = []\\n+\\n+    async def __call__(self, key):\\n+        self.keys.append(key)\\n+        self.called.set()\\n+        return await self.result\\n+\\n+\\n+class PreviewTests(unittest.IsolatedAsyncioTestCase):\\n+    async def asyncSetUp(self):\\n+        self.tasks = []\\n+        self.preview = Preview()\\n+        self.prior = object()\\n+        self.assertFalse(self.preview.pending)\\n+        self.assertIsNone(self.preview.value)\\n+        await self.publish(self.preview, self.prior)\\n+\\n+    async def asyncTearDown(self):\\n+        for task in self.tasks:\\n+            if not task.done():\\n+                task.cancel()\\n+        if self.tasks:\\n+            await asyncio.wait_for(\\n+                asyncio.gather(*self.tasks, return_exceptions=True), TIMEOUT\\n+            )\\n+\\n+    async def finish(self, task):\\n+        # Shield keeps a timeout from masquerading as application cancellation.\\n+        return await asyncio.wait_for(asyncio.shield(task), TIMEOUT)\\n+\\n+    async def start(self, fetch, key, preview=None):\\n+        if preview is None:\\n+            preview = self.preview\\n+        task = asyncio.create_task(preview.refresh(key, fetch))\\n+        self.tasks.append(task)\\n+        await asyncio.wait_for(fetch.called.wait(), TIMEOUT)\\n+        self.assertEqual(fetch.keys, [key])\\n+        self.assertFalse(task.done())\\n+        self.assertTrue(preview.pending)\\n+        return task\\n+\\n+    async def publish(self, preview, value):\\n+        async def fetch(key):\\n+            self.assertTrue(preview.pending)\\n+            return value\\n+\\n+        task = asyncio.create_task(preview.refresh(object(), fetch))\\n+        self.tasks.append(task)\\n+        self.assertIs(await self.finish(task), value)\\n+        self.assertIs(preview.value, value)\\n+        self.assertFalse(preview.pending)\\n+\\n+    async def pair(self):\\n+        older_fetch, latest_fetch = ControlledFetch(), ControlledFetch()\\n+        # Identical keys must still invoke both supplied callbacks concurrently.\\n+        key = object()\\n+        older = await self.start(older_fetch, key)\\n+        latest = await self.start(latest_fetch, key)\\n+        self.assertFalse(older.done())\\n+        self.assertIs(self.preview.value, self.prior)\\n+        return older_fetch, older, latest_fetch, latest\\n+\\n+    async def test_earlier_success_then_latest_success(self):\\n+        old_fetch, old, new_fetch, new = await self.pair()\\n+        old_value, new_value = object(), object()\\n+        old_fetch.result.set_result(old_value)\\n+        self.assertIs(await self.finish(old), old_value)\\n+        self.assertFalse(new.done())\\n+        self.assertTrue(self.preview.pending)\\n+        self.assertIs(self.preview.value, self.prior)\\n+        new_fetch.result.set_result(new_value)\\n+        self.assertIs(await self.finish(new), new_value)\\n+        self.assertFalse(self.preview.pending)\\n+        self.assertIs(self.preview.value, new_value)\\n+\\n+    async def test_latest_success_then_earlier_success(self):\\n+        old_fetch, old, new_fetch, new = await self.pair()\\n+        old_value, new_value = object(), object()\\n+        new_fetch.result.set_result(new_value)\\n+        self.assertIs(await self.finish(new), new_value)\\n+        self.assertFalse(old.done())\\n+        self.assertFalse(self.preview.pending)\\n+        self.assertIs(self.preview.value, new_value)\\n+        old_fetch.result.set_result(old_value)\\n+        self.assertIs(await self.finish(old), old_value)\\n+        self.assertFalse(self.preview.pending)\\n+        self.assertIs(self.preview.value, new_value)\\n+\\n+    async def settle_unsuccessfully(self, fetch, task, cancel):\\n+        if cancel:\\n+            task.cancel()\\n+            with self.assertRaises(asyncio.CancelledError):\\n+                await self.finish(task)\\n+        else:\\n+            error = RuntimeError(\\\"controlled failure\\\")\\n+            fetch.result.set_exception(error)\\n+            with self.assertRaises(RuntimeError) as caught:\\n+                await self.finish(task)\\n+            self.assertIs(caught.exception, error)\\n+\\n+    async def earlier_unsuccessful(self, cancel):\\n+        old_fetch, old, new_fetch, new = await self.pair()\\n+        await self.settle_unsuccessfully(old_fetch, old, cancel)\\n+        self.assertFalse(new.done())\\n+        self.assertFalse(new_fetch.result.done())\\n+        self.assertTrue(self.preview.pending)\\n+        self.assertIs(self.preview.value, self.prior)\\n+        value = object()\\n+        new_fetch.result.set_result(value)\\n+        self.assertIs(await self.finish(new), value)\\n+        self.assertIs(self.preview.value, value)\\n+        self.assertFalse(self.preview.pending)\\n+\\n+    async def test_earlier_failure_while_latest_pending(self):\\n+        await self.earlier_unsuccessful(cancel=False)\\n+\\n+    async def test_earlier_cancellation_while_latest_pending(self):\\n+        await self.earlier_unsuccessful(cancel=True)\\n+\\n+    async def latest_unsuccessful_and_retry(self, cancel):\\n+        old_fetch, old, new_fetch, new = await self.pair()\\n+        await self.settle_unsuccessfully(new_fetch, new, cancel)\\n+        self.assertFalse(old.done())\\n+        self.assertFalse(old_fetch.result.done())\\n+        self.assertFalse(self.preview.pending)\\n+        self.assertIs(self.preview.value, self.prior)\\n+        retry_fetch = ControlledFetch()\\n+        retry = await self.start(retry_fetch, object())\\n+        self.assertIs(self.preview.value, self.prior)\\n+        old_value = object()\\n+        old_fetch.result.set_result(old_value)\\n+        self.assertIs(await self.finish(old), old_value)\\n+        self.assertTrue(self.preview.pending)\\n+        self.assertFalse(retry.done())\\n+        self.assertIs(self.preview.value, self.prior)\\n+        retry_value = object()\\n+        retry_fetch.result.set_result(retry_value)\\n+        self.assertIs(await self.finish(retry), retry_value)\\n+        self.assertFalse(self.preview.pending)\\n+        self.assertIs(self.preview.value, retry_value)\\n+\\n+    async def test_latest_failure_and_retry(self):\\n+        await self.latest_unsuccessful_and_retry(cancel=False)\\n+\\n+    async def test_latest_cancellation_and_retry(self):\\n+        await self.latest_unsuccessful_and_retry(cancel=True)\\n+\\n+    async def test_synchronous_callback_failure_and_retry(self):\\n+        old_fetch = ControlledFetch()\\n+        old = await self.start(old_fetch, object())\\n+        key, error = object(), LookupError(\\\"synchronous failure\\\")\\n+        calls = []\\n+\\n+        def fail(actual_key):\\n+            calls.append(actual_key)\\n+            self.assertTrue(self.preview.pending)\\n+            self.assertIs(self.preview.value, self.prior)\\n+            raise error\\n+\\n+        task = asyncio.create_task(self.preview.refresh(key, fail))\\n+        self.tasks.append(task)\\n+        with self.assertRaises(LookupError) as caught:\\n+            await self.finish(task)\\n+        self.assertIs(caught.exception, error)\\n+        self.assertEqual(calls, [key])\\n+        self.assertFalse(self.preview.pending)\\n+        self.assertFalse(old.done())\\n+        self.assertIs(self.preview.value, self.prior)\\n+        value = object()\\n+        await self.publish(self.preview, value)\\n+        old_value = object()\\n+        old_fetch.result.set_result(old_value)\\n+        self.assertIs(await self.finish(old), old_value)\\n+        self.assertIs(self.preview.value, value)\\n+        self.assertFalse(self.preview.pending)\\n+\\n+    async def test_instances_are_independent(self):\\n+        other = Preview()\\n+        other_prior = object()\\n+        await self.publish(other, other_prior)\\n+        first_fetch, second_fetch = ControlledFetch(), ControlledFetch()\\n+        first = await self.start(first_fetch, object())\\n+        second = await self.start(second_fetch, object(), other)\\n+        self.assertTrue(self.preview.pending)\\n+        self.assertIs(self.preview.value, self.prior)\\n+        self.assertIs(other.value, other_prior)\\n+        first_value = object()\\n+        first_fetch.result.set_result(first_value)\\n+        self.assertIs(await self.finish(first), first_value)\\n+        self.assertFalse(self.preview.pending)\\n+        self.assertIs(self.preview.value, first_value)\\n+        self.assertTrue(other.pending)\\n+        self.assertFalse(second.done())\\n+        self.assertIs(other.value, other_prior)\\n+        second_value = object()\\n+        second_fetch.result.set_result(second_value)\\n+        self.assertIs(await self.finish(second), second_value)\\n+        self.assertFalse(other.pending)\\n+        self.assertIs(other.value, second_value)\\n+        self.assertFalse(self.preview.pending)\\n+        self.assertIs(self.preview.value, first_value)\\n+\\n+\\n+if __name__ == \\\"__main__\\\":\\n+    unittest.main()\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3ad-c520-79b2-b916-b96c645b61c6",
+            "create_time": 1789989366.215739
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "ab75afbc1d2f4960688848e74e759444f3b3ea5e33910583718873a1d37eefc5",
+      "record": {
+        "timestamp": "2026-09-21T11:17:27.987Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3af-6933-73d0-bb63-dda2119717d6",
+          "call_id": "call_LqxBTb4RlYJIMHJVButkTgZ5",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3ea9de\",\"wall_time_seconds\":0.000001834,\"exit_code\":0,\"original_token_count\":173,\"output\":\"test_earlier_cancellation_while_latest_pending (test_preview.PreviewTests) ... ok\\ntest_earlier_failure_while_latest_pending (test_preview.PreviewTests) ... ok\\ntest_earlier_success_then_latest_success (test_preview.PreviewTests) ... ok\\ntest_instances_are_independent (test_preview.PreviewTests) ... ok\\ntest_latest_cancellation_and_retry (test_preview.PreviewTests) ... ok\\ntest_latest_failure_and_retry (test_preview.PreviewTests) ... ok\\ntest_latest_success_then_earlier_success (test_preview.PreviewTests) ... ok\\ntest_synchronous_callback_failure_and_retry (test_preview.PreviewTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 8 tests in 0.041s\\n\\nOK\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3ad-c520-79b2-b916-b96c645b61c6",
+            "create_time": 1789989447.987399
+          }
+        }
+      }
+    },
+    {
+      "line": 35,
+      "line_sha256": "09edfacbb723c66988601645ff64f8745f6cdcffe401afc9b95586fea3ccbed6",
+      "record": {
+        "timestamp": "2026-09-21T11:17:32.689Z",
+        "ordinal": 34,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0989cc11d3bb66b6016ab1124b90b887d09568e83d51a19715",
+          "status": "completed",
+          "call_id": "call_nsfKdAvx8j0JRXLEpmSZsOMq",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff --check; git diff -- preview.py requirements.md notes.txt; git status --short\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3ad-c520-79b2-b916-b96c645b61c6",
+            "create_time": 1789989448.493937
+          }
+        }
+      }
+    },
+    {
+      "line": 38,
+      "line_sha256": "9e44df6e796cdefdb51a4328088c2b67f3a9ac9f4fe0a549cbdfa20a0d5a8857",
+      "record": {
+        "timestamp": "2026-09-21T11:17:32.820Z",
+        "ordinal": 37,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3af-7c14-75e3-a92a-773fb1b38409",
+          "call_id": "call_nsfKdAvx8j0JRXLEpmSZsOMq",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"32c661\",\"wall_time_seconds\":0.000001625,\"exit_code\":0,\"original_token_count\":92,\"output\":\"diff --git a/preview.py b/preview.py\\nindex f56b4ff..2ce0584 100644\\n--- a/preview.py\\n+++ b/preview.py\\n@@ -14,4 +14,5 @@ class Preview:\\n                 self.value = value\\n             return value\\n         finally:\\n-            self.pending = False\\n+            if generation == self.generation:\\n+                self.pending = False\\n M preview.py\\n?? test_preview.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3ad-c520-79b2-b916-b96c645b61c6",
+            "create_time": 1789989452.820528
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

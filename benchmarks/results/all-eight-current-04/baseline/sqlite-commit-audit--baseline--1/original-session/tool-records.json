@@ -1,0 +1,209 @@
+{
+  "session_id": "01a0c3af-906d-7df0-9ccf-e32c6556cd98",
+  "source_bytes": 125128,
+  "source_sha256": "e0884a3a706499fec5562cb2160a14a5b73a52d3d1cae7d1f3c9b89e4bdffcfe",
+  "source_lines": 41,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "4ec1a78de8887966d4b305f7dc4f670dc12bcd4905d0ac68a9116704c4a22632",
+      "record": {
+        "timestamp": "2026-09-21T11:17:45.535Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0c4e900676aefe4f016ab11257b00c87d0965eb6a01245ed5d",
+          "status": "completed",
+          "call_id": "call_NlOjWfG5h8Xi6SdbuZRx5iwN",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g '*.py' -g 'pyproject.toml' -g 'pytest.ini' -g 'README*' -g 'setup.cfg'\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3af-90b0-78e2-97fe-2011395804ec",
+            "create_time": 1789989460.685586
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "b534dc3ea414585f676c3250e03f7e33ee062d312a7ccd7165a54f64109536c3",
+      "record": {
+        "timestamp": "2026-09-21T11:17:45.687Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3af-ae57-7612-b9c3-f19063f7f309",
+          "call_id": "call_NlOjWfG5h8Xi6SdbuZRx5iwN",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3ec7d9\",\"wall_time_seconds\":0.000001625,\"exit_code\":0,\"original_token_count\":56,\"output\":\"<WORKSPACE>\\ntest_receipts.py\\ningest/endpoint.py\\ningest/__init__.py\\ningest/ledger.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3af-90b0-78e2-97fe-2011395804ec",
+            "create_time": 1789989465.687946
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "5e3e960ea6eaa1126b4c5f1451ac88fd1df1eb5d651c82f02b5612ee72f46595",
+      "record": {
+        "timestamp": "2026-09-21T11:17:49.009Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0c4e900676aefe4f016ab1125b6e6887d0863ce6187dac1f79",
+          "status": "completed",
+          "call_id": "call_rzLihnXSNrvhBq9jXo3Q8uc4",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; cat test_receipts.py ingest/endpoint.py ingest/ledger.py ingest/__init__.py; rg --files --hidden -g '! .git'\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3af-90b0-78e2-97fe-2011395804ec",
+            "create_time": 1789989466.21968
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "f77eb04135cdf7b6c10e6d4f6c6a9819dedf4d9dadf279277a1b86a649fe99e8",
+      "record": {
+        "timestamp": "2026-09-21T11:17:49.096Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3af-bba8-71a3-80bd-453ae1ce3524",
+          "call_id": "call_rzLihnXSNrvhBq9jXo3Q8uc4",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6ec23b\",\"wall_time_seconds\":0.000001459,\"exit_code\":0,\"original_token_count\":640,\"output\":\"total 16\\ndrwxr-xr-x@  6 admin  staff   192 Sep 21 20:17 .\\ndrwxr-xr-x@  3 admin  staff    96 Sep 21 20:17 ..\\ndrwxr-xr-x@ 10 admin  staff   320 Sep 21 20:17 .git\\ndrwxr-xr-x@  5 admin  staff   160 Sep 21 20:17 ingest\\n-rw-r--r--@  1 admin  staff   662 Sep 21 20:17 requirements.md\\n-rw-r--r--@  1 admin  staff  1086 Sep 21 20:17 test_receipts.py\\nimport sqlite3\\nimport tempfile\\nfrom pathlib import Path\\nimport unittest\\nfrom ingest.endpoint import handle_upload as accept\\n\\n\\nclass LedgerFixture(unittest.TestCase):\\n    def setUp(self):\\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-',\\n                                                  dir=Path(__file__).resolve().parent)\\n        self.addCleanup(self.scratch.cleanup)\\n        self.database = Path(self.scratch.name) / 'events.sqlite'\\n        connection = sqlite3.connect(self.database)\\n        try:\\n            connection.execute('CREATE TABLE events (id INTEGER PRIMARY KEY, payload BLOB NOT NULL)')\\n            connection.execute('INSERT INTO events VALUES (?, ?)', (10, b'previous'))\\n            connection.commit()\\n        finally:\\n            connection.close()\\n\\n\\nclass ReceiptTests(LedgerFixture):\\n    def test_acknowledges_binary_upload(self):\\n        self.assertEqual(accept(self.database, 20, b'\\\\x00\\\\xffnew'), {'accepted': 20})\\n\\n    def test_acknowledges_empty_upload(self):\\n        self.assertEqual(accept(self.database, 30, b''), {'accepted': 30})\\nfrom ingest.ledger import write_event as _record\\n\\n\\ndef handle_upload(database, event_id, payload):\\n    return _record(database, event_id, payload)\\nimport sqlite3\\n\\n\\ndef write_event(database, event_id, payload):\\n    connection = sqlite3.connect(database)\\n    try:\\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\\n                           (event_id, payload))\\n        connection.commit()\\n    finally:\\n        connection.close()\\n    return {'accepted': event_id}\\n.git/COMMIT_EDITMSG\\n.git/index\\n.git/refs/heads/main\\n.git/logs/refs/heads/main\\n.git/logs/HEAD\\n.git/HEAD\\n.git/objects/85/b1448e3faaf2a0ded1c26cbb976108cb9906ef\\n.git/objects/ce/d8d254a8ee9785be60f906bff52796b5da0ffd\\n.git/objects/ce/b86c580d187f7739564390e477a505b17df92c\\n.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391\\n.git/objects/18/0cfc6b37736eeb3a93a6b75a27cff1a3ad2a24\\n.git/objects/ed/af4650f0b9f757cecceb86fed7a1d27011cc22\\n.git/objects/fb/ce1896b282b10a87386c9b8e239433728633bb\\n.git/objects/67/70f5e67f5ae986b23fe1dd3b9523fc7d3de8a7\\n.git/config\\ntest_receipts.py\\ningest/endpoint.py\\ningest/__init__.py\\ningest/ledger.py\\nrequirements.md\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3af-90b0-78e2-97fe-2011395804ec",
+            "create_time": 1789989469.096803
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "bad621590d142e76d66ca3cda1f1dbf69891746369e30770d737bb23cb85fa82",
+      "record": {
+        "timestamp": "2026-09-21T11:17:52.313Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0c4e900676aefe4f016ab1125efa7887d0ae9703c9ab262863",
+          "status": "completed",
+          "call_id": "call_X3wLywM6W3IUjFxdV5lzBUfh",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat requirements.md; git status --short; find .. -name AGENTS.md -print\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3af-90b0-78e2-97fe-2011395804ec",
+            "create_time": 1789989469.768375
+          }
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "fe7742d5242e68a5f50a55be8fcce00e49d8ec139e2188e7d43f0fe2da2385ad",
+      "record": {
+        "timestamp": "2026-09-21T11:17:52.432Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3af-c8b0-7b80-b720-490fce9f6d5a",
+          "call_id": "call_X3wLywM6W3IUjFxdV5lzBUfh",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"5605b3\",\"wall_time_seconds\":0.000001458,\"exit_code\":0,\"original_token_count\":166,\"output\":\"Python 3.9+ standard library; python3 -B -m unittest -v test_receipts.\\nSuccessful handle_upload must preserve the integer ID and exact bytes payload in\\nthe disk SQLite database, visible from a newly opened connection after it returns.\\nPreviously committed events must survive. The acknowledgment is not durability proof.\\nIDs are distinct positive integers and payloads are bytes, including empty/binary bytes.\\nNo networking or concurrent writers are in scope. Existing production/test files are\\nimmutable for this audit. Use disposable project-local copies, clean owned scratch,\\nand preserve all original bytes/modes. Do not install packages or change warnings.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3af-90b0-78e2-97fe-2011395804ec",
+            "create_time": 1789989472.43228
+          }
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "6465dbd5406d298bc34038e37c5bc94b3bb9d6335d8b654491eb8af95db17439",
+      "record": {
+        "timestamp": "2026-09-21T11:18:48.138Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0c4e900676aefe4f016ab1126de33087d0be5aa141b34b5316",
+          "status": "completed",
+          "call_id": "call_ZLoHZwVy0RxxBrxB5KYHMyXK",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport hashlib\\nfrom pathlib import Path\\nimport shutil\\nimport stat\\nimport subprocess\\nimport sys\\nimport tempfile\\n\\nroot = Path.cwd().resolve()\\nfiles = ['test_receipts.py', 'ingest/__init__.py', 'ingest/endpoint.py', 'ingest/ledger.py', 'requirements.md']\\ndef snapshot():\\n    return {name: (hashlib.sha256((root / name).read_bytes()).hexdigest(), stat.S_IMODE((root / name).stat().st_mode)) for name in files}\\nbefore = snapshot()\\nrunner = r'''\\nfrom pathlib import Path\\nimport sqlite3\\nimport sys\\nimport unittest\\nimport test_receipts\\nimport ingest.endpoint as endpoint\\nimport ingest.ledger as ledger\\n\\nroot = Path.cwd().resolve()\\nphase = sys.argv[1]\\ndef check_bindings():\\n    assert test_receipts.accept is endpoint.handle_upload\\n    assert endpoint.handle_upload.__globals__['_record'] is ledger.write_event\\n    for module, relative in ((test_receipts, 'test_receipts.py'), (endpoint, 'ingest/endpoint.py'), (ledger, 'ingest/ledger.py')):\\n        assert Path(module.__file__).resolve() == root / relative\\n    assert Path(test_receipts.accept.__code__.co_filename).resolve() == root / 'ingest/endpoint.py'\\n    assert Path(endpoint._record.__code__.co_filename).resolve() == root / 'ingest/ledger.py'\\ncheck_bindings()\\nprint('BINDINGS VERIFIED in test process:', root, flush=True)\\nprint('test_receipts.accept is endpoint.handle_upload; handle_upload globals _record is ledger.write_event', flush=True)\\n\\nclass DurableReceiptTests(test_receipts.ReceiptTests):\\n    def assert_committed_rows(self, new_row):\\n        connection = sqlite3.connect(self.database)\\n        try:\\n            rows = connection.execute('SELECT id, payload FROM events ORDER BY id').fetchall()\\n        finally:\\n            connection.close()\\n        expected = [(10, b'previous'), new_row]\\n        print('FRESH CONNECTION actual=%r expected=%r' % (rows, expected), flush=True)\\n        self.assertEqual(rows, expected, 'Missing committed data after actual upload call')\\n\\n    def test_acknowledges_binary_upload(self):\\n        super().test_acknowledges_binary_upload()\\n        self.assert_committed_rows((20, b'\\\\x00\\\\xffnew'))\\n\\n    def test_acknowledges_empty_upload(self):\\n        super().test_acknowledges_empty_upload()\\n        self.assert_committed_rows((30, b''))\\n\\ncalls = {'endpoint': 0, 'writer': 0}\\ndef trace(frame, event, arg):\\n    if event == 'call':\\n        if frame.f_code is endpoint.handle_upload.__code__:\\n            calls['endpoint'] += 1\\n        if frame.f_code is ledger.write_event.__code__:\\n            assert frame.f_back.f_code is endpoint.handle_upload.__code__\\n            calls['writer'] += 1\\n    return trace\\nsuite = unittest.defaultTestLoader.loadTestsFromTestCase(test_receipts.ReceiptTests if phase == 'native' else DurableReceiptTests)\\nsys.settrace(trace)\\ntry:\\n    result = unittest.TextTestRunner(verbosity=2, stream=sys.stdout).run(suite)\\nfinally:\\n    sys.settrace(None)\\ncheck_bindings()\\nassert calls == {'endpoint': 2, 'writer': 2}, calls\\nassert result.testsRun == 2\\nassert not result.errors, result.errors\\nprint('REACHABILITY VERIFIED:', calls, 'failures=', len(result.failures), 'errors=', len(result.errors), flush=True)\\nsys.exit(0 if result.wasSuccessful() else 1)\\n'''\\ntry:\\n    with tempfile.TemporaryDirectory(prefix='.commit-audit-', dir=root) as scratch:\\n        base = Path(scratch)\\n        for version in ('correct', 'faulty'):\\n            target = base / version\\n            for name in files:\\n                destination = target / name\\n                destination.parent.mkdir(parents=True, exist_ok=True)\\n                shutil.copy2(root / name, destination)\\n            if version == 'faulty':\\n                ledger_path = target / 'ingest/ledger.py'\\n                source = ledger_path.read_bytes()\\n                commit = b'        connection.commit()\\\\n'\\n                assert source.count(commit) == 1\\n                ledger_path.write_bytes(source.replace(commit, b'', 1))\\n                assert ledger_path.read_bytes() == (root / 'ingest/ledger.py').read_bytes().replace(commit, b'', 1)\\n            for name in files:\\n                if version == 'faulty' and name == 'ingest/ledger.py':\\n                    continue\\n                assert (target / name).read_bytes() == (root / name).read_bytes()\\n        print('FAULT: removed only connection.commit() from copied ledger; acknowledgment and finally/close unchanged.', flush=True)\\n        for phase in ('native', 'strong'):\\n            for version in ('correct', 'faulty'):\\n                target = base / version\\n                print('\\\\nCOMMAND: cwd=%s python3 -B -c <same binding-checked unittest runner> %s' % (target, phase), flush=True)\\n                proc = subprocess.run([sys.executable, '-B', '-c', runner, phase], cwd=target, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)\\n                print(proc.stdout, end='', flush=True)\\n                print('EXIT:', proc.returncode, flush=True)\\n                expected_exit = 1 if (phase, version) == ('strong', 'faulty') else 0\\n                assert proc.returncode == expected_exit\\n                assert 'REACHABILITY VERIFIED:' in proc.stdout\\n                if expected_exit:\\n                    assert 'Missing committed data after actual upload call' in proc.stdout\\n                    assert 'failures= 2 errors= 0' in proc.stdout\\n                    assert \\\"FRESH CONNECTION actual=[(10, b'previous')]\\\" in proc.stdout\\n    assert not base.exists()\\n    print('\\\\nCLEANUP VERIFIED: owned disposable copies removed.', flush=True)\\nfinally:\\n    assert snapshot() == before\\n    print('ORIGINALS VERIFIED: all original source/test/requirements bytes and modes unchanged.', flush=True)\\nPY\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3af-90b0-78e2-97fe-2011395804ec",
+            "create_time": 1789989473.256778
+          }
+        }
+      }
+    },
+    {
+      "line": 35,
+      "line_sha256": "90caff9f34bc2d471800aab01e51e57fb0728d5a511824dc02ec61bbe78a512c",
+      "record": {
+        "timestamp": "2026-09-21T11:18:48.464Z",
+        "ordinal": 34,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3b0-a390-7223-90fb-6e232489136b",
+          "call_id": "call_ZLoHZwVy0RxxBrxB5KYHMyXK",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"dde4d9\",\"wall_time_seconds\":0.134811167,\"exit_code\":0,\"original_token_count\":1386,\"output\":\"FAULT: removed only connection.commit() from copied ledger; acknowledgment and finally/close unchanged.\\n\\nCOMMAND: cwd=<WORKSPACE>/.commit-audit-ct3lxcts/correct python3 -B -c <same binding-checked unittest runner> native\\nBINDINGS VERIFIED in test process: <WORKSPACE>/.commit-audit-ct3lxcts/correct\\ntest_receipts.accept is endpoint.handle_upload; handle_upload globals _record is ledger.write_event\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.007s\\n\\nOK\\nREACHABILITY VERIFIED: {'endpoint': 2, 'writer': 2} failures= 0 errors= 0\\nEXIT: 0\\n\\nCOMMAND: cwd=<WORKSPACE>/.commit-audit-ct3lxcts/faulty python3 -B -c <same binding-checked unittest runner> native\\nBINDINGS VERIFIED in test process: <WORKSPACE>/.commit-audit-ct3lxcts/faulty\\ntest_receipts.accept is endpoint.handle_upload; handle_upload globals _record is ledger.write_event\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.006s\\n\\nOK\\nREACHABILITY VERIFIED: {'endpoint': 2, 'writer': 2} failures= 0 errors= 0\\nEXIT: 0\\n\\nCOMMAND: cwd=<WORKSPACE>/.commit-audit-ct3lxcts/correct python3 -B -c <same binding-checked unittest runner> strong\\nBINDINGS VERIFIED in test process: <WORKSPACE>/.commit-audit-ct3lxcts/correct\\ntest_receipts.accept is endpoint.handle_upload; handle_upload globals _record is ledger.write_event\\ntest_acknowledges_binary_upload (__main__.DurableReceiptTests) ... FRESH CONNECTION actual=[(10, b'previous'), (20, b'\\\\x00\\\\xffnew')] expected=[(10, b'previous'), (20, b'\\\\x00\\\\xffnew')]\\nok\\ntest_acknowledges_empty_upload (__main__.DurableReceiptTests) ... FRESH CONNECTION actual=[(10, b'previous'), (30, b'')] expected=[(10, b'previous'), (30, b'')]\\nok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.007s\\n\\nOK\\nREACHABILITY VERIFIED: {'endpoint': 2, 'writer': 2} failures= 0 errors= 0\\nEXIT: 0\\n\\nCOMMAND: cwd=<WORKSPACE>/.commit-audit-ct3lxcts/faulty python3 -B -c <same binding-checked unittest runner> strong\\nBINDINGS VERIFIED in test process: <WORKSPACE>/.commit-audit-ct3lxcts/faulty\\ntest_receipts.accept is endpoint.handle_upload; handle_upload globals _record is ledger.write_event\\ntest_acknowledges_binary_upload (__main__.DurableReceiptTests) ... FRESH CONNECTION actual=[(10, b'previous')] expected=[(10, b'previous'), (20, b'\\\\x00\\\\xffnew')]\\nFAIL\\ntest_acknowledges_empty_upload (__main__.DurableReceiptTests) ... FRESH CONNECTION actual=[(10, b'previous')] expected=[(10, b'previous'), (30, b'')]\\nFAIL\\n\\n======================================================================\\nFAIL: test_acknowledges_binary_upload (__main__.DurableReceiptTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<string>\\\", line 36, in test_acknowledges_binary_upload\\n  File \\\"<string>\\\", line 32, in assert_committed_rows\\nAssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')]\\n\\nSecond list contains 1 additional elements.\\nFirst extra element 1:\\n(20, b'\\\\x00\\\\xffnew')\\n\\n- [(10, b'previous')]\\n+ [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')] : Missing committed data after actual upload call\\n\\n======================================================================\\nFAIL: test_acknowledges_empty_upload (__main__.DurableReceiptTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<string>\\\", line 40, in test_acknowledges_empty_upload\\n  File \\\"<string>\\\", line 32, in assert_committed_rows\\nAssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (30, b'')]\\n\\nSecond list contains 1 additional elements.\\nFirst extra element 1:\\n(30, b'')\\n\\n- [(10, b'previous')]\\n+ [(10, b'previous'), (30, b'')]\\n?                   +++++++++++\\n : Missing committed data after actual upload call\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.011s\\n\\nFAILED (failures=2)\\nREACHABILITY VERIFIED: {'endpoint': 2, 'writer': 2} failures= 2 errors= 0\\nEXIT: 1\\n\\nCLEANUP VERIFIED: owned disposable copies removed.\\nORIGINALS VERIFIED: all original source/test/requirements bytes and modes unchanged.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3af-90b0-78e2-97fe-2011395804ec",
+            "create_time": 1789989528.464458
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
