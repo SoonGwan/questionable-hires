@@ -47,6 +47,11 @@ combined gold/solver verification are still unfinished.
 certificate acceptance/rejection and all142 original Requests tests pass with
 unchanged source. First probe's installed-copy limitation is retained; combined
 gold grading and solver-access validation are still pending, not model results.
+[Combined Requests grading](SWE-LITE-PILOT-01-SCORING-04.md): original has one
+required failure; gold passes all141 required labels (143 native items), with
+successful setup and same-process source bindings. Together with pytest's78 gold
+passes this completes scoped reference preflight, not solver/runtime-access
+verification, model calls or a measured skill gain.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |
