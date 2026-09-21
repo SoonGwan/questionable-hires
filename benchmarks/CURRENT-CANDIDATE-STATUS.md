@@ -23,6 +23,9 @@ multi-version helper is used in current/multiple, but all conditions already
 execute each requested revision once. Actual adoption, not a broad cost win;
 no featured promotion or favorable rerun. All native contracts and final-state
 preservation checks pass; original tool output resolves CLI prefix omissions.
+[Response-cost review](RECEIPT-VERSIONS-01-INPUT-COSTS.md) reconciles all six:
+single responses5/6/4, multiple5/5/5 (baseline/predecessor/current). No redundant
+native execution or new generic compression/forced-helper rule is supported.
 
 한국어: 새 다중 버전 기능의 실제 사용은 확인했지만 합계 토큰 절감은 없었다.
 시간 감소만으로 전체 개선을 주장하지 않으며 불리한 결과도 함께 보존한다.
