@@ -1,0 +1,391 @@
+{
+  "upstream_revision": "f85f9488520148d5f6899b5639199882b605e30a",
+  "upstream_blob_ids": {
+    "LICENSE": "82af695f594e8c1e83ee98db0bcae758620f1b63",
+    "slugify/__init__.py": "6d3279fb1ac2e9c3febeca395a5f7350d8fa5969",
+    "slugify/__main__.py": "4cc461622837bf5c765c06d9a5f20f265945d968",
+    "slugify/__version__.py": "854038e500d54f104aa0390ad191e81c3ea9dfce",
+    "slugify/py.typed": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+    "slugify/slugify.py": "09c7e076cf27406c7f0ab324b5ac1da787da3624",
+    "slugify/special.py": "918cb2add83f5135b4e9528956abaddeff9c6893",
+    "test.py": "d13ef94f7b36e126871af4a8f4e4e4fedc53cdd1"
+  },
+  "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "dependency": {
+    "text-unidecode": "1.3"
+  },
+  "direct_controls": [
+    {
+      "variant": "correct",
+      "observations": [
+        {
+          "selector": "test.TestSlugify.test_non_word_characters",
+          "exit_code": 0,
+          "output": "test_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_max_length",
+          "exit_code": 0,
+          "output": "test_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_custom_separator",
+          "exit_code": 0,
+          "output": "test_custom_separator (test.TestSlugify.test_custom_separator) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_save_order",
+          "exit_code": 0,
+          "output": "test_save_order (test.TestSlugify.test_save_order) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ]
+    },
+    {
+      "variant": "omit-separator",
+      "observations": [
+        {
+          "selector": "test.TestSlugify.test_non_word_characters",
+          "exit_code": 0,
+          "output": "test_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_max_length",
+          "exit_code": 0,
+          "output": "test_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_custom_separator",
+          "exit_code": 1,
+          "output": "test_custom_separator (test.TestSlugify.test_custom_separator) ... FAIL\n\n======================================================================\nFAIL: test_custom_separator (test.TestSlugify.test_custom_separator)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/test.py\", line 96, in test_custom_separator\n    self.assertEqual(r, \"jaja.lol.mememeoo.a\")\nAssertionError: 'jaja-lol-mememeoo-a' != 'jaja.lol.mememeoo.a'\n- jaja-lol-mememeoo-a\n?     ^   ^        ^\n+ jaja.lol.mememeoo.a\n?     ^   ^        ^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_save_order",
+          "exit_code": 0,
+          "output": "test_save_order (test.TestSlugify.test_save_order) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ]
+    },
+    {
+      "variant": "ignore-order",
+      "observations": [
+        {
+          "selector": "test.TestSlugify.test_non_word_characters",
+          "exit_code": 0,
+          "output": "test_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_max_length",
+          "exit_code": 0,
+          "output": "test_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_custom_separator",
+          "exit_code": 0,
+          "output": "test_custom_separator (test.TestSlugify.test_custom_separator) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_save_order",
+          "exit_code": 1,
+          "output": "test_save_order (test.TestSlugify.test_save_order) ... FAIL\n\n======================================================================\nFAIL: test_save_order (test.TestSlugify.test_save_order)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/test.py\", line 118, in test_save_order\n    self.assertEqual(r, \"one-two\")\nAssertionError: 'one-two-four' != 'one-two'\n- one-two-four\n?        -----\n+ one-two\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        }
+      ]
+    },
+    {
+      "variant": "omit-limit",
+      "observations": [
+        {
+          "selector": "test.TestSlugify.test_non_word_characters",
+          "exit_code": 0,
+          "output": "test_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_max_length",
+          "exit_code": 1,
+          "output": "test_max_length (test.TestSlugify.test_max_length) ... FAIL\n\n======================================================================\nFAIL: test_max_length (test.TestSlugify.test_max_length)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/test.py\", line 65, in test_max_length\n    self.assertEqual(r, \"jaja-lol\")\nAssertionError: 'jaja-lol-mememeoo-a' != 'jaja-lol'\n- jaja-lol-mememeoo-a\n+ jaja-lol\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_custom_separator",
+          "exit_code": 0,
+          "output": "test_custom_separator (test.TestSlugify.test_custom_separator) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_save_order",
+          "exit_code": 1,
+          "output": "test_save_order (test.TestSlugify.test_save_order) ... FAIL\n\n======================================================================\nFAIL: test_save_order (test.TestSlugify.test_save_order)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/test.py\", line 106, in test_save_order\n    self.assertEqual(r, \"one-two-three\")\nAssertionError: 'one-two-three-four-five' != 'one-two-three'\n- one-two-three-four-five\n+ one-two-three\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        }
+      ]
+    },
+    {
+      "variant": "equivalent",
+      "observations": [
+        {
+          "selector": "test.TestSlugify.test_non_word_characters",
+          "exit_code": 0,
+          "output": "test_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_max_length",
+          "exit_code": 0,
+          "output": "test_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_custom_separator",
+          "exit_code": 0,
+          "output": "test_custom_separator (test.TestSlugify.test_custom_separator) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test.TestSlugify.test_save_order",
+          "exit_code": 0,
+          "output": "test_save_order (test.TestSlugify.test_save_order) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ]
+    }
+  ],
+  "helper_report": {
+    "status": "observed",
+    "audits": [
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-039ky5g1/correct-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"3103ecc34bb68362d4fbc0414fb2b40ce946b40848c68287403e1f5a5b4a9656\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\ntest_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "test.TestSlugify.test_non_word_characters",
+              "test.TestSlugify.test_max_length",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 2,
+              "skipped": 0,
+              "successful": true
+            }
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-039ky5g1/mutant-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"c81680bca7ee96b0be169a4cba6c7e2d795bf63b0b619b124039fdfb39fe26e5\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\ntest_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "test.TestSlugify.test_non_word_characters",
+              "test.TestSlugify.test_max_length",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 2,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      },
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "observation_ref": "#/audits/0/checks/correct_tests"
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-f40e_wy2/mutant-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"ced63bd7c9fb0ea50bb80d9a936137c7b429d37c92681e539b01e1e872c3c668\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\ntest_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "test.TestSlugify.test_non_word_characters",
+              "test.TestSlugify.test_max_length",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 2,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "correct_tests_reused": true,
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      },
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "observation_ref": "#/audits/0/checks/correct_tests"
+          },
+          "mutant_tests": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-vti5_6sb/mutant-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"0d93986dc36b6e7ea32973f0ebb1dfe3b5f0c3d40b2096504f682dd23dd8d083\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\ntest_max_length (test.TestSlugify.test_max_length) ... FAIL\n\n======================================================================\nFAIL: test_max_length (test.TestSlugify.test_max_length)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-vti5_6sb/mutant-tests/test.py\", line 65, in test_max_length\n    self.assertEqual(r, \"jaja-lol\")\nAssertionError: 'jaja-lol-mememeoo-a' != 'jaja-lol'\n- jaja-lol-mememeoo-a\n+ jaja-lol\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nFAILED (failures=1)\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "test.TestSlugify.test_non_word_characters",
+              "test.TestSlugify.test_max_length",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 2,
+              "skipped": 0,
+              "successful": false
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "correct_tests_reused": true,
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      },
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-juo743oo/correct-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"3103ecc34bb68362d4fbc0414fb2b40ce946b40848c68287403e1f5a5b4a9656\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_custom_separator (test.TestSlugify.test_custom_separator) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "test.TestSlugify.test_custom_separator",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          },
+          "mutant_tests": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-juo743oo/mutant-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"c81680bca7ee96b0be169a4cba6c7e2d795bf63b0b619b124039fdfb39fe26e5\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_custom_separator (test.TestSlugify.test_custom_separator) ... FAIL\n\n======================================================================\nFAIL: test_custom_separator (test.TestSlugify.test_custom_separator)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-juo743oo/mutant-tests/test.py\", line 96, in test_custom_separator\n    self.assertEqual(r, \"jaja.lol.mememeoo.a\")\nAssertionError: 'jaja-lol-mememeoo-a' != 'jaja.lol.mememeoo.a'\n- jaja-lol-mememeoo-a\n?     ^   ^        ^\n+ jaja.lol.mememeoo.a\n?     ^   ^        ^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "test.TestSlugify.test_custom_separator",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": false
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      },
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-uz2ni6yx/correct-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"3103ecc34bb68362d4fbc0414fb2b40ce946b40848c68287403e1f5a5b4a9656\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_save_order (test.TestSlugify.test_save_order) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "test.TestSlugify.test_save_order",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          },
+          "mutant_tests": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-uz2ni6yx/mutant-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"ced63bd7c9fb0ea50bb80d9a936137c7b429d37c92681e539b01e1e872c3c668\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_save_order (test.TestSlugify.test_save_order) ... FAIL\n\n======================================================================\nFAIL: test_save_order (test.TestSlugify.test_save_order)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-b26clxnw/.con-artist-uz2ni6yx/mutant-tests/test.py\", line 118, in test_save_order\n    self.assertEqual(r, \"one-two\")\nAssertionError: 'one-two-four' != 'one-two'\n- one-two-four\n?        -----\n+ one-two\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "test.TestSlugify.test_save_order",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": false
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      }
+    ],
+    "limitation": "Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled."
+  },
+  "scratch_removed": true,
+  "limitation": "20 direct native processes plus 8 helper native processes / 12 method executions. Author-selected unchanged upstream tests and deliberate faults; not model evidence or a blind holdout."
+}

@@ -51,6 +51,11 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [Slugify transfer preparation](SLUGIFY-NATIVE-01-PREFLIGHT.md), helper
+  `a7dcbd8`: unchanged pinned upstream tests establish correct/equivalent/fault
+  outcomes in20 direct processes;8 helper processes execute12 methods with
+  matching results and cleanup. No model calls or frozen model schedule yet.
+  한국어: 다음 비교를 위한 실제 프로젝트 대조이며 성능 향상 수치는 아니다.
 - [Native existing-test recipe correction](AUDIT-NATIVE-RECIPE-02.md), parent
   `df072b3`: source-root and existing-witness selections are self-contained in
   the native guide. Real packaged weak/strong controls pass on Python3.9/3.11;
