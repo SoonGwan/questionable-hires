@@ -179,7 +179,13 @@ GitHub helper and npx remote clone produce matching8 skills/51 resources;
 nine installed entrypoints and selected native checks pass. Cached CLI package
 and existing credentials; not anonymous/public access or model performance.
 
-[Current local checkpoint](RELEASE-VALIDATION-AD72A3F.md), source`ad72a3f`:
+[Current local checkpoint](RELEASE-VALIDATION-2C7E036.md), source`2c7e036`:
+macOS/Python3.11 checkout1,225passes; Linux/Python3.12 archive1,195passes,
+30history/checkout skips, zero failures. Includes multi-version comparison and
+BOM repair. Both exit0; hosted run35630364251 fails before steps with the same
+payment/spending-limit alternatives. No model gain or publication claim.
+
+[Prior local checkpoint](RELEASE-VALIDATION-AD72A3F.md), source`ad72a3f`:
 macOS/Python3.11 checkout1,203passes; Linux/Python3.12 archive1,174passes,
 29history/checkout skips, zero failures. Both exit0. Hosted main run35625416269
 failed before all four jobs' steps; Python3.11 cites payments/spending limit.
