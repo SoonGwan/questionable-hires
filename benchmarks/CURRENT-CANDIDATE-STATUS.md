@@ -88,6 +88,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Candidate2026-09-21, parent`f7ecb45`: [audit phase versus batch routing](AUDIT-PHASE-ROUTING-01.md)
+distinguishes one fault's four verification phases from independent batch work.
+Single/multiple-fault execution contracts unchanged;107audit tests pass. Model
+route selection and efficiency remain unmeasured; do not reuse old scores.
+한국어: 단일 결함의 검증 단계와 배치를 구분하는 안내 수정이며 비용 효과는 미측정이다.
+
 Checkpoint2026-09-21, parent`af9f5d5`: [batch/probe route correction](AUDIT-BATCH-PROBE-ROUTING-01.md)
 clarifies per-mutation probe placement after an observed schema error and adds
 a precise pre-execution diagnostic without accepting previously invalid inputs.

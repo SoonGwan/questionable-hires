@@ -40,11 +40,13 @@ process does not prove what the test process loads.
   and proposed tests against correct/faulty code with the native runner and fixtures;
   applying the verified edit remains separate. No helper is needed for a simpler
   native workflow or an already-completed audit.
-- Repeated Python fault/test checks: the [native unittest batch recipe](references/native-unittest-batch.md)
+- Several independent Python faults or required test selections: the [native unittest batch recipe](references/native-unittest-batch.md)
   provides actual `python -B -m unittest` execution, same-process binding prechecks,
   copy cleanup and reusable correct observations without writing your own startup script.
-  Consider it when those facilities remove needed orchestration. For pytest or
-  inline probes, use the [common helper contract](references/python-audit.md).
+  Consider it when those facilities remove needed orchestration. One fault's
+  correct/mutant and stronger-assertion phases do not alone need a batch: the
+  [single-audit contract](references/python-audit.md) supports them, as well as
+  pytest and inline probes.
   Prefer existing project support or a simpler native check when sufficient;
   don't restart a completed audit to adopt a helper. It checks selected files by
   default; enable `guard_project` for required, authorized whole-project inventories.

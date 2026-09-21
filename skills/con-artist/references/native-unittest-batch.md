@@ -3,6 +3,9 @@
 Use this optional recipe when independent, already-required faults need copied
 native execution and shared baseline evidence. Existing project support or a
 simple direct check may be sufficient. This is not a reason to add faults.
+One fault's correct/mutant checks plus a stronger assertion are phases of a
+single audit, not several independent faults; the [single-audit contract](python-audit.md)
+already supports them. Use a batch when separate fault/test selections justify it.
 Adapt complete selected files, reachable edits and the test binding to the project;
 do not extract a function when that loses its imports, closures or decorators.
 
