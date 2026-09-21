@@ -53,6 +53,13 @@ author check, not another independent sample. Model task text, six-cell schedule
 freeze and original-session review still remain; no model run or graph promotion
 is claimed here.
 
+Archive follow-up at`078f201`: fresh `git archive` without Git/local-run artifacts
+passes all four construction/evidence controls on Python3.9.6,.090s. The public
+preflight script also executes successfully from that archive on the supplied
+Python3.11 environment, reproducing all16 native outcomes and four request byte
+counts into a separate temporary output. This is an author reproducibility check,
+not16 additional independent model samples or a rewrite of the retained first run.
+
 한국어: 두 입력 방식 모두 동일한 네 단계 검사 결과를 냈고, 실행된 테스트 파일의
 해시도 같았다. 큰 파일에서 JSON 입력은35,185→2,100바이트지만 토큰·시간 절감률은
 아니다. 아직 모델 사용 여부와 실제 비용을 비교하지 않았으며 다음 실행 조건을
