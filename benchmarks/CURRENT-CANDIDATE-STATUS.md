@@ -9,6 +9,31 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Whole-suite local checkpoint — 2026-09-21, resource `2753915`
+
+Clean checkout at `2753915e3693bc9fbc424bb7f0e24de01404048e`:
+Python3.11.16 ran **994 tests in166.436s, OK, no skips** with
+`python -B -m unittest discover -s tests -q`. This includes the recent native
+reporter experiments and selected-input race correction alongside existing
+helper, installer, packaging and benchmark-runner checks. Intermediate simulated
+runner outputs are test fixtures, not fresh model sessions or performance results.
+Repository validation, localized featured synchronization and diff checks pass.
+Working tree remained clean through execution; no source edits occurred mid-run.
+
+Hosted [run35563929473](https://github.com/SoonGwan/questionable-hires/actions/runs/35563929473)
+at this same commit has four failed jobs with **no executed steps**. The Python3.11
+job annotation reports failed account payments or a spending-limit issue. This
+does not establish a code-test failure, but hosted Python3.9/3.11/3.12 and source
+archive release checks are not green. No billing changes or reruns were requested.
+Local macOS/Python3.11 results do not substitute for hosted Linux/Python3.12 checks.
+
+All-eight task-level efficiency remains unproven. No capability/benchmark numbers,
+representative graphs, production instructions or release visibility change here.
+
+한국어: 동일 커밋에서 전체994개 로컬 검사가 건너뜀 없이 통과했다. GitHub 검사는
+계정 결제·한도 문제로 단계 실행 전 실패했으므로 배포 검증 완료로 표시하지 않는다.
+모델 성능 비교를 새로 실행한 것이 아니며 전체 토큰·시간 개선 목표는 여전히 미달이다.
+
 ## Con Artist selected-input opens corrected — 2026-09-21, parent `06353c6`
 
 [Native before/after probes](AUDIT-SELECTED-READ-01.md) reproduce two FIFO hangs and
