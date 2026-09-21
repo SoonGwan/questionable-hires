@@ -1,0 +1,274 @@
+{
+  "session_id": "01a0c23c-3c40-7672-ad14-93da3867f0a2",
+  "source_bytes": 263921,
+  "source_sha256": "3cf9df9978ffe60fd2e96055564fd34cc964cc2d8a777614aeb5ddd45d96db0c",
+  "source_lines": 55,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "55b9d8f41a0cddee5a3a8ac4d33c457be932e8a1023282996555193d1e2722fd",
+      "record": {
+        "timestamp": "2026-09-21T04:32:10.222Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d365230bf8aea6c016ab0b347e03887d09fded0d34aa1447f",
+          "status": "completed",
+          "call_id": "call_pyH4ClkUxQomR4Ry3d6lZ09T",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; git status --short; cat AGENTS.md .agents/skills/hostage-negotiator/SKILL.md index.js; rg --files --hidden -g '! .git' -g '!node_modules' -g '!*lock*' -g '! .git/**'\",\"max_output_tokens\":10000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23c-3c89-7381-8b22-a188d3d18c62",
+            "create_time": 1789965125.429119
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "7818c5dcd80ec00c9d28d9d0b7fa67310eb6bf9d2369c92fb3551f6264e5d8c0",
+      "record": {
+        "timestamp": "2026-09-21T04:32:10.368Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c23c-5a80-7433-a32c-4238066037fb",
+          "call_id": "call_pyH4ClkUxQomR4Ry3d6lZ09T",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"14937d\",\"wall_time_seconds\":0.000001375,\"exit_code\":0,\"original_token_count\":3857,\"output\":\"<WORKSPACE>\\n?? .agents/\\nUse Node and `node --test *.test.cjs` in this root. Keep existing tests and license unchanged; add native regression tests. Implementation changes belong in index.js. No dependencies, network, commits, declarations/build changes or unrelated refactoring.\\n---\\nname: hostage-negotiator\\ndescription: Keep a small requested change focused when optional refactors, architectural redesign, or unrelated cleanup threaten to expand its scope.\\n---\\n\\n# Hostage Negotiator\\n\\n> Release the button. The architecture stays.\\n\\n## Establish the terms\\n\\nRead supplied files, applicable project instructions and working-tree status together. Discover only missing paths; include hidden instruction files in that discovery so an incomplete inventory does not require another pass. Do not precede known-file reads with a separate directory listing. Search again for an unresolved dependency or instruction boundary. Use the project's runner.\\n\\nFor each supporting change, ask which acceptance condition fails without it. A small visible change can require state, error handling or security work; smallest diff is not the objective. Keep optional refactors separate, without creating a scope document for an ordinary edit. Ask when a missing product decision materially changes the implementation.\\n\\nFor stateful behavior, distinguish operation completion from deferred cleanup: another caller may enter between them. Follow entry, completion and recovery through the existing owner; test that interval when the contract depends on it. Preserve existing or specified values, errors, cleanup and cancellation. For suppressed operations, assert suppression and ownership without inventing return contracts. Extend existing tests, not a parallel harness.\\n\\nAssert observable contracts, not incidental counter increments or token values. For stale or failed work, capture contractual field values before release and compare afterward; retaining the owner object can alias in-place mutations. Preserve payload/error identity and snapshot mutable contents only when contractual. Do not invent exception-identity requirements for task cancellation.\\n\\nAsync regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup. Keep callback helpers separate from framework methods: an async `fail` or `run` on a unittest TestCase can break assertions or execution; use distinct names or composed support.\\n\\nWithout equivalent project support, optionally copy the [Python asyncio asset](assets/controlled_call.py) or [JavaScript Promise asset](assets/controlled_call.mjs) for the actual runtime into permitted test support. Read its complete usage block alongside application files: `sed -n '1,/^\\\"\\\"\\\"$/p' <python-asset>` or `sed -n '1,/^ \\\\*\\\\//p' <js-asset>`. These include limits and optional task lifecycle ownership to replace custom start/wait/drain plumbing; inspect implementation for trust, adaptation or unclear behavior. Assets do not replace application assertions or external-resource cleanup; no separate reference is needed.\\n\\n## Deliver and stop\\n\\nRun native tests in a dedicated shell command with its own results and process exit. A dedicated command need not be a separate model turn: when an edit succeeds, run the relevant test command immediately in the same tool interaction if sequencing is supported. Wait for the edit result first; do not test a failed or pending edit, run edits and tests concurrently, or replace a test exit with a later command exit. Inspect a failing test before choosing a fix. Keep before/after evidence separate; batching changes transport, not the checks or their order. Then combine remaining copy integrity (`cmp <asset> <copy>`), diff checks and scope status in one non-test call, preserving each needed exit. Inspect new code not already visible in your edit output; do not reprint a whole generated suite merely to confirm it exists. A later successful command is not test evidence; never recopy a helper to make its integrity check pass.\\n\\nReview the diff against acceptance conditions, removing only your own unjustified additions. Reuse valid evidence; rerun only for changed relevant inputs, unresolved uncertainty or an explicit requirement.\\n\\nBefore claiming tests passed, locate their native identities/count and results, not just the shell exit or trailing diff/status. Missing evidence: first inspect an existing report tied to that command and inputs; observe a still-running process instead of restarting it. Otherwise rerun only the missing, safely repeatable check in scope, capturing its result and own exit. Never replay a deployment or side-effectful workflow merely to recover output. If evidence remains unavailable, say unverified. A later run is new evidence, not a repaired transcript; missing, undiscovered or skipped tests cannot support a pass.\\n\\nWhen terminal capture is unreliable and local evidence files are permitted, use the [single-run native capture fallback](references/native-evidence.md); read retained results instead of rerunning solely for output.\\n\\nReport decisive observations and limits, then stop when the requested behavior and checks are verified.\\n\\nPreserve user changes and explicit requirements. Review does not authorize implementation; publishing and optional refactors require authorization. Keep humor optional.\\n'use strict';\\n\\nvar has = Object.prototype.hasOwnProperty\\n  , prefix = '~';\\n\\n/**\\n * Constructor to create a storage for our `EE` objects.\\n * An `Events` instance is a plain object whose properties are event names.\\n *\\n * @constructor\\n * @private\\n */\\nfunction Events() {}\\n\\n//\\n// We try to not inherit from `Object.prototype`. In some engines creating an\\n// instance in this way is faster than calling `Object.create(null)` directly.\\n// If `Object.create(null)` is not supported we prefix the event names with a\\n// character to make sure that the built-in object properties are not\\n// overridden or used as an attack vector.\\n//\\nif (Object.create) {\\n  Events.prototype = Object.create(null);\\n\\n  //\\n  // This hack is needed because the `__proto__` property is still inherited in\\n  // some old browsers like Android 4, iPhone 5.1, Opera 11 and Safari 5.\\n  //\\n  if (!new Events().__proto__) prefix = false;\\n}\\n\\n/**\\n * Representation of a single event listener.\\n *\\n * @param {Function} fn The listener function.\\n * @param {*} context The context to invoke the listener with.\\n * @param {Boolean} [once=false] Specify if the listener is a one-time listener.\\n * @constructor\\n * @private\\n */\\nfunction EE(fn, context, once) {\\n  this.fn = fn;\\n  this.context = context;\\n  this.once = once || false;\\n}\\n\\n/**\\n * Add a listener for a given event.\\n *\\n * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.\\n * @param {(String|Symbol)} event The event name.\\n * @param {Function} fn The listener function.\\n * @param {*} context The context to invoke the listener with.\\n * @param {Boolean} once Specify if the listener is a one-time listener.\\n * @returns {EventEmitter}\\n * @private\\n */\\nfunction addListener(emitter, event, fn, context, once) {\\n  if (typeof fn !== 'function') {\\n    throw new TypeError('The listener must be a function');\\n  }\\n\\n  var listener = new EE(fn, context || emitter, once)\\n    , evt = prefix ? prefix + event : event;\\n\\n  if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;\\n  else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);\\n  else emitter._events[evt] = [emitter._events[evt], listener];\\n\\n  return emitter;\\n}\\n\\n/**\\n * Clear event by name.\\n *\\n * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.\\n * @param {(String|Symbol)} evt The Event name.\\n * @private\\n */\\nfunction clearEvent(emitter, evt) {\\n  if (--emitter._eventsCount === 0) emitter._events = new Events();\\n  else delete emitter._events[evt];\\n}\\n\\n/**\\n * Minimal `EventEmitter` interface that is molded against the Node.js\\n * `EventEmitter` interface.\\n *\\n * @constructor\\n * @public\\n */\\nfunction EventEmitter() {\\n  this._events = new Events();\\n  this._eventsCount = 0;\\n}\\n\\n/**\\n * Return an array listing the events for which the emitter has registered\\n * listeners.\\n *\\n * @returns {Array}\\n * @public\\n */\\nEventEmitter.prototype.eventNames = function eventNames() {\\n  var names = []\\n    , events\\n    , name;\\n\\n  if (this._eventsCount === 0) return names;\\n\\n  for (name in (events = this._events)) {\\n    if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);\\n  }\\n\\n  if (Object.getOwnPropertySymbols) {\\n    return names.concat(Object.getOwnPropertySymbols(events));\\n  }\\n\\n  return names;\\n};\\n\\n/**\\n * Return the listeners registered for a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @returns {Array} The registered listeners.\\n * @public\\n */\\nEventEmitter.prototype.listeners = function listeners(event) {\\n  var evt = prefix ? prefix + event : event\\n    , handlers = this._events[evt];\\n\\n  if (!handlers) return [];\\n  if (handlers.fn) return [handlers.fn];\\n\\n  for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {\\n    ee[i] = handlers[i].fn;\\n  }\\n\\n  return ee;\\n};\\n\\n/**\\n * Return the number of listeners listening to a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @returns {Number} The number of listeners.\\n * @public\\n */\\nEventEmitter.prototype.listenerCount = function listenerCount(event) {\\n  var evt = prefix ? prefix + event : event\\n    , listeners = this._events[evt];\\n\\n  if (!listeners) return 0;\\n  if (listeners.fn) return 1;\\n  return listeners.length;\\n};\\n\\n/**\\n * Calls each of the listeners registered for a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @returns {Boolean} `true` if the event had listeners, else `false`.\\n * @public\\n */\\nEventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {\\n  var evt = prefix ? prefix + event : event;\\n\\n  if (!this._events[evt]) return false;\\n\\n  var listeners = this._events[evt]\\n    , len = arguments.length\\n    , args\\n    , i;\\n\\n  if (listeners.fn) {\\n    if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);\\n\\n    switch (len) {\\n      case 1: return listeners.fn.call(listeners.context), true;\\n      case 2: return listeners.fn.call(listeners.context, a1), true;\\n      case 3: return listeners.fn.call(listeners.context, a1, a2), true;\\n      case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;\\n      case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;\\n      case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;\\n    }\\n\\n    for (i = 1, args = new Array(len -1); i < len; i++) {\\n      args[i - 1] = arguments[i];\\n    }\\n\\n    listeners.fn.apply(listeners.context, args);\\n  } else {\\n    var length = listeners.length\\n      , j;\\n\\n    for (i = 0; i < length; i++) {\\n      if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);\\n\\n      switch (len) {\\n        case 1: listeners[i].fn.call(listeners[i].context); break;\\n        case 2: listeners[i].fn.call(listeners[i].context, a1); break;\\n        case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;\\n        case 4: listeners[i].fn.call(listeners[i].context, a1, a2, a3); break;\\n        default:\\n          if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {\\n            args[j - 1] = arguments[j];\\n          }\\n\\n          listeners[i].fn.apply(listeners[i].context, args);\\n      }\\n    }\\n  }\\n\\n  return true;\\n};\\n\\n/**\\n * Add a listener for a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @param {Function} fn The listener function.\\n * @param {*} [context=this] The context to invoke the listener with.\\n * @returns {EventEmitter} `this`.\\n * @public\\n */\\nEventEmitter.prototype.on = function on(event, fn, context) {\\n  return addListener(this, event, fn, context, false);\\n};\\n\\n/**\\n * Add a one-time listener for a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @param {Function} fn The listener function.\\n * @param {*} [context=this] The context to invoke the listener with.\\n * @returns {EventEmitter} `this`.\\n * @public\\n */\\nEventEmitter.prototype.once = function once(event, fn, context) {\\n  return addListener(this, event, fn, context, true);\\n};\\n\\n/**\\n * Remove the listeners of a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @param {Function} fn Only remove the listeners that match this function.\\n * @param {*} context Only remove the listeners that have this context.\\n * @param {Boolean} once Only remove one-time listeners.\\n * @returns {EventEmitter} `this`.\\n * @public\\n */\\nEventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {\\n  var evt = prefix ? prefix + event : event;\\n\\n  if (!this._events[evt]) return this;\\n  if (!fn) {\\n    clearEvent(this, evt);\\n    return this;\\n  }\\n\\n  var listeners = this._events[evt];\\n\\n  if (listeners.fn) {\\n    if (\\n      listeners.fn === fn &&\\n      (!once || listeners.once) &&\\n      (!context || listeners.context === context)\\n    ) {\\n      clearEvent(this, evt);\\n    }\\n  } else {\\n    for (var i = 0, events = [], length = listeners.length; i < length; i++) {\\n      if (\\n        listeners[i].fn !== fn ||\\n        (once && !listeners[i].once) ||\\n        (context && listeners[i].context !== context)\\n      ) {\\n        events.push(listeners[i]);\\n      }\\n    }\\n\\n    //\\n    // Reset the array, or remove it completely if we have no more listeners.\\n    //\\n    if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;\\n    else clearEvent(this, evt);\\n  }\\n\\n  return this;\\n};\\n\\n/**\\n * Remove all listeners, or those of the specified event.\\n *\\n * @param {(String|Symbol)} [event] The event name.\\n * @returns {EventEmitter} `this`.\\n * @public\\n */\\nEventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {\\n  var evt;\\n\\n  if (event) {\\n    evt = prefix ? prefix + event : event;\\n    if (this._events[evt]) clearEvent(this, evt);\\n  } else {\\n    this._events = new Events();\\n    this._eventsCount = 0;\\n  }\\n\\n  return this;\\n};\\n\\n//\\n// Alias methods names because people roll like that.\\n//\\nEventEmitter.prototype.off = EventEmitter.prototype.removeListener;\\nEventEmitter.prototype.addListener = EventEmitter.prototype.on;\\n\\n//\\n// Expose the prefix.\\n//\\nEventEmitter.prefixed = prefix;\\n\\n//\\n// Allow `EventEmitter` to be imported as module namespace.\\n//\\nEventEmitter.EventEmitter = EventEmitter;\\n\\n//\\n// Expose the module.\\n//\\nif ('undefined' !== typeof module) {\\n  module.exports = EventEmitter;\\n}\\n.git/COMMIT_EDITMSG\\n.git/index\\n.git/refs/heads/main\\n.git/logs/refs/heads/main\\n.git/logs/HEAD\\n.git/HEAD\\n.git/objects/23/cb89f28b0a0a2e3bf7866047f3a0fcf5394efc\\n.git/objects/55/ab3a5b95c053d4e1b94d67c6f176abf49c504d\\n.git/objects/6e/a485c40a694deb72801fcd0048a3c44de95403\\n.git/objects/17/212cfb0eb870066dadaf6ee75c235886732669\\n.git/objects/cf/ac44dd2d29c3bcdccaf713f218cb1da9e9bd87\\n.git/objects/ab/cbd54e5eefdac272de763e774ca75825ca55ce\\n.git/config\\nAGENTS.md\\nexisting.test.cjs\\nindex.js\\n.agents/skills/hostage-negotiator/assets/controlled_call.mjs\\n.agents/skills/hostage-negotiator/assets/controlled_call.py\\n.agents/skills/hostage-negotiator/SKILL.md\\n.agents/skills/hostage-negotiator/agents/openai.yaml\\n.agents/skills/hostage-negotiator/references/native-evidence.md\\n.agents/skills/hostage-negotiator/references/async-callback.md\\nLICENSE\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23c-3c89-7381-8b22-a188d3d18c62",
+            "create_time": 1789965130.368412
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "02d1215b55b1b6ec7132db5651a1003a6461c9d356b3a2ebc4fd98dc7b692a55",
+      "record": {
+        "timestamp": "2026-09-21T04:32:14.763Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d365230bf8aea6c016ab0b34e8a1487d0b2b2c699ba008700",
+          "status": "completed",
+          "call_id": "call_P4vnneq8UQHH8vlPY3xyBccy",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat existing.test.cjs; git ls-files\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23c-3c89-7381-8b22-a188d3d18c62",
+            "create_time": 1789965131.072571
+          }
+        }
+      }
+    },
+    {
+      "line": 24,
+      "line_sha256": "f2f43918cda02532467d27a7077026e96ee8ab8e2b10c03fa884f8247c85e6fa",
+      "record": {
+        "timestamp": "2026-09-21T04:32:14.870Z",
+        "ordinal": 23,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c23c-6c16-7580-8978-1688855317df",
+          "call_id": "call_P4vnneq8UQHH8vlPY3xyBccy",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a3c4d2\",\"wall_time_seconds\":0.000001667,\"exit_code\":0,\"original_token_count\":170,\"output\":\"const test = require('node:test');\\nconst assert = require('node:assert/strict');\\nconst E = require('./index.js');\\ntest('existing ordinary emit, context, arguments and once', () => {\\n  const e = new E(), context = {}, payload = {}, seen = [];\\n  function f(value) { seen.push([this, value]); }\\n  assert.equal(e.on('a', f, context), e);\\n  e.once('a', f, context);\\n  assert.equal(e.emit('a', payload), true);\\n  assert.equal(e.emit('a', payload), true);\\n  assert.equal(seen.length, 3);\\n  for (const [owner, value] of seen) {\\n    assert.equal(owner, context); assert.equal(value, payload);\\n  }\\n  assert.equal(e.emit('absent'), false);\\n});\\nAGENTS.md\\nLICENSE\\nexisting.test.cjs\\nindex.js\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23c-3c89-7381-8b22-a188d3d18c62",
+            "create_time": 1789965134.870079
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "bda3678a51844c08249d6c4c48af454e600d2cb0b20b150dbbe228ae064fa00b",
+      "record": {
+        "timestamp": "2026-09-21T04:33:21.875Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d365230bf8aea6c016ab0b355a27887d08e6d0c9bfdfbbf9d",
+          "status": "completed",
+          "call_id": "call_9jyTDyJ5jjjjaupfZJe84Xrq",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Add File: once.test.cjs\\n+const test = require('node:test');\\n+const assert = require('node:assert/strict');\\n+const E = require('./index.js');\\n+\\n+for (const single of [false, true]) {\\n+  for (let arity = 0; arity <= 6; arity++) {\\n+    test(`recursive once dispatch: ${single ? 'single' : 'array'} nested path, ${arity} arguments`, () => {\\n+      const e = new E(), event = Symbol('event'), context = {};\\n+      const outer = Array.from({ length: arity }, () => ({}));\\n+      const nested = Array.from({ length: arity }, () => ({}));\\n+      const seen = [];\\n+      let recursing = false;\\n+      function earlier() {\\n+        if (recursing) return;\\n+        recursing = true;\\n+        if (single) e.removeListener(event, earlier);\\n+        assert.equal(e.emit(event, ...nested), true);\\n+      }\\n+      e.on(event, earlier);\\n+      e.once(event, function (...args) { seen.push([this, args]); }, context);\\n+      assert.equal(e.emit(event, ...outer), true);\\n+      assert.equal(seen.length, 1);\\n+      assert.equal(seen[0][0], context);\\n+      assert.equal(seen[0][1].length, arity);\\n+      nested.forEach((value, i) => assert.equal(seen[0][1][i], value));\\n+      assert.equal(e.listenerCount(event), single ? 0 : 1);\\n+      assert.equal(e.emit(event), !single);\\n+      assert.equal(seen.length, 1);\\n+    });\\n+  }\\n+}\\n+\\n+for (const single of [false, true]) {\\n+  for (const caught of [false, true]) {\\n+    test(`throwing nested once: ${single ? 'single' : 'array'} path, ${caught ? 'caught' : 'propagated'}`, () => {\\n+      const e = new E(), error = {}, payload = {}, context = {}, seen = [];\\n+      let recursing = false;\\n+      function earlier() {\\n+        if (recursing) return;\\n+        recursing = true;\\n+        if (single) e.removeListener('event', earlier);\\n+        if (caught) assert.throws(() => e.emit('event', payload), value => value === error);\\n+        else e.emit('event', payload);\\n+      }\\n+      e.on('event', earlier);\\n+      e.once('event', function (value) {\\n+        assert.equal(this, context);\\n+        assert.equal(value, payload);\\n+        seen.push(value);\\n+        throw error;\\n+      }, context);\\n+      if (caught) assert.equal(e.emit('event', payload), true);\\n+      else assert.throws(() => e.emit('event', payload), value => value === error);\\n+      assert.deepEqual(seen, [payload]);\\n+      assert.equal(e.listenerCount('event'), single ? 0 : 1);\\n+      assert.equal(e.emit('event', payload), !single);\\n+      assert.deepEqual(seen, [payload]);\\n+    });\\n+  }\\n+}\\n+\\n+test('duplicate once registrations remain distinct during recursion, including contexts', () => {\\n+  const e = new E(), first = {}, second = {}, outer = {}, nested = {}, seen = [];\\n+  function listener(value) {\\n+    seen.push([this, value]);\\n+    if (seen.length === 1) {\\n+      assert.equal(e.listenerCount('event'), 2);\\n+      assert.equal(e.emit('event', nested), true);\\n+    }\\n+  }\\n+  e.once('event', listener, first);\\n+  e.once('event', listener, first);\\n+  e.once('event', listener, second);\\n+  assert.equal(e.emit('event', outer), true);\\n+  assert.equal(seen.length, 3);\\n+  for (const [i, context, value] of [[0, first, outer], [1, first, nested], [2, second, nested]]) {\\n+    assert.equal(seen[i][0], context);\\n+    assert.equal(seen[i][1], value);\\n+  }\\n+  assert.deepEqual(e.eventNames(), []);\\n+  assert.equal(e.emit('event'), false);\\n+});\\n+\\n+test('re-registering a consumed callback survives stale snapshots and thrown calls', () => {\\n+  const e = new E(), error = {}, outer = {}, nested = {}, later = {}, seen = [];\\n+  function listener(value) {\\n+    assert.equal(this, e);\\n+    seen.push(value);\\n+    if (seen.length === 1) {\\n+      e.once('event', listener);\\n+      throw error;\\n+    }\\n+  }\\n+  function earlier() {\\n+    e.removeListener('event', earlier);\\n+    assert.throws(() => e.emit('event', nested), value => value === error);\\n+  }\\n+  e.on('event', earlier);\\n+  e.once('event', listener);\\n+  assert.equal(e.emit('event', outer), true);\\n+  assert.deepEqual(seen, [nested]);\\n+  assert.deepEqual(e.listeners('event'), [listener]);\\n+  assert.equal(e.emit('event', later), true);\\n+  assert.deepEqual(seen, [nested, later]);\\n+  assert.equal(e.emit('event'), false);\\n+});\\n+\\n+test('removal and addition preserve the active listener snapshot', () => {\\n+  const e = new E(), seen = [];\\n+  function ordinary(value) { seen.push(['ordinary', value]); }\\n+  function once(value) { seen.push(['once', value]); }\\n+  function added(value) { seen.push(['added', value]); }\\n+  e.on('event', () => {\\n+    e.removeAllListeners('event');\\n+    e.on('event', added);\\n+  });\\n+  e.on('event', ordinary);\\n+  e.once('event', once);\\n+  assert.equal(e.emit('event', 'outer'), true);\\n+  assert.deepEqual(seen, [['ordinary', 'outer'], ['once', 'outer']]);\\n+  assert.deepEqual(e.listeners('event'), [added]);\\n+  assert.equal(e.emit('event', 'later'), true);\\n+  assert.deepEqual(seen, [['ordinary', 'outer'], ['once', 'outer'], ['added', 'later']]);\\n+});\\n+\\n+test('ordinary listeners still run in both overlapping snapshots', () => {\\n+  const e = new E(), seen = [];\\n+  e.once('event', () => {\\n+    assert.equal(e.emit('event', 'nested'), true);\\n+  });\\n+  e.on('event', value => seen.push(['ordinary', value]));\\n+  e.once('event', value => seen.push(['once', value]));\\n+  assert.equal(e.emit('event', 'outer'), true);\\n+  assert.deepEqual(seen, [['ordinary', 'nested'], ['once', 'nested'], ['ordinary', 'outer']]);\\n+});\\n+\\n+test('consumption belongs to a registration, not its callback, event or emitter', () => {\\n+  const a = new E(), b = new E(), event = Symbol('event'), other = Symbol('event'), seen = [];\\n+  function listener(value) { seen.push([this, value]); }\\n+  a.once(event, () => {\\n+    assert.equal(a.emit(event, 'nested'), true);\\n+    assert.equal(b.emit(event, 'other emitter'), true);\\n+    assert.equal(a.emit(other, 'other event'), true);\\n+  });\\n+  a.once(event, listener);\\n+  a.once(other, listener);\\n+  b.once(event, listener);\\n+  assert.equal(a.emit(event, 'outer'), true);\\n+  assert.deepEqual(seen, [[a, 'nested'], [b, 'other emitter'], [a, 'other event']]);\\n+  assert.deepEqual(a.eventNames(), []);\\n+  assert.deepEqual(b.eventNames(), []);\\n+  a.once(event, listener);\\n+  assert.equal(a.emit(event, 'registered again'), true);\\n+  assert.equal(seen.length, 4);\\n+  assert.equal(seen[3][0], a);\\n+  assert.equal(seen[3][1], 'registered again');\\n+});\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"node --test *.test.cjs\",\"max_output_tokens\":2200}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23c-3c89-7381-8b22-a188d3d18c62",
+            "create_time": 1789965135.438298
+          }
+        }
+      }
+    },
+    {
+      "line": 34,
+      "line_sha256": "a719c23326188af57908a4727a15d6b0f19f35e75583914650ef1c4c13cd47e8",
+      "record": {
+        "timestamp": "2026-09-21T04:33:22.120Z",
+        "ordinal": 33,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c23d-72c8-7270-8a2b-07c81acaf089",
+          "call_id": "call_9jyTDyJ5jjjjaupfZJe84Xrq",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"daf95d\",\"wall_time_seconds\":0.000001583,\"exit_code\":1,\"original_token_count\":4686,\"output\":\"Warning: truncated output (original token count: 4686)\\nTotal output lines: 453\\n\\n\u2714 existing ordinary emit, context, arguments and once (0.533667ms)\\n\u2716 recursive once dispatch: array nested path, 0 arguments (1.599875ms)\\n\u2716 recursive once dispatch: array nested path, 1 arguments (0.197833ms)\\n\u2716 recursive once dispatch: array nested path, 2 arguments (0.098166ms)\\n\u2716 recursive once dispatch: array nested path, 3 arguments (0.0825ms)\\n\u2716 recursive once dispatch: array nested path, 4 arguments (0.097958ms)\\n\u2716 recursive once dispatch: array nested path, 5 arguments (0.074875ms)\\n\u2716 recursive once dispatch: array nested path, 6 arguments (0.072375ms)\\n\u2716 recursive once dispatch: single nested path, 0 arguments (0.096916ms)\\n\u2716 recursive once dispatch: single nested path, 1 arguments (0.084166ms)\\n\u2716 recursive once dispatch: single nested path, 2 arguments (0.126125ms)\\n\u2716 recursive once dispatch: single nested path, 3 arguments (0.084709ms)\\n\u2716 recursive once dispatch: single nested path, 4 arguments (0.064625ms)\\n\u2716 recursive once dispatch: single nested path, 5 arguments (0.055542ms)\\n\u2716 recursive once dispatch: single nested path, 6 arguments (0.050875ms)\\n\u2714 throwing nested once: array path, propagated (0.616708ms)\\n\u2716 throwing nested once: array path, caught (0.06775ms)\\n\u2714 throwing nested once: single path, propagated (0.043125ms)\\n\u2716 throwing nested once: single path, caught (0.041042ms)\\n\u2716 duplicate once registrations remain distinct during recursion, including contexts (0.141083ms)\\n\u2716 re-registering a consumed callback survives stale snapshots and thrown calls (0.300792ms)\\n\u2714 removal and addition preserve the active listener snapshot (0.720458ms)\\n\u2716 ordinary listeners still run in both overlapping snapshots (0.374041ms)\\n\u2716 consumption belongs to a registration, not its callback, event or emitter (0.318292ms)\\n\u2139 tests 24\\n\u2139 suites 0\\n\u2139 pass 4\\n\u2139 fail 20\\n\u2139 cancelled 0\\n\u2139 skipped 0\\n\u2139 todo 0\\n\u2139 duration_ms 56.410792\\n\\n\u2716 failing tests:\\n\\ntest at once.test.cjs:7:5\\n\u2716 recursive once dispatch: array nested path, 0 arguments (1.599875ms)\\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\\n  \\n  2 !== 1\\n  \\n      at TestContext.<anonymous> (<WORKSPACE>/once.test.cjs:22:14)\\n      at Test.runInAsyncScope (node:async_hooks:227:14)\\n      at Test.run (node:internal/test_runner/test:1306:25)\\n      at Test.start (node:internal/test_runner/test:1177:17)\\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: 2,\\n    expected: 1,\\n    operator: 'strictEqual',\\n    diff: 'simple'\\n  }\\n\\ntest at once.test.cjs:7:5\\n\u2716 recursive once dispatch: array nested path, 1 arguments (0.197833ms)\\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\\n  \\n  2 !== 1\\n  \\n      at TestContext.<anonymous> (<WORKSPACE>/once.test.cjs:22:14)\\n      at Test.runInAsyncScope (node:async_hooks:227:14)\\n      at Test.run (node:internal/test_runner/test:1306:25)\\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\\n      at Test.postRun (node:internal/test_runner/test:1447:19)\\n      at Test.run (node:internal/test_runner/test:1372:12)\\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: 2,\\n    expected: 1,\\n    operator: 'strictEqual',\\n    diff: 'simple'\\n  }\\n\\ntest at once.test.cjs:7:5\\n\u2716 recursive once dispatch: array nested path, 2 arguments (0.098166ms)\\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\\n  \\n  2 !== 1\\n  \\n      at TestContext.<anonymous> (<WORKSPACE>/once.test.cjs:22:14)\\n      at Test.runInAsyncScope (node:async_hooks:227:14)\\n      at Test.run (node:internal/test_runner/test:1306:25)\\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\\n      at Test.postRun (node:internal/test_runner/test:1447:19)\\n      at Test.run (node:internal/test_runner/test:1372:12)\\n      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: 2,\\n    expected: 1,\\n    operator: 'strictEqual',\\n    diff: 'simple'\\n  }\\n\\ntest at once.test.cjs:7:5\\n\u2716 recursive onc\u20262486 tokens truncated\u2026roject/once.test.cjs:67:14)\\n      at EventEmitter.emit (<WORKSPACE>/index.js:202:33)\\n      at TestContext.<anonymous> (<WORKSPACE>/once.test.cjs:74:18)\\n      at Test.runInAsyncScope (node:async_hooks:227:14)\\n      at Test.run (node:internal/test_runner/test:1306:25)\\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\\n      at Test.postRun (node:internal/test_runner/test:1447:19)\\n      at Test.run (node:internal/test_runner/test:1372:12)\\n      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: 0,\\n    expected: 2,\\n    operator: 'strictEqual',\\n    diff: 'simple'\\n  }\\n\\ntest at once.test.cjs:84:1\\n\u2716 re-registering a consumed callback survives stale snapshots and thrown calls (0.300792ms)\\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\\n  + actual - expected\\n  \\n    [\\n      {},\\n  +   {}\\n    ]\\n  \\n      at TestContext.<anonymous> (<WORKSPACE>/once.test.cjs:101:10)\\n      at Test.runInAsyncScope (node:async_hooks:227:14)\\n      at Test.run (node:internal/test_runner/test:1306:25)\\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\\n      at Test.postRun (node:internal/test_runner/test:1447:19)\\n      at Test.run (node:internal/test_runner/test:1372:12)\\n      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: [ {}, {} ],\\n    expected: [ {} ],\\n    operator: 'deepStrictEqual',\\n    diff: 'simple'\\n  }\\n\\ntest at once.test.cjs:126:1\\n\u2716 ordinary listeners still run in both overlapping snapshots (0.374041ms)\\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\\n  + actual - expected\\n  ... Skipped lines\\n  \\n    [\\n      [\\n        'ordinary',\\n        'nested'\\n      ],\\n  ...\\n      ],\\n  +   [\\n  +     'once',\\n  +     'outer'\\n  +   ]\\n    ]\\n  \\n      at TestContext.<anonymous> (<WORKSPACE>/once.test.cjs:134:10)\\n      at Test.runInAsyncScope (node:async_hooks:227:14)\\n      at Test.run (node:internal/test_runner/test:1306:25)\\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\\n      at Test.postRun (node:internal/test_runner/test:1447:19)\\n      at Test.run (node:internal/test_runner/test:1372:12)\\n      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: [ [ 'ordinary', 'nested' ], [ 'once', 'nested' ], [ 'ordinary', 'outer' ], [ 'once', 'outer' ] ],\\n    expected: [ [ 'ordinary', 'nested' ], [ 'once', 'nested' ], [ 'ordinary', 'outer' ] ],\\n    operator: 'deepStrictEqual',\\n    diff: 'simple'\\n  }\\n\\ntest at once.test.cjs:137:1\\n\u2716 consumption belongs to a registration, not its callback, event or emitter (0.318292ms)\\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\\n  + actual - expected\\n  ... Skipped lines\\n  \\n    [\\n      [\\n        EventEmitter {\\n          _events: Events <[Object: null prototype] {}> {},\\n          _eventsCount: 0\\n  ...\\n      ],\\n  +   [\\n  +     EventEmitter {\\n  +       _events: Events <[Object: null prototype] {}> {},\\n  +       _eventsCount: 0\\n  +     },\\n  +     'outer'\\n  +   ]\\n    ]\\n  \\n      at TestContext.<anonymous> (<WORKSPACE>/once.test.cjs:149:10)\\n      at Test.runInAsyncScope (node:async_hooks:227:14)\\n      at Test.run (node:internal/test_runner/test:1306:25)\\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\\n      at Test.postRun (node:internal/test_runner/test:1447:19)\\n      at Test.run (node:internal/test_runner/test:1372:12)\\n      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: [ [ [Object], 'nested' ], [ [Object], 'other emitter' ], [ [Object], 'other event' ], [ [Object], 'outer' ] ],\\n    expected: [ [ [Object], 'nested' ], [ [Object], 'other emitter' ], [ [Object], 'other event' ] ],\\n    operator: 'deepStrictEqual',\\n    diff: 'simple'\\n  }\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23c-3c89-7381-8b22-a188d3d18c62",
+            "create_time": 1789965202.120065
+          }
+        }
+      }
+    },
+    {
+      "line": 36,
+      "line_sha256": "aadd9d7f94de521590ecac39d966f17559e01b21b85a677c2befef440cd5e918",
+      "record": {
+        "timestamp": "2026-09-21T04:33:39.296Z",
+        "ordinal": 35,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d365230bf8aea6c016ab0b393fe7087d0a8ba316f66c99c0c",
+          "status": "completed",
+          "call_id": "call_u5UdGZb0BKditofImt9I1AP9",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: index.js\\n@@\\n   this.once = once || false;\\n+  this.fired = false;\\n@@\\n function clearEvent(emitter, evt) {\\n   if (--emitter._eventsCount === 0) emitter._events = new Events();\\n   else delete emitter._events[evt];\\n }\\n \\n+/**\\n+ * Consume one registration without changing active dispatch snapshots.\\n+ *\\n+ * @param {EventEmitter} emitter The owning emitter.\\n+ * @param {(String|Symbol)} evt The internal event key.\\n+ * @param {EE} listener The one-time registration.\\n+ * @returns {Boolean} Whether this registration can be invoked.\\n+ * @private\\n+ */\\n+function consumeOnce(emitter, evt, listener) {\\n+  if (listener.fired) return false;\\n+\\n+  // Mark before invoking user code, including code that recursively emits or throws.\\n+  listener.fired = true;\\n+\\n+  var listeners = emitter._events[evt];\\n+\\n+  if (listeners === listener) clearEvent(emitter, evt);\\n+  else if (listeners && !listeners.fn) {\\n+    for (var i = 0, events = [], length = listeners.length; i < length; i++) {\\n+      if (listeners[i] !== listener) events.push(listeners[i]);\\n+    }\\n+\\n+    if (events.length) emitter._events[evt] = events.length === 1 ? events[0] : events;\\n+    else clearEvent(emitter, evt);\\n+  }\\n+\\n+  return true;\\n+}\\n+\\n@@\\n   if (listeners.fn) {\\n-    if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);\\n+    if (listeners.once && !consumeOnce(this, evt, listeners)) return true;\\n@@\\n-      if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);\\n+      if (listeners[i].once && !consumeOnce(this, evt, listeners[i])) continue;\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"node --test *.test.cjs\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23c-3c89-7381-8b22-a188d3d18c62",
+            "create_time": 1789965202.818604
+          }
+        }
+      }
+    },
+    {
+      "line": 40,
+      "line_sha256": "1c1287a8900f3035b4d24560c1546ff8dad935f6340343be5499a6f11b346e14",
+      "record": {
+        "timestamp": "2026-09-21T04:33:39.554Z",
+        "ordinal": 39,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c23d-b6e2-7452-ac29-e4106c782b18",
+          "call_id": "call_u5UdGZb0BKditofImt9I1AP9",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"804dea\",\"wall_time_seconds\":0.0000015,\"exit_code\":0,\"original_token_count\":471,\"output\":\"\u2714 existing ordinary emit, context, arguments and once (0.512375ms)\\n\u2714 recursive once dispatch: array nested path, 0 arguments (1.159208ms)\\n\u2714 recursive once dispatch: array nested path, 1 arguments (0.110708ms)\\n\u2714 recursive once dispatch: array nested path, 2 arguments (0.070625ms)\\n\u2714 recursive once dispatch: array nested path, 3 arguments (0.059416ms)\\n\u2714 recursive once dispatch: array nested path, 4 arguments (0.085708ms)\\n\u2714 recursive once dispatch: array nested path, 5 arguments (0.065625ms)\\n\u2714 recursive once dispatch: array nested path, 6 arguments (0.055084ms)\\n\u2714 recursive once dispatch: single nested path, 0 arguments (0.092ms)\\n\u2714 recursive once dispatch: single nested path, 1 arguments (0.061166ms)\\n\u2714 recursive once dispatch: single nested path, 2 arguments (0.109292ms)\\n\u2714 recursive once dispatch: single nested path, 3 arguments (0.0635ms)\\n\u2714 recursive once dispatch: single nested path, 4 arguments (0.052917ms)\\n\u2714 recursive once dispatch: single nested path, 5 arguments (0.045917ms)\\n\u2714 recursive once dispatch: single nested path, 6 arguments (0.055292ms)\\n\u2714 throwing nested once: array path, propagated (0.686792ms)\\n\u2714 throwing nested once: array path, caught (0.07025ms)\\n\u2714 throwing nested once: single path, propagated (0.050208ms)\\n\u2714 throwing nested once: single path, caught (0.048792ms)\\n\u2714 duplicate once registrations remain distinct during recursion, including contexts (0.132875ms)\\n\u2714 re-registering a consumed callback survives stale snapshots and thrown calls (0.122292ms)\\n\u2714 removal and addition preserve the active listener snapshot (0.55475ms)\\n\u2714 ordinary listeners still run in both overlapping snapshots (0.097ms)\\n\u2714 consumption belongs to a registration, not its callback, event or emitter (0.092458ms)\\n\u2139 tests 24\\n\u2139 suites 0\\n\u2139 pass 24\\n\u2139 fail 0\\n\u2139 cancelled 0\\n\u2139 skipped 0\\n\u2139 todo 0\\n\u2139 duration_ms 50.805042\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23c-3c89-7381-8b22-a188d3d18c62",
+            "create_time": 1789965219.554147
+          }
+        }
+      }
+    },
+    {
+      "line": 44,
+      "line_sha256": "cb7bbe22feb6019f4f2c878f6f7108ed743e136676c847d26bfc023e42b0951f",
+      "record": {
+        "timestamp": "2026-09-21T04:33:58.083Z",
+        "ordinal": 43,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d365230bf8aea6c016ab0b3a92a1487d09398e280f2296e50",
+          "status": "completed",
+          "call_id": "call_8UvvSBrFaEnHlcjoCpg8ODrh",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: once.test.cjs\\n@@\\n test('re-registering a consumed callback survives stale snapshots and thrown calls', () => {\\n@@\\n   assert.deepEqual(seen, [nested]);\\n+  assert.equal(seen[0], nested);\\n@@\\n   assert.deepEqual(seen, [nested, later]);\\n+  assert.equal(seen[1], later);\\n   assert.equal(e.emit('event'), false);\\n });\\n \\n+test('a throwing duplicate leaves unconsumed registrations available', () => {\\n+  const e = new E(), error = {}, seen = [];\\n+  function listener(value) {\\n+    seen.push(value);\\n+    if (seen.length === 1) throw error;\\n+  }\\n+  e.once('event', listener);\\n+  e.once('event', listener);\\n+  assert.throws(() => e.emit('event', 'first'), value => value === error);\\n+  assert.deepEqual(e.listeners('event'), [listener]);\\n+  assert.equal(e.emit('event', 'second'), true);\\n+  assert.deepEqual(seen, ['first', 'second']);\\n+  assert.equal(e.emit('event'), false);\\n+});\\n+\\n@@\\n   assert.deepEqual(seen, [[a, 'nested'], [b, 'other emitter'], [a, 'other event']]);\\n+  assert.equal(seen[0][0], a);\\n+  assert.equal(seen[1][0], b);\\n+  assert.equal(seen[2][0], a);\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"node --test *.test.cjs\",\"max_output_tokens\":3000}));\ntext(await tools.exec_command({cmd:\"git diff --check; git diff --exit-code -- existing.test.cjs LICENSE; git diff -- index.js; git status --short\",\"max_output_tokens\":3500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23c-3c89-7381-8b22-a188d3d18c62",
+            "create_time": 1789965220.198336
+          }
+        }
+      }
+    },
+    {
+      "line": 49,
+      "line_sha256": "8257401404dc5378c5c153138f0f3ed5b110eac7eac69ebed6db47594d3dc109",
+      "record": {
+        "timestamp": "2026-09-21T04:33:58.437Z",
+        "ordinal": 48,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c23e-00a5-7661-8d62-adc82bf3e116",
+          "call_id": "call_8UvvSBrFaEnHlcjoCpg8ODrh",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"7d1b7c\",\"wall_time_seconds\":0.000001583,\"exit_code\":0,\"original_token_count\":492,\"output\":\"\u2714 existing ordinary emit, context, arguments and once (0.503917ms)\\n\u2714 recursive once dispatch: array nested path, 0 arguments (1.192125ms)\\n\u2714 recursive once dispatch: array nested path, 1 arguments (0.125208ms)\\n\u2714 recursive once dispatch: array nested path, 2 arguments (0.073458ms)\\n\u2714 recursive once dispatch: array nested path, 3 arguments (0.059791ms)\\n\u2714 recursive once dispatch: array nested path, 4 arguments (0.0935ms)\\n\u2714 recursive once dispatch: array nested path, 5 arguments (0.073041ms)\\n\u2714 recursive once dispatch: array nested path, 6 arguments (0.056875ms)\\n\u2714 recursive once dispatch: single nested path, 0 arguments (0.107291ms)\\n\u2714 recursive once dispatch: single nested path, 1 arguments (0.067166ms)\\n\u2714 recursive once dispatch: single nested path, 2 arguments (0.116792ms)\\n\u2714 recursive once dispatch: single nested path, 3 arguments (0.063041ms)\\n\u2714 recursive once dispatch: single nested path, 4 arguments (0.048542ms)\\n\u2714 recursive once dispatch: single nested path, 5 arguments (0.054542ms)\\n\u2714 recursive once dispatch: single nested path, 6 arguments (0.042667ms)\\n\u2714 throwing nested once: array path, propagated (0.663625ms)\\n\u2714 throwing nested once: array path, caught (0.074375ms)\\n\u2714 throwing nested once: single path, propagated (0.045ms)\\n\u2714 throwing nested once: single path, caught (0.051083ms)\\n\u2714 duplicate once registrations remain distinct during recursion, including contexts (0.127916ms)\\n\u2714 re-registering a consumed callback survives stale snapshots and thrown calls (0.170917ms)\\n\u2714 a throwing duplicate leaves unconsumed registrations available (0.079541ms)\\n\u2714 removal and addition preserve the active listener snapshot (0.094458ms)\\n\u2714 ordinary listeners still run in both overlapping snapshots (0.052375ms)\\n\u2714 consumption belongs to a registration, not its callback, event or emitter (0.08375ms)\\n\u2139 tests 25\\n\u2139 suites 0\\n\u2139 pass 25\\n\u2139 fail 0\\n\u2139 cancelled 0\\n\u2139 skipped 0\\n\u2139 todo 0\\n\u2139 duration_ms 52.483542\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"e6b762\",\"wall_time_seconds\":0.000001333,\"exit_code\":0,\"original_token_count\":565,\"output\":\"diff --git a/index.js b/index.js\\nindex 6ea485c..fd4c4ee 100644\\n--- a/index.js\\n+++ b/index.js\\n@@ -42,6 +42,7 @@ function EE(fn, context, once) {\\n   this.fn = fn;\\n   this.context = context;\\n   this.once = once || false;\\n+  this.fired = false;\\n }\\n \\n /**\\n@@ -82,6 +83,36 @@ function clearEvent(emitter, evt) {\\n   else delete emitter._events[evt];\\n }\\n \\n+/**\\n+ * Consume one registration without changing active dispatch snapshots.\\n+ *\\n+ * @param {EventEmitter} emitter The owning emitter.\\n+ * @param {(String|Symbol)} evt The internal event key.\\n+ * @param {EE} listener The one-time registration.\\n+ * @returns {Boolean} Whether this registration can be invoked.\\n+ * @private\\n+ */\\n+function consumeOnce(emitter, evt, listener) {\\n+  if (listener.fired) return false;\\n+\\n+  // Mark before invoking user code, including code that recursively emits or throws.\\n+  listener.fired = true;\\n+\\n+  var listeners = emitter._events[evt];\\n+\\n+  if (listeners === listener) clearEvent(emitter, evt);\\n+  else if (listeners && !listeners.fn) {\\n+    for (var i = 0, events = [], length = listeners.length; i < length; i++) {\\n+      if (listeners[i] !== listener) events.push(listeners[i]);\\n+    }\\n+\\n+    if (events.length) emitter._events[evt] = events.length === 1 ? events[0] : events;\\n+    else clearEvent(emitter, evt);\\n+  }\\n+\\n+  return true;\\n+}\\n+\\n /**\\n  * Minimal `EventEmitter` interface that is molded against the Node.js\\n  * `EventEmitter` interface.\\n@@ -174,7 +205,7 @@ EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {\\n     , i;\\n \\n   if (listeners.fn) {\\n-    if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);\\n+    if (listeners.once && !consumeOnce(this, evt, listeners)) return true;\\n \\n     switch (len) {\\n       case 1: return listeners.fn.call(listeners.context), true;\\n@@ -195,7 +226,7 @@ EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {\\n       , j;\\n \\n     for (i = 0; i < length; i++) {\\n-      if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);\\n+      if (listeners[i].once && !consumeOnce(this, evt, listeners[i])) continue;\\n \\n       switch (len) {\\n         case 1: listeners[i].fn.call(listeners[i].context); break;\\n M index.js\\n?? .agents/\\n?? once.test.cjs\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23c-3c89-7381-8b22-a188d3d18c62",
+            "create_time": 1789965238.437873
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

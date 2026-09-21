@@ -1,5 +1,9 @@
 # Hostage completion boundary — unmeasured candidate
 
+Historical preparation. The [completed EventEmitter comparison](EVENTEMITTER-BOUNDARY-01-REVIEW.md)
+rejects promotion: candidate cost increased on both tasks without a reviewed
+correctness advantage. Candidate files and preparation below remain frozen.
+
 2026-09-21, parent `d971cc2`. Candidate resource:
 `benchmarks/candidates/hostage-completion-boundary/skills/hostage-negotiator`.
 Production and historical experimental resources are unchanged.

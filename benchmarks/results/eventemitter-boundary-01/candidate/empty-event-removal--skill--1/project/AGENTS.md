@@ -1,0 +1,1 @@
+Use Node and `node --test *.test.cjs` in this root. Keep existing tests and license unchanged; add native regression tests. Implementation changes belong in index.js. No dependencies, network, commits, declarations/build changes or unrelated refactoring.

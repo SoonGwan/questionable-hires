@@ -1,0 +1,221 @@
+{
+  "session_id": "01a0c23e-f78a-74f0-9695-0e24b40d9307",
+  "source_bytes": 130510,
+  "source_sha256": "76b0ef5fdab3e4441d9ab1dc2e011736b0e3bb5fc9da303c5ed90c7c0cb00ad5",
+  "source_lines": 40,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "eee5d1d9e47eb241eba0a535307d972ad1c8977607efa4c8ba1ee8f1fc6f7328",
+      "record": {
+        "timestamp": "2026-09-21T04:35:08.608Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d49d07553836856016ab0b3fb962487d09b41fb18c954cff5",
+          "status": "completed",
+          "call_id": "call_DNFN7zyn2p0gDwMlBmpRfvqU",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files -g '!node_modules' -g '!\\\\.git'\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23e-f7d2-7a92-ab4f-56cc8f8e3e69",
+            "create_time": 1789965305.394445
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "1ed19e4301209f632230a6ec50d8fc6bc68dcb6c80f485a13bb68645fa35a520",
+      "record": {
+        "timestamp": "2026-09-21T04:35:08.748Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c23f-134c-73d2-996b-6829db8237f4",
+          "call_id": "call_DNFN7zyn2p0gDwMlBmpRfvqU",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2a81fc\",\"wall_time_seconds\":0.000003292,\"exit_code\":0,\"original_token_count\":32,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nexisting.test.cjs\\nindex.js\\nLICENSE\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23e-f7d2-7a92-ab4f-56cc8f8e3e69",
+            "create_time": 1789965308.748395
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "979c5c1cf2e8c1ae018e7beb7defa53cfb72320e7dbd25013a1ddc0f2b41b9d2",
+      "record": {
+        "timestamp": "2026-09-21T04:35:12.032Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d49d07553836856016ab0b3ff053487d085cad0d5c18ca463",
+          "status": "completed",
+          "call_id": "call_vXJaReyhBcpBqIjZl8eqBkSs",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md index.js existing.test.cjs\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23e-f7d2-7a92-ab4f-56cc8f8e3e69",
+            "create_time": 1789965309.669088
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "3f54e5c69186f05b92265fac0142a6735cf977975b5d691d2a153e88827c4630",
+      "record": {
+        "timestamp": "2026-09-21T04:35:12.120Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c23f-2078-7041-bf7d-5b9b727942d1",
+          "call_id": "call_vXJaReyhBcpBqIjZl8eqBkSs",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"24fb0b\",\"wall_time_seconds\":0.000003083,\"exit_code\":0,\"original_token_count\":2508,\"output\":\"Use Node and `node --test *.test.cjs` in this root. Keep existing tests and license unchanged; add native regression tests. Implementation changes belong in index.js. No dependencies, network, commits, declarations/build changes or unrelated refactoring.\\n'use strict';\\n\\nvar has = Object.prototype.hasOwnProperty\\n  , prefix = '~';\\n\\n/**\\n * Constructor to create a storage for our `EE` objects.\\n * An `Events` instance is a plain object whose properties are event names.\\n *\\n * @constructor\\n * @private\\n */\\nfunction Events() {}\\n\\n//\\n// We try to not inherit from `Object.prototype`. In some engines creating an\\n// instance in this way is faster than calling `Object.create(null)` directly.\\n// If `Object.create(null)` is not supported we prefix the event names with a\\n// character to make sure that the built-in object properties are not\\n// overridden or used as an attack vector.\\n//\\nif (Object.create) {\\n  Events.prototype = Object.create(null);\\n\\n  //\\n  // This hack is needed because the `__proto__` property is still inherited in\\n  // some old browsers like Android 4, iPhone 5.1, Opera 11 and Safari 5.\\n  //\\n  if (!new Events().__proto__) prefix = false;\\n}\\n\\n/**\\n * Representation of a single event listener.\\n *\\n * @param {Function} fn The listener function.\\n * @param {*} context The context to invoke the listener with.\\n * @param {Boolean} [once=false] Specify if the listener is a one-time listener.\\n * @constructor\\n * @private\\n */\\nfunction EE(fn, context, once) {\\n  this.fn = fn;\\n  this.context = context;\\n  this.once = once || false;\\n}\\n\\n/**\\n * Add a listener for a given event.\\n *\\n * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.\\n * @param {(String|Symbol)} event The event name.\\n * @param {Function} fn The listener function.\\n * @param {*} context The context to invoke the listener with.\\n * @param {Boolean} once Specify if the listener is a one-time listener.\\n * @returns {EventEmitter}\\n * @private\\n */\\nfunction addListener(emitter, event, fn, context, once) {\\n  if (typeof fn !== 'function') {\\n    throw new TypeError('The listener must be a function');\\n  }\\n\\n  var listener = new EE(fn, context || emitter, once)\\n    , evt = prefix ? prefix + event : event;\\n\\n  if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;\\n  else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);\\n  else emitter._events[evt] = [emitter._events[evt], listener];\\n\\n  return emitter;\\n}\\n\\n/**\\n * Clear event by name.\\n *\\n * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.\\n * @param {(String|Symbol)} evt The Event name.\\n * @private\\n */\\nfunction clearEvent(emitter, evt) {\\n  if (--emitter._eventsCount === 0) emitter._events = new Events();\\n  else delete emitter._events[evt];\\n}\\n\\n/**\\n * Minimal `EventEmitter` interface that is molded against the Node.js\\n * `EventEmitter` interface.\\n *\\n * @constructor\\n * @public\\n */\\nfunction EventEmitter() {\\n  this._events = new Events();\\n  this._eventsCount = 0;\\n}\\n\\n/**\\n * Return an array listing the events for which the emitter has registered\\n * listeners.\\n *\\n * @returns {Array}\\n * @public\\n */\\nEventEmitter.prototype.eventNames = function eventNames() {\\n  var names = []\\n    , events\\n    , name;\\n\\n  if (this._eventsCount === 0) return names;\\n\\n  for (name in (events = this._events)) {\\n    if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);\\n  }\\n\\n  if (Object.getOwnPropertySymbols) {\\n    return names.concat(Object.getOwnPropertySymbols(events));\\n  }\\n\\n  return names;\\n};\\n\\n/**\\n * Return the listeners registered for a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @returns {Array} The registered listeners.\\n * @public\\n */\\nEventEmitter.prototype.listeners = function listeners(event) {\\n  var evt = prefix ? prefix + event : event\\n    , handlers = this._events[evt];\\n\\n  if (!handlers) return [];\\n  if (handlers.fn) return [handlers.fn];\\n\\n  for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {\\n    ee[i] = handlers[i].fn;\\n  }\\n\\n  return ee;\\n};\\n\\n/**\\n * Return the number of listeners listening to a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @returns {Number} The number of listeners.\\n * @public\\n */\\nEventEmitter.prototype.listenerCount = function listenerCount(event) {\\n  var evt = prefix ? prefix + event : event\\n    , listeners = this._events[evt];\\n\\n  if (!listeners) return 0;\\n  if (listeners.fn) return 1;\\n  return listeners.length;\\n};\\n\\n/**\\n * Calls each of the listeners registered for a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @returns {Boolean} `true` if the event had listeners, else `false`.\\n * @public\\n */\\nEventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {\\n  var evt = prefix ? prefix + event : event;\\n\\n  if (!this._events[evt]) return false;\\n\\n  var listeners = this._events[evt]\\n    , len = arguments.length\\n    , args\\n    , i;\\n\\n  if (listeners.fn) {\\n    if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);\\n\\n    switch (len) {\\n      case 1: return listeners.fn.call(listeners.context), true;\\n      case 2: return listeners.fn.call(listeners.context, a1), true;\\n      case 3: return listeners.fn.call(listeners.context, a1, a2), true;\\n      case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;\\n      case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;\\n      case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;\\n    }\\n\\n    for (i = 1, args = new Array(len -1); i < len; i++) {\\n      args[i - 1] = arguments[i];\\n    }\\n\\n    listeners.fn.apply(listeners.context, args);\\n  } else {\\n    var length = listeners.length\\n      , j;\\n\\n    for (i = 0; i < length; i++) {\\n      if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);\\n\\n      switch (len) {\\n        case 1: listeners[i].fn.call(listeners[i].context); break;\\n        case 2: listeners[i].fn.call(listeners[i].context, a1); break;\\n        case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;\\n        case 4: listeners[i].fn.call(listeners[i].context, a1, a2, a3); break;\\n        default:\\n          if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {\\n            args[j - 1] = arguments[j];\\n          }\\n\\n          listeners[i].fn.apply(listeners[i].context, args);\\n      }\\n    }\\n  }\\n\\n  return true;\\n};\\n\\n/**\\n * Add a listener for a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @param {Function} fn The listener function.\\n * @param {*} [context=this] The context to invoke the listener with.\\n * @returns {EventEmitter} `this`.\\n * @public\\n */\\nEventEmitter.prototype.on = function on(event, fn, context) {\\n  return addListener(this, event, fn, context, false);\\n};\\n\\n/**\\n * Add a one-time listener for a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @param {Function} fn The listener function.\\n * @param {*} [context=this] The context to invoke the listener with.\\n * @returns {EventEmitter} `this`.\\n * @public\\n */\\nEventEmitter.prototype.once = function once(event, fn, context) {\\n  return addListener(this, event, fn, context, true);\\n};\\n\\n/**\\n * Remove the listeners of a given event.\\n *\\n * @param {(String|Symbol)} event The event name.\\n * @param {Function} fn Only remove the listeners that match this function.\\n * @param {*} context Only remove the listeners that have this context.\\n * @param {Boolean} once Only remove one-time listeners.\\n * @returns {EventEmitter} `this`.\\n * @public\\n */\\nEventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {\\n  var evt = prefix ? prefix + event : event;\\n\\n  if (!this._events[evt]) return this;\\n  if (!fn) {\\n    clearEvent(this, evt);\\n    return this;\\n  }\\n\\n  var listeners = this._events[evt];\\n\\n  if (listeners.fn) {\\n    if (\\n      listeners.fn === fn &&\\n      (!once || listeners.once) &&\\n      (!context || listeners.context === context)\\n    ) {\\n      clearEvent(this, evt);\\n    }\\n  } else {\\n    for (var i = 0, events = [], length = listeners.length; i < length; i++) {\\n      if (\\n        listeners[i].fn !== fn ||\\n        (once && !listeners[i].once) ||\\n        (context && listeners[i].context !== context)\\n      ) {\\n        events.push(listeners[i]);\\n      }\\n    }\\n\\n    //\\n    // Reset the array, or remove it completely if we have no more listeners.\\n    //\\n    if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;\\n    else clearEvent(this, evt);\\n  }\\n\\n  return this;\\n};\\n\\n/**\\n * Remove all listeners, or those of the specified event.\\n *\\n * @param {(String|Symbol)} [event] The event name.\\n * @returns {EventEmitter} `this`.\\n * @public\\n */\\nEventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {\\n  var evt;\\n\\n  if (event) {\\n    evt = prefix ? prefix + event : event;\\n    if (this._events[evt]) clearEvent(this, evt);\\n  } else {\\n    this._events = new Events();\\n    this._eventsCount = 0;\\n  }\\n\\n  return this;\\n};\\n\\n//\\n// Alias methods names because people roll like that.\\n//\\nEventEmitter.prototype.off = EventEmitter.prototype.removeListener;\\nEventEmitter.prototype.addListener = EventEmitter.prototype.on;\\n\\n//\\n// Expose the prefix.\\n//\\nEventEmitter.prefixed = prefix;\\n\\n//\\n// Allow `EventEmitter` to be imported as module namespace.\\n//\\nEventEmitter.EventEmitter = EventEmitter;\\n\\n//\\n// Expose the module.\\n//\\nif ('undefined' !== typeof module) {\\n  module.exports = EventEmitter;\\n}\\nconst test = require('node:test');\\nconst assert = require('node:assert/strict');\\nconst E = require('./index.js');\\ntest('existing ordinary emit, context, arguments and once', () => {\\n  const e = new E(), context = {}, payload = {}, seen = [];\\n  function f(value) { seen.push([this, value]); }\\n  assert.equal(e.on('a', f, context), e);\\n  e.once('a', f, context);\\n  assert.equal(e.emit('a', payload), true);\\n  assert.equal(e.emit('a', payload), true);\\n  assert.equal(seen.length, 3);\\n  for (const [owner, value] of seen) {\\n    assert.equal(owner, context); assert.equal(value, payload);\\n  }\\n  assert.equal(e.emit('absent'), false);\\n});\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23e-f7d2-7a92-ab4f-56cc8f8e3e69",
+            "create_time": 1789965312.120103
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "921ba23657061220748136da5cfc57daac3fac1a8050f66fd709dec4082cf54e",
+      "record": {
+        "timestamp": "2026-09-21T04:35:45.878Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d49d07553836856016ab0b4025adc87d09e1c45cf5ad8bab6",
+          "status": "completed",
+          "call_id": "call_w2w7LSuvzmK1ikeWgy61pNWq",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Add File: remove-all-listeners.test.cjs\\n+const test = require('node:test');\\n+const assert = require('node:assert/strict');\\n+const E = require('./index.js');\\n+\\n+test('removing empty-string listeners preserves other string and symbol events', () => {\\n+  const e = new E();\\n+  const symbol = Symbol('event');\\n+  const seen = [];\\n+  const empty = () => seen.push('empty');\\n+  const ordinary = () => seen.push('ordinary');\\n+  const symbolic = () => seen.push('symbol');\\n+  e.on('', empty).once('', empty).on('ordinary', ordinary).on(symbol, symbolic);\\n+\\n+  assert.equal(e.listenerCount(''), 2);\\n+  assert.equal(e.removeAllListeners(''), e);\\n+  assert.deepEqual(e.eventNames(), ['ordinary', symbol]);\\n+  assert.equal(e.listenerCount(''), 0);\\n+  assert.deepEqual(e.listeners(''), []);\\n+  assert.equal(e.emit(''), false);\\n+  for (const [event, listener] of [['ordinary', ordinary], [symbol, symbolic]]) {\\n+    assert.equal(e.listenerCount(event), 1);\\n+    assert.deepEqual(e.listeners(event), [listener]);\\n+    assert.equal(e.emit(event), true);\\n+  }\\n+  assert.deepEqual(seen, ['ordinary', 'symbol']);\\n+\\n+  assert.equal(e.removeAllListeners('ordinary'), e);\\n+  assert.deepEqual(e.eventNames(), [symbol]);\\n+  assert.equal(e.listenerCount('ordinary'), 0);\\n+  assert.equal(e.removeAllListeners(symbol), e);\\n+  assert.deepEqual(e.eventNames(), []);\\n+  assert.equal(e.listenerCount(symbol), 0);\\n+});\\n+\\n+test('removing an absent empty-string event is a fluent no-op', () => {\\n+  const e = new E();\\n+  const symbol = Symbol('event');\\n+  const listener = () => {};\\n+  assert.equal(e.removeAllListeners(''), e);\\n+  assert.deepEqual(e.eventNames(), []);\\n+  e.on('ordinary', listener).on(symbol, listener);\\n+  for (let i = 0; i < 2; i++) {\\n+    assert.equal(e.removeAllListeners(''), e);\\n+    assert.deepEqual(e.eventNames(), ['ordinary', symbol]);\\n+    assert.equal(e.listenerCount(''), 0);\\n+    for (const event of ['ordinary', symbol]) {\\n+      assert.equal(e.listenerCount(event), 1);\\n+      assert.deepEqual(e.listeners(event), [listener]);\\n+      assert.equal(e.emit(event), true);\\n+    }\\n+  }\\n+});\\n+\\n+test('removing the sole empty-string event allows subsequent registration', () => {\\n+  const e = new E();\\n+  const listener = () => {};\\n+  e.on('', listener);\\n+  assert.equal(e.removeAllListeners(''), e);\\n+  assert.deepEqual(e.eventNames(), []);\\n+  assert.equal(e.listenerCount(''), 0);\\n+  assert.equal(e.emit(''), false);\\n+  assert.equal(e.on('', listener), e);\\n+  assert.deepEqual(e.eventNames(), ['']);\\n+  assert.equal(e.listenerCount(''), 1);\\n+  assert.equal(e.emit(''), true);\\n+});\\n+\\n+for (const args of [[], [undefined]]) {\\n+  test(`removeAllListeners with ${args.length ? 'undefined' : 'no argument'} clears all events`, () => {\\n+    const e = new E();\\n+    const symbol = Symbol('event');\\n+    const listener = () => {};\\n+    const events = ['', 'ordinary', symbol];\\n+    for (const event of events) e.on(event, listener).once(event, listener);\\n+    assert.equal(e.removeAllListeners(...args), e);\\n+    assert.deepEqual(e.eventNames(), []);\\n+    for (const event of events) {\\n+      assert.equal(e.listenerCount(event), 0);\\n+      assert.deepEqual(e.listeners(event), []);\\n+      assert.equal(e.emit(event), false);\\n+    }\\n+    assert.equal(e.on('new', listener), e);\\n+    assert.deepEqual(e.eventNames(), ['new']);\\n+    assert.equal(e.listenerCount('new'), 1);\\n+  });\\n+}\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"node --test *.test.cjs\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23e-f7d2-7a92-ab4f-56cc8f8e3e69",
+            "create_time": 1789965312.906024
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "1e7f2dfa91e143aaf611ab659996afa2a53399b199c28613e79907b6b2bfba68",
+      "record": {
+        "timestamp": "2026-09-21T04:35:46.128Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c23f-a550-73d0-ab6a-18351222d782",
+          "call_id": "call_w2w7LSuvzmK1ikeWgy61pNWq",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b780a7\",\"wall_time_seconds\":0.000003666,\"exit_code\":1,\"original_token_count\":607,\"output\":\"\u2714 existing ordinary emit, context, arguments and once (0.588083ms)\\n\u2716 removing empty-string listeners preserves other string and symbol events (1.273583ms)\\n\u2716 removing an absent empty-string event is a fluent no-op (0.247708ms)\\n\u2714 removing the sole empty-string event allows subsequent registration (0.209375ms)\\n\u2714 removeAllListeners with no argument clears all events (0.132209ms)\\n\u2714 removeAllListeners with undefined clears all events (0.076666ms)\\n\u2139 tests 6\\n\u2139 suites 0\\n\u2139 pass 4\\n\u2139 fail 2\\n\u2139 cancelled 0\\n\u2139 skipped 0\\n\u2139 todo 0\\n\u2139 duration_ms 51.2335\\n\\n\u2716 failing tests:\\n\\ntest at remove-all-listeners.test.cjs:5:1\\n\u2716 removing empty-string listeners preserves other string and symbol events (1.273583ms)\\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\\n  + actual - expected\\n  \\n  + []\\n  - [\\n  -   'ordinary',\\n  -   Symbol(event)\\n  - ]\\n  \\n      at TestContext.<anonymous> (<WORKSPACE>/remove-all-listeners.test.cjs:16:10)\\n      at Test.runInAsyncScope (node:async_hooks:227:14)\\n      at Test.run (node:internal/test_runner/test:1306:25)\\n      at Test.start (node:internal/test_runner/test:1177:17)\\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: [],\\n    expected: [Array],\\n    operator: 'deepStrictEqual',\\n    diff: 'simple'\\n  }\\n\\ntest at remove-all-listeners.test.cjs:35:1\\n\u2716 removing an absent empty-string event is a fluent no-op (0.247708ms)\\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\\n  + actual - expected\\n  \\n  + []\\n  - [\\n  -   'ordinary',\\n  -   Symbol(event)\\n  - ]\\n  \\n      at TestContext.<anonymous> (<WORKSPACE>/remove-all-listeners.test.cjs:44:12)\\n      at Test.runInAsyncScope (node:async_hooks:227:14)\\n      at Test.run (node:internal/test_runner/test:1306:25)\\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\\n      at Test.postRun (node:internal/test_runner/test:1447:19)\\n      at Test.run (node:internal/test_runner/test:1372:12)\\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: [],\\n    expected: [Array],\\n    operator: 'deepStrictEqual',\\n    diff: 'simple'\\n  }\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23e-f7d2-7a92-ab4f-56cc8f8e3e69",
+            "create_time": 1789965346.128954
+          }
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "c4a72b4d8c2698a26336617c4ad9e969f116b8d09e0134805dd12c177b285270",
+      "record": {
+        "timestamp": "2026-09-21T04:35:50.754Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d49d07553836856016ab0b423d5c487d0946562ce4775260e",
+          "status": "completed",
+          "call_id": "call_hh2AjupHCWtX0rhw6JoEF4te",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: index.js\\n@@\\n-  if (event) {\\n+  if (event !== undefined) {\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"node --test *.test.cjs\",\"max_output_tokens\":1500}));\ntext(await tools.exec_command({cmd:\"git diff --stat && git diff -- index.js && git status --short\",\"max_output_tokens\":1500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23e-f7d2-7a92-ab4f-56cc8f8e3e69",
+            "create_time": 1789965346.771484
+          }
+        }
+      }
+    },
+    {
+      "line": 34,
+      "line_sha256": "4a3562c8a621feaa12364e930cc3a569a0aead781fd6975faf776aa5711be100",
+      "record": {
+        "timestamp": "2026-09-21T04:35:51.097Z",
+        "ordinal": 33,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c23f-b8b9-78f0-b309-d806fb647a20",
+          "call_id": "call_hh2AjupHCWtX0rhw6JoEF4te",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"93eaa9\",\"wall_time_seconds\":0.000003209,\"exit_code\":0,\"original_token_count\":143,\"output\":\"\u2714 existing ordinary emit, context, arguments and once (0.502667ms)\\n\u2714 removing empty-string listeners preserves other string and symbol events (0.867375ms)\\n\u2714 removing an absent empty-string event is a fluent no-op (0.125792ms)\\n\u2714 removing the sole empty-string event allows subsequent registration (0.081875ms)\\n\u2714 removeAllListeners with no argument clears all events (0.105459ms)\\n\u2714 removeAllListeners with undefined clears all events (0.06725ms)\\n\u2139 tests 6\\n\u2139 suites 0\\n\u2139 pass 6\\n\u2139 fail 0\\n\u2139 cancelled 0\\n\u2139 skipped 0\\n\u2139 todo 0\\n\u2139 duration_ms 47.803708\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"8fe624\",\"wall_time_seconds\":0.000002709,\"exit_code\":0,\"original_token_count\":138,\"output\":\" index.js | 2 +-\\n 1 file changed, 1 insertion(+), 1 deletion(-)\\ndiff --git a/index.js b/index.js\\nindex 6ea485c..5899781 100644\\n--- a/index.js\\n+++ b/index.js\\n@@ -301,7 +301,7 @@ EventEmitter.prototype.removeListener = function removeListener(event, fn, conte\\n EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {\\n   var evt;\\n \\n-  if (event) {\\n+  if (event !== undefined) {\\n     evt = prefix ? prefix + event : event;\\n     if (this._events[evt]) clearEvent(this, evt);\\n   } else {\\n M index.js\\n?? remove-all-listeners.test.cjs\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c23e-f7d2-7a92-ab4f-56cc8f8e3e69",
+            "create_time": 1789965351.097738
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

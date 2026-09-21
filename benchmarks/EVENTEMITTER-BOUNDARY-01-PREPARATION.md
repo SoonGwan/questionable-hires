@@ -1,5 +1,9 @@
 # EventEmitter boundary transfer — native preparation only
 
+Historical preparation, superseded by the [completed review](EVENTEMITTER-BOUNDARY-01-REVIEW.md).
+The review also identifies a limitation in the frozen author correction; original
+preflight passing results below were not exhaustive and remain unchanged.
+
 2026-09-21. Candidate resource `89c5172`, production resource `716ef88`.
 No model sessions have run and no adoption decision follows from these controls.
 

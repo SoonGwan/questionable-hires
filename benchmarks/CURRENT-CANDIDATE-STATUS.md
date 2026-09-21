@@ -9,7 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## EventEmitter transfer controls prepared — 2026-09-21, candidate `89c5172`
+## EventEmitter comparison reviewed; no promotion — 2026-09-21
+
+[All six original attempts and criterion review](EVENTEMITTER-BOUNDARY-01-REVIEW.md),
+launch `ed74b11`, candidate `89c5172`, prior `716ef88`. All arms satisfy the frozen
+criteria on both tasks, but candidate costs more tokens and time than both other
+arms on each task. Candidate rejected for promotion. Original failure runs, unequal
+verification, two truncated captures and two ambiguous empty-output matches retained.
+All model deliveries pass a post-run duplicate-exception probe that the frozen author
+reference fails; this oracle limitation is disclosed separately. Production/chart
+unchanged. Two author-selected source excerpts,n=1: no broad improvement established.
+
+한국어: 두 과제 모두 요구사항은 충족했지만 후보는 기존 스킬과 무스킬보다 토큰·시간이
+늘어 채택하지 않았다. 작성자 대조 코드의 누락도 따로 검증·공개했다. 성능 목표는
+여전히 미달이며, 유리한 결과를 얻기 위해 같은 과제를 재실행하지 않는다.
+
+## Historical EventEmitter preparation — 2026-09-21, candidate `89c5172`
 
 [Frozen six-cell protocol](EVENTEMITTER-BOUNDARY-01-PROTOCOL.md): two tasks with
 prior/baseline/candidate orders reversed, Astra medium,n=1,360seconds/cell. Seven

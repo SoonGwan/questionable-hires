@@ -1,0 +1,134 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const E = require('./index.js');
+
+for (const single of [false, true]) {
+  for (let arity = 0; arity <= 7; arity++) {
+    test(`recursive once dispatch: single=${single}, payload count=${arity}`, () => {
+      const e = new E(), event = Symbol('event'), context = {};
+      const outer = Array.from({ length: arity }, () => ({}));
+      const inner = Array.from({ length: arity }, () => ({}));
+      const seen = [];
+      let nested = false;
+      function first() {
+        if (nested) return;
+        nested = true;
+        if (single) e.removeListener(event, first);
+        assert.equal(e.emit(event, ...inner), true);
+      }
+      e.on(event, first);
+      e.once(event, function (...values) { seen.push([this, values]); }, context);
+      assert.equal(e.emit(event, ...outer), true);
+      assert.equal(seen.length, 1);
+      assert.equal(seen[0][0], context);
+      assert.equal(seen[0][1].length, arity);
+      inner.forEach((value, i) => assert.equal(seen[0][1][i], value));
+      assert.equal(e.listenerCount(event), single ? 0 : 1);
+      assert.equal(e.emit(event), !single);
+      assert.equal(seen.length, 1);
+    });
+  }
+}
+
+for (const single of [false, true]) {
+  for (const caught of [false, true]) {
+    test(`throwing nested once: single=${single}, caught=${caught}`, () => {
+      const e = new E(), error = {}, payload = {}, seen = [];
+      let nested = false;
+      function first() {
+        if (nested) return;
+        nested = true;
+        if (single) e.removeListener('event', first);
+        if (caught) assert.throws(() => e.emit('event', payload), value => value === error);
+        else e.emit('event', payload);
+      }
+      e.on('event', first);
+      e.once('event', value => { seen.push(value); throw error; });
+      if (caught) assert.equal(e.emit('event', payload), true);
+      else assert.throws(() => e.emit('event', payload), value => value === error);
+      assert.equal(seen.length, 1);
+      assert.equal(seen[0], payload);
+      assert.equal(e.listenerCount('event'), single ? 0 : 1);
+      assert.equal(e.emit('event'), !single);
+      assert.equal(seen.length, 1);
+    });
+  }
+}
+
+test('duplicate once registrations retain their contexts and are individually consumed', () => {
+  const e = new E(), a = {}, b = {}, outer = {}, inner = {}, seen = [];
+  function listener(value) {
+    seen.push([this, value]);
+    if (seen.length === 1) {
+      assert.equal(e.listenerCount('event'), 2);
+      assert.equal(e.emit('event', inner), true);
+    }
+  }
+  e.once('event', listener, a);
+  e.once('event', listener, a);
+  e.once('event', listener, b);
+  assert.equal(e.emit('event', outer), true);
+  assert.equal(seen.length, 3);
+  [a, a, b].forEach((context, i) => assert.equal(seen[i][0], context));
+  [outer, inner, inner].forEach((value, i) => assert.equal(seen[i][1], value));
+  assert.deepEqual(e.eventNames(), []);
+  assert.equal(e.emit('event'), false);
+});
+
+test('a consumed callback can register again while old dispatches overlap', () => {
+  const e = new E(), seen = [];
+  let nested = false;
+  e.on('event', () => {
+    if (!nested) { nested = true; e.emit('event', 'inner'); }
+  });
+  function listener(value) {
+    seen.push(value);
+    if (seen.length === 1) e.once('event', listener);
+  }
+  e.once('event', listener);
+  assert.equal(e.emit('event', 'outer'), true);
+  assert.deepEqual(seen, ['inner']);
+  assert.equal(e.listenerCount('event'), 2);
+  assert.equal(e.emit('event', 'later'), true);
+  assert.deepEqual(seen, ['inner', 'later']);
+  assert.equal(e.listenerCount('event'), 1);
+});
+
+test('ordinary removal and addition preserve dispatch snapshots', () => {
+  const e = new E(), seen = [];
+  let nested = false;
+  function removed(value) { seen.push(['removed', value]); }
+  function added(value) { seen.push(['added', value]); }
+  e.on('event', value => {
+    seen.push(['first', value]);
+    if (!nested) {
+      nested = true;
+      e.removeListener('event', removed);
+      e.on('event', added);
+      e.emit('event', 'inner');
+    }
+  });
+  e.on('event', removed);
+  e.once('event', value => seen.push(['once', value]));
+  assert.equal(e.emit('event', 'outer'), true);
+  assert.deepEqual(seen, [
+    ['first', 'outer'], ['first', 'inner'], ['once', 'inner'],
+    ['added', 'inner'], ['removed', 'outer']
+  ]);
+  assert.deepEqual(e.listeners('event'), [e.listeners('event')[0], added]);
+});
+
+test('consumption belongs to registrations, across event names and emitter instances', () => {
+  const a = new E(), b = new E(), symbol = Symbol('event'), seen = [];
+  function listener(value) { seen.push([this, value]); }
+  a.once('event', listener);
+  a.once(symbol, listener);
+  b.once('event', listener);
+  assert.equal(a.emit('event', 1), true);
+  assert.equal(a.emit('event', 2), false);
+  assert.equal(a.emit(symbol, 3), true);
+  assert.equal(b.emit('event', 4), true);
+  assert.deepEqual(seen, [[a, 1], [a, 3], [b, 4]]);
+  assert.deepEqual(a.eventNames(), []);
+  assert.deepEqual(b.eventNames(), []);
+});
