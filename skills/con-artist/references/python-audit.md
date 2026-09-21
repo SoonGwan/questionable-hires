@@ -30,6 +30,8 @@ JSON
 `files` selects relative files/directories and needed configuration. Select small
 permitted packages/test directories together to preserve fixtures and imports;
 narrow for size, scope or sensitive data, not to reconstruct every dependency.
+Selected trees must contain only regular files/directories; symlinks and special
+files (such as FIFOs or sockets) are rejected, not silently omitted from copies.
 `imports` includes the affected implementation and must resolve inside each copy.
 `old` matches `target` exactly once. `tests` supplies unittest or installed pytest
 arguments. Optional `probe` runs the same stronger assertion on correct/faulty

@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-21, working resource `8114957`**.
+Decision checkpoint **2026-09-21, parent resource `74b674a` plus special-input fix**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -36,6 +36,10 @@ or recoverable savings.
 
 These changes are implemented; their model-cost effect is not established:
 
+- [Audit special-input rejection](AUDIT-SPECIAL-INPUTS-01.md), parent`74b674a`:
+  initially selected FIFO/socket entries no longer disappear silently from copies;
+  rejected before execution.121 audit and80 mutation-helper controls pass on3.11.
+  Correctness repair, not model-efficiency evidence.
 - [Local CLI installation03](SKILLS-CLI-INSTALL-03.md), resource`8114957`:
   eight skills/51 resources match after actual local CLI copy; nine Python
   entrypoints and selected installed behaviors pass. Initial mount error retained;

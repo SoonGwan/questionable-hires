@@ -168,17 +168,19 @@ def snapshot(root, names):
                 raise ValueError('Symlinks are not independent audit inputs: ' + name)
         if not source.exists():
             raise ValueError('Missing input: ' + name)
-        for item in ([source] if source.is_file() else source.rglob('*')):
-            if item.is_symlink():
+        for item in (source.rglob('*') if source.is_dir() else [source]):
+            inspected = item.lstat()
+            if stat.S_ISLNK(inspected.st_mode):
                 raise ValueError('Symlink in selected tree: ' + str(item))
-            if item.is_file():
+            if not (stat.S_ISREG(inspected.st_mode) or stat.S_ISDIR(inspected.st_mode)):
+                raise ValueError('Selected input must be a regular file or directory: ' + str(item))
+            if stat.S_ISREG(inspected.st_mode):
                 key = str(item.relative_to(root))
                 relative(key)
-                if item.stat().st_size > 20_000_000:
+                if inspected.st_size > 20_000_000:
                     raise ValueError('Input too large for this small-audit helper: ' + key)
                 if key not in files:
                     remaining = 20_000_000 - total
-                    inspected = item.stat()
                     if inspected.st_size > remaining:
                         raise ValueError('Selected inputs exceed 20 MB; use the project audit facilities')
                     # The file can grow after stat. Bound allocation and charge

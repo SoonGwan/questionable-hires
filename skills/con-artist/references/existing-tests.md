@@ -79,7 +79,8 @@ whole-root preservation; without it, unselected files are not covered. Neither
 mode proves arbitrary external effects absent. After verifying the proposed
 tests, apply only the authorized test edit and retain unchanged tested bytes.
 
-Boundaries: trusted local tests, Python 3.9+/POSIX, no sandbox; no symlink inputs,
+Boundaries: trusted local tests, Python 3.9+/POSIX, no sandbox; selected inputs
+must be regular files/directories (no FIFO/socket/device or symlink inputs),
 Git internals or parent paths. Shared input budget 20 MB; 30 seconds/check by
 default (`--timeout`, maximum 300), last 12,000 output characters per check.
 Remaining foreground process-group members are stopped; persistent background
