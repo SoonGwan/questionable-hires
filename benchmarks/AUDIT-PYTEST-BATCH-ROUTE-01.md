@@ -38,6 +38,8 @@ checked. This is six author pytest processes, not model work or time savings.
 
 - Python3.11.16 integration test: both variants pass,0.925s, pytest8.3.4.
 - Python3.11.16 entire `test_audit*.py` suite:113 passed,17.844s.
+- Fresh `git archive 22c0300`, no Git history/local-run artifacts: the same
+  Python3.11.16 integration control passes both variants in0.931s, no skips.
 - Repository/skill validation, featured synchronization and whitespace checks pass.
 - The integration test explicitly skips if pytest is unavailable; such a skip
   must not be represented as passing native validation.
