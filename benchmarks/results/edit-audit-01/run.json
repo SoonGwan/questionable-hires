@@ -1,0 +1,328 @@
+{
+  "cases": [
+    {
+      "id": "edit-audit-proposals",
+      "skill": "con-artist",
+      "files": {
+        "text_edits.py": "def apply_edits(text, edits):\n    ordered = sorted(edits, key=lambda item: item[0])\n    previous_end = 0\n    for start, end, replacement in ordered:\n        if not 0 <= start < end <= len(text):\n            raise ValueError(\"invalid range\")\n        if start < previous_end:\n            raise ValueError(\"overlapping edits\")\n        previous_end = end\n    result = text\n    for start, end, replacement in reversed(ordered):\n        result = result[:start] + replacement + result[end:]\n    return result\n",
+        "test_edits.py": "import unittest\nfrom text_edits import apply_edits\n\nclass EditTests(unittest.TestCase):\n    def test_multiple_edits(self):\n        edits = [(5, 7, \"XY\"), (1, 3, \"Q\")]\n        result = apply_edits(\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\", edits)\n        self.assertIsInstance(result, str)\n        self.assertEqual(len(result), 7)\n\n    def test_overlap(self):\n        with self.assertRaisesRegex(ValueError, \"overlapping edits\"):\n            apply_edits(\"abcdef\", [(3, 5, \"Y\"), (1, 4, \"X\")])\n\n    def test_controls(self):\n        self.assertEqual(apply_edits(\"\u03b1\u03b2\u03b3\", []), \"\u03b1\u03b2\u03b3\")\n        self.assertEqual(apply_edits(\"\u03b1\u03b2\u03b3\", [(0, 1, \"\"), (1, 3, \"Z\")]), \"Z\")\n        with self.assertRaisesRegex(ValueError, \"invalid range\"):\n            apply_edits(\"abc\", [(2, 4, \"Z\")])\n",
+        "CONTRACT.md": "apply_edits takes text (str) and a list of (start, end, replacement) tuples. start/end are integers in original-text Unicode character coordinates, not byte positions; replacement is str. Each range must satisfy 0 <= start < end <= len(text), otherwise ValueError(\"invalid range\"). Valid ranges may touch but must not overlap, otherwise ValueError(\"overlapping edits\"). All edits refer to the same original text, irrespective of caller order or replacement length. Empty replacements delete; an empty edit list returns unchanged text. Do not change the caller list on success or failure. Unsupported element types and insertion-only zero-width ranges are not supported; scalability, concurrency and integrations are out of scope.\n",
+        "AGENTS.md": "Audit only. Preserve every original file byte and mode. Do not apply production or test changes. Use disposable project-local copies and remove owned copies afterward; retain no extra harness/report. No dependencies, network, commits or discovery outside the project. Use python3 -B -m unittest <selector> -v from each copy root. Establish which copied implementation the actual native tests exercise, including the test module imported function binding in that same process. Tool choice is yours; instrumentation is allowed.\n"
+      },
+      "task": "Audit test_edits.EditTests.test_multiple_edits and test_edits.EditTests.test_overlap for three independent regressions in text_edits.apply_edits: (1) apply the sorted edits forward while continuing to use original-text offsets, (2) omit overlap rejection while retaining range validation, and (3) sort the caller list in place instead of sorting a copy, otherwise preserving application and validation behavior. Keep the three faults separate, confined to apply_edits in disposable variants; preserve unchanged test bodies. For all six fault/test combinations run the unchanged native tests, demonstrate correct-code success, explain detecting assertions or surviving gaps, and distinguish setup failures from behavioral detection. Matching correct observations may be reused when identified. Suggest concrete contract-distinguishing assertions for gaps without claiming unexecuted assertions have been verified. Follow CONTRACT.md and AGENTS.md.",
+      "criteria": [
+        "Both unchanged selected tests have genuine passing correct-code observations and copied implementation/test-function binding evidence in the same native processes.",
+        "Three isolated semantic faults implement the requested changes only inside apply_edits; setup errors are not behavioral detection.",
+        "All six native faulty outcomes are observed and explained, with any correct-code reuse identified.",
+        "Concrete assertions distinguish original-coordinate output and caller preservation without claiming unexecuted assertions verified.",
+        "Every original byte/mode is preserved and scoped owned scratch removed; no production/test fix or permanent artifact."
+      ]
+    },
+    {
+      "id": "edit-audit-verified",
+      "skill": "con-artist",
+      "files": {
+        "text_edits.py": "def apply_edits(text, edits):\n    ordered = sorted(edits, key=lambda item: item[0])\n    previous_end = 0\n    for start, end, replacement in ordered:\n        if not 0 <= start < end <= len(text):\n            raise ValueError(\"invalid range\")\n        if start < previous_end:\n            raise ValueError(\"overlapping edits\")\n        previous_end = end\n    result = text\n    for start, end, replacement in reversed(ordered):\n        result = result[:start] + replacement + result[end:]\n    return result\n",
+        "test_edits.py": "import unittest\nfrom text_edits import apply_edits\n\nclass EditTests(unittest.TestCase):\n    def test_multiple_edits(self):\n        edits = [(5, 7, \"XY\"), (1, 3, \"Q\")]\n        result = apply_edits(\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\", edits)\n        self.assertIsInstance(result, str)\n        self.assertEqual(len(result), 7)\n\n    def test_overlap(self):\n        with self.assertRaisesRegex(ValueError, \"overlapping edits\"):\n            apply_edits(\"abcdef\", [(3, 5, \"Y\"), (1, 4, \"X\")])\n\n    def test_controls(self):\n        self.assertEqual(apply_edits(\"\u03b1\u03b2\u03b3\", []), \"\u03b1\u03b2\u03b3\")\n        self.assertEqual(apply_edits(\"\u03b1\u03b2\u03b3\", [(0, 1, \"\"), (1, 3, \"Z\")]), \"Z\")\n        with self.assertRaisesRegex(ValueError, \"invalid range\"):\n            apply_edits(\"abc\", [(2, 4, \"Z\")])\n",
+        "CONTRACT.md": "apply_edits takes text (str) and a list of (start, end, replacement) tuples. start/end are integers in original-text Unicode character coordinates, not byte positions; replacement is str. Each range must satisfy 0 <= start < end <= len(text), otherwise ValueError(\"invalid range\"). Valid ranges may touch but must not overlap, otherwise ValueError(\"overlapping edits\"). All edits refer to the same original text, irrespective of caller order or replacement length. Empty replacements delete; an empty edit list returns unchanged text. Do not change the caller list on success or failure. Unsupported element types and insertion-only zero-width ranges are not supported; scalability, concurrency and integrations are out of scope.\n",
+        "AGENTS.md": "Audit only. Preserve every original file byte and mode. Do not apply production or test changes. Use disposable project-local copies and remove owned copies afterward; retain no extra harness/report. No dependencies, network, commits or discovery outside the project. Use python3 -B -m unittest <selector> -v from each copy root. Establish which copied implementation the actual native tests exercise, including the test module imported function binding in that same process. Tool choice is yours; instrumentation is allowed.\n"
+      },
+      "task": "Audit test_edits.EditTests.test_multiple_edits and test_edits.EditTests.test_overlap for three independent regressions in text_edits.apply_edits: (1) apply the sorted edits forward while continuing to use original-text offsets, (2) omit overlap rejection while retaining range validation, and (3) sort the caller list in place instead of sorting a copy, otherwise preserving application and validation behavior. Keep the three faults separate, confined to apply_edits in disposable variants; preserve unchanged test bodies. For all six fault/test combinations run the unchanged native tests, demonstrate correct-code success, explain detecting assertions or surviving gaps, and distinguish setup failures from behavioral detection. Matching correct observations may be reused when identified. Suggest concrete contract-distinguishing assertions for gaps without claiming unexecuted assertions have been verified. Follow CONTRACT.md and AGENTS.md. Also actually verify stronger assertions against correct and corresponding faulty copies. Cover exact original-coordinate output plus caller-list preservation on both successful application and overlap rejection. Show passing-correct/failing-faulty results for the intended effects. Keep extra assertions only in disposable copies; unexecuted suggestions do not fulfill this additional requirement.",
+      "criteria": [
+        "Both unchanged selected tests have genuine passing correct-code observations and copied implementation/test-function binding evidence in the same native processes.",
+        "Three isolated semantic faults implement the requested changes only inside apply_edits; setup errors are not behavioral detection.",
+        "All six native faulty outcomes are observed and explained, with any correct-code reuse identified.",
+        "Concrete assertions distinguish original-coordinate output and caller preservation without claiming unexecuted assertions verified.",
+        "Every original byte/mode is preserved and scoped owned scratch removed; no production/test fix or permanent artifact.",
+        "Stronger exact-output and caller-preservation assertions on success and overlap failure actually pass correct code and fail corresponding faults for the intended assertion, not setup."
+      ]
+    }
+  ],
+  "identities": {
+    "benchmarks/run_edit_audit_01.py": "607d7d4d85b109f17c65d20d0194d92c5e4d72167f95dbdcf8bf8dd16c960376",
+    "benchmarks/edit_audit_cases.py": "fefc430b1ac4d5a59da5acabf0b9086785d0cc8a7711b3faed03a164de935d0a",
+    "benchmarks/run_cachetools_audit_01.py": "7d0f314123613b93838044c3277edb4014497205ac9c9eb1d1af385a52747632",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "benchmarks/EDIT-AUDIT-01-PROTOCOL.md": "7acad6c4d5d7e15be9fcd1ea11c0e9b7d7eb5516bcb40c3a6819cc0ff5dc281d",
+    "tests/test_edit_audit_runner.py": "39e856e5e8213ac0c5fd90b9e2429e6cdf4943136e3b4fd6959333579e5fac8c",
+    "tests/test_edit_audit_cases.py": "290a420847076f78836abe5c1737d00ee83f702323fd9e87f33500409657e03f"
+  },
+  "schedule": [
+    [
+      0,
+      "prior"
+    ],
+    [
+      0,
+      "baseline"
+    ],
+    [
+      0,
+      "current"
+    ],
+    [
+      1,
+      "current"
+    ],
+    [
+      1,
+      "baseline"
+    ],
+    [
+      1,
+      "prior"
+    ]
+  ],
+  "resource_revisions": {
+    "prior": "04bf934637575ec29a786f79865401815f6608e5",
+    "current": "e6aa16ef0fa81759f4fe404891d5d5a285f78061"
+  },
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "prior": "0e733f6c392aebfcb4337389c0885349a16acc4e9f19181a5cb0a58c1d7a3a83",
+    "current": "1b19f8996c271d9319f80acd7daae7b05ee690688caf47825a5ef82c55e2c804"
+  },
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "repeats": 1,
+    "jobs": 1
+  },
+  "python_version": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "native_preflight": [
+    {
+      "variant": "correct",
+      "selected": [
+        {
+          "selector": "test_edits.EditTests.test_multiple_edits",
+          "exit_code": 0,
+          "output": "test_multiple_edits (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_edits.EditTests.test_overlap",
+          "exit_code": 0,
+          "output": "test_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness",
+        "exit_code": 0,
+        "output": "test_original_coordinates (test_witness.Witnesses) ... ok\ntest_overlap (test_witness.Witnesses) ... ok\ntest_preserve_failure (test_witness.Witnesses) ... ok\ntest_preserve_success (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+      },
+      "failure_preservation": {
+        "selector": "test_witness.Witnesses.test_preserve_failure",
+        "exit_code": 0,
+        "output": "test_preserve_failure (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "controls": {
+        "selector": "test_edits",
+        "exit_code": 0,
+        "output": "test_controls (test_edits.EditTests) ... ok\ntest_multiple_edits (test_edits.EditTests) ... ok\ntest_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+      }
+    },
+    {
+      "variant": "equivalent",
+      "selected": [
+        {
+          "selector": "test_edits.EditTests.test_multiple_edits",
+          "exit_code": 0,
+          "output": "test_multiple_edits (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_edits.EditTests.test_overlap",
+          "exit_code": 0,
+          "output": "test_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness",
+        "exit_code": 0,
+        "output": "test_original_coordinates (test_witness.Witnesses) ... ok\ntest_overlap (test_witness.Witnesses) ... ok\ntest_preserve_failure (test_witness.Witnesses) ... ok\ntest_preserve_success (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+      },
+      "failure_preservation": {
+        "selector": "test_witness.Witnesses.test_preserve_failure",
+        "exit_code": 0,
+        "output": "test_preserve_failure (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "controls": {
+        "selector": "test_edits",
+        "exit_code": 0,
+        "output": "test_controls (test_edits.EditTests) ... ok\ntest_multiple_edits (test_edits.EditTests) ... ok\ntest_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+      }
+    },
+    {
+      "variant": "forward-application",
+      "selected": [
+        {
+          "selector": "test_edits.EditTests.test_multiple_edits",
+          "exit_code": 0,
+          "output": "test_multiple_edits (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_edits.EditTests.test_overlap",
+          "exit_code": 0,
+          "output": "test_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_original_coordinates",
+        "exit_code": 1,
+        "output": "test_original_coordinates (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_original_coordinates (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 6, in test_original_coordinates\n    self.assertEqual(apply_edits(\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\", [(5, 7, \"XY\"), (1, 3, \"Q\")]), \"\u03b1Q\u03b4\u03b5XY\u03b8\")\nAssertionError: '\u03b1Q\u03b4\u03b5\u03b6XY' != '\u03b1Q\u03b4\u03b5XY\u03b8'\n- \u03b1Q\u03b4\u03b5\u03b6XY\n?     -\n+ \u03b1Q\u03b4\u03b5XY\u03b8\n?       +\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "failure_preservation": {
+        "selector": "test_witness.Witnesses.test_preserve_failure",
+        "exit_code": 0,
+        "output": "test_preserve_failure (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "controls": null
+    },
+    {
+      "variant": "overlap-accepted",
+      "selected": [
+        {
+          "selector": "test_edits.EditTests.test_multiple_edits",
+          "exit_code": 0,
+          "output": "test_multiple_edits (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_edits.EditTests.test_overlap",
+          "exit_code": 1,
+          "output": "test_overlap (test_edits.EditTests) ... FAIL\n\n======================================================================\nFAIL: test_overlap (test_edits.EditTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 13, in test_overlap\n    apply_edits(\"abcdef\", [(3, 5, \"Y\"), (1, 4, \"X\")])\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_overlap",
+        "exit_code": 1,
+        "output": "test_overlap (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_overlap (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 23, in test_overlap\n    apply_edits(\"abcdef\", [(3, 5, \"Y\"), (1, 4, \"X\")])\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "failure_preservation": {
+        "selector": "test_witness.Witnesses.test_preserve_failure",
+        "exit_code": 1,
+        "output": "test_preserve_failure (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_preserve_failure (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 18, in test_preserve_failure\n    apply_edits(\"abcdef\", edits)\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "controls": null
+    },
+    {
+      "variant": "caller-sorted",
+      "selected": [
+        {
+          "selector": "test_edits.EditTests.test_multiple_edits",
+          "exit_code": 0,
+          "output": "test_multiple_edits (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_edits.EditTests.test_overlap",
+          "exit_code": 0,
+          "output": "test_overlap (test_edits.EditTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_preserve_success",
+        "exit_code": 1,
+        "output": "test_preserve_success (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_preserve_success (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 12, in test_preserve_success\n    self.assertEqual(edits, before)\nAssertionError: Lists differ: [(1, 3, 'Q'), (5, 7, 'XY')] != [(5, 7, 'XY'), (1, 3, 'Q')]\n\nFirst differing element 0:\n(1, 3, 'Q')\n(5, 7, 'XY')\n\n- [(1, 3, 'Q'), (5, 7, 'XY')]\n+ [(5, 7, 'XY'), (1, 3, 'Q')]\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "failure_preservation": {
+        "selector": "test_witness.Witnesses.test_preserve_failure",
+        "exit_code": 1,
+        "output": "test_preserve_failure (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_preserve_failure (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 19, in test_preserve_failure\n    self.assertEqual(edits, before)\nAssertionError: Lists differ: [(1, 4, 'X'), (3, 5, 'Y')] != [(3, 5, 'Y'), (1, 4, 'X')]\n\nFirst differing element 0:\n(1, 4, 'X')\n(3, 5, 'Y')\n\n- [(1, 4, 'X'), (3, 5, 'Y')]\n+ [(3, 5, 'Y'), (1, 4, 'X')]\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "controls": null
+    }
+  ],
+  "completed_cells": [
+    {
+      "case": "edit-audit-proposals",
+      "condition": "prior",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 75660,
+        "cached_input_tokens": 57216,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2382,
+        "reasoning_output_tokens": 247
+      },
+      "elapsed_seconds": 82.698
+    },
+    {
+      "case": "edit-audit-proposals",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 68151,
+        "cached_input_tokens": 54144,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2466,
+        "reasoning_output_tokens": 323
+      },
+      "elapsed_seconds": 84.975
+    },
+    {
+      "case": "edit-audit-proposals",
+      "condition": "current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 73370,
+        "cached_input_tokens": 59520,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1929,
+        "reasoning_output_tokens": 119
+      },
+      "elapsed_seconds": 69.111
+    },
+    {
+      "case": "edit-audit-verified",
+      "condition": "current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 132367,
+        "cached_input_tokens": 112512,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5298,
+        "reasoning_output_tokens": 349
+      },
+      "elapsed_seconds": 183.065
+    },
+    {
+      "case": "edit-audit-verified",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 69643,
+        "cached_input_tokens": 54272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2355,
+        "reasoning_output_tokens": 404
+      },
+      "elapsed_seconds": 83.559
+    },
+    {
+      "case": "edit-audit-verified",
+      "condition": "prior",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 77038,
+        "cached_input_tokens": 64000,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2517,
+        "reasoning_output_tokens": 219
+      },
+      "elapsed_seconds": 86.833
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T07:15:21.540427+00:00",
+  "finished_at": "2026-09-21T07:25:24.276330+00:00"
+}

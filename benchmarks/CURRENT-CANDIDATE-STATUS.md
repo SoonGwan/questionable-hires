@@ -1,7 +1,7 @@
 # Current candidate: whole-task performance remains unproven
 
-Checkpoint **2026-09-21, last model resource `a3dee3b`; module-invocation support
-based on `04bf934`**. This is a decision index, not a new
+Checkpoint **2026-09-21, last model resource `e6aa16e`, edit-audit launch `f5654a2`**.
+This is a decision index, not a new
 measurement. [Full chronological history](CANDIDATE-HISTORY-2026-09-21.md) preserves
 every preceding checkpoint, including adverse results and preparation notes.
 Use dated reports for exact tasks, resources, scope and capture limitations.
@@ -19,11 +19,11 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
-Prepared checkpoint2026-09-21: [native edit-audit protocol](EDIT-AUDIT-01-PROTOCOL.md)
-compares `04bf934`/`e6aa16e` and no-skill baseline on a new authored project with
-two requests, six fixed sessions. [Native controls](results/edit-audit-01-preflight.json)
-pass correct/equivalent code and reject intended faults. Preparation is not model
-performance evidence; no result or featured change is claimed yet.
+Reviewed checkpoint2026-09-21: [native edit audit](EDIT-AUDIT-01.md) retains all six
+original attempts. Required outcomes hold, but helper use is absent and current
+verified-request costs regress substantially. Setup recovery and different extra
+checks remain included. 한국어:6회 검토 완료. 새 도구는 미사용이었고, 입증 과제의
+비용 증가·복구·추가 검사도 보존했다. 전체 성능 향상으로 채택하지 않는다.
 
 Transfer checkpoint2026-09-21, launch`557a021`: all six dependency-plan sessions
 reviewed; originals/scope preserved. Prior's instrumentation repair and capture
@@ -36,6 +36,7 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 | [Cachetools audit01](CACHETOOLS-AUDIT-01.md),2026-09-21,`b1875a0` | All three arms5/5; current versus baseline tokens−20.6%, time+30.9% | Changed helper unused; unequal extra checks. One source-excerpt task,n=1; no optimization attribution. |
 | [Proposal boundary01](AUDIT-PROPOSAL-01.md),2026-09-21,`e17e13d` | Proposal: tokens−17.46%, time−8.48%,20→10 unittest processes. Verified: tokens+3.40%, time−3.34%; required assertions retained | Retain scope distinction provisionally. Two requests on reused development fixture,n=1; not independent validation. |
 | [Plan audit01](PLAN-AUDIT-01.md),2026-09-21,`a3dee3b` | All arms meet5/5 proposal and6/6 verified criteria. Current versus baseline: proposal−11.39% tokens/−2.98% time; verified+12.83%/+9.02% | Scope distinction transfers in one fresh authored fixture; unequal probes and prior instrumentation repair. No broad efficiency win. |
+| [Edit audit01](EDIT-AUDIT-01.md),2026-09-21,`e6aa16e` | All arms meet5/5 proposal and6/6 verified criteria. Current versus baseline: proposal+6.63% tokens/−18.67% time; verified+91.21%/+119.09% | Helper unused; current startup recovery and unequal extra work retained. No demonstrated efficiency improvement. |
 
 한국어: 전체 비교에서는 토큰 증가가 남았다. 제안과 입증을 구분한 수정은 한 사례에서
 추가 실행을 줄였지만 입증 과제의 토큰 증가도 공개한다. 독립적인 프로젝트에서

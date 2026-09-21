@@ -1,0 +1,334 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "edit-audit-proposals",
+    "skill": "con-artist",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "8a8eb430345ab58745267e8adb4a1987b45093cd",
+    "skill_sha256": "a5c8b695eb7653582e3d577925c67e0812a1c8d4097034adc0b73ff8154e9d47",
+    "skill_resources_sha256": "b3177193063fd4882887f2c8fcc21fca5e0812cb368dea126d2bbc2d7fce46c2",
+    "elapsed_seconds": 69.111,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 73370,
+      "cached_input_tokens": 59520,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1929,
+      "reasoning_output_tokens": 119
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $con-artist at .agents/skills/con-artist/SKILL.md.\n\nAudit test_edits.EditTests.test_multiple_edits and test_edits.EditTests.test_overlap for three independent regressions in text_edits.apply_edits: (1) apply the sorted edits forward while continuing to use original-text offsets, (2) omit overlap rejection while retaining range validation, and (3) sort the caller list in place instead of sorting a copy, otherwise preserving application and validation behavior. Keep the three faults separate, confined to apply_edits in disposable variants; preserve unchanged test bodies. For all six fault/test combinations run the unchanged native tests, demonstrate correct-code success, explain detecting assertions or surviving gaps, and distinguish setup failures from behavioral detection. Matching correct observations may be reused when identified. Suggest concrete contract-distinguishing assertions for gaps without claiming unexecuted assertions have been verified. Follow CONTRACT.md and AGENTS.md.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "a5c8b695eb7653582e3d577925c67e0812a1c8d4097034adc0b73ff8154e9d47",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/assets/unittest_startup.py": {
+        "kind": "file",
+        "sha256": "a1cb382500550d4ac47cbcd88936618c6bfc67fdb26b75842a8739ca47bef114",
+        "mode": 420
+      },
+      "con-artist/references/existing-tests.md": {
+        "kind": "file",
+        "sha256": "38e86fee602f66fafa69955ec4428de0a7c1b0f8d4c2035acbc0661195367bef",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "43d895d747f9d8af2afaeb00bea0d48227e928535c2434f231b1c59fd7e81627",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "34e76d5310ceca30aa66d5f856ae21d217bbe178cbb941e028637f84435a9df0",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "b59ec6c7a7fdee139a22af61d0f338439fed7a724903ecb2a2517daa9c532ec7",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "b46a52c28c33ae69fcfb15e66db6044cc746bd7540e8656c9b3a5ea116a9a077",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "37a948dfb1ba1bd10335ad09671fba2e3a186b8cfde3d3a2c1d4d01712df7f68",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "ac354313260cf74e0a6b810ca25d2dcc6c5ac983b8d7f82d263c69a025bc5e25",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "42115f9607ff9c838df3f849a1d828e333253162bc6471b195cda17b2a86f37a",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "a5c8b695eb7653582e3d577925c67e0812a1c8d4097034adc0b73ff8154e9d47",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/assets/unittest_startup.py": {
+        "kind": "file",
+        "sha256": "a1cb382500550d4ac47cbcd88936618c6bfc67fdb26b75842a8739ca47bef114",
+        "mode": 420
+      },
+      "con-artist/references/existing-tests.md": {
+        "kind": "file",
+        "sha256": "38e86fee602f66fafa69955ec4428de0a7c1b0f8d4c2035acbc0661195367bef",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "43d895d747f9d8af2afaeb00bea0d48227e928535c2434f231b1c59fd7e81627",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "34e76d5310ceca30aa66d5f856ae21d217bbe178cbb941e028637f84435a9df0",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "b59ec6c7a7fdee139a22af61d0f338439fed7a724903ecb2a2517daa9c532ec7",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "b46a52c28c33ae69fcfb15e66db6044cc746bd7540e8656c9b3a5ea116a9a077",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "37a948dfb1ba1bd10335ad09671fba2e3a186b8cfde3d3a2c1d4d01712df7f68",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "ac354313260cf74e0a6b810ca25d2dcc6c5ac983b8d7f82d263c69a025bc5e25",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "42115f9607ff9c838df3f849a1d828e333253162bc6471b195cda17b2a86f37a",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 377,
+      "mode": 420,
+      "sha256": "c544310413a2b5030e487ac8f9843f71330d6fe104f2c52409548cd72edca17b",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  },
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "edit-audit-verified",
+    "skill": "con-artist",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "8a8eb430345ab58745267e8adb4a1987b45093cd",
+    "skill_sha256": "a5c8b695eb7653582e3d577925c67e0812a1c8d4097034adc0b73ff8154e9d47",
+    "skill_resources_sha256": "b3177193063fd4882887f2c8fcc21fca5e0812cb368dea126d2bbc2d7fce46c2",
+    "elapsed_seconds": 183.065,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 132367,
+      "cached_input_tokens": 112512,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 5298,
+      "reasoning_output_tokens": 349
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Use $con-artist at .agents/skills/con-artist/SKILL.md.\n\nAudit test_edits.EditTests.test_multiple_edits and test_edits.EditTests.test_overlap for three independent regressions in text_edits.apply_edits: (1) apply the sorted edits forward while continuing to use original-text offsets, (2) omit overlap rejection while retaining range validation, and (3) sort the caller list in place instead of sorting a copy, otherwise preserving application and validation behavior. Keep the three faults separate, confined to apply_edits in disposable variants; preserve unchanged test bodies. For all six fault/test combinations run the unchanged native tests, demonstrate correct-code success, explain detecting assertions or surviving gaps, and distinguish setup failures from behavioral detection. Matching correct observations may be reused when identified. Suggest concrete contract-distinguishing assertions for gaps without claiming unexecuted assertions have been verified. Follow CONTRACT.md and AGENTS.md. Also actually verify stronger assertions against correct and corresponding faulty copies. Cover exact original-coordinate output plus caller-list preservation on both successful application and overlap rejection. Show passing-correct/failing-faulty results for the intended effects. Keep extra assertions only in disposable copies; unexecuted suggestions do not fulfill this additional requirement.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "a5c8b695eb7653582e3d577925c67e0812a1c8d4097034adc0b73ff8154e9d47",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/assets/unittest_startup.py": {
+        "kind": "file",
+        "sha256": "a1cb382500550d4ac47cbcd88936618c6bfc67fdb26b75842a8739ca47bef114",
+        "mode": 420
+      },
+      "con-artist/references/existing-tests.md": {
+        "kind": "file",
+        "sha256": "38e86fee602f66fafa69955ec4428de0a7c1b0f8d4c2035acbc0661195367bef",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "43d895d747f9d8af2afaeb00bea0d48227e928535c2434f231b1c59fd7e81627",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "34e76d5310ceca30aa66d5f856ae21d217bbe178cbb941e028637f84435a9df0",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "b59ec6c7a7fdee139a22af61d0f338439fed7a724903ecb2a2517daa9c532ec7",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "b46a52c28c33ae69fcfb15e66db6044cc746bd7540e8656c9b3a5ea116a9a077",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "37a948dfb1ba1bd10335ad09671fba2e3a186b8cfde3d3a2c1d4d01712df7f68",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "ac354313260cf74e0a6b810ca25d2dcc6c5ac983b8d7f82d263c69a025bc5e25",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "42115f9607ff9c838df3f849a1d828e333253162bc6471b195cda17b2a86f37a",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "a5c8b695eb7653582e3d577925c67e0812a1c8d4097034adc0b73ff8154e9d47",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/assets/unittest_startup.py": {
+        "kind": "file",
+        "sha256": "a1cb382500550d4ac47cbcd88936618c6bfc67fdb26b75842a8739ca47bef114",
+        "mode": 420
+      },
+      "con-artist/references/existing-tests.md": {
+        "kind": "file",
+        "sha256": "38e86fee602f66fafa69955ec4428de0a7c1b0f8d4c2035acbc0661195367bef",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "43d895d747f9d8af2afaeb00bea0d48227e928535c2434f231b1c59fd7e81627",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "34e76d5310ceca30aa66d5f856ae21d217bbe178cbb941e028637f84435a9df0",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "b59ec6c7a7fdee139a22af61d0f338439fed7a724903ecb2a2517daa9c532ec7",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "b46a52c28c33ae69fcfb15e66db6044cc746bd7540e8656c9b3a5ea116a9a077",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "37a948dfb1ba1bd10335ad09671fba2e3a186b8cfde3d3a2c1d4d01712df7f68",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "ac354313260cf74e0a6b810ca25d2dcc6c5ac983b8d7f82d263c69a025bc5e25",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "42115f9607ff9c838df3f849a1d828e333253162bc6471b195cda17b2a86f37a",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 377,
+      "mode": 420,
+      "sha256": "6b1e8e42d54ab5deac3e4ee39cc26258f7c8e4d1555ebbb0e1ab9c16d9d0e3f1",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]

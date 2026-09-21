@@ -1,0 +1,164 @@
+{
+  "session_id": "01a0c2d1-ee93-7111-9384-ca13e3eadcc8",
+  "source_bytes": 167801,
+  "source_sha256": "f107a59af8edf97901333202032fd0f9b66d236d066b0d96ba9c36871f16bdb1",
+  "source_lines": 38,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "95d10d469663760f29f9689f424d43238382cb1708d87db9385d0ea83efc6c31",
+      "record": {
+        "timestamp": "2026-09-21T07:15:41.508Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_09ebe15d98966ddb016ab0d99bece887d0b5c77be9c9af9875",
+          "status": "completed",
+          "call_id": "call_iJi9ABOcI6wSlKflESAbbBGx",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'CONTRACT.md' -g '*edits*' -g 'SKILL.md' -g 'pyproject.toml' -g 'setup.cfg' -g 'pytest.ini' -g 'sitecustomize.py' -g '__init__.py'\",max_output_tokens:4000}));\ntext(await tools.exec_command({cmd:\"cat AGENTS.md CONTRACT.md .agents/skills/con-artist/SKILL.md\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d1-eed9-74d0-93ae-ca7fcd025824",
+            "create_time": 1789974937.631765
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "9456a6cf2e8b05ed7ce3c267f2a83e740bc24a76432ce29add9ae6c9c8bfaa1f",
+      "record": {
+        "timestamp": "2026-09-21T07:15:41.727Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c2d2-101f-7de3-973b-9994a448cf14",
+          "call_id": "call_iJi9ABOcI6wSlKflESAbbBGx",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"82d42e\",\"wall_time_seconds\":0.000001416,\"exit_code\":0,\"original_token_count\":33,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nCONTRACT.md\\ntext_edits.py\\ntest_edits.py\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"8689e3\",\"wall_time_seconds\":0.000001917,\"exit_code\":0,\"original_token_count\":1404,\"output\":\"Audit only. Preserve every original file byte and mode. Do not apply production or test changes. Use disposable project-local copies and remove owned copies afterward; retain no extra harness/report. No dependencies, network, commits or discovery outside the project. Use python3 -B -m unittest <selector> -v from each copy root. Establish which copied implementation the actual native tests exercise, including the test module imported function binding in that same process. Tool choice is yours; instrumentation is allowed.\\napply_edits takes text (str) and a list of (start, end, replacement) tuples. start/end are integers in original-text Unicode character coordinates, not byte positions; replacement is str. Each range must satisfy 0 <= start < end <= len(text), otherwise ValueError(\\\"invalid range\\\"). Valid ranges may touch but must not overlap, otherwise ValueError(\\\"overlapping edits\\\"). All edits refer to the same original text, irrespective of caller order or replacement length. Empty replacements delete; an empty edit list returns unchanged text. Do not change the caller list on success or failure. Unsupported element types and insertion-only zero-width ranges are not supported; scalability, concurrency and integrations are out of scope.\\n---\\nname: con-artist\\ndescription: Audit whether tests detect broken behavior by tracing assertions and running narrow controlled mutations in an isolated workspace; use for test-quality reviews, not routine test execution.\\n---\\n\\n# Con Artist\\n\\n> Your mock is very impressed with itself.\\n\\n## Check what the test actually buys\\n\\nTrace the requested assertions far enough to establish the actual exercised effect\\nand select a reachable fault. Follow unresolved bindings, mocks and relevant setup;\\nreading every intermediate wrapper is not itself evidence. Reuse known instructions,\\nrunner and source context. Keep discovery inside the permitted project root; a\\nbroad suite need not become a reading list of unrelated tests.\\n\\nUse the evidenced runner and configuration; reuse a valid correct-code baseline.\\nChoose one meaningful fault at the requested boundary, such as acknowledging\\nwithout persisting. Preserve originals and compilation/binding context through\\nproject isolation, disposable module/package copies or a valid substitution;\\nrestore substitutions in reused processes. A wrong binding, rewritten simulation,\\nsyntax error or equivalent mutation cannot establish test sensitivity.\\n\\nInspect each phase's actual assertion and exit, not just a green baseline or a\\nnonzero mutant status. Runner errors/warnings can indicate broken assertion\\nplumbing, not a detected production fault. Establish provenance through copied\\nimports, traced bindings and defect-specific observations. Add instrumentation for\\nrequired or unresolved dispatch, not duplicate evidence; a separate import-only\\nprocess does not prove what the test process loads.\\n\\n## Use support only where it helps\\n\\n- Nearby known files: read relevant source/configuration directly. For scattered\\n  Python context, [the collector](references/python-context.md) locates definitions,\\n  ancestor instructions and fixtures. Select known bodies directly; indexes are\\n  navigation, not reviewed bodies or execution. Don't recollect equivalent context.\\n- Existing Python test improvements: consider [the complete four-check recipe](references/existing-tests.md)\\n  when they remove custom copy/run/cleanup plumbing. One recipe checks original\\n  and proposed tests against correct/faulty code with the native runner and fixtures;\\n  applying the verified edit remains separate. No helper is needed for a simpler\\n  native workflow or an already-completed audit.\\n- Small self-contained audits: use the native runner in project-local copies or\\n  a valid substitution. Choose [the Python helper](references/python-audit.md) when\\n  its bounded processes, integrity checks or shared-baseline batches remove needed\\n  orchestration. For required whole-project preservation, its optional `guard_project`\\n  checks authorized roots, including unselected files and in-root Git metadata;\\n  selected-input checks remain the default. Python compatibility alone is not a reason to adopt\\n  it or load its guide. Read implementation for a concrete trust/adaptation question.\\n- Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)\\n  covers false-pass assertion helpers and incomplete checks. It is not routine setup.\\n\\nIf tests survive, distinguish demonstrating the gap from verifying a repair.\\nFor a proposal-only review, give a concrete assertion and label it unexecuted\\nunless checked; demonstrating the requested fault still requires execution.\\nFor requested test improvements or a claim that an assertion closes the gap,\\nverify it on correct and faulty code: pass the former, fail the latter for the\\nintended effect, not merely success or container size. If killed, identify the\\ndetecting assertion or warning policy; this protects that fault, not every lifecycle path.\\n\\n## Deliver and stop\\n\\nGive decisive commands/results and the gap/proposed assertion or detecting check.\\nKeep a harness/report only for requested reuse or delivery. Without isolated\\nexecution, label the concern static. Apply test improvements only when requested,\\nnever the deliberate fault; an audit does not authorize publication.\\n\\nStop when the scoped claim and requested improvements are verified. Add faults\\nonly for distinct material boundaries, not to fish for survivors, chase a global\\nmutation score or remove every mock. Preserve user changes and explicit requirements.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d1-eed9-74d0-93ae-ca7fcd025824",
+            "create_time": 1789974941.72752
+          }
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "2ab7cb06dceade180d710b64f51c966eff2f43b6a373c4e0848cc4f7f743720f",
+      "record": {
+        "timestamp": "2026-09-21T07:15:45.366Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_09ebe15d98966ddb016ab0d9a1d6ac87d08a4b1ac3465f489a",
+          "status": "completed",
+          "call_id": "call_NmCdcRvSZriXfRVLBRZan5pX",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; nl -ba text_edits.py; nl -ba test_edits.py; rg --files --hidden -g '! .git'\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d1-eed9-74d0-93ae-ca7fcd025824",
+            "create_time": 1789974944.417575
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "d56c413ba97697e6e06576b46ebfa18382f53ee29aeb5bcb69bdf350002b7d55",
+      "record": {
+        "timestamp": "2026-09-21T07:15:45.501Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c2d2-1edd-79d1-a381-d36f25ec6bcb",
+          "call_id": "call_NmCdcRvSZriXfRVLBRZan5pX",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"1c9573\",\"wall_time_seconds\":0.000001875,\"exit_code\":0,\"original_token_count\":733,\"output\":\"total 32\\ndrwxr-xr-x@  8 admin  staff  256 Sep 21 16:15 .\\ndrwx------@  3 admin  staff   96 Sep 21 16:15 ..\\ndrwxr-xr-x@  3 admin  staff   96 Sep 21 16:15 .agents\\ndrwxr-xr-x@ 10 admin  staff  320 Sep 21 16:15 .git\\n-rw-r--r--@  1 admin  staff  526 Sep 21 16:15 AGENTS.md\\n-rw-r--r--@  1 admin  staff  730 Sep 21 16:15 CONTRACT.md\\n-rw-r--r--@  1 admin  staff  752 Sep 21 16:15 test_edits.py\\n-rw-r--r--@  1 admin  staff  502 Sep 21 16:15 text_edits.py\\n     1\\tdef apply_edits(text, edits):\\n     2\\t    ordered = sorted(edits, key=lambda item: item[0])\\n     3\\t    previous_end = 0\\n     4\\t    for start, end, replacement in ordered:\\n     5\\t        if not 0 <= start < end <= len(text):\\n     6\\t            raise ValueError(\\\"invalid range\\\")\\n     7\\t        if start < previous_end:\\n     8\\t            raise ValueError(\\\"overlapping edits\\\")\\n     9\\t        previous_end = end\\n    10\\t    result = text\\n    11\\t    for start, end, replacement in reversed(ordered):\\n    12\\t        result = result[:start] + replacement + result[end:]\\n    13\\t    return result\\n     1\\timport unittest\\n     2\\tfrom text_edits import apply_edits\\n     3\\t\\n     4\\tclass EditTests(unittest.TestCase):\\n     5\\t    def test_multiple_edits(self):\\n     6\\t        edits = [(5, 7, \\\"XY\\\"), (1, 3, \\\"Q\\\")]\\n     7\\t        result = apply_edits(\\\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\\\", edits)\\n     8\\t        self.assertIsInstance(result, str)\\n     9\\t        self.assertEqual(len(result), 7)\\n    10\\t\\n    11\\t    def test_overlap(self):\\n    12\\t        with self.assertRaisesRegex(ValueError, \\\"overlapping edits\\\"):\\n    13\\t            apply_edits(\\\"abcdef\\\", [(3, 5, \\\"Y\\\"), (1, 4, \\\"X\\\")])\\n    14\\t\\n    15\\t    def test_controls(self):\\n    16\\t        self.assertEqual(apply_edits(\\\"\u03b1\u03b2\u03b3\\\", []), \\\"\u03b1\u03b2\u03b3\\\")\\n    17\\t        self.assertEqual(apply_edits(\\\"\u03b1\u03b2\u03b3\\\", [(0, 1, \\\"\\\"), (1, 3, \\\"Z\\\")]), \\\"Z\\\")\\n    18\\t        with self.assertRaisesRegex(ValueError, \\\"invalid range\\\"):\\n    19\\t            apply_edits(\\\"abc\\\", [(2, 4, \\\"Z\\\")])\\n.git/COMMIT_EDITMSG\\n.git/index\\n.git/refs/heads/main\\n.git/logs/refs/heads/main\\n.git/logs/HEAD\\n.git/HEAD\\n.git/objects/c2/7884ffa7d2763c86cdb6dccb83a1ba633a4f30\\n.git/objects/aa/c3d93515d0b18e1cc9ea0a3da5ed8a7db392d0\\n.git/objects/06/8e2d67d0236f66c9c66430da810a729a92f03d\\n.git/objects/31/fb3aaebafed466db319697daadf9d0b7fc6cc3\\n.git/objects/8a/8eb430345ab58745267e8adb4a1987b45093cd\\n.git/objects/df/318558644d8455808f2721be7a1b7e3c267b81\\n.git/config\\nAGENTS.md\\nCONTRACT.md\\n.agents/skills/con-artist/SKILL.md\\n.agents/skills/con-artist/scripts/context.py\\n.agents/skills/con-artist/scripts/audit.py\\n.agents/skills/con-artist/agents/openai.yaml\\n.agents/skills/con-artist/references/python-context.md\\n.agents/skills/con-artist/references/python-audit-advanced.md\\n.agents/skills/con-artist/references/existing-tests.md\\n.agents/skills/con-artist/references/python-audit-probes.md\\n.agents/skills/con-artist/references/python-audit.md\\n.agents/skills/con-artist/references/python-audit-batch.md\\ntext_edits.py\\ntest_edits.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d1-eed9-74d0-93ae-ca7fcd025824",
+            "create_time": 1789974945.501104
+          }
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "2213bea0f5491ec1db05d560a5eeb01945c9d81006fdfc30bcce2907a7b88c5c",
+      "record": {
+        "timestamp": "2026-09-21T07:16:31.628Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_09ebe15d98966ddb016ab0d9b00bc887d0b88fc8095f2859c5",
+          "status": "completed",
+          "call_id": "call_LwA0LDgNRsxsdcjsGb1YqXtD",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport os, stat, hashlib, pathlib, tempfile, shutil, subprocess\\nroot = pathlib.Path.cwd()\\ndef snapshot():\\n    result = {}\\n    for p in root.rglob('*'):\\n        rel = str(p.relative_to(root))\\n        s = p.lstat()\\n        result[rel] = (stat.S_IMODE(s.st_mode), 'link', os.readlink(p)) if p.is_symlink() else (stat.S_IMODE(s.st_mode), 'file', hashlib.sha256(p.read_bytes()).hexdigest()) if p.is_file() else (stat.S_IMODE(s.st_mode), 'dir')\\n    result['.'] = (stat.S_IMODE(root.stat().st_mode), 'dir')\\n    return result\\nbefore = snapshot()\\nsource = (root / 'text_edits.py').read_text()\\ntests = (root / 'test_edits.py').read_bytes()\\nvariants = {\\n    'correct': source,\\n    'forward': source.replace('in reversed(ordered):', 'in ordered:'),\\n    'no_overlap': source.replace('        if start < previous_end:\\\\n            raise ValueError(\\\"overlapping edits\\\")\\\\n', ''),\\n    'in_place': source.replace('    ordered = sorted(edits, key=lambda item: item[0])', '    edits.sort(key=lambda item: item[0])\\\\n    ordered = edits'),\\n}\\ninstrument = r'''\\nimport sys, json, pathlib, hashlib\\n_copy_root = pathlib.Path(__file__).resolve().parent\\n_before = {}\\ndef _trace(frame, event, arg):\\n    if frame.f_code.co_name != 'apply_edits':\\n        return None\\n    module = sys.modules.get('text_edits')\\n    test_module = sys.modules.get('test_edits')\\n    if event == 'call':\\n        path = pathlib.Path(frame.f_code.co_filename).resolve()\\n        binding_ok = test_module.apply_edits is module.apply_edits and module.apply_edits.__code__ is frame.f_code\\n        assert path == _copy_root / 'text_edits.py', str(path)\\n        assert pathlib.Path(test_module.__file__).resolve() == _copy_root / 'test_edits.py'\\n        assert binding_ok\\n        _before[id(frame)] = list(frame.f_locals['edits'])\\n        print('AUDIT ' + json.dumps({'event': event, 'implementation': str(path), 'module_file': module.__file__, 'test_module': test_module.__file__, 'binding_is_actual_code': binding_ok, 'implementation_sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'text': frame.f_locals['text'], 'edits_before': _before[id(frame)]}, ensure_ascii=False), flush=True)\\n    elif event == 'exception':\\n        print('AUDIT ' + json.dumps({'event': event, 'type': arg[0].__name__, 'message': str(arg[1])}, ensure_ascii=False), flush=True)\\n    elif event == 'return':\\n        print('AUDIT ' + json.dumps({'event': event, 'result': arg, 'edits_after': frame.f_locals['edits'], 'caller_list_changed': _before.pop(id(frame)) != frame.f_locals['edits']}, ensure_ascii=False), flush=True)\\n    return _trace\\nsys.settrace(_trace)\\n'''\\nowned = pathlib.Path(tempfile.mkdtemp(prefix='.audit-', dir=root))\\ntry:\\n    for name, code in variants.items():\\n        copy = owned / name\\n        copy.mkdir()\\n        for filename in ('AGENTS.md', 'CONTRACT.md', 'text_edits.py', 'test_edits.py'):\\n            shutil.copy2(root / filename, copy / filename)\\n        (copy / 'text_edits.py').write_text(code)\\n        (copy / 'sitecustomize.py').write_text(instrument)\\n        assert (copy / 'test_edits.py').read_bytes() == tests\\n        env = os.environ.copy()\\n        env['PYTHONPATH'] = str(copy)\\n        env['PYTHONNOUSERSITE'] = '1'\\n        for test in ('test_multiple_edits', 'test_overlap'):\\n            command = ['python3', '-B', '-m', 'unittest', 'test_edits.EditTests.' + test, '-v']\\n            print('\\\\nRUN', name, 'cwd=' + str(copy), ' '.join(command), flush=True)\\n            run = subprocess.run(command, cwd=copy, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=30)\\n            print(run.stdout, end='')\\n            print('EXIT', run.returncode, flush=True)\\nfinally:\\n    shutil.rmtree(owned)\\n    after = snapshot()\\n    print('\\\\nPRESERVATION', 'PASS' if before == after else 'FAIL', 'original tree bytes/modes; disposable copies removed', flush=True)\\n    assert before == after\\nPY\",\"max_output_tokens\":7500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d1-eed9-74d0-93ae-ca7fcd025824",
+            "create_time": 1789974948.055507
+          }
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "9103464b7943b38e6195862b4e1aa0f3d4adb6234d9a141a5651818b7cbe7227",
+      "record": {
+        "timestamp": "2026-09-21T07:16:32.204Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c2d2-d54c-7212-9bc6-36b399480b60",
+          "call_id": "call_LwA0LDgNRsxsdcjsGb1YqXtD",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.6 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"07d91b\",\"wall_time_seconds\":0.384162375,\"exit_code\":0,\"original_token_count\":2394,\"output\":\"\\nRUN correct cwd=<WORKSPACE>/.audit-5z6dqe46/correct python3 -B -m unittest test_edits.EditTests.test_multiple_edits -v\\ntest_multiple_edits (test_edits.EditTests) ... AUDIT {\\\"event\\\": \\\"call\\\", \\\"implementation\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/correct/text_edits.py\\\", \\\"module_file\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/correct/text_edits.py\\\", \\\"test_module\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/correct/test_edits.py\\\", \\\"binding_is_actual_code\\\": true, \\\"implementation_sha256\\\": \\\"b137e837ec5bb8b79ce58ed701fbcd0794ae474823ab17f401826388f01cc602\\\", \\\"text\\\": \\\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\\\", \\\"edits_before\\\": [[5, 7, \\\"XY\\\"], [1, 3, \\\"Q\\\"]]}\\nAUDIT {\\\"event\\\": \\\"return\\\", \\\"result\\\": \\\"\u03b1Q\u03b4\u03b5XY\u03b8\\\", \\\"edits_after\\\": [[5, 7, \\\"XY\\\"], [1, 3, \\\"Q\\\"]], \\\"caller_list_changed\\\": false}\\nok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nRUN correct cwd=<WORKSPACE>/.audit-5z6dqe46/correct python3 -B -m unittest test_edits.EditTests.test_overlap -v\\ntest_overlap (test_edits.EditTests) ... AUDIT {\\\"event\\\": \\\"call\\\", \\\"implementation\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/correct/text_edits.py\\\", \\\"module_file\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/correct/text_edits.py\\\", \\\"test_module\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/correct/test_edits.py\\\", \\\"binding_is_actual_code\\\": true, \\\"implementation_sha256\\\": \\\"b137e837ec5bb8b79ce58ed701fbcd0794ae474823ab17f401826388f01cc602\\\", \\\"text\\\": \\\"abcdef\\\", \\\"edits_before\\\": [[3, 5, \\\"Y\\\"], [1, 4, \\\"X\\\"]]}\\nAUDIT {\\\"event\\\": \\\"exception\\\", \\\"type\\\": \\\"ValueError\\\", \\\"message\\\": \\\"overlapping edits\\\"}\\nAUDIT {\\\"event\\\": \\\"return\\\", \\\"result\\\": null, \\\"edits_after\\\": [[3, 5, \\\"Y\\\"], [1, 4, \\\"X\\\"]], \\\"caller_list_changed\\\": false}\\nok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nRUN forward cwd=<WORKSPACE>/.audit-5z6dqe46/forward python3 -B -m unittest test_edits.EditTests.test_multiple_edits -v\\ntest_multiple_edits (test_edits.EditTests) ... AUDIT {\\\"event\\\": \\\"call\\\", \\\"implementation\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/forward/text_edits.py\\\", \\\"module_file\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/forward/text_edits.py\\\", \\\"test_module\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/forward/test_edits.py\\\", \\\"binding_is_actual_code\\\": true, \\\"implementation_sha256\\\": \\\"f3fcb9cbea9e55ec63476c0a188d9ece5cf68ded69e190f40afb59f8154c523b\\\", \\\"text\\\": \\\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\\\", \\\"edits_before\\\": [[5, 7, \\\"XY\\\"], [1, 3, \\\"Q\\\"]]}\\nAUDIT {\\\"event\\\": \\\"return\\\", \\\"result\\\": \\\"\u03b1Q\u03b4\u03b5\u03b6XY\\\", \\\"edits_after\\\": [[5, 7, \\\"XY\\\"], [1, 3, \\\"Q\\\"]], \\\"caller_list_changed\\\": false}\\nok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nRUN forward cwd=<WORKSPACE>/.audit-5z6dqe46/forward python3 -B -m unittest test_edits.EditTests.test_overlap -v\\ntest_overlap (test_edits.EditTests) ... AUDIT {\\\"event\\\": \\\"call\\\", \\\"implementation\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/forward/text_edits.py\\\", \\\"module_file\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/forward/text_edits.py\\\", \\\"test_module\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/forward/test_edits.py\\\", \\\"binding_is_actual_code\\\": true, \\\"implementation_sha256\\\": \\\"f3fcb9cbea9e55ec63476c0a188d9ece5cf68ded69e190f40afb59f8154c523b\\\", \\\"text\\\": \\\"abcdef\\\", \\\"edits_before\\\": [[3, 5, \\\"Y\\\"], [1, 4, \\\"X\\\"]]}\\nAUDIT {\\\"event\\\": \\\"exception\\\", \\\"type\\\": \\\"ValueError\\\", \\\"message\\\": \\\"overlapping edits\\\"}\\nAUDIT {\\\"event\\\": \\\"return\\\", \\\"result\\\": null, \\\"edits_after\\\": [[3, 5, \\\"Y\\\"], [1, 4, \\\"X\\\"]], \\\"caller_list_changed\\\": false}\\nok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nRUN no_overlap cwd=<WORKSPACE>/.audit-5z6dqe46/no_overlap python3 -B -m unittest test_edits.EditTests.test_multiple_edits -v\\ntest_multiple_edits (test_edits.EditTests) ... AUDIT {\\\"event\\\": \\\"call\\\", \\\"implementation\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/no_overlap/text_edits.py\\\", \\\"module_file\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/no_overlap/text_edits.py\\\", \\\"test_module\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/no_overlap/test_edits.py\\\", \\\"binding_is_actual_code\\\": true, \\\"implementation_sha256\\\": \\\"a38682424a83bba474e6b475d8c66dff4121596566a6dc5a271d123093a57357\\\", \\\"text\\\": \\\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\\\", \\\"edits_before\\\": [[5, 7, \\\"XY\\\"], [1, 3, \\\"Q\\\"]]}\\nAUDIT {\\\"event\\\": \\\"return\\\", \\\"result\\\": \\\"\u03b1Q\u03b4\u03b5XY\u03b8\\\", \\\"edits_after\\\": [[5, 7, \\\"XY\\\"], [1, 3, \\\"Q\\\"]], \\\"caller_list_changed\\\": false}\\nok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nRUN no_overlap cwd=<WORKSPACE>/.audit-5z6dqe46/no_overlap python3 -B -m unittest test_edits.EditTests.test_overlap -v\\ntest_overlap (test_edits.EditTests) ... AUDIT {\\\"event\\\": \\\"call\\\", \\\"implementation\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/no_overlap/text_edits.py\\\", \\\"module_file\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/no_overlap/text_edits.py\\\", \\\"test_module\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/no_overlap/test_edits.py\\\", \\\"binding_is_actual_code\\\": true, \\\"implementation_sha256\\\": \\\"a38682424a83bba474e6b475d8c66dff4121596566a6dc5a271d123093a57357\\\", \\\"text\\\": \\\"abcdef\\\", \\\"edits_before\\\": [[3, 5, \\\"Y\\\"], [1, 4, \\\"X\\\"]]}\\nAUDIT {\\\"event\\\": \\\"return\\\", \\\"result\\\": \\\"aXf\\\", \\\"edits_after\\\": [[3, 5, \\\"Y\\\"], [1, 4, \\\"X\\\"]], \\\"caller_list_changed\\\": false}\\nFAIL\\n\\n======================================================================\\nFAIL: test_overlap (test_edits.EditTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-5z6dqe46/no_overlap/test_edits.py\\\", line 13, in test_overlap\\n    apply_edits(\\\"abcdef\\\", [(3, 5, \\\"Y\\\"), (1, 4, \\\"X\\\")])\\nAssertionError: ValueError not raised\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.001s\\n\\nFAILED (failures=1)\\nEXIT 1\\n\\nRUN in_place cwd=<WORKSPACE>/.audit-5z6dqe46/in_place python3 -B -m unittest test_edits.EditTests.test_multiple_edits -v\\ntest_multiple_edits (test_edits.EditTests) ... AUDIT {\\\"event\\\": \\\"call\\\", \\\"implementation\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/in_place/text_edits.py\\\", \\\"module_file\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/in_place/text_edits.py\\\", \\\"test_module\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/in_place/test_edits.py\\\", \\\"binding_is_actual_code\\\": true, \\\"implementation_sha256\\\": \\\"413976c06741fa3f5b02c6caaeb2ff2f60773023f275d731b0e49b5ffc744753\\\", \\\"text\\\": \\\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\\\", \\\"edits_before\\\": [[5, 7, \\\"XY\\\"], [1, 3, \\\"Q\\\"]]}\\nAUDIT {\\\"event\\\": \\\"return\\\", \\\"result\\\": \\\"\u03b1Q\u03b4\u03b5XY\u03b8\\\", \\\"edits_after\\\": [[1, 3, \\\"Q\\\"], [5, 7, \\\"XY\\\"]], \\\"caller_list_changed\\\": true}\\nok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nRUN in_place cwd=<WORKSPACE>/.audit-5z6dqe46/in_place python3 -B -m unittest test_edits.EditTests.test_overlap -v\\ntest_overlap (test_edits.EditTests) ... AUDIT {\\\"event\\\": \\\"call\\\", \\\"implementation\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/in_place/text_edits.py\\\", \\\"module_file\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/in_place/text_edits.py\\\", \\\"test_module\\\": \\\"<WORKSPACE>/.audit-5z6dqe46/in_place/test_edits.py\\\", \\\"binding_is_actual_code\\\": true, \\\"implementation_sha256\\\": \\\"413976c06741fa3f5b02c6caaeb2ff2f60773023f275d731b0e49b5ffc744753\\\", \\\"text\\\": \\\"abcdef\\\", \\\"edits_before\\\": [[3, 5, \\\"Y\\\"], [1, 4, \\\"X\\\"]]}\\nAUDIT {\\\"event\\\": \\\"exception\\\", \\\"type\\\": \\\"ValueError\\\", \\\"message\\\": \\\"overlapping edits\\\"}\\nAUDIT {\\\"event\\\": \\\"return\\\", \\\"result\\\": null, \\\"edits_after\\\": [[1, 4, \\\"X\\\"], [3, 5, \\\"Y\\\"]], \\\"caller_list_changed\\\": true}\\nok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nPRESERVATION PASS original tree bytes/modes; disposable copies removed\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d1-eed9-74d0-93ae-ca7fcd025824",
+            "create_time": 1789974992.204619
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

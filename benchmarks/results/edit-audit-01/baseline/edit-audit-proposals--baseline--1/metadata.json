@@ -1,0 +1,54 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "edit-audit-proposals",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "8a8eb430345ab58745267e8adb4a1987b45093cd",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 84.975,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 68151,
+    "cached_input_tokens": 54144,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2466,
+    "reasoning_output_tokens": 323
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Audit test_edits.EditTests.test_multiple_edits and test_edits.EditTests.test_overlap for three independent regressions in text_edits.apply_edits: (1) apply the sorted edits forward while continuing to use original-text offsets, (2) omit overlap rejection while retaining range validation, and (3) sort the caller list in place instead of sorting a copy, otherwise preserving application and validation behavior. Keep the three faults separate, confined to apply_edits in disposable variants; preserve unchanged test bodies. For all six fault/test combinations run the unchanged native tests, demonstrate correct-code success, explain detecting assertions or surviving gaps, and distinguish setup failures from behavioral detection. Matching correct observations may be reused when identified. Suggest concrete contract-distinguishing assertions for gaps without claiming unexecuted assertions have been verified. Follow CONTRACT.md and AGENTS.md.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 377,
+    "mode": 420,
+    "sha256": "01a6ced0d87c086ba9d4039eddc794fffa6121b90ddd91d9ddc35d254a2eccf4",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

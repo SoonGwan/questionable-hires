@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0c2d8-5967-78b1-86e8-8b3eadcc9c79",
+  "source_bytes": 163014,
+  "source_sha256": "0c3012f3953ef4c2c5f8196ff169474de42c706a437f2da044a265d06dd0296b",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "8e47f521c9c00f7a7884ea7becbfe28cdb4fd42c5fb3ece9d0034a9b3893042b",
+      "record": {
+        "timestamp": "2026-09-21T07:22:42.010Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_00969e371127978f016ab0db42073487d082a4c4644459ed95",
+          "status": "completed",
+          "call_id": "call_5J3d6CoGh99YJSvKX0mkcsbR",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!__pycache__' -g '! .git'\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d8-59ae-7711-ac26-9e900b455a07",
+            "create_time": 1789975359.013113
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "376e12007b650c443ccf04b570ef9a70b7f049b75c135110fc877513953c2d0f",
+      "record": {
+        "timestamp": "2026-09-21T07:22:42.158Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c2d8-7a6e-77c2-b0c0-25d691edeffd",
+          "call_id": "call_5J3d6CoGh99YJSvKX0mkcsbR",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2228fb\",\"wall_time_seconds\":0.000003458,\"exit_code\":0,\"original_token_count\":33,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nCONTRACT.md\\ntext_edits.py\\ntest_edits.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d8-59ae-7711-ac26-9e900b455a07",
+            "create_time": 1789975362.158842
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "cfc57ae7fefe89b4776ab5710bffcf96fa22c3a6d8e445fc7ddcfcca7e8f2c4a",
+      "record": {
+        "timestamp": "2026-09-21T07:22:45.317Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_00969e371127978f016ab0db464c6887d0bea2766ee1c3ac2c",
+          "status": "completed",
+          "call_id": "call_dTXTCjnAsgykIdAAa6xWiNPS",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md CONTRACT.md text_edits.py test_edits.py\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d8-59ae-7711-ac26-9e900b455a07",
+            "create_time": 1789975364.95816
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "4092dd2ff29159d72507fd6d62f578aeb6b3c64e4a90ad6f0456fdb1367e29a1",
+      "record": {
+        "timestamp": "2026-09-21T07:22:45.419Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c2d8-872b-77c2-a3d9-eb652190fb41",
+          "call_id": "call_dTXTCjnAsgykIdAAa6xWiNPS",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"33ed46\",\"wall_time_seconds\":0.000001709,\"exit_code\":0,\"original_token_count\":628,\"output\":\"Audit only. Preserve every original file byte and mode. Do not apply production or test changes. Use disposable project-local copies and remove owned copies afterward; retain no extra harness/report. No dependencies, network, commits or discovery outside the project. Use python3 -B -m unittest <selector> -v from each copy root. Establish which copied implementation the actual native tests exercise, including the test module imported function binding in that same process. Tool choice is yours; instrumentation is allowed.\\napply_edits takes text (str) and a list of (start, end, replacement) tuples. start/end are integers in original-text Unicode character coordinates, not byte positions; replacement is str. Each range must satisfy 0 <= start < end <= len(text), otherwise ValueError(\\\"invalid range\\\"). Valid ranges may touch but must not overlap, otherwise ValueError(\\\"overlapping edits\\\"). All edits refer to the same original text, irrespective of caller order or replacement length. Empty replacements delete; an empty edit list returns unchanged text. Do not change the caller list on success or failure. Unsupported element types and insertion-only zero-width ranges are not supported; scalability, concurrency and integrations are out of scope.\\ndef apply_edits(text, edits):\\n    ordered = sorted(edits, key=lambda item: item[0])\\n    previous_end = 0\\n    for start, end, replacement in ordered:\\n        if not 0 <= start < end <= len(text):\\n            raise ValueError(\\\"invalid range\\\")\\n        if start < previous_end:\\n            raise ValueError(\\\"overlapping edits\\\")\\n        previous_end = end\\n    result = text\\n    for start, end, replacement in reversed(ordered):\\n        result = result[:start] + replacement + result[end:]\\n    return result\\nimport unittest\\nfrom text_edits import apply_edits\\n\\nclass EditTests(unittest.TestCase):\\n    def test_multiple_edits(self):\\n        edits = [(5, 7, \\\"XY\\\"), (1, 3, \\\"Q\\\")]\\n        result = apply_edits(\\\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\\\", edits)\\n        self.assertIsInstance(result, str)\\n        self.assertEqual(len(result), 7)\\n\\n    def test_overlap(self):\\n        with self.assertRaisesRegex(ValueError, \\\"overlapping edits\\\"):\\n            apply_edits(\\\"abcdef\\\", [(3, 5, \\\"Y\\\"), (1, 4, \\\"X\\\")])\\n\\n    def test_controls(self):\\n        self.assertEqual(apply_edits(\\\"\u03b1\u03b2\u03b3\\\", []), \\\"\u03b1\u03b2\u03b3\\\")\\n        self.assertEqual(apply_edits(\\\"\u03b1\u03b2\u03b3\\\", [(0, 1, \\\"\\\"), (1, 3, \\\"Z\\\")]), \\\"Z\\\")\\n        with self.assertRaisesRegex(ValueError, \\\"invalid range\\\"):\\n            apply_edits(\\\"abc\\\", [(2, 4, \\\"Z\\\")])\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d8-59ae-7711-ac26-9e900b455a07",
+            "create_time": 1789975365.419956
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "3e6507f73a430a9704c7edf2da8ecff483167b97dce912024158347c6affaa4a",
+      "record": {
+        "timestamp": "2026-09-21T07:23:36.739Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_00969e371127978f016ab0db57ddec87d0b1c16d0fa85425a7",
+          "status": "completed",
+          "call_id": "call_70n4437kSMBvX84ZrjaUutJ6",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport os, stat, hashlib, pathlib, tempfile, shutil, subprocess\\nroot = pathlib.Path.cwd()\\ndef snapshot():\\n    result = {}\\n    for base, dirs, files in os.walk(root, followlinks=False):\\n        for name in dirs + files:\\n            p = pathlib.Path(base) / name\\n            s = p.lstat()\\n            result[str(p.relative_to(root))] = (stat.S_IMODE(s.st_mode), 'link' if p.is_symlink() else 'dir' if p.is_dir() else 'file', os.readlink(p) if p.is_symlink() else p.read_bytes() if p.is_file() else None)\\n    return result\\nbefore = snapshot()\\nsource = (root / 'text_edits.py').read_text()\\nnative = (root / 'test_edits.py').read_bytes()\\nvariants = {\\n    'correct': source,\\n    'forward': source.replace('in reversed(ordered):', 'in ordered:'),\\n    'no_overlap': source.replace('        if start < previous_end:\\\\n            raise ValueError(\\\"overlapping edits\\\")\\\\n', ''),\\n    'in_place': source.replace('    ordered = sorted(edits, key=lambda item: item[0])', '    edits.sort(key=lambda item: item[0])\\\\n    ordered = edits'),\\n}\\nprobe = '''\\n# Disposable import instrumentation; original native test bodies above are unchanged.\\nimport pathlib as _pathlib\\nimport hashlib as _hashlib\\nimport inspect as _inspect\\nimport text_edits as _impl\\n_expected = _pathlib.Path(__file__).resolve().parent / \\\"text_edits.py\\\"\\nassert _pathlib.Path(_impl.__file__).resolve() == _expected\\nassert _pathlib.Path(apply_edits.__code__.co_filename).resolve() == _expected\\nassert apply_edits is _impl.apply_edits\\nprint(\\\"BINDING\\\", __file__, \\\"->\\\", _impl.__file__, \\\"same_object=True\\\", \\\"function_sha256=\\\" + _hashlib.sha256(_inspect.getsource(apply_edits).encode()).hexdigest(), flush=True)\\n'''\\nstrong = '''import unittest\\nfrom test_edits import apply_edits\\n\\nclass StrongTests(unittest.TestCase):\\n    def test_exact_original_coordinates(self):\\n        self.assertEqual(apply_edits(\\\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\\\", [(5, 7, \\\"XY\\\"), (1, 3, \\\"Q\\\")]), \\\"\u03b1Q\u03b4\u03b5XY\u03b8\\\")\\n\\n    def test_caller_list_success(self):\\n        edits = [(5, 7, \\\"XY\\\"), (1, 3, \\\"Q\\\")]\\n        before = edits.copy()\\n        apply_edits(\\\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\\\", edits)\\n        self.assertEqual(edits, before)\\n\\n    def test_overlap_rejection(self):\\n        with self.assertRaisesRegex(ValueError, \\\"^overlapping edits$\\\"):\\n            apply_edits(\\\"abcdef\\\", [(3, 5, \\\"Y\\\"), (1, 4, \\\"X\\\")])\\n\\n    def test_caller_list_overlap_rejection(self):\\n        edits = [(3, 5, \\\"Y\\\"), (1, 4, \\\"X\\\")]\\n        before = edits.copy()\\n        with self.assertRaisesRegex(ValueError, \\\"^overlapping edits$\\\"):\\n            apply_edits(\\\"abcdef\\\", edits)\\n        self.assertEqual(edits, before)\\n'''\\nowned = pathlib.Path(tempfile.mkdtemp(prefix='.audit-', dir=root))\\ntry:\\n    for name, code in variants.items():\\n        copy = owned / name\\n        copy.mkdir()\\n        for filename in ('AGENTS.md', 'CONTRACT.md', 'text_edits.py', 'test_edits.py'):\\n            shutil.copy2(root / filename, copy / filename)\\n        (copy / 'text_edits.py').write_text(code)\\n        (copy / 'test_edits.py').write_bytes(native + probe.encode())\\n        assert (copy / 'test_edits.py').read_bytes()[:len(native)] == native\\n        (copy / 'test_strong.py').write_text(strong)\\n        print('\\\\nVARIANT', name, 'implementation_sha256=' + hashlib.sha256(code.encode()).hexdigest(), flush=True)\\n        for selector in ('test_edits.EditTests.test_multiple_edits', 'test_edits.EditTests.test_overlap', 'test_edits.EditTests.test_controls', 'test_strong.StrongTests'):\\n            command = ['python3', '-B', '-m', 'unittest', selector, '-v']\\n            print('RUN', ' '.join(command), 'CWD', copy, flush=True)\\n            result = subprocess.run(command, cwd=copy, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\\n            print(result.stdout, end='', flush=True)\\n            print('EXIT', result.returncode, flush=True)\\nfinally:\\n    shutil.rmtree(owned)\\n    after = snapshot()\\n    assert before == after, 'Original tree changed'\\n    print('\\\\nPRESERVATION VERIFIED: all original bytes and modes unchanged; owned copies removed; no extra files retained.', flush=True)\\nPY\",\"max_output_tokens\":10500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d8-59ae-7711-ac26-9e900b455a07",
+            "create_time": 1789975368.060072
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "518dcea79641b03486bf20bb476a04b82b828733c62984189bcb4b41ed1ef951",
+      "record": {
+        "timestamp": "2026-09-21T07:23:37.690Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c2d9-535a-7db0-99bb-78ef20a86174",
+          "call_id": "call_70n4437kSMBvX84ZrjaUutJ6",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.9 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"0ca22e\",\"wall_time_seconds\":0.771006708,\"exit_code\":0,\"original_token_count\":4028,\"output\":\"\\nVARIANT correct implementation_sha256=b137e837ec5bb8b79ce58ed701fbcd0794ae474823ab17f401826388f01cc602\\nRUN python3 -B -m unittest test_edits.EditTests.test_multiple_edits -v CWD <WORKSPACE>/.audit-0jq9k8e1/correct\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/correct/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/correct/text_edits.py same_object=True function_sha256=b137e837ec5bb8b79ce58ed701fbcd0794ae474823ab17f401826388f01cc602\\ntest_multiple_edits (test_edits.EditTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN python3 -B -m unittest test_edits.EditTests.test_overlap -v CWD <WORKSPACE>/.audit-0jq9k8e1/correct\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/correct/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/correct/text_edits.py same_object=True function_sha256=b137e837ec5bb8b79ce58ed701fbcd0794ae474823ab17f401826388f01cc602\\ntest_overlap (test_edits.EditTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN python3 -B -m unittest test_edits.EditTests.test_controls -v CWD <WORKSPACE>/.audit-0jq9k8e1/correct\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/correct/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/correct/text_edits.py same_object=True function_sha256=b137e837ec5bb8b79ce58ed701fbcd0794ae474823ab17f401826388f01cc602\\ntest_controls (test_edits.EditTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN python3 -B -m unittest test_strong.StrongTests -v CWD <WORKSPACE>/.audit-0jq9k8e1/correct\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/correct/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/correct/text_edits.py same_object=True function_sha256=b137e837ec5bb8b79ce58ed701fbcd0794ae474823ab17f401826388f01cc602\\ntest_caller_list_overlap_rejection (test_strong.StrongTests) ... ok\\ntest_caller_list_success (test_strong.StrongTests) ... ok\\ntest_exact_original_coordinates (test_strong.StrongTests) ... ok\\ntest_overlap_rejection (test_strong.StrongTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.000s\\n\\nOK\\nEXIT 0\\n\\nVARIANT forward implementation_sha256=f3fcb9cbea9e55ec63476c0a188d9ece5cf68ded69e190f40afb59f8154c523b\\nRUN python3 -B -m unittest test_edits.EditTests.test_multiple_edits -v CWD <WORKSPACE>/.audit-0jq9k8e1/forward\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/forward/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/forward/text_edits.py same_object=True function_sha256=f3fcb9cbea9e55ec63476c0a188d9ece5cf68ded69e190f40afb59f8154c523b\\ntest_multiple_edits (test_edits.EditTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN python3 -B -m unittest test_edits.EditTests.test_overlap -v CWD <WORKSPACE>/.audit-0jq9k8e1/forward\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/forward/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/forward/text_edits.py same_object=True function_sha256=f3fcb9cbea9e55ec63476c0a188d9ece5cf68ded69e190f40afb59f8154c523b\\ntest_overlap (test_edits.EditTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN python3 -B -m unittest test_edits.EditTests.test_controls -v CWD <WORKSPACE>/.audit-0jq9k8e1/forward\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/forward/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/forward/text_edits.py same_object=True function_sha256=f3fcb9cbea9e55ec63476c0a188d9ece5cf68ded69e190f40afb59f8154c523b\\ntest_controls (test_edits.EditTests) ... FAIL\\n\\n======================================================================\\nFAIL: test_controls (test_edits.EditTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-0jq9k8e1/forward/test_edits.py\\\", line 17, in test_controls\\n    self.assertEqual(apply_edits(\\\"\u03b1\u03b2\u03b3\\\", [(0, 1, \\\"\\\"), (1, 3, \\\"Z\\\")]), \\\"Z\\\")\\nAssertionError: '\u03b2Z' != 'Z'\\n- \u03b2Z\\n? -\\n+ Z\\n\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\nEXIT 1\\nRUN python3 -B -m unittest test_strong.StrongTests -v CWD <WORKSPACE>/.audit-0jq9k8e1/forward\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/forward/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/forward/text_edits.py same_object=True function_sha256=f3fcb9cbea9e55ec63476c0a188d9ece5cf68ded69e190f40afb59f8154c523b\\ntest_caller_list_overlap_rejection (test_strong.StrongTests) ... ok\\ntest_caller_list_success (test_strong.StrongTests) ... ok\\ntest_exact_original_coordinates (test_strong.StrongTests) ... FAIL\\ntest_overlap_rejection (test_strong.StrongTests) ... ok\\n\\n======================================================================\\nFAIL: test_exact_original_coordinates (test_strong.StrongTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-0jq9k8e1/forward/test_strong.py\\\", line 6, in test_exact_original_coordinates\\n    self.assertEqual(apply_edits(\\\"\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\\\", [(5, 7, \\\"XY\\\"), (1, 3, \\\"Q\\\")]), \\\"\u03b1Q\u03b4\u03b5XY\u03b8\\\")\\nAssertionError: '\u03b1Q\u03b4\u03b5\u03b6XY' != '\u03b1Q\u03b4\u03b5XY\u03b8'\\n- \u03b1Q\u03b4\u03b5\u03b6XY\\n?     -\\n+ \u03b1Q\u03b4\u03b5XY\u03b8\\n?       +\\n\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.001s\\n\\nFAILED (failures=1)\\nEXIT 1\\n\\nVARIANT no_overlap implementation_sha256=a38682424a83bba474e6b475d8c66dff4121596566a6dc5a271d123093a57357\\nRUN python3 -B -m unittest test_edits.EditTests.test_multiple_edits -v CWD <WORKSPACE>/.audit-0jq9k8e1/no_overlap\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/no_overlap/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/no_overlap/text_edits.py same_object=True function_sha256=a38682424a83bba474e6b475d8c66dff4121596566a6dc5a271d123093a57357\\ntest_multiple_edits (test_edits.EditTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN python3 -B -m unittest test_edits.EditTests.test_overlap -v CWD <WORKSPACE>/.audit-0jq9k8e1/no_overlap\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/no_overlap/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/no_overlap/text_edits.py same_object=True function_sha256=a38682424a83bba474e6b475d8c66dff4121596566a6dc5a271d123093a57357\\ntest_overlap (test_edits.EditTests) ... FAIL\\n\\n======================================================================\\nFAIL: test_overlap (test_edits.EditTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-0jq9k8e1/no_overlap/test_edits.py\\\", line 13, in test_overlap\\n    apply_edits(\\\"abcdef\\\", [(3, 5, \\\"Y\\\"), (1, 4, \\\"X\\\")])\\nAssertionError: ValueError not raised\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\nEXIT 1\\nRUN python3 -B -m unittest test_edits.EditTests.test_controls -v CWD <WORKSPACE>/.audit-0jq9k8e1/no_overlap\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/no_overlap/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/no_overlap/text_edits.py same_object=True function_sha256=a38682424a83bba474e6b475d8c66dff4121596566a6dc5a271d123093a57357\\ntest_controls (test_edits.EditTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN python3 -B -m unittest test_strong.StrongTests -v CWD <WORKSPACE>/.audit-0jq9k8e1/no_overlap\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/no_overlap/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/no_overlap/text_edits.py same_object=True function_sha256=a38682424a83bba474e6b475d8c66dff4121596566a6dc5a271d123093a57357\\ntest_caller_list_overlap_rejection (test_strong.StrongTests) ... FAIL\\ntest_caller_list_success (test_strong.StrongTests) ... ok\\ntest_exact_original_coordinates (test_strong.StrongTests) ... ok\\ntest_overlap_rejection (test_strong.StrongTests) ... FAIL\\n\\n======================================================================\\nFAIL: test_caller_list_overlap_rejection (test_strong.StrongTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-0jq9k8e1/no_overlap/test_strong.py\\\", line 22, in test_caller_list_overlap_rejection\\n    apply_edits(\\\"abcdef\\\", edits)\\nAssertionError: ValueError not raised\\n\\n======================================================================\\nFAIL: test_overlap_rejection (test_strong.StrongTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-0jq9k8e1/no_overlap/test_strong.py\\\", line 16, in test_overlap_rejection\\n    apply_edits(\\\"abcdef\\\", [(3, 5, \\\"Y\\\"), (1, 4, \\\"X\\\")])\\nAssertionError: ValueError not raised\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.000s\\n\\nFAILED (failures=2)\\nEXIT 1\\n\\nVARIANT in_place implementation_sha256=413976c06741fa3f5b02c6caaeb2ff2f60773023f275d731b0e49b5ffc744753\\nRUN python3 -B -m unittest test_edits.EditTests.test_multiple_edits -v CWD <WORKSPACE>/.audit-0jq9k8e1/in_place\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/in_place/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/in_place/text_edits.py same_object=True function_sha256=413976c06741fa3f5b02c6caaeb2ff2f60773023f275d731b0e49b5ffc744753\\ntest_multiple_edits (test_edits.EditTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN python3 -B -m unittest test_edits.EditTests.test_overlap -v CWD <WORKSPACE>/.audit-0jq9k8e1/in_place\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/in_place/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/in_place/text_edits.py same_object=True function_sha256=413976c06741fa3f5b02c6caaeb2ff2f60773023f275d731b0e49b5ffc744753\\ntest_overlap (test_edits.EditTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN python3 -B -m unittest test_edits.EditTests.test_controls -v CWD <WORKSPACE>/.audit-0jq9k8e1/in_place\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/in_place/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/in_place/text_edits.py same_object=True function_sha256=413976c06741fa3f5b02c6caaeb2ff2f60773023f275d731b0e49b5ffc744753\\ntest_controls (test_edits.EditTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN python3 -B -m unittest test_strong.StrongTests -v CWD <WORKSPACE>/.audit-0jq9k8e1/in_place\\nBINDING <WORKSPACE>/.audit-0jq9k8e1/in_place/test_edits.py -> <WORKSPACE>/.audit-0jq9k8e1/in_place/text_edits.py same_object=True function_sha256=413976c06741fa3f5b02c6caaeb2ff2f60773023f275d731b0e49b5ffc744753\\ntest_caller_list_overlap_rejection (test_strong.StrongTests) ... FAIL\\ntest_caller_list_success (test_strong.StrongTests) ... FAIL\\ntest_exact_original_coordinates (test_strong.StrongTests) ... ok\\ntest_overlap_rejection (test_strong.StrongTests) ... ok\\n\\n======================================================================\\nFAIL: test_caller_list_overlap_rejection (test_strong.StrongTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-0jq9k8e1/in_place/test_strong.py\\\", line 23, in test_caller_list_overlap_rejection\\n    self.assertEqual(edits, before)\\nAssertionError: Lists differ: [(1, 4, 'X'), (3, 5, 'Y')] != [(3, 5, 'Y'), (1, 4, 'X')]\\n\\nFirst differing element 0:\\n(1, 4, 'X')\\n(3, 5, 'Y')\\n\\n- [(1, 4, 'X'), (3, 5, 'Y')]\\n+ [(3, 5, 'Y'), (1, 4, 'X')]\\n\\n======================================================================\\nFAIL: test_caller_list_success (test_strong.StrongTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-0jq9k8e1/in_place/test_strong.py\\\", line 12, in test_caller_list_success\\n    self.assertEqual(edits, before)\\nAssertionError: Lists differ: [(1, 3, 'Q'), (5, 7, 'XY')] != [(5, 7, 'XY'), (1, 3, 'Q')]\\n\\nFirst differing element 0:\\n(1, 3, 'Q')\\n(5, 7, 'XY')\\n\\n- [(1, 3, 'Q'), (5, 7, 'XY')]\\n+ [(5, 7, 'XY'), (1, 3, 'Q')]\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.001s\\n\\nFAILED (failures=2)\\nEXIT 1\\n\\nPRESERVATION VERIFIED: all original bytes and modes unchanged; owned copies removed; no extra files retained.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2d8-59ae-7711-ac26-9e900b455a07",
+            "create_time": 1789975417.69019
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
