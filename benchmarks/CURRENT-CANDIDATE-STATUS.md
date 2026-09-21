@@ -20,11 +20,12 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
-Prepared2026-09-21: [all-eight regression04](ALL-EIGHT-CURRENT-04-PROTOCOL.md)
-pins bundle`0d12dd9` for16 fresh cells on8 exposed tasks. [Native preflight and
-runner controls](results/all-eight-current-04-preflight/README.md) pass; checkout9/9,
-archive8pass/1historical skip. Zero model calls at this checkpoint. No new
-performance claim. 한국어:8개 스킬 회귀 비교 입력 고정 완료이며 실측 전이다.
+Captured2026-09-21: [all-eight regression04](results/all-eight-current-04/README.md)
+retains all16 complete cells at bundle`0d12dd9`, launch`c2a0748`. Original records,
+usage and final artifact checks are retained. Full behavioral review is pending;
+Receipt source-output truncation, Hostage empty-output ambiguity and SQLite
+baseline scope violation are disclosed. No performance promotion or chart change.
+한국어:16회 실측과 원본 보존 완료. 전체 행동 검토 전이며 성능 개선으로 채택하지 않는다.
 
 Local correction2026-09-21, parent`d5eab87`: [native exit consistency](AUDIT-EXIT-CONSISTENCY-01.md)
 reproduces two shutdown/result contradictions before the fix and now stops them
