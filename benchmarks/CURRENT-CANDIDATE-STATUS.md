@@ -9,6 +9,27 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Source-archive checkpoint — 2026-09-21, resource `ac1d17c`
+
+A fresh `git archive` of `ac1d17c45a98295b0b6e3aa693261470cddc8fdb`, extracted
+outside the repository, had neither `.git` nor `benchmarks/local-runs`. Repository
+validation and localized featured synchronization passed inside that archive.
+Python3.11.16 then discovered **994 tests in151.869s: OK,22 skipped**. The Python
+interpreter/dependencies came from the existing external environment; no dependency
+installation, model session, public release or account change was performed.
+
+This validates the committed source distribution on local macOS, including the
+suite's offline installation/standalone-package checks, without silently supplying
+the original checkout's Git or ignored experiment files. The22 skips remain
+unexecuted tests, not passes. The prior checkout run executed all994 without skips;
+neither result substitutes for hosted Linux/Python3.12 validation. Hosted billing
+failure and unproven all-eight model efficiency remain open. Production and charts
+unchanged; this is reproducibility evidence, not a performance result.
+
+한국어: Git 이력·로컬 실험 파일 없는 소스 압축본에서994개 검사를 발견했고 실패 없이
+끝났다.22개는 건너뛰었으므로 통과로 세지 않는다. 로컬 배포 소스 재현성 확인이며,
+GitHub 검증이나 모델 성능 향상까지 완료했다는 뜻은 아니다.
+
 ## Whole-suite local checkpoint — 2026-09-21, resource `2753915`
 
 Clean checkout at `2753915e3693bc9fbc424bb7f0e24de01404048e`:
