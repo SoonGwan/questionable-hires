@@ -17,7 +17,7 @@ SPEC.loader.exec_module(builder)
 
 class StandaloneArchiveTests(unittest.TestCase):
     def test_reproducible_archive_installs_all_resources_offline(self):
-        with tempfile.TemporaryDirectory(prefix='standalone-', dir=ROOT / 'benchmarks') as temporary:
+        with tempfile.TemporaryDirectory(prefix='standalone-') as temporary:
             root = Path(temporary)
             first, second = root / 'one.tar.gz', root / 'two.tar.gz'
             report = builder.package(first)
@@ -57,6 +57,35 @@ class StandaloneArchiveTests(unittest.TestCase):
                 result = subprocess.run([sys.executable, '-I', '-B', str(script), '--help'],
                                         cwd=root, capture_output=True, text=True, timeout=15)
                 self.assertEqual(result.returncode, 0, result.stderr)
+            # Exercise behavior from the extracted/installed resource, not only
+            # its argument parser or a checkout-imported module.
+            consumer = root / 'consumer'
+            source = consumer / 'sample.py'
+            original = ''.join('def f%d():\n' % i + '    x = 1\n' * 9 for i in range(21))
+            source.write_text(original)
+            source.chmod(0o600)
+            context = destination / 'con-artist/scripts/context.py'
+            reports = {}
+            for format_args in ([], ['--pretty']):
+                result = subprocess.run([sys.executable, '-I', '-B', str(context),
+                    '--root', str(consumer), *format_args, 'sample.py'], cwd=consumer,
+                    capture_output=True, text=True, timeout=15)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(result.stderr, '')
+                reports[bool(format_args)] = json.loads(result.stdout)
+            self.assertEqual(reports[False]['selected'][0]['representation'], 'definition_index')
+            selected = reports[True]['selected'][0]
+            self.assertEqual(selected['representation'], 'full_source')
+            self.assertEqual(selected['sha256'], hashlib.sha256(original.encode()).hexdigest())
+            self.assertEqual(selected['source'], '\n'.join(
+                f'{i}: {line}' for i, line in enumerate(original.splitlines(), 1)))
+            self.assertEqual(source.read_bytes(), original.encode())
+            self.assertEqual(source.stat().st_mode & 0o777, 0o600)
+            self.assertEqual({p.name for p in consumer.iterdir()}, {'.agents', 'sample.py'})
+            rechecked = subprocess.run(command + ['--check'], cwd=root,
+                capture_output=True, text=True, timeout=15)
+            self.assertEqual(rechecked.returncode, 0, rechecked.stderr)
+            self.assertTrue(json.loads(rechecked.stdout)['matches'])
 
     def test_existing_output_is_preserved(self):
         with tempfile.TemporaryDirectory() as temporary:

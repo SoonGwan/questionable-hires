@@ -9,6 +9,17 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Installed archive verified — 2026-09-21, resources `61f30db`
+
+[Standalone checkpoint](../docs/STANDALONE-ARCHIVE.md):52-file archive is85,769
+bytes. Tests extract/install all eight outside the repository, execute isolated
+installed entrypoints and the corrected context collector, then recheck unchanged
+resources and consumer state. Four archive tests pass under Python3.9/3.11.
+No hosted release, public install or model-performance claim; `npx` unchanged.
+
+한국어: 최근 개선이 실제 설치 묶음과 설치본 실행에서도 유지됨을 확인했다.
+설치 경로 검증이며 모델 성능·공개 배포 완료를 의미하지 않는다.
+
 ## Collector representation corrected — 2026-09-21, parent `d151136`
 
 [Local output-size correction](CONTEXT-REPRESENTATION-SIZE-01.md): automatic

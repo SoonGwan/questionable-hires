@@ -34,7 +34,36 @@ history or network is needed for this Python installation path. Downloading a
 private artifact still requires authorized access. This command does not upload,
 publish or create a GitHub release, and does not change `npx skills add` behavior.
 
-## Local check — 2026-09-15 KST
+## Local archive checkpoint — 2026-09-21, resources `61f30db`
+
+The current builder produces **52 files, 265,227 uncompressed content bytes,
+85,769 archive bytes**, SHA-256
+`7531327db4b22a66b58cdc83567a26e403713519a3e52405312f1ff7e5269724`.
+The complete source archive at the same revision is14,337,274 bytes. This
+comparison describes different-purpose payloads, not an install-time or model
+performance improvement. The standalone archive remains a local artifact, not a
+published release asset or a change to the `npx` download path.
+
+The archive test now extracts and installs outside the repository, runs each
+copied Python script's `--help`, then invokes installed Con Artist context
+collection with isolated Python (`-I -B`). Compact mode returns the smaller index;
+pretty mode returns complete numbered source with the original SHA-256. Consumer
+bytes/mode stay unchanged; no extra consumer files appear; installer `--check`
+still reports every installed resource matching after execution. This verifies
+the recent representation correction survives the actual package/install path,
+not just that checkout code passes an import-based test.
+
+All four archive tests pass on Python3.9.6 (1.873s) and3.11.16 (0.671s).
+They also verify reproducibility, conflict preservation and link/source-output
+refusal. No network, user skill directory, host registration or visibility change.
+This does not replace the separate model evidence or hosted release gates.
+
+한국어: `61f30db`의 설치 묶음은52개 파일·85,769바이트다. 저장소 밖에서
+압축 해제→8개 스킬 설치→설치본 실행→파일 일치 재확인까지 통과했다.
+최근 소스 수집기 수정도 설치본에서 검증했다. 원격 공개 설치나 모델 성능
+개선을 증명한 것은 아니며, 실제 공개 릴리스는 만들지 않았다.
+
+## Historical local check — 2026-09-15 KST
 
 Skill/installer source `e8dd5a5`. The new builder produces **43 files, 203,700
 uncompressed content bytes, 66,697 archive bytes**, SHA-256
