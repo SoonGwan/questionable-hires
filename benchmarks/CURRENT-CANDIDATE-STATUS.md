@@ -11,6 +11,12 @@ it has not established a broad 20–30% gain.
 
 ## EventEmitter transfer controls prepared — 2026-09-21, candidate `89c5172`
 
+[Frozen six-cell protocol](EVENTEMITTER-BOUNDARY-01-PROTOCOL.md): two tasks with
+prior/baseline/candidate orders reversed, Astra medium,n=1,360seconds/cell. Seven
+native/runner checks pass Python3.9/3.11; resource/runtime drift and duplicate
+launch are rejected. Prepared manifest contains source and resource identities;
+no reviewed model result yet. Author controls remain outside model inputs.
+
 [Two source-excerpt tasks and native controls](EVENTEMITTER-BOUNDARY-01-PREPARATION.md)
 use pinned upstream EventEmitter3 code without rewriting the original fixture.
 Both observed defects fail assertions; full author corrections pass, and a
