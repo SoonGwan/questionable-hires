@@ -23,9 +23,17 @@ per-test process exits. All selected tests and failure diagnostics remain necess
 
 Within that invocation, a successful normal test result is reused when selected
 bytes/modes, imports, ordered import roots, test arguments, interpreter, timeout and environment match.
+Returning to an earlier selection (A→B→A) reuses its original successful observation,
+not only the immediately previous selection. One shared selected-input context is
+retained for up to eight normal-result entries, not a source copy per selection.
+Every audit still rereads/validates current inputs; any change to the shared identity,
+including runner, precheck or optional project-guard state, clears those entries.
+This does not cache failed checks, skip mutants or change requested audit order.
 An identical stronger probe also reuses its successful correct-code observation
 under those same conditions; changing the probe, new files or replacement contents
 runs a new correct-code check.
+Probe caching remains a single most-recent observation; the non-adjacent map applies
+only to normal test baselines. Neither cache establishes external-state freshness.
 Each mutant test and mutant probe still runs in a fresh copy, as does every
 non-reused correct check. Nothing is cached across
 invocations. External services, changing dependencies, clock/random behavior and

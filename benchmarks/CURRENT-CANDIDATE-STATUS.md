@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Non-adjacent audit reuse implemented — 2026-09-21, parent `51a4f5a`
+
+[All before/after native records](AUDIT-SELECTION-REUSE-02.md): unchanged adjacent
+control5→5 check executions, A-B-A6→5, eight alternating selections16→10. Mutants
+still execute3/3/8 times and retain the same assertion outcomes. One shared normal
+input context supports up to eight result slots, invalidates on context changes,
+and references original executions directly; probe cache behavior stays unchanged.
+This is actual helper work removed, not measured token/time or all-eight gains.
+Bilingual capability/conditional guide updated; entry and featured graphs unchanged.
+
+한국어: 특정 배치 예제에서 검사 실행을16회→10회로 줄였고 변형 검사 범위는 유지했다.
+입력 변경 무효화와 원본 결과 연결을 검사했으며, 전체 모델 성능 개선과 구분한다.
+
 ## Non-adjacent audit baseline work identified — 2026-09-21, parent `4e99345`
 
 [Three native observations](AUDIT-SELECTION-REUSE-01.md) show normal-baseline

@@ -260,7 +260,8 @@ def execute(python, directory, spec, probe, timeout):
                 output=output, output_truncated=characters > 12000)
 
 
-def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _probe_baseline=None):
+def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _probe_baseline=None,
+          _selection_baselines=None):
     root = Path(root).resolve()
     if not isinstance(spec, dict):
         raise ValueError('Audit recipe must be a JSON object')
@@ -357,6 +358,16 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     identity = (files, modes, spec['imports'], spec['tests'], spec.get('precheck'), import_roots,
                 spec.get('runner', 'unittest'), str(python), timeout, dict(os.environ), guarded)
     reused = _baseline is not None and _baseline.get('identity') == identity
+    selected_baseline = None
+    if _selection_baselines is not None:
+        # One shared source snapshot, not one copy per test selection. All other
+        # identity components still invalidate every cached normal observation.
+        context = identity[:3] + identity[4:]
+        if _selection_baselines.get('context') != context:
+            _selection_baselines.update(context=context, checks={})
+        selection = tuple(spec['tests'])
+        selected_baseline = _selection_baselines['checks'].get(selection)
+        reused = selected_baseline is not None
     probe_identity = (identity, spec.get('probe'), probe_files, spec.get('probe_tests'), probe_replacements)
     probe_reused = False
     results = {}
@@ -371,7 +382,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                 if check == 'probe' and (not has_probe or skipped is not None):
                     continue
                 if variant == 'correct' and check == 'tests' and reused:
-                    results['correct_tests'] = dict(_baseline['result'])
+                    results['correct_tests'] = dict((selected_baseline or _baseline)['result'])
                     continue
                 if variant == 'correct' and check == 'probe' and _probe_baseline is not None \
                         and _probe_baseline.get('identity') == probe_identity:
@@ -415,6 +426,9 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                     return output
                 if variant == 'correct' and check == 'tests' and _baseline is not None:
                     _baseline.update(identity=identity, result=dict(result))
+                if variant == 'correct' and check == 'tests' and _selection_baselines is not None:
+                    _selection_baselines['checks'][selection] = dict(
+                        result=dict(result), observation_index=_selection_baselines['index'])
                 if variant == 'correct' and check == 'probe' and _probe_baseline is not None:
                     _probe_baseline.update(identity=probe_identity, result=dict(result))
                 if probe_when == 'survives' and variant == 'mutant' and check == 'tests' and result['exit_code'] != 0:
@@ -467,12 +481,14 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
         if not isinstance(fault, dict) or set(fault) - fault_keys or not {'target', 'old', 'new'} <= set(fault):
             raise ValueError('Each mutation requires target/old/new and optional tests/probe settings')
     common = {key: value for key, value in spec.items() if key != 'mutations'}
-    baseline, probe_baseline, observations = {}, {}, []
+    selection_baselines, probe_baseline, observations = {}, {}, []
     baseline_indices = {}
     for fault in mutations:
         try:
-            result = audit(root, dict(common, **fault), python, timeout,
-                           _baseline=baseline, _probe_baseline=probe_baseline)
+            selection_baselines['index'] = len(observations)
+            recipe = dict(common, **fault)
+            result = audit(root, recipe, python, timeout,
+                           _selection_baselines=selection_baselines, _probe_baseline=probe_baseline)
         except (ValueError, KeyError, OSError) as error:
             if not observations:
                 raise
@@ -488,9 +504,11 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
             if result.get(name + '_reused'):
                 # Point directly to the execution, not another reused reference.
                 check = result['checks'][name]
+                index = (selection_baselines['checks'][tuple(recipe['tests'])]['observation_index']
+                         if name == 'correct_tests' else baseline_indices[name])
                 result['checks'][name] = dict(
                     exit_code=check['exit_code'], timed_out=check['timed_out'],
-                    observation_ref=f'#/audits/{baseline_indices[name]}/checks/{name}')
+                    observation_ref=f'#/audits/{index}/checks/{name}')
             else:
                 baseline_indices[name] = len(observations)
         observations.append(result)

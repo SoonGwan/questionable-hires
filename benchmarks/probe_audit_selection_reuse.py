@@ -65,7 +65,7 @@ def probe():
                 reused=[bool(a.get('correct_tests_reused')) for a in result['audits']],
                 originals_preserved=True, owned_scratch_removed=True)
     report['limitations'] = ('Authored deterministic tests, no external state; repeated selections deliberately expose cache topology. '
-        'No proposed cache, elapsed-time, token or whole-task gain is measured. Each mutant remains necessary. '
+        'Execution counts only; no elapsed-time, token or whole-task gain is measured. Each mutant remains necessary. '
         'Additional reuse would need current identity validation, direct observation references and bounded retained memory.')
     return report
 
