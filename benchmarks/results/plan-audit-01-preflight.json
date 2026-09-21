@@ -1,0 +1,145 @@
+{
+  "source_sha256": "54c7af739e8f967f524a5f15bdbfa56d8f00ca3cd6a78a1f221a122c9bef707e",
+  "tests_sha256": "8b7d8512f2bf0a33507a23c7c08b2f3cdf43f656ab05fc41026eccd8088cf2b1",
+  "rows": [
+    {
+      "variant": "correct",
+      "selected": [
+        {
+          "selector": "test_plan.PlanTests.test_chain",
+          "exit_code": 0,
+          "output": "test_chain (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_plan.PlanTests.test_cycle",
+          "exit_code": 0,
+          "output": "test_cycle (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness",
+        "exit_code": 0,
+        "output": "test_cycle (test_witness.Witnesses) ... ok\ntest_cycle_preservation (test_witness.Witnesses) ... ok\ntest_order (test_witness.Witnesses) ... ok\ntest_preservation (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+      },
+      "cycle_preservation": {
+        "selector": "test_witness.Witnesses.test_cycle_preservation",
+        "exit_code": 0,
+        "output": "test_cycle_preservation (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "native_controls": {
+        "selector": "test_plan",
+        "exit_code": 0,
+        "output": "test_chain (test_plan.PlanTests) ... ok\ntest_cycle (test_plan.PlanTests) ... ok\ntest_independent_nodes (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+      }
+    },
+    {
+      "variant": "equivalent",
+      "selected": [
+        {
+          "selector": "test_plan.PlanTests.test_chain",
+          "exit_code": 0,
+          "output": "test_chain (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_plan.PlanTests.test_cycle",
+          "exit_code": 0,
+          "output": "test_cycle (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness",
+        "exit_code": 0,
+        "output": "test_cycle (test_witness.Witnesses) ... ok\ntest_cycle_preservation (test_witness.Witnesses) ... ok\ntest_order (test_witness.Witnesses) ... ok\ntest_preservation (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+      },
+      "cycle_preservation": {
+        "selector": "test_witness.Witnesses.test_cycle_preservation",
+        "exit_code": 0,
+        "output": "test_cycle_preservation (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "native_controls": {
+        "selector": "test_plan",
+        "exit_code": 0,
+        "output": "test_chain (test_plan.PlanTests) ... ok\ntest_cycle (test_plan.PlanTests) ... ok\ntest_independent_nodes (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+      }
+    },
+    {
+      "variant": "reversed-order",
+      "selected": [
+        {
+          "selector": "test_plan.PlanTests.test_chain",
+          "exit_code": 0,
+          "output": "test_chain (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_plan.PlanTests.test_cycle",
+          "exit_code": 0,
+          "output": "test_cycle (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_order",
+        "exit_code": 1,
+        "output": "test_order (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_order (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 7, in test_order\n    self.assertEqual(plan({\"ship\": [\"compile\"], \"compile\": [\"fetch\"], \"fetch\": []}),\nAssertionError: Lists differ: ['ship', 'compile', 'fetch'] != ['fetch', 'compile', 'ship']\n\nFirst differing element 0:\n'ship'\n'fetch'\n\n- ['ship', 'compile', 'fetch']\n?   ^ --               ^^^^\n\n+ ['fetch', 'compile', 'ship']\n?   ^^^^                ^ ++\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "cycle_preservation": {
+        "selector": "test_witness.Witnesses.test_cycle_preservation",
+        "exit_code": 0,
+        "output": "test_cycle_preservation (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "native_controls": null
+    },
+    {
+      "variant": "input-mutation",
+      "selected": [
+        {
+          "selector": "test_plan.PlanTests.test_chain",
+          "exit_code": 0,
+          "output": "test_chain (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_plan.PlanTests.test_cycle",
+          "exit_code": 0,
+          "output": "test_cycle (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_preservation",
+        "exit_code": 1,
+        "output": "test_preservation (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_preservation (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 14, in test_preservation\n    self.assertEqual(graph, before)\nAssertionError: {'ship': [], 'compile': [], 'fetch': []} != {'ship': ['compile'], 'compile': ['fetch'], 'fetch': []}\n- {'compile': [], 'fetch': [], 'ship': []}\n+ {'compile': ['fetch'], 'fetch': [], 'ship': ['compile']}\n?              +++++++                         +++++++++\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "cycle_preservation": {
+        "selector": "test_witness.Witnesses.test_cycle_preservation",
+        "exit_code": 1,
+        "output": "test_cycle_preservation (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_cycle_preservation (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 25, in test_cycle_preservation\n    self.assertEqual(graph, before)\nAssertionError: {'a': [], 'b': []} != {'a': ['b'], 'b': ['a']}\n- {'a': [], 'b': []}\n+ {'a': ['b'], 'b': ['a']}\n?        +++         +++\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "native_controls": null
+    },
+    {
+      "variant": "cycle-accepted",
+      "selected": [
+        {
+          "selector": "test_plan.PlanTests.test_chain",
+          "exit_code": 0,
+          "output": "test_chain (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_plan.PlanTests.test_cycle",
+          "exit_code": 1,
+          "output": "test_cycle (test_plan.PlanTests) ... FAIL\n\n======================================================================\nFAIL: test_cycle (test_plan.PlanTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 13, in test_cycle\n    plan({\"a\": [\"b\"], \"b\": [\"a\"]})\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_cycle",
+        "exit_code": 1,
+        "output": "test_cycle (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_cycle (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 18, in test_cycle\n    plan({\"a\": [\"b\"], \"b\": [\"a\"]})\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "cycle_preservation": {
+        "selector": "test_witness.Witnesses.test_cycle_preservation",
+        "exit_code": 1,
+        "output": "test_cycle_preservation (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_cycle_preservation (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 24, in test_cycle_preservation\n    plan(graph)\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "native_controls": null
+    }
+  ],
+  "limitation": "Author native preparation, not model evidence or independent holdout. Witnesses and fault patches are excluded from model inputs."
+}

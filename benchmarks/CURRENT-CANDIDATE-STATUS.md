@@ -18,6 +18,13 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
+Preparation checkpoint2026-09-21, parent`0a7256e`:
+[dependency-plan transfer protocol](PLAN-AUDIT-01-PROTOCOL.md) defines two new
+authored requests and six planned sessions. Native correct/equivalent/fault
+controls pass; no model attempts yet. It is synthetic development transfer,
+not independent holdout evidence. 한국어: 새 과제의 실제 대조 검증을 마쳤으며
+모델 실측 전 준비다. 개선 수치나 독립 검증 결과로 계산하지 않는다.
+
 | Dated checkpoint / resource | Observed result | Decision and limitation |
 | --- | --- | --- |
 | [All-eight screen03](results/all-eight-current-03/README.md),2026-09-20,`ee5eb28` | Both arms8/8; skill summed tokens+20.34%, time−3.61%; every pair uses more tokens | Efficiency target unmet. Eight exposed authored tasks,n=1; not a measurement of subsequent changes. |
