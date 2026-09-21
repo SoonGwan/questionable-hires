@@ -22,6 +22,12 @@ three-version native Receipt comparison after offline packaging/extraction.
 Python3.9/3.11 and fresh-source-archive controls pass; this does not refresh the
 older remote `npx` measurement or substitute for hosted CI.
 
+A [retained local distributable](STANDALONE-ARCHIVE.md#local-distributable-candidate--source-1fbcc40-2026-09-22)
+at source`1fbcc40` is98,261bytes and reproducible in the tested runtime. Its
+actual extraction/install passes all8 resource comparisons,9 entrypoint checks
+and the recent BOM/multiple-before checks. It has not been uploaded or released;
+this does not remove private-history issues from the full repository clone.
+
 The [documented installation routes](INSTALL.md) remain available to authorized
 users. [Standalone archives](STANDALONE-ARCHIVE.md) provide an optional smaller
 handoff; they do not change the `npx` clone path or imply a published package.

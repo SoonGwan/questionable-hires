@@ -58,6 +58,28 @@ installation, model-cost measurement, complete hosted matrix or public release.
 실제 실패값·현재 통과·원본 보존·임시 파일 정리·설치본 일치를 검사했다.
 모델 성능 향상 수치나 공개 배포 완료를 의미하지 않는다.
 
+### Local distributable candidate — source `1fbcc40`, 2026-09-22
+
+An actual retained local installation bundle contains54 files (including
+`CONTENTS.json`),308,730 uncompressed content bytes and98,261 compressed bytes.
+SHA-256: `0ddeabba07e9c92b28e3a1008eb1388cfca64b45f05a834d26f15780bc61dded`.
+Two differently named builds in the same runtime are byte-identical. All53
+manifest-listed originals match checkout bytes/modes. The archive excludes Git
+history and benchmark artifacts; it is not a substitute for the complete source.
+
+This specific bundle was extracted into a new local directory and installed into
+a temporary consumer project, not the user's personal skill directory. All8
+skills match; all9 installed Python entrypoints pass `--help`. The installed
+BOM/multiple-before checks described above pass from this exact artifact, and
+the installer still reports matching resources afterward. An existing-pattern
+scan of extracted content has zero findings, not a complete privacy certificate.
+The archive is retained locally only: no upload, tag, GitHub release, npm
+publication, public repository or performance claim is implied.
+
+한국어: 실제 로컬 설치 후보 파일은54개·98,261바이트이며 두 빌드가 완전히
+일치한다. 이 압축 파일에서8개 스킬 설치와9개 Python 진입점, BOM/다중 버전
+동작을 확인했다. Git 이력과 벤치마크 자료는 포함하지 않았으며 외부에 게시하지 않았다.
+
 ## Installed guard checkpoint — 2026-09-21, resources `40f381c`
 
 The offline extraction/install test now executes the installed audit helper with
