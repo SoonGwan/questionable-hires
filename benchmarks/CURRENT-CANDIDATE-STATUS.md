@@ -9,6 +9,23 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Local full-suite checkpoint — 2026-09-21, resource `7034f1d`
+
+Clean checkout at `7034f1d`: Python3.11.16 ran **1,010 tests in171.171s,
+OK, no skips**, using `python -B -m unittest discover -s tests -q` from the
+existing local environment. This includes the baseline-cache implementation,
+new fixture/runner controls, packaging and prior helper regression checks.
+Repository validation and localized featured synchronization pass; tracked
+worktree remained clean during execution. Intermediate simulated model outputs
+and invalid-argument errors belong to runner tests, not new model attempts.
+
+This is local macOS checkout evidence, not proof of prompt generalization,
+hosted Linux checks, source-archive reproducibility at this revision or release
+readiness. No performance graph, resource claim or production change follows.
+
+한국어: 현재 커밋에서 전체1,010개 검사가 실패·건너뜀 없이 완료됐다. 로컬 기능
+회귀 확인이며 모델 전체 성능, 호스팅 검증, 배포 완료를 뜻하지 않는다.
+
 ## Proposal boundary reviewed — 2026-09-21, resource `e17e13d`
 
 [Four original sessions](AUDIT-PROPOSAL-01.md): both proposal attempts meet5/5
