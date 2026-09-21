@@ -9,7 +9,22 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Proposal boundary comparison prepared — 2026-09-21, resource `e17e13d`
+## Proposal boundary reviewed — 2026-09-21, resource `e17e13d`
+
+[Four original sessions](AUDIT-PROPOSAL-01.md): both proposal attempts meet5/5
+criteria and both verified-assertion attempts meet6/6. Proposal current versus
+prior:127,347→105,116 tokens (−17.46%),123.017→112.584s (−8.48%),20→10 unittest
+processes. Verified pair:88,723→91,739 tokens (+3.40%),100.776→97.408s (−3.34%),
+19→18 processes. Required correct/faulty stronger assertions remain demonstrated.
+All source/resource/scope checks pass; two truncated source reads are disclosed.
+Reused development fixture,n=1,unequal optional work: retain the scope distinction
+provisionally, not a broad efficiency claim. No new production or featured change.
+
+한국어: 제안 과제에서 추가 실행을 줄였고 입증 과제의 필수 검증은 유지했다.
+입증 과제 토큰 증가는 그대로 공개한다. 재사용한 사례의 단일 비교이며 전체 성능
+달성이나 독립 검증 완료가 아니다.
+
+## Historical: proposal comparison prepared — 2026-09-21, resource `e17e13d`
 
 [Four-cell protocol](AUDIT-PROPOSAL-01-PROTOCOL.md) compares prior/current skills
 on the unchanged cachetools proposal request and an explicitly verified-assertion
