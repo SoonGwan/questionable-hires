@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Audit guard transfer prepared — 2026-09-21, resources `f157b76` / `f6f2980`
+
+[Frozen three-cell protocol](AUDIT-GUARD-01-PROTOCOL.md) uses a new authored
+SQLite atomic-batch audit with whole-project preservation explicitly authorized.
+Native original tests pass both implementations; identical stronger tests reject
+partial persisted state with real SQLite assertions and neighboring controls.
+Four runner/preflight tests pass under Python3.9/3.11. Prior/baseline/current
+sessions must preserve original attempts; helper adoption is not required.
+Preparation is not an efficiency result. No concurrent author regression suites.
+
+한국어: 새 SQLite 과제로 실제 도우미 채택과 작업 비용을 비교할 조건을
+고정했다. 정상·결함 대조는 통과했지만 모델 성능 결과는 아직 없다.
+
 ## Audit preservation support added — 2026-09-21, parent `f157b76`
 
 [Native capability controls](AUDIT-PROJECT-GUARD-01.md): optional recipe field
