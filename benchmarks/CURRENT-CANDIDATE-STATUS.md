@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-22, external solver runtime preparation `365fea9`**.
+Decision checkpoint **2026-09-22, external solver adapter `6a9fd17`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -25,6 +25,11 @@ base-only images with CLI0.153.4 pass142 Requests/77 pytest public native checks
 with same-process project bindings. No model calls or efficiency claim; actual
 launcher/access/network gates remain. Prior setup failures and chronology remain
 in the [dated checkpoint archive](CANDIDATE-STATUS-2026-09-22-BEFORE-SOLVER-RUNTIME.md).
+[Actual CLI probe](SWE-LITE-PILOT-01-LAUNCHER.md): neutral session01 fails to
+execute tools with recorded OOM; session02 writes/reads the expected file after
+moving to a separate8GiB VM/container6GiB. Both attempts retained, not skill
+evidence. Requests combined path/final protocol remain; zero selected-issue
+model attempts. Unrelated default Colima/MySQL are unchanged.
 
 한국어: 두 외부 과제의 기준 채점과 실행 이미지 검증까지 완료했다. 실제 모델 비교와
 접근 경계 검증은 아직 남아 있다. 과거 실패 기록·그래프·개선율 주장은 변경하지 않았다.

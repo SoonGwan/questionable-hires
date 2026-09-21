@@ -1,0 +1,111 @@
+{
+  "session_id": "01a0c497-4341-7451-b86d-c2e54517759b",
+  "source_bytes": 50122,
+  "source_sha256": "af5051816ec6e6945df0cc199041a108640cd782a0c1f4de688f64dcf4831b71",
+  "source_lines": 27,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "87ecbcd69d6e63bcb84781437946c4ced69c330941ba41dd6afbdf36364e503f",
+      "record": {
+        "timestamp": "2026-09-21T15:30:50.067Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a5283b94ad0ad39016ab14da82e7c87d0b26e25cfd5f78077",
+          "status": "completed",
+          "call_id": "call_mYIhHC9aviqFaI7mPdUvFMfo",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python -c 'import sys, os; print(sys.version); print(os.getcwd()); open(\\\"observed.txt\\\", \\\"w\\\").write(\\\"runtime-ready\\\\n\\\")'\",\"workdir\":\"/testbed\",\"max_output_tokens\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c497-44d4-7ea3-acfb-6b3b872ebee5",
+            "create_time": 1790004645.736262
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "2e4dde4968965acce3a04397fa51d867ddae44972f2cbf2ab29ef48caf37e938",
+      "record": {
+        "timestamp": "2026-09-21T15:30:50.602Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c497-6269-7d63-8091-38a9165c62af",
+          "call_id": "call_mYIhHC9aviqFaI7mPdUvFMfo",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6fe69f\",\"wall_time_seconds\":0.000830875,\"exit_code\":0,\"original_token_count\":15,\"output\":\"3.9.20 (main, Oct  3 2024, 07:27:41) \\n[GCC 11.2.0]\\n/testbed\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c497-44d4-7ea3-acfb-6b3b872ebee5",
+            "create_time": 1790004650.6016989
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "b23530a04bd720bd7bd7dfaf7208e79708fb82dc184216a80440a8d626bade82",
+      "record": {
+        "timestamp": "2026-09-21T15:30:52.956Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a5283b94ad0ad39016ab14dac09ac87d0af189b996eef9cd8",
+          "status": "completed",
+          "call_id": "call_a0jogJVxOvzbDNUCqXXsdLKl",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat observed.txt\",\"workdir\":\"/testbed\",\"max_output_tokens\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c497-44d4-7ea3-acfb-6b3b872ebee5",
+            "create_time": 1790004651.029044
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "3b921f98c343adb48efea59b3b6360fa0187f3c0128bfcb534741d5ffb5626aa",
+      "record": {
+        "timestamp": "2026-09-21T15:30:53.148Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c497-6c5c-7781-861e-96b8fe9c3451",
+          "call_id": "call_a0jogJVxOvzbDNUCqXXsdLKl",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b47ef3\",\"wall_time_seconds\":0.000004792,\"exit_code\":0,\"original_token_count\":4,\"output\":\"runtime-ready\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c497-44d4-7ea3-acfb-6b3b872ebee5",
+            "create_time": 1790004653.1483455
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
