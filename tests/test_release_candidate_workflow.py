@@ -2,6 +2,7 @@
 import hashlib
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -32,6 +33,8 @@ class ReleaseCandidateWorkflowTests(unittest.TestCase):
         jobs = workflow['jobs']
         self.assertEqual(jobs['validate']['uses'], './.github/workflows/validate.yml')
         self.assertEqual(jobs['package']['needs'], 'validate')
+        self.assertNotIn('if', jobs['package'])
+        self.assertNotIn('continue-on-error', jobs['package'])
         validation = yaml.load((ROOT/'.github/workflows/validate.yml').read_text(), Loader=yaml.BaseLoader)
         self.assertIn('workflow_call', validation['on'])
         self.assertIn('source-archive', validation['jobs'])
@@ -45,6 +48,9 @@ class ReleaseCandidateWorkflowTests(unittest.TestCase):
         upload = steps[-1]
         self.assertTrue(upload['uses'].startswith('actions/upload-artifact@'))
         self.assertEqual(upload['with']['if-no-files-found'], 'error')
+        for step in steps:
+            self.assertNotIn('if', step)
+            self.assertNotIn('continue-on-error', step)
 
     def test_actual_shell_builds_reproducible_installable_minimal_artifact(self):
         step = next(s for s in self.workflow()['jobs']['package']['steps'] if s.get('id') == 'candidate')
@@ -83,3 +89,50 @@ class ReleaseCandidateWorkflowTests(unittest.TestCase):
             self.assertIn('package_skills.py', result.stderr)
             self.assertFalse(output.exists())
             self.assertEqual(list(root.rglob('SOURCE_COMMIT')), [])
+
+    def test_privacy_finding_blocks_installation_and_candidate_signal(self):
+        self.check_rejected_candidate('privacy')
+
+    def test_install_verification_failure_blocks_candidate_signal(self):
+        self.check_rejected_candidate('install-check')
+
+    def check_rejected_candidate(self, failure):
+        """Fault injection affects only a disposable copy, never shipped resources."""
+        step = next(s for s in self.workflow()['jobs']['package']['steps'] if s.get('id') == 'candidate')
+        with tempfile.TemporaryDirectory(prefix='candidate-rejection-') as scratch:
+            root = Path(scratch)
+            source = root/'source'
+            source.mkdir()
+            shutil.copytree(ROOT/'skills', source/'skills', ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+            (source/'scripts').mkdir()
+            (source/'benchmarks').mkdir()
+            for name in ('package_skills.py', 'install.py'):
+                shutil.copy2(ROOT/'scripts'/name, source/'scripts'/name)
+            shutil.copy2(ROOT/'LICENSE', source/'LICENSE')
+            shutil.copy2(ROOT/'benchmarks/scan_evidence.py', source/'benchmarks/scan_evidence.py')
+            if failure == 'privacy':
+                # Header-only synthetic scanner control, not a private key.
+                (source/'skills/receipt/rejection-control.txt').write_text('-----BEGIN PRIVATE KEY-----\n')
+            else:
+                installer = source/'scripts/install.py'
+                # Insert before main runs, preserving any future-import position.
+                original = installer.read_text()
+                guard = "if __name__ == "
+                position = original.index(guard)
+                installer.write_text(original[:position] +
+                                     "import sys\nif '--check' in sys.argv:\n    raise SystemExit(42)\n\n" +
+                                     original[position:])
+            output = root/'outputs'
+            env = self.runner_environment(root, output)
+            result = subprocess.run(['bash', '-c', step['run']], cwd=source, env=env,
+                                    capture_output=True, text=True, timeout=30)
+            self.assertFalse(output.exists(), result.stdout + result.stderr)
+            self.assertEqual(list(root.rglob('SOURCE_COMMIT')), [])
+            installed = list(root.glob('qh-candidate.*/consumer/.agents/skills/*/SKILL.md'))
+            if failure == 'privacy':
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertIn('"kind": "credential"', result.stdout)
+                self.assertEqual(installed, [])
+            else:
+                self.assertEqual(result.returncode, 42, result.stdout + result.stderr)
+                self.assertEqual(len(installed), 8)

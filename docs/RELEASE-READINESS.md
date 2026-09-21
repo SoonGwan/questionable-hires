@@ -19,6 +19,19 @@ and a missing-packager failure control; it does not exercise hosted scheduling,
 artifact upload or clear the account billing/limit blocker. Skill resources and
 model benchmark measurements are unchanged by this checkpoint.
 
+Follow-up against workflow`a7fb71a`: all five focused workflow tests pass on
+Python3.9/3.11 and from a fresh source archive. Added rejection controls exercise
+privacy-scan and post-install verification failures in disposable source copies;
+neither emits the upload-directory signal. The1,228-test total above predates
+these two added tests and is not relabeled as a new full-suite run.
+
+Hosted follow-up at`b802984`:
+[run35636106436](https://github.com/SoonGwan/questionable-hires/actions/runs/35636106436)
+completed with all four jobs failing before any steps. Python3.11 check106453785289
+again reports failed recent payments or a spending limit. This confirms the
+external blocker persists; the candidate workflow has not been dispatched and
+its artifact upload is not hosted-verified.
+
 | Gate | Evidence / remaining work |
 | --- | --- |
 | Current local compatibility | [Combined checkpoint](../benchmarks/RELEASE-VALIDATION-2C7E036.md), `2c7e036`: macOS/Python3.11 checkout1,225 passes; Linux/Python3.12 archive1,195 passes/30 historical skips, zero failures. Includes Receipt multiple-before and Necromancer BOM support. Local checks do not replace the hosted matrix. Prior [ad72a3f evidence](../benchmarks/RELEASE-VALIDATION-AD72A3F.md) is retained. |

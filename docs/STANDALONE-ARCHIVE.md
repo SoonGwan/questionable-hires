@@ -55,7 +55,11 @@ has read-only repository permissions; no release, tag or visibility change occur
 This does **not** clear privacy findings in a full repository clone.
 
 Local tests execute the actual build shell and check that a failed build emits no
-upload-directory output. Hosted scheduling, artifact upload and permissions still
+upload-directory output. In disposable source copies, a synthetic key-header
+finding stops before installation, and an injected installer verification failure
+stops after installation without signaling a completed candidate. No real
+credentials or shipped resources are changed by those controls.
+Hosted scheduling, artifact upload and permissions still
 need a successful Actions run; the recorded account billing/limit blocker is not
 fixed by this workflow. See [release readiness](RELEASE-READINESS.md).
 
