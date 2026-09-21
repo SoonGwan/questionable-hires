@@ -1,6 +1,7 @@
 # Current candidate: whole-task performance remains unproven
 
-Checkpoint **2026-09-21, resource `a3dee3b`**. This is a decision index, not a new
+Checkpoint **2026-09-21, last model resource `a3dee3b`; empty-mutant correction
+based on `bd238f1`**. This is a decision index, not a new
 measurement. [Full chronological history](CANDIDATE-HISTORY-2026-09-21.md) preserves
 every preceding checkpoint, including adverse results and preparation notes.
 Use dated reports for exact tasks, resources, scope and capture limitations.
@@ -36,6 +37,11 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [Con Artist empty-mutant correction](AUDIT-EMPTY-MUTANT-01.md), parent `bd238f1`:
+  five real-process control failures now stop as incomplete, including native
+  probes and batches. Four Python3.11 test methods pass; Python3.9 skips the
+  pytest-dependent method. Exact `python -m unittest` invocation remains
+  unsupported and is disclosed in both README languages. No model-cost claim.
 - [Receipt selected-read correction](RECEIPT-SELECTED-READ-01.md),`a3dee3b`:
   reproduced FIFO blocking plus accepted link/regular replacements; all three
   now reject at the observed open boundary. Python3.11 Receipt175/build13 and

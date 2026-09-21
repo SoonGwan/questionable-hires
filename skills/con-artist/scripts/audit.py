@@ -415,7 +415,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                 result = execute(str(python), directory, phase_spec,
                                  spec.get('probe') if check == 'probe' else None, timeout)
                 results[variant + '_' + check] = result
-                if (result['timed_out'] or result['exit_code'] == 7
+                if (result['timed_out'] or result['exit_code'] in (5, 7)
                         or (variant == 'correct' and result['exit_code'] != 0)
                         or (spec.get('precheck') and result['exit_code'] == 6)):
                     output = dict(status='incomplete', checks=results)

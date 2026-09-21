@@ -74,6 +74,10 @@ baselines. It verifies bindings at that point, not later fixture behavior.
 Normally completed unittest runs with zero tests or only skipped tests have check
 exit 5 and an explicit diagnostic. An empty correct suite or native correct probe
 stops as incomplete, not a reusable baseline. Actual failures retain exit 1.
+Exit 5 stops correct and mutant checks, including native probes and batches, as
+incomplete. A mutant that removes collection or skips every test did not establish
+detection; it must not trigger the conditional-probe skip path. Inline code that
+explicitly exits 5 is conservatively incomplete too, not a killed fault.
 Inline assertion probes are not unittest suites and remain supported; pytest
 retains native exits. Help/early exits or nonzero mutant exits do not prove actual
 test execution or a killed behavioral fault.

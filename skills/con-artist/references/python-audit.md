@@ -37,6 +37,10 @@ Unknown fields are rejected. Set interpreter/deadline through CLI `--python` and
 `--timeout`, not JSON keys. Each executed check uses a fresh project-local copy as
 its working directory. Listed imports are verified before the precheck.
 
+Unittest uses a Python bootstrap calling `unittest.main`, not `python -m unittest`.
+If the task requires that exact module invocation or its startup lifecycle, use
+project facilities instead; this helper does not satisfy that requirement.
+
 For native pytest checks, configuration and collection precede import verification
 and the precheck, before test bodies. Selected test modules can therefore be listed
 without bypassing native assertion rewriting. This does not run fixtures before
@@ -99,7 +103,7 @@ not protection proved; CLI 2 means invalid/incomplete (possibly stderr only).
 Each check retains a 12,000-character output tail, replacing invalid UTF-8;
 provenance can also be truncated. Timeout defaults to 30 seconds/check, max 300.
 
-Empty/skipped unittest suites (exit 5), precheck failure (6), import setup failure
+Empty/skipped unittest suites or pytest no-tests (exit 5), precheck failure (6), import setup failure
 or early exit (7) are incomplete. Broken runner helpers can cause false passes.
 Pytest help/version without a verification session is incomplete too, not a baseline.
 Do not change warning policy to credit detection. Read [diagnostics](python-audit-advanced.md#diagnostics-and-incomplete-evidence)
