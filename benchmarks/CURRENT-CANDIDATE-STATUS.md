@@ -81,7 +81,8 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 Checkpoint2026-09-21: [ancestry runner archive correction](ANCESTRY-ARCHIVE-01.md)
 separates synthetic scheduling controls from real pinned-resource checks after
-six source-archive setup errors were reproduced. No skill or model-result change.
+six source-archive setup errors were reproduced. Checkout10/10; fresh archive
+Python3.9/3.11 each9pass/1historical skip. No skill or model-result change.
 한국어: 압축본에서도 실행 제어 검증이 가능하도록 테스트의 Git 의존을 분리했다.
 
 Checkpoint2026-09-21: [ancestry scope comparison preparation](ANCESTRY-SCOPE-01-PROTOCOL.md)

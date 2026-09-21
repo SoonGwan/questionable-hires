@@ -30,6 +30,20 @@ exclusive-start and account-limit controls must still run, not all skip.
 The production runner, native fixture, installed skills and frozen reports are
 unchanged. Only future test-source hashes differ; do not rewrite old manifests.
 
+## After-correction validation
+
+- Checkout Python3.11: all10 fixture/runner checks pass in7.652s, including actual
+  pinned resources.
+- Fresh `git archive` of`0d79b39`, verified without`.git` or`local-runs`:
+  Python3.11 runs10 checks in6.333s,9pass/1explicit historical skip;
+  Python3.9 runs10 in6.330s with the same9pass/1skip.
+- The six previously failing scheduling checks all execute and pass in both
+  archive runs; they were not converted into skipped checks.
+
+These are targeted checks, not a rerun of the full repository suite or hosted CI.
+The original failing archive remains a separate author artifact; results are not
+substituted into the previously measured model records.
+
 ## Hosted boundary
 
 Fresh inspection of [run35584332665](https://github.com/SoonGwan/questionable-hires/actions/runs/35584332665)
