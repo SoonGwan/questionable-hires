@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Cachetools audit task prepared — 2026-09-21, parent `8ea8f77`
+
+[Three-arm protocol](CACHETOOLS-AUDIT-01-PROTOCOL.md) uses six byte-identical selected
+upstream files from cachetools5.5.2, with MIT license and Git identities. Original
+and equivalent LRU variants pass15 upstream tests; four isolated regressions fail
+distinct behavioral witnesses. Both selected tests execute against all six variants.
+Two fixture checks pass Python3.9/3.11. Preparation mistakes (wrong initial cwd,
+overbroad ERROR classification) are disclosed; upstream files remain unchanged.
+No model sessions yet. Task permits any suitable tool/grouping and does not force
+the new batch cache to be exercised. Authored task, not independent holdout.
+
+한국어: 실제 라이브러리의 원본 파일과 정상·결함 대조를 확인한 새 과제를 준비했다.
+모델 실측 전 준비이며 도우미 사용·유리한 순서를 강요하지 않는다.
+
 ## Native batch timing screen — 2026-09-21, resource `b1875a0`
 
 [All18 native cells](AUDIT-SELECTION-TIMING-01.md), three authored cases×two
