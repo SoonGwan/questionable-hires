@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Click audit pair prepared — 2026-09-21, resources `f253f38`
+
+[Frozen protocol](CLICK-CONTEXT-01-PROTOCOL.md) fixes one real-source task,
+baseline then Con Artist, two serial Astra medium sessions with original-session
+retention. The neutral task does not expose the author mutation/oracle or missing
+scope diagnosis. Native controls are retained; three scheduler tests pass for
+exclusive execution, changed input rejection and account-limit stop. Source,
+resource, task and dependency identities are frozen before launch. No model
+outcome, skill change or featured chart claim is implied by preparation.
+
+한국어: 실제 Click 감사 과제의 무스킬·현재 스킬 비교 조건을 고정했다. 정답은
+모델 입력에서 제외했으며 실행 전 검증을 통과했다. 모델 결과는 아직 없다.
+
 ## New Click audit workload preflight — 2026-09-21, source `6aabf09`
 
 [Actual upstream test gap](CLICK-CONTEXT-PREFLIGHT-01.md): a nested-resource
