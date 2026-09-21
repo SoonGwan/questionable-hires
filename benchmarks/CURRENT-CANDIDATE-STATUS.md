@@ -24,8 +24,14 @@ holdouts and are now exposed development cases. Do not promote the favorable
 Requests pair or rerun the pair as independent validation. Preparation/failure
 history remains in the [dated checkpoint](CANDIDATE-STATUS-2026-09-22-BEFORE-SWE-RESULTS.md).
 
+[Original response-cost review](SWE-LITE-PILOT-01-INPUT-COSTS.md) reconciles all
+four sessions: Requests responses9→7, pytest10→11. It does not identify causal
+savings or justify mandatory helper use; repair a new fixture's neighboring-test
+behavior before further timing. Skill instructions remain unchanged by this review.
+
 한국어: 외부 과제4회 실행·기준 채점까지 완료했지만 큰 비용 개선은 없었다. pytest의
 추가 검사에 영향을 준 실험 환경 문제도 남긴다. 유리한 한 쌍만 홍보하지 않는다.
+원본 비용 분석도 완료했으나, 불필요한 도구 강제나 지침 변경의 근거는 아니다.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |
