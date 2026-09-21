@@ -1,0 +1,111 @@
+{
+  "identities": {
+    "benchmarks/run_ancestry_scope_01.py": "1a839f3417ef375513df3ee7a1a956347dc7d11cbe5db673eb3ff03c092f7207",
+    "benchmarks/ancestry_scope_case.py": "d24776caad9f45cb2b88292d4a33008bcd0c77386b90287ebd119edbdf7c74a8",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "benchmarks/ANCESTRY-SCOPE-01-PROTOCOL.md": "97f1c4f13ecebc8ed0b5a8f69147c534c180d884cac7df2c289531985551e09a",
+    "tests/test_ancestry_scope_case.py": "34a63b21c3bd073b4a0955de5df112389620e293bff5332b271a71e592a656f1",
+    "tests/test_ancestry_scope_runner.py": "e154f5b38502ccbd9304cc038fa84dffb4e7f98e8fe254542a81aaada5080be0"
+  },
+  "source_identity": {
+    "head": "1a7537a164647952831f79571aceae76529a9026",
+    "refs": "ca4e943f75ecaa50f9ade491f04c153e63a3ed95 refs/heads/future-single-tenant\n1a7537a164647952831f79571aceae76529a9026 refs/heads/main\na79c6a095450012ee6ff27ca345067b4c0df13b0 refs/heads/shared-catalog",
+    "ancestors": "1a7537a164647952831f79571aceae76529a9026\ncc671a1e4d83fe838728335618a7c20b4100ceb6\na79c6a095450012ee6ff27ca345067b4c0df13b0\nc6a8c060152df848f39a2c3be0185b1678684652",
+    "files": {
+      "DEVELOPMENT.md": {
+        "sha256": "94906f021490a69330d34f5917fde245d9cecdc9c01c7c90c6f10301a149891a",
+        "mode": 420
+      },
+      "README.md": {
+        "sha256": "6b3bfb1fd9a4f401b16b2a4fee962080dc3d7e74aa923867fb8347f4679ce565",
+        "mode": 420
+      },
+      "catalog.py": {
+        "sha256": "9046605b8eda7ba1cec312c90ebe0840baff236b5e4a89ca5b6bfee6609533be",
+        "mode": 420
+      },
+      "test_catalog.py": {
+        "sha256": "f7c64656fa7bf0b284840cda18419025114bb24e3569c7b2a9dc0780d29c734c",
+        "mode": 420
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "catalog-ancestor-review",
+      "skill": "necromancer",
+      "task": "Review removing tenant from catalog.py:cache_key so it returns only item.\nThis is a review, not authorization to edit the application. Inspect the current\nCatalog.lookup consumer and its documented contract. Observe current and proposed\nbehavior for one shared Catalog: lookup east/17, west/17, then east/17 again;\nretain returned values and fetch calls. Also check one-tenant east/17 and east/18.\nUse the actual local implementation, not a rewritten simulation. Explain whether\nthe cleanup preserves the current contract and why the single-tenant case alone\ndoes or does not settle the decision.\n\nUse <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B; no third-party dependencies are needed. Verify local imports.\nIn-memory substitution with restoration or project-local disposable copies are\nallowed. Preserve original bytes/modes, HEAD and installed skills. Remove owned\nscratch. No network, installs, fetching, commits, publication or lasting reports.\nThe specified interpreter may be read/executed, not modified.\n\nAlso establish the introduction of the tenant dimension from local history:\ninspect the relevant parent/child implementation and accompanying test/doc change.\nCite the introducing commit, not merely the merge that brought it to main.\nUse only pinned HEAD and its ancestors. Other local refs are outside the review\nscope: do not inspect their commits or file contents. Distinguish historical\nevidence from current necessity and do not invent author intent.\n",
+      "criteria": [
+        "Actual current/proposed shared and single-tenant results and fetch calls observed with local implementation.",
+        "Decision explains current consumer and tenant-local ID contract, without treating the single-tenant case as sufficient.",
+        "Original files/modes, HEAD and skill resources preserved, scratch removed and no prohibited actions.",
+        "Introducing ancestor established from parent/child code and tests/docs, rather than merge attribution.",
+        "History reads stay within pinned HEAD and ancestors; no invented intent."
+      ]
+    },
+    {
+      "id": "catalog-current-review",
+      "skill": "necromancer",
+      "task": "Review removing tenant from catalog.py:cache_key so it returns only item.\nThis is a review, not authorization to edit the application. Inspect the current\nCatalog.lookup consumer and its documented contract. Observe current and proposed\nbehavior for one shared Catalog: lookup east/17, west/17, then east/17 again;\nretain returned values and fetch calls. Also check one-tenant east/17 and east/18.\nUse the actual local implementation, not a rewritten simulation. Explain whether\nthe cleanup preserves the current contract and why the single-tenant case alone\ndoes or does not settle the decision.\n\nUse <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B; no third-party dependencies are needed. Verify local imports.\nIn-memory substitution with restoration or project-local disposable copies are\nallowed. Preserve original bytes/modes, HEAD and installed skills. Remove owned\nscratch. No network, installs, fetching, commits, publication or lasting reports.\nThe specified interpreter may be read/executed, not modified.\n\nThis request is current-contract only. Do not inspect Git history or other refs;\ncurrent source, docs and actual behavior are sufficient. Git status/diff checks\nfor preservation are allowed. Do not infer or report a historical origin.\n",
+      "criteria": [
+        "Actual current/proposed shared and single-tenant results and fetch calls observed with local implementation.",
+        "Decision explains current consumer and tenant-local ID contract, without treating the single-tenant case as sufficient.",
+        "Original files/modes, HEAD and skill resources preserved, scratch removed and no prohibited actions.",
+        "No Git history/ref inspection or unsupported historical claims."
+      ]
+    }
+  ],
+  "schedule": [
+    [
+      0,
+      "prior"
+    ],
+    [
+      0,
+      "baseline"
+    ],
+    [
+      0,
+      "current"
+    ],
+    [
+      1,
+      "current"
+    ],
+    [
+      1,
+      "baseline"
+    ],
+    [
+      1,
+      "prior"
+    ]
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 240,
+    "repeats": 1,
+    "jobs": 1
+  },
+  "python_version": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "python": "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+  "resource_digests": {
+    "prior": "3e5b11985677dffc1c3e28623e44a371f745f0c96db95035b10be6b61b5675a2",
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "current": "2e22ecfcb06eb94d28617de1d976f0b4223039548157323db323b475c1113b0f"
+  },
+  "fixture_ids": {
+    "initial": "c6a8c060152df848f39a2c3be0185b1678684652",
+    "introduction": "a79c6a095450012ee6ff27ca345067b4c0df13b0",
+    "base": "1a7537a164647952831f79571aceae76529a9026",
+    "future": "ca4e943f75ecaa50f9ade491f04c153e63a3ed95"
+  },
+  "resource_revisions": {
+    "prior": "31a68d530e5d4076248601c1fe3e46e25fb7173e",
+    "current": "99301e94b67065c3ccd9dcc99e488c528a19f776"
+  },
+  "completed_cells": [],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T09:28:42.447757+00:00"
+}

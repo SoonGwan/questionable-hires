@@ -1,0 +1,54 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "catalog-current-review",
+  "skill": "necromancer",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "1a7537a164647952831f79571aceae76529a9026",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 46.061,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 63224,
+    "cached_input_tokens": 54016,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1187,
+    "reasoning_output_tokens": 98
+  },
+  "completed": true,
+  "allocated_workspace": "<WORKSPACE>",
+  "prompt": "Review removing tenant from catalog.py:cache_key so it returns only item.\nThis is a review, not authorization to edit the application. Inspect the current\nCatalog.lookup consumer and its documented contract. Observe current and proposed\nbehavior for one shared Catalog: lookup east/17, west/17, then east/17 again;\nretain returned values and fetch calls. Also check one-tenant east/17 and east/18.\nUse the actual local implementation, not a rewritten simulation. Explain whether\nthe cleanup preserves the current contract and why the single-tenant case alone\ndoes or does not settle the decision.\n\nUse <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B; no third-party dependencies are needed. Verify local imports.\nIn-memory substitution with restoration or project-local disposable copies are\nallowed. Preserve original bytes/modes, HEAD and installed skills. Remove owned\nscratch. No network, installs, fetching, commits, publication or lasting reports.\nThe specified interpreter may be read/executed, not modified.\n\nThis request is current-contract only. Do not inspect Git history or other refs;\ncurrent source, docs and actual behavior are sufficient. Git status/diff checks\nfor preservation are allowed. Do not infer or report a historical origin.\n\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 377,
+    "mode": 420,
+    "sha256": "37a2581279ea22556f9ded6fe7a402586fa4645b1a4ad2fcffcefb37a89727e2",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0c34f-3e30-7c12-a5c7-f86c0ee757bd",
+  "source_bytes": 95116,
+  "source_sha256": "c87ef7957f2a80dee7c31cbb9ac150c81a25153019aac9f389676458a219e0e4",
+  "source_lines": 34,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "92641f9af51f7e2df2acbe2f344a537945605cae8bc8da9880b59a193d53251a",
+      "record": {
+        "timestamp": "2026-09-21T09:32:32.549Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0ac2c58ce9d39171016ab0f9aeca2887d08401ba71d66be823",
+          "status": "completed",
+          "call_id": "call_mlMDxoXq5gDdBNetfaBtkQ6P",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g '*catalog*' -g '*README*' -g '*test*'; git status --short; git diff --stat\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c34f-3e7a-7df0-ac23-00d9189e89ed",
+            "create_time": 1789983148.113554
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "a9a72aaca98a1be1cd4014db9a9b7c8791623eb617a04bcb0ecacd2ebf3bc50b",
+      "record": {
+        "timestamp": "2026-09-21T09:32:32.729Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c34f-5a59-7b02-8fea-fab4057de883",
+          "call_id": "call_mlMDxoXq5gDdBNetfaBtkQ6P",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b41649\",\"wall_time_seconds\":0.00000375,\"exit_code\":0,\"original_token_count\":48,\"output\":\"<WORKSPACE>\\nREADME.md\\ntest_catalog.py\\ncatalog.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c34f-3e7a-7df0-ac23-00d9189e89ed",
+            "create_time": 1789983152.72932
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "5dfdaed59f40c8b542f8d5dc93b10796913d29b41990df860bf996ebb2442e47",
+      "record": {
+        "timestamp": "2026-09-21T09:32:35.789Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0ac2c58ce9d39171016ab0f9b2565487d083c596bc661b6b91",
+          "status": "completed",
+          "call_id": "call_zKBAt6jG5lKYfQ075jykjeSl",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; cat catalog.py README.md test_catalog.py; if [ -f AGENTS.md ]; then cat AGENTS.md; fi\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c34f-3e7a-7df0-ac23-00d9189e89ed",
+            "create_time": 1789983153.159975
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "be6452c3ed0141e08017f4b383f1b983346ff38459ea9407b1477fec24017e4f",
+      "record": {
+        "timestamp": "2026-09-21T09:32:35.895Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c34f-66b7-7432-a08b-647394a2a176",
+          "call_id": "call_zKBAt6jG5lKYfQ075jykjeSl",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"04a3c3\",\"wall_time_seconds\":0.000002041,\"exit_code\":0,\"original_token_count\":401,\"output\":\"total 32\\ndrwxr-xr-x@  7 admin  staff  224 Sep 21 18:28 .\\ndrwxr-xr-x@  3 admin  staff   96 Sep 21 18:32 ..\\ndrwxr-xr-x@ 14 admin  staff  448 Sep 21 18:32 .git\\n-rw-r--r--@  1 admin  staff   46 Sep 21 18:28 DEVELOPMENT.md\\n-rw-r--r--@  1 admin  staff   77 Sep 21 18:28 README.md\\n-rw-r--r--@  1 admin  staff  349 Sep 21 18:28 catalog.py\\n-rw-r--r--@  1 admin  staff  783 Sep 21 18:28 test_catalog.py\\ndef cache_key(tenant, item):\\n    return (tenant, item)\\n\\n\\nclass Catalog:\\n    def __init__(self, fetch):\\n        self.fetch = fetch\\n        self.cache = {}\\n\\n    def lookup(self, tenant, item):\\n        key = cache_key(tenant, item)\\n        if key not in self.cache:\\n            self.cache[key] = self.fetch(tenant, item)\\n        return self.cache[key]\\n# Catalog\\nOne Catalog may serve multiple tenants; item IDs are tenant-local.\\nimport unittest\\nfrom catalog import Catalog\\n\\nclass CatalogTests(unittest.TestCase):\\n    def test_shared_catalog(self):\\n        calls = []\\n        def fetch(tenant, item):\\n            calls.append((tenant, item))\\n            return tenant + ':' + item\\n        catalog = Catalog(fetch)\\n        self.assertEqual(catalog.lookup('east', '17'), 'east:17')\\n        self.assertEqual(catalog.lookup('west', '17'), 'west:17')\\n        self.assertEqual(catalog.lookup('east', '17'), 'east:17')\\n        self.assertEqual(calls, [('east', '17'), ('west', '17')])\\n\\n    def test_single_tenant(self):\\n        catalog = Catalog(lambda tenant, item: tenant + ':' + item)\\n        self.assertEqual(catalog.lookup('east', '17'), 'east:17')\\n        self.assertEqual(catalog.lookup('east', '18'), 'east:18')\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c34f-3e7a-7df0-ac23-00d9189e89ed",
+            "create_time": 1789983155.895572
+          }
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "8f2bef20035b27f38af4daf41a45c9f68949ca5793d3eed865c242e14cbf0f57",
+      "record": {
+        "timestamp": "2026-09-21T09:33:00.063Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0ac2c58ce9d39171016ab0f9b9586487d0b904a4ced09ef99e",
+          "status": "completed",
+          "call_id": "call_vBYDrsZA8g9F9UVrP8KdC0f0",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat DEVELOPMENT.md; <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B - <<'PY'\\nimport hashlib\\nimport importlib\\nimport io\\nimport json\\nfrom pathlib import Path\\nimport stat\\nimport unittest\\n\\nroot = Path.cwd().resolve()\\ndef snapshot():\\n    return {str(p.relative_to(root)): (hashlib.sha256(p.read_bytes()).hexdigest(), stat.S_IMODE(p.stat().st_mode))\\n            for p in root.rglob('*') if p.is_file() and '.git' not in p.relative_to(root).parts}\\nbefore = snapshot()\\nhead = root / '.git' / 'HEAD'\\nhead_before = (head.read_bytes(), stat.S_IMODE(head.stat().st_mode))\\nimport catalog\\nimport test_catalog\\nfor module in (catalog, test_catalog):\\n    actual = Path(module.__file__).resolve()\\n    assert actual == root / (module.__name__ + '.py'), actual\\n    print('Verified local import:', actual)\\noriginal = catalog.cache_key\\n\\ndef observe(sequence):\\n    calls = []\\n    def fetch(tenant, item):\\n        calls.append((tenant, item))\\n        return tenant + ':' + item\\n    instance = catalog.Catalog(fetch)\\n    values = [instance.lookup(tenant, item) for tenant, item in sequence]\\n    return {'returned': values, 'fetch_calls': calls}\\n\\nresults = {}\\ntry:\\n    for label, key in [('current', original), ('proposed', lambda tenant, item: item)]:\\n        catalog.cache_key = key\\n        results[label] = {\\n            'shared': observe([('east', '17'), ('west', '17'), ('east', '17')]),\\n            'single_tenant': observe([('east', '17'), ('east', '18')]),\\n        }\\n        stream = io.StringIO()\\n        suite = unittest.defaultTestLoader.loadTestsFromModule(test_catalog)\\n        outcome = unittest.TextTestRunner(stream=stream, verbosity=2).run(suite)\\n        results[label]['tests'] = {'run': outcome.testsRun, 'failures': len(outcome.failures), 'errors': len(outcome.errors)}\\n        print(label + ' test output:\\\\n' + stream.getvalue())\\nfinally:\\n    catalog.cache_key = original\\nassert catalog.cache_key is original\\nassert snapshot() == before, 'Repository bytes or modes changed'\\nassert (head.read_bytes(), stat.S_IMODE(head.stat().st_mode)) == head_before, 'HEAD changed'\\nprint(json.dumps(results, indent=2))\\nprint('Original cache_key restored; repository file bytes/modes and HEAD unchanged; no scratch files created.')\\nPY\\n git status --short; git diff --exit-code\",\"max_output_tokens\":4500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c34f-3e7a-7df0-ac23-00d9189e89ed",
+            "create_time": 1789983156.341271
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "4bc539c9594f2a97b894c8294d7b9453db6b403d91d8f3932e35fe03e77b3b73",
+      "record": {
+        "timestamp": "2026-09-21T09:33:00.239Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c34f-c5cf-7af0-a50d-5c8a00598b71",
+          "call_id": "call_vBYDrsZA8g9F9UVrP8KdC0f0",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"540b9d\",\"wall_time_seconds\":0.000002167,\"exit_code\":0,\"original_token_count\":695,\"output\":\"Use Python 3.9+; no third-party dependencies.\\nVerified local import: <WORKSPACE>/catalog.py\\nVerified local import: <WORKSPACE>/test_catalog.py\\ncurrent test output:\\ntest_shared_catalog (test_catalog.CatalogTests.test_shared_catalog) ... ok\\ntest_single_tenant (test_catalog.CatalogTests.test_single_tenant) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nOK\\n\\nproposed test output:\\ntest_shared_catalog (test_catalog.CatalogTests.test_shared_catalog) ... FAIL\\ntest_single_tenant (test_catalog.CatalogTests.test_single_tenant) ... ok\\n\\n======================================================================\\nFAIL: test_shared_catalog (test_catalog.CatalogTests.test_shared_catalog)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_catalog.py\\\", line 12, in test_shared_catalog\\n    self.assertEqual(catalog.lookup('west', '17'), 'west:17')\\nAssertionError: 'east:17' != 'west:17'\\n- east:17\\n?  -\\n+ west:17\\n? +\\n\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nFAILED (failures=1)\\n\\n{\\n  \\\"current\\\": {\\n    \\\"shared\\\": {\\n      \\\"returned\\\": [\\n        \\\"east:17\\\",\\n        \\\"west:17\\\",\\n        \\\"east:17\\\"\\n      ],\\n      \\\"fetch_calls\\\": [\\n        [\\n          \\\"east\\\",\\n          \\\"17\\\"\\n        ],\\n        [\\n          \\\"west\\\",\\n          \\\"17\\\"\\n        ]\\n      ]\\n    },\\n    \\\"single_tenant\\\": {\\n      \\\"returned\\\": [\\n        \\\"east:17\\\",\\n        \\\"east:18\\\"\\n      ],\\n      \\\"fetch_calls\\\": [\\n        [\\n          \\\"east\\\",\\n          \\\"17\\\"\\n        ],\\n        [\\n          \\\"east\\\",\\n          \\\"18\\\"\\n        ]\\n      ]\\n    },\\n    \\\"tests\\\": {\\n      \\\"run\\\": 2,\\n      \\\"failures\\\": 0,\\n      \\\"errors\\\": 0\\n    }\\n  },\\n  \\\"proposed\\\": {\\n    \\\"shared\\\": {\\n      \\\"returned\\\": [\\n        \\\"east:17\\\",\\n        \\\"east:17\\\",\\n        \\\"east:17\\\"\\n      ],\\n      \\\"fetch_calls\\\": [\\n        [\\n          \\\"east\\\",\\n          \\\"17\\\"\\n        ]\\n      ]\\n    },\\n    \\\"single_tenant\\\": {\\n      \\\"returned\\\": [\\n        \\\"east:17\\\",\\n        \\\"east:18\\\"\\n      ],\\n      \\\"fetch_calls\\\": [\\n        [\\n          \\\"east\\\",\\n          \\\"17\\\"\\n        ],\\n        [\\n          \\\"east\\\",\\n          \\\"18\\\"\\n        ]\\n      ]\\n    },\\n    \\\"tests\\\": {\\n      \\\"run\\\": 2,\\n      \\\"failures\\\": 1,\\n      \\\"errors\\\": 0\\n    }\\n  }\\n}\\nOriginal cache_key restored; repository file bytes/modes and HEAD unchanged; no scratch files created.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c34f-3e7a-7df0-ac23-00d9189e89ed",
+            "create_time": 1789983180.239725
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

@@ -1,7 +1,7 @@
 # Current candidate: whole-task performance remains unproven
 
-Checkpoint **2026-09-21, last model resource `f53cb65`, urllib3 launch `6cf747f`**.
-The measured section-read candidate is subsequently withdrawn, not relabeled.
+Checkpoint **2026-09-21, last model resource `99301e9`, ancestry launch `6baa5b7`**.
+The earlier measured section-read candidate remains withdrawn, not relabeled.
 This is a decision index, not a new
 measurement. [Full chronological history](CANDIDATE-HISTORY-2026-09-21.md) preserves
 every preceding checkpoint, including adverse results and preparation notes.
@@ -19,6 +19,13 @@ hosted-check success or public-release approval is claimed here.
 과거 실험과 불리한 결과는 이력 문서에 그대로 보존했다.
 
 ## Model evidence that governs claims
+
+Reviewed checkpoint2026-09-21: [ancestry scope](ANCESTRY-SCOPE-01.md), all6
+complete; all arms5/5 history and4/4 current-only. Current versus prior history
++26.06% tokens/+13.60% time, current-only−0.18%/−5.82%; versus baseline both cost
+metrics increase on both tasks. One correlated authored pair, no advantage in
+scope accuracy, no efficiency promotion. 한국어: 안내의 범위 준수는 확인했지만
+비용 개선은 입증하지 못했다. 모든 시도와 원본 출력 대조를 보존했다.
 
 Reviewed checkpoint2026-09-21: [urllib3 history](URLLIB3-HISTORY-01.md) retains
 all three attempts. Prior/baseline5/5, candidate4/5 (non-ancestor history read).
