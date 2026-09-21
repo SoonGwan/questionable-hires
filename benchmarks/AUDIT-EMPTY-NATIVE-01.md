@@ -38,8 +38,16 @@ It uses a controlled shutdown handler, not a claim about real incident frequency
 - macOS Python 3.11.16 complete audit suite: 112 passed, 16.869s.
 - Skill/repository validation, evidence pattern scan, featured sync and diff
   whitespace checks pass. Pattern scanning is not a security certificate.
-- Corrected full Linux archive validation remains pending at this checkpoint;
-  the original failing source/log is not relabeled.
+- Corrected full Linux archive at `c8fd471`: 1,113 discovered, **1,087 passed,
+  26 skipped, zero failures**, exit 0 in 77.811s. The
+  [complete log](results/release-validation-c8fd471/linux-suite.txt) and
+  [runtime record](results/release-validation-c8fd471/linux-runtime.json) retain
+  the source, identical immutable image, network isolation and output digest.
+  All 26 skips explicitly require project-owned historical Git resources;
+  synthetic schedule checks still execute. Both the originally failing native
+  test and new shutdown-boundary control pass. Validation/featured-sync checks
+  also pass inside this fresh archive. Durations are not performance comparisons.
+  The original failing source/log is not relabeled or replaced.
 
 ## Hosted release gate remains separate
 
@@ -53,4 +61,5 @@ No billing, publication or workflow bypass was performed.
 Python 3.12의 테스트 0개 종료 코드를 실행 모순으로 잘못 분류한 문제다.
 검증 성공으로 오인한 것은 아니며, 두 경우 모두 불완전으로 중단했지만 진단을
 정확히 수정했다. 기존 실패 로그를 보존했고 수정 후 macOS 감사 테스트112개가
-통과했다. Linux 전체 재검증은 아직 남아 있으며 모델 성능 향상 수치는 아니다.
+통과했다. 수정 커밋의 Linux 전체 재검증은1,087개 통과·26개 이력 의존 검사
+건너뜀·실패0개로 완료했다. 모델 성능 향상 수치는 아니다.
