@@ -1,6 +1,8 @@
-# Current candidate: whole-task performance remains unproven
+# Historical checkpoint before solver runtime preparation — 2026-09-22
 
-Decision checkpoint **2026-09-22, external solver runtime preparation `365fea9`**.
+Preserved from `299cdf6`; see [current decision index](CURRENT-CANDIDATE-STATUS.md).
+
+Decision checkpoint **2026-09-22, external-runtime TLS validation based on `dfbe182`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -16,18 +18,42 @@ readiness. No public-release approval or successful hosted matrix is claimed.
 
 ## Model evidence that governs claims
 
-[External-issue pilot selection](SWE-LITE-PILOT-01-SELECTION.md) fixes two public
-SWE-bench Lite issues by a predeclared hash rule; these are not proven
-uncontaminated holdouts. [Reference preflight](SWE-LITE-PILOT-01-SCORING-04.md)
-now distinguishes original failures from passing gold patches for both issues.
-[Solver runtimes](SWE-LITE-PILOT-01-SOLVER-RUNTIME.md), `365fea9`: separate
-base-only images with CLI0.153.4 pass142 Requests/77 pytest public native checks
-with same-process project bindings. No model calls or efficiency claim; actual
-launcher/access/network gates remain. Prior setup failures and chronology remain
-in the [dated checkpoint archive](CANDIDATE-STATUS-2026-09-22-BEFORE-SOLVER-RUNTIME.md).
-
-한국어: 두 외부 과제의 기준 채점과 실행 이미지 검증까지 완료했다. 실제 모델 비교와
-접근 경계 검증은 아직 남아 있다. 과거 실패 기록·그래프·개선율 주장은 변경하지 않았다.
+[External-issue pilot selection](SWE-LITE-PILOT-01-SELECTION.md) freezes two
+SWE-bench Lite instance identities by a predeclared hash rule, without inspecting
+solution patches. Environment/license/scoring gates are pending; no model calls
+or new performance result. Public tasks are not proven uncontaminated holdout.
+[Image feasibility](SWE-LITE-PILOT-01-ENVIRONMENT.md): both pinned amd64 images
+start under compatibility mode with matching source blobs, but differing modes
+and broad Git stores require solver isolation. Imports are not native-test validation.
+[Base-only copies and smoke checks](SWE-LITE-PILOT-01-ISOLATION.md) now preserve
+the exact base trees with one fresh commit/no remotes. Requests one native control
+and pytest77 existing tests pass; setup failures are retained. Hidden scoring,
+same-process provenance and complete solver-access review remain pending.
+[Scoring preflight](SWE-LITE-PILOT-01-SCORING-PREFLIGHT.md) rejects the current
+offline environment: pytest setup fails despite its expected gold transition;
+Requests gold retains60 failures with network errors. All attempts retained, no
+model calls or scored efficiency claim; no dropping controls/task replacement.
+[Build/service repair](SWE-LITE-PILOT-01-SERVICES.md), attempt03: offline wheels
+restore successful installation; pytest gold passes78/78 with the expected base
+failure. Requests internal HTTP service reduces failures but gold still fails7
+required checks. Both-task execution/access gates remain unfinished; no model run.
+[Requests diagnosis](SWE-LITE-PILOT-01-REQUESTS-DIAGNOSIS.md): unchanged public
+suite134pass/8fail identifies runner API, hostname/TLS and timeout-network causes.
+Pinned pytest4.6.11 repairs the demonstrated string-raises case; actual pass/fail
+assertion controls work. Combined service/scoring validation is still pending.
+[Network controls](SWE-LITE-PILOT-01-NETWORK.md): a separate internal subnet,
+local cross-host endpoint and explicit client address pass all4 unchanged
+redirect/timeout/basic checks; the prior2fail attempt remains. HTTPS trust and
+combined gold/solver verification are still unfinished.
+[Scoped TLS controls](SWE-LITE-PILOT-01-TLS.md): project-bound same-process
+certificate acceptance/rejection and all142 original Requests tests pass with
+unchanged source. First probe's installed-copy limitation is retained; combined
+gold grading and solver-access validation are still pending, not model results.
+[Combined Requests grading](SWE-LITE-PILOT-01-SCORING-04.md): original has one
+required failure; gold passes all141 required labels (143 native items), with
+successful setup and same-process source bindings. Together with pytest's78 gold
+passes this completes scoped reference preflight, not solver/runtime-access
+verification, model calls or a measured skill gain.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |
