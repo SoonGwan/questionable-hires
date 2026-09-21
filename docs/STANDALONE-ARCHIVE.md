@@ -34,6 +34,30 @@ history or network is needed for this Python installation path. Downloading a
 private artifact still requires authorized access. This command does not upload,
 publish or create a GitHub release, and does not change `npx skills add` behavior.
 
+## Installed recent-capability checkpoint — 2026-09-22, resources `11d9a36`
+
+The expanded offline package/extract/install test now executes the installed
+Necromancer and Receipt helpers outside the checkout with isolated Python.
+UTF-8 BOM input yields the complete CRLF-preserving function excerpt, original
+byte hash/count and physical line1; a missing name remains incomplete with exit1.
+
+Receipt compares two actual historical Git versions against one uncommitted
+current version using identical native assertions. Both historical versions fail
+different boundary assertions; current passes. Three native checks retain full
+revision identities, same-process copied-module provenance, exits and actual
+failure values. Source/Git bytes and modes remain unchanged, scratch is removed,
+and the installer confirms that all installed resources still match afterward.
+No personal skill directories or application settings are modified.
+
+All four expanded archive tests pass on Python3.11.16 (1.647s) and3.9.6 (3.157s).
+The same tests also pass from a fresh source archive without project history or
+local-run artifacts. These are installed-capability checks, not a new remote
+installation, model-cost measurement, complete hosted matrix or public release.
+
+한국어: 압축·설치된 스킬로 BOM 입력과 다중 과거 버전 검증까지 확인했다.
+실제 실패값·현재 통과·원본 보존·임시 파일 정리·설치본 일치를 검사했다.
+모델 성능 향상 수치나 공개 배포 완료를 의미하지 않는다.
+
 ## Installed guard checkpoint — 2026-09-21, resources `40f381c`
 
 The offline extraction/install test now executes the installed audit helper with

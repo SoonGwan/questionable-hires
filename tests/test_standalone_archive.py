@@ -123,10 +123,82 @@ class StandaloneArchiveTests(unittest.TestCase):
             self.assertIn('notes.txt', rejected.stderr)
             self.assertEqual((project / 'notes.txt').read_text(), 'changed')
             self.assertEqual({p.name for p in project.iterdir()}, set(originals))
+            self.check_recent_installed_helpers(destination, root)
             rechecked = subprocess.run(command + ['--check'], cwd=root,
                 capture_output=True, text=True, timeout=15)
             self.assertEqual(rechecked.returncode, 0, rechecked.stderr)
             self.assertTrue(json.loads(rechecked.stdout)['matches'])
+
+    def check_recent_installed_helpers(self, destination, root):
+        """Execute recent capabilities from installed files, outside checkout."""
+        region = destination / 'necromancer/scripts/python_regions.py'
+        source = b'\xef\xbb\xbfdef selected():\r\n    return 1\r\n'
+        for name, code in [('selected', 0), ('missing', 1)]:
+            result = subprocess.run([sys.executable, '-I', '-B', str(region), '--name', name],
+                input=source, cwd=root, capture_output=True, timeout=15)
+            self.assertEqual(result.returncode, code, result.stderr)
+            data = json.loads(result.stdout)
+            self.assertEqual(data['source_sha256'], hashlib.sha256(source).hexdigest())
+            self.assertEqual(data['source_bytes'], len(source))
+            self.assertEqual(data['complete'], code == 0)
+            if code == 0:
+                self.assertEqual(data['regions'][0]['text'], source[3:].decode())
+                self.assertEqual(data['regions'][0]['start_line'], 1)
+            else:
+                self.assertEqual(data['missing_names'], ['missing'])
+
+        project = root / 'receipt-consumer'
+        project.mkdir()
+        def git(*args):
+            result = subprocess.run(['git', *args], cwd=project,
+                capture_output=True, text=True, timeout=15)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            return result.stdout.strip()
+        git('init', '-q', '--template=')
+        git('config', 'user.name', 'Fixture Author')
+        git('config', 'user.email', 'fixture@example.invalid')
+        git('config', 'commit.gpgsign', 'false')
+        (project/'.git/no-hooks').mkdir()
+        git('config', 'core.hooksPath', str(project/'.git/no-hooks'))
+        revisions = []
+        for expression in ('n > 18', 'n >= 17'):
+            (project/'rule.py').write_text('def eligible(n): return ' + expression + '\n')
+            git('add', 'rule.py')
+            git('commit', '-qm', 'Historical implementation')
+            revisions.append(git('rev-parse', 'HEAD'))
+        (project/'rule.py').write_text('def eligible(n): return n >= 18\n')
+        (project/'test_rule.py').write_text('import unittest\nimport rule\n'
+            'class Boundary(unittest.TestCase):\n'
+            '    def test_adult(self): self.assertTrue(rule.eligible(18))\n'
+            '    def test_minor(self): self.assertFalse(rule.eligible(17))\n')
+        def inventory():
+            return {str(p.relative_to(project)): (p.read_bytes(), p.stat().st_mode & 0o777)
+                    for p in project.rglob('*') if p.is_file()}
+        before = inventory()
+        recipe = dict(fixed=['test_rule.py'], vary=['rule.py'], before=revisions[0],
+            additional_before=[revisions[1]], after={'working_tree': True},
+            imports=['rule'], runner='unittest', invocation='module',
+            tests=['-v', 'test_rule'], guard_tree=True)
+        result = subprocess.run([sys.executable, '-I', '-B',
+            str(destination/'receipt/scripts/compare.py'), '--source', str(project), '--spec', '-'],
+            input=json.dumps(recipe), cwd=root, capture_output=True, text=True, timeout=20)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        data = json.loads(result.stdout)
+        self.assertEqual(data['revisions'], dict(before=revisions[0], before_2=revisions[1], after=None))
+        self.assertEqual(list(data['checks']), ['before', 'before_2', 'after'])
+        for label, code in [('before', 1), ('before_2', 1), ('after', 0)]:
+            observed = data['checks'][label]
+            self.assertEqual(observed['native_exit_code'], code)
+            self.assertTrue(observed['provenance_ready'])
+            self.assertFalse(observed['timed_out'])
+            self.assertFalse(observed['output_truncated'])
+            self.assertIn('Ran 2 tests', observed['output'])
+            self.assertIn('Verified copied import: rule', observed['output'])
+        self.assertIn('False is not true', data['checks']['before']['output'])
+        self.assertIn('True is not false', data['checks']['before_2']['output'])
+        self.assertTrue(data['tree_guard']['unchanged'])
+        self.assertTrue(data['comparison_copies_removed'])
+        self.assertEqual(inventory(), before)
 
     def test_existing_output_is_preserved(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -16,6 +16,12 @@ performance superiority.** Each check applies only to its stated source revision
 | Remote installation | [Authenticated checkpoint01](../benchmarks/REMOTE-INSTALL-01.md), `5e6beab`: GitHub helper and actual npx remote clone install all8/51 resources into fresh temporary destinations; selected installed behaviors pass. Existing Git credentials and cached CLI package used. Fresh npm download, anonymous public access and host discovery remain unverified. |
 | Publication authority | Obtain owner approval before changing visibility or publishing a release. No billing, visibility or publication changes are made by local validation. |
 
+[Installed-capability checkpoint](STANDALONE-ARCHIVE.md#installed-recent-capability-checkpoint--2026-09-22-resources-11d9a36)
+at resource`11d9a36` additionally exercises installed BOM excerpts and actual
+three-version native Receipt comparison after offline packaging/extraction.
+Python3.9/3.11 and fresh-source-archive controls pass; this does not refresh the
+older remote `npx` measurement or substitute for hosted CI.
+
 The [documented installation routes](INSTALL.md) remain available to authorized
 users. [Standalone archives](STANDALONE-ARCHIVE.md) provide an optional smaller
 handoff; they do not change the `npx` clone path or imply a published package.
