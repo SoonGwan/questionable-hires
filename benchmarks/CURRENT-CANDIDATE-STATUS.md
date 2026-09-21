@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Contract-focused assertion candidate — 2026-09-21, parent `903e7c8`
+
+[Instruction candidate](CON-ARTIST-CONTRACT-01.md) distinguishes requested
+behavioral assertions from incidental representation/identity constraints, while
+retaining contract-required identity/order. Motivated by the original Click repair;
+model effect unmeasured. Structural checks do not establish efficiency, and no
+featured data or capability claim changes. Transfer must include identity-sensitive
+controls so weaker verification cannot masquerade as a saving.
+
+한국어: 과잉 검사로 인한 재작업을 줄이는 지침 후보를 추가했다. 필수 검증을
+생략하지 않으며, 실제 성능 향상 여부는 다음 비교에서 확인해야 한다.
+
 ## Click audit reviewed — 2026-09-21, resources `f253f38`
 
 [Original pair review](CLICK-CONTEXT-01-REVIEW.md): both meet 5/5 obligations,
