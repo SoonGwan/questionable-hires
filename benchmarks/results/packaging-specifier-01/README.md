@@ -1,5 +1,11 @@
 # Packaging specifier audit01: captured, behavioral review pending
 
+Subsequent [behavioral review](../../PACKAGING-SPECIFIER-01-REVIEW.md) is complete.
+The capture-stage wording below is historical. Native criteria hold in all four;
+whole-session initial-index identity remains unproven. Split native outputs
+reconcile, both skill sessions avoid the helper, and costs remain mixed. No
+efficiency promotion or frozen measurement rewrite.
+
 2026-09-21. Resource `c8fd471`, launch `5aa96b7`.
 [Protocol](../../PACKAGING-SPECIFIER-01-PROTOCOL.md) ·
 [predeclared selection](../../PACKAGING-SPECIFIER-01-SELECTION.md) ·
