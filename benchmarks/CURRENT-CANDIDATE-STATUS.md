@@ -9,7 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Packaging design comparison prepared — 2026-09-21, resource `a545a53`
+## Packaging design sessions complete, review pending — 2026-09-21
+
+[Original process measurements](PACKAGING-DESIGN-01-PENDING.md), launch `d9a9a6e`,
+resources `a545a53`: baseline76073tokens/59.042seconds, candidate81947/61.405,
+prior89313/66.403. All three complete; no timeout/limit. Criterion/capture/integrity
+review remains outstanding. Candidate did not use its collector; no demonstrated
+tool benefit or broad improvement. Production Landlord and featured charts stay
+unchanged. Original sessions retained locally; do not restart the completed run.
+
+한국어: 새 과제3세션이 끝났다. 후보는 기존보다 저렴했지만 무스킬보다 비쌌고,
+추가한 도구를 사용하지 않았다. 원본 근거 검토 전이며 성능 개선으로 홍보하지 않는다.
+
+## Historical preparation — packaging design, 2026-09-21, resource `a545a53`
 
 [Frozen protocol](PACKAGING-DESIGN-01-PROTOCOL.md) compares the separate collector
 candidate with production Landlord and no-skill on one new installed-source task.
