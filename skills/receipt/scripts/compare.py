@@ -397,7 +397,7 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
     if os.name != 'posix' or not 0 < timeout <= 300:
         raise ValueError('Requires POSIX and a timeout in (0, 300]')
     required = {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}
-    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings'}:
+    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings', 'additional_before'}:
         raise ValueError('Recipe requires fixed, vary, before, after, imports, runner and tests')
     if type(recipe.get('guard_tree', False)) is not bool:
         raise ValueError('guard_tree must be a boolean')
@@ -409,6 +409,13 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
             raise ValueError(key + ' must be a nonempty string list')
     if recipe['runner'] not in ('unittest', 'pytest', 'node'):
         raise ValueError('Use unittest, installed pytest or native node')
+    additional_before = recipe.get('additional_before', [])
+    if (not isinstance(additional_before, list) or len(additional_before) > 7
+            or not all(isinstance(ref, str) and ref and not ref.startswith('-')
+                       and '\n' not in ref for ref in additional_before)):
+        raise ValueError('additional_before must contain at most seven commit expressions')
+    if additional_before and recipe['runner'] != 'unittest':
+        raise ValueError('additional_before currently requires unittest')
     if recipe['runner'] == 'node':
         if any(key in recipe for key in ('invocation', 'import_roots', 'module_bindings')):
             raise ValueError('Node does not support Python invocation/import options')
@@ -480,8 +487,11 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
     variants, revisions = {}, {}
     varying_names = set(recipe['vary'])
     blobs = {}  # Immutable object content; never reuse mutable working inputs.
-    for label in ('before', 'after'):
-        ref = recipe[label]
+    requested_versions = [('before', recipe['before'])]
+    requested_versions.extend(('before_' + str(index + 2), ref)
+                              for index, ref in enumerate(additional_before))
+    requested_versions.append(('after', recipe['after']))
+    for label, ref in requested_versions:
         if (label == 'after' and isinstance(ref, dict) and set(ref) == {'working_tree'}
                 and ref['working_tree'] is True):
             revisions[label] = None
@@ -491,6 +501,8 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
         if not isinstance(ref, str) or not ref or ref.startswith('-') or '\n' in ref:
             raise ValueError('Invalid revision')
         sha = git(root, 'rev-parse', '--verify', '--end-of-options', ref + '^{commit}').decode().strip()
+        if label != 'after' and sha in revisions.values():
+            raise ValueError('Historical before revisions must be distinct')
         revisions[label] = sha
         files = {name: originals[name] for name in names}
         variant_modes = {name: modes[name] for name in names}
@@ -601,6 +613,9 @@ guard_tree (optional boolean): inventory all source entries including Git around
 the comparison; no link traversal. 10000 entries/20 MB read per inventory. Opt in
 only when whole-project preservation is requested and all source reads are allowed.
 before: commit expression. after: commit expression or {"working_tree":true}.
+additional_before (optional): up to seven extra distinct commits, unittest only.
+Runs before, before_2, ... then after once, using identical frozen current tests.
+One shared 20 MB snapshot budget; timeout remains per check. Inspect every check.
 Working-tree after freezes current bytes/modes once, not the index or a commit.
 imports: modules that must load inside each copy. runner: unittest, pytest or node.
 Node mode: imports are selected .js/.cjs/.mjs paths; tests are fixed JS paths,

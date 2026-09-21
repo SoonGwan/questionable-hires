@@ -67,6 +67,15 @@ JSON
 - Optional `"watch":["notes.txt"]`: existing files/directories checked, **not
   copied/executed**. `originals` gives selected hashes/modes/unchanged status;
   `comparison_copies_removed` gives cleanup. Reuse those selected-file checks.
+- For a requested comparison of several past versions against the same current
+  tests, unittest supports `"additional_before":["release-a","release-b"]`.
+  Distinct commits run as `before`, `before_2`, `before_3`, then `after` **once**;
+  `checks` and `revisions` use those labels. Inputs are frozen once, all versions
+  are prepared before execution, and one shared snapshot budget still applies.
+  At most seven extras; per-check timeout and incomplete-evidence stopping remain.
+  Inspect each actual failure, not just the shared after pass. This replaces
+  repeated pairwise helper calls, not an adequate native multi-version runner;
+  it is not independent confirmation or appropriate for different tests/runtimes.
 - Optional `"guard_tree":true`: only for requested whole-project preservation
   with all reads authorized. Checks Git/ignored entries, bytes/modes and link text
   around comparison; changes abort without restoration. It excludes link targets,

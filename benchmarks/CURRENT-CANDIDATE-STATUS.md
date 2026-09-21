@@ -55,6 +55,10 @@ or recoverable savings.
 
 These changes are implemented; their model-cost effect is not established:
 
+- [Receipt multiple-before](RECEIPT-MULTIPLE-BEFORE-01.md), parent`efc1439`:
+  optional unittest multi-version comparison executes current once, preserving
+  each historical result and shared snapshot limits. Author native control4→3
+  checks, single pair2→2;7 new controls pass in checkout/archive. No model gain.
 - [Receipt original-hash reuse](RECEIPT-ORIGINAL-HASH-REUSE-01.md), parent`20380c9`:
   result fields reuse digests of already captured bytes; mutable-file rereads,
   guards and native comparisons remain. Two-file working-tree control4→2 digest
