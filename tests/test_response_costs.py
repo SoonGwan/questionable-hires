@@ -1,6 +1,8 @@
 import copy
+import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'benchmarks'))
@@ -48,3 +50,41 @@ class ResponseCostsTests(unittest.TestCase):
         self.assertEqual(len(result['rows']), 8)
         self.assertEqual(sum(r['delta_total_tokens'] for r in result['rows']), 114945)
         self.assertEqual(sum(r['arithmetic_terms']['output_term'] for r in result['rows']), -507)
+
+    def test_all_eventemitter_conditions_are_retained(self):
+        root = Path(__file__).resolve().parents[1]
+        result = analyze(root/'benchmarks/results/eventemitter-boundary-01', all_conditions=True)
+        self.assertEqual(len(result['rows']), 4)
+        deltas = {condition: sum(r['delta_total_tokens'] for r in result['rows']
+                               if r['condition'] == condition) for condition in ('prior', 'candidate')}
+        self.assertEqual(deltas, {'prior': 41971, 'candidate': 66491})
+        for row in result['rows']:
+            self.assertEqual(set(row['profile_sha256']), {'baseline', row['condition']})
+
+    def test_missing_arm_duplicate_and_unsafe_names_fail(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            rows = []
+            for case in ('one', 'two'):
+                for condition in ('baseline', 'prior', 'candidate'):
+                    arm = 'baseline' if condition == 'baseline' else 'skill'
+                    dest = root/condition/(case+'--'+arm+'--1')
+                    dest.mkdir(parents=True)
+                    data = profile([100, 120])
+                    (dest/'usage-profile.json').write_text(json.dumps(data))
+                    rows.append(dict(case=case, condition=condition, total_tokens=data['total_tokens']))
+            manifest = root/'comparison.json'
+            (root/'run.json').write_text(json.dumps(dict(completed_cells=rows)))
+            for changed in (rows[:-1], rows + [rows[0]],
+                            [row for row in rows if row['condition'] != 'candidate'],
+                            [dict(rows[0], condition='../escape')],
+                            [dict(rows[0], case='../escape')], []):
+                manifest.write_text(json.dumps(dict(rows=changed)))
+                with self.subTest(rows=changed), self.assertRaises(ValueError):
+                    analyze(root, all_conditions=True)
+            for changed in ([dict(rows[0], case='../escape')],
+                            [dict(rows[0], condition='../escape')]):
+                manifest.write_text(json.dumps(dict(rows=changed)))
+                (root/'run.json').write_text(json.dumps(dict(completed_cells=changed)))
+                with self.assertRaisesRegex(ValueError, 'Unexpected or duplicate'):
+                    analyze(root, all_conditions=True)

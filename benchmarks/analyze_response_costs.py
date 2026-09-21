@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 
 FIELDS = ('input_tokens', 'cached_input_tokens', 'output_tokens')
 
@@ -41,15 +42,27 @@ def compare(baseline, current):
     return dict(baseline=b, current=c, delta_total_tokens=delta, arithmetic_terms=terms)
 
 
-def analyze(directory):
+def analyze(directory, all_conditions=False):
     directory = Path(directory)
     comparison = json.loads((directory/'comparison.json').read_text())
+    if all_conditions:
+        manifest = json.loads((directory/'run.json').read_text())
+        completed = manifest.get('completed_cells')
+        if not isinstance(completed, list) or not completed:
+            raise ValueError('Completed-cell manifest required for all-condition coverage')
+        expected = [(row['case'], row['condition']) for row in completed]
+        observed = [(row['case'], row['condition']) for row in comparison['rows']]
+        if len(set(expected)) != len(expected) or sorted(expected) != sorted(observed):
+            raise ValueError('Comparison does not cover every recorded attempt exactly once')
     pairs = {}
     for row in comparison['rows']:
         condition, case = row['condition'], row['case']
-        if condition not in ('baseline', 'current') or condition in pairs.setdefault(case, {}):
+        valid_name = lambda value: isinstance(value, str) and re.fullmatch(r'[a-z0-9][a-z0-9-]*', value)
+        if (not valid_name(case) or not valid_name(condition)
+                or (not all_conditions and condition not in ('baseline', 'current'))
+                or condition in pairs.setdefault(case, {})):
             raise ValueError('Unexpected or duplicate comparison arm')
-        arm = 'baseline' if condition == 'baseline' else 'skill'
+        arm = condition if condition in ('baseline', 'control', 'auto') else 'skill'
         path = directory/condition/(case+'--'+arm+'--1')/'usage-profile.json'
         raw = path.read_bytes()
         profile = json.loads(raw)
@@ -57,11 +70,18 @@ def analyze(directory):
             raise ValueError('Published comparison mismatch')
         pairs[case][condition] = (profile, hashlib.sha256(raw).hexdigest())
     rows = []
+    conditions = {condition for arms in pairs.values() for condition in arms}
+    if 'baseline' not in conditions or len(conditions) < 2:
+        raise ValueError('Baseline and at least one comparison arm required')
     for case, arms in pairs.items():
-        if set(arms) != {'baseline', 'current'}:
+        if set(arms) != conditions:
             raise ValueError('Incomplete pair')
-        rows.append(dict(case=case, **compare(arms['baseline'][0], arms['current'][0]),
-                         profile_sha256={k:v[1] for k,v in arms.items()}))
+        for condition in sorted(conditions - {'baseline'}):
+            row = dict(case=case, **compare(arms['baseline'][0], arms[condition][0]),
+                       profile_sha256={k:arms[k][1] for k in ('baseline', condition)})
+            if all_conditions:
+                row['condition'] = condition
+            rows.append(row)
     return dict(rows=rows,
         limitations='Recorded usage arithmetic only. First input includes all initial context, not just the skill. Later input includes prior conversation and tool results; response-count differences are not inherently unnecessary. No causal savings, dollar estimate, or latency attribution. Cached input is counted once within input.')
 
@@ -69,5 +89,7 @@ def analyze(directory):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory', type=Path)
+    parser.add_argument('--all-conditions', action='store_true',
+                        help='Compare every observed arm against baseline; require all arms on every task')
     args = parser.parse_args()
-    print(json.dumps(analyze(args.directory), indent=2))
+    print(json.dumps(analyze(args.directory, args.all_conditions), indent=2))

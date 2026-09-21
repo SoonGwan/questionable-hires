@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## EventEmitter cost decomposition — 2026-09-21, parent `43c814e`
+
+[All-arm accounting](EVENTEMITTER-INPUT-COSTS-01.md) reconciles six existing profiles
+without new sessions. Reentrant arms have equal response counts but higher skill
+input; optional runtime assets were not read. Before-fix failure diagnostics and
+different verification paths are retained, not labeled avoidable. Analyzer now
+supports all observed conditions and rejects incomplete comparisons; five tests
+pass3.9/3.11. This narrows the next investigation, not a savings claim or promotion.
+
+한국어: 최근 세 조건 모두의 비용 구성을 확인했다. 추가 왕복이나 읽지 않은
+도구 크기만 줄이는 접근으로는 설명되지 않으며, 전체 성능 목표는 여전히 미달이다.
+
 ## Friday source-read replacement corrected — 2026-09-21, parent `71068c0`
 
 [Native failing-before/passing-after probes](FRIDAY-SOURCE-READ-01.md) reproduce
