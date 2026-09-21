@@ -139,6 +139,14 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Preparation2026-09-21, selection`e004fdf`, fixed resource`e1e1ef8`:
+[configuration-layer controls](CONFIG-LAYERS-01-PREFLIGHT.md) retain all four
+declared faults: three survive original native tests and fail a stronger
+assertion; one is already detected. Single/four requests share identical inputs.
+Native bindings/preservation/cleanup and fixture controls pass; no model launch,
+independent validation or new cache-attribution claim.
+한국어: 새 설정 병합 감사의 실행 준비 검증 완료이며 모델 성능 결과는 아니다.
+
 Local optimization2026-09-21, parent`cb9cde1`:
 [non-adjacent stronger-probe cache](AUDIT-PROBE-CACHE-02.md) reuses a returning
 identical successful probe under unchanged context, with bounded retention.
