@@ -128,7 +128,7 @@ use Node.js. Helpers do not install dependencies or run in the background.
 | Friday | [SQLite compatibility checks](skills/friday/references/sqlite-matrix.md), with opened-source identity checks against file replacement. Not a filesystem sandbox or proof of production rollout safety or other DB engines. |
 | Receipt | Isolated before/after checks for [Python](skills/receipt/references/existing-fix.md) or [native Node tests](skills/receipt/references/node-comparison.md), with source identity, both results and optional bounded whole-project change detection. Selected reads reject observed file replacement at open; snapshots are not atomic. Node load records are not dispatch/coverage proof; no model efficiency gain established. |
 | Exorcist | [Bounded foreground probes](skills/exorcist/references/bounded-probe.md). Not for background services. |
-| Mother-in-law | [Controlled interaction checks](skills/mother-in-law/SKILL.md) for compatible UI-less Python components. Existing project tests take precedence; not browser verification. |
+| Mother-in-law | [Controlled interaction checks](skills/mother-in-law/SKILL.md) for compatible UI-less Python components. Its native-test transport preserves unconsumed requests when an entry wait is cancelled. Existing project tests take precedence; not browser verification. |
 | Landlord | [Review guidance](skills/landlord/SKILL.md); no separate bundled runtime helper. |
 
 **Evidence is mixed.** Some tools are demonstrably useful, but installing them

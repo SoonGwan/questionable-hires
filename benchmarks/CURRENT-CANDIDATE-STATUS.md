@@ -148,6 +148,14 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Runtime correction2026-09-21, parent`eed4ff7`:
+[request-entry cancellation](MOTHER-ENTRY-CANCEL-01.md) reproduces swallowed
+waiter cancellation in the Mother-in-law native transport on Python3.9/3.11.
+Notification-based waiting preserves requests/application ownership;8 asset
+controls pass on both versions and38 Mother controls pass on3.11. No model-cost
+claim, sequence-probe change or frozen-chart update.
+한국어: 화면 테스트 지원 도구의 취소 오류를 재현·수정했으며 성능 수치와 구분한다.
+
 Instruction correction2026-09-21, parent`5a49091`: Con Artist's delivery guidance
 now distinguishes native executions from comparisons, including custom harnesses:
 one correct run used for several faults is reused evidence, counted once. This

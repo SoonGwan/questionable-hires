@@ -60,6 +60,39 @@ class ControlledFetchAssetTests(unittest.IsolatedAsyncioTestCase):
         self.tasks.append(task)
         return task
 
+    async def test_cancelled_entry_wait_preserves_request_during_wakeup(self):
+        waiter = asyncio.create_task(self.fetch.started('same'))
+        self.tasks.append(waiter)
+        await asyncio.sleep(0)
+        await asyncio.sleep(0)
+        application = self.start_task('same')
+        asyncio.get_running_loop().call_soon(waiter.cancel)
+        with self.assertRaises(asyncio.CancelledError):
+            await waiter
+        self.assertFalse(application.done())
+        request = await self.fetch.started('same')
+        value = object()
+        request.complete(value)
+        self.assertIs(await asyncio.wait_for(application, 1), value)
+        self.assertTrue(self.fetch.calls.empty())
+
+    async def test_competing_entry_waiters_keep_distinct_requests(self):
+        waiters = [asyncio.create_task(self.fetch.started('same')) for _ in range(2)]
+        self.tasks.extend(waiters)
+        await asyncio.sleep(0)
+        first_task = self.start_task('same')
+        done, pending = await asyncio.wait(waiters, timeout=1, return_when=asyncio.FIRST_COMPLETED)
+        self.assertEqual(len(done), 1)
+        first = done.pop().result()
+        first.complete('first')
+        self.assertEqual(await asyncio.wait_for(first_task, 1), 'first')
+        second_task = self.start_task('same')
+        second = await asyncio.wait_for(pending.pop(), 1)
+        self.assertIsNot(first.response, second.response)
+        second.complete('second')
+        self.assertEqual(await asyncio.wait_for(second_task, 1), 'second')
+        self.assertTrue(self.fetch.calls.empty())
+
     async def test_identical_keys_keep_distinct_reverse_completion_payloads(self):
         older = self.start_task('same')
         first = await self.fetch.started('same')

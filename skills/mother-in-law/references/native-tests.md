@@ -6,6 +6,9 @@ project support is absent. The copy needs no installed skill.
 `await fetch.started(key)` checks actual entry/key and returns a unique handle,
 even for repeated keys. Call `request.complete(payload)` or
 `request.fail_request(error)` directly, without TestCase wrappers.
+Cancelling or timing out the entry wait leaves unconsumed requests and application
+tasks untouched; a later waiter can observe the pending request. A returned handle
+is already consumed. These are cooperative same-loop waits, not process deadlines.
 
 Tests own component assertions and bounded task cancellation/draining, including
 after failed entry checks; the asset does neither. Do not shadow runner methods:

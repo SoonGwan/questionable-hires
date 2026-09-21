@@ -171,7 +171,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 | 배포 생존 담당 | [SQLite 호환성 확인](skills/friday/references/sqlite-matrix.md). 실제로 연 소스 파일의 식별자를 검사해 파일 교체를 확인합니다. 파일 시스템 격리나 운영 배포·다른 DB 엔진의 안전성을 증명하지 않습니다. |
 | 수정 검증관 | [Python](skills/receipt/references/existing-fix.md) 또는 [Node 기본 테스트](skills/receipt/references/node-comparison.md)를 격리해 전후 결과·소스 출처를 확인하고, 용량 제한이 있는 프로젝트 전체 변경 감지를 선택할 수 있습니다. 선택 파일을 여는 순간 감지한 교체는 거부하지만 원자적 스냅샷은 아닙니다. Node 로딩 기록만으로 기능 실행·테스트 범위가 입증되지는 않으며 모델 효율 향상은 미검증입니다. |
 | 가설 퇴마사 | [시간·출력 제한 진단 실행](skills/exorcist/references/bounded-probe.md). 백그라운드 서비스용이 아닙니다. |
-| 클릭 꼬투리 QA | [응답 순서 제어 검증](skills/mother-in-law/SKILL.md). 지원 인터페이스에 맞는 UI 없는 Python 컴포넌트용이며 기존 테스트가 우선입니다. |
+| 클릭 꼬투리 QA | [응답 순서 제어 검증](skills/mother-in-law/SKILL.md). 네이티브 테스트용 요청 제어는 진입 대기를 취소해도 아직 전달하지 않은 요청을 보존합니다. 지원 인터페이스에 맞는 UI 없는 Python 컴포넌트용이며 기존 테스트가 우선이고 브라우저 검증은 아닙니다. |
 | 구조 관리인 | [구조 검토 지침](skills/landlord/SKILL.md). 별도 실행 도구는 포함하지 않습니다. |
 
 **효과는 아직 혼재합니다.** 최근 상태 내용 비교 보강은 놓치던 결함을 잡았지만,
