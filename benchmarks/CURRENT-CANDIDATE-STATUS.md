@@ -23,8 +23,9 @@ hosted-check success or public-release approval is claimed here.
 Preparation2026-09-21: [ZIP audit01 protocol](ZIP-AUDIT-01-PROTOCOL.md) fixes a
 different authored project with single/multiple-fault controls for the phase-route
 candidate. [Actual native preflight](results/zip-audit-01-preflight/README.md)
-distinguishes both faults; no model calls yet, runner controls remain to be built.
-한국어: ZIP 권한·내용 감사 과제의 정상/고장 대조를 준비했다. 모델 성능 결과는 아니다.
+distinguishes both faults; runner`47fe7cf` passes checkout10/10 and source archive
+9pass/1historical skip. Six-cell inputs/resources prepared, no model calls yet.
+한국어: ZIP 감사 과제와 실행기 검증을 마쳤고6회 입력을 고정했다. 모델 성능 결과는 아니다.
 
 Reviewed checkpoint2026-09-21, resource`35bba0a`, launch`4f47d5b`:
 [effort × skill](EFFORT-FACTORIAL-01.md), all8complete. Actual model/effort and
