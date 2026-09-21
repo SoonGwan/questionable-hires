@@ -35,17 +35,19 @@ different native coverage and already-unsuccessful routing approaches are
 distinguished; no new instruction edit, model run or claimed saving.
 한국어: 추가 비용을 원본 응답별로 확인했으며 유효한 검증을 낭비로 분류하지 않았다.
 
-Prepared2026-09-21: [packaging specifier native transfer](results/packaging-specifier-01-preflight/README.md),
+Captured2026-09-21: [packaging specifier native transfer](results/packaging-specifier-01/README.md),
 selection`8b591ff`, fixed skill`c8fd471`. Original upstream806-test baseline passes;
 all three mechanically selected independent mutations yield native assertion
 failures with source/binding/cleanup checks. Single/multiple requests are correlated.
 Committed source export now validates exact upstream bytes/modes/licenses and
 materializes both requests; seven input controls pass without a local clone.
-The [four-cell schedule](PACKAGING-SPECIFIER-01-PROTOCOL.md) is frozen/prepared.
+The [four-cell schedule](PACKAGING-SPECIFIER-01-PROTOCOL.md) completed at launch`5aa96b7`.
 Runner controls at`3fd7260`:8/8 checkout,7pass/1historical skip in a fresh archive
-(Python3.11.16,0.849s/0.421s). No model outcome is claimed by preparation.
-한국어: 실제 패키지 원본 테스트로 새4회 비교를 준비했다. 실행 제어와 압축본 검사를
-마쳤으며, 준비 결과를 모델 성능 향상으로 해석하지 않는다.
+(Python3.11.16,0.849s/0.421s). All four original sessions/usage/final files retained;
+single costs lower, multiple costs higher. Behavioral and split-output review
+pending; no performance promotion or featured-chart change.
+한국어:4회 실측을 마쳐 원본을 보존했다. 단일/다중 비용 결과가 엇갈렸고,
+상세 행동·분할 출력 검토 전이므로 성능 개선으로 채택하지 않는다.
 
 Local correction2026-09-21, parent`d5eab87`: [native exit consistency](AUDIT-EXIT-CONSISTENCY-01.md)
 reproduces two shutdown/result contradictions before the fix and now stops them
