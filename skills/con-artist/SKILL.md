@@ -69,6 +69,9 @@ detecting assertion or warning policy; this protects that fault, not every lifec
 ## Deliver and stop
 
 Give decisive commands/results and the gap/proposed assertion or detecting check.
+Distinguish executions from comparisons: one correct run used against several
+faults is reused evidence even in a custom harness. Label that reuse and count
+the run once, not once per comparison.
 Keep a harness/report only for requested reuse or delivery. Without isolated
 execution, label the concern static. Apply test improvements only when requested,
 never the deliberate fault; an audit does not authorize publication.

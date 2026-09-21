@@ -148,6 +148,16 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Instruction correction2026-09-21, parent`5a49091`: Con Artist's delivery guidance
+now distinguishes native executions from comparisons, including custom harnesses:
+one correct run used for several faults is reused evidence, counted once. This
+addresses the [observed configuration reporting defect](CONFIG-LAYERS-01-REVIEW.md),
+not helper adoption or speed. No extra check, forced helper, runtime/API change or
+favorable rerun. Skill validation,13 build tests and4 native fixture controls pass;
+future model reporting/cost effect remains unmeasured. Frozen results unchanged.
+한국어: 직접 만든 검사에서도 실행 횟수와 비교 횟수를 구분해 재사용을 표시하도록
+안내를 보완했다. 실제 보고 오류 감소나 성능 개선은 아직 측정하지 않았다.
+
 Preparation2026-09-21, selection`e004fdf`, fixed resource`e1e1ef8`:
 [configuration-layer controls](CONFIG-LAYERS-01-PREFLIGHT.md) retain all four
 declared faults: three survive original native tests and fail a stronger
