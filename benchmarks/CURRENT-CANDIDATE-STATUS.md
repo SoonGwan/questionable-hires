@@ -9,7 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Landlord boundary candidate prepared — 2026-09-21, prior `a062950`
+## Landlord boundary candidate rejected — 2026-09-21, prior `a062950`, launch `387e398`
+
+[Six original static reviews](LANDLORD-BOUNDARIES-01-REVIEW.md) meet task/scope
+criteria, but compact candidate costs31.90% more tokens /14.00% more time than
+prior across two tasks. Against baseline it costs24.09% fewer tokens /13.46% less
+time; that favorable comparator does not establish an upgrade. Production was
+never replaced. Retain candidate and all results, including truncated original
+source output in each runtime arm. No featured promotion or repeated tuning here.
+
+한국어: 짧은 후보가 기존 스킬보다 더 비싸 채택하지 않는다. 무스킬 대비
+유리한 결과도 함께 기록하되 개선판으로 홍보하지 않는다. 전체 성능은 미입증이다.
+
+## Historical preparation — Landlord boundaries 01, 2026-09-21
 
 [Frozen protocol](LANDLORD-BOUNDARIES-01-PROTOCOL.md) compares an isolated compact
 entrypoint candidate with prior and no-skill on two real-source design proposals.
