@@ -40,13 +40,15 @@ process does not prove what the test process loads.
   and proposed tests against correct/faulty code with the native runner and fixtures;
   applying the verified edit remains separate. No helper is needed for a simpler
   native workflow or an already-completed audit.
-- Small self-contained audits: use the native runner in project-local copies or
-  a valid substitution. Choose [the Python helper](references/python-audit.md) when
-  its bounded processes, integrity checks or shared-baseline batches remove needed
-  orchestration. For required whole-project preservation, its optional `guard_project`
-  checks authorized roots, including unselected files and in-root Git metadata;
-  selected-input checks remain the default. Python compatibility alone is not a reason to adopt
-  it or load its guide. Read implementation for a concrete trust/adaptation question.
+- Repeated Python fault/test checks: the [native unittest batch recipe](references/native-unittest-batch.md)
+  provides actual `python -B -m unittest` execution, same-process binding prechecks,
+  copy cleanup and reusable correct observations without writing your own startup script.
+  Consider it when those facilities remove needed orchestration. For pytest or
+  inline probes, use the [common helper contract](references/python-audit.md).
+  Prefer existing project support or a simpler native check when sufficient;
+  don't restart a completed audit to adopt a helper. It checks selected files by
+  default; enable `guard_project` for required, authorized whole-project inventories.
+  Inspect implementation for a concrete trust/adaptation question.
 - Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)
   covers false-pass assertion helpers and incomplete checks. It is not routine setup.
 

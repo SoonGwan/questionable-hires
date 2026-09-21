@@ -44,6 +44,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [Native audit discovery correction](AUDIT-NATIVE-ROUTE-01.md), parent `1fa230c`:
+  entrypoint exposes the supported module command and a complete batch recipe.
+  The actual bundled recipe passes weak/strong assertion controls on Python3.9/3.11;
+  build13/archive4 pass. Model adoption and cost impact are unmeasured; existing
+  project support, simpler checks and justified inspection remain valid choices.
+  한국어: 안내·예제 검증 완료이며 모델 성능 수치로 채택한 결과가 아니다.
 - [Con Artist module invocation](AUDIT-MODULE-01.md), parent `04bf934`: optional
   instrumented `python -B -m unittest` checks preserve native result evidence,
   probes and batch reuse. Twelve controls pass on Python3.9/3.11, including the
