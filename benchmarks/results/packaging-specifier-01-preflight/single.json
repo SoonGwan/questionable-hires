@@ -1,0 +1,35 @@
+{
+  "status": "observed",
+  "audits": [
+    {
+      "status": "observed",
+      "checks": {
+        "correct_tests": {
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<WORKSPACE>/.con-artist-iodnw3p8/correct-tests\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"186d703cd31c2f47cc24eebcbc5e77c0a31dc277de84371a23eafd3694df8a50\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"417f0db966e3a4f79ff0684ea83fb390bbc53f01a6b23b70aaa4eb20d74b6af7\"}\nPrecheck completed in check process.\n........................................................................ [  8%]\n........................................................................ [ 17%]\n........................................................................ [ 26%]\n........................................................................ [ 35%]\n........................................................................ [ 44%]\n........................................................................ [ 53%]\n........................................................................ [ 62%]\n........................................................................ [ 71%]\n........................................................................ [ 80%]\n........................................................................ [ 89%]\n........................................................................ [ 98%]\n..............                                                           [100%]\n806 passed in 0.34s\n",
+          "output_truncated": false
+        },
+        "mutant_tests": {
+          "exit_code": 1,
+          "timed_out": false,
+          "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<WORKSPACE>/.con-artist-iodnw3p8/mutant-tests\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"8820b1cd8dbb766e2554a6e597947286fa91d0e035013d4ed3cbaa58572c9a1b\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"417f0db966e3a4f79ff0684ea83fb390bbc53f01a6b23b70aaa4eb20d74b6af7\"}\nPrecheck completed in check process.\n........................................................................ [  8%]\n........................................................................ [ 17%]\n........................................................................ [ 26%]\n........................................................................ [ 35%]\n........................................................................ [ 44%]\n................F\n=================================== FAILURES ===================================\n_________________ TestSpecifier.test_specifiers[1-~=1.0-True] __________________\ntests/test_specifiers.py:482: in test_specifiers\n    assert version in spec\nE   AssertionError: assert '1' in <Specifier('~=1.0', prereleases=True)>\n=========================== short test summary info ============================\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers[1-~=1.0-True]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 376 passed in 0.20s\n",
+          "output_truncated": false
+        }
+      },
+      "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+      "integrity": {
+        "selected_files": 20,
+        "selected_original_bytes_and_modes_unchanged": true,
+        "owned_scratch_removed": true,
+        "project_guard": {
+          "unchanged": true,
+          "entries": 29,
+          "file_bytes": 289376,
+          "scope": "source root including Git metadata; symlink targets not read"
+        }
+      }
+    }
+  ],
+  "limitation": "Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled."
+}

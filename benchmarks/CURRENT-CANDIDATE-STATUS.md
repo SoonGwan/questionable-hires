@@ -35,6 +35,13 @@ different native coverage and already-unsuccessful routing approaches are
 distinguished; no new instruction edit, model run or claimed saving.
 한국어: 추가 비용을 원본 응답별로 확인했으며 유효한 검증을 낭비로 분류하지 않았다.
 
+Prepared2026-09-21: [packaging specifier native transfer](results/packaging-specifier-01-preflight/README.md),
+selection`8b591ff`, fixed skill`c8fd471`. Original upstream806-test baseline passes;
+all three mechanically selected independent mutations yield native assertion
+failures with source/binding/cleanup checks. Single/multiple requests are correlated.
+Author controls only; model schedule not launched and no performance result.
+한국어: 실제 패키지 원본 테스트로 새 과제를 준비했다. 모델 성능 측정은 아직 전이다.
+
 Local correction2026-09-21, parent`d5eab87`: [native exit consistency](AUDIT-EXIT-CONSISTENCY-01.md)
 reproduces two shutdown/result contradictions before the fix and now stops them
 as incomplete, preserving native evidence. Python3.11 audit111/111 pass; no new
