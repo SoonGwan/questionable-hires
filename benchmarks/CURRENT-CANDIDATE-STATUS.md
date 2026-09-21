@@ -72,6 +72,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Checkpoint2026-09-21: [ancestry scope comparison preparation](ANCESTRY-SCOPE-01-PROTOCOL.md)
+adds a merged-history request and correlated no-history control with native
+pass/fail preflight. No model calls yet; runner freezing remains before launch.
+한국어: 이력 안내 수정의 실제 효과를 검증할 두 과제와 실행 대조를 준비했다.
+모델 성능 결과나 독립 실무 검증은 아니다.
+
 Checkpoint2026-09-21: [explicit-base history recipe](NECROMANCER-ANCESTRY-01.md)
 addresses observed invalid Git options and other-ref expansion with a native
 command example. Real local merge-DAG controls verify command semantics, not
