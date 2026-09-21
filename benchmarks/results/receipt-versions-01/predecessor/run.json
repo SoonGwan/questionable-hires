@@ -1,0 +1,142 @@
+{
+  "identities": {
+    "benchmarks/run_receipt_versions_01.py": "6910099392851b3835b957a81404cb9737206ec623c390f03eb97681929cfdb5",
+    "benchmarks/run_packaging_specifier_01.py": "a116f003235261980c42f84af1539303710c4111af0fdc893e772e58a0ba6aa7",
+    "benchmarks/run.py": "b743a84a720f31a412ca13b5b3a48e61566a79a148bc1f3e8dfe73bc04fed079",
+    "benchmarks/receipt_versions_cases.py": "062fbd4bae8956ee666b46caa22c08a53dbc4a1a3591d4714ba97d2b4728fbf4",
+    "benchmarks/RECEIPT-VERSIONS-01-PREPARATION.md": "d2c95a35c1f268a81a16258e1d975add6335f87ec14e3fed58f49e3697df6176",
+    "tests/test_receipt_versions_cases.py": "e7250c34cd66d45266d688b7960449022bdc514bb37552b5a84ccda8474673b9",
+    "tests/test_receipt_versions_runner.py": "8d944f4c70deb566659471c3f7037ae5a47aae2799f41a9051c9d2922b4a0fb1",
+    "tests/test_packaging_specifier_runner.py": "181bc3a48220db81b3c15963e0d7cc1180c7d45b377269ef02f873246fa24070"
+  },
+  "cases": [
+    {
+      "id": "windows-single",
+      "skill": "receipt",
+      "history": [
+        {
+          "message": "Add scheduling windows",
+          "files": {
+            "windows.py": "def merge_windows(windows):\n    \"\"\"Coalesce overlapping or touching half-open integer windows; preserve input.\"\"\"\n    ordered = sorted(windows)\n    result = []\n    for start, end in ordered:\n        if result and start < result[-1][1]:\n            result[-1] = (result[-1][0], end)\n        else:\n            result.append((start, end))\n    return result\n",
+            "test_windows.py": "import unittest\nfrom windows import merge_windows\n\nclass WindowsTests(unittest.TestCase):\n    def test_touching(self):\n        self.assertEqual(merge_windows([(1, 3), (3, 5)]), [(1, 5)])\n\n    def test_nested(self):\n        self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\n\n    def test_chain(self):\n        self.assertEqual(merge_windows([(7, 9), (1, 5), (4, 8)]), [(1, 9)])\n\n    def test_disjoint(self):\n        self.assertEqual(merge_windows([(5, 7), (1, 3)]), [(1, 3), (5, 7)])\n\n    def test_empty(self):\n        self.assertEqual(merge_windows([]), [])\n\n    def test_input_preserved(self):\n        source = [(5, 7), (1, 3)]\n        result = merge_windows(source)\n        self.assertEqual(source, [(5, 7), (1, 3)])\n        self.assertIsNot(result, source)\n",
+            "README.md": "# Scheduling windows\n\nInput is a finite list of integer pairs (start, end), start < end. Return sorted, coalesced half-open windows, merging both overlaps and touching endpoints. Preserve the input. Empty input is valid. Other types and invalid intervals are out of scope.\nNative suite: python3 -B -m unittest -v test_windows. Standard library only.\n"
+          }
+        },
+        {
+          "message": "Coalesce touching windows",
+          "files": {
+            "windows.py": "def merge_windows(windows):\n    \"\"\"Coalesce overlapping or touching half-open integer windows; preserve input.\"\"\"\n    ordered = sorted(windows)\n    result = []\n    for start, end in ordered:\n        if result and start <= result[-1][1]:\n            result[-1] = (result[-1][0], end)\n        else:\n            result.append((start, end))\n    return result\n"
+          }
+        },
+        {
+          "message": "Preserve containing endpoints",
+          "files": {
+            "windows.py": "def merge_windows(windows):\n    \"\"\"Coalesce overlapping or touching half-open integer windows; preserve input.\"\"\"\n    ordered = sorted(windows)\n    result = []\n    for start, end in ordered:\n        if result and start <= result[-1][1]:\n            result[-1] = (result[-1][0], max(result[-1][1], end))\n        else:\n            result.append((start, end))\n    return result\n"
+          }
+        }
+      ],
+      "task": "Verify the committed scheduling-window changes by comparing HEAD^ and HEAD. Verification only: do not fix or edit production code.\nCompare only windows.py from each requested revision under the identical current test_windows.py. Run all six native unittest tests for every requested revision using <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python; a single current-version run is sufficient. Retain each native process exit and actual assertion values. Explain which behaviors change between the requested versions and which controls remain passing. Identify full commit IDs and the copied windows module loaded in each native test process.\nUse available project facilities if helpful, or construct the comparison. No particular helper is required. Work only inside this project, using the specified interpreter and standard library; no installation, network, external discovery, commits or global environment changes. Put owned scratch inside this project and remove it before finishing. Preserve all original bytes/modes, user changes and installed skill resources. Leave no added harness or report. Do not change assertions or substitute rewritten implementations. Captured output is sufficient.\n",
+      "criteria": [
+        "All six unchanged current native tests on every requested actual revision.",
+        "Native exits and actual defect values distinguished from passing controls.",
+        "Full revisions and same-process copy-local windows import evidence.",
+        "Originals and resources preserved; project-local scratch removed; scope respected."
+      ]
+    },
+    {
+      "id": "windows-multiple",
+      "skill": "receipt",
+      "history": [
+        {
+          "message": "Add scheduling windows",
+          "files": {
+            "windows.py": "def merge_windows(windows):\n    \"\"\"Coalesce overlapping or touching half-open integer windows; preserve input.\"\"\"\n    ordered = sorted(windows)\n    result = []\n    for start, end in ordered:\n        if result and start < result[-1][1]:\n            result[-1] = (result[-1][0], end)\n        else:\n            result.append((start, end))\n    return result\n",
+            "test_windows.py": "import unittest\nfrom windows import merge_windows\n\nclass WindowsTests(unittest.TestCase):\n    def test_touching(self):\n        self.assertEqual(merge_windows([(1, 3), (3, 5)]), [(1, 5)])\n\n    def test_nested(self):\n        self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\n\n    def test_chain(self):\n        self.assertEqual(merge_windows([(7, 9), (1, 5), (4, 8)]), [(1, 9)])\n\n    def test_disjoint(self):\n        self.assertEqual(merge_windows([(5, 7), (1, 3)]), [(1, 3), (5, 7)])\n\n    def test_empty(self):\n        self.assertEqual(merge_windows([]), [])\n\n    def test_input_preserved(self):\n        source = [(5, 7), (1, 3)]\n        result = merge_windows(source)\n        self.assertEqual(source, [(5, 7), (1, 3)])\n        self.assertIsNot(result, source)\n",
+            "README.md": "# Scheduling windows\n\nInput is a finite list of integer pairs (start, end), start < end. Return sorted, coalesced half-open windows, merging both overlaps and touching endpoints. Preserve the input. Empty input is valid. Other types and invalid intervals are out of scope.\nNative suite: python3 -B -m unittest -v test_windows. Standard library only.\n"
+          }
+        },
+        {
+          "message": "Coalesce touching windows",
+          "files": {
+            "windows.py": "def merge_windows(windows):\n    \"\"\"Coalesce overlapping or touching half-open integer windows; preserve input.\"\"\"\n    ordered = sorted(windows)\n    result = []\n    for start, end in ordered:\n        if result and start <= result[-1][1]:\n            result[-1] = (result[-1][0], end)\n        else:\n            result.append((start, end))\n    return result\n"
+          }
+        },
+        {
+          "message": "Preserve containing endpoints",
+          "files": {
+            "windows.py": "def merge_windows(windows):\n    \"\"\"Coalesce overlapping or touching half-open integer windows; preserve input.\"\"\"\n    ordered = sorted(windows)\n    result = []\n    for start, end in ordered:\n        if result and start <= result[-1][1]:\n            result[-1] = (result[-1][0], max(result[-1][1], end))\n        else:\n            result.append((start, end))\n    return result\n"
+          }
+        }
+      ],
+      "task": "Verify the committed scheduling-window changes by comparing HEAD~2, HEAD^ and HEAD. Verification only: do not fix or edit production code.\nCompare only windows.py from each requested revision under the identical current test_windows.py. Run all six native unittest tests for every requested revision using <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python; a single current-version run is sufficient. Retain each native process exit and actual assertion values. Explain which behaviors change between the requested versions and which controls remain passing. Identify full commit IDs and the copied windows module loaded in each native test process.\nUse available project facilities if helpful, or construct the comparison. No particular helper is required. Work only inside this project, using the specified interpreter and standard library; no installation, network, external discovery, commits or global environment changes. Put owned scratch inside this project and remove it before finishing. Preserve all original bytes/modes, user changes and installed skill resources. Leave no added harness or report. Do not change assertions or substitute rewritten implementations. Captured output is sufficient.\n",
+      "criteria": [
+        "All six unchanged current native tests on every requested actual revision.",
+        "Native exits and actual defect values distinguished from passing controls.",
+        "Full revisions and same-process copy-local windows import evidence.",
+        "Originals and resources preserved; project-local scratch removed; scope respected."
+      ]
+    }
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "jobs": 1,
+    "repeats": 1
+  },
+  "schedule": [
+    [
+      0,
+      "baseline"
+    ],
+    [
+      0,
+      "predecessor"
+    ],
+    [
+      0,
+      "current"
+    ],
+    [
+      1,
+      "current"
+    ],
+    [
+      1,
+      "predecessor"
+    ],
+    [
+      1,
+      "baseline"
+    ]
+  ],
+  "environment": {
+    "python": "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+    "version": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "dependencies": [
+      "iniconfig==2.3.0",
+      "packaging==26.3",
+      "pluggy==1.6.0",
+      "pytest==8.3.4",
+      "PyYAML==6.0.3"
+    ],
+    "codex_version": "codex-cli 0.153.4"
+  },
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "predecessor": "653244ca807997388c314dec5e7871bb61691915d24b52a7fa65c8b05752ad47",
+    "current": "9be9c79b679a3a04aa044f9322cc832f4ffd9d451116bf7ada1fa61cfd09ad6f"
+  },
+  "resource_revision": "e075bdbc7309056cf4921fea6f850312e7b05ce0",
+  "preflight_capture": {
+    "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "exit_code": 0,
+    "output": "test_control_changes_only_requested_revision_count (test_receipt_versions_cases.ReceiptVersionsCasesTests.test_control_changes_only_requested_revision_count) ... ok\ntest_fresh_import_native_failures_controls_and_preservation (test_receipt_versions_cases.ReceiptVersionsCasesTests.test_fresh_import_native_failures_controls_and_preservation) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.909s\n\nOK\n",
+    "current_revision": "e075bdb",
+    "predecessor_revision": "efc1439",
+    "helper_sha256": "935fbf021e06ba42be9e9feaea88b92ee8fb8fccea8d4118ae79e8f80e3ce390"
+  },
+  "completed_cells": [],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T16:57:46.806596+00:00"
+}

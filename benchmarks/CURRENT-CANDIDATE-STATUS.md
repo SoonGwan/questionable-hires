@@ -16,6 +16,17 @@ readiness. No public-release approval or successful hosted matrix is claimed.
 
 ## Model evidence that governs claims
 
+[Receipt versions01](RECEIPT-VERSIONS-01-REVIEW.md), current`e075bdb`, completed
+six authored single/multiple-version cells. Current versus baseline summed
+tokens+0.31%,time−13.77%; each task trades one metric against the other. The
+multi-version helper is used in current/multiple, but all conditions already
+execute each requested revision once. Actual adoption, not a broad cost win;
+no featured promotion or favorable rerun. All native contracts and final-state
+preservation checks pass; original tool output resolves CLI prefix omissions.
+
+한국어: 새 다중 버전 기능의 실제 사용은 확인했지만 합계 토큰 절감은 없었다.
+시간 감소만으로 전체 개선을 주장하지 않으며 불리한 결과도 함께 보존한다.
+
 [SWE-Lite pilot01](SWE-LITE-PILOT-01-REVIEW.md) completed its four frozen
 external-issue cells. Both conditions pass the required native contracts, but
 summed cost is essentially unchanged and broader pytest validation reveals a

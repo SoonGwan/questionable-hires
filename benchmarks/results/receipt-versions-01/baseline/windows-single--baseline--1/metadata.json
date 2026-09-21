@@ -1,0 +1,67 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "windows-single",
+  "skill": "receipt",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 61.141,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 80674,
+    "cached_input_tokens": 70144,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1580,
+    "reasoning_output_tokens": 116
+  },
+  "completed": true,
+  "allocated_workspace": "<WORKSPACE>",
+  "prompt": "Verify the committed scheduling-window changes by comparing HEAD^ and HEAD. Verification only: do not fix or edit production code.\nCompare only windows.py from each requested revision under the identical current test_windows.py. Run all six native unittest tests for every requested revision using <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python; a single current-version run is sufficient. Retain each native process exit and actual assertion values. Explain which behaviors change between the requested versions and which controls remain passing. Identify full commit IDs and the copied windows module loaded in each native test process.\nUse available project facilities if helpful, or construct the comparison. No particular helper is required. Work only inside this project, using the specified interpreter and standard library; no installation, network, external discovery, commits or global environment changes. Put owned scratch inside this project and remove it before finishing. Preserve all original bytes/modes, user changes and installed skill resources. Leave no added harness or report. Do not change assertions or substitute rewritten implementations. Captured output is sufficient.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 297,
+    "mode": 420,
+    "sha256": "0179759119deb02ca514d04ee9a42138b2f83c503f5131d2efe4a855850043e6",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "pre_model_index": {
+    "status": "retained",
+    "file": "git-index.before-model.bin",
+    "bytes": 297,
+    "mode": 420,
+    "sha256": "0179759119deb02ca514d04ee9a42138b2f83c503f5131d2efe4a855850043e6",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "index_comparison": {
+    "status": "observed",
+    "bytes_and_mode_unchanged": true,
+    "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+  }
+}

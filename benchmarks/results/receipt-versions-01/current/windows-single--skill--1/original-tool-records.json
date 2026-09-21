@@ -1,0 +1,164 @@
+{
+  "session_id": "01a0c4e8-c47e-7de0-98e9-67c2ef6ee8cc",
+  "source_bytes": 111711,
+  "source_sha256": "2a77fdd57a6c0910964a9c5c37a7dad99432594f0e135ce7781e7164a04d306f",
+  "source_lines": 37,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "c1f9ac38f5b91d82f16d5cd3382437151fdb2e4adbd72ab49f72ad360ca1170c",
+      "record": {
+        "timestamp": "2026-09-21T16:59:51.077Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d4a90cbe8e60049016ab16284c83c87d0a9d2168586df14ed",
+          "status": "completed",
+          "call_id": "call_99pCteLBxTF4IXGEIY7R1l97",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat .agents/skills/receipt/SKILL.md\",\"max_output_tokens\":6000}));\ntext(await tools.exec_command({cmd:\"pwd; git status --short; rg --files -g 'AGENTS.md' -g '*windows*' -g '*receipt*' -g 'README*'\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4e8-c4c6-7f00-baa8-f9fbd41ada2a",
+            "create_time": 1790009986.379234
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "4582f4d12eeccc30a8486c3d60121fbf98295d2d262c820e9f3a80a08a4d11be",
+      "record": {
+        "timestamp": "2026-09-21T16:59:51.302Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c4e8-e086-7d43-b595-1fcaf786e508",
+          "call_id": "call_99pCteLBxTF4IXGEIY7R1l97",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d1296c\",\"wall_time_seconds\":0.000002833,\"exit_code\":0,\"original_token_count\":588,\"output\":\"---\\nname: receipt\\ndescription: Verify that a requested bug fix changes observable behavior with a failing-before, passing-after reproduction and honest execution evidence.\\n---\\n\\n# Receipt\\n\\n> You fixed it? Show me the receipt.\\n\\nReuse supplied guidance; discover missing instructions only within authorized roots, never through an out-of-scope ancestor sweep. Report inaccessible evidence instead of broadening access.\\n\\nFor a current bug, select a regression on the actual affected path using the documented runner. Reuse valid before evidence; otherwise observe the defect-specific failure, implement the requested fix, then rerun unchanged assertions/inputs. Preserve neighboring behavior and required coverage. Inspect history only for unresolved behavior or implementation.\\n\\nFor an already-present fix, compare isolated versions with the same current assertions/inputs and compatible runtime; identify the code loaded by the test process. Reuse an adequate project-native comparison instead of rebuilding it. Optional support for [Python](references/existing-fix.md) or [native Node tests](references/node-comparison.md) supplies copying, source checks and cleanup when those are missing. Choose by the required evidence and setup work, not merely by language support. Don't reverse patches in the user's working tree.\\n\\nA required suite running that regression with matching inputs/runtime supplies after evidence; don't repeat it separately. Skipped, undiscovered or differently configured tests don't qualify. Changed relevant inputs invalidate reused results.\\n\\nBatch final checks in one shell call, adapting the runner and paths:\\n\\n```sh\\npython3 -B -m unittest -v && git diff --check -- app.py test_app.py && git diff -- app.py test_app.py\\n```\\n\\n`&&` leaves later checks unrun after failure. If all must run, retain each exit explicitly, not just the shell's final status. Review untracked files separately; `git diff` omits them.\\n\\nSetup failures aren't defect reproduction; mocks don't prove unobserved effects. Preserve user changes and scope; verification alone authorizes neither implementation nor publication.\\n\\nReport the reviewed change, decisive before/after observations and commands, applicable revision identities and limits. Stop when the requested outcome and required checks are verified; no separate dossier or unrelated green checks.\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"c76c7f\",\"wall_time_seconds\":0.000001458,\"exit_code\":0,\"original_token_count\":48,\"output\":\"<WORKSPACE>\\n?? .agents/\\ntest_windows.py\\nwindows.py\\nREADME.md\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4e8-c4c6-7f00-baa8-f9fbd41ada2a",
+            "create_time": 1790009991.30222
+          }
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "79b23aa280906c9a335967aa011cbc9347829a916435f2eb96afce1b7e5c6d01",
+      "record": {
+        "timestamp": "2026-09-21T16:59:54.885Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d4a90cbe8e60049016ab16288d42487d0bff1016692b942e4",
+          "status": "completed",
+          "call_id": "call_JsGWoS8lrngbd1dNrdv272Dl",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git rev-parse HEAD^ HEAD; git diff HEAD^ HEAD -- windows.py; cat test_windows.py README.md; rg --files --hidden -g '!\\\\.git/**' -g '!\\\\.agents/**' -g 'AGENTS.md'; git ls-files\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4e8-c4c6-7f00-baa8-f9fbd41ada2a",
+            "create_time": 1790009991.806938
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "9d93971f6cc345b572ae976256f8defc9e7ceb110aeffc52598c96b4aeb2311e",
+      "record": {
+        "timestamp": "2026-09-21T16:59:55.032Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c4e8-ef18-79b0-a3fc-3c9131c1be29",
+          "call_id": "call_JsGWoS8lrngbd1dNrdv272Dl",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"7aa377\",\"wall_time_seconds\":0.000001667,\"exit_code\":0,\"original_token_count\":418,\"output\":\"9910b517fbdf67e0335ae7e92967de94be62d62a\\n1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24\\ndiff --git a/windows.py b/windows.py\\nindex c5a9a4d..39fbdd5 100644\\n--- a/windows.py\\n+++ b/windows.py\\n@@ -4,7 +4,7 @@ def merge_windows(windows):\\n     result = []\\n     for start, end in ordered:\\n         if result and start <= result[-1][1]:\\n-            result[-1] = (result[-1][0], end)\\n+            result[-1] = (result[-1][0], max(result[-1][1], end))\\n         else:\\n             result.append((start, end))\\n     return result\\nimport unittest\\nfrom windows import merge_windows\\n\\nclass WindowsTests(unittest.TestCase):\\n    def test_touching(self):\\n        self.assertEqual(merge_windows([(1, 3), (3, 5)]), [(1, 5)])\\n\\n    def test_nested(self):\\n        self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\\n\\n    def test_chain(self):\\n        self.assertEqual(merge_windows([(7, 9), (1, 5), (4, 8)]), [(1, 9)])\\n\\n    def test_disjoint(self):\\n        self.assertEqual(merge_windows([(5, 7), (1, 3)]), [(1, 3), (5, 7)])\\n\\n    def test_empty(self):\\n        self.assertEqual(merge_windows([]), [])\\n\\n    def test_input_preserved(self):\\n        source = [(5, 7), (1, 3)]\\n        result = merge_windows(source)\\n        self.assertEqual(source, [(5, 7), (1, 3)])\\n        self.assertIsNot(result, source)\\n# Scheduling windows\\n\\nInput is a finite list of integer pairs (start, end), start < end. Return sorted, coalesced half-open windows, merging both overlaps and touching endpoints. Preserve the input. Empty input is valid. Other types and invalid intervals are out of scope.\\nNative suite: python3 -B -m unittest -v test_windows. Standard library only.\\nREADME.md\\ntest_windows.py\\nwindows.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4e8-c4c6-7f00-baa8-f9fbd41ada2a",
+            "create_time": 1790009995.032105
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "cff1dcc5074c7bb8620678dbe69dbbce09be4128ec87fdcebe174845eb9c69a2",
+      "record": {
+        "timestamp": "2026-09-21T17:00:35.194Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0d4a90cbe8e60049016ab1629642cc87d0a313aa26427ab4df",
+          "status": "completed",
+          "call_id": "call_8bEnPKBvu0EJt5gK8JLJ12MR",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B - <<'PY'\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport stat\\nimport subprocess\\nimport sys\\nimport tempfile\\n\\nroot = Path.cwd()\\ndef snapshot():\\n    entries = {}\\n    for p in root.rglob('*'):\\n        if '.git' in p.relative_to(root).parts:\\n            continue\\n        s = p.lstat()\\n        kind = stat.S_IFMT(s.st_mode)\\n        payload = os.readlink(p) if p.is_symlink() else hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else None\\n        entries[str(p.relative_to(root))] = (kind, stat.S_IMODE(s.st_mode), payload)\\n    return entries\\n\\ndef git(*args):\\n    return subprocess.check_output(['git', *args], cwd=root)\\n\\nbefore = snapshot()\\ntest_bytes = (root / 'test_windows.py').read_bytes()\\nprint('Interpreter:', sys.executable, sys.version, flush=True)\\nprint('Identical current test_windows.py SHA256:', hashlib.sha256(test_bytes).hexdigest(), flush=True)\\nbootstrap = r'''\\nimport hashlib\\nfrom pathlib import Path\\nimport runpy\\nimport sys\\nimport unittest\\nimport windows\\nprint('Loaded windows module:', windows.__file__, flush=True)\\nprint('Loaded windows SHA256:', hashlib.sha256(Path(windows.__file__).read_bytes()).hexdigest(), flush=True)\\nprint('Native invocation: -B -m unittest -v test_windows (via runpy with assertion tracing)', flush=True)\\n\\ndef trace(frame, event, arg):\\n    if event == 'call' and frame.f_code in (unittest.TestCase.assertEqual.__code__, unittest.TestCase.assertIsNot.__code__):\\n        v = frame.f_locals\\n        if frame.f_code is unittest.TestCase.assertEqual.__code__:\\n            print('ASSERT', v['self'].id(), 'assertEqual actual=', repr(v['first']), 'expected=', repr(v['second']), flush=True)\\n        else:\\n            print('ASSERT', v['self'].id(), 'assertIsNot first=', repr(v['expr1']), 'second=', repr(v['expr2']), 'same_object=', v['expr1'] is v['expr2'], flush=True)\\n    return None\\nsys.settrace(trace)\\nsys.argv = ['unittest', '-v', 'test_windows']\\nrunpy.run_module('unittest', run_name='__main__')\\n'''\\nscratch = Path(tempfile.mkdtemp(prefix='.receipt-verify-', dir=root))\\ntry:\\n    for ref in ('HEAD^', 'HEAD'):\\n        revision = git('rev-parse', ref).decode().strip()\\n        dest = scratch / ('parent' if ref == 'HEAD^' else 'head')\\n        dest.mkdir()\\n        code = git('show', revision + ':windows.py')\\n        (dest / 'windows.py').write_bytes(code)\\n        (dest / 'test_windows.py').write_bytes(test_bytes)\\n        assert (dest / 'windows.py').read_bytes() == code\\n        assert (dest / 'test_windows.py').read_bytes() == test_bytes\\n        print('\\\\nREVISION', ref, revision, flush=True)\\n        print('Committed windows.py SHA256:', hashlib.sha256(code).hexdigest(), flush=True)\\n        result = subprocess.run([sys.executable, '-B', '-c', bootstrap], cwd=dest, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\\n        print(result.stdout, end='', flush=True)\\n        print('NATIVE PROCESS EXIT:', result.returncode, flush=True)\\nfinally:\\n    shutil.rmtree(scratch)\\nprint('\\\\nOriginal project bytes/modes and entries preserved:', snapshot() == before, flush=True)\\nassert snapshot() == before\\nfor command in (['git', 'diff', '--check'], ['git', 'diff', '--', 'windows.py', 'test_windows.py'], ['git', 'status', '--short']):\\n    result = subprocess.run(command, cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\\n    print('FINAL CHECK:', command, 'EXIT:', result.returncode, flush=True)\\n    print(result.stdout, end='', flush=True)\\nPY\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4e8-c4c6-7f00-baa8-f9fbd41ada2a",
+            "create_time": 1790009995.515051
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "2b60d17a33e8fa73ba9af88840e8b2ca3dade237e6bb97835cbd439ada511dd8",
+      "record": {
+        "timestamp": "2026-09-21T17:00:35.510Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c4e9-8d36-74e1-9f57-f3cdc5d215cb",
+          "call_id": "call_8bEnPKBvu0EJt5gK8JLJ12MR",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d27034\",\"wall_time_seconds\":0.121235,\"exit_code\":0,\"original_token_count\":1183,\"output\":\"Interpreter: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python 3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]\\nIdentical current test_windows.py SHA256: 48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e\\n\\nREVISION HEAD^ 9910b517fbdf67e0335ae7e92967de94be62d62a\\nCommitted windows.py SHA256: 591c87bd2b3c850384453e6acde2f319b6dc7463c7ab9468a20eabf8844bada8\\nLoaded windows module: <WORKSPACE>/.receipt-verify-ql1g1mfv/parent/windows.py\\nLoaded windows SHA256: 591c87bd2b3c850384453e6acde2f319b6dc7463c7ab9468a20eabf8844bada8\\nNative invocation: -B -m unittest -v test_windows (via runpy with assertion tracing)\\ntest_chain (test_windows.WindowsTests.test_chain) ... ASSERT test_windows.WindowsTests.test_chain assertEqual actual= [(1, 9)] expected= [(1, 9)]\\nok\\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ASSERT test_windows.WindowsTests.test_disjoint assertEqual actual= [(1, 3), (5, 7)] expected= [(1, 3), (5, 7)]\\nok\\ntest_empty (test_windows.WindowsTests.test_empty) ... ASSERT test_windows.WindowsTests.test_empty assertEqual actual= [] expected= []\\nok\\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ASSERT test_windows.WindowsTests.test_input_preserved assertEqual actual= [(5, 7), (1, 3)] expected= [(5, 7), (1, 3)]\\nASSERT test_windows.WindowsTests.test_input_preserved assertIsNot first= [(1, 3), (5, 7)] second= [(5, 7), (1, 3)] same_object= False\\nok\\ntest_nested (test_windows.WindowsTests.test_nested) ... ASSERT test_windows.WindowsTests.test_nested assertEqual actual= [(1, 3)] expected= [(1, 10)]\\nFAIL\\ntest_touching (test_windows.WindowsTests.test_touching) ... ASSERT test_windows.WindowsTests.test_touching assertEqual actual= [(1, 5)] expected= [(1, 5)]\\nok\\n\\n======================================================================\\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.receipt-verify-ql1g1mfv/parent/test_windows.py\\\", line 9, in test_nested\\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\\n\\nFirst differing element 0:\\n(1, 3)\\n(1, 10)\\n\\n- [(1, 3)]\\n?      ^\\n\\n+ [(1, 10)]\\n?      ^^\\n\\n\\n----------------------------------------------------------------------\\nRan 6 tests in 0.001s\\n\\nFAILED (failures=1)\\nNATIVE PROCESS EXIT: 1\\n\\nREVISION HEAD 1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24\\nCommitted windows.py SHA256: dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e\\nLoaded windows module: <WORKSPACE>/.receipt-verify-ql1g1mfv/head/windows.py\\nLoaded windows SHA256: dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e\\nNative invocation: -B -m unittest -v test_windows (via runpy with assertion tracing)\\ntest_chain (test_windows.WindowsTests.test_chain) ... ASSERT test_windows.WindowsTests.test_chain assertEqual actual= [(1, 9)] expected= [(1, 9)]\\nok\\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ASSERT test_windows.WindowsTests.test_disjoint assertEqual actual= [(1, 3), (5, 7)] expected= [(1, 3), (5, 7)]\\nok\\ntest_empty (test_windows.WindowsTests.test_empty) ... ASSERT test_windows.WindowsTests.test_empty assertEqual actual= [] expected= []\\nok\\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ASSERT test_windows.WindowsTests.test_input_preserved assertEqual actual= [(5, 7), (1, 3)] expected= [(5, 7), (1, 3)]\\nASSERT test_windows.WindowsTests.test_input_preserved assertIsNot first= [(1, 3), (5, 7)] second= [(5, 7), (1, 3)] same_object= False\\nok\\ntest_nested (test_windows.WindowsTests.test_nested) ... ASSERT test_windows.WindowsTests.test_nested assertEqual actual= [(1, 10)] expected= [(1, 10)]\\nok\\ntest_touching (test_windows.WindowsTests.test_touching) ... ASSERT test_windows.WindowsTests.test_touching assertEqual actual= [(1, 5)] expected= [(1, 5)]\\nok\\n\\n----------------------------------------------------------------------\\nRan 6 tests in 0.000s\\n\\nOK\\nNATIVE PROCESS EXIT: 0\\n\\nOriginal project bytes/modes and entries preserved: True\\nFINAL CHECK: ['git', 'diff', '--check'] EXIT: 0\\nFINAL CHECK: ['git', 'diff', '--', 'windows.py', 'test_windows.py'] EXIT: 0\\nFINAL CHECK: ['git', 'status', '--short'] EXIT: 0\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4e8-c4c6-7f00-baa8-f9fbd41ada2a",
+            "create_time": 1790010035.510649
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

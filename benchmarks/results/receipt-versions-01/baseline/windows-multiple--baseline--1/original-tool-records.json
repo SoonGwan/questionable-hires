@@ -1,0 +1,209 @@
+{
+  "session_id": "01a0c4eb-bfb9-71a0-af97-1ad40355385d",
+  "source_bytes": 125489,
+  "source_sha256": "712c49f8cf51e792b0ffa44b2f65bb3306ec7ae783b9e06d21af059ca10bef4e",
+  "source_lines": 39,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "7319a556c8b4d59c9230f5abc216e4bd8d36083d805efa1766286cd4e7902e8d",
+      "record": {
+        "timestamp": "2026-09-21T17:03:09.162Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_038fe1080ee1e6e5016ab1634b833887d0801959b4efeace59",
+          "status": "completed",
+          "call_id": "call_G49ygQ9qtmOIzVQs6qyemua3",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g '*windows*' -g '*verify*'; git status --short; git rev-parse HEAD~2 HEAD^ HEAD\",max_output_tokens:4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4eb-c002-7972-a64a-b5b0715240c0",
+            "create_time": 1790010181.77228
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "5aaeb26ebdaf3c919947398ca4303002bbedf3d95509f86076a9596095555bf8",
+      "record": {
+        "timestamp": "2026-09-21T17:03:09.333Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c4eb-e615-72a0-a207-62ee08623c95",
+          "call_id": "call_G49ygQ9qtmOIzVQs6qyemua3",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d5961f\",\"wall_time_seconds\":0.000002916,\"exit_code\":0,\"original_token_count\":75,\"output\":\"<WORKSPACE>\\ntest_windows.py\\nwindows.py\\nc4a41f0c97d598fb902f24be2b09ed8ddc602450\\n9910b517fbdf67e0335ae7e92967de94be62d62a\\n1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4eb-c002-7972-a64a-b5b0715240c0",
+            "create_time": 1790010189.333092
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "d8e174138e32b41f7dd54173a8746f6d77071dff6052d9a47adce0b4684c0131",
+      "record": {
+        "timestamp": "2026-09-21T17:03:12.388Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_038fe1080ee1e6e5016ab1634efcf087d0ae1acc549126537a",
+          "status": "completed",
+          "call_id": "call_hzo57uctX8JDpN4GyfHJzphH",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; cat test_windows.py; git diff HEAD~2 HEAD^ -- windows.py; git diff HEAD^ HEAD -- windows.py; cat windows.py\",max_output_tokens:6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4eb-c002-7972-a64a-b5b0715240c0",
+            "create_time": 1790010189.83806
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "673aaf4f0a5ece830d46b2983e0d7ac7339b3413508887e068fada6659f0c9d1",
+      "record": {
+        "timestamp": "2026-09-21T17:03:12.531Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c4eb-f293-7320-b65d-6f932a0aa985",
+          "call_id": "call_hzo57uctX8JDpN4GyfHJzphH",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"fbd0c2\",\"wall_time_seconds\":0.000001417,\"exit_code\":0,\"original_token_count\":583,\"output\":\"total 24\\ndrwxr-xr-x@  6 admin  staff  192 Sep 22 02:02 .\\ndrwxr-xr-x@  3 admin  staff   96 Sep 22 02:02 ..\\ndrwxr-xr-x@ 10 admin  staff  320 Sep 22 02:02 .git\\n-rw-r--r--@  1 admin  staff  350 Sep 22 02:02 README.md\\n-rw-r--r--@  1 admin  staff  771 Sep 22 02:02 test_windows.py\\n-rw-r--r--@  1 admin  staff  375 Sep 22 02:02 windows.py\\nimport unittest\\nfrom windows import merge_windows\\n\\nclass WindowsTests(unittest.TestCase):\\n    def test_touching(self):\\n        self.assertEqual(merge_windows([(1, 3), (3, 5)]), [(1, 5)])\\n\\n    def test_nested(self):\\n        self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\\n\\n    def test_chain(self):\\n        self.assertEqual(merge_windows([(7, 9), (1, 5), (4, 8)]), [(1, 9)])\\n\\n    def test_disjoint(self):\\n        self.assertEqual(merge_windows([(5, 7), (1, 3)]), [(1, 3), (5, 7)])\\n\\n    def test_empty(self):\\n        self.assertEqual(merge_windows([]), [])\\n\\n    def test_input_preserved(self):\\n        source = [(5, 7), (1, 3)]\\n        result = merge_windows(source)\\n        self.assertEqual(source, [(5, 7), (1, 3)])\\n        self.assertIsNot(result, source)\\ndiff --git a/windows.py b/windows.py\\nindex 4754afe..c5a9a4d 100644\\n--- a/windows.py\\n+++ b/windows.py\\n@@ -3,7 +3,7 @@ def merge_windows(windows):\\n     ordered = sorted(windows)\\n     result = []\\n     for start, end in ordered:\\n-        if result and start < result[-1][1]:\\n+        if result and start <= result[-1][1]:\\n             result[-1] = (result[-1][0], end)\\n         else:\\n             result.append((start, end))\\ndiff --git a/windows.py b/windows.py\\nindex c5a9a4d..39fbdd5 100644\\n--- a/windows.py\\n+++ b/windows.py\\n@@ -4,7 +4,7 @@ def merge_windows(windows):\\n     result = []\\n     for start, end in ordered:\\n         if result and start <= result[-1][1]:\\n-            result[-1] = (result[-1][0], end)\\n+            result[-1] = (result[-1][0], max(result[-1][1], end))\\n         else:\\n             result.append((start, end))\\n     return result\\ndef merge_windows(windows):\\n    \\\"\\\"\\\"Coalesce overlapping or touching half-open integer windows; preserve input.\\\"\\\"\\\"\\n    ordered = sorted(windows)\\n    result = []\\n    for start, end in ordered:\\n        if result and start <= result[-1][1]:\\n            result[-1] = (result[-1][0], max(result[-1][1], end))\\n        else:\\n            result.append((start, end))\\n    return result\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4eb-c002-7972-a64a-b5b0715240c0",
+            "create_time": 1790010192.53167
+          }
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "b649e7e3cc9fd57489ca46290c5fc04af6c424f5ee1c17feb09e03d6c35648b1",
+      "record": {
+        "timestamp": "2026-09-21T17:03:21.835Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_038fe1080ee1e6e5016ab16359b3e087d0be1f3a66ab791bf4",
+          "status": "completed",
+          "call_id": "call_w35YweZfPrMq4XyO3ip8BWp8",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat README.md; git log -3 --format='%H %s'\",max_output_tokens:2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4eb-c002-7972-a64a-b5b0715240c0",
+            "create_time": 1790010193.016718
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "0422d22bede36af01c9ce2e3fed5b68168d2aa9d3dfb610c4df6c34ea8687893",
+      "record": {
+        "timestamp": "2026-09-21T17:03:21.953Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c4ec-1761-7133-b002-9562e686d8e2",
+          "call_id": "call_w35YweZfPrMq4XyO3ip8BWp8",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3e0c04\",\"wall_time_seconds\":0.00000175,\"exit_code\":0,\"original_token_count\":138,\"output\":\"# Scheduling windows\\n\\nInput is a finite list of integer pairs (start, end), start < end. Return sorted, coalesced half-open windows, merging both overlaps and touching endpoints. Preserve the input. Empty input is valid. Other types and invalid intervals are out of scope.\\nNative suite: python3 -B -m unittest -v test_windows. Standard library only.\\n1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24 Preserve containing endpoints\\n9910b517fbdf67e0335ae7e92967de94be62d62a Coalesce touching windows\\nc4a41f0c97d598fb902f24be2b09ed8ddc602450 Add scheduling windows\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4eb-c002-7972-a64a-b5b0715240c0",
+            "create_time": 1790010201.953945
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "0527b94b70890412101635c172a21c7fc61173429a3f8e7bf254db411506f73a",
+      "record": {
+        "timestamp": "2026-09-21T17:03:48.915Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_038fe1080ee1e6e5016ab1635c1c2c87d085954f4c60eec4ba",
+          "status": "completed",
+          "call_id": "call_jrfFMeJcInYfnd1rJPWnh7Jx",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B - <<'PY'\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport stat\\nimport subprocess\\nimport sys\\nimport tempfile\\n\\nroot = Path.cwd()\\ndef snapshot():\\n    return {str(p.relative_to(root)): (p.read_bytes(), stat.S_IMODE(p.stat().st_mode))\\n            for p in root.rglob('*') if p.is_file()}\\nbefore = snapshot()\\ntest_bytes = (root / 'test_windows.py').read_bytes()\\nrunner = r'''\\nimport hashlib\\nfrom pathlib import Path\\nimport runpy\\nimport sys\\nimport windows\\nmodule_path = Path(windows.__file__).resolve()\\ntest_path = Path('test_windows.py').resolve()\\nprint('LOADED_WINDOWS=' + str(module_path), flush=True)\\nprint('WINDOWS_SHA256=' + hashlib.sha256(module_path.read_bytes()).hexdigest(), flush=True)\\nprint('TEST_SHA256=' + hashlib.sha256(test_path.read_bytes()).hexdigest(), flush=True)\\ndef trace(frame, event, arg):\\n    if event == 'call' and frame.f_back and frame.f_back.f_code.co_filename == str(test_path):\\n        name = frame.f_code.co_name\\n        if name in ('assertEqual', 'assertIsNot'):\\n            values = frame.f_locals\\n            first = values['first'] if name == 'assertEqual' else values['expr1']\\n            second = values['second'] if name == 'assertEqual' else values['expr2']\\n            detail = 'equal=' + str(first == second) if name == 'assertEqual' else 'same_object=' + str(first is second)\\n            print('ASSERT ' + frame.f_back.f_code.co_name + ' ' + name + ' actual=' + repr(first) + ' comparison=' + repr(second) + ' ' + detail, flush=True)\\n    return trace\\nsys.settrace(trace)\\nsys.argv = ['unittest', '-v', 'test_windows']\\nrunpy.run_module('unittest', run_name='__main__')\\n'''\\nscratch = Path(tempfile.mkdtemp(prefix='.window-verification-', dir=root))\\ntry:\\n    for revision, label in [('HEAD~2', 'head_minus_2'), ('HEAD^', 'head_parent'), ('HEAD', 'head')]:\\n        commit = subprocess.check_output(['git', 'rev-parse', revision], cwd=root, text=True).strip()\\n        module_bytes = subprocess.check_output(['git', 'show', commit + ':windows.py'], cwd=root)\\n        work = scratch / label\\n        work.mkdir()\\n        (work / 'windows.py').write_bytes(module_bytes)\\n        shutil.copy2(root / 'test_windows.py', work / 'test_windows.py')\\n        assert (work / 'test_windows.py').read_bytes() == test_bytes\\n        print('\\\\nREVISION=' + revision + ' COMMIT=' + commit, flush=True)\\n        print('EXPECTED_WINDOWS_SHA256=' + hashlib.sha256(module_bytes).hexdigest(), flush=True)\\n        result = subprocess.run([sys.executable, '-B', '-c', runner], cwd=work, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\\n        print(result.stdout, end='', flush=True)\\n        print('NATIVE_PROCESS_EXIT=' + str(result.returncode), flush=True)\\nfinally:\\n    shutil.rmtree(scratch)\\n    after = snapshot()\\n    assert before == after, 'Original file bytes/modes or file set changed'\\n    print('\\\\nCLEANUP: scratch removed; original file set, bytes, and modes unchanged.', flush=True)\\nPY\",max_output_tokens:6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4eb-c002-7972-a64a-b5b0715240c0",
+            "create_time": 1790010202.569094
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "989d237fe4957284184b94a5c7570f851ec863cd39408ac2f0c3098a3c76d4df",
+      "record": {
+        "timestamp": "2026-09-21T17:03:49.289Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c4ec-8229-7bc0-8684-aa50bc355ff2",
+          "call_id": "call_jrfFMeJcInYfnd1rJPWnh7Jx",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"5c9428\",\"wall_time_seconds\":0.1825405,\"exit_code\":0,\"original_token_count\":1783,\"output\":\"\\nREVISION=HEAD~2 COMMIT=c4a41f0c97d598fb902f24be2b09ed8ddc602450\\nEXPECTED_WINDOWS_SHA256=b49f03f9c3fce5958876efe2b46d83545c88966b29684448560d9eab449e8f51\\nLOADED_WINDOWS=<WORKSPACE>/.window-verification-m8ua7_3j/head_minus_2/windows.py\\nWINDOWS_SHA256=b49f03f9c3fce5958876efe2b46d83545c88966b29684448560d9eab449e8f51\\nTEST_SHA256=48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e\\ntest_chain (test_windows.WindowsTests.test_chain) ... ASSERT test_chain assertEqual actual=[(1, 9)] comparison=[(1, 9)] equal=True\\nok\\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ASSERT test_disjoint assertEqual actual=[(1, 3), (5, 7)] comparison=[(1, 3), (5, 7)] equal=True\\nok\\ntest_empty (test_windows.WindowsTests.test_empty) ... ASSERT test_empty assertEqual actual=[] comparison=[] equal=True\\nok\\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ASSERT test_input_preserved assertEqual actual=[(5, 7), (1, 3)] comparison=[(5, 7), (1, 3)] equal=True\\nASSERT test_input_preserved assertIsNot actual=[(1, 3), (5, 7)] comparison=[(5, 7), (1, 3)] same_object=False\\nok\\ntest_nested (test_windows.WindowsTests.test_nested) ... ASSERT test_nested assertEqual actual=[(1, 3)] comparison=[(1, 10)] equal=False\\nFAIL\\ntest_touching (test_windows.WindowsTests.test_touching) ... ASSERT test_touching assertEqual actual=[(1, 3), (3, 5)] comparison=[(1, 5)] equal=False\\nFAIL\\n\\n======================================================================\\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.window-verification-m8ua7_3j/head_minus_2/test_windows.py\\\", line 9, in test_nested\\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\\n\\nFirst differing element 0:\\n(1, 3)\\n(1, 10)\\n\\n- [(1, 3)]\\n?      ^\\n\\n+ [(1, 10)]\\n?      ^^\\n\\n\\n======================================================================\\nFAIL: test_touching (test_windows.WindowsTests.test_touching)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.window-verification-m8ua7_3j/head_minus_2/test_windows.py\\\", line 6, in test_touching\\n    self.assertEqual(merge_windows([(1, 3), (3, 5)]), [(1, 5)])\\nAssertionError: Lists differ: [(1, 3), (3, 5)] != [(1, 5)]\\n\\nFirst differing element 0:\\n(1, 3)\\n(1, 5)\\n\\nFirst list contains 1 additional elements.\\nFirst extra element 1:\\n(3, 5)\\n\\n- [(1, 3), (3, 5)]\\n+ [(1, 5)]\\n\\n----------------------------------------------------------------------\\nRan 6 tests in 0.001s\\n\\nFAILED (failures=2)\\nNATIVE_PROCESS_EXIT=1\\n\\nREVISION=HEAD^ COMMIT=9910b517fbdf67e0335ae7e92967de94be62d62a\\nEXPECTED_WINDOWS_SHA256=591c87bd2b3c850384453e6acde2f319b6dc7463c7ab9468a20eabf8844bada8\\nLOADED_WINDOWS=<WORKSPACE>/.window-verification-m8ua7_3j/head_parent/windows.py\\nWINDOWS_SHA256=591c87bd2b3c850384453e6acde2f319b6dc7463c7ab9468a20eabf8844bada8\\nTEST_SHA256=48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e\\ntest_chain (test_windows.WindowsTests.test_chain) ... ASSERT test_chain assertEqual actual=[(1, 9)] comparison=[(1, 9)] equal=True\\nok\\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ASSERT test_disjoint assertEqual actual=[(1, 3), (5, 7)] comparison=[(1, 3), (5, 7)] equal=True\\nok\\ntest_empty (test_windows.WindowsTests.test_empty) ... ASSERT test_empty assertEqual actual=[] comparison=[] equal=True\\nok\\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ASSERT test_input_preserved assertEqual actual=[(5, 7), (1, 3)] comparison=[(5, 7), (1, 3)] equal=True\\nASSERT test_input_preserved assertIsNot actual=[(1, 3), (5, 7)] comparison=[(5, 7), (1, 3)] same_object=False\\nok\\ntest_nested (test_windows.WindowsTests.test_nested) ... ASSERT test_nested assertEqual actual=[(1, 3)] comparison=[(1, 10)] equal=False\\nFAIL\\ntest_touching (test_windows.WindowsTests.test_touching) ... ASSERT test_touching assertEqual actual=[(1, 5)] comparison=[(1, 5)] equal=True\\nok\\n\\n======================================================================\\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.window-verification-m8ua7_3j/head_parent/test_windows.py\\\", line 9, in test_nested\\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\\n\\nFirst differing element 0:\\n(1, 3)\\n(1, 10)\\n\\n- [(1, 3)]\\n?      ^\\n\\n+ [(1, 10)]\\n?      ^^\\n\\n\\n----------------------------------------------------------------------\\nRan 6 tests in 0.001s\\n\\nFAILED (failures=1)\\nNATIVE_PROCESS_EXIT=1\\n\\nREVISION=HEAD COMMIT=1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24\\nEXPECTED_WINDOWS_SHA256=dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e\\nLOADED_WINDOWS=<WORKSPACE>/.window-verification-m8ua7_3j/head/windows.py\\nWINDOWS_SHA256=dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e\\nTEST_SHA256=48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e\\ntest_chain (test_windows.WindowsTests.test_chain) ... ASSERT test_chain assertEqual actual=[(1, 9)] comparison=[(1, 9)] equal=True\\nok\\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ASSERT test_disjoint assertEqual actual=[(1, 3), (5, 7)] comparison=[(1, 3), (5, 7)] equal=True\\nok\\ntest_empty (test_windows.WindowsTests.test_empty) ... ASSERT test_empty assertEqual actual=[] comparison=[] equal=True\\nok\\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ASSERT test_input_preserved assertEqual actual=[(5, 7), (1, 3)] comparison=[(5, 7), (1, 3)] equal=True\\nASSERT test_input_preserved assertIsNot actual=[(1, 3), (5, 7)] comparison=[(5, 7), (1, 3)] same_object=False\\nok\\ntest_nested (test_windows.WindowsTests.test_nested) ... ASSERT test_nested assertEqual actual=[(1, 10)] comparison=[(1, 10)] equal=True\\nok\\ntest_touching (test_windows.WindowsTests.test_touching) ... ASSERT test_touching assertEqual actual=[(1, 5)] comparison=[(1, 5)] equal=True\\nok\\n\\n----------------------------------------------------------------------\\nRan 6 tests in 0.000s\\n\\nOK\\nNATIVE_PROCESS_EXIT=0\\n\\nCLEANUP: scratch removed; original file set, bytes, and modes unchanged.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c4eb-c002-7972-a64a-b5b0715240c0",
+            "create_time": 1790010229.289568
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
