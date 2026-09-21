@@ -20,13 +20,14 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
-Capture checkpoint2026-09-21, resource`35bba0a`, launch`4f47d5b`:
+Reviewed checkpoint2026-09-21, resource`35bba0a`, launch`4f47d5b`:
 [effort × skill](EFFORT-FACTORIAL-01.md), all8complete. Actual model/effort and
 original usage reconcile; current costs more tokens on both tasks at both
-efforts. Full task/artifact review pending; baseline scope failures, input-error
-recovery and capture gaps retained. No default-effort or featured-chart change.
-한국어:8회 실행 완료. 낮은 추론 강도도 비용 문제를 해결하지 못했고 최종 품질
-검토는 진행 중이다. 범위 위반·복구 비용·캡처 제한을 모두 보존한다.
+efforts. Functional/artifact criteria hold in all8; both SQLite baselines fail
+scope. Extra work, input-error recovery, capture gaps and separately labeled
+author sensitivity checks retained. No default-effort or featured-chart change.
+한국어:8회 상세 검토 완료. 낮은 추론 강도도 비용 문제를 해결하지 못했다.
+기능 기준은 충족했지만 범위 위반·복구 비용·추가 검사 차이를 함께 공개한다.
 
 Reviewed checkpoint2026-09-21: [ancestry scope](ANCESTRY-SCOPE-01.md), all6
 complete; all arms5/5 history and4/4 current-only. Current versus prior history
