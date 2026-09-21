@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Checkpoint **2026-09-21, ZIP candidate `ac108f5`, launch `0807814`**.
+Checkpoint **2026-09-21, all-eight bundle `0d12dd9`, launch `c2a0748`**.
 The earlier measured section-read candidate remains withdrawn, not relabeled.
 This is a decision index, not a new
 measurement. [Full chronological history](CANDIDATE-HISTORY-2026-09-21.md) preserves
@@ -20,12 +20,14 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
-Captured2026-09-21: [all-eight regression04](results/all-eight-current-04/README.md)
-retains all16 complete cells at bundle`0d12dd9`, launch`c2a0748`. Original records,
-usage and final artifact checks are retained. Full behavioral review is pending;
-Receipt source-output truncation, Hostage empty-output ambiguity and SQLite
-baseline scope violation are disclosed. No performance promotion or chart change.
-한국어:16회 실측과 원본 보존 완료. 전체 행동 검토 전이며 성능 개선으로 채택하지 않는다.
+Reviewed2026-09-21: [all-eight regression04](ALL-EIGHT-CURRENT-04-REVIEW.md)
+retains all16 complete cells at bundle`0d12dd9`, launch`c2a0748`. Functional/artifact
+obligations hold in both arms; including scope gives baseline7/8,current8/8
+because baseline SQLite searches outside the project. Summed tokens+20.39%,
+time−5.17%; efficiency target unmet. Original capture limitations, recovery,
+extra work and separate author native controls remain disclosed. No chart change.
+한국어:16회 상세 검토 완료. 범위 포함7/8 대8/8이나 일반 품질 우위로 주장하지 않는다.
+합산 토큰20.39% 증가·시간5.17% 감소로 비용 목표에는 미달했다.
 
 Local correction2026-09-21, parent`d5eab87`: [native exit consistency](AUDIT-EXIT-CONSISTENCY-01.md)
 reproduces two shutdown/result contradictions before the fix and now stops them

@@ -1,5 +1,11 @@
 # Current eight-role regression04: original evidence
 
+Subsequent [behavioral review](../../ALL-EIGHT-CURRENT-04-REVIEW.md) is complete.
+The capture-stage wording below remains historical. Functional/artifact criteria
+hold in both arms; scope-inclusive counts are baseline7/8,current8/8. Summed
+tokens+20.39%, time−5.17%; no efficiency promotion. Separate post-timing
+`author-native-replays.json` is not original model work.
+
 2026-09-21, resource`0d12dd9`, launch`c2a0748`.
 [Frozen protocol](../../ALL-EIGHT-CURRENT-04-PROTOCOL.md) ·
 [native preparation](../all-eight-current-04-preflight/README.md).
