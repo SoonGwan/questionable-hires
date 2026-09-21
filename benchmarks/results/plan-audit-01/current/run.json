@@ -1,0 +1,235 @@
+{
+  "cases": [
+    {
+      "id": "plan-audit-proposals",
+      "skill": "con-artist",
+      "files": {
+        "build_plan.py": "def plan(dependencies):\n    remaining = {name: set(parents) for name, parents in dependencies.items()}\n    ready = [name for name, parents in remaining.items() if not parents]\n    order = []\n    while ready:\n        name = ready.pop(0)\n        order.append(name)\n        del remaining[name]\n        for child, parents in remaining.items():\n            parents.discard(name)\n            if not parents and child not in ready:\n                ready.append(child)\n    if remaining:\n        raise ValueError(\"dependency cycle\")\n    return order\n",
+        "test_plan.py": "import unittest\nfrom build_plan import plan\n\nclass PlanTests(unittest.TestCase):\n    def test_chain(self):\n        graph = {\"ship\": [\"compile\"], \"compile\": [\"fetch\"], \"fetch\": []}\n        result = plan(graph)\n        self.assertEqual(len(result), 3)\n        self.assertEqual(set(result), {\"fetch\", \"compile\", \"ship\"})\n\n    def test_cycle(self):\n        with self.assertRaisesRegex(ValueError, \"dependency cycle\"):\n            plan({\"a\": [\"b\"], \"b\": [\"a\"]})\n\n    def test_independent_nodes(self):\n        self.assertEqual(set(plan({\"a\": [], \"b\": []})), {\"a\", \"b\"})\n        self.assertEqual(plan({}), [])\n",
+        "CONTRACT.md": "plan takes a dict of unique string task IDs to lists of unique prerequisite IDs, all present as keys. Return each task exactly once with every prerequisite before its dependent. Any valid order for independent tasks is allowed. An empty graph returns []. A cycle raises ValueError with message dependency cycle. Never mutate the supplied dict or its lists, including on failure. Inputs outside this domain, concurrency, large-graph performance and scheduling execution are outside the task.\n",
+        "AGENTS.md": "Audit only. Preserve every original file byte and mode; do not implement a production or test fix. Use disposable copies inside this project, remove your own copies afterward, and retain no extra harness/report. No dependencies, network, commits or discovery outside the project. Use python3 -B -m unittest <selector> -v from each copy root and establish which local implementation the actual native tests exercise.\n"
+      },
+      "task": "Audit test_plan.PlanTests.test_chain and test_plan.PlanTests.test_cycle against three independent regressions in build_plan.plan: (1) reverse the complete returned order of an acyclic graph, (2) clear each caller-owned prerequisite list after copying it into internal working sets while preserving the returned schedule and cycle detection, (3) return the partial order instead of raising when a cycle remains. Change only plan in each disposable variant, keep faults separate, and do not rewrite test bodies. For all six fault/test combinations run the unchanged native tests, show correct-code success and faulty outcomes, explain detecting assertions or surviving gaps, and distinguish setup errors from behavioral detection. Suggest concrete contract-distinguishing assertions for uncovered behavior; do not claim existing tests prove the full contract. Matching correct-code observations may be reused if you identify reuse. Tool choice and grouping are yours. Follow AGENTS.md.",
+      "criteria": [
+        "Both selected unchanged test bodies have passing correct-code observations tied to the actual copied implementation.",
+        "Three separate semantic faults match the specified regressions, confined to plan; setup errors are not detection.",
+        "All six actual native fault/test outcomes are correctly explained, with reused observations identified.",
+        "Concrete stronger assertions cover missing order and input-preservation behavior without claiming unexecuted repairs verified.",
+        "Original bytes/modes are preserved; scoped owned scratch is removed; no production/test fix or permanent artifact."
+      ]
+    },
+    {
+      "id": "plan-audit-verified",
+      "skill": "con-artist",
+      "files": {
+        "build_plan.py": "def plan(dependencies):\n    remaining = {name: set(parents) for name, parents in dependencies.items()}\n    ready = [name for name, parents in remaining.items() if not parents]\n    order = []\n    while ready:\n        name = ready.pop(0)\n        order.append(name)\n        del remaining[name]\n        for child, parents in remaining.items():\n            parents.discard(name)\n            if not parents and child not in ready:\n                ready.append(child)\n    if remaining:\n        raise ValueError(\"dependency cycle\")\n    return order\n",
+        "test_plan.py": "import unittest\nfrom build_plan import plan\n\nclass PlanTests(unittest.TestCase):\n    def test_chain(self):\n        graph = {\"ship\": [\"compile\"], \"compile\": [\"fetch\"], \"fetch\": []}\n        result = plan(graph)\n        self.assertEqual(len(result), 3)\n        self.assertEqual(set(result), {\"fetch\", \"compile\", \"ship\"})\n\n    def test_cycle(self):\n        with self.assertRaisesRegex(ValueError, \"dependency cycle\"):\n            plan({\"a\": [\"b\"], \"b\": [\"a\"]})\n\n    def test_independent_nodes(self):\n        self.assertEqual(set(plan({\"a\": [], \"b\": []})), {\"a\", \"b\"})\n        self.assertEqual(plan({}), [])\n",
+        "CONTRACT.md": "plan takes a dict of unique string task IDs to lists of unique prerequisite IDs, all present as keys. Return each task exactly once with every prerequisite before its dependent. Any valid order for independent tasks is allowed. An empty graph returns []. A cycle raises ValueError with message dependency cycle. Never mutate the supplied dict or its lists, including on failure. Inputs outside this domain, concurrency, large-graph performance and scheduling execution are outside the task.\n",
+        "AGENTS.md": "Audit only. Preserve every original file byte and mode; do not implement a production or test fix. Use disposable copies inside this project, remove your own copies afterward, and retain no extra harness/report. No dependencies, network, commits or discovery outside the project. Use python3 -B -m unittest <selector> -v from each copy root and establish which local implementation the actual native tests exercise.\n"
+      },
+      "task": "Audit test_plan.PlanTests.test_chain and test_plan.PlanTests.test_cycle against three independent regressions in build_plan.plan: (1) reverse the complete returned order of an acyclic graph, (2) clear each caller-owned prerequisite list after copying it into internal working sets while preserving the returned schedule and cycle detection, (3) return the partial order instead of raising when a cycle remains. Change only plan in each disposable variant, keep faults separate, and do not rewrite test bodies. For all six fault/test combinations run the unchanged native tests, show correct-code success and faulty outcomes, explain detecting assertions or surviving gaps, and distinguish setup errors from behavioral detection. Suggest concrete contract-distinguishing assertions for uncovered behavior; do not claim existing tests prove the full contract. Matching correct-code observations may be reused if you identify reuse. Tool choice and grouping are yours. Follow AGENTS.md. Also verify the proposed stronger assertions on correct and corresponding faulty copies. Cover both missing ordering and caller-input preservation, including preservation when cycle detection raises. Report genuine passing-correct/failing-faulty outcomes for each assertion. Keep extra tests only in disposable copies; an unexecuted suggestion does not fulfill this additional request.",
+      "criteria": [
+        "Both selected unchanged test bodies have passing correct-code observations tied to the actual copied implementation.",
+        "Three separate semantic faults match the specified regressions, confined to plan; setup errors are not detection.",
+        "All six actual native fault/test outcomes are correctly explained, with reused observations identified.",
+        "Concrete stronger assertions cover missing order and input-preservation behavior without claiming unexecuted repairs verified.",
+        "Original bytes/modes are preserved; scoped owned scratch is removed; no production/test fix or permanent artifact.",
+        "Stronger ordering and input-preservation assertions (acyclic and cyclic inputs) actually pass correct code and fail the corresponding fault for the intended reason."
+      ]
+    }
+  ],
+  "identities": {
+    "benchmarks/run_plan_audit_01.py": "988dce03bd0e906a9f60a22aafa5643e4c67c2019f726ec08c01eba61a9f4592",
+    "benchmarks/plan_audit_cases.py": "abdb361f4d39906540d31751d0ce9e4ecb75466c51c83a0c4dab049f77aba98d",
+    "benchmarks/run_cachetools_audit_01.py": "7d0f314123613b93838044c3277edb4014497205ac9c9eb1d1af385a52747632",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "benchmarks/PLAN-AUDIT-01-PROTOCOL.md": "14d5a0e7d160fba7dca60ea421b34acdabc9f65f93b02c57319b73c464aafe98",
+    "tests/test_plan_audit_runner.py": "15176a7b5e0d173f56158491402fd99662c30d1d89584218fea62b168fb800e8"
+  },
+  "schedule": [
+    [
+      0,
+      "baseline"
+    ],
+    [
+      0,
+      "prior"
+    ],
+    [
+      0,
+      "current"
+    ],
+    [
+      1,
+      "current"
+    ],
+    [
+      1,
+      "prior"
+    ],
+    [
+      1,
+      "baseline"
+    ]
+  ],
+  "resource_revisions": {
+    "prior": "740948e1ce55c8abe9acb6fc9cf2bc69547766d1",
+    "current": "a3dee3b13db494aa269753fc6fa0fd72e16dcd8f"
+  },
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "prior": "031448753fbee818e1655e377904c34786a40cfeb5453673b7c8afc7cd54b926",
+    "current": "87f800f12f8803d402fdc18b34c3c706fef74e8d57fc6bfb5ac0a68e4eeb3852"
+  },
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "repeats": 1,
+    "jobs": 1
+  },
+  "python_version": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "native_preflight": [
+    {
+      "variant": "correct",
+      "selected": [
+        {
+          "selector": "test_plan.PlanTests.test_chain",
+          "exit_code": 0,
+          "output": "test_chain (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_plan.PlanTests.test_cycle",
+          "exit_code": 0,
+          "output": "test_cycle (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness",
+        "exit_code": 0,
+        "output": "test_cycle (test_witness.Witnesses) ... ok\ntest_cycle_preservation (test_witness.Witnesses) ... ok\ntest_order (test_witness.Witnesses) ... ok\ntest_preservation (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+      },
+      "cycle_preservation": {
+        "selector": "test_witness.Witnesses.test_cycle_preservation",
+        "exit_code": 0,
+        "output": "test_cycle_preservation (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "native_controls": {
+        "selector": "test_plan",
+        "exit_code": 0,
+        "output": "test_chain (test_plan.PlanTests) ... ok\ntest_cycle (test_plan.PlanTests) ... ok\ntest_independent_nodes (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+      }
+    },
+    {
+      "variant": "equivalent",
+      "selected": [
+        {
+          "selector": "test_plan.PlanTests.test_chain",
+          "exit_code": 0,
+          "output": "test_chain (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_plan.PlanTests.test_cycle",
+          "exit_code": 0,
+          "output": "test_cycle (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness",
+        "exit_code": 0,
+        "output": "test_cycle (test_witness.Witnesses) ... ok\ntest_cycle_preservation (test_witness.Witnesses) ... ok\ntest_order (test_witness.Witnesses) ... ok\ntest_preservation (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+      },
+      "cycle_preservation": {
+        "selector": "test_witness.Witnesses.test_cycle_preservation",
+        "exit_code": 0,
+        "output": "test_cycle_preservation (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "native_controls": {
+        "selector": "test_plan",
+        "exit_code": 0,
+        "output": "test_chain (test_plan.PlanTests) ... ok\ntest_cycle (test_plan.PlanTests) ... ok\ntest_independent_nodes (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+      }
+    },
+    {
+      "variant": "reversed-order",
+      "selected": [
+        {
+          "selector": "test_plan.PlanTests.test_chain",
+          "exit_code": 0,
+          "output": "test_chain (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_plan.PlanTests.test_cycle",
+          "exit_code": 0,
+          "output": "test_cycle (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_order",
+        "exit_code": 1,
+        "output": "test_order (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_order (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 7, in test_order\n    self.assertEqual(plan({\"ship\": [\"compile\"], \"compile\": [\"fetch\"], \"fetch\": []}),\nAssertionError: Lists differ: ['ship', 'compile', 'fetch'] != ['fetch', 'compile', 'ship']\n\nFirst differing element 0:\n'ship'\n'fetch'\n\n- ['ship', 'compile', 'fetch']\n?   ^ --               ^^^^\n\n+ ['fetch', 'compile', 'ship']\n?   ^^^^                ^ ++\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "cycle_preservation": {
+        "selector": "test_witness.Witnesses.test_cycle_preservation",
+        "exit_code": 0,
+        "output": "test_cycle_preservation (test_witness.Witnesses) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      "native_controls": null
+    },
+    {
+      "variant": "input-mutation",
+      "selected": [
+        {
+          "selector": "test_plan.PlanTests.test_chain",
+          "exit_code": 0,
+          "output": "test_chain (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_plan.PlanTests.test_cycle",
+          "exit_code": 0,
+          "output": "test_cycle (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_preservation",
+        "exit_code": 1,
+        "output": "test_preservation (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_preservation (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 14, in test_preservation\n    self.assertEqual(graph, before)\nAssertionError: {'ship': [], 'compile': [], 'fetch': []} != {'ship': ['compile'], 'compile': ['fetch'], 'fetch': []}\n- {'compile': [], 'fetch': [], 'ship': []}\n+ {'compile': ['fetch'], 'fetch': [], 'ship': ['compile']}\n?              +++++++                         +++++++++\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "cycle_preservation": {
+        "selector": "test_witness.Witnesses.test_cycle_preservation",
+        "exit_code": 1,
+        "output": "test_cycle_preservation (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_cycle_preservation (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 25, in test_cycle_preservation\n    self.assertEqual(graph, before)\nAssertionError: {'a': [], 'b': []} != {'a': ['b'], 'b': ['a']}\n- {'a': [], 'b': []}\n+ {'a': ['b'], 'b': ['a']}\n?        +++         +++\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "native_controls": null
+    },
+    {
+      "variant": "cycle-accepted",
+      "selected": [
+        {
+          "selector": "test_plan.PlanTests.test_chain",
+          "exit_code": 0,
+          "output": "test_chain (test_plan.PlanTests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "test_plan.PlanTests.test_cycle",
+          "exit_code": 1,
+          "output": "test_cycle (test_plan.PlanTests) ... FAIL\n\n======================================================================\nFAIL: test_cycle (test_plan.PlanTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 13, in test_cycle\n    plan({\"a\": [\"b\"], \"b\": [\"a\"]})\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        }
+      ],
+      "witness": {
+        "selector": "test_witness.Witnesses.test_cycle",
+        "exit_code": 1,
+        "output": "test_cycle (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_cycle (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 18, in test_cycle\n    plan({\"a\": [\"b\"], \"b\": [\"a\"]})\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "cycle_preservation": {
+        "selector": "test_witness.Witnesses.test_cycle_preservation",
+        "exit_code": 1,
+        "output": "test_cycle_preservation (test_witness.Witnesses) ... FAIL\n\n======================================================================\nFAIL: test_cycle_preservation (test_witness.Witnesses)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 24, in test_cycle_preservation\n    plan(graph)\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      },
+      "native_controls": null
+    }
+  ],
+  "completed_cells": [],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T06:31:27.733945+00:00"
+}

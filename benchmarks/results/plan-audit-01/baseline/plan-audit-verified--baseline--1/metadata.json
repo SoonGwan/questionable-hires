@@ -1,0 +1,54 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "plan-audit-verified",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "43f2569d0a7bc175b6f3bab97937aa9b485845ab",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 86.752,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 83343,
+    "cached_input_tokens": 74240,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2397,
+    "reasoning_output_tokens": 180
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Audit test_plan.PlanTests.test_chain and test_plan.PlanTests.test_cycle against three independent regressions in build_plan.plan: (1) reverse the complete returned order of an acyclic graph, (2) clear each caller-owned prerequisite list after copying it into internal working sets while preserving the returned schedule and cycle detection, (3) return the partial order instead of raising when a cycle remains. Change only plan in each disposable variant, keep faults separate, and do not rewrite test bodies. For all six fault/test combinations run the unchanged native tests, show correct-code success and faulty outcomes, explain detecting assertions or surviving gaps, and distinguish setup errors from behavioral detection. Suggest concrete contract-distinguishing assertions for uncovered behavior; do not claim existing tests prove the full contract. Matching correct-code observations may be reused if you identify reuse. Tool choice and grouping are yours. Follow AGENTS.md. Also verify the proposed stronger assertions on correct and corresponding faulty copies. Cover both missing ordering and caller-input preservation, including preservation when cycle detection raises. Report genuine passing-correct/failing-faulty outcomes for each assertion. Keep extra tests only in disposable copies; an unexecuted suggestion does not fulfill this additional request.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 377,
+    "mode": 420,
+    "sha256": "bdbdfe134d17067b1d8ff1faa3e6b9eab6341c8b070bf77d6d01f6356290cc10",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

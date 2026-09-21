@@ -1,0 +1,209 @@
+{
+  "session_id": "01a0c2b1-027c-7030-9111-3e31f5df4683",
+  "source_bytes": 143357,
+  "source_sha256": "d40cbdc3e9792eb9d3f0209f1bf71366c75cb0983ccadfe24e453ea5caa465dc",
+  "source_lines": 43,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "2de329d628a88eb368c415ed338a37a4ca72fcd2b9113252f6d598729b4915d1",
+      "record": {
+        "timestamp": "2026-09-21T06:39:41.574Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b3b63e2343a7b52016ab0d12e6f7c87d0a31df09876e7197a",
+          "status": "completed",
+          "call_id": "call_UKI9sW39fOGnQwkkxa7P8XPg",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '! .git' -g '!*pyc'\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2b1-02bf-77e0-91a1-05dc07cc8373",
+            "create_time": 1789972779.956414
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "57b902491b95887377d77e93e7a8b29e49c416ad8f53f55639d6cfbba1f7cb3d",
+      "record": {
+        "timestamp": "2026-09-21T06:39:41.745Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c2b1-1ab1-7070-a857-0f07d0ece703",
+          "call_id": "call_UKI9sW39fOGnQwkkxa7P8XPg",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"900457\",\"wall_time_seconds\":0.00000275,\"exit_code\":0,\"original_token_count\":33,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nCONTRACT.md\\nbuild_plan.py\\ntest_plan.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2b1-02bf-77e0-91a1-05dc07cc8373",
+            "create_time": 1789972781.745183
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "59823f485e0bc93230c88d63485e33bb15cf485ab258dd0370f40d190b5ba835",
+      "record": {
+        "timestamp": "2026-09-21T06:39:44.403Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b3b63e2343a7b52016ab0d131759887d0985e738f9c038478",
+          "status": "completed",
+          "call_id": "call_4nbd42Dnf1ZaJH9E117kugxy",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md CONTRACT.md build_plan.py test_plan.py\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2b1-02bf-77e0-91a1-05dc07cc8373",
+            "create_time": 1789972784.251788
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "1c2729f8e1cef362e75543f6bbcb8e08621e36507a92810036d5162ec1ead864",
+      "record": {
+        "timestamp": "2026-09-21T06:39:44.548Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c2b1-25a4-7900-bc22-bb9f8f94eb7e",
+          "call_id": "call_4nbd42Dnf1ZaJH9E117kugxy",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"58fa58\",\"wall_time_seconds\":0.000003458,\"exit_code\":0,\"original_token_count\":513,\"output\":\"Audit only. Preserve every original file byte and mode; do not implement a production or test fix. Use disposable copies inside this project, remove your own copies afterward, and retain no extra harness/report. No dependencies, network, commits or discovery outside the project. Use python3 -B -m unittest <selector> -v from each copy root and establish which local implementation the actual native tests exercise.\\nplan takes a dict of unique string task IDs to lists of unique prerequisite IDs, all present as keys. Return each task exactly once with every prerequisite before its dependent. Any valid order for independent tasks is allowed. An empty graph returns []. A cycle raises ValueError with message dependency cycle. Never mutate the supplied dict or its lists, including on failure. Inputs outside this domain, concurrency, large-graph performance and scheduling execution are outside the task.\\ndef plan(dependencies):\\n    remaining = {name: set(parents) for name, parents in dependencies.items()}\\n    ready = [name for name, parents in remaining.items() if not parents]\\n    order = []\\n    while ready:\\n        name = ready.pop(0)\\n        order.append(name)\\n        del remaining[name]\\n        for child, parents in remaining.items():\\n            parents.discard(name)\\n            if not parents and child not in ready:\\n                ready.append(child)\\n    if remaining:\\n        raise ValueError(\\\"dependency cycle\\\")\\n    return order\\nimport unittest\\nfrom build_plan import plan\\n\\nclass PlanTests(unittest.TestCase):\\n    def test_chain(self):\\n        graph = {\\\"ship\\\": [\\\"compile\\\"], \\\"compile\\\": [\\\"fetch\\\"], \\\"fetch\\\": []}\\n        result = plan(graph)\\n        self.assertEqual(len(result), 3)\\n        self.assertEqual(set(result), {\\\"fetch\\\", \\\"compile\\\", \\\"ship\\\"})\\n\\n    def test_cycle(self):\\n        with self.assertRaisesRegex(ValueError, \\\"dependency cycle\\\"):\\n            plan({\\\"a\\\": [\\\"b\\\"], \\\"b\\\": [\\\"a\\\"]})\\n\\n    def test_independent_nodes(self):\\n        self.assertEqual(set(plan({\\\"a\\\": [], \\\"b\\\": []})), {\\\"a\\\", \\\"b\\\"})\\n        self.assertEqual(plan({}), [])\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2b1-02bf-77e0-91a1-05dc07cc8373",
+            "create_time": 1789972784.54802
+          }
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "e6c4a959bb8f7f11ea04e56700ea2311d2194d0aba7bbec6095aa451173dc430",
+      "record": {
+        "timestamp": "2026-09-21T06:39:53.071Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b3b63e2343a7b52016ab0d138fee487d0afa4eeab6a157ba6",
+          "status": "completed",
+          "call_id": "call_geHp8iIQkRGKt5l5U0CpWLCH",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"rg --files --hidden; nl -ba build_plan.py; nl -ba test_plan.py\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2b1-02bf-77e0-91a1-05dc07cc8373",
+            "create_time": 1789972787.242723
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "5f810f9acc894ce900ba6f0551dd6dd1ed3d0970dd2a386aae71d017b995c068",
+      "record": {
+        "timestamp": "2026-09-21T06:39:53.168Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c2b1-4750-7950-a025-36b2c062b1c6",
+          "call_id": "call_geHp8iIQkRGKt5l5U0CpWLCH",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"76b854\",\"wall_time_seconds\":0.000001667,\"exit_code\":0,\"original_token_count\":466,\"output\":\".git/COMMIT_EDITMSG\\n.git/index\\n.git/refs/heads/main\\n.git/logs/refs/heads/main\\n.git/logs/HEAD\\n.git/HEAD\\n.git/objects/1c/351f64962530413b89c46529ee9d20f6c0f316\\n.git/objects/70/168beb6965c8965354778bb6f7bcfe87d7271f\\n.git/objects/a9/50e5bd4fffd196e41e9510bc06a42ec1e7ece9\\n.git/objects/43/f2569d0a7bc175b6f3bab97937aa9b485845ab\\n.git/objects/27/06727952a617f3381952cd9aabf7e6e3517c28\\n.git/objects/bb/1de3b8628954b3d12f8382dd7c54fd8a08b2f0\\n.git/config\\nAGENTS.md\\nCONTRACT.md\\nbuild_plan.py\\ntest_plan.py\\n     1\\tdef plan(dependencies):\\n     2\\t    remaining = {name: set(parents) for name, parents in dependencies.items()}\\n     3\\t    ready = [name for name, parents in remaining.items() if not parents]\\n     4\\t    order = []\\n     5\\t    while ready:\\n     6\\t        name = ready.pop(0)\\n     7\\t        order.append(name)\\n     8\\t        del remaining[name]\\n     9\\t        for child, parents in remaining.items():\\n    10\\t            parents.discard(name)\\n    11\\t            if not parents and child not in ready:\\n    12\\t                ready.append(child)\\n    13\\t    if remaining:\\n    14\\t        raise ValueError(\\\"dependency cycle\\\")\\n    15\\t    return order\\n     1\\timport unittest\\n     2\\tfrom build_plan import plan\\n     3\\t\\n     4\\tclass PlanTests(unittest.TestCase):\\n     5\\t    def test_chain(self):\\n     6\\t        graph = {\\\"ship\\\": [\\\"compile\\\"], \\\"compile\\\": [\\\"fetch\\\"], \\\"fetch\\\": []}\\n     7\\t        result = plan(graph)\\n     8\\t        self.assertEqual(len(result), 3)\\n     9\\t        self.assertEqual(set(result), {\\\"fetch\\\", \\\"compile\\\", \\\"ship\\\"})\\n    10\\t\\n    11\\t    def test_cycle(self):\\n    12\\t        with self.assertRaisesRegex(ValueError, \\\"dependency cycle\\\"):\\n    13\\t            plan({\\\"a\\\": [\\\"b\\\"], \\\"b\\\": [\\\"a\\\"]})\\n    14\\t\\n    15\\t    def test_independent_nodes(self):\\n    16\\t        self.assertEqual(set(plan({\\\"a\\\": [], \\\"b\\\": []})), {\\\"a\\\", \\\"b\\\"})\\n    17\\t        self.assertEqual(plan({}), [])\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2b1-02bf-77e0-91a1-05dc07cc8373",
+            "create_time": 1789972793.16881
+          }
+        }
+      }
+    },
+    {
+      "line": 34,
+      "line_sha256": "c561d237576ef453daa47b49f77591ead7330ce47552138308a254938c48e493",
+      "record": {
+        "timestamp": "2026-09-21T06:40:40.449Z",
+        "ordinal": 33,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b3b63e2343a7b52016ab0d140713487d0b1da6107b8d8d5b3",
+          "status": "completed",
+          "call_id": "call_ibGUBTJqEsI0Exar28TFwthr",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport ast\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport stat\\nimport subprocess\\nimport tempfile\\n\\nroot = Path.cwd()\\ndef snapshot():\\n    result = {}\\n    for p in root.rglob('*'):\\n        s = p.lstat()\\n        rel = str(p.relative_to(root))\\n        if p.is_symlink():\\n            result[rel] = ('link', stat.S_IMODE(s.st_mode), os.readlink(p))\\n        elif p.is_file():\\n            result[rel] = ('file', stat.S_IMODE(s.st_mode), p.read_bytes())\\n        else:\\n            result[rel] = ('dir', stat.S_IMODE(s.st_mode))\\n    return result\\nbefore = snapshot()\\nsource = (root / 'build_plan.py').read_text()\\nvariants = {\\n    'correct': source,\\n    'reverse': source.replace('    return order\\\\n', '    return order[::-1]\\\\n'),\\n    'clear_inputs': source.replace('    ready =', '    for parents in dependencies.values():\\\\n        parents.clear()\\\\n    ready =', 1),\\n    'partial_cycle': source.replace('        raise ValueError(\\\"dependency cycle\\\")', '        return order'),\\n}\\nstrong = '''import unittest\\nfrom build_plan import plan\\n\\nclass StrongTests(unittest.TestCase):\\n    def test_chain_order(self):\\n        graph = {\\\"ship\\\": [\\\"compile\\\"], \\\"compile\\\": [\\\"fetch\\\"], \\\"fetch\\\": []}\\n        result = plan(graph)\\n        self.assertEqual(result, [\\\"fetch\\\", \\\"compile\\\", \\\"ship\\\"])\\n\\n    def test_input_preserved_success(self):\\n        graph = {\\\"ship\\\": [\\\"compile\\\"], \\\"compile\\\": [\\\"fetch\\\"], \\\"fetch\\\": []}\\n        before = {name: parents[:] for name, parents in graph.items()}\\n        aliases = dict(graph)\\n        result = plan(graph)\\n        self.assertEqual(result, [\\\"fetch\\\", \\\"compile\\\", \\\"ship\\\"])\\n        self.assertEqual(graph, before)\\n        for name in before:\\n            self.assertIs(graph[name], aliases[name])\\n            self.assertEqual(aliases[name], before[name])\\n\\n    def test_input_preserved_cycle(self):\\n        graph = {\\\"a\\\": [\\\"b\\\"], \\\"b\\\": [\\\"a\\\"]}\\n        before = {name: parents[:] for name, parents in graph.items()}\\n        aliases = dict(graph)\\n        with self.assertRaisesRegex(ValueError, \\\"^dependency cycle$\\\"):\\n            plan(graph)\\n        self.assertEqual(graph, before)\\n        for name in before:\\n            self.assertIs(graph[name], aliases[name])\\n            self.assertEqual(aliases[name], before[name])\\n'''\\nidentity = '''import pathlib, inspect, test_plan, build_plan\\nroot = pathlib.Path.cwd().resolve()\\nassert pathlib.Path(test_plan.__file__).resolve() == root / 'test_plan.py'\\nassert pathlib.Path(build_plan.__file__).resolve() == root / 'build_plan.py'\\nassert test_plan.plan is build_plan.plan\\nassert pathlib.Path(inspect.getsourcefile(test_plan.plan)).resolve() == root / 'build_plan.py'\\nprint('NATIVE BINDING:', test_plan.__file__, '->', inspect.getsourcefile(test_plan.plan), flush=True)\\n'''\\nwork = Path(tempfile.mkdtemp(prefix='.audit-', dir=root))\\ntry:\\n    for label, code in variants.items():\\n        tree = ast.parse(code)\\n        assert len(tree.body) == 1 and isinstance(tree.body[0], ast.FunctionDef) and tree.body[0].name == 'plan'\\n        copy = work / label\\n        copy.mkdir()\\n        for name in ('AGENTS.md', 'CONTRACT.md', 'build_plan.py', 'test_plan.py'):\\n            shutil.copy2(root / name, copy / name)\\n        (copy / 'build_plan.py').write_text(code)\\n        assert (copy / 'test_plan.py').read_bytes() == (root / 'test_plan.py').read_bytes()\\n        print('\\\\nVARIANT', label, 'implementation SHA256', hashlib.sha256(code.encode()).hexdigest(), flush=True)\\n        proc = subprocess.run(['python3', '-B', '-c', identity], cwd=copy, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)\\n        print(proc.stdout, end='', flush=True)\\n        assert proc.returncode == 0, 'setup/binding error'\\n        for method in ('test_chain', 'test_cycle'):\\n            selector = 'test_plan.PlanTests.' + method\\n            print('RUN', label, 'python3 -B -m unittest', selector, '-v', flush=True)\\n            proc = subprocess.run(['python3', '-B', '-m', 'unittest', selector, '-v'], cwd=copy, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)\\n            print(proc.stdout, end='', flush=True)\\n            print('EXIT', proc.returncode, flush=True)\\n    for label in variants:\\n        (work / label / 'test_contract_audit.py').write_text(strong)\\n    cases = [('test_chain_order', 'reverse'), ('test_input_preserved_success', 'clear_inputs'), ('test_input_preserved_cycle', 'clear_inputs')]\\n    for method, faulty in cases:\\n        for label in ('correct', faulty):\\n            selector = 'test_contract_audit.StrongTests.' + method\\n            print('\\\\nSTRONG RUN', label, 'python3 -B -m unittest', selector, '-v', flush=True)\\n            proc = subprocess.run(['python3', '-B', '-m', 'unittest', selector, '-v'], cwd=work / label, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)\\n            print(proc.stdout, end='', flush=True)\\n            print('EXIT', proc.returncode, flush=True)\\nfinally:\\n    shutil.rmtree(work)\\n    after = snapshot()\\n    assert before == after, 'Original bytes/modes or file inventory changed'\\n    print('\\\\nCLEANUP VERIFIED: all original file bytes and file/directory modes preserved; no extra files or directories retained.', flush=True)\\nPY\",\"max_output_tokens\":7500,\"yield_time_ms\":10000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2b1-02bf-77e0-91a1-05dc07cc8373",
+            "create_time": 1789972795.770268
+          }
+        }
+      }
+    },
+    {
+      "line": 37,
+      "line_sha256": "99456fd4480c6aa5ec10a6e13d1213723cc9e3c78fa40640f88db131718e73eb",
+      "record": {
+        "timestamp": "2026-09-21T06:40:41.360Z",
+        "ordinal": 36,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c2b2-0390-7742-a5b9-2fc75fa388e7",
+          "call_id": "call_ibGUBTJqEsI0Exar28TFwthr",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.9 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"35b207\",\"wall_time_seconds\":0.709774458,\"exit_code\":0,\"original_token_count\":1889,\"output\":\"\\nVARIANT correct implementation SHA256 54c7af739e8f967f524a5f15bdbfa56d8f00ca3cd6a78a1f221a122c9bef707e\\nNATIVE BINDING: <WORKSPACE>/.audit-p1rx8lt1/correct/test_plan.py -> <WORKSPACE>/.audit-p1rx8lt1/correct/build_plan.py\\nRUN correct python3 -B -m unittest test_plan.PlanTests.test_chain -v\\ntest_chain (test_plan.PlanTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN correct python3 -B -m unittest test_plan.PlanTests.test_cycle -v\\ntest_cycle (test_plan.PlanTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nVARIANT reverse implementation SHA256 de4aad72a43984ff2daff6aff589fe4cbc22e08112bd0cac7e19efd7eeb6d349\\nNATIVE BINDING: <WORKSPACE>/.audit-p1rx8lt1/reverse/test_plan.py -> <WORKSPACE>/.audit-p1rx8lt1/reverse/build_plan.py\\nRUN reverse python3 -B -m unittest test_plan.PlanTests.test_chain -v\\ntest_chain (test_plan.PlanTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN reverse python3 -B -m unittest test_plan.PlanTests.test_cycle -v\\ntest_cycle (test_plan.PlanTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nVARIANT clear_inputs implementation SHA256 36c8911b0da8f11e7c46337dea260215b64536d8602725e3c3a62068d4c833f2\\nNATIVE BINDING: <WORKSPACE>/.audit-p1rx8lt1/clear_inputs/test_plan.py -> <WORKSPACE>/.audit-p1rx8lt1/clear_inputs/build_plan.py\\nRUN clear_inputs python3 -B -m unittest test_plan.PlanTests.test_chain -v\\ntest_chain (test_plan.PlanTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN clear_inputs python3 -B -m unittest test_plan.PlanTests.test_cycle -v\\ntest_cycle (test_plan.PlanTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nVARIANT partial_cycle implementation SHA256 3dfc2c053e0738bac355ccffd5a8430b5fdae691e8dd6eef09ceb22a541e59fe\\nNATIVE BINDING: <WORKSPACE>/.audit-p1rx8lt1/partial_cycle/test_plan.py -> <WORKSPACE>/.audit-p1rx8lt1/partial_cycle/build_plan.py\\nRUN partial_cycle python3 -B -m unittest test_plan.PlanTests.test_chain -v\\ntest_chain (test_plan.PlanTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\nRUN partial_cycle python3 -B -m unittest test_plan.PlanTests.test_cycle -v\\ntest_cycle (test_plan.PlanTests) ... FAIL\\n\\n======================================================================\\nFAIL: test_cycle (test_plan.PlanTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-p1rx8lt1/partial_cycle/test_plan.py\\\", line 13, in test_cycle\\n    plan({\\\"a\\\": [\\\"b\\\"], \\\"b\\\": [\\\"a\\\"]})\\nAssertionError: ValueError not raised\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\nEXIT 1\\n\\nSTRONG RUN correct python3 -B -m unittest test_contract_audit.StrongTests.test_chain_order -v\\ntest_chain_order (test_contract_audit.StrongTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nSTRONG RUN reverse python3 -B -m unittest test_contract_audit.StrongTests.test_chain_order -v\\ntest_chain_order (test_contract_audit.StrongTests) ... FAIL\\n\\n======================================================================\\nFAIL: test_chain_order (test_contract_audit.StrongTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-p1rx8lt1/reverse/test_contract_audit.py\\\", line 8, in test_chain_order\\n    self.assertEqual(result, [\\\"fetch\\\", \\\"compile\\\", \\\"ship\\\"])\\nAssertionError: Lists differ: ['ship', 'compile', 'fetch'] != ['fetch', 'compile', 'ship']\\n\\nFirst differing element 0:\\n'ship'\\n'fetch'\\n\\n- ['ship', 'compile', 'fetch']\\n?   ^ --               ^^^^\\n\\n+ ['fetch', 'compile', 'ship']\\n?   ^^^^                ^ ++\\n\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\nEXIT 1\\n\\nSTRONG RUN correct python3 -B -m unittest test_contract_audit.StrongTests.test_input_preserved_success -v\\ntest_input_preserved_success (test_contract_audit.StrongTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nSTRONG RUN clear_inputs python3 -B -m unittest test_contract_audit.StrongTests.test_input_preserved_success -v\\ntest_input_preserved_success (test_contract_audit.StrongTests) ... FAIL\\n\\n======================================================================\\nFAIL: test_input_preserved_success (test_contract_audit.StrongTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-p1rx8lt1/clear_inputs/test_contract_audit.py\\\", line 16, in test_input_preserved_success\\n    self.assertEqual(graph, before)\\nAssertionError: {'ship': [], 'compile': [], 'fetch': []} != {'ship': ['compile'], 'compile': ['fetch'], 'fetch': []}\\n- {'compile': [], 'fetch': [], 'ship': []}\\n+ {'compile': ['fetch'], 'fetch': [], 'ship': ['compile']}\\n?              +++++++                         +++++++++\\n\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\nEXIT 1\\n\\nSTRONG RUN correct python3 -B -m unittest test_contract_audit.StrongTests.test_input_preserved_cycle -v\\ntest_input_preserved_cycle (test_contract_audit.StrongTests) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nEXIT 0\\n\\nSTRONG RUN clear_inputs python3 -B -m unittest test_contract_audit.StrongTests.test_input_preserved_cycle -v\\ntest_input_preserved_cycle (test_contract_audit.StrongTests) ... FAIL\\n\\n======================================================================\\nFAIL: test_input_preserved_cycle (test_contract_audit.StrongTests)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-p1rx8lt1/clear_inputs/test_contract_audit.py\\\", line 27, in test_input_preserved_cycle\\n    self.assertEqual(graph, before)\\nAssertionError: {'a': [], 'b': []} != {'a': ['b'], 'b': ['a']}\\n- {'a': [], 'b': []}\\n+ {'a': ['b'], 'b': ['a']}\\n?        +++         +++\\n\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\nEXIT 1\\n\\nCLEANUP VERIFIED: all original file bytes and file/directory modes preserved; no extra files or directories retained.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c2b1-02bf-77e0-91a1-05dc07cc8373",
+            "create_time": 1789972841.360212
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

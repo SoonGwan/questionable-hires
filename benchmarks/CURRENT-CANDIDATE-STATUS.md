@@ -18,18 +18,17 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
-Preparation checkpoint2026-09-21, parent`0a7256e`:
-[dependency-plan transfer protocol](PLAN-AUDIT-01-PROTOCOL.md) defines two new
-authored requests and six planned sessions. Native correct/equivalent/fault
-controls pass; no model attempts yet. It is synthetic development transfer,
-not independent holdout evidence. 한국어: 새 과제의 실제 대조 검증을 마쳤으며
-모델 실측 전 준비다. 개선 수치나 독립 검증 결과로 계산하지 않는다.
+Transfer checkpoint2026-09-21, launch`557a021`: all six dependency-plan sessions
+reviewed; originals/scope preserved. Prior's instrumentation repair and capture
+prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토를
+마쳤고 기존 실행의 설정 실패·복구 비용까지 보존했다. 독립 평가로 주장하지 않는다.
 
 | Dated checkpoint / resource | Observed result | Decision and limitation |
 | --- | --- | --- |
 | [All-eight screen03](results/all-eight-current-03/README.md),2026-09-20,`ee5eb28` | Both arms8/8; skill summed tokens+20.34%, time−3.61%; every pair uses more tokens | Efficiency target unmet. Eight exposed authored tasks,n=1; not a measurement of subsequent changes. |
 | [Cachetools audit01](CACHETOOLS-AUDIT-01.md),2026-09-21,`b1875a0` | All three arms5/5; current versus baseline tokens−20.6%, time+30.9% | Changed helper unused; unequal extra checks. One source-excerpt task,n=1; no optimization attribution. |
 | [Proposal boundary01](AUDIT-PROPOSAL-01.md),2026-09-21,`e17e13d` | Proposal: tokens−17.46%, time−8.48%,20→10 unittest processes. Verified: tokens+3.40%, time−3.34%; required assertions retained | Retain scope distinction provisionally. Two requests on reused development fixture,n=1; not independent validation. |
+| [Plan audit01](PLAN-AUDIT-01.md),2026-09-21,`a3dee3b` | All arms meet5/5 proposal and6/6 verified criteria. Current versus baseline: proposal−11.39% tokens/−2.98% time; verified+12.83%/+9.02% | Scope distinction transfers in one fresh authored fixture; unequal probes and prior instrumentation repair. No broad efficiency win. |
 
 한국어: 전체 비교에서는 토큰 증가가 남았다. 제안과 입증을 구분한 수정은 한 사례에서
 추가 실행을 줄였지만 입증 과제의 토큰 증가도 공개한다. 독립적인 프로젝트에서
