@@ -55,10 +55,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
   selections reduce native executions16→10 while preserving all8 mutant checks.
   [Native timing](AUDIT-SELECTION-TIMING-01.md):0.7080→0.4525s on that authored
   workload. Not whole-task/model efficiency.
-- Whole-checkout checkpoint at`31b1479`: Python3.11.16,1,023 tests in174.348s,
+- Whole-checkout checkpoint at`c258570`: Python3.11.16,1,035 tests in175.415s,
   no failures/skips. Includes Receipt's selected-read correction, plan-audit
-  fixture/runner controls and Con Artist's empty-mutant correction. Local tests
-  do not establish hosted CI success or improved model performance.
+  fixture/runner controls and Con Artist's empty-mutant/module-mode corrections.
+  Earlier module-mode run had a packaging failure, retained in its report; the
+  final rerun passes. Local tests do not establish hosted CI success or improved
+  model performance.
 - Source archive at`ac1d17c`:994 discovered,22 skipped,no failures. This does not
   establish archive validation of`a3dee3b`. Both detailed test checkpoints remain
   in the [history](CANDIDATE-HISTORY-2026-09-21.md).

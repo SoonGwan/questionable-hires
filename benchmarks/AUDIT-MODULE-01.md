@@ -69,6 +69,13 @@ Moved that copied template to `assets/` and updated its lookup. The template is
 still packaged and covered by actual installed/bundled execution controls; the
 standalone CLI check is unchanged rather than weakened to ignore the failure.
 
+Final checkout at `c258570`: **1,035 tests pass in175.415s**, no failures/skips,
+Python3.11.16 (`python -B -m unittest discover -s tests`). The focused standalone
+archive suite also passes all4 tests (1.125s), and the12 module controls pass again
+(2.917s) after relocation. Repository validation, skill quick validation, whitespace
+and featured localization checks pass. This does not establish hosted CI success,
+an archive-wide 1,035-test invocation, model performance or public-release approval.
+
 한국어: 요구된 `-m unittest` 방식에서도 복사본 출처 확인, 실제 테스트 결과,
 보강 테스트와 배치 재사용을 제공한다. 내부 관찰 코드가 개입하므로 순수한
 시작 과정과 동일하다고 주장하지 않는다. 기존 과제의 검증 코드를 재사용한
