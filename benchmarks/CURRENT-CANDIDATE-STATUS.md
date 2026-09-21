@@ -79,6 +79,11 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Checkpoint2026-09-21: [ancestry runner archive correction](ANCESTRY-ARCHIVE-01.md)
+separates synthetic scheduling controls from real pinned-resource checks after
+six source-archive setup errors were reproduced. No skill or model-result change.
+한국어: 압축본에서도 실행 제어 검증이 가능하도록 테스트의 Git 의존을 분리했다.
+
 Checkpoint2026-09-21: [ancestry scope comparison preparation](ANCESTRY-SCOPE-01-PROTOCOL.md)
 adds a merged-history request and correlated no-history control with native
 pass/fail preflight. Nine fixture/runner tests pass; six-cell identity and exclusive
@@ -181,6 +186,12 @@ new model measurement or efficiency claim. 한국어: 패키지 초기화 실패
 
 ## Avoid repeating rejected approaches
 
+The [all-eight lean experiment](results/lean-screen-01/README.md) already tested
+a broad entrypoint rewrite: lean7/8 versus current8/8, with higher cost than the
+baseline. Astra's [current design guidance](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)
+supports contextual instructions, not treating another global compression as a
+proven fix. Do not repeat that strategy without a distinct observed mechanism.
+
 The [slugify remaining-cost diagnosis](SLUGIFY-NATIVE-01-INPUT-COSTS.md) reconciles
 the31,063-token baseline gap with the existing response analyzer. It does not
 attribute causal savings or justify a new grouping API from child-process counts.
@@ -211,10 +222,10 @@ is a regression control, not an independent test set.
 
 ## Release and publication boundary
 
-Last inspected hosted checkpoint:
-[run35563929473](https://github.com/SoonGwan/questionable-hires/actions/runs/35563929473)
-at`2753915` had no executed job steps; annotation cited payments/spending limit.
-This is historical, not a fresh account-status check. Local results do not
+Hosted checkpoint inspected2026-09-21:
+[run35584332665](https://github.com/SoonGwan/questionable-hires/actions/runs/35584332665)
+at`faab9e2` has no executed steps in all four jobs; the Python3.11 annotation
+cites payments/spending limit. Local results do not
 establish hosted validation. Do not change billing/visibility without owner
 direction; scoped local work can continue.
 
@@ -222,6 +233,6 @@ Keep `featured.json` tied to its frozen evidence. Representative changes require
 reviewed data and synchronized English/Korean text/charts. No small checkpoint
 above independently justifies replacing it.
 
-한국어: 호스팅 검사 성공과 공개 배포 승인은 아직 확인되지 않았다. 과거 결제·한도
-오류를 현재 계정 상태로 단정하지 않고 계정 설정·공개 여부도 임의로 바꾸지 않는다.
+한국어: 최신 확인 실행도 결제·한도 사유로 시작되지 않았다. 호스팅 검사 성공과
+공개 배포 승인은 미확인이며 계정 설정·공개 여부도 임의로 바꾸지 않는다.
 대표 그래프는 검토된 자료와 두 언어를 함께 갱신할 때만 변경한다.

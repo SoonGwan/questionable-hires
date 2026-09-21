@@ -6,10 +6,26 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+from runner_snapshot_support import require_history
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'benchmarks'))
 import run_ancestry_scope_01 as runner
+
+
+def synthetic_resource_git(*args):
+    """Unit-only resource objects; never historical or model evidence."""
+    revisions = set(runner.RESOURCES.values())
+    if len(args) == 5 and args[:2] == ('ls-tree', '-r') and args[2] in revisions and args[3:] == ('--', 'skills/necromancer'):
+        revision = args[2]
+        return (f'100644 blob {revision}-entry\tskills/necromancer/SKILL.md\n'
+                f'100755 blob {revision}-asset\tskills/necromancer/assets/control.sh\n').encode()
+    if len(args) == 3 and args[:2] == ('cat-file', 'blob') and args[2] in {
+            r + suffix for r in revisions for suffix in ('-entry', '-asset')}:
+        return ('Synthetic unit object; never model evidence: ' + args[2] + '\n').encode()
+    if len(args) == 2 and args[0] == 'rev-parse' and args[1] in revisions | {'HEAD'}:
+        return ('synthetic-' + args[1]).encode()
+    raise AssertionError('Unexpected repository dependency: ' + repr(args))
 
 
 class AncestryScopeRunnerTests(unittest.TestCase):
@@ -17,6 +33,9 @@ class AncestryScopeRunnerTests(unittest.TestCase):
         folder = tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks')
         self.addCleanup(folder.cleanup)
         self.output = Path(folder.name) / 'run'
+        self.resource_git = patch.object(runner, 'repository_git', side_effect=synthetic_resource_git)
+        self.resource_git.start()
+        self.addCleanup(self.resource_git.stop)
         self.manifest = runner.prepare(self.output)
         self.result = dict(completed=True, timed_out=False, limit_detected=False, usage={}, elapsed_seconds=1)
 
@@ -82,6 +101,33 @@ class AncestryScopeRunnerTests(unittest.TestCase):
         self.assertIn('benchmarks/ancestry_scope_case.py', self.manifest['identities'])
         self.assertEqual(list((self.output / 'baseline/skills').iterdir()), [])
         self.assertNotEqual(self.manifest['resource_digests']['prior'], self.manifest['resource_digests']['current'])
+        for condition in runner.RESOURCES:
+            path = self.output / condition / 'skills/necromancer/assets/control.sh'
+            self.assertEqual(path.stat().st_mode & 0o777, 0o755)
+            self.assertIn(b'Synthetic unit object', path.read_bytes())
+
+
+class AncestryScopeHistoricalResourceTests(unittest.TestCase):
+    def test_real_pinned_resources(self):
+        require_history(self, ROOT, runner.RESOURCES.values())
+        with tempfile.TemporaryDirectory(dir=ROOT / 'benchmarks') as directory:
+            output = Path(directory) / 'run'
+            manifest = runner.prepare(output)
+            for condition, revision in runner.RESOURCES.items():
+                expected = set()
+                listing = runner.repository_git('ls-tree', '-r', revision, '--', 'skills/necromancer')
+                for line in listing.decode().splitlines():
+                    info, name = line.split('\t', 1)
+                    mode, kind, oid = info.split()
+                    self.assertEqual(kind, 'blob')
+                    copied = output / condition / name
+                    self.assertEqual(copied.read_bytes(), runner.repository_git('cat-file', 'blob', oid))
+                    self.assertEqual(copied.stat().st_mode & 0o777, int(mode[-3:], 8))
+                    expected.add(name)
+                self.assertTrue(expected)
+                self.assertEqual({p.relative_to(output / condition).as_posix()
+                    for p in (output / condition / 'skills').rglob('*') if p.is_file()}, expected)
+                self.assertEqual(manifest['resource_digests'][condition], runner.run.resource_digest(output / condition / 'skills'))
 
 
 if __name__ == '__main__':
