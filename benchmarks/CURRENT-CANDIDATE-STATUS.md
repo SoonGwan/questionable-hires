@@ -60,6 +60,9 @@ These changes are implemented; their model-cost effect is not established:
   Native base replay184pass versus legacy181pass/3fail;23 runner checks pass
   in checkout/archive. Old scheduler unchanged; future task scope must explicitly
   permit scratch. This is environment validation, not a new model efficiency result.
+  [Mounted-source follow-up](SWE-LITE-SCRATCH-ADAPTER-02.md) at`0858a26` also
+  verifies194 source bindings, the same native outcomes, intentional failure
+  output, unchanged project and actual adapter cleanup without a model call.
 - [Complete decorator excerpts](PYTHON-REGIONS-DECORATORS-01.md), parent`7d67eff`:
   multiline decorator openings no longer disappear from supposedly complete
   regions. Four new regression tests fail before repair; all18 region tests pass
