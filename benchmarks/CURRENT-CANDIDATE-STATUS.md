@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Native full-inspection route not adopted — 2026-09-21, parent `2ff4490`
+
+[Four-case accounting and original attempts](NATIVE-INSPECTION-03.md) includes
+first-look plus full raw inspection: all cases cost more display bytes than raw
+alone. Existing native spec is smaller than TAP in these examples; no custom skill
+gain follows. Three simultaneous reporters emit a retained native warning; the
+initial author-harness stderr assertion failure is also retained. Do not ship or
+spend model sessions on the unconditional custom-reporter route. Selective reading
+remains unmeasured; no production, model-result or featured-chart change.
+
+한국어: 요약 뒤 원본을 모두 읽는 비용까지 계산하면 네 예제 모두 늘어 기본 기능으로
+채택하지 않는다. 기존 출력 형식을 우선하며 실제 성능 향상 목표는 여전히 미달이다.
+
 ## Native first-look candidate — 2026-09-21, parent `95820be`
 
 [Separate v2 prototype](NATIVE-NODE-FIRST-LOOK-02.md) omits ordinary pass identities
