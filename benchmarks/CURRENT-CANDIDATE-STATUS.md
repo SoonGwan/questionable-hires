@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-21, local validation at `04741d7`**.
+Decision checkpoint **2026-09-22, external-runtime TLS validation based on `dfbe182`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -43,6 +43,10 @@ assertion controls work. Combined service/scoring validation is still pending.
 local cross-host endpoint and explicit client address pass all4 unchanged
 redirect/timeout/basic checks; the prior2fail attempt remains. HTTPS trust and
 combined gold/solver verification are still unfinished.
+[Scoped TLS controls](SWE-LITE-PILOT-01-TLS.md): project-bound same-process
+certificate acceptance/rejection and all142 original Requests tests pass with
+unchanged source. First probe's installed-copy limitation is retained; combined
+gold grading and solver-access validation are still pending, not model results.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |

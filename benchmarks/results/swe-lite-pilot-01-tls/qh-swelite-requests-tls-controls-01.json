@@ -1,0 +1,61 @@
+{
+  "name": "qh-swelite-requests-tls-controls-01",
+  "image": "sha256:f4ede93d2747ddc21d276572cbd2e1df5ea60df8d5d99247f073797bab3e539f",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-21T15:01:36.425526361Z",
+    "FinishedAt": "2026-09-21T15:01:52.427086488Z"
+  },
+  "command": [
+    "120",
+    "/bin/bash",
+    "-lc",
+    "set -e; python -B -m pip install --no-index --no-deps --find-links /opt/compat pytest==4.6.11 pluggy==0.13.1 atomicwrites==1.4.1 py==1.11.0 six==1.17.0 attrs==23.2.0 more-itertools==9.1.0 packaging==24.2 wcwidth==0.2.13 certifi==2024.8.30; python -B /fixture/check.py; python -B -m pytest -p no:cacheprovider -q --tb=short test_requests.py"
+  ],
+  "entrypoint": [
+    "/usr/bin/timeout"
+  ],
+  "environment": [
+    "HTTPBIN_URL=http://httpbin/",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+    "QH_DISPOSABLE_CONTAINER=1",
+    "PATH=/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "TZ=Etc/UTC"
+  ],
+  "ports": {},
+  "network": "qh-swelite-contract-01",
+  "network_settings": {
+    "qh-swelite-contract-01": {
+      "IPAMConfig": {
+        "IPv4Address": "10.255.255.5"
+      },
+      "Links": null,
+      "Aliases": null,
+      "DriverOpts": null,
+      "GwPriority": 0,
+      "NetworkID": "b06e0b52738d81f71ae00911d53b61b66f04da26264aff88ebb41ff0ad0a5b33",
+      "EndpointID": "",
+      "Gateway": "",
+      "IPAddress": "",
+      "MacAddress": "",
+      "IPPrefixLen": 0,
+      "IPv6Gateway": "",
+      "GlobalIPv6Address": "",
+      "GlobalIPv6PrefixLen": 0,
+      "DNSNames": [
+        "qh-swelite-requests-tls-controls-01",
+        "b9408dcca9b0"
+      ]
+    }
+  },
+  "log_sha256": "0d48c4ac4b0ae00ff783437923789b76cbdbef5a7ccc4042a551805ad8281b9e"
+}

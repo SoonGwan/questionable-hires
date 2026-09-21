@@ -1,0 +1,14 @@
+[req]
+distinguished_name = dn
+prompt = no
+[dn]
+CN = Questionable Hires local test CA
+[ca]
+basicConstraints = critical,CA:TRUE
+keyUsage = critical,keyCertSign,cRLSign
+subjectKeyIdentifier = hash
+[server]
+basicConstraints = critical,CA:FALSE
+keyUsage = critical,digitalSignature,keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = DNS:httpbin,DNS:httpbin.org
