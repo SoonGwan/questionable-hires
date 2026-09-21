@@ -51,6 +51,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [Native existing-test recipe correction](AUDIT-NATIVE-RECIPE-02.md), parent
+  `df072b3`: source-root and existing-witness selections are self-contained in
+  the native guide. Real packaged weak/strong controls pass on Python3.9/3.11;
+  no runtime change or new model measurement. This longer recipe aims to avoid
+  unnecessary document transitions, not to establish token savings by byte count.
+  한국어: 안내 경로 개선 후보이며 전체 비용 절감은 아직 측정하지 않았다.
 - [Dateutil native transfer preparation](DATEUTIL-NATIVE-01-PREFLIGHT.md),
   helper `387c53b`: unchanged pinned upstream test/source files pass25 direct
   controls and8 helper executions with matching selected-test outcomes, real

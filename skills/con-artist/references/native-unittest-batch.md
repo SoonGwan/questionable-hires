@@ -26,6 +26,10 @@ JSON
 ```
 
 Select existing relative files/directories plus required fixtures/configuration.
+For an evidenced `src/` layout, select those source files and add shared
+`"import_roots": ["src"]`. Roots are distinct relative directories containing
+selected files, searched inside each copy before its root; include package
+initializers. This does not install packages or reproduce editable/build hooks.
 Each `old` must match its selected `target` exactly once. The shared recipe accepts
 1–8 independent mutations; an entry may override `tests` for required test-specific
 process exits. Use a suite when its native method results suffice; separate exits
@@ -55,10 +59,14 @@ collected, not a killed fault; CLI2/`incomplete` means evidence is not establish
 Timeouts, missing checks, setup errors and bare nonzero exits are not detection.
 Inspect the intended assertion; a failed normal check stops later work.
 
-The example checks existing protection only. When stronger assertions must be
-verified, each mutation can add native `probe_files`/`probe_replacements` and
-`probe_tests`: see [native probe details](python-audit-probes.md). Module mode does
-not support inline `probe` or pytest. Never call an unexecuted proposal verified.
+The example checks existing protection only. If an existing unchanged test
+already supplies a required stronger assertion, another mutation entry with the
+same fault and different `tests` runs its correct/faulty pair; no probe fields are
+needed. Include that test and its imports in the selected files and adapt any
+binding precheck. The same observation/reuse rules apply. Only when adding or
+changing assertions, use `probe_files`/`probe_replacements` and `probe_tests`:
+see [native probe details](python-audit-probes.md). Module mode does not support
+inline `probe` or pytest. Never call an unexecuted proposal verified.
 
 `integrity` confirms selected original bytes/modes and owned-scratch removal.
 For required whole-project preservation, add shared `"guard_project": true` only
@@ -71,6 +79,9 @@ symlinks/Git internals/traversal/namespace-package checks, no installation or sa
 Each check retains its last12,000 output characters; provenance can be truncated.
 CLI `--python` selects an existing interpreter; `--timeout` sets seconds/check
 (default30,max300), not JSON fields. Foreground work only; surviving background
-jobs are unsupported. Do not retry an unconfirmed child exit. For evidenced `src/`
-imports or unresolved errors, read the relevant [advanced section](python-audit-advanced.md),
-not unrelated modes. Do not rerun completed checks merely to adopt this recipe.
+jobs are unsupported. Do not retry an unconfirmed child exit. For import-root
+edge cases or unresolved errors, consult [advanced details](python-audit-advanced.md).
+This recipe covers native batches with existing tests; the common/probe guides
+are not prerequisites for that path. Inspect implementation when a concrete
+trust or adaptation question needs it. Do not rerun completed checks merely to
+adopt this recipe.

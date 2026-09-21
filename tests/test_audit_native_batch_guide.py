@@ -10,6 +10,57 @@ from test_build import builder
 
 
 class NativeBatchGuideTests(unittest.TestCase):
+    def test_packaged_recipe_with_source_root_and_existing_witness(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            bundle = builder.build(root / 'bundle with spaces')
+            guide = (bundle / 'skills/con-artist/references/native-unittest-batch.md').read_text()
+            recipe = json.loads(guide.split("<<'JSON'\n", 1)[1].split('\nJSON', 1)[0])
+            project = root / 'project'
+            (project / 'src').mkdir(parents=True)
+            example = builder.ROOT / 'examples/con-artist-batch'
+            (project / 'src/service.py').write_bytes((example / 'service.py').read_bytes())
+            (project / 'test_service.py').write_text((example / 'test_service.py').read_text() +
+                '\n    def test_persists_once(self):\n'
+                '        store = []\n        save(store, "new")\n'
+                '        self.assertEqual(store, ["new"])\n')
+            recipe['files'] = ['src/service.py', 'test_service.py']
+            recipe['import_roots'] = ['src']
+            for entry in recipe['mutations']:
+                entry['target'] = 'src/service.py'
+            recipe['mutations'] += [dict(entry, tests=['test_service.SaveTests.test_persists_once', '-v'])
+                                    for entry in recipe['mutations']]
+            before = {str(p.relative_to(project)): (p.read_bytes(), p.stat().st_mode & 0o777)
+                      for p in project.rglob('*') if p.is_file()}
+            result = subprocess.run([sys.executable, '-I', '-B',
+                str(bundle / 'skills/con-artist/scripts/audit.py'), '--source', str(project), '--spec', '-'],
+                input=json.dumps(recipe), text=True, capture_output=True, timeout=15)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            report = json.loads(result.stdout)
+            self.assertEqual(report['status'], 'observed')
+            self.assertEqual(len(report['audits']), 4)
+            for index, audit in enumerate(report['audits']):
+                correct = audit['checks']['correct_tests']
+                if index in (0, 2):
+                    self.assertEqual(correct['exit_code'], 0)
+                    self.assertEqual(correct['suite_observation']['tests'], 1)
+                else:
+                    self.assertEqual(correct['observation_ref'],
+                                     '#/audits/{}/checks/correct_tests'.format(index - 1))
+                mutant = audit['checks']['mutant_tests']
+                self.assertEqual(mutant['exit_code'], int(index >= 2))
+                self.assertEqual(mutant['native_exit_code'], int(index >= 2))
+                self.assertEqual(mutant['command'][1:4], ['-B', '-m', 'unittest'])
+                self.assertEqual(mutant['suite_observation']['tests'], 1)
+                self.assertIn('Verified native test save binding', mutant['output'])
+                if index >= 2:
+                    self.assertIn('AssertionError: Lists differ:', mutant['output'])
+                self.assertNotIn('correct_probe', audit['checks'])
+                self.assertTrue(audit['integrity']['owned_scratch_removed'])
+            self.assertEqual(before, {str(p.relative_to(project)): (p.read_bytes(), p.stat().st_mode & 0o777)
+                                     for p in project.rglob('*') if p.is_file()})
+            self.assertEqual(sorted(p.name for p in project.iterdir()), ['src', 'test_service.py'])
+
     def test_packaged_recipe_preserves_survivors_and_real_detection(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
