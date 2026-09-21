@@ -35,8 +35,12 @@ failure, growth/size/link/layout boundaries, raw-byte export exclusion and origi
 stream preservation. The changed-index control distinguishes the child index
 from the collector's subsequent `git add -N` mutation.
 
-The complete focused `test_benchmark*.py` suite is checked before committing;
-source-archive verification follows on the committed revision. These controls
+The complete focused `test_benchmark*.py` suite passes43/43 on macOS Python3.9.6
+in4.016s. A fresh `git archive 6db0788`, without repository history or local-run
+artifacts, passes the same43/43 with no skips in3.899s. Expected invalid-input
+diagnostics and synthetic cell logs are test controls, not model calls. Repository,
+featured-sync and whitespace checks pass; this is not a new full-platform matrix.
+These controls
 do not turn historical unknown index identity into an observed pass. All prior
 model measurements and featured charts remain unchanged.
 
