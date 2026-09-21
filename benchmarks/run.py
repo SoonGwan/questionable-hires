@@ -115,8 +115,10 @@ def command(args, cwd, **kwargs):
     return subprocess.run(args, cwd=cwd, text=True, capture_output=True, check=True, **kwargs).stdout.strip()
 
 
-def preserve_collector_index(workspace, cell):
-    """Retain local index bytes before author git-add, outside model timing."""
+def preserve_collector_index(workspace, cell, phase='before-collection'):
+    """Retain local index bytes outside model timing, without following links."""
+    if phase not in ('before-model', 'before-collection'):
+        raise ValueError('Unsupported index capture phase')
     path = workspace / '.git/index'
     try:
         if (workspace / '.git').is_symlink() or not (workspace / '.git').is_dir():
@@ -132,7 +134,7 @@ def preserve_collector_index(workspace, cell):
             data = stream.read(INDEX_CAPTURE_LIMIT + 1)
         if len(data) > INDEX_CAPTURE_LIMIT:
             return dict(status='unavailable', reason='Index grew beyond 20 MB')
-        name = 'git-index.before-collection.bin'
+        name = 'git-index.' + phase + '.bin'
         (cell / name).write_bytes(data)
         return dict(status='retained', file=name, bytes=len(data),
                     mode=stat.S_IMODE(info.st_mode), sha256=hashlib.sha256(data).hexdigest(),
@@ -288,6 +290,8 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
     if launcher:
         args = launcher(workspace, args)
         execution = 'external-container'
+    initial_index = preserve_collector_index(workspace, cell, 'before-model')
+    (cell / 'git-index.before-model.json').write_text(json.dumps(initial_index, indent=2) + '\n')
     started = time.monotonic()
     process = subprocess.Popen(args, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
     timed_out = False
@@ -354,6 +358,13 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
             "installed_resources_after": installed_after,
             "resource_diagnostics": resource_diagnostics}
     meta['pre_collection_index'] = collector_index
+    meta['pre_model_index'] = initial_index
+    comparable = initial_index['status'] == collector_index['status'] == 'retained'
+    meta['index_comparison'] = dict(
+        status='observed' if comparable else 'unknown',
+        bytes_and_mode_unchanged=(all(initial_index[k] == collector_index[k]
+                                     for k in ('sha256', 'bytes', 'mode')) if comparable else None),
+        limitation='Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content.')
     if initial_diff is not None:
         meta['initial_tree'] = initial_tree
         meta['initial_working_files'] = {name: hashlib.sha256(content.encode()).hexdigest()

@@ -39,6 +39,12 @@ class IndexCaptureTests(unittest.TestCase):
                     'gpt-6-astra', 'medium', 10, [], workspace_root=root / 'workspaces')
             cell = output / 'index--baseline--1'
             captured = meta['pre_collection_index']
+            initial = meta['pre_model_index']
+            self.assertEqual(initial['status'], 'retained')
+            self.assertNotEqual(initial['sha256'], captured['sha256'])
+            self.assertEqual(meta['index_comparison']['status'], 'observed')
+            self.assertIs(meta['index_comparison']['bytes_and_mode_unchanged'], False)
+            self.assertEqual(json.loads((cell/'git-index.before-model.json').read_text()), initial)
             self.assertEqual(captured['status'], 'retained')
             self.assertEqual((cell / captured['file']).read_bytes(), expected.read_bytes())
             self.assertEqual(captured['sha256'], hashlib.sha256(expected.read_bytes()).hexdigest())
@@ -55,6 +61,28 @@ class IndexCaptureTests(unittest.TestCase):
             exported_meta = json.loads((exported/'metadata.json').read_text())
             self.assertEqual(exported_meta['pre_collection_index'], captured)
             self.assertFalse((exported/captured['file']).exists())
+            self.assertEqual(exported_meta['pre_model_index'], initial)
+            self.assertFalse((exported/initial['file']).exists())
+
+    def test_read_only_child_keeps_initial_index_identity(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            output = root/'results'
+            output.mkdir()
+            actual_popen = runner.subprocess.Popen
+            def launch(args, **kwargs):
+                if args[0] != 'codex':
+                    return actual_popen(args, **kwargs)
+                return actual_popen([sys.executable, '-B', '-c',
+                    'import json; print(json.dumps({"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":1}}))'], **kwargs)
+            with patch.object(runner.subprocess, 'Popen', side_effect=launch):
+                meta = runner.run_cell(dict(id='read-only', skill='receipt', task='Fixture',
+                    files={'source.py':'VALUE=1\n'}), 'baseline', 1, output,
+                    'gpt-6-astra','medium',10,[],workspace_root=root/'workspaces')
+            self.assertIs(meta['index_comparison']['bytes_and_mode_unchanged'], True)
+            cell = output/'read-only--baseline--1'
+            self.assertEqual((cell/meta['pre_model_index']['file']).read_bytes(),
+                             (cell/meta['pre_collection_index']['file']).read_bytes())
 
     def test_bad_native_index_survives_subsequent_collector_failure(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -79,6 +107,29 @@ class IndexCaptureTests(unittest.TestCase):
             self.assertEqual(json.loads((cell/'git-index.before-collection.json').read_text())['status'], 'retained')
             self.assertEqual((cell/'stdout.original.jsonl').read_text(), 'original child output\n')
             self.assertFalse((cell/'metadata.json').exists())
+            self.assertEqual(json.loads((cell/'git-index.before-model.json').read_text())['status'], 'retained')
+            self.assertNotEqual((cell/'git-index.before-model.bin').read_bytes(), b'invalid fixture index')
+
+    def test_unavailable_capture_is_unknown_not_an_unchanged_index(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            output = root/'results'
+            output.mkdir()
+            actual_popen = runner.subprocess.Popen
+            def launch(args, **kwargs):
+                if args[0] != 'codex':
+                    return actual_popen(args, **kwargs)
+                return actual_popen([sys.executable, '-B', '-c', 'print("synthetic child")'], **kwargs)
+            with patch.object(runner.subprocess, 'Popen', side_effect=launch), \
+                 patch.object(runner, 'preserve_collector_index',
+                              return_value=dict(status='unavailable', reason='synthetic unreadable control')):
+                meta = runner.run_cell(dict(id='unknown-index', skill='receipt', task='Fixture',
+                    files={'source.py':'VALUE=1\n'}), 'baseline', 1, output,
+                    'gpt-6-astra','medium',10,[],workspace_root=root/'workspaces')
+            self.assertEqual(meta['index_comparison']['status'], 'unknown')
+            self.assertIsNone(meta['index_comparison']['bytes_and_mode_unchanged'])
+            cell = output/'unknown-index--baseline--1'
+            self.assertEqual(list(cell.glob('git-index.*.bin')), [])
 
     def test_local_snapshot_is_bounded_and_never_follows_links(self):
         with tempfile.TemporaryDirectory() as folder:

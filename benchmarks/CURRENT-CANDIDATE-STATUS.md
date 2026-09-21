@@ -139,6 +139,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Measurement correction2026-09-21, parent`1cb7a25`:
+[initial index capture](INITIAL-INDEX-CAPTURE-01.md) retains before-model and
+before-collector byte/mode identities outside model timing. Missing capture is
+unknown; changes are not automatically scope failures. No historical rescore,
+model-cost claim or skill change. 한국어: 실행 전 인덱스 기록 누락을 보완했다.
+
 Correction2026-09-21, parent`e86720f`: [empty native unittest status](AUDIT-EMPTY-NATIVE-01.md).
 Full Linux Python3.12 archive:1,085pass/26skip/1failure. The audit helper confused
 native empty-suite exit5 with a shutdown contradiction; both already stopped as
