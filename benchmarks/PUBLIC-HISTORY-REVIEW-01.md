@@ -58,6 +58,13 @@ checks (23 checks total). This is not a full-suite rerun or model measurement.
 
 ## Remaining publication work
 
+[Labeled derivative set01](results/public-path-derivatives-01/README.md),
+source`f4e3ca8`, now provides eight separately hashed redacted reading copies for
+the five owner-path JSON files and three account-directory artifacts below.
+All original files/history remain unchanged. Twelve remaining scanner lines
+are individually classified as `/home` suffixes after already-redacted account
+roots, not suppressed scanner findings. This does not close the public-history gate.
+
 Do not mark public artifact review complete. Future exports can use the repaired
 redactor, but already-published-to-private-Git artifacts still contain paths.
 Review and create explicitly labeled sanitized derivatives without changing

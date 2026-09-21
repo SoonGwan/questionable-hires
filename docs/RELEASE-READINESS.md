@@ -22,6 +22,12 @@ handoff; they do not change the `npx` clone path or imply a published package.
 
 ## Interpretation and maintenance
 
+[Path derivative set01](../benchmarks/results/public-path-derivatives-01/README.md)
+provides labeled reading copies of eight identified author-path/account artifacts.
+Their original hashes and non-string values are retained, but originals remain
+in the current tree/history. Do not mistake derivative availability for safe
+public-clone disposition; no history rewrite or visibility change is authorized.
+
 Preserve failure/skipped records and resource revisions. Skipped historical-source
 checks in an archive are unavailable coverage, not passes; the checkout suite
 must still exercise them. Local container tests are not hosted CI or a fresh

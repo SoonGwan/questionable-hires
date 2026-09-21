@@ -173,6 +173,9 @@ Do not rerun a completed experiment until it becomes favorable.
 bounded scan finds a test-only key-header marker and284 path-shaped lines.
 Future scratch-path export gap repaired; past artifacts/history remain unchanged.
 Public artifact review is not complete and no history rewrite is authorized.
+[Eight labeled reading derivatives](results/public-path-derivatives-01/README.md)
+now redact the identified owner/account paths with source and derivative hashes;
+original observations and reachable history remain unchanged. Not release clearance.
 
 [Authenticated remote installation01](REMOTE-INSTALL-01.md), source`5e6beab`:
 GitHub helper and npx remote clone produce matching8 skills/51 resources;
