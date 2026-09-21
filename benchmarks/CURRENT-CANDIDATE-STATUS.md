@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-21, working resource `37e62d2`**.
+Decision checkpoint **2026-09-21, routing clarification based on `36c3d94`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -37,6 +37,12 @@ or recoverable savings.
 
 These changes are implemented; their model-cost effect is not established:
 
+- Con Artist entrypoint now mentions localized exact edits in its existing
+  optional four-check recipe route. In transfer01, predecessor/current entrypoints
+  were identical and all four skill sessions stopped at that body without reading
+  the supporting guide. This makes the capability visible earlier, not mandatory;
+  it does not establish why models chose custom harnesses or that routing is fixed.
+  The new wording is unmeasured; frozen results/charts remain unchanged.
 - [Exact native probe edits](AUDIT-PROBE-EDITS-01.md), parent`23f06d2`:
   localized test changes need not resend unchanged file contents; four native
   checks and full materialized-byte budget/cache identity remain.128 audit controls

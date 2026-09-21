@@ -38,7 +38,8 @@ process does not prove what the test process loads.
 - Existing Python test improvements: consider [the complete four-check recipe](references/existing-tests.md)
   when they remove custom copy/run/cleanup plumbing. One recipe checks original
   and proposed tests against correct/faulty code with the native runner and fixtures;
-  applying the verified edit remains separate. No helper is needed for a simpler
+  localized changes can use an exact edit instead of a complete replacement file.
+  Applying the verified edit remains separate. No helper is needed for a simpler
   native workflow or an already-completed audit.
 - Several independent Python faults or required test selections: choose the matching runner.
   For pytest, use the [common CLI contract](references/python-audit.md) with
