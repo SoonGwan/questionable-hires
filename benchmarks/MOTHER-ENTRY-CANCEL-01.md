@@ -33,6 +33,10 @@ After correction:8/8 controls pass on Python3.11.16 in0.084s and Python3.9.6
 in0.207s. The38 `test_mother*.py` methods pass on Python3.11 in1.001s. These are
 focused compatibility checks, not a new full release matrix. Loop-turn yields
 make the native race reproducible; they are not delays added to a model task.
+Build13 and standalone packaging4 tests also pass (3.080s/1.094s). A fresh
+`git archive c00276d`, without Git or local-run state, passes all8 native asset
+tests on Python3.11.16 in0.086s with no skips. Skill/repository validation and
+featured bilingual synchronization pass; no hosted result is inferred.
 
 The native guide and both capability rows now describe the behavior. No generic
 skill-entry rule, sequence-probe behavior, production code, frozen model result
