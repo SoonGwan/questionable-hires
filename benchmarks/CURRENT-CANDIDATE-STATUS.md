@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Contract transfer prepared — 2026-09-21, resources `903e7c8` / `19d63ec`
+
+[Frozen six-cell protocol](CONTRACT-AUDIT-01-PROTOCOL.md) pairs a
+representation-flexible JSON contract with a genuinely identity-sensitive registry
+contract. Twelve native author controls pass, including actual failing assertions
+and alternate valid implementations; three scheduler tests verify exclusive
+execution, resource-change refusal and account-limit stop. Preparation is not a
+model result. Prior/current/no-skill comparisons retain failed attempts and costs.
+
+한국어: 서로 반대 성격의 계약을 가진 2개 과제에서 이전·수정·무스킬 비교를
+준비했다. 사전 대조는 통과했으나 수정본의 성능 향상은 아직 입증되지 않았다.
+
 ## Contract-focused assertion candidate — 2026-09-21, parent `903e7c8`
 
 [Instruction candidate](CON-ARTIST-CONTRACT-01.md) distinguishes requested
