@@ -1,0 +1,111 @@
+{
+  "session_id": "01a0c423-3ae5-78c2-aca8-1326dd377b53",
+  "source_bytes": 59895,
+  "source_sha256": "d6870ffee9eb47708bc51d0b6b19b31716fbbf2eeec87f22905cd591c386ca83",
+  "source_lines": 27,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "698ac4e81aac235dd262b9f000527a09ac89e6fa05ffb41ad8cdd03ffd6438c9",
+      "record": {
+        "timestamp": "2026-09-21T13:24:05.278Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0f83b78f986cac63016ab12ff42c8487d086edf54e9cd6f393",
+          "status": "completed",
+          "call_id": "call_EBbHRqf9vb6RDo5OiZQBI5Cz",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'deploy.log' -g 'AGENTS.md'\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c423-3b30-7aa1-9bae-4f2579886df6",
+            "create_time": 1789997041.106572
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "0653a88fb501af66b5c209a78fc279eaf3cc76293bdf811f6e4c531a6a205771",
+      "record": {
+        "timestamp": "2026-09-21T13:24:05.441Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c423-56c0-7853-b4e0-483860cad0fe",
+          "call_id": "call_EBbHRqf9vb6RDo5OiZQBI5Cz",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"046630\",\"wall_time_seconds\":0.000003166,\"exit_code\":0,\"original_token_count\":24,\"output\":\"<WORKSPACE>\\ndeploy.log\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c423-3b30-7aa1-9bae-4f2579886df6",
+            "create_time": 1789997045.440986
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "08001728fa2793e56cec0d69bd0c2003923d0acef1007ae70905546940729019",
+      "record": {
+        "timestamp": "2026-09-21T13:24:07.753Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0f83b78f986cac63016ab12ff7113c87d0b0cad09e7e68d974",
+          "status": "completed",
+          "call_id": "call_EX1ZTCuIHA6XbHFoHoYvQ0sf",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat deploy.log\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c423-3b30-7aa1-9bae-4f2579886df6",
+            "create_time": 1789997045.905195
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "dd80b6605f18de8793d145fdf09b2c539b115a2220d2a44196a0b9c203b0f9d1",
+      "record": {
+        "timestamp": "2026-09-21T13:24:07.837Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c423-601d-7ac1-858b-81c4510d9728",
+          "call_id": "call_EX1ZTCuIHA6XbHFoHoYvQ0sf",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"cf71d8\",\"wall_time_seconds\":0.00000175,\"exit_code\":0,\"original_token_count\":77,\"output\":\"09:10 deployment v12 started on staging\\n09:12 new worker health check failed: queue connection refused\\n09:13 deployment halted; no production traffic was switched\\n09:14 staging reverted to v11\\n09:15 v11 staging health checks passed\\n09:16 queue connectivity root cause not investigated; no retry scheduled\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c423-3b30-7aa1-9bae-4f2579886df6",
+            "create_time": 1789997047.837202
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

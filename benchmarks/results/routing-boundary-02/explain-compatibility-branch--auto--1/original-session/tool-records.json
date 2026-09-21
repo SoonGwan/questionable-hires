@@ -1,0 +1,111 @@
+{
+  "session_id": "01a0c423-782b-71b0-af07-74d8a745692d",
+  "source_bytes": 59456,
+  "source_sha256": "bd66aaa76ce7396646015b44aa6dc9c11c7e01fefc2e12584bdc3c41c18e7d5b",
+  "source_lines": 27,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "abc1b037071912fbca56b8d17ee9faa96f894f33ffa2ab5df5944edede16fb47",
+      "record": {
+        "timestamp": "2026-09-21T13:24:21.501Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0adcf726cb1739c6016ab13004591c87d08e7ada6c5613c6aa",
+          "status": "completed",
+          "call_id": "call_rXeR22Hk5ZJLecpq0Gh0THJG",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'display.py'\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c423-7872-7db0-9df7-4010682535de",
+            "create_time": 1789997058.432661
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "421a7cb1193ff37a7856ddcb9ee2c6a68bd3dcfcdafc1c028fd00a7b08d4da40",
+      "record": {
+        "timestamp": "2026-09-21T13:24:21.660Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c423-961b-7df2-b40c-54541568e2dd",
+          "call_id": "call_rXeR22Hk5ZJLecpq0Gh0THJG",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"8571a2\",\"wall_time_seconds\":0.00000575,\"exit_code\":0,\"original_token_count\":24,\"output\":\"<WORKSPACE>\\ndisplay.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c423-7872-7db0-9df7-4010682535de",
+            "create_time": 1789997061.659994
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "2b045b57b9974631e86acaab5bf82ce6dffd446235c09d1edbe3fee9fc8ef718",
+      "record": {
+        "timestamp": "2026-09-21T13:24:24.071Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0adcf726cb1739c6016ab1300763bc87d085f3a16e05101ccf",
+          "status": "completed",
+          "call_id": "call_T3DJJXQUeBwNPmWyALxnmVQz",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat display.py\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c423-7872-7db0-9df7-4010682535de",
+            "create_time": 1789997062.216588
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "b97da42580aa872d9ff570eeefa316a9101180bad62863982bc307d38c53c51e",
+      "record": {
+        "timestamp": "2026-09-21T13:24:24.172Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c423-9fec-78a0-a05e-e2e3f77f9e90",
+          "call_id": "call_T3DJJXQUeBwNPmWyALxnmVQz",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"bd91b2\",\"wall_time_seconds\":0.000001875,\"exit_code\":0,\"original_token_count\":41,\"output\":\"def display(record):\\n    # Compatibility path for records without a name field.\\n    if 'name' not in record:\\n        return 'Anonymous'\\n    return record['name']\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c423-7872-7db0-9df7-4010682535de",
+            "create_time": 1789997064.17282
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

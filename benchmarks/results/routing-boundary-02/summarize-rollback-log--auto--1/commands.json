@@ -1,0 +1,18 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'deploy.log' -g 'AGENTS.md'\"",
+    "aggregated_output": "<WORKSPACE>\ndeploy.log\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat deploy.log'",
+    "aggregated_output": "09:10 deployment v12 started on staging\n09:12 new worker health check failed: queue connection refused\n09:13 deployment halted; no production traffic was switched\n09:14 staging reverted to v11\n09:15 v11 staging health checks passed\n09:16 queue connectivity root cause not investigated; no retry scheduled\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]
