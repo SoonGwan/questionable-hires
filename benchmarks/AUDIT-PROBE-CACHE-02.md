@@ -64,6 +64,11 @@ replacement-control method was added. All80 mutation-helper tests passed in
 repository/skill validation and featured synchronization pass. This is focused
 local validation, not a new full release matrix or hosted CI pass.
 
+Committed-source archive `b6df5f6`, with no Git/local-run directory, passes all118
+audit tests in21.587s on Python3.11.16 (no skips). Archive repository validation
+and featured synchronization also pass. The checkout's13 build tests pass in2.989s.
+Final focused five-method suites: Python3.11.16,4.724s; Python3.9.6,4.060s.
+
 Both capability rows and the batch guide are updated. Entry instructions,
 frozen model measurements and featured graphs are unchanged. Broad cost benefit
 remains unproven; this deterministic reduction applies only when the helper is
