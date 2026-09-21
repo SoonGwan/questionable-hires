@@ -58,6 +58,11 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [Whole-checkout validation](CHECKOUT-VALIDATION-2026-09-21.md), code/tests
+  `3fa1758`: Python3.11.16,1,052 tests in179.745s, no failures/skips. Adds the
+  subsequent fixture/runner/packaged-recipe controls to the older1,035-test
+  checkpoint below. Local regression evidence, not model or hosted validation.
+  한국어: 최신 전체 로컬 검사 통과이며 성능 향상 증거와 구분한다.
 - [Slugify transfer preparation](SLUGIFY-NATIVE-01-PREFLIGHT.md), helper
   `a7dcbd8`: unchanged pinned upstream tests establish correct/equivalent/fault
   outcomes in20 direct processes;8 helper processes execute12 methods with
@@ -115,6 +120,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 소스 압축본 검사는 서로 다른 범위·커밋의 결과이므로 구분한다.
 
 ## Avoid repeating rejected approaches
+
+The [slugify remaining-cost diagnosis](SLUGIFY-NATIVE-01-INPUT-COSTS.md) reconciles
+the31,063-token baseline gap with the existing response analyzer. It does not
+attribute causal savings or justify a new grouping API from child-process counts.
+Six roles changed since the last all-eight resource; do not relabel that old
+measurement as current. 한국어: 실행 수 감소와 전체 비용 절감을 구분한다.
 
 Reuse [the existing cost analysis](ALL-EIGHT-03-INPUT-COSTS.md) and
 `analyze_response_costs.py`; no second profiler is needed. Its arithmetic is not
