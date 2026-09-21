@@ -58,6 +58,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [Hostage entry-wait cancellation correction](HOSTAGE-ENTRY-CANCEL-01.md),
+  parent `b9a2900`: plain callback-entry wait no longer swallows cancellation
+  overlapping queue wakeup in the tested Python3.9/3.11 runtimes. Both reproduce
+  the failure before the fix and pass18 controls afterward; owned-task11,
+  usage1, build13/archive4 pass. No model-cost claim or new full-suite run.
+  한국어: 취소 경계의 실제 결함 수정이며 전체 성능 개선 수치와 구분한다.
 - [Whole-checkout validation](CHECKOUT-VALIDATION-2026-09-21.md), code/tests
   `3fa1758`: Python3.11.16,1,052 tests in179.745s, no failures/skips. Adds the
   subsequent fixture/runner/packaged-recipe controls to the older1,035-test

@@ -165,7 +165,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 
 | 스킬 | 선택형 도구와 적용 범위 |
 | --- | --- |
-| 범위 협상가 | [Python 호출 제어·선택적 작업 정리](skills/hostage-negotiator/assets/controlled_call.py)(종료를 다시 요청해도 진행 중인 비동기 정리에 취소를 재전송하지 않음) 또는 [JavaScript 호출·정리](skills/hostage-negotiator/assets/controlled_call.mjs), 출력 누락에 대비한 선택적 [테스트 증거 보존](skills/hostage-negotiator/references/native-evidence.md). 성공한 편집과 테스트를 같은 도구 호출에서 실행하되 각각의 결과를 보존할 수 있습니다. 앱 검증은 테스트가 담당하며 증거 보존 방법은 브라우저 검증이나 실행 시간 제한을 제공하지 않습니다. |
+| 범위 협상가 | [Python 호출 제어·선택적 작업 정리](skills/hostage-negotiator/assets/controlled_call.py)(진입 대기를 취소해도 아직 전달하지 않은 호출을 보존하며, 종료를 다시 요청해도 진행 중인 비동기 정리에 취소를 재전송하지 않음) 또는 [JavaScript 호출·정리](skills/hostage-negotiator/assets/controlled_call.mjs), 출력 누락에 대비한 선택적 [테스트 증거 보존](skills/hostage-negotiator/references/native-evidence.md). 성공한 편집과 테스트를 같은 도구 호출에서 실행하되 각각의 결과를 보존할 수 있습니다. 앱 검증은 테스트가 담당하며 증거 보존 방법은 브라우저 검증이나 실행 시간 제한을 제공하지 않습니다. |
 | 테스트 사기 감별사 | 선택 파일 교체 확인과 배치 내 반복 테스트 선택의 정상 결과 재사용을 지원하는 [Python 테스트 결함 감사](skills/con-artist/references/python-audit.md), 크기 제한이 있는 선택형 프로젝트 전체 변경 확인, 같은 이름의 정의 선택과 전체 출력 크기 제한을 지원하는 [읽기 전용 맥락 수집](skills/con-artist/references/python-context.md). 정상·결함 코드 어느 쪽이든 빈 테스트의 종료 코드 5는 검증 불완전으로 처리합니다. 선택형 [네이티브 unittest 배치 예제](skills/con-artist/references/native-unittest-batch.md)는 실행 관찰 코드를 추가한 `python -B -m unittest`와 정상 결과 재사용을 안내하며, 기본값은 기존 내부 실행 방식입니다. 신뢰하는 테스트만 실행하며 샌드박스나 동시 변경을 격리하는 스냅샷이 아닙니다. |
 | 레거시 고고학자 | [관련 Git 이력 수집](skills/necromancer/references/focused-history.md). 과거 이유를 찾았다고 유지·삭제 결론이 자동으로 정해지지는 않습니다. |
 | 배포 생존 담당 | [SQLite 호환성 확인](skills/friday/references/sqlite-matrix.md). 실제로 연 소스 파일의 식별자를 검사해 파일 교체를 확인합니다. 파일 시스템 격리나 운영 배포·다른 DB 엔진의 안전성을 증명하지 않습니다. |

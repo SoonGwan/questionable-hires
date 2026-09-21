@@ -6,6 +6,8 @@ the copied module needs no installed skill. No application implementation here.
 save = ControlledCall() accepts any positional/keyword arguments, including none.
 Start the application task with owned cleanup registered BEFORE waiting. Await
 save.started(timeout=1) for actual callback entry; it returns a unique Call.
+Cancelling an entry wait propagates cancellation and leaves unconsumed entries
+available; it does not cancel application work.
 call.args/call.kwargs hold argument references, not deep snapshots. save.calls
 records every entry, even identical arguments, for call-count assertions.
 
@@ -138,7 +140,22 @@ class ControlledCall:
         """
         if not 0 < timeout <= 30:
             raise ValueError('timeout must be in (0, 30]')
-        return await asyncio.wait_for(self._entered.get(), timeout)
+        deadline = asyncio.get_running_loop().time() + timeout
+        while True:
+            if not self._entered.empty():
+                return self._entered.get_nowait()
+            self._entry_changed.clear()
+            # Observe availability, not a child task that consumes the entry.
+            # Cancellation must not be swallowed by a completed queue getter.
+            notice = asyncio.create_task(self._entry_changed.wait())
+            try:
+                done, _ = await asyncio.wait((notice,), timeout=max(
+                    0, deadline - asyncio.get_running_loop().time()))
+                if not done:
+                    raise asyncio.TimeoutError('Timed out waiting for callback entry')
+            finally:
+                notice.cancel()
+                await asyncio.gather(notice, return_exceptions=True)
 
     async def started_before(self, task, timeout=1):
         """Observe entry or task settlement without owning/cancelling that task."""

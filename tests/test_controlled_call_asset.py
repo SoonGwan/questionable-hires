@@ -15,6 +15,42 @@ spec.loader.exec_module(asset)
 
 
 class ControlledCallTests(unittest.IsolatedAsyncioTestCase):
+    async def test_plain_wait_cancellation_during_entry_wakeup_is_not_swallowed(self):
+        waiter = asyncio.create_task(self.callback.started(timeout=1))
+        self.tasks.append(waiter)
+        await asyncio.sleep(0)
+        await asyncio.sleep(0)
+        application = self.start('preserved')
+        asyncio.get_running_loop().call_soon(waiter.cancel)
+        with self.assertRaises(asyncio.CancelledError):
+            await waiter
+        self.assertFalse(application.done())
+        entry = await self.callback.started_before(application)
+        self.assertIs(entry, self.callback.calls[0])
+        self.assertEqual(entry.args, ('preserved',))
+        result = object()
+        entry.complete(result)
+        self.assertIs(await application, result)
+
+    async def test_plain_wait_competing_consumers_preserve_unique_entries(self):
+        waiters = [asyncio.create_task(self.callback.started()) for _ in range(2)]
+        self.tasks.extend(waiters)
+        await asyncio.sleep(0)
+        first = self.start('first')
+        done, pending = await asyncio.wait(waiters, timeout=1, return_when=asyncio.FIRST_COMPLETED)
+        self.assertEqual(len(done), 1)
+        one = done.pop().result()
+        self.assertEqual(one.args, ('first',))
+        one.complete('one')
+        self.assertEqual(await first, 'one')
+        second = self.start('second')
+        two = await asyncio.wait_for(pending.pop(), 1)
+        self.assertIsNot(one, two)
+        self.assertEqual(two.args, ('second',))
+        two.complete('two')
+        self.assertEqual(await second, 'two')
+        self.assertEqual(self.callback.calls, [one, two])
+
     async def test_plain_entry_wait_cannot_observe_already_completed_application(self):
         task = asyncio.create_task(asyncio.sleep(0, result='skipped callback'))
         self.tasks.append(task)
