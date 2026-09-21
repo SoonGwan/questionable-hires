@@ -18,6 +18,7 @@ readiness. No public-release approval or successful hosted matrix is claimed.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |
+| [Probe-edit transfer01](PROBE-EDIT-TRANSFER-01-REVIEW.md), current`aed8a27` |6cells; current vs baseline full tokens−7.87%/time+67.29%, prefix+10.43%/+0.74%. Current costs more tokens/time than predecessor on both. All scoped native checks succeed; helper unused. | No API adoption or efficiency benefit; no promotion. |
 | [All-eight regression04](ALL-EIGHT-CURRENT-04-REVIEW.md), `0d12dd9` |16cells; summed tokens+20.39%, time−5.17%. Scope included: baseline7/8,current8/8 because baseline SQLite searches outside the project. | Cost goal unmet; not a general quality advantage. This predates subsequent changes. |
 | [Configuration audit01](CONFIG-LAYERS-01-REVIEW.md), `e1e1ef8` |4cells; single tokens+4.65%/time+2.26%, multiple+0.38%/−1.28%. Helper unused in both current sessions. Multiple/current incorrectly denies baseline reuse. | No efficiency promotion or unqualified task pass. Native checks/preservation hold; reporting defect retained. |
 | [Packaging specifier01](PACKAGING-SPECIFIER-01-REVIEW.md), `c8fd471` |4cells; single tokens−18.53%/time−5.06%, multiple+5.39%/+13.84%. Helper unused; original806-test suite and requested faults run. | Mixed correlated pair, not a broad saving. Original initial-index identity is unproven. |
@@ -74,11 +75,10 @@ These changes are implemented; their model-cost effect is not established:
 
 ## Avoid repeating rejected approaches
 
-Prepared [existing-file probe transfer01](PROBE-EDIT-TRANSFER-01-PREFLIGHT.md):
-one native method in full/prefix upstream test files, both replacement/edit forms.
-All16 author pytest checks establish equal outcomes and copied-file identity;
-smaller serialized requests are not model savings. [Six-cell launch preparation](PROBE-EDIT-TRANSFER-01-LAUNCH.md)
-freezes baseline/predecessor/current across both sizes; outcomes are not yet reviewed.
+Reviewed [existing-file probe transfer01](PROBE-EDIT-TRANSFER-01-REVIEW.md):
+all six use custom harnesses; the optional exact-edit API is not adopted.
+Author preflight's smaller serialized requests are not model savings. Do not
+force helper usage or rerun the same full/prefix tasks for a favorable outcome.
 
 Reviewed [natural routing-boundary screen02](ROUTING-BOUNDARY-02-REVIEW.md):
 three ordinary requests, unchanged bundle`ba477ae`, auto-only. All satisfy the
