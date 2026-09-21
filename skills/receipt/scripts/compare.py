@@ -337,7 +337,16 @@ def run_node_check(node, root, recipe, timeout):
 
 
 def read_limited(path, limit):
-    with path.open('rb') as stream:
+    info = path.lstat()
+    if not stat.S_ISREG(info.st_mode):
+        raise ValueError('Selected input must be a regular file')
+    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    with os.fdopen(descriptor, 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        if (not stat.S_ISREG(opened.st_mode)
+                or (opened.st_dev, opened.st_ino, opened.st_mode)
+                != (info.st_dev, info.st_ino, info.st_mode)):
+            raise ValueError('Selected input changed while opening')
         return stream.read(limit + 1)
 
 

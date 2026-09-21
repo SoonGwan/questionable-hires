@@ -361,24 +361,58 @@ class ReceiptHelperTests(unittest.TestCase):
         self.assertEqual(original.read_text(), 'x' * 1000)
         self.assertFalse(list(self.root.glob('.receipt-*')))
 
+    def test_initial_read_replacement_rejects_before_native_execution(self):
+        original = self.root.resolve() / 'rule.py'
+        content = original.read_bytes()
+        open_file = helper.os.open
+        def replace(path, *args, **kwargs):
+            if path == original:
+                original.rename(original.with_name('old-rule'))
+                original.write_bytes(content)
+            return open_file(path, *args, **kwargs)
+        with patch.object(helper.os, 'open', replace), \
+                patch.object(helper, 'run_check') as execute, \
+                self.assertRaisesRegex(ValueError, 'changed while opening'):
+            helper.compare(self.root, self.recipe)
+        execute.assert_not_called()
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_final_read_replacement_rejects_and_cleans_owned_copies(self):
+        original = self.root.resolve() / 'rule.py'
+        content = original.read_bytes()
+        open_file = helper.os.open
+        checks = []
+        def execute(*args):
+            checks.append(args)
+            return dict(exit_code=0, timed_out=False, output='fixture', output_truncated=False)
+        def replace(path, *args, **kwargs):
+            if path == original and len(checks) == 2:
+                original.rename(original.with_name('old-rule'))
+                original.write_bytes(content)
+            return open_file(path, *args, **kwargs)
+        with patch.object(helper.os, 'open', replace), \
+                patch.object(helper, 'run_check', side_effect=execute), \
+                self.assertRaisesRegex(ValueError, 'changed while opening'):
+            helper.compare(self.root, self.recipe)
+        self.assertEqual(len(checks), 2)
+        self.assertEqual(original.read_bytes(), content)
+        self.assertTrue(original.with_name('old-rule').exists())
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
     def test_post_stat_growth_is_read_with_remaining_budget_before_execution(self):
-        class GrowingFile(io.BytesIO):
-            requests = []
-            def read(self, size=-1):
-                self.requests.append(size)
-                return super().read(size)
-        growing = GrowingFile(b'x' * 20_000_001)
-        original_open = Path.open
+        original_open = helper.os.open
         def open_file(path, *args, **kwargs):
-            if path == self.root.resolve() / 'rule.py' and (args[0] if args else kwargs.get('mode')) == 'rb':
-                return growing
+            if path == self.root.resolve() / 'rule.py':
+                path.write_bytes(b'x' * 20_000_001)
             return original_open(path, *args, **kwargs)
-        with patch.object(Path, 'open', open_file), \
+        with patch.object(helper.os, 'open', open_file), \
+                patch.object(helper, 'read_limited', wraps=helper.read_limited) as reads, \
                 patch.object(helper, 'run_check') as execute, \
                 self.assertRaisesRegex(ValueError, 'Inputs exceed 20 MB'):
             helper.compare(self.root, self.recipe)
-        self.assertEqual(growing.requests,
-                         [20_000_000 - (self.root / 'test_rule.py').stat().st_size + 1])
+        self.assertEqual(reads.call_args.args,
+                         (self.root.resolve() / 'rule.py',
+                          20_000_000 - (self.root / 'test_rule.py').stat().st_size))
         execute.assert_not_called()
         self.assertFalse(list(self.root.glob('.receipt-*')))
 
@@ -581,15 +615,14 @@ class ReceiptHelperTests(unittest.TestCase):
             with (self.root / name).open('wb') as stream:
                 stream.truncate(10_000_000)
         recipe = dict(self.recipe, fixed=['test_rule.py', 'large-a.bin', 'large-b.bin'])
-        open_file = Path.open
+        open_file = helper.os.open
         accessed = []
         def checked_open(path, *args, **kwargs):
-            if (args[0] if args else kwargs.get('mode')) == 'rb':
-                accessed.append(path.name)
-                if path.name == 'large-b.bin':
-                    raise AssertionError('Read started after the working-input budget was exhausted')
+            accessed.append(path.name)
+            if path.name == 'large-b.bin':
+                raise AssertionError('Read started after the working-input budget was exhausted')
             return open_file(path, *args, **kwargs)
-        with patch.object(Path, 'open', checked_open), \
+        with patch.object(helper.os, 'open', checked_open), \
                 patch.object(helper, 'run_check') as execute:
             with self.assertRaisesRegex(ValueError, 'Inputs exceed 20 MB'):
                 helper.compare(self.root, recipe)

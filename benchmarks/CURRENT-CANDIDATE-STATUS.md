@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Receipt selected-read correction — 2026-09-21, parent `266798e`
+
+[Reproduction and limits](RECEIPT-SELECTED-READ-01.md): before, one FIFO timeout
+and two accepted same-byte replacements; after, all three rejected. Selected
+snapshot/final reads now use nonblocking no-follow descriptors with observed
+identity/mode validation. Initial/final lifecycle tests preserve no-execution and
+cleanup guarantees. Python3.9 helper49 plus the three-case race test pass;
+Python3.11 Receipt175 checks pass in65.659s with no skips.
+Whole-suite1,010 checkpoint below predates this change. This is reliability
+evidence, not model efficiency. Entry and charts unchanged; bilingual capability
+and conditional documentation updated. Same-inode/parent races remain limitations.
+
+한국어: 선택 파일 교체 시 멈춤·잘못된 수용을 재현해 수정했다. 전체 모델 성능
+향상 수치가 아니라 신뢰성 보완이며, 동시 파일 변경을 완전히 격리하지는 않는다.
+
 ## Local full-suite checkpoint — 2026-09-21, resource `7034f1d`
 
 Clean checkout at `7034f1d`: Python3.11.16 ran **1,010 tests in171.171s,

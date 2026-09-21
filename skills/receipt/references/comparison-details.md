@@ -79,6 +79,12 @@ integrity reads stop at original length + 1. Total memory is not bounded by thes
 limits. Directory expansion is limited to 10,000 entries. An optional tree guard
 has its own 10,000-entry/20 MB streamed inventory budget, separate from copying.
 
+Selected-input reads use nonblocking, no-follow descriptor opens and compare the
+opened regular file's identity/mode with its immediately preceding observation.
+An observed replacement aborts instead of following a link or waiting on a FIFO,
+including during final integrity reads. This is not an atomic snapshot: parent
+directory races and concurrent writes to the same inode remain outside the guarantee.
+
 Execution defaults to 30 seconds/check (`--timeout` up to 300), retaining the last
 12,000 output characters. `output_truncated` leaves omitted evidence unavailable.
 Child exit has a separate five-second cleanup wait: unconfirmed exit means CLI 2,
