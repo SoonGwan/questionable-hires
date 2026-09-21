@@ -146,7 +146,13 @@ Do not rerun a completed experiment until it becomes favorable.
 
 ## Release and publication boundary
 
-[Current local checkpoint](RELEASE-VALIDATION-04741D7.md), source`04741d7`:
+[Current local checkpoint](RELEASE-VALIDATION-AD72A3F.md), source`ad72a3f`:
+macOS/Python3.11 checkout1,203passes; Linux/Python3.12 archive1,174passes,
+29history/checkout skips, zero failures. Both exit0. Hosted main run35625416269
+failed before all four jobs' steps; Python3.11 cites payments/spending limit.
+No new model result, remote installation or publication approval is implied.
+
+[Prior local checkpoint](RELEASE-VALIDATION-04741D7.md), source`04741d7`:
 macOS/Python3.11 checkout1,179passes; Linux/Python3.12 archive1,150passes,
 29historical skips, zero failures. Both exit0; overlapping durations are not
 speed comparisons. Hosted main run35610526288 failed before all four jobs'

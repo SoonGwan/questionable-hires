@@ -1,14 +1,14 @@
 # Release readiness — development preview
 
-Decision index,2026-09-21. **Not a completed public release or a claim of broad
+Decision index,2026-09-22. **Not a completed public release or a claim of broad
 performance superiority.** Each check applies only to its stated source revision.
 
 ## Required evidence
 
 | Gate | Evidence / remaining work |
 | --- | --- |
-| Current local compatibility | [Combined checkpoint](../benchmarks/RELEASE-VALIDATION-04741D7.md), `04741d7`: macOS/Python3.11 checkout1,179 passes; Linux/Python3.12 archive1,150 passes/29 historical skips, zero failures. Covers exact probe edits and decorator repair. Local checks do not replace the hosted matrix. |
-| Hosted Python matrix and archive | [Run35610526288](https://github.com/SoonGwan/questionable-hires/actions/runs/35610526288) at `04741d7`: all four jobs failed before any steps. The Python3.11 annotation cites failed recent payments or a spending limit. The intended release commit still needs successful hosted execution. |
+| Current local compatibility | [Combined checkpoint](../benchmarks/RELEASE-VALIDATION-AD72A3F.md), `ad72a3f`: macOS/Python3.11 checkout1,203 passes; Linux/Python3.12 archive1,174 passes/29 historical skips, zero failures. Includes Receipt hash reuse and optional isolated scratch. Local checks do not replace the hosted matrix. Prior [04741d7 evidence](../benchmarks/RELEASE-VALIDATION-04741D7.md) is retained. |
+| Hosted Python matrix and archive | [Run35625416269](https://github.com/SoonGwan/questionable-hires/actions/runs/35625416269) at `ad72a3f`: all four jobs failed before any steps. The Python3.11 annotation cites failed recent payments or a spending limit. The intended release commit still needs successful hosted execution. |
 | Installable resources | [Local skills CLI checkpoint03](../benchmarks/SKILLS-CLI-INSTALL-03.md), `8114957`: eight hires/51 resources, nine Python entrypoints and selected installed behavior pass. This predates the special-input fix; not remote authenticated installation or host registration. |
 | Whole-task performance | [Candidate evidence](../benchmarks/CURRENT-CANDIDATE-STATUS.md): broad20–30%+ improvement remains unproven. The all-eight comparison costs more tokens; configuration/packaging findings are adverse or mixed. Do not promote favorable pairs alone. |
 | Model selection and realistic use | [Natural boundary screen02](../benchmarks/ROUTING-BOUNDARY-02-REVIEW.md), `ba477ae`: three ordinary requests stay scoped, with no observed skill-body reads. This is not all-eight positive recall, a population false-positive rate, generalization or browser QA. Historical checks remain below. |
