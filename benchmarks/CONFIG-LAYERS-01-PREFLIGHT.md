@@ -36,6 +36,12 @@ Repeated unit-test execution is compatibility checking, not extra model attempts
 Fresh source archive`d844ede`, without Git history or local-run artifacts, also
 passes all four fixture controls on Python3.11.16 in0.781s, with no skips.
 
+Schedule preparation at`c852644`: [four-cell protocol](CONFIG-LAYERS-01-PROTOCOL.md)
+and its configured runner pass8 checkout controls in0.446s; a fresh source archive
+passes7 with1 explicit historical-snapshot skip in0.033s. The actual preparation
+command validates native preflight hashes/runtime and freezes inputs/resources.
+This preparation record is not a completed model result.
+
 The fixture contains author answer controls outside the task's supplied files;
 model projects receive only `settings.py` and the original `test_settings.py`.
 Both tasks have the same files and differ only in requested mutations. They may

@@ -146,6 +146,9 @@ assertion; one is already detected. Single/four requests share identical inputs.
 Native bindings/preservation/cleanup and fixture controls pass; no model launch,
 independent validation or new cache-attribution claim.
 한국어: 새 설정 병합 감사의 실행 준비 검증 완료이며 모델 성능 결과는 아니다.
+The [four-cell schedule](CONFIG-LAYERS-01-PROTOCOL.md) at`c852644` now passes
+8checkout controls,7archive controls/1historical skip; actual inputs/resources
+are prepared for one execution. This does not establish a completed comparison.
 
 Local optimization2026-09-21, parent`cb9cde1`:
 [non-adjacent stronger-probe cache](AUDIT-PROBE-CACHE-02.md) reuses a returning
