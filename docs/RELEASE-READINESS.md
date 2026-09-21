@@ -5,6 +5,20 @@ performance superiority.** Each check applies only to its stated source revision
 
 ## Required evidence
 
+The [manual candidate workflow](STANDALONE-ARCHIVE.md#manual-candidate-workflow)
+prepares a downloadable installation bundle only after the full validation
+workflow succeeds. It does not publish or bypass the gates below. Before changing
+visibility, follow the [owner launch checklist](PUBLIC-LAUNCH.md).
+
+Local automation checkpoint,2026-09-22/source`a7fb71a`: Python3.11.16 checkout
+passes1,228 tests in211.875s, zero failures/skips. The three new workflow tests
+also pass on Python3.9.6. A fresh source archive with the same workflow/test
+changes passes those three tests and all four standalone installation tests.
+This runs the actual packaging shell, including reproducibility, installation
+and a missing-packager failure control; it does not exercise hosted scheduling,
+artifact upload or clear the account billing/limit blocker. Skill resources and
+model benchmark measurements are unchanged by this checkpoint.
+
 | Gate | Evidence / remaining work |
 | --- | --- |
 | Current local compatibility | [Combined checkpoint](../benchmarks/RELEASE-VALIDATION-2C7E036.md), `2c7e036`: macOS/Python3.11 checkout1,225 passes; Linux/Python3.12 archive1,195 passes/30 historical skips, zero failures. Includes Receipt multiple-before and Necromancer BOM support. Local checks do not replace the hosted matrix. Prior [ad72a3f evidence](../benchmarks/RELEASE-VALIDATION-AD72A3F.md) is retained. |

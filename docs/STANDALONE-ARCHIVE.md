@@ -34,6 +34,36 @@ history or network is needed for this Python installation path. Downloading a
 private artifact still requires authorized access. This command does not upload,
 publish or create a GitHub release, and does not change `npx skills add` behavior.
 
+## Manual candidate workflow
+
+In GitHub Actions, select **Prepare release candidate**, choose the intended
+branch and select **Run workflow**. This is candidate preparation, not publication.
+It first calls the complete Python3.9/3.11/3.12 and source-archive validation
+workflow. Only after all jobs pass does it build the bundle twice, compare bytes,
+scan extracted contents, install into a temporary consumer and verify that install.
+
+The retained `candidate-<full commit SHA>` artifact contains only:
+
+- `questionable-hires.tar.gz`: the standalone installation bundle;
+- `SHA256SUMS`: the bundle's SHA-256, not the enclosing Actions artifact digest;
+- `SOURCE_COMMIT`: the checkout revision used to build it.
+
+Download within14 days and verify the bundle using `shasum -a 256 -c SHA256SUMS`
+from the downloaded directory. The checksum detects mismatches, not an untrusted
+publisher. No raw runs, consumer files or repository history are uploaded. Actions
+has read-only repository permissions; no release, tag or visibility change occurs.
+This does **not** clear privacy findings in a full repository clone.
+
+Local tests execute the actual build shell and check that a failed build emits no
+upload-directory output. Hosted scheduling, artifact upload and permissions still
+need a successful Actions run; the recorded account billing/limit blocker is not
+fixed by this workflow. See [release readiness](RELEASE-READINESS.md).
+
+한국어: Actions의 **Prepare release candidate → Run workflow**는 검증된 설치
+후보를 만드는 버튼이다. 전체 검증 성공 후에만 압축·재현성·설치 일치를 확인하고
+설치 묶음·체크섬·원본 커밋 번호만14일 보관한다. 공개 전환이나 GitHub Release
+게시 버튼은 아니다. 원격 CI 결제/한도 문제와 Git 이력의 공개 검토는 별도로 남는다.
+
 ## Installed recent-capability checkpoint — 2026-09-22, resources `11d9a36`
 
 The expanded offline package/extract/install test now executes the installed
