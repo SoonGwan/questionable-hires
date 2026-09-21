@@ -1,0 +1,27 @@
+{
+  "name": "qh-swelite-requests-identity-01",
+  "image": "sha256:a0ce096d4dfa27ca8ea80ae4b38103e970d17b19066d886a550936394827c9fb",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-21T14:26:20.173527009Z",
+    "FinishedAt": "2026-09-21T14:26:21.306631678Z"
+  },
+  "command": [
+    "-lc",
+    "python -B -c 'import subprocess,json; base=\"091991be0da19de9108dbe5e3752917fea3d7fdc\"; tree=lambda rev: {v.split(b\"\\t\",1)[1]:v.split(b\"\\t\",1)[0].split() for v in subprocess.check_output([\"git\",\"ls-tree\",\"-rz\",rev]).split(b\"\\0\") if v}; a,b=tree(base),tree(\"HEAD\"); print(json.dumps({\"base_entries\":len(a),\"image_entries\":len(b),\"same_paths\":a.keys()==b.keys(),\"changed_blobs\":sum(a[k][1:]!=b[k][1:] for k in a.keys()&b.keys()),\"changed_modes\":sum(a[k][0]!=b[k][0] for k in a.keys()&b.keys())})); assert a.keys()==b.keys() and all(a[k][1:]==b[k][1:] for k in a)'"
+  ],
+  "entrypoint": [
+    "/bin/bash"
+  ],
+  "network": "none",
+  "readonly_rootfs": true,
+  "log_sha256": "d17577559a279aa9686cd0fd401d21d88a2acbe380f7d2bf9a7083f5195bf812"
+}

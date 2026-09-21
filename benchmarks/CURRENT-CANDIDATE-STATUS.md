@@ -20,6 +20,9 @@ readiness. No public-release approval or successful hosted matrix is claimed.
 SWE-bench Lite instance identities by a predeclared hash rule, without inspecting
 solution patches. Environment/license/scoring gates are pending; no model calls
 or new performance result. Public tasks are not proven uncontaminated holdout.
+[Image feasibility](SWE-LITE-PILOT-01-ENVIRONMENT.md): both pinned amd64 images
+start under compatibility mode with matching source blobs, but differing modes
+and broad Git stores require solver isolation. Imports are not native-test validation.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |
