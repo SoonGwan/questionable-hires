@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Checkpoint **2026-09-21, last model resource `e6aa16e`, edit-audit launch `f5654a2`**.
+Checkpoint **2026-09-21, last model resource `387c53b`, dateutil launch `fcd6c1e`**.
 This is a decision index, not a new
 measurement. [Full chronological history](CANDIDATE-HISTORY-2026-09-21.md) preserves
 every preceding checkpoint, including adverse results and preparation notes.
@@ -18,6 +18,12 @@ hosted-check success or public-release approval is claimed here.
 과거 실험과 불리한 결과는 이력 문서에 그대로 보존했다.
 
 ## Model evidence that governs claims
+
+Reviewed checkpoint2026-09-21: [dateutil native audit](DATEUTIL-NATIVE-01.md)
+retains all three original attempts. All arms meet5/5; current uses the helper
+and executes12 methods in8 rather than12 processes, but versus baseline total
+tokens+51.37%, time−14.46%. No efficiency promotion. 한국어: 실제 도구 사용은
+확인했지만 토큰 비용 목표에는 미달이며 전체 성능 향상으로 채택하지 않는다.
 
 Reviewed checkpoint2026-09-21: [native edit audit](EDIT-AUDIT-01.md) retains all six
 original attempts. Required outcomes hold, but helper use is absent and current
@@ -37,6 +43,7 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 | [Proposal boundary01](AUDIT-PROPOSAL-01.md),2026-09-21,`e17e13d` | Proposal: tokens−17.46%, time−8.48%,20→10 unittest processes. Verified: tokens+3.40%, time−3.34%; required assertions retained | Retain scope distinction provisionally. Two requests on reused development fixture,n=1; not independent validation. |
 | [Plan audit01](PLAN-AUDIT-01.md),2026-09-21,`a3dee3b` | All arms meet5/5 proposal and6/6 verified criteria. Current versus baseline: proposal−11.39% tokens/−2.98% time; verified+12.83%/+9.02% | Scope distinction transfers in one fresh authored fixture; unequal probes and prior instrumentation repair. No broad efficiency win. |
 | [Edit audit01](EDIT-AUDIT-01.md),2026-09-21,`e6aa16e` | All arms meet5/5 proposal and6/6 verified criteria. Current versus baseline: proposal+6.63% tokens/−18.67% time; verified+91.21%/+119.09% | Helper unused; current startup recovery and unequal extra work retained. No demonstrated efficiency improvement. |
+| [Dateutil native01](DATEUTIL-NATIVE-01.md),2026-09-21,`387c53b` | All arms5/5; current helper used,12 methods in8 processes versus12; tokens+51.37%, time−14.46% versus baseline | Adoption but not efficiency target. Multiple guide reads; one author-inspected upstream subset,n=1. |
 
 한국어: 전체 비교에서는 토큰 증가가 남았다. 제안과 입증을 구분한 수정은 한 사례에서
 추가 실행을 줄였지만 입증 과제의 토큰 증가도 공개한다. 독립적인 프로젝트에서
@@ -48,12 +55,13 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
   helper `387c53b`: unchanged pinned upstream test/source files pass25 direct
   controls and8 helper executions with matching selected-test outcomes, real
   assertion failures and cleanup. Author-selected development cases; no model
-  sessions, no measured savings, and no frozen model protocol yet.
-  한국어: 실제 프로젝트 호환성 대조 완료. 모델 성능 측정은 아직 아니다.
+  sessions at that preparation checkpoint. Subsequent model comparison is above.
+  한국어: 준비 당시에는 호환성 대조만 완료했고 이후 모델 비교는 위에 구분했다.
 - [Native audit discovery correction](AUDIT-NATIVE-ROUTE-01.md), parent `1fa230c`:
   entrypoint exposes the supported module command and a complete batch recipe.
   The actual bundled recipe passes weak/strong assertion controls on Python3.9/3.11;
-  build13/archive4 pass. Model adoption and cost impact are unmeasured; existing
+  build13/archive4 pass. That checkpoint had no model measurement; see the
+  subsequent dateutil comparison above. Existing
   project support, simpler checks and justified inspection remain valid choices.
   한국어: 안내·예제 검증 완료이며 모델 성능 수치로 채택한 결과가 아니다.
 - [Con Artist module invocation](AUDIT-MODULE-01.md), parent `04bf934`: optional
