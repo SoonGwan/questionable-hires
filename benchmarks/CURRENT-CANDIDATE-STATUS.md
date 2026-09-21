@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-21, working resource `9a84635`**.
+Decision checkpoint **2026-09-21, parent resource `23f06d2` plus exact probe edits**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -36,6 +36,10 @@ or recoverable savings.
 
 These changes are implemented; their model-cost effect is not established:
 
+- [Exact native probe edits](AUDIT-PROBE-EDITS-01.md), parent`23f06d2`:
+  localized test changes need not resend unchanged file contents; four native
+  checks and full materialized-byte budget/cache identity remain.128 audit controls
+  pass on3.11; no measured model adoption or efficiency effect.
 - [Audit special-input rejection](AUDIT-SPECIAL-INPUTS-01.md), parent`74b674a`:
   initially selected FIFO/socket entries no longer disappear silently from copies;
   rejected before execution.121 audit and80 mutation-helper controls pass on3.11.

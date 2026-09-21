@@ -320,7 +320,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     if not isinstance(spec, dict):
         raise ValueError('Audit recipe must be a JSON object')
     allowed = {'files', 'imports', 'runner', 'tests', 'target', 'old', 'new',
-               'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_tests', 'precheck', 'import_roots', 'guard_project', 'invocation'}
+               'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_edits', 'probe_tests', 'precheck', 'import_roots', 'guard_project', 'invocation'}
     unknown = set(spec) - allowed
     if unknown:
         raise ValueError('Unknown audit fields: ' + ', '.join(sorted(map(str, unknown))) +
@@ -345,16 +345,16 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
         raise ValueError('probe must be Python assertion code')
     if 'precheck' in spec and not isinstance(spec['precheck'], str):
         raise ValueError('precheck must be Python assertion code')
-    file_probe = any(key in spec for key in ('probe_files', 'probe_replacements', 'probe_tests'))
+    file_probe = any(key in spec for key in ('probe_files', 'probe_replacements', 'probe_edits', 'probe_tests'))
     if file_probe:
         if 'probe' in spec:
             raise ValueError('Use probe or native probe files/replacements, not both')
-        if (not any(key in spec for key in ('probe_files', 'probe_replacements'))
+        if (not any(key in spec for key in ('probe_files', 'probe_replacements', 'probe_edits'))
                 or any(key in spec and (not isinstance(spec[key], dict) or not spec[key])
-                       for key in ('probe_files', 'probe_replacements'))
+                       for key in ('probe_files', 'probe_replacements', 'probe_edits'))
                 or not isinstance(spec.get('probe_tests'), list) or not spec['probe_tests']
                 or not all(isinstance(x, str) and x for x in spec['probe_tests'])):
-            raise ValueError('Nonempty probe_files/probe_replacements and probe_tests are required together')
+            raise ValueError('Nonempty probe_files/probe_replacements/probe_edits and probe_tests are required together')
     has_probe = 'probe' in spec or file_probe
     probe_when = spec.get('probe_when', 'always')
     if probe_when not in ('always', 'survives') or ('probe_when' in spec and not has_probe):
@@ -405,6 +405,25 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
         if total > 20_000_000:
             raise ValueError('Selected inputs and probe contents exceed 20 MB')
         probe_replacements[key] = encoded
+    for name, edit in spec.get('probe_edits', {}).items():
+        if (not isinstance(name, str) or not isinstance(edit, dict)
+                or set(edit) != {'old', 'new'} or not isinstance(edit['old'], str)
+                or not edit['old'] or not isinstance(edit['new'], str)
+                or edit['old'] == edit['new']):
+            raise ValueError('probe_edits must map relative paths to distinct old/new text')
+        key = str(relative(name))
+        if key not in files or key == target or key in probe_replacements:
+            raise ValueError('Probe edit requires a distinct selected non-target file: ' + key)
+        before, after = edit['old'].encode('utf-8'), edit['new'].encode('utf-8')
+        content = files[key]
+        if content.count(before) != 1:
+            raise ValueError('Probe edit old text must match exactly once: ' + key)
+        # Charge the complete resulting file, not merely the shorter edit request.
+        # Check before allocating it; the existing cache keys materialized bytes.
+        total += len(content) - len(before) + len(after)
+        if total > 20_000_000:
+            raise ValueError('Selected inputs and probe contents exceed 20 MB')
+        probe_replacements[key] = content.replace(before, after, 1)
     modes = {name: (root / name).stat().st_mode & 0o777 for name in files}
     if target not in files:
         raise ValueError('Mutation target must be among selected input files')
@@ -553,7 +572,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
 def audit_batch(root, spec, python=sys.executable, timeout=30):
     """Reuse a successful baseline only within this explicit local batch."""
     common_keys = {'files', 'imports', 'runner', 'tests', 'mutations', 'precheck', 'import_roots', 'guard_project', 'invocation'}
-    fault_keys = {'target', 'old', 'new', 'tests', 'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_tests'}
+    fault_keys = {'target', 'old', 'new', 'tests', 'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_edits', 'probe_tests'}
     mutations = spec.get('mutations')
     misplaced = (set(spec) - common_keys) & fault_keys
     if misplaced:

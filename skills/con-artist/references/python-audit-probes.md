@@ -61,8 +61,33 @@ This preserves native module names and fixture layout without editing the origin
 ```
 
 Adapt the complete proposed test file, retaining required assertions/fixtures.
+For a small change in a large selected test file, use `probe_edits` instead of
+resending its unchanged contents:
+
+```json
+{
+  "probe_edits": {
+    "test_service.py": {
+      "old": "        self.assertTrue(save(values, 'item'))\n",
+      "new": "        self.assertTrue(save(values, 'item'))\n        self.assertEqual(values, ['item'])\n"
+    }
+  },
+  "probe_tests": ["-v", "test_service"]
+}
+```
+
+Each selected file accepts one exact UTF-8 `old`/`new` edit. `old` must be nonempty
+and match exactly once; `new` must differ (empty deletion is allowed). Include
+enough unchanged context to disambiguate; there is no fuzzy matching or implicit
+append. Untouched bytes, including line endings, remain unchanged. For several
+separated changes in one file, use its complete `probe_replacements` content.
+Different files may use edits and replacements together, but the same normalized
+path cannot appear in both. The full resulting files, not just edit fragments,
+count toward the existing20 MB input bound. Cache reuse compares their actual
+resulting bytes, so equivalent edit/replacement forms share one correct observation.
+
 The replacement must name a selected existing file and cannot replace the mutation
-target. Duplicate normalized paths, missing files, mixed inline `probe` mode and
+target. This also applies to edits. Duplicate normalized paths, missing files, mixed inline `probe` mode and
 oversized contents are rejected before execution. Original selected bytes plus
 new/replacement probe contents share the 20 MB input budget. `probe_files` may
 also supply new support files; it still never overwrites existing paths.

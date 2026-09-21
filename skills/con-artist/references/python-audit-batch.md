@@ -6,7 +6,7 @@ loading unrelated import-root or runner-diagnostic details.
 For independent, already-scoped local audits, the same CLI accepts shared `files`,
 `imports`, `runner`, `tests`, optional `precheck` and `import_roots` plus a `mutations` list
 (1–8 objects). Move each fault's `target`, `old`, `new`, optional `probe` (or
-`probe_files`/`probe_replacements` with `probe_tests`) and
+`probe_files`/`probe_replacements`/`probe_edits` with `probe_tests`) and
 `probe_when` into its own list entry. An entry may also override `tests` with native
 runner arguments when the audit requires separate test selections. Other per-entry
 overrides are unsupported.

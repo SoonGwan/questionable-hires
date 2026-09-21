@@ -8,6 +8,8 @@ it never applies the proposed edit or deliberate fault to the source project.
 Adapt this complete recipe to the actual files, reachable fault and stronger test.
 Use the project's interpreter and installed skill path. No wrapper or saved recipe
 is required; `probe_replacements` contains the complete proposed test file.
+For one localized change in a larger file, [exact probe edits](python-audit-probes.md#improve-existing-tests-at-their-native-paths)
+avoid resending unchanged source; the same four checks and preservation rules apply.
 
 ```sh
 /path/to/project/python /path/to/con-artist/scripts/audit.py --source . --spec - <<'JSON'
