@@ -241,6 +241,14 @@ new model measurement or efficiency claim. 한국어: 패키지 초기화 실패
 
 ## Avoid repeating rejected approaches
 
+The [ZIP input-cost diagnosis](ZIP-AUDIT-01-INPUT-COSTS.md) reconciles all6
+original profiles. Candidate output is lower than baseline on both tasks; the
+single-fault candidate reads no helper reference yet retains a token gap.
+No new grouping/read-less rewrite or favorable ZIP retry is justified. Current
+cross-role regression evidence is still missing; reused tasks must remain labeled
+exposed, not independent validation. 한국어: 비용 분석을 근거로 같은 안내 수정은
+반복하지 않고 현재8개 스킬의 회귀 비교와 독립 검증을 구분한다.
+
 The [all-eight lean experiment](results/lean-screen-01/README.md) already tested
 a broad entrypoint rewrite: lean7/8 versus current8/8, with higher cost than the
 baseline. Astra's [current design guidance](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)
