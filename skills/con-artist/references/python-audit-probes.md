@@ -1,7 +1,10 @@
 # Native stronger probes
 
-Read with the [common CLI contract](python-audit.md) when a stronger assertion
-needs the project's native runner or fixtures. Supply `probe_files` (new relative
+Use with either the [single-audit contract](python-audit.md) or the
+[native batch recipe](native-unittest-batch.md) already selected. The JSON fragments
+below go at the single-audit root; in a batch, merge them into the relevant
+`mutations[]` entry alongside `target`/`old`/`new`, never into the shared root.
+Supply `probe_files` (new relative
 paths → source text) and `probe_tests` (arguments for the same runner), **instead
 of** `probe`. Reuse the actual application call and relevant fixture, not a
 replacement implementation. For example, with `runner: "unittest"`:
@@ -16,7 +19,7 @@ replacement implementation. For example, with `runner: "unittest"`:
 }
 ```
 
-These fields augment the common recipe; adapt paths, assertions and runner to
+These fields augment the selected recipe; adapt paths, assertions and runner to
 the project. Files exist only in fresh correct/faulty **probe** copies, never in
 original-test checks or the source project. Existing paths, selected-file
 collisions and traversal are refused before execution. Inputs plus probe files

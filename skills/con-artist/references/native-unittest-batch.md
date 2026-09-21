@@ -67,8 +67,10 @@ already supplies a required stronger assertion, another mutation entry with the
 same fault and different `tests` runs its correct/faulty pair; no probe fields are
 needed. Include that test and its imports in the selected files and adapt any
 binding precheck. The same observation/reuse rules apply. Only when adding or
-changing assertions, use `probe_files`/`probe_replacements` and `probe_tests`:
-see [native probe details](python-audit-probes.md). Module mode does not support
+changing assertions, put `probe_files`/`probe_replacements`, `probe_tests` and any
+`probe_when` inside the relevant `mutations[]` entry, alongside `target`/`old`/`new`,
+not at the batch root. See [native probe details](python-audit-probes.md) for their
+contents; this recipe already supplies the shared CLI contract. Module mode does not support
 inline `probe` or pytest. Never call an unexecuted proposal verified.
 
 `integrity` confirms selected original bytes/modes and owned-scratch removal.

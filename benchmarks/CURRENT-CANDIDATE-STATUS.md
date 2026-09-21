@@ -87,6 +87,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Checkpoint2026-09-21, parent`af9f5d5`: [batch/probe route correction](AUDIT-BATCH-PROBE-ROUTING-01.md)
+clarifies per-mutation probe placement after an observed schema error and adds
+a precise pre-execution diagnostic without accepting previously invalid inputs.
+Actual packaged examples compose and detect both faults;107audit tests pass.
+한국어: 실제 입력 오류를 바탕으로 안내·진단을 수정했다. 모델 비용 개선은 미측정이다.
+
 Checkpoint2026-09-21, parent`994d056`: [current-source line allocation](HISTORY-CURRENT-LINES-01.md)
 avoids whole-file row-list allocation in Necromancer. Four local input comparisons
 retain identical selected text; many-row peak decreases while long-row/small

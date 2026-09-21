@@ -10,6 +10,48 @@ from test_build import builder
 
 
 class NativeBatchGuideTests(unittest.TestCase):
+    def test_packaged_batch_and_native_probe_compose_at_mutation_boundary(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            bundle = builder.build(root / 'bundle')
+            references = bundle / 'skills/con-artist/references'
+            guide = (references / 'native-unittest-batch.md').read_text()
+            recipe = json.loads(guide.split("<<'JSON'\n", 1)[1].split('\nJSON', 1)[0])
+            probe = json.loads((references / 'python-audit-probes.md').read_text().split('```json\n', 1)[1].split('\n```', 1)[0])
+            project = root / 'project'
+            project.mkdir()
+            for name in ('service.py', 'test_service.py'):
+                (project / name).write_bytes((builder.ROOT / 'examples/con-artist-batch' / name).read_bytes())
+            before = {p.name: (p.read_bytes(), p.stat().st_mode) for p in project.iterdir()}
+            command = [sys.executable, '-I', '-B', str(bundle / 'skills/con-artist/scripts/audit.py'),
+                       '--source', str(project), '--spec', '-']
+            # Reproduce the observed composition mistake: probe fields at batch root.
+            invalid = subprocess.run(command, input=json.dumps(dict(recipe, **probe)),
+                                     text=True, capture_output=True, timeout=15)
+            self.assertEqual(invalid.returncode, 2)
+            self.assertEqual(invalid.stdout, '')
+            self.assertIn('each mutations[] entry', invalid.stderr)
+            self.assertEqual(before, {p.name: (p.read_bytes(), p.stat().st_mode) for p in project.iterdir()})
+            valid = dict(recipe, mutations=[dict(fault, **probe) for fault in recipe['mutations']])
+            result = subprocess.run(command, input=json.dumps(valid),
+                                    text=True, capture_output=True, timeout=15)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            audits = json.loads(result.stdout)['audits']
+            self.assertEqual(len(audits), 2)
+            for index, audit in enumerate(audits):
+                checks = audit['checks']
+                self.assertEqual(checks['mutant_tests']['exit_code'], 0)
+                self.assertEqual(checks['mutant_probe']['exit_code'], 1)
+                self.assertIn('AssertionError: Lists differ:', checks['mutant_probe']['output'])
+                self.assertEqual(checks['mutant_probe']['suite_observation']['tests'], 1)
+                self.assertTrue(audit['integrity']['owned_scratch_removed'])
+                if index:
+                    self.assertEqual(checks['correct_probe']['observation_ref'], '#/audits/0/checks/correct_probe')
+                else:
+                    self.assertEqual(checks['correct_probe']['exit_code'], 0)
+                    self.assertEqual(checks['correct_probe']['suite_observation']['tests'], 1)
+            self.assertEqual(before, {p.name: (p.read_bytes(), p.stat().st_mode) for p in project.iterdir()})
+
     def test_packaged_recipe_with_source_root_and_existing_witness(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

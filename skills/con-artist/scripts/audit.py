@@ -525,6 +525,10 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
     common_keys = {'files', 'imports', 'runner', 'tests', 'mutations', 'precheck', 'import_roots', 'guard_project', 'invocation'}
     fault_keys = {'target', 'old', 'new', 'tests', 'probe', 'probe_when', 'probe_files', 'probe_replacements', 'probe_tests'}
     mutations = spec.get('mutations')
+    misplaced = (set(spec) - common_keys) & fault_keys
+    if misplaced:
+        raise ValueError('Batch fault/probe fields belong in each mutations[] entry, not the batch root: '
+                         + ', '.join(sorted(misplaced)))
     if set(spec) - common_keys or not isinstance(mutations, list) or not 1 <= len(mutations) <= 8:
         raise ValueError('Batch requires shared files/imports/runner/tests and 1–8 mutations')
     for fault in mutations:
