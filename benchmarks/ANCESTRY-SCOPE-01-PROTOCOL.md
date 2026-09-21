@@ -75,6 +75,23 @@ The outcome/process distinction follows [OpenAI's skill-evaluation guidance](htt
 No new API, credential setup, model substitution or account change is needed for
 this preparation.
 
+## Frozen execution interface
+
+`run_ancestry_scope_01.py` includes the actual builder in its identity manifest,
+freezes refs as well as HEAD/source/resources, and checks those identities before
+every cell. Exclusive start prevents restarting partial runs. Six runner tests
+plus three fixture tests pass under Python3.11 (8.076s), including mid-run resource
+drift, changed non-ancestor refs, account-limit retention and original schedule.
+Those runner tests stub model execution; fixture tests use actual native processes.
+
+```sh
+benchmarks/local-runs/receipt-provenance-venv/bin/python -B benchmarks/run_ancestry_scope_01.py --output benchmarks/local-runs/ancestry-scope-01
+benchmarks/local-runs/receipt-provenance-venv/bin/python -B benchmarks/run_ancestry_scope_01.py --output benchmarks/local-runs/ancestry-scope-01 --execute
+```
+
+The first command only prepares immutable inputs. The second is a single planned
+execution; never rerun it to replace a partial, failed or unfavorable schedule.
+
 한국어: 두 과제는 같은 작성자 제작 저장소를 공유하는 이력 검토·현재 동작 대조다.
 정상/결함 실행과 병합 이력 조건을 먼저 검증하고, 6개 세션의 모든 시도를 보존한다.
 아직 모델 실행 전이며 독립 실무 성능이나 전체 스킬 향상으로 주장하지 않는다.

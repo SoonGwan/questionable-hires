@@ -74,7 +74,8 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 Checkpoint2026-09-21: [ancestry scope comparison preparation](ANCESTRY-SCOPE-01-PROTOCOL.md)
 adds a merged-history request and correlated no-history control with native
-pass/fail preflight. No model calls yet; runner freezing remains before launch.
+pass/fail preflight. Nine fixture/runner tests pass; six-cell identity and exclusive
+start controls are ready. This prelaunch checkpoint is not a model result.
 한국어: 이력 안내 수정의 실제 효과를 검증할 두 과제와 실행 대조를 준비했다.
 모델 성능 결과나 독립 실무 검증은 아니다.
 
