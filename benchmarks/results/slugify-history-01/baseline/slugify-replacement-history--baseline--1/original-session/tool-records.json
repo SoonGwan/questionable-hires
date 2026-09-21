@@ -1,0 +1,258 @@
+{
+  "session_id": "01a0c31d-a758-78f2-ac07-41f34d3a8602",
+  "source_bytes": 228723,
+  "source_sha256": "87ec43a6361b34db1ffbd5a0b3b9a78afeea8421bfcc74540c14c048a1f7444c",
+  "source_lines": 46,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "264b7d4080ec660f0a8471d0d3d154514c7b8899b6edb835f6ca22226a9bc4c0",
+      "record": {
+        "timestamp": "2026-09-21T08:38:22.852Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a70a0b8a8061e3f016ab0ed00d04c87d0b44dd0fd50411019",
+          "status": "completed",
+          "call_id": "call_U54Y2GNcTbWxMrMPhX65Ny5L",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; git status --short; git rev-parse HEAD; rg --files -g AGENTS.md -g '*slugify*' -g '*test*' -g '*README*'; git log --oneline --all=false -12\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c31d-a7a9-7400-acf3-858b25a69605",
+            "create_time": 1789979902.00506
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "91b97b3929dbf7a64b97b54c890398d4d611c57ce56586b373bed5540f0072f2",
+      "record": {
+        "timestamp": "2026-09-21T08:38:23.039Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c31d-c43f-7b33-b91b-464dacbf3c2b",
+          "call_id": "call_U54Y2GNcTbWxMrMPhX65Ny5L",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"fa96a5\",\"wall_time_seconds\":0.000002666,\"exit_code\":128,\"original_token_count\":51,\"output\":\"<WORKSPACE>\\nf85f9488520148d5f6899b5639199882b605e30a\\nREADME.md\\ntest.py\\nslugify/slugify.py\\nfatal: unrecognized argument: --all=false\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c31d-a7a9-7400-acf3-858b25a69605",
+            "create_time": 1789979903.039238
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "78067bb593d82c82a6021cb1fb59b1f7f779b6989a0a909aed816f4c7e145edf",
+      "record": {
+        "timestamp": "2026-09-21T08:38:27.592Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a70a0b8a8061e3f016ab0ed04e2f887d0a056329202ec09d0",
+          "status": "completed",
+          "call_id": "call_oi4tW8yAFrwHNcO5cQv9h2jj",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git log --oneline -15 HEAD; cat slugify/slugify.py; cat slugify/__init__.py; rg -n 'replacement|percent|\\\\bor\\\\b|FOO' test.py README.md; git log HEAD --format='%h %s' -G 'replacements|user-specific' -- slugify/slugify.py\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c31d-a7a9-7400-acf3-858b25a69605",
+            "create_time": 1789979907.560552
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "0c51658ae7f9834fc4d084d2b1deaa44b08382bf3905e408c173262f522e7ca4",
+      "record": {
+        "timestamp": "2026-09-21T08:38:27.738Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c31d-d69a-7f02-a86d-382962880ca7",
+          "call_id": "call_oi4tW8yAFrwHNcO5cQv9h2jj",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"cf03e7\",\"wall_time_seconds\":0.000001542,\"exit_code\":0,\"original_token_count\":2455,\"output\":\"f85f948 Merge branch 'master' into ci\\n2433548 Uppercase handling of special chars (#149)\\n8fd20c6 format\\n8bb1514 up version\\na243ccd fix uppercase pre-translations (#148)\\n0116509 Merge branch 'master' into ci\\n26b81c2 Drop compatibility for unsupported Python Version (#147)\\ne3cd9cd UpVersion\\nab9ee93 Merge branch 'master' into ci\\ne4c6700 Remove compatibility with unsupported Python versions (#146)\\ne52c35e Ci - Normalize accented text twice. (#143)\\n237ccbd more test\\nea42704 format fix\\n3b61126 upversion node support\\n24946ec pre normalize\\nfrom __future__ import annotations\\n\\nimport re\\nimport unicodedata\\nfrom collections.abc import Iterable\\nfrom html.entities import name2codepoint\\n\\ntry:\\n    import unidecode\\nexcept ImportError:\\n    import text_unidecode as unidecode\\n\\n__all__ = ['slugify', 'smart_truncate']\\n\\n\\nCHAR_ENTITY_PATTERN = re.compile(r'&(%s);' % '|'.join(name2codepoint))\\nDECIMAL_PATTERN = re.compile(r'&#(\\\\d+);')\\nHEX_PATTERN = re.compile(r'&#x([\\\\da-fA-F]+);')\\nQUOTE_PATTERN = re.compile(r'[\\\\']+')\\nDISALLOWED_CHARS_PATTERN = re.compile(r'[^-a-zA-Z0-9]+')\\nDISALLOWED_UNICODE_CHARS_PATTERN = re.compile(r'[\\\\W_]+')\\nDUPLICATE_DASH_PATTERN = re.compile(r'-{2,}')\\nNUMBERS_PATTERN = re.compile(r'(?<=\\\\d),(?=\\\\d)')\\nDEFAULT_SEPARATOR = '-'\\n\\n\\ndef smart_truncate(\\n    string: str,\\n    max_length: int = 0,\\n    word_boundary: bool = False,\\n    separator: str = \\\" \\\",\\n    save_order: bool = False,\\n) -> str:\\n    \\\"\\\"\\\"\\n    Truncate a string.\\n    :param string (str): string for modification\\n    :param max_length (int): output string length\\n    :param word_boundary (bool):\\n    :param save_order (bool): if True then word order of output string is like input string\\n    :param separator (str): separator between words\\n    :return:\\n    \\\"\\\"\\\"\\n\\n    string = string.strip(separator)\\n\\n    if not max_length:\\n        return string\\n\\n    if len(string) < max_length:\\n        return string\\n\\n    if not word_boundary:\\n        return string[:max_length].strip(separator)\\n\\n    if separator not in string:\\n        return string[:max_length]\\n\\n    truncated = ''\\n    for word in string.split(separator):\\n        if word:\\n            next_len = len(truncated) + len(word)\\n            if next_len < max_length:\\n                truncated += '{}{}'.format(word, separator)\\n            elif next_len == max_length:\\n                truncated += '{}'.format(word)\\n                break\\n            else:\\n                if save_order:\\n                    break\\n    if not truncated:  # pragma: no cover\\n        truncated = string[:max_length]\\n    return truncated.strip(separator)\\n\\n\\ndef slugify(\\n    text: str,\\n    entities: bool = True,\\n    decimal: bool = True,\\n    hexadecimal: bool = True,\\n    max_length: int = 0,\\n    word_boundary: bool = False,\\n    separator: str = DEFAULT_SEPARATOR,\\n    save_order: bool = False,\\n    stopwords: Iterable[str] = (),\\n    regex_pattern: re.Pattern[str] | str | None = None,\\n    lowercase: bool = True,\\n    replacements: Iterable[Iterable[str]] = (),\\n    allow_unicode: bool = False,\\n) -> str:\\n    \\\"\\\"\\\"\\n    Make a slug from the given text.\\n    :param text (str): initial text\\n    :param entities (bool): converts html entities to unicode\\n    :param decimal (bool): converts html decimal to unicode\\n    :param hexadecimal (bool): converts html hexadecimal to unicode\\n    :param max_length (int): output string length\\n    :param word_boundary (bool): truncates to complete word even if length ends up shorter than max_length\\n    :param save_order (bool): if parameter is True and max_length > 0 return whole words in the initial order\\n    :param separator (str): separator between words\\n    :param stopwords (iterable): words to discount\\n    :param regex_pattern (str): regex pattern for disallowed characters\\n    :param lowercase (bool): activate case sensitivity by setting it to False\\n    :param replacements (iterable): list of replacement rules e.g. [['|', 'or'], ['%', 'percent']]\\n    :param allow_unicode (bool): allow unicode characters\\n    :return (str):\\n    \\\"\\\"\\\"\\n\\n    # user-specific replacements\\n    if replacements:\\n        for old, new in replacements:\\n            text = text.replace(old, new)\\n\\n    # ensure text is unicode\\n    if not isinstance(text, str):\\n        text = str(text, 'utf-8', 'ignore')\\n\\n    # replace quotes with dashes - pre-process\\n    text = QUOTE_PATTERN.sub(DEFAULT_SEPARATOR, text)\\n\\n    # normalize text, convert to unicode if required\\n    if allow_unicode:\\n        text = unicodedata.normalize('NFKC', text)\\n    else:\\n        text = unicodedata.normalize('NFKD', text)\\n        text = unidecode.unidecode(text)\\n\\n    # ensure text is still in unicode\\n    if not isinstance(text, str):\\n        text = str(text, 'utf-8', 'ignore')\\n\\n    # character entity reference\\n    if entities:\\n        text = CHAR_ENTITY_PATTERN.sub(lambda m: chr(name2codepoint[m.group(1)]), text)\\n\\n    # decimal character reference\\n    if decimal:\\n        try:\\n            text = DECIMAL_PATTERN.sub(lambda m: chr(int(m.group(1))), text)\\n        except Exception:\\n            pass\\n\\n    # hexadecimal character reference\\n    if hexadecimal:\\n        try:\\n            text = HEX_PATTERN.sub(lambda m: chr(int(m.group(1), 16)), text)\\n        except Exception:\\n            pass\\n\\n    # re normalize text\\n    if allow_unicode:\\n        text = unicodedata.normalize('NFKC', text)\\n    else:\\n        text = unicodedata.normalize('NFKD', text)\\n\\n    # make the text lowercase (optional)\\n    if lowercase:\\n        text = text.lower()\\n\\n    # remove generated quotes -- post-process\\n    text = QUOTE_PATTERN.sub('', text)\\n\\n    # cleanup numbers\\n    text = NUMBERS_PATTERN.sub('', text)\\n\\n    # replace all other unwanted characters\\n    if allow_unicode:\\n        pattern = regex_pattern or DISALLOWED_UNICODE_CHARS_PATTERN\\n    else:\\n        pattern = regex_pattern or DISALLOWED_CHARS_PATTERN\\n\\n    text = re.sub(pattern, DEFAULT_SEPARATOR, text)\\n\\n    # remove redundant\\n    text = DUPLICATE_DASH_PATTERN.sub(DEFAULT_SEPARATOR, text).strip(DEFAULT_SEPARATOR)\\n\\n    # remove stopwords\\n    if stopwords:\\n        if lowercase:\\n            stopwords_lower = [s.lower() for s in stopwords]\\n            words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords_lower]\\n        else:\\n            words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords]\\n        text = DEFAULT_SEPARATOR.join(words)\\n\\n    # finalize user-specific replacements\\n    if replacements:\\n        for old, new in replacements:\\n            text = text.replace(old, new)\\n\\n    # smart truncate if requested\\n    if max_length > 0:\\n        text = smart_truncate(text, max_length, word_boundary, DEFAULT_SEPARATOR, save_order)\\n\\n    if separator != DEFAULT_SEPARATOR:\\n        text = text.replace(DEFAULT_SEPARATOR, separator)\\n\\n    return text\\nfrom .special import *\\nfrom .slugify import *\\nfrom .__version__ import __title__\\nfrom .__version__ import __author__\\nfrom .__version__ import __author_email__\\nfrom .__version__ import __description__\\nfrom .__version__ import __url__\\nfrom .__version__ import __license__\\nfrom .__version__ import __copyright__\\nfrom .__version__ import __version__\\nREADME.md:48:    replacements: Iterable[Iterable[str]] = (),\\nREADME.md:64:  :param replacements (iterable): list of replacement rules e.g. [['|', 'or'], ['%', 'percent']]\\nREADME.md:138:r = slugify(txt, replacements=[['|', 'or'], ['%', 'percent']])\\nREADME.md:139:self.assertEqual(r, \\\"10-or-20-percent\\\")\\nREADME.md:142:r = slugify(txt, replacements=[['\u00dc', 'UE'], ['\u00fc', 'ue']])\\nREADME.md:163:The command can take its input directly on the command line or from STDIN (when the `--stdin` flag is passed):\\nREADME.md:175:Please note that when a multi-valued option such as `--stopwords` or `--replacements` is passed, you need to use `--` as separator before you start with the input:\\ntest.py:136:        txt = 'Foo A FOO B foo C'\\ntest.py:140:        txt = 'Foo A FOO B foo C'\\ntest.py:141:        r = slugify(txt, stopwords=['FOO'])\\ntest.py:226:    def test_replacements(self):\\ntest.py:228:        r = slugify(txt, replacements=[['|', 'or'], ['%', 'percent']])\\ntest.py:229:        self.assertEqual(r, \\\"10-or-20-percent\\\")\\ntest.py:232:        r = slugify(txt, replacements=[['\u2665', 'amour'], ['\ud83e\udd84', 'licorne']])\\ntest.py:235:    def test_replacements_german_umlaut_custom(self):\\ntest.py:237:        r = slugify(txt, replacements=[['\u00dc', 'UE'], ['\u00fc', 'ue']])\\ntest.py:388:        txt = 'Foo A FOO B foo C'\\ntest.py:392:        txt = 'Foo A FOO B foo C'\\ntest.py:393:        r = slugify(txt, allow_unicode=True, stopwords=['FOO'])\\ntest.py:483:    def test_replacements(self):\\ntest.py:485:        r = slugify(txt, allow_unicode=True, replacements=[['|', 'or'], ['%', 'percent']])\\ntest.py:486:        self.assertEqual(r, \\\"10-or-20-percent\\\")\\ntest.py:489:        r = slugify(txt, allow_unicode=True, replacements=[['\u2665', 'amour'], ['\ud83e\udd84', 'licorne']])\\ntest.py:493:        r = slugify(txt, allow_unicode=True, replacements=[['\u2665', '\u10e1\u10d8\u10e7\u10d5\u10d0\u10e0\u10e3\u10da\u10d8'], ['\ud83e\udd84', 'licorne']])\\ntest.py:496:    def test_replacements_german_umlaut_custom(self):\\ntest.py:498:        r = slugify(txt, allow_unicode=True, replacements=[['\u00dc', 'UE'], ['\u00fc', 'ue']])\\ntest.py:503:        allowing unicode shouldn't allow emojis, even in replacements.\\ntest.py:523:        r = slugify(txt, allow_unicode=True, replacements=[['you', '\ud83e\udd84']])\\ntest.py:578:        'replacements': None\\ntest.py:615:    def test_replacements_right(self):\\ntest.py:616:        params = self.get_params_from_cli('--replacements', 'A->B', 'C->D')\\ntest.py:617:        expected = self.make_params(replacements=[['A', 'B'], ['C', 'D']])\\ntest.py:620:    def test_replacements_wrong(self):\\ntest.py:622:            self.get_params_from_cli('--replacements', 'A--B')\\na072544 Add typing and expose py.typed (#137)\\nc094c8a cmdline options\\n8aea5c4 clean up, up version\\n646761e add support user-specific replacements (#66)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c31d-a7a9-7400-acf3-858b25a69605",
+            "create_time": 1789979907.738632
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "b04ba48cce6af048dee67cee2d5d3c0b310e1ef5f2de85af4b70f605746dff3b",
+      "record": {
+        "timestamp": "2026-09-21T08:38:32.360Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a70a0b8a8061e3f016ab0ed09866487d0a4fcfe34fec90b3d",
+          "status": "completed",
+          "call_id": "call_DZIGWWpf1lXLUPjumnWCVVi5",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git show --format=fuller --stat 646761e; git show 646761e --; git show --format=fuller 8aea5c4 --; git log HEAD --oneline --reverse -- slugify/slugify.py; git ls-files --stage; rg --files --hidden -g AGENTS.md -g '!\\\\.git'\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c31d-a7a9-7400-acf3-858b25a69605",
+            "create_time": 1789979912.278176
+          }
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "4cbe938a3e0e1ed8df48206108eef2cea87798f31db201efffc67c1086151ee4",
+      "record": {
+        "timestamp": "2026-09-21T08:38:32.538Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c31d-e95a-7790-8f33-783e49e2bd5e",
+          "call_id": "call_DZIGWWpf1lXLUPjumnWCVVi5",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"957e4b\",\"wall_time_seconds\":0.000001833,\"exit_code\":1,\"original_token_count\":1905,\"output\":\"commit 646761e5b4c73b9be7285c60eab4e10c30fe32f4\\nAuthor:     Andriy Orehov <andriyorehov@gmail.com>\\nAuthorDate: Thu Jan 3 18:28:01 2019 +0200\\nCommit:     Val Neekman <un33kvu@gmail.com>\\nCommitDate: Thu Jan 3 11:28:01 2019 -0500\\n\\n    add support user-specific replacements (#66)\\n    \\n    thx\\n\\n README.md          | 4 ++++\\n slugify/slugify.py | 9 ++++++++-\\n test.py            | 9 +++++++++\\n 3 files changed, 21 insertions(+), 1 deletion(-)\\ncommit 646761e5b4c73b9be7285c60eab4e10c30fe32f4\\nAuthor: Andriy Orehov <andriyorehov@gmail.com>\\nDate:   Thu Jan 3 18:28:01 2019 +0200\\n\\n    add support user-specific replacements (#66)\\n    \\n    thx\\n\\ndiff --git a/README.md b/README.md\\nindex d58daee..bc4d9e8 100644\\n--- a/README.md\\n+++ b/README.md\\n@@ -98,6 +98,10 @@ How to use\\n     r = slugify(txt, separator='_', regex_pattern=regex_pattern)\\n     self.assertNotEqual(r, \\\"_this_is_a_test_\\\")\\n \\n+    txt = '10 | 20 %'\\n+    r = slugify(txt, replacements=[['|', 'or'], ['%', 'percent']])\\n+    self.assertEqual(r, \\\"10-or-20-percent\\\")\\n+\\n    ```\\n    \\n For more examples, have a look at the [test.py](test.py) file.\\ndiff --git a/slugify/slugify.py b/slugify/slugify.py\\nindex ccd33a8..1544aba 100644\\n--- a/slugify/slugify.py\\n+++ b/slugify/slugify.py\\n@@ -75,7 +75,8 @@ def smart_truncate(string, max_length=0, word_boundary=False, separator=' ', sav\\n \\n \\n def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, word_boundary=False,\\n-            separator=DEFAULT_SEPARATOR, save_order=False, stopwords=(), regex_pattern=None, lowercase=True):\\n+            separator=DEFAULT_SEPARATOR, save_order=False, stopwords=(), regex_pattern=None, lowercase=True,\\n+            replacements=()):\\n     \\\"\\\"\\\"\\n     Make a slug from the given text.\\n     :param text (str): initial text\\n@@ -89,9 +90,15 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, w\\n     :param stopwords (iterable): words to discount\\n     :param regex_pattern (str): regex pattern for allowed characters\\n     :param lowercase (bool): activate case sensitivity by setting it to False\\n+    :param replacements (iterable): list of replacement rules e.g. [['|', 'or'], ['%', 'percent']]\\n     :return (str):\\n     \\\"\\\"\\\"\\n \\n+    # user-specific replacements\\n+    if replacements:\\n+        for old, new in replacements:\\n+            text = text.replace(old, new)\\n+\\n     # ensure text is unicode\\n     if not isinstance(text, _unicode_type):\\n         text = _unicode(text, 'utf-8', 'ignore')\\ndiff --git a/test.py b/test.py\\nindex 9ff9ec0..78b1956 100644\\n--- a/test.py\\n+++ b/test.py\\n@@ -189,6 +189,15 @@ class TestSlugification(unittest.TestCase):\\n         r = slugify(txt, separator='_', regex_pattern=regex_pattern)\\n         self.assertNotEqual(r, \\\"_this_is_a_test_\\\")\\n \\n+    def test_replacements(self):\\n+        txt = '10 | 20 %'\\n+        r = slugify(txt, replacements=[['|', 'or'], ['%', 'percent']])\\n+        self.assertEqual(r, \\\"10-or-20-percent\\\")\\n+\\n+        txt = 'I \u2665 \ud83e\udd84'\\n+        r = slugify(txt, replacements=[['\u2665', 'amour'], ['\ud83e\udd84', 'licorne']])\\n+        self.assertEqual(r, \\\"i-amour-licorne\\\")\\n+\\n \\n class TestUtils(unittest.TestCase):\\n \\ncommit 8aea5c49b960b66e5c81bf20f17ec23e41c8d157\\nAuthor:     Val Neekman <val@neekware.com>\\nAuthorDate: Thu Jan 3 17:40:15 2019 -0500\\nCommit:     Val Neekman <val@neekware.com>\\nCommitDate: Thu Jan 3 17:40:15 2019 -0500\\n\\n    clean up, up version\\n\\ndiff --git a/CHANGELOG.md b/CHANGELOG.md\\nindex cd80bf1..e2eed12 100644\\n--- a/CHANGELOG.md\\n+++ b/CHANGELOG.md\\n@@ -1,3 +1,6 @@\\n+## 2.0.1\\n+  - Add replacements option e.g. [['|', 'or'], ['%', 'percent'], ['-', '_']] (@andriyor)\\n+\\n ## 2.0.0\\n   - Fix alternative dependency installation\\n \\ndiff --git a/slugify/__init__.py b/slugify/__init__.py\\nindex 81849b9..7358b99 100644\\n--- a/slugify/__init__.py\\n+++ b/slugify/__init__.py\\n@@ -3,4 +3,4 @@ from .slugify import *\\n \\n __author__ = 'Val Neekman @ Neekware Inc. [@vneekman]'\\n __description__ = 'A Python slugify application that also handles Unicode'\\n-__version__ = '2.0.0'\\n+__version__ = '2.0.1'\\ndiff --git a/slugify/slugify.py b/slugify/slugify.py\\nindex 1544aba..59e9672 100644\\n--- a/slugify/slugify.py\\n+++ b/slugify/slugify.py\\n@@ -165,6 +165,11 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, w\\n             words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords]\\n         text = DEFAULT_SEPARATOR.join(words)\\n \\n+    # finalize user-specific replacements\\n+    if replacements:\\n+        for old, new in replacements:\\n+            text = text.replace(old, new)\\n+\\n     # smart truncate if requested\\n     if max_length > 0:\\n         text = smart_truncate(text, max_length, word_boundary, DEFAULT_SEPARATOR, save_order)\\nb86d17c Added console, pypy and some reorg\\n96fec75 Add save_order parameter. Fix count next length. Add breaks.\\n3d75734 Fix kwargs order.\\n07155c2 Fix bug (len of output string).\\n8a521b0 Add parameter 'save_order'.\\nf90ecf1 remove 2to3 depenancy, add save word order\\na1d0dfd remove six dependancy\\nf60687c Added support to strip stopwords\\n85082f6 unichr is not defined in python 3\\n069a368 add numeric comma cleanup\\n0c3053d Only call .lower() once\\na1543fe fixed stopword replacement bug (different separators)\\n0c9b8e0 Fixed apos quote not replaced by separator - Issue #17\\n7044d7a replace quotes with dashes\\n7699d5a add more tests\\n6472f8f add py3.5 support, add manifest.in file, add more tests\\n750c737 Added possibility to include custom regex as allowed characters (#36)\\nb3b38b1 add regex_pattern and support for py 3.6\\n874fe14 Use unidecode as an API and allow alternatives (#53)\\nd12d1fc support of text-unidecode\\n5c766dd Support for case sensitivity (#54)\\n76f4eab Proper fallback to text-unidecode, favoring Unidecode, drop support for py 2.6, 3.3. (#63)\\n683364e Rename word_boundaries: more consistent naming (#64)\\n646761e add support user-specific replacements (#66)\\n8aea5c4 clean up, up version\\n7addc36 add text-unidecode option as extra\\nb6067d1 update readme, add pydoc\\nb79331c remove unicode chars from file\\n76f3272 Drop support for old python - cleanup - up version  (#88)\\n3b51e23 Create command line tool that can set all parameters\\nc094c8a cmdline options\\n22d7e84 Update import order for unidecode vs text_unidecode (#126)\\na072544 Add typing and expose py.typed (#137)\\n24946ec pre normalize\\ne4c6700 Remove compatibility with unsupported Python versions (#146)\\n100644 71bc2192a3ee6574f7db5b54c668df797f563850 0\\t.github/workflows/ci.yml\\n100644 88791a7eab7c71f9a6814a617f6ee2f0c05c4c08 0\\t.github/workflows/dev.yml\\n100644 7a9c77e7368f0f02fc8ce4846d8cdc5e632b7702 0\\t.github/workflows/main.yml\\n100644 6cc65d2c0ae159c070a686bfd39928f7d73169b5 0\\t.gitignore\\n100644 ecfbb807b5a3af92bff274612258ee075268b675 0\\t.vscode/settings.json\\n100644 9aa0ef27738c7b1c6702daa822e6996e6b40de51 0\\tCHANGELOG.md\\n100644 82af695f594e8c1e83ee98db0bcae758620f1b63 0\\tLICENSE\\n100644 373701c7be122e140c98812366e8d058fe46ef6e 0\\tMANIFEST.in\\n100644 0dfbd92bfb339fa9a15871bc188782fa2e68d7b2 0\\tREADME.md\\n100644 5f94d7bdfb03c89e960917feeb613c76a5a01fad 0\\tdev.requirements.txt\\n100755 cd6122dd7dc764b18d7e5c524d3b2a11083172f3 0\\tformat.sh\\n100755 96616384e871220611b9da238a4fe555a48a020f 0\\tsetup.py\\n100644 6d3279fb1ac2e9c3febeca395a5f7350d8fa5969 0\\tslugify/__init__.py\\n100644 4cc461622837bf5c765c06d9a5f20f265945d968 0\\tslugify/__main__.py\\n100644 854038e500d54f104aa0390ad191e81c3ea9dfce 0\\tslugify/__version__.py\\n100644 e69de29bb2d1d6434b8b29ae775ad8c2e48c5391 0\\tslugify/py.typed\\n100644 09c7e076cf27406c7f0ab324b5ac1da787da3624 0\\tslugify/slugify.py\\n100644 918cb2add83f5135b4e9528956abaddeff9c6893 0\\tslugify/special.py\\n100644 d13ef94f7b36e126871af4a8f4e4e4fedc53cdd1 0\\ttest.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c31d-a7a9-7400-acf3-858b25a69605",
+            "create_time": 1789979912.538587
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "5dbe1f3e9da85dd67a09ce7718a6b33a6df12f63d2425ff8859bd56008cae7c5",
+      "record": {
+        "timestamp": "2026-09-21T08:38:53.497Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a70a0b8a8061e3f016ab0ed0e48d887d0a28ed60e1200ffcb",
+          "status": "completed",
+          "call_id": "call_r3j4MwhuKwmv71kadShkMVXJ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python -B - <<'PY'\\nfrom pathlib import Path\\nimport importlib\\nimport hashlib\\nimport stat\\nimport subprocess\\nroot = Path.cwd()\\ndef snapshot():\\n    return {str(p.relative_to(root)): (stat.S_IMODE(p.stat().st_mode), hashlib.sha256(p.read_bytes()).hexdigest()) for p in root.rglob('*') if p.is_file() and '.git' not in p.relative_to(root).parts}\\nbefore = snapshot()\\nmodule = importlib.import_module('slugify.slugify')\\npath = root / 'slugify' / 'slugify.py'\\nassert Path(module.__file__).resolve() == path.resolve()\\nprint('Implementation:', module.__file__)\\nprint('Transliterator:', module.unidecode.__name__)\\nsource = path.read_text()\\nearly = '    # user-specific replacements\\\\n    if replacements:\\\\n        for old, new in replacements:\\\\n            text = text.replace(old, new)\\\\n\\\\n'\\nlate = early.replace('# user-specific replacements', '# finalize user-specific replacements')\\nassert source.count(early) == source.count(late) == 1\\ncases = [dict(text='10 | 20 %', replacements=[['|','or'],['%','percent']]), dict(text='FOO', replacements=[['foo','bar']]), dict(text='Plain Text')]\\nfor label, block in [('current', None), ('remove early only', early), ('remove late only', late)]:\\n    if block is None:\\n        function = module.slugify\\n    else:\\n        namespace = {'__name__': 'slugify_in_memory_variant', '__file__': str(path)}\\n        exec(compile(source.replace(block, '', 1), str(path), 'exec'), namespace)\\n        function = namespace['slugify']\\n    for index, kwargs in enumerate(cases, 1):\\n        try:\\n            print(label, index, 'return', repr(function(**kwargs)))\\n        except Exception as exc:\\n            print(label, index, 'exception', type(exc).__name__, repr(str(exc)))\\nassert before == snapshot(), 'File contents/modes changed'\\nprint('Repository file bytes/modes unchanged across observations; no scratch created.')\\nPY\\n git show -s --format='%H parents: %P%n%B' 646761e 8aea5c4; git merge-base --is-ancestor 646761e HEAD; git merge-base --is-ancestor 8aea5c4 HEAD; git diff 646761e^ 646761e -- slugify/slugify.py README.md test.py; git diff 8aea5c4^ 8aea5c4 -- slugify/slugify.py README.md test.py CHANGELOG.md\",\"max_output_tokens\":4500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c31d-a7a9-7400-acf3-858b25a69605",
+            "create_time": 1789979917.009727
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "4dae2f49ff81b6a49ae844d968ba281e063087ba441305a10a6a2021ec0f6a3d",
+      "record": {
+        "timestamp": "2026-09-21T08:38:53.690Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c31e-3bfa-7dc3-9c2c-fba4f89b506d",
+          "call_id": "call_r3j4MwhuKwmv71kadShkMVXJ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"bf63ec\",\"wall_time_seconds\":0.000001458,\"exit_code\":0,\"original_token_count\":1060,\"output\":\"Implementation: <WORKSPACE>/slugify/slugify.py\\nTransliterator: text_unidecode\\ncurrent 1 return '10-or-20-percent'\\ncurrent 2 return 'bar'\\ncurrent 3 return 'plain-text'\\nremove early only 1 return '10-20'\\nremove early only 2 return 'bar'\\nremove early only 3 return 'plain-text'\\nremove late only 1 return '10-or-20-percent'\\nremove late only 2 return 'foo'\\nremove late only 3 return 'plain-text'\\nRepository file bytes/modes unchanged across observations; no scratch created.\\n646761e5b4c73b9be7285c60eab4e10c30fe32f4 parents: c357ee590b2e799e62229e656e566cc9b7298498\\nadd support user-specific replacements (#66)\\n\\nthx\\n8aea5c49b960b66e5c81bf20f17ec23e41c8d157 parents: 646761e5b4c73b9be7285c60eab4e10c30fe32f4\\nclean up, up version\\n\\ndiff --git a/README.md b/README.md\\nindex d58daee..bc4d9e8 100644\\n--- a/README.md\\n+++ b/README.md\\n@@ -98,6 +98,10 @@ How to use\\n     r = slugify(txt, separator='_', regex_pattern=regex_pattern)\\n     self.assertNotEqual(r, \\\"_this_is_a_test_\\\")\\n \\n+    txt = '10 | 20 %'\\n+    r = slugify(txt, replacements=[['|', 'or'], ['%', 'percent']])\\n+    self.assertEqual(r, \\\"10-or-20-percent\\\")\\n+\\n    ```\\n    \\n For more examples, have a look at the [test.py](test.py) file.\\ndiff --git a/slugify/slugify.py b/slugify/slugify.py\\nindex ccd33a8..1544aba 100644\\n--- a/slugify/slugify.py\\n+++ b/slugify/slugify.py\\n@@ -75,7 +75,8 @@ def smart_truncate(string, max_length=0, word_boundary=False, separator=' ', sav\\n \\n \\n def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, word_boundary=False,\\n-            separator=DEFAULT_SEPARATOR, save_order=False, stopwords=(), regex_pattern=None, lowercase=True):\\n+            separator=DEFAULT_SEPARATOR, save_order=False, stopwords=(), regex_pattern=None, lowercase=True,\\n+            replacements=()):\\n     \\\"\\\"\\\"\\n     Make a slug from the given text.\\n     :param text (str): initial text\\n@@ -89,9 +90,15 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, w\\n     :param stopwords (iterable): words to discount\\n     :param regex_pattern (str): regex pattern for allowed characters\\n     :param lowercase (bool): activate case sensitivity by setting it to False\\n+    :param replacements (iterable): list of replacement rules e.g. [['|', 'or'], ['%', 'percent']]\\n     :return (str):\\n     \\\"\\\"\\\"\\n \\n+    # user-specific replacements\\n+    if replacements:\\n+        for old, new in replacements:\\n+            text = text.replace(old, new)\\n+\\n     # ensure text is unicode\\n     if not isinstance(text, _unicode_type):\\n         text = _unicode(text, 'utf-8', 'ignore')\\ndiff --git a/test.py b/test.py\\nindex 9ff9ec0..78b1956 100644\\n--- a/test.py\\n+++ b/test.py\\n@@ -189,6 +189,15 @@ class TestSlugification(unittest.TestCase):\\n         r = slugify(txt, separator='_', regex_pattern=regex_pattern)\\n         self.assertNotEqual(r, \\\"_this_is_a_test_\\\")\\n \\n+    def test_replacements(self):\\n+        txt = '10 | 20 %'\\n+        r = slugify(txt, replacements=[['|', 'or'], ['%', 'percent']])\\n+        self.assertEqual(r, \\\"10-or-20-percent\\\")\\n+\\n+        txt = 'I \u2665 \ud83e\udd84'\\n+        r = slugify(txt, replacements=[['\u2665', 'amour'], ['\ud83e\udd84', 'licorne']])\\n+        self.assertEqual(r, \\\"i-amour-licorne\\\")\\n+\\n \\n class TestUtils(unittest.TestCase):\\n \\ndiff --git a/CHANGELOG.md b/CHANGELOG.md\\nindex cd80bf1..e2eed12 100644\\n--- a/CHANGELOG.md\\n+++ b/CHANGELOG.md\\n@@ -1,3 +1,6 @@\\n+## 2.0.1\\n+  - Add replacements option e.g. [['|', 'or'], ['%', 'percent'], ['-', '_']] (@andriyor)\\n+\\n ## 2.0.0\\n   - Fix alternative dependency installation\\n \\ndiff --git a/slugify/slugify.py b/slugify/slugify.py\\nindex 1544aba..59e9672 100644\\n--- a/slugify/slugify.py\\n+++ b/slugify/slugify.py\\n@@ -165,6 +165,11 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, w\\n             words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords]\\n         text = DEFAULT_SEPARATOR.join(words)\\n \\n+    # finalize user-specific replacements\\n+    if replacements:\\n+        for old, new in replacements:\\n+            text = text.replace(old, new)\\n+\\n     # smart truncate if requested\\n     if max_length > 0:\\n         text = smart_truncate(text, max_length, word_boundary, DEFAULT_SEPARATOR, save_order)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c31d-a7a9-7400-acf3-858b25a69605",
+            "create_time": 1789979933.690499
+          }
+        }
+      }
+    },
+    {
+      "line": 37,
+      "line_sha256": "5256130bed5afb96d3cc51c6d1e8e1bb6028605df5bd27140f58a8aca2454856",
+      "record": {
+        "timestamp": "2026-09-21T08:39:02.859Z",
+        "ordinal": 36,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a70a0b8a8061e3f016ab0ed28f81087d0930b2227210427ce",
+          "status": "completed",
+          "call_id": "call_jUtcOWOmvU7LVRwWTGrJqJk0",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git show 646761e^:slugify/slugify.py; git show 8aea5c4:slugify/slugify.py; git status --porcelain=v1; git rev-parse HEAD\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c31d-a7a9-7400-acf3-858b25a69605",
+            "create_time": 1789979938.100685
+          }
+        }
+      }
+    },
+    {
+      "line": 40,
+      "line_sha256": "9a531c9274bf620cc1ab715549d944ee8c0d15ad7648c513be5924acf3810c16",
+      "record": {
+        "timestamp": "2026-09-21T08:39:02.998Z",
+        "ordinal": 39,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c31e-6056-7661-8769-fa6954661e8f",
+          "call_id": "call_jUtcOWOmvU7LVRwWTGrJqJk0",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"7ea33c\",\"wall_time_seconds\":0.000004417,\"exit_code\":0,\"original_token_count\":2840,\"output\":\"import re\\nimport unicodedata\\nimport types\\nimport sys\\n\\ntry:\\n    from htmlentitydefs import name2codepoint\\n    _unicode = unicode\\n    _unicode_type = types.UnicodeType\\nexcept ImportError:\\n    from html.entities import name2codepoint\\n    _unicode = str\\n    _unicode_type = str\\n    unichr = chr\\n\\ntry:\\n    import unidecode\\nexcept ImportError:\\n    import text_unidecode as unidecode\\n\\n__all__ = ['slugify', 'smart_truncate']\\n\\n\\nCHAR_ENTITY_PATTERN = re.compile(r'&(%s);' % '|'.join(name2codepoint))\\nDECIMAL_PATTERN = re.compile(r'&#(\\\\d+);')\\nHEX_PATTERN = re.compile(r'&#x([\\\\da-fA-F]+);')\\nQUOTE_PATTERN = re.compile(r'[\\\\']+')\\nALLOWED_CHARS_PATTERN = re.compile(r'[^-a-z0-9]+')\\nALLOWED_CHARS_PATTERN_WITH_UPPERCASE = re.compile(r'[^-a-zA-Z0-9]+')\\nDUPLICATE_DASH_PATTERN = re.compile(r'-{2,}')\\nNUMBERS_PATTERN = re.compile(r'(?<=\\\\d),(?=\\\\d)')\\nDEFAULT_SEPARATOR = '-'\\n\\n\\ndef smart_truncate(string, max_length=0, word_boundary=False, separator=' ', save_order=False):\\n    \\\"\\\"\\\"\\n    Truncate a string.\\n    :param string (str): string for modification\\n    :param max_length (int): output string length\\n    :param word_boundary (bool):\\n    :param save_order (bool): if True then word order of output string is like input string\\n    :param separator (str): separator between words\\n    :return:\\n    \\\"\\\"\\\"\\n\\n    string = string.strip(separator)\\n\\n    if not max_length:\\n        return string\\n\\n    if len(string) < max_length:\\n        return string\\n\\n    if not word_boundary:\\n        return string[:max_length].strip(separator)\\n\\n    if separator not in string:\\n        return string[:max_length]\\n\\n    truncated = ''\\n    for word in string.split(separator):\\n        if word:\\n            next_len = len(truncated) + len(word)\\n            if next_len < max_length:\\n                truncated += '{0}{1}'.format(word, separator)\\n            elif next_len == max_length:\\n                truncated += '{0}'.format(word)\\n                break\\n            else:\\n                if save_order:\\n                    break\\n    if not truncated: # pragma: no cover\\n        truncated = string[:max_length]\\n    return truncated.strip(separator)\\n\\n\\ndef slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, word_boundary=False,\\n            separator=DEFAULT_SEPARATOR, save_order=False, stopwords=(), regex_pattern=None, lowercase=True):\\n    \\\"\\\"\\\"\\n    Make a slug from the given text.\\n    :param text (str): initial text\\n    :param entities (bool):\\n    :param decimal (bool):\\n    :param hexadecimal (bool):\\n    :param max_length (int): output string length\\n    :param word_boundary (bool):\\n    :param save_order (bool): if parameter is True and max_length > 0 return whole words in the initial order\\n    :param separator (str): separator between words\\n    :param stopwords (iterable): words to discount\\n    :param regex_pattern (str): regex pattern for allowed characters\\n    :param lowercase (bool): activate case sensitivity by setting it to False\\n    :return (str):\\n    \\\"\\\"\\\"\\n\\n    # ensure text is unicode\\n    if not isinstance(text, _unicode_type):\\n        text = _unicode(text, 'utf-8', 'ignore')\\n\\n    # replace quotes with dashes - pre-process\\n    text = QUOTE_PATTERN.sub(DEFAULT_SEPARATOR, text)\\n\\n    # decode unicode\\n    text = unidecode.unidecode(text)\\n\\n    # ensure text is still in unicode\\n    if not isinstance(text, _unicode_type):\\n        text = _unicode(text, 'utf-8', 'ignore')\\n\\n    # character entity reference\\n    if entities:\\n        text = CHAR_ENTITY_PATTERN.sub(lambda m: unichr(name2codepoint[m.group(1)]), text)\\n\\n    # decimal character reference\\n    if decimal:\\n        try:\\n            text = DECIMAL_PATTERN.sub(lambda m: unichr(int(m.group(1))), text)\\n        except Exception:\\n            pass\\n\\n    # hexadecimal character reference\\n    if hexadecimal:\\n        try:\\n            text = HEX_PATTERN.sub(lambda m: unichr(int(m.group(1), 16)), text)\\n        except Exception:\\n            pass\\n\\n    # translate\\n    text = unicodedata.normalize('NFKD', text)\\n    if sys.version_info < (3,):\\n        text = text.encode('ascii', 'ignore')\\n\\n    # make the text lowercase (optional)\\n    if lowercase:\\n        text = text.lower()\\n\\n    # remove generated quotes -- post-process\\n    text = QUOTE_PATTERN.sub('', text)\\n\\n    # cleanup numbers\\n    text = NUMBERS_PATTERN.sub('', text)\\n\\n    # replace all other unwanted characters\\n    if lowercase:\\n        pattern = regex_pattern or ALLOWED_CHARS_PATTERN\\n    else:\\n        pattern = regex_pattern or ALLOWED_CHARS_PATTERN_WITH_UPPERCASE\\n    text = re.sub(pattern, DEFAULT_SEPARATOR, text)\\n\\n    # remove redundant\\n    text = DUPLICATE_DASH_PATTERN.sub(DEFAULT_SEPARATOR, text).strip(DEFAULT_SEPARATOR)\\n\\n    # remove stopwords\\n    if stopwords:\\n        if lowercase:\\n            stopwords_lower = [s.lower() for s in stopwords]\\n            words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords_lower]\\n        else:\\n            words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords]\\n        text = DEFAULT_SEPARATOR.join(words)\\n\\n    # smart truncate if requested\\n    if max_length > 0:\\n        text = smart_truncate(text, max_length, word_boundary, DEFAULT_SEPARATOR, save_order)\\n\\n    if separator != DEFAULT_SEPARATOR:\\n        text = text.replace(DEFAULT_SEPARATOR, separator)\\n\\n    return text\\n\\n\\ndef main(): # pragma: no cover\\n    if len(sys.argv) < 2:\\n        print(\\\"Usage %s TEXT TO SLUGIFY\\\" % sys.argv[0])\\n    else:\\n        text = ' '.join(sys.argv[1:])\\n        print(slugify(text))\\nimport re\\nimport unicodedata\\nimport types\\nimport sys\\n\\ntry:\\n    from htmlentitydefs import name2codepoint\\n    _unicode = unicode\\n    _unicode_type = types.UnicodeType\\nexcept ImportError:\\n    from html.entities import name2codepoint\\n    _unicode = str\\n    _unicode_type = str\\n    unichr = chr\\n\\ntry:\\n    import unidecode\\nexcept ImportError:\\n    import text_unidecode as unidecode\\n\\n__all__ = ['slugify', 'smart_truncate']\\n\\n\\nCHAR_ENTITY_PATTERN = re.compile(r'&(%s);' % '|'.join(name2codepoint))\\nDECIMAL_PATTERN = re.compile(r'&#(\\\\d+);')\\nHEX_PATTERN = re.compile(r'&#x([\\\\da-fA-F]+);')\\nQUOTE_PATTERN = re.compile(r'[\\\\']+')\\nALLOWED_CHARS_PATTERN = re.compile(r'[^-a-z0-9]+')\\nALLOWED_CHARS_PATTERN_WITH_UPPERCASE = re.compile(r'[^-a-zA-Z0-9]+')\\nDUPLICATE_DASH_PATTERN = re.compile(r'-{2,}')\\nNUMBERS_PATTERN = re.compile(r'(?<=\\\\d),(?=\\\\d)')\\nDEFAULT_SEPARATOR = '-'\\n\\n\\ndef smart_truncate(string, max_length=0, word_boundary=False, separator=' ', save_order=False):\\n    \\\"\\\"\\\"\\n    Truncate a string.\\n    :param string (str): string for modification\\n    :param max_length (int): output string length\\n    :param word_boundary (bool):\\n    :param save_order (bool): if True then word order of output string is like input string\\n    :param separator (str): separator between words\\n    :return:\\n    \\\"\\\"\\\"\\n\\n    string = string.strip(separator)\\n\\n    if not max_length:\\n        return string\\n\\n    if len(string) < max_length:\\n        return string\\n\\n    if not word_boundary:\\n        return string[:max_length].strip(separator)\\n\\n    if separator not in string:\\n        return string[:max_length]\\n\\n    truncated = ''\\n    for word in string.split(separator):\\n        if word:\\n            next_len = len(truncated) + len(word)\\n            if next_len < max_length:\\n                truncated += '{0}{1}'.format(word, separator)\\n            elif next_len == max_length:\\n                truncated += '{0}'.format(word)\\n                break\\n            else:\\n                if save_order:\\n                    break\\n    if not truncated: # pragma: no cover\\n        truncated = string[:max_length]\\n    return truncated.strip(separator)\\n\\n\\ndef slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0, word_boundary=False,\\n            separator=DEFAULT_SEPARATOR, save_order=False, stopwords=(), regex_pattern=None, lowercase=True,\\n            replacements=()):\\n    \\\"\\\"\\\"\\n    Make a slug from the given text.\\n    :param text (str): initial text\\n    :param entities (bool):\\n    :param decimal (bool):\\n    :param hexadecimal (bool):\\n    :param max_length (int): output string length\\n    :param word_boundary (bool):\\n    :param save_order (bool): if parameter is True and max_length > 0 return whole words in the initial order\\n    :param separator (str): separator between words\\n    :param stopwords (iterable): words to discount\\n    :param regex_pattern (str): regex pattern for allowed characters\\n    :param lowercase (bool): activate case sensitivity by setting it to False\\n    :param replacements (iterable): list of replacement rules e.g. [['|', 'or'], ['%', 'percent']]\\n    :return (str):\\n    \\\"\\\"\\\"\\n\\n    # user-specific replacements\\n    if replacements:\\n        for old, new in replacements:\\n            text = text.replace(old, new)\\n\\n    # ensure text is unicode\\n    if not isinstance(text, _unicode_type):\\n        text = _unicode(text, 'utf-8', 'ignore')\\n\\n    # replace quotes with dashes - pre-process\\n    text = QUOTE_PATTERN.sub(DEFAULT_SEPARATOR, text)\\n\\n    # decode unicode\\n    text = unidecode.unidecode(text)\\n\\n    # ensure text is still in unicode\\n    if not isinstance(text, _unicode_type):\\n        text = _unicode(text, 'utf-8', 'ignore')\\n\\n    # character entity reference\\n    if entities:\\n        text = CHAR_ENTITY_PATTERN.sub(lambda m: unichr(name2codepoint[m.group(1)]), text)\\n\\n    # decimal character reference\\n    if decimal:\\n        try:\\n            text = DECIMAL_PATTERN.sub(lambda m: unichr(int(m.group(1))), text)\\n        except Exception:\\n            pass\\n\\n    # hexadecimal character reference\\n    if hexadecimal:\\n        try:\\n            text = HEX_PATTERN.sub(lambda m: unichr(int(m.group(1), 16)), text)\\n        except Exception:\\n            pass\\n\\n    # translate\\n    text = unicodedata.normalize('NFKD', text)\\n    if sys.version_info < (3,):\\n        text = text.encode('ascii', 'ignore')\\n\\n    # make the text lowercase (optional)\\n    if lowercase:\\n        text = text.lower()\\n\\n    # remove generated quotes -- post-process\\n    text = QUOTE_PATTERN.sub('', text)\\n\\n    # cleanup numbers\\n    text = NUMBERS_PATTERN.sub('', text)\\n\\n    # replace all other unwanted characters\\n    if lowercase:\\n        pattern = regex_pattern or ALLOWED_CHARS_PATTERN\\n    else:\\n        pattern = regex_pattern or ALLOWED_CHARS_PATTERN_WITH_UPPERCASE\\n    text = re.sub(pattern, DEFAULT_SEPARATOR, text)\\n\\n    # remove redundant\\n    text = DUPLICATE_DASH_PATTERN.sub(DEFAULT_SEPARATOR, text).strip(DEFAULT_SEPARATOR)\\n\\n    # remove stopwords\\n    if stopwords:\\n        if lowercase:\\n            stopwords_lower = [s.lower() for s in stopwords]\\n            words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords_lower]\\n        else:\\n            words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords]\\n        text = DEFAULT_SEPARATOR.join(words)\\n\\n    # finalize user-specific replacements\\n    if replacements:\\n        for old, new in replacements:\\n            text = text.replace(old, new)\\n\\n    # smart truncate if requested\\n    if max_length > 0:\\n        text = smart_truncate(text, max_length, word_boundary, DEFAULT_SEPARATOR, save_order)\\n\\n    if separator != DEFAULT_SEPARATOR:\\n        text = text.replace(DEFAULT_SEPARATOR, separator)\\n\\n    return text\\n\\n\\ndef main(): # pragma: no cover\\n    if len(sys.argv) < 2:\\n        print(\\\"Usage %s TEXT TO SLUGIFY\\\" % sys.argv[0])\\n    else:\\n        text = ' '.join(sys.argv[1:])\\n        print(slugify(text))\\nf85f9488520148d5f6899b5639199882b605e30a\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c31d-a7a9-7400-acf3-858b25a69605",
+            "create_time": 1789979942.998791
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

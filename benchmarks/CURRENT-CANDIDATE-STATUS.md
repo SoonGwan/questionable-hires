@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Checkpoint **2026-09-21, last model resource `a7dcbd8`, slugify launch `6b85ec1`**.
+Checkpoint **2026-09-21, last model resource `92afe96`, history launch `27558d1`**.
 This is a decision index, not a new
 measurement. [Full chronological history](CANDIDATE-HISTORY-2026-09-21.md) preserves
 every preceding checkpoint, including adverse results and preparation notes.
@@ -18,6 +18,12 @@ hosted-check success or public-release approval is claimed here.
 과거 실험과 불리한 결과는 이력 문서에 그대로 보존했다.
 
 ## Model evidence that governs claims
+
+Reviewed checkpoint2026-09-21: [slugify history review](SLUGIFY-HISTORY-01.md)
+retains both original attempts; both5/5. Current versus baseline tokens+34.32%,
+time+13.97%; helper unused. Both invalid Git-option recoveries and current's
+truncated whole-file read remain disclosed. No efficiency promotion.
+한국어: 정확한 검토에도 비용이 증가했으며 새 전체 성능 개선 수치로 채택하지 않는다.
 
 Reviewed checkpoint2026-09-21: [slugify native audit](SLUGIFY-NATIVE-01.md)
 retains all three attempts; all arms5/5. Current versus prior tokens−22.19%,

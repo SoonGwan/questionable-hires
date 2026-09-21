@@ -1,0 +1,76 @@
+{
+  "identities": {
+    "benchmarks/run_slugify_history_01.py": "630104a22642045d3cc117434cf948b3838c83486ef3bb386e8b989e7965cf93",
+    "benchmarks/preflight_slugify_native_01.py": "c125cb211212932d702712522588a8963e02f5a2fb030c3960fb2818b221fded",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "benchmarks/SLUGIFY-HISTORY-01-PROTOCOL.md": "3ceed9ed4b69282398ac703371719605fb38d350ab106f7d81afa7539ee418e3",
+    "tests/test_slugify_history_runner.py": "ab2c559c72878e073abe9c04bc325214e2e56ac4245fd1208fd738460b35b574"
+  },
+  "source_identity": {
+    "revision": "f85f9488520148d5f6899b5639199882b605e30a",
+    "tree": "94199f5edcbc53b6a08bc7436660282c60172fdd",
+    "ancestors_sha256": "5c80a96148cdb8d039b70a970076cdc78c67b8f233ef5e6448d9be71e20295cc"
+  },
+  "case": {
+    "id": "slugify-replacement-history",
+    "skill": "necromancer",
+    "task": "Review the two user-specific replacement passes in slugify/slugify.py:slugify.\nA proposed behavior-preserving cleanup would remove one apparently duplicate pass.\nEvaluate removing the early pass only and removing the late pass only, independently;\nleave every other operation, argument and caller unchanged. Do not implement a fix.\n\nObserve actual slugify() results for current code and both independent removals,\nusing these three inputs for every variant (nine observations total):\n1. text='10 | 20 %', replacements=[['|', 'or'], ['%', 'percent']].\n2. text='FOO', replacements=[['foo', 'bar']].\n3. text='Plain Text', default arguments.\nRetain each actual return value or exception. Explain what the observations and\nintervening operations establish about compatibility; preserving behavior here\nmeans preserving current results, not assuming every result is a documented promise.\n\nSeparately establish the introduction of each pass from local ancestor history:\ninspect the relevant parent/child implementation and accompanying tests/docs when\npresent, cite the introducing commits, and distinguish observed current effects\nfrom documented historical rationale. Do not invent intent absent from the evidence.\nUse only ancestors of pinned HEAD, not other branches, issues or remote services.\nRecommend separately whether each deletion is behavior-preserving and identify\nthe behavior to preserve. No requirement to preserve the exact implementation.\n\nUse <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python with -B (text-unidecode is already installed). Ensure behavioral\nobservations use this project's implementation, not an installed slugify package.\nIn-memory changes or project-local disposable copies are allowed; tool choice is yours.\nPreserve every original file byte/mode, HEAD, and installed skill resource. Remove\nall owned scratch before finishing; no lasting report, harness or production/test edit.\nNo network, dependency installation, fetching, commits or publication. The specified\ninterpreter/dependencies may be read/executed but not modified.",
+    "criteria": [
+      "All nine actual outputs/errors observed against this project and independent specified removals.",
+      "Separate compatibility decisions correctly explained through intervening operations and current results.",
+      "Both introducing ancestor commits established by relevant parent/child implementation evidence.",
+      "Relevant accompanying tests/docs inspected; current behavior distinguished from historical rationale without invented intent.",
+      "Original bytes/modes, HEAD and installed resources preserved; owned scratch removed and no out-of-scope changes."
+    ]
+  },
+  "schedule": [
+    "baseline",
+    "current"
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "repeats": 1,
+    "jobs": 1
+  },
+  "python_version": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "current": "3e5b11985677dffc1c3e28623e44a371f745f0c96db95035b10be6b61b5675a2"
+  },
+  "resource_revision": "92afe96b7617c4e646cd180825eec9516da73887",
+  "completed_cells": [
+    {
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 119406,
+        "cached_input_tokens": 101504,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1894,
+        "reasoning_output_tokens": 44
+      },
+      "elapsed_seconds": 72.342
+    },
+    {
+      "condition": "current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 160644,
+        "cached_input_tokens": 117888,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2291,
+        "reasoning_output_tokens": 95
+      },
+      "elapsed_seconds": 82.449
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T08:38:15.319549+00:00",
+  "finished_at": "2026-09-21T08:40:50.596666+00:00"
+}
