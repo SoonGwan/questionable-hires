@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Friday source-read replacement corrected — 2026-09-21, parent `71068c0`
+
+[Native failing-before/passing-after probes](FRIDAY-SOURCE-READ-01.md) reproduce
+replacement FIFOs blocking and replacement files/symlinks being read after source
+inspection. Both SQL and Python-reader paths now validate the opened descriptor;
+six replacement cases reject before SQLite starts. Stable bytes/hashes/results
+remain intact. Two new tests and77 existing Friday tests pass Python3.9/3.11.
+Conditional documentation and bilingual capability rows updated; entry unchanged.
+Not a filesystem sandbox, global deadline, model-cost gain or all-eight result.
+
+한국어: 실제 파일 교체 상황에서의 멈춤·오독을 막고 기존 동작 검사를 통과했다.
+배포 도구의 신뢰성 개선이지 모델 성능 수치 개선으로 계산하지 않는다.
+
 ## EventEmitter comparison reviewed; no promotion — 2026-09-21
 
 [All six original attempts and criterion review](EVENTEMITTER-BOUNDARY-01-REVIEW.md),

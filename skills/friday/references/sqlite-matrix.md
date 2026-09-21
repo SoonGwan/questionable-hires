@@ -94,6 +94,13 @@ are denied. Files must be regular, nonsymlink, project-relative. Limits: 20 phas
 queries, 20 rows/check, 1 MB/file, 2 MB input, 5-second SQL budget (`--timeout`, max 30).
 Unsupported operations need other evidence, not rewritten migrations.
 
+SQL source files and literal-reader modules are checked again on the opened
+descriptor: type, size and identity must match the inspected regular file.
+Where available, nonblocking/no-follow flags reject replacement FIFOs/symlinks
+without waiting for a writer. This does not prevent same-file edits, parent-path
+races or provide an atomic snapshot. The SQL timeout is not an input-reading
+deadline; recipe-file/stdin reading remains outside that timeout.
+
 Read [details](sqlite-matrix-details.md) for BLOB JSON, duplicate/empty-column
 semantics, input rejection or budget diagnostics. This is not a sandbox: no total
 memory/race isolation, live locking, network or production-readiness guarantees.

@@ -4,8 +4,10 @@ import argparse
 import ast
 import hashlib
 import json
+import os
 from pathlib import Path
 import sqlite3
+import stat
 import sys
 import time
 
@@ -37,22 +39,42 @@ def literal_reader(reference, root, remaining, cache=None):
                            'kind': 'static literal, not runtime binding evidence'}
 
 
-def reader_constants(relative, root, remaining):
-    """One bounded declaration snapshot; no imports or SQL execution."""
+def read_source_bytes(relative, root, remaining, kind):
+    """Bound a regular-file read and reject replacement between stat and open."""
     path = root / relative
     if any(part.is_symlink() for part in [path, *path.parents]
            if part != root and root in part.parents):
-        raise ValueError('symlink reader paths are not supported')
-    if not path.is_file() or path.stat().st_size > 1_000_000:
-        raise ValueError('reader file missing or exceeds 1 MB')
-    if path.stat().st_size > remaining:
+        raise ValueError('symlink ' + kind + ' paths are not supported')
+    try:
+        info = path.stat()
+    except (FileNotFoundError, NotADirectoryError) as error:
+        raise ValueError(kind + ' file missing or exceeds 1 MB') from error
+    if not stat.S_ISREG(info.st_mode) or info.st_size > 1_000_000:
+        raise ValueError(kind + ' file missing or exceeds 1 MB')
+    if info.st_size > remaining:
         raise ValueError('SQL exceeds 2 MB')
-    with path.open('rb') as stream:
+    flags = os.O_RDONLY | getattr(os, 'O_NONBLOCK', 0) | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_BINARY', 0)
+    descriptor = os.open(path, flags)
+    with os.fdopen(descriptor, 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        if (not stat.S_ISREG(opened.st_mode)
+                or (opened.st_dev, opened.st_ino) != (info.st_dev, info.st_ino)):
+            raise ValueError(kind + ' file changed while opening')
+        if opened.st_size > 1_000_000:
+            raise ValueError(kind + ' file exceeds 1 MB')
+        if opened.st_size > remaining:
+            raise ValueError('SQL exceeds 2 MB')
         source = stream.read(min(1_000_000, remaining) + 1)
     if len(source) > 1_000_000:
-        raise ValueError('reader file exceeds 1 MB')
+        raise ValueError(kind + ' file exceeds 1 MB')
     if len(source) > remaining:
         raise ValueError('SQL exceeds 2 MB')
+    return source
+
+
+def reader_constants(relative, root, remaining):
+    """One bounded declaration snapshot; no imports or SQL execution."""
+    source = read_source_bytes(relative, root, remaining, 'reader')
     try:
         tree = ast.parse(source, filename=relative.as_posix())
     except (SyntaxError, ValueError, RecursionError) as error:
@@ -124,22 +146,9 @@ def matrix(spec, root, timeout=5):
             relative = Path(filename)
             if relative.is_absolute() or not relative.parts or ".." in relative.parts:
                 raise ValueError("SQL files must be relative to source")
-            path = root / relative
-            if any(part.is_symlink() for part in [path, *path.parents] if part != root and root in part.parents):
-                raise ValueError("symlink SQL paths are not supported")
-            if not path.is_file():
-                raise ValueError("SQL file missing or exceeds 1 MB")
-            length = path.stat().st_size
-            if length > 1_000_000:
-                raise ValueError("SQL file missing or exceeds 1 MB")
-            if total + length > 2_000_000:
-                raise ValueError("SQL exceeds 2 MB")
             # Preserve original bytes (including CRLF) and bound a read even if
             # the file grows after stat. Repeated selections count each time.
-            with path.open("rb") as stream:
-                data = stream.read(min(1_000_000, 2_000_000 - total) + 1)
-            if len(data) > 1_000_000:
-                raise ValueError("SQL file missing or exceeds 1 MB")
+            data = read_source_bytes(relative, root, 2_000_000 - total, 'SQL')
             total += len(data)
             if total > 2_000_000:
                 raise ValueError("SQL exceeds 2 MB")

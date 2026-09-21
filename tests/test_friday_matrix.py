@@ -146,12 +146,12 @@ class MatrixTests(unittest.TestCase):
                                  phase('after', 'INSERT INTO t VALUES(2);')],
                       'checks': {name: {'python_file': 'readers.py', 'constant': constant}
                                  for name, constant in [('rows', 'FIRST'), ('count', 'SECOND'), ('again', 'FIRST')]}}
-            real_open, opened = Path.open, []
+            real_open, opened = helper.os.open, []
             def tracked_open(path, *args, **kwargs):
                 opened.append(path)
                 return real_open(path, *args, **kwargs)
             with patch.object(helper.ast, 'parse', wraps=helper.ast.parse) as parsed, \
-                    patch.object(Path, 'open', tracked_open):
+                    patch.object(helper.os, 'open', tracked_open):
                 result = helper.matrix(recipe, root)
             self.assertEqual(parsed.call_count, 1)
             self.assertEqual(opened, [root.resolve() / 'readers.py'])
@@ -547,11 +547,11 @@ class MatrixTests(unittest.TestCase):
             recipe = {'phases': [phase('oversized', files=['large.sql'] * 100)],
                       'checks': {'read': 'SELECT 1'}}
             opened = []
-            original_open = Path.open
+            original_open = helper.os.open
             def tracked_open(path, *args, **kwargs):
                 opened.append(path)
                 return original_open(path, *args, **kwargs)
-            with patch.object(Path, 'open', tracked_open), \
+            with patch.object(helper.os, 'open', tracked_open), \
                     patch.object(helper.sqlite3, 'connect') as connect, \
                     self.assertRaisesRegex(ValueError, 'SQL exceeds 2 MB'):
                 helper.matrix(recipe, root)
@@ -565,7 +565,7 @@ class MatrixTests(unittest.TestCase):
             source.write_text('SELECT 1;')
             for inline, query in ((' ' * 2_000_000, 'SELECT 1'), ('', '가' * 700_000)):
                 with self.subTest(inline_bytes=len(inline)), \
-                        patch.object(Path, 'open') as opened, \
+                        patch.object(helper.os, 'open') as opened, \
                         patch.object(helper.sqlite3, 'connect') as connect, \
                         self.assertRaisesRegex(ValueError, 'SQL exceeds 2 MB'):
                     helper.matrix({'phases': [phase('big', inline, ['schema.sql'])],
@@ -596,13 +596,22 @@ class MatrixTests(unittest.TestCase):
     def test_growth_after_stat_is_bounded_before_decode_or_sql(self):
         class GrowingFile(io.BytesIO):
             requested = []
+            def fileno(self):
+                return self.real.fileno()
+            def close(self):
+                self.real.close()
+                super().close()
             def read(self, size=-1):
                 self.requested.append(size)
                 return super().read(size)
         with tempfile.TemporaryDirectory() as directory:
             (Path(directory) / 'a.sql').write_bytes(b' ')
             grown = GrowingFile(b' ' * 1_000_002)
-            with patch.object(Path, 'open', return_value=grown), \
+            real_fdopen = helper.os.fdopen
+            def tracked_fdopen(descriptor, mode):
+                grown.real = real_fdopen(descriptor, mode)
+                return grown
+            with patch.object(helper.os, 'fdopen', side_effect=tracked_fdopen), \
                     patch.object(helper.sqlite3, 'connect') as connect, \
                     self.assertRaisesRegex(ValueError, 'exceeds 1 MB'):
                 helper.matrix({'phases': [phase('growing', files=['a.sql'])],
