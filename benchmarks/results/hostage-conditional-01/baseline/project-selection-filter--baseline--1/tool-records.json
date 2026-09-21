@@ -1,0 +1,164 @@
+{
+  "session_id": "01a0c220-8c83-7f23-a1ef-496855eecad1",
+  "source_bytes": 72545,
+  "source_sha256": "b5407e5e3867ff37b558045539b7a5b7152b2173c9593100538e3792d2e73a19",
+  "source_lines": 33,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "702ac79d6e0a3d9cfee37a8afe912dfcf71cc7825a58a04cf0b743680acceb0b",
+      "record": {
+        "timestamp": "2026-09-21T04:01:53.989Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0526393dac725666016ab0ac31132c87d0af9a16aeb77d06d8",
+          "status": "completed",
+          "call_id": "call_wsN6NUpWuxMshNEXniqZYWpu",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files -g '!__pycache__'\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c220-8ccc-7041-9e4c-d5ec57946b0b",
+            "create_time": 1789963311.020435
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "209bd6f82d99790d0d9acf42be3384b3db75be0c20c4bba004afdc241f384095",
+      "record": {
+        "timestamp": "2026-09-21T04:01:54.138Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c220-a3da-7593-afc6-df743914430f",
+          "call_id": "call_wsN6NUpWuxMshNEXniqZYWpu",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"234209\",\"wall_time_seconds\":0.000001625,\"exit_code\":0,\"original_token_count\":31,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nselection.py\\ntest_selection.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c220-8ccc-7041-9e4c-d5ec57946b0b",
+            "create_time": 1789963314.138307
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "ca716a1c5f4fc9613cc43a57ad49c053863a49117ee31c150fdf7292727924fa",
+      "record": {
+        "timestamp": "2026-09-21T04:01:57.285Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0526393dac725666016ab0ac33b96087d0a9ae9a646c85eedf",
+          "status": "completed",
+          "call_id": "call_zr8wAdrakj0g2wjwv56OU7An",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md selection.py test_selection.py\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c220-8ccc-7041-9e4c-d5ec57946b0b",
+            "create_time": 1789963314.645735
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "1f0f0bec5423a584b2d638ab10e3f8c7b06948c589e96227da168da783a7c219",
+      "record": {
+        "timestamp": "2026-09-21T04:01:57.383Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c220-b087-79a1-961c-90287604e12f",
+          "call_id": "call_zr8wAdrakj0g2wjwv56OU7An",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"db24ef\",\"wall_time_seconds\":0.000002042,\"exit_code\":0,\"original_token_count\":179,\"output\":\"Use Python3.9+ and `python3 -B -m unittest discover -v` in this root.\\nKeep implementation changes in the supplied module; add focused native tests.\\nNo dependencies, network, commits or unrelated cleanup. Preserve existing tests.\\ndef visible(records, *, include_archived=False):\\n    return [row for row in records if include_archived or not row.get(\\\"archived\\\")]\\nimport unittest\\nfrom selection import visible\\nclass Existing(unittest.TestCase):\\n    def test_archived_and_identity(self):\\n        a, b = {\\\"project_id\\\": 0}, {\\\"project_id\\\": 1, \\\"archived\\\": True}\\n        self.assertEqual(visible([a, b]), [a])\\n        self.assertIs(visible([a])[0], a)\\n        self.assertEqual(visible([a, b], include_archived=True), [a, b])\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c220-8ccc-7041-9e4c-d5ec57946b0b",
+            "create_time": 1789963317.383822
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "52970a1a75475f3560000ab450d617458d58b261c1a3c6bcb48e6f9ffd69ab0a",
+      "record": {
+        "timestamp": "2026-09-21T04:02:26.576Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0526393dac725666016ab0ac37941c87d0ad4dce8cf4f06c66",
+          "status": "completed",
+          "call_id": "call_wUiYy63EhQoxq9Nq1OmbJlJg",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/selection.py\\n@@\\n-def visible(records, *, include_archived=False):\\n-    return [row for row in records if include_archived or not row.get(\\\"archived\\\")]\\n+def visible(records, *, include_archived=False, project_ids=None):\\n+    selected_projects = None if project_ids is None else set(project_ids)\\n+    return [\\n+        row for row in records\\n+        if (include_archived or not row.get(\\\"archived\\\"))\\n+        and (selected_projects is None or row.get(\\\"project_id\\\") in selected_projects)\\n+    ]\\n*** Update File: <WORKSPACE>/test_selection.py\\n@@\\n         self.assertEqual(visible([a, b], include_archived=True), [a, b])\\n+\\n+\\n+class ProjectSelection(unittest.TestCase):\\n+    def test_none_keeps_existing_behavior(self):\\n+        rows = [{\\\"project_id\\\": 0}, {}, {\\\"project_id\\\": 1, \\\"archived\\\": True}]\\n+        self.assertEqual(visible(rows, project_ids=None), rows[:2])\\n+        self.assertEqual(\\n+            visible(rows, project_ids=None, include_archived=True), rows\\n+        )\\n+\\n+    def test_one_shot_ids_preserve_order_duplicates_and_identity(self):\\n+        first = {\\\"project_id\\\": 2}\\n+        zero = {\\\"project_id\\\": 0}\\n+        equal_but_distinct = {\\\"project_id\\\": 2}\\n+        rows = [first, {\\\"project_id\\\": 1}, zero, first, equal_but_distinct]\\n+        result = visible(iter(rows), project_ids=iter([0, 2]))\\n+        expected = [first, zero, first, equal_but_distinct]\\n+        self.assertEqual(len(result), len(expected))\\n+        for actual, original in zip(result, expected):\\n+            self.assertIs(actual, original)\\n+\\n+    def test_empty_iterables_select_nothing(self):\\n+        rows = [{\\\"project_id\\\": 0}, {\\\"project_id\\\": 1, \\\"archived\\\": True}]\\n+        for ids in ([], (), iter(())):\\n+            with self.subTest(ids=ids):\\n+                self.assertEqual(\\n+                    visible(rows, project_ids=ids, include_archived=True), []\\n+                )\\n+\\n+    def test_archived_filter_and_inputs_are_preserved(self):\\n+        rows = [\\n+            {\\\"project_id\\\": 0},\\n+            {\\\"project_id\\\": 0, \\\"archived\\\": True},\\n+            {\\\"project_id\\\": 1, \\\"archived\\\": True},\\n+        ]\\n+        originals = list(rows)\\n+        snapshot = [dict(row) for row in rows]\\n+        ids = [0, 0]\\n+        self.assertEqual(visible(rows, project_ids=ids), rows[:1])\\n+        self.assertEqual(\\n+            visible(rows, project_ids=ids, include_archived=True), rows[:2]\\n+        )\\n+        self.assertEqual(rows, snapshot)\\n+        for actual, original in zip(rows, originals):\\n+            self.assertIs(actual, original)\\n+        self.assertEqual(ids, [0, 0])\\n+\\n+    def test_project_ids_is_keyword_only(self):\\n+        with self.assertRaises(TypeError):\\n+            visible([], False, [0])\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c220-8ccc-7041-9e4c-d5ec57946b0b",
+            "create_time": 1789963318.245637
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "b7dc156363ccbda6beef3390437c2a2be4b5b23a15fe0bb9ddb779209d85c998",
+      "record": {
+        "timestamp": "2026-09-21T04:02:26.901Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c221-23d5-7513-89f5-0ac891e55fdd",
+          "call_id": "call_wUiYy63EhQoxq9Nq1OmbJlJg",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"df10a1\",\"wall_time_seconds\":0.000003541,\"exit_code\":0,\"original_token_count\":143,\"output\":\"test_archived_and_identity (test_selection.Existing) ... ok\\ntest_archived_filter_and_inputs_are_preserved (test_selection.ProjectSelection) ... ok\\ntest_empty_iterables_select_nothing (test_selection.ProjectSelection) ... ok\\ntest_none_keeps_existing_behavior (test_selection.ProjectSelection) ... ok\\ntest_one_shot_ids_preserve_order_duplicates_and_identity (test_selection.ProjectSelection) ... ok\\ntest_project_ids_is_keyword_only (test_selection.ProjectSelection) ... ok\\n\\n----------------------------------------------------------------------\\nRan 6 tests in 0.000s\\n\\nOK\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c220-8ccc-7041-9e4c-d5ec57946b0b",
+            "create_time": 1789963346.901472
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

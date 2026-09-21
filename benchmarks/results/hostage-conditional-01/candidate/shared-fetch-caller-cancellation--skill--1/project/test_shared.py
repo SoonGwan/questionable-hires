@@ -1,0 +1,171 @@
+import asyncio
+import gc
+import unittest
+import weakref
+from shared import Loader
+class Existing(unittest.IsolatedAsyncioTestCase):
+    async def test_single_result(self):
+        value = object()
+        async def fetch(key):
+            self.assertEqual(key, "one")
+            return value
+        self.assertIs(await Loader(fetch).load("one"), value)
+
+
+class SharedFetch(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.tasks = []
+        self.requests = asyncio.Queue()
+        self.loader = Loader(self.fetch)
+        self.addAsyncCleanup(self.drain_tasks)
+
+    async def fetch(self, key):
+        self.tasks.append(asyncio.current_task())
+        result = asyncio.get_running_loop().create_future()
+        self.requests.put_nowait((key, result))
+        return await result
+
+    async def drain_tasks(self):
+        tasks = set(self.tasks) | set(self.loader._inflight.values())
+        for task in tasks:
+            task.cancel()
+        await asyncio.wait_for(
+            asyncio.gather(*tasks, return_exceptions=True), timeout=1
+        )
+
+    async def start_caller(self, key="one"):
+        entered = asyncio.Event()
+
+        async def call():
+            entered.set()
+            return await self.loader.load(key)
+
+        task = asyncio.create_task(call())
+        self.tasks.append(task)
+        await asyncio.wait_for(entered.wait(), timeout=1)
+        return task
+
+    async def next_request(self, key="one"):
+        actual_key, result = await asyncio.wait_for(self.requests.get(), timeout=1)
+        self.assertEqual(actual_key, key)
+        return result
+
+    async def cancel_caller(self, task):
+        task.cancel()
+        with self.assertRaises(asyncio.CancelledError):
+            await asyncio.wait_for(task, timeout=1)
+        self.assertTrue(task.cancelled())
+
+    async def result_of(self, task):
+        return await asyncio.wait_for(asyncio.shield(task), timeout=1)
+
+    async def test_cancellation_keeps_fetch_and_late_caller_shares_it(self):
+        first = await self.start_caller()
+        pending = await self.next_request()
+        fetch_task = self.loader._inflight["one"]
+        second = await self.start_caller()
+        await self.cancel_caller(first)
+        third = await self.start_caller()
+        self.assertIs(self.loader._inflight["one"], fetch_task)
+        self.assertFalse(pending.done())
+        self.assertFalse(second.done())
+        self.assertFalse(third.done())
+        self.assertTrue(self.requests.empty())
+
+        value = object()
+        pending.set_result(value)
+        self.assertIs(await self.result_of(second), value)
+        self.assertIs(await self.result_of(third), value)
+        self.assertNotIn("one", self.loader._inflight)
+
+    async def test_all_cancelled_fetch_finishes_without_caching(self):
+        first = await self.start_caller()
+        pending = await self.next_request()
+        second = await self.start_caller()
+        fetch_task = self.loader._inflight["one"]
+        await self.cancel_caller(first)
+        await self.cancel_caller(second)
+        self.assertIs(self.loader._inflight["one"], fetch_task)
+        self.assertFalse(pending.done())
+        late = await self.start_caller()
+        self.assertTrue(self.requests.empty())
+        await self.cancel_caller(late)
+
+        value = object()
+        pending.set_result(value)
+        self.assertIs(await self.result_of(fetch_task), value)
+        self.assertNotIn("one", self.loader._inflight)
+        retry = await self.start_caller()
+        fresh = await self.next_request()
+        new_value = object()
+        fresh.set_result(new_value)
+        self.assertIs(await self.result_of(retry), new_value)
+
+    async def test_shared_failure_identity_and_retry(self):
+        first = await self.start_caller()
+        pending = await self.next_request()
+        second = await self.start_caller()
+        error = RuntimeError("fetch failed")
+        pending.set_exception(error)
+        for caller in (first, second):
+            with self.assertRaises(RuntimeError) as caught:
+                await self.result_of(caller)
+            self.assertIs(caught.exception, error)
+        self.assertNotIn("one", self.loader._inflight)
+
+        retry = await self.start_caller()
+        fresh = await self.next_request()
+        value = object()
+        fresh.set_result(value)
+        self.assertIs(await self.result_of(retry), value)
+
+    async def test_abandoned_failure_is_observed_and_allows_retry(self):
+        loop = asyncio.get_running_loop()
+        reports = []
+        previous_handler = loop.get_exception_handler()
+        loop.set_exception_handler(lambda loop, context: reports.append(context))
+        self.addCleanup(loop.set_exception_handler, previous_handler)
+
+        first = await self.start_caller()
+        pending = await self.next_request()
+        second = await self.start_caller()
+        fetch_task = self.loader._inflight["one"]
+        finished = asyncio.Event()
+        fetch_task.add_done_callback(lambda task: finished.set())
+        fetch_ref = weakref.ref(fetch_task)
+        await self.cancel_caller(first)
+        await self.cancel_caller(second)
+        self.assertFalse(pending.done())
+        pending.set_exception(RuntimeError("abandoned failure"))
+        # Observe completion without retrieving the task's exception ourselves.
+        await asyncio.wait_for(finished.wait(), timeout=1)
+        self.assertNotIn("one", self.loader._inflight)
+        self.tasks.remove(fetch_task)
+        self.tasks.remove(first)
+        self.tasks.remove(second)
+        del fetch_task, pending, first, second
+        gc.collect()
+        self.assertIsNone(fetch_ref())
+        self.assertEqual(reports, [])
+
+        retry = await self.start_caller()
+        fresh = await self.next_request()
+        value = object()
+        fresh.set_result(value)
+        self.assertIs(await self.result_of(retry), value)
+
+    async def test_different_keys_complete_independently(self):
+        first = await self.start_caller("one")
+        pending_one = await self.next_request("one")
+        second = await self.start_caller("two")
+        pending_two = await self.next_request("two")
+        value_two = object()
+        pending_two.set_result(value_two)
+        self.assertIs(await self.result_of(second), value_two)
+        self.assertFalse(first.done())
+        self.assertFalse(pending_one.done())
+        self.assertNotIn("two", self.loader._inflight)
+        self.assertIn("one", self.loader._inflight)
+        value_one = object()
+        pending_one.set_result(value_one)
+        self.assertIs(await self.result_of(first), value_one)

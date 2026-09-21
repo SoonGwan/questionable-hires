@@ -1,0 +1,85 @@
+diff --git a/selection.py b/selection.py
+index abd383c..3f8a7e3 100644
+--- a/selection.py
++++ b/selection.py
+@@ -1,2 +1,7 @@
+-def visible(records, *, include_archived=False):
+-    return [row for row in records if include_archived or not row.get("archived")]
++def visible(records, *, include_archived=False, project_ids=None):
++    project_ids = None if project_ids is None else tuple(project_ids)
++    return [
++        row for row in records
++        if (include_archived or not row.get("archived"))
++        and (project_ids is None or row.get("project_id") in project_ids)
++    ]
+diff --git a/test_selection.py b/test_selection.py
+index ace0de7..e30ea52 100644
+--- a/test_selection.py
++++ b/test_selection.py
+@@ -6,3 +6,66 @@ class Existing(unittest.TestCase):
+         self.assertEqual(visible([a, b]), [a])
+         self.assertIs(visible([a])[0], a)
+         self.assertEqual(visible([a, b], include_archived=True), [a, b])
++
++
++class ProjectFiltering(unittest.TestCase):
++    def test_none_preserves_existing_behavior(self):
++        active, archived = {}, {"archived": True}
++        records = [active, archived]
++        self.assertEqual(visible(records, project_ids=None), [active])
++        self.assertEqual(
++            visible(records, include_archived=True, project_ids=None), records
++        )
++
++    def test_filter_preserves_order_duplicates_identity_and_inputs(self):
++        zero = {"project_id": 0}
++        one = {"project_id": 1}
++        two = {"project_id": 2}
++        records = [two, one, zero, two, {"project_id": 0}]
++        original_records = records[:]
++        original_rows = [row.copy() for row in records]
++        project_ids = [0, 2, 2]
++
++        result = visible(records, project_ids=project_ids)
++
++        expected = [two, zero, two, records[4]]
++        self.assertEqual(len(result), len(expected))
++        for actual, original in zip(result, expected):
++            self.assertIs(actual, original)
++        self.assertEqual(records, original_rows)
++        for actual, original in zip(records, original_records):
++            self.assertIs(actual, original)
++        self.assertEqual(project_ids, [0, 2, 2])
++
++    def test_one_shot_iterables(self):
++        records = [{"project_id": value} for value in (2, 0, 2, 1, 0)]
++        self.assertEqual(
++            visible(iter(records), project_ids=(value for value in (0, 2))),
++            [records[0], records[1], records[2], records[4]],
++        )
++
++    def test_empty_iterables_select_nothing(self):
++        records = [{"project_id": 0}, {"project_id": 1, "archived": True}]
++        for include_archived in (False, True):
++            for project_ids in ([], iter(())):
++                with self.subTest(include_archived=include_archived):
++                    self.assertEqual(
++                        visible(records, include_archived=include_archived,
++                                project_ids=project_ids),
++                        [],
++                    )
++
++    def test_archived_filter_combines_with_project_filter(self):
++        active = {"project_id": 0}
++        archived = {"project_id": 0, "archived": True}
++        excluded = {"project_id": 1, "archived": True}
++        records = [active, archived, excluded]
++        self.assertEqual(visible(records, project_ids=[0]), [active])
++        self.assertEqual(
++            visible(records, project_ids=[0], include_archived=True),
++            [active, archived],
++        )
++
++    def test_project_ids_is_keyword_only(self):
++        with self.assertRaises(TypeError):
++            visible([], [0])

@@ -1,5 +1,8 @@
 # Conditional Hostage comparison — six sessions complete, full review pending
 
+Historical checkpoint, superseded by the [completed review](HOSTAGE-CONDITIONAL-01-REVIEW.md).
+The original pending observations below remain unchanged.
+
 2026-09-21, launch `1b26f9d`, resources `a1f420e`.
 [Frozen protocol](HOSTAGE-CONDITIONAL-01-PROTOCOL.md). All six original attempts
 completed without timeout/account limit; runner is terminal. Do not restart.

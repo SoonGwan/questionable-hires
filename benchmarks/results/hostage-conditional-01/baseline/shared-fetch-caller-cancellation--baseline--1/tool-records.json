@@ -1,0 +1,323 @@
+{
+  "session_id": "01a0c223-b16b-7a63-9612-5f6437f42ed8",
+  "source_bytes": 127186,
+  "source_sha256": "d09d88ec34e619335029bcab2a18432cca6ec5f4b5afa5ccb8ada048c7b87fb7",
+  "source_lines": 61,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "75ebb466058086bb7da5d81f7698efcb1d135488e604c185d5d0cb23979fc241",
+      "record": {
+        "timestamp": "2026-09-21T04:05:19.784Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_038f92c35f820c82016ab0acfec9e087d0b7c908716afeb3b3",
+          "status": "completed",
+          "call_id": "call_jFj7URKsYupxd1seaszguSmq",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!**/__pycache__/**'\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963516.516861
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "92b43416e8f7ab70026172e64a4253609eb6e3fe053744e9c7734129848491c0",
+      "record": {
+        "timestamp": "2026-09-21T04:05:19.940Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c223-c7c4-7f21-87b8-e74774fe80e9",
+          "call_id": "call_jFj7URKsYupxd1seaszguSmq",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2b23ad\",\"wall_time_seconds\":0.000005834,\"exit_code\":0,\"original_token_count\":30,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nshared.py\\ntest_shared.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963519.940428
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "d73692dc2819b7e996c93d7f146b90df00306b430cc5141eb4e260fd677ec678",
+      "record": {
+        "timestamp": "2026-09-21T04:05:23.986Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_038f92c35f820c82016ab0ad0328ec87d0a2b8a3f924f384d1",
+          "status": "completed",
+          "call_id": "call_3wtKAYkfywXmlFMGiJS96F4z",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md shared.py test_shared.py\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963520.486359
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "a0c2145fc758de2f38d51454ed5a8ea441bb47bd10db5590abc1a41067b00eb5",
+      "record": {
+        "timestamp": "2026-09-21T04:05:24.086Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c223-d7f6-7320-ba85-bba1494ee902",
+          "call_id": "call_3wtKAYkfywXmlFMGiJS96F4z",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"718dde\",\"wall_time_seconds\":0.000001666,\"exit_code\":0,\"original_token_count\":239,\"output\":\"Use Python3.9+ and `python3 -B -m unittest discover -v` in this root.\\nKeep implementation changes in the supplied module; add focused native tests.\\nNo dependencies, network, commits or unrelated cleanup. Preserve existing tests.\\nimport asyncio\\n\\nclass Loader:\\n    def __init__(self, fetch):\\n        self.fetch = fetch\\n        self._inflight = {}\\n\\n    async def load(self, key):\\n        task = self._inflight.get(key)\\n        if task is None:\\n            task = asyncio.create_task(self.fetch(key))\\n            self._inflight[key] = task\\n        try:\\n            return await task\\n        finally:\\n            self._inflight.pop(key, None)\\nimport unittest\\nfrom shared import Loader\\nclass Existing(unittest.IsolatedAsyncioTestCase):\\n    async def test_single_result(self):\\n        value = object()\\n        async def fetch(key):\\n            self.assertEqual(key, \\\"one\\\")\\n            return value\\n        self.assertIs(await Loader(fetch).load(\\\"one\\\"), value)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963524.086042
+          }
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "e319867a62fe5cc0f581b924aec92557f6f358a9f68dd0669b3876cde3f3952e",
+      "record": {
+        "timestamp": "2026-09-21T04:05:47.302Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_038f92c35f820c82016ab0ad14932087d0a2b8d6f7f23923cc",
+          "status": "completed",
+          "call_id": "call_Uw4oWv7ckCYBTikVbH4v05Cz",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/shared.py\\n@@\\n-        if task is None:\\n+        if task is None or task.done():\\n             task = asyncio.create_task(self.fetch(key))\\n             self._inflight[key] = task\\n-        try:\\n-            return await task\\n-        finally:\\n+            task.add_done_callback(lambda done: self._fetch_done(key, done))\\n+        return await asyncio.shield(task)\\n+\\n+    def _fetch_done(self, key, task):\\n+        # The fetch owns cleanup, even if all of its callers have cancelled.\\n+        if not task.cancelled():\\n+            task.exception()\\n+        if self._inflight.get(key) is task:\\n             self._inflight.pop(key, None)\\n*** End Patch\"));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963524.877967
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "eeadb5c909a28942820d5f78b24c33660fa5923f915c45e6d7178f719bc78280",
+      "record": {
+        "timestamp": "2026-09-21T04:05:47.441Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c224-3330-7293-b7c0-3a013428a69f",
+          "call_id": "call_Uw4oWv7ckCYBTikVbH4v05Cz",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963547.440996
+          }
+        }
+      }
+    },
+    {
+      "line": 34,
+      "line_sha256": "24f17b544524e05e3f63af97fabb8c7cbabf34759520942c263dbcda08eaf944",
+      "record": {
+        "timestamp": "2026-09-21T04:06:52.452Z",
+        "ordinal": 33,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_038f92c35f820c82016ab0ad226c4087d0b62ffdf682c1a38e",
+          "status": "completed",
+          "call_id": "call_2Vdvf88cAdVI22e0wWp43A1n",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Add File: <WORKSPACE>/test_shared_concurrency.py\\n+import asyncio\\n+import gc\\n+import unittest\\n+\\n+from shared import Loader\\n+\\n+\\n+class ConcurrentLoads(unittest.IsolatedAsyncioTestCase):\\n+    async def asyncSetUp(self):\\n+        self.tasks = set()\\n+        self.calls = []\\n+        self.started = {}\\n+        self.release = {}\\n+        self.results = {}\\n+        self.failures = {}\\n+\\n+        async def fetch(key):\\n+            self.tasks.add(asyncio.current_task())\\n+            self.calls.append(key)\\n+            self.started[key].set()\\n+            await self.release[key].wait()\\n+            if key in self.failures:\\n+                raise self.failures[key]\\n+            return self.results[key]\\n+\\n+        self.loader = Loader(fetch)\\n+\\n+    async def asyncTearDown(self):\\n+        for task in self.tasks:\\n+            if not task.done():\\n+                task.cancel()\\n+        if self.tasks:\\n+            await asyncio.wait_for(\\n+                asyncio.gather(*self.tasks, return_exceptions=True), 2\\n+            )\\n+\\n+    def prepare(self, key, failure=None):\\n+        self.started[key] = asyncio.Event()\\n+        self.release[key] = asyncio.Event()\\n+        self.results[key] = object()\\n+        self.failures.pop(key, None)\\n+        if failure is not None:\\n+            self.failures[key] = failure\\n+        return self.results[key]\\n+\\n+    async def caller(self, key):\\n+        entered = asyncio.Event()\\n+\\n+        async def load():\\n+            entered.set()\\n+            return await self.loader.load(key)\\n+\\n+        task = asyncio.create_task(load())\\n+        self.tasks.add(task)\\n+        await asyncio.wait_for(entered.wait(), 2)\\n+        await asyncio.wait_for(self.started[key].wait(), 2)\\n+        return task\\n+\\n+    async def cancel(self, task):\\n+        task.cancel()\\n+        with self.assertRaises(asyncio.CancelledError):\\n+            await asyncio.wait_for(task, 2)\\n+\\n+    async def finish_fetch(self, task, key):\\n+        # Wait for completion callbacks without retrieving the fetch exception.\\n+        completed = asyncio.Event()\\n+        task.add_done_callback(lambda unused: completed.set())\\n+        self.release[key].set()\\n+        await asyncio.wait_for(completed.wait(), 2)\\n+\\n+    async def test_cancel_one_caller_and_join_active_fetch(self):\\n+        value = self.prepare(\\\"one\\\")\\n+        first = await self.caller(\\\"one\\\")\\n+        second = await self.caller(\\\"one\\\")\\n+        fetch = self.loader._inflight[\\\"one\\\"]\\n+        await self.cancel(first)\\n+        third = await self.caller(\\\"one\\\")\\n+        self.assertIs(self.loader._inflight[\\\"one\\\"], fetch)\\n+        self.assertEqual(self.calls, [\\\"one\\\"])\\n+        self.assertFalse(fetch.done())\\n+        self.assertFalse(second.done())\\n+        self.release[\\\"one\\\"].set()\\n+        results = await asyncio.wait_for(asyncio.gather(second, third), 2)\\n+        self.assertTrue(all(result is value for result in results))\\n+        self.assertEqual(self.loader._inflight, {})\\n+\\n+    async def test_all_cancel_then_late_caller_joins_and_results_are_not_cached(self):\\n+        value = self.prepare(\\\"one\\\")\\n+        first = await self.caller(\\\"one\\\")\\n+        second = await self.caller(\\\"one\\\")\\n+        fetch = self.loader._inflight[\\\"one\\\"]\\n+        await self.cancel(first)\\n+        await self.cancel(second)\\n+        self.assertFalse(fetch.done())\\n+        late = await self.caller(\\\"one\\\")\\n+        self.assertEqual(self.calls, [\\\"one\\\"])\\n+        self.release[\\\"one\\\"].set()\\n+        self.assertIs(await asyncio.wait_for(late, 2), value)\\n+        next_value = self.prepare(\\\"one\\\")\\n+        retry = await self.caller(\\\"one\\\")\\n+        self.release[\\\"one\\\"].set()\\n+        self.assertIs(await asyncio.wait_for(retry, 2), next_value)\\n+        self.assertEqual(self.calls, [\\\"one\\\", \\\"one\\\"])\\n+\\n+    async def test_abandoned_success_finishes_and_clears(self):\\n+        self.prepare(\\\"one\\\")\\n+        caller = await self.caller(\\\"one\\\")\\n+        fetch = self.loader._inflight[\\\"one\\\"]\\n+        await self.cancel(caller)\\n+        self.assertFalse(fetch.done())\\n+        await self.finish_fetch(fetch, \\\"one\\\")\\n+        self.assertFalse(fetch.cancelled())\\n+        self.assertEqual(self.loader._inflight, {})\\n+\\n+    async def test_abandoned_failure_is_observed_and_can_retry(self):\\n+        loop = asyncio.get_running_loop()\\n+        previous_handler = loop.get_exception_handler()\\n+        unhandled = []\\n+        loop.set_exception_handler(lambda loop, context: unhandled.append(context))\\n+        try:\\n+            self.prepare(\\\"one\\\", RuntimeError(\\\"fetch failed\\\"))\\n+            first = await self.caller(\\\"one\\\")\\n+            second = await self.caller(\\\"one\\\")\\n+            fetch = self.loader._inflight[\\\"one\\\"]\\n+            await self.cancel(first)\\n+            await self.cancel(second)\\n+            self.assertFalse(fetch.done())\\n+            await self.finish_fetch(fetch, \\\"one\\\")\\n+            self.assertFalse(fetch.cancelled())\\n+            self.assertEqual(self.loader._inflight, {})\\n+            self.tasks.remove(fetch)\\n+            del fetch\\n+            gc.collect()\\n+            self.assertEqual(unhandled, [])\\n+            value = self.prepare(\\\"one\\\")\\n+            retry = await self.caller(\\\"one\\\")\\n+            self.release[\\\"one\\\"].set()\\n+            self.assertIs(await asyncio.wait_for(retry, 2), value)\\n+            self.assertEqual(self.calls, [\\\"one\\\", \\\"one\\\"])\\n+        finally:\\n+            loop.set_exception_handler(previous_handler)\\n+\\n+    async def test_fetch_error_identity_and_retry(self):\\n+        error = RuntimeError(\\\"fetch failed\\\")\\n+        self.prepare(\\\"one\\\", error)\\n+        first = await self.caller(\\\"one\\\")\\n+        second = await self.caller(\\\"one\\\")\\n+        self.release[\\\"one\\\"].set()\\n+        errors = await asyncio.wait_for(\\n+            asyncio.gather(first, second, return_exceptions=True), 2\\n+        )\\n+        self.assertTrue(all(result is error for result in errors))\\n+        self.assertEqual(self.loader._inflight, {})\\n+        value = self.prepare(\\\"one\\\")\\n+        retry = await self.caller(\\\"one\\\")\\n+        self.release[\\\"one\\\"].set()\\n+        self.assertIs(await asyncio.wait_for(retry, 2), value)\\n+        self.assertEqual(self.calls, [\\\"one\\\", \\\"one\\\"])\\n+\\n+    async def test_different_keys_complete_independently(self):\\n+        first_value = self.prepare(\\\"one\\\")\\n+        second_value = self.prepare(\\\"two\\\")\\n+        first = await self.caller(\\\"one\\\")\\n+        cancelled = await self.caller(\\\"one\\\")\\n+        second = await self.caller(\\\"two\\\")\\n+        await self.cancel(cancelled)\\n+        self.release[\\\"two\\\"].set()\\n+        self.assertIs(await asyncio.wait_for(second, 2), second_value)\\n+        self.assertFalse(first.done())\\n+        self.assertEqual(set(self.loader._inflight), {\\\"one\\\"})\\n+        self.release[\\\"one\\\"].set()\\n+        self.assertIs(await asyncio.wait_for(first, 2), first_value)\\n+        self.assertEqual(self.calls, [\\\"one\\\", \\\"two\\\"])\\n+        self.assertEqual(self.loader._inflight, {})\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963548.532688
+          }
+        }
+      }
+    },
+    {
+      "line": 38,
+      "line_sha256": "11cf5cf9435502fb33465c4140c1ea62939a798d53f7bd4e8ce9b256359d0957",
+      "record": {
+        "timestamp": "2026-09-21T04:06:52.741Z",
+        "ordinal": 37,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c225-3245-7902-8692-5ab7a25bf24a",
+          "call_id": "call_2Vdvf88cAdVI22e0wWp43A1n",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"5ddfb6\",\"wall_time_seconds\":0.000002834,\"exit_code\":0,\"original_token_count\":181,\"output\":\"test_single_result (test_shared.Existing) ... ok\\ntest_abandoned_failure_is_observed_and_can_retry (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_abandoned_success_finishes_and_clears (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_all_cancel_then_late_caller_joins_and_results_are_not_cached (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_cancel_one_caller_and_join_active_fetch (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_different_keys_complete_independently (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_fetch_error_identity_and_retry (test_shared_concurrency.ConcurrentLoads) ... ok\\n\\n----------------------------------------------------------------------\\nRan 7 tests in 0.041s\\n\\nOK\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963612.74189
+          }
+        }
+      }
+    },
+    {
+      "line": 42,
+      "line_sha256": "ef98021cec2c50d601f3a3f8cc40d22c2752e4cba14de368d3a8bea059b54d87",
+      "record": {
+        "timestamp": "2026-09-21T04:07:02.727Z",
+        "ordinal": 41,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_038f92c35f820c82016ab0ad610c5c87d093e46d97a3d1fcdb",
+          "status": "completed",
+          "call_id": "call_HTgmfEQYW6Zr1P0oXkO1hULf",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/test_shared_concurrency.py\\n@@\\n import unittest\\n+import weakref\\n@@\\n             self.assertFalse(fetch.cancelled())\\n             self.assertEqual(self.loader._inflight, {})\\n+            fetch_ref = weakref.ref(fetch)\\n             self.tasks.remove(fetch)\\n             del fetch\\n             gc.collect()\\n+            self.assertIsNone(fetch_ref())\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":2000}));\ntext(await tools.exec_command({cmd:\"git diff --check; git status --short\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963613.281149
+          }
+        }
+      }
+    },
+    {
+      "line": 47,
+      "line_sha256": "1b3db7dd687bd5603d28cf7db2dc0d6c9b9dae5745c1024c8545e80c4f419c8e",
+      "record": {
+        "timestamp": "2026-09-21T04:07:03.103Z",
+        "ordinal": 46,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c225-5abf-7bd2-967f-d0bce91fca27",
+          "call_id": "call_HTgmfEQYW6Zr1P0oXkO1hULf",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"8db486\",\"wall_time_seconds\":0.000004875,\"exit_code\":1,\"original_token_count\":618,\"output\":\"test_single_result (test_shared.Existing) ... ok\\ntest_abandoned_failure_is_observed_and_can_retry (test_shared_concurrency.ConcurrentLoads) ... FAIL\\ntest_abandoned_success_finishes_and_clears (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_all_cancel_then_late_caller_joins_and_results_are_not_cached (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_cancel_one_caller_and_join_active_fetch (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_different_keys_complete_independently (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_fetch_error_identity_and_retry (test_shared_concurrency.ConcurrentLoads) ... ok\\n\\n======================================================================\\nFAIL: test_abandoned_failure_is_observed_and_can_retry (test_shared_concurrency.ConcurrentLoads)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\\\", line 65, in _callTestMethod\\n    self._callMaybeAsync(method)\\n  File \\\"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\\\", line 88, in _callMaybeAsync\\n    return self._asyncioTestLoop.run_until_complete(fut)\\n  File \\\"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\\\", line 642, in run_until_complete\\n    return future.result()\\n  File \\\"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\\\", line 102, in _asyncioLoopRunner\\n    ret = await awaitable\\n  File \\\"<WORKSPACE>/test_shared_concurrency.py\\\", line 136, in test_abandoned_failure_is_observed_and_can_retry\\n    self.assertIsNone(fetch_ref())\\nAssertionError: <Task finished name='Task-7' coro=<ConcurrentLoads.asyncSetUp.<locals>.fetch() done, defined at <WORKSPACE>/test_shared_concurrency.py:18> exception=RuntimeError('fetch failed') created at /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/tasks.py:361> is not None\\n\\n----------------------------------------------------------------------\\nRan 7 tests in 0.039s\\n\\nFAILED (failures=1)\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"7d977c\",\"wall_time_seconds\":0.000002834,\"exit_code\":0,\"original_token_count\":11,\"output\":\" M shared.py\\n?? test_shared_concurrency.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963623.10358
+          }
+        }
+      }
+    },
+    {
+      "line": 51,
+      "line_sha256": "18043852a9ab56ca1c27c71eb220553d5c69222a85c2d37893b46c1217e9297d",
+      "record": {
+        "timestamp": "2026-09-21T04:07:10.562Z",
+        "ordinal": 50,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_038f92c35f820c82016ab0ad69dc8087d0b5cf0be294ba3cac",
+          "status": "completed",
+          "call_id": "call_2aP8DmGE7rTOfjgPQobqWMPd",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/test_shared_concurrency.py\\n@@\\n             fetch_ref = weakref.ref(fetch)\\n             self.tasks.remove(fetch)\\n-            del fetch\\n+            # Cancelled callers can retain load's frame (and its fetch task).\\n+            self.tasks.remove(first)\\n+            self.tasks.remove(second)\\n+            del fetch, first, second\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963623.57249
+          }
+        }
+      }
+    },
+    {
+      "line": 55,
+      "line_sha256": "f058eff25c6d723e98067cb18a1a9fc958f92b78b292b3917b4da5d1ab9ff432",
+      "record": {
+        "timestamp": "2026-09-21T04:07:10.856Z",
+        "ordinal": 54,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c225-7908-7191-ba8b-eddbc376bfad",
+          "call_id": "call_2aP8DmGE7rTOfjgPQobqWMPd",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"682e12\",\"wall_time_seconds\":0.000003458,\"exit_code\":0,\"original_token_count\":181,\"output\":\"test_single_result (test_shared.Existing) ... ok\\ntest_abandoned_failure_is_observed_and_can_retry (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_abandoned_success_finishes_and_clears (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_all_cancel_then_late_caller_joins_and_results_are_not_cached (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_cancel_one_caller_and_join_active_fetch (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_different_keys_complete_independently (test_shared_concurrency.ConcurrentLoads) ... ok\\ntest_fetch_error_identity_and_retry (test_shared_concurrency.ConcurrentLoads) ... ok\\n\\n----------------------------------------------------------------------\\nRan 7 tests in 0.040s\\n\\nOK\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c223-b1b2-7242-8af8-4eb4313e183b",
+            "create_time": 1789963630.856603
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

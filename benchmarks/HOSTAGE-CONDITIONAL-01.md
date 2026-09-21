@@ -1,5 +1,8 @@
 # Hostage conditional instructions — separate, unmeasured candidate
 
+Historical preparation. The [completed comparison](HOSTAGE-CONDITIONAL-01-REVIEW.md)
+rejects promotion; the preparation and frozen candidate below remain unchanged.
+
 2026-09-21. Parent `51dd30e`. Candidate:
 `benchmarks/candidates/hostage-conditional/skills/hostage-negotiator`.
 Production remains unchanged; this is not an accepted performance improvement.

@@ -1,0 +1,207 @@
+{
+  "cases": [
+    {
+      "id": "project-selection-filter",
+      "skill": "hostage-negotiator",
+      "files": {
+        "AGENTS.md": "Use Python3.9+ and `python3 -B -m unittest discover -v` in this root.\nKeep implementation changes in the supplied module; add focused native tests.\nNo dependencies, network, commits or unrelated cleanup. Preserve existing tests.\n",
+        "selection.py": "def visible(records, *, include_archived=False):\n    return [row for row in records if include_archived or not row.get(\"archived\")]\n",
+        "test_selection.py": "import unittest\nfrom selection import visible\nclass Existing(unittest.TestCase):\n    def test_archived_and_identity(self):\n        a, b = {\"project_id\": 0}, {\"project_id\": 1, \"archived\": True}\n        self.assertEqual(visible([a, b]), [a])\n        self.assertIs(visible([a])[0], a)\n        self.assertEqual(visible([a, b], include_archived=True), [a, b])\n"
+      },
+      "task": "In selection.py, extend visible with keyword-only project_ids=None. None keeps existing behavior; a supplied iterable filters by project_id, including zero; an empty iterable selects nothing. Consume a one-shot iterable correctly, preserve row order, duplicates and object identity; do not mutate inputs. Keep include_archived behavior and add native regression tests. Preserve existing tests and unrelated behavior; implement and verify, no commits or publication.",
+      "criteria": [
+        "Implements None/empty/one-shot iterable and zero-ID semantics.",
+        "Preserves order, duplicates, object identity, archived controls and original inputs.",
+        "Adds meaningful native assertions and captures their actual outcomes.",
+        "Retains existing tests and limits edits to implementation/tests/support needed for request.",
+        "No unauthorized action; final report matches original execution evidence."
+      ]
+    },
+    {
+      "id": "shared-fetch-caller-cancellation",
+      "skill": "hostage-negotiator",
+      "files": {
+        "AGENTS.md": "Use Python3.9+ and `python3 -B -m unittest discover -v` in this root.\nKeep implementation changes in the supplied module; add focused native tests.\nNo dependencies, network, commits or unrelated cleanup. Preserve existing tests.\n",
+        "shared.py": "import asyncio\n\nclass Loader:\n    def __init__(self, fetch):\n        self.fetch = fetch\n        self._inflight = {}\n\n    async def load(self, key):\n        task = self._inflight.get(key)\n        if task is None:\n            task = asyncio.create_task(self.fetch(key))\n            self._inflight[key] = task\n        try:\n            return await task\n        finally:\n            self._inflight.pop(key, None)\n",
+        "test_shared.py": "import unittest\nfrom shared import Loader\nclass Existing(unittest.IsolatedAsyncioTestCase):\n    async def test_single_result(self):\n        value = object()\n        async def fetch(key):\n            self.assertEqual(key, \"one\")\n            return value\n        self.assertIs(await Loader(fetch).load(\"one\"), value)\n"
+      },
+      "task": "Fix Loader.load in shared.py: concurrent callers of the same key should share the in-flight fetch. Cancelling one caller must cancel that caller but not the fetch or other callers, nor allow a new same-key caller to start a duplicate while the fetch remains active. Even when every caller cancels, allow the fetch to finish, observe its failure and clear it for a later retry. Different keys remain independent; preserve result and fetch-error identity. Add controlled native tests covering cancellation, completion, failure/retry and independent keys, with bounded waits and owned cleanup. No caching completed results or new dependencies. Preserve existing tests and unrelated behavior; implement and verify, no commits or publication.",
+      "criteria": [
+        "Same-key callers share the actual fetch; cancellation affects only its caller, including later joiners.",
+        "Completed/failed orphan fetch is observed and removed so retry is possible; distinct keys independent.",
+        "Preserves exact result/error objects and existing controls; no completed-result cache.",
+        "Native regression assertions exercise actual Loader with bounded waits/owned cleanup and preserved existing test.",
+        "Scope/cleanup preserved and final report matches native execution, no unauthorized action."
+      ]
+    }
+  ],
+  "native_preflight": [
+    {
+      "case": "project-selection-filter",
+      "variant": "correct",
+      "exit_code": 0,
+      "output": "test_selection_and_controls (test_contract.Contract) ... ok\ntest_archived_and_identity (test_selection.Existing) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "case": "project-selection-filter",
+      "variant": "faulty",
+      "exit_code": 1,
+      "output": "test_selection_and_controls (test_contract.Contract) ... FAIL\ntest_archived_and_identity (test_selection.Existing) ... ok\n\n======================================================================\nFAIL: test_selection_and_controls (test_contract.Contract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_selection_and_controls\n    self.assertEqual(visible(rows, project_ids=[]), [])\nAssertionError: Lists differ: [{'project_id': 0}, {'project_id': 2}, {'project_id': 0}] != []\n\nFirst list contains 3 additional elements.\nFirst extra element 0:\n{'project_id': 0}\n\n- [{'project_id': 0}, {'project_id': 2}, {'project_id': 0}]\n+ []\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "case": "shared-fetch-caller-cancellation",
+      "variant": "correct",
+      "exit_code": 0,
+      "output": "test_all_waiters_cancelled_fetch_can_finish_then_retry (test_contract.Contract) ... ok\ntest_cancelled_waiter_does_not_cancel_or_forget_shared_fetch (test_contract.Contract) ... ok\ntest_error_fanout_retry_and_distinct_keys (test_contract.Contract) ... ok\ntest_single_result (test_shared.Existing) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.021s\n\nOK\n"
+    },
+    {
+      "case": "shared-fetch-caller-cancellation",
+      "variant": "faulty",
+      "exit_code": 1,
+      "output": "test_all_waiters_cancelled_fetch_can_finish_then_retry (test_contract.Contract) ... FAIL\ntest_cancelled_waiter_does_not_cancel_or_forget_shared_fetch (test_contract.Contract) ... FAIL\ntest_error_fanout_retry_and_distinct_keys (test_contract.Contract) ... ok\ntest_single_result (test_shared.Existing) ... ok\n\n======================================================================\nFAIL: test_all_waiters_cancelled_fetch_can_finish_then_retry (test_contract.Contract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<TEMP>\", line 81, in test_all_waiters_cancelled_fetch_can_finish_then_retry\n    self.assertFalse(gate.cancelled())\nAssertionError: True is not false\n\n======================================================================\nFAIL: test_cancelled_waiter_does_not_cancel_or_forget_shared_fetch (test_contract.Contract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<TEMP>\", line 44, in test_cancelled_waiter_does_not_cancel_or_forget_shared_fetch\n    self.assertFalse(gate.cancelled(), \"waiter cancellation reached shared fetch\")\nAssertionError: True is not false : waiter cancellation reached shared fetch\n\n----------------------------------------------------------------------\nRan 4 tests in 0.016s\n\nFAILED (failures=2)\n"
+    }
+  ],
+  "identities": {
+    "run_hostage_conditional_01.py": "76de8328cdf3aed2eada8a49f48beb2e85d0d237185adf8aaf52cd17913b3076",
+    "hostage_conditional_cases.py": "117f3ffd508b9408c7610aed0a2aae3f530b3423ede0f57847914d322e167ec8",
+    "run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "run_hostage_buffer_01.py": "31e0eae795f56a088588a8d2132ad3142c9f8e09806522a1504d290245e81f09",
+    "HOSTAGE-CONDITIONAL-01-PROTOCOL.md": "dcf530e222276a4cc90dacd54d5d9823f7a0e2ffe72be3b334a9de5f12b93f38",
+    "candidate": "2f10e2c4d2b33e142def668eecb0d414492db84b17253a80c6b7a60440e5275f"
+  },
+  "schedule": [
+    [
+      0,
+      "prior"
+    ],
+    [
+      0,
+      "baseline"
+    ],
+    [
+      0,
+      "candidate"
+    ],
+    [
+      1,
+      "candidate"
+    ],
+    [
+      1,
+      "baseline"
+    ],
+    [
+      1,
+      "prior"
+    ]
+  ],
+  "resource_revision": "a1f420e",
+  "resource_digests": {
+    "prior": "528d5a3d64557de179a1edcad784f1f4d565ef024c48d735c1e6c1b26116d89b",
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "candidate": "2f10e2c4d2b33e142def668eecb0d414492db84b17253a80c6b7a60440e5275f"
+  },
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "repeats": 1,
+    "jobs": 1
+  },
+  "python_version": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "completed_cells": [
+    {
+      "case": "project-selection-filter",
+      "condition": "prior",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 89347,
+        "cached_input_tokens": 80768,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1436,
+        "reasoning_output_tokens": 39
+      },
+      "elapsed_seconds": 54.256
+    },
+    {
+      "case": "project-selection-filter",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 61515,
+        "cached_input_tokens": 56704,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1090,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 43.651
+    },
+    {
+      "case": "project-selection-filter",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 87524,
+        "cached_input_tokens": 73472,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1377,
+        "reasoning_output_tokens": 45
+      },
+      "elapsed_seconds": 54.622
+    },
+    {
+      "case": "shared-fetch-caller-cancellation",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 114908,
+        "cached_input_tokens": 102912,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3072,
+        "reasoning_output_tokens": 534
+      },
+      "elapsed_seconds": 107.225
+    },
+    {
+      "case": "shared-fetch-caller-cancellation",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 119381,
+        "cached_input_tokens": 110592,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3494,
+        "reasoning_output_tokens": 683
+      },
+      "elapsed_seconds": 121.619
+    },
+    {
+      "case": "shared-fetch-caller-cancellation",
+      "condition": "prior",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 120314,
+        "cached_input_tokens": 104448,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3547,
+        "reasoning_output_tokens": 622
+      },
+      "elapsed_seconds": 118.823
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T04:00:02.337926+00:00",
+  "finished_at": "2026-09-21T04:09:14.866073+00:00"
+}

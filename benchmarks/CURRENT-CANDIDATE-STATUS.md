@@ -9,7 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Conditional comparison complete; correctness gap found — 2026-09-21
+## Conditional comparison reviewed; candidate rejected — 2026-09-21
+
+[Full six-attempt review and original evidence](HOSTAGE-CONDITIONAL-01-REVIEW.md),
+launch `1b26f9d`, resource `a1f420e`. Selection passes all arms; shared-fetch passes
+baseline but fails prior/candidate's existing no-completed-cache contract. Prior's
+explicit no-cache claim also fails the report criterion. All28 shell outputs match
+original capture exactly; all repairs/costs retained. Conditional reading works,
+but correctness and general efficiency gates are not met. No production promotion
+or featured-chart change. Frozen author preflight gap remains disclosed.
+
+한국어: 원본 6세션 검토·공개를 완료했고 후보는 채택하지 않았다. 동기식 과제는
+모두 통과했지만 비동기식은 무스킬 구현만 요구사항을 모두 만족했다. 조건부 읽기
+성공과 비용 일부 감소를 전체 성능 향상으로 포장하지 않는다.
+
+## Historical pending checkpoint — 2026-09-21
 
 [Six original attempts and post-run finding](HOSTAGE-CONDITIONAL-01-PENDING.md),
 launch `1b26f9d`, resource `a1f420e`. No timeout/limit; full evidence review pending.
