@@ -1,0 +1,56 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "cachetools-lru-four-faults",
+    "skill": "con-artist",
+    "arm": "baseline",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "da82c9deed7200c36cbb5c447b86bf64bb5d3144",
+    "skill_sha256": null,
+    "skill_resources_sha256": null,
+    "elapsed_seconds": 82.797,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 109499,
+      "cached_input_tokens": 88832,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2304,
+      "reasoning_output_tokens": 133
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Audit the two existing native tests tests.test_lru.LRUCacheTest.test_lru and tests.test_lru.LRUCacheTest.test_lru_getsizeof against four independent LRUCache regressions: (1) reading an existing key does not refresh recency, (2) overwriting an existing key does not refresh recency while new insertions still enter the order, (3) eviction removes the most-recent instead of least-recent key, (4) the constructor ignores the supplied getsizeof. Keep each regression isolated; do not change other cache classes or test bodies. For each of the eight fault/test combinations, establish correct-code success and the faulty copied test outcome, identify a detecting assertion/failure path or surviving gap, and distinguish setup errors from behavioral detection. Show the eight results clearly, explain any unprotected behavior and suggest a focused assertion for it. You may reuse matching correct-code observations within this audit if you identify that reuse; fresh external state is not required. Tool choice and execution grouping are yours. Follow AGENTS.md.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {},
+    "installed_resources_after": {},
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 778,
+      "mode": 420,
+      "sha256": "a7e75c82bad91e07c3d2c30b0d13ca141fffa2cc7bf6745e0cfedefa592b7851",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]

@@ -9,7 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Cachetools audit task prepared — 2026-09-21, parent `8ea8f77`
+## Cachetools model checkpoint — 2026-09-21, resource `b1875a0`
+
+[Three original attempts](CACHETOOLS-AUDIT-01.md) all meet5/5 frozen criteria.
+Current uses88,757 tokens/108.364s versus no-skill111,803/82.797s and
+prior89,523/101.780s:20.6% fewer tokens but30.9% more time than no skill.
+Neither skill session invokes the changed helper. Each receives the entry body
+initially and reads it again; both execute extra checks beyond required proposals.
+One authored source-excerpt task,n=1,fixed order/shared cache and unequal work do
+not establish cache-optimization benefit or broad efficiency. All costs, native
+outcomes and capture limitations retained. Featured charts and production unchanged.
+
+한국어: 세 조건 모두 정확했지만 수정 스킬은 토큰 감소와 시간 증가가 함께 나타났다.
+새 도우미는 실제로 사용되지 않았다. 단일 과제 결과이며 전체 성능 달성은 아니다.
+
+## Historical: cachetools task prepared — 2026-09-21, parent `8ea8f77`
 
 [Three-arm protocol](CACHETOOLS-AUDIT-01-PROTOCOL.md) uses six byte-identical selected
 upstream files from cachetools5.5.2, with MIT license and Git identities. Original
