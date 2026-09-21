@@ -20,6 +20,12 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
+Local change2026-09-21, parent`bf936a4`: [audit JSON formatting](AUDIT-OUTPUT-COMPACT-01.md)
+preserves every value with compact default/legacy `--pretty`. Three retained
+report objects shrink13.49–14.55% in bytes;109 Python3.11 audit tests pass.
+No new model measurement or total-cost claim. 한국어: 출력 표현만 개선했으며
+모델 성능 향상과 구분한다. 아래 ZIP 실측은 변경 전 리소스의 결과 그대로다.
+
 Reviewed2026-09-21: [ZIP audit01](ZIP-AUDIT-01.md), all6complete, all4/4.
 Candidate`ac108f5` versus prior`f7ecb45`: single-fault tokens−21.73% but
 time+19.60%; multiple-fault tokens+0.86%/time+3.97%. Versus baseline, candidate

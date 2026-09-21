@@ -9,7 +9,8 @@ already supports them. Use a batch when separate fault/test selections justify i
 Adapt complete selected files, reachable edits and the test binding to the project;
 do not extract a function when that loses its imports, closures or decorators.
 
-Run with the project interpreter and installed skill path; send JSON on stdin:
+Run with the project interpreter and installed skill path; send JSON on stdin.
+Output is lossless compact JSON; `--pretty` adds indentation for manual reading.
 
 ```sh
 /path/to/project/python /path/to/con-artist/scripts/audit.py --source . --spec - <<'JSON'

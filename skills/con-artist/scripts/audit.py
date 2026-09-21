@@ -578,6 +578,7 @@ def main():
     parser.add_argument('--source', type=Path, default=Path.cwd())
     parser.add_argument('--python', default=sys.executable, help='Existing project interpreter; no dependency installation')
     parser.add_argument('--timeout', type=float, default=30, help='Seconds per check, at most 300')
+    parser.add_argument('--pretty', action='store_true', help='Indent JSON for manual reading; default retains identical values in compact JSON')
     args = parser.parse_args()
     try:
         recipe = sys.stdin.read() if args.spec == Path('-') else args.spec.read_text()
@@ -586,7 +587,7 @@ def main():
         result = run(args.source, spec, args.python, args.timeout)
     except (ValueError, KeyError, OSError, RuntimeError) as error:
         parser.exit(2, 'Audit not established: ' + str(error) + '\n')
-    print(json.dumps(result, indent=2))
+    print(json.dumps(result, indent=2) if args.pretty else json.dumps(result, separators=(',', ':')))
     return 0 if result['status'] == 'observed' else 2
 
 
