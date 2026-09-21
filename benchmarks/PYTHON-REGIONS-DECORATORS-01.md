@@ -27,6 +27,8 @@ No source code is executed. Existing source-size and match limits remain intact.
 - Python3.9.6:18 discovered,16 pass,2 explicit syntax-version skips,0.114s.
   Skips are existing match/exception-group tests, not new decorator tests.
 - Build/distribution: all13 checks pass on Python3.11.16,3.029s.
+- Fresh `git archive 5956f47`, without Git or local-run artifacts: all18 region
+  tests pass using Python3.11.16,0.111s, no skips.
 - Catalog/document links, featured synchronization and whitespace checks pass.
 
 Following `skill-creator`, this is a narrow code repair backed by reproductions,
