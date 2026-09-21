@@ -116,6 +116,61 @@ class OwnedTaskTests(unittest.IsolatedAsyncioTestCase):
         finally:
             coroutine.close()
 
+    async def test_retry_close_does_not_interrupt_async_finally(self):
+        entered, cleaning, release, cleaned = (asyncio.Event() for _ in range(4))
+        async def application():
+            entered.set()
+            try:
+                await asyncio.Future()
+            finally:
+                cleaning.set()
+                await release.wait()
+                cleaned.set()
+        task = self.owner.start(application())
+        await entered.wait()
+        try:
+            with self.assertRaises(asyncio.TimeoutError):
+                await self.owner.close()
+            self.assertTrue(cleaning.is_set())
+            self.assertFalse(task.done())
+            # Retry must drain the same cancellation, not abort its cleanup and
+            # report success merely because a second cancel makes the task done.
+            with self.assertRaises(asyncio.TimeoutError):
+                await self.owner.close()
+            self.assertFalse(task.done())
+            self.assertFalse(cleaned.is_set())
+        finally:
+            release.set()
+            await asyncio.gather(task, return_exceptions=True)
+        await self.owner.close()
+        self.assertTrue(cleaned.is_set())
+        self.assertTrue(task.cancelled())
+
+    async def test_concurrent_close_waits_for_one_cancellation_cleanup(self):
+        entered, cleaning, release, cleaned = (asyncio.Event() for _ in range(4))
+        async def application():
+            entered.set()
+            try:
+                await asyncio.Future()
+            finally:
+                cleaning.set()
+                await release.wait()
+                cleaned.set()
+        task = self.owner.start(application())
+        await entered.wait()
+        first = asyncio.create_task(self.owner.close())
+        try:
+            await asyncio.wait_for(cleaning.wait(), 1)
+            with self.assertRaises(asyncio.TimeoutError):
+                await self.owner.close()
+            self.assertFalse(task.done())
+        finally:
+            release.set()
+            await asyncio.gather(first, task, return_exceptions=True)
+        await self.owner.close()
+        self.assertTrue(cleaned.is_set())
+        self.assertTrue(task.cancelled())
+
     async def test_invalid_deadlines_and_empty_cleanup(self):
         for timeout in (0, -1, 31, float('nan'), float('inf')):
             with self.subTest(timeout=timeout), self.assertRaises(ValueError):

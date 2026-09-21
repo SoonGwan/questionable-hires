@@ -38,7 +38,9 @@ Timeout or cancelling this wait leaves the task alive for assertions/cleanup.
 close cancels/drains only registered tasks, retrieves their exceptions, and
 rejects new starts. Assert expected outcomes before cleanup: close is not a
 test of application success. A cleanup timeout reports unfinished tasks; it
-does not claim they stopped. Retry close only to drain that same owner.
+does not claim they stopped. Retrying/concurrent close drains the same owner
+without sending another cancellation into an in-progress async cleanup. External
+cancellation or application cleanup failures remain the caller's responsibility.
 
 Otherwise tests own cancellation/drain even if entry/assertions fail; started's
 timeout does not clean application tasks. Bound application waits too. Async
@@ -82,10 +84,11 @@ class OwnedTasks:
 
     async def close(self):
         self._check_loop()
-        self._closed = True
-        for task in self._tasks:
-            if not task.done():
-                task.cancel()
+        if not self._closed:
+            self._closed = True
+            for task in self._tasks:
+                if not task.done():
+                    task.cancel()
         if not self._tasks:
             return
         done, pending = await asyncio.wait(self._tasks, timeout=self.timeout)

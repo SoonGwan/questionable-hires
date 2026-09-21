@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Hostage cleanup retry corrected — 2026-09-21, parent `d04d40e`
+
+[Native failing-before/passing-after checks](HOSTAGE-CLEANUP-RETRY-01.md): repeated
+or concurrent `OwnedTasks.close()` could cancel an already-running async finally
+block again, ending it before cleanup completed. Only the first close now sends
+cancellation; later calls retain bounded draining. Both new tests fail before;
+all11 ownership checks pass after on Python3.9/3.11, plus16 call and4 archive checks
+on Python3.9. Asset instructions and both README rows updated. External cancellation
+and indefinite cleanup remain limits; no model-cost or all-eight improvement claim.
+
+한국어: 종료 재시도·동시 호출이 진행 중인 비동기 정리를 다시 취소하는 실제
+결함을 수정했다. 수정 전 실패·수정 후 통과를 확인했으며 성능 절감 수치는 아니다.
+
 ## Initial/body re-exposure audit — 2026-09-21, parent `0f8d2e2`
 
 [Reproducible19-session analysis](SKILL-REEXPOSURE-02.md): screen03's8 skill arms
