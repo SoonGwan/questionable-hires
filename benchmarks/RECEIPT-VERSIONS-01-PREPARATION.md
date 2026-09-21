@@ -47,6 +47,21 @@ Native process counts are descriptive, not a substitute for model costs.
   native check completes without truncation/timeout. Complete original tree
   bytes/modes remain identical, and comparison copies are removed.
 
-These are author checks of the fixture/helper, not model observations. Further
-runner validation and frozen capture are required before the six-cell launch.
-Existing featured graphs and claims remain unchanged.
+These are author checks of the fixture/helper, not model observations.
+
+## Exclusive runner validation
+
+`run_receipt_versions_01.py` reuses the existing exclusive scheduler, with two
+byte/mode-exact pinned Receipt snapshots and an empty baseline resource tree.
+It freezes tasks, resource digests, settings, interpreter/dependencies and CLI
+version. Preparation captures the native fixture test output and rejects a
+working helper that differs from the pinned current helper. Execution rechecks
+frozen inputs, retains completed cells, stops at a detected limit and rejects
+restarts even when the first interrupted attempt produced no result.
+
+Nine runner tests pass in checkout. Combined fixture/runner archive checks:
+10 pass,1 historical-resource check skipped because the archive has no history.
+Synthetic checks exercise all six scheduled calls, both resource mutations,
+runtime/settings changes, mid-schedule changes, limits and stale restarts; they
+do not call the model. Freeze the final manifest before execution. Existing
+featured graphs and claims remain unchanged.
