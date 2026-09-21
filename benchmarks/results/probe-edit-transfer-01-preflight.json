@@ -1,0 +1,216 @@
+{
+  "kind": "author native preflight, not model performance",
+  "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "fixture_sha256": "4bdc1d92e1e77a3d5528d7f9f2a550bd57d96baa3afad3d19cef0fe6a07e62e3",
+  "helper_sha256": "ddd7a5fc0afc2128b4419107928331dac4c5b45ae1707cfc0f9be2c87df4ce3a",
+  "records": [
+    {
+      "variant": "full",
+      "form": "replacement",
+      "test_file_bytes": 30731,
+      "compact_recipe_bytes": 35185,
+      "fresh_import": {
+        "exit_code": 0,
+        "stdout": "24.2\n",
+        "stderr": ""
+      },
+      "result": {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-sca9nm9v/correct-tests\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"186d703cd31c2f47cc24eebcbc5e77c0a31dc277de84371a23eafd3694df8a50\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"417f0db966e3a4f79ff0684ea83fb390bbc53f01a6b23b70aaa4eb20d74b6af7\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.08s\n",
+            "output_truncated": false
+          },
+          "correct_probe": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-sca9nm9v/correct-probe\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"186d703cd31c2f47cc24eebcbc5e77c0a31dc277de84371a23eafd3694df8a50\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"7f2e65fa5d02909b6e6cbc634a8d11beb8e911977f8ae670c5dcdc4a316c084a\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.07s\n",
+            "output_truncated": false
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-sca9nm9v/mutant-tests\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"79dd889eb6a051519e990585f224fcbc18e9dcb9ff15854879887b9275b599e1\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"417f0db966e3a4f79ff0684ea83fb390bbc53f01a6b23b70aaa4eb20d74b6af7\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.08s\n",
+            "output_truncated": false
+          },
+          "mutant_probe": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-sca9nm9v/mutant-probe\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"79dd889eb6a051519e990585f224fcbc18e9dcb9ff15854879887b9275b599e1\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"7f2e65fa5d02909b6e6cbc634a8d11beb8e911977f8ae670c5dcdc4a316c084a\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\nFFFFFFFFF                                                                [100%]\n=================================== FAILURES ===================================\n__________________ TestSpecifier.test_specifiers_valid[~=2.0] __________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '~=2.0'\nE     \nE     - ~=2.0\n_________________ TestSpecifier.test_specifiers_valid[==2.1.*] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '==2.1.*'\nE     \nE     - ==2.1.*\n________________ TestSpecifier.test_specifiers_valid[==2.1.0.3] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '==2.1.0.3'\nE     \nE     - ==2.1.0.3\n_________________ TestSpecifier.test_specifiers_valid[!=2.2.*] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '!=2.2.*'\nE     \nE     - !=2.2.*\n________________ TestSpecifier.test_specifiers_valid[!=2.2.0.5] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '!=2.2.0.5'\nE     \nE     - !=2.2.0.5\n___________________ TestSpecifier.test_specifiers_valid[<=5] ___________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '<=5'\nE     \nE     - <=5\n_________________ TestSpecifier.test_specifiers_valid[>=7.9a1] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '>=7.9a1'\nE     \nE     - >=7.9a1\n________________ TestSpecifier.test_specifiers_valid[<1.0.dev1] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '<1.0.dev1'\nE     \nE     - <1.0.dev1\n_______________ TestSpecifier.test_specifiers_valid[>2.0.post1] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '>2.0.post1'\nE     \nE     - >2.0.post1\n=========================== short test summary info ============================\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[~=2.0]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[==2.1.*]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[==2.1.0.3]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[!=2.2.*]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[!=2.2.0.5]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[<=5] - ...\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[>=7.9a1]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[<1.0.dev1]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[>2.0.post1]\n9 failed in 0.13s\n",
+            "output_truncated": false
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 24,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true,
+          "project_guard": {
+            "unchanged": true,
+            "entries": 29,
+            "file_bytes": 289376,
+            "scope": "source root including Git metadata; symlink targets not read"
+          }
+        }
+      }
+    },
+    {
+      "variant": "full",
+      "form": "edit",
+      "test_file_bytes": 30731,
+      "compact_recipe_bytes": 2100,
+      "fresh_import": {
+        "exit_code": 0,
+        "stdout": "24.2\n",
+        "stderr": ""
+      },
+      "result": {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-9g8o8uqv/correct-tests\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"186d703cd31c2f47cc24eebcbc5e77c0a31dc277de84371a23eafd3694df8a50\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"417f0db966e3a4f79ff0684ea83fb390bbc53f01a6b23b70aaa4eb20d74b6af7\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.08s\n",
+            "output_truncated": false
+          },
+          "correct_probe": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-9g8o8uqv/correct-probe\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"186d703cd31c2f47cc24eebcbc5e77c0a31dc277de84371a23eafd3694df8a50\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"7f2e65fa5d02909b6e6cbc634a8d11beb8e911977f8ae670c5dcdc4a316c084a\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.07s\n",
+            "output_truncated": false
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-9g8o8uqv/mutant-tests\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"79dd889eb6a051519e990585f224fcbc18e9dcb9ff15854879887b9275b599e1\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"417f0db966e3a4f79ff0684ea83fb390bbc53f01a6b23b70aaa4eb20d74b6af7\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.07s\n",
+            "output_truncated": false
+          },
+          "mutant_probe": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-9g8o8uqv/mutant-probe\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"79dd889eb6a051519e990585f224fcbc18e9dcb9ff15854879887b9275b599e1\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"7f2e65fa5d02909b6e6cbc634a8d11beb8e911977f8ae670c5dcdc4a316c084a\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\nFFFFFFFFF                                                                [100%]\n=================================== FAILURES ===================================\n__________________ TestSpecifier.test_specifiers_valid[~=2.0] __________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '~=2.0'\nE     \nE     - ~=2.0\n_________________ TestSpecifier.test_specifiers_valid[==2.1.*] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '==2.1.*'\nE     \nE     - ==2.1.*\n________________ TestSpecifier.test_specifiers_valid[==2.1.0.3] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '==2.1.0.3'\nE     \nE     - ==2.1.0.3\n_________________ TestSpecifier.test_specifiers_valid[!=2.2.*] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '!=2.2.*'\nE     \nE     - !=2.2.*\n________________ TestSpecifier.test_specifiers_valid[!=2.2.0.5] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '!=2.2.0.5'\nE     \nE     - !=2.2.0.5\n___________________ TestSpecifier.test_specifiers_valid[<=5] ___________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '<=5'\nE     \nE     - <=5\n_________________ TestSpecifier.test_specifiers_valid[>=7.9a1] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '>=7.9a1'\nE     \nE     - >=7.9a1\n________________ TestSpecifier.test_specifiers_valid[<1.0.dev1] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '<1.0.dev1'\nE     \nE     - <1.0.dev1\n_______________ TestSpecifier.test_specifiers_valid[>2.0.post1] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '>2.0.post1'\nE     \nE     - >2.0.post1\n=========================== short test summary info ============================\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[~=2.0]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[==2.1.*]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[==2.1.0.3]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[!=2.2.*]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[!=2.2.0.5]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[<=5] - ...\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[>=7.9a1]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[<1.0.dev1]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[>2.0.post1]\n9 failed in 0.13s\n",
+            "output_truncated": false
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 24,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true,
+          "project_guard": {
+            "unchanged": true,
+            "entries": 29,
+            "file_bytes": 289376,
+            "scope": "source root including Git metadata; symlink targets not read"
+          }
+        }
+      }
+    },
+    {
+      "variant": "prefix",
+      "form": "replacement",
+      "test_file_bytes": 816,
+      "compact_recipe_bytes": 2820,
+      "fresh_import": {
+        "exit_code": 0,
+        "stdout": "24.2\n",
+        "stderr": ""
+      },
+      "result": {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-3l3bsw8u/correct-tests\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"186d703cd31c2f47cc24eebcbc5e77c0a31dc277de84371a23eafd3694df8a50\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"2f6a699f491bb2decdde5db8a570925153f0cd1681b094c536325c42729a3d2a\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.03s\n",
+            "output_truncated": false
+          },
+          "correct_probe": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-3l3bsw8u/correct-probe\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"186d703cd31c2f47cc24eebcbc5e77c0a31dc277de84371a23eafd3694df8a50\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"9e49e72f1a5229cfe5be222d6db036a1d8ddd8e4529a49d072c1f6f0cd75534b\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.03s\n",
+            "output_truncated": false
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-3l3bsw8u/mutant-tests\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"79dd889eb6a051519e990585f224fcbc18e9dcb9ff15854879887b9275b599e1\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"2f6a699f491bb2decdde5db8a570925153f0cd1681b094c536325c42729a3d2a\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.03s\n",
+            "output_truncated": false
+          },
+          "mutant_probe": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-3l3bsw8u/mutant-probe\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"79dd889eb6a051519e990585f224fcbc18e9dcb9ff15854879887b9275b599e1\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"9e49e72f1a5229cfe5be222d6db036a1d8ddd8e4529a49d072c1f6f0cd75534b\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\nFFFFFFFFF                                                                [100%]\n=================================== FAILURES ===================================\n__________________ TestSpecifier.test_specifiers_valid[~=2.0] __________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '~=2.0'\nE     \nE     - ~=2.0\n_________________ TestSpecifier.test_specifiers_valid[==2.1.*] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '==2.1.*'\nE     \nE     - ==2.1.*\n________________ TestSpecifier.test_specifiers_valid[==2.1.0.3] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '==2.1.0.3'\nE     \nE     - ==2.1.0.3\n_________________ TestSpecifier.test_specifiers_valid[!=2.2.*] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '!=2.2.*'\nE     \nE     - !=2.2.*\n________________ TestSpecifier.test_specifiers_valid[!=2.2.0.5] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '!=2.2.0.5'\nE     \nE     - !=2.2.0.5\n___________________ TestSpecifier.test_specifiers_valid[<=5] ___________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '<=5'\nE     \nE     - <=5\n_________________ TestSpecifier.test_specifiers_valid[>=7.9a1] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '>=7.9a1'\nE     \nE     - >=7.9a1\n________________ TestSpecifier.test_specifiers_valid[<1.0.dev1] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '<1.0.dev1'\nE     \nE     - <1.0.dev1\n_______________ TestSpecifier.test_specifiers_valid[>2.0.post1] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '>2.0.post1'\nE     \nE     - >2.0.post1\n=========================== short test summary info ============================\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[~=2.0]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[==2.1.*]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[==2.1.0.3]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[!=2.2.*]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[!=2.2.0.5]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[<=5] - ...\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[>=7.9a1]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[<1.0.dev1]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[>2.0.post1]\n9 failed in 0.05s\n",
+            "output_truncated": false
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 24,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true,
+          "project_guard": {
+            "unchanged": true,
+            "entries": 29,
+            "file_bytes": 259461,
+            "scope": "source root including Git metadata; symlink targets not read"
+          }
+        }
+      }
+    },
+    {
+      "variant": "prefix",
+      "form": "edit",
+      "test_file_bytes": 816,
+      "compact_recipe_bytes": 2100,
+      "fresh_import": {
+        "exit_code": 0,
+        "stdout": "24.2\n",
+        "stderr": ""
+      },
+      "result": {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-8vytjavu/correct-tests\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"186d703cd31c2f47cc24eebcbc5e77c0a31dc277de84371a23eafd3694df8a50\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"2f6a699f491bb2decdde5db8a570925153f0cd1681b094c536325c42729a3d2a\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.03s\n",
+            "output_truncated": false
+          },
+          "correct_probe": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-8vytjavu/correct-probe\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"186d703cd31c2f47cc24eebcbc5e77c0a31dc277de84371a23eafd3694df8a50\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"9e49e72f1a5229cfe5be222d6db036a1d8ddd8e4529a49d072c1f6f0cd75534b\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.04s\n",
+            "output_truncated": false
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-8vytjavu/mutant-tests\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"79dd889eb6a051519e990585f224fcbc18e9dcb9ff15854879887b9275b599e1\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"2f6a699f491bb2decdde5db8a570925153f0cd1681b094c536325c42729a3d2a\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\n.........                                                                [100%]\n9 passed in 0.03s\n",
+            "output_truncated": false
+          },
+          "mutant_probe": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/packaging-specifier-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-8vytjavu/mutant-probe\"}\nVerified copied import: packaging {\"path\":\"src/packaging/__init__.py\",\"sha256\":\"764e136bfbe67552716070dc7f286f40dc3c5773e0481a2628d5ea83e0f62436\"}\nVerified copied import: packaging.specifiers {\"path\":\"src/packaging/specifiers.py\",\"sha256\":\"79dd889eb6a051519e990585f224fcbc18e9dcb9ff15854879887b9275b599e1\"}\nVerified copied import: tests.test_specifiers {\"path\":\"tests/test_specifiers.py\",\"sha256\":\"9e49e72f1a5229cfe5be222d6db036a1d8ddd8e4529a49d072c1f6f0cd75534b\"}\nVerified native test Specifier binding\nPrecheck completed in check process.\nFFFFFFFFF                                                                [100%]\n=================================== FAILURES ===================================\n__________________ TestSpecifier.test_specifiers_valid[~=2.0] __________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '~=2.0'\nE     \nE     - ~=2.0\n_________________ TestSpecifier.test_specifiers_valid[==2.1.*] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '==2.1.*'\nE     \nE     - ==2.1.*\n________________ TestSpecifier.test_specifiers_valid[==2.1.0.3] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '==2.1.0.3'\nE     \nE     - ==2.1.0.3\n_________________ TestSpecifier.test_specifiers_valid[!=2.2.*] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '!=2.2.*'\nE     \nE     - !=2.2.*\n________________ TestSpecifier.test_specifiers_valid[!=2.2.0.5] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '!=2.2.0.5'\nE     \nE     - !=2.2.0.5\n___________________ TestSpecifier.test_specifiers_valid[<=5] ___________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '<=5'\nE     \nE     - <=5\n_________________ TestSpecifier.test_specifiers_valid[>=7.9a1] _________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '>=7.9a1'\nE     \nE     - >=7.9a1\n________________ TestSpecifier.test_specifiers_valid[<1.0.dev1] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '<1.0.dev1'\nE     \nE     - <1.0.dev1\n_______________ TestSpecifier.test_specifiers_valid[>2.0.post1] ________________\ntests/test_specifiers.py:40: in test_specifiers_valid\n    assert str(Specifier(specifier)) == specifier\nE   AssertionError: assert '' == '>2.0.post1'\nE     \nE     - >2.0.post1\n=========================== short test summary info ============================\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[~=2.0]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[==2.1.*]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[==2.1.0.3]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[!=2.2.*]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[!=2.2.0.5]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[<=5] - ...\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[>=7.9a1]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[<1.0.dev1]\nFAILED tests/test_specifiers.py::TestSpecifier::test_specifiers_valid[>2.0.post1]\n9 failed in 0.05s\n",
+            "output_truncated": false
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 24,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true,
+          "project_guard": {
+            "unchanged": true,
+            "entries": 29,
+            "file_bytes": 259461,
+            "scope": "source root including Git metadata; symlink targets not read"
+          }
+        }
+      }
+    }
+  ]
+}
