@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Landlord boundary candidate prepared — 2026-09-21, prior `a062950`
+
+[Frozen protocol](LANDLORD-BOUNDARIES-01-PROTOCOL.md) compares an isolated compact
+entrypoint candidate with prior and no-skill on two real-source design proposals.
+The prior compression experiment was adverse; shorter instructions do not imply
+cheaper work. Current production resources remain unchanged. Source compilation
+and four scheduling/freeze/limit tests pass on Python3.9/3.11; no behavioral or
+efficiency result yet. Six original sessions are scheduled, no automatic promotion.
+
+한국어: 실제 코드의 배포 경계 두 과제로 지침 후보를 비교할 조건을 고정했다.
+이전 압축 실험의 불리한 결과도 명시했고 배포 스킬은 바꾸지 않았다. 준비와
+러너 검사 통과는 모델 성능 결과가 아니다.
+
 ## Local release regression — 2026-09-21, resources `40f381c`
 
 Full checkout:928 tests /160.286s, Python3.11.16, no failures/skips. No model
