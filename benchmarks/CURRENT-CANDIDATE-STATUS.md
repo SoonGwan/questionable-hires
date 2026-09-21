@@ -9,7 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Hostage conditional comparison prepared — 2026-09-21, resource `a1f420e`
+## Conditional comparison complete; correctness gap found — 2026-09-21
+
+[Six original attempts and post-run finding](HOSTAGE-CONDITIONAL-01-PENDING.md),
+launch `1b26f9d`, resource `a1f420e`. No timeout/limit; full evidence review pending.
+Candidate's conditional reading works, but a supplementary native completed-fetch
+window violates the existing no-result-cache contract in both skill deliveries;
+baseline passes. Author preflight reference has the same gap, explicitly retained.
+Probe regression accepts the completed-task check and rejects the frozen reference.
+This is author evidence, not a repaired model transcript. No production promotion.
+
+한국어: 6세션은 끝났지만, 두 스킬 구현과 작성자 대조 코드에서 완료 직후 재진입
+경계를 놓친 것을 발견했다. 무스킬 구현은 통과했다. 불리한 결과와 작성자 검증의
+한계를 모두 보존하며 원본 수정·재측정으로 덮지 않는다.
+
+## Historical preparation — Hostage conditional, 2026-09-21, resource `a1f420e`
 
 [Frozen two-task protocol](HOSTAGE-CONDITIONAL-01-PROTOCOL.md) covers a synchronous
 selection change and shared-fetch caller cancellation. Correct author controls
