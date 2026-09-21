@@ -19,6 +19,13 @@ are rejected before opening or running Git. The read stops at
 collection. This bounds that read, not total memory or Git output, and does not
 provide a snapshot of concurrently edited files.
 
+Current-line selection scans LF-delimited chunks and allocates row lists only
+for selected chunks and the final chunk, rather than splitting the entire file.
+The full bounded source is still read and decoded first, so invalid UTF-8 outside
+the selected lines is still rejected. This reduces intermediate allocation on
+many-line files, not the source-read limit or Git subprocess memory. A single
+long line can exceed the nominal 64K-character chunk size.
+
 Source and Git output must decode as UTF-8. Embedded Unicode separators and CR
 characters remain source content, including CR in CRLF files. Current text,
 blame rows and numbered excerpts all count LF-delimited lines, not language-parser

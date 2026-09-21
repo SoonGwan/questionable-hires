@@ -79,6 +79,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Checkpoint2026-09-21, parent`994d056`: [current-source line allocation](HISTORY-CURRENT-LINES-01.md)
+avoids whole-file row-list allocation in Necromancer. Four local input comparisons
+retain identical selected text; many-row peak decreases while long-row/small
+timings regress slightly. Not a model token/time gain; frozen charts unchanged.
+한국어: 줄 선택의 중간 할당을 줄였고 불리한 입력도 기록했다. 전체 성능과 구분한다.
+
 Checkpoint2026-09-21, source`33498a0`: [complete offline compatibility suite](RELEASE-VALIDATION-33498A0.md).
 macOS checkout1,079pass; macOS/Linux source archives each1,056pass/23skip.
 Linux verbose log and container identity retained; historical comparisons are

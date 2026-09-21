@@ -40,6 +40,34 @@ def iter_git_lines(text):
         start = end
 
 
+def selected_current_lines(text, numbers):
+    """Select sorted, distinct LF rows without allocating a whole-file row list."""
+    rows = []
+    start, first, position = 0, 1, 0
+    while start < len(text):
+        end = text.find('\n', start + 65536)
+        chunk = None
+        if end < 0:
+            end = len(text)
+            chunk = git_lines(text[start:end])
+            count = len(chunk)
+        else:
+            end += 1
+            count = text.count('\n', start, end)
+        if numbers[position] < first + count:
+            if chunk is None:
+                chunk = git_lines(text[start:end])
+            while position < len(numbers) and numbers[position] < first + count:
+                number = numbers[position]
+                rows.append(dict(line=number, text=chunk[number - first]))
+                position += 1
+            if position == len(numbers):
+                return rows
+        first += count
+        start = end
+    raise ValueError('Line range exceeds current file')
+
+
 def parse_blame(output):
     rows, current = [], None
     for line in git_lines(output):
@@ -229,11 +257,8 @@ def trace_ranges(repo, filename, ranges, max_commits=3):
         current = stream.read(2_000_001)
     if len(current) > 2_000_000:
         raise ValueError('Selected file exceeds 2 MB while reading; use focused native tools')
-    lines = git_lines(current.decode('utf-8'))
-    if selected_lines[-1] > len(lines):
-        raise ValueError('Line range exceeds current file')
-    evidence = dict(path=path.as_posix(), current_lines=[dict(line=i, text=lines[i - 1])
-                    for i in selected_lines], commits=[])
+    selected_text = selected_current_lines(current.decode('utf-8'), selected_lines)
+    evidence = dict(path=path.as_posix(), current_lines=selected_text, commits=[])
     if len(merged) > 1:
         evidence['ranges'] = merged
     top = git(repo, 'rev-parse', '--show-toplevel', '--is-shallow-repository')
