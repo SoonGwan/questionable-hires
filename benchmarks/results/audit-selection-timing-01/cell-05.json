@@ -1,0 +1,154 @@
+{
+  "case": "alternating-eight",
+  "repeat": 0,
+  "arm": "after",
+  "elapsed_seconds": 0.460364792,
+  "observation": {
+    "kind": "author native execution-count probe, not model evidence",
+    "helper_sha256": "627f9e804f5a04a670dba15543a9968d1a9aa570b000a327d241688a5c6cabca",
+    "python": "3.9.6",
+    "source": "def save(store, value):\n    store.append(value)\n    return True\n",
+    "tests": "import unittest\nfrom service import save\nclass Tests(unittest.TestCase):\n    def test_ack(self):\n        self.assertTrue(save([], 'value'))\n    def test_stored(self):\n        values = []; save(values, 'value'); self.assertEqual(values, ['value'])\n",
+    "cases": {
+      "alternating-eight": {
+        "selections": [
+          "ack",
+          "stored",
+          "ack",
+          "stored",
+          "ack",
+          "stored",
+          "ack",
+          "stored"
+        ],
+        "executions": [
+          {
+            "phase": "correct-tests",
+            "selection": [
+              "-v",
+              "test_service.Tests.test_ack"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<PYTHON>\",\"cwd\":\"/private<PROJECT>/.con-artist-7nu7wngf/correct-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"19b5a829f6360c367ab527a7313f51b5b81665d02a2ce33273d88d61efe7dc67\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"dea326e58d0e3134f5543d4f8c8bbe17ab69d40b450edb74b355883a74db8369\"}\ntest_ack (test_service.Tests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false
+          },
+          {
+            "phase": "mutant-tests",
+            "selection": [
+              "-v",
+              "test_service.Tests.test_ack"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<PYTHON>\",\"cwd\":\"/private<PROJECT>/.con-artist-7nu7wngf/mutant-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"c090e5c40ebce296bfbba659d143c65ed13e0369239c53b3d80573d7ce295075\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"dea326e58d0e3134f5543d4f8c8bbe17ab69d40b450edb74b355883a74db8369\"}\ntest_ack (test_service.Tests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false
+          },
+          {
+            "phase": "correct-tests",
+            "selection": [
+              "-v",
+              "test_service.Tests.test_stored"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<PYTHON>\",\"cwd\":\"/private<PROJECT>/.con-artist-0snkr10l/correct-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"19b5a829f6360c367ab527a7313f51b5b81665d02a2ce33273d88d61efe7dc67\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"dea326e58d0e3134f5543d4f8c8bbe17ab69d40b450edb74b355883a74db8369\"}\ntest_stored (test_service.Tests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false
+          },
+          {
+            "phase": "mutant-tests",
+            "selection": [
+              "-v",
+              "test_service.Tests.test_stored"
+            ],
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<PYTHON>\",\"cwd\":\"/private<PROJECT>/.con-artist-0snkr10l/mutant-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"c090e5c40ebce296bfbba659d143c65ed13e0369239c53b3d80573d7ce295075\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"dea326e58d0e3134f5543d4f8c8bbe17ab69d40b450edb74b355883a74db8369\"}\ntest_stored (test_service.Tests) ... FAIL\n\n======================================================================\nFAIL: test_stored (test_service.Tests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private<PROJECT>/.con-artist-0snkr10l/mutant-tests/test_service.py\", line 7, in test_stored\n    values = []; save(values, 'value'); self.assertEqual(values, ['value'])\nAssertionError: Lists differ: [] != ['value']\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\n'value'\n\n- []\n+ ['value']\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+            "output_truncated": false
+          },
+          {
+            "phase": "mutant-tests",
+            "selection": [
+              "-v",
+              "test_service.Tests.test_ack"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<PYTHON>\",\"cwd\":\"/private<PROJECT>/.con-artist-ws8_fkh8/mutant-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"c090e5c40ebce296bfbba659d143c65ed13e0369239c53b3d80573d7ce295075\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"dea326e58d0e3134f5543d4f8c8bbe17ab69d40b450edb74b355883a74db8369\"}\ntest_ack (test_service.Tests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false
+          },
+          {
+            "phase": "mutant-tests",
+            "selection": [
+              "-v",
+              "test_service.Tests.test_stored"
+            ],
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<PYTHON>\",\"cwd\":\"/private<PROJECT>/.con-artist-s9he9zgz/mutant-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"c090e5c40ebce296bfbba659d143c65ed13e0369239c53b3d80573d7ce295075\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"dea326e58d0e3134f5543d4f8c8bbe17ab69d40b450edb74b355883a74db8369\"}\ntest_stored (test_service.Tests) ... FAIL\n\n======================================================================\nFAIL: test_stored (test_service.Tests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private<PROJECT>/.con-artist-s9he9zgz/mutant-tests/test_service.py\", line 7, in test_stored\n    values = []; save(values, 'value'); self.assertEqual(values, ['value'])\nAssertionError: Lists differ: [] != ['value']\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\n'value'\n\n- []\n+ ['value']\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+            "output_truncated": false
+          },
+          {
+            "phase": "mutant-tests",
+            "selection": [
+              "-v",
+              "test_service.Tests.test_ack"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<PYTHON>\",\"cwd\":\"/private<PROJECT>/.con-artist-ps2i8f9b/mutant-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"c090e5c40ebce296bfbba659d143c65ed13e0369239c53b3d80573d7ce295075\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"dea326e58d0e3134f5543d4f8c8bbe17ab69d40b450edb74b355883a74db8369\"}\ntest_ack (test_service.Tests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false
+          },
+          {
+            "phase": "mutant-tests",
+            "selection": [
+              "-v",
+              "test_service.Tests.test_stored"
+            ],
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<PYTHON>\",\"cwd\":\"/private<PROJECT>/.con-artist-aggg3sql/mutant-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"c090e5c40ebce296bfbba659d143c65ed13e0369239c53b3d80573d7ce295075\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"dea326e58d0e3134f5543d4f8c8bbe17ab69d40b450edb74b355883a74db8369\"}\ntest_stored (test_service.Tests) ... FAIL\n\n======================================================================\nFAIL: test_stored (test_service.Tests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private<PROJECT>/.con-artist-aggg3sql/mutant-tests/test_service.py\", line 7, in test_stored\n    values = []; save(values, 'value'); self.assertEqual(values, ['value'])\nAssertionError: Lists differ: [] != ['value']\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\n'value'\n\n- []\n+ ['value']\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+            "output_truncated": false
+          },
+          {
+            "phase": "mutant-tests",
+            "selection": [
+              "-v",
+              "test_service.Tests.test_ack"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<PYTHON>\",\"cwd\":\"/private<PROJECT>/.con-artist-kbkt_key/mutant-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"c090e5c40ebce296bfbba659d143c65ed13e0369239c53b3d80573d7ce295075\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"dea326e58d0e3134f5543d4f8c8bbe17ab69d40b450edb74b355883a74db8369\"}\ntest_ack (test_service.Tests) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false
+          },
+          {
+            "phase": "mutant-tests",
+            "selection": [
+              "-v",
+              "test_service.Tests.test_stored"
+            ],
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<PYTHON>\",\"cwd\":\"/private<PROJECT>/.con-artist-dx_pnina/mutant-tests\"}\nVerified copied import: service {\"path\":\"service.py\",\"sha256\":\"c090e5c40ebce296bfbba659d143c65ed13e0369239c53b3d80573d7ce295075\"}\nVerified copied import: test_service {\"path\":\"test_service.py\",\"sha256\":\"dea326e58d0e3134f5543d4f8c8bbe17ab69d40b450edb74b355883a74db8369\"}\ntest_stored (test_service.Tests) ... FAIL\n\n======================================================================\nFAIL: test_stored (test_service.Tests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private<PROJECT>/.con-artist-dx_pnina/mutant-tests/test_service.py\", line 7, in test_stored\n    values = []; save(values, 'value'); self.assertEqual(values, ['value'])\nAssertionError: Lists differ: [] != ['value']\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\n'value'\n\n- []\n+ ['value']\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+            "output_truncated": false
+          }
+        ],
+        "correct_executions": 2,
+        "mutant_executions": 8,
+        "reused": [
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "originals_preserved": true,
+        "owned_scratch_removed": true
+      }
+    },
+    "limitations": "Authored deterministic tests, no external state; repeated selections deliberately expose cache topology. Execution counts only; no elapsed-time, token or whole-task gain is measured. Each mutant remains necessary. Additional reuse would need current identity validation, direct observation references and bounded retained memory."
+  }
+}

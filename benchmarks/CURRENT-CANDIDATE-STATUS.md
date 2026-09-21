@@ -9,6 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Native batch timing screen — 2026-09-21, resource `b1875a0`
+
+[All18 native cells](AUDIT-SELECTION-TIMING-01.md), three authored cases×two
+frozen helpers×three repeats, fixed alternating order. Eight alternating selections
+average0.7080→0.4525 seconds (36.1% lower, approximately0.256s saved); A-B-A is12.0%
+lower. Adjacent control keeps5 executions and differs only2.0% in measured time.
+All native mutant results preserved, no exclusions. These small helper timings
+are not model tokens, total task latency, significance or all-eight improvement.
+No production change or representative-graph promotion from this screen.
+
+한국어: 도우미 교차 배치 예제에서 평균0.256초 절감을 실측했다. 작은 예제의
+실행 시간 결과이며 모델 전체 성능 개선율로 확대하지 않는다.
+
 ## Non-adjacent audit reuse implemented — 2026-09-21, parent `51a4f5a`
 
 [All before/after native records](AUDIT-SELECTION-REUSE-02.md): unchanged adjacent
