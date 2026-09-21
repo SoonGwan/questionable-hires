@@ -69,10 +69,11 @@ These changes are implemented; their model-cost effect is not established:
 
 ## Avoid repeating rejected approaches
 
-Prepared [natural routing-boundary screen02](ROUTING-BOUNDARY-02-PROTOCOL.md):
+Executed [natural routing-boundary screen02](ROUTING-BOUNDARY-02-PROTOCOL.md):
 three ordinary requests, unchanged bundle`ba477ae`, auto-only. Native author
-preflight passes and the deliberate control fails as expected. Model outcomes
-are not yet reviewed; no efficiency or selection result is claimed.
+preflight passes and the deliberate control fails as expected. All three sessions
+completed at launch`504d49e`, with no limit stop or retry. Original-session exposure
+and behavioral review remain pending; no efficiency or selection result is claimed.
 
 Before another edit, inspect the mechanism and prior outcomes:
 

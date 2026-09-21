@@ -58,3 +58,15 @@ Only a concrete observed misrouting would motivate a narrow subsequent fix.
 한국어: 명시적인 “리뷰 금지” 없이 기존 테스트 실행·로그 요약·코드 설명을 요청하는
 3개 개발용 사례다. 불필요한 스킬 활성화와 범위 확장을 점검하며, 성능 향상 비교나
 실사용 일반화 검증으로 주장하지 않는다. 현재 번들을 고정하고 결과 전에 기준을 정한다.
+
+## Execution checkpoint (not reviewed outcomes)
+
+Launched at`504d49e` using the frozen archive under ignored
+`local-runs/routing-boundary-02-resources/skills`. Existing runner SHA256:
+`b743a84a720f31a412ca13b5b3a48e61566a79a148bc1f3e8dfe73bc04fed079`.
+The retained run at`local-runs/routing-boundary-02` completed all three cells,
+in log-summary / compatibility-explanation / native-test order, between
+2026-09-21T13:23:58Z and13:24:40Z. No retries or account-limit stop.
+Completion is not correctness, routing success or exposure verification; inspect
+original stored sessions before publishing those conclusions. Raw local records
+require privacy review before export. Frozen fixtures/criteria above are unchanged.
