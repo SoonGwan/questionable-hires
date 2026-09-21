@@ -1,5 +1,11 @@
 # urllib3 history preparation — 2026-09-21
 
+**Post-run qualification:** [The subsequent model comparison](URLLIB3-HISTORY-01.md)
+found missing generated version metadata. The native assertions below genuinely
+run, but unittest's import retry reuses cached submodules after package startup
+fails. They do **not** establish a successful cold root-package import. Both
+the original evidence and later instrumented diagnostics are retained.
+
 **Author controls only; no model sessions or efficiency claim.** Prepares a
 different upstream project for the [section-read candidate](NECROMANCER-SECTION-READ-01.md)
 `f53cb65`, after the adverse [Slugify history result](SLUGIFY-HISTORY-01.md).

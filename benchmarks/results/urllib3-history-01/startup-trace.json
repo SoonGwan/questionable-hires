@@ -1,0 +1,17 @@
+{
+  "rows": [
+    {
+      "label": "cached-util",
+      "exit_code": 0,
+      "stdout": "IMPORT_ATTEMPT {'urllib3': False, 'urllib3.util': False, 'urllib3.util.retry': False}\nIMPORT_ATTEMPT {'urllib3': False, 'urllib3.util': True, 'urllib3.util.retry': True}\n",
+      "stderr": "test_method_restriction (test_compatibility.Compatibility.test_method_restriction) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+    },
+    {
+      "label": "require-package",
+      "exit_code": 1,
+      "stdout": "IMPORT_ATTEMPT {'urllib3': False, 'urllib3.util': False, 'urllib3.util.retry': False}\nIMPORT_ATTEMPT {'urllib3': False, 'urllib3.util': True, 'urllib3.util.retry': True}\nIMPORT_ATTEMPT {'urllib3': False, 'urllib3.util': True, 'urllib3.util.retry': True}\n",
+      "stderr": "test_compatibility (unittest.loader._FailedTest.test_compatibility) ... ERROR\n\n======================================================================\nERROR: test_compatibility (unittest.loader._FailedTest.test_compatibility)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_compatibility\nTraceback (most recent call last):\n  File \"<HOME>/homebrew/Cellar/python@3.11/3.11.16/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/loader.py\", line 162, in loadTestsFromName\n    module = __import__(module_name)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/urllib3-import-trace-iyz1w0if/test_compatibility.py\", line 28, in <module>\n    import urllib3\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/urllib3-import-trace-iyz1w0if/src/urllib3/__init__.py\", line 17, in <module>\n    from ._version import __version__\nModuleNotFoundError: No module named 'urllib3._version'\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)\n"
+    }
+  ],
+  "limitation": "Post-run instrumented author imports; no original model evidence or new performance claim."
+}

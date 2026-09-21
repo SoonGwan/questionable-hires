@@ -1,0 +1,95 @@
+{
+  "identities": {
+    "benchmarks/run_urllib3_history_01.py": "86fa38599ac0ad0c772151f3754cf60748fe500e051c0e1af54bb2800c64e060",
+    "benchmarks/preflight_slugify_native_01.py": "c125cb211212932d702712522588a8963e02f5a2fb030c3960fb2818b221fded",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "benchmarks/URLLIB3-HISTORY-01-PROTOCOL.md": "9457a1d1ccb723d1c9b2a02a124ba37bff0bbe2c02adcc5c727760c50085faa1",
+    "tests/test_urllib3_history_runner.py": "2f67c837c31c2e26309baeccbc0113f31db9dcdab2b6132763cbc282c98b6b2a"
+  },
+  "source_identity": {
+    "revision": "2458bfcd3dacdf6c196e98d077fc6bb02a5fc1df",
+    "tree": "bae5d4c3c61d78c04fe2675825d84dc2e9f6b30d",
+    "ancestors_sha256": "aaf0932e3d11570d75c0f087103103fc08199a4cb367b6760c40e6aa6b6f7989"
+  },
+  "case": {
+    "id": "urllib3-retry-history",
+    "skill": "necromancer",
+    "task": "Review two proposed behavior-preserving cleanups in src/urllib3/util/retry.py:Retry.is_retry.\nA: move the method-allowlist rejection below the status_forcelist early return.\nB: remove only self.total from the Retry-After fallback condition.\nEvaluate independently, not combined, and leave every other operation unchanged.\nThis is a review, not authorization to fix production code.\n\nObserve actual Retry.is_retry results for current, A-only and B-only using these\nfive configurations/calls (15 observations total). In every case allowed_methods=['GET'];\nunspecified constructor/call arguments use defaults:\n1. total=3, status_forcelist=[500]; is_retry('POST', 500).\n2. total=0, no forced statuses; is_retry('GET', 429, True).\n3. total=3, status_forcelist=[500]; is_retry('GET', 500).\n4. total=3, no forced statuses; is_retry('GET', 429, True).\n5. total=0, status_forcelist=[500]; is_retry('GET', 500).\nRetain every actual value or exception. Explain separate compatibility decisions\nand the relevant existing test/doc contract. Inspect the current connection-pool\ncaller and explain whether these predicate results alone establish an actual\nnetwork retry, including case5. No HTTP requests or full integration run is needed.\n\nUse local ancestor history to establish when the Retry-After fallback was added:\ninspect the relevant parent/child implementation and accompanying tests/docs.\nAlso inspect the change attributing the method check to _is_method_retryable and\nan earlier operational implementation. Distinguish helper extraction/renaming from\nintroduction of the method restriction; first-ever origin is not required.\nCite the relevant commits. Separate observed current behavior from historical\nrationale; do not invent author intent. Use only ancestors of pinned HEAD.\n\nUse <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python with -B and this checkout's src directory on the import path.\nVerify the imported implementation is local, not an installed urllib3 package.\nIn-memory variants or project-local disposable copies are allowed; no tool is\nrequired. Preserve every original file byte/mode, HEAD and installed resource.\nRemove all owned scratch before finishing; no lasting harness, report or code edit.\nNo network/HTTP requests, installations, fetching, commits or publication.\nThe specified interpreter/dependencies may be read/executed, not modified.",
+    "criteria": [
+      "All15 actual outputs/errors observed with local binding and independent specified changes.",
+      "Separate compatibility decisions correctly explain the observations and existing test/doc contract.",
+      "Current connection-pool caller inspected; predicate results distinguished from actual network retry, including zero-budget forced status.",
+      "Retry-After fallback introduction and method-helper extraction established with relevant ancestor parent/child evidence, without invented origin or intent.",
+      "Original bytes/modes, HEAD and installed resources preserved; scratch removed; no out-of-scope actions."
+    ]
+  },
+  "schedule": [
+    "prior",
+    "baseline",
+    "current"
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "repeats": 1,
+    "jobs": 1
+  },
+  "python_version": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "resource_digests": {
+    "prior": "3e5b11985677dffc1c3e28623e44a371f745f0c96db95035b10be6b61b5675a2",
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "current": "f3b0c42f2e18bfbf23433c01f79ef7b0ba5b5dad6b239284af9b1bb51d1e9a4d"
+  },
+  "resource_revisions": {
+    "prior": "92afe96b7617c4e646cd180825eec9516da73887",
+    "current": "f53cb65e33258f64d6d9d9428ad3c4bc3d3512c1"
+  },
+  "completed_cells": [
+    {
+      "condition": "prior",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 253720,
+        "cached_input_tokens": 219520,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4086,
+        "reasoning_output_tokens": 91
+      },
+      "elapsed_seconds": 150.375
+    },
+    {
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 173258,
+        "cached_input_tokens": 144768,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3459,
+        "reasoning_output_tokens": 76
+      },
+      "elapsed_seconds": 124.648
+    },
+    {
+      "condition": "current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 242303,
+        "cached_input_tokens": 206976,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4312,
+        "reasoning_output_tokens": 155
+      },
+      "elapsed_seconds": 157.228
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T08:54:17.656091+00:00",
+  "finished_at": "2026-09-21T09:01:30.711971+00:00"
+}

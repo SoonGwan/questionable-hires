@@ -1,0 +1,58 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "urllib3-retry-history",
+    "skill": "necromancer",
+    "arm": "baseline",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "2458bfcd3dacdf6c196e98d077fc6bb02a5fc1df",
+    "skill_sha256": null,
+    "skill_resources_sha256": null,
+    "elapsed_seconds": 124.648,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 173258,
+      "cached_input_tokens": 144768,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 3459,
+      "reasoning_output_tokens": 76
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Review two proposed behavior-preserving cleanups in src/urllib3/util/retry.py:Retry.is_retry.\nA: move the method-allowlist rejection below the status_forcelist early return.\nB: remove only self.total from the Retry-After fallback condition.\nEvaluate independently, not combined, and leave every other operation unchanged.\nThis is a review, not authorization to fix production code.\n\nObserve actual Retry.is_retry results for current, A-only and B-only using these\nfive configurations/calls (15 observations total). In every case allowed_methods=['GET'];\nunspecified constructor/call arguments use defaults:\n1. total=3, status_forcelist=[500]; is_retry('POST', 500).\n2. total=0, no forced statuses; is_retry('GET', 429, True).\n3. total=3, status_forcelist=[500]; is_retry('GET', 500).\n4. total=3, no forced statuses; is_retry('GET', 429, True).\n5. total=0, status_forcelist=[500]; is_retry('GET', 500).\nRetain every actual value or exception. Explain separate compatibility decisions\nand the relevant existing test/doc contract. Inspect the current connection-pool\ncaller and explain whether these predicate results alone establish an actual\nnetwork retry, including case5. No HTTP requests or full integration run is needed.\n\nUse local ancestor history to establish when the Retry-After fallback was added:\ninspect the relevant parent/child implementation and accompanying tests/docs.\nAlso inspect the change attributing the method check to _is_method_retryable and\nan earlier operational implementation. Distinguish helper extraction/renaming from\nintroduction of the method restriction; first-ever origin is not required.\nCite the relevant commits. Separate observed current behavior from historical\nrationale; do not invent author intent. Use only ancestors of pinned HEAD.\n\nUse <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python with -B and this checkout's src directory on the import path.\nVerify the imported implementation is local, not an installed urllib3 package.\nIn-memory variants or project-local disposable copies are allowed; no tool is\nrequired. Preserve every original file byte/mode, HEAD and installed resource.\nRemove all owned scratch before finishing; no lasting harness, report or code edit.\nNo network/HTTP requests, installations, fetching, commits or publication.\nThe specified interpreter/dependencies may be read/executed, not modified.\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [
+        "item_10"
+      ],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {},
+    "installed_resources_after": {},
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 15618,
+      "mode": 420,
+      "sha256": "54f4fc3b59b067b6add0c6663872b6b32ee9203c6402440c9675905cb13e592b",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]
