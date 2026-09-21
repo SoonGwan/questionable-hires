@@ -27,6 +27,8 @@ Validation on the changed checkout:
 - Python3.11.16: all121 `test_audit*.py` checks pass,22.796s.
 - Python3.11.16: all80 mutation-helper checks pass,16.058s.
 - Python3.9.6: new three checks pass,.006s.
+- Fresh `git archive 2baf118`, without Git history/local-run artifacts:
+  all121 audit checks pass on Python3.11.16,21.711s, no skips.
 
 Runtime observations are not speed comparisons. No model calls, efficiency claim
 or featured-chart changes. The common guide, existing-test recipe and both README
