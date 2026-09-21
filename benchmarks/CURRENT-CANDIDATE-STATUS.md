@@ -44,6 +44,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [Dateutil native transfer preparation](DATEUTIL-NATIVE-01-PREFLIGHT.md),
+  helper `387c53b`: unchanged pinned upstream test/source files pass25 direct
+  controls and8 helper executions with matching selected-test outcomes, real
+  assertion failures and cleanup. Author-selected development cases; no model
+  sessions, no measured savings, and no frozen model protocol yet.
+  한국어: 실제 프로젝트 호환성 대조 완료. 모델 성능 측정은 아직 아니다.
 - [Native audit discovery correction](AUDIT-NATIVE-ROUTE-01.md), parent `1fa230c`:
   entrypoint exposes the supported module command and a complete batch recipe.
   The actual bundled recipe passes weak/strong assertion controls on Python3.9/3.11;

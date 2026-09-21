@@ -1,0 +1,449 @@
+{
+  "upstream_revision": "1ae807774053c071acc9e7d3d27778fba0a7773e",
+  "upstream_blob_ids": {
+    "AUTHORS.md": "793a2fd59586c099e4db9475b79d92c8427363fa",
+    "LICENSE": "1e65815cf0b3132689485874a93034ede7206bf4",
+    "src/dateutil/__init__.py": "a2c19c06fe14476a9bfa4f1f60de7a997a41191c",
+    "src/dateutil/_common.py": "4eb2659bd2986125fcfb4afea5bae9efc2dcd1a0",
+    "src/dateutil/relativedelta.py": "cd323a549e0f182541ebcde2d2ea1adfbbd9701e",
+    "tests/__init__.py": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+    "tests/_common.py": "b8d20473743bfbdc0968578e2b79b201b79512fb",
+    "tests/test_relativedelta.py": "5204c293b7c0a318a75f6ff6395bdc1f9a517ae0"
+  },
+  "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "dependencies": {
+    "pytest": "8.3.5",
+    "six": "1.17.0",
+    "iniconfig": "2.3.0",
+    "packaging": "26.3",
+    "pluggy": "1.6.0"
+  },
+  "direct_controls": [
+    {
+      "variant": "correct",
+      "selected": [
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+          "exit_code": 0,
+          "output": "testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextFriday",
+          "exit_code": 0,
+          "output": "testNextFriday (tests.test_relativedelta.RelativeDeltaTest.testNextFriday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witnesses": [
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear",
+          "exit_code": 0,
+          "output": "testLastDayOfFebruaryLeapYear (tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday",
+          "exit_code": 0,
+          "output": "testNextWednesdayIsToday (tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+          "exit_code": 0,
+          "output": "testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ]
+    },
+    {
+      "variant": "february-cap",
+      "selected": [
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+          "exit_code": 0,
+          "output": "testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextFriday",
+          "exit_code": 0,
+          "output": "testNextFriday (tests.test_relativedelta.RelativeDeltaTest.testNextFriday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witnesses": [
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear",
+          "exit_code": 1,
+          "output": "testLastDayOfFebruaryLeapYear (tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear) ... FAIL\n\n======================================================================\nFAIL: testLastDayOfFebruaryLeapYear (tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/tests/test_relativedelta.py\", line 127, in testLastDayOfFebruaryLeapYear\n    self.assertEqual(date(2020, 2, 1) + relativedelta(day=31),\nAssertionError: datetime.date(2020, 2, 28) != datetime.date(2020, 2, 29)\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday",
+          "exit_code": 0,
+          "output": "testNextWednesdayIsToday (tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+          "exit_code": 0,
+          "output": "testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ]
+    },
+    {
+      "variant": "strict-next-weekday",
+      "selected": [
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+          "exit_code": 0,
+          "output": "testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextFriday",
+          "exit_code": 0,
+          "output": "testNextFriday (tests.test_relativedelta.RelativeDeltaTest.testNextFriday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witnesses": [
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear",
+          "exit_code": 0,
+          "output": "testLastDayOfFebruaryLeapYear (tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday",
+          "exit_code": 1,
+          "output": "testNextWednesdayIsToday (tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday) ... FAIL\n\n======================================================================\nFAIL: testNextWednesdayIsToday (tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/tests/test_relativedelta.py\", line 131, in testNextWednesdayIsToday\n    self.assertEqual(self.today+relativedelta(weekday=WE),\nAssertionError: datetime.date(2003, 9, 24) != datetime.date(2003, 9, 17)\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+          "exit_code": 0,
+          "output": "testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ]
+    },
+    {
+      "variant": "omit-relative-month",
+      "selected": [
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+          "exit_code": 1,
+          "output": "testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... FAIL\n\n======================================================================\nFAIL: testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/tests/test_relativedelta.py\", line 63, in testNextMonth\n    self.assertEqual(self.now+relativedelta(months=+1),\nAssertionError: datetime.datetime(2003, 9, 17, 20, 54, 47, 282310) != datetime.datetime(2003, 10, 17, 20, 54, 47, 282310)\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextFriday",
+          "exit_code": 0,
+          "output": "testNextFriday (tests.test_relativedelta.RelativeDeltaTest.testNextFriday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witnesses": [
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear",
+          "exit_code": 0,
+          "output": "testLastDayOfFebruaryLeapYear (tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday",
+          "exit_code": 0,
+          "output": "testNextWednesdayIsToday (tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+          "exit_code": 1,
+          "output": "testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... FAIL\n\n======================================================================\nFAIL: testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/tests/test_relativedelta.py\", line 63, in testNextMonth\n    self.assertEqual(self.now+relativedelta(months=+1),\nAssertionError: datetime.datetime(2003, 9, 17, 20, 54, 47, 282310) != datetime.datetime(2003, 10, 17, 20, 54, 47, 282310)\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+        }
+      ]
+    },
+    {
+      "variant": "equivalent",
+      "selected": [
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+          "exit_code": 0,
+          "output": "testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextFriday",
+          "exit_code": 0,
+          "output": "testNextFriday (tests.test_relativedelta.RelativeDeltaTest.testNextFriday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ],
+      "witnesses": [
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear",
+          "exit_code": 0,
+          "output": "testLastDayOfFebruaryLeapYear (tests.test_relativedelta.RelativeDeltaTest.testLastDayOfFebruaryLeapYear) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday",
+          "exit_code": 0,
+          "output": "testNextWednesdayIsToday (tests.test_relativedelta.RelativeDeltaTest.testNextWednesdayIsToday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        {
+          "selector": "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+          "exit_code": 0,
+          "output": "testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        }
+      ]
+    }
+  ],
+  "helper_report": {
+    "status": "observed",
+    "audits": [
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/.con-artist-7kgn_wn5/correct-tests\"}\nVerified copied import: dateutil.relativedelta {\"path\":\"src/dateutil/relativedelta.py\",\"sha256\":\"218fe6825323a196d87ebbe5a1363671ed366a25633c892265faa03536517ee0\"}\nVerified copied import: tests.test_relativedelta {\"path\":\"tests/test_relativedelta.py\",\"sha256\":\"631046822ad924aad5a7ab780504c1f22258932d15841d4c7dd97218f755ffbe\"}\ncopied binding verified\nPrecheck completed in check process.\ntestNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/.con-artist-7kgn_wn5/mutant-tests\"}\nVerified copied import: dateutil.relativedelta {\"path\":\"src/dateutil/relativedelta.py\",\"sha256\":\"69d4ca9ce020657cdc787b5e29d5e6a748d622bbd195695504ae156c1393e3a7\"}\nVerified copied import: tests.test_relativedelta {\"path\":\"tests/test_relativedelta.py\",\"sha256\":\"631046822ad924aad5a7ab780504c1f22258932d15841d4c7dd97218f755ffbe\"}\ncopied binding verified\nPrecheck completed in check process.\ntestNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      },
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/.con-artist-1a1nsfew/correct-tests\"}\nVerified copied import: dateutil.relativedelta {\"path\":\"src/dateutil/relativedelta.py\",\"sha256\":\"218fe6825323a196d87ebbe5a1363671ed366a25633c892265faa03536517ee0\"}\nVerified copied import: tests.test_relativedelta {\"path\":\"tests/test_relativedelta.py\",\"sha256\":\"631046822ad924aad5a7ab780504c1f22258932d15841d4c7dd97218f755ffbe\"}\ncopied binding verified\nPrecheck completed in check process.\ntestNextFriday (tests.test_relativedelta.RelativeDeltaTest.testNextFriday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "tests.test_relativedelta.RelativeDeltaTest.testNextFriday",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/.con-artist-1a1nsfew/mutant-tests\"}\nVerified copied import: dateutil.relativedelta {\"path\":\"src/dateutil/relativedelta.py\",\"sha256\":\"69d4ca9ce020657cdc787b5e29d5e6a748d622bbd195695504ae156c1393e3a7\"}\nVerified copied import: tests.test_relativedelta {\"path\":\"tests/test_relativedelta.py\",\"sha256\":\"631046822ad924aad5a7ab780504c1f22258932d15841d4c7dd97218f755ffbe\"}\ncopied binding verified\nPrecheck completed in check process.\ntestNextFriday (tests.test_relativedelta.RelativeDeltaTest.testNextFriday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "tests.test_relativedelta.RelativeDeltaTest.testNextFriday",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      },
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "observation_ref": "#/audits/0/checks/correct_tests"
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/.con-artist-thdqo21m/mutant-tests\"}\nVerified copied import: dateutil.relativedelta {\"path\":\"src/dateutil/relativedelta.py\",\"sha256\":\"cbe8a40323caff202d4c2bde302decbd4552a278320140a550bc28e0aaa219bd\"}\nVerified copied import: tests.test_relativedelta {\"path\":\"tests/test_relativedelta.py\",\"sha256\":\"631046822ad924aad5a7ab780504c1f22258932d15841d4c7dd97218f755ffbe\"}\ncopied binding verified\nPrecheck completed in check process.\ntestNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "correct_tests_reused": true,
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      },
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "observation_ref": "#/audits/1/checks/correct_tests"
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/.con-artist-xr9cmhq5/mutant-tests\"}\nVerified copied import: dateutil.relativedelta {\"path\":\"src/dateutil/relativedelta.py\",\"sha256\":\"cbe8a40323caff202d4c2bde302decbd4552a278320140a550bc28e0aaa219bd\"}\nVerified copied import: tests.test_relativedelta {\"path\":\"tests/test_relativedelta.py\",\"sha256\":\"631046822ad924aad5a7ab780504c1f22258932d15841d4c7dd97218f755ffbe\"}\ncopied binding verified\nPrecheck completed in check process.\ntestNextFriday (tests.test_relativedelta.RelativeDeltaTest.testNextFriday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "tests.test_relativedelta.RelativeDeltaTest.testNextFriday",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "correct_tests_reused": true,
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      },
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "observation_ref": "#/audits/0/checks/correct_tests"
+          },
+          "mutant_tests": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/.con-artist-sc_af6yu/mutant-tests\"}\nVerified copied import: dateutil.relativedelta {\"path\":\"src/dateutil/relativedelta.py\",\"sha256\":\"286fa92c62e9d56796ab878ca32f4b9adb537935cb7d3ff1f4a91d17456ec1fe\"}\nVerified copied import: tests.test_relativedelta {\"path\":\"tests/test_relativedelta.py\",\"sha256\":\"631046822ad924aad5a7ab780504c1f22258932d15841d4c7dd97218f755ffbe\"}\ncopied binding verified\nPrecheck completed in check process.\ntestNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth) ... FAIL\n\n======================================================================\nFAIL: testNextMonth (tests.test_relativedelta.RelativeDeltaTest.testNextMonth)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/.con-artist-sc_af6yu/mutant-tests/tests/test_relativedelta.py\", line 63, in testNextMonth\n    self.assertEqual(self.now+relativedelta(months=+1),\nAssertionError: datetime.datetime(2003, 9, 17, 20, 54, 47, 282310) != datetime.datetime(2003, 10, 17, 20, 54, 47, 282310)\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "tests.test_relativedelta.RelativeDeltaTest.testNextMonth",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": false
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "correct_tests_reused": true,
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      },
+      {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "observation_ref": "#/audits/1/checks/correct_tests"
+          },
+          "mutant_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-preflight-zs98cmrb/.con-artist-t2qh4nub/mutant-tests\"}\nVerified copied import: dateutil.relativedelta {\"path\":\"src/dateutil/relativedelta.py\",\"sha256\":\"286fa92c62e9d56796ab878ca32f4b9adb537935cb7d3ff1f4a91d17456ec1fe\"}\nVerified copied import: tests.test_relativedelta {\"path\":\"tests/test_relativedelta.py\",\"sha256\":\"631046822ad924aad5a7ab780504c1f22258932d15841d4c7dd97218f755ffbe\"}\ncopied binding verified\nPrecheck completed in check process.\ntestNextFriday (tests.test_relativedelta.RelativeDeltaTest.testNextFriday) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/dateutil-native-venv-01/bin/python",
+              "-B",
+              "-m",
+              "unittest",
+              "tests.test_relativedelta.RelativeDeltaTest.testNextFriday",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "correct_tests_reused": true,
+        "integrity": {
+          "selected_files": 8,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true
+        }
+      }
+    ],
+    "limitation": "Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled."
+  },
+  "scratch_removed": true,
+  "limitation": "Selected unchanged upstream files/tests, author-chosen mutations and selections. 25 direct controls plus 8 helper executions. Not a whole-project suite, model measurement or holdout."
+}
