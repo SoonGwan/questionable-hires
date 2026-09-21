@@ -20,6 +20,12 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
+Preparation2026-09-21, resource`35bba0a`: [effort × skill protocol](EFFORT-FACTORIAL-01-PROTOCOL.md)
+fixes two exposed tasks and eight low/medium × baseline/current cells. This is
+a new configuration factor, not an improvement result or default-effort change.
+Within-effort skill comparisons remain separate from cross-effort tradeoffs.
+한국어: 추론 강도별 효과를 분리하는 실험 준비이며 성능 결과는 아직 없다.
+
 Reviewed checkpoint2026-09-21: [ancestry scope](ANCESTRY-SCOPE-01.md), all6
 complete; all arms5/5 history and4/4 current-only. Current versus prior history
 +26.06% tokens/+13.60% time, current-only−0.18%/−5.82%; versus baseline both cost
