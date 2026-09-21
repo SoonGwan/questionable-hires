@@ -64,6 +64,11 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [urllib3 history preparation](URLLIB3-HISTORY-01-PREFLIGHT.md), candidate
+  `f53cb65`:15 native author controls and ancestor checks pass on a new pinned
+  project. Distinguishes retry predicate results from actual network retries;
+  no model sessions, installations or efficiency claim.
+  한국어: 다른 프로젝트의 사전 검증이며 수정 스킬의 절감 효과는 아직 미측정이다.
 - [Necromancer section-read correction](NECROMANCER-SECTION-READ-01.md): clarify
   relevant contract/test sections with enclosing logic and scope-driven widening;
   helpers and probe safeguards unchanged. Motivated by the adverse history pair
