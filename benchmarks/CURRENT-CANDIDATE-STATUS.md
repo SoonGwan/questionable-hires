@@ -9,6 +9,21 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Proposal-versus-repair boundary — 2026-09-21, parent `740948e`
+
+Con Artist's entry now distinguishes a demonstrated test gap from a verified
+repair. A proposal-only review may deliver a concrete, explicitly unexecuted
+assertion; requested improvements or claims that the assertion closes the gap
+still require correct/faulty execution. This narrows the former unconditional
+stronger-assertion execution rule, after both cachetools skill attempts ran extra
+checks beyond the requested proposals. Bilingual selection guidance matches.
+No new model measurement yet: reduced work/cost is a hypothesis, not a result.
+Fault demonstration, provenance, scope and cleanup requirements are unchanged.
+
+한국어: 제안과 검증된 수정을 구분하도록 지침을 좁혔다. 제안만 요청받았다면
+미실행임을 표시할 수 있지만 실제 수정·효과 입증에는 양쪽 실행이 계속 필요하다.
+아직 변경 후 모델 실측 전이며 성능 향상 수치를 주장하지 않는다.
+
 ## Cachetools model checkpoint — 2026-09-21, resource `b1875a0`
 
 [Three original attempts](CACHETOOLS-AUDIT-01.md) all meet5/5 frozen criteria.

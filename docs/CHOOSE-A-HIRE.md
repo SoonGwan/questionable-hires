@@ -23,6 +23,10 @@ measured token-saving claim.
 **Cause, fix, or test quality?** Exorcist investigates why it happens. Receipt
 checks whether a particular fix prevents it. Con Artist checks whether the tests
 would notice a fault. A green suite alone answers none of these automatically.
+For Con Artist, an unexecuted assertion proposal is not a verified repair.
+Requesting test improvements or proof that they close a gap requires checking
+the assertion against both correct and faulty code; a proposal-only review does
+not require implementing every suggestion.
 
 **Interaction QA or implementation scope?** Mother-in-law is for interaction
 coverage. Hostage Negotiator is for delivering a focused change, including state

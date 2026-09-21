@@ -50,10 +50,13 @@ process does not prove what the test process loads.
 - Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)
   covers false-pass assertion helpers and incomplete checks. It is not routine setup.
 
-If tests survive, verify the same stronger assertion on correct and faulty code:
-pass the former, fail the latter for the intended effect, not merely success or
-container size. If killed, identify the detecting assertion or warning policy;
-this protects that fault, not every lifecycle path.
+If tests survive, distinguish demonstrating the gap from verifying a repair.
+For a proposal-only review, give a concrete assertion and label it unexecuted
+unless checked; demonstrating the requested fault still requires execution.
+For requested test improvements or a claim that an assertion closes the gap,
+verify it on correct and faulty code: pass the former, fail the latter for the
+intended effect, not merely success or container size. If killed, identify the
+detecting assertion or warning policy; this protects that fault, not every lifecycle path.
 
 ## Deliver and stop
 
