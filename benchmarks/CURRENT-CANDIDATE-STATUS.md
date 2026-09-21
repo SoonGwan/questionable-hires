@@ -36,7 +36,10 @@ Same Click project was previously used for an unrelated Context audit; not a hol
 정상·결함 사전 검증은 통과했지만 모델 성능 결과는 아직 없다. 이전에 사용한
 Click 프로젝트의 다른 과제이므로 독립 검증이라고 과장하지 않는다.
 
-## Landlord combined-output correction — 2026-09-21, predecessor `4416263`
+## Historical output-budget candidate — 2026-09-21, predecessor `4416263`
+
+Removed after the Click transfer above; production entrypoint again matches
+`4416263` byte-for-byte. The following describes its pre-measurement rationale.
 
 [Recorded truncation analysis](LANDLORD-READ-BUDGET-01.md) shows all three runtime
 arms budgeting individual large source commands but losing combined tool output.

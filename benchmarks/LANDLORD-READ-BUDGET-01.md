@@ -1,5 +1,10 @@
 # Landlord source-output budgeting — 2026-09-21
 
+Historical candidate: the subsequent [Click transfer](CLICK-DEFAULTS-01-REVIEW.md)
+did not establish effective aggregate budgeting or a joint cost advantage. The
+added sentence was removed; candidate `1ae3ee0` and all results remain preserved.
+The pre-measurement rationale below is not a current improvement claim.
+
 Predecessor `4416263`; narrow entrypoint correction, not an efficiency result.
 The rejected compact candidate remains separate and unchanged.
 
