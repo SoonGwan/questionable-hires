@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Packaging design comparison prepared — 2026-09-21, resource `a545a53`
+
+[Frozen protocol](PACKAGING-DESIGN-01-PROTOCOL.md) compares the separate collector
+candidate with production Landlord and no-skill on one new installed-source task.
+Eight native author observations pass for packaging26.3, with local import binding.
+The task examines name-policy consolidation, acceptance and exception contracts.
+No upstream tests/history supplied; author-selected, not an independent holdout.
+Three original sessions are scheduled; no reviewed model result or chart update.
+
+한국어: 새 프로젝트의 이름 검증 통합 제안으로 비교 조건을 고정했다. 원본
+동작8건 확인은 과제 준비 검증이며, 스킬 성능 결과는 아직 아니다.
+
 ## Landlord optional collector candidate — 2026-09-21, parent `bf1a2eb`
 
 [Preparation and validation](LANDLORD-CONTEXT-01.md): a separate self-contained
