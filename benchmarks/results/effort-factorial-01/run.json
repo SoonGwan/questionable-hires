@@ -1,0 +1,219 @@
+{
+  "identities": {
+    "benchmarks/run_effort_factorial_01.py": "4490964a549e53decac570023723db8f40b6f6206f0426d6370893257785c67f",
+    "benchmarks/EFFORT-FACTORIAL-01-PROTOCOL.md": "db66422019c8bcb7051a78bf3883b01d9f2ad8a66daf242a6939ade97a93af3c",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "benchmarks/con_artist_sqlite_cases.py": "2bec026bdff1d4a8636e909915559724ba67ae0d7afc2c08ce69007968f78f7e",
+    "benchmarks/hostage_refresh_cases.py": "20902b8848f665a41b9f638010b4277da5ec56203f558b18b57b68b38c034c90",
+    "benchmarks/con-artist-sqlite-cases.json": "c5a3b37e70613ed8eb657db25aa043772a0056692b207ff1d29c1e91bbce4c3f",
+    "benchmarks/hostage-refresh-cases.json": "7b0bc8120865802a29dd97b6fedb9863bdbe19742ce68bb93307588b55a04c21",
+    "tests/test_effort_factorial_runner.py": "6ff4879cae82cd6f81400ad684f3c781476140beb1f8c51f39332d83a5723448",
+    "tests/test_sqlite_audit_fixture.py": "490b736d6ca7551691188455fe6082e2cfec72fb115c91b1f0433bfbc3d03e4d",
+    "tests/test_hostage_refresh_fixture.py": "63ee9392f57e0b70113d0214e5a1d92ab3fea35e4ae16379a845ac8b4daa366a"
+  },
+  "cases": [
+    {
+      "id": "sqlite-commit-audit",
+      "skill": "con-artist",
+      "task": "Audit whether the existing receipt tests detect a lost commit in this upload\npath. Inspect the actual test, endpoint binding and ledger implementation. Execute\nthe existing native tests on correct code and an isolated reachable fault omitting\nthe ledger commit (keep acknowledgment and connection closing unchanged). Verify\nthe actual test's imported endpoint and that endpoint's writer binding in the same\nprocess as the checks, not just in a separate import-only process.\nIf the tests survive, execute the same stronger native assertion on both versions:\nread through a new SQLite connection after the actual upload call and compare the\ncomplete ordered rows, retaining the pre-existing row and exact new binary payload.\nShow correct code passing and the faulty code failing for missing committed data,\nnot setup/import failures. Preserve originals and remove owned disposable copies.\nCaptured commands/results are sufficient; no permanent harness/report is required.\nWork only inside this project: no services, dependencies, other skills, delegation,\npublishing or production repair.",
+      "files": {
+        "ingest/__init__.py": "",
+        "ingest/ledger.py": "import sqlite3\n\n\ndef write_event(database, event_id, payload):\n    connection = sqlite3.connect(database)\n    try:\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\n                           (event_id, payload))\n        connection.commit()\n    finally:\n        connection.close()\n    return {'accepted': event_id}\n",
+        "ingest/endpoint.py": "from ingest.ledger import write_event as _record\n\n\ndef handle_upload(database, event_id, payload):\n    return _record(database, event_id, payload)\n",
+        "test_receipts.py": "import sqlite3\nimport tempfile\nfrom pathlib import Path\nimport unittest\nfrom ingest.endpoint import handle_upload as accept\n\n\nclass LedgerFixture(unittest.TestCase):\n    def setUp(self):\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-',\n                                                  dir=Path(__file__).resolve().parent)\n        self.addCleanup(self.scratch.cleanup)\n        self.database = Path(self.scratch.name) / 'events.sqlite'\n        connection = sqlite3.connect(self.database)\n        try:\n            connection.execute('CREATE TABLE events (id INTEGER PRIMARY KEY, payload BLOB NOT NULL)')\n            connection.execute('INSERT INTO events VALUES (?, ?)', (10, b'previous'))\n            connection.commit()\n        finally:\n            connection.close()\n\n\nclass ReceiptTests(LedgerFixture):\n    def test_acknowledges_binary_upload(self):\n        self.assertEqual(accept(self.database, 20, b'\\x00\\xffnew'), {'accepted': 20})\n\n    def test_acknowledges_empty_upload(self):\n        self.assertEqual(accept(self.database, 30, b''), {'accepted': 30})\n",
+        "requirements.md": "Python 3.9+ standard library; python3 -B -m unittest -v test_receipts.\nSuccessful handle_upload must preserve the integer ID and exact bytes payload in\nthe disk SQLite database, visible from a newly opened connection after it returns.\nPreviously committed events must survive. The acknowledgment is not durability proof.\nIDs are distinct positive integers and payloads are bytes, including empty/binary bytes.\nNo networking or concurrent writers are in scope. Existing production/test files are\nimmutable for this audit. Use disposable project-local copies, clean owned scratch,\nand preserve all original bytes/modes. Do not install packages or change warnings.\n"
+      },
+      "criteria": [
+        "Actual source inspection and same-process test-to-endpoint-to-ledger binding evidence.",
+        "Correct and missing-commit native tests execute; syntax/setup failures are not sensitivity.",
+        "Same stronger native row assertion passes correct code and rejects lost binary row through a fresh connection.",
+        "Pre-existing row and originals preserved; owned project-local scratch removed."
+      ]
+    },
+    {
+      "id": "refresh-owner-a",
+      "skill": "hostage-negotiator",
+      "task": "Review Preview.refresh against requirements.md and fix preview.py only if\nneeded. Add rerunnable standard-library unittest tests using actual Preview with\ncontrolled callbacks. Cover both completion orders, earlier failure/cancellation\nwhile latest remains pending, latest failure/cancellation and retry, synchronous\ncallback failure, result/error identity, prior display retention and instance isolation.\nBound behavior-dependent waits and clean up owned tasks; no timing sleeps. Use\npython3 -B -m unittest discover -v and report actual native results and the test\nprocess exit. Never infer passed tests solely from a later diff/status or prior prose.\nPreserve requirements and unrelated owner notes. Test support may be added inside\nthis project; no dependencies, network, external discovery, deployment or publishing.\nDo not serialize or suppress overlapping refresh calls to make the tests pass.\n",
+      "files": {
+        "preview.py": "class Preview:\n    def __init__(self):\n        self.pending = False\n        self.value = None\n        self.generation = 0\n\n    async def refresh(self, key, fetch):\n        self.generation += 1\n        generation = self.generation\n        self.pending = True\n        try:\n            value = await fetch(key)\n            if generation == self.generation:\n                self.value = value\n            return value\n        finally:\n            self.pending = False\n",
+        "requirements.md": "Every refresh must invoke its supplied fetch(key), even while another\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\nEach call returns its own exact fetched object or propagates its own exception.\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\nfailure or cancellation cannot clear pending while the latest is unresolved.\nLatest settlement clears pending even if older calls remain running. Keep the prior\nvalue during loading and on failure/cancellation. Instances are independent.\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\n",
+        "notes.txt": "Owner draft: preserve this unrelated note.\n"
+      },
+      "criteria": [
+        "Preserve overlapping callback invocation and exact per-call results/errors.",
+        "Latest-started request alone owns pending/value across both orders and recovery.",
+        "Keep valid original behavior; change production only if a contract defect exists.",
+        "Retain bounded native tests and report actual evidence without scope expansion."
+      ]
+    }
+  ],
+  "schedule": [
+    [
+      0,
+      "low-baseline"
+    ],
+    [
+      0,
+      "low-current"
+    ],
+    [
+      0,
+      "medium-current"
+    ],
+    [
+      0,
+      "medium-baseline"
+    ],
+    [
+      1,
+      "medium-baseline"
+    ],
+    [
+      1,
+      "medium-current"
+    ],
+    [
+      1,
+      "low-current"
+    ],
+    [
+      1,
+      "low-baseline"
+    ]
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "timeout_seconds": 360,
+    "jobs": 1,
+    "repeats": 1
+  },
+  "python": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+  "python_version": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "resource_digest": "34106a94c3b3499e9c4eba45220ce2e49357b666c57b2b431ba8df52dfa5b891",
+  "resource_revision": "35bba0ae823d89f179eeac9c8388fbc6fc58d855",
+  "completed_cells": [
+    {
+      "case_id": "sqlite-commit-audit",
+      "condition": "low-baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 64122,
+        "cached_input_tokens": 54784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1776,
+        "reasoning_output_tokens": 130
+      },
+      "elapsed_seconds": 65.41
+    },
+    {
+      "case_id": "sqlite-commit-audit",
+      "condition": "low-current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 153484,
+        "cached_input_tokens": 129792,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1988,
+        "reasoning_output_tokens": 33
+      },
+      "elapsed_seconds": 80.988
+    },
+    {
+      "case_id": "sqlite-commit-audit",
+      "condition": "medium-current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 114732,
+        "cached_input_tokens": 92288,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1175,
+        "reasoning_output_tokens": 18
+      },
+      "elapsed_seconds": 54.873
+    },
+    {
+      "case_id": "sqlite-commit-audit",
+      "condition": "medium-baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 81608,
+        "cached_input_tokens": 70784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2019,
+        "reasoning_output_tokens": 226
+      },
+      "elapsed_seconds": 72.372
+    },
+    {
+      "case_id": "refresh-owner-a",
+      "condition": "medium-baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 83128,
+        "cached_input_tokens": 75648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3270,
+        "reasoning_output_tokens": 229
+      },
+      "elapsed_seconds": 112.849
+    },
+    {
+      "case_id": "refresh-owner-a",
+      "condition": "medium-current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 116556,
+        "cached_input_tokens": 105088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2990,
+        "reasoning_output_tokens": 91
+      },
+      "elapsed_seconds": 106.448
+    },
+    {
+      "case_id": "refresh-owner-a",
+      "condition": "low-current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 160288,
+        "cached_input_tokens": 143104,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2572,
+        "reasoning_output_tokens": 60
+      },
+      "elapsed_seconds": 94.828
+    },
+    {
+      "case_id": "refresh-owner-a",
+      "condition": "low-baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 81381,
+        "cached_input_tokens": 74624,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2658,
+        "reasoning_output_tokens": 50
+      },
+      "elapsed_seconds": 92.446
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T10:04:03.554337+00:00",
+  "finished_at": "2026-09-21T10:15:42.900947+00:00"
+}
