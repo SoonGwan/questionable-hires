@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Initial/body re-exposure audit — 2026-09-21, parent `0f8d2e2`
+
+[Reproducible19-session analysis](SKILL-REEXPOSURE-02.md): screen03's8 skill arms
+all receive initial bodies,7 also show later tool-body output; packaging's2 skill
+arms show both. Baselines have no exact target-body observations. Target hashes and
+line order are checked; three tests pass. This extends an existing known loading
+observation, not a new efficiency result or proof of unnecessary calls. No cost
+subtraction, host-rule bypass, production edit or chart change. Goal remains unmet.
+
+한국어: 기존19세션의 스킬 중복 노출을 재현 가능하게 집계했다. 중복이 보인다고
+호출 전체를 없앨 수 있거나 그 비용이 전부 낭비라는 뜻은 아니다. 기존 수치는 유지한다.
+
 ## Full checkout regression — 2026-09-21, source `572bea9`
 
 Python3.11.16: `python -B -m unittest discover -s tests` passes **950 tests in
