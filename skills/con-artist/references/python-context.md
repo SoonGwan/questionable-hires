@@ -12,8 +12,10 @@ python -B /path/to/con-artist/scripts/context.py --root /permitted/project --ful
 ```
 
 This reads the test body and only `Store.save` from the implementation in one
-call. CLI output is compact JSON; `--pretty` restores indentation for manual
-inspection without changing fields or source text. Omit `--full` for a locating pass when needed definitions are unknown;
+call. CLI output is compact JSON; `--pretty` adds indentation for manual
+inspection. Automatic full-source/index choice uses the requested output format,
+so that representation may differ; explicit definitions and `--full` retain the
+same fields and source text. Omit `--full` for a locating pass when needed definitions are unknown;
 do not request an index first when you already need the file's assertions.
 For a very large test file, select the relevant test definitions and inspect
 their unresolved setup instead of forcing a whole-file read past output limits.
@@ -40,7 +42,8 @@ Line numbers follow Python physical lines (LF, CRLF or CR). Unicode separators
 and control characters inside literals do not create extra source lines. Excerpts
 use LF between numbered lines; hashes still identify the original file bytes.
 Unqualified Python files over 200 lines return a definition/method index when
-that is smaller than full source; smaller files remain complete. Output labels
+that is smaller than full source in the requested JSON format, including nested
+indentation; smaller files remain complete. Output labels
 `representation` and `bodies_omitted` explicitly. Read the needed bodies using
 the returned line ranges; an index is not reviewed source. `--full` restores full
 selected files when needed, subject to the same size limits. It does not expand

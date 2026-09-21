@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Collector representation corrected — 2026-09-21, parent `d151136`
+
+[Local output-size correction](CONTEXT-REPRESENTATION-SIZE-01.md): automatic
+full/index choice now measures the requested JSON format at its actual nesting
+depth. A210-line example keeps full source in3,915 characters rather than a4,590
+character pretty index, and no longer rejects fitting100,000-character context.
+Four new regression checks reject the prior behavior and pass revised behavior;
+existing context checks pass. No model saving or featured update is implied.
+
+한국어: 소스 수집기의 재현 가능한 크기 선택 오류를 수정했다. 정보는 더
+보존하면서 불필요한 출력·거부를 줄였고, 전체 스킬 성능과는 구분한다.
+
 ## Contract candidate rejected — 2026-09-21, measured `19d63ec`
 
 [Six-cell review](CONTRACT-AUDIT-01-REVIEW.md): every arm meets both tasks'
