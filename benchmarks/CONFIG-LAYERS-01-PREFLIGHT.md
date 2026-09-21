@@ -33,6 +33,8 @@ Four fixture controls verify real benchmark workspace materialization, native
 outcomes, separate request maps and relative-interpreter rejection. Python3.11.16
 passes4/4 in0.833s. Python3.9 also passes4/4. There is no third-party dependency.
 Repeated unit-test execution is compatibility checking, not extra model attempts.
+Fresh source archive`d844ede`, without Git history or local-run artifacts, also
+passes all four fixture controls on Python3.11.16 in0.781s, with no skips.
 
 The fixture contains author answer controls outside the task's supplied files;
 model projects receive only `settings.py` and the original `test_settings.py`.
