@@ -77,7 +77,8 @@ These changes are implemented; their model-cost effect is not established:
 Prepared [existing-file probe transfer01](PROBE-EDIT-TRANSFER-01-PREFLIGHT.md):
 one native method in full/prefix upstream test files, both replacement/edit forms.
 All16 author pytest checks establish equal outcomes and copied-file identity;
-smaller serialized requests are not model savings. Six-cell model freeze remains.
+smaller serialized requests are not model savings. [Six-cell launch preparation](PROBE-EDIT-TRANSFER-01-LAUNCH.md)
+freezes baseline/predecessor/current across both sizes; outcomes are not yet reviewed.
 
 Reviewed [natural routing-boundary screen02](ROUTING-BOUNDARY-02-REVIEW.md):
 three ordinary requests, unchanged bundle`ba477ae`, auto-only. All satisfy the
