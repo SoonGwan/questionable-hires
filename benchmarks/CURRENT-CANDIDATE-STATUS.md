@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Checkpoint **2026-09-21, last model resource `99301e9`, ancestry launch `6baa5b7`**.
+Checkpoint **2026-09-21, ZIP candidate `ac108f5`, launch `0807814`**.
 The earlier measured section-read candidate remains withdrawn, not relabeled.
 This is a decision index, not a new
 measurement. [Full chronological history](CANDIDATE-HISTORY-2026-09-21.md) preserves
@@ -20,12 +20,15 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
-Preparation2026-09-21: [ZIP audit01 protocol](ZIP-AUDIT-01-PROTOCOL.md) fixes a
-different authored project with single/multiple-fault controls for the phase-route
-candidate. [Actual native preflight](results/zip-audit-01-preflight/README.md)
-distinguishes both faults; runner`47fe7cf` passes checkout10/10 and source archive
-9pass/1historical skip. Six-cell inputs/resources prepared, no model calls yet.
-한국어: ZIP 감사 과제와 실행기 검증을 마쳤고6회 입력을 고정했다. 모델 성능 결과는 아니다.
+Reviewed2026-09-21: [ZIP audit01](ZIP-AUDIT-01.md), all6complete, all4/4.
+Candidate`ac108f5` versus prior`f7ecb45`: single-fault tokens−21.73% but
+time+19.60%; multiple-fault tokens+0.86%/time+3.97%. Versus baseline, candidate
+tokens+29.94%/+45.24%. Direct-single/batch-multiple routing observed; no accepted
+efficiency win or featured-chart change. Original captures, reviewer correction,
+all adverse cells and [native preflight](results/zip-audit-01-preflight/README.md)
+retained. One correlated authored pair, not independent validation.
+한국어:6회 모두 기준 충족. 단일 결함에서 이전 대비 토큰은 줄었지만 시간이 늘었고,
+무스킬보다 두 과제 모두 토큰이 많았다. 전체 성능 향상으로 채택하지 않는다.
 
 Reviewed checkpoint2026-09-21, resource`35bba0a`, launch`4f47d5b`:
 [effort × skill](EFFORT-FACTORIAL-01.md), all8complete. Actual model/effort and
