@@ -1,0 +1,67 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "config-layers-single",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "95d46542483851602126fadf0acef8ab9441fb78",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 69.089,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 65819,
+    "cached_input_tokens": 54400,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1984,
+    "reasoning_output_tokens": 266
+  },
+  "completed": true,
+  "allocated_workspace": "<WORKSPACE>",
+  "prompt": "Audit the supplied configuration resolver's existing native tests against\nthe requested independent replacements below. Contract: defaults are overridden\nby environment, then explicit overrides. None means absent. False, zero and empty\nstrings remain explicit values. None of the three input mappings may change.\nThere is no parsing, type coercion or unknown-key rejection requirement.\n\nRun the original unchanged test_settings suite on correct code and each isolated\nfault in project-local disposable copies, using the supplied Python's unittest\nrunner. Verify copy-local settings/test_settings paths and their resolve binding\ninside every actual native test process. An import-only preliminary check is not\nsame-process proof. Report native counts, exits and actual assertion values or\nsurvival; import/setup/empty-suite failures are not detection.\n\nFor each survivor, add a focused native regression assertion in a disposable\ncopy, preserving every existing assertion, and verify the same assertion passes\ncorrect code and fails that fault. No added assertion is required for a fault\nalready detected by the original suite. Reuse a successful correct observation\nonly while its inputs, runtime and relevant state remain identical; label reuse\ninstead of counting it as another execution. Choose your own implementation;\nno particular helper or grouping is required.\n\nKeep source/test bytes and modes, Git HEAD/index and supplied skill resources\nunchanged. Remove owned scratch, including failure paths, leaving no permanent\nharness/report. Work only within this project; no network, installation,\nexternal-project search, delegation, Git mutation or publication. Report unknowns\nhonestly. These are authored development inputs, not production incident data.\n\nIndependent replacements:\n[\n  {\n    \"target\": \"settings.py\",\n    \"old\": \"(environment, overrides)\",\n    \"new\": \"(overrides, environment)\"\n  }\n]\nPreinstalled Python: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 225,
+    "mode": 420,
+    "sha256": "33f5c5b6c63825d48848afbd9b0b3ef557c2e08651bb2296a74a87571d747bda",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "pre_model_index": {
+    "status": "retained",
+    "file": "git-index.before-model.bin",
+    "bytes": 225,
+    "mode": 420,
+    "sha256": "33f5c5b6c63825d48848afbd9b0b3ef557c2e08651bb2296a74a87571d747bda",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "index_comparison": {
+    "status": "observed",
+    "bytes_and_mode_unchanged": true,
+    "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+  }
+}

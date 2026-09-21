@@ -1,0 +1,281 @@
+{
+  "identities": {
+    "benchmarks/run_config_layers_01.py": "057cf34087112013766ad2dbaed2a021e589b37fc7704a0bfb29c90ca6392d98",
+    "benchmarks/config_layers_cases.py": "5c77688fa9dd6e8d2558b8bdea0299fbf72263d746564f0f18a2c7ee7c9316f0",
+    "benchmarks/run_packaging_specifier_01.py": "a116f003235261980c42f84af1539303710c4111af0fdc893e772e58a0ba6aa7",
+    "benchmarks/run.py": "b743a84a720f31a412ca13b5b3a48e61566a79a148bc1f3e8dfe73bc04fed079",
+    "benchmarks/CONFIG-LAYERS-01-SELECTION.md": "334c66a507b6056caf954d11dd2a5dd05bb5fb2d52a33b06b852ba8e32109b3e",
+    "benchmarks/CONFIG-LAYERS-01-PROTOCOL.md": "429261a42c46cbe798264c03c36600dd51200e68cc687cb5fe31d87fcba27b8a",
+    "benchmarks/results/config-layers-01-preflight.json": "ffe310ab5a67a9cfc380745a1dd21199019061802a2acb092d98c8bc8fe3d2a9",
+    "tests/test_config_layers_cases.py": "69982968d08f21bda9aa0f82cbe33e61be783cc9d0ae9a4e961a2327ddbc5b43",
+    "tests/test_config_layers_runner.py": "225e8e5c44ae6822d2398ea14c21cf7abf712e329b25f96812a32b3c55873610",
+    "tests/test_packaging_specifier_runner.py": "181bc3a48220db81b3c15963e0d7cc1180c7d45b377269ef02f873246fa24070"
+  },
+  "cases": [
+    {
+      "id": "config-layers-single",
+      "skill": "con-artist",
+      "files": {
+        "settings.py": "def resolve(defaults, environment, overrides):\n    result = dict(defaults)\n    for layer in (environment, overrides):\n        for key, value in layer.items():\n            if value is not None:\n                result[key] = value\n    return result\n",
+        "test_settings.py": "import unittest\nfrom settings import resolve\n\nclass SettingsTests(unittest.TestCase):\n    def test_defaults(self):\n        self.assertEqual(resolve({'retries': 3}, {}, {}), {'retries': 3})\n    def test_environment(self):\n        self.assertEqual(resolve({'retries': 3}, {'retries': 4}, {}), {'retries': 4})\n    def test_override(self):\n        self.assertEqual(resolve({'retries': 3}, {}, {'retries': 5}), {'retries': 5})\n    def test_absent_override(self):\n        self.assertEqual(resolve({'retries': 3}, {}, {'retries': None}), {'retries': 3})\n"
+      },
+      "task": "Audit the supplied configuration resolver's existing native tests against\nthe requested independent replacements below. Contract: defaults are overridden\nby environment, then explicit overrides. None means absent. False, zero and empty\nstrings remain explicit values. None of the three input mappings may change.\nThere is no parsing, type coercion or unknown-key rejection requirement.\n\nRun the original unchanged test_settings suite on correct code and each isolated\nfault in project-local disposable copies, using the supplied Python's unittest\nrunner. Verify copy-local settings/test_settings paths and their resolve binding\ninside every actual native test process. An import-only preliminary check is not\nsame-process proof. Report native counts, exits and actual assertion values or\nsurvival; import/setup/empty-suite failures are not detection.\n\nFor each survivor, add a focused native regression assertion in a disposable\ncopy, preserving every existing assertion, and verify the same assertion passes\ncorrect code and fails that fault. No added assertion is required for a fault\nalready detected by the original suite. Reuse a successful correct observation\nonly while its inputs, runtime and relevant state remain identical; label reuse\ninstead of counting it as another execution. Choose your own implementation;\nno particular helper or grouping is required.\n\nKeep source/test bytes and modes, Git HEAD/index and supplied skill resources\nunchanged. Remove owned scratch, including failure paths, leaving no permanent\nharness/report. Work only within this project; no network, installation,\nexternal-project search, delegation, Git mutation or publication. Report unknowns\nhonestly. These are authored development inputs, not production incident data.\n\nIndependent replacements:\n[\n  {\n    \"target\": \"settings.py\",\n    \"old\": \"(environment, overrides)\",\n    \"new\": \"(overrides, environment)\"\n  }\n]\nPreinstalled Python: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+      "criteria": [
+        "Copy-local module/test binding verified in every actual native test process.",
+        "Unchanged original suite passes correct code and runs every isolated requested fault.",
+        "Detection/survival uses native counts, exits and actual assertions, not support errors.",
+        "Every survivor has a native stronger assertion passing correct code and rejecting it unchanged.",
+        "Original bytes/modes/Git/resources preserved, owned scratch removed, project-only scope kept."
+      ]
+    },
+    {
+      "id": "config-layers-multiple",
+      "skill": "con-artist",
+      "files": {
+        "settings.py": "def resolve(defaults, environment, overrides):\n    result = dict(defaults)\n    for layer in (environment, overrides):\n        for key, value in layer.items():\n            if value is not None:\n                result[key] = value\n    return result\n",
+        "test_settings.py": "import unittest\nfrom settings import resolve\n\nclass SettingsTests(unittest.TestCase):\n    def test_defaults(self):\n        self.assertEqual(resolve({'retries': 3}, {}, {}), {'retries': 3})\n    def test_environment(self):\n        self.assertEqual(resolve({'retries': 3}, {'retries': 4}, {}), {'retries': 4})\n    def test_override(self):\n        self.assertEqual(resolve({'retries': 3}, {}, {'retries': 5}), {'retries': 5})\n    def test_absent_override(self):\n        self.assertEqual(resolve({'retries': 3}, {}, {'retries': None}), {'retries': 3})\n"
+      },
+      "task": "Audit the supplied configuration resolver's existing native tests against\nthe requested independent replacements below. Contract: defaults are overridden\nby environment, then explicit overrides. None means absent. False, zero and empty\nstrings remain explicit values. None of the three input mappings may change.\nThere is no parsing, type coercion or unknown-key rejection requirement.\n\nRun the original unchanged test_settings suite on correct code and each isolated\nfault in project-local disposable copies, using the supplied Python's unittest\nrunner. Verify copy-local settings/test_settings paths and their resolve binding\ninside every actual native test process. An import-only preliminary check is not\nsame-process proof. Report native counts, exits and actual assertion values or\nsurvival; import/setup/empty-suite failures are not detection.\n\nFor each survivor, add a focused native regression assertion in a disposable\ncopy, preserving every existing assertion, and verify the same assertion passes\ncorrect code and fails that fault. No added assertion is required for a fault\nalready detected by the original suite. Reuse a successful correct observation\nonly while its inputs, runtime and relevant state remain identical; label reuse\ninstead of counting it as another execution. Choose your own implementation;\nno particular helper or grouping is required.\n\nKeep source/test bytes and modes, Git HEAD/index and supplied skill resources\nunchanged. Remove owned scratch, including failure paths, leaving no permanent\nharness/report. Work only within this project; no network, installation,\nexternal-project search, delegation, Git mutation or publication. Report unknowns\nhonestly. These are authored development inputs, not production incident data.\n\nIndependent replacements:\n[\n  {\n    \"target\": \"settings.py\",\n    \"old\": \"(environment, overrides)\",\n    \"new\": \"(overrides, environment)\"\n  },\n  {\n    \"target\": \"settings.py\",\n    \"old\": \"if value is not None:\",\n    \"new\": \"if value:\"\n  },\n  {\n    \"target\": \"settings.py\",\n    \"old\": \"result = dict(defaults)\",\n    \"new\": \"result = defaults\"\n  },\n  {\n    \"target\": \"settings.py\",\n    \"old\": \"if value is not None:\",\n    \"new\": \"if True:\"\n  }\n]\nPreinstalled Python: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+      "criteria": [
+        "Copy-local module/test binding verified in every actual native test process.",
+        "Unchanged original suite passes correct code and runs every isolated requested fault.",
+        "Detection/survival uses native counts, exits and actual assertions, not support errors.",
+        "Every survivor has a native stronger assertion passing correct code and rejecting it unchanged.",
+        "Original bytes/modes/Git/resources preserved, owned scratch removed, project-only scope kept."
+      ]
+    }
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "jobs": 1,
+    "repeats": 1
+  },
+  "schedule": [
+    [
+      0,
+      "baseline"
+    ],
+    [
+      0,
+      "current"
+    ],
+    [
+      1,
+      "current"
+    ],
+    [
+      1,
+      "baseline"
+    ]
+  ],
+  "environment": {
+    "python": "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+    "version": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "dependencies": [
+      "iniconfig==2.3.0",
+      "packaging==26.3",
+      "pluggy==1.6.0",
+      "pytest==8.3.4",
+      "PyYAML==6.0.3"
+    ]
+  },
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "current": "6ef0b6415608dea4bd6f5fc853f694fa80bb41c26f2296fc4ae5bf1fa0624a80"
+  },
+  "resource_revision": "e1e1ef8d7aefed20ba15b249fd4e097f64313b51",
+  "preflight_capture": {
+    "kind": "author native preflight, not model evidence",
+    "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "helper_sha256": "bd97726c4ab174d48f2613dfd8a694124276356d00636ee6748e9ba53585ff25",
+    "fixture_sha256": "5c77688fa9dd6e8d2558b8bdea0299fbf72263d746564f0f18a2c7ee7c9316f0",
+    "cases": {
+      "single": {
+        "status": "observed",
+        "audits": [
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-ds1ygvlb/correct-tests\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"88670863d1291513f4e350e0091f321b6ec19903d146a7884b40c75434ee35d9\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"32c4e22ebd306606e34acde4a3eab9dfdcbb69124e532f1d4ff559f6b98d749d\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+                "output_truncated": false
+              },
+              "mutant_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-ds1ygvlb/mutant-tests\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"5b97c4d36bfa9e79bbc256c806ace1602160717f9382b3395a0780ee90d9f5be\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"32c4e22ebd306606e34acde4a3eab9dfdcbb69124e532f1d4ff559f6b98d749d\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+                "output_truncated": false
+              },
+              "correct_probe": {
+                "exit_code": 0,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-ds1ygvlb/correct-probe\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"88670863d1291513f4e350e0091f321b6ec19903d146a7884b40c75434ee35d9\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"226290131f1d5bf926578d43f82487a6d14bdd2fa7c57070d3cbafbef6e15d57\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_layer_interactions_and_preservation (test_settings.SettingsTests.test_layer_interactions_and_preservation) ... ok\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK\n",
+                "output_truncated": false
+              },
+              "mutant_probe": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-ds1ygvlb/mutant-probe\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"5b97c4d36bfa9e79bbc256c806ace1602160717f9382b3395a0780ee90d9f5be\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"226290131f1d5bf926578d43f82487a6d14bdd2fa7c57070d3cbafbef6e15d57\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_layer_interactions_and_preservation (test_settings.SettingsTests.test_layer_interactions_and_preservation) ... FAIL\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n======================================================================\nFAIL: test_layer_interactions_and_preservation (test_settings.SettingsTests.test_layer_interactions_and_preservation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PROJECT>/.con-artist-ds1ygvlb/mutant-probe/test_settings.py\", line 19, in test_layer_interactions_and_preservation\n    self.assertEqual(resolve(defaults, environment, overrides),\nAssertionError: {'enabled': False, 'retries': 0, 'region': 'us', 'label': ''} != {'enabled': False, 'retries': 0, 'region': 'ap', 'label': ''}\n- {'enabled': False, 'label': '', 'region': 'us', 'retries': 0}\n?                                            ^^\n\n+ {'enabled': False, 'label': '', 'region': 'ap', 'retries': 0}\n?                                            ^^\n\n\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nFAILED (failures=1)\n",
+                "output_truncated": false
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "integrity": {
+              "selected_files": 2,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true
+            }
+          }
+        ],
+        "limitation": "Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled."
+      },
+      "multiple": {
+        "status": "observed",
+        "audits": [
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-3g54tyim/correct-tests\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"88670863d1291513f4e350e0091f321b6ec19903d146a7884b40c75434ee35d9\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"32c4e22ebd306606e34acde4a3eab9dfdcbb69124e532f1d4ff559f6b98d749d\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+                "output_truncated": false
+              },
+              "mutant_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-3g54tyim/mutant-tests\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"5b97c4d36bfa9e79bbc256c806ace1602160717f9382b3395a0780ee90d9f5be\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"32c4e22ebd306606e34acde4a3eab9dfdcbb69124e532f1d4ff559f6b98d749d\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+                "output_truncated": false
+              },
+              "correct_probe": {
+                "exit_code": 0,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-3g54tyim/correct-probe\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"88670863d1291513f4e350e0091f321b6ec19903d146a7884b40c75434ee35d9\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"226290131f1d5bf926578d43f82487a6d14bdd2fa7c57070d3cbafbef6e15d57\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_layer_interactions_and_preservation (test_settings.SettingsTests.test_layer_interactions_and_preservation) ... ok\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK\n",
+                "output_truncated": false
+              },
+              "mutant_probe": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-3g54tyim/mutant-probe\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"5b97c4d36bfa9e79bbc256c806ace1602160717f9382b3395a0780ee90d9f5be\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"226290131f1d5bf926578d43f82487a6d14bdd2fa7c57070d3cbafbef6e15d57\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_layer_interactions_and_preservation (test_settings.SettingsTests.test_layer_interactions_and_preservation) ... FAIL\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n======================================================================\nFAIL: test_layer_interactions_and_preservation (test_settings.SettingsTests.test_layer_interactions_and_preservation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PROJECT>/.con-artist-3g54tyim/mutant-probe/test_settings.py\", line 19, in test_layer_interactions_and_preservation\n    self.assertEqual(resolve(defaults, environment, overrides),\nAssertionError: {'enabled': False, 'retries': 0, 'region': 'us', 'label': ''} != {'enabled': False, 'retries': 0, 'region': 'ap', 'label': ''}\n- {'enabled': False, 'label': '', 'region': 'us', 'retries': 0}\n?                                            ^^\n\n+ {'enabled': False, 'label': '', 'region': 'ap', 'retries': 0}\n?                                            ^^\n\n\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nFAILED (failures=1)\n",
+                "output_truncated": false
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "integrity": {
+              "selected_files": 2,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true
+            }
+          },
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "observation_ref": "#/audits/0/checks/correct_tests"
+              },
+              "mutant_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-9k0xubzg/mutant-tests\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"c4ba831df20a36eefe2b78ad079825278155c98871f3f453cd7101a35cf6db8a\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"32c4e22ebd306606e34acde4a3eab9dfdcbb69124e532f1d4ff559f6b98d749d\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+                "output_truncated": false
+              },
+              "correct_probe": {
+                "exit_code": 0,
+                "timed_out": false,
+                "observation_ref": "#/audits/0/checks/correct_probe"
+              },
+              "mutant_probe": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-9k0xubzg/mutant-probe\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"c4ba831df20a36eefe2b78ad079825278155c98871f3f453cd7101a35cf6db8a\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"226290131f1d5bf926578d43f82487a6d14bdd2fa7c57070d3cbafbef6e15d57\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_layer_interactions_and_preservation (test_settings.SettingsTests.test_layer_interactions_and_preservation) ... FAIL\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n======================================================================\nFAIL: test_layer_interactions_and_preservation (test_settings.SettingsTests.test_layer_interactions_and_preservation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PROJECT>/.con-artist-9k0xubzg/mutant-probe/test_settings.py\", line 19, in test_layer_interactions_and_preservation\n    self.assertEqual(resolve(defaults, environment, overrides),\nAssertionError: {'enabled': True, 'retries': 3, 'region': 'ap', 'label': 'default'} != {'enabled': False, 'retries': 0, 'region': 'ap', 'label': ''}\n- {'enabled': True, 'label': 'default', 'region': 'ap', 'retries': 3}\n?             ^^^             -------                              ^\n\n+ {'enabled': False, 'label': '', 'region': 'ap', 'retries': 0}\n?             ^^^^                                           ^\n\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nFAILED (failures=1)\n",
+                "output_truncated": false
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "correct_tests_reused": true,
+            "correct_probe_reused": true,
+            "integrity": {
+              "selected_files": 2,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true
+            }
+          },
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "observation_ref": "#/audits/0/checks/correct_tests"
+              },
+              "mutant_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-f_mylwbh/mutant-tests\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"9628417f4cc4055bfa266e98ada1f083c283ccb42a51d4fd92420f26b9758d8d\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"32c4e22ebd306606e34acde4a3eab9dfdcbb69124e532f1d4ff559f6b98d749d\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+                "output_truncated": false
+              },
+              "correct_probe": {
+                "exit_code": 0,
+                "timed_out": false,
+                "observation_ref": "#/audits/0/checks/correct_probe"
+              },
+              "mutant_probe": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-f_mylwbh/mutant-probe\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"9628417f4cc4055bfa266e98ada1f083c283ccb42a51d4fd92420f26b9758d8d\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"226290131f1d5bf926578d43f82487a6d14bdd2fa7c57070d3cbafbef6e15d57\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ok\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_layer_interactions_and_preservation (test_settings.SettingsTests.test_layer_interactions_and_preservation) ... FAIL\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n======================================================================\nFAIL: test_layer_interactions_and_preservation (test_settings.SettingsTests.test_layer_interactions_and_preservation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PROJECT>/.con-artist-f_mylwbh/mutant-probe/test_settings.py\", line 21, in test_layer_interactions_and_preservation\n    self.assertEqual([defaults, environment, overrides], before)\nAssertionError: Lists differ: [{'enabled': False, 'retries': 0, 'region': 'ap', 'lab[102 chars]one}] != [{'enabled': True, 'retries': 3, 'region': 'eu', 'labe[108 chars]one}]\n\nFirst differing element 0:\n{'enabled': False, 'retries': 0, 'region': 'ap', 'label': ''}\n{'enabled': True, 'retries': 3, 'region': 'eu', 'label': 'default'}\n\n- [{'enabled': False, 'label': '', 'region': 'ap', 'retries': 0},\n?              ^^^^                           ^^              ^\n\n+ [{'enabled': True, 'label': 'default', 'region': 'eu', 'retries': 3},\n?              ^^^             +++++++              ^^              ^\n\n   {'enabled': False, 'label': '', 'region': 'us', 'retries': 0},\n   {'region': 'ap', 'retries': None}]\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nFAILED (failures=1)\n",
+                "output_truncated": false
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "correct_tests_reused": true,
+            "correct_probe_reused": true,
+            "integrity": {
+              "selected_files": 2,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true
+            }
+          },
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "observation_ref": "#/audits/0/checks/correct_tests"
+              },
+              "mutant_tests": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\",\"cwd\":\"<PROJECT>/.con-artist-jhohgpa_/mutant-tests\"}\nVerified copied import: settings {\"path\":\"settings.py\",\"sha256\":\"f7bf157c77d405e036d2289aa3b3dbd813a21d6e021206f77acfb0c7c48f6696\"}\nVerified copied import: test_settings {\"path\":\"test_settings.py\",\"sha256\":\"32c4e22ebd306606e34acde4a3eab9dfdcbb69124e532f1d4ff559f6b98d749d\"}\nPrecheck completed in check process.\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... FAIL\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ok\ntest_environment (test_settings.SettingsTests.test_environment) ... ok\ntest_override (test_settings.SettingsTests.test_override) ... ok\n\n======================================================================\nFAIL: test_absent_override (test_settings.SettingsTests.test_absent_override)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PROJECT>/.con-artist-jhohgpa_/mutant-tests/test_settings.py\", line 12, in test_absent_override\n    self.assertEqual(resolve({'retries': 3}, {}, {'retries': None}), {'retries': 3})\nAssertionError: {'retries': None} != {'retries': 3}\n- {'retries': None}\n?             ^^^^\n\n+ {'retries': 3}\n?             ^\n\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nFAILED (failures=1)\n",
+                "output_truncated": false
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "probe_skipped": "Mutant tests exited nonzero; inspect their failure before any coverage claim. Proposed probe was not validated.",
+            "correct_tests_reused": true,
+            "integrity": {
+              "selected_files": 2,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true
+            }
+          }
+        ],
+        "limitation": "Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled."
+      }
+    },
+    "fresh_import": {
+      "exit_code": 0,
+      "output": "fresh public import passed\n"
+    },
+    "originals_unchanged": true
+  },
+  "completed_cells": [],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T12:37:59.746722+00:00"
+}

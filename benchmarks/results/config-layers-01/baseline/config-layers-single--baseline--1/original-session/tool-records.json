@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0c3f9-7db9-7cd2-94d4-e14ac0c2bd68",
+  "source_bytes": 122796,
+  "source_sha256": "5e62362bca50b07a84ad85055ff629741458244d5f68872dd4e27b41771fe142",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "edde91580d4b2a7aa8e03553234f06820504d27bab3d07071f8eb30e04c1a79a",
+      "record": {
+        "timestamp": "2026-09-21T12:38:29.889Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0546ab6c91abbb9e016ab12544070487d0bac334229a0f27e1",
+          "status": "completed",
+          "call_id": "call_BpIitFPs2CKQf9nepVQX1DrN",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g '*.py' -g 'pyproject.toml'; git status --porcelain; git rev-parse HEAD; git ls-files -s\",max_output_tokens:6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3f9-7e01-7ad3-8f4c-7976eefb919c",
+            "create_time": 1789994305.366564
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "5841eca1c85e56e29cecc52858da85beb6a584126f449cb8d663827c7ac78593",
+      "record": {
+        "timestamp": "2026-09-21T12:38:30.084Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3f9-99c4-7343-8861-3ded57d302e5",
+          "call_id": "call_BpIitFPs2CKQf9nepVQX1DrN",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"5cf991\",\"wall_time_seconds\":0.000002333,\"exit_code\":0,\"original_token_count\":87,\"output\":\"<WORKSPACE>\\ntest_settings.py\\nsettings.py\\n95d46542483851602126fadf0acef8ab9441fb78\\n100644 a82c0d6d72fc3c3a9e504ca10a588c8d03e142d9 0\\tsettings.py\\n100644 280bfd2b0dcb1dcc13cf437825ad2669b242fc64 0\\ttest_settings.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3f9-7e01-7ad3-8f4c-7976eefb919c",
+            "create_time": 1789994310.08437
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "07eefe172e88d9d89bda96dcd32cc099e0cb99e3afc70e2c2fa702dd69d2c372",
+      "record": {
+        "timestamp": "2026-09-21T12:38:33.101Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0546ab6c91abbb9e016ab12547bbb887d094cc7af524276fb4",
+          "status": "completed",
+          "call_id": "call_fOxhFe5HXu8TPptJR1J58W5E",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; cat settings.py test_settings.py; if [ -f AGENTS.md ]; then cat AGENTS.md; fi\",max_output_tokens:6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3f9-7e01-7ad3-8f4c-7976eefb919c",
+            "create_time": 1789994310.519424
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "3cf3c00b90dc7f87b9471bf1f81c9e62b818dccb6e94ccccbfd29f5a5c3ac973",
+      "record": {
+        "timestamp": "2026-09-21T12:38:33.204Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3f9-a5f4-7a71-983b-37b766299f67",
+          "call_id": "call_fOxhFe5HXu8TPptJR1J58W5E",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"32062d\",\"wall_time_seconds\":0.000002917,\"exit_code\":0,\"original_token_count\":268,\"output\":\"total 16\\ndrwxr-xr-x@  5 admin  staff  160 Sep 21 21:38 .\\ndrwxr-xr-x@  3 admin  staff   96 Sep 21 21:38 ..\\ndrwxr-xr-x@ 10 admin  staff  320 Sep 21 21:38 .git\\n-rw-r--r--@  1 admin  staff  247 Sep 21 21:38 settings.py\\n-rw-r--r--@  1 admin  staff  547 Sep 21 21:38 test_settings.py\\ndef resolve(defaults, environment, overrides):\\n    result = dict(defaults)\\n    for layer in (environment, overrides):\\n        for key, value in layer.items():\\n            if value is not None:\\n                result[key] = value\\n    return result\\nimport unittest\\nfrom settings import resolve\\n\\nclass SettingsTests(unittest.TestCase):\\n    def test_defaults(self):\\n        self.assertEqual(resolve({'retries': 3}, {}, {}), {'retries': 3})\\n    def test_environment(self):\\n        self.assertEqual(resolve({'retries': 3}, {'retries': 4}, {}), {'retries': 4})\\n    def test_override(self):\\n        self.assertEqual(resolve({'retries': 3}, {}, {'retries': 5}), {'retries': 5})\\n    def test_absent_override(self):\\n        self.assertEqual(resolve({'retries': 3}, {}, {'retries': None}), {'retries': 3})\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3f9-7e01-7ad3-8f4c-7976eefb919c",
+            "create_time": 1789994313.20487
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "5d002b4e566b1b8cbc79de8c7804f65995519db4262144c9db892d022c559673",
+      "record": {
+        "timestamp": "2026-09-21T12:39:19.138Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0546ab6c91abbb9e016ab12556452487d09469bec798617d93",
+          "status": "completed",
+          "call_id": "call_1Ogv9Gy2vClfYMFgTgWyyYk2",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python -B - <<'PY'\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport stat\\nimport subprocess\\nimport sys\\nimport tempfile\\n\\nroot = Path.cwd()\\ndef snapshot():\\n    result = {}\\n    for p in sorted(root.rglob('*')):\\n        if scratch is not None and (p == scratch or scratch in p.parents):\\n            continue\\n        s = p.lstat()\\n        if p.is_symlink():\\n            result[str(p.relative_to(root))] = (stat.S_IMODE(s.st_mode), 'link', os.readlink(p))\\n        elif p.is_file():\\n            result[str(p.relative_to(root))] = (stat.S_IMODE(s.st_mode), 'file', p.read_bytes())\\n        elif p.is_dir():\\n            result[str(p.relative_to(root))] = (stat.S_IMODE(s.st_mode), 'dir')\\n    return result\\nscratch = None\\nbefore = snapshot()\\nsource = (root / 'settings.py').read_bytes()\\ntests = (root / 'test_settings.py').read_bytes()\\nold = b'(environment, overrides)'\\nassert source.count(old) == 1\\naddition = b\\\"\\\\n    def test_override_beats_environment(self):\\\\n        self.assertEqual(resolve({'retries': 3}, {'retries': 4}, {'retries': 5}), {'retries': 5})\\\\n\\\"\\nprobe = '''import pathlib\\nimport sys\\nimport unittest\\nimport settings\\nimport test_settings\\n\\nbase = pathlib.Path(__file__).resolve().parent\\nfor module, name in ((settings, 'settings.py'), (test_settings, 'test_settings.py')):\\n    actual = pathlib.Path(module.__file__).resolve()\\n    assert actual == base / name, (actual, base / name)\\n    print('PROVENANCE ' + name + '=' + str(actual), flush=True)\\nassert test_settings.resolve is settings.resolve\\nassert pathlib.Path(test_settings.resolve.__code__.co_filename).resolve() == base / 'settings.py'\\nprint('PROVENANCE test_settings.resolve is settings.resolve=True; code=' + test_settings.resolve.__code__.co_filename, flush=True)\\nprint('RUNTIME ' + sys.executable + ' ' + sys.version.replace('\\\\\\\\n', ' '), flush=True)\\noriginal_equal = unittest.TestCase.assertEqual\\ndef observed_equal(self, first, second, *args, **kwargs):\\n    print('ASSERT ' + self.id() + ' actual=' + repr(first) + ' expected=' + repr(second), flush=True)\\n    return original_equal(self, first, second, *args, **kwargs)\\nunittest.TestCase.assertEqual = observed_equal\\nprogram = unittest.main(module=test_settings, argv=['test_settings', '-v'], exit=False)\\nr = program.result\\nprint('NATIVE testsRun=%d failures=%d errors=%d skipped=%d' % (r.testsRun, len(r.failures), len(r.errors), len(r.skipped)), flush=True)\\nassert r.testsRun > 0\\nsys.exit(0 if r.wasSuccessful() else 1)\\n'''\\ntry:\\n    scratch = Path(tempfile.mkdtemp(prefix='.resolver-audit-', dir=root))\\n    for augmented in (False, True):\\n        for faulty in (False, True):\\n            label = ('regression' if augmented else 'original') + '-' + ('fault' if faulty else 'correct')\\n            case = scratch / label\\n            case.mkdir()\\n            for name in ('settings.py', 'test_settings.py'):\\n                shutil.copy2(root / name, case / name)\\n            if faulty:\\n                (case / 'settings.py').write_bytes(source.replace(old, b'(overrides, environment)'))\\n            if augmented:\\n                (case / 'test_settings.py').write_bytes(tests + addition)\\n            assert (case / 'test_settings.py').read_bytes() == tests + (addition if augmented else b'')\\n            (case / 'native_probe.py').write_text(probe)\\n            print('\\\\nEXECUTION ' + label, flush=True)\\n            result = subprocess.run([sys.executable, '-B', str(case / 'native_probe.py')], cwd=case, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'}, timeout=30)\\n            print(result.stdout, end='', flush=True)\\n            print('PROCESS EXIT ' + str(result.returncode), flush=True)\\n            expected = 1 if augmented and faulty else 0\\n            assert result.returncode == expected, (label, result.returncode)\\nfinally:\\n    if scratch is not None:\\n        shutil.rmtree(scratch)\\n    after = snapshot()\\n    assert before == after, 'Project bytes/modes/entries changed'\\n    print('\\\\nCLEANUP verified: owned scratch removed; all original project file bytes/modes and entries, including Git HEAD/index, unchanged.', flush=True)\\nPY\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3f9-7e01-7ad3-8f4c-7976eefb919c",
+            "create_time": 1789994313.653749
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "494527ad80ff197afa3c1df839d55fd171ec79dc909615c7cbac9bd1ac18c6f8",
+      "record": {
+        "timestamp": "2026-09-21T12:39:19.455Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c3fa-5a9f-7e23-b98e-77d623130fee",
+          "call_id": "call_1Ogv9Gy2vClfYMFgTgWyyYk2",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a43268\",\"wall_time_seconds\":0.124809875,\"exit_code\":0,\"original_token_count\":2200,\"output\":\"\\nEXECUTION original-correct\\nPROVENANCE settings.py=<WORKSPACE>/.resolver-audit-6feoajgz/original-correct/settings.py\\nPROVENANCE test_settings.py=<WORKSPACE>/.resolver-audit-6feoajgz/original-correct/test_settings.py\\nPROVENANCE test_settings.resolve is settings.resolve=True; code=<WORKSPACE>/.resolver-audit-6feoajgz/original-correct/settings.py\\nRUNTIME <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python 3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]\\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ASSERT test_settings.SettingsTests.test_absent_override actual={'retries': 3} expected={'retries': 3}\\nok\\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ASSERT test_settings.SettingsTests.test_defaults actual={'retries': 3} expected={'retries': 3}\\nok\\ntest_environment (test_settings.SettingsTests.test_environment) ... ASSERT test_settings.SettingsTests.test_environment actual={'retries': 4} expected={'retries': 4}\\nok\\ntest_override (test_settings.SettingsTests.test_override) ... ASSERT test_settings.SettingsTests.test_override actual={'retries': 5} expected={'retries': 5}\\nok\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.000s\\n\\nOK\\nNATIVE testsRun=4 failures=0 errors=0 skipped=0\\nPROCESS EXIT 0\\n\\nEXECUTION original-fault\\nPROVENANCE settings.py=<WORKSPACE>/.resolver-audit-6feoajgz/original-fault/settings.py\\nPROVENANCE test_settings.py=<WORKSPACE>/.resolver-audit-6feoajgz/original-fault/test_settings.py\\nPROVENANCE test_settings.resolve is settings.resolve=True; code=<WORKSPACE>/.resolver-audit-6feoajgz/original-fault/settings.py\\nRUNTIME <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python 3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]\\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ASSERT test_settings.SettingsTests.test_absent_override actual={'retries': 3} expected={'retries': 3}\\nok\\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ASSERT test_settings.SettingsTests.test_defaults actual={'retries': 3} expected={'retries': 3}\\nok\\ntest_environment (test_settings.SettingsTests.test_environment) ... ASSERT test_settings.SettingsTests.test_environment actual={'retries': 4} expected={'retries': 4}\\nok\\ntest_override (test_settings.SettingsTests.test_override) ... ASSERT test_settings.SettingsTests.test_override actual={'retries': 5} expected={'retries': 5}\\nok\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.000s\\n\\nOK\\nNATIVE testsRun=4 failures=0 errors=0 skipped=0\\nPROCESS EXIT 0\\n\\nEXECUTION regression-correct\\nPROVENANCE settings.py=<WORKSPACE>/.resolver-audit-6feoajgz/regression-correct/settings.py\\nPROVENANCE test_settings.py=<WORKSPACE>/.resolver-audit-6feoajgz/regression-correct/test_settings.py\\nPROVENANCE test_settings.resolve is settings.resolve=True; code=<WORKSPACE>/.resolver-audit-6feoajgz/regression-correct/settings.py\\nRUNTIME <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python 3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]\\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ASSERT test_settings.SettingsTests.test_absent_override actual={'retries': 3} expected={'retries': 3}\\nok\\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ASSERT test_settings.SettingsTests.test_defaults actual={'retries': 3} expected={'retries': 3}\\nok\\ntest_environment (test_settings.SettingsTests.test_environment) ... ASSERT test_settings.SettingsTests.test_environment actual={'retries': 4} expected={'retries': 4}\\nok\\ntest_override (test_settings.SettingsTests.test_override) ... ASSERT test_settings.SettingsTests.test_override actual={'retries': 5} expected={'retries': 5}\\nok\\ntest_override_beats_environment (test_settings.SettingsTests.test_override_beats_environment) ... ASSERT test_settings.SettingsTests.test_override_beats_environment actual={'retries': 5} expected={'retries': 5}\\nok\\n\\n----------------------------------------------------------------------\\nRan 5 tests in 0.000s\\n\\nOK\\nNATIVE testsRun=5 failures=0 errors=0 skipped=0\\nPROCESS EXIT 0\\n\\nEXECUTION regression-fault\\nPROVENANCE settings.py=<WORKSPACE>/.resolver-audit-6feoajgz/regression-fault/settings.py\\nPROVENANCE test_settings.py=<WORKSPACE>/.resolver-audit-6feoajgz/regression-fault/test_settings.py\\nPROVENANCE test_settings.resolve is settings.resolve=True; code=<WORKSPACE>/.resolver-audit-6feoajgz/regression-fault/settings.py\\nRUNTIME <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python 3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]\\ntest_absent_override (test_settings.SettingsTests.test_absent_override) ... ASSERT test_settings.SettingsTests.test_absent_override actual={'retries': 3} expected={'retries': 3}\\nok\\ntest_defaults (test_settings.SettingsTests.test_defaults) ... ASSERT test_settings.SettingsTests.test_defaults actual={'retries': 3} expected={'retries': 3}\\nok\\ntest_environment (test_settings.SettingsTests.test_environment) ... ASSERT test_settings.SettingsTests.test_environment actual={'retries': 4} expected={'retries': 4}\\nok\\ntest_override (test_settings.SettingsTests.test_override) ... ASSERT test_settings.SettingsTests.test_override actual={'retries': 5} expected={'retries': 5}\\nok\\ntest_override_beats_environment (test_settings.SettingsTests.test_override_beats_environment) ... ASSERT test_settings.SettingsTests.test_override_beats_environment actual={'retries': 4} expected={'retries': 5}\\nFAIL\\n\\n======================================================================\\nFAIL: test_override_beats_environment (test_settings.SettingsTests.test_override_beats_environment)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.resolver-audit-6feoajgz/regression-fault/test_settings.py\\\", line 15, in test_override_beats_environment\\n    self.assertEqual(resolve({'retries': 3}, {'retries': 4}, {'retries': 5}), {'retries': 5})\\n  File \\\"<WORKSPACE>/.resolver-audit-6feoajgz/regression-fault/native_probe.py\\\", line 19, in observed_equal\\n    return original_equal(self, first, second, *args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError: {'retries': 4} != {'retries': 5}\\n- {'retries': 4}\\n?             ^\\n\\n+ {'retries': 5}\\n?             ^\\n\\n\\n----------------------------------------------------------------------\\nRan 5 tests in 0.000s\\n\\nFAILED (failures=1)\\nNATIVE testsRun=5 failures=1 errors=0 skipped=0\\nPROCESS EXIT 1\\n\\nCLEANUP verified: owned scratch removed; all original project file bytes/modes and entries, including Git HEAD/index, unchanged.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c3f9-7e01-7ad3-8f4c-7976eefb919c",
+            "create_time": 1789994359.455935
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

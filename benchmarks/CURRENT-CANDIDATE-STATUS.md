@@ -20,6 +20,15 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
+Reviewed2026-09-21: [configuration-layer audit01](CONFIG-LAYERS-01-REVIEW.md),
+resource`e1e1ef8`, launch`106c012`: all four cells complete with native
+sensitivity/preservation evidence; multiple/current incorrectly denies baseline
+reuse, so no unqualified task pass. Single tokens+4.65%/time+2.26%; multiple+0.38%/−1.28%.
+Both arms use custom harnesses (4/11 native processes), not the shipped helper.
+Original truncation is reconciled with retained fragments, not replay; source,
+resources,HEAD and initial/final index identities match. No cost promotion.
+한국어: 결함 검출·보존은 확인했지만 스킬의 재사용 보고 오류가 남았고 토큰 절감도 없었다.
+
 Reviewed2026-09-21: [all-eight regression04](ALL-EIGHT-CURRENT-04-REVIEW.md)
 retains all16 complete cells at bundle`0d12dd9`, launch`c2a0748`. Functional/artifact
 obligations hold in both arms; including scope gives baseline7/8,current8/8
@@ -143,9 +152,10 @@ Preparation2026-09-21, selection`e004fdf`, fixed resource`e1e1ef8`:
 [configuration-layer controls](CONFIG-LAYERS-01-PREFLIGHT.md) retain all four
 declared faults: three survive original native tests and fail a stronger
 assertion; one is already detected. Single/four requests share identical inputs.
-Native bindings/preservation/cleanup and fixture controls pass; no model launch,
+Native bindings/preservation/cleanup and fixture controls pass; at preparation
+there was no model launch. Subsequent original model review is above; no
 independent validation or new cache-attribution claim.
-한국어: 새 설정 병합 감사의 실행 준비 검증 완료이며 모델 성능 결과는 아니다.
+한국어: 준비 검증과 이후 모델 결과를 구분하며 독립 검증으로 주장하지 않는다.
 The [four-cell schedule](CONFIG-LAYERS-01-PROTOCOL.md) at`c852644` now passes
 8checkout controls,7archive controls/1historical skip; actual inputs/resources
 are prepared for one execution. This does not establish a completed comparison.
