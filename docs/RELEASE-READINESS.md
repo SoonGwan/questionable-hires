@@ -27,6 +27,10 @@ provides labeled reading copies of eight identified author-path/account artifact
 Their original hashes and non-string values are retained, but originals remain
 in the current tree/history. Do not mistake derivative availability for safe
 public-clone disposition; no history rewrite or visibility change is authorized.
+[Earlier-inventory classification](../benchmarks/PUBLIC-PATH-CLASSIFICATION-01.md)
+covers all284 path-shaped object-lines, distinguishing real owner/account paths
+from temporary shapes and retained test/documentation data. This does not replace
+owner disposition or a current-source public review.
 
 Preserve failure/skipped records and resource revisions. Skipped historical-source
 checks in an archive are unavailable coverage, not passes; the checkout suite

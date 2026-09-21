@@ -58,6 +58,11 @@ checks (23 checks total). This is not a full-suite rerun or model measurement.
 
 ## Remaining publication work
 
+[Complete category ledger](PUBLIC-PATH-CLASSIFICATION-01.md) now classifies all284
+earlier path-shaped object-lines without removing any finding or changing source
+evidence. It separates owner/account paths, temporary shapes, retained URL data
+and explanatory false positives. This is the old inventory, not a current scan.
+
 [Labeled derivative set01](results/public-path-derivatives-01/README.md),
 source`f4e3ca8`, now provides eight separately hashed redacted reading copies for
 the five owner-path JSON files and three account-directory artifacts below.
