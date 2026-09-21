@@ -1,0 +1,17 @@
+{
+  "source_revision": "04741d7c8992222311ebee09ec5e28b9afc1039d",
+  "image_id": "sha256:59f6ca68c1b94db38c241951f74f3a40b377afff5cc87fbf873154b8531df350",
+  "network": "none",
+  "status": "exited",
+  "exit_code": 0,
+  "started_at": "2026-09-21T14:12:24.630717642Z",
+  "finished_at": "2026-09-21T14:14:03.631310328Z",
+  "log_sha256": "fc188826fee1b2b76bcae08c36eeb56e4e67c5f734808475848e066dafbde64c",
+  "log_bytes": 207044,
+  "command": [
+    "bash",
+    "-lc",
+    "set -euo pipefail\nmkdir -p /work /usr/local/lib/python3.12/dist-packages\ncp -a /source/. /work/\ncp -a /pytest-deps/. /usr/local/lib/python3.12/dist-packages/\ncp -a /yaml /usr/local/lib/python3.12/dist-packages/yaml\nexport PATH=/opt/codex/packages/standalone/releases/0.153.4-aarch64-unknown-linux-musl/codex-path:$PATH\ncd /work\ntest ! -e .git\ntest ! -e benchmarks/local-runs\npython3 -I -c \"import sys, pytest, yaml; print(sys.version); print(pytest.__version__, yaml.__version__)\"\nnode --version\nrg --version\npython3 -B scripts/validate.py\npython3 -B scripts/sync_featured_benchmark.py --check\npython3 -B -m unittest discover -s tests -v"
+  ],
+  "limitation": "Offline author compatibility validation, not hosted CI or model performance."
+}

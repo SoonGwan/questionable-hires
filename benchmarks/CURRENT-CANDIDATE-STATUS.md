@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-21, decorator repair based on `7d67eff`**.
+Decision checkpoint **2026-09-21, local validation at `04741d7`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -115,6 +115,12 @@ and every scheduled attempt retained; exposed cases are not held-out validation.
 Do not rerun a completed experiment until it becomes favorable.
 
 ## Release and publication boundary
+
+[Current local checkpoint](RELEASE-VALIDATION-04741D7.md), source`04741d7`:
+macOS/Python3.11 checkout1,179passes; Linux/Python3.12 archive1,150passes,
+29historical skips, zero failures. Both exit0; overlapping durations are not
+speed comparisons. Hosted main run35610526288 failed before all four jobs'
+steps; Python3.11 again reports account payment/spending-limit alternatives.
 
 [Combined local checkpoint](RELEASE-VALIDATION-9A84635.md), source`9a84635`:
 1,155checkout passes on macOS/Python3.11.16; Linux/Python3.12.3 archive
