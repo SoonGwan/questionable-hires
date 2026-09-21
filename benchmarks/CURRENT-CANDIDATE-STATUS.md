@@ -64,6 +64,11 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+- [Necromancer section-read correction](NECROMANCER-SECTION-READ-01.md): clarify
+  relevant contract/test sections with enclosing logic and scope-driven widening;
+  helpers and probe safeguards unchanged. Motivated by the adverse history pair
+  above, not yet measured as a model efficiency improvement.
+  한국어: 큰 파일의 관련 부분부터 읽도록 안내를 수정했으며 절감 효과는 미측정이다.
 - [Slugify history preparation](SLUGIFY-HISTORY-01-PREFLIGHT.md), checkout
   `79fb2e2`: nine native current/deletion controls and full-history attribution
   pass. New review task on the already-used project; no model sessions or skill
