@@ -15,6 +15,14 @@ import sys
 import uuid
 
 
+def network_arguments(project, network):
+    # Docker's special 'none' network cannot be combined with another network.
+    # For offline Requests checks use only the internal fixture network instead.
+    if project == 'requests' and network == 'none':
+        return ['--network', 'qh-swelite-contract-01', '--ip', '10.255.255.5']
+    return ['--network', network]
+
+
 def inspected_container(result, name):
     """A Docker/daemon error is not proof that a container is absent."""
     if result.returncode == 0:
@@ -69,6 +77,12 @@ def container_launcher(image, auth_file, state, project, network='none', timeout
         if workspace == auth_file or workspace in auth_file.parents:
             raise ValueError('Credentials must not be inside project')
         translated = translated_args(workspace, args)
+        # Native pytest self-tests previously ran in system temp, outside the
+        # repository's strict warning/options config. Keep that config boundary
+        # when providing project-local temp; do not rewrite the native tests.
+        scratch = workspace / '.git/qh-tmp'
+        scratch.mkdir(parents=True, exist_ok=False)
+        (scratch / 'pytest.ini').write_text('[pytest]\n')
         return [sys.executable, str(Path(__file__).resolve()), '--image', image,
             '--auth-file', str(auth_file), '--state', str(state),
             '--workspace', str(workspace), '--project', project, '--network', network,
@@ -98,7 +112,7 @@ def execute(args):
     try:
         command = [
             'create', '--name', name, '--label', 'qh.solver.owner=' + owner,
-            '--pull', 'never', '--platform', 'linux/amd64', '--network', args.network,
+            '--pull', 'never', '--platform', 'linux/amd64', *network_arguments(args.project, args.network),
             '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
             '--memory', str(args.memory_gib) + 'g', '--cpus', '2', '--pids-limit', '256',
             '--tmpfs', '/run/codex-home:rw,noexec,nosuid,nodev,mode=0700',
@@ -106,18 +120,20 @@ def execute(args):
             '--mount', f'type=bind,src={args.workspace},dst=/testbed',
             '--mount', f'type=bind,src={state / "sessions"},dst=/run/codex-home/sessions',
             '-e', 'CODEX_HOME=/run/codex-home',
+            '-e', 'TMPDIR=/testbed/.git/qh-tmp',
             '-e', 'PYTEST_DISABLE_PLUGIN_AUTOLOAD=1',
             '-e', 'PYTHONPATH=' + ('/testbed' if args.project == 'requests' else '/testbed/src'),
             '-e', 'HTTPBIN_URL=http://httpbin/', '--workdir', '/testbed',
             '--entrypoint', '/bin/sh', args.image, '-c',
-            'set -eu; install -m 600 /run/codex-auth.json /run/codex-home/auth.json; '
+            'set -eu; mkdir -p /testbed/.git/qh-tmp; '
+            'install -m 600 /run/codex-auth.json /run/codex-home/auth.json; '
             'exec timeout --signal=TERM --kill-after=3 "$@"',
             'sh', str(args.timeout), *args.command,
         ]
         lifecycle['container_id'] = docker(*command).stdout.strip()
         # Connect only when needed. Explicit address never occupies timeout-test
         # tarpit10.255.255.1. Serial schedule must release this address each cell.
-        if args.project == 'requests':
+        if args.project == 'requests' and args.network != 'none':
             docker('network', 'connect', '--ip', '10.255.255.5',
                    'qh-swelite-contract-01', name)
         result = subprocess.call([*prefix, 'start', '--attach', name])

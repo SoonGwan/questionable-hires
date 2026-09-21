@@ -12,6 +12,12 @@ IMAGE = 'sha256:' + 'a' * 64
 
 
 class ContainerAdapterTests(unittest.TestCase):
+    def test_offline_requests_uses_only_fixture_network(self):
+        self.assertEqual(runner.network_arguments('requests', 'none'),
+            ['--network', 'qh-swelite-contract-01', '--ip', '10.255.255.5'])
+        self.assertEqual(runner.network_arguments('pytest', 'none'), ['--network', 'none'])
+        self.assertEqual(runner.network_arguments('requests', 'bridge'), ['--network', 'bridge'])
+
     def test_inspect_failure_is_not_cleanup_success(self):
         result = SimpleNamespace(returncode=1, stdout='', stderr='Cannot connect to Docker daemon')
         with self.assertRaises(RuntimeError):
@@ -59,6 +65,7 @@ class ContainerAdapterTests(unittest.TestCase):
             self.assertIn(str(auth), command)
             self.assertNotIn('{}', command)
             self.assertIn(IMAGE, command)
+            self.assertEqual((root/'project/.git/qh-tmp/pytest.ini').read_text(), '[pytest]\n')
             self.assertEqual(command[command.index('--network') + 1], 'none')
             self.assertEqual(command[command.index('--context') + 1], 'synthetic-context')
             self.assertEqual(command[command.index('--memory-gib') + 1], '6')
