@@ -35,6 +35,10 @@ model calls or scored efficiency claim; no dropping controls/task replacement.
 restore successful installation; pytest gold passes78/78 with the expected base
 failure. Requests internal HTTP service reduces failures but gold still fails7
 required checks. Both-task execution/access gates remain unfinished; no model run.
+[Requests diagnosis](SWE-LITE-PILOT-01-REQUESTS-DIAGNOSIS.md): unchanged public
+suite134pass/8fail identifies runner API, hostname/TLS and timeout-network causes.
+Pinned pytest4.6.11 repairs the demonstrated string-raises case; actual pass/fail
+assertion controls work. Combined service/scoring validation is still pending.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |

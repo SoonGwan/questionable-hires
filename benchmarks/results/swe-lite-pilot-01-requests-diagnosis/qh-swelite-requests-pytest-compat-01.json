@@ -1,0 +1,26 @@
+{
+  "name": "qh-swelite-requests-pytest-compat-01",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-21T14:52:43.49481904Z",
+    "FinishedAt": "2026-09-21T14:52:52.675918472Z"
+  },
+  "image": "sha256:f4ede93d2747ddc21d276572cbd2e1df5ea60df8d5d99247f073797bab3e539f",
+  "command": [
+    "-lc",
+    "set -e; python -B -m pip install --no-index --no-deps --find-links /opt/compat pytest==4.6.11 pluggy==0.13.1 atomicwrites==1.4.1 py==1.11.0 six==1.17.0 attrs==23.2.0 more-itertools==9.1.0 packaging==24.2 wcwidth==0.2.13; python -B -m pytest -p no:cacheprovider -q test_requests.py::RequestsTestCase::test_conflicting_post_params; set +e; python -B -m pytest -p no:cacheprovider -q /tmp/test_control.py; control_exit=$?; echo deliberate_control_exit=$control_exit; test \"$control_exit\" -eq 1"
+  ],
+  "entrypoint": [
+    "/bin/bash"
+  ],
+  "network": "none",
+  "log_sha256": "5c26807f86d0a866baba3286964242aecefe82905c7f85de08ad12f87cf92e7b"
+}
