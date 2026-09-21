@@ -1,0 +1,103 @@
+{
+  "upstream_revision": "6aabf099bfdd4c1e75fe8d0e0d4241372b988ab1",
+  "resource_revision": "f253f38",
+  "case": {
+    "id": "nested-resource-audit",
+    "skill": "con-artist",
+    "criteria": [
+      "Actual copy-local implementation is used by native tests in correct/faulty variants; mutation targets the requested behavior, not setup or test edits.",
+      "Unchanged existing tests run in both variants and sensitivity claims identify the actual executed cleanup path and native results.",
+      "If needed, identical focused added assertions pass correct and reject faulty behavior with actual exception propagation and reverse-order exits; no setup failure substitutes.",
+      "Single-resource propagation and nested suppression controls execute with correct observations; diagnosis remains scoped to demonstrated coverage.",
+      "Original files/modes, Git HEAD/index and skill resources preserved; owned scratch removed and no out-of-scope operations."
+    ],
+    "task": "Audit whether tests/test_context.py protects Context resource unwinding\nwhen two nested resources both decline to suppress an exception from the body.\nEstablish whether the original exception propagates and whether both resources\nactually exit in reverse registration order. Include single-resource propagation\nand nested-resource suppression as neighboring controls.\nDemonstrate existing test sensitivity with a narrow isolated behavioral mutation\nin actual src/click/core.py. Execute the unchanged relevant existing tests against\ncorrect and faulty copies. If coverage is missing, verify the same focused added\nassertions against both variants; if adequate, identify the detecting assertions\nwithout demanding redundant tests. Explain the actual exercised path, not just\nthe presence of pytest.raises or a green exit. Report native test identities,\ncounts, assertions and exits; confirm the native test process imports the actual\ncopy-local Click implementation. A rewritten simulation or setup failure is not\nmutation detection. Do not assume other unsupported input behavior.\nKeep originals, Git HEAD/index, file modes and installed skill resources unchanged.\nAll disposable copies, tests and diagnostics must be project-local and removed\nat completion, including failure paths; leave no harness or report. No production\nfix, dependency installation, network, commit, stash, reset or publication.\nUse the supplied Python interpreter with bytecode disabled. For pytest use\nPYTHONPATH=src and PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 from each copy root, with\n-p no:cacheprovider. Preserve the project's other pytest settings. Source is a\nshallow checkout; this task does not require history-origin claims.\nPreinstalled Python: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python"
+  },
+  "schedule": [
+    "baseline",
+    "skill"
+  ],
+  "identities": {
+    "run_click_context_01.py": "0cf5c6c46fc034ab8135b7c807d7547cfb5eb464dfc135c6b99fd57b5148caf7",
+    "preflight_click_context.py": "284f5848dcf20253688066e80a707e3cb2dd89262a452d8bbc933c91f80b0505",
+    "run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "run_httpx.py": "d7e7433e459562872f5db9d7bd4d171276de4864baad11aa2a7cc30b076aedb0",
+    "CLICK-CONTEXT-01-PROTOCOL.md": "75ebcad3d0057906c2bf2b75198b66e21be4a4c7410dc37a3525d02fbb22d9d3"
+  },
+  "source_digest": "c7fa7ab88f16ba1b37191797e4b3bdc3f8ebecee56888f315bc8afcab6cb4862",
+  "resource_digest": "0fdce6457dee9c237cbc3c87d97b18486813de796b8fa6cd5b70886e6174a025",
+  "interpreter": "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+  "environment": {
+    "version": "Python 3.11.16",
+    "dependencies": "iniconfig==2.3.0\npackaging==26.3\npluggy==1.6.0\npytest==8.3.4\nPyYAML==6.0.3"
+  },
+  "native_preflight": {
+    "upstream_revision": "6aabf099bfdd4c1e75fe8d0e0d4241372b988ab1",
+    "outcomes": [
+      {
+        "variant": "correct",
+        "suite": "tests/test_context.py",
+        "exit_code": 0,
+        "output": "..............................\n30 passed in 0.04s\n"
+      },
+      {
+        "variant": "correct",
+        "suite": "tests/test_author_context.py",
+        "exit_code": 0,
+        "output": "OBSERVED 2 False [(1, True, False), (0, True, False)] propagated True\n.OBSERVED 1 False [(0, True, False)] propagated True\n.OBSERVED 2 True [(1, True, False), (0, False, True)] propagated False\n.\n3 passed in 0.01s\n"
+      },
+      {
+        "variant": "faulty",
+        "suite": "tests/test_context.py",
+        "exit_code": 0,
+        "output": "..............................\n30 passed in 0.04s\n"
+      },
+      {
+        "variant": "faulty",
+        "suite": "tests/test_author_context.py",
+        "exit_code": 1,
+        "output": "OBSERVED 2 False [(1, True, False), (0, True, False)] propagated False\nFOBSERVED 1 False [(0, True, False)] propagated True\n.OBSERVED 2 True [(1, True, False), (0, False, True)] propagated False\n.\n=================================== FAILURES ===================================\n________________________ test_real_nested_exit[2-False] ________________________\n\ncount = 2, suppress = False\n\n    @pytest.mark.parametrize('count,suppress', [(2,False),(1,False),(2,True)])\n    def test_real_nested_exit(count, suppress):\n        assert Path(click.__file__).resolve() == Path(__file__).resolve().parents[1] / 'src/click/__init__.py'\n        calls = []\n        error = RuntimeError('body-failure-sentinel')\n        class Resource:\n            def __init__(self, name): self.name = name\n            def __enter__(self): return self\n            def __exit__(self, typ, value, tb):\n                calls.append((self.name, value is error, value is None))\n                return suppress\n        caught = None\n        ctx = click.Context(click.Command('test'))\n        try:\n            with ctx.scope():\n                for index in range(count): ctx.with_resource(Resource(index))\n                raise error\n        except RuntimeError as exc:\n            caught = exc\n        finally:\n            ctx.close()\n        print('OBSERVED', count, suppress, calls, 'propagated', caught is error)\n>       assert (caught is error) == (not suppress)\nE       AssertionError: assert (None is RuntimeError('body-failure-sentinel')) == not False\n\ntests/test_author_context.py:27: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_author_context.py::test_real_nested_exit[2-False] - Asserti...\n1 failed, 2 passed in 0.02s\n"
+      }
+    ],
+    "originals_preserved": true,
+    "limitation": "Author-selected upstream test gap and synthetic mutation; not an organic production bug, model score or performance result."
+  },
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 360,
+  "repeats": 1,
+  "jobs": 1,
+  "completed_cells": [
+    {
+      "arm": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 111769,
+        "cached_input_tokens": 92160,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3117,
+        "reasoning_output_tokens": 392
+      },
+      "elapsed_seconds": 114.069
+    },
+    {
+      "arm": "skill",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 175948,
+        "cached_input_tokens": 131712,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5220,
+        "reasoning_output_tokens": 573
+      },
+      "elapsed_seconds": 172.195
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T01:53:55.855158+00:00",
+  "finished_at": "2026-09-21T01:59:15.533960+00:00"
+}

@@ -1,0 +1,54 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "nested-resource-audit",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "6aabf099bfdd4c1e75fe8d0e0d4241372b988ab1",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 114.069,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 111769,
+    "cached_input_tokens": 92160,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3117,
+    "reasoning_output_tokens": 392
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Audit whether tests/test_context.py protects Context resource unwinding\nwhen two nested resources both decline to suppress an exception from the body.\nEstablish whether the original exception propagates and whether both resources\nactually exit in reverse registration order. Include single-resource propagation\nand nested-resource suppression as neighboring controls.\nDemonstrate existing test sensitivity with a narrow isolated behavioral mutation\nin actual src/click/core.py. Execute the unchanged relevant existing tests against\ncorrect and faulty copies. If coverage is missing, verify the same focused added\nassertions against both variants; if adequate, identify the detecting assertions\nwithout demanding redundant tests. Explain the actual exercised path, not just\nthe presence of pytest.raises or a green exit. Report native test identities,\ncounts, assertions and exits; confirm the native test process imports the actual\ncopy-local Click implementation. A rewritten simulation or setup failure is not\nmutation detection. Do not assume other unsupported input behavior.\nKeep originals, Git HEAD/index, file modes and installed skill resources unchanged.\nAll disposable copies, tests and diagnostics must be project-local and removed\nat completion, including failure paths; leave no harness or report. No production\nfix, dependency installation, network, commit, stash, reset or publication.\nUse the supplied Python interpreter with bytecode disabled. For pytest use\nPYTHONPATH=src and PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 from each copy root, with\n-p no:cacheprovider. Preserve the project's other pytest settings. Source is a\nshallow checkout; this task does not require history-origin claims.\nPreinstalled Python: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 17238,
+    "mode": 420,
+    "sha256": "ac76e413d772800835ba032850df2667977c4572bf6d2f1c9c437391919dac4b",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

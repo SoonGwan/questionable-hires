@@ -9,7 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Click audit pair prepared — 2026-09-21, resources `f253f38`
+## Click audit reviewed — 2026-09-21, resources `f253f38`
+
+[Original pair review](CLICK-CONTEXT-01-REVIEW.md): both meet 5/5 obligations,
+but skill uses 181,168 versus 114,886 tokens and 172.195 versus 114.069 seconds
+(+57.69% / +50.96%). Skill runs more tests and repairs an overly strict assertion
+that fails correct code. All attempts and native evidence retained; original
+files/Git/resources and cleanup independently checked. One authored real-source
+task, n=1, unequal work: no efficiency win or featured/release promotion.
+
+한국어: 최종 판단은 같지만 스킬 쪽 비용이 더 컸다. 불필요하게 강한 검사와
+복구 과정을 확인했으며, 불리한 결과도 보존한다. 전체 성능 목표는 아직 미달이다.
+
+## Historical: Click audit pair prepared — 2026-09-21, resources `f253f38`
 
 [Frozen protocol](CLICK-CONTEXT-01-PROTOCOL.md) fixes one real-source task,
 baseline then Con Artist, two serial Astra medium sessions with original-session
