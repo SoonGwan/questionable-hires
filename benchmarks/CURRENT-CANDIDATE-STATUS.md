@@ -9,6 +9,17 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Guard routing corrected — 2026-09-21, measured predecessor `f6f2980`
+
+Con Artist's entrypoint now names optional whole-project preservation at the
+existing helper route instead of advertising selected-input checks alone.
+Default behavior, read authorization and detailed limits remain unchanged.
+This addresses an observed discovery gap, not a demonstrated model efficiency
+gain. No new benchmark result is attributed to this instruction-only revision.
+
+한국어: 전체 원본 보존 기능을 필요한 상황에서 찾을 수 있도록 진입 안내를
+보완했다. 기능 사용을 강제하지 않으며, 이 수정의 모델 성능은 아직 미측정이다.
+
 ## Audit guard transfer reviewed — 2026-09-21, resources `f157b76` / `f6f2980`
 
 [Three original attempts](AUDIT-GUARD-01-REVIEW.md) meet all five criteria. Current

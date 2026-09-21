@@ -42,8 +42,10 @@ process does not prove what the test process loads.
   native workflow or an already-completed audit.
 - Small self-contained audits: use the native runner in project-local copies or
   a valid substitution. Choose [the Python helper](references/python-audit.md) when
-  its bounded processes, selected-input integrity checks or shared-baseline batches
-  remove needed orchestration. Python compatibility alone is not a reason to adopt
+  its bounded processes, integrity checks or shared-baseline batches remove needed
+  orchestration. For required whole-project preservation, its optional `guard_project`
+  checks authorized roots, including unselected files and in-root Git metadata;
+  selected-input checks remain the default. Python compatibility alone is not a reason to adopt
   it or load its guide. Read implementation for a concrete trust/adaptation question.
 - Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)
   covers false-pass assertion helpers and incomplete checks. It is not routine setup.
