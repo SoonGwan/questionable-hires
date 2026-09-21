@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-21, parent resource `23f06d2` plus exact probe edits**.
+Decision checkpoint **2026-09-21, working resource `37e62d2`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -39,7 +39,8 @@ These changes are implemented; their model-cost effect is not established:
 - [Exact native probe edits](AUDIT-PROBE-EDITS-01.md), parent`23f06d2`:
   localized test changes need not resend unchanged file contents; four native
   checks and full materialized-byte budget/cache identity remain.128 audit controls
-  pass on3.11; no measured model adoption or efficiency effect.
+  pass on3.11; full checkout1,162/1,162 and archive new group7/7.
+  No measured model adoption or efficiency effect.
 - [Audit special-input rejection](AUDIT-SPECIAL-INPUTS-01.md), parent`74b674a`:
   initially selected FIFO/socket entries no longer disappear silently from copies;
   rejected before execution.121 audit and80 mutation-helper controls pass on3.11.
@@ -103,6 +104,9 @@ Do not rerun a completed experiment until it becomes favorable.
 1,155checkout passes on macOS/Python3.11.16; Linux/Python3.12.3 archive
 1,127passes/28historical skips/0failures. Logs retained; overlapping durations
 are not speed comparisons. This is not the complete hosted version matrix.
+The newer [probe-edit resource](AUDIT-PROBE-EDITS-01.md),`37e62d2`, passes
+all1,162 checkout checks on macOS/Python3.11.16 and its seven new archive checks;
+the earlier Linux whole-suite result does not cover that new input form.
 Earlier [macOS](RELEASE-VALIDATION-D97E971.md) and
 [Linux](AUDIT-EMPTY-NATIVE-01.md) checkpoints retain their original revisions.
 

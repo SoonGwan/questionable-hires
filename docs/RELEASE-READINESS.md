@@ -7,7 +7,7 @@ performance superiority.** Each check applies only to its stated source revision
 
 | Gate | Evidence / remaining work |
 | --- | --- |
-| Current local compatibility | [Combined checkpoint](../benchmarks/RELEASE-VALIDATION-9A84635.md), `9a84635`: macOS/Python3.11 checkout1,155 passes; Linux/Python3.12 archive1,127 passes/28 historical skips; zero failures. Local checks do not replace the hosted matrix. |
+| Current local compatibility | [Probe-edit checkpoint](../benchmarks/AUDIT-PROBE-EDITS-01.md), `37e62d2`: macOS/Python3.11 checkout1,162 passes and seven new archive checks pass. [Earlier combined checkpoint](../benchmarks/RELEASE-VALIDATION-9A84635.md), `9a84635`: Linux/Python3.12 archive1,127 passes/28 historical skips, zero failures; it predates probe edits. Local checks do not replace the hosted matrix. |
 | Hosted Python matrix and archive | [Run35604299489](https://github.com/SoonGwan/questionable-hires/actions/runs/35604299489) at `9a84635`: all four jobs failed before any steps. The Python3.11 annotation cites failed recent payments or a spending limit. The intended release commit still needs successful hosted execution. |
 | Installable resources | [Local skills CLI checkpoint03](../benchmarks/SKILLS-CLI-INSTALL-03.md), `8114957`: eight hires/51 resources, nine Python entrypoints and selected installed behavior pass. This predates the special-input fix; not remote authenticated installation or host registration. |
 | Whole-task performance | [Candidate evidence](../benchmarks/CURRENT-CANDIDATE-STATUS.md): broad20–30%+ improvement remains unproven. The all-eight comparison costs more tokens; configuration/packaging findings are adverse or mixed. Do not promote favorable pairs alone. |

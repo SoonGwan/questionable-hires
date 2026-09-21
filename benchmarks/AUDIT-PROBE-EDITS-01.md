@@ -34,6 +34,15 @@ the stronger suite fails on actual `[]` versus `['item']`, not setup errors.
 - Python3.11.16: all128 audit checks pass,23.520s, no skips.
 - Python3.9.6: new group has6 passes/1 explicit pytest-dependency skip,1.124s.
   The skip is not pytest compatibility evidence on that interpreter.
+- Fresh `git archive 37e62d2`, without Git/local-run artifacts: all seven new
+  checks pass on Python3.11.16,1.685s, including actual pytest execution.
+- All13 build/distribution checks pass on Python3.11.16,3.056s.
+- Full macOS checkout at executable/test resource`37e62d2`:
+  `python -B -m unittest discover -s tests -q` passes all1,162 checks on
+  Python3.11.16,203.695s, exit0, no skips. Only this report was updated while it
+  ran; executable/test/skill inputs remained unchanged. Local terminal summary
+  and ignored `local-runs/probe-edits-37e62d2-full.txt` retain the result, not a
+  committed per-test verbose transcript. No current Linux or hosted run is implied.
 
 These durations are not speed comparisons. The seven author-side tests are not
 fresh model sessions, automatic adoption or a20–30% efficiency result. No graph
