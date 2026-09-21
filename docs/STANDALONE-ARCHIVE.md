@@ -34,9 +34,30 @@ history or network is needed for this Python installation path. Downloading a
 private artifact still requires authorized access. This command does not upload,
 publish or create a GitHub release, and does not change `npx skills add` behavior.
 
-## Local archive checkpoint — 2026-09-21, resources `61f30db`
+## Installed guard checkpoint — 2026-09-21, resources `40f381c`
 
-The current builder produces **52 files, 265,227 uncompressed content bytes,
+The offline extraction/install test now executes the installed audit helper with
+isolated Python outside the repository. Native original tests pass correct/faulty
+code; the same probe passes correct and rejects faulty code with `AssertionError:
+2`. Whole-root preservation is reported only after checking originals and scratch
+cleanup. A separate deliberate edit to unselected owner notes makes the installed
+CLI exit2 without a success JSON, names the changed file, removes scratch and
+leaves the edit visible rather than silently restoring it. Installed resources
+still match afterward. All changes occur in test-owned temporary projects.
+
+Four expanded archive tests pass under Python3.9.6 (2.424s) and3.11.16 (1.091s).
+Before this test expansion, the full checkout at `40f381c` passed928 tests in
+160.286s under Python3.11.16, with no skips. This is local deployment-readiness
+evidence, not hosted CI, public installation or model-performance evidence.
+
+한국어: 압축 해제·설치한 도우미로 정상/결함 실행과 미선택 원본 변경 감지를
+확인했다. 변경을 숨기거나 자동 복원하지 않으며 임시 파일도 제거된다.
+확장한 설치 검사4개가 Python3.9/3.11에서 통과했다. 확장 전 전체928개도
+통과했지만, 원격 배포나 모델 성능 향상을 뜻하지는 않는다.
+
+## Historical local archive checkpoint — 2026-09-21, resources `61f30db`
+
+The builder at that revision produced **52 files, 265,227 uncompressed content bytes,
 85,769 archive bytes**, SHA-256
 `7531327db4b22a66b58cdc83567a26e403713519a3e52405312f1ff7e5269724`.
 The complete source archive at the same revision is14,337,274 bytes. This

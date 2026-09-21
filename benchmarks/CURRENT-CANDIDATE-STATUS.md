@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Local release regression — 2026-09-21, resources `40f381c`
+
+Full checkout:928 tests /160.286s, Python3.11.16, no failures/skips. No model
+benchmark ran concurrently. Afterward, the [offline archive test](../docs/STANDALONE-ARCHIVE.md)
+was expanded to verify installed native guard success and real unselected-file
+violation, scratch removal and unchanged installed resources. Expanded four-test
+suite passes Python3.9/3.11. The full suite predates that test-only expansion.
+Hosted checks/public installation were not rerun. No model-performance claim.
+
+한국어: 전체928개 검사를 통과했다. 이후 설치본 원본 보존 검사도 강화해
+Python3.9/3.11에서 확인했다. 배포 안정성 근거이며 전체 성능 목표는 미달이다.
+
 ## Guard routing corrected — 2026-09-21, measured predecessor `f6f2980`
 
 Con Artist's entrypoint now names optional whole-project preservation at the

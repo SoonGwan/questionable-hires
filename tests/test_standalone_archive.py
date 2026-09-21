@@ -82,6 +82,47 @@ class StandaloneArchiveTests(unittest.TestCase):
             self.assertEqual(source.read_bytes(), original.encode())
             self.assertEqual(source.stat().st_mode & 0o777, 0o600)
             self.assertEqual({p.name for p in consumer.iterdir()}, {'.agents', 'sample.py'})
+            # The installed guard must preserve native evidence and detect an
+            # unselected original edit, not merely expose a working --help.
+            project = root / 'audit-consumer'
+            project.mkdir()
+            originals = {
+                'service.py': 'def value():\n    return 1\n',
+                'test_service.py': 'import unittest\nimport service\nclass Tests(unittest.TestCase):\n    def test_positive(self):\n        self.assertGreater(service.value(), 0)\n',
+                'notes.txt': 'owner notes',
+            }
+            for name, contents in originals.items():
+                (project / name).write_text(contents)
+                (project / name).chmod(0o600)
+            recipe = dict(files=['service.py', 'test_service.py'], imports=['service'],
+                target='service.py', old='return 1', new='return 2',
+                tests=['-v', 'test_service'], guard_project=True,
+                probe='import service\nassert service.value() == 1, service.value()\n')
+            audit = [sys.executable, '-I', '-B',
+                str(destination / 'con-artist/scripts/audit.py'),
+                '--source', str(project), '--spec', '-']
+            observed = subprocess.run(audit, input=json.dumps(recipe), cwd=root,
+                capture_output=True, text=True, timeout=15)
+            self.assertEqual(observed.returncode, 0, observed.stderr)
+            evidence = json.loads(observed.stdout)
+            self.assertEqual({k: v['exit_code'] for k, v in evidence['checks'].items()},
+                dict(correct_tests=0, mutant_tests=0, correct_probe=0, mutant_probe=1))
+            self.assertIn('Ran 1 test', evidence['checks']['correct_tests']['output'])
+            self.assertIn('AssertionError: 2', evidence['checks']['mutant_probe']['output'])
+            self.assertTrue(evidence['integrity']['project_guard']['unchanged'])
+            self.assertEqual({p.name for p in project.iterdir()}, set(originals))
+            for name, contents in originals.items():
+                self.assertEqual((project / name).read_text(), contents)
+                self.assertEqual((project / name).stat().st_mode & 0o777, 0o600)
+            recipe['precheck'] = 'from pathlib import Path\nPath(%r).write_text("changed")\n' % str(project / 'notes.txt')
+            rejected = subprocess.run(audit, input=json.dumps(recipe), cwd=root,
+                capture_output=True, text=True, timeout=15)
+            self.assertEqual(rejected.returncode, 2, rejected.stderr)
+            self.assertEqual(rejected.stdout, '')
+            self.assertIn('Project tree changed during audit; not restored', rejected.stderr)
+            self.assertIn('notes.txt', rejected.stderr)
+            self.assertEqual((project / 'notes.txt').read_text(), 'changed')
+            self.assertEqual({p.name for p in project.iterdir()}, set(originals))
             rechecked = subprocess.run(command + ['--check'], cwd=root,
                 capture_output=True, text=True, timeout=15)
             self.assertEqual(rechecked.returncode, 0, rechecked.stderr)
