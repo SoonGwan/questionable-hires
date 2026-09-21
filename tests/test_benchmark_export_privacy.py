@@ -21,7 +21,9 @@ class ExportPrivacyTests(unittest.TestCase):
             project.mkdir(parents=True)
             paths = ['/private/var/folders/fy/privateid/T/run/file.py',
                      '/private/var/fy/privateid/T/run/file.py',
-                     '/var/fy/privateid/T/run/file.py']
+                     '/var/fy/privateid/T/run/file.py',
+                     '/tmp/qh-privateid/source/file.py',
+                     '/private/tmp/qh-privateid/source/file.py']
             evidence = '\n'.join(paths) + '\nAssertionError: actual != expected\nRan 3 tests\n'
             (source / 'run.json').write_text(json.dumps({'note': paths[1], 'schedule': [cell.name]}))
             (cell / 'metadata.json').write_text(json.dumps({'workspace': '/synthetic/project', 'diagnostic': evidence}))
@@ -45,12 +47,23 @@ class ExportPrivacyTests(unittest.TestCase):
                             json.loads(line)
             public = target / cell.name
             exported = json.loads((public / 'events.jsonl').read_text())['item']
-            self.assertEqual(exported['aggregated_output'], '<TEMP>\n<TEMP>\n<TEMP>\nAssertionError: actual != expected\nRan 3 tests\n')
+            self.assertEqual(exported['aggregated_output'], '<TEMP>\n'*5 + 'AssertionError: actual != expected\nRan 3 tests\n')
             self.assertEqual(exported['exit_code'], 1)
             self.assertEqual((public / 'answer.md').read_text(), 'malformed\n[good](project/file.py#L2)\n')
             provenance = json.loads((public / 'source-sha256.json').read_text())
             self.assertEqual(provenance['events.jsonl'], hashlib.sha256(before[Path(cell.name) / 'events.jsonl']).hexdigest())
             self.assertEqual(before, {p.relative_to(source): p.read_bytes() for p in source.rglob('*') if p.is_file()})
+
+    def test_qh_scratch_redaction_preserves_delimiters_and_unrelated_paths(self):
+        raw = {'command': 'python /tmp/qh-privateid/run.py',
+               'output': 'AssertionError\n/private/tmp/qh-privateid/log.txt\nactual=2 expected=3',
+               'unrelated': '/tmp/application/input.txt',
+               'relative': 'tmp/qh-relative/file.py'}
+        observed = json.loads(exporter.redact_paths(json.dumps(raw)))
+        self.assertEqual(observed['command'], 'python <TEMP>')
+        self.assertEqual(observed['output'], 'AssertionError\n<TEMP>\nactual=2 expected=3')
+        self.assertEqual(observed['unrelated'], raw['unrelated'])
+        self.assertEqual(observed['relative'], raw['relative'])
 
 
 if __name__ == '__main__':

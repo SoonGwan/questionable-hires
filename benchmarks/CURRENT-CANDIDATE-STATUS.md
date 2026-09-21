@@ -146,6 +146,11 @@ Do not rerun a completed experiment until it becomes favorable.
 
 ## Release and publication boundary
 
+[Public-history review01](PUBLIC-HISTORY-REVIEW-01.md), source`4174c18`:
+bounded scan finds a test-only key-header marker and284 path-shaped lines.
+Future scratch-path export gap repaired; past artifacts/history remain unchanged.
+Public artifact review is not complete and no history rewrite is authorized.
+
 [Authenticated remote installation01](REMOTE-INSTALL-01.md), source`5e6beab`:
 GitHub helper and npx remote clone produce matching8 skills/51 resources;
 nine installed entrypoints and selected native checks pass. Cached CLI package

@@ -14,8 +14,8 @@ def redact_paths(text, workspace=None):
         text = text.replace('/private<WORKSPACE>', '<WORKSPACE>')
     text = text.replace(str(Path.home()), '<HOME>')
     # Keep JSON escapes and Markdown delimiters outside a redacted path. Also
-    # handle observed model links missing the "folders" component of macOS temp.
-    return re.sub(r'''/(?:private/)?var/(?:folders/|[a-z0-9]{2}/[A-Za-z0-9_-]+/T/)[^\s"'<>\\)\]}]+''',
+    # handle malformed macOS links and the task-owned /tmp/qh-* scratch roots.
+    return re.sub(r'''/(?:private/)?(?:var/(?:folders/|[a-z0-9]{2}/[A-Za-z0-9_-]+/T/)|tmp/qh-)[^\s"'<>\\)\]}]+''',
                   '<TEMP>', text)
 
 
