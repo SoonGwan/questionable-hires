@@ -27,6 +27,10 @@ and broad Git stores require solver isolation. Imports are not native-test valid
 the exact base trees with one fresh commit/no remotes. Requests one native control
 and pytest77 existing tests pass; setup failures are retained. Hidden scoring,
 same-process provenance and complete solver-access review remain pending.
+[Scoring preflight](SWE-LITE-PILOT-01-SCORING-PREFLIGHT.md) rejects the current
+offline environment: pytest setup fails despite its expected gold transition;
+Requests gold retains60 failures with network errors. All attempts retained, no
+model calls or scored efficiency claim; no dropping controls/task replacement.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |
