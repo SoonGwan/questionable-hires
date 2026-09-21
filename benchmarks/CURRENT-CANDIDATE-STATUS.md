@@ -9,7 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Click defaults transfer prepared — 2026-09-21, resources `4416263` / `1ae3ee0`
+## Click defaults transfer reviewed — 2026-09-21, resources `4416263` / `1ae3ee0`
+
+[Three original native reviews](CLICK-DEFAULTS-01-REVIEW.md) meet all five
+criteria,46 existing tests per arm and all eight requested observations. Candidate
+versus prior:−17.91% tokens /+21.48% time; versus baseline:+11.37% /+26.03%.
+Both skill arms still truncate source output. Do not accept the output-budget
+sentence as a demonstrated optimization; restore the prior entrypoint. Unequal
+extra controls, n=1, fixed order/shared cache and author review limit inference.
+All attempts/capture gaps retained; no featured promotion or all-eight success.
+
+한국어: 정확도는 유지했지만 토큰·시간 개선은 혼재했고 의도한 출력 잘림 방지도
+확인하지 못했다. 추가 문장을 되돌리고 불리한 비교까지 전부 보존한다.
+
+## Historical preparation — Click defaults 01, 2026-09-21
 
 [Frozen protocol](CLICK-DEFAULTS-01-PROTOCOL.md) compares output-budget guidance
 on a new default-resolution design proposal in pinned Click source. Native author

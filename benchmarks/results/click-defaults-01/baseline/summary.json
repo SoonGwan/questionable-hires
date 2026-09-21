@@ -1,0 +1,56 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "click-default-resolution-design",
+    "skill": "landlord",
+    "arm": "baseline",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "6aabf099bfdd4c1e75fe8d0e0d4241372b988ab1",
+    "skill_sha256": null,
+    "skill_resources_sha256": null,
+    "elapsed_seconds": 95.867,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 125519,
+      "cached_input_tokens": 102016,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2767,
+      "reasoning_output_tokens": 196
+    },
+    "completed": true,
+    "allocated_workspace": "<TEMP>",
+    "prompt": "Review a proposed simplification in src/click/core.py: in\nParameter.get_default, replace `if value is None and not ctx._default_map_has(self.name):`\nwith `if value is None:`; in Parameter.consume_value, replace\n`if default_map_value is not None or ctx._default_map_has(self.name):`\nwith `if default_map_value is not None:`. Everything else stays unchanged.\nWould this preserve default resolution? Recommend keep, simplify or remove with\nactual caller/policy reasoning, source references and a viable alternative.\nTrace one concrete future maintenance change, not just a line-count comparison.\n\nRun the relevant existing tests in tests/test_defaults.py and observe actual\nCliRunner resolution for a string --name option with default='fallback' and an\nexplicit environment variable. Include: CLI value with environment and map also\npresent; environment with map present; map values None, empty string, zero;\nmissing map entry; stored click._utils.UNSET; and a map factory returning None.\nRecord values and parameter sources, and the factory's invocation count. Explain\nhow those observations bear on the proposal. Preserve normal controls. You may\nanalyze the proposed change statically after observing current behavior; applying\nit in a disposable copy is optional, not required. Distinguish execution from\ninference, and confirm native observations import this checkout's Click.\n\nReview only: originals, file modes, Git HEAD/index and installed skill resources\nmust remain unchanged. Work only within the project. Remove any owned local\nscratch on completion or failure; no permanent tests/report. No dependencies,\nnetwork, production fix, commits, resets or publication. Source is shallow; no\nhistory-origin claim is requested. Use the supplied interpreter with -B. For\npytest use PYTHONPATH=src, PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 and -p no:cacheprovider,\nretaining other project settings. CliRunner's in-process environment isolation\nis permitted; do not change external settings.\nPreinstalled Python: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 9,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {},
+    "installed_resources_after": {},
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 17238,
+      "mode": 420,
+      "sha256": "ac76e413d772800835ba032850df2667977c4572bf6d2f1c9c437391919dac4b",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    }
+  }
+]

@@ -1,0 +1,139 @@
+{
+  "upstream_revision": "6aabf099bfdd4c1e75fe8d0e0d4241372b988ab1",
+  "resource_revisions": {
+    "prior": "4416263",
+    "current": "1ae3ee0"
+  },
+  "case": {
+    "id": "click-default-resolution-design",
+    "skill": "landlord",
+    "criteria": [
+      "Traces lookup/default/consume caller semantics and recommends a contract-preserving design, not merely fewer lines.",
+      "Runs relevant native existing tests and all eight requested actual CliRunner scenarios, recording values/sources and factory count with normal controls.",
+      "Explains explicit None versus missing/UNSET, false values and callable resolution using supported observations and proposal analysis, not simulated code.",
+      "Provides source-grounded viable alternative and concrete maintenance tradeoff; distinguishes original execution from unexecuted proposal effects.",
+      "Native observations use actual checkout Click; originals/modes/Git/resources preserved, owned scratch removed, no unauthorized action."
+    ],
+    "task": "Review a proposed simplification in src/click/core.py: in\nParameter.get_default, replace `if value is None and not ctx._default_map_has(self.name):`\nwith `if value is None:`; in Parameter.consume_value, replace\n`if default_map_value is not None or ctx._default_map_has(self.name):`\nwith `if default_map_value is not None:`. Everything else stays unchanged.\nWould this preserve default resolution? Recommend keep, simplify or remove with\nactual caller/policy reasoning, source references and a viable alternative.\nTrace one concrete future maintenance change, not just a line-count comparison.\n\nRun the relevant existing tests in tests/test_defaults.py and observe actual\nCliRunner resolution for a string --name option with default='fallback' and an\nexplicit environment variable. Include: CLI value with environment and map also\npresent; environment with map present; map values None, empty string, zero;\nmissing map entry; stored click._utils.UNSET; and a map factory returning None.\nRecord values and parameter sources, and the factory's invocation count. Explain\nhow those observations bear on the proposal. Preserve normal controls. You may\nanalyze the proposed change statically after observing current behavior; applying\nit in a disposable copy is optional, not required. Distinguish execution from\ninference, and confirm native observations import this checkout's Click.\n\nReview only: originals, file modes, Git HEAD/index and installed skill resources\nmust remain unchanged. Work only within the project. Remove any owned local\nscratch on completion or failure; no permanent tests/report. No dependencies,\nnetwork, production fix, commits, resets or publication. Source is shallow; no\nhistory-origin claim is requested. Use the supplied interpreter with -B. For\npytest use PYTHONPATH=src, PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 and -p no:cacheprovider,\nretaining other project settings. CliRunner's in-process environment isolation\nis permitted; do not change external settings.\nPreinstalled Python: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python"
+  },
+  "schedule": [
+    "current",
+    "baseline",
+    "prior"
+  ],
+  "identities": {
+    "run_click_defaults_01.py": "ee114803a133c1c6b6ba7fe89326e3aac0653319f284df2c89a99c7df7536b2f",
+    "preflight_click_defaults.py": "1c0a4c7b29a9d306a674149e9dea6a5d74200e80e0a2c0916af638cdb7217963",
+    "preflight_click_context.py": "284f5848dcf20253688066e80a707e3cb2dd89262a452d8bbc933c91f80b0505",
+    "run_click_context_01.py": "0cf5c6c46fc034ab8135b7c807d7547cfb5eb464dfc135c6b99fd57b5148caf7",
+    "run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "run_httpx.py": "d7e7433e459562872f5db9d7bd4d171276de4864baad11aa2a7cc30b076aedb0",
+    "CLICK-DEFAULTS-01-PROTOCOL.md": "21f5f159339eca49da7f974bf518e368d879bbd2f736321e9ffb2d7764e57e50"
+  },
+  "source_digest": "c7fa7ab88f16ba1b37191797e4b3bdc3f8ebecee56888f315bc8afcab6cb4862",
+  "resource_digests": {
+    "current": "a8519531e6af79887f7294dc1d7119a41ee364afa05f8f3e7c403129d5cec9a4",
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "prior": "8aa450ddfc453445743752ac4c1359e447960eaf91e89bc6cb26feb4d68e5864"
+  },
+  "environment": {
+    "version": "Python 3.11.16",
+    "dependencies": "iniconfig==2.3.0\npackaging==26.3\npluggy==1.6.0\npytest==8.3.4\nPyYAML==6.0.3"
+  },
+  "interpreter": "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+  "native_preflight": {
+    "upstream_revision": "6aabf099bfdd4c1e75fe8d0e0d4241372b988ab1",
+    "outcomes": [
+      {
+        "variant": "correct",
+        "suite": [
+          "tests/test_defaults.py::test_default_map_source",
+          "tests/test_defaults.py::test_lookup_default_callable_in_default_map"
+        ],
+        "exit_code": 0,
+        "output": ".......\n7 passed in 0.03s\n"
+      },
+      {
+        "variant": "correct",
+        "suite": [
+          "tests/test_author_defaults.py"
+        ],
+        "exit_code": 0,
+        "output": "OBSERVED cli ['cli', 'COMMANDLINE'] factory_calls 0\n.OBSERVED env ['env', 'ENVIRONMENT'] factory_calls 0\n.OBSERVED none [None, 'DEFAULT_MAP'] factory_calls 0\n.OBSERVED empty ['', 'DEFAULT_MAP'] factory_calls 0\n.OBSERVED zero ['0', 'DEFAULT_MAP'] factory_calls 0\n.OBSERVED missing ['fallback', 'DEFAULT'] factory_calls 0\n.OBSERVED unset ['fallback', 'DEFAULT'] factory_calls 0\n.OBSERVED callable-none [None, 'DEFAULT_MAP'] factory_calls 1\n.\n8 passed in 0.01s\n"
+      },
+      {
+        "variant": "proposal",
+        "suite": [
+          "tests/test_defaults.py::test_default_map_source",
+          "tests/test_defaults.py::test_lookup_default_callable_in_default_map"
+        ],
+        "exit_code": 1,
+        "output": "..F....\n=================================== FAILURES ===================================\n_________ test_default_map_source[args2-default_map2-None-DEFAULT_MAP] _________\n\nrunner = <click.testing.CliRunner object at 0x107fd5110>, args = []\ndefault_map = {'name': None}, expected_value = None\nexpected_source = 'DEFAULT_MAP'\n\n    @pytest.mark.parametrize(\n        (\"args\", \"default_map\", \"expected_value\", \"expected_source\"),\n        [\n            # CLI arg wins over everything.\n            ([\"--name\", \"cli\"], {\"name\": \"mapped\"}, \"cli\", \"COMMANDLINE\"),\n            # default_map overrides parameter default.\n            ([], {\"name\": \"mapped\"}, \"mapped\", \"DEFAULT_MAP\"),\n            # Explicit None in default_map still counts as DEFAULT_MAP.\n            ([], {\"name\": None}, None, \"DEFAULT_MAP\"),\n            # Falsy values in default_map are not confused with missing keys.\n            ([], {\"name\": \"\"}, \"\", \"DEFAULT_MAP\"),\n            ([], {\"name\": 0}, \"0\", \"DEFAULT_MAP\"),\n            # No default_map falls back to parameter default.\n            ([], None, \"original\", \"DEFAULT\"),\n        ],\n    )\n    def test_default_map_source(runner, args, default_map, expected_value, expected_source):\n        \"\"\"``get_parameter_source()`` reports the correct origin for a parameter\n        value across the resolution chain: CLI > default_map > parameter default.\n        \"\"\"\n    \n        @click.command()\n        @click.option(\"--name\", default=\"original\")\n        @click.pass_context\n        def cli(ctx, name):\n            source = ctx.get_parameter_source(\"name\")\n            click.echo(f\"name={name!r} source={source.name}\")\n    \n        kwargs = {}\n        if default_map is not None:\n            kwargs[\"default_map\"] = default_map\n        result = runner.invoke(cli, args, **kwargs)\n        assert not result.exception\n>       assert f\"name={expected_value!r}\" in result.output\nE       assert 'name=None' in \"name='original' source=DEFAULT\\n\"\nE        +  where \"name='original' source=DEFAULT\\n\" = <Result okay>.output\n\ntests/test_defaults.py:271: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_defaults.py::test_default_map_source[args2-default_map2-None-DEFAULT_MAP]\n1 failed, 6 passed in 0.04s\n"
+      },
+      {
+        "variant": "proposal",
+        "suite": [
+          "tests/test_author_defaults.py"
+        ],
+        "exit_code": 1,
+        "output": "OBSERVED cli ['cli', 'COMMANDLINE'] factory_calls 0\n.OBSERVED env ['env', 'ENVIRONMENT'] factory_calls 0\n.OBSERVED none ['fallback', 'DEFAULT'] factory_calls 0\nFOBSERVED empty ['', 'DEFAULT_MAP'] factory_calls 0\n.OBSERVED zero ['0', 'DEFAULT_MAP'] factory_calls 0\n.OBSERVED missing ['fallback', 'DEFAULT'] factory_calls 0\n.OBSERVED unset ['fallback', 'DEFAULT'] factory_calls 0\n.OBSERVED callable-none [None, 'DEFAULT'] factory_calls 2\nF\n=================================== FAILURES ===================================\n____________ test_actual_cli[none-argv2-None-mapping2-expected2-0] _____________\n\nlabel = 'none', argv = [], env = None, mapping = {'name': None}\nexpected = [None, 'DEFAULT_MAP'], calls_expected = 0\n\n    @pytest.mark.parametrize('label,argv,env,mapping,expected,calls_expected', [\n        ('cli', ['--name','cli'], 'env', {'name':None}, ['cli','COMMANDLINE'], 0),\n        ('env', [], 'env', {'name':None}, ['env','ENVIRONMENT'], 0),\n        ('none', [], None, {'name':None}, [None,'DEFAULT_MAP'], 0),\n        ('empty', [], None, {'name':''}, ['','DEFAULT_MAP'], 0),\n        ('zero', [], None, {'name':0}, ['0','DEFAULT_MAP'], 0),\n        ('missing', [], None, {}, ['fallback','DEFAULT'], 0),\n        ('unset', [], None, {'name':UNSET}, ['fallback','DEFAULT'], 0),\n        ('callable-none', [], None, None, [None,'DEFAULT_MAP'], 1),\n    ])\n    def test_actual_cli(label, argv, env, mapping, expected, calls_expected):\n        assert Path(click.__file__).resolve() == Path(__file__).resolve().parents[1] / 'src/click/__init__.py'\n        calls = []\n        def factory():\n            calls.append('called')\n            return None\n        if mapping is None:\n            mapping = {'name':factory}\n        @click.command()\n        @click.option('--name', default='fallback', envvar='QH_REVIEW_NAME')\n        @click.pass_context\n        def cli(ctx, name):\n            click.echo(json.dumps([name, ctx.get_parameter_source('name').name]))\n        result = CliRunner().invoke(cli, argv, env={'QH_REVIEW_NAME':env}, default_map=mapping)\n        assert result.exit_code == 0, (result.output, result.exception)\n        actual = json.loads(result.output)\n        print('OBSERVED', label, actual, 'factory_calls', len(calls))\n>       assert actual == expected\nE       AssertionError: assert ['fallback', 'DEFAULT'] == [None, 'DEFAULT_MAP']\nE         \nE         At index 0 diff: 'fallback' != None\nE         Use -v to get more diff\n\ntests/test_author_defaults.py:35: AssertionError\n__________ test_actual_cli[callable-none-argv7-None-None-expected7-1] __________\n\nlabel = 'callable-none', argv = [], env = None\nmapping = {'name': <function test_actual_cli.<locals>.factory at 0x1069e27a0>}\nexpected = [None, 'DEFAULT_MAP'], calls_expected = 1\n\n    @pytest.mark.parametrize('label,argv,env,mapping,expected,calls_expected', [\n        ('cli', ['--name','cli'], 'env', {'name':None}, ['cli','COMMANDLINE'], 0),\n        ('env', [], 'env', {'name':None}, ['env','ENVIRONMENT'], 0),\n        ('none', [], None, {'name':None}, [None,'DEFAULT_MAP'], 0),\n        ('empty', [], None, {'name':''}, ['','DEFAULT_MAP'], 0),\n        ('zero', [], None, {'name':0}, ['0','DEFAULT_MAP'], 0),\n        ('missing', [], None, {}, ['fallback','DEFAULT'], 0),\n        ('unset', [], None, {'name':UNSET}, ['fallback','DEFAULT'], 0),\n        ('callable-none', [], None, None, [None,'DEFAULT_MAP'], 1),\n    ])\n    def test_actual_cli(label, argv, env, mapping, expected, calls_expected):\n        assert Path(click.__file__).resolve() == Path(__file__).resolve().parents[1] / 'src/click/__init__.py'\n        calls = []\n        def factory():\n            calls.append('called')\n            return None\n        if mapping is None:\n            mapping = {'name':factory}\n        @click.command()\n        @click.option('--name', default='fallback', envvar='QH_REVIEW_NAME')\n        @click.pass_context\n        def cli(ctx, name):\n            click.echo(json.dumps([name, ctx.get_parameter_source('name').name]))\n        result = CliRunner().invoke(cli, argv, env={'QH_REVIEW_NAME':env}, default_map=mapping)\n        assert result.exit_code == 0, (result.output, result.exception)\n        actual = json.loads(result.output)\n        print('OBSERVED', label, actual, 'factory_calls', len(calls))\n>       assert actual == expected\nE       AssertionError: assert [None, 'DEFAULT'] == [None, 'DEFAULT_MAP']\nE         \nE         At index 1 diff: 'DEFAULT' != 'DEFAULT_MAP'\nE         Use -v to get more diff\n\ntests/test_author_defaults.py:35: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_author_defaults.py::test_actual_cli[none-argv2-None-mapping2-expected2-0]\nFAILED tests/test_author_defaults.py::test_actual_cli[callable-none-argv7-None-None-expected7-1]\n2 failed, 6 passed in 0.02s\n"
+      }
+    ],
+    "originals_preserved": true,
+    "limitation": "Author-selected proposal over real source, not a model result or organic upstream issue. Existing source is unchanged."
+  },
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360
+  },
+  "repeats": 1,
+  "jobs": 1,
+  "completed_cells": [
+    {
+      "condition": "current",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 139828,
+        "cached_input_tokens": 114304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3041,
+        "reasoning_output_tokens": 266
+      },
+      "elapsed_seconds": 120.824
+    },
+    {
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 125519,
+        "cached_input_tokens": 102016,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2767,
+        "reasoning_output_tokens": 196
+      },
+      "elapsed_seconds": 95.867
+    },
+    {
+      "condition": "prior",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 171274,
+        "cached_input_tokens": 143104,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2776,
+        "reasoning_output_tokens": 75
+      },
+      "elapsed_seconds": 99.46
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T03:09:39.414682+00:00",
+  "finished_at": "2026-09-21T03:15:31.880166+00:00"
+}
