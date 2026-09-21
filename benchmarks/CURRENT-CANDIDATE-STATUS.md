@@ -9,6 +9,20 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## New Click audit workload preflight — 2026-09-21, source `6aabf09`
+
+[Actual upstream test gap](CLICK-CONTEXT-PREFLIGHT-01.md): a nested-resource
+exception test registers callbacks without entering the cleanup scope. The 30-test
+file passes correct and narrowly mutated implementations, while the same added
+three-case check passes correct and rejects faulty exception suppression with
+two neighboring controls intact. Original files/Git and cleanup are verified.
+This is author-selected real source plus a synthetic mutation, not a production
+bug or model result. Task/resource/schedule freezing remains before model calls;
+no skill instructions or featured results changed.
+
+한국어: HTTPX와 다른 실제 프로젝트에서 감사할 구체적인 테스트 공백을 확인했다.
+정상·결함 대조는 검증됐지만 모델 효율 개선은 아직 측정하지 않았다.
+
 ## History excerpt allocation reduced — 2026-09-21, parent `0154324`
 
 [Local allocation probe](HISTORY-PATCH-MEMORY-01.md) keeps complete patch
