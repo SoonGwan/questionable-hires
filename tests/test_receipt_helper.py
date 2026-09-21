@@ -19,6 +19,26 @@ spec.loader.exec_module(helper)
 
 
 class ReceiptHelperTests(unittest.TestCase):
+    def test_original_hashes_are_computed_once_without_reusing_mutable_reads(self):
+        recipe = dict(self.recipe, after={'working_tree': True})
+        selected = {name: (self.root/name).read_bytes()
+                    for name in recipe['fixed'] + recipe['vary']}
+        with patch.object(helper.hashlib, 'sha256', wraps=hashlib.sha256) as digest, \
+                patch.object(helper, 'read_limited', wraps=helper.read_limited) as reads:
+            result = helper.compare(self.root, recipe)
+        for name, content in selected.items():
+            self.assertEqual(sum(call.args == (content,) for call in digest.call_args_list), 1)
+            self.assertEqual(sum(call.args[0] == self.root.resolve()/name
+                                 for call in reads.call_args_list), 2)
+            self.assertEqual(result['originals']['sha256'][name], hashlib.sha256(content).hexdigest())
+        self.assertEqual(result['fixed_sha256'],
+            {name: result['originals']['sha256'][name] for name in recipe['fixed']})
+        self.assertEqual(result['working_tree_after']['sha256'],
+            {name: result['originals']['sha256'][name] for name in recipe['vary']})
+        self.assertEqual(result['checks']['before']['exit_code'], 1)
+        self.assertEqual(result['checks']['after']['exit_code'], 0)
+        self.assertTrue(result['comparison_copies_removed'])
+
     def test_finished_native_checks_do_not_wait_on_inherited_descendant_pipe(self):
         source = self.tests + ('\nimport subprocess, sys\n'
             '_background = subprocess.Popen([sys.executable, "-B", "-c", '

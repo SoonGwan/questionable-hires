@@ -536,12 +536,15 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
             files[name] = blobs[oid]
             variant_modes[name] = 0o755 if mode == b'100755' else 0o644
         variants[label] = (files, variant_modes)
+    # Reuse hashes of these immutable captured bytes, never later filesystem reads.
+    original_hashes = {name: hashlib.sha256(content).hexdigest()
+                       for name, content in originals.items()}
     result = dict(status='observed', revisions=revisions, checks={}, import_roots=list(import_roots),
-                  fixed_sha256={name: hashlib.sha256(originals[name]).hexdigest() for name in recipe['fixed']},
+                  fixed_sha256={name: original_hashes[name] for name in recipe['fixed']},
                   limitation='Inspect assertion failures and import provenance; exit codes alone do not prove the fix.')
     if revisions['after'] is None:
         result['working_tree_after'] = dict(
-            sha256={name: hashlib.sha256(originals[name]).hexdigest() for name in recipe['vary']},
+            sha256={name: original_hashes[name] for name in recipe['vary']},
             modes={name: modes[name] for name in recipe['vary']})
     guarded = tree_inventory(root) if recipe.get('guard_tree', False) else None
     try:
@@ -579,7 +582,7 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
                 file_bytes=byte_count, inventory_sha256=hashlib.sha256(encoded).hexdigest(),
                 scope='source root including Git metadata; symlink targets not read')
     result['originals'] = dict(unchanged=True,
-        sha256={name: hashlib.sha256(content).hexdigest() for name, content in originals.items()},
+        sha256=original_hashes,
         modes=modes, watch_only=watched)
     result['comparison_copies_removed'] = True
     return result

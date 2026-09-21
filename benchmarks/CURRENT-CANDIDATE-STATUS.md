@@ -55,6 +55,10 @@ or recoverable savings.
 
 These changes are implemented; their model-cost effect is not established:
 
+- [Receipt original-hash reuse](RECEIPT-ORIGINAL-HASH-REUSE-01.md), parent`20380c9`:
+  result fields reuse digests of already captured bytes; mutable-file rereads,
+  guards and native comparisons remain. Two-file working-tree control4→2 digest
+  calls is not a whole-helper or model saving.50 helper/8 guard tests pass.
 - [Isolated scratch02](SWE-LITE-SCRATCH-02.md), parent`551dce3`: optional
   container-private scratch avoids the pytest ancestor-config rootdir defect.
   Native base replay184pass versus legacy181pass/3fail;23 runner checks pass
