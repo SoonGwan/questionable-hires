@@ -1,0 +1,59 @@
+test_requests.py
+Traceback (most recent call last):
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pytest/__main__.py", line 5, in <module>
+    raise SystemExit(pytest.console_main())
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/config/__init__.py", line 192, in console_main
+    code = main()
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/config/__init__.py", line 150, in main
+    config = _prepareconfig(args, plugins)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/config/__init__.py", line 331, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/helpconfig.py", line 104, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1075, in pytest_cmdline_parse
+    self.parse(args)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1425, in parse
+    self._preparse(args, addopts=addopts)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1327, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/capture.py", line 149, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/capture.py", line 750, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/capture.py", line 692, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/_pytest/capture.py", line 466, in __init__
+    TemporaryFile(buffering=0),
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/tempfile.py", line 601, in TemporaryFile
+    prefix, suffix, dir, output_type = _sanitize_params(prefix, suffix, dir)
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/tempfile.py", line 122, in _sanitize_params
+    dir = gettempdir()
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/tempfile.py", line 307, in gettempdir
+    tempdir = _get_default_tempdir()
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/tempfile.py", line 223, in _get_default_tempdir
+    raise FileNotFoundError(_errno.ENOENT,
+FileNotFoundError: [Errno 2] No usable temporary directory found in ['/tmp', '/var/tmp', '/usr/tmp', '/testbed']

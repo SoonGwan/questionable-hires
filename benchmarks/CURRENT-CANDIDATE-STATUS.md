@@ -23,6 +23,10 @@ or new performance result. Public tasks are not proven uncontaminated holdout.
 [Image feasibility](SWE-LITE-PILOT-01-ENVIRONMENT.md): both pinned amd64 images
 start under compatibility mode with matching source blobs, but differing modes
 and broad Git stores require solver isolation. Imports are not native-test validation.
+[Base-only copies and smoke checks](SWE-LITE-PILOT-01-ISOLATION.md) now preserve
+the exact base trees with one fresh commit/no remotes. Requests one native control
+and pytest77 existing tests pass; setup failures are retained. Hidden scoring,
+same-process provenance and complete solver-access review remain pending.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |
