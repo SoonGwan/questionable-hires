@@ -1,0 +1,449 @@
+{
+  "case": {
+    "id": "slugify-native-verified",
+    "skill": "con-artist",
+    "files": {
+      "LICENSE": "The MIT License\n\nCopyright (c) Val Neekman @ Neekware Inc. http://neekware.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n",
+      "slugify/__init__.py": "from .special import *\nfrom .slugify import *\nfrom .__version__ import __title__\nfrom .__version__ import __author__\nfrom .__version__ import __author_email__\nfrom .__version__ import __description__\nfrom .__version__ import __url__\nfrom .__version__ import __license__\nfrom .__version__ import __copyright__\nfrom .__version__ import __version__\n",
+      "slugify/__main__.py": "from __future__ import annotations\n\nimport argparse\nimport sys\nfrom typing import Any\n\nfrom .slugify import slugify, DEFAULT_SEPARATOR\n\n\ndef parse_args(argv: list[str]) -> argparse.Namespace:\n    parser = argparse.ArgumentParser(description=\"Slug string\")\n\n    input_group = parser.add_argument_group(description=\"Input\")\n    input_group.add_argument(\"input_string\", nargs='*',\n                             help='Text to slugify')\n    input_group.add_argument(\"--stdin\", action='store_true',\n                             help=\"Take the text from STDIN\")\n\n    parser.add_argument(\"--no-entities\", action='store_false', dest='entities', default=True,\n                        help=\"Do not convert HTML entities to unicode\")\n    parser.add_argument(\"--no-decimal\", action='store_false', dest='decimal', default=True,\n                        help=\"Do not convert HTML decimal to unicode\")\n    parser.add_argument(\"--no-hexadecimal\", action='store_false', dest='hexadecimal', default=True,\n                        help=\"Do not convert HTML hexadecimal to unicode\")\n    parser.add_argument(\"--max-length\", type=int, default=0,\n                        help=\"Output string length, 0 for no limit\")\n    parser.add_argument(\"--word-boundary\", action='store_true', default=False,\n                        help=\"Truncate to complete word even if length ends up shorter than --max_length\")\n    parser.add_argument(\"--save-order\", action='store_true', default=False,\n                        help=\"When set and --max_length > 0 return whole words in the initial order\")\n    parser.add_argument(\"--separator\", type=str, default=DEFAULT_SEPARATOR,\n                        help=\"Separator between words. By default \" + DEFAULT_SEPARATOR)\n    parser.add_argument(\"--stopwords\", nargs='+',\n                        help=\"Words to discount\")\n    parser.add_argument(\"--regex-pattern\",\n                        help=\"Python regex pattern for disallowed characters\")\n    parser.add_argument(\"--no-lowercase\", action='store_false', dest='lowercase', default=True,\n                        help=\"Activate case sensitivity\")\n    parser.add_argument(\"--replacements\", nargs='+',\n                        help=\"\"\"Additional replacement rules e.g. \"|->or\", \"%%->percent\".\"\"\")\n    parser.add_argument(\"--allow-unicode\", action='store_true', default=False,\n                        help=\"Allow unicode characters\")\n\n    args = parser.parse_args(argv[1:])\n\n    if args.input_string and args.stdin:\n        parser.error(\"Input strings and --stdin cannot work together\")\n\n    if args.replacements:\n        def split_check(repl):\n            SEP = '->'\n            if SEP not in repl:\n                parser.error(\"Replacements must be of the form: ORIGINAL{SEP}REPLACED\".format(SEP=SEP))\n            return repl.split(SEP, 1)\n        args.replacements = [split_check(repl) for repl in args.replacements]\n\n    if args.input_string:\n        args.input_string = \" \".join(args.input_string)\n    elif args.stdin:\n        args.input_string = sys.stdin.read()\n\n    if not args.input_string:\n        args.input_string = ''\n\n    return args\n\n\ndef slugify_params(args: argparse.Namespace) -> dict[str, Any]:\n    return dict(\n        text=args.input_string,\n        entities=args.entities,\n        decimal=args.decimal,\n        hexadecimal=args.hexadecimal,\n        max_length=args.max_length,\n        word_boundary=args.word_boundary,\n        save_order=args.save_order,\n        separator=args.separator,\n        stopwords=args.stopwords,\n        lowercase=args.lowercase,\n        replacements=args.replacements,\n        allow_unicode=args.allow_unicode\n    )\n\n\ndef main(argv: list[str] | None = None):  # pragma: no cover\n    \"\"\" Run this program \"\"\"\n    if argv is None:\n        argv = sys.argv\n    args = parse_args(argv)\n    params = slugify_params(args)\n    try:\n        print(slugify(**params))\n    except KeyboardInterrupt:\n        sys.exit(-1)\n\n\nif __name__ == '__main__':  # pragma: no cover\n    main()\n",
+      "slugify/__version__.py": "__title__ = 'python-slugify'\n__author__ = 'Val Neekman'\n__author_email__ = 'info@neekware.com'\n__description__ = 'A Python slugify application that also handles Unicode'\n__url__ = 'https://github.com/un33k/python-slugify'\n__license__ = 'MIT'\n__copyright__ = 'Copyright 2022 Val Neekman @ Neekware Inc.'\n__version__ = '8.0.4'\n",
+      "slugify/py.typed": "",
+      "slugify/slugify.py": "from __future__ import annotations\n\nimport re\nimport unicodedata\nfrom collections.abc import Iterable\nfrom html.entities import name2codepoint\n\ntry:\n    import unidecode\nexcept ImportError:\n    import text_unidecode as unidecode\n\n__all__ = ['slugify', 'smart_truncate']\n\n\nCHAR_ENTITY_PATTERN = re.compile(r'&(%s);' % '|'.join(name2codepoint))\nDECIMAL_PATTERN = re.compile(r'&#(\\d+);')\nHEX_PATTERN = re.compile(r'&#x([\\da-fA-F]+);')\nQUOTE_PATTERN = re.compile(r'[\\']+')\nDISALLOWED_CHARS_PATTERN = re.compile(r'[^-a-zA-Z0-9]+')\nDISALLOWED_UNICODE_CHARS_PATTERN = re.compile(r'[\\W_]+')\nDUPLICATE_DASH_PATTERN = re.compile(r'-{2,}')\nNUMBERS_PATTERN = re.compile(r'(?<=\\d),(?=\\d)')\nDEFAULT_SEPARATOR = '-'\n\n\ndef smart_truncate(\n    string: str,\n    max_length: int = 0,\n    word_boundary: bool = False,\n    separator: str = \" \",\n    save_order: bool = False,\n) -> str:\n    \"\"\"\n    Truncate a string.\n    :param string (str): string for modification\n    :param max_length (int): output string length\n    :param word_boundary (bool):\n    :param save_order (bool): if True then word order of output string is like input string\n    :param separator (str): separator between words\n    :return:\n    \"\"\"\n\n    string = string.strip(separator)\n\n    if not max_length:\n        return string\n\n    if len(string) < max_length:\n        return string\n\n    if not word_boundary:\n        return string[:max_length].strip(separator)\n\n    if separator not in string:\n        return string[:max_length]\n\n    truncated = ''\n    for word in string.split(separator):\n        if word:\n            next_len = len(truncated) + len(word)\n            if next_len < max_length:\n                truncated += '{}{}'.format(word, separator)\n            elif next_len == max_length:\n                truncated += '{}'.format(word)\n                break\n            else:\n                if save_order:\n                    break\n    if not truncated:  # pragma: no cover\n        truncated = string[:max_length]\n    return truncated.strip(separator)\n\n\ndef slugify(\n    text: str,\n    entities: bool = True,\n    decimal: bool = True,\n    hexadecimal: bool = True,\n    max_length: int = 0,\n    word_boundary: bool = False,\n    separator: str = DEFAULT_SEPARATOR,\n    save_order: bool = False,\n    stopwords: Iterable[str] = (),\n    regex_pattern: re.Pattern[str] | str | None = None,\n    lowercase: bool = True,\n    replacements: Iterable[Iterable[str]] = (),\n    allow_unicode: bool = False,\n) -> str:\n    \"\"\"\n    Make a slug from the given text.\n    :param text (str): initial text\n    :param entities (bool): converts html entities to unicode\n    :param decimal (bool): converts html decimal to unicode\n    :param hexadecimal (bool): converts html hexadecimal to unicode\n    :param max_length (int): output string length\n    :param word_boundary (bool): truncates to complete word even if length ends up shorter than max_length\n    :param save_order (bool): if parameter is True and max_length > 0 return whole words in the initial order\n    :param separator (str): separator between words\n    :param stopwords (iterable): words to discount\n    :param regex_pattern (str): regex pattern for disallowed characters\n    :param lowercase (bool): activate case sensitivity by setting it to False\n    :param replacements (iterable): list of replacement rules e.g. [['|', 'or'], ['%', 'percent']]\n    :param allow_unicode (bool): allow unicode characters\n    :return (str):\n    \"\"\"\n\n    # user-specific replacements\n    if replacements:\n        for old, new in replacements:\n            text = text.replace(old, new)\n\n    # ensure text is unicode\n    if not isinstance(text, str):\n        text = str(text, 'utf-8', 'ignore')\n\n    # replace quotes with dashes - pre-process\n    text = QUOTE_PATTERN.sub(DEFAULT_SEPARATOR, text)\n\n    # normalize text, convert to unicode if required\n    if allow_unicode:\n        text = unicodedata.normalize('NFKC', text)\n    else:\n        text = unicodedata.normalize('NFKD', text)\n        text = unidecode.unidecode(text)\n\n    # ensure text is still in unicode\n    if not isinstance(text, str):\n        text = str(text, 'utf-8', 'ignore')\n\n    # character entity reference\n    if entities:\n        text = CHAR_ENTITY_PATTERN.sub(lambda m: chr(name2codepoint[m.group(1)]), text)\n\n    # decimal character reference\n    if decimal:\n        try:\n            text = DECIMAL_PATTERN.sub(lambda m: chr(int(m.group(1))), text)\n        except Exception:\n            pass\n\n    # hexadecimal character reference\n    if hexadecimal:\n        try:\n            text = HEX_PATTERN.sub(lambda m: chr(int(m.group(1), 16)), text)\n        except Exception:\n            pass\n\n    # re normalize text\n    if allow_unicode:\n        text = unicodedata.normalize('NFKC', text)\n    else:\n        text = unicodedata.normalize('NFKD', text)\n\n    # make the text lowercase (optional)\n    if lowercase:\n        text = text.lower()\n\n    # remove generated quotes -- post-process\n    text = QUOTE_PATTERN.sub('', text)\n\n    # cleanup numbers\n    text = NUMBERS_PATTERN.sub('', text)\n\n    # replace all other unwanted characters\n    if allow_unicode:\n        pattern = regex_pattern or DISALLOWED_UNICODE_CHARS_PATTERN\n    else:\n        pattern = regex_pattern or DISALLOWED_CHARS_PATTERN\n\n    text = re.sub(pattern, DEFAULT_SEPARATOR, text)\n\n    # remove redundant\n    text = DUPLICATE_DASH_PATTERN.sub(DEFAULT_SEPARATOR, text).strip(DEFAULT_SEPARATOR)\n\n    # remove stopwords\n    if stopwords:\n        if lowercase:\n            stopwords_lower = [s.lower() for s in stopwords]\n            words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords_lower]\n        else:\n            words = [w for w in text.split(DEFAULT_SEPARATOR) if w not in stopwords]\n        text = DEFAULT_SEPARATOR.join(words)\n\n    # finalize user-specific replacements\n    if replacements:\n        for old, new in replacements:\n            text = text.replace(old, new)\n\n    # smart truncate if requested\n    if max_length > 0:\n        text = smart_truncate(text, max_length, word_boundary, DEFAULT_SEPARATOR, save_order)\n\n    if separator != DEFAULT_SEPARATOR:\n        text = text.replace(DEFAULT_SEPARATOR, separator)\n\n    return text\n",
+      "slugify/special.py": "from __future__ import annotations\n\n\ndef add_uppercase_char(char_list: list[tuple[str, str]]) -> list[tuple[str, str]]:\n    \"\"\" Given a replacement char list, this adds uppercase chars to the list \"\"\"\n\n    for item in char_list:\n        char, xlate = item\n        upper_dict = char.upper(), xlate.capitalize()\n        if upper_dict not in char_list and char != upper_dict[0]:\n            char_list.insert(0, upper_dict)\n    return char_list\n\n\n# Language specific pre translations\n# Source awesome-slugify\n\n_CYRILLIC = [      # package defaults:\n    (u'\u0451', u'e'),    # io / yo\n    (u'\u044f', u'ya'),   # ia\n    (u'\u0445', u'h'),    # kh\n    (u'\u0443', u'y'),    # u\n    (u'\u0449', u'sch'),  # sch\n    (u'\u044e', u'u'),    # iu / yu\n]\nCYRILLIC = add_uppercase_char(_CYRILLIC)\n\n_GERMAN = [        # package defaults:\n    (u'\u00e4', u'ae'),   # a\n    (u'\u00f6', u'oe'),   # o\n    (u'\u00fc', u'ue'),   # u\n]\nGERMAN = add_uppercase_char(_GERMAN)\n\n_GREEK = [         # package defaults:\n    (u'\u03c7', u'ch'),   # kh\n    (u'\u039e', u'X'),    # Ks\n    (u'\u03d2', u'Y'),    # U\n    (u'\u03c5', u'y'),    # u\n    (u'\u03cd', u'y'),\n    (u'\u03cb', u'y'),\n    (u'\u03b0', u'y'),\n]\nGREEK = add_uppercase_char(_GREEK)\n\n# Pre translations\nPRE_TRANSLATIONS = CYRILLIC + GERMAN + GREEK\n",
+      "test.py": "# -*- coding: utf-8 -*-\nimport io\nimport sys\nimport unittest\nfrom contextlib import contextmanager\n\nfrom slugify import PRE_TRANSLATIONS\nfrom slugify import slugify\nfrom slugify import smart_truncate\nfrom slugify.__main__ import slugify_params, parse_args\n\n\nclass TestSlugify(unittest.TestCase):\n\n    def test_extraneous_seperators(self):\n\n        txt = \"This is a test ---\"\n        r = slugify(txt)\n        self.assertEqual(r, \"this-is-a-test\")\n\n        txt = \"___This is a test ---\"\n        r = slugify(txt)\n        self.assertEqual(r, \"this-is-a-test\")\n\n        txt = \"___This is a test___\"\n        r = slugify(txt)\n        self.assertEqual(r, \"this-is-a-test\")\n\n    def test_non_word_characters(self):\n        txt = \"This -- is a ## test ---\"\n        r = slugify(txt)\n        self.assertEqual(r, \"this-is-a-test\")\n\n    def test_phonetic_conversion_of_eastern_scripts(self):\n        txt = '\u5f71\u5e2b\u55ce'\n        r = slugify(txt)\n        self.assertEqual(r, \"ying-shi-ma\")\n\n    def test_accented_text(self):\n        txt = '\ud835\udc1a\u0301\u0301\ud835\udd52\u0301\u00e0\u00e1\u00e2\u00e4\u00e3\u0105\u0101'\n        r = slugify(txt)\n        self.assertEqual(r, \"aaaaaaaaa\")\n\n        txt = 'C\\'est d\u00e9j\u00e0 l\\'\u00e9t\u00e9.'\n        r = slugify(txt)\n        self.assertEqual(r, \"c-est-deja-l-ete\")\n\n        txt = 'N\u00edn h\u01ceo. W\u01d2 sh\u00ec zh\u014dng gu\u00f3 r\u00e9n'\n        r = slugify(txt)\n        self.assertEqual(r, \"nin-hao-wo-shi-zhong-guo-ren\")\n\n    def test_accented_text_with_non_word_characters(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt)\n        self.assertEqual(r, \"jaja-lol-mememeoo-a\")\n\n    def test_cyrillic_text(self):\n        txt = '\u041a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440'\n        r = slugify(txt)\n        self.assertEqual(r, \"kompiuter\")\n\n    def test_max_length(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, max_length=9)\n        self.assertEqual(r, \"jaja-lol\")\n\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, max_length=15)\n        self.assertEqual(r, \"jaja-lol-mememe\")\n\n    def test_max_length_cutoff_not_required(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, max_length=50)\n        self.assertEqual(r, \"jaja-lol-mememeoo-a\")\n\n    def test_word_boundary(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, max_length=15, word_boundary=True)\n        self.assertEqual(r, \"jaja-lol-a\")\n\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, max_length=17, word_boundary=True)\n        self.assertEqual(r, \"jaja-lol-mememeoo\")\n\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, max_length=18, word_boundary=True)\n        self.assertEqual(r, \"jaja-lol-mememeoo\")\n\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, max_length=19, word_boundary=True)\n        self.assertEqual(r, \"jaja-lol-mememeoo-a\")\n\n    def test_custom_separator(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, max_length=20, word_boundary=True, separator=\".\")\n        self.assertEqual(r, \"jaja.lol.mememeoo.a\")\n\n    def test_multi_character_separator(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, max_length=20, word_boundary=True, separator=\"ZZZZZZ\")\n        self.assertEqual(r, \"jajaZZZZZZlolZZZZZZmememeooZZZZZZa\")\n\n    def test_save_order(self):\n        txt = 'one two three four five'\n        r = slugify(txt, max_length=13, word_boundary=True, save_order=True)\n        self.assertEqual(r, \"one-two-three\")\n\n        txt = 'one two three four five'\n        r = slugify(txt, max_length=13, word_boundary=True, save_order=False)\n        self.assertEqual(r, \"one-two-three\")\n\n        txt = 'one two three four five'\n        r = slugify(txt, max_length=12, word_boundary=True, save_order=False)\n        self.assertEqual(r, \"one-two-four\")\n\n        txt = 'one two three four five'\n        r = slugify(txt, max_length=12, word_boundary=True, save_order=True)\n        self.assertEqual(r, \"one-two\")\n\n    def test_stopword_removal(self):\n        txt = 'this has a stopword'\n        r = slugify(txt, stopwords=['stopword'])\n        self.assertEqual(r, 'this-has-a')\n\n    def test_stopword_removal_casesensitive(self):\n        txt = 'thIs Has a stopword Stopword'\n        r = slugify(txt, stopwords=['Stopword'], lowercase=False)\n        self.assertEqual(r, 'thIs-Has-a-stopword')\n\n    def test_multiple_stopword_occurances(self):\n        txt = 'the quick brown fox jumps over the lazy dog'\n        r = slugify(txt, stopwords=['the'])\n        self.assertEqual(r, 'quick-brown-fox-jumps-over-lazy-dog')\n\n    def test_differently_cased_stopword_match(self):\n        txt = 'Foo A FOO B foo C'\n        r = slugify(txt, stopwords=['foo'])\n        self.assertEqual(r, 'a-b-c')\n\n        txt = 'Foo A FOO B foo C'\n        r = slugify(txt, stopwords=['FOO'])\n        self.assertEqual(r, 'a-b-c')\n\n    def test_multiple_stopwords(self):\n        txt = 'the quick brown fox jumps over the lazy dog in a hurry'\n        r = slugify(txt, stopwords=['the', 'in', 'a', 'hurry'])\n        self.assertEqual(r, 'quick-brown-fox-jumps-over-lazy-dog')\n\n    def test_stopwords_with_different_separator(self):\n        txt = 'the quick brown fox jumps over the lazy dog'\n        r = slugify(txt, stopwords=['the'], separator=' ')\n        self.assertEqual(r, 'quick brown fox jumps over lazy dog')\n\n    def test_html_entities_on(self):\n        txt = 'foo &amp; bar'\n        r = slugify(txt)\n        self.assertEqual(r, 'foo-bar')\n\n    def test_html_entities_off(self):\n        txt = 'foo &amp; bar'\n        r = slugify(txt, entities=False)\n        self.assertEqual(r, 'foo-amp-bar')\n\n    def test_html_decimal_on(self):\n        txt = '&#381;'\n        r = slugify(txt, decimal=True)\n        self.assertEqual(r, 'z')\n\n    def test_html_decimal_off(self):\n        txt = '&#381;'\n        r = slugify(txt, entities=False, decimal=False)\n        self.assertEqual(r, '381')\n\n    def test_html_hexadecimal_on(self):\n        txt = '&#x17D;'\n        r = slugify(txt, hexadecimal=True)\n        self.assertEqual(r, 'z')\n\n    def test_html_hexadecimal_off(self):\n        txt = '&#x17D;'\n        r = slugify(txt, hexadecimal=False)\n        self.assertEqual(r, 'x17d')\n\n    def test_starts_with_number(self):\n        txt = '10 amazing secrets'\n        r = slugify(txt)\n        self.assertEqual(r, '10-amazing-secrets')\n\n    def test_contains_numbers(self):\n        txt = 'buildings with 1000 windows'\n        r = slugify(txt)\n        self.assertEqual(r, 'buildings-with-1000-windows')\n\n    def test_ends_with_number(self):\n        txt = 'recipe number 3'\n        r = slugify(txt)\n        self.assertEqual(r, 'recipe-number-3')\n\n    def test_numbers_only(self):\n        txt = '404'\n        r = slugify(txt)\n        self.assertEqual(r, '404')\n\n    def test_numbers_and_symbols(self):\n        txt = '1,000 reasons you are #1'\n        r = slugify(txt)\n        self.assertEqual(r, '1000-reasons-you-are-1')\n\n    def test_regex_pattern_keep_underscore(self):\n        txt = \"___This is a test___\"\n        regex_pattern = r'[^-a-z0-9_]+'\n        r = slugify(txt, regex_pattern=regex_pattern)\n        self.assertEqual(r, \"___this-is-a-test___\")\n\n    def test_regex_pattern_keep_underscore_with_underscore_as_separator(self):\n        \"\"\"\n        The regex_pattern turns the power to the caller.\n        Hence the caller must ensure that a custom separator doesn't clash\n        with the regex_pattern.\n        \"\"\"\n        txt = \"___This is a test___\"\n        regex_pattern = r'[^-a-z0-9_]+'\n        r = slugify(txt, separator='_', regex_pattern=regex_pattern)\n        self.assertNotEqual(r, \"_this_is_a_test_\")\n\n    def test_replacements(self):\n        txt = '10 | 20 %'\n        r = slugify(txt, replacements=[['|', 'or'], ['%', 'percent']])\n        self.assertEqual(r, \"10-or-20-percent\")\n\n        txt = 'I \u2665 \ud83e\udd84'\n        r = slugify(txt, replacements=[['\u2665', 'amour'], ['\ud83e\udd84', 'licorne']])\n        self.assertEqual(r, \"i-amour-licorne\")\n\n    def test_replacements_german_umlaut_custom(self):\n        txt = '\u00dcBER \u00dcber German Umlaut'\n        r = slugify(txt, replacements=[['\u00dc', 'UE'], ['\u00fc', 'ue']])\n        self.assertEqual(r, \"ueber-ueber-german-umlaut\")\n\n    def test_pre_translation(self):\n        self.assertEqual(PRE_TRANSLATIONS, [('\u042e', 'U'), ('\u0429', 'Sch'), ('\u0423', 'Y'), ('\u0425', 'H'), ('\u042f', 'Ya'), ('\u0401', 'E'), ('\u0451', 'e'), ('\u044f', 'ya'), ('\u0445', 'h'), ('\u0443', 'y'), ('\u0449', 'sch'), ('\u044e', 'u'), ('\u00dc', 'Ue'), ('\u00d6', 'Oe'), ('\u00c4', 'Ae'), ('\u00e4', 'ae'), ('\u00f6', 'oe'), ('\u00fc', 'ue'), ('\u03a5\u0308\u0301', 'Y'), ('\u03ab', 'Y'), ('\u038e', 'Y'), ('\u03a5', 'Y'), ('\u03a7', 'Ch'), ('\u03c7', 'ch'), ('\u039e', 'X'), ('\u03d2', 'Y'), ('\u03c5', 'y'), ('\u03cd', 'y'), ('\u03cb', 'y'), ('\u03b0', 'y')])\n\n\nclass TestSlugifyUnicode(unittest.TestCase):\n    def test_extraneous_seperators(self):\n\n        txt = \"This is a test ---\"\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, \"this-is-a-test\")\n\n        txt = \"___This is a test ---\"\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, \"this-is-a-test\")\n\n        txt = \"___This is a test___\"\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, \"this-is-a-test\")\n\n    def test_non_word_characters(self):\n        txt = \"This -- is a ## test ---\"\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, \"this-is-a-test\")\n\n    def test_phonetic_conversion_of_eastern_scripts(self):\n        txt = '\u5f71\u5e2b\u55ce'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, txt)\n\n    def test_accented_text(self):\n        txt = 'C\\'est d\u00e9j\u00e0 l\\'\u00e9t\u00e9.'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, \"c-est-d\u00e9j\u00e0-l-\u00e9t\u00e9\")\n\n        txt = 'N\u00edn h\u01ceo. W\u01d2 sh\u00ec zh\u014dng gu\u00f3 r\u00e9n'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, \"n\u00edn-h\u01ceo-w\u01d2-sh\u00ec-zh\u014dng-gu\u00f3-r\u00e9n\")\n\n    def test_accented_text_with_non_word_characters(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, \"jaja-lol-m\u00e9m\u00e9m\u00e9oo-a\")\n\n    def test_cyrillic_text(self):\n        txt = '\u041a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, \"\u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\")\n\n    def test_max_length(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, allow_unicode=True, max_length=9)\n        self.assertEqual(r, \"jaja-lol\")\n\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, allow_unicode=True, max_length=15)\n        self.assertEqual(r, \"jaja-lol-m\u00e9m\u00e9m\u00e9\")\n\n    def test_max_length_cutoff_not_required(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, allow_unicode=True, max_length=50)\n        self.assertEqual(r, \"jaja-lol-m\u00e9m\u00e9m\u00e9oo-a\")\n\n    def test_word_boundary(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, allow_unicode=True, max_length=15, word_boundary=True)\n        self.assertEqual(r, \"jaja-lol-a\")\n\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, allow_unicode=True, max_length=17, word_boundary=True)\n        self.assertEqual(r, \"jaja-lol-m\u00e9m\u00e9m\u00e9oo\")\n\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, allow_unicode=True, max_length=18, word_boundary=True)\n        self.assertEqual(r, \"jaja-lol-m\u00e9m\u00e9m\u00e9oo\")\n\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, allow_unicode=True, max_length=19, word_boundary=True)\n        self.assertEqual(r, \"jaja-lol-m\u00e9m\u00e9m\u00e9oo-a\")\n\n    def test_custom_separator(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, allow_unicode=True, max_length=20, word_boundary=True, separator=\".\")\n        self.assertEqual(r, \"jaja.lol.m\u00e9m\u00e9m\u00e9oo.a\")\n\n    def test_multi_character_separator(self):\n        txt = 'jaja---lol-m\u00e9m\u00e9m\u00e9oo--a'\n        r = slugify(txt, allow_unicode=True, max_length=20, word_boundary=True, separator=\"ZZZZZZ\")\n        self.assertEqual(r, \"jajaZZZZZZlolZZZZZZm\u00e9m\u00e9m\u00e9ooZZZZZZa\")\n\n    def test_save_order(self):\n        txt = 'one two three four five'\n        r = slugify(txt, allow_unicode=True, max_length=13, word_boundary=True, save_order=True)\n        self.assertEqual(r, \"one-two-three\")\n\n        txt = 'one two three four five'\n        r = slugify(txt, allow_unicode=True, max_length=13, word_boundary=True, save_order=False)\n        self.assertEqual(r, \"one-two-three\")\n\n        txt = 'one two three four five'\n        r = slugify(txt, allow_unicode=True, max_length=12, word_boundary=True, save_order=False)\n        self.assertEqual(r, \"one-two-four\")\n\n        txt = 'one two three four five'\n        r = slugify(txt, allow_unicode=True, max_length=12, word_boundary=True, save_order=True)\n        self.assertEqual(r, \"one-two\")\n\n    def test_save_order_rtl(self):\n        \"\"\"For right-to-left unicode languages\"\"\"\n        txt = '\u062f\u0648 \u0633\u0647 \u0686\u0647\u0627\u0631 \u067e\u0646\u062c'\n        r = slugify(txt, allow_unicode=True, max_length=10, word_boundary=True, save_order=True)\n        self.assertEqual(r, \"\u062f\u0648-\u0633\u0647-\u0686\u0647\u0627\u0631\")\n\n        txt = '\u062f\u0648 \u0633\u0647 \u0686\u0647\u0627\u0631 \u067e\u0646\u062c'\n        r = slugify(txt, allow_unicode=True, max_length=10, word_boundary=True, save_order=False)\n        self.assertEqual(r, \"\u062f\u0648-\u0633\u0647-\u0686\u0647\u0627\u0631\")\n\n        txt = '\u062f\u0648 \u0633\u0647 \u0686\u0647\u0627\u0631 \u067e\u0646\u062c'\n        r = slugify(txt, allow_unicode=True, max_length=9, word_boundary=True, save_order=False)\n        self.assertEqual(r, \"\u062f\u0648-\u0633\u0647-\u067e\u0646\u062c\")\n\n        txt = '\u062f\u0648 \u0633\u0647 \u0686\u0647\u0627\u0631 \u067e\u0646\u062c'\n        r = slugify(txt, allow_unicode=True, max_length=9, word_boundary=True, save_order=True)\n        self.assertEqual(r, \"\u062f\u0648-\u0633\u0647\")\n\n    def test_stopword_removal(self):\n        txt = 'this has a stopword'\n        r = slugify(txt, allow_unicode=True, stopwords=['stopword'])\n        self.assertEqual(r, 'this-has-a')\n\n        txt = 'this has a \u00d6l\u00e4nd'\n        r = slugify(txt, allow_unicode=True, stopwords=['\u00d6l\u00e4nd'])\n        self.assertEqual(r, 'this-has-a')\n\n    def test_stopword_removal_casesensitive(self):\n        txt = 'thIs Has a stopword Stopword'\n        r = slugify(txt, allow_unicode=True, stopwords=['Stopword'], lowercase=False)\n        self.assertEqual(r, 'thIs-Has-a-stopword')\n\n        txt = 'thIs Has a \u00f6l\u00e4nd \u00d6l\u00e4nd'\n        r = slugify(txt, allow_unicode=True, stopwords=['\u00d6l\u00e4nd'], lowercase=False)\n        self.assertEqual(r, 'thIs-Has-a-\u00f6l\u00e4nd')\n\n    def test_multiple_stopword_occurances(self):\n        txt = 'the quick brown fox jumps over the lazy dog'\n        r = slugify(txt, allow_unicode=True, stopwords=['the'])\n        self.assertEqual(r, 'quick-brown-fox-jumps-over-lazy-dog')\n\n    def test_differently_cased_stopword_match(self):\n        txt = 'Foo A FOO B foo C'\n        r = slugify(txt, allow_unicode=True, stopwords=['foo'])\n        self.assertEqual(r, 'a-b-c')\n\n        txt = 'Foo A FOO B foo C'\n        r = slugify(txt, allow_unicode=True, stopwords=['FOO'])\n        self.assertEqual(r, 'a-b-c')\n\n    def test_multiple_stopwords(self):\n        txt = 'the quick brown fox jumps over the lazy dog in a hurry'\n        r = slugify(txt, allow_unicode=True, stopwords=['the', 'in', 'a', 'hurry'])\n        self.assertEqual(r, 'quick-brown-fox-jumps-over-lazy-dog')\n\n    def test_stopwords_with_different_separator(self):\n        txt = 'the quick brown fox jumps over the lazy dog'\n        r = slugify(txt, allow_unicode=True, stopwords=['the'], separator=' ')\n        self.assertEqual(r, 'quick brown fox jumps over lazy dog')\n\n    def test_html_entities_on(self):\n        txt = 'foo &amp; bar'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, 'foo-bar')\n\n    def test_html_entities_off(self):\n        txt = 'foo &amp; b\u00e5r'\n        r = slugify(txt, allow_unicode=True, entities=False)\n        self.assertEqual(r, 'foo-amp-b\u00e5r')\n\n    def test_html_decimal_on(self):\n        txt = '&#381;'\n        r = slugify(txt, allow_unicode=True, decimal=True)\n        self.assertEqual(r, '\u017e')\n\n    def test_html_decimal_off(self):\n        txt = '&#381;'\n        r = slugify(txt, allow_unicode=True, entities=False, decimal=False)\n        self.assertEqual(r, '381')\n\n    def test_html_hexadecimal_on(self):\n        txt = '&#x17D;'\n        r = slugify(txt, allow_unicode=True, hexadecimal=True)\n        self.assertEqual(r, '\u017e')\n\n    def test_html_hexadecimal_off(self):\n        txt = '&#x17D;'\n        r = slugify(txt, allow_unicode=True, hexadecimal=False)\n        self.assertEqual(r, 'x17d')\n\n    def test_starts_with_number(self):\n        txt = '10 amazing secrets'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, '10-amazing-secrets')\n\n    def test_contains_numbers(self):\n        txt = 'buildings with 1000 windows'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, 'buildings-with-1000-windows')\n\n    def test_ends_with_number(self):\n        txt = 'recipe number 3'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, 'recipe-number-3')\n\n    def test_numbers_only(self):\n        txt = '404'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, '404')\n\n    def test_numbers_and_symbols(self):\n        txt = '1,000 reasons you are #1'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, '1000-reasons-you-are-1')\n\n        txt = '\u06f1,\u06f0\u06f0\u06f0 reasons you are #\u06f1'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, '\u06f1\u06f0\u06f0\u06f0-reasons-you-are-\u06f1')\n\n    def test_regex_pattern_keep_underscore(self):\n        \"\"\"allowing unicode should not overrule the passed regex_pattern\"\"\"\n        txt = \"___This is a test___\"\n        regex_pattern = r'[^-a-z0-9_]+'\n        r = slugify(txt, allow_unicode=True, regex_pattern=regex_pattern)\n        self.assertEqual(r, \"___this-is-a-test___\")\n\n    def test_regex_pattern_keep_underscore_with_underscore_as_separator(self):\n        \"\"\"\n        The regex_pattern turns the power to the caller.\n        Hence, the caller must ensure that a custom separator doesn't clash\n        with the regex_pattern.\n        \"\"\"\n        txt = \"___This is a test___\"\n        regex_pattern = r'[^-a-z0-9_]+'\n        r = slugify(txt, allow_unicode=True, separator='_', regex_pattern=regex_pattern)\n        self.assertNotEqual(r, \"_this_is_a_test_\")\n\n    def test_replacements(self):\n        txt = '10 | 20 %'\n        r = slugify(txt, allow_unicode=True, replacements=[['|', 'or'], ['%', 'percent']])\n        self.assertEqual(r, \"10-or-20-percent\")\n\n        txt = 'I \u2665 \ud83e\udd84'\n        r = slugify(txt, allow_unicode=True, replacements=[['\u2665', 'amour'], ['\ud83e\udd84', 'licorne']])\n        self.assertEqual(r, \"i-amour-licorne\")\n\n        txt = 'I \u2665 \ud83e\udd84'\n        r = slugify(txt, allow_unicode=True, replacements=[['\u2665', '\u10e1\u10d8\u10e7\u10d5\u10d0\u10e0\u10e3\u10da\u10d8'], ['\ud83e\udd84', 'licorne']])\n        self.assertEqual(r, \"i-\u10e1\u10d8\u10e7\u10d5\u10d0\u10e0\u10e3\u10da\u10d8-licorne\")\n\n    def test_replacements_german_umlaut_custom(self):\n        txt = '\u00dcBER \u00dcber German Umlaut'\n        r = slugify(txt, allow_unicode=True, replacements=[['\u00dc', 'UE'], ['\u00fc', 'ue']])\n        self.assertEqual(r, \"ueber-ueber-german-umlaut\")\n\n    def test_emojis(self):\n        \"\"\"\n        allowing unicode shouldn't allow emojis, even in replacements.\n        the only exception is when it is allowed by the regex_pattern. regex_pattern overrules all\n        \"\"\"\n        txt = 'i love \ud83e\udd84'\n        r = slugify(txt, allow_unicode=True)\n        self.assertEqual(r, \"i-love\")\n\n        txt = 'i love \ud83e\udd84'\n        r = slugify(txt, allow_unicode=True, decimal=True)\n        self.assertEqual(r, \"i-love\")\n\n        txt = 'i love \ud83e\udd84'\n        r = slugify(txt, allow_unicode=True, hexadecimal=True)\n        self.assertEqual(r, \"i-love\")\n\n        txt = 'i love \ud83e\udd84'\n        r = slugify(txt, allow_unicode=True, entities=True)\n        self.assertEqual(r, \"i-love\")\n\n        txt = 'i love you'\n        r = slugify(txt, allow_unicode=True, replacements=[['you', '\ud83e\udd84']])\n        self.assertEqual(r, \"i-love\")\n\n        txt = 'i love \ud83e\udd84'\n        r = slugify(txt, allow_unicode=True, regex_pattern=r'[^\ud83e\udd84]+')\n        self.assertEqual(r, \"\ud83e\udd84\")\n\n\nclass TestUtils(unittest.TestCase):\n\n    def test_smart_truncate_no_max_length(self):\n        txt = '1,000 reasons you are #1'\n        r = smart_truncate(txt)\n        self.assertEqual(r, txt)\n\n    def test_smart_truncate_no_seperator(self):\n        txt = '1,000 reasons you are #1'\n        r = smart_truncate(txt, max_length=100, separator='_')\n        self.assertEqual(r, txt)\n\n\nPY3 = sys.version_info.major == 3\n\n\n@contextmanager\ndef captured_stderr():\n    backup = sys.stderr\n    sys.stderr = io.StringIO() if PY3 else io.BytesIO()\n    try:\n        yield sys.stderr\n    finally:\n        sys.stderr = backup\n\n\n@contextmanager\ndef loaded_stdin(contents):\n    backup = sys.stdin\n    sys.stdin = io.StringIO(contents) if PY3 else io.BytesIO(contents)\n    try:\n        yield sys.stdin\n    finally:\n        sys.stdin = backup\n\n\nclass TestCommandParams(unittest.TestCase):\n    DEFAULTS = {\n        'entities': True,\n        'decimal': True,\n        'hexadecimal': True,\n        'max_length': 0,\n        'word_boundary': False,\n        'save_order': False,\n        'separator': '-',\n        'stopwords': None,\n        'lowercase': True,\n        'replacements': None\n    }\n\n    def get_params_from_cli(self, *argv):\n        args = parse_args([None] + list(argv))\n        return slugify_params(args)\n\n    def make_params(self, **values):\n        return dict(self.DEFAULTS, **values)\n\n    def assertParamsMatch(self, expected, checked):\n        reduced_checked = {}\n        for key in expected.keys():\n            reduced_checked[key] = checked[key]\n        self.assertEqual(expected, reduced_checked)\n\n    def test_defaults(self):\n        params = self.get_params_from_cli()\n        self.assertParamsMatch(self.DEFAULTS, params)\n\n    def test_negative_flags(self):\n        params = self.get_params_from_cli('--no-entities', '--no-decimal', '--no-hexadecimal', '--no-lowercase')\n        expected = self.make_params(entities=False, decimal=False, hexadecimal=False, lowercase=False)\n        self.assertFalse(expected['lowercase'])\n        self.assertFalse(expected['word_boundary'])\n        self.assertParamsMatch(expected, params)\n\n    def test_affirmative_flags(self):\n        params = self.get_params_from_cli('--word-boundary', '--save-order')\n        expected = self.make_params(word_boundary=True, save_order=True)\n        self.assertParamsMatch(expected, params)\n\n    def test_valued_arguments(self):\n        params = self.get_params_from_cli('--stopwords', 'abba', 'beatles', '--max-length', '98', '--separator', '+')\n        expected = self.make_params(stopwords=['abba', 'beatles'], max_length=98, separator='+')\n        self.assertParamsMatch(expected, params)\n\n    def test_replacements_right(self):\n        params = self.get_params_from_cli('--replacements', 'A->B', 'C->D')\n        expected = self.make_params(replacements=[['A', 'B'], ['C', 'D']])\n        self.assertParamsMatch(expected, params)\n\n    def test_replacements_wrong(self):\n        with self.assertRaises(SystemExit) as err, captured_stderr() as cse:\n            self.get_params_from_cli('--replacements', 'A--B')\n        self.assertEqual(err.exception.code, 2)\n        self.assertIn(\"Replacements must be of the form: ORIGINAL->REPLACED\", cse.getvalue())\n\n    def test_text_in_cli(self):\n        params = self.get_params_from_cli('Cool Text')\n        expected = self.make_params(text='Cool Text')\n        self.assertParamsMatch(expected, params)\n\n    def test_text_in_cli_multi(self):\n        params = self.get_params_from_cli('Cool', 'Text')\n        expected = self.make_params(text='Cool Text')\n        self.assertParamsMatch(expected, params)\n\n    def test_text_in_stdin(self):\n        with loaded_stdin(\"Cool Stdin\"):\n            params = self.get_params_from_cli('--stdin')\n        expected = self.make_params(text='Cool Stdin')\n        self.assertParamsMatch(expected, params)\n\n    def test_two_text_sources_fails(self):\n        with self.assertRaises(SystemExit) as err, captured_stderr() as cse:\n            self.get_params_from_cli('--stdin', 'Text')\n        self.assertEqual(err.exception.code, 2)\n        self.assertIn(\"Input strings and --stdin cannot work together\", cse.getvalue())\n\n    def test_multivalued_options_with_text(self):\n        text = \"the quick brown fox jumps over the lazy dog in a hurry\"\n        cli_args = \"--stopwords the in a hurry -- {}\".format(text).split()\n        params = self.get_params_from_cli(*cli_args)\n        self.assertEqual(params['text'], text)\n        self.assertEqual(params['stopwords'], ['the', 'in', 'a', 'hurry'])\n\n\nif __name__ == '__main__':\n    unittest.main()\n",
+      "AGENTS.md": "This is a selected unchanged python-slugify source tree, revision f85f9488520148d5f6899b5639199882b605e30a. Audit only. Preserve every original file byte and mode; no production/test changes or commits. Use disposable project-local copies and remove all owned scratch afterward; retain no extra harness or report. No network, dependency installation, delegation or unrelated project inspection. Use the existing project interpreter <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python (text-unidecode is already installed). Execute it with -B -m unittest <selectors> -v from each copy root. Ensure imports resolve to that copy, not an installed slugify package. Establish the native test module imported slugify function binding to the copied implementation in the same process. Instrumentation is permitted; tool choice is yours. The configured interpreter and dependencies may be read/executed, not modified.\n"
+    },
+    "task": "Audit test.TestSlugify.test_non_word_characters and test.TestSlugify.test_max_length against three independent regressions confined to the slugify function in slugify/slugify.py: (1) omit the final conversion from default hyphens to the requested custom separator, (2) pass False to smart_truncate for save_order instead of forwarding the requested save_order, and (3) omit requested max_length truncation, otherwise preserving slug generation. Keep fault copies independent and both selected upstream test bodies unchanged. Observe all six fault/test outcomes plus passing correct-code controls, and explain detecting assertions versus surviving gaps; setup errors are not detection. Identify any reused matching correct observations. For gaps, actually verify assertions for a non-default separator and order-preserving whole-word truncation where a later short word fits but an earlier long word does not. Reuse relevant upstream witness tests or add assertions only in disposable copies. Demonstrate passing-correct/failing-matching-faulty native assertion results, not merely proposals. Limit this audit to these regressions and assertions, not the whole suite. Follow AGENTS.md.",
+    "criteria": [
+      "Both selected unchanged tests pass correct code with copied implementation and same-process test-function binding evidence.",
+      "Three independent copies implement only the requested semantic faults in slugify; setup errors are not detections.",
+      "All six native fault/test outcomes are observed and explained; correct-observation reuse is identified.",
+      "Custom-separator and order-preserving truncation assertions pass correct and fail matching faulty copies for intended behavior.",
+      "Original bytes/modes preserved, owned scratch removed, no lasting artifact or production/test edit."
+    ]
+  },
+  "identities": {
+    "benchmarks/run_slugify_native_01.py": "f2eeb5a770c74432afec59ebde727dcfab7adb1318e2f42395859a8b653b3195",
+    "benchmarks/preflight_slugify_native_01.py": "c125cb211212932d702712522588a8963e02f5a2fb030c3960fb2818b221fded",
+    "benchmarks/run_cachetools_audit_01.py": "7d0f314123613b93838044c3277edb4014497205ac9c9eb1d1af385a52747632",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "benchmarks/SLUGIFY-NATIVE-01-PROTOCOL.md": "71b86bd49d9fec0ec0fd826eebb84a7c0f5a2d435c78d146a28b7b5fbc24a59e",
+    "tests/test_slugify_native_runner.py": "7ab7acd8e22f4d497903652e09d09ea40caa063dbd731cb125664b462c8ef89f"
+  },
+  "schedule": [
+    "current",
+    "baseline",
+    "prior"
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "repeats": 1,
+    "jobs": 1
+  },
+  "resource_revisions": {
+    "prior": "387c53ba4c39be67dd00a0a88436a225492da24a",
+    "current": "a7dcbd8dfd57d0efb5cf45207328ab97dd0b2044"
+  },
+  "resource_digests": {
+    "current": "0853976001cd1fdf54380592e651731b3a1f307a8eb413d9dda340896d6fed4d",
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "prior": "69743d095d2c7dca9c33d42849543582b1e6f8a656eebc1646a9164437c219b0"
+  },
+  "python_version": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "native_preflight": {
+    "upstream_revision": "f85f9488520148d5f6899b5639199882b605e30a",
+    "upstream_blob_ids": {
+      "LICENSE": "82af695f594e8c1e83ee98db0bcae758620f1b63",
+      "slugify/__init__.py": "6d3279fb1ac2e9c3febeca395a5f7350d8fa5969",
+      "slugify/__main__.py": "4cc461622837bf5c765c06d9a5f20f265945d968",
+      "slugify/__version__.py": "854038e500d54f104aa0390ad191e81c3ea9dfce",
+      "slugify/py.typed": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "slugify/slugify.py": "09c7e076cf27406c7f0ab324b5ac1da787da3624",
+      "slugify/special.py": "918cb2add83f5135b4e9528956abaddeff9c6893",
+      "test.py": "d13ef94f7b36e126871af4a8f4e4e4fedc53cdd1"
+    },
+    "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "dependency": {
+      "text-unidecode": "1.3"
+    },
+    "direct_controls": [
+      {
+        "variant": "correct",
+        "observations": [
+          {
+            "selector": "test.TestSlugify.test_non_word_characters",
+            "exit_code": 0,
+            "output": "test_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_max_length",
+            "exit_code": 0,
+            "output": "test_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_custom_separator",
+            "exit_code": 0,
+            "output": "test_custom_separator (test.TestSlugify.test_custom_separator) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_save_order",
+            "exit_code": 0,
+            "output": "test_save_order (test.TestSlugify.test_save_order) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          }
+        ]
+      },
+      {
+        "variant": "omit-separator",
+        "observations": [
+          {
+            "selector": "test.TestSlugify.test_non_word_characters",
+            "exit_code": 0,
+            "output": "test_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_max_length",
+            "exit_code": 0,
+            "output": "test_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_custom_separator",
+            "exit_code": 1,
+            "output": "test_custom_separator (test.TestSlugify.test_custom_separator) ... FAIL\n\n======================================================================\nFAIL: test_custom_separator (test.TestSlugify.test_custom_separator)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/test.py\", line 96, in test_custom_separator\n    self.assertEqual(r, \"jaja.lol.mememeoo.a\")\nAssertionError: 'jaja-lol-mememeoo-a' != 'jaja.lol.mememeoo.a'\n- jaja-lol-mememeoo-a\n?     ^   ^        ^\n+ jaja.lol.mememeoo.a\n?     ^   ^        ^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_save_order",
+            "exit_code": 0,
+            "output": "test_save_order (test.TestSlugify.test_save_order) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          }
+        ]
+      },
+      {
+        "variant": "ignore-order",
+        "observations": [
+          {
+            "selector": "test.TestSlugify.test_non_word_characters",
+            "exit_code": 0,
+            "output": "test_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_max_length",
+            "exit_code": 0,
+            "output": "test_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_custom_separator",
+            "exit_code": 0,
+            "output": "test_custom_separator (test.TestSlugify.test_custom_separator) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_save_order",
+            "exit_code": 1,
+            "output": "test_save_order (test.TestSlugify.test_save_order) ... FAIL\n\n======================================================================\nFAIL: test_save_order (test.TestSlugify.test_save_order)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/test.py\", line 118, in test_save_order\n    self.assertEqual(r, \"one-two\")\nAssertionError: 'one-two-four' != 'one-two'\n- one-two-four\n?        -----\n+ one-two\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+          }
+        ]
+      },
+      {
+        "variant": "omit-limit",
+        "observations": [
+          {
+            "selector": "test.TestSlugify.test_non_word_characters",
+            "exit_code": 0,
+            "output": "test_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_max_length",
+            "exit_code": 1,
+            "output": "test_max_length (test.TestSlugify.test_max_length) ... FAIL\n\n======================================================================\nFAIL: test_max_length (test.TestSlugify.test_max_length)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/test.py\", line 65, in test_max_length\n    self.assertEqual(r, \"jaja-lol\")\nAssertionError: 'jaja-lol-mememeoo-a' != 'jaja-lol'\n- jaja-lol-mememeoo-a\n+ jaja-lol\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_custom_separator",
+            "exit_code": 0,
+            "output": "test_custom_separator (test.TestSlugify.test_custom_separator) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_save_order",
+            "exit_code": 1,
+            "output": "test_save_order (test.TestSlugify.test_save_order) ... FAIL\n\n======================================================================\nFAIL: test_save_order (test.TestSlugify.test_save_order)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/test.py\", line 106, in test_save_order\n    self.assertEqual(r, \"one-two-three\")\nAssertionError: 'one-two-three-four-five' != 'one-two-three'\n- one-two-three-four-five\n+ one-two-three\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+          }
+        ]
+      },
+      {
+        "variant": "equivalent",
+        "observations": [
+          {
+            "selector": "test.TestSlugify.test_non_word_characters",
+            "exit_code": 0,
+            "output": "test_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_max_length",
+            "exit_code": 0,
+            "output": "test_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_custom_separator",
+            "exit_code": 0,
+            "output": "test_custom_separator (test.TestSlugify.test_custom_separator) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          },
+          {
+            "selector": "test.TestSlugify.test_save_order",
+            "exit_code": 0,
+            "output": "test_save_order (test.TestSlugify.test_save_order) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+          }
+        ]
+      }
+    ],
+    "helper_report": {
+      "status": "observed",
+      "audits": [
+        {
+          "status": "observed",
+          "checks": {
+            "correct_tests": {
+              "exit_code": 0,
+              "timed_out": false,
+              "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-_n2wgy14/correct-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"3103ecc34bb68362d4fbc0414fb2b40ce946b40848c68287403e1f5a5b4a9656\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\ntest_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+              "output_truncated": false,
+              "command": [
+                "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+                "-B",
+                "-m",
+                "unittest",
+                "test.TestSlugify.test_non_word_characters",
+                "test.TestSlugify.test_max_length",
+                "-v"
+              ],
+              "invocation": "module",
+              "native_exit_code": 0,
+              "suite_observation": {
+                "tests": 2,
+                "skipped": 0,
+                "successful": true
+              }
+            },
+            "mutant_tests": {
+              "exit_code": 0,
+              "timed_out": false,
+              "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-_n2wgy14/mutant-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"c81680bca7ee96b0be169a4cba6c7e2d795bf63b0b619b124039fdfb39fe26e5\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\ntest_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+              "output_truncated": false,
+              "command": [
+                "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+                "-B",
+                "-m",
+                "unittest",
+                "test.TestSlugify.test_non_word_characters",
+                "test.TestSlugify.test_max_length",
+                "-v"
+              ],
+              "invocation": "module",
+              "native_exit_code": 0,
+              "suite_observation": {
+                "tests": 2,
+                "skipped": 0,
+                "successful": true
+              }
+            }
+          },
+          "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+          "integrity": {
+            "selected_files": 8,
+            "selected_original_bytes_and_modes_unchanged": true,
+            "owned_scratch_removed": true
+          }
+        },
+        {
+          "status": "observed",
+          "checks": {
+            "correct_tests": {
+              "exit_code": 0,
+              "timed_out": false,
+              "observation_ref": "#/audits/0/checks/correct_tests"
+            },
+            "mutant_tests": {
+              "exit_code": 0,
+              "timed_out": false,
+              "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-x6cu8ivm/mutant-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"ced63bd7c9fb0ea50bb80d9a936137c7b429d37c92681e539b01e1e872c3c668\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\ntest_max_length (test.TestSlugify.test_max_length) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+              "output_truncated": false,
+              "command": [
+                "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+                "-B",
+                "-m",
+                "unittest",
+                "test.TestSlugify.test_non_word_characters",
+                "test.TestSlugify.test_max_length",
+                "-v"
+              ],
+              "invocation": "module",
+              "native_exit_code": 0,
+              "suite_observation": {
+                "tests": 2,
+                "skipped": 0,
+                "successful": true
+              }
+            }
+          },
+          "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+          "correct_tests_reused": true,
+          "integrity": {
+            "selected_files": 8,
+            "selected_original_bytes_and_modes_unchanged": true,
+            "owned_scratch_removed": true
+          }
+        },
+        {
+          "status": "observed",
+          "checks": {
+            "correct_tests": {
+              "exit_code": 0,
+              "timed_out": false,
+              "observation_ref": "#/audits/0/checks/correct_tests"
+            },
+            "mutant_tests": {
+              "exit_code": 1,
+              "timed_out": false,
+              "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-rr63syye/mutant-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"0d93986dc36b6e7ea32973f0ebb1dfe3b5f0c3d40b2096504f682dd23dd8d083\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_non_word_characters (test.TestSlugify.test_non_word_characters) ... ok\ntest_max_length (test.TestSlugify.test_max_length) ... FAIL\n\n======================================================================\nFAIL: test_max_length (test.TestSlugify.test_max_length)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-rr63syye/mutant-tests/test.py\", line 65, in test_max_length\n    self.assertEqual(r, \"jaja-lol\")\nAssertionError: 'jaja-lol-mememeoo-a' != 'jaja-lol'\n- jaja-lol-mememeoo-a\n+ jaja-lol\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nFAILED (failures=1)\n",
+              "output_truncated": false,
+              "command": [
+                "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+                "-B",
+                "-m",
+                "unittest",
+                "test.TestSlugify.test_non_word_characters",
+                "test.TestSlugify.test_max_length",
+                "-v"
+              ],
+              "invocation": "module",
+              "native_exit_code": 1,
+              "suite_observation": {
+                "tests": 2,
+                "skipped": 0,
+                "successful": false
+              }
+            }
+          },
+          "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+          "correct_tests_reused": true,
+          "integrity": {
+            "selected_files": 8,
+            "selected_original_bytes_and_modes_unchanged": true,
+            "owned_scratch_removed": true
+          }
+        },
+        {
+          "status": "observed",
+          "checks": {
+            "correct_tests": {
+              "exit_code": 0,
+              "timed_out": false,
+              "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-4csgo3kj/correct-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"3103ecc34bb68362d4fbc0414fb2b40ce946b40848c68287403e1f5a5b4a9656\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_custom_separator (test.TestSlugify.test_custom_separator) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+              "output_truncated": false,
+              "command": [
+                "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+                "-B",
+                "-m",
+                "unittest",
+                "test.TestSlugify.test_custom_separator",
+                "-v"
+              ],
+              "invocation": "module",
+              "native_exit_code": 0,
+              "suite_observation": {
+                "tests": 1,
+                "skipped": 0,
+                "successful": true
+              }
+            },
+            "mutant_tests": {
+              "exit_code": 1,
+              "timed_out": false,
+              "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-4csgo3kj/mutant-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"c81680bca7ee96b0be169a4cba6c7e2d795bf63b0b619b124039fdfb39fe26e5\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_custom_separator (test.TestSlugify.test_custom_separator) ... FAIL\n\n======================================================================\nFAIL: test_custom_separator (test.TestSlugify.test_custom_separator)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-4csgo3kj/mutant-tests/test.py\", line 96, in test_custom_separator\n    self.assertEqual(r, \"jaja.lol.mememeoo.a\")\nAssertionError: 'jaja-lol-mememeoo-a' != 'jaja.lol.mememeoo.a'\n- jaja-lol-mememeoo-a\n?     ^   ^        ^\n+ jaja.lol.mememeoo.a\n?     ^   ^        ^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+              "output_truncated": false,
+              "command": [
+                "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+                "-B",
+                "-m",
+                "unittest",
+                "test.TestSlugify.test_custom_separator",
+                "-v"
+              ],
+              "invocation": "module",
+              "native_exit_code": 1,
+              "suite_observation": {
+                "tests": 1,
+                "skipped": 0,
+                "successful": false
+              }
+            }
+          },
+          "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+          "integrity": {
+            "selected_files": 8,
+            "selected_original_bytes_and_modes_unchanged": true,
+            "owned_scratch_removed": true
+          }
+        },
+        {
+          "status": "observed",
+          "checks": {
+            "correct_tests": {
+              "exit_code": 0,
+              "timed_out": false,
+              "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-95xxrli9/correct-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"3103ecc34bb68362d4fbc0414fb2b40ce946b40848c68287403e1f5a5b4a9656\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_save_order (test.TestSlugify.test_save_order) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+              "output_truncated": false,
+              "command": [
+                "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+                "-B",
+                "-m",
+                "unittest",
+                "test.TestSlugify.test_save_order",
+                "-v"
+              ],
+              "invocation": "module",
+              "native_exit_code": 0,
+              "suite_observation": {
+                "tests": 1,
+                "skipped": 0,
+                "successful": true
+              }
+            },
+            "mutant_tests": {
+              "exit_code": 1,
+              "timed_out": false,
+              "output": "Copied process: {\"python\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python\",\"cwd\":\"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-95xxrli9/mutant-tests\"}\nVerified copied import: slugify.slugify {\"path\":\"slugify/slugify.py\",\"sha256\":\"ced63bd7c9fb0ea50bb80d9a936137c7b429d37c92681e539b01e1e872c3c668\"}\nVerified copied import: test {\"path\":\"test.py\",\"sha256\":\"96a2fb00cb9a225c473cd0bcfab01286f16d47b51368a986a250e00a50ddcc92\"}\ncopied slugify binding verified\nPrecheck completed in check process.\ntest_save_order (test.TestSlugify.test_save_order) ... FAIL\n\n======================================================================\nFAIL: test_save_order (test.TestSlugify.test_save_order)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-preflight-2numtm69/.con-artist-95xxrli9/mutant-tests/test.py\", line 118, in test_save_order\n    self.assertEqual(r, \"one-two\")\nAssertionError: 'one-two-four' != 'one-two'\n- one-two-four\n?        -----\n+ one-two\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+              "output_truncated": false,
+              "command": [
+                "<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/slugify-native-venv-01/bin/python",
+                "-B",
+                "-m",
+                "unittest",
+                "test.TestSlugify.test_save_order",
+                "-v"
+              ],
+              "invocation": "module",
+              "native_exit_code": 1,
+              "suite_observation": {
+                "tests": 1,
+                "skipped": 0,
+                "successful": false
+              }
+            }
+          },
+          "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+          "integrity": {
+            "selected_files": 8,
+            "selected_original_bytes_and_modes_unchanged": true,
+            "owned_scratch_removed": true
+          }
+        }
+      ],
+      "limitation": "Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled."
+    },
+    "scratch_removed": true,
+    "limitation": "20 direct native processes plus 8 helper native processes / 12 method executions. Author-selected unchanged upstream tests and deliberate faults; not model evidence or a blind holdout."
+  },
+  "completed_cells": [],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T08:06:28.381153+00:00"
+}

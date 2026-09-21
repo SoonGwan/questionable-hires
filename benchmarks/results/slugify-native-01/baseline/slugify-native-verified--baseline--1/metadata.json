@@ -1,0 +1,54 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "slugify-native-verified",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "2c030c8d809ab704438d179a0e364110414cef3b",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 75.64,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 82901,
+    "cached_input_tokens": 63872,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2089,
+    "reasoning_output_tokens": 190
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "Audit test.TestSlugify.test_non_word_characters and test.TestSlugify.test_max_length against three independent regressions confined to the slugify function in slugify/slugify.py: (1) omit the final conversion from default hyphens to the requested custom separator, (2) pass False to smart_truncate for save_order instead of forwarding the requested save_order, and (3) omit requested max_length truncation, otherwise preserving slug generation. Keep fault copies independent and both selected upstream test bodies unchanged. Observe all six fault/test outcomes plus passing correct-code controls, and explain detecting assertions versus surviving gaps; setup errors are not detection. Identify any reused matching correct observations. For gaps, actually verify assertions for a non-default separator and order-preserving whole-word truncation where a later short word fits but an earlier long word does not. Reuse relevant upstream witness tests or add assertions only in disposable copies. Demonstrate passing-correct/failing-matching-faulty native assertion results, not merely proposals. Limit this audit to these regressions and assertions, not the whole suite. Follow AGENTS.md.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 833,
+    "mode": 420,
+    "sha256": "d7e411257bd7739ae9ea65f11ebfbf6083ef6e7a776a2399abd4780d89af383b",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}

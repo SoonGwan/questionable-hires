@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Checkpoint **2026-09-21, last model resource `387c53b`, dateutil launch `fcd6c1e`**.
+Checkpoint **2026-09-21, last model resource `a7dcbd8`, slugify launch `6b85ec1`**.
 This is a decision index, not a new
 measurement. [Full chronological history](CANDIDATE-HISTORY-2026-09-21.md) preserves
 every preceding checkpoint, including adverse results and preparation notes.
@@ -18,6 +18,12 @@ hosted-check success or public-release approval is claimed here.
 과거 실험과 불리한 결과는 이력 문서에 그대로 보존했다.
 
 ## Model evidence that governs claims
+
+Reviewed checkpoint2026-09-21: [slugify native audit](SLUGIFY-NATIVE-01.md)
+retains all three attempts; all arms5/5. Current versus prior tokens−22.19%,
+time−1.80%, with fewer guide transitions; versus baseline tokens+36.55%,
+time−15.53%. Keep recipe correction provisionally, not as a broad efficiency win.
+한국어: 이전 안내 대비 개선을 관찰했지만 무스킬 대비 토큰 증가가 남았다.
 
 Reviewed checkpoint2026-09-21: [dateutil native audit](DATEUTIL-NATIVE-01.md)
 retains all three original attempts. All arms meet5/5; current uses the helper
@@ -44,6 +50,7 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 | [Plan audit01](PLAN-AUDIT-01.md),2026-09-21,`a3dee3b` | All arms meet5/5 proposal and6/6 verified criteria. Current versus baseline: proposal−11.39% tokens/−2.98% time; verified+12.83%/+9.02% | Scope distinction transfers in one fresh authored fixture; unequal probes and prior instrumentation repair. No broad efficiency win. |
 | [Edit audit01](EDIT-AUDIT-01.md),2026-09-21,`e6aa16e` | All arms meet5/5 proposal and6/6 verified criteria. Current versus baseline: proposal+6.63% tokens/−18.67% time; verified+91.21%/+119.09% | Helper unused; current startup recovery and unequal extra work retained. No demonstrated efficiency improvement. |
 | [Dateutil native01](DATEUTIL-NATIVE-01.md),2026-09-21,`387c53b` | All arms5/5; current helper used,12 methods in8 processes versus12; tokens+51.37%, time−14.46% versus baseline | Adoption but not efficiency target. Multiple guide reads; one author-inspected upstream subset,n=1. |
+| [Slugify native01](SLUGIFY-NATIVE-01.md),2026-09-21,`a7dcbd8` | All arms5/5; current versus prior−22.19% tokens/−1.80% time; versus baseline+36.55%/−15.53% | Both skill arms use helper; baseline4 versus skill8 processes for12 methods. Recipe retained provisionally; broad efficiency unmet,n=1. |
 
 한국어: 전체 비교에서는 토큰 증가가 남았다. 제안과 입증을 구분한 수정은 한 사례에서
 추가 실행을 줄였지만 입증 과제의 토큰 증가도 공개한다. 독립적인 프로젝트에서
@@ -54,14 +61,15 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 - [Slugify transfer preparation](SLUGIFY-NATIVE-01-PREFLIGHT.md), helper
   `a7dcbd8`: unchanged pinned upstream tests establish correct/equivalent/fault
   outcomes in20 direct processes;8 helper processes execute12 methods with
-  matching results and cleanup. No model calls or frozen model schedule yet.
-  한국어: 다음 비교를 위한 실제 프로젝트 대조이며 성능 향상 수치는 아니다.
+  matching results and cleanup. No model calls at that preparation checkpoint;
+  subsequent model comparison is above. 한국어: 준비와 이후 모델 측정을 구분한다.
 - [Native existing-test recipe correction](AUDIT-NATIVE-RECIPE-02.md), parent
   `df072b3`: source-root and existing-witness selections are self-contained in
   the native guide. Real packaged weak/strong controls pass on Python3.9/3.11;
-  no runtime change or new model measurement. This longer recipe aims to avoid
+  no runtime change or model measurement at that checkpoint; see slugify above.
+  This longer recipe aims to avoid
   unnecessary document transitions, not to establish token savings by byte count.
-  한국어: 안내 경로 개선 후보이며 전체 비용 절감은 아직 측정하지 않았다.
+  한국어: 안내 수정 당시에는 미측정이었고 후속 slugify 비교는 위에 구분했다.
 - [Dateutil native transfer preparation](DATEUTIL-NATIVE-01-PREFLIGHT.md),
   helper `387c53b`: unchanged pinned upstream test/source files pass25 direct
   controls and8 helper executions with matching selected-test outcomes, real
