@@ -1,5 +1,14 @@
 # Local plugin installation check
 
+Standalone CLI checkpoint, 2026-09-21: [eight skills / 51 resources](../benchmarks/SKILLS-CLI-INSTALL-03.md),
+source `8114957`, existing `skills@1.5.26`. Bytes/modes, nine Python entrypoints,
+controlled callbacks, named-region extraction and Receipt's native before-fail /
+after-pass check pass in a network-disabled disposable Linux project. Initial
+mount error retained; not remote installation or model-performance evidence.
+
+한국어: 해당 버전의 로컬 설치와 선택한 설치본 실행을 확인했다. 원격 설치나
+모델 성능 개선 검증은 아니며, 아래 기록은 각각의 과거 버전에 해당한다.
+
 Standalone CLI checkpoint, 2026-09-15: [all-eight installation and recent helper execution](../benchmarks/SKILLS-CLI-INSTALL-02.md),
 source `0f2706a`, `skills@1.5.26`. All 43 selected resources match bytes/modes;
 eight Python entrypoints, both callback assets, named Python regions and real

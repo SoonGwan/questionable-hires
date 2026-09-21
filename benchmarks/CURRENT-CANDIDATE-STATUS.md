@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-21, working resource `bfcaae9`**.
+Decision checkpoint **2026-09-21, working resource `8114957`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -36,6 +36,10 @@ or recoverable savings.
 
 These changes are implemented; their model-cost effect is not established:
 
+- [Local CLI installation03](SKILLS-CLI-INSTALL-03.md), resource`8114957`:
+  eight skills/51 resources match after actual local CLI copy; nine Python
+  entrypoints and selected installed behaviors pass. Initial mount error retained;
+  no remote-install, hosted-CI or model-efficiency claim.
 - [Focused history hunk selection](HISTORY-HUNK-SELECTION-01.md), parent`c96730d`:
   slices retained hunks instead of copying every omitted body; exact evidence
   matches the old selector. Large sparse input reduces intermediate allocations,
