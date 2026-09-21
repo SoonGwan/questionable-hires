@@ -41,8 +41,11 @@ all three mechanically selected independent mutations yield native assertion
 failures with source/binding/cleanup checks. Single/multiple requests are correlated.
 Committed source export now validates exact upstream bytes/modes/licenses and
 materializes both requests; seven input controls pass without a local clone.
-Author controls only; model schedule not launched and no performance result.
-한국어: 실제 패키지 원본 테스트로 새 과제를 준비했다. 모델 성능 측정은 아직 전이다.
+The [four-cell schedule](PACKAGING-SPECIFIER-01-PROTOCOL.md) is frozen/prepared.
+Runner controls at`3fd7260`:8/8 checkout,7pass/1historical skip in a fresh archive
+(Python3.11.16,0.849s/0.421s). No model outcome is claimed by preparation.
+한국어: 실제 패키지 원본 테스트로 새4회 비교를 준비했다. 실행 제어와 압축본 검사를
+마쳤으며, 준비 결과를 모델 성능 향상으로 해석하지 않는다.
 
 Local correction2026-09-21, parent`d5eab87`: [native exit consistency](AUDIT-EXIT-CONSISTENCY-01.md)
 reproduces two shutdown/result contradictions before the fix and now stops them
