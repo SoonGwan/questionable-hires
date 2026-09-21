@@ -146,6 +146,11 @@ Do not rerun a completed experiment until it becomes favorable.
 
 ## Release and publication boundary
 
+[Authenticated remote installation01](REMOTE-INSTALL-01.md), source`5e6beab`:
+GitHub helper and npx remote clone produce matching8 skills/51 resources;
+nine installed entrypoints and selected native checks pass. Cached CLI package
+and existing credentials; not anonymous/public access or model performance.
+
 [Current local checkpoint](RELEASE-VALIDATION-AD72A3F.md), source`ad72a3f`:
 macOS/Python3.11 checkout1,203passes; Linux/Python3.12 archive1,174passes,
 29history/checkout skips, zero failures. Both exit0. Hosted main run35625416269

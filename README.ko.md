@@ -116,7 +116,7 @@ Node.js/npm과 Git이 있다면 한 명만 고르거나 8명 전부 설치할 �
 npx skills add SoonGwan/questionable-hires
 ```
 
-`skills@1.5.26`(Node.js 22.20.0 이상)으로 [8개 스킬의 로컬 설치](benchmarks/SKILLS-CLI-INSTALL-01.md)를 확인했습니다. 원격 인증·공개 저장소 설치까지 검증한 결과는 아닙니다.
+캐시된 `skills@1.5.26`(Node.js 22.20.0 이상)으로 `5e6beab`의 [인증된 원격 설치](benchmarks/REMOTE-INSTALL-01.md)를 확인했습니다. 8개 스킬과 설치본의 일부 실제 동작을 검증했으며, 신규 npm 다운로드·익명 공개 설치는 아직 검증하지 않았습니다.
 
 8개 스킬을 자동으로 찾은 뒤 설치할 스킬과 지원 에이전트를 고를 수 있습니다.
 질문 없이 현재 프로젝트의 Codex에 한 명만 복사하려면:

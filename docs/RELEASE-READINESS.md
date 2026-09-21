@@ -13,7 +13,7 @@ performance superiority.** Each check applies only to its stated source revision
 | Whole-task performance | [Candidate evidence](../benchmarks/CURRENT-CANDIDATE-STATUS.md): broad20–30%+ improvement remains unproven. The all-eight comparison costs more tokens; configuration/packaging findings are adverse or mixed. Do not promote favorable pairs alone. |
 | Model selection and realistic use | [Natural boundary screen02](../benchmarks/ROUTING-BOUNDARY-02-REVIEW.md), `ba477ae`: three ordinary requests stay scoped, with no observed skill-body reads. This is not all-eight positive recall, a population false-positive rate, generalization or browser QA. Historical checks remain below. |
 | Public artifact review | Review the intended release tree and reachable history for sensitive material. Prior bounded pattern scans are historical, not certification of subsequent commits. |
-| Remote installation | Verify the intended documented GitHub installation in an appropriately authorized clean environment; local CLI-copy checks do not establish remote authentication or public access. |
+| Remote installation | [Authenticated checkpoint01](../benchmarks/REMOTE-INSTALL-01.md), `5e6beab`: GitHub helper and actual npx remote clone install all8/51 resources into fresh temporary destinations; selected installed behaviors pass. Existing Git credentials and cached CLI package used. Fresh npm download, anonymous public access and host discovery remain unverified. |
 | Publication authority | Obtain owner approval before changing visibility or publishing a release. No billing, visibility or publication changes are made by local validation. |
 
 The [documented installation routes](INSTALL.md) remain available to authorized

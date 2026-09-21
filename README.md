@@ -64,7 +64,7 @@ With Node.js/npm and Git, install one hire or the whole team:
 npx skills add SoonGwan/questionable-hires
 ```
 
-Tested with `skills@1.5.26` (Node.js 22.20.0+): [all-eight local installation check](benchmarks/SKILLS-CLI-INSTALL-01.md). Remote authentication/public installation is not covered by that check.
+With cached `skills@1.5.26` (Node.js 22.20.0+), [authenticated remote installation](benchmarks/REMOTE-INSTALL-01.md) at `5e6beab` verified all eight skills and selected installed behaviors. Fresh npm downloads and anonymous public installation remain unverified.
 
 The installer discovers all eight hires and lets you select skills and supported
 agents. For one project-local Codex skill without prompts:

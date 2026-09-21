@@ -28,6 +28,13 @@ checks in an isolated project. This tests the CLI entrypoint with a local source
 not remote authentication or public availability. Review third-party CLIs and
 skill contents before installation; an unpinned CLI can change its requirements.
 
+[Authenticated remote checkpoint01](../benchmarks/REMOTE-INSTALL-01.md),
+2026-09-22/source`5e6beab`, also verifies both a pinned GitHub helper installation
+and actual npx remote cloning into a temporary project. All8 skills/51 resources
+match; nine installed Python entrypoints and selected native behavior pass.
+The CLI tarball was cached: no fresh npm download, anonymous public access or
+host registration is established.
+
 ## Install into a project
 
 Requires Python 3.8+ and an authenticated Git client. From a directory where you keep tools:
