@@ -1,0 +1,41 @@
+diff --git a/requests/sessions.py b/requests/sessions.py
+index d701ff2..dfce7cf 100644
+--- a/requests/sessions.py
++++ b/requests/sessions.py
+@@ -13,7 +13,7 @@ from collections import Mapping
+ from datetime import datetime
+ 
+ from .auth import _basic_auth_str
+-from .compat import cookielib, OrderedDict, urljoin, urlparse, builtin_str
++from .compat import cookielib, OrderedDict, urljoin, urlparse
+ from .cookies import (
+     cookiejar_from_dict, extract_cookies_to_jar, RequestsCookieJar, merge_cookies)
+ from .models import Request, PreparedRequest, DEFAULT_REDIRECT_LIMIT
+@@ -425,7 +425,7 @@ class Session(SessionRedirectMixin):
+             If Tuple, ('cert', 'key') pair.
+         """
+ 
+-        method = builtin_str(method)
++        method = to_native_string(method)
+ 
+         # Create the Request.
+         req = Request(
+diff --git a/test_requests.py b/test_requests.py
+index 467c5bc..7307b55 100755
+--- a/test_requests.py
++++ b/test_requests.py
+@@ -1459,6 +1459,14 @@ def list_of_tuples():
+         ]
+ 
+ 
++@pytest.mark.parametrize('method', [b'GET', b'get', 'GET', u('get')])
++def test_request_method_is_native_string(method):
++    r = requests.request(method, httpbin('get'))
++    assert r.status_code == 200
++    assert r.request.method == 'GET'
++    assert isinstance(r.request.method, builtin_str)
++
++
+ def test_data_argument_accepts_tuples(list_of_tuples):
+     """
+     Ensure that the data argument will accept tuples of strings

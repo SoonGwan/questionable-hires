@@ -1,6 +1,8 @@
-# Current candidate: whole-task performance remains unproven
+# Historical checkpoint before external pilot results — 2026-09-22
 
-Decision checkpoint **2026-09-22, SWE-Lite pilot01 resource`8ee6c56` / runner`796926e`**.
+Checkpoint content from `b0810a9`; see [current decision index](CURRENT-CANDIDATE-STATUS.md).
+
+Decision checkpoint **2026-09-22, exact solver execution path `54e3b2c`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -16,20 +18,32 @@ readiness. No public-release approval or successful hosted matrix is claimed.
 
 ## Model evidence that governs claims
 
-[SWE-Lite pilot01](SWE-LITE-PILOT-01-REVIEW.md) completed its four frozen
-external-issue cells. Both conditions pass the required native contracts, but
-summed cost is essentially unchanged and broader pytest validation reveals a
-fixture-induced path problem. These public tasks are not proven uncontaminated
-holdouts and are now exposed development cases. Do not promote the favorable
-Requests pair or rerun the pair as independent validation. Preparation/failure
-history remains in the [dated checkpoint](CANDIDATE-STATUS-2026-09-22-BEFORE-SWE-RESULTS.md).
+[External-issue pilot selection](SWE-LITE-PILOT-01-SELECTION.md) fixes two public
+SWE-bench Lite issues by a predeclared hash rule; these are not proven
+uncontaminated holdouts. [Reference preflight](SWE-LITE-PILOT-01-SCORING-04.md)
+now distinguishes original failures from passing gold patches for both issues.
+[Solver runtimes](SWE-LITE-PILOT-01-SOLVER-RUNTIME.md), `365fea9`: separate
+base-only images with CLI0.153.4 pass142 Requests/77 pytest public native checks
+with same-process project bindings. No model calls or efficiency claim; actual
+launcher/access/network gates remain. Prior setup failures and chronology remain
+in the [dated checkpoint archive](CANDIDATE-STATUS-2026-09-22-BEFORE-SOLVER-RUNTIME.md).
+[Actual CLI probe](SWE-LITE-PILOT-01-LAUNCHER.md): neutral session01 fails to
+execute tools with recorded OOM; session02 writes/reads the expected file after
+moving to a separate8GiB VM/container6GiB. Both attempts retained, not skill
+evidence. Requests combined path/final protocol remain; zero selected-issue
+model attempts. Unrelated default Colima/MySQL are unchanged.
+[Exact mounted-source path](SWE-LITE-PILOT-01-FINAL-ENVIRONMENT.md): Requests
+passes142 native checks on internal-only and API-mode networking; pytest passes77
+after restoring the project-local temporary-directory config boundary. Prior
+7fail/70pass attempt retained, no test/source rewrite. The
+[four-cell protocol](SWE-LITE-PILOT-01-PROTOCOL.md) fixes resource`8ee6c56`,
+Astra/medium and360s inner/380s outer limits before selected-issue model execution.
 
-한국어: 외부 과제4회 실행·기준 채점까지 완료했지만 큰 비용 개선은 없었다. pytest의
-추가 검사에 영향을 준 실험 환경 문제도 남긴다. 유리한 한 쌍만 홍보하지 않는다.
+한국어: 두 외부 과제의 기준 채점과 실행 이미지 검증까지 완료했다. 실제 모델 비교와
+접근 경계 검증은 아직 남아 있다. 과거 실패 기록·그래프·개선율 주장은 변경하지 않았다.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |
-| [SWE-Lite pilot01](SWE-LITE-PILOT-01-REVIEW.md), `8ee6c56` |4cells; both conditions pass Requests141/141 and pytest78/78 required checks. Sum tokens−0.71%, time+2.43%. Both current sessions read Receipt; no helper execution. | No broad gain. Broader pytest validation is fixture-confounded; baseline Requests also searches `/run`. Preserve all cells, no featured promotion. |
 | [Probe-edit transfer01](PROBE-EDIT-TRANSFER-01-REVIEW.md), current`aed8a27` |6cells; current vs baseline full tokens−7.87%/time+67.29%, prefix+10.43%/+0.74%. Current costs more tokens/time than predecessor on both. All scoped native checks succeed; helper unused. | No API adoption or efficiency benefit; no promotion. |
 | [All-eight regression04](ALL-EIGHT-CURRENT-04-REVIEW.md), `0d12dd9` |16cells; summed tokens+20.39%, time−5.17%. Scope included: baseline7/8,current8/8 because baseline SQLite searches outside the project. | Cost goal unmet; not a general quality advantage. This predates subsequent changes. |
 | [Configuration audit01](CONFIG-LAYERS-01-REVIEW.md), `e1e1ef8` |4cells; single tokens+4.65%/time+2.26%, multiple+0.38%/−1.28%. Helper unused in both current sessions. Multiple/current incorrectly denies baseline reuse. | No efficiency promotion or unqualified task pass. Native checks/preservation hold; reporting defect retained. |

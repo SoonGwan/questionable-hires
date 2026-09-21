@@ -1,0 +1,57 @@
+diff --git a/src/_pytest/skipping.py b/src/_pytest/skipping.py
+index 7bd975e..5b9b522 100644
+--- a/src/_pytest/skipping.py
++++ b/src/_pytest/skipping.py
+@@ -291,12 +291,12 @@ def pytest_runtest_makereport(item: Item, call: CallInfo[None]):
+             else:
+                 rep.outcome = "passed"
+                 rep.wasxfail = xfailed.reason
+-    elif (
++    if (
+         item._store.get(skipped_by_mark_key, True)
+         and rep.skipped
+         and type(rep.longrepr) is tuple
+     ):
+-        # skipped by mark.skipif; change the location of the failure
++        # Skipped by mark.skip or mark.skipif; change the location of the failure
+         # to point to the item definition, otherwise it will display
+         # the location of where the skip exception was raised within pytest
+         _, _, reason = rep.longrepr
+diff --git a/testing/test_skipping.py b/testing/test_skipping.py
+index 0b1c0b4..6bbdd39 100644
+--- a/testing/test_skipping.py
++++ b/testing/test_skipping.py
+@@ -716,6 +716,33 @@ class TestSkipif:
+         assert result.ret == 0
+ 
+ 
++@pytest.mark.parametrize("runxfail", [False, True])
++@pytest.mark.parametrize(
++    "mark, reason",
++    [
++        ("skip", "unconditional skip"),
++        ('skip(reason="skip reason")', "skip reason"),
++        ('skipif(True, reason="skipif reason")', "skipif reason"),
++    ],
++)
++def test_skip_location(testdir, runxfail, mark, reason):
++    testdir.makepyfile(
++        test_skip_location="""
++        import pytest
++        @pytest.mark.{mark}
++        def test_skip():
++            assert 0
++        """.format(mark=mark)
++    )
++    args = ["-rs"]
++    if runxfail:
++        args.append("--runxfail")
++    result = testdir.runpytest(*args)
++    result.assert_outcomes(skipped=1)
++    result.stdout.fnmatch_lines(["SKIPPED [1] test_skip_location.py:2: " + reason])
++    assert result.ret == 0
++
++
+ def test_skip_not_report_default(testdir):
+     p = testdir.makepyfile(
+         test_one="""

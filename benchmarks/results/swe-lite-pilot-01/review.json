@@ -1,0 +1,157 @@
+[
+  {
+    "project": "requests",
+    "condition": "baseline",
+    "total_tokens": 164972,
+    "elapsed_seconds": 70.735,
+    "catalog_entries": [],
+    "body_exposure": {},
+    "command_count": 10,
+    "resources_changed": {
+      "changed_paths": []
+    },
+    "index_comparison": {
+      "status": "observed",
+      "bytes_and_mode_unchanged": false,
+      "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+    },
+    "command_strings": [
+      "/bin/bash -lc \"pwd; rg --files -g AGENTS.md -g '*test*' -g 'sessions.py' -g 'utils.py' -g 'pytest.ini' -g 'setup.cfg' -g 'tox.ini' -g 'conftest.py' -g 'README*'\"",
+      "/bin/bash -lc 'git status --short; rg --files -g AGENTS.md /testbed /run 2>/dev/null'",
+      "/bin/bash -lc \"rg -n 'builtin_str|native_string|def request|method|HTTPBIN|httpbin' requests/sessions.py requests/utils.py test_requests.py setup.cfg\"",
+      "/bin/bash -lc \"sed -n '1,140p' test_requests.py; sed -n '505,530p' test_requests.py; sed -n '650,677p' requests/utils.py; sed -n '410,440p' requests/sessions.py; cat setup.cfg; rg --files -g '*test*' -g '*pytest*' -g 'AGENTS.md' -g 'Makefile' -g 'tox*'; ls -a\"",
+      "/bin/bash -lc \"cat Makefile; python -c \\\"import sys, os; print(sys.version); print('HTTPBIN_URL=' + os.environ.get('HTTPBIN_URL', '<unset>')));\\\"\"",
+      "/bin/bash -lc \"python -c \\\"import sys, os; print(sys.version); print('HTTPBIN_URL=' + os.environ.get('HTTPBIN_URL', '<unset>'))\\\"; rg -n '\"'^class |''^def test_|parametrize'\"' test_requests.py\"",
+      "/bin/bash -lc 'python -m pytest -q test_requests.py -k bytes_method_name'",
+      "/bin/bash -lc \"sed -n '280,308p' test_requests.py; sed -n '456,476p' test_requests.py; sed -n '970,1012p' test_requests.py; sed -n '1348,1403p' test_requests.py; rg -n 'requests\\\\.(get|post|put|request|head)|s\\\\.(get|post|send)|https?://' test_requests.py\"",
+      "/bin/bash -lc \"python -m pytest -q test_requests.py -k 'method_name or HTTP_ or TestRedirects or test_basic_building or test_no_content_length'\"",
+      "/bin/bash -lc 'git diff --check; git diff --stat; git diff -- requests/sessions.py test_requests.py'"
+    ],
+    "staged_entries_unchanged": true,
+    "head_unchanged": true
+  },
+  {
+    "project": "requests",
+    "condition": "current",
+    "total_tokens": 133027,
+    "elapsed_seconds": 64.611,
+    "catalog_entries": [
+      "con-artist",
+      "exorcist",
+      "friday",
+      "hostage-negotiator",
+      "landlord",
+      "mother-in-law",
+      "necromancer",
+      "receipt"
+    ],
+    "body_exposure": {
+      "receipt": [
+        {
+          "line": 17,
+          "phase": "tool_output"
+        }
+      ]
+    },
+    "command_count": 8,
+    "resources_changed": {
+      "changed_paths": []
+    },
+    "index_comparison": {
+      "status": "observed",
+      "bytes_and_mode_unchanged": false,
+      "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+    },
+    "command_strings": [
+      "/bin/bash -lc \"pwd; rg --files -g 'AGENTS.md' -g '*test*' -g 'pytest*' -g 'setup.cfg' -g 'sessions.py' -g 'compat.py' -g 'utils.py' -g 'SKILL.md'\"",
+      "/bin/bash -lc 'cat /testbed/.agents/skills/receipt/SKILL.md'",
+      "/bin/bash -lc \"git status --short; rg --files -g AGENTS.md -g conftest.py -g '*requirements*' -g tox.ini -g Makefile; cat setup.cfg; rg -n 'builtin_str|def request|to_native_string' requests/sessions.py requests/utils.py requests/models.py; sed -n '1,210p' test_requests.py\"",
+      "/bin/bash -lc \"sed -n '415,450p' requests/sessions.py; sed -n '650,677p' requests/utils.py; rg -n 'prepare_method|self.method' requests/models.py; tail -90 test_requests.py; cat Makefile; rg -n 'https?://|parametrize|method' test_requests.py\"",
+      "/bin/bash -lc \"python -c \\\"import sys, os, requests; print(sys.version); print(requests.__file__); print('HTTPBIN_URL:', os.environ.get('HTTPBIN_URL'))\\\"; rg --files -g '*test*.py' -g 'pytest.ini' -g 'pyproject.toml'\"",
+      "/bin/bash -lc \"sed -n '490,535p' test_requests.py; sed -n '270,310p' test_requests.py; sed -n '930,955p' test_requests.py; rg -n '\"'^    def test_'\"' test_requests.py\"",
+      "/bin/bash -lc 'python -m pytest -q test_requests.py -k test_request_method_is_native_string'",
+      "/bin/bash -lc \"python -m pytest -q test_requests.py -k 'request_method_is_native_string or unicode_method_name or HTTP_200_OK or HTTP_302_ALLOW_REDIRECT_GET or no_content_length or basic_building or TestRedirects or prepared_from_session or prepared_request or session_hooks or hook_receives_request_arguments or json_param_post_content_type_works'; git diff --check; git diff --stat; git diff -- requests/sessions.py test_requests.py; git status --short\""
+    ],
+    "staged_entries_unchanged": true,
+    "head_unchanged": true
+  },
+  {
+    "project": "pytest",
+    "condition": "current",
+    "total_tokens": 269575,
+    "elapsed_seconds": 104.489,
+    "catalog_entries": [
+      "con-artist",
+      "exorcist",
+      "friday",
+      "hostage-negotiator",
+      "landlord",
+      "mother-in-law",
+      "necromancer",
+      "receipt"
+    ],
+    "body_exposure": {
+      "receipt": [
+        {
+          "line": 16,
+          "phase": "tool_output"
+        }
+      ]
+    },
+    "command_count": 10,
+    "resources_changed": {
+      "changed_paths": []
+    },
+    "index_comparison": {
+      "status": "observed",
+      "bytes_and_mode_unchanged": false,
+      "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+    },
+    "command_strings": [
+      "/bin/bash -lc \"pwd && rg --files -g AGENTS.md -g '*skipping*' -g 'pyproject.toml' -g 'tox.ini' -g 'pytest.ini' -g 'setup.cfg' && cat /testbed/.agents/skills/receipt/SKILL.md\"",
+      "/bin/bash -lc \"git status --short && sed -n '1,330p' src/_pytest/skipping.py && rg -n 'runxfail|location|skip_location' testing/test_skipping.py && cat pyproject.toml && sed -n '1,180p' setup.cfg && sed -n '1,180p' testing/conftest.py\"",
+      "/bin/bash -lc \"sed -n '360,720p' testing/test_skipping.py && sed -n '1,100p' testing/test_skipping.py && python -c 'import sys, pytest; print(sys.version); print(pytest.__file__)' && rg --files -g 'AGENTS.md' -g 'conftest.py' -g '*unittest*' -g '*runner*' | head -35\"",
+      "/bin/bash -lc \"rg -n 'lineno|longrepr|skip.*report|skip.*line' testing/test_skipping.py && ls -d .git/qh-tmp 2>/dev/null\"",
+      "/bin/bash -lc \"sed -n '740,800p' testing/test_skipping.py && ls .git/qh-tmp\"",
+      "/bin/bash -lc 'python -m pytest testing/test_skipping.py -k test_skip_location --basetemp=.git/qh-tmp/skip-before -q'",
+      "/bin/bash -lc 'git diff --check && git diff --stat && git diff -- src/_pytest/skipping.py testing/test_skipping.py'",
+      "/bin/bash -lc 'python -m pytest testing/test_skipping.py testing/test_unittest.py testing/test_runner.py --basetemp=.git/qh-tmp/skip-after -q'",
+      "/bin/bash -lc \"python - <<'PY'\nimport pathlib\nimport shutil\nimport subprocess\nimport os\n\nbaseline = pathlib.Path('/testbed/.git/qh-tmp/skip-baseline-source')\nshutil.copytree('/testbed/src', baseline / 'src')\noriginal = subprocess.check_output(['git', 'show', 'HEAD:src/_pytest/skipping.py'])\n(baseline / 'src/_pytest/skipping.py').write_bytes(original)\nenv = os.environ.copy()\nenv['PYTHONPATH'] = str(baseline / 'src')\nresult = subprocess.run([\n    'python', '-m', 'pytest', 'testing/test_runner.py',\n    '-k', 'test_logstart_logfinish_hooks or test_collect_result or test_current_test_env_var',\n    '--basetemp=.git/qh-tmp/skip-baseline-run', '-q',\n], env=env)\nraise SystemExit(result.returncode)\nPY\"",
+      "/bin/bash -lc 'git diff --check && git status --short && git diff --stat'"
+    ],
+    "staged_entries_unchanged": true,
+    "head_unchanged": true
+  },
+  {
+    "project": "pytest",
+    "condition": "baseline",
+    "total_tokens": 240489,
+    "elapsed_seconds": 94.36,
+    "catalog_entries": [],
+    "body_exposure": {},
+    "command_count": 11,
+    "resources_changed": {
+      "changed_paths": []
+    },
+    "index_comparison": {
+      "status": "observed",
+      "bytes_and_mode_unchanged": false,
+      "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+    },
+    "command_strings": [
+      "/bin/bash -lc \"pwd; rg --files -g AGENTS.md -g '*skipping*' -g 'pytest.ini' -g 'pyproject.toml' -g 'tox.ini'\"",
+      "/bin/bash -lc \"git status --short; sed -n '1,340p' src/_pytest/skipping.py\"",
+      "/bin/bash -lc \"rg -n 'location|runxfail|skip.*report|report.*skip' testing/test_skipping.py; sed -n '1,160p' testing/conftest.py; cat pyproject.toml\"",
+      "/bin/bash -lc \"rg --files -g AGENTS.md -g '*requirements*' -g 'conftest.py'; sed -n '1,180p' tox.ini; sed -n '1,190p' testing/test_skipping.py\"",
+      "/bin/bash -lc \"sed -n '580,735p' testing/test_skipping.py; python -c 'import sys, pytest; print(sys.version); print(pytest.__file__)'; ls -d .git/qh-tmp\"",
+      "/bin/bash -lc \"mkdir -p .git/qh-tmp; python -c 'from pathlib import Path; Path(\\\".git/qh-tmp/pytest.ini\\\").touch()'; TMPDIR=/testbed/.git/qh-tmp python -m pytest testing/test_skipping.py -k test_skip_location --basetemp=/testbed/.git/qh-tmp/skip-location-before -q\"",
+      "/bin/bash -lc 'TMPDIR=/testbed/.git/qh-tmp python -m pytest testing/test_skipping.py testing/test_unittest.py testing/test_runner.py --basetemp=/testbed/.git/qh-tmp/skipping-related -q'",
+      "/bin/bash -lc 'git diff --check; git diff --stat; git diff -- src/_pytest/skipping.py testing/test_skipping.py; git status --short'",
+      "/bin/bash -lc \"python - <<'PY'\nimport os\nfrom pathlib import Path\nimport subprocess\n\npath = Path('src/_pytest/skipping.py')\nfixed = path.read_text()\noriginal = fixed.replace('    if (\\\\n        item._store.get(skipped_by_mark_key, True)', '    elif (\\\\n        item._store.get(skipped_by_mark_key, True)')\nassert original \"'!= fixed\ntry:\n    path.write_text(original)\n    result = subprocess.run([\n        '\"'python', '-m', 'pytest', 'testing/test_runner.py',\n        '-k', 'test_logstart_logfinish_hooks or test_collect_result or test_current_test_env_var',\n        '--basetemp=/testbed/.git/qh-tmp/runner-baseline', '-q', '--tb=short',\n    ], env=dict(os.environ, TMPDIR='/testbed/.git/qh-tmp'))\nfinally:\n    path.write_text(fixed)\nraise SystemExit(result.returncode)\nPY\"",
+      "/bin/bash -lc 'TMPDIR=/testbed/.git/qh-tmp python -m pytest testing/test_skipping.py testing/test_unittest.py --basetemp=/testbed/.git/qh-tmp/skipping-final -q'",
+      "/bin/bash -lc 'git diff --check; git status --short'"
+    ],
+    "staged_entries_unchanged": true,
+    "head_unchanged": true
+  }
+]
