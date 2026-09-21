@@ -36,6 +36,10 @@ or recoverable savings.
 
 These changes are implemented; their model-cost effect is not established:
 
+- [Focused history hunk selection](HISTORY-HUNK-SELECTION-01.md), parent`c96730d`:
+  slices retained hunks instead of copying every omitted body; exact evidence
+  matches the old selector. Large sparse input reduces intermediate allocations,
+  tiny-input memory increases;56 history controls pass. Not a model-cost result.
 - [Mother request-entry cancellation](MOTHER-ENTRY-CANCEL-01.md), code`c00276d`:
   reproduced on Python3.9/3.11, then repaired without consuming pending requests.
   Native asset8/8 on both versions,38 Mother controls on3.11; source archive8/8.

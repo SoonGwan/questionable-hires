@@ -93,26 +93,28 @@ def focused_patch(output, historical_path, line_numbers):
     marker = '+++ b/' + historical_path + '\n'
     if output.count(marker) != 1 or any(c in historical_path for c in '\n\r\t"'):
         return output, 0
-    header, body = output.split(marker, 1)
-    if 'diff --git ' in body or '@@@' in body:
+    body_start = output.index(marker) + len(marker)
+    if output.find('diff --git ', body_start) >= 0 or output.find('@@@', body_start) >= 0:
         return output, 0
-    parts = re.split(r'(?m)(^@@ -\d+(?:,\d+)? \+\d+(?:,\d+)? @@[^\n]*\n)', body)
-    if len(parts) < 3 or parts[0].strip():
+    headers = re.compile(r'(?m)^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@[^\n]*\n').finditer(output, body_start)
+    hunk = next(headers, None)
+    if hunk is None or output[body_start:hunk.start()].strip():
         return output, 0
     kept, omitted = [], 0
     targets = sorted(set(line_numbers))
-    for index in range(1, len(parts), 2):
-        hunk = parts[index]
-        match = re.match(r'@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@', hunk)
-        start, count = int(match[1]), int(match[2] or 1)
+    while hunk is not None:
+        following = next(headers, None)
+        start, count = int(hunk[1]), int(hunk[2] or 1)
         position = bisect_left(targets, start)
         if position < len(targets) and targets[position] < start + count:
-            kept.append(hunk + parts[index + 1])
+            # Slice selected hunks only; do not copy every omitted patch body.
+            kept.append(output[hunk.start():following.start() if following else len(output)])
         else:
             omitted += 1
+        hunk = following
     if not kept:
         return output, 0
-    return header + marker + ''.join(kept), omitted
+    return output[:body_start] + ''.join(kept), omitted
 
 
 def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
