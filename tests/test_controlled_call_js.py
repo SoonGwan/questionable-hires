@@ -9,6 +9,31 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class ControlledCallJavaScriptTests(unittest.TestCase):
     @unittest.skipUnless(shutil.which('node'), 'Node is required for native JavaScript verification')
+    def test_async_finally_check_detects_missing_drain_release_in_standalone_copy(self):
+        asset = ROOT / 'skills/hostage-negotiator/assets/controlled_call.mjs'
+        original = asset.read_text()
+        release = 'if (closing) controlled.calls.at(-1).complete();'
+        self.assertEqual(original.count(release), 1)
+        check = (ROOT / 'tests/controlled_scope_js.test.mjs').read_text().replace(
+            '../skills/hostage-negotiator/assets/controlled_call.mjs', './controlled_call.mjs')
+        with tempfile.TemporaryDirectory() as folder:
+            project = Path(folder)
+            (project / 'check.test.mjs').write_text(check)
+            for source, expected in ((original, 0), (original.replace(release, ''), 1)):
+                (project / 'controlled_call.mjs').write_text(source)
+                result = subprocess.run(['node', '--test', '--test-reporter=tap',
+                    '--test-name-pattern=failed body drains a controlled async finally',
+                    'check.test.mjs'], cwd=project, capture_output=True, text=True, timeout=10)
+                output = result.stdout + result.stderr
+                self.assertEqual(result.returncode, expected, output)
+                self.assertIn('# fail ' + str(expected), output)
+                if expected:
+                    self.assertIn('Body and controlled-call cleanup failed', output)
+                else:
+                    self.assertIn('ok', output)
+        self.assertEqual(asset.read_text(), original)
+
+    @unittest.skipUnless(shutil.which('node'), 'Node is required for native JavaScript verification')
     def test_entry_before_task_settlement_and_failure_controls(self):
         result = subprocess.run(['node', '--test', '--test-reporter=tap',
                                  'tests/controlled_entry_js.test.mjs'], cwd=ROOT,
@@ -52,8 +77,8 @@ class ControlledCallJavaScriptTests(unittest.TestCase):
                                 capture_output=True, text=True, timeout=15)
         output = result.stdout + result.stderr
         self.assertEqual(result.returncode, 0, output)
-        self.assertIn('# tests 10', output)
-        self.assertIn('# pass 10', output)
+        self.assertIn('# tests 12', output)
+        self.assertIn('# pass 12', output)
         self.assertIn('# fail 0', output)
 
     @unittest.skipUnless(shutil.which('node'), 'Node is required for native JavaScript verification')

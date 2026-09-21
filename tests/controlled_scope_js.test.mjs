@@ -133,3 +133,70 @@ test('scope cleans up without replacing real owner assertions or masking faults'
   await assert.rejects(check(false, true), { code: 'ERR_ASSERTION', actual: 2, expected: 1 });
   await assert.rejects(check(true, false), { code: 'ERR_ASSERTION', actual: true, expected: false });
 });
+
+test('failed body drains a controlled async finally without replacing its error', async () => {
+  const failure = new Error('body assertion failed');
+  let operation, cleanup, finalized = false;
+  await assert.rejects(withControlledCalls(async scope => {
+    operation = scope.call();
+    cleanup = scope.call();
+    scope.run(async () => {
+      try { await operation('work'); }
+      finally {
+        await cleanup('release resource');
+        finalized = true;
+      }
+    });
+    await operation.started();
+    assert.equal(cleanup.calls.length, 0);
+    throw failure;
+  }), error => error === failure);
+  assert.equal(finalized, true);
+  assert.equal(operation.calls.length, 1);
+  assert.equal(cleanup.calls.length, 1);
+  assert.deepEqual(cleanup.calls[0].args, ['release resource']);
+  assert.equal(cleanup.calls[0].released, true);
+});
+
+test('one failing scope does not release or close a concurrently active scope', async () => {
+  let notifyReady, allowBody;
+  const ready = new Promise(resolve => { notifyReady = resolve; });
+  const proceed = new Promise(resolve => { allowBody = resolve; });
+  const payload = {}, result = {};
+  let siblingEntry, siblingTask, siblingFinished = false;
+  const sibling = withControlledCalls(async scope => {
+    const save = scope.call();
+    siblingTask = scope.run(async () => {
+      const value = await save(payload);
+      siblingFinished = true;
+      return value;
+    });
+    siblingEntry = await save.started();
+    notifyReady();
+    await proceed;
+    assert.equal(await scope.wait(siblingTask), result);
+  });
+  // Observe rejection immediately even if an assertion below fails first.
+  const observedSibling = sibling.then(() => null, error => error);
+  try {
+    await ready;
+    const failure = new Error('other scope failed');
+    await assert.rejects(withControlledCalls(async scope => {
+      const save = scope.call();
+      scope.run(() => save(payload));
+      await save.started();
+      throw failure;
+    }), error => error === failure);
+    assert.equal(siblingEntry.released, false);
+    assert.equal(siblingEntry.args[0], payload);
+    assert.equal(siblingFinished, false);
+    siblingEntry.complete(result);
+    allowBody();
+    assert.equal(await observedSibling, null);
+    assert.equal(siblingFinished, true);
+  } finally {
+    if (siblingEntry && !siblingEntry.released) siblingEntry.complete(result);
+    allowBody();
+    await observedSibling;
+  }
+});

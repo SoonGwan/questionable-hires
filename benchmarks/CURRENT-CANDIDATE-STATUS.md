@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## JavaScript cleanup counterpart verified — 2026-09-21, source `a7c92b0`
+
+[Native follow-up](HOSTAGE-CLEANUP-RETRY-01.md#javascript-follow-up--2026-09-21-parent-a7c92b0):
+two added Node checks verify asynchronous finally draining and concurrent scope
+isolation. All12 scope checks pass; copied missing-release fault fails the same
+async-finally check while original passes. All6 Python-driven JS integration
+checks pass on Node24.16.0. Production JS remains unchanged: its Promise-release
+mechanism does not require the Python cancellation fix. No model-efficiency claim.
+
+한국어: JavaScript에서도 비동기 정리와 동시 작업 격리를 확인했다. 임시 복사본의
+정리 누락은 실제로 검출했으며, 문제가 없는 배포 코드는 불필요하게 바꾸지 않았다.
+
 ## Hostage cleanup retry corrected — 2026-09-21, parent `d04d40e`
 
 [Native failing-before/passing-after checks](HOSTAGE-CLEANUP-RETRY-01.md): repeated
