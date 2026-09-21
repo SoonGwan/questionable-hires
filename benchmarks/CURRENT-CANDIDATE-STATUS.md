@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Complete definition groups — 2026-09-21, parent `75a46c9`
+
+[Collector capability check](CONTEXT-DEFINITION-GROUPS-01.md): optional
+`--all-matches` retrieves every same-name leaf definition, including overloads,
+without choosing a runtime implementation. Default ambiguity rejection remains.
+Six tests pass on Python3.9/3.11; pinned Click's four known names return all eight
+complete spans. Both README capability descriptions updated. No model adoption/
+cost result, cross-skill dependency or featured promotion; whole-task goal unmet.
+
+한국어: 같은 이름의 정의를 빠짐없이 함께 읽는 기능을 검증했다. 기존의 안전한
+기본 동작은 유지하며, 실제 모델의 성능 개선은 별도로 검증해야 한다.
+
 ## Click defaults transfer reviewed — 2026-09-21, resources `4416263` / `1ae3ee0`
 
 [Three original native reviews](CLICK-DEFAULTS-01-REVIEW.md) meet all five

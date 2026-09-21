@@ -38,6 +38,26 @@ a conditional replacement; use an explicit line or inspect the enclosing source.
 A unique static definition does not prove that its branch executes or that a later
 assignment/decorator preserves its runtime binding. Index coverage is unchanged;
 conditional class-body definitions may require surrounding source inspection.
+
+To read all definitions sharing a known leaf name (such as overload declarations
+and their implementation), add `--all-matches`:
+
+```sh
+python -B /path/to/con-artist/scripts/context.py --root /permitted/project \
+  --all-matches service.py:Store.save
+```
+
+Named selections then return `representation: "definition_group"` with every
+static match's complete numbered source, kind and first/last line, in source order.
+This does not recognize a special decorator or pick the last definition: conditional
+alternatives, property accessors and other duplicates remain visible. Enclosing
+conditions and runtime assignments are unresolved; inspect them when relevant.
+Ambiguous parent scopes and missing names still fail; use line selectors or wider
+context for those. A unique leaf produces a one-member group. File and line
+selectors keep their existing behavior, including with `--full`. Default named
+selection remains strict. The same read/output limits apply to complete groups;
+oversized results fail rather than dropping definitions or returning partial text.
+
 Line numbers follow Python physical lines (LF, CRLF or CR). Unicode separators
 and control characters inside literals do not create extra source lines. Excerpts
 use LF between numbered lines; hashes still identify the original file bytes.

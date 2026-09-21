@@ -143,7 +143,7 @@ def scope_definitions(body):
             yield from scope_definitions(ast.iter_child_nodes(node))
 
 
-def describe(root, path, budget, symbol=None, index=False, auto_index=False, cache=None, pretty=False):
+def describe(root, path, budget, symbol=None, index=False, auto_index=False, cache=None, pretty=False, all_matches=False):
     # Invocation-local only: multiple excerpts must share the same source bytes.
     if cache is None:
         cache = {}
@@ -170,7 +170,8 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
             else:
                 body = tree.body
                 scopes = snapshot.setdefault('scope_names', {})
-                for name in symbol.split('.'):
+                parts = symbol.split('.')
+                for position, name in enumerate(parts):
                     key = id(body)  # The parsed tree owns these lists for this snapshot.
                     if key not in scopes:
                         names = {}
@@ -178,6 +179,16 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
                             names.setdefault(definition.name, []).append(definition)
                         scopes[key] = names
                     matches = scopes[key].get(name, [])
+                    if all_matches and position == len(parts) - 1 and matches:
+                        definitions = []
+                        for match in sorted(matches, key=span):
+                            first, last = span(match)
+                            definitions.append(dict(kind=type(match).__name__, first_line=first,
+                                last_line=last, source=excerpt(lines, first, last)))
+                        result.update(representation='definition_group', symbol=symbol,
+                            definitions=definitions,
+                            limitation='All static definitions at the named leaf, not a selected runtime implementation. Enclosing conditions, imports, globals, assignments and bindings are unresolved.')
+                        return result
                     if len(matches) != 1:
                         raise ValueError('Missing or ambiguous definition: ' + str(path) + ':' + symbol)
                     node = matches[0]
@@ -215,7 +226,7 @@ def encode(result, pretty=False):
                       separators=None if pretty else (',', ':'))
 
 
-def collect(root, selectors, full=False, *, pretty=False):
+def collect(root, selectors, full=False, *, pretty=False, all_matches=False):
     root = Path(root).resolve(strict=True)
     if not root.is_dir() or not 1 <= len(selectors) <= 8:
         raise ValueError('Provide a project directory and 1–8 file[:definition-or-line] selectors')
@@ -253,7 +264,7 @@ def collect(root, selectors, full=False, *, pretty=False):
     result = dict(status='collected', instructions=instructions,
                   instruction_paths_checked=checked_instructions, configs=configs,
                   conftest_indexes=conftests,
-                  selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache, pretty=pretty) for path, symbol in selected],
+                  selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache, pretty=pretty, all_matches=all_matches) for path, symbol in selected],
                   limitation='Read-only navigation, not execution or complete dependency/config discovery. Only selected-path ancestors inside the supplied root are checked. Host instructions still apply; inspect additional dependencies when needed. Files must remain stable while reading.')
     if len(encode(result, pretty)) + 1 > MAX_OUTPUT:  # CLI's terminating newline
         raise ValueError(f'Context exceeds {MAX_OUTPUT} characters; narrow selectors or use project tools. No partial context emitted.')
@@ -267,10 +278,12 @@ def main():
                         help='Return full selected files instead of indexing Python files over 200 lines; size limits still apply')
     parser.add_argument('--pretty', action='store_true',
                         help='Indent JSON for manual inspection; default JSON is compact with identical values')
+    parser.add_argument('--all-matches', action='store_true',
+                        help='For named selectors, return every static leaf definition (including overloads); ambiguous parent scopes still fail. Does not resolve runtime bindings.')
     parser.add_argument('selectors', nargs='+', metavar='FILE[:DEFINITION_OR_LINE]')
     args = parser.parse_args()
     try:
-        result = collect(args.root, args.selectors, full=args.full, pretty=args.pretty)
+        result = collect(args.root, args.selectors, full=args.full, pretty=args.pretty, all_matches=args.all_matches)
     except (OSError, ValueError, SyntaxError, RecursionError) as error:
         print(json.dumps(dict(status='incomplete', error=str(error))), file=sys.stderr)
         return 2
