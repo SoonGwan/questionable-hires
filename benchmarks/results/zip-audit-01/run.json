@@ -1,0 +1,188 @@
+{
+  "identities": {
+    "benchmarks/run_zip_audit_01.py": "9086f05b46e2a37bd47359f96209a006f516b15129b160092d1db84fa34d19d0",
+    "benchmarks/zip_audit_cases.py": "ef346c692720b115da521d41d3f0ed2a090020461863c9053c40012972b65df2",
+    "benchmarks/zip-audit-01-cases.json": "da6360f16010f5274d95dd909c3a91f150fc8e23295627275366de371f24e5ba",
+    "benchmarks/ZIP-AUDIT-01-PROTOCOL.md": "60592b13b83220f451db1b7e386ac3569b6be7f1e40fa7373c6977333b0a0833",
+    "benchmarks/run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "tests/test_zip_audit_fixture.py": "94e3e843717a221b7d03ec59b0b13162b3905120641334787507eadd0b3ddba7",
+    "tests/test_zip_audit_runner.py": "b78fdae743a9cb80dbe0bd4a1623d571f3491458303f92a516232060fe0cbc5b"
+  },
+  "cases": [
+    {
+      "id": "zip-audit-single",
+      "skill": "con-artist",
+      "files": {
+        "releasekit/__init__.py": "from .endpoint import create_package\n",
+        "releasekit/endpoint.py": "from releasekit.writer import pack as _pack\n\n\ndef create_package(records):\n    return _pack(records)\n",
+        "releasekit/writer.py": "import io\nimport stat\nimport zipfile\n\n\ndef pack(records):\n    buffer = io.BytesIO()\n    with zipfile.ZipFile(buffer, 'w') as archive:\n        for name, payload, permissions in records:\n            info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))\n            info.create_system = 3\n            info.external_attr = (stat.S_IFREG | permissions) << 16\n            archive.writestr(info, payload)\n    return buffer.getvalue()\n",
+        "test_package.py": "import io\nimport unittest\nimport zipfile\nfrom releasekit import create_package as build\n\n\nclass PackageTests(unittest.TestCase):\n    def test_entries_and_crc(self):\n        records = [('bin/launch', b'\\x00\\xfflaunch', 0o755),\n                   ('etc/settings', b'', 0o640)]\n        with zipfile.ZipFile(io.BytesIO(build(records))) as archive:\n            self.assertEqual(archive.namelist(), ['bin/launch', 'etc/settings'])\n            self.assertIsNone(archive.testzip())\n\n    def test_empty_package(self):\n        with zipfile.ZipFile(io.BytesIO(build([]))) as archive:\n            self.assertEqual(archive.namelist(), [])\n            self.assertIsNone(archive.testzip())\n",
+        "requirements.md": "Python3.9+ standard library only. Run python3 -B -m unittest -v test_package.\ncreate_package accepts an ordered list of distinct relative POSIX file names,\nbytes payloads (including binary and empty bytes), and integer permission bits\nbetween 0 and 0o777. Inputs are already validated; path validation and extraction\nare not in scope. It returns ZIP bytes with exactly that entry order, exact bytes,\nUnix creator system3 and each supplied Unix permission value. An empty list returns\na valid empty archive. Do not modify the caller's list or tuples. Inputs are regular\nfiles only; directory/symlink entries and filesystem extraction are not supported.\nFor this audit, all supplied source/test/requirements files are immutable. Isolated\nproject-local copies and temporary added tests are allowed; remove owned scratch\nbefore finishing. No external resources, installation, delegation or publication.\n"
+      },
+      "task": "Omit only the external_attr assignment in pack; keep payload writing unchanged.\n\nInspect the actual tests, public package entrypoint and writer. Audit\nwhether the native tests detect the specified reachable fault(s), in isolation.\nExecute existing native tests on correct code and each faulty version; keep each\nfault independent, not combined. Verify the actual test's build binding and the\nendpoint's _pack binding in the same process as the checks. If an existing test\nsurvives, execute the same stronger native assertion against correct code and that\nfault: reopen the bytes returned by the real create_package, compare complete\nordered (filename, payload bytes, permission bits, Unix creator system) records\nfor the existing binary and empty entries, and verify input preservation.\nShow normal passes and defect-specific assertion failures, not import/setup errors.\nPreserve original bytes/modes and remove owned project-local disposable copies.\nCommands/results suffice; do not retain a permanent harness/report or apply repairs.\nWork only inside this project, with no network, dependencies, external discovery,\nother skills, delegation or publication.",
+      "criteria": [
+        "Inspect real sources and prove same-process test/endpoint/writer bindings.",
+        "Execute normal and each independently requested fault with the original native tests.",
+        "Verify the same stronger complete-record native assertion on normal and surviving faults, including input preservation.",
+        "Preserve originals and remove owned scratch without scope expansion."
+      ]
+    },
+    {
+      "id": "zip-audit-multiple",
+      "skill": "con-artist",
+      "files": {
+        "releasekit/__init__.py": "from .endpoint import create_package\n",
+        "releasekit/endpoint.py": "from releasekit.writer import pack as _pack\n\n\ndef create_package(records):\n    return _pack(records)\n",
+        "releasekit/writer.py": "import io\nimport stat\nimport zipfile\n\n\ndef pack(records):\n    buffer = io.BytesIO()\n    with zipfile.ZipFile(buffer, 'w') as archive:\n        for name, payload, permissions in records:\n            info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))\n            info.create_system = 3\n            info.external_attr = (stat.S_IFREG | permissions) << 16\n            archive.writestr(info, payload)\n    return buffer.getvalue()\n",
+        "test_package.py": "import io\nimport unittest\nimport zipfile\nfrom releasekit import create_package as build\n\n\nclass PackageTests(unittest.TestCase):\n    def test_entries_and_crc(self):\n        records = [('bin/launch', b'\\x00\\xfflaunch', 0o755),\n                   ('etc/settings', b'', 0o640)]\n        with zipfile.ZipFile(io.BytesIO(build(records))) as archive:\n            self.assertEqual(archive.namelist(), ['bin/launch', 'etc/settings'])\n            self.assertIsNone(archive.testzip())\n\n    def test_empty_package(self):\n        with zipfile.ZipFile(io.BytesIO(build([]))) as archive:\n            self.assertEqual(archive.namelist(), [])\n            self.assertIsNone(archive.testzip())\n",
+        "requirements.md": "Python3.9+ standard library only. Run python3 -B -m unittest -v test_package.\ncreate_package accepts an ordered list of distinct relative POSIX file names,\nbytes payloads (including binary and empty bytes), and integer permission bits\nbetween 0 and 0o777. Inputs are already validated; path validation and extraction\nare not in scope. It returns ZIP bytes with exactly that entry order, exact bytes,\nUnix creator system3 and each supplied Unix permission value. An empty list returns\na valid empty archive. Do not modify the caller's list or tuples. Inputs are regular\nfiles only; directory/symlink entries and filesystem extraction are not supported.\nFor this audit, all supplied source/test/requirements files are immutable. Isolated\nproject-local copies and temporary added tests are allowed; remove owned scratch\nbefore finishing. No external resources, installation, delegation or publication.\n"
+      },
+      "task": "Check two independent faults in pack: omit only the external_attr assignment; separately replace writestr(info, payload) with writestr(info, b'') while preserving metadata.\n\nInspect the actual tests, public package entrypoint and writer. Audit\nwhether the native tests detect the specified reachable fault(s), in isolation.\nExecute existing native tests on correct code and each faulty version; keep each\nfault independent, not combined. Verify the actual test's build binding and the\nendpoint's _pack binding in the same process as the checks. If an existing test\nsurvives, execute the same stronger native assertion against correct code and that\nfault: reopen the bytes returned by the real create_package, compare complete\nordered (filename, payload bytes, permission bits, Unix creator system) records\nfor the existing binary and empty entries, and verify input preservation.\nShow normal passes and defect-specific assertion failures, not import/setup errors.\nPreserve original bytes/modes and remove owned project-local disposable copies.\nCommands/results suffice; do not retain a permanent harness/report or apply repairs.\nWork only inside this project, with no network, dependencies, external discovery,\nother skills, delegation or publication.",
+      "criteria": [
+        "Inspect real sources and prove same-process test/endpoint/writer bindings.",
+        "Execute normal and each independently requested fault with the original native tests.",
+        "Verify the same stronger complete-record native assertion on normal and surviving faults, including input preservation.",
+        "Preserve originals and remove owned scratch without scope expansion."
+      ]
+    }
+  ],
+  "schedule": [
+    [
+      0,
+      "prior"
+    ],
+    [
+      0,
+      "baseline"
+    ],
+    [
+      0,
+      "candidate"
+    ],
+    [
+      1,
+      "candidate"
+    ],
+    [
+      1,
+      "baseline"
+    ],
+    [
+      1,
+      "prior"
+    ]
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "jobs": 1,
+    "repeats": 1
+  },
+  "python": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+  "python_version": "3.9.6 (default, Apr 17 2026, 18:15:52) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "resource_digests": {
+    "prior": "bdb42b97bbd71f2be56684f3677fcf10d9e7f82527ff821527ce717340972608",
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "candidate": "75e747b3348d81056f5a34cc98ddd0c355589a6adb88cead9b7f6f8b885d0fa2"
+  },
+  "resource_revisions": {
+    "prior": "f7ecb45ceb6fcbf9f3a72626a34a7039604de989",
+    "candidate": "ac108f588ea04ae85d8dad00924e78363ea7e917"
+  },
+  "completed_cells": [
+    {
+      "case_id": "zip-audit-single",
+      "condition": "prior",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 108824,
+        "cached_input_tokens": 96640,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1314,
+        "reasoning_output_tokens": 66
+      },
+      "elapsed_seconds": 56.614
+    },
+    {
+      "case_id": "zip-audit-single",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 64400,
+        "cached_input_tokens": 57600,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1942,
+        "reasoning_output_tokens": 225
+      },
+      "elapsed_seconds": 68.562
+    },
+    {
+      "case_id": "zip-audit-single",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 84346,
+        "cached_input_tokens": 72320,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1857,
+        "reasoning_output_tokens": 170
+      },
+      "elapsed_seconds": 67.712
+    },
+    {
+      "case_id": "zip-audit-multiple",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 95606,
+        "cached_input_tokens": 80768,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1520,
+        "reasoning_output_tokens": 120
+      },
+      "elapsed_seconds": 62.874
+    },
+    {
+      "case_id": "zip-audit-multiple",
+      "condition": "baseline",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 64904,
+        "cached_input_tokens": 57600,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1967,
+        "reasoning_output_tokens": 199
+      },
+      "elapsed_seconds": 68.739
+    },
+    {
+      "case_id": "zip-audit-multiple",
+      "condition": "prior",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 94816,
+        "cached_input_tokens": 80384,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1484,
+        "reasoning_output_tokens": 67
+      },
+      "elapsed_seconds": 60.472
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T10:35:31.029902+00:00",
+  "finished_at": "2026-09-21T10:43:08.416433+00:00"
+}

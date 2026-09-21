@@ -1,0 +1,54 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "zip-audit-single",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "b283ee3ca64cb978e611f6520c2d54a1f934a6ce",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 68.562,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 64400,
+    "cached_input_tokens": 57600,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1942,
+    "reasoning_output_tokens": 225
+  },
+  "completed": true,
+  "allocated_workspace": "<WORKSPACE>",
+  "prompt": "Omit only the external_attr assignment in pack; keep payload writing unchanged.\n\nInspect the actual tests, public package entrypoint and writer. Audit\nwhether the native tests detect the specified reachable fault(s), in isolation.\nExecute existing native tests on correct code and each faulty version; keep each\nfault independent, not combined. Verify the actual test's build binding and the\nendpoint's _pack binding in the same process as the checks. If an existing test\nsurvives, execute the same stronger native assertion against correct code and that\nfault: reopen the bytes returned by the real create_package, compare complete\nordered (filename, payload bytes, permission bits, Unix creator system) records\nfor the existing binary and empty entries, and verify input preservation.\nShow normal passes and defect-specific assertion failures, not import/setup errors.\nPreserve original bytes/modes and remove owned project-local disposable copies.\nCommands/results suffice; do not retain a permanent harness/report or apply repairs.\nWork only inside this project, with no network, dependencies, external discovery,\nother skills, delegation or publication.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 9,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 524,
+    "mode": 420,
+    "sha256": "891c4d5d1b80a448c31627743d37850d2c5fd91c20807b880459616b8a6ed7d0",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  }
+}
