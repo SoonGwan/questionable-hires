@@ -1,0 +1,60 @@
+{
+  "name": "qh-swelite-requests-network-controls-01",
+  "image": "sha256:f4ede93d2747ddc21d276572cbd2e1df5ea60df8d5d99247f073797bab3e539f",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 1,
+    "Error": "",
+    "StartedAt": "2026-09-21T14:56:28.620112879Z",
+    "FinishedAt": "2026-09-21T14:56:33.263099859Z"
+  },
+  "command": [
+    "60",
+    "/opt/miniconda3/envs/testbed/bin/python",
+    "-B",
+    "-m",
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "-q",
+    "--tb=short",
+    "test_requests.py::RequestsTestCase::test_auth_is_stripped_on_redirect_off_host",
+    "test_requests.py::TestTimeout::test_connect_timeout",
+    "test_requests.py::TestTimeout::test_total_timeout_connect",
+    "test_requests.py::RequestsTestCase::test_basic_building"
+  ],
+  "entrypoint": [
+    "/usr/bin/timeout"
+  ],
+  "network": "qh-swelite-contract-01",
+  "ports": {},
+  "network_settings": {
+    "qh-swelite-contract-01": {
+      "IPAMConfig": null,
+      "Links": null,
+      "Aliases": null,
+      "DriverOpts": null,
+      "GwPriority": 0,
+      "NetworkID": "b06e0b52738d81f71ae00911d53b61b66f04da26264aff88ebb41ff0ad0a5b33",
+      "EndpointID": "",
+      "Gateway": "",
+      "IPAddress": "",
+      "MacAddress": "",
+      "IPPrefixLen": 0,
+      "IPv6Gateway": "",
+      "GlobalIPv6Address": "",
+      "GlobalIPv6PrefixLen": 0,
+      "DNSNames": [
+        "qh-swelite-requests-network-controls-01",
+        "91ebe264ad68"
+      ]
+    }
+  },
+  "log_sha256": "913880ca8cececaef6fdf5e0ab4c5ff0d0e1d6007633549f7c8f0e3cc25fe7ef"
+}

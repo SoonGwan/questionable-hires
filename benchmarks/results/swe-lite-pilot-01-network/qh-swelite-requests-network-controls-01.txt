@@ -1,0 +1,237 @@
+.FF.                                                                     [100%]
+=================================== FAILURES ===================================
+_______________________ TestTimeout.test_connect_timeout _______________________
+requests/packages/urllib3/connectionpool.py:514: in urlopen
+    httplib_response = self._make_request(conn, method, url,
+requests/packages/urllib3/connectionpool.py:308: in _make_request
+    conn.request(method, url, **httplib_request_kw)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1285: in request
+    self._send_request(method, url, body, headers, encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1331: in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1280: in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1040: in _send_output
+    self.send(msg)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:980: in send
+    self.connect()
+requests/packages/urllib3/connection.py:146: in connect
+    conn = self._new_conn()
+requests/packages/urllib3/connection.py:124: in _new_conn
+    conn = connection.create_connection(
+requests/packages/urllib3/util/connection.py:87: in create_connection
+    raise err
+requests/packages/urllib3/util/connection.py:78: in create_connection
+    sock.connect(sa)
+E   ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+requests/adapters.py:352: in send
+    resp = conn.urlopen(
+requests/packages/urllib3/connectionpool.py:558: in urlopen
+    retries = retries.increment(method, url, error=e,
+requests/packages/urllib3/util/retry.py:245: in increment
+    raise six.reraise(type(error), error, _stacktrace)
+requests/packages/urllib3/packages/six.py:309: in reraise
+    raise value.with_traceback(tb)
+requests/packages/urllib3/connectionpool.py:514: in urlopen
+    httplib_response = self._make_request(conn, method, url,
+requests/packages/urllib3/connectionpool.py:308: in _make_request
+    conn.request(method, url, **httplib_request_kw)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1285: in request
+    self._send_request(method, url, body, headers, encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1331: in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1280: in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1040: in _send_output
+    self.send(msg)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:980: in send
+    self.connect()
+requests/packages/urllib3/connection.py:146: in connect
+    conn = self._new_conn()
+requests/packages/urllib3/connection.py:124: in _new_conn
+    conn = connection.create_connection(
+requests/packages/urllib3/util/connection.py:87: in create_connection
+    raise err
+requests/packages/urllib3/util/connection.py:78: in create_connection
+    sock.connect(sa)
+E   requests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))
+
+During handling of the above exception, another exception occurred:
+test_requests.py:1379: in test_connect_timeout
+    requests.get(TARPIT, timeout=(0.1, None))
+requests/api.py:60: in get
+    return request('get', url, **kwargs)
+requests/api.py:49: in request
+    return session.request(method=method, url=url, **kwargs)
+requests/sessions.py:457: in request
+    resp = self.send(prep, **send_kwargs)
+requests/sessions.py:569: in send
+    r = adapter.send(request, **kwargs)
+requests/adapters.py:407: in send
+    raise ConnectionError(err, request=request)
+E   requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))
+____________________ TestTimeout.test_total_timeout_connect ____________________
+requests/packages/urllib3/connectionpool.py:514: in urlopen
+    httplib_response = self._make_request(conn, method, url,
+requests/packages/urllib3/connectionpool.py:308: in _make_request
+    conn.request(method, url, **httplib_request_kw)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1285: in request
+    self._send_request(method, url, body, headers, encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1331: in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1280: in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1040: in _send_output
+    self.send(msg)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:980: in send
+    self.connect()
+requests/packages/urllib3/connection.py:146: in connect
+    conn = self._new_conn()
+requests/packages/urllib3/connection.py:124: in _new_conn
+    conn = connection.create_connection(
+requests/packages/urllib3/util/connection.py:87: in create_connection
+    raise err
+requests/packages/urllib3/util/connection.py:78: in create_connection
+    sock.connect(sa)
+E   ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+requests/adapters.py:352: in send
+    resp = conn.urlopen(
+requests/packages/urllib3/connectionpool.py:558: in urlopen
+    retries = retries.increment(method, url, error=e,
+requests/packages/urllib3/util/retry.py:245: in increment
+    raise six.reraise(type(error), error, _stacktrace)
+requests/packages/urllib3/packages/six.py:309: in reraise
+    raise value.with_traceback(tb)
+requests/packages/urllib3/connectionpool.py:514: in urlopen
+    httplib_response = self._make_request(conn, method, url,
+requests/packages/urllib3/connectionpool.py:308: in _make_request
+    conn.request(method, url, **httplib_request_kw)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1285: in request
+    self._send_request(method, url, body, headers, encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1331: in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1280: in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1040: in _send_output
+    self.send(msg)
+/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:980: in send
+    self.connect()
+requests/packages/urllib3/connection.py:146: in connect
+    conn = self._new_conn()
+requests/packages/urllib3/connection.py:124: in _new_conn
+    conn = connection.create_connection(
+requests/packages/urllib3/util/connection.py:87: in create_connection
+    raise err
+requests/packages/urllib3/util/connection.py:78: in create_connection
+    sock.connect(sa)
+E   requests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))
+
+During handling of the above exception, another exception occurred:
+test_requests.py:1387: in test_total_timeout_connect
+    requests.get(TARPIT, timeout=(0.1, 0.1))
+requests/api.py:60: in get
+    return request('get', url, **kwargs)
+requests/api.py:49: in request
+    return session.request(method=method, url=url, **kwargs)
+requests/sessions.py:457: in request
+    resp = self.send(prep, **send_kwargs)
+requests/sessions.py:569: in send
+    r = adapter.send(request, **kwargs)
+requests/adapters.py:407: in send
+    raise ConnectionError(err, request=request)
+E   requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))
+=============================== warnings summary ===============================
+requests/packages/urllib3/connectionpool.py:80
+  /testbed/requests/packages/urllib3/connectionpool.py:80: DeprecationWarning: invalid escape sequence \*
+    """
+
+requests/packages/urllib3/connectionpool.py:403
+  /testbed/requests/packages/urllib3/connectionpool.py:403: DeprecationWarning: invalid escape sequence \*
+    """
+
+requests/packages/urllib3/connectionpool.py:734
+  /testbed/requests/packages/urllib3/connectionpool.py:734: DeprecationWarning: invalid escape sequence \*
+    """
+
+requests/packages/urllib3/_collections.py:1
+requests/packages/urllib3/_collections.py:1
+  /testbed/requests/packages/urllib3/_collections.py:1: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    from collections import Mapping, MutableMapping
+
+requests/packages/urllib3/poolmanager.py:32
+  /testbed/requests/packages/urllib3/poolmanager.py:32: DeprecationWarning: invalid escape sequence \*
+    """
+
+requests/models.py:777
+  /testbed/requests/models.py:777: DeprecationWarning: invalid escape sequence \*
+    """Returns the json-encoded content of a response, if any.
+
+requests/api.py:53
+  /testbed/requests/api.py:53: DeprecationWarning: invalid escape sequence \*
+    """Sends a GET request. Returns :class:`Response` object.
+
+requests/api.py:64
+  /testbed/requests/api.py:64: DeprecationWarning: invalid escape sequence \*
+    """Sends a OPTIONS request. Returns :class:`Response` object.
+
+requests/api.py:75
+  /testbed/requests/api.py:75: DeprecationWarning: invalid escape sequence \*
+    """Sends a HEAD request. Returns :class:`Response` object.
+
+requests/api.py:86
+  /testbed/requests/api.py:86: DeprecationWarning: invalid escape sequence \*
+    """Sends a POST request. Returns :class:`Response` object.
+
+requests/api.py:98
+  /testbed/requests/api.py:98: DeprecationWarning: invalid escape sequence \*
+    """Sends a PUT request. Returns :class:`Response` object.
+
+requests/api.py:109
+  /testbed/requests/api.py:109: DeprecationWarning: invalid escape sequence \*
+    """Sends a PATCH request. Returns :class:`Response` object.
+
+requests/api.py:120
+  /testbed/requests/api.py:120: DeprecationWarning: invalid escape sequence \*
+    """Sends a DELETE request. Returns :class:`Response` object.
+
+requests/sessions.py:462
+  /testbed/requests/sessions.py:462: DeprecationWarning: invalid escape sequence \*
+    """Sends a GET request. Returns :class:`Response` object.
+
+requests/sessions.py:472
+  /testbed/requests/sessions.py:472: DeprecationWarning: invalid escape sequence \*
+    """Sends a OPTIONS request. Returns :class:`Response` object.
+
+requests/sessions.py:482
+  /testbed/requests/sessions.py:482: DeprecationWarning: invalid escape sequence \*
+    """Sends a HEAD request. Returns :class:`Response` object.
+
+requests/sessions.py:492
+  /testbed/requests/sessions.py:492: DeprecationWarning: invalid escape sequence \*
+    """Sends a POST request. Returns :class:`Response` object.
+
+requests/sessions.py:503
+  /testbed/requests/sessions.py:503: DeprecationWarning: invalid escape sequence \*
+    """Sends a PUT request. Returns :class:`Response` object.
+
+requests/sessions.py:513
+  /testbed/requests/sessions.py:513: DeprecationWarning: invalid escape sequence \*
+    """Sends a PATCH request. Returns :class:`Response` object.
+
+requests/sessions.py:523
+  /testbed/requests/sessions.py:523: DeprecationWarning: invalid escape sequence \*
+    """Sends a DELETE request. Returns :class:`Response` object.
+
+test_requests.py::RequestsTestCase::test_auth_is_stripped_on_redirect_off_host
+  /testbed/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+    if isinstance(hook, collections.Callable):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED test_requests.py::TestTimeout::test_connect_timeout - requests.excepti...
+FAILED test_requests.py::TestTimeout::test_total_timeout_connect - requests.e...
+2 failed, 2 passed, 22 warnings in 3.61s

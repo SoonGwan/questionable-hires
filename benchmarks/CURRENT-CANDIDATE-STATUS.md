@@ -39,6 +39,10 @@ required checks. Both-task execution/access gates remain unfinished; no model ru
 suite134pass/8fail identifies runner API, hostname/TLS and timeout-network causes.
 Pinned pytest4.6.11 repairs the demonstrated string-raises case; actual pass/fail
 assertion controls work. Combined service/scoring validation is still pending.
+[Network controls](SWE-LITE-PILOT-01-NETWORK.md): a separate internal subnet,
+local cross-host endpoint and explicit client address pass all4 unchanged
+redirect/timeout/basic checks; the prior2fail attempt remains. HTTPS trust and
+combined gold/solver verification are still unfinished.
 
 | Reviewed checkpoint / measured resource | Observed result | Decision |
 | --- | --- | --- |
