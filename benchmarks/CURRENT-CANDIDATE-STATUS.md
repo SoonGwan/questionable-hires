@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## Landlord combined-output correction — 2026-09-21, predecessor `4416263`
+
+[Recorded truncation analysis](LANDLORD-READ-BUDGET-01.md) shows all three runtime
+arms budgeting individual large source commands but losing combined tool output.
+The entrypoint now distinguishes aggregate capacity from nested command limits,
+retaining full necessary context and recovery. No new helper or mandatory search
+phase. This narrow instruction change has no measured adoption/cost result yet;
+the rejected compact candidate and historical charts remain unchanged.
+
+한국어: 출력 잘림과 재탐색의 실제 원인을 좁혀 전체 출력 예산을 고려하도록
+보완했다. 모델 성능 향상은 아직 입증하지 않았고 전체 목표도 미달이다.
+
 ## Landlord boundary candidate rejected — 2026-09-21, prior `a062950`, launch `387e398`
 
 [Six original static reviews](LANDLORD-BOUNDARIES-01-REVIEW.md) meet task/scope
