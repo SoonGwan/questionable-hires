@@ -1,0 +1,46 @@
+{
+  "kind": "author_native_preflight_not_model_evidence",
+  "node": "v24.16.0",
+  "rows": [
+    {
+      "task": "once-reentrant-dispatch",
+      "variant": "upstream",
+      "exit_code": 1,
+      "source_sha256": "1560f251de5d28d2c15ff070215d2c5c0fa06f1a92e8d6522bbee37e06d2a6b5",
+      "output": "✖ earlier listener re-entry consumes once only once (0.904167ms)\n✖ nested single-listener path updates the outer snapshot (0.140709ms)\n✖ throwing nested once stays consumed and preserves exact error (0.215375ms)\n✔ duplicates, contexts, symbols, instances and variadic payloads (0.490958ms)\n✔ ordinary snapshot removal and additions retain existing behavior (0.108ms)\n✔ existing ordinary emit, context, arguments and once (0.529083ms)\nℹ tests 6\nℹ suites 0\nℹ pass 3\nℹ fail 3\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 50.0825\n\n✖ failing tests:\n\ntest at contract.test.cjs:4:1\n✖ earlier listener re-entry consumes once only once (0.904167ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  2 !== 1\n  \n      at TestContext.<anonymous> (/private<CONTROL>/contract.test.cjs:8:23)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1306:25)\n      at Test.start (node:internal/test_runner/test:1177:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 2,\n    expected: 1,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at contract.test.cjs:10:1\n✖ nested single-listener path updates the outer snapshot (0.140709ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  2 !== 1\n  \n      at TestContext.<anonymous> (/private<CONTROL>/contract.test.cjs:14:23)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1306:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\n      at Test.postRun (node:internal/test_runner/test:1447:19)\n      at Test.run (node:internal/test_runner/test:1372:12)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 2,\n    expected: 1,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at contract.test.cjs:16:1\n✖ throwing nested once stays consumed and preserves exact error (0.215375ms)\n  Error: once failure\n      at TestContext.<anonymous> (/private<CONTROL>/contract.test.cjs:17:30)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1306:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\n      at Test.postRun (node:internal/test_runner/test:1447:19)\n      at Test.run (node:internal/test_runner/test:1372:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)\n",
+      "stderr": ""
+    },
+    {
+      "task": "once-reentrant-dispatch",
+      "variant": "corrected",
+      "exit_code": 0,
+      "source_sha256": "e7648bcd29b44ada165c2b695f304cf9d89f67f74fbd4fb9bcbe91cb5a4ac6fe",
+      "output": "✔ earlier listener re-entry consumes once only once (0.562334ms)\n✔ nested single-listener path updates the outer snapshot (0.103ms)\n✔ throwing nested once stays consumed and preserves exact error (0.222834ms)\n✔ duplicates, contexts, symbols, instances and variadic payloads (0.497208ms)\n✔ ordinary snapshot removal and additions retain existing behavior (0.102459ms)\n✔ existing ordinary emit, context, arguments and once (0.542ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 47.257417\n",
+      "stderr": ""
+    },
+    {
+      "task": "once-reentrant-dispatch",
+      "variant": "partial-multi-path-only",
+      "exit_code": 1,
+      "source_sha256": "f19be3372c8afd2a7e5e91a6d3deb58cc1eee6bf875472db4a8c7ca549914e54",
+      "output": "✔ earlier listener re-entry consumes once only once (0.569333ms)\n✖ nested single-listener path updates the outer snapshot (0.5585ms)\n✔ throwing nested once stays consumed and preserves exact error (0.240459ms)\n✔ duplicates, contexts, symbols, instances and variadic payloads (0.43325ms)\n✔ ordinary snapshot removal and additions retain existing behavior (0.103666ms)\n✔ existing ordinary emit, context, arguments and once (0.533ms)\nℹ tests 6\nℹ suites 0\nℹ pass 5\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 50.104291\n\n✖ failing tests:\n\ntest at contract.test.cjs:10:1\n✖ nested single-listener path updates the outer snapshot (0.5585ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  2 !== 1\n  \n      at TestContext.<anonymous> (/private<CONTROL>/contract.test.cjs:14:23)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1306:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\n      at Test.postRun (node:internal/test_runner/test:1447:19)\n      at Test.run (node:internal/test_runner/test:1372:12)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 2,\n    expected: 1,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n",
+      "stderr": ""
+    },
+    {
+      "task": "empty-event-removal",
+      "variant": "upstream",
+      "exit_code": 1,
+      "source_sha256": "1560f251de5d28d2c15ff070215d2c5c0fa06f1a92e8d6522bbee37e06d2a6b5",
+      "output": "✖ empty name removes only that event and preserves other registrations (0.851ms)\n✖ absent empty name is no-op; undefined/no arguments still clear all (0.128ms)\n✔ existing ordinary emit, context, arguments and once (0.548875ms)\nℹ tests 3\nℹ suites 0\nℹ pass 1\nℹ fail 2\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 48.069333\n\n✖ failing tests:\n\ntest at contract.test.cjs:4:1\n✖ empty name removes only that event and preserves other registrations (0.851ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  0 !== 1\n  \n      at TestContext.<anonymous> (/private<CONTROL>/contract.test.cjs:8:48)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1306:25)\n      at Test.start (node:internal/test_runner/test:1177:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 0,\n    expected: 1,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at contract.test.cjs:13:1\n✖ absent empty name is no-op; undefined/no arguments still clear all (0.128ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  0 !== 1\n  \n      at TestContext.<anonymous> (/private<CONTROL>/contract.test.cjs:15:54)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1306:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)\n      at Test.postRun (node:internal/test_runner/test:1447:19)\n      at Test.run (node:internal/test_runner/test:1372:12)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 0,\n    expected: 1,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n",
+      "stderr": ""
+    },
+    {
+      "task": "empty-event-removal",
+      "variant": "corrected",
+      "exit_code": 0,
+      "source_sha256": "acd3e83f0b5d2d2250ccc2da638e5a8d7770b8f6f5fce312b9441e3d162c3e1f",
+      "output": "✔ empty name removes only that event and preserves other registrations (0.838125ms)\n✔ absent empty name is no-op; undefined/no arguments still clear all (0.147792ms)\n✔ existing ordinary emit, context, arguments and once (0.57ms)\nℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 57.486166\n",
+      "stderr": ""
+    }
+  ]
+}

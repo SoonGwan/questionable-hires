@@ -9,6 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
+## EventEmitter transfer controls prepared — 2026-09-21, candidate `89c5172`
+
+[Two source-excerpt tasks and native controls](EVENTEMITTER-BOUNDARY-01-PREPARATION.md)
+use pinned upstream EventEmitter3 code without rewriting the original fixture.
+Both observed defects fail assertions; full author corrections pass, and a
+partial reentrant fix fails an additional path. Source/license identities verified.
+This is author preparation, not model evidence, independent holdout, current
+upstream status or proof of broad efficiency. Production and charts unchanged.
+
+한국어: 고정된 실제 라이브러리 소스에서 새 비교 과제 두 개의 대조 검사를
+마쳤다. 모델 실측 전 준비이며 스킬 성능 향상으로 계산하지 않는다.
+
 ## Completion-boundary candidate prepared — 2026-09-21, parent `d971cc2`
 
 Local validation checkpoint: Python3.11.16 ran **962 tests in164.018s, OK** on the
