@@ -20,6 +20,12 @@ hosted-check success or public-release approval is claimed here.
 
 ## Model evidence that governs claims
 
+Prepared2026-09-21: [all-eight regression04](ALL-EIGHT-CURRENT-04-PROTOCOL.md)
+pins bundle`0d12dd9` for16 fresh cells on8 exposed tasks. [Native preflight and
+runner controls](results/all-eight-current-04-preflight/README.md) pass; checkout9/9,
+archive8pass/1historical skip. Zero model calls at this checkpoint. No new
+performance claim. 한국어:8개 스킬 회귀 비교 입력 고정 완료이며 실측 전이다.
+
 Local correction2026-09-21, parent`d5eab87`: [native exit consistency](AUDIT-EXIT-CONSISTENCY-01.md)
 reproduces two shutdown/result contradictions before the fix and now stops them
 as incomplete, preserving native evidence. Python3.11 audit111/111 pass; no new
