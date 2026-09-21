@@ -9,7 +9,19 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Audit guard transfer prepared — 2026-09-21, resources `f157b76` / `f6f2980`
+## Audit guard transfer reviewed — 2026-09-21, resources `f157b76` / `f6f2980`
+
+[Three original attempts](AUDIT-GUARD-01-REVIEW.md) meet all five criteria. Current
+uses 57,589 tokens: 14.39% below no-skill, 2.25% above prior. No arm uses the helper
+or guard; current never reads the guides exposing the new capability. This is not
+evidence of guard-driven efficiency. Preserve all attempts; no featured promotion.
+One authored task, n=1, fixed order, shared host/cache and unequal native work.
+
+한국어: 세 실행 모두 요구사항은 충족했지만 새 도우미 사용은 없었다. 무스킬
+대비 토큰 감소와 이전 버전 대비 증가를 함께 기록하며, 새 기능의 성과로
+포장하지 않는다. 전체 성능 목표는 미달이며 대표 그래프는 그대로 유지한다.
+
+## Historical preparation — audit guard 01, 2026-09-21
 
 [Frozen three-cell protocol](AUDIT-GUARD-01-PROTOCOL.md) uses a new authored
 SQLite atomic-batch audit with whole-project preservation explicitly authorized.

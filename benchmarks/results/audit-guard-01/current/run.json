@@ -1,0 +1,83 @@
+{
+  "case": {
+    "id": "sqlite-batch-audit",
+    "skill": "con-artist",
+    "files": {
+      "batch.py": "import sqlite3\n\ndef append_batch(path, rows):\n    connection = sqlite3.connect(path)\n    try:\n        with connection:\n            for key, value in rows:\n                connection.execute(\"INSERT INTO records VALUES (?, ?)\", (key, value))\n    finally:\n        connection.close()\n",
+      "test_batch.py": "from contextlib import closing\nfrom pathlib import Path\nimport sqlite3\nimport tempfile\nimport unittest\nimport batch\n\nclass BatchTests(unittest.TestCase):\n    def setUp(self):\n        temporary = tempfile.TemporaryDirectory(prefix=\".test-db-\", dir=Path(__file__).parent)\n        self.addCleanup(temporary.cleanup)\n        self.path = Path(temporary.name) / \"records.db\"\n        with closing(sqlite3.connect(self.path)) as connection:\n            connection.execute(\"CREATE TABLE records (id INTEGER PRIMARY KEY, value TEXT NOT NULL)\")\n            connection.execute(\"INSERT INTO records VALUES (1, 'seed')\")\n            connection.commit()\n\n    def records(self):\n        with closing(sqlite3.connect(self.path)) as connection:\n            return connection.execute(\"SELECT id, value FROM records ORDER BY id\").fetchall()\n\n    def test_success(self):\n        batch.append_batch(self.path, [(3, \"three\"), (2, \"two\")])\n        self.assertEqual(self.records(), [(1, \"seed\"), (2, \"two\"), (3, \"three\")])\n\n    def test_empty(self):\n        batch.append_batch(self.path, [])\n        self.assertEqual(self.records(), [(1, \"seed\")])\n",
+      "notes.txt": "Owner notes: keep unchanged.\n",
+      "CONTRACT.md": "append_batch(path, rows) receives a local SQLite database with the\nrecords schema shown in test_batch.py, and a finite list of (integer id, string\nvalue) pairs. Successful calls persist every row and preserve existing records.\nAn empty list changes nothing. On a duplicate primary key, propagate SQLite's\nIntegrityError and leave the database exactly as before the call: no partial\nbatch may persist. Other input types, concurrent callers and external failures\nare outside this task. The function owns and closes its connection.\n",
+      "AGENTS.md": "Audit only. Use the supplied Python interpreter with -B and native\nunittest. No dependency installs, network, commits, stash/reset or production fix.\nAll original files/modes, owner notes, Git HEAD/index and installed skill resources\nmust remain unchanged; no new original-tree files may remain. Whole-project\nread-only inventory is authorized inside this root. Use project-local disposable\ncopies for faults/proposed tests and remove owned scratch on failure and success.\nThe existing test fixture already creates/deletes its database inside the copy.\nDo not redirect fixtures outside the project or bypass their real SQLite behavior.\nNo particular helper or custom wrapper is required.\n"
+    },
+    "task": "Audit whether test_batch.py protects the atomic batch contract in CONTRACT.md.\nRun unchanged existing tests on correct code and one narrow meaningful fault in\nactual batch.py. If coverage is missing, verify the identical strengthened native\ntests against both implementations, preserving success and empty-input controls.\nReport native identities/counts/exits and the actual failure assertions. Confirm\nthe executing test process uses its copy-local implementation, not a simulation\nor separate import-only probe. Missing setup is not a behavioral failure. Follow\nAGENTS.md; leave originals unchanged and remove scratch. Do not apply test edits.\nUse this preinstalled interpreter: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python",
+    "criteria": [
+      "Native correct/faulty existing tests run unchanged with actual copy-local implementation and meaningful atomicity fault.",
+      "Coverage diagnosis traces existing assertions and the required database state after a duplicate-key error.",
+      "Identical stronger native tests pass correct and reject faulty persisted state via actual assertions, not setup errors.",
+      "Successful batch and empty-input controls execute with real SQLite behavior; no unsupported input requirements invented.",
+      "Original bytes/modes, notes, Git HEAD/index and resources preserved, no extra original-tree files; project-local scratch removed."
+    ],
+    "provenance": {
+      "kind": "Authored SQLite contract transfer, not a real issue or independent holdout"
+    }
+  },
+  "identities": {
+    "run_audit_guard_01.py": "177b01153c35cfc0334027b60a8977e7863069bfa40186bcd17612ec20d5ac4b",
+    "audit_guard_case.py": "735af9c809fbb184086ea7ee8e363a7bb8142e9d2cf46eea3f3d1f7f6f4933c4",
+    "run.py": "f9aca25dd58da1893544e95192b82ecefebb541297cd758194dd6d1779a9f66c",
+    "run_httpx.py": "d7e7433e459562872f5db9d7bd4d171276de4864baad11aa2a7cc30b076aedb0",
+    "AUDIT-GUARD-01-PROTOCOL.md": "eed4a57597a294ad88471549c8ce912c4dacc22b6b4f6e35d20c12ee2df48d0e"
+  },
+  "schedule": [
+    "prior",
+    "baseline",
+    "current"
+  ],
+  "resource_revisions": {
+    "prior": "f157b76",
+    "current": "f6f2980"
+  },
+  "resource_digests": {
+    "prior": "c6b72b02943d0656bfaf6fc805b66fcf1fb29d22e11abaf3446033e3ae82eb0e",
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "current": "b306c5deb1238e5725f6e78ef14122edc756a1f3fae97b5ee42d2b2a13675e81"
+  },
+  "native_preflight": {
+    "sqlite_version": "3.53.4",
+    "observations": [
+      {
+        "variant": "correct",
+        "suite": "existing",
+        "exit_code": 0,
+        "output": "test_empty (test_batch.BatchTests.test_empty) ... ok\ntest_success (test_batch.BatchTests.test_success) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.004s\n\nOK\n"
+      },
+      {
+        "variant": "correct",
+        "suite": "stronger",
+        "exit_code": 0,
+        "output": "test_duplicate_rolls_back_entire_batch (test_batch.BatchTests.test_duplicate_rolls_back_entire_batch) ... ok\ntest_empty (test_batch.BatchTests.test_empty) ... ok\ntest_success (test_batch.BatchTests.test_success) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.004s\n\nOK\n"
+      },
+      {
+        "variant": "faulty",
+        "suite": "existing",
+        "exit_code": 0,
+        "output": "test_empty (test_batch.BatchTests.test_empty) ... ok\ntest_success (test_batch.BatchTests.test_success) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.003s\n\nOK\n"
+      },
+      {
+        "variant": "faulty",
+        "suite": "stronger",
+        "exit_code": 1,
+        "output": "test_duplicate_rolls_back_entire_batch (test_batch.BatchTests.test_duplicate_rolls_back_entire_batch) ... FAIL\ntest_empty (test_batch.BatchTests.test_empty) ... ok\ntest_success (test_batch.BatchTests.test_success) ... ok\n\n======================================================================\nFAIL: test_duplicate_rolls_back_entire_batch (test_batch.BatchTests.test_duplicate_rolls_back_entire_batch)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/test_batch.py\", line 34, in test_duplicate_rolls_back_entire_batch\n    self.assertEqual(self.records(), [(1, \"seed\")])\nAssertionError: Lists differ: [(1, 'seed'), (2, 'new')] != [(1, 'seed')]\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\n(2, 'new')\n\n- [(1, 'seed'), (2, 'new')]\n+ [(1, 'seed')]\n\n----------------------------------------------------------------------\nRan 3 tests in 0.006s\n\nFAILED (failures=1)\n"
+      }
+    ]
+  },
+  "python_version": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "timeout_seconds": 360,
+  "repeats": 1,
+  "jobs": 1,
+  "completed_cells": [],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-21T02:33:44.777847+00:00"
+}

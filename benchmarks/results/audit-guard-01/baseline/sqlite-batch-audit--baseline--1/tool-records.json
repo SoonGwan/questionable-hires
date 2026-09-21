@@ -1,0 +1,160 @@
+{
+  "session_id": "01a0c1d1-4827-7e61-bd1d-ab97f95bb876",
+  "source_bytes": 115998,
+  "source_sha256": "a4fcc47cce287661a68f15f14372f4616c877a702f235cf036c89515f9c32a25",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "43172535e5ca8e43eb865f35739b4a5fddcc195546810590dd329b1720b971f3",
+      "record": {
+        "timestamp": "2026-09-21T02:35:20.210Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05c1c96430319b98016ab097e9018c87d0816ceb5ba15c352a",
+          "status": "completed",
+          "call_id": "call_IXA3sTgoSmxp7QKdwDMyZjll",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '!.git/**' -g '!__pycache__/**'\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1d1-4879-7222-8f83-cd644e996fd0",
+            "create_time": 1789958117.709963
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "5170d4206e93c93d39543ecdfef4afe89c1dad071bb00ce8d0316cee682727de",
+      "record": {
+        "timestamp": "2026-09-21T02:35:20.340Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c1d1-6394-7a21-8102-e58220be5240",
+          "call_id": "call_IXA3sTgoSmxp7QKdwDMyZjll",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2a0d76\",\"wall_time_seconds\":0.00000425,\"exit_code\":0,\"original_token_count\":35,\"output\":\"<WORKSPACE>\\ntest_batch.py\\nAGENTS.md\\nCONTRACT.md\\nbatch.py\\nnotes.txt\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1d1-4879-7222-8f83-cd644e996fd0",
+            "create_time": 1789958120.340255
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "a490bcbdc2009745c6d3e21cb6002d028266de6a2da50695c79960cf732ae2c9",
+      "record": {
+        "timestamp": "2026-09-21T02:35:24.757Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05c1c96430319b98016ab097ed87d087d0b47fb488c3810120",
+          "status": "completed",
+          "call_id": "call_TiCIfBMyzmSsdxUV1wWIT7nS",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md CONTRACT.md batch.py test_batch.py notes.txt\",\"max_output_tokens\":8000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1d1-4879-7222-8f83-cd644e996fd0",
+            "create_time": 1789958123.085468
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "adaff94879873a6482b9b18777257bad5d2a3292343a861ac3d40259e3e20e59",
+      "record": {
+        "timestamp": "2026-09-21T02:35:24.854Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c1d1-7536-7bb0-88ba-3f787b08db60",
+          "call_id": "call_TiCIfBMyzmSsdxUV1wWIT7nS",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ad94e2\",\"wall_time_seconds\":0.000001917,\"exit_code\":0,\"original_token_count\":663,\"output\":\"Audit only. Use the supplied Python interpreter with -B and native\\nunittest. No dependency installs, network, commits, stash/reset or production fix.\\nAll original files/modes, owner notes, Git HEAD/index and installed skill resources\\nmust remain unchanged; no new original-tree files may remain. Whole-project\\nread-only inventory is authorized inside this root. Use project-local disposable\\ncopies for faults/proposed tests and remove owned scratch on failure and success.\\nThe existing test fixture already creates/deletes its database inside the copy.\\nDo not redirect fixtures outside the project or bypass their real SQLite behavior.\\nNo particular helper or custom wrapper is required.\\nappend_batch(path, rows) receives a local SQLite database with the\\nrecords schema shown in test_batch.py, and a finite list of (integer id, string\\nvalue) pairs. Successful calls persist every row and preserve existing records.\\nAn empty list changes nothing. On a duplicate primary key, propagate SQLite's\\nIntegrityError and leave the database exactly as before the call: no partial\\nbatch may persist. Other input types, concurrent callers and external failures\\nare outside this task. The function owns and closes its connection.\\nimport sqlite3\\n\\ndef append_batch(path, rows):\\n    connection = sqlite3.connect(path)\\n    try:\\n        with connection:\\n            for key, value in rows:\\n                connection.execute(\\\"INSERT INTO records VALUES (?, ?)\\\", (key, value))\\n    finally:\\n        connection.close()\\nfrom contextlib import closing\\nfrom pathlib import Path\\nimport sqlite3\\nimport tempfile\\nimport unittest\\nimport batch\\n\\nclass BatchTests(unittest.TestCase):\\n    def setUp(self):\\n        temporary = tempfile.TemporaryDirectory(prefix=\\\".test-db-\\\", dir=Path(__file__).parent)\\n        self.addCleanup(temporary.cleanup)\\n        self.path = Path(temporary.name) / \\\"records.db\\\"\\n        with closing(sqlite3.connect(self.path)) as connection:\\n            connection.execute(\\\"CREATE TABLE records (id INTEGER PRIMARY KEY, value TEXT NOT NULL)\\\")\\n            connection.execute(\\\"INSERT INTO records VALUES (1, 'seed')\\\")\\n            connection.commit()\\n\\n    def records(self):\\n        with closing(sqlite3.connect(self.path)) as connection:\\n            return connection.execute(\\\"SELECT id, value FROM records ORDER BY id\\\").fetchall()\\n\\n    def test_success(self):\\n        batch.append_batch(self.path, [(3, \\\"three\\\"), (2, \\\"two\\\")])\\n        self.assertEqual(self.records(), [(1, \\\"seed\\\"), (2, \\\"two\\\"), (3, \\\"three\\\")])\\n\\n    def test_empty(self):\\n        batch.append_batch(self.path, [])\\n        self.assertEqual(self.records(), [(1, \\\"seed\\\")])\\nOwner notes: keep unchanged.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1d1-4879-7222-8f83-cd644e996fd0",
+            "create_time": 1789958124.854954
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "e7f54ded72ee876257e812234aa44debcea6bf7398abc273c6e6cbf2084bf98f",
+      "record": {
+        "timestamp": "2026-09-21T02:36:14.612Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_05c1c96430319b98016ab097ffbc9887d0aefe8dce7bccfaf6",
+          "status": "completed",
+          "call_id": "call_aBfW9V8oJB7yVW3jv1p0uGIH",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"'<HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python' -B - <<'PY'\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport stat\\nimport subprocess\\nimport sys\\nimport tempfile\\n\\nroot = Path.cwd().resolve()\\npython = sys.executable\\n\\ndef snapshot():\\n    result = {}\\n    for p in sorted(root.rglob('*')):\\n        s = p.lstat()\\n        rel = str(p.relative_to(root))\\n        if p.is_symlink():\\n            payload = ('symlink', os.readlink(p))\\n        elif p.is_file():\\n            payload = ('file', hashlib.sha256(p.read_bytes()).hexdigest())\\n        else:\\n            payload = ('directory',)\\n        result[rel] = (stat.S_IMODE(s.st_mode), s.st_uid, s.st_gid, payload)\\n    return result\\n\\nbefore = snapshot()\\nprint('Original inventory (including Git metadata):', len(before), 'entries', flush=True)\\nsource = (root / 'batch.py').read_text()\\ntests = (root / 'test_batch.py').read_text()\\nneedle = '                connection.execute(\\\"INSERT INTO records VALUES (?, ?)\\\", (key, value))\\\\n'\\nassert source.count(needle) == 1\\nfault = source.replace(needle, needle + '                connection.commit()\\\\n')\\nextra = '''\\n    def test_duplicate_existing_key_rolls_back(self):\\n        before = self.records()\\n        with self.assertRaises(sqlite3.IntegrityError):\\n            batch.append_batch(self.path, [(2, \\\"two\\\"), (3, \\\"three\\\"), (1, \\\"duplicate\\\")])\\n        self.assertEqual(self.records(), before)\\n\\n    def test_duplicate_within_batch_rolls_back(self):\\n        before = self.records()\\n        with self.assertRaises(sqlite3.IntegrityError):\\n            batch.append_batch(self.path, [(2, \\\"two\\\"), (3, \\\"three\\\"), (2, \\\"duplicate\\\")])\\n        self.assertEqual(self.records(), before)\\n'''\\nrunner = '''\\nimport hashlib\\nfrom pathlib import Path\\nimport sys\\nimport unittest\\nimport batch\\nimport test_batch\\nexpected = Path.cwd().resolve()\\nassert Path(batch.__file__).resolve() == expected / \\\"batch.py\\\", batch.__file__\\nassert Path(test_batch.__file__).resolve() == expected / \\\"test_batch.py\\\", test_batch.__file__\\nassert test_batch.batch is batch\\nprint(\\\"EXECUTING interpreter:\\\", sys.executable, flush=True)\\nprint(\\\"EXECUTING implementation:\\\", Path(test_batch.batch.__file__).resolve(), flush=True)\\nprint(\\\"EXECUTING implementation SHA256:\\\", hashlib.sha256(Path(batch.__file__).read_bytes()).hexdigest(), flush=True)\\nprint(\\\"EXECUTING tests SHA256:\\\", hashlib.sha256(Path(test_batch.__file__).read_bytes()).hexdigest(), flush=True)\\nsuite = unittest.defaultTestLoader.loadTestsFromName(\\\"test_batch\\\")\\nprint(\\\"NATIVE discovered count:\\\", suite.countTestCases(), flush=True)\\nresult = unittest.TextTestRunner(verbosity=2).run(suite)\\nprint(\\\"NATIVE result: run=%d failures=%d errors=%d skipped=%d\\\" % (result.testsRun, len(result.failures), len(result.errors), len(result.skipped)), flush=True)\\nsys.exit(0 if result.wasSuccessful() else 1)\\n'''\\ntry:\\n    with tempfile.TemporaryDirectory(prefix='.audit-', dir=root) as temporary:\\n        scratch = Path(temporary)\\n        for label, implementation, test_source, expected_exit in [\\n            ('existing_correct', source, tests, 0),\\n            ('existing_fault', fault, tests, 0),\\n            ('strengthened_correct', source, tests + extra, 0),\\n            ('strengthened_fault', fault, tests + extra, 1),\\n        ]:\\n            copy = scratch / label\\n            copy.mkdir()\\n            for name in ['AGENTS.md', 'CONTRACT.md', 'batch.py', 'test_batch.py', 'notes.txt']:\\n                shutil.copy2(root / name, copy / name)\\n            if implementation != source:\\n                (copy / 'batch.py').write_text(implementation)\\n            if test_source != tests:\\n                (copy / 'test_batch.py').write_text(test_source)\\n            print('\\\\nAUDIT CASE:', label, flush=True)\\n            completed = subprocess.run([python, '-B', '-c', runner], cwd=copy, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)\\n            print(completed.stdout, end='', flush=True)\\n            print('PROCESS EXIT:', completed.returncode, flush=True)\\n            assert completed.returncode == expected_exit, (label, completed.returncode)\\n            assert not list(copy.glob('.test-db-*')), 'fixture cleanup incomplete'\\nfinally:\\n    after = snapshot()\\n    differences = [key for key in before.keys() | after.keys() if before.get(key) != after.get(key)]\\n    print('\\\\nORIGINAL INVENTORY UNCHANGED:', not differences, flush=True)\\n    print('CHANGED/ADDED/REMOVED ENTRIES:', differences, flush=True)\\n    assert not differences\\nPY\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1d1-4879-7222-8f83-cd644e996fd0",
+            "create_time": 1789958127.794052
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "39f93a7b24196b8e7319333a0d1b02a8a6124f79d627491660004c6c4c98f69d",
+      "record": {
+        "timestamp": "2026-09-21T02:36:14.973Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0c1d2-38fd-79d0-9176-f029e9092af3",
+          "call_id": "call_aBfW9V8oJB7yVW3jv1p0uGIH",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3b7dee\",\"wall_time_seconds\":0.173106167,\"exit_code\":0,\"original_token_count\":1319,\"output\":\"Original inventory (including Git metadata): 37 entries\\n\\nAUDIT CASE: existing_correct\\nEXECUTING interpreter: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\\nEXECUTING implementation: <WORKSPACE>/.audit-0i1_v72v/existing_correct/batch.py\\nEXECUTING implementation SHA256: 3c9129f205867dea43c842a7571152dea5bdc8a07b64862f5ea4d8ac6b44e9f2\\nEXECUTING tests SHA256: 026707fbe86d564b85ca402a803067a226fae1117dbd74a321c5c4a355db7ef3\\nNATIVE discovered count: 2\\ntest_empty (test_batch.BatchTests.test_empty) ... ok\\ntest_success (test_batch.BatchTests.test_success) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.003s\\n\\nOK\\nNATIVE result: run=2 failures=0 errors=0 skipped=0\\nPROCESS EXIT: 0\\n\\nAUDIT CASE: existing_fault\\nEXECUTING interpreter: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\\nEXECUTING implementation: <WORKSPACE>/.audit-0i1_v72v/existing_fault/batch.py\\nEXECUTING implementation SHA256: f6255130da3c7352d8026a05e52f02451b28257238ccdfcae8e3950829aceab1\\nEXECUTING tests SHA256: 026707fbe86d564b85ca402a803067a226fae1117dbd74a321c5c4a355db7ef3\\nNATIVE discovered count: 2\\ntest_empty (test_batch.BatchTests.test_empty) ... ok\\ntest_success (test_batch.BatchTests.test_success) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.004s\\n\\nOK\\nNATIVE result: run=2 failures=0 errors=0 skipped=0\\nPROCESS EXIT: 0\\n\\nAUDIT CASE: strengthened_correct\\nEXECUTING interpreter: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\\nEXECUTING implementation: <WORKSPACE>/.audit-0i1_v72v/strengthened_correct/batch.py\\nEXECUTING implementation SHA256: 3c9129f205867dea43c842a7571152dea5bdc8a07b64862f5ea4d8ac6b44e9f2\\nEXECUTING tests SHA256: bae2a39096d5e3b1f70f5785ac0b7cfb8451ce653718f68ffac404043a127343\\nNATIVE discovered count: 4\\ntest_duplicate_existing_key_rolls_back (test_batch.BatchTests.test_duplicate_existing_key_rolls_back) ... ok\\ntest_duplicate_within_batch_rolls_back (test_batch.BatchTests.test_duplicate_within_batch_rolls_back) ... ok\\ntest_empty (test_batch.BatchTests.test_empty) ... ok\\ntest_success (test_batch.BatchTests.test_success) ... ok\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.006s\\n\\nOK\\nNATIVE result: run=4 failures=0 errors=0 skipped=0\\nPROCESS EXIT: 0\\n\\nAUDIT CASE: strengthened_fault\\nEXECUTING interpreter: <HOME>/orca/workspaces/this-work/humpback/benchmarks/local-runs/receipt-provenance-venv/bin/python\\nEXECUTING implementation: <WORKSPACE>/.audit-0i1_v72v/strengthened_fault/batch.py\\nEXECUTING implementation SHA256: f6255130da3c7352d8026a05e52f02451b28257238ccdfcae8e3950829aceab1\\nEXECUTING tests SHA256: bae2a39096d5e3b1f70f5785ac0b7cfb8451ce653718f68ffac404043a127343\\nNATIVE discovered count: 4\\ntest_duplicate_existing_key_rolls_back (test_batch.BatchTests.test_duplicate_existing_key_rolls_back) ... FAIL\\ntest_duplicate_within_batch_rolls_back (test_batch.BatchTests.test_duplicate_within_batch_rolls_back) ... FAIL\\ntest_empty (test_batch.BatchTests.test_empty) ... ok\\ntest_success (test_batch.BatchTests.test_success) ... ok\\n\\n======================================================================\\nFAIL: test_duplicate_existing_key_rolls_back (test_batch.BatchTests.test_duplicate_existing_key_rolls_back)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-0i1_v72v/strengthened_fault/test_batch.py\\\", line 34, in test_duplicate_existing_key_rolls_back\\n    self.assertEqual(self.records(), before)\\nAssertionError: Lists differ: [(1, 'seed'), (2, 'two'), (3, 'three')] != [(1, 'seed')]\\n\\nFirst list contains 2 additional elements.\\nFirst extra element 1:\\n(2, 'two')\\n\\n- [(1, 'seed'), (2, 'two'), (3, 'three')]\\n+ [(1, 'seed')]\\n\\n======================================================================\\nFAIL: test_duplicate_within_batch_rolls_back (test_batch.BatchTests.test_duplicate_within_batch_rolls_back)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.audit-0i1_v72v/strengthened_fault/test_batch.py\\\", line 40, in test_duplicate_within_batch_rolls_back\\n    self.assertEqual(self.records(), before)\\nAssertionError: Lists differ: [(1, 'seed'), (2, 'two'), (3, 'three')] != [(1, 'seed')]\\n\\nFirst list contains 2 additional elements.\\nFirst extra element 1:\\n(2, 'two')\\n\\n- [(1, 'seed'), (2, 'two'), (3, 'three')]\\n+ [(1, 'seed')]\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.008s\\n\\nFAILED (failures=2)\\nNATIVE result: run=4 failures=2 errors=0 skipped=0\\nPROCESS EXIT: 1\\n\\nORIGINAL INVENTORY UNCHANGED: True\\nCHANGED/ADDED/REMOVED ENTRIES: []\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0c1d1-4879-7222-8f83-cd644e996fd0",
+            "create_time": 1789958174.973024
+          }
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
