@@ -69,3 +69,20 @@ result is a decision, not a reason to replace tasks or rerun until favorable.
 요청을 함께 준비하며 살아남는 결함도 교체하지 않는다. 기존 스킬을 고정하고
 실제 반복 작업에서 사용되는지 보려는 작성자 선정 전이 과제다. 아직 실행 성과나
 독립 벤치마크가 아니며, 과거의 불리한 전체 비교를 대체하지 않는다.
+
+## Input export follow-up
+
+`packaging_specifier_cases.py` builds the two requests from the committed
+`packaging-specifier-01-source.json`, not a dependency on an ignored local clone.
+The exported subset validates every source byte against the original preflight
+manifest, preserves upstream license files, and checks the mechanical mutation
+rule. Both requests retain identical source files; only requested mutations in
+the task differ. The absolute preinstalled interpreter is supplied at preparation,
+not embedded as a private machine path in the committed source snapshot.
+
+The exporter rejects changed inventories/content/modes, symlinks and overwrites.
+Seven controls additionally exercise real `run.prepare` workspace construction
+and its exact source bytes/modes. macOS Python3.9.6:7/7 pass in0.330s. These are
+input/packaging controls, not model performance or new upstream test executions.
+The forthcoming scheduler must still freeze runtime/resource/settings identities
+and enforce one attempt per cell before model launch.

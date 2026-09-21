@@ -39,6 +39,8 @@ Prepared2026-09-21: [packaging specifier native transfer](results/packaging-spec
 selection`8b591ff`, fixed skill`c8fd471`. Original upstream806-test baseline passes;
 all three mechanically selected independent mutations yield native assertion
 failures with source/binding/cleanup checks. Single/multiple requests are correlated.
+Committed source export now validates exact upstream bytes/modes/licenses and
+materializes both requests; seven input controls pass without a local clone.
 Author controls only; model schedule not launched and no performance result.
 한국어: 실제 패키지 원본 테스트로 새 과제를 준비했다. 모델 성능 측정은 아직 전이다.
 
