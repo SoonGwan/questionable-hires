@@ -217,7 +217,7 @@ def execute(python, directory, spec, probe, timeout):
                 raise ValueError('Module invocation does not replace project startup customization')
         adapter = Path(tempfile.mkdtemp(prefix='.audit-startup-', dir=directory))
         marker = adapter / 'result.json'
-        startup = Path(__file__).with_name('unittest_startup.py').read_text()
+        startup = (Path(__file__).resolve().parent.parent / 'assets/unittest_startup.py').read_text()
         (adapter / 'sitecustomize.py').write_text(
             'spec = ' + repr(payload) + '\nsetup_source = ' + repr(SETUP) + '\n' + startup)
         env['PYTHONPATH'] = os.pathsep.join([str(adapter), *map(str, paths)])

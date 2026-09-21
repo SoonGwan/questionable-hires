@@ -62,6 +62,13 @@ precede the final planner-control method. Final whole-suite verification is reco
 separately when completed. Skill instructions remain unchanged at the entrypoint;
 the conditional reference documents mode-specific limits.
 
+First whole-suite run: 1,035 methods in176.773s, **one failure**, not a green run.
+Standalone packaging invokes every advertised CLI script with `--help`; placing
+the internal startup template under `scripts/` incorrectly exposed it as a CLI.
+Moved that copied template to `assets/` and updated its lookup. The template is
+still packaged and covered by actual installed/bundled execution controls; the
+standalone CLI check is unchanged rather than weakened to ignore the failure.
+
 한국어: 요구된 `-m unittest` 방식에서도 복사본 출처 확인, 실제 테스트 결과,
 보강 테스트와 배치 재사용을 제공한다. 내부 관찰 코드가 개입하므로 순수한
 시작 과정과 동일하다고 주장하지 않는다. 기존 과제의 검증 코드를 재사용한

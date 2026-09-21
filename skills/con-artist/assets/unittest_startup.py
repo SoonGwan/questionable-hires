@@ -1,4 +1,4 @@
-"""Copied startup adapter for audit.py's optional -m unittest invocation.
+"""Copied startup asset for audit.py's optional -m unittest invocation.
 
 Not a standalone command. The parent injects spec and setup_source in the owned
 copy. Observe the real TestProgram result without replacing the native CLI.
