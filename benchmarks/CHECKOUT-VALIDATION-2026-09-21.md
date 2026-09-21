@@ -1,5 +1,21 @@
 # Whole-checkout validation — 2026-09-21
 
+## After entry-wait cancellation correction
+
+Code/tests `79fb2e2`: **1,054 tests in179.540s, OK**, Python3.11.16;
+command below exited0 with no failures or skips. This includes the two new
+plain-entry cancellation/competing-waiter controls. Only unrelated history
+preflight documentation/evidence was prepared and committed during execution
+(`ad54294`); no runtime or test edits occurred. No timed model session ran
+concurrently, and simulated model-cell messages are still test doubles.
+Repository/link validation, featured synchronization and whitespace checks pass.
+This is local regression evidence, not a new model performance measurement.
+
+한국어: 취소 처리 수정까지 포함한 전체 검사1,054개가179.540초에 통과했다.
+모델 비교나 전체 스킬의 성능 향상 수치가 아니라 로컬 회귀 검사 결과다.
+
+## Earlier checkpoint, before that correction
+
 Code/test checkpoint `3fa1758`; analysis-only documentation/JSON additions were
 in progress during this check. No runtime or test edits were made during it.
 

@@ -70,9 +70,9 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
   usage1, build13/archive4 pass. No model-cost claim or new full-suite run.
   한국어: 취소 경계의 실제 결함 수정이며 전체 성능 개선 수치와 구분한다.
 - [Whole-checkout validation](CHECKOUT-VALIDATION-2026-09-21.md), code/tests
-  `3fa1758`: Python3.11.16,1,052 tests in179.745s, no failures/skips. Adds the
-  subsequent fixture/runner/packaged-recipe controls to the older1,035-test
-  checkpoint below. Local regression evidence, not model or hosted validation.
+  `79fb2e2`: Python3.11.16,1,054 tests in179.540s, no failures/skips. Includes
+  both new entry-wait controls; the earlier1,052-test checkpoint is preserved
+  in the report. Local regression evidence, not model or hosted validation.
   한국어: 최신 전체 로컬 검사 통과이며 성능 향상 증거와 구분한다.
 - [Slugify transfer preparation](SLUGIFY-NATIVE-01-PREFLIGHT.md), helper
   `a7dcbd8`: unchanged pinned upstream tests establish correct/equivalent/fault
