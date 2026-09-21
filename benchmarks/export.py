@@ -13,6 +13,10 @@ def redact_paths(text, workspace=None):
         text = text.replace(str(workspace), '<WORKSPACE>')
         text = text.replace('/private<WORKSPACE>', '<WORKSPACE>')
     text = text.replace(str(Path.home()), '<HOME>')
+    # A home placeholder alone still exposes the local account directory UUID.
+    # Keep unrelated run/test UUIDs intact; account placeholders are not identities.
+    text = re.sub(r'(/codex-accounts/)[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}(?=/)',
+                  r'\1<ACCOUNT>', text)
     # Keep JSON escapes and Markdown delimiters outside a redacted path. Also
     # handle malformed macOS links and the task-owned /tmp/qh-* scratch roots.
     return re.sub(r'''/(?:private/)?(?:var/(?:folders/|[a-z0-9]{2}/[A-Za-z0-9_-]+/T/)|tmp/qh-)[^\s"'<>\\)\]}]+''',

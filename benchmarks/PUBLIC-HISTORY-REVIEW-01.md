@@ -65,6 +65,42 @@ benchmark metrics. Removing material from reachable Git history is a distinct,
 potentially destructive operation requiring owner direction; no force push,
 history rewrite, visibility or account setting change was performed.
 
+## Targeted follow-up — parent016f13f, 2026-09-22
+
+Review of the recorded home-shaped findings narrows the26 owner-workspace lines
+to five authored replay/preflight JSON files:
+
+- `benchmarks/hostage-coverage-replay-01.json` (7)
+- `benchmarks/hostage-input-preflight-01.json` (4)
+- `benchmarks/ledger-selection-01-preflight.json` (1)
+- `benchmarks/results/config-layers-01-preflight.json` (13)
+- `benchmarks/sequence-entry-repository-preflight-01.json` (1)
+
+These contain real local paths in failure output or interpreter provenance,
+not discovered credentials. They need labeled sanitized derivatives; changing
+assertions, failure outcomes, resource counters or pinned recipe hashes is not
+authorized by privacy cleanup. No historical JSON was modified in this follow-up.
+
+Three app-server artifacts also retain local account-directory UUIDs after a
+`<HOME>` prefix: `app-server-model-capture-01/launch.json` and
+`app-server-model-capture-02/{launch.json,server-events.jsonl}`, under results.
+Add a narrow future-export rule replacing UUIDs only immediately within
+`/codex-accounts/<UUID>/` with `<ACCOUNT>`. This is not a bearer credential,
+and unrelated run IDs, fixture UUIDs and ordinary paths must remain unchanged.
+The placeholder does not establish that two redacted paths belonged to the same
+account. Existing exported artifacts/history remain untouched.
+
+New synthetic test fails before the fix and passes after it, including valid
+JSON, preserved run/fixture identifiers and idempotence. All3 export-privacy
+and4 evidence tests pass. Catalog/link and EN/KO featured checks pass. Broader
+semantic privacy review and disposition of remaining paths are still open;
+neither this repair nor a future zero-match scan certifies public safety.
+
+한국어 추가: 실제 작성자 경로26개는 결과 JSON5개에 모여 있었고, 앱 서버
+자료3개에는 홈 경로를 가린 뒤에도 계정 폴더 식별자가 남아 있었다. 앞으로의
+내보내기에서 해당 경로 형태만 가리도록 보완했다. 실행 ID나 테스트 데이터는
+유지하며, 기존 파일·이력 정리와 나머지 공개 검토는 아직 끝나지 않았다.
+
 한국어:1368개 커밋의 고유 파일 내용을 제한된 패턴으로 점검했다. 인증정보 후보
 1개는 실제 키가 아닌 거부 테스트용 헤더였고,경로 후보284개는 추가 공개 검토가
 필요하다. 앞으로 내보낼 자료의 임시 경로 누락을 수정했지만 과거 파일이나 Git

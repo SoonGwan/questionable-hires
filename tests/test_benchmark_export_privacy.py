@@ -12,6 +12,18 @@ spec.loader.exec_module(exporter)
 
 
 class ExportPrivacyTests(unittest.TestCase):
+    def test_account_directory_identity_is_redacted_after_home_placeholder(self):
+        identity = '12345678-1234-4321-abcd-123456789012'
+        data = {'hook': '<HOME>/Library/Application Support/orca/codex-accounts/'
+                + identity + '/home/skills/tool/SKILL.md',
+                'run_id': identity,
+                'ordinary_path': 'fixtures/' + identity + '/input.json'}
+        result = json.loads(exporter.redact_paths(json.dumps(data)))
+        self.assertEqual(result['hook'], '<HOME>/Library/Application Support/orca/codex-accounts/<ACCOUNT>/home/skills/tool/SKILL.md')
+        self.assertEqual(result['run_id'], identity)
+        self.assertEqual(result['ordinary_path'], data['ordinary_path'])
+        self.assertEqual(exporter.redact_paths(json.dumps(result)), json.dumps(result))
+
     def test_native_export_redacts_both_temp_shapes_without_eating_evidence(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
