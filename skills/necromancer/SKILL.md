@@ -20,7 +20,7 @@ When a behavioral probe recompiles extracted Python, preserve the original modul
 
 For AST-based substitutions, match node fields or compare parsed trees with `ast.dump(..., include_attributes=False)`, not `ast.unparse` against handwritten formatting. Verify the intended match count before substitution; a structural match still needs behavioral checks.
 
-For missing attribution, use `git blame -L <start>,<end> -- <path>` and inspect the relevant before/after change. Reuse established facts; native Git is enough for one fact. Optional tools when they replace repeated work:
+For missing attribution, use `git blame -L <start>,<end> -- <path>` and inspect the relevant before/after change. For current-commit ancestry, use `git log HEAD -- <path>` (optionally `-S 'text'` before `HEAD`), not `--all` or `HEAD..HEAD`; substitute the requested base for `HEAD`. Reuse established facts; native Git is enough for one fact. Optional tools when they replace repeated work:
 
 - [History collector](references/focused-history.md): repeated attribution, renames or oversized patches.
 - [Named Python excerpts](references/python-regions.md): revision/path/function names are known and you would otherwise write extraction code. Read this interface, not the collector guide.

@@ -1,9 +1,17 @@
 # Focused Git evidence
 
-Use native Git for one missing fact: `git log -S 'distinctive text' -- <path>`,
+Use native Git for one missing fact: `git log -S 'distinctive text' HEAD -- <path>`,
 line blame, or the relevant before/after patch. A live counterexample can settle
 current necessity without more history. The optional collector helps when several
 attributions, renames or large patches would otherwise require repeated work.
+
+An explicit revision bounds traversal to that revision and its ancestors; use
+the requested base instead of `HEAD` when different. Do not add `--all` for an
+ancestor-only request: it adds other refs. `--all=false` is not its negation,
+and `HEAD..HEAD` is an empty range, not a way to select ancestors. Normal traversal
+includes merged branches; `--first-parent` narrows that evidence and is not an
+equivalent shortcut. A path or pickaxe filter selects relevant changes, not every
+ancestor; use historical paths for renames. Existing shallow-history limits apply.
 
 ## Collect once
 

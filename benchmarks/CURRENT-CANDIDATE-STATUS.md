@@ -72,6 +72,12 @@ prefix omissions remain in the [report](PLAN-AUDIT-01.md). 한국어:6회 검토
 
 ## Implemented capabilities and local validation
 
+Checkpoint2026-09-21: [explicit-base history recipe](NECROMANCER-ANCESTRY-01.md)
+addresses observed invalid Git options and other-ref expansion with a native
+command example. Real local merge-DAG controls verify command semantics, not
+model adoption or cost savings. 한국어: 허용 이력 범위를 유지하는 명령을 안내하고
+병합·다른 분기 대조로 검증했다. 모델 성능 개선은 아직 측정하지 않았다.
+
 Checkpoint2026-09-21: [partial-package import correction](AUDIT-PARTIAL-IMPORT-01.md)
 rejects cached listed submodules whose parent package is absent after failed
 initialization. Local failing-first reproduction and valid-package control; no
