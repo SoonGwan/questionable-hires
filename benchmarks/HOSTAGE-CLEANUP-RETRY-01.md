@@ -45,7 +45,7 @@ A copied-asset negative control removes only closing-time release for newly
 entered calls. The unchanged async-finally test then fails with the combined body
 and cleanup error; the original copy passes. This is an intentional author fault
 in a temporary directory, not a shipped edit or model attempt. All6 Python-driven
-JavaScript integration checks pass, covering23 native asset checks plus copying
+JavaScript integration checks pass, covering25 native asset checks plus copying
 and this new positive/negative control. Repo/locale/diff checks pass. No new model
 cost measurement, no runtime-code edit and no rewrite of historical full-suite
 counts. The tests constrain behavior rather than porting Python cancellation
