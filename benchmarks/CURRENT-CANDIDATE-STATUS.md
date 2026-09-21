@@ -9,7 +9,18 @@ it has not established a broad 20–30% gain.
 개발에서 더 적은 토큰과 시간으로 좋은 결과를 낸다는 목표는 아직 미달이다.
 개별 유리한 수치와 전체 성능을 구분하고, 불리한 결과도 그대로 보존한다.
 
-## Contract transfer prepared — 2026-09-21, resources `903e7c8` / `19d63ec`
+## Checkout regression refreshed — 2026-09-21, source `6daafcb`
+
+[Release-check checkpoint](RELEASE-CHECK-2026-09-20.md): Python 3.11 passes
+911 checkout tests, no skips. Archive/hosted results remain historical. This
+check overlapped three contract-transfer cells on the same host; disclose that
+extra load and do not claim candidate latency savings from that comparison.
+Model evidence review is ongoing; no release or broad-performance approval.
+
+한국어: 작업본 911개 검사 통과. 비교 실행과 부하가 겹친 사실은 기록했으며,
+시간 절감 주장에 사용하지 않는다. 스킬 성능의 전체 목표는 아직 미달이다.
+
+## Historical preparation: contract transfer — 2026-09-21, resources `903e7c8` / `19d63ec`
 
 [Frozen six-cell protocol](CONTRACT-AUDIT-01-PROTOCOL.md) pairs a
 representation-flexible JSON contract with a genuinely identity-sensitive registry

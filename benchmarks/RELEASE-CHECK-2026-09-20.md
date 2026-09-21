@@ -4,7 +4,25 @@
 and repository source archive are different deliverables; do not generalize one
 passing check to the other.
 
-## Updated checkout and source archive pass — 2026-09-21, source `f21db2b`
+## Checkout refreshed — 2026-09-21, source `6daafcb`
+
+Python 3.11.16 `python -B -m unittest discover -s tests`: **911 tests,
+159.295 seconds, OK**, exit 0, no skips (terminal session 83611). This includes
+the new history excerpt and Click/contract scheduler tests. It is a checkout
+correctness check, not model-performance evidence. The Git-free archive and
+hosted checks were not rerun at this revision; their older results remain dated.
+
+This regression overlapped the active contract-transfer experiment on the same
+host (prior/current response cells and current identity cell). The added host
+load is an experiment limitation, not evidence of a skill latency change. No
+benchmark rerun or outcome substitution was performed. Completion observed at
+2026-09-21 02:11:54 UTC. Preserve that limitation in the eventual comparison.
+
+한국어: 작업본의 911개 검사는 모두 통과했다. 같은 리비전의 소스 압축본과
+호스팅 검사는 재실행하지 않았다. 비교 실험과 호스트 부하가 겹쳤으므로 이번
+비교의 시간 차이를 스킬 속도 개선으로 주장하지 않는다.
+
+## Historical checkout and source archive pass — 2026-09-21, source `f21db2b`
 
 Python 3.11.16 native discovery (`python -B -m unittest discover -s tests`)
 completed against the source containing Node support and both reviewed Node pilots:
