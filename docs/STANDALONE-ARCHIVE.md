@@ -36,6 +36,14 @@ publish or create a GitHub release, and does not change `npx skills add` behavio
 
 ## Manual candidate workflow
 
+**Retired on2026-09-22 at the owner's request.** Both Actions workflows were
+removed. The section below records the former design, not a currently available
+button. Use the local build/install commands at the top of this page and run
+the [local validation checklist](PUBLIC-LAUNCH.md) before distributing a bundle.
+
+한국어: CI 제거 요청에 따라 아래 Actions 버튼은 더 이상 제공하지 않는다.
+이 문서 상단의 로컬 빌드·설치 명령을 사용한다. 아래는 과거 설계 기록이다.
+
 In GitHub Actions, select **Prepare release candidate**, choose the intended
 branch and select **Run workflow**. This is candidate preparation, not publication.
 It first calls the complete Python3.9/3.11/3.12 and source-archive validation

@@ -30,8 +30,9 @@ model, install skills into your host, or publish a package:
 
 The development requirements include pytest for native fixture/collection checks.
 Those checks explicitly skip if the selected interpreter lacks pytest; skips are
-not passing compatibility evidence. Both CI jobs install the requirements before
-running tests. An existing project environment can run the focused group with
+not passing compatibility evidence. CI is disabled by owner choice; maintainers
+must install the requirements and run checks locally before publishing changes.
+An existing project environment can run the focused group with
 `python -B -m unittest discover -s tests -p test_audit_pytest_replacements.py`.
 
 ```sh

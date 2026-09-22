@@ -1,7 +1,7 @@
 # Onboarding
 
-Clone access is required while the repository is private; no special access is
-needed after a public release. Installing a skill does not select your model or
+Public repository access does not require GitHub credentials.
+Installing a skill does not select your model or
 change your approval settings.
 
 ## Install with the skills CLI
@@ -37,7 +37,7 @@ host registration is established.
 
 ## Install into a project
 
-Requires Python 3.8+ and an authenticated Git client. From a directory where you keep tools:
+Requires Python 3.8+ and Git. From a directory where you keep tools:
 
 ```sh
 git clone https://github.com/SoonGwan/questionable-hires.git

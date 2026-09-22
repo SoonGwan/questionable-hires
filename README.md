@@ -74,9 +74,8 @@ npx skills add SoonGwan/questionable-hires --agent codex --skill mother-in-law -
 ```
 
 This uses the independent [`skills`](https://github.com/vercel-labs/skills) CLI;
-review it and the selected skills before execution. During the private preview,
-Git credentials are required. After the repository is public, the same command
-works without repository access.
+review it and the selected skills before execution. Public repository access
+does not require GitHub credentials. No Questionable Hires npm account is needed.
 
 Or use the bundled Python 3.8+ installer directly:
 

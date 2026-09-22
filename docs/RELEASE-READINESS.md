@@ -1,5 +1,23 @@
 # Release readiness — development preview
 
+## Publication decision — 2026-09-22
+
+The owner approved public visibility with the existing Git history after review
+of local paths/account-directory identifiers, and requested removal of CI.
+Both GitHub Actions workflows and their workflow-specific tests are removed;
+the skill, installer, archive and benchmark tests remain available locally.
+Hosted CI is no longer a release requirement or an active service. This is not
+a claim that hosted checks passed. The earlier checkpoints below are historical.
+
+Run local checks using [the publication guide](PUBLIC-LAUNCH.md). Standalone
+archives use the local builder, not an Actions button. Public visibility does not
+establish universal performance gains or complete privacy/security assurance.
+
+한국어: 소유자가 경로·폴더 식별자 검토 후 기존 이력의 공개와 CI 제거를
+승인했다. 아래 원격 CI 차단 기록은 과거 기록이며 현재의 공개 차단 조건이 아니다.
+
+## Historical pre-publication checkpoint
+
 Decision index,2026-09-22. **Not a completed public release or a claim of broad
 performance superiority.** Each check applies only to its stated source revision.
 

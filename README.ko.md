@@ -127,8 +127,8 @@ npx skills add SoonGwan/questionable-hires --agent codex --skill mother-in-law -
 
 이 명령은 이 저장소가 만든 CLI가 아니라 독립적인
 [`skills`](https://github.com/vercel-labs/skills) CLI를 실행합니다. 실행 전에
-CLI와 설치할 스킬을 확인하세요. 비공개 개발 중에는 Git 인증이 필요하며,
-저장소가 공개되면 같은 명령을 별도 접근 권한 없이 사용할 수 있습니다.
+CLI와 설치할 스킬을 확인하세요. 공개 저장소 접근에는 GitHub 인증이 필요하지
+않으며, Questionable Hires용 npm 계정을 따로 만들 필요도 없습니다.
 
 저장소에 포함된 Python 3.8 이상용 설치기를 직접 사용해도 됩니다.
 
