@@ -15,7 +15,16 @@ Colors follow [Montage's semantic palette](https://montage.wanted.co.kr/docs/fou
 
 `team.svg` is original vector artwork with a system-font stack and a dark-theme media query. Its light palette is the fallback for viewers that do not support that query. Plugin metadata uses the light primary blue. No Montage logo, illustration, or font is bundled, and no affiliation is implied.
 
-## Character banner
+## Social preview
+
+`social-preview.svg` is the editable1280×640 sharing card; `social-preview.png`
+is the upload-ready render. It uses the same Montage light palette, system fonts,
+one blue accent and no generated illustration or performance percentage.
+Upload the PNG through repository Settings → Social preview. Committing it does
+not itself change GitHub's sharing image. Copy-ready introductions and a real
+helper demo are in [the sharing guide](../docs/SHARE.md).
+
+## Character banner (existing artwork)
 
 `team-characters.png` is the approved text-free, two-row doodle cast, displayed immediately below `team.svg` in both READMEs. Keep the sparse black outlines, off-white background, blue accents, deadpan faces, and simple signature props. The deliberately rough character drawing complements the restrained title banner.
 

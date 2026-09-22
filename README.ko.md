@@ -12,7 +12,7 @@
 
 [English](README.md) · [실제 실행 예시](examples/README.md) · [현재 비교 근거](benchmarks/CURRENT-CANDIDATE-STATUS.md) · [설치 가이드](docs/INSTALL.md)
 
-`c0f53cc` 기준 로컬 검증(2026-09-15 한국 시간): [8개 스킬 패키징·설치된 도우미 검사를 포함한 테스트 576개 통과](docs/INSTALLATION-TEST.md#whole-bundle-regression--2026-09-15-kst-source-c0f53cc). 모델 성능이나 원격 설치 성공률을 뜻하지 않습니다.
+`0ca24f2` 기준 공개 프리뷰(2026-09-22 한국 시간): [로컬 테스트1,224개 통과·Git 인증 없이8개 스킬 설치를 확인했습니다](docs/PUBLIC-LAUNCH.md). 테스트 개수는 모델 성능 점수가 아닙니다. [질문·사용 후기](https://github.com/SoonGwan/questionable-hires/discussions) · [모델 사용량 없이 데모 실행](docs/SHARE.md#a-real-demo-without-model-usage).
 
 ## 이런 일을 시킵니다
 

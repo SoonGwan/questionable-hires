@@ -6,7 +6,7 @@
 
 # Questionable Hires
 
-Eight suspiciously effective engineering coworkers for your AI agent.
+Eight character-driven developer skills for AI coding agents: debugging, code review, testing, and release checks.
 
 One demands receipts. One charges your abstractions rent. One talks to developers who left in 2019. Hiring was a mistake. Firing them would be worse.
 
@@ -14,7 +14,7 @@ Each character carries one engineering habit: trace the reason, prove the fix, t
 
 **Development preview.** All eight hires have been exercised on small synthetic tasks. The baseline usually reached the same central answer. We show actual comparisons and limitations rather than claim a universal improvement.
 
-Local regression at `c0f53cc` (2026-09-15 KST): [576 tests passed, including all-eight packaging and installed-helper controls](docs/INSTALLATION-TEST.md#whole-bundle-regression--2026-09-15-kst-source-c0f53cc). This is not a model-performance or remote-installation score.
+Public preview at `0ca24f2` (2026-09-22 KST): [1,224 local tests passed and all eight skills installed without Git credentials](docs/PUBLIC-LAUNCH.md). Test counts are not model-performance scores. [Ask a question or share a result](https://github.com/SoonGwan/questionable-hires/discussions) · [Try a demo without model usage](docs/SHARE.md#a-real-demo-without-model-usage).
 
 ## The test passed. The record disappeared.
 
