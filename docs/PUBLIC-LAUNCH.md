@@ -4,6 +4,32 @@
 제거를 승인했다. GitHub Actions 자동 검증·후보 생성 버튼은 제공하지 않는다.
 계정 결제/한도 변경이나 Git 이력 재작성은 하지 않는다.
 
+## Verified publication — source `0ca24f2`, 2026-09-22
+
+GitHub reports `PUBLIC`; an unauthenticated repository API request reports
+`private: false`. Actions permissions report `enabled: false`. The local suite
+passes1,224 tests in209.127s with zero failures/skips. Six removed tests were
+specific to the removed workflows; this is not a reduction of skill tests.
+
+From a new temporary project and empty npm cache, this command downloaded the
+pinned CLI and installed all eight skills from the public GitHub repository:
+
+```sh
+npx --yes skills@1.5.26 add SoonGwan/questionable-hires --agent codex --skill '*' --copy -y
+```
+
+Git system/global configuration, credential helpers, extra Authorization headers
+and interactive prompts were disabled for the check; GH_TOKEN/GITHUB_TOKEN and
+askpass variables were unset. npm used an isolated cache and no user npmrc;
+telemetry was disabled. No personal/global skill installation was requested.
+All installed files/modes match source`0ca24f2`. This validates the pinned CLI
+on Node24.16.0/npm11.13.0, not every future unpinned CLI or host discovery.
+No GitHub Release or npm package was published for this repository.
+
+한국어: 실제 public 상태와 비인증 접근을 확인했다. 빈 npm 캐시에서 CLI를
+받아 Git 인증을 끈 임시 프로젝트에8개 스킬을 설치했으며 원본 파일·권한과
+일치했다. 개인 스킬 폴더는 변경하지 않았다. 자동 CI는 비활성화되어 있다.
+
 ## Local validation / 로컬 검증
 
 Python3.9+의 별도 개발 환경에서 의존성을 설치하고 저장소 루트에서 실행한다:

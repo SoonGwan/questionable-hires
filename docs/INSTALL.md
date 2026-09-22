@@ -6,6 +6,11 @@ change your approval settings.
 
 ## Install with the skills CLI
 
+[Public installation checkpoint](PUBLIC-LAUNCH.md),2026-09-22/source`0ca24f2`:
+fresh npm download of`skills@1.5.26`, Git credentials disabled, all8 skills installed
+into a temporary project with matching files/modes. The repository is public;
+earlier private-install checkpoints below are historical.
+
 The repository follows the standard `skills/*/SKILL.md` layout and can be
 installed without a Questionable Hires npm package:
 
