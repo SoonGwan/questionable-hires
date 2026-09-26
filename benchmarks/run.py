@@ -64,11 +64,14 @@ def inspect_capture(stdout, stderr):
             continue
         events.append(event)
     empty_outputs, event_errors, transcript_candidates, missing_summaries = [], [], [], []
-    node_missing_summaries = []
+    node_missing_summaries, item_errors = [], []
     for event in events:
         if event.get('type') in ('error', 'turn.failed'):
             event_errors.append(event.get('type'))
         item = event.get('item')
+        if (event.get('type') == 'item.completed' and isinstance(item, dict)
+                and item.get('type') == 'error'):
+            item_errors.append(dict(item_id=item.get('id'), message=item.get('message')))
         if (event.get('type') == 'item.completed' and isinstance(item, dict)
                 and item.get('type') == 'command_execution'):
             if not item.get('aggregated_output'):
@@ -103,11 +106,13 @@ def inspect_capture(stdout, stderr):
     return events, dict(
         invalid_json_lines=invalid_lines, non_object_json_lines=non_objects,
         empty_command_output_items=empty_outputs, error_event_types=event_errors,
+        item_error_review_candidates=item_errors,
         unittest_transcript_review_candidates=transcript_candidates,
         unittest_missing_summary_review_candidates=missing_summaries,
         node_missing_summary_review_candidates=node_missing_summaries,
         patch_rejection_count=stderr.lower().count('patch rejected'),
         limitation='Empty command output may be legitimate. Nonempty output may still be incomplete. '
+                   'Item errors may be recoverable; review actual execution. '
                    'These diagnostics neither prove full tool-output capture nor score task success.')
 
 

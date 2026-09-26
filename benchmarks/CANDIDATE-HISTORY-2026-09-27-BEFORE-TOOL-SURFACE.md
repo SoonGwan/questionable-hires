@@ -1,3 +1,5 @@
+# Historical index before tool-surface01 — 2026-09-27
+
 # Current candidate: whole-task improvement remains unproven
 
 Decision checkpoint **2026-09-27, model-choice01 matching-skill bundle `6701069f`**.
@@ -44,15 +46,6 @@ integration05(2026-09-27,`75183f2f`)의16회 원본 토큰은 일치하지만
 이를 일반적인 스킬 우월성으로 해석하지 않는다. 8개 역할 전체의 목표는 미달이다.
 
 ## Local functionality and delivery evidence
-
-- [Tool-surface01 probe and collector correction](TOOL-SURFACE-01-REVIEW.md),
-  2026-09-27,execution sources`e70238f6`,CLI0.157.1,no installed skills:
-  apps_off first input−8.77% but whole tokens+21.06%,time+1.29%; host_off
-  cannot execute required work. No configuration adoption or all-eight claim.
-  Post-timing collector now flags item-level errors without automatically
-  rescoring tasks; actual failing-before regression,36 checkout/Git-free controls.
-  한국어: 앱 제외의 첫 입력 감소는 전체 절감이 아니고 실행 호스트 제외는 작업 실패다.
-  오류 진단만 보완했으며 모델 성능·출시 검증으로 확대하지 않는다.
 
 - [Receipt guard I/O01 rejection](RECEIPT-GUARD-IO-01.md),2026-09-27,
   repository`d4bacdf6`,unchanged skill resource`6701069f`: single-pass prototype

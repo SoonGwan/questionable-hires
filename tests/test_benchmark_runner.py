@@ -14,6 +14,28 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_completed_item_error_remains_visible_with_completed_cli_turn(self):
+        rows = [dict(type='item.completed', item=dict(type='error', id='unavailable',
+                    message='Code Mode is unavailable because code-mode host is disabled.')),
+                dict(type='turn.completed', usage=dict(input_tokens=42, output_tokens=2))]
+        events, diagnostic = runner.inspect_capture('\n'.join(json.dumps(row) for row in rows), '')
+        self.assertEqual(events, rows)
+        self.assertEqual(diagnostic.get('item_error_review_candidates', []), [
+            dict(item_id='unavailable', message=rows[0]['item']['message'])])
+        self.assertEqual(diagnostic['error_event_types'], [])
+        self.assertEqual(events[-1]['usage'], dict(input_tokens=42, output_tokens=2))
+
+    def test_item_warning_does_not_replace_later_native_observation(self):
+        rows = [dict(type='item.completed', item=dict(type='error', id='warning', message='Temporary tool problem')),
+                dict(type='item.completed', item=dict(type='command_execution', id='native',
+                    command='python3 -B -m unittest -v test_app', exit_code=0,
+                    aggregated_output='test_case (test_app.Tests.test_case) ... ok\nRan 1 test in 0.001s\nOK\n'))]
+        events, diagnostic = runner.inspect_capture('\n'.join(json.dumps(row) for row in rows), '')
+        self.assertEqual(events, rows)
+        self.assertEqual(diagnostic.get('item_error_review_candidates', []), [dict(item_id='warning',message='Temporary tool problem')])
+        self.assertEqual(events[-1]['item']['exit_code'],0)
+        self.assertEqual(diagnostic['unittest_missing_summary_review_candidates'],[])
+
     def test_session_persistence_is_explicit_and_does_not_drop_isolation_flags(self):
         for persist in (False, True):
             with self.subTest(persist=persist), tempfile.TemporaryDirectory(dir=runner.ROOT) as directory:
