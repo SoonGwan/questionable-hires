@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-27, assertion-contract01 reviewed candidate `33530f98`, inputs `f241f94d`**.
+Decision checkpoint **2026-09-27, assertion-contract01 partial screen; comparison incomplete**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -65,36 +65,38 @@ or recoverable savings.
 한국어: 전체 비교의 토큰 증가, 단일/다중 과제의 혼재된 결과, 스킬의 재사용 보고
 오류를 모두 유지한다. 유리한 한 쌍이나 프로세스 감소를 전체 개선율로 확대하지 않는다.
 
-## Assertion-contract01 — quality retained, cost goal unmet
+## Active partial screen — not an efficiency result
 
-[Six-cell review](ASSERTION-CONTRACT-01-REVIEW.md), candidate `33530f98`,
-2026-09-27, inputs `f241f94d`: all scoped contracts pass. Candidate versus no
-skill summed tokens **+36.43%**, time **−12.01%**; versus predecessor `5f94777a`,
-tokens **−3.17%**, time **+6.88%**. No joint improvement, no featured promotion.
-[Original counter reconciliation](results/assertion-contract-01/input-cost-analysis.json)
-covers all six. All four skill sessions initially receive then reread the exact
-entry body; both multiple sessions adopt native batch reuse. No assertion/schema
-repair justifies calling the gap recoverable waste. Correlated synthetic tasks,
-n=1, fixed order/shared cache, unblinded review; not independent generalization.
+[Assertion-contract01 protocol](ASSERTION-CONTRACT-01-PROTOCOL.md), inputs
+`f241f94d`, compares pinned candidate `33530f98`, predecessor `5f94777a` and
+no-skill on two new correlated authored dispatch audits. Six serial cells are
+scheduled. The first no-skill/single cell completed: 64,401 total tokens,
+83.273 seconds. Original native tests miss swallowed errors; identical added
+assertions pass correct code and reject missing type/message/stop behavior.
+Copy-local binding, unchanged snapshot/resources and initial/final index bytes
+were checked in retained original output. Other scheduled cells remain underway;
+there is no paired saving or full candidate-quality conclusion.
+Private originals are retained locally, pending reviewed redacted export. This
+partial note is not independent generalization, all-eight evidence or release
+completion. [Full remaining gates](../docs/NEXT-VERSION-WORK-2026-09-27.md).
+[Prior index](CANDIDATE-STATUS-2026-09-27-BEFORE-DISPATCH-SCREEN.md) preserves the
+unmeasured instruction checkpoint.
 
-한국어: 새6회 비교는 계약을 지켰지만 토큰·시간 동시 개선은 달성하지 못했다.
-전체8개 역할 목표는 미완료이며 불리한 결과와 원본 도구 기록을 보존한다.
-[이전 부분 검토](CANDIDATE-STATUS-2026-09-27-BEFORE-DISPATCH-REVIEW.md)와
-[전체 남은 조건](../docs/NEXT-VERSION-WORK-2026-09-27.md)을 함께 보존한다.
+한국어: 새6회 비교의 첫 무스킬 실행만 검토됐다. 스킬 조건 비교가 진행 중이므로
+토큰·시간 절감이나 다음 버전 완료를 주장하지 않는다. 전체8개 역할 목표는 유지한다.
 
-## Assertion-contract instruction and its measurement limits
+## Unmeasured instruction candidate
 
 Con Artist now requires an observable contract before adding object-identity
 assertions and checks proposed assertions on correct code first. Motivated by
 [Click context01](CLICK-CONTEXT-01-REVIEW.md), measured resource `f253f38`,
 2026-09-21: an unsupported traceback-identity assertion caused normal-code
 failures and repair work. That exposed pair is historical, not a measurement
-of this instruction. The new dispatch screen above measures this candidate and
-retains quality but does not establish simultaneous token/time savings or
-generalization. Do not rerun the Click pair as independent validation.
+of this instruction. No token/time saving, generalization or helper adoption
+is established. Do not rerun that pair as independent validation.
 
 한국어: 정상 코드에서 실패·복구를 유발한 계약 밖 객체 동일성 검사를 피하도록
-지침을 보완했다. 위 새 비교에서도 토큰·시간 동시 절감은 입증되지 않았다.
+지침을 보완했다. 새 모델 측정은 없으며 토큰·시간 절감은 아직 미입증이다.
 이전 [판단 색인](CANDIDATE-STATUS-2026-09-26-BEFORE-ASSERTION-CONTRACT.md)을 보존한다.
 
 ## Implemented capabilities and local validation

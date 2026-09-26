@@ -131,8 +131,9 @@ use Node.js. Helpers do not install dependencies or run in the background.
 | Landlord | [Review guidance](skills/landlord/SKILL.md); no separate bundled runtime helper. |
 
 Con Artist ties new assertions to the required observable contract; object identity
-requires an explicit requirement. This instruction change has **no measured token
-saving** ([dated status](benchmarks/CURRENT-CANDIDATE-STATUS.md)).
+requires an explicit requirement. [Assertion-contract01](benchmarks/ASSERTION-CONTRACT-01-REVIEW.md)
+(2026-09-27, `33530f98`) retains quality but uses **36.43% more summed tokens**
+and 12.01% less time than no skill; no joint efficiency gain is established.
 
 Con Artist also accepts [exact test-file edits](skills/con-artist/references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)
 instead of resending a whole file; original/correct/faulty checks stay intact.

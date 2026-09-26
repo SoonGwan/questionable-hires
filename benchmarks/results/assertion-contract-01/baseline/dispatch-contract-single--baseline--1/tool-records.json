@@ -1,0 +1,172 @@
+{
+  "session_id": "01a0dec0-115a-7211-89ec-6ab990705be6",
+  "source_bytes": 112917,
+  "source_sha256": "ceb89c4a7da9ecf01cab516c9657b64a98ab3fed20b04d8060ece5160d573969",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "4e07f39254b87b0d7f44f33cf620e7a427e6079cb15f9b3cc873b72c2da1576f",
+      "record": {
+        "timestamp": "2026-09-26T17:25:30.924Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_034415af72cd4d11016ab80009371887d0a6735960d20be7e9",
+          "status": "completed",
+          "call_id": "call_xcufWQbO5nQbN31wtGhrJrcf",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files -g '! .git' -g '!*pyc' -g '!__pycache__' && git status --porcelain && git rev-parse HEAD\",max_output_tokens:5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec0-11ef-7e91-abbe-dd04ac117ede",
+            "create_time": 1790443526.460895
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "6c7d785fd2bab86970c52b2a53bf44cfe9674a95fa36998eefa9e76d228f7c21",
+      "record": {
+        "timestamp": "2026-09-26T17:25:33.050Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dec0-32fa-7f01-ac76-371b2528c9eb",
+          "call_id": "call_xcufWQbO5nQbN31wtGhrJrcf",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2989d2\",\"wall_time_seconds\":0.230617792,\"exit_code\":0,\"original_token_count\":46,\"output\":\"<WORKSPACE>\\nAGENTS.md\\ndispatch.py\\ntest_dispatch.py\\nd524d0dd58563fbc25972883e5ba73dc480897f0\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec0-11ef-7e91-abbe-dd04ac117ede",
+            "create_time": 1790443533.050909
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "f1e128f131725eeb487c40e3b0f9076f3fc3393b555df573d7d58f866ec04b28",
+      "record": {
+        "timestamp": "2026-09-26T17:25:35.540Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_034415af72cd4d11016ab8000e7d5087d0b0bd5f7bcf53e5df",
+          "status": "completed",
+          "call_id": "call_uvsLANcF8L24ukcK7xyjMb9x",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md dispatch.py test_dispatch.py && git ls-files --stage\",max_output_tokens:6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec0-11ef-7e91-abbe-dd04ac117ede",
+            "create_time": 1790443533.411887
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "70a766c1ffd18781d8bb0a593d1f06c2ba1547e7862cdbe572ad4956549e2ad9",
+      "record": {
+        "timestamp": "2026-09-26T17:25:35.639Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dec0-3d17-72d0-a034-29baf5be6f76",
+          "call_id": "call_uvsLANcF8L24ukcK7xyjMb9x",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"cc9c4d\",\"wall_time_seconds\":0.000003708,\"exit_code\":0,\"original_token_count\":281,\"output\":\"Work in this project only. Preserve supplied files and Git state.\\nfrom copy import deepcopy\\n\\n\\ndef dispatch(payload, handlers):\\n    results = []\\n    for handler in handlers:\\n        try:\\n            results.append(handler(deepcopy(payload)))\\n        except ValueError as error:\\n            raise ValueError(str(error)) from error\\n    return results\\nimport unittest\\nfrom dispatch import dispatch\\n\\n\\nclass DispatchTests(unittest.TestCase):\\n    def test_order(self):\\n        self.assertEqual(dispatch({\\\"id\\\": 1}, [lambda p: \\\"first\\\", lambda p: \\\"second\\\"]), [\\\"first\\\", \\\"second\\\"])\\n\\n    def test_payload_isolation(self):\\n        payload = {\\\"items\\\": [1]}\\n        def mutate(value):\\n            value[\\\"items\\\"].append(2)\\n            return value\\n        self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{\\\"items\\\": [1, 2]}, {\\\"items\\\": [1]}])\\n        self.assertEqual(payload, {\\\"items\\\": [1]})\\n\\n\\nif __name__ == \\\"__main__\\\":\\n    unittest.main()\\n100644 94efcb3dc725c04ea2b12d500025c1852639bc05 0\\tAGENTS.md\\n100644 5f7124e7a99279ca61c4301746490d3ebc47b6b5 0\\tdispatch.py\\n100644 a81318c9382c2e987bfc20ea488d86f86478086d 0\\ttest_dispatch.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec0-11ef-7e91-abbe-dd04ac117ede",
+            "create_time": 1790443535.639888
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "7967bfe667fe20bee3b32e5d4f070f166edfd79a59928fe4999e54496262c838",
+      "record": {
+        "timestamp": "2026-09-26T17:26:33.009Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_034415af72cd4d11016ab8001e4fb487d096ef42a91e205c90",
+          "status": "completed",
+          "call_id": "call_NOqomIXpdF9VADQgTQGEw06e",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"/opt/homebrew/opt/python@3.11/bin/python3.11 -B - <<'PY'\\nimport hashlib\\nimport pathlib\\nimport shutil\\nimport subprocess\\nimport tempfile\\nimport textwrap\\n\\nroot = pathlib.Path.cwd()\\npython = '/opt/homebrew/opt/python@3.11/bin/python3.11'\\ndef snapshot():\\n    return {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()\\n            for p in root.rglob('*') if p.is_file()}\\nbefore = snapshot()\\nhead = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root)\\nindex = subprocess.check_output(['git', 'ls-files', '--stage'], cwd=root)\\nstatus = subprocess.check_output(['git', 'status', '--porcelain'], cwd=root)\\nscratch = pathlib.Path(tempfile.mkdtemp(prefix='.dispatch-audit-', dir=root))\\nregression = textwrap.dedent('''\\\\\\nimport unittest\\nfrom dispatch import dispatch\\n\\nclass RegressionTests(unittest.TestCase):\\n    def test_value_error_contract(self):\\n        payload = {\\\"items\\\": [1]}\\n        calls = []\\n        def first(value):\\n            calls.append(\\\"first\\\")\\n            value[\\\"items\\\"].append(2)\\n            return \\\"ok\\\"\\n        def fail(value):\\n            calls.append(\\\"fail\\\")\\n            value[\\\"items\\\"].append(3)\\n            raise ValueError(\\\"handler rejected payload\\\")\\n        def later(value):\\n            calls.append(\\\"later\\\")\\n            return \\\"unexpected\\\"\\n        caught = None\\n        try:\\n            dispatch(payload, [first, fail, later])\\n        except Exception as error:\\n            caught = error\\n        with self.subTest(contract=\\\"exception type\\\"):\\n            self.assertIs(type(caught), ValueError)\\n        with self.subTest(contract=\\\"exception message\\\"):\\n            self.assertEqual(str(caught), \\\"handler rejected payload\\\")\\n        with self.subTest(contract=\\\"stop before later handler\\\"):\\n            self.assertEqual(calls, [\\\"first\\\", \\\"fail\\\"])\\n        with self.subTest(contract=\\\"caller state\\\"):\\n            self.assertEqual(payload, {\\\"items\\\": [1]})\\n\\n    def test_successful_dispatch_contract(self):\\n        payload = {\\\"items\\\": [1]}\\n        calls = []\\n        received = []\\n        def first(value):\\n            calls.append(\\\"first\\\")\\n            received.append(value)\\n            value[\\\"items\\\"].append(2)\\n            return value\\n        def second(value):\\n            calls.append(\\\"second\\\")\\n            received.append(value)\\n            value[\\\"items\\\"].append(3)\\n            return value\\n        results = dispatch(payload, [first, second])\\n        self.assertEqual(calls, [\\\"first\\\", \\\"second\\\"])\\n        self.assertEqual(results, [{\\\"items\\\": [1, 2]}, {\\\"items\\\": [1, 3]}])\\n        self.assertIsNot(received[0], received[1])\\n        self.assertIsNot(received[0][\\\"items\\\"], received[1][\\\"items\\\"])\\n        self.assertEqual(payload, {\\\"items\\\": [1]})\\n''')\\ntry:\\n    original = (root / 'dispatch.py').read_text()\\n    target = '            raise ValueError(str(error)) from error'\\n    assert original.count(target) == 1\\n    variants = {}\\n    for label in ['correct', 'swallowed-error']:\\n        folder = scratch / label\\n        folder.mkdir()\\n        for name in ['AGENTS.md', 'dispatch.py', 'test_dispatch.py']:\\n            shutil.copy2(root / name, folder / name)\\n        if label != 'correct':\\n            (folder / 'dispatch.py').write_text(original.replace(target, '            results.append(None)'))\\n        assert (folder / 'test_dispatch.py').read_bytes() == (root / 'test_dispatch.py').read_bytes()\\n        (folder / 'test_regression.py').write_text(regression)\\n        digest = hashlib.sha256((folder / 'dispatch.py').read_bytes()).hexdigest()\\n        probe = f'''import hashlib\\nimport pathlib\\nimport dispatch\\nimport test_dispatch\\nimport test_regression\\nexpected = pathlib.Path({str(folder / 'dispatch.py')!r})\\nassert pathlib.Path(dispatch.__file__).resolve() == expected.resolve(), dispatch.__file__\\nassert pathlib.Path(dispatch.dispatch.__code__.co_filename).resolve() == expected.resolve()\\nassert hashlib.sha256(expected.read_bytes()).hexdigest() == {digest!r}\\nassert test_dispatch.dispatch is dispatch.dispatch\\nassert test_regression.dispatch is dispatch.dispatch\\nprint(\\\"PROVENANCE OK: \\\" + str(expected) + \\\" sha256={digest}\\\", flush=True)\\n'''\\n        (folder / 'variant_probe.py').write_text(probe)\\n        variants[label] = folder\\n    outcomes = []\\n    for suite in ['test_dispatch', 'test_regression']:\\n        for label, folder in variants.items():\\n            command = [python, '-B', '-m', 'unittest', '-v', 'variant_probe', suite]\\n            print(f'\\\\nRUN variant={label} suite={suite}\\\\ncwd={folder}\\\\ncommand={\\\" \\\".join(command)}', flush=True)\\n            result = subprocess.run(command, cwd=folder, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\\n            print(result.stdout, end='', flush=True)\\n            print(f'EXIT={result.returncode}', flush=True)\\n            outcomes.append((label, suite, result.returncode))\\n    assert outcomes == [('correct', 'test_dispatch', 0), ('swallowed-error', 'test_dispatch', 0), ('correct', 'test_regression', 0), ('swallowed-error', 'test_regression', 1)], outcomes\\nfinally:\\n    shutil.rmtree(scratch)\\n    assert not scratch.exists()\\n    assert snapshot() == before, 'Project files changed'\\n    assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root) == head\\n    assert subprocess.check_output(['git', 'ls-files', '--stage'], cwd=root) == index\\n    assert subprocess.check_output(['git', 'status', '--porcelain'], cwd=root) == status\\n    print('\\\\nCLEANUP OK; project file hashes, Git HEAD/index/status unchanged.', flush=True)\\nPY\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec0-11ef-7e91-abbe-dd04ac117ede",
+            "create_time": 1790443536.081203
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "ff9dcb35a4917c3114ec81b082ac079c1f04c5342b88ed7373e15bea8a820fb1",
+      "record": {
+        "timestamp": "2026-09-26T17:26:33.409Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dec1-1ec1-7021-b06b-c134e8864076",
+          "call_id": "call_NOqomIXpdF9VADQgTQGEw06e",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"1741d0\",\"wall_time_seconds\":0.218319583,\"exit_code\":0,\"original_token_count\":1446,\"output\":\"\\nRUN variant=correct suite=test_dispatch\\ncwd=<WORKSPACE>/.dispatch-audit-3p_i_yc8/correct\\ncommand=/opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v variant_probe test_dispatch\\nPROVENANCE OK: <WORKSPACE>/.dispatch-audit-3p_i_yc8/correct/dispatch.py sha256=49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39\\ntest_order (test_dispatch.DispatchTests.test_order) ... ok\\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nOK\\nEXIT=0\\n\\nRUN variant=swallowed-error suite=test_dispatch\\ncwd=<WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error\\ncommand=/opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v variant_probe test_dispatch\\nPROVENANCE OK: <WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error/dispatch.py sha256=5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752\\ntest_order (test_dispatch.DispatchTests.test_order) ... ok\\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nOK\\nEXIT=0\\n\\nRUN variant=correct suite=test_regression\\ncwd=<WORKSPACE>/.dispatch-audit-3p_i_yc8/correct\\ncommand=/opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v variant_probe test_regression\\nPROVENANCE OK: <WORKSPACE>/.dispatch-audit-3p_i_yc8/correct/dispatch.py sha256=49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39\\ntest_successful_dispatch_contract (test_regression.RegressionTests.test_successful_dispatch_contract) ... ok\\ntest_value_error_contract (test_regression.RegressionTests.test_value_error_contract) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nOK\\nEXIT=0\\n\\nRUN variant=swallowed-error suite=test_regression\\ncwd=<WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error\\ncommand=/opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v variant_probe test_regression\\nPROVENANCE OK: <WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error/dispatch.py sha256=5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752\\ntest_successful_dispatch_contract (test_regression.RegressionTests.test_successful_dispatch_contract) ... ok\\ntest_value_error_contract (test_regression.RegressionTests.test_value_error_contract) ... \\n  test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='exception type') ... FAIL\\n  test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='exception message') ... FAIL\\n  test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='stop before later handler') ... FAIL\\n\\n======================================================================\\nFAIL: test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='exception type')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error/test_regression.py\\\", line 25, in test_value_error_contract\\n    self.assertIs(type(caught), ValueError)\\nAssertionError: <class 'NoneType'> is not <class 'ValueError'>\\n\\n======================================================================\\nFAIL: test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='exception message')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error/test_regression.py\\\", line 27, in test_value_error_contract\\n    self.assertEqual(str(caught), \\\"handler rejected payload\\\")\\nAssertionError: 'None' != 'handler rejected payload'\\n- None\\n+ handler rejected payload\\n\\n\\n======================================================================\\nFAIL: test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='stop before later handler')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error/test_regression.py\\\", line 29, in test_value_error_contract\\n    self.assertEqual(calls, [\\\"first\\\", \\\"fail\\\"])\\nAssertionError: Lists differ: ['first', 'fail', 'later'] != ['first', 'fail']\\n\\nFirst list contains 1 additional elements.\\nFirst extra element 2:\\n'later'\\n\\n- ['first', 'fail', 'later']\\n?                 ---------\\n\\n+ ['first', 'fail']\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.001s\\n\\nFAILED (failures=3)\\nEXIT=1\\n\\nCLEANUP OK; project file hashes, Git HEAD/index/status unchanged.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec0-11ef-7e91-abbe-dd04ac117ede",
+            "create_time": 1790443593.409765
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

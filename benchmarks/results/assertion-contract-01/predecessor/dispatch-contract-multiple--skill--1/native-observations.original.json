@@ -1,0 +1,195 @@
+{
+  "status": "observed",
+  "audits": [
+    {
+      "status": "observed",
+      "checks": {
+        "correct_tests": {
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<WORKSPACE>/.con-artist-_dbimoel/correct-tests\"}\nVerified copied import: dispatch {\"path\":\"dispatch.py\",\"sha256\":\"49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39\"}\nVerified copied import: test_dispatch {\"path\":\"test_dispatch.py\",\"sha256\":\"3f5afc4e78777cc19ec5cbe93e3372b22aaea148c8788b83220142aa3e17c481\"}\nVERIFIED native test binding: <WORKSPACE>/.con-artist-_dbimoel/correct-tests/dispatch.py\nPrecheck completed in check process.\ntest_order (test_dispatch.DispatchTests.test_order) ... ok\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+          "output_truncated": false,
+          "command": [
+            "/opt/homebrew/opt/python@3.11/bin/python3.11",
+            "-B",
+            "-m",
+            "unittest",
+            "-v",
+            "test_dispatch"
+          ],
+          "invocation": "module",
+          "native_exit_code": 0,
+          "suite_observation": {
+            "tests": 2,
+            "skipped": 0,
+            "successful": true
+          }
+        },
+        "mutant_tests": {
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<WORKSPACE>/.con-artist-_dbimoel/mutant-tests\"}\nVerified copied import: dispatch {\"path\":\"dispatch.py\",\"sha256\":\"5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752\"}\nVerified copied import: test_dispatch {\"path\":\"test_dispatch.py\",\"sha256\":\"3f5afc4e78777cc19ec5cbe93e3372b22aaea148c8788b83220142aa3e17c481\"}\nVERIFIED native test binding: <WORKSPACE>/.con-artist-_dbimoel/mutant-tests/dispatch.py\nPrecheck completed in check process.\ntest_order (test_dispatch.DispatchTests.test_order) ... ok\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+          "output_truncated": false,
+          "command": [
+            "/opt/homebrew/opt/python@3.11/bin/python3.11",
+            "-B",
+            "-m",
+            "unittest",
+            "-v",
+            "test_dispatch"
+          ],
+          "invocation": "module",
+          "native_exit_code": 0,
+          "suite_observation": {
+            "tests": 2,
+            "skipped": 0,
+            "successful": true
+          }
+        },
+        "correct_probe": {
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<WORKSPACE>/.con-artist-_dbimoel/correct-probe\"}\nVerified copied import: dispatch {\"path\":\"dispatch.py\",\"sha256\":\"49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39\"}\nVerified copied import: test_dispatch {\"path\":\"test_dispatch.py\",\"sha256\":\"fc6521e643b7678c33f525fc51d0681b3daa3abcf706cbb4ae600607d1f9e84e\"}\nVERIFIED native test binding: <WORKSPACE>/.con-artist-_dbimoel/correct-probe/dispatch.py\nPrecheck completed in check process.\ntest_error_contract (test_dispatch.DispatchRegressionTests.test_error_contract) ... ok\ntest_success_contract (test_dispatch.DispatchRegressionTests.test_success_contract) ... ok\ntest_order (test_dispatch.DispatchTests.test_order) ... ok\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "output_truncated": false,
+          "command": [
+            "/opt/homebrew/opt/python@3.11/bin/python3.11",
+            "-B",
+            "-m",
+            "unittest",
+            "-v",
+            "test_dispatch"
+          ],
+          "invocation": "module",
+          "native_exit_code": 0,
+          "suite_observation": {
+            "tests": 4,
+            "skipped": 0,
+            "successful": true
+          }
+        },
+        "mutant_probe": {
+          "exit_code": 1,
+          "timed_out": false,
+          "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<WORKSPACE>/.con-artist-_dbimoel/mutant-probe\"}\nVerified copied import: dispatch {\"path\":\"dispatch.py\",\"sha256\":\"5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752\"}\nVerified copied import: test_dispatch {\"path\":\"test_dispatch.py\",\"sha256\":\"fc6521e643b7678c33f525fc51d0681b3daa3abcf706cbb4ae600607d1f9e84e\"}\nVERIFIED native test binding: <WORKSPACE>/.con-artist-_dbimoel/mutant-probe/dispatch.py\nPrecheck completed in check process.\ntest_error_contract (test_dispatch.DispatchRegressionTests.test_error_contract) ... \n  test_error_contract (test_dispatch.DispatchRegressionTests.test_error_contract) (contract='exception type and message') ... FAIL\n  test_error_contract (test_dispatch.DispatchRegressionTests.test_error_contract) (contract='stop and registration order') ... FAIL\ntest_success_contract (test_dispatch.DispatchRegressionTests.test_success_contract) ... ok\ntest_order (test_dispatch.DispatchTests.test_order) ... ok\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok\n\n======================================================================\nFAIL: test_error_contract (test_dispatch.DispatchRegressionTests.test_error_contract) (contract='exception type and message')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-_dbimoel/mutant-probe/test_dispatch.py\", line 39, in test_error_contract\n    with self.assertRaises(ValueError) as caught:\nAssertionError: ValueError not raised\n\n======================================================================\nFAIL: test_error_contract (test_dispatch.DispatchRegressionTests.test_error_contract) (contract='stop and registration order')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-_dbimoel/mutant-probe/test_dispatch.py\", line 44, in test_error_contract\n    self.assertEqual(calls, [\"first\", \"fail\"])\nAssertionError: Lists differ: ['first', 'fail', 'later'] != ['first', 'fail']\n\nFirst list contains 1 additional elements.\nFirst extra element 2:\n'later'\n\n- ['first', 'fail', 'later']\n?                 ---------\n\n+ ['first', 'fail']\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=2)\n",
+          "output_truncated": false,
+          "command": [
+            "/opt/homebrew/opt/python@3.11/bin/python3.11",
+            "-B",
+            "-m",
+            "unittest",
+            "-v",
+            "test_dispatch"
+          ],
+          "invocation": "module",
+          "native_exit_code": 1,
+          "suite_observation": {
+            "tests": 4,
+            "skipped": 0,
+            "successful": false
+          }
+        }
+      },
+      "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+      "integrity": {
+        "selected_files": 2,
+        "selected_original_bytes_and_modes_unchanged": true,
+        "owned_scratch_removed": true,
+        "project_guard": {
+          "unchanged": true,
+          "entries": 51,
+          "file_bytes": 108710,
+          "scope": "source root including Git metadata; symlink targets not read"
+        }
+      }
+    },
+    {
+      "status": "observed",
+      "checks": {
+        "correct_tests": {
+          "exit_code": 0,
+          "timed_out": false,
+          "observation_ref": "#/audits/0/checks/correct_tests"
+        },
+        "mutant_tests": {
+          "exit_code": 1,
+          "timed_out": false,
+          "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<WORKSPACE>/.con-artist-rjn3g_ou/mutant-tests\"}\nVerified copied import: dispatch {\"path\":\"dispatch.py\",\"sha256\":\"da5dfec26ce6bf15b6bd1fdcb58746d7f6e928b708b6c4a967d9c6fac80ae86c\"}\nVerified copied import: test_dispatch {\"path\":\"test_dispatch.py\",\"sha256\":\"3f5afc4e78777cc19ec5cbe93e3372b22aaea148c8788b83220142aa3e17c481\"}\nVERIFIED native test binding: <WORKSPACE>/.con-artist-rjn3g_ou/mutant-tests/dispatch.py\nPrecheck completed in check process.\ntest_order (test_dispatch.DispatchTests.test_order) ... FAIL\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... FAIL\n\n======================================================================\nFAIL: test_order (test_dispatch.DispatchTests.test_order)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-rjn3g_ou/mutant-tests/test_dispatch.py\", line 7, in test_order\n    self.assertEqual(dispatch({\"id\": 1}, [lambda p: \"first\", lambda p: \"second\"]), [\"first\", \"second\"])\nAssertionError: Lists differ: ['second', 'first'] != ['first', 'second']\n\nFirst differing element 0:\n'second'\n'first'\n\n- ['second', 'first']\n+ ['first', 'second']\n\n======================================================================\nFAIL: test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-rjn3g_ou/mutant-tests/test_dispatch.py\", line 14, in test_payload_isolation\n    self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{\"items\": [1, 2]}, {\"items\": [1]}])\nAssertionError: Lists differ: [{'items': [1]}, {'items': [1, 2]}] != [{'items': [1, 2]}, {'items': [1]}]\n\nFirst differing element 0:\n{'items': [1]}\n{'items': [1, 2]}\n\n- [{'items': [1]}, {'items': [1, 2]}]\n?                              ---\n\n+ [{'items': [1, 2]}, {'items': [1]}]\n?              +++\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nFAILED (failures=2)\n",
+          "output_truncated": false,
+          "command": [
+            "/opt/homebrew/opt/python@3.11/bin/python3.11",
+            "-B",
+            "-m",
+            "unittest",
+            "-v",
+            "test_dispatch"
+          ],
+          "invocation": "module",
+          "native_exit_code": 1,
+          "suite_observation": {
+            "tests": 2,
+            "skipped": 0,
+            "successful": false
+          }
+        }
+      },
+      "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+      "correct_tests_reused": true,
+      "integrity": {
+        "selected_files": 2,
+        "selected_original_bytes_and_modes_unchanged": true,
+        "owned_scratch_removed": true,
+        "project_guard": {
+          "unchanged": true,
+          "entries": 51,
+          "file_bytes": 108710,
+          "scope": "source root including Git metadata; symlink targets not read"
+        }
+      }
+    },
+    {
+      "status": "observed",
+      "checks": {
+        "correct_tests": {
+          "exit_code": 0,
+          "timed_out": false,
+          "observation_ref": "#/audits/0/checks/correct_tests"
+        },
+        "mutant_tests": {
+          "exit_code": 1,
+          "timed_out": false,
+          "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<WORKSPACE>/.con-artist-b_hq8aso/mutant-tests\"}\nVerified copied import: dispatch {\"path\":\"dispatch.py\",\"sha256\":\"cc0b5b61415399447d97096fec867d482f73e746665ffb140d0ba560265948b4\"}\nVerified copied import: test_dispatch {\"path\":\"test_dispatch.py\",\"sha256\":\"3f5afc4e78777cc19ec5cbe93e3372b22aaea148c8788b83220142aa3e17c481\"}\nVERIFIED native test binding: <WORKSPACE>/.con-artist-b_hq8aso/mutant-tests/dispatch.py\nPrecheck completed in check process.\ntest_order (test_dispatch.DispatchTests.test_order) ... ok\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... FAIL\n\n======================================================================\nFAIL: test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-b_hq8aso/mutant-tests/test_dispatch.py\", line 14, in test_payload_isolation\n    self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{\"items\": [1, 2]}, {\"items\": [1]}])\nAssertionError: Lists differ: [{'items': [1, 2]}, {'items': [1, 2]}] != [{'items': [1, 2]}, {'items': [1]}]\n\nFirst differing element 1:\n{'items': [1, 2]}\n{'items': [1]}\n\n- [{'items': [1, 2]}, {'items': [1, 2]}]\n?                                 ---\n\n+ [{'items': [1, 2]}, {'items': [1]}]\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nFAILED (failures=1)\n",
+          "output_truncated": false,
+          "command": [
+            "/opt/homebrew/opt/python@3.11/bin/python3.11",
+            "-B",
+            "-m",
+            "unittest",
+            "-v",
+            "test_dispatch"
+          ],
+          "invocation": "module",
+          "native_exit_code": 1,
+          "suite_observation": {
+            "tests": 2,
+            "skipped": 0,
+            "successful": false
+          }
+        }
+      },
+      "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+      "correct_tests_reused": true,
+      "integrity": {
+        "selected_files": 2,
+        "selected_original_bytes_and_modes_unchanged": true,
+        "owned_scratch_removed": true,
+        "project_guard": {
+          "unchanged": true,
+          "entries": 51,
+          "file_bytes": 108710,
+          "scope": "source root including Git metadata; symlink targets not read"
+        }
+      }
+    }
+  ],
+  "limitation": "Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled."
+}

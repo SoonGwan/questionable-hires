@@ -1,0 +1,244 @@
+
+RUN: correct original 
+CWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/correct 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_dispatch
+test_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/correct/dispatch.py SHA256: 49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39
+ok
+test_order (test_dispatch.DispatchTests.test_order) ... ok
+test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+EXIT: 0
+
+RUN: correct focused 
+CWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/correct 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_regression
+test_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/correct/dispatch.py SHA256: 49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39
+ok
+test_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers) ... ok
+test_error_type_and_message (test_regression.RegressionTests.test_error_type_and_message) ... ok
+test_nearby_success (test_regression.RegressionTests.test_nearby_success) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK
+EXIT: 0
+
+RUN: swallowed-error original 
+CWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_dispatch
+test_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error/dispatch.py SHA256: 5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752
+ok
+test_order (test_dispatch.DispatchTests.test_order) ... ok
+test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+EXIT: 0
+
+RUN: swallowed-error focused 
+CWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_regression
+test_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error/dispatch.py SHA256: 5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752
+ok
+test_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers) ... FAIL
+test_error_type_and_message (test_regression.RegressionTests.test_error_type_and_message) ... FAIL
+test_nearby_success (test_regression.RegressionTests.test_nearby_success) ... ok
+
+======================================================================
+FAIL: test_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error/test_regression.py", line 25, in test_error_stops_later_handlers
+    self.assertEqual(calls, ['fail'])
+AssertionError: Lists differ: ['fail', 'later'] != ['fail']
+
+First list contains 1 additional elements.
+First extra element 1:
+'later'
+
+- ['fail', 'later']
++ ['fail']
+
+======================================================================
+FAIL: test_error_type_and_message (test_regression.RegressionTests.test_error_type_and_message)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error/test_regression.py", line 8, in test_error_type_and_message
+    with self.assertRaises(ValueError) as caught:
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+FAILED (failures=2)
+EXIT: 1
+
+RUN: reversed-handlers original 
+CWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_dispatch
+test_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/dispatch.py SHA256: da5dfec26ce6bf15b6bd1fdcb58746d7f6e928b708b6c4a967d9c6fac80ae86c
+ok
+test_order (test_dispatch.DispatchTests.test_order) ... FAIL
+test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... FAIL
+
+======================================================================
+FAIL: test_order (test_dispatch.DispatchTests.test_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/test_dispatch.py", line 7, in test_order
+    self.assertEqual(dispatch({"id": 1}, [lambda p: "first", lambda p: "second"]), ["first", "second"])
+AssertionError: Lists differ: ['second', 'first'] != ['first', 'second']
+
+First differing element 0:
+'second'
+'first'
+
+- ['second', 'first']
++ ['first', 'second']
+
+======================================================================
+FAIL: test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/test_dispatch.py", line 14, in test_payload_isolation
+    self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{"items": [1, 2]}, {"items": [1]}])
+AssertionError: Lists differ: [{'items': [1]}, {'items': [1, 2]}] != [{'items': [1, 2]}, {'items': [1]}]
+
+First differing element 0:
+{'items': [1]}
+{'items': [1, 2]}
+
+- [{'items': [1]}, {'items': [1, 2]}]
+?                              ---
+
++ [{'items': [1, 2]}, {'items': [1]}]
+?              +++
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+FAILED (failures=2)
+EXIT: 1
+
+RUN: reversed-handlers focused 
+CWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_regression
+test_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/dispatch.py SHA256: da5dfec26ce6bf15b6bd1fdcb58746d7f6e928b708b6c4a967d9c6fac80ae86c
+ok
+test_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers) ... FAIL
+test_error_type_and_message (test_regression.RegressionTests.test_error_type_and_message) ... ok
+test_nearby_success (test_regression.RegressionTests.test_nearby_success) ... FAIL
+
+======================================================================
+FAIL: test_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/test_regression.py", line 25, in test_error_stops_later_handlers
+    self.assertEqual(calls, ['fail'])
+AssertionError: Lists differ: ['later', 'fail'] != ['fail']
+
+First differing element 0:
+'later'
+'fail'
+
+First list contains 1 additional elements.
+First extra element 1:
+'fail'
+
+- ['later', 'fail']
++ ['fail']
+
+======================================================================
+FAIL: test_nearby_success (test_regression.RegressionTests.test_nearby_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/test_regression.py", line 38, in test_nearby_success
+    self.assertEqual(calls, ['first', 'second'])
+AssertionError: Lists differ: ['second', 'first'] != ['first', 'second']
+
+First differing element 0:
+'second'
+'first'
+
+- ['second', 'first']
++ ['first', 'second']
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+FAILED (failures=2)
+EXIT: 1
+
+RUN: shared-payload original 
+CWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_dispatch
+test_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload/dispatch.py SHA256: cc0b5b61415399447d97096fec867d482f73e746665ffb140d0ba560265948b4
+ok
+test_order (test_dispatch.DispatchTests.test_order) ... ok
+test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... FAIL
+
+======================================================================
+FAIL: test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload/test_dispatch.py", line 14, in test_payload_isolation
+    self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{"items": [1, 2]}, {"items": [1]}])
+AssertionError: Lists differ: [{'items': [1, 2]}, {'items': [1, 2]}] != [{'items': [1, 2]}, {'items': [1]}]
+
+First differing element 1:
+{'items': [1, 2]}
+{'items': [1]}
+
+- [{'items': [1, 2]}, {'items': [1, 2]}]
+?                                 ---
+
++ [{'items': [1, 2]}, {'items': [1]}]
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+FAILED (failures=1)
+EXIT: 1
+
+RUN: shared-payload focused 
+CWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_regression
+test_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload/dispatch.py SHA256: cc0b5b61415399447d97096fec867d482f73e746665ffb140d0ba560265948b4
+ok
+test_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers) ... ok
+test_error_type_and_message (test_regression.RegressionTests.test_error_type_and_message) ... ok
+test_nearby_success (test_regression.RegressionTests.test_nearby_success) ... FAIL
+
+======================================================================
+FAIL: test_nearby_success (test_regression.RegressionTests.test_nearby_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload/test_regression.py", line 39, in test_nearby_success
+    self.assertEqual(results, [{'items': [1, 2]}, {'items': [1]}])
+AssertionError: Lists differ: [{'items': [1, 2]}, {'items': [1, 2]}] != [{'items': [1, 2]}, {'items': [1]}]
+
+First differing element 1:
+{'items': [1, 2]}
+{'items': [1]}
+
+- [{'items': [1, 2]}, {'items': [1, 2]}]
+?                                 ---
+
++ [{'items': [1, 2]}, {'items': [1]}]
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+FAILED (failures=1)
+EXIT: 1
+
+SCRATCH REMOVED: True
+ALL ORIGINAL FILES AND GIT CONTENT UNCHANGED: True

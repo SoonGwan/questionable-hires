@@ -5,11 +5,14 @@ whole-task tokens and faster completion. The update remains unfinished until
 quality, resource and delivery requirements have direct evidence. “Perfect” is
 not an empirically proven universal guarantee.
 
-## Active measured screen
+## Completed first measured screen — whole objective unfinished
 
 Assertion-contract01, inputs `f241f94d`, pinned candidate `33530f98` versus
 predecessor `5f94777a` and no-skill control. Six fresh serial sessions, two new
 correlated authored tasks; [frozen protocol](../benchmarks/ASSERTION-CONTRACT-01-PROTOCOL.md).
+All six sessions finished and were reviewed: candidate versus no skill summed
+tokens+36.43%, time−12.01%; versus predecessor tokens−3.17%, time+6.88%.
+[Complete reviewed result](../benchmarks/ASSERTION-CONTRACT-01-REVIEW.md).
 Four native setup controls passed; exclusive scheduler's eight controls passed.
 Codex CLI observed at launch: 0.157.1. Private run storage:
 `/tmp/qh-assertion-contract-01`; never publish raw private sessions.
@@ -46,6 +49,5 @@ No completed release, new efficiency result or change to featured.json is claime
 by this work log. The whole objective remains active, including roles not yet
 covered by assertion-contract01.
 
-한국어: 목표는 8개 역할 전체의 작업 품질·토큰·시간 개선이다. 현재 첫6회 비교를
-실행 중이며, 모든 결과 검토·전체 역할 검증·설치/회귀·다국어 배포 확인이 남는다.
+한국어: 목표는 8개 역할 전체의 작업 품질·토큰·시간 개선이다. 첫6회 비교는 완료됐지만 동시 개선은 없었으며, 모든 결과 검토·전체 역할 검증·설치/회귀·다국어 배포 확인이 남는다.
 단일 지침 수정이나 유리한 한 과제만으로 목표 달성을 선언하지 않는다.
