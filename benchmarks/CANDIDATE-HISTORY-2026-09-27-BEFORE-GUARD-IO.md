@@ -1,3 +1,5 @@
+# Historical index before Receipt guard I/O01 — 2026-09-27
+
 # Current candidate: whole-task improvement remains unproven
 
 Decision checkpoint **2026-09-27, model-choice01 matching-skill bundle `6701069f`**.
@@ -44,14 +46,6 @@ integration05(2026-09-27,`75183f2f`)의16회 원본 토큰은 일치하지만
 이를 일반적인 스킬 우월성으로 해석하지 않는다. 8개 역할 전체의 목표는 미달이다.
 
 ## Local functionality and delivery evidence
-
-- [Receipt guard I/O01 rejection](RECEIPT-GUARD-IO-01.md),2026-09-27,
-  repository`d4bacdf6`,unchanged skill resource`6701069f`: single-pass prototype
-  misses a watched-file mutation that the original detects. Helper restored;
-  new native regression passes with15 checkout/Git-free controls and fails on
-  the rejected helper. Under1ms author pass savings are not whole-task/token gains.
-  한국어: 보존 검사 약화를 실제 반례로 확인해 시제품을 폐기했다. 도구 변경 없이
-  회귀 검사만 보완했으며 전체 성능 개선이나 출시 검증은 아니다.
 
 - [Evidence delivery and language links](../docs/LANDING-EVIDENCE-DELIVERY-2026-09-27.md),
   2026-09-27,deployed`0c6223d3`:16 archive tests;14 public open-table layouts,

@@ -1,0 +1,202 @@
+diff --git a/skills/receipt/scripts/compare.py b/skills/receipt/scripts/compare.py
+index 95b7035d..db9acab2 100644
+--- a/skills/receipt/scripts/compare.py
++++ b/skills/receipt/scripts/compare.py
+@@ -386,9 +386,15 @@ def read_limited(path, limit):
+         return stream.read(limit + 1)
+ 
+ 
+-def tree_inventory(root):
+-    """Bounded read-only inventory; record links, never their target contents."""
++def tree_inventory(root, *, selected=None):
++    """Bounded inventory; optionally verify selected captured bytes in the same read.
++
++    selected is an internal path -> (immutable bytes, permission bits) mapping.
++    Links are recorded without following their targets. No mutable reads reused.
++    """
+     inventory, pending, total = {}, [root], 0
++    selected = {} if selected is None else selected
++    changed = set()
+     while pending:
+         path = pending.pop()
+         name = path.relative_to(root).as_posix()
+@@ -409,10 +415,13 @@ def tree_inventory(root):
+             if info.st_size > MAX_GUARD_BYTES - total:
+                 raise ValueError('Tree guard exceeds 20 MB per inventory')
+             digest = hashlib.sha256()
++            offset = 0
+             descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+             with os.fdopen(descriptor, 'rb') as stream:
+                 opened = os.fstat(stream.fileno())
+-                if not stat.S_ISREG(opened.st_mode) or (opened.st_dev, opened.st_ino) != (info.st_dev, info.st_ino):
++                if (not stat.S_ISREG(opened.st_mode)
++                        or (opened.st_dev, opened.st_ino, opened.st_mode)
++                        != (info.st_dev, info.st_ino, info.st_mode)):
+                     raise ValueError('Tree guard file changed while opening')
+                 while True:
+                     chunk = stream.read(min(65536, MAX_GUARD_BYTES - total + 1))
+@@ -422,9 +431,23 @@ def tree_inventory(root):
+                     if total > MAX_GUARD_BYTES:
+                         raise ValueError('Tree guard exceeds 20 MB per inventory')
+                     digest.update(chunk)
++                    if name in selected and chunk != selected[name][0][offset:offset + len(chunk)]:
++                        changed.add(name)
++                    offset += len(chunk)
++            if name in selected:
++                final = path.lstat()
++                if (offset != len(selected[name][0]) or not stat.S_ISREG(final.st_mode)
++                        or stat.S_IMODE(final.st_mode) & 0o777 != selected[name][1]):
++                    changed.add(name)
+             inventory[name] = ('file', mode, digest.hexdigest())
+         else:
+             raise ValueError('Tree guard supports only files, directories and symlinks')
++    for name, (_, expected_mode) in selected.items():
++        observed = inventory.get(name)
++        if observed is None or observed[0] != 'file' or observed[1] & 0o777 != expected_mode:
++            changed.add(name)
++    if changed:
++        raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(sorted(changed)))
+     return inventory, total
+ 
+ 
+@@ -612,13 +635,15 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
+                     result['status'] = 'incomplete'
+                     break
+     finally:
+-        changed = [name for name, content in originals.items() if (root/name).is_symlink()
+-                   or not (root/name).is_file() or read_limited(root/name, len(content)) != content
+-                   or (root/name).stat().st_mode & 0o777 != modes[name]]
+-        if changed:
+-            raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))
+-        if guarded is not None:
+-            current, _ = tree_inventory(root)
++        if guarded is None:
++            changed = [name for name, content in originals.items() if (root/name).is_symlink()
++                       or not (root/name).is_file() or read_limited(root/name, len(content)) != content
++                       or (root/name).stat().st_mode & 0o777 != modes[name]]
++            if changed:
++                raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))
++        else:
++            current, _ = tree_inventory(root, selected={
++                name: (content, modes[name]) for name, content in originals.items()})
+             previous, byte_count = guarded
+             differences = sorted(name for name in previous.keys() | current.keys()
+                                  if previous.get(name) != current.get(name))
+diff --git a/tests/test_receipt_tree_guard.py b/tests/test_receipt_tree_guard.py
+index d6dc8c65..e1d8c8f2 100644
+--- a/tests/test_receipt_tree_guard.py
++++ b/tests/test_receipt_tree_guard.py
+@@ -18,6 +18,113 @@ class ReceiptTreeGuardTests(unittest.TestCase):
+     git = fixture.ReceiptHelperTests.git
+     commit = fixture.ReceiptHelperTests.commit
+ 
++    def test_guarded_selected_inputs_are_opened_once_per_inventory(self):
++        selected = {self.root.resolve() / name for name in self.recipe['fixed'] + self.recipe['vary']}
++        with patch.object(helper.os, 'open', wraps=os.open) as opened:
++            result = helper.compare(self.root, dict(self.recipe, guard_tree=True))
++        for path in selected:
++            self.assertEqual(sum(Path(call.args[0]) == path for call in opened.call_args_list), 3,
++                             'capture, before guard, after guard; no duplicate final selected read')
++        self.assertEqual(result['checks']['before']['exit_code'], 1)
++        self.assertIn('AssertionError: False is not true', result['checks']['before']['output'])
++        self.assertEqual(result['checks']['after']['exit_code'], 0)
++        self.assertIn('Ran 1 test', result['checks']['after']['output'])
++        self.assertTrue(result['originals']['unchanged'])
++        self.assertTrue(result['tree_guard']['unchanged'])
++
++    def test_selected_change_before_initial_guard_is_not_hidden(self):
++        original = helper.tree_inventory
++        calls = []
++        def inventory(root, **kwargs):
++            if not calls:
++                (root / 'rule.py').write_text('def allowed(age): return False\n')
++            calls.append(root)
++            return original(root, **kwargs)
++        with patch.object(helper, 'tree_inventory', side_effect=inventory):
++            with self.assertRaisesRegex(RuntimeError, 'Selected originals changed.*rule.py'):
++                helper.compare(self.root, dict(self.recipe, guard_tree=True))
++        self.assertEqual((self.root / 'rule.py').read_text(), 'def allowed(age): return False\n')
++        self.assertFalse(list(self.root.glob('.receipt-*')))
++
++    def test_selected_exact_bytes_permissions_and_links_in_guard_stream(self):
++        path = self.root / 'watched.bin'
++        expected = bytes(range(256)) * 513
++        path.write_bytes(expected)
++        path.chmod(0o600)
++        selected = {'watched.bin': (expected, 0o600)}
++        self.assertEqual(helper.tree_inventory(self.root, selected=selected), helper.tree_inventory(self.root))
++        for position in (0, 65535, 65536, len(expected) - 1):
++            with self.subTest(position=position):
++                mutated = bytearray(expected)
++                mutated[position] ^= 1
++                path.write_bytes(mutated)
++                with self.assertRaisesRegex(RuntimeError, 'Selected originals changed.*watched.bin'):
++                    helper.tree_inventory(self.root, selected=selected)
++        for content in (expected[:-1], expected + b'x', b''):
++            with self.subTest(length=len(content)):
++                path.write_bytes(content)
++                with self.assertRaisesRegex(RuntimeError, 'Selected originals changed.*watched.bin'):
++                    helper.tree_inventory(self.root, selected=selected)
++        path.write_bytes(expected)
++        path.chmod(0o644)
++        with self.assertRaisesRegex(RuntimeError, 'Selected originals changed.*watched.bin'):
++            helper.tree_inventory(self.root, selected=selected)
++        path.unlink()
++        with self.assertRaisesRegex(RuntimeError, 'Selected originals changed.*watched.bin'):
++            helper.tree_inventory(self.root, selected=selected)
++        path.symlink_to('missing-target')
++        with self.assertRaisesRegex(RuntimeError, 'Selected originals changed.*watched.bin'):
++            helper.tree_inventory(self.root, selected=selected)
++        self.assertTrue(path.is_symlink())
++
++    def test_guard_rejects_observed_permission_change_while_opening(self):
++        path = self.root / 'watched.bin'
++        path.write_bytes(b'original')
++        path.chmod(0o600)
++        identity = path.stat()
++        original = os.fstat
++        def fstat(descriptor):
++            observed = original(descriptor)
++            if (observed.st_dev, observed.st_ino) == (identity.st_dev, identity.st_ino):
++                path.chmod(0o644)
++                return original(descriptor)
++            return observed
++        with patch.object(helper.os, 'fstat', side_effect=fstat):
++            with self.assertRaisesRegex(ValueError, 'file changed while opening'):
++                helper.tree_inventory(self.root, selected={'watched.bin': (b'original', 0o600)})
++        self.assertEqual(path.stat().st_mode & 0o777, 0o644)
++
++    def test_selected_permission_change_during_read_is_rejected(self):
++        path = self.root / 'watched.bin'
++        path.write_bytes(b'original')
++        path.chmod(0o600)
++        identity = path.stat()
++        original = os.fdopen
++        class ChangedStream:
++            def __init__(self, stream):
++                self.stream = stream
++            def __enter__(self):
++                return self
++            def __exit__(self, *args):
++                return self.stream.__exit__(*args)
++            def fileno(self):
++                return self.stream.fileno()
++            def read(self, count):
++                data = self.stream.read(count)
++                if data:
++                    path.chmod(0o644)
++                return data
++        def fdopen(descriptor, *args):
++            observed = os.fstat(descriptor)
++            stream = original(descriptor, *args)
++            if (observed.st_dev, observed.st_ino) == (identity.st_dev, identity.st_ino):
++                return ChangedStream(stream)
++            return stream
++        with patch.object(helper.os, 'fdopen', side_effect=fdopen):
++            with self.assertRaisesRegex(RuntimeError, 'Selected originals changed.*watched.bin'):
++                helper.tree_inventory(self.root, selected={'watched.bin': (b'original', 0o600)})
++        self.assertEqual(path.stat().st_mode & 0o777, 0o644)
++
+     def test_native_comparison_preserves_whole_tree_without_listing_hashes(self):
+         (self.root / 'unrelated.bin').write_bytes(b'\x00\xfforiginal')
+         (self.root / 'empty').mkdir()

@@ -18,6 +18,49 @@ class ReceiptTreeGuardTests(unittest.TestCase):
     git = fixture.ReceiptHelperTests.git
     commit = fixture.ReceiptHelperTests.commit
 
+    def test_guard_detects_watch_change_after_selected_read(self):
+        watched = self.root / 'notes.txt'
+        watched.write_bytes(b'original')
+        watched.chmod(0o600)
+        identity = watched.stat()
+        original_fdopen, original_check = os.fdopen, helper.run_check
+        state = {'checks': [], 'mutated': False}
+        class Stream:
+            def __init__(self, stream):
+                self.stream = stream
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return self.stream.__exit__(*args)
+            def fileno(self):
+                return self.stream.fileno()
+            def read(self, count):
+                data = self.stream.read(count)
+                if data and len(state['checks']) == 2 and not state['mutated']:
+                    watched.write_bytes(b'changed!')
+                    state['mutated'] = True
+                return data
+        def fdopen(descriptor, *args):
+            observed = os.fstat(descriptor)
+            stream = original_fdopen(descriptor, *args)
+            if (observed.st_dev, observed.st_ino) == (identity.st_dev, identity.st_ino):
+                return Stream(stream)
+            return stream
+        def check(*args, **kwargs):
+            result = original_check(*args, **kwargs)
+            state['checks'].append(result)
+            return result
+        with patch.object(helper.os, 'fdopen', side_effect=fdopen), \
+                patch.object(helper, 'run_check', side_effect=check):
+            with self.assertRaisesRegex(RuntimeError, 'Project tree changed.*notes.txt'):
+                helper.compare(self.root, dict(self.recipe, watch=['notes.txt'], guard_tree=True))
+        self.assertTrue(state['mutated'])
+        self.assertEqual([result['exit_code'] for result in state['checks']], [1, 0])
+        self.assertIn('AssertionError: False is not true', state['checks'][0]['output'])
+        self.assertIn('Ran 1 test', state['checks'][1]['output'])
+        self.assertEqual(watched.read_bytes(), b'changed!')
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
     def test_native_comparison_preserves_whole_tree_without_listing_hashes(self):
         (self.root / 'unrelated.bin').write_bytes(b'\x00\xfforiginal')
         (self.root / 'empty').mkdir()
