@@ -14,7 +14,7 @@ produces exactly the same selected excerpt; malformed extra tail still rejects.
 CR/LF/Unicode and chunk boundaries are covered. [Checkout49](results/history-body-offset-01/after.txt)
 and [Git-free49](results/history-body-offset-01/git-free.txt) pass without skips.
 The first archive omitted the scratch benchmarks directory and had5 setup errors;
-[original failure](results/history-body-offset-01/git-free-first.txt) retained and
+[original failure](results/history-body-offset-01/git-free-first.txt.gz) retained and
 archive corrected. Those setup errors are not defect reproduction or passing tests.
 
 Author traced peak: **2,717,506→259,653bytes**,about90.45% less. Input allocated
