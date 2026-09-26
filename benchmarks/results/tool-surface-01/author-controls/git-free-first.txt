@@ -1,0 +1,32 @@
+test_execution_injects_each_condition_and_restores_process_function (test_tool_surface_01.SurfaceControls.test_execution_injects_each_condition_and_restores_process_function) ... ERROR
+test_frozen_flag_drift_rejected_before_attempt (test_tool_surface_01.SurfaceControls.test_frozen_flag_drift_rejected_before_attempt) ... ok
+test_interruption_cannot_restart (test_tool_surface_01.SurfaceControls.test_interruption_cannot_restart) ... ok
+test_only_codex_exec_gets_flags_without_losing_process_options (test_tool_surface_01.SurfaceControls.test_only_codex_exec_gets_flags_without_losing_process_options) ... ok
+test_preflight_failure_creates_no_output (test_tool_surface_01.SurfaceControls.test_preflight_failure_creates_no_output) ... ok
+test_three_fresh_baseline_calls_and_exclusive_marker (test_tool_surface_01.SurfaceControls.test_three_fresh_baseline_calls_and_exclusive_marker) ... ok
+test_uncompleted_or_limit_stops_and_keeps_schedule (test_tool_surface_01.SurfaceControls.test_uncompleted_or_limit_stops_and_keeps_schedule) ... ok
+
+======================================================================
+ERROR: test_execution_injects_each_condition_and_restores_process_function (test_tool_surface_01.SurfaceControls.test_execution_injects_each_condition_and_restores_process_function)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<TEMP>", line 40, in test_execution_injects_each_condition_and_restores_process_function
+    runner.execute(self.output,manifest)
+  File "<TEMP>", line 67, in execute
+    if any(manifest.get(k)!=v for k,v in frozen().items()) or manifest['completed']:
+                                         ^^^^^^^^
+  File "<TEMP>", line 31, in frozen
+    cli_version=subprocess.check_output(["codex", "--version"], text=True).strip())))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+    ^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.222s
+
+FAILED (errors=1)
