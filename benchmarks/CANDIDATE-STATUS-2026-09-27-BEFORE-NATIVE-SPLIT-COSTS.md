@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-27, native-split02 cost reconciliation for `6c099d68`; native quality review incomplete**.
+Decision checkpoint **2026-09-27, assertion-contract01 reviewed candidate `33530f98`, inputs `f241f94d`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -15,22 +15,6 @@ readiness. No public-release approval or successful hosted matrix is claimed.
 도구 테스트 통과, 모델 성능 실증, 공개 배포 준비는 서로 다른 조건이다.
 
 ## Model evidence that governs claims
-
-[Native-split02 recorded costs](NATIVE-SPLIT-02-COSTS.json), candidate `6c099d68`,
-[protocol](NATIVE-SPLIT-02-PROTOCOL.md): all six per-response counters reconcile.
-Summed tokens baseline203,262 / predecessor320,765 / candidate290,769.
-Candidate versus baseline **+43.05%**; versus predecessor **−9.35%**.
-Cached input is included once. Repeated conversation/tool input counts at each
-response. No billing or causal attribution follows. Native quality review remains
-incomplete: predecessor/multiple retained output has a truncation. Do not claim
-all criteria pass or promote this cost-only result into the featured benchmark.
-The [prior dated index](CANDIDATE-STATUS-2026-09-27-BEFORE-NATIVE-SPLIT-COSTS.md)
-preserves the preceding decision checkpoint.
-
-한국어: native-split02의 응답별 토큰 합계는 원본과 일치한다. 후보는 이전 버전보다
-9.35% 적지만 무스킬보다43.05% 많다. 캐시 중복 계산 오류가 아니며 대화·도구
-결과가 매 응답 입력에 누적된다. 네이티브 품질 검토는 출력 잘림 때문에 미완료이고,
-전체 개선이나 대표 실험 교체로 해석하지 않는다.
 
 [Receipt versions01](RECEIPT-VERSIONS-01-REVIEW.md), current`e075bdb`, completed
 six authored single/multiple-version cells. Current versus baseline summed
