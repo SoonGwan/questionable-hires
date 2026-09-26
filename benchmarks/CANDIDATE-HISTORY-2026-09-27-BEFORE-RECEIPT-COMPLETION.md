@@ -1,3 +1,5 @@
+# Historical index before Receipt completion01
+
 # Current candidate: whole-task improvement remains unproven
 
 Decision checkpoint **2026-09-27, integration05 bundle `75183f2f`**.
@@ -78,19 +80,6 @@ whole-task tokens and faster completion. No completed update or broad saving.
 파일에 소급하지 않는다. 공개 이력 검토와 최종 릴리스 준비도 미완료다.
 
 ## Scoped candidate and next required work
-
-[Receipt module completion01](RECEIPT-NATIVE-COMPLETION-01.md),2026-09-27,
-candidate on parent`96d43558`, corrects native body early-exit and shutdown/status
-contradictions:missing completed unittest results stop later comparisons. Final16
-native controls and Git-free source-copy controls pass; draft196 Receipt tests
-precede the final empty-exit compatibility adjustment. Exact source hashes and
-original/separate author evidence remain linked. No new model saving or full
-release claim; integration05 still measures`75183f2f`. Previous index is preserved
-in [dated history](CANDIDATE-HISTORY-2026-09-27-BEFORE-RECEIPT-COMPLETION.md).
-
-한국어: Receipt의 검사 중 종료·결과 불일치 처리를 보강했다. 최종 네이티브16개
-검사는 통과했지만 모델 토큰·시간 비교는 없으며 전체8개 역할 목표는 미달이다.
-
 
 
 [Native transcript output prototype01](NATIVE-TRANSCRIPT-FORMAT-01.md),2026-09-27,

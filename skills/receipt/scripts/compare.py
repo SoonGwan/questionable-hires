@@ -148,6 +148,18 @@ def _receipt_startup():
                 'path': str(pathlib.Path(location).resolve()), 'pid': os.getpid()
             }), flush=True)
         verify_module_bindings(recipe, root)
+        import unittest
+        original_run = unittest.TestProgram.runTests
+        def observed_run(program):
+            try:
+                return original_run(program)
+            finally:
+                result = getattr(program, 'result', None)
+                if result is not None:
+                    observation = dict(tests=result.testsRun, skipped=len(result.skipped),
+                                       successful=result.wasSuccessful())
+                    (probe / 'suite.json').write_text(json.dumps(observation))
+        unittest.TestProgram.runTests = observed_run
         (probe / 'ready').write_bytes(b'ready')
     except BaseException:
         traceback.print_exc()
@@ -239,9 +251,22 @@ def run_check(python, root, recipe, timeout):
     result = capture_check(args, root, env, timeout)
     if marker is not None:
         ready = marker.is_file() and not marker.is_symlink() and read_limited(marker, 5) == b'ready'
+        suite = None
+        try:
+            value = json.loads(read_limited(probe / 'suite.json', 4096))
+            if (isinstance(value, dict) and set(value) == {'tests', 'skipped', 'successful'}
+                    and type(value['tests']) is int and type(value['skipped']) is int
+                    and 0 <= value['skipped'] <= value['tests']
+                    and type(value['successful']) is bool):
+                suite = value
+        except (OSError, ValueError):
+            pass
         result.update(command=args, invocation='module', provenance_ready=ready,
-                      native_exit_code=result['exit_code'])
-        if not ready and not result['timed_out']:
+                      native_exit_code=result['exit_code'], suite_observation=suite)
+        agrees = suite is not None and (
+            result['exit_code'] == (0 if suite['successful'] else 1)
+            or (suite['successful'] and suite['tests'] == 0 and result['exit_code'] == 5))
+        if (not ready or not agrees) and not result['timed_out']:
             result['exit_code'] = 7
     return result
 

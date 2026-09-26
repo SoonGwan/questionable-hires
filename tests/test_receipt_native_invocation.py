@@ -37,6 +37,7 @@ class NativeInvocationTests(unittest.TestCase):
             self.assertEqual(check['native_exit_code'], expected)
             self.assertEqual(check['command'], native_calls[0])
             self.assertTrue(check['provenance_ready'])
+            self.assertEqual(check['suite_observation'], dict(tests=1, skipped=0, successful=expected == 0))
             self.assertIn('Verified copied import: rule', check['output'])
             self.assertIn('Ran 1 test', check['output'])
         self.assertIn('AssertionError: False is not true', result['checks']['before']['output'])
@@ -77,6 +78,59 @@ class Probe(unittest.TestCase):
                     self.assertEqual(check['native_exit_code'], direct.returncode)
                     self.assertEqual(check['exit_code'], direct.returncode)
                     self.assertIn(summary, check['output'])
+
+    def test_body_zero_exit_is_incomplete_and_stops_next_comparison(self):
+        (self.root/'test_rule.py').write_text('import os, unittest\n'
+            'class Interrupted(unittest.TestCase):\n'
+            '    def test_body(self):\n'
+            '        print("entered test body", flush=True)\n'
+            '        os._exit(0)\n')
+        original = helper.tree_inventory(self.root)
+        with patch.object(helper, 'run_check', wraps=helper.run_check) as execute:
+            result = helper.compare(self.root, dict(self.recipe, invocation='module', guard_tree=True))
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(execute.call_count, 1)
+        self.assertEqual(list(result['checks']), ['before'])
+        check = result['checks']['before']
+        self.assertEqual(check['native_exit_code'], 0)
+        self.assertEqual(check['exit_code'], 7)
+        self.assertTrue(check['provenance_ready'])
+        self.assertIsNone(check['suite_observation'])
+        self.assertIn('entered test body', check['output'])
+        self.assertNotIn('Ran 1 test', check['output'])
+        self.assertEqual(helper.tree_inventory(self.root), original)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_completed_failure_with_masked_native_exit_is_incomplete(self):
+        (self.root/'test_rule.py').write_text('import atexit, os, unittest\n'
+            'atexit.register(lambda: os._exit(0))\n'
+            'class Masked(unittest.TestCase):\n'
+            '    def test_failure(self): self.fail("actual contract failure")\n')
+        result = helper.compare(self.root, dict(self.recipe, invocation='module', guard_tree=True))
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(list(result['checks']), ['before'])
+        check = result['checks']['before']
+        self.assertEqual(check['native_exit_code'], 0)
+        self.assertEqual(check['exit_code'], 7)
+        self.assertEqual(check['suite_observation'], dict(tests=1, skipped=0, successful=False))
+        self.assertIn('AssertionError: actual contract failure', check['output'])
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
+    def test_empty_native_exit_five_compatibility_control(self):
+        (self.root/'test_rule.py').write_text('import unittest\n')
+        original_capture = helper.capture_check
+        def newer_empty_exit(*args, **kwargs):
+            result = original_capture(*args, **kwargs)
+            self.assertIn('Ran 0 tests', result['output'])
+            result['exit_code'] = 5  # Simulate the documented newer-Python exit only.
+            return result
+        with patch.object(helper, 'capture_check', side_effect=newer_empty_exit):
+            result = helper.compare(self.root, dict(self.recipe, invocation='module'))
+        self.assertEqual(result['status'], 'observed')
+        for check in result['checks'].values():
+            self.assertEqual(check['native_exit_code'], 5)
+            self.assertEqual(check['exit_code'], 5)
+            self.assertEqual(check['suite_observation'], dict(tests=0, skipped=0, successful=True))
 
     def test_startup_system_exit_is_incomplete_and_stops_next_comparison(self):
         (self.root/'test_rule.py').write_text('raise SystemExit(0)\n')
