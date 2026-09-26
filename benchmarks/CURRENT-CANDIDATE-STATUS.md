@@ -4,6 +4,16 @@ Decision checkpoint **2026-09-27, native-split02 cost reconciliation for `6c099d
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
+
+Local delivery follow-up **2026-09-27, resource `75183f2f`**:
+[actual installed behavior](INSTALLED-BEHAVIOR-75183F2F.json) verifies8 copied
+skills/51 files,9 CLI entrypoints and25 expected command exits. New checks execute
+Con Artist's four native phases (0/0/0/1), reject a wrong binding as incomplete7,
+and verify Exorcist child failure17 and timeout/cleanup124. The installed-helper
+suite also runs guarded/unguarded/setup-failing Mother-in-law sequences. These
+are local integration controls, not fresh independent developer/model evidence;
+the whole-token/time objective remains unfinished.
+
 ## Objective and unfinished requirements
 
 All eight skills should improve real developer outcomes at similar or lower

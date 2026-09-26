@@ -69,6 +69,63 @@ def exercise_recent_helpers(installed, project, run):
                 receipt_original_tree_unchanged=True)
 
 
+def exercise_audit_and_deadline(installed, project, run):
+    """Check installed runtime assets through real child processes and assertions."""
+    with tempfile.TemporaryDirectory(prefix='installed-audit-', dir=project) as folder:
+        root = Path(folder)
+        (root / 'service.py').write_text(
+            'def save(values, value):\n    values.append(value)\n    return True\n')
+        (root / 'test_service.py').write_text(
+            'import unittest\nfrom service import save\nclass SaveTests(unittest.TestCase):\n'
+            '    def test_acknowledges(self):\n        self.assertTrue(save([], "item"))\n')
+        before = inventory(root)
+        recipe = dict(files=['service.py', 'test_service.py'], imports=['service', 'test_service'],
+            target='service.py', old='    values.append(value)\n', new='',
+            runner='unittest', invocation='module', tests=['-v', 'test_service'],
+            precheck='import service, test_service\nassert test_service.save is service.save\n',
+            probe_replacements={'test_service.py':
+                'import unittest\nfrom service import save\nclass SaveTests(unittest.TestCase):\n'
+                '    def test_saved(self):\n        values = []\n'
+                '        self.assertTrue(save(values, "item"))\n'
+                '        self.assertEqual(values, ["item"])\n'},
+            probe_tests=['-v', 'test_service'], guard_project=True)
+        command = [sys.executable, '-I', '-B', str(installed / 'con-artist/scripts/audit.py'),
+                   '--source', str(root), '--spec', '-']
+        report = json.loads(run(command, input=json.dumps(recipe)))
+        assert report['status'] == 'observed'
+        expected = {'correct_tests': 0, 'mutant_tests': 0, 'correct_probe': 0, 'mutant_probe': 1}
+        assert set(report['checks']) == set(expected)
+        for phase, status in expected.items():
+            check = report['checks'][phase]
+            assert check['exit_code'] == check['native_exit_code'] == status, check
+            assert check['command'][1:4] == ['-B', '-m', 'unittest']
+            assert check['suite_observation']['tests'] == 1
+            assert not check['timed_out'] and not check['output_truncated']
+            assert 'Verified copied import: service ' in check['output']
+        assert 'AssertionError: Lists differ:' in report['checks']['mutant_probe']['output']
+        assert report['integrity']['project_guard']['unchanged']
+        assert report['integrity']['owned_scratch_removed']
+        rejected = json.loads(run(command, expected_exit=2, input=json.dumps(dict(recipe,
+            precheck='import service, test_service\nassert test_service.save is not service.save\n'))))
+        assert rejected['status'] == 'incomplete'
+        assert set(rejected['checks']) == {'correct_tests'}
+        assert rejected['checks']['correct_tests']['exit_code'] == 7
+        assert inventory(root) == before
+    deadline = [sys.executable, '-I', '-B', str(installed / 'exorcist/scripts/run_probe.py')]
+    failed = json.loads(run([*deadline, '--timeout', '2', '--', sys.executable, '-I', '-B',
+        '-c', 'import sys; print("native failure witnessed", flush=True); sys.exit(17)'], expected_exit=1))
+    assert failed['exit_code'] == 17 and not failed['timed_out']
+    assert failed['output'].strip() == 'native failure witnessed'
+    assert failed['cleanup_complete'] and not failed['output_truncated']
+    expired = json.loads(run([*deadline, '--timeout', '0.2', '--', sys.executable, '-I', '-B',
+        '-c', 'import time; time.sleep(60)'], expected_exit=124))
+    assert expired['timed_out'] and expired['cleanup_complete']
+    assert expired['exit_code'] != 0
+    return dict(audit_native_exits=expected, wrong_binding_incomplete_exit=7,
+                audit_original_tree_unchanged=True, deadline_child_failure_exit=17,
+                deadline_timeout_cli_exit=124, deadline_cleanup_complete=True)
+
+
 def check(source, cli):
     names = sorted(p.parent.name for p in (source / 'skills').glob('*/SKILL.md'))
     assert len(names) == 8
@@ -131,11 +188,13 @@ await withControlledCalls(async scope => {
 console.log('installed JavaScript task-aware callback passed');
 '''])
         recent = exercise_recent_helpers(installed, project, run)
+        audit_and_deadline = exercise_audit_and_deadline(installed, project, run)
         assert inventory(installed) == expected
         assert inventory(source / 'skills') == source_before
         report = dict(kind='local skills CLI copy and executable check; not remote/model evidence',
                       skills=names, installed_inventory=expected, python_entrypoints=len(scripts),
-                      commands=commands, copied_bytes_and_modes_match=True, recent_helpers=recent)
+                      commands=commands, copied_bytes_and_modes_match=True, recent_helpers=recent,
+                      audit_and_deadline=audit_and_deadline)
         text = json.dumps(report, indent=2)
         return text.replace(str(project), '<PROJECT>').replace(str(source), '<SOURCE>').replace(str(cli), '<CLI>')
 
