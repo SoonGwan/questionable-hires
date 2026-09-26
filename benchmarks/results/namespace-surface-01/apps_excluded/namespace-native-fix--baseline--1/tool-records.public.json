@@ -1,0 +1,135 @@
+{
+  "session_id": "01a0dffa-a4e8-7523-8470-fb1ed86fba50",
+  "source_bytes": 61903,
+  "source_sha256": "7214a3441e34b540020a1481a387bfe844cec745a71086aaf01668b63b5a5474",
+  "source_lines": 31,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "91377da56427a2dcfde9fc3fc97f0a1ebcae9317bf5b0f667fe84a60ab1c2206",
+      "record": {
+        "timestamp": "2026-09-26T23:09:07.948Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0afd536944f58af0016ab85090efa087d0914cb69269a724f1",
+          "status": "completed",
+          "call_id": "call_KWZo44f6Jx7JXHodSNY9wHWD",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'app.py' -g 'test_app.py'; git status --short\",\"max_output_tokens\":3000}));\ntext(await tools.exec_command({cmd:\"cat AGENTS.md app.py test_app.py\",\"max_output_tokens\":10000}));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest -v test_app\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dffa-a54b-7f72-9109-8344c84c97f0",
+            "create_time": 1790464142.321333
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "f2a84926809928cf90049ac00d06bfefba89b6ca55ee582033cc71de3b357b74",
+      "record": {
+        "timestamp": "2026-09-26T23:09:08.263Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dffa-c327-7922-af37-a6084b36ff4b",
+          "call_id": "call_KWZo44f6Jx7JXHodSNY9wHWD",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"17ed70\",\"wall_time_seconds\":0.000004208,\"exit_code\":0,\"original_token_count\":39,\"output\":\"<WORKSPACE>\\ntest_app.py\\nAGENTS.md\\napp.py\\n M notes.txt\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"92d6d9\",\"wall_time_seconds\":0.000003333,\"exit_code\":0,\"original_token_count\":111,\"output\":\"Python standard-library unittest. Work only inside this project. Preserve tests and owner changes. No installs, services, delegation or commits.\\ndef quantity():\\n    return 1\\n\\ndef payload():\\n    return b\\\"\\\\x00\\\\xff\\\"\\nimport unittest\\nfrom app import quantity, payload\\n\\nclass Tests(unittest.TestCase):\\n    def test_quantity(self):\\n        self.assertEqual(quantity(), 2)\\n    def test_payload(self):\\n        self.assertEqual(payload(), b\\\"\\\\x00\\\\xff\\\")\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3b9620\",\"wall_time_seconds\":0.000003542,\"exit_code\":1,\"original_token_count\":167,\"output\":\"test_payload (test_app.Tests.test_payload) ... ok\\ntest_quantity (test_app.Tests.test_quantity) ... FAIL\\n\\n======================================================================\\nFAIL: test_quantity (test_app.Tests.test_quantity)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_app.py\\\", line 6, in test_quantity\\n    self.assertEqual(quantity(), 2)\\nAssertionError: 1 != 2\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nFAILED (failures=1)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dffa-a54b-7f72-9109-8344c84c97f0",
+            "create_time": 1790464148.263001
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "e53387a6fd0188c2263f6f435da2d4d167549a574f8fc05e517ae10cb8f3bb03",
+      "record": {
+        "timestamp": "2026-09-26T23:09:13.965Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0afd536944f58af0016ab850963c5087d0ab41fe0146440c67",
+          "status": "completed",
+          "call_id": "call_mgnH4WoYIatQ58d4EqCGJuUY",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/app.py\\n@@\\n def quantity():\\n-    return 1\\n+    return 2\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest -v test_app\",\"max_output_tokens\":3000}));\ntext(await tools.exec_command({cmd:\"git diff -- app.py; git status --short\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dffa-a54b-7f72-9109-8344c84c97f0",
+            "create_time": 1790464149.040381
+          }
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "c01ce656eb31bde3728ed96a4f7ee4b9a8b8509062681b9ea166677c4dc242b0",
+      "record": {
+        "timestamp": "2026-09-26T23:09:14.207Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dffa-da5f-70f3-a502-a2fbe28cab41",
+          "call_id": "call_mgnH4WoYIatQ58d4EqCGJuUY",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"76d8f5\",\"wall_time_seconds\":0.000003125,\"exit_code\":0,\"original_token_count\":50,\"output\":\"test_payload (test_app.Tests.test_payload) ... ok\\ntest_quantity (test_app.Tests.test_quantity) ... ok\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.000s\\n\\nOK\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b36918\",\"wall_time_seconds\":0.000002833,\"exit_code\":0,\"original_token_count\":53,\"output\":\"diff --git a/app.py b/app.py\\nindex e57f42d..4af92a6 100644\\n--- a/app.py\\n+++ b/app.py\\n@@ -1,5 +1,5 @@\\n def quantity():\\n-    return 1\\n+    return 2\\n \\n def payload():\\n     return b\\\"\\\\x00\\\\xff\\\"\\n M app.py\\n M notes.txt\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dffa-a54b-7f72-9109-8344c84c97f0",
+            "create_time": 1790464154.207172
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

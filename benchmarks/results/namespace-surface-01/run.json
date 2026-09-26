@@ -1,0 +1,81 @@
+{
+  "case": {
+    "id": "namespace-native-fix",
+    "skill": "receipt",
+    "files": {
+      "app.py": "def quantity():\n    return 1\n\ndef payload():\n    return b\"\\x00\\xff\"\n",
+      "test_app.py": "import unittest\nfrom app import quantity, payload\n\nclass Tests(unittest.TestCase):\n    def test_quantity(self):\n        self.assertEqual(quantity(), 2)\n    def test_payload(self):\n        self.assertEqual(payload(), b\"\\x00\\xff\")\n",
+      "notes.txt": "original owner note\n",
+      "AGENTS.md": "Python standard-library unittest. Work only inside this project. Preserve tests and owner changes. No installs, services, delegation or commits.\n"
+    },
+    "working_files": {
+      "notes.txt": "uncommitted owner change\n"
+    },
+    "task": "Fix app.quantity to satisfy the supplied contract tests. Read app.py, test_app.py and project instructions. Execute python3 -B -m unittest -v test_app before and after the fix, retaining actual results and process exits. Change app.py only; preserve test coverage, payload behavior and all owner changes. No scratch reports, dependencies, external access or commits."
+  },
+  "flags": {
+    "apps_only": [
+      "--disable",
+      "apps"
+    ],
+    "apps_excluded": [
+      "--disable",
+      "apps",
+      "-c",
+      "features.code_mode.excluded_tool_namespaces=[\"web\",\"imagegen\",\"clock\"]"
+    ]
+  },
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout": 120
+  },
+  "sources": {
+    "benchmarks/run_tool_surface_01.py": "7765a8400ab2dee61283ce00cb82050c99a79735b4b146f4074de2345e5572ec",
+    "benchmarks/TOOL-SURFACE-01-PROTOCOL.md": "71c4b7fda1afe84e46e73ff130a524347b850b103fdeb651f6e9f024064c6ab5",
+    "benchmarks/run.py": "53161123b284ac083320a62287bef7aa37ed92d5abb15a2f28c4a35c6a9a3d60",
+    "tests/test_tool_surface_01.py": "e6bea8f16420632bf3190c5329858d250fe2c358d7703a3f402c38f4b1fb1ca2",
+    "benchmarks/run_namespace_surface_01.py": "90cabca519d1155f961967064b69dd98165ba6df108a398685ad287a18e2a6e3",
+    "benchmarks/NAMESPACE-SURFACE-01-PROTOCOL.md": "12664310fd911046ae8f2511512c34354a3d5d30860c4b90a7764ac092861114",
+    "tests/test_namespace_surface_01.py": "e1a296e1c64295b95501c8a3ecf8cad9487c908fc688b4e5a84943dda1714474"
+  },
+  "python": "<TEMP>",
+  "python_version": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+  "cli_version": "codex-cli 0.157.1",
+  "completed": [
+    {
+      "condition": "apps_only",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 40517,
+        "cached_input_tokens": 26240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 372,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 17.884
+    },
+    {
+      "condition": "apps_excluded",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 32384,
+        "cached_input_tokens": 20736,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 369,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 19.457
+    }
+  ],
+  "schedule": [
+    "apps_only",
+    "apps_excluded"
+  ],
+  "prepared_at": "2026-09-26T23:08:41.510009+00:00",
+  "finished_at": "2026-09-26T23:09:20.003659+00:00"
+}
