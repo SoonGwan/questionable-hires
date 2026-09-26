@@ -46,7 +46,8 @@ class LandingTests(unittest.TestCase):
             self.assertIn(Path(pointer['result_directory']).name, source)
             for metric in ('total_tokens', 'elapsed_seconds'):
                 value = self.evidence['data']['resource_ratios'][metric]['skill']
-                self.assertIn(f'{value:.1f}<small>%</small>', source)
+                self.assertIn(f'{value-100:+.1f}<small>%</small>', source)
+                self.assertIn(f'{value:.1f}%', source)
             self.assertIn(self.evidence['revision'], source)
             self.assertIn(self.evidence['date'], source)
 
@@ -68,6 +69,18 @@ class LandingTests(unittest.TestCase):
         self.assertIn('126.4%', source)
         self.assertIn('Ratios of raw sums differ', source)
         self.assertIn('general whole-team superiority', source)
+
+    def test_cost_interpretation_preserves_increases_and_actual_usage(self):
+        en = self.files['en/index.html'].decode()
+        ko = self.files['ko/index.html'].decode()
+        for phrase in ('29.8% more', '6.4% more', '31.6% less',
+                       'Without 64,055 → with 83,165',
+                       'Tokens decreased on 3, increased on 2 / 5 tasks',
+                       '20.39% more summed tokens', 'Cached input is included once'):
+            self.assertIn(phrase, en)
+        for phrase in ('29.8% 증가', '6.4% 증가', '31.6% 감소',
+                       '토큰 감소 3개 · 증가 2개 / 5개 과제', '20.39% 증가'):
+            self.assertIn(phrase, ko)
 
     def test_changed_source_evidence_cannot_silently_change_published_chart(self):
         original = landing.read_json

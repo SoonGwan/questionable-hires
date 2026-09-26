@@ -148,13 +148,19 @@ def experiment(evidence, copy):
              '<div class="metric-grid">']
     for key, label in (('total_tokens', 'tokens'), ('elapsed_seconds', 'elapsed')):
         value = data['resource_ratios'][key]['skill']
-        parts.append(f'<div class="metric"><span>{e(copy[label])}</span><strong>{value:.1f}<small>%</small></strong>'
-                     f'<p>{e(copy["conditionSkill"])} / {e(copy["conditionBaseline"])} 100%</p></div>')
+        parts.append(f'<div class="metric"><span>{e(copy[label])}</span><strong>{value-100:+.1f}<small>%</small></strong>'
+                     f'<p>{e(copy["conditionSkill"])} {value:.1f}% / {e(copy["conditionBaseline"])} 100%</p></div>')
     parts.append('<div class="metric metric-quality">' + f'<span>{e(copy["qualityLabel"])}</span>'
                  f'<strong>{data["quality"]["baseline"]}/{data["cases"]}<small> → </small>{data["quality"]["skill"]}/{data["cases"]}</strong>'
                  f'<p>{e(copy["conditionBaseline"])} → {e(copy["conditionSkill"])} · {e(copy["falsePositiveLabel"])} '
                  f'{data["clean_false_positives"]["baseline"]} → {data["clean_false_positives"]["skill"]}{e(copy["falsePositiveUnit"])}</p></div></div>')
+    token_ratios = [100 * (records[(case, 'skill')]['input_tokens'] + records[(case, 'skill')]['output_tokens']) /
+                    (records[(case, 'baseline')]['input_tokens'] + records[(case, 'baseline')]['output_tokens']) for case in cases]
+    cost_summary = copy['costSummary'].format(lower=sum(r < 100 for r in token_ratios),
+                                            higher=sum(r > 100 for r in token_ratios), total=len(cases))
     parts.extend([f'<p class="normalized-note">{e(copy["normalized"])}</p>',
+                  f'<p class="token-meaning">{e(copy["tokenMeaning"])}</p>',
+                  f'<p class="cost-summary">{e(cost_summary)}</p>',
                   '<div class="chart-top">', f'<h4>{e(copy["chartHeading"])}</h4>',
                   '<div class="chart-controls" role="group" hidden>',
                   f'<button type="button" data-metric="total_tokens" aria-pressed="true">{e(copy["tokens"])}</button>',
@@ -169,9 +175,13 @@ def experiment(evidence, copy):
         parts.append(f'<figure class="task-chart" data-chart="{metric}" aria-describedby="chart-description"><figcaption>{e(copy[label])}</figcaption>')
         for case, ratio in zip(cases, ratios):
             name = copy.get('case-' + case, case)
-            parts.append(f'<div class="chart-row"><span class="chart-case">{e(name)}</span><div class="chart-bars" style="--baseline-width:{100/ceiling*100:.4f}%">'
+            change = copy['changeLess' if ratio < 100 else 'changeMore' if ratio > 100 else 'changeEqual'].format(value=f'{abs(ratio - 100):.1f}')
+            formatter = (lambda x: f'{x:,}') if metric == 'total_tokens' else (lambda x: f'{x:.3f} s')
+            usage = copy['actualUsage'].format(baseline=formatter(value(records[(case, 'baseline')])),
+                                             skill=formatter(value(records[(case, 'skill')])))
+            parts.append(f'<div class="chart-row"><span class="chart-case">{e(name)}<small>{e(change)}</small></span><div class="chart-bars" style="--baseline-width:{100/ceiling*100:.4f}%">'
                          f'<div class="bar baseline" style="--bar-width:{100/ceiling*100:.4f}%"><span class="sr-only">{e(copy["conditionBaseline"])} </span><span class="bar-value">100%</span></div>'
-                         f'<div class="bar skill" style="--bar-width:{ratio/ceiling*100:.4f}%"><span class="sr-only">{e(copy["conditionSkill"])} </span><span class="bar-value">{ratio:.1f}%</span></div></div></div>')
+                         f'<div class="bar skill" style="--bar-width:{ratio/ceiling*100:.4f}%"><span class="sr-only">{e(copy["conditionSkill"])} </span><span class="bar-value">{ratio:.1f}%</span></div><p class="chart-usage">{e(usage)}</p></div></div>')
         parts.append('<div class="chart-axis" aria-hidden="true"><span></span><div>' + ''.join(
             f'<span style="left:{tick/ceiling*100:.4f}%">{tick}%</span>' for tick in range(0, ceiling + 1, 50)) + '</div></div></figure>')
     parts.extend([f'<details class="raw-details"><summary>{e(copy["rawSummary"])}</summary>',
@@ -190,6 +200,7 @@ def experiment(evidence, copy):
         parts.append(f'<tr><th scope="row">{e(copy["rawTotal"])}</th><td>{e(copy[label])}</td><td>{sums["total_tokens"]:,}</td><td>{sums["elapsed_seconds"]:.3f}</td><td>{data["quality"][arm]}/{data["cases"]}</td></tr>')
     parts.extend(['</tfoot></table></div>', f'<p class="raw-note">{e(copy["rawNote"])}</p></details>',
                   f'<aside class="experiment-limit"><h4>{e(copy["limitationTitle"])}</h4><p>{e(copy["limitation"])}</p></aside>',
+                  f'<aside class="experiment-limit"><h4>{e(copy["performanceStatus"])}</h4><p>{e(copy["performanceDetail"])}</p><a href="{GITHUB}/blob/main/benchmarks/ALL-EIGHT-04-INPUT-COSTS.md">{e(copy["costAnalysis"])} ↗</a></aside>',
                   f'<div class="experiment-links"><a href="{report}/README.md">{e(copy["fullReport"])} ↗</a><a href="{report}/cells.json">{e(copy["rawRecords"])} ↗</a></div></article>'])
     return '\n'.join(parts)
 
