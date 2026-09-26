@@ -200,7 +200,7 @@ def experiment(evidence, copy):
         parts.append(f'<tr><th scope="row">{e(copy["rawTotal"])}</th><td>{e(copy[label])}</td><td>{sums["total_tokens"]:,}</td><td>{sums["elapsed_seconds"]:.3f}</td><td>{data["quality"][arm]}/{data["cases"]}</td></tr>')
     parts.extend(['</tfoot></table></div>', f'<p class="raw-note">{e(copy["rawNote"])}</p></details>',
                   f'<aside class="experiment-limit"><h4>{e(copy["limitationTitle"])}</h4><p>{e(copy["limitation"])}</p></aside>',
-                  f'<aside class="experiment-limit"><h4>{e(copy["performanceStatus"])}</h4><p>{e(copy["performanceDetail"])}</p><a href="{GITHUB}/blob/main/benchmarks/ALL-EIGHT-04-INPUT-COSTS.md">{e(copy["costAnalysis"])} ↗</a></aside>',
+                  f'<aside class="experiment-limit"><h4>{e(copy["performanceStatus"])}</h4><p>{e(copy["performanceDetail"])}</p><a href="{GITHUB}/blob/main/benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md">{e(copy["costAnalysis"])} ↗</a></aside>',
                   f'<div class="experiment-links"><a href="{report}/README.md">{e(copy["fullReport"])} ↗</a><a href="{report}/cells.json">{e(copy["rawRecords"])} ↗</a></div></article>'])
     return '\n'.join(parts)
 

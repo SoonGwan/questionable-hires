@@ -76,10 +76,14 @@ class LandingTests(unittest.TestCase):
         for phrase in ('29.8% more', '6.4% more', '31.6% less',
                        'Without 64,055 → with 83,165',
                        'Tokens decreased on 3, increased on 2 / 5 tasks',
-                       '20.39% more summed tokens', 'Cached input is included once'):
+                       '18.54% more summed tokens', '9.06% more time',
+                       'integration05', '2026-09-27', '75183f2f',
+                       'Detailed quality review remains incomplete',
+                       'ALL-EIGHT-CURRENT-05-COSTS.md', 'Cached input is included once'):
             self.assertIn(phrase, en)
         for phrase in ('29.8% 증가', '6.4% 증가', '31.6% 감소',
-                       '토큰 감소 3개 · 증가 2개 / 5개 과제', '20.39% 증가'):
+                       '토큰 감소 3개 · 증가 2개 / 5개 과제', '토큰 18.54%',
+                       '시간 9.06% 증가', '품질 상세 검토는 미완료'):
             self.assertIn(phrase, ko)
 
     def test_changed_source_evidence_cannot_silently_change_published_chart(self):
