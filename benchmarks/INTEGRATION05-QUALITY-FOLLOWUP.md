@@ -118,6 +118,40 @@ paths are redacted. No model invocation, production change or new harness is add
 snapshot·새 편집 dirty·편집 없는 clean의 독립 결함3개를 실제 assertion으로
 거부한다. 원래 모델 실행이나 비용을 수정하지 않고 비교 우월성도 주장하지 않는다.
 
+## All16 static test-contract scan and Store original review
+
+[Static scan](results/all-eight-current-05/test-contract-scan.json) covers all16
+delivered projects,49 Python files, with exact source hashes and no parse errors.
+It finds only the previously reviewed baseline Hostage async fail override.
+The existing mutation follow-up above already establishes its diagnostic TypeError;
+this is confirmation of coverage, not a new independent fault or rescoring.
+Unresolved non-unittest classes and the scanner's dynamic/synchronous-signature
+limits remain in the record. No candidates elsewhere is not proof of correct tests.
+Nothing is imported or executed by this static scan.
+
+Both original Store tasks meet their explicit local review obligations. Native
+test_contract.Contract executes2/2 passing tests with own exit0. Actual service.save
+called directly with Backend returns created=None, raises Duplicate on repetition,
+retains original stored values, and propagates OSError. Store's native contract tests
+verify literal True/False conversion and operational-failure propagation. Baseline's
+additional direct witness uses three keys, current's one; both keep that extra work
+in their original cost. This is not equal extra coverage or causal cost attribution.
+
+Both final answers recommend keeping or relocating the necessary translation,
+explaining the concrete service/driver coupling tradeoff rather than class count.
+Both explicitly report unavailable staging receipts without manufacturing evidence.
+Scoped original artifact checks hold, and no implementation was delivered. Original
+commands and native source are retained in the two store-check-scope cells; no
+author replay was necessary. These two task outcomes do not establish comparative
+quality advantage or stage/release verification. Complete all-role review remains
+unfinished; integration05 summed costs stay+18.54% tokens/+9.06% time.
+
+한국어:16개 전달 결과의 정적 검사는49개 Python 파일을 파싱했고 이미 확인한
+미적용 Hostage의 fail 충돌만 찾았다. 새로운 독립 발견이나 전체 안전 증명이
+아니다. Store 두 과제는 실제 반환값·중복 예외·원래 값 보존·운영 오류와
+유지보수 판단을 원본 실행으로 뒷받침한다. staging은 양쪽 모두 미검증이며
+추가 검사 수 차이와 불리한 비용을 그대로 유지한다.
+
 한국어:16회 최종 파일·추적 파일 모드·인덱스·설치 리소스 대조는 명시한 범위에서
 일치한다. 초기 미추적 파일 모드의 직접 증거는 없으며 과장하지 않는다. SQLite
 첫 단계는 원본 기록에서 복구했고 재실행하지 않았다. 별도 사후 반환값 대조는
