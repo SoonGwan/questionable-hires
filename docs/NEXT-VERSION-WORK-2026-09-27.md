@@ -74,6 +74,12 @@ interactions, including graphs, mobile raw data, language and copy recovery.
 This closes the missing current website interaction observation; final candidate
 changes still require checks against the actual deployed source.
 
+[Evidence delivery follow-up](LANDING-EVIDENCE-DELIVERY-2026-09-27.md), deployed
+`0c6223d3`, replaces a report link absent from remote main with an on-site paired
+cost table and exact downloads. Root language/new-tab navigation is fixed;16
+archive tests and14 public open-table layouts pass. Existing skill resources and
+featured measurements are unchanged. This is delivery progress, not efficiency.
+
 ## Required remaining work
 
 [Path-selection transfer01](../benchmarks/PATH-SELECTION-01-PROTOCOL.md), frozen

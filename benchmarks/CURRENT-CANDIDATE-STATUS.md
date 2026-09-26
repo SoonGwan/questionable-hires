@@ -35,6 +35,11 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 ## Local functionality and delivery evidence
 
+- [Evidence delivery and language links](../docs/LANDING-EVIDENCE-DELIVERY-2026-09-27.md),
+  2026-09-27,deployed`0c6223d3`:16 archive tests;14 public open-table layouts,
+  new-tab root language navigation and3 byte-identical evidence downloads pass.
+  Dated integration05 costs are now viewable on-site. No model-efficiency gain.
+
 - [Production browser checks](../docs/LANDING-BROWSER-2026-09-27.md),2026-09-27,
   deployed `ba2713d5`:14 bilingual responsive layouts and local/public browser
   interactions pass. Website evidence only; no model efficiency claim.
