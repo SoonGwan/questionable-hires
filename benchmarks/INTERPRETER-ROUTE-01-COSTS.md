@@ -27,6 +27,8 @@ cost saving. Complete original native assertion/binding, command-output, scope,
 artifact and cleanup review remains pending. CLI completion is not a quality score.
 [Original-evidence follow-up](INTERPRETER-ROUTE-01-FOLLOWUP.md) adds scoped final-state
 controls and recovers two omitted native prefixes; complete quality labels remain pending.
+Subsequent [six-cell scoped review](INTERPRETER-ROUTE-01-REVIEW.md) now verifies
+the explicit native task outcomes, retaining capture-stage labels and mixed costs.
 
 These tasks share identical code/history and differ only in documented interpreter.
 Source and cancellation controls were previously exposed development material;

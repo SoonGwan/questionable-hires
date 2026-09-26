@@ -10,7 +10,7 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
-| [Interpreter route01 costs](INTERPRETER-ROUTE-01-COSTS.md),2026-09-27,`e918d02d` |6 cells; versus no skill tokens+0.67%,time−8.39%; versus predecessor tokens−4.75%,time+1.73%. Native/artifact review pending. | Neither aggregate improves both; correlated exposed development/control pair. |
+| [Interpreter route01 review](INTERPRETER-ROUTE-01-REVIEW.md),2026-09-27,`e918d02d` |6 scoped tasks supported; versus no skill tokens+0.67%,time−8.39%; versus predecessor tokens−4.75%,time+1.73%. Unequal extra work and coordinator exit-vector limits retained. | Neither aggregate improves both; correlated exposed development/control pair. |
 | [Integration05 costs](ALL-EIGHT-CURRENT-05-COSTS.md),2026-09-27,`75183f2f` |16 completed cells; tokens+18.54%,time+9.06%; no pair improves both. Scoped artifact checks hold; native review incomplete, baseline SQLite outside scope. | Adverse cost result; exposed integration controls, not independent validation. |
 | [Native-split02 costs](NATIVE-SPLIT-02-COSTS.json),2026-09-27,`6c099d68` |6 cells; summed tokens+43.05% versus no skill,−9.35% versus predecessor. [Original output follow-up](NATIVE-SPLIT-02-OUTPUT-REVIEW.md) retains391-token predecessor truncation. | Native review incomplete; no efficiency promotion. |
 | [Assertion-contract01](ASSERTION-CONTRACT-01-REVIEW.md),2026-09-27,`33530f98` |6 reviewed cells meet scoped contracts; tokens+36.43%,time−12.01% versus no skill. | No joint saving; retain correctness boundary. |
@@ -53,7 +53,8 @@ whole-task tokens and faster completion. No completed update or broad saving.
 [Native interpreter route01](NATIVE-INTERPRETER-ROUTE-01.md),2026-09-27,`e918d02d`,
 addresses repeated unavailable-executable launches and masked probe exits in
 Necromancer. Metadata/catalog checks pass; [six-cell costs](INTERPRETER-ROUTE-01-COSTS.md)
-are mixed, with no aggregate joint saving and native quality review pending.
+are mixed, with no aggregate joint saving. [Complete scoped review](INTERPRETER-ROUTE-01-REVIEW.md)
+supports all six explicit tasks without a comparative quality advantage.
 [Original-evidence follow-up](INTERPRETER-ROUTE-01-FOLLOWUP.md) confirms scoped
 six-cell artifact preservation and recovers two omitted native prefixes, retaining
 unequal extra coverage and the candidate coordinator's unasserted exit-vector limit.
@@ -67,7 +68,8 @@ model attempts now have reconciled original counters, without an efficiency prom
 한국어: 실행기 비교 6회는 이전 후보·미적용과 비교하도록 사전 고정했다.
 기존에 사용한 코드와 취소 회귀를 재사용하므로 독립 검증이 아니며,
 준비·작성자 테스트 통과를 모델 비용 개선으로 계산하지 않는다. 6회 원본
-토큰은 일치하지만 합계 두 비용의 동시 개선은 없고 품질 상세 검토는 미완료다.
+토큰은 일치하지만 합계 두 비용의 동시 개선은 없다. 후속 검토는 명시된6회
+과제를 뒷받침하며 전체8개 역할의 품질·비용 목표는 계속 미달이다.
 
 
 Review all16 original assertions/bindings, scope, required coverage, artifacts,

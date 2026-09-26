@@ -1,0 +1,41 @@
+SNAPSHOT earlier: sha256=d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c, matches local provenance
+SNAPSHOT current: sha256=48567a44a073b8b7574e5d2f4542501fd491b9003a320d80602c7cb2b8bb3a81, matches local provenance
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> controlled_fetch.py current ordinary
+ordinary: exact result identity=True; exact error identity=True; invalid 0/-1/31 rejected; key mismatch asserted; mismatch app pending=True
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> controlled_fetch.py current repeated
+repeated: distinct handles=True; distinct futures=True; second result is v2=True; first pending until own completion=True; first result is v1=True
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> controlled_fetch.py current wakeup_cancel
+wakeup_cancel: {'waiter_pending_at_cancel': True, 'queued_at_cancel': 1, 'app_pending_at_cancel': True, 'cancel_accepted': True, 'waiter_cancelled': True, 'queued_after': 1, 'app_pending_after': True, 'handle_returned': False, 'response_uncancelled': True, 'app_exact_result': True}
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> controlled_fetch.py current delivered_cancel
+delivered_cancel: owner cancelled=True; queue size=0; delivered handle remains valid=True; app exact result=True
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> .controlled-fetch-review-h8ormg_h/controlled_fetch_proposal.py proposal ordinary
+ordinary: exact result identity=True; exact error identity=True; invalid 0/-1/31 rejected; key mismatch asserted; mismatch app pending=True
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> .controlled-fetch-review-h8ormg_h/controlled_fetch_proposal.py proposal repeated
+repeated: distinct handles=True; distinct futures=True; second result is v2=True; first pending until own completion=True; first result is v1=True
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> .controlled-fetch-review-h8ormg_h/controlled_fetch_proposal.py proposal wakeup_cancel
+wakeup_cancel: {'waiter_pending_at_cancel': True, 'queued_at_cancel': 1, 'app_pending_at_cancel': True, 'cancel_accepted': True, 'waiter_cancelled': False, 'queued_after': 0, 'app_pending_after': True, 'handle_returned': True, 'response_uncancelled': True, 'app_exact_result': True}
+Traceback (most recent call last):
+  File "<string>", line 154, in <module>
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<string>", line 125, in main
+AssertionError: pending started cancellation must propagate and preserve the undelivered request and application task
+PROCESS EXIT: 1
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> .controlled-fetch-review-h8ormg_h/controlled_fetch_proposal.py proposal delivered_cancel
+delivered_cancel: owner cancelled=True; queue size=0; delivered handle remains valid=True; app exact result=True
+PROCESS EXIT: 0
+INTEGRITY: all project and .git file hashes unchanged; owned scratch removed; no bytecode written
+

@@ -1,0 +1,54 @@
+SOURCE_HASHES d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c 48567a44a073b8b7574e5d2f4542501fd491b9003a320d80602c7cb2b8bb3a81
+COPY_ASSERTIONS: current exact; proposal changes only started; earlier started exact; provenance hashes match
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.review-vowp2w0b/probe.py current ordinary
+ordinary: key=ordinary; result is chosen object=True; queue=0
+PROCESS_EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.review-vowp2w0b/probe.py current repeated
+repeated: distinct handles/futures=True; second result is v2=True; first pending=True; first result is v1=True; queue=0
+PROCESS_EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.review-vowp2w0b/probe.py current pending_cancel
+pending_cancel: waiter cancelled=True; later request recoverable=True; application result identity=True
+PROCESS_EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.review-vowp2w0b/probe.py current delivered_cancel
+delivered_cancel: cancel accepted=False; waiter cancelled=False; delivered handle remains consumed=True; result identity=True
+PROCESS_EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.review-vowp2w0b/probe.py current wakeup_cancel
+wakeup_cancel: {'pending_at_cancel': True, 'queued_at_cancel': 1, 'cancel_accepted': True, 'waiter_cancelled': True, 'queue_after': 1, 'application_pending': True, 'returned_handle': False}
+wakeup_cancel: application response uncancelled=True; completed result identity=True
+PROCESS_EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.review-vowp2w0b/probe.py proposal ordinary
+ordinary: key=ordinary; result is chosen object=True; queue=0
+PROCESS_EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.review-vowp2w0b/probe.py proposal repeated
+repeated: distinct handles/futures=True; second result is v2=True; first pending=True; first result is v1=True; queue=0
+PROCESS_EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.review-vowp2w0b/probe.py proposal pending_cancel
+pending_cancel: waiter cancelled=True; later request recoverable=True; application result identity=True
+PROCESS_EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.review-vowp2w0b/probe.py proposal delivered_cancel
+delivered_cancel: cancel accepted=False; waiter cancelled=False; delivered handle remains consumed=True; result identity=True
+PROCESS_EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.review-vowp2w0b/probe.py proposal wakeup_cancel
+wakeup_cancel: {'pending_at_cancel': True, 'queued_at_cancel': 1, 'cancel_accepted': True, 'waiter_cancelled': False, 'queue_after': 0, 'application_pending': True, 'returned_handle': True}
+wakeup_cancel: application response uncancelled=True; completed result identity=True
+Traceback (most recent call last):
+  File "<WORKSPACE>/.review-vowp2w0b/probe.py", line 135, in <module>
+    asyncio.run(main())
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.review-vowp2w0b/probe.py", line 123, in main
+    await run()
+  File "<WORKSPACE>/.review-vowp2w0b/probe.py", line 117, in run
+    assert observations['waiter_cancelled'] and observations['queue_after'] == 1, 'pending cancellation must reach waiter and preserve undelivered request'
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: pending cancellation must reach waiter and preserve undelivered request
+PROCESS_EXIT: 1
+CLEANUP: owned scratch removed; all original file bytes including Git HEAD/index unchanged
+
