@@ -59,6 +59,16 @@ source bytes/modes, configuration and environment within this batch. Every mutan
 executes. External state/flakiness is not controlled; use fresh observations when
 the contract requires them. No cache survives another CLI invocation.
 
+When the combined report exceeds the tool's output budget, capture its JSON in
+owned temporary scratch outside the guarded project, preserving the CLI exit.
+Inspect each executed check's full output separately, resolving `observation_ref`
+against that same captured report; inspect integrity once. This avoids replaying
+native checks to recover a cut-off transcript. A compact exit/count summary is
+navigation, not an assertion or provenance review. Remove temporary evidence
+when delivery does not require it. A cut-off tool transcript and a check's own
+`output_truncated` flag are different: saving the report cannot recover output
+the helper already discarded. Keep that limitation explicit.
+
 `command`, `native_exit_code` and `suite_observation` retain module-mode evidence.
 Empty/all-skipped suites map to check exit5; missing completed-suite evidence,
 including setup failure/help-only/early zero exit, maps to7. CLI0 means observations

@@ -24,13 +24,17 @@ handle/process; timeout of an observation does not mean execution has stopped.
 [New frozen protocol](../benchmarks/NATIVE-SPLIT-02-PROTOCOL.md), inputs
 `77b8af9e`: licensed more-itertools10.8.0 source, explicit consumer no-split
 contract, single and repeated independent-fault controls. Six fresh serial model
-cells are underway in `/tmp/qh-native-split-02-frozen`; initial preparation
+cells completed in `/tmp/qh-native-split-02-frozen`; initial preparation
 `/tmp/qh-native-split-02` remains unexecuted. Never restart either to select a
 favorable outcome. Candidate is `6c099d68`, predecessor `33530f98`.
 
 [Local validation](../benchmarks/RELEASE-VALIDATION-6C099D68.md) records complete
 checkout/archive discovered suites and exact actual installer copy. This does
-not establish model costs, the hosted matrix or installed behavioral checks.
+not establish model costs or the hosted matrix.
+[Installed behavior follow-up](../benchmarks/INSTALLED-BEHAVIOR-6C099D68.json)
+now verifies the cached local CLI installation and actual selected behaviors.
+[Cost reconciliation and original output limits](../benchmarks/NATIVE-SPLIT-02-OUTPUT-REVIEW.md)
+retain all six results; whole-task improvement is still absent.
 
 ## Required remaining work
 

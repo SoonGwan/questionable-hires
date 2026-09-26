@@ -185,6 +185,8 @@ $friday 이 배포 롤백 가능한지 봐줘.
 
 테스트 사기 감별사는 파일 전체를 다시 보내는 대신 [정확히 일치하는 부분 수정](skills/con-artist/references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)도
 받습니다. 기존 테스트와 강화한 테스트의 정상·결함 코드 검사는 그대로 유지합니다.
+큰 네이티브 배치 출력은 [보관한 검사별 기록을 나눠 검토](skills/con-artist/references/native-unittest-batch.md)해
+출력 복구를 위한 재실행 없이 원본 증거를 유지합니다.
 
 **효과는 아직 혼재합니다.** 최근 상태 내용 비교 보강은 놓치던 결함을 잡았지만,
 도구 설치가 모델 비용 절감을 보장하지는 않습니다. [현재 검토 결과](benchmarks/CURRENT-CANDIDATE-STATUS.md).

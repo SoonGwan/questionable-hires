@@ -24,6 +24,9 @@ Cached input is included once. Repeated conversation/tool input counts at each
 response. No billing or causal attribution follows. Native quality review remains
 incomplete: predecessor/multiple retained output has a truncation. Do not claim
 all criteria pass or promote this cost-only result into the featured benchmark.
+[Output follow-up](NATIVE-SPLIT-02-OUTPUT-REVIEW.md) records the391-token cutoff,
+optional per-check capture route and separately verified installed behaviors.
+The reference change has no new model-cost measurement.
 The [prior dated index](CANDIDATE-STATUS-2026-09-27-BEFORE-NATIVE-SPLIT-COSTS.md)
 preserves the preceding decision checkpoint.
 

@@ -140,7 +140,9 @@ is locally verified guidance. Its [native-split02 cost checkpoint](benchmarks/NA
 9.35% fewer than its predecessor; native quality review remains incomplete.
 
 Con Artist also accepts [exact test-file edits](skills/con-artist/references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)
-instead of resending a whole file; original/correct/faulty checks stay intact.
+instead of resending a whole file; original/correct/faulty checks stay intact. For large native batch reports,
+[inspect captured checks separately](skills/con-artist/references/native-unittest-batch.md)
+to preserve original evidence without rerunning checks.
 
 **Evidence is mixed.** Some tools are demonstrably useful, but installing them
 does not establish lower model cost. The state-content correction catches
