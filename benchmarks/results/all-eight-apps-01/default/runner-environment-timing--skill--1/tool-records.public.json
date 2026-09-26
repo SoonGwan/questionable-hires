@@ -1,0 +1,180 @@
+{
+  "session_id": "01a0dfec-6f87-7022-a4b9-ce196c5d95ab",
+  "source_bytes": 102992,
+  "source_sha256": "804f64e4a9144e77732f3f9bb90b2a430698ee04d1de91c0849006e204d8abdf",
+  "source_lines": 39,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "ef599033d027bfbe903d5864f55b1fe553b126a43a630312b37c0d5c35ac7e3c",
+      "record": {
+        "timestamp": "2026-09-26T22:53:35.319Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_028b5e47740075c0016ab84ced1aa887d08979c7282326ca32",
+          "status": "completed",
+          "call_id": "call_SfEzvnFVX2fNhs72drGJXk5Z",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!__pycache__' -g '!*.pyc' -g '!*lock*'\",\"max_output_tokens\":4000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/exorcist/SKILL.md\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfec-6fd5-7633-baf8-b658049573b9",
+            "create_time": 1790463211.281342
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "87623b3a8b30a95f72df99c2dee7053c729686af4889215de6ca2f0dbc0d07c3",
+      "record": {
+        "timestamp": "2026-09-26T22:53:35.525Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dfec-87a5-7ca2-b3ec-c577856aa61f",
+          "call_id": "call_SfEzvnFVX2fNhs72drGJXk5Z",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"0c2ffb\",\"wall_time_seconds\":0.000004541,\"exit_code\":0,\"original_token_count\":36,\"output\":\"<WORKSPACE>\\nincident.md\\ntest_worker.py\\nworker.py\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"1f15f2\",\"wall_time_seconds\":0.000003084,\"exit_code\":0,\"original_token_count\":928,\"output\":\"---\\nname: exorcist\\ndescription: Diagnose an uncertain bug by designing experiments that distinguish competing causes, especially speculative cache, timing, environment, or concurrency explanations.\\n---\\n\\n# Exorcist\\n\\n> You keep saying cache. Let's test that belief.\\n\\n## Find the decision-changing observation\\n\\nStart at the reported failure using supplied paths or the repository file list. Reuse existing reproduction evidence; trace only until plausible causes diverge. Don't manufacture hypotheses for an established mechanism.\\n\\nObserve that boundary in the actual implementation: submission versus persistence, dispatch versus completion, configuration versus effective state. Prefer existing observations or a recording dependency. Another layer recording the same value adds nothing unless its provenance is unresolved. A rewritten simulation or repeated success flag cannot establish an unobserved effect.\\n\\nChoose the runner before inspecting setup: use existing tests when they exercise the distinction, otherwise one small probe with comparable inputs and controlled timing. Inspect fixtures/configuration if that path uses them or they could explain the symptom. Retain normal controls; repeat only for unresolved intermittency or a required check.\\n\\nBefore another experiment, ask which possible result changes the diagnosis or next action. If none, stop. A symptom without a suspected dependency shows that dependency is unnecessary for this reproduction, not every production incident. Explain why the existing safeguard does or doesn't address the observed mechanism.\\n\\n## Match containment to the exercised path\\n\\nRun a bounded local computation with the chosen interpreter or existing test runner. The optional helper is not the default probe command: use it for an identified hang risk that the runner's existing process deadline does not contain. Synchronous code can also block; choose from the actual operations, not the presence of `async` alone.\\n\\nFor asynchronous probes, bound signals that may never arrive and clean up owned tasks. Asyncio timeouts can wait indefinitely for suppressed cancellation. When an additional process deadline is needed, the installed POSIX helper supplies one (replace paths/interpreter):\\n\\n```sh\\npython3 /path/to/exorcist/scripts/run_probe.py --timeout 10 -- python3 -B experiments/probe.py\\n```\\n\\nTrusted local foreground commands only: this kills remaining process-group members even after normal completion; it is not a sandbox. JSON retains child status, timeout and bounded output. Timeout or truncated decisive output means incomplete evidence, not causal proof. See [runner details](references/bounded-probe.md) for exit mapping, limits or adaptation; routine invocation doesn't require source inspection.\\n\\n## Finish at the evidence boundary\\n\\nChoose one destination for detailed evidence. If a trace file is requested or needed for later analysis, write it and print its path plus distinguishing inputs/outcomes and failures; don't also print the entire trace unless needed to resolve the diagnosis. Otherwise use captured command output directly instead of a file round trip. Preserve necessary ordering/provenance and keep the reproduction rerunnable.\\n\\nReport the supported mechanism, decisive command/result, safeguard and uncertainty. Name the missing observation if blocked, rather than expanding simulations. Link the reproduction instead of repeating it. A restart alone isn't causal proof; preserve evidence and user state before an authorized reset.\\n\\nDiagnosis leaves production code unchanged. A requested fix stays scoped and reruns the original reproduction plus relevant checks. Preserve user changes and explicit requirements. Keep humor optional.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfec-6fd5-7633-baf8-b658049573b9",
+            "create_time": 1790463215.525546
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "58d2d7bf22131455ea82332f88ba0ba649f025cc1be75657b52d97b44f3b00bd",
+      "record": {
+        "timestamp": "2026-09-26T22:53:38.029Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_028b5e47740075c0016ab84cf0a3bc87d09fe4a6b46bb8c48f",
+          "status": "completed",
+          "call_id": "call_AkAQzdD14ylsOPxylJkV4DBs",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"rg --files --hidden -g AGENTS.md -g '! .git'; cat incident.md; cat test_worker.py; cat worker.py\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfec-6fd5-7633-baf8-b658049573b9",
+            "create_time": 1790463215.863711
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "9fc40c55a829c12f456369a48a1ea272dbd8ae176a31e27d7be42f05b7a72e9d",
+      "record": {
+        "timestamp": "2026-09-26T22:53:38.128Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dfec-91d0-7960-b325-f9ac96705d83",
+          "call_id": "call_AkAQzdD14ylsOPxylJkV4DBs",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"46e4d7\",\"wall_time_seconds\":0.000003583,\"exit_code\":0,\"original_token_count\":328,\"output\":\"No external mail provider is used in this reproduction. Run the test from a fresh process with REQUEST_RETRIES absent: python3 -m unittest -v test_worker. The contrasting standalone process sets REQUEST_RETRIES=0 before importing worker, then invokes deliver with a callback that records calls and raises RuntimeError. Its callback runs once. The application currently reads deployment environment at process startup; whether live configuration changes should be supported is not specified.\\nimport os\\nimport unittest\\nfrom unittest.mock import patch\\nimport worker\\n\\nclass DeliveryTests(unittest.TestCase):\\n    def setUp(self):\\n        self.environment = patch.dict(os.environ, {'REQUEST_RETRIES': '0'})\\n        self.environment.start()\\n        self.addCleanup(self.environment.stop)\\n\\n    def test_disabled_retries(self):\\n        calls = []\\n        def send():\\n            calls.append('attempt')\\n            raise RuntimeError('offline failure')\\n        with self.assertRaises(RuntimeError):\\n            worker.deliver(send)\\n        self.assertEqual(len(calls), 1)\\nimport os\\n\\nRETRIES = int(os.environ.get('REQUEST_RETRIES', '2'))\\n\\ndef deliver(send):\\n    for attempt in range(RETRIES + 1):\\n        try:\\n            return send()\\n        except RuntimeError:\\n            if attempt == RETRIES:\\n                raise\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfec-6fd5-7633-baf8-b658049573b9",
+            "create_time": 1790463218.128947
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "1629dc34862f6157aa310fda27a018741ea7261a5d4e0971e490253a3b360acc",
+      "record": {
+        "timestamp": "2026-09-26T22:54:05.143Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_028b5e47740075c0016ab84cf890b487d08405539d37e41557",
+          "status": "completed",
+          "call_id": "call_VTAC4VzySRJsD6PzxC5NwFGk",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"env -u REQUEST_RETRIES python3 -B -m unittest -v test_worker\",\"max_output_tokens\":3000}));\ntext(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport os\\nimport subprocess\\nimport sys\\n\\nprobe = r'''\\nimport os\\nimport unittest\\nfrom unittest.mock import patch\\nprint('before test import: REQUEST_RETRIES=%r' % os.environ.get('REQUEST_RETRIES'), flush=True)\\nimport test_worker\\nworker = test_worker.worker\\nprint('after test import: worker.RETRIES=%r' % worker.RETRIES, flush=True)\\noriginal_deliver = worker.deliver\\n\\ndef observed_deliver(send):\\n    calls = []\\n    print('deliver after actual setUp: REQUEST_RETRIES=%r worker.RETRIES=%r' %\\n          (os.environ.get('REQUEST_RETRIES'), worker.RETRIES), flush=True)\\n    def recording_send():\\n        calls.append('attempt')\\n        return send()\\n    try:\\n        return original_deliver(recording_send)\\n    finally:\\n        print('actual callback calls=%d' % len(calls), flush=True)\\n\\nwith patch.object(worker, 'deliver', observed_deliver):\\n    result = unittest.TextTestRunner(verbosity=2).run(\\n        unittest.defaultTestLoader.loadTestsFromTestCase(test_worker.DeliveryTests))\\nprint('after cleanup: REQUEST_RETRIES=%r worker.RETRIES=%r' %\\n      (os.environ.get('REQUEST_RETRIES'), worker.RETRIES), flush=True)\\nraise SystemExit(not result.wasSuccessful())\\n'''\\nstandalone = r'''\\nimport worker\\ncalls = []\\ndef send():\\n    calls.append('attempt')\\n    raise RuntimeError('offline failure')\\ntry:\\n    worker.deliver(send)\\nexcept RuntimeError as error:\\n    print('standalone: worker.RETRIES=%d callback calls=%d error=%s' %\\n          (worker.RETRIES, len(calls), error), flush=True)\\nassert len(calls) == 1\\n'''\\nfor label, setting, script, expected in [\\n    ('actual test; setting absent at import', None, probe, 1),\\n    ('actual test; setting 0 before import', '0', probe, 0),\\n    ('incident standalone; setting 0 before import', '0', standalone, 0),\\n]:\\n    env = os.environ.copy()\\n    env.pop('REQUEST_RETRIES', None)\\n    if setting is not None:\\n        env['REQUEST_RETRIES'] = setting\\n    print('\\\\n=== %s ===' % label, flush=True)\\n    result = subprocess.run([sys.executable, '-B', '-'], input=script, text=True,\\n                            env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,\\n                            timeout=10)\\n    print(result.stdout, end='', flush=True)\\n    print('process exit=%d (expected %d)' % (result.returncode, expected), flush=True)\\n    assert result.returncode == expected\\nPY\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfec-6fd5-7633-baf8-b658049573b9",
+            "create_time": 1790463218.45221
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "64273a4b3b96b8696e81ddeffde058288916417382609341a11f1a2e1f8a6004",
+      "record": {
+        "timestamp": "2026-09-26T22:54:05.500Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dfec-fcbc-7630-8a2e-d77702218c57",
+          "call_id": "call_VTAC4VzySRJsD6PzxC5NwFGk",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"35a8d2\",\"wall_time_seconds\":0.000004833,\"exit_code\":1,\"original_token_count\":169,\"output\":\"test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... FAIL\\n\\n======================================================================\\nFAIL: test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_worker.py\\\", line 19, in test_disabled_retries\\n    self.assertEqual(len(calls), 1)\\nAssertionError: 3 != 1\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2c4ea4\",\"wall_time_seconds\":0.021570209,\"exit_code\":0,\"original_token_count\":396,\"output\":\"\\n=== actual test; setting absent at import ===\\nbefore test import: REQUEST_RETRIES=None\\nafter test import: worker.RETRIES=2\\ntest_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... deliver after actual setUp: REQUEST_RETRIES='0' worker.RETRIES=2\\nactual callback calls=3\\nFAIL\\n\\n======================================================================\\nFAIL: test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_worker.py\\\", line 19, in test_disabled_retries\\n    self.assertEqual(len(calls), 1)\\nAssertionError: 3 != 1\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\nafter cleanup: REQUEST_RETRIES=None worker.RETRIES=2\\nprocess exit=1 (expected 1)\\n\\n=== actual test; setting 0 before import ===\\nbefore test import: REQUEST_RETRIES='0'\\nafter test import: worker.RETRIES=0\\ntest_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... deliver after actual setUp: REQUEST_RETRIES='0' worker.RETRIES=0\\nactual callback calls=1\\nok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nafter cleanup: REQUEST_RETRIES='0' worker.RETRIES=0\\nprocess exit=0 (expected 0)\\n\\n=== incident standalone; setting 0 before import ===\\nstandalone: worker.RETRIES=0 callback calls=1 error=offline failure\\nprocess exit=0 (expected 0)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfec-6fd5-7633-baf8-b658049573b9",
+            "create_time": 1790463245.500797
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

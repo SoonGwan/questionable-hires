@@ -155,6 +155,8 @@ its six-cell costs are mixed with no joint aggregate token/time saving.
 [Current dated evidence and limitations](benchmarks/CURRENT-CANDIDATE-STATUS.md)
 retain adverse development and model-configuration comparisons. Model-choice01
 (2026-09-27, `6701069f`) is declined; it does not establish joint token/time saving.
+[Apps01](benchmarks/ALL-EIGHT-APPS-01-REVIEW.md) (2026-09-27, `6701069f`) also remains
+unadopted: tokens−9.49%, time+0.52% across eight exposed tasks;4/8 joint reductions.
 
 [Detailed development history and adverse results](docs/DEVELOPMENT-NOTES.md)
 (snapshot: 2026-09-14, source `17ede49`). Examples include Hostage's higher token

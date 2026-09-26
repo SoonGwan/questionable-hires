@@ -1,0 +1,151 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "editor-snapshot-present",
+  "skill": "mother-in-law",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "6b29c12dfe0258e3c6cef8d357f01442617fb794",
+  "skill_sha256": "7b821467179f40f0f246e616aa13508eb60a66f7e358b251b3a382b8757ad084",
+  "skill_resources_sha256": "fdf71c90185b27881a3598db4865d6f40439abe0c2dc4ccc2d77f5f4925aa769",
+  "elapsed_seconds": 51.175,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 67124,
+    "cached_input_tokens": 60672,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1308,
+    "reasoning_output_tokens": 82
+  },
+  "completed": true,
+  "allocated_workspace": "<WORKSPACE>",
+  "prompt": "Use $mother-in-law at .agents/skills/mother-in-law/SKILL.md.\n\nAdd native regression coverage for Editor.save in editor.py.\nRead test_editor.py and applicable project instructions. Existing test_support.py provides writes() with controlled entry, delayed serialization, and owned task cleanup.\n\nContract: persist receives a per-save snapshot of the full nested settings at\nsave entry. Later set_theme calls may edit live settings but must not mutate that\npending snapshot. Once the save completes, newer edits remain visible and dirty.\nWithout an intervening edit, completion marks the saved settings clean.\n\nPreserve the existing initial-state test. Add exactly two native test methods:\n(1) set a theme, save with no intervening edit, acknowledge, then verify stored\nsettings and clean state; (2) start saving one theme, change it again while persist\nis pending, inspect the still-pending payload, acknowledge, then inspect stored\nsettings, current settings and dirty state. Use independent expected values, not\nreferences that change alongside live state. Check the full nested payload, not\njust one scalar. The persist test double must record a deep copy of its argument\nAFTER acknowledgement, not eagerly on callback entry; this models delayed\nserialization and must not itself fix the application's snapshot behavior.\n\nExercise real Editor.save through the native framework with deterministic gates,\nactual callback-entry observation, bounded waits and failure-safe task cleanup.\nRun the resulting three-method suite once after writing tests. Keep real\nregression failures: do not modify production, skip, mark expectedFailure or\nweaken expectations. If an assertion fails, later dependent steps may unwind to\ncleanup; all required checkpoints must still exist and execute on conforming\nproduction. No browser, separate disposable probe or extra report is requested.\nRepair only test-authoring errors if needed; retain all attempts as evidence.\nReport native identities/results, demonstrated behavior, tested layer and limits.\n\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 15,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [
+      "item_7"
+    ],
+    "error_event_types": [],
+    "item_error_review_candidates": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. Item errors may be recoverable; review actual execution. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "mother-in-law/SKILL.md": {
+      "kind": "file",
+      "sha256": "7b821467179f40f0f246e616aa13508eb60a66f7e358b251b3a382b8757ad084",
+      "mode": 420
+    },
+    "mother-in-law/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "e7ac9fbc8db01811c3b1a1ef776af05c13d641c4f93a5874a4d1c236d190a3ce",
+      "mode": 420
+    },
+    "mother-in-law/assets/controlled_fetch.py": {
+      "kind": "file",
+      "sha256": "48567a44a073b8b7574e5d2f4542501fd491b9003a320d80602c7cb2b8bb3a81",
+      "mode": 420
+    },
+    "mother-in-law/references/browser.md": {
+      "kind": "file",
+      "sha256": "dbc70f7812433629a8904098b4e02cd7237f1274ad8206017e5c0869ab1086d7",
+      "mode": 420
+    },
+    "mother-in-law/references/component-probe.md": {
+      "kind": "file",
+      "sha256": "557926b84933aced45537f95d312b457c27c5cd7ca21cebc55175276605ccd0a",
+      "mode": 420
+    },
+    "mother-in-law/references/native-tests.md": {
+      "kind": "file",
+      "sha256": "2c60e2c458c0ee74a1e50575f553682996b2ad0825d8eacc09f06c9b2fc94364",
+      "mode": 420
+    },
+    "mother-in-law/scripts/sequence_probe.py": {
+      "kind": "file",
+      "sha256": "6c6643c3865dbbd05d592eb7861b446587dbfdee459defe00cc11ab722ef5a0b",
+      "mode": 493
+    }
+  },
+  "installed_resources_after": {
+    "mother-in-law/SKILL.md": {
+      "kind": "file",
+      "sha256": "7b821467179f40f0f246e616aa13508eb60a66f7e358b251b3a382b8757ad084",
+      "mode": 420
+    },
+    "mother-in-law/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "e7ac9fbc8db01811c3b1a1ef776af05c13d641c4f93a5874a4d1c236d190a3ce",
+      "mode": 420
+    },
+    "mother-in-law/assets/controlled_fetch.py": {
+      "kind": "file",
+      "sha256": "48567a44a073b8b7574e5d2f4542501fd491b9003a320d80602c7cb2b8bb3a81",
+      "mode": 420
+    },
+    "mother-in-law/references/browser.md": {
+      "kind": "file",
+      "sha256": "dbc70f7812433629a8904098b4e02cd7237f1274ad8206017e5c0869ab1086d7",
+      "mode": 420
+    },
+    "mother-in-law/references/component-probe.md": {
+      "kind": "file",
+      "sha256": "557926b84933aced45537f95d312b457c27c5cd7ca21cebc55175276605ccd0a",
+      "mode": 420
+    },
+    "mother-in-law/references/native-tests.md": {
+      "kind": "file",
+      "sha256": "2c60e2c458c0ee74a1e50575f553682996b2ad0825d8eacc09f06c9b2fc94364",
+      "mode": 420
+    },
+    "mother-in-law/scripts/sequence_probe.py": {
+      "kind": "file",
+      "sha256": "6c6643c3865dbbd05d592eb7861b446587dbfdee459defe00cc11ab722ef5a0b",
+      "mode": 493
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 369,
+    "mode": 420,
+    "sha256": "9ec7b754d4d1e7f5e9fa0d2d68960520b49155e73bfe946c29dac012081479a7",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "pre_model_index": {
+    "status": "retained",
+    "file": "git-index.before-model.bin",
+    "bytes": 369,
+    "mode": 420,
+    "sha256": "9ec7b754d4d1e7f5e9fa0d2d68960520b49155e73bfe946c29dac012081479a7",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "pre_model_project_files": {
+    "local_artifact": "project-files.before-model.json",
+    "sha256": "39a5f8bc46263bde53600ae7323810aa2a9ba28da361a27f33038bb558fc5623",
+    "excluded_prefixes": [
+      ".git",
+      ".agents/skills"
+    ],
+    "limitation": "Local regular-file bytes/modes and symlink targets before model execution; not directory metadata, an atomic snapshot, transient-change evidence, or an automatic preservation verdict. Raw inventory is not exported."
+  },
+  "index_comparison": {
+    "status": "observed",
+    "bytes_and_mode_unchanged": true,
+    "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+  }
+}

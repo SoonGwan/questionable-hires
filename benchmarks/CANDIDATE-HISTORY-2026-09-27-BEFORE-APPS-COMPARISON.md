@@ -1,6 +1,10 @@
+# Historical index before apps01 review — 2026-09-27
+
+Superseded index from `5cf3504b`; preserved below, not a current release claim.
+
 # Current candidate: whole-task improvement remains unproven
 
-Decision checkpoint **2026-09-27**, apps01 execution `5cf3504b`, skill bundle `6701069f`.
+Decision checkpoint **2026-09-27**, on repository `ba1c5d82`.
 The owner objective is better developer work across **all eight roles**, fewer
 **whole-task input+output tokens**, and faster completion. It remains unmet.
 No complete update or general efficiency claim is supported.
@@ -22,7 +26,6 @@ integration05(`75183f2f`)의 불리한 결과와 범위·평가·보존 한계�
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
-| [Apps01](ALL-EIGHT-APPS-01-REVIEW.md),2026-09-27,`6701069f`,execution `5cf3504b` |16 matching-skill default/apps-off cells; tokens−9.49%,time+0.52%;4/8 joint reductions. | No adoption; exposed n=1 tasks,shared host/cache and unequal optional work. Scoped native outcomes and original preservation reviewed; no general quality or skill-version gain. |
 | [Model-choice01](ALL-EIGHT-MODEL-CHOICE-01-REVIEW.md),2026-09-27,`6701069f` |16 same matching-skill Astra/Sol cells; Sol tokens+39.23%,time−0.61%; all8 higher tokens,0 joint gains. | Configuration declined; Sol scope violations, unequal host catalogs, matching-skill-only protocol correction and exposed n=1 development tasks retained. |
 | [Path-selection transfer01](PATH-SELECTION-01-REVIEW.md),2026-09-27,unchanged resource`9fdee801`,inputs`3ff3fa85` |4 scoped diagnostic outcomes supported; tokens+5.40%,time−18.75%; no pair improves both. Direct initial/final supplied-file modes match. | No optimization adopted or quality advantage; related authored fixtures,n=1,grouped order/shared cache and unequal optional work. |
 | [Interpreter route01 review](INTERPRETER-ROUTE-01-REVIEW.md),2026-09-27,`e918d02d` |6 scoped tasks supported; versus no skill tokens+0.67%,time−8.39%; versus predecessor tokens−4.75%,time+1.73%. Unequal extra work and coordinator exit-vector limits retained. | Neither aggregate improves both; correlated exposed development/control pair. |
@@ -38,9 +41,6 @@ All observations are dated, resource-specific development evidence. Reused
 fixtures, n=1, shared host/cache, unequal verification and exposure limits prevent
 independent generalization. Cached input is included once; reasoning is not added
 again. The [featured pointer](featured.json) and frozen charts remain separate.
-
-한국어: apps01(2026-09-27,`6701069f`)은 토큰9.49% 감소지만 시간0.52% 증가이며
-동시 절감4/8이다. 전체 목표 미달로 설정을 채택하지 않는다. [이전 판단 기록](CANDIDATE-HISTORY-2026-09-27-BEFORE-APPS-COMPARISON.md)을 보존한다.
 
 ## Functionality and delivery, not model savings
 

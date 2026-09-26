@@ -199,6 +199,8 @@ $friday 이 배포 롤백 가능한지 봐줘.
 [날짜별 근거와 한계](benchmarks/CURRENT-CANDIDATE-STATUS.md)에 불리한 개발·모델 설정
 비교도 보존합니다. model-choice01(2026-09-27, `6701069f`) 설정은 채택하지 않으며
 토큰·시간 동시 절감의 근거가 아닙니다.
+[apps01](benchmarks/ALL-EIGHT-APPS-01-REVIEW.md)(2026-09-27, `6701069f`)도 채택하지 않습니다.
+노출된 과제8개에서 토큰9.49% 감소·시간0.52% 증가이며 동시 절감은4/8입니다.
 
 [도구별 개발 이력과 불리한 결과](docs/DEVELOPMENT-NOTES.ko.md)
 (2026-09-14, `17ede49` 기록)를 별도로 모았습니다. Hostage의 토큰 증가·원본 테스트
