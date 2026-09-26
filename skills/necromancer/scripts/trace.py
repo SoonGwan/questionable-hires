@@ -30,9 +30,8 @@ def git_lines(text):
     return rows
 
 
-def iter_git_lines(text):
+def iter_git_lines(text, start=0):
     """Iterate LF rows without allocating a second full patch line list."""
-    start = 0
     while start < len(text):
         end = text.find('\n', start + 65536)
         end = len(text) if end < 0 else end + 1
@@ -122,8 +121,8 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
     marker = '+++ b/' + historical_path + '\n'
     if output.count(marker) != 1 or any(c in historical_path for c in '\n\r\t"'):
         return None
-    body = output.split(marker, 1)[1]
-    if 'diff --git ' in body or '@@@' in body:
+    body_start = output.index(marker) + len(marker)
+    if output.find('diff --git ', body_start) >= 0 or output.find('@@@', body_start) >= 0:
         return None
     rows, selected, covered = {}, [], set()
     targets = set(line_numbers)
@@ -141,7 +140,7 @@ def selected_patch_excerpt(output, historical_path, line_numbers, budget=8000):
         row_count += 1
 
     old = new = old_left = new_left = None
-    for line in iter_git_lines(body):
+    for line in iter_git_lines(output, body_start):
         match = (re.fullmatch(r'@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@.*', line)
                  if line.startswith('@@ -') else None)
         if match:
