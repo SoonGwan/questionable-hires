@@ -25,6 +25,8 @@ discovers the executable with initial source reads instead. The instruction's
 intended behavior is observed, but avoiding that launch is not demonstrated joint
 cost saving. Complete original native assertion/binding, command-output, scope,
 artifact and cleanup review remains pending. CLI completion is not a quality score.
+[Original-evidence follow-up](INTERPRETER-ROUTE-01-FOLLOWUP.md) adds scoped final-state
+controls and recovers two omitted native prefixes; complete quality labels remain pending.
 
 These tasks share identical code/history and differ only in documented interpreter.
 Source and cancellation controls were previously exposed development material;

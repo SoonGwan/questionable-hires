@@ -54,6 +54,9 @@ whole-task tokens and faster completion. No completed update or broad saving.
 addresses repeated unavailable-executable launches and masked probe exits in
 Necromancer. Metadata/catalog checks pass; [six-cell costs](INTERPRETER-ROUTE-01-COSTS.md)
 are mixed, with no aggregate joint saving and native quality review pending.
+[Original-evidence follow-up](INTERPRETER-ROUTE-01-FOLLOWUP.md) confirms scoped
+six-cell artifact preservation and recovers two omitted native prefixes, retaining
+unequal extra coverage and the candidate coordinator's unasserted exit-vector limit.
 Integration05 still belongs to `75183f2f`, not this candidate.
 The [frozen interpreter comparison](INTERPRETER-ROUTE-01-PROTOCOL.md) specifies
 six serial cells against predecessor/no-skill, with documented and unspecified
