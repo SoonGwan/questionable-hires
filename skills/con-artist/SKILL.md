@@ -22,6 +22,12 @@ project isolation, disposable module/package copies or a valid substitution;
 restore substitutions in reused processes. A wrong binding, rewritten simulation,
 syntax error or equivalent mutation cannot establish test sensitivity.
 
+Before adding an assertion, identify the required observable contract. Object
+identity (including exception or traceback identity) needs an explicit identity
+requirement; propagation or unwinding alone does not imply it. Reuse existing
+neighboring controls when they cover the required boundary. Check the proposed
+assertion on correct code before interpreting its failure on faulty code.
+
 Inspect each phase's actual assertion and exit, not just a green baseline or a
 nonzero mutant status. Runner errors/warnings can indicate broken assertion
 plumbing, not a detected production fault. Establish provenance through copied

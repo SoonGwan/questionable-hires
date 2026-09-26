@@ -174,6 +174,10 @@ $friday 이 배포 롤백 가능한지 봐줘.
 | 클릭 꼬투리 QA | [응답 순서 제어 검증](skills/mother-in-law/SKILL.md). 네이티브 테스트용 요청 제어는 진입 대기를 취소해도 아직 전달하지 않은 요청을 보존합니다. 지원 인터페이스에 맞는 UI 없는 Python 컴포넌트용이며 기존 테스트가 우선이고 브라우저 검증은 아닙니다. |
 | 구조 관리인 | [구조 검토 지침](skills/landlord/SKILL.md). 별도 실행 도구는 포함하지 않습니다. |
 
+테스트 사기 감별사는 새 검사를 실제 요구 계약에 연결하고, 객체 동일성은 명시된
+요구가 있을 때 검사하도록 보완했습니다. 이 지침의 **토큰 절감 효과는 미측정**입니다.
+[날짜별 상태](benchmarks/CURRENT-CANDIDATE-STATUS.md)를 확인하세요.
+
 테스트 사기 감별사는 파일 전체를 다시 보내는 대신 [정확히 일치하는 부분 수정](skills/con-artist/references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)도
 받습니다. 기존 테스트와 강화한 테스트의 정상·결함 코드 검사는 그대로 유지합니다.
 

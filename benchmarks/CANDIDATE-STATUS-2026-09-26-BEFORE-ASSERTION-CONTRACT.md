@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-26, assertion-contract instruction candidate; no new model measurement**.
+Decision checkpoint **2026-09-22, SWE-Lite pilot01 resource`8ee6c56` / runner`796926e`**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -64,20 +64,6 @@ or recoverable savings.
 
 한국어: 전체 비교의 토큰 증가, 단일/다중 과제의 혼재된 결과, 스킬의 재사용 보고
 오류를 모두 유지한다. 유리한 한 쌍이나 프로세스 감소를 전체 개선율로 확대하지 않는다.
-
-## Unmeasured instruction candidate
-
-Con Artist now requires an observable contract before adding object-identity
-assertions and checks proposed assertions on correct code first. Motivated by
-[Click context01](CLICK-CONTEXT-01-REVIEW.md), measured resource `f253f38`,
-2026-09-21: an unsupported traceback-identity assertion caused normal-code
-failures and repair work. That exposed pair is historical, not a measurement
-of this instruction. No token/time saving, generalization or helper adoption
-is established. Do not rerun that pair as independent validation.
-
-한국어: 정상 코드에서 실패·복구를 유발한 계약 밖 객체 동일성 검사를 피하도록
-지침을 보완했다. 새 모델 측정은 없으며 토큰·시간 절감은 아직 미입증이다.
-이전 [판단 색인](CANDIDATE-STATUS-2026-09-26-BEFORE-ASSERTION-CONTRACT.md)을 보존한다.
 
 ## Implemented capabilities and local validation
 

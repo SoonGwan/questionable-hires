@@ -130,6 +130,10 @@ use Node.js. Helpers do not install dependencies or run in the background.
 | Mother-in-law | [Controlled interaction checks](skills/mother-in-law/SKILL.md) for compatible UI-less Python components. Its native-test transport preserves unconsumed requests when an entry wait is cancelled. Existing project tests take precedence; not browser verification. |
 | Landlord | [Review guidance](skills/landlord/SKILL.md); no separate bundled runtime helper. |
 
+Con Artist ties new assertions to the required observable contract; object identity
+requires an explicit requirement. This instruction change has **no measured token
+saving** ([dated status](benchmarks/CURRENT-CANDIDATE-STATUS.md)).
+
 Con Artist also accepts [exact test-file edits](skills/con-artist/references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)
 instead of resending a whole file; original/correct/faulty checks stay intact.
 
