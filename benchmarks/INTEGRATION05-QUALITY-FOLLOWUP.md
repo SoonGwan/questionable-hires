@@ -245,6 +245,55 @@ all-role review are unchanged.
 테스트 프로세스 내부라는 차이를 보존한다. helper의0 종료를 수정 완료로
 해석하지 않으며 원본 실행·비용·작업 파일을 고치지 않는다.
 
+## Necromancer original independent proposals
+
+Both history-invoice-boundary results support the explicit read-only task. Actual
+ee9689a28e043cc57317c118786ce7f5b1f213b4 adds the integer early return for integer
+minor units. Actual1d38dfc0c1a1255c8f9a5f8dd8aaab9c58a58d34 replaces truncation with
+ROUND_HALF_UP quantization for half-cent rounding, including credits. The separate
+9b050b628b971c45ff80073172d26f262341ada0 change retires the importer and converts
+validated strings to Decimal at the only supported invoice entrypoint. Both
+recommendations distinguish actual introducing diffs from current necessity.
+The explicit private/helper/no-alternate-caller contract bounds the approval of A;
+it is not a general claim that an absent local text match proves no public consumers.
+
+Both execute independent current/A-only/B-only complete amounts module variants,
+substituting invoice.amount_cents in memory and invoking the actual invoice_total.
+Native test_invoice.InvoiceTests still calls that entrypoint. Original binding is
+restored in finally. A removes only the integer guard; B retains it and replaces
+only quantization. Baseline checks exact text match counts; current verifies one
+structural match per AST substitution and compiles with dont_inherit=True.
+The original module has no future imports, so baseline's default compilation does
+not establish a future-flags defect in this measured task.
+
+| Input | Current | A-only | B-only | Required |
+| --- | ---: | ---: | ---: | ---: |
+| 1.005 |101 |101 |100 |101 |
+| −1.005 |−101 |−101 |−100 |−101 |
+| 2.34 |234 |234 |234 |234 |
+
+Each arm runs three native methods per variant. Current/A have3 passes; B has
+one pass and two actual half-cent AssertionErrors. Complete original outputs:
+[baseline line31](results/all-eight-current-05/baseline/history-invoice-boundary--baseline--1/native-tool-output-line-31.txt),
+[current line43](results/all-eight-current-05/current/history-invoice-boundary--skill--1/native-tool-output-line-43.txt).
+The coordinator prints outcomes rather than enforcing an expected result vector;
+its own shell success alone would not prove these results. The individual native
+method observations and values supply the evidence. Neither implements either
+proposal, and scoped file/index/resource preservation holds.
+
+Both first try unavailable python and recover with python3. Current appends Git
+status/diff to that first failed launch, masking its shell exit; the later native
+output does not rewrite that attempt. Costs retain both launches and all output.
+Both make the same supported recommendations; no comparative quality advantage,
+new measurement, favorable rerun or promotion of later interpreter guidance follows.
+The `e918d02d` route01 comparison remains a distinct measured resource/workflow.
+
+한국어:양쪽 모두 integer 예외와 rounding의 실제 도입 커밋을 구분하고, 현재
+지원되는 invoice 진입점에서 A·B를 독립 실행했다. A는101/−101/234를 유지하고
+B는100/−100/234로 half-cent 테스트2개를 실패한다. 현재 소스에 future import가
+없다는 범위와 조정자의 종료만으로 검증할 수 없는 한계를 보존한다. 원래 Python
+재시도·종료 코드 가림·비용은 그대로이며 비교 우월성이나 후속 후보 절감 근거가 아니다.
+
 한국어:16회 최종 파일·추적 파일 모드·인덱스·설치 리소스 대조는 명시한 범위에서
 일치한다. 초기 미추적 파일 모드의 직접 증거는 없으며 과장하지 않는다. SQLite
 첫 단계는 원본 기록에서 복구했고 재실행하지 않았다. 별도 사후 반환값 대조는

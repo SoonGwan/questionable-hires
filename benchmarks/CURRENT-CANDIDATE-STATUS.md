@@ -6,6 +6,9 @@ verifies scoped final-state preservation and retains test-plumbing/capture limit
 Separate author Editor controls now confirm both delivered suites execute required
 completion checkpoints on conforming copies and reject three contract faults;
 these post-timing controls are not original model work or comparative gains.
+The original follow-up now details Store, Exorcist, Receipt and Necromancer task
+outcomes, retaining the Exorcist criterion-visibility mismatch and native/coordinator
+exit distinctions. Complete all-role review remains unfinished.
 The owner objective remains better developer work across all eight roles, fewer
 whole-task tokens and faster completion. No completed update or broad saving.
 
