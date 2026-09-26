@@ -101,20 +101,41 @@ class Probe(unittest.TestCase):
         self.assertEqual(helper.tree_inventory(self.root), original)
         self.assertFalse(list(self.root.glob('.receipt-*')))
 
+    def test_bootstrap_body_zero_exit_stops_without_completed_result(self):
+        (self.root/'test_rule.py').write_text('import os, unittest\n'
+            'class Interrupted(unittest.TestCase):\n'
+            '    def test_body(self):\n'
+            '        print("entered bootstrap test body", flush=True)\n'
+            '        os._exit(0)\n')
+        original = helper.tree_inventory(self.root)
+        with patch.object(helper, 'run_check', wraps=helper.run_check) as execute:
+            result = helper.compare(self.root, dict(self.recipe, guard_tree=True))
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(execute.call_count, 1)
+        self.assertEqual(list(result['checks']), ['before'])
+        check = result['checks']['before']
+        self.assertEqual(check['native_exit_code'], 0)
+        self.assertEqual(check['exit_code'], 7)
+        self.assertIsNone(check['suite_observation'])
+        self.assertIn('entered bootstrap test body', check['output'])
+        self.assertEqual(helper.tree_inventory(self.root), original)
+        self.assertFalse(list(self.root.glob('.receipt-*')))
+
     def test_completed_failure_with_masked_native_exit_is_incomplete(self):
         (self.root/'test_rule.py').write_text('import atexit, os, unittest\n'
             'atexit.register(lambda: os._exit(0))\n'
             'class Masked(unittest.TestCase):\n'
             '    def test_failure(self): self.fail("actual contract failure")\n')
-        result = helper.compare(self.root, dict(self.recipe, invocation='module', guard_tree=True))
-        self.assertEqual(result['status'], 'incomplete')
-        self.assertEqual(list(result['checks']), ['before'])
-        check = result['checks']['before']
-        self.assertEqual(check['native_exit_code'], 0)
-        self.assertEqual(check['exit_code'], 7)
-        self.assertEqual(check['suite_observation'], dict(tests=1, skipped=0, successful=False))
-        self.assertIn('AssertionError: actual contract failure', check['output'])
-        self.assertFalse(list(self.root.glob('.receipt-*')))
+        for invocation in ('module', 'bootstrap'):
+            result = helper.compare(self.root, dict(self.recipe, invocation=invocation, guard_tree=True))
+            self.assertEqual(result['status'], 'incomplete')
+            self.assertEqual(list(result['checks']), ['before'])
+            check = result['checks']['before']
+            self.assertEqual(check['native_exit_code'], 0)
+            self.assertEqual(check['exit_code'], 7)
+            self.assertEqual(check['suite_observation'], dict(tests=1, skipped=0, successful=False))
+            self.assertIn('AssertionError: actual contract failure', check['output'])
+            self.assertFalse(list(self.root.glob('.receipt-*')))
 
     def test_empty_native_exit_five_compatibility_control(self):
         (self.root/'test_rule.py').write_text('import unittest\n')

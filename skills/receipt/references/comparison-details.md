@@ -35,15 +35,15 @@ identities, assertions, counts/skips, copied imports and each check's own output
 | Bootstrap unittest | Failure 1; empty/all-skipped 5; partial-skip success 0 |
 | Module unittest | Completed native exit preserved; empty discovery may return 0 or 5 depending on Python; all-skipped checks can return 0 |
 | Pytest | Native exits retained; otherwise-success/failure 0/1 without collection-time import verification becomes incomplete 7 |
-| Missing module-unittest completion or disagreement with native exit | Check7; native exit retained separately; CLI2; no next comparison |
+| Missing unittest completion or disagreement with native exit | Check7; native exit retained separately; CLI2; no next comparison |
 | Missing startup provenance | Check 7; native exit retained separately; CLI 2; no next comparison |
 | Import verification exceptions, including `SystemExit(0)` | Traceback retained; check 7; CLI 2; no next comparison |
 
 An independent runner exit 7 is conservatively incomplete too. No mode proves
-requested coverage. Module unittest records the completed runner result; missing
-completion, including
-`os._exit` during execution, is incomplete. Bootstrap/pytest paths and these
-trusted-test checks are not general early-exit or adversarial attestation; inspect
+requested coverage. Both unittest modes record the completed runner result;
+missing completion, including `os._exit` during execution, is incomplete. Pytest
+and Node retain their separate contracts. These trusted-test checks are not
+general early-exit or adversarial attestation; inspect
 actual tests. A setup/import error is not the
 requested defect's reproduction.
 

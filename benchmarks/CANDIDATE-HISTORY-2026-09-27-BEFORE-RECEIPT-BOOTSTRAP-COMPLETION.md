@@ -1,3 +1,5 @@
+# Historical index before Receipt default-path completion02
+
 # Current candidate: whole-task improvement remains unproven
 
 Decision checkpoint **2026-09-27, integration05 bundle `75183f2f`**.
@@ -78,20 +80,6 @@ whole-task tokens and faster completion. No completed update or broad saving.
 파일에 소급하지 않는다. 공개 이력 검토와 최종 릴리스 준비도 미완료다.
 
 ## Scoped candidate and next required work
-
-
-[Receipt unittest completion02](RECEIPT-UNITTEST-COMPLETION-02.md),2026-09-27,
-candidate on parent`3dac549a`, extends the correction to the default bootstrap:
-both unittest modes stop after missing/contradictory completion. Final Receipt198
-tests and Git-free17 controls pass. All8 resources match an isolated repository
-installer copy; installed Receipt ordinary/interrupted default CLI paths behave
-as required. No fresh model cost, remote-install or broader platform claim.
-The prior module-only checkpoint below is historical and the preceding index is
-retained in [dated history](CANDIDATE-HISTORY-2026-09-27-BEFORE-RECEIPT-BOOTSTRAP-COMPLETION.md).
-
-한국어: 기본 경로까지 완료 결과 확인을 보강했고 로컬 검사·설치 동작을 확인했다.
-실제 모델의 전체8개 역할 품질·토큰·시간 목표는 계속 미달이다.
-
 
 [Receipt module completion01](RECEIPT-NATIVE-COMPLETION-01.md),2026-09-27,
 candidate on parent`96d43558`, corrects native body early-exit and shutdown/status

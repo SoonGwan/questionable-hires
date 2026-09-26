@@ -59,6 +59,7 @@ BOOTSTRAP = '''import importlib, json, os, pathlib, sys, traceback, types
 ''' + MODULE_BINDINGS + '''
 recipe = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
+suite_path = os.environ.pop('RECEIPT_SUITE_RESULT', None) if recipe['runner'] == 'unittest' else None
 sys.path[:0] = [str(root / name) for name in recipe.get('import_roots', [])] + [str(root)]
 def verify_imports():
     for name in recipe['imports']:
@@ -98,6 +99,8 @@ except BaseException:
 if recipe['runner'] == 'unittest':
     import unittest
     result = unittest.main(module=None, exit=False).result
+    pathlib.Path(suite_path).write_text(json.dumps(dict(
+        tests=result.testsRun, skipped=len(result.skipped), successful=result.wasSuccessful())))
     if not result.wasSuccessful():
         raise SystemExit(1)
     if result.testsRun == len(result.skipped):
@@ -237,6 +240,7 @@ def run_check(python, root, recipe, timeout):
     env.pop('PYTHONOPTIMIZE', None)
     args = [str(python), '-B', '-c', BOOTSTRAP, json.dumps(recipe)]
     marker = None
+    observer = None
     if recipe.get('invocation', 'bootstrap') == 'module':
         for directory in [root, *(root / name for name in recipe.get('import_roots', []))]:
             if any((directory / name).exists() for name in
@@ -246,14 +250,19 @@ def run_check(python, root, recipe, timeout):
         probe = Path(tempfile.mkdtemp(prefix='.receipt-startup-', dir=root))
         (probe / 'sitecustomize.py').write_text('recipe = ' + repr(recipe) + '\n' + NATIVE_STARTUP)
         marker = probe / 'ready'
+        observer = probe
         env['PYTHONPATH'] = os.pathsep.join([str(probe), *(str(root / name) for name in recipe.get('import_roots', [])), str(root)])
         args = [str(python), '-B', '-m', recipe['runner'], *recipe['tests']]
+    elif recipe['runner'] == 'unittest':
+        observer = Path(tempfile.mkdtemp(prefix='.receipt-result-', dir=root))
+        env['RECEIPT_SUITE_RESULT'] = str(observer / 'suite.json')
     result = capture_check(args, root, env, timeout)
-    if marker is not None:
-        ready = marker.is_file() and not marker.is_symlink() and read_limited(marker, 5) == b'ready'
+    if observer is not None:
+        ready = (marker is None or (marker.is_file() and not marker.is_symlink()
+                 and read_limited(marker, 5) == b'ready'))
         suite = None
         try:
-            value = json.loads(read_limited(probe / 'suite.json', 4096))
+            value = json.loads(read_limited(observer / 'suite.json', 4096))
             if (isinstance(value, dict) and set(value) == {'tests', 'skipped', 'successful'}
                     and type(value['tests']) is int and type(value['skipped']) is int
                     and 0 <= value['skipped'] <= value['tests']
@@ -261,11 +270,13 @@ def run_check(python, root, recipe, timeout):
                 suite = value
         except (OSError, ValueError):
             pass
-        result.update(command=args, invocation='module', provenance_ready=ready,
-                      native_exit_code=result['exit_code'], suite_observation=suite)
+        result.update(native_exit_code=result['exit_code'], suite_observation=suite)
+        if marker is not None:
+            result.update(command=args, invocation='module', provenance_ready=ready)
         agrees = suite is not None and (
             result['exit_code'] == (0 if suite['successful'] else 1)
-            or (suite['successful'] and suite['tests'] == 0 and result['exit_code'] == 5))
+            or (suite['successful'] and suite['tests'] == suite['skipped']
+                and result['exit_code'] == 5))
         if (not ready or not agrees) and not result['timed_out']:
             result['exit_code'] = 7
     return result

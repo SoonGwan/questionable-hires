@@ -104,8 +104,8 @@ JSON
   with `runner: "unittest"` and existing `tests`; no internal adapter needed.
   Default is `bootstrap`. Copy-local startup checks imports in the native test
   process; inspect `command`, `native_exit_code`, `provenance_ready` and
-  `suite_observation`. A missing completed unittest result or disagreement with
-  the native exit maps to incomplete check7 and stops later comparisons. Empty
+  `suite_observation`. Both unittest modes record completion; missing results or
+  exit disagreement map to incomplete check7 and stop later comparisons. Empty
   and all-skipped native results retain their exit; they are not regression proof.
   Conventional existing system/user hooks are preserved. Project-local or unusual
   startup customization needs native project setup, not a bypass; read
