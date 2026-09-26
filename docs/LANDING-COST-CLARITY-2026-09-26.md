@@ -15,6 +15,10 @@ token result remains linked and visible.
 Local verification: 14 landing/server tests passed, 14 responsive layouts across
 both languages passed browser checks, catalog validation passed, generated build
 and featured synchronization checks passed. Mobile experiment rendering reviewed.
+Public Korean HTML fetched over verified TLS with Cloudflare DNS-over-HTTPS
+contains the new signed mean, adverse task changes and whole-team warning.
+The ordinary headless-browser public navigation timed out twice at 20 seconds;
+no successful public browser interaction check is claimed for this revision.
 These are website checks, not model-efficiency measurements.
 
 Instruction candidate `33530f98` avoids unsupported object-identity requirements
