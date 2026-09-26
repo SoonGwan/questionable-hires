@@ -48,14 +48,32 @@ made during preparation. Exclusive run storage: `/tmp/qh-all-eight-current-05`.
 Retain every result and poll the actual execution handle without restarting.
 All16 sessions are now terminal. [Recorded cost checkpoint](../benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md)
 reconciles all responses: tokens+18.54%,time+9.06%, no joint pair improvement.
-Native/artifact review remains unfinished; no relaunch or favorable replacement.
+[Scoped original review](../benchmarks/ALL-EIGHT-CURRENT-05-REVIEW.md) now covers
+all16 explicit task outcomes, retaining scope, criterion and untracked-mode evidence
+limits. No unqualified score, relaunch or favorable replacement.
+
+## Interpreter route and current local validation
+
+[Route01 scoped review](../benchmarks/INTERPRETER-ROUTE-01-REVIEW.md), candidate
+`e918d02d`, records six completed cells. No-skill comparison tokens+0.67%/time−8.39%;
+predecessor comparison tokens−4.75%/time+1.73%. Neither aggregate improves both.
+Exposed correlated controls are not independent all-eight validation.
+
+[Local validation](../benchmarks/RELEASE-VALIDATION-BA2713D5.md), source `ba2713d5`,
+now covers checkout/archive full discovered suites and cached CLI installed
+behavior. Both discovered1,250 tests, with17/47 skipped respectively and zero
+failures; installed8 skills/51 files/25 command exits match expected behavior.
+These local checks do not satisfy model efficiency, hosted/platform or final
+release requirements. Older dated validations remain at their actual sources.
 
 ## Required remaining work
 
-1. Review all six scheduled attempts against original native assertions, imports,
-   preservation and cleanup; reconcile tokens and time using existing analyzers.
-   Treat missing/incomplete evidence as incomplete. Identify unnecessary repairs,
-   duplicate setup or unresolved coverage before any further instruction edit.
+1. Use completed scoped original reviews and existing counter reconciliations;
+   retain missing/incomplete evidence rather than repairing past transcripts.
+   In particular, direct initial untracked-file modes were not captured in
+   integration05. Future measured fixtures need direct pre-model preservation
+   evidence; a replay cannot establish those historical initial modes. Identify
+   unnecessary repairs, duplicate setup or unresolved coverage before skill edits.
 2. Investigate all eight roles with distinct relevant developer workflows and a
    simple control alongside repeated work. Search historical tasks before choosing
    new ones. Freeze task selection, criteria, resources and schedule before model

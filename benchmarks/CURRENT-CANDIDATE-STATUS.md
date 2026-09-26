@@ -34,6 +34,11 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 ## Local functionality and delivery evidence
 
+- [Local validation](RELEASE-VALIDATION-BA2713D5.md),2026-09-27,`ba2713d5`:
+  macOS/Python3.11.6 checkout1,250 discovered/17 skipped; Git-free archive1,250/47
+  skipped,zero failures. Cached CLI install8 skills/51 files/25 command exits and
+  selected installed behavior verified. No model gain, remote or hosted matrix claim.
+
 - [Installed behavior](INSTALLED-BEHAVIOR-75183F2F.json),2026-09-27,`75183f2f`:
   cached local CLI copies8 skills/51 files exactly,9 entrypoints and25 command
   exits match expectations. Actual native audit phases0/0/0/1, wrong binding
