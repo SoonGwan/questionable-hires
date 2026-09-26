@@ -77,11 +77,12 @@ changes still require checks against the actual deployed source.
 [Path-selection transfer01](../benchmarks/PATH-SELECTION-01-PROTOCOL.md), frozen
 inputs/launch `3ff3fa85`, tests unchanged Exorcist source `9fdee801` against no
 skill on two new authored diagnostic fixtures. Native defective and healthy
-controls are complete; four serial model sessions started in
-`/tmp/qh-path-selection-01-frozen`, original exec handle72611. Poll that handle
-and actual processes, never restart because an observation expires. This is
-new one-role transfer evidence pending review, not an adopted optimization,
-independent external validation or all-eight result.
+controls and all four original model reviews are complete. Original exec handle72611
+terminated with exit0; do not restart `/tmp/qh-path-selection-01-frozen`.
+[Reviewed result](../benchmarks/PATH-SELECTION-01-REVIEW.md): tokens+5.40%,time−18.75%,
+neither pair improves both. All counters reconcile and directly recorded initial
+supplied-file modes match final artifacts. Both conditions diagnose the actual
+mechanism; no optimization adopted, independent external or all-eight result.
 
 1. Use completed scoped original reviews and existing counter reconciliations;
    retain missing/incomplete evidence rather than repairing past transcripts.

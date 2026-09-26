@@ -151,7 +151,9 @@ retains scope, criterion and preservation-evidence limitations.
 The [interpreter route candidate](benchmarks/NATIVE-INTERPRETER-ROUTE-01.md)
 (2026-09-27, `e918d02d`) avoids failed probe launches in its measured control, but
 its six-cell costs are mixed with no joint aggregate token/time saving.
-[Current dated evidence and limitations](benchmarks/CURRENT-CANDIDATE-STATUS.md).
+[Current dated evidence and limitations](benchmarks/CURRENT-CANDIDATE-STATUS.md)
+also retain path-selection01 (2026-09-27, unchanged resource `9fdee801`): both conditions found
+the mechanism, with no joint token/time saving.
 
 [Detailed development history and adverse results](docs/DEVELOPMENT-NOTES.md)
 (snapshot: 2026-09-14, source `17ede49`). Examples include Hostage's higher token

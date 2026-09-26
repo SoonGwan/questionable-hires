@@ -1,0 +1,1 @@
+Every load selects its filename under the currently selected root. Root changes take effect on the next load. This is a sequential local reproduction, not a thread-safety or live-edit contract. New clients are independent.

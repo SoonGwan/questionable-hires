@@ -18,7 +18,6 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
-| [Path-selection transfer01](PATH-SELECTION-01-REVIEW.md),2026-09-27,unchanged resource`9fdee801`,inputs`3ff3fa85` |4 scoped diagnostic outcomes supported; tokens+5.40%,time−18.75%; no pair improves both. Direct initial/final supplied-file modes match. | No optimization adopted or quality advantage; related authored fixtures,n=1,grouped order/shared cache and unequal optional work. |
 | [Interpreter route01 review](INTERPRETER-ROUTE-01-REVIEW.md),2026-09-27,`e918d02d` |6 scoped tasks supported; versus no skill tokens+0.67%,time−8.39%; versus predecessor tokens−4.75%,time+1.73%. Unequal extra work and coordinator exit-vector limits retained. | Neither aggregate improves both; correlated exposed development/control pair. |
 | [Integration05 review](ALL-EIGHT-CURRENT-05-REVIEW.md),2026-09-27,`75183f2f` |16 scoped outcomes reviewed; tokens+18.54%,time+9.06%; no pair improves both. Baseline SQLite outside scope, criterion mismatch and initial untracked-mode gaps retained. | Adverse cost result; exposed integration controls, not independent validation or unqualified quality score. |
 | [Native-split02 costs](NATIVE-SPLIT-02-COSTS.json),2026-09-27,`6c099d68` |6 cells; summed tokens+43.05% versus no skill,−9.35% versus predecessor. [Original output follow-up](NATIVE-SPLIT-02-OUTPUT-REVIEW.md) retains391-token predecessor truncation. | Native review incomplete; no efficiency promotion. |
@@ -73,19 +72,6 @@ whole-task tokens and faster completion. No completed update or broad saving.
 파일에 소급하지 않는다. 공개 이력 검토와 최종 릴리스 준비도 미완료다.
 
 ## Scoped candidate and next required work
-
-[Path-selection transfer01](PATH-SELECTION-01-REVIEW.md) completes the four frozen
-Exorcist sessions on new authored fixtures with unchanged resource`9fdee801`.
-Both conditions identify the actual cache/path or retained-binding mechanism;
-all six-response counters reconcile. Both skill cells are faster but use more
-tokens. Exact entry bodies are initially injected and later reread; existing
-context-exposure limits prohibit treating every reread as removable overhead.
-No new skill change or general savings follows. The prior decision index is
-preserved in [dated history](CANDIDATE-HISTORY-2026-09-27-BEFORE-PATH-SELECTION.md).
-
-한국어: 경로 선택 진단4회(2026-09-27,스킬 자원`9fdee801`,입력`3ff3fa85`)는
-원본 과제를 뒷받침하지만 합계 토큰5.40% 증가·시간18.75% 감소다. 두 조건 모두
-원인을 찾았고 동시 절감 과제는 없다. 전체8개 역할의 목표는 계속 미달이다.
 
 [Native interpreter route01](NATIVE-INTERPRETER-ROUTE-01.md),2026-09-27,`e918d02d`,
 addresses repeated unavailable-executable launches and masked probe exits in

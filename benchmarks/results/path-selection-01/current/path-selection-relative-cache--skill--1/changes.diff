@@ -1,0 +1,484 @@
+diff --git a/experiments/original_hashes.json b/experiments/original_hashes.json
+new file mode 100644
+index 0000000..eba380f
+--- /dev/null
++++ b/experiments/original_hashes.json
+@@ -0,0 +1,14 @@
++{
++  ".agents/skills/exorcist/SKILL.md": "8bab259a8b49f9e653ce289dea938d32bdae98137ab8ab80f08cdb8cec484f20",
++  ".agents/skills/exorcist/agents/openai.yaml": "7b32eff2aac69985ed633c2f8aa63ddaf4ff584230b1f3540ac82c91dc81b87a",
++  ".agents/skills/exorcist/references/bounded-probe.md": "cdb0c90431dcc2c8be32dc842ee2357cd0fb2e0dee35c9f58803eebc4ea9e6be",
++  ".agents/skills/exorcist/scripts/run_probe.py": "c52b5e17303b161acb5bb6130a56a821df3f7f6c54149d5d0f2ba31631285a89",
++  "alpha/other.txt": "78b9041431a47c113011bf6056a6f48baded875b6845f59bc7f110bbd02d5ba6",
++  "alpha/settings.txt": "1fc917c7ad66487470e466c0ad40ddd45b9f7730a4b43e1b2542627f0596bbdc",
++  "beta/other.txt": "07d961b4441af9213b46b56dbf0727702888a63ad1952ff3616430f09c8170be",
++  "beta/settings.txt": "8f8eea956d0ea50d6442fdab213326f75bb6f584268b0795ad452faa85db5f9d",
++  "client.py": "56098a072d645149ca7a2b182472d0a065fea7559f425aa26f6a2362aae97359",
++  "loader.py": "31aec5180b384012dd7be8720c78bd51d3d2e6eb4a60004d305a8032d1806cdf",
++  "requirements.md": "6e54da242750654cb40dc14c24bd6478dbdf46d93145254f5c57e1755899eec4",
++  "test_paths.py": "d73f852e52e5a12acb5f35844a3f007dd162a69fb0f841e855e5615677da7e09"
++}
+diff --git a/experiments/paths_trace.json b/experiments/paths_trace.json
+new file mode 100644
+index 0000000..2ed36ca
+--- /dev/null
++++ b/experiments/paths_trace.json
+@@ -0,0 +1,345 @@
++{
++  "scope": "Sequential local supplied client and cached loader; wrappers delegate unchanged calls.",
++  "read_observation": "Successful real Path.read_text calls, resolved filesystem identity and contents; empty list means no loader file read.",
++  "original_files_unchanged": true,
++  "probe_checks_passed": true,
++  "events": [
++    {
++      "action": "cache_clear",
++      "reason": "deterministic initial baseline"
++    },
++    {
++      "label": "single-root control",
++      "client": "shared",
++      "requested_root": "<WORKSPACE>/alpha",
++      "selected_root": "<WORKSPACE>/alpha",
++      "requested_filename": "settings.txt",
++      "expected": 111,
++      "loader_calls": [
++        {
++          "input": "settings.txt",
++          "cwd": "<WORKSPACE>/alpha",
++          "effective_path_if_read": "<WORKSPACE>/alpha/settings.txt",
++          "cache_before": {
++            "hits": 0,
++            "misses": 0,
++            "maxsize": 8,
++            "currsize": 0
++          },
++          "returned": 111,
++          "cache_after": {
++            "hits": 0,
++            "misses": 1,
++            "maxsize": 8,
++            "currsize": 1
++          }
++        }
++      ],
++      "physical_reads": [
++        {
++          "path_argument": "settings.txt",
++          "resolved_path": "<WORKSPACE>/alpha/settings.txt",
++          "device": 16777231,
++          "inode": 43712457,
++          "text": "111\n"
++        }
++      ],
++      "returned": 111,
++      "matches_requirement": true,
++      "cwd_restored": true,
++      "probe_check_passed": true
++    },
++    {
++      "label": "repeat single-root control",
++      "client": "shared",
++      "requested_root": "<WORKSPACE>/alpha",
++      "selected_root": "<WORKSPACE>/alpha",
++      "requested_filename": "settings.txt",
++      "expected": 111,
++      "loader_calls": [
++        {
++          "input": "settings.txt",
++          "cwd": "<WORKSPACE>/alpha",
++          "effective_path_if_read": "<WORKSPACE>/alpha/settings.txt",
++          "cache_before": {
++            "hits": 0,
++            "misses": 1,
++            "maxsize": 8,
++            "currsize": 1
++          },
++          "returned": 111,
++          "cache_after": {
++            "hits": 1,
++            "misses": 1,
++            "maxsize": 8,
++            "currsize": 1
++          }
++        }
++      ],
++      "physical_reads": [],
++      "returned": 111,
++      "matches_requirement": true,
++      "cwd_restored": true,
++      "probe_check_passed": true
++    },
++    {
++      "label": "other-filename control",
++      "client": "shared",
++      "requested_root": "<WORKSPACE>/alpha",
++      "selected_root": "<WORKSPACE>/alpha",
++      "requested_filename": "other.txt",
++      "expected": 333,
++      "loader_calls": [
++        {
++          "input": "other.txt",
++          "cwd": "<WORKSPACE>/alpha",
++          "effective_path_if_read": "<WORKSPACE>/alpha/other.txt",
++          "cache_before": {
++            "hits": 1,
++            "misses": 1,
++            "maxsize": 8,
++            "currsize": 1
++          },
++          "returned": 333,
++          "cache_after": {
++            "hits": 1,
++            "misses": 2,
++            "maxsize": 8,
++            "currsize": 2
++          }
++        }
++      ],
++      "physical_reads": [
++        {
++          "path_argument": "other.txt",
++          "resolved_path": "<WORKSPACE>/alpha/other.txt",
++          "device": 16777231,
++          "inode": 43712460,
++          "text": "333\n"
++        }
++      ],
++      "returned": 333,
++      "matches_requirement": true,
++      "cwd_restored": true,
++      "probe_check_passed": true
++    },
++    {
++      "label": "switch to beta",
++      "client": "shared",
++      "requested_root": "<WORKSPACE>/beta",
++      "selected_root": "<WORKSPACE>/beta",
++      "requested_filename": "settings.txt",
++      "expected": 222,
++      "loader_calls": [
++        {
++          "input": "settings.txt",
++          "cwd": "<WORKSPACE>/beta",
++          "effective_path_if_read": "<WORKSPACE>/beta/settings.txt",
++          "cache_before": {
++            "hits": 1,
++            "misses": 2,
++            "maxsize": 8,
++            "currsize": 2
++          },
++          "returned": 111,
++          "cache_after": {
++            "hits": 2,
++            "misses": 2,
++            "maxsize": 8,
++            "currsize": 2
++          }
++        }
++      ],
++      "physical_reads": [],
++      "returned": 111,
++      "matches_requirement": false,
++      "cwd_restored": true,
++      "probe_check_passed": true
++    },
++    {
++      "label": "switch back to alpha",
++      "client": "shared",
++      "requested_root": "<WORKSPACE>/alpha",
++      "selected_root": "<WORKSPACE>/alpha",
++      "requested_filename": "settings.txt",
++      "expected": 111,
++      "loader_calls": [
++        {
++          "input": "settings.txt",
++          "cwd": "<WORKSPACE>/alpha",
++          "effective_path_if_read": "<WORKSPACE>/alpha/settings.txt",
++          "cache_before": {
++            "hits": 2,
++            "misses": 2,
++            "maxsize": 8,
++            "currsize": 2
++          },
++          "returned": 111,
++          "cache_after": {
++            "hits": 3,
++            "misses": 2,
++            "maxsize": 8,
++            "currsize": 2
++          }
++        }
++      ],
++      "physical_reads": [],
++      "returned": 111,
++      "matches_requirement": true,
++      "cwd_restored": true,
++      "probe_check_passed": true
++    },
++    {
++      "label": "fresh beta client",
++      "client": "fresh_beta",
++      "requested_root": "<WORKSPACE>/beta",
++      "selected_root": "<WORKSPACE>/beta",
++      "requested_filename": "settings.txt",
++      "expected": 222,
++      "loader_calls": [
++        {
++          "input": "settings.txt",
++          "cwd": "<WORKSPACE>/beta",
++          "effective_path_if_read": "<WORKSPACE>/beta/settings.txt",
++          "cache_before": {
++            "hits": 3,
++            "misses": 2,
++            "maxsize": 8,
++            "currsize": 2
++          },
++          "returned": 111,
++          "cache_after": {
++            "hits": 4,
++            "misses": 2,
++            "maxsize": 8,
++            "currsize": 2
++          }
++        }
++      ],
++      "physical_reads": [],
++      "returned": 111,
++      "matches_requirement": false,
++      "cwd_restored": true,
++      "probe_check_passed": true
++    },
++    {
++      "label": "fresh beta other filename",
++      "client": "fresh_beta",
++      "requested_root": "<WORKSPACE>/beta",
++      "selected_root": "<WORKSPACE>/beta",
++      "requested_filename": "other.txt",
++      "expected": 444,
++      "loader_calls": [
++        {
++          "input": "other.txt",
++          "cwd": "<WORKSPACE>/beta",
++          "effective_path_if_read": "<WORKSPACE>/beta/other.txt",
++          "cache_before": {
++            "hits": 4,
++            "misses": 2,
++            "maxsize": 8,
++            "currsize": 2
++          },
++          "returned": 333,
++          "cache_after": {
++            "hits": 5,
++            "misses": 2,
++            "maxsize": 8,
++            "currsize": 2
++          }
++        }
++      ],
++      "physical_reads": [],
++      "returned": 333,
++      "matches_requirement": false,
++      "cwd_restored": true,
++      "probe_check_passed": true
++    },
++    {
++      "action": "cache_clear",
++      "reason": "hold beta client/root/filename fixed; change only cache state"
++    },
++    {
++      "label": "beta after cache clear",
++      "client": "fresh_beta",
++      "requested_root": "<WORKSPACE>/beta",
++      "selected_root": "<WORKSPACE>/beta",
++      "requested_filename": "settings.txt",
++      "expected": 222,
++      "loader_calls": [
++        {
++          "input": "settings.txt",
++          "cwd": "<WORKSPACE>/beta",
++          "effective_path_if_read": "<WORKSPACE>/beta/settings.txt",
++          "cache_before": {
++            "hits": 0,
++            "misses": 0,
++            "maxsize": 8,
++            "currsize": 0
++          },
++          "returned": 222,
++          "cache_after": {
++            "hits": 0,
++            "misses": 1,
++            "maxsize": 8,
++            "currsize": 1
++          }
++        }
++      ],
++      "physical_reads": [
++        {
++          "path_argument": "settings.txt",
++          "resolved_path": "<WORKSPACE>/beta/settings.txt",
++          "device": 16777231,
++          "inode": 43712459,
++          "text": "222\n"
++        }
++      ],
++      "returned": 222,
++      "matches_requirement": true,
++      "cwd_restored": true,
++      "probe_check_passed": true
++    },
++    {
++      "label": "beta other-filename cold control",
++      "client": "fresh_beta",
++      "requested_root": "<WORKSPACE>/beta",
++      "selected_root": "<WORKSPACE>/beta",
++      "requested_filename": "other.txt",
++      "expected": 444,
++      "loader_calls": [
++        {
++          "input": "other.txt",
++          "cwd": "<WORKSPACE>/beta",
++          "effective_path_if_read": "<WORKSPACE>/beta/other.txt",
++          "cache_before": {
++            "hits": 0,
++            "misses": 1,
++            "maxsize": 8,
++            "currsize": 1
++          },
++          "returned": 444,
++          "cache_after": {
++            "hits": 0,
++            "misses": 2,
++            "maxsize": 8,
++            "currsize": 2
++          }
++        }
++      ],
++      "physical_reads": [
++        {
++          "path_argument": "other.txt",
++          "resolved_path": "<WORKSPACE>/beta/other.txt",
++          "device": 16777231,
++          "inode": 43712461,
++          "text": "444\n"
++        }
++      ],
++      "returned": 444,
++      "matches_requirement": true,
++      "cwd_restored": true,
++      "probe_check_passed": true
++    }
++  ]
++}
+diff --git a/experiments/probe_paths.py b/experiments/probe_paths.py
+new file mode 100644
+index 0000000..fa70914
+--- /dev/null
++++ b/experiments/probe_paths.py
+@@ -0,0 +1,107 @@
++"""Observe the supplied implementation; run with python3 -B experiments/probe_paths.py."""
++import hashlib
++import json
++from pathlib import Path
++import sys
++from unittest.mock import patch
++
++BASE = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(BASE))
++from client import Client
++import loader
++
++
++def main():
++    original_loader = loader.read_limit
++    original_read_text = Path.read_text
++    events = []
++    active = None
++
++    def record_loader(filename):
++        call = {
++            "input": filename,
++            "cwd": str(Path.cwd()),
++            "effective_path_if_read": str(Path(filename).resolve()),
++            "cache_before": original_loader.cache_info()._asdict(),
++        }
++        active["loader_calls"].append(call)
++        result = original_loader(filename)
++        call["returned"] = result
++        call["cache_after"] = original_loader.cache_info()._asdict()
++        return result
++
++    def record_read_text(path, *args, **kwargs):
++        resolved = path.resolve()
++        stat = resolved.stat()
++        result = original_read_text(path, *args, **kwargs)
++        active["physical_reads"].append({
++            "path_argument": str(path),
++            "resolved_path": str(resolved),
++            "device": stat.st_dev,
++            "inode": stat.st_ino,
++            "text": result,
++        })
++        return result
++
++    def request(label, client_id, client, root, filename, expected, observed):
++        nonlocal active
++        client.select_root(BASE / root)
++        before = Path.cwd()
++        active = {
++            "label": label, "client": client_id,
++            "requested_root": str(BASE / root),
++            "selected_root": str(client.root),
++            "requested_filename": filename, "expected": expected,
++            "loader_calls": [], "physical_reads": [],
++        }
++        events.append(active)
++        active["returned"] = client.load(filename)
++        active["matches_requirement"] = active["returned"] == expected
++        active["cwd_restored"] = Path.cwd() == before
++        active["probe_check_passed"] = (
++            active["returned"] == observed and active["cwd_restored"]
++        )
++        active = None
++
++    original_loader.cache_clear()
++    events.append({"action": "cache_clear", "reason": "deterministic initial baseline"})
++    try:
++        with patch.object(loader, "read_limit", record_loader), patch.object(Path, "read_text", record_read_text):
++            shared = Client(BASE / "alpha")
++            request("single-root control", "shared", shared, "alpha", "settings.txt", 111, 111)
++            request("repeat single-root control", "shared", shared, "alpha", "settings.txt", 111, 111)
++            request("other-filename control", "shared", shared, "alpha", "other.txt", 333, 333)
++            request("switch to beta", "shared", shared, "beta", "settings.txt", 222, 111)
++            request("switch back to alpha", "shared", shared, "alpha", "settings.txt", 111, 111)
++            fresh = Client(BASE / "beta")
++            request("fresh beta client", "fresh_beta", fresh, "beta", "settings.txt", 222, 111)
++            request("fresh beta other filename", "fresh_beta", fresh, "beta", "other.txt", 444, 333)
++            original_loader.cache_clear()
++            events.append({"action": "cache_clear", "reason": "hold beta client/root/filename fixed; change only cache state"})
++            request("beta after cache clear", "fresh_beta", fresh, "beta", "settings.txt", 222, 222)
++            request("beta other-filename cold control", "fresh_beta", fresh, "beta", "other.txt", 444, 444)
++    finally:
++        original_loader.cache_clear()
++
++    manifest = json.loads((BASE / "experiments/original_hashes.json").read_text())
++    unchanged = all(hashlib.sha256((BASE / name).read_bytes()).hexdigest() == digest
++                    for name, digest in manifest.items())
++    passed = unchanged and all(e.get("probe_check_passed", True) for e in events)
++    trace = BASE / "experiments/paths_trace.json"
++    trace.write_text(json.dumps({
++        "scope": "Sequential local supplied client and cached loader; wrappers delegate unchanged calls.",
++        "read_observation": "Successful real Path.read_text calls, resolved filesystem identity and contents; empty list means no loader file read.",
++        "original_files_unchanged": unchanged,
++        "probe_checks_passed": passed,
++        "events": events,
++    }, indent=2) + "\n")
++    print(f"Trace: {trace}")
++    for event in events:
++        if "returned" in event:
++            print(f"{event['label']}: {Path(event['requested_root']).name}/{event['requested_filename']} -> {event['returned']} (expected {event['expected']}; reads={len(event['physical_reads'])})")
++    print(f"Probe checks passed: {passed}; original files unchanged: {unchanged}")
++    return 0 if passed else 1
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())

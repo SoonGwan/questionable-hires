@@ -1,0 +1,286 @@
+{
+  "session_id": "01a0df66-aac5-7763-a850-31fd43036e34",
+  "source_bytes": 119611,
+  "source_sha256": "b43db1ce078ff6c37fa42ba1551bb96e8e54112a893b852d9911866b94351c33",
+  "source_lines": 51,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "8ed188b323156aeaeafafa5c3ce2b04181893aa34bcdbf1f58895c76fc39a460",
+      "record": {
+        "timestamp": "2026-09-26T20:27:28.856Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b8f8beb3d55670c016ab82aaf518887d09ca391636f0a34a4",
+          "status": "completed",
+          "call_id": "call_7Ilyn83OnBjvPlk0QEhUXIph",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files --hidden -g '!.git/**' -g '!.agents/**'; cat .agents/skills/exorcist/SKILL.md\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df66-ab18-7b43-8a23-0523433b333c",
+            "create_time": 1790454444.492702
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "9fddca52ab2768047132bb936530390bd4b341adeca9e3c828c78a052f752e40",
+      "record": {
+        "timestamp": "2026-09-26T20:27:29.011Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df66-c373-7911-b90a-52ac0ee7721d",
+          "call_id": "call_7Ilyn83OnBjvPlk0QEhUXIph",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"68da7a\",\"wall_time_seconds\":0.000005125,\"exit_code\":0,\"original_token_count\":978,\"output\":\"<WORKSPACE>\\nalpha/other.txt\\nalpha/settings.txt\\ntest_paths.py\\nloader.py\\nclient.py\\nrequirements.md\\nbeta/other.txt\\nbeta/settings.txt\\n---\\nname: exorcist\\ndescription: Diagnose an uncertain bug by designing experiments that distinguish competing causes, especially speculative cache, timing, environment, or concurrency explanations.\\n---\\n\\n# Exorcist\\n\\n> You keep saying cache. Let's test that belief.\\n\\n## Find the decision-changing observation\\n\\nStart at the reported failure using supplied paths or the repository file list. Reuse existing reproduction evidence; trace only until plausible causes diverge. Don't manufacture hypotheses for an established mechanism.\\n\\nObserve that boundary in the actual implementation: submission versus persistence, dispatch versus completion, configuration versus effective state. Prefer existing observations or a recording dependency. Another layer recording the same value adds nothing unless its provenance is unresolved. A rewritten simulation or repeated success flag cannot establish an unobserved effect.\\n\\nChoose the runner before inspecting setup: use existing tests when they exercise the distinction, otherwise one small probe with comparable inputs and controlled timing. Inspect fixtures/configuration if that path uses them or they could explain the symptom. Retain normal controls; repeat only for unresolved intermittency or a required check.\\n\\nBefore another experiment, ask which possible result changes the diagnosis or next action. If none, stop. A symptom without a suspected dependency shows that dependency is unnecessary for this reproduction, not every production incident. Explain why the existing safeguard does or doesn't address the observed mechanism.\\n\\n## Match containment to the exercised path\\n\\nRun a bounded local computation with the chosen interpreter or existing test runner. The optional helper is not the default probe command: use it for an identified hang risk that the runner's existing process deadline does not contain. Synchronous code can also block; choose from the actual operations, not the presence of `async` alone.\\n\\nFor asynchronous probes, bound signals that may never arrive and clean up owned tasks. Asyncio timeouts can wait indefinitely for suppressed cancellation. When an additional process deadline is needed, the installed POSIX helper supplies one (replace paths/interpreter):\\n\\n```sh\\npython3 /path/to/exorcist/scripts/run_probe.py --timeout 10 -- python3 -B experiments/probe.py\\n```\\n\\nTrusted local foreground commands only: this kills remaining process-group members even after normal completion; it is not a sandbox. JSON retains child status, timeout and bounded output. Timeout or truncated decisive output means incomplete evidence, not causal proof. See [runner details](references/bounded-probe.md) for exit mapping, limits or adaptation; routine invocation doesn't require source inspection.\\n\\n## Finish at the evidence boundary\\n\\nChoose one destination for detailed evidence. If a trace file is requested or needed for later analysis, write it and print its path plus distinguishing inputs/outcomes and failures; don't also print the entire trace unless needed to resolve the diagnosis. Otherwise use captured command output directly instead of a file round trip. Preserve necessary ordering/provenance and keep the reproduction rerunnable.\\n\\nReport the supported mechanism, decisive command/result, safeguard and uncertainty. Name the missing observation if blocked, rather than expanding simulations. Link the reproduction instead of repeating it. A restart alone isn't causal proof; preserve evidence and user state before an authorized reset.\\n\\nDiagnosis leaves production code unchanged. A requested fix stays scoped and reruns the original reproduction plus relevant checks. Preserve user changes and explicit requirements. Keep humor optional.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df66-ab18-7b43-8a23-0523433b333c",
+            "create_time": 1790454449.011109
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "b8bd53dae5289ea5b7c18303f170792bd60092953d663ac923786eff40371337",
+      "record": {
+        "timestamp": "2026-09-26T20:27:31.860Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b8f8beb3d55670c016ab82ab2651087d08f1502cac2ae16a9",
+          "status": "completed",
+          "call_id": "call_TJzbBaBVK7KSW3JhSYtE7K0n",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat client.py loader.py test_paths.py requirements.md; rg --files --hidden -g AGENTS.md -g '!.git/**'; git status --short\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df66-ab18-7b43-8a23-0523433b333c",
+            "create_time": 1790454449.356925
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "4c4f860e08b7dcfe68ab2a4b78ccfb8be143cd27e70d60d88bdd3e0a56b7b86e",
+      "record": {
+        "timestamp": "2026-09-26T20:27:31.971Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df66-cf03-7470-b4aa-faff2e46404c",
+          "call_id": "call_TJzbBaBVK7KSW3JhSYtE7K0n",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2e510f\",\"wall_time_seconds\":0.000002708,\"exit_code\":0,\"original_token_count\":362,\"output\":\"import os\\nfrom pathlib import Path\\nimport loader\\n\\nclass Client:\\n    def __init__(self, root):\\n        self.root = Path(root).resolve()\\n\\n    def select_root(self, root):\\n        self.root = Path(root).resolve()\\n\\n    def load(self, filename=\\\"settings.txt\\\"):\\n        previous = Path.cwd()\\n        try:\\n            os.chdir(self.root)\\n            return loader.read_limit(filename)\\n        finally:\\n            os.chdir(previous)\\nfrom functools import lru_cache\\nfrom pathlib import Path\\n\\n@lru_cache(maxsize=8)\\ndef read_limit(filename):\\n    return int(Path(filename).read_text())\\nfrom pathlib import Path\\nimport unittest\\nfrom client import Client\\n\\nBASE = Path(__file__).resolve().parent\\n\\nclass PathTests(unittest.TestCase):\\n    def test_single_root(self):\\n        self.assertEqual(Client(BASE / \\\"alpha\\\").load(), 111)\\n\\n    def test_other_filename(self):\\n        self.assertEqual(Client(BASE / \\\"alpha\\\").load(\\\"other.txt\\\"), 333)\\n\\n    def test_switch_root(self):\\n        client = Client(BASE / \\\"alpha\\\")\\n        self.assertEqual(client.load(), 111)\\n        client.select_root(BASE / \\\"beta\\\")\\n        self.assertEqual(client.load(), 222)\\n        client.select_root(BASE / \\\"alpha\\\")\\n        self.assertEqual(client.load(), 111)\\nEvery load selects its filename under the currently selected root. Root changes take effect on the next load. This is a sequential local reproduction, not a thread-safety or live-edit contract. New clients are independent.\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df66-ab18-7b43-8a23-0523433b333c",
+            "create_time": 1790454451.971306
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "3683a92e505c67cbc5dbdbba3302288dc2fa457a50fb909ea49ff7f11151f48b",
+      "record": {
+        "timestamp": "2026-09-26T20:27:39.830Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b8f8beb3d55670c016ab82ab9e4f487d0882dc00e86e42bd6",
+          "status": "completed",
+          "call_id": "call_5jcwDCwPSgKVhbJfezeq0nZW",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B -m unittest -v test_paths\",\"max_output_tokens\":3000}));\ntext(await tools.exec_command({cmd:\"cat alpha/settings.txt alpha/other.txt beta/settings.txt beta/other.txt; ls -l alpha beta\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df66-ab18-7b43-8a23-0523433b333c",
+            "create_time": 1790454452.350757
+          }
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "4b18d936e4bf4c6c46b5c9364d170e5755bf1f575625dc9c6e9cad893829ecae",
+      "record": {
+        "timestamp": "2026-09-26T20:27:40.019Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df66-ee73-7cc0-b169-99ec1c0f05df",
+          "call_id": "call_5jcwDCwPSgKVhbJfezeq0nZW",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"893bfd\",\"wall_time_seconds\":0.000002667,\"exit_code\":1,\"original_token_count\":190,\"output\":\"test_other_filename (test_paths.PathTests.test_other_filename) ... ok\\ntest_single_root (test_paths.PathTests.test_single_root) ... ok\\ntest_switch_root (test_paths.PathTests.test_switch_root) ... FAIL\\n\\n======================================================================\\nFAIL: test_switch_root (test_paths.PathTests.test_switch_root)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_paths.py\\\", line 18, in test_switch_root\\n    self.assertEqual(client.load(), 222)\\nAssertionError: 111 != 222\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.001s\\n\\nFAILED (failures=1)\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"bbc069\",\"wall_time_seconds\":0.000006459,\"exit_code\":0,\"original_token_count\":73,\"output\":\"111\\n333\\n222\\n444\\nalpha:\\ntotal 16\\n-rw-r--r--@ 1 gwonsungwan  staff  4 Sep 27 05:27 other.txt\\n-rw-r--r--@ 1 gwonsungwan  staff  4 Sep 27 05:27 settings.txt\\n\\nbeta:\\ntotal 16\\n-rw-r--r--@ 1 gwonsungwan  staff  4 Sep 27 05:27 other.txt\\n-rw-r--r--@ 1 gwonsungwan  staff  4 Sep 27 05:27 settings.txt\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df66-ab18-7b43-8a23-0523433b333c",
+            "create_time": 1790454460.019843
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 34,
+      "line_sha256": "ab20725c51a24331c1d1b5059ab48ba0545ab081beffec8d84bdf418b9b83d8f",
+      "record": {
+        "timestamp": "2026-09-26T20:28:29.649Z",
+        "ordinal": 33,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b8f8beb3d55670c016ab82abf195087d0966d202ca3d7c6d4",
+          "status": "completed",
+          "call_id": "call_MFRzOoAygL8v8XXC6LFT7kM8",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"mkdir -p experiments; python3 -B - <<'PY'\\nfrom pathlib import Path\\nimport hashlib, json\\nbase = Path.cwd()\\nfiles = sorted(p for p in base.rglob('*') if p.is_file() and '.git' not in p.parts and 'experiments' not in p.relative_to(base).parts)\\nPath('experiments/original_hashes.json').write_text(json.dumps({str(p.relative_to(base)): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}, indent=2) + '\\\\n')\\nPY\",\"max_output_tokens\":1000}));\ntext(await tools.apply_patch(\"*** Begin Patch\\n*** Add File: <WORKSPACE>/experiments/probe_paths.py\\n+\\\"\\\"\\\"Observe the supplied implementation; run with python3 -B experiments/probe_paths.py.\\\"\\\"\\\"\\n+import hashlib\\n+import json\\n+from pathlib import Path\\n+import sys\\n+from unittest.mock import patch\\n+\\n+BASE = Path(__file__).resolve().parents[1]\\n+sys.path.insert(0, str(BASE))\\n+from client import Client\\n+import loader\\n+\\n+\\n+def main():\\n+    original_loader = loader.read_limit\\n+    original_read_text = Path.read_text\\n+    events = []\\n+    active = None\\n+\\n+    def record_loader(filename):\\n+        call = {\\n+            \\\"input\\\": filename,\\n+            \\\"cwd\\\": str(Path.cwd()),\\n+            \\\"effective_path_if_read\\\": str(Path(filename).resolve()),\\n+            \\\"cache_before\\\": original_loader.cache_info()._asdict(),\\n+        }\\n+        active[\\\"loader_calls\\\"].append(call)\\n+        result = original_loader(filename)\\n+        call[\\\"returned\\\"] = result\\n+        call[\\\"cache_after\\\"] = original_loader.cache_info()._asdict()\\n+        return result\\n+\\n+    def record_read_text(path, *args, **kwargs):\\n+        resolved = path.resolve()\\n+        stat = resolved.stat()\\n+        result = original_read_text(path, *args, **kwargs)\\n+        active[\\\"physical_reads\\\"].append({\\n+            \\\"path_argument\\\": str(path),\\n+            \\\"resolved_path\\\": str(resolved),\\n+            \\\"device\\\": stat.st_dev,\\n+            \\\"inode\\\": stat.st_ino,\\n+            \\\"text\\\": result,\\n+        })\\n+        return result\\n+\\n+    def request(label, client_id, client, root, filename, expected, observed):\\n+        nonlocal active\\n+        client.select_root(BASE / root)\\n+        before = Path.cwd()\\n+        active = {\\n+            \\\"label\\\": label, \\\"client\\\": client_id,\\n+            \\\"requested_root\\\": str(BASE / root),\\n+            \\\"selected_root\\\": str(client.root),\\n+            \\\"requested_filename\\\": filename, \\\"expected\\\": expected,\\n+            \\\"loader_calls\\\": [], \\\"physical_reads\\\": [],\\n+        }\\n+        events.append(active)\\n+        active[\\\"returned\\\"] = client.load(filename)\\n+        active[\\\"matches_requirement\\\"] = active[\\\"returned\\\"] == expected\\n+        active[\\\"cwd_restored\\\"] = Path.cwd() == before\\n+        active[\\\"probe_check_passed\\\"] = (\\n+            active[\\\"returned\\\"] == observed and active[\\\"cwd_restored\\\"]\\n+        )\\n+        active = None\\n+\\n+    original_loader.cache_clear()\\n+    events.append({\\\"action\\\": \\\"cache_clear\\\", \\\"reason\\\": \\\"deterministic initial baseline\\\"})\\n+    try:\\n+        with patch.object(loader, \\\"read_limit\\\", record_loader), patch.object(Path, \\\"read_text\\\", record_read_text):\\n+            shared = Client(BASE / \\\"alpha\\\")\\n+            request(\\\"single-root control\\\", \\\"shared\\\", shared, \\\"alpha\\\", \\\"settings.txt\\\", 111, 111)\\n+            request(\\\"repeat single-root control\\\", \\\"shared\\\", shared, \\\"alpha\\\", \\\"settings.txt\\\", 111, 111)\\n+            request(\\\"other-filename control\\\", \\\"shared\\\", shared, \\\"alpha\\\", \\\"other.txt\\\", 333, 333)\\n+            request(\\\"switch to beta\\\", \\\"shared\\\", shared, \\\"beta\\\", \\\"settings.txt\\\", 222, 111)\\n+            request(\\\"switch back to alpha\\\", \\\"shared\\\", shared, \\\"alpha\\\", \\\"settings.txt\\\", 111, 111)\\n+            fresh = Client(BASE / \\\"beta\\\")\\n+            request(\\\"fresh beta client\\\", \\\"fresh_beta\\\", fresh, \\\"beta\\\", \\\"settings.txt\\\", 222, 111)\\n+            request(\\\"fresh beta other filename\\\", \\\"fresh_beta\\\", fresh, \\\"beta\\\", \\\"other.txt\\\", 444, 333)\\n+            original_loader.cache_clear()\\n+            events.append({\\\"action\\\": \\\"cache_clear\\\", \\\"reason\\\": \\\"hold beta client/root/filename fixed; change only cache state\\\"})\\n+            request(\\\"beta after cache clear\\\", \\\"fresh_beta\\\", fresh, \\\"beta\\\", \\\"settings.txt\\\", 222, 222)\\n+            request(\\\"beta other-filename cold control\\\", \\\"fresh_beta\\\", fresh, \\\"beta\\\", \\\"other.txt\\\", 444, 444)\\n+    finally:\\n+        original_loader.cache_clear()\\n+\\n+    manifest = json.loads((BASE / \\\"experiments/original_hashes.json\\\").read_text())\\n+    unchanged = all(hashlib.sha256((BASE / name).read_bytes()).hexdigest() == digest\\n+                    for name, digest in manifest.items())\\n+    passed = unchanged and all(e.get(\\\"probe_check_passed\\\", True) for e in events)\\n+    trace = BASE / \\\"experiments/paths_trace.json\\\"\\n+    trace.write_text(json.dumps({\\n+        \\\"scope\\\": \\\"Sequential local supplied client and cached loader; wrappers delegate unchanged calls.\\\",\\n+        \\\"read_observation\\\": \\\"Successful real Path.read_text calls, resolved filesystem identity and contents; empty list means no loader file read.\\\",\\n+        \\\"original_files_unchanged\\\": unchanged,\\n+        \\\"probe_checks_passed\\\": passed,\\n+        \\\"events\\\": events,\\n+    }, indent=2) + \\\"\\\\n\\\")\\n+    print(f\\\"Trace: {trace}\\\")\\n+    for event in events:\\n+        if \\\"returned\\\" in event:\\n+            print(f\\\"{event['label']}: {Path(event['requested_root']).name}/{event['requested_filename']} -> {event['returned']} (expected {event['expected']}; reads={len(event['physical_reads'])})\\\")\\n+    print(f\\\"Probe checks passed: {passed}; original files unchanged: {unchanged}\\\")\\n+    return 0 if passed else 1\\n+\\n+\\n+if __name__ == \\\"__main__\\\":\\n+    raise SystemExit(main())\\n*** End Patch\"));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df66-ab18-7b43-8a23-0523433b333c",
+            "create_time": 1790454460.436681
+          }
+        }
+      }
+    },
+    {
+      "line": 38,
+      "line_sha256": "52aa9d100b76e66a97c736cc5cf737ff923397f6b6c6d664b8eedf444aa492b0",
+      "record": {
+        "timestamp": "2026-09-26T20:28:29.791Z",
+        "ordinal": 37,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df67-b0df-7f31-86ad-939f34a1cfcf",
+          "call_id": "call_MFRzOoAygL8v8XXC6LFT7kM8",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"9f9ab4\",\"wall_time_seconds\":0.000002041,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df66-ab18-7b43-8a23-0523433b333c",
+            "create_time": 1790454509.791953
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 42,
+      "line_sha256": "a0f53a1d6a49e21a5de9512d229471d2cb31bbf2cda9d97667abec61d827800d",
+      "record": {
+        "timestamp": "2026-09-26T20:28:32.355Z",
+        "ordinal": 41,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b8f8beb3d55670c016ab82aef368c87d081e751534f23787c",
+          "status": "completed",
+          "call_id": "call_eIL1Fgvg2tIzxcSjSGZB7DOv",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B experiments/probe_paths.py; git diff --exit-code; git status --short\",\"max_output_tokens\":2500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df66-ab18-7b43-8a23-0523433b333c",
+            "create_time": 1790454510.170951
+          }
+        }
+      }
+    },
+    {
+      "line": 45,
+      "line_sha256": "9558ed89cd2c6b23bcabbe8afe5cbdb5a729ca755d1633e8b773fa57354214c9",
+      "record": {
+        "timestamp": "2026-09-26T20:28:32.548Z",
+        "ordinal": 44,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df67-bba4-7ef0-91cc-dec0f79dd2ed",
+          "call_id": "call_eIL1Fgvg2tIzxcSjSGZB7DOv",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"141e3f\",\"wall_time_seconds\":0.011364708,\"exit_code\":0,\"original_token_count\":214,\"output\":\"Trace: <WORKSPACE>/experiments/paths_trace.json\\nsingle-root control: alpha/settings.txt -> 111 (expected 111; reads=1)\\nrepeat single-root control: alpha/settings.txt -> 111 (expected 111; reads=0)\\nother-filename control: alpha/other.txt -> 333 (expected 333; reads=1)\\nswitch to beta: beta/settings.txt -> 111 (expected 222; reads=0)\\nswitch back to alpha: alpha/settings.txt -> 111 (expected 111; reads=0)\\nfresh beta client: beta/settings.txt -> 111 (expected 222; reads=0)\\nfresh beta other filename: beta/other.txt -> 333 (expected 444; reads=0)\\nbeta after cache clear: beta/settings.txt -> 222 (expected 222; reads=1)\\nbeta other-filename cold control: beta/other.txt -> 444 (expected 444; reads=1)\\nProbe checks passed: True; original files unchanged: True\\n?? .agents/\\n?? experiments/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df66-ab18-7b43-8a23-0523433b333c",
+            "create_time": 1790454512.548043
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
