@@ -152,6 +152,52 @@ unfinished; integration05 summed costs stay+18.54% tokens/+9.06% time.
 유지보수 판단을 원본 실행으로 뒷받침한다. staging은 양쪽 모두 미검증이며
 추가 검사 수 차이와 불리한 비용을 그대로 유지한다.
 
+## Exorcist original diagnosis and criterion visibility
+
+Both original runner-environment-timing diagnoses are supported by actual worker
+and fixture execution, with unchanged production and scoped artifacts. The fresh
+native unittest with REQUEST_RETRIES absent runs1 method and exits1 with3!=1.
+A separate startup-zero process invokes the actual worker callback once. Both
+inspect test_worker importing worker before setUp; the fixture changes environment
+to0 but cannot change the already initialized RETRIES=2.
+
+Baseline additionally runs the uninstrumented startup-zero native suite (1 pass,
+exit0), then wraps the actual setUp/deliver call to observe absent→0 environment,
+retained RETRIES=2 and3 calls. Current uses sys.settrace on the actual worker code
+and actual test send callback in two fresh processes; observed boundaries are
+('0',2)/3 calls versus ('0',0)/1 call. It does not replace the worker implementation.
+Its coordinator asserts actual call counts and expected native failure/error
+counts, then exits0 because the expected failing diagnosis is observed. That exit
+does not mean the original production test passed. Baseline likewise retains its
+expected native failure inside an observation coordinator.
+
+The current CLI aggregate omits its first trace control. Retained original
+[line41](results/all-eight-current-05/current/runner-environment-timing--skill--1/native-tool-output-line-41.txt)
+recovers both controls and cleanup values, without another model run or author
+replay. Both final answers reject an unsupported intermittent-cache explanation;
+neither claims a deployed observation or automatic live environment reloading.
+
+Frozen criterion3 also asks for a proposal aligning setup with startup semantics.
+The model-visible task asks diagnosis, not a fix proposal, and incident.md documents
+startup behavior without requesting that extra deliverable. Baseline volunteers
+before-import setup or patching RETRIES; current explains the mechanism and unknown
+dynamic-config policy but offers no explicit fix instruction. Record that reporting
+difference, but do not silently turn the additional criterion into a hidden task
+failure. Frozen inputs/criteria and original answers remain unchanged. Future
+tasks must explicitly request any scored next-action deliverable before execution.
+This interpretation limit precludes claiming an unqualified criterion-level pass.
+
+No additional skill instruction is justified by this reporting difference: the
+current entry already asks for mechanism, safeguard and uncertainty. Extra trace
+work and native controls remain in costs; their arithmetic is not proof of waste
+or recoverable savings. Overall integration05 quality review and the all-eight
+owner objective remain unfinished.
+
+한국어:두 진단은 실제 import·setUp·worker callback에서3회/1회를 확인했고
+캐시 주장이나 배포 상태를 꾸며내지 않았다. 적용의 첫 trace 출력은 원본에서
+복구했다. 평가 기준의 수정 제안은 모델에게 명시적으로 요청되지 않았으므로
+미제안을 숨은 실패 조건으로 쓰지 않는다. 원래 기준·답변·비용은 그대로 보존한다.
+
 한국어:16회 최종 파일·추적 파일 모드·인덱스·설치 리소스 대조는 명시한 범위에서
 일치한다. 초기 미추적 파일 모드의 직접 증거는 없으며 과장하지 않는다. SQLite
 첫 단계는 원본 기록에서 복구했고 재실행하지 않았다. 별도 사후 반환값 대조는
