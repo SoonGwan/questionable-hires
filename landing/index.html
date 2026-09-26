@@ -125,7 +125,7 @@
 <div class="metric"><span>실행 시간</span><strong>-28.7<small>%</small></strong><p>스킬 적용 71.3% / 스킬 미적용 100%</p></div>
 <div class="metric metric-quality"><span>검토 기준 충족</span><strong>5/5<small> → </small>5/5</strong><p>스킬 미적용 → 스킬 적용 · 오탐 0 → 0건</p></div></div>
 <p class="normalized-note">과제별 스킬/미적용 비율의 동일 가중 평균입니다. 합계 토큰 절감률이나 요금 절감률이 아닙니다.</p>
-<p class="token-meaning">각 모델 응답의 입력 + 출력을 모두 더한 값입니다. 예: 첫 응답 10,000 + 다음 응답 12,000 = 작업 전체 22,000토큰. 다음 입력에 다시 전달된 대화·도구 결과도 포함됩니다. 캐시 입력은 한 번만 계산하며, 결제 금액이나 최종 답변 길이가 아닙니다.</p>
+<p class="token-meaning">각 모델 응답의 입력 + 출력을 모두 더한 값입니다. 예: 첫 응답 10,000 + 다음 응답 12,000 = 작업 전체 22,000토큰. 다음 입력에 다시 전달된 대화·도구 결과도 포함됩니다. 캐시 입력은 각 응답의 입력에 이미 포함되며, 결제 금액이나 최종 답변 길이가 아닙니다.</p>
 <p class="cost-summary">토큰 감소 3개 · 증가 2개 / 5개 과제</p>
 <div class="chart-top">
 <h4>과제별로 보면</h4>
@@ -174,6 +174,9 @@
 <p class="raw-note">총 토큰은 캐시를 포함한 입력 + 출력입니다. 원시 합계의 비율과 위 그래프의 과제별 비율 평균은 다릅니다.</p></details>
 <aside class="experiment-limit"><h4>이 실험이 말하지 않는 것</h4><p>과제·조건별 1회 실행한 기술적 기록입니다. 신뢰구간이나 반복 표본, 팀 전체의 일반적인 우월성을 뜻하지 않습니다. 측정 이후 수정본의 성능도 증명하지 않습니다.</p></aside>
 <aside class="experiment-limit"><h4>전체 스킬의 비용 개선은 아직 입증되지 않았습니다.</h4><p>8개 역할 비교 integration05(2026-09-27, 75183f2f)는 합계 토큰 18.54%, 시간 9.06% 증가였습니다. 원본 과제 검토에는 범위·평가 조건·보존 증거의 한계가 남아 있습니다. 이 대표 실험의 평균 절감을 전체 성능으로 확대할 수 없습니다.</p><details class="checkpoint-details"><summary>8개 역할 · 작업별 전체 비교</summary>
+<p class="raw-note">스킬 미적용: 입력 592,509 + 출력 13,846 = 누적 606,355토큰 · 입력 중 캐시 530,432 · 모델 응답 38회</p>
+<p class="raw-note">스킬 적용: 입력 705,328 + 출력 13,419 = 누적 718,747토큰 · 입력 중 캐시 613,632 · 모델 응답 39회</p>
+<p class="raw-note">캐시 입력은 각 응답의 입력 토큰에 이미 포함되어 있어 별도로 더하지 않습니다. 같은 대화가 다음 응답에 다시 전달되면 그 응답의 입력에도 포함됩니다. 이 누적 사용량을 청구 요금으로 환산하지 않습니다.</p>
 <p class="checkpoint-scroll-hint raw-note">표를 좌우로 움직이면 미적용·적용 수치를 모두 볼 수 있습니다.</p>
 <div class="table-scroll" tabindex="0" role="region" aria-label="8개 역할 · 작업별 전체 비교">
 <table><caption>integration05 · 2026-09-27 · 75183f2f</caption><thead><tr>

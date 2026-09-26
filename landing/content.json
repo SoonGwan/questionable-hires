@@ -87,7 +87,7 @@
       "case-lookup-stale-error": "이전 요청 오류",
       "case-nested-city-runner": "하위 도시 검색",
       "ogAlt": "Questionable Hires. 이걸 뽑네. 근데 일을 하네. 여덟 개의 개발자 에이전트 스킬.",
-      "tokenMeaning": "각 모델 응답의 입력 + 출력을 모두 더한 값입니다. 예: 첫 응답 10,000 + 다음 응답 12,000 = 작업 전체 22,000토큰. 다음 입력에 다시 전달된 대화·도구 결과도 포함됩니다. 캐시 입력은 한 번만 계산하며, 결제 금액이나 최종 답변 길이가 아닙니다.",
+      "tokenMeaning": "각 모델 응답의 입력 + 출력을 모두 더한 값입니다. 예: 첫 응답 10,000 + 다음 응답 12,000 = 작업 전체 22,000토큰. 다음 입력에 다시 전달된 대화·도구 결과도 포함됩니다. 캐시 입력은 각 응답의 입력에 이미 포함되며, 결제 금액이나 최종 답변 길이가 아닙니다.",
       "changeLess": "{value}% 감소",
       "changeMore": "{value}% 증가",
       "changeEqual": "변화 없음",
@@ -107,7 +107,9 @@
       "checkpoint-sqlite-commit-audit": "실제 저장 검증",
       "checkpoint-store-check-scope": "저장소 설계 검토",
       "checkpoint-view-contract": "배포·롤백 호환성",
-      "checkpointScrollHint": "표를 좌우로 움직이면 미적용·적용 수치를 모두 볼 수 있습니다."
+      "checkpointScrollHint": "표를 좌우로 움직이면 미적용·적용 수치를 모두 볼 수 있습니다.",
+      "checkpointTokenBreakdown": "{condition}: 입력 {input_tokens} + 출력 {output_tokens} = 누적 {total_tokens}토큰 · 입력 중 캐시 {cached_input_tokens} · 모델 응답 {recorded_responses}회",
+      "checkpointCacheMeaning": "캐시 입력은 각 응답의 입력 토큰에 이미 포함되어 있어 별도로 더하지 않습니다. 같은 대화가 다음 응답에 다시 전달되면 그 응답의 입력에도 포함됩니다. 이 누적 사용량을 청구 요금으로 환산하지 않습니다."
     },
     "en": {
       "title": "Questionable Hires — Weird, but employed.",
@@ -196,7 +198,7 @@
       "case-lookup-stale-error": "Stale error",
       "case-nested-city-runner": "Nested city search",
       "ogAlt": "Questionable Hires. Weird, but employed. Eight developer agent skills.",
-      "tokenMeaning": "Sum of input + output across every model response. Example: 10,000 tokens on the first response + 12,000 on the next = 22,000 for the task. Conversation and tool results sent again count in the next input. Cached input is included once; this is neither billing nor final-answer length.",
+      "tokenMeaning": "Sum of input + output across every model response. Example: 10,000 tokens on the first response + 12,000 on the next = 22,000 for the task. Conversation and tool results sent again count in the next input. Cached input is already included in each response’s input; this is neither billing nor final-answer length.",
       "changeLess": "{value}% less",
       "changeMore": "{value}% more",
       "changeEqual": "No change",
@@ -216,7 +218,9 @@
       "checkpoint-sqlite-commit-audit": "Stored write audit",
       "checkpoint-store-check-scope": "Store design review",
       "checkpoint-view-contract": "Rollout and rollback compatibility",
-      "checkpointScrollHint": "Scroll the table sideways to compare both conditions."
+      "checkpointScrollHint": "Scroll the table sideways to compare both conditions.",
+      "checkpointTokenBreakdown": "{condition}: {input_tokens} input + {output_tokens} output = {total_tokens} total tokens · {cached_input_tokens} of the input cached · {recorded_responses} model responses",
+      "checkpointCacheMeaning": "Cached input is already included in each response’s input tokens; it is not added again. Conversation sent again is included in the next response’s input too. These cumulative usage counts are not converted to billing costs."
     }
   },
   "hires": [

@@ -38,10 +38,13 @@ def integration05():
             row = records.get((case, condition))
             if (row is None or not row['completed'] or row['total_tokens'] <= 0
                     or row['elapsed_seconds'] <= 0
+                    or not 0 <= row['cached_input_tokens'] <= row['input_tokens']
+                    or row['output_tokens'] < 0 or row['recorded_responses'] < 1
                     or row['total_tokens'] != row['input_tokens'] + row['output_tokens']):
                 raise ValueError('integration05 comparison is incomplete or inconsistent')
     sums = {condition: {metric: sum(records[(case, condition)][metric] for case in cases)
-                       for metric in ('total_tokens', 'elapsed_seconds')}
+                       for metric in ('total_tokens', 'input_tokens', 'cached_input_tokens',
+                                      'output_tokens', 'recorded_responses', 'elapsed_seconds')}
             for condition in ('baseline', 'current')}
     return dict(records=records, cases=cases, sums=sums)
 
@@ -53,6 +56,12 @@ def integration_table(checkpoint, copy, prefix):
              f'<div class="table-scroll" tabindex="0" role="region" aria-label="{e(copy["checkpointTable"])}">',
              '<table><caption>integration05 · 2026-09-27 · 75183f2f</caption><thead><tr>',
              f'<th scope="col">{e(copy["rawCase"])}</th>']
+    breakdown = []
+    for condition, label in (('baseline', 'conditionBaseline'), ('current', 'conditionSkill')):
+        totals = checkpoint['sums'][condition]
+        breakdown.append('<p class="raw-note">' + e(copy['checkpointTokenBreakdown'].format(
+            condition=copy[label], **{key: f'{value:,}' for key, value in totals.items()})) + '</p>')
+    parts[1:1] = breakdown + [f'<p class="raw-note">{e(copy["checkpointCacheMeaning"])}</p>']
     for condition in ('conditionBaseline', 'conditionSkill'):
         for metric in ('rawTokens', 'rawElapsed'):
             parts.append(f'<th scope="col">{e(copy[condition])} · {e(copy[metric])}</th>')

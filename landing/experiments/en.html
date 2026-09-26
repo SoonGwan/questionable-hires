@@ -9,7 +9,7 @@ Different costs by task.</h3>
 <div class="metric"><span>Elapsed time</span><strong>-28.7<small>%</small></strong><p>With skill 71.3% / Without skill 100%</p></div>
 <div class="metric metric-quality"><span>Reviewed targets met</span><strong>5/5<small> → </small>5/5</strong><p>Without skill → With skill · False positives 0 → 0</p></div></div>
 <p class="normalized-note">Equal-weight mean of per-task skill/no-skill ratios. This is neither a reduction in summed tokens nor a billing saving.</p>
-<p class="token-meaning">Sum of input + output across every model response. Example: 10,000 tokens on the first response + 12,000 on the next = 22,000 for the task. Conversation and tool results sent again count in the next input. Cached input is included once; this is neither billing nor final-answer length.</p>
+<p class="token-meaning">Sum of input + output across every model response. Example: 10,000 tokens on the first response + 12,000 on the next = 22,000 for the task. Conversation and tool results sent again count in the next input. Cached input is already included in each response’s input; this is neither billing nor final-answer length.</p>
 <p class="cost-summary">Tokens decreased on 3, increased on 2 / 5 tasks</p>
 <div class="chart-top">
 <h4>Look at every task</h4>
@@ -58,6 +58,9 @@ Different costs by task.</h3>
 <p class="raw-note">Total tokens include cached input + output. Ratios of raw sums differ from the equal-weight task means plotted above.</p></details>
 <aside class="experiment-limit"><h4>What this experiment doesn’t establish</h4><p>A descriptive record of one run per arm and task. Not a confidence interval, repeated-sample result or general whole-team superiority claim. It does not measure revisions made after this checkpoint.</p></aside>
 <aside class="experiment-limit"><h4>Lower cost across all skills remains unproven.</h4><p>The eight-role integration05 comparison (2026-09-27, 75183f2f) used 18.54% more summed tokens and 9.06% more time. Original task review retains scope, criterion and preservation-evidence limitations. The average reduction in this featured experiment does not establish whole-team performance.</p><details class="checkpoint-details"><summary>Eight roles · full task comparison</summary>
+<p class="raw-note">Without skill: 592,509 input + 13,846 output = 606,355 total tokens · 530,432 of the input cached · 38 model responses</p>
+<p class="raw-note">With skill: 705,328 input + 13,419 output = 718,747 total tokens · 613,632 of the input cached · 39 model responses</p>
+<p class="raw-note">Cached input is already included in each response’s input tokens; it is not added again. Conversation sent again is included in the next response’s input too. These cumulative usage counts are not converted to billing costs.</p>
 <p class="checkpoint-scroll-hint raw-note">Scroll the table sideways to compare both conditions.</p>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Eight roles · full task comparison">
 <table><caption>integration05 · 2026-09-27 · 75183f2f</caption><thead><tr>

@@ -79,7 +79,7 @@ class LandingTests(unittest.TestCase):
                        '18.54% more summed tokens', '9.06% more time',
                        'integration05', '2026-09-27', '75183f2f',
                        'scope, criterion and preservation-evidence limitations',
-                       'ALL-EIGHT-CURRENT-05-COSTS.md', 'Cached input is included once'):
+                       'ALL-EIGHT-CURRENT-05-COSTS.md', 'Cached input is already included in each response'):
             self.assertIn(phrase, en)
         for phrase in ('29.8% 증가', '6.4% 증가', '31.6% 감소',
                        '토큰 감소 3개 · 증가 2개 / 5개 과제', '토큰 18.54%',
@@ -116,7 +116,7 @@ class LandingTests(unittest.TestCase):
 
     def test_integration_rejects_missing_duplicate_and_inconsistent_attempts(self):
         original = landing.read_json
-        for fault in ('missing', 'duplicate', 'counter'):
+        for fault in ('missing', 'duplicate', 'counter', 'cached', 'responses'):
             def changed(path):
                 value = original(path)
                 if str(path).endswith('all-eight-current-05/comparison.json'):
@@ -124,6 +124,10 @@ class LandingTests(unittest.TestCase):
                         value['rows'].pop()
                     elif fault == 'duplicate':
                         value['rows'][-1] = copy.deepcopy(value['rows'][0])
+                    elif fault == 'cached':
+                        value['rows'][0]['cached_input_tokens'] = value['rows'][0]['input_tokens'] + 1
+                    elif fault == 'responses':
+                        value['rows'][0]['recorded_responses'] = 0
                     else:
                         value['rows'][0]['total_tokens'] += 1
                 return value
