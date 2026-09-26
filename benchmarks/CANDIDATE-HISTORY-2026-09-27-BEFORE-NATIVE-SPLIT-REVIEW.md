@@ -1,3 +1,5 @@
+# Historical index before native-split02 scoped review
+
 # Current candidate: whole-task improvement remains unproven
 
 Decision checkpoint **2026-09-27, integration05 bundle `75183f2f`**.
@@ -21,7 +23,7 @@ whole-task tokens and faster completion. No completed update or broad saving.
 | [Path-selection transfer01](PATH-SELECTION-01-REVIEW.md),2026-09-27,unchanged resource`9fdee801`,inputs`3ff3fa85` |4 scoped diagnostic outcomes supported; tokens+5.40%,time−18.75%; no pair improves both. Direct initial/final supplied-file modes match. | No optimization adopted or quality advantage; related authored fixtures,n=1,grouped order/shared cache and unequal optional work. |
 | [Interpreter route01 review](INTERPRETER-ROUTE-01-REVIEW.md),2026-09-27,`e918d02d` |6 scoped tasks supported; versus no skill tokens+0.67%,time−8.39%; versus predecessor tokens−4.75%,time+1.73%. Unequal extra work and coordinator exit-vector limits retained. | Neither aggregate improves both; correlated exposed development/control pair. |
 | [Integration05 review](ALL-EIGHT-CURRENT-05-REVIEW.md),2026-09-27,`75183f2f` |16 scoped outcomes reviewed; tokens+18.54%,time+9.06%; no pair improves both. Baseline SQLite outside scope, criterion mismatch and initial untracked-mode gaps retained. | Adverse cost result; exposed integration controls, not independent validation or unqualified quality score. |
-| [Native-split02 costs](NATIVE-SPLIT-02-COSTS.json),2026-09-27,`6c099d68` |6 cells; summed tokens+43.05% versus no skill,−9.35% versus predecessor. [Original output follow-up](NATIVE-SPLIT-02-OUTPUT-REVIEW.md) retains391-token predecessor truncation. | [Scoped original review](NATIVE-SPLIT-02-REVIEW.md) retains binding-capture, criterion and index limitations; no whole-team efficiency promotion. |
+| [Native-split02 costs](NATIVE-SPLIT-02-COSTS.json),2026-09-27,`6c099d68` |6 cells; summed tokens+43.05% versus no skill,−9.35% versus predecessor. [Original output follow-up](NATIVE-SPLIT-02-OUTPUT-REVIEW.md) retains391-token predecessor truncation. | Native review incomplete; no efficiency promotion. |
 | [Assertion-contract01](ASSERTION-CONTRACT-01-REVIEW.md),2026-09-27,`33530f98` |6 reviewed cells meet scoped contracts; tokens+36.43%,time−12.01% versus no skill. | No joint saving; retain correctness boundary. |
 | [Receipt versions01](RECEIPT-VERSIONS-01-REVIEW.md),2026-09-22,`e075bdb` |6 cells; tokens+0.31%,time−13.77%; multi-version helper adopted. | Adoption without broad cost gain; [original response-cost review](RECEIPT-VERSIONS-01-INPUT-COSTS.md). |
 | [External SWE-Lite pilot01](SWE-LITE-PILOT-01-REVIEW.md),2026-09-22,`8ee6c56` |4 cells; required Requests141/141 and pytest78/78 pass; tokens−0.71%,time+2.43%. Broader pytest check has fixture confound. | Public external authorship, not proven uncontaminated holdout; no general saving. |
@@ -78,18 +80,6 @@ whole-task tokens and faster completion. No completed update or broad saving.
 파일에 소급하지 않는다. 공개 이력 검토와 최종 릴리스 준비도 미완료다.
 
 ## Scoped candidate and next required work
-
-[Native-split02 original review](NATIVE-SPLIT-02-REVIEW.md) now inspects all six
-retained outcomes and final artifacts without rerunning model tasks. Five native
-captures have no outer truncation marker; predecessor/multiple retains391-token cutoff. Candidate
-versus predecessor sums tokens−9.35%,time−2.32%, but versus no skill tokens+43.05%.
-No broad quality/efficiency gain. Shared-support criterion wording and historical
-initial-mode/current-index limits stay explicit.
-The previous index is preserved in [dated history](CANDIDATE-HISTORY-2026-09-27-BEFORE-NATIVE-SPLIT-REVIEW.md).
-
-한국어: 네이티브 비교6회의 원본 검토와 최종 파일 확인을 완료했지만 출력 누락·
-평가 문구·인덱스 한계를 유지한다. 이전 버전 대비 합계 비용 감소는 전체 스킬
-미적용 대비 개선이 아니며 전체8개 역할 목표는 미달이다.
 
 [Path-selection transfer01](PATH-SELECTION-01-REVIEW.md) completes the four frozen
 Exorcist sessions on new authored fixtures with unchanged resource`9fdee801`.

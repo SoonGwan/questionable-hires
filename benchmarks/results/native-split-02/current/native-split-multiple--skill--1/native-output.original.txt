@@ -1,0 +1,269 @@
+AUDIT CLI EXIT 0
+
+FAULT split_at
+{
+  "status": "observed",
+  "checks": {
+    "correct_tests": {
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-2zqsm5a_/correct-tests\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"98d3ca2aee5423b9512f8eb4be09b441309616218c542328b123f15527626e8b\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBIND more_itertools <WORKSPACE>/.con-artist-2zqsm5a_/correct-tests/more_itertools/__init__.py\nBIND more_itertools.more <WORKSPACE>/.con-artist-2zqsm5a_/correct-tests/more_itertools/more.py\nBIND tests.test_more <WORKSPACE>/.con-artist-2zqsm5a_/correct-tests/tests/test_more.py\nBINDINGS VERIFIED: public exports, implementation and selected tests\nPrecheck completed in check process.\n----------------------------------------------------------------------\nRan 13 tests in 0.000s\n\nOK\n",
+      "output_truncated": false,
+      "command": [
+        "<TEMP>",
+        "-B",
+        "-m",
+        "unittest",
+        "-q",
+        "tests.test_more.SplitAtTests",
+        "tests.test_more.SplitBeforeTest",
+        "tests.test_more.SplitAfterTest"
+      ],
+      "invocation": "module",
+      "native_exit_code": 0,
+      "suite_observation": {
+        "tests": 13,
+        "skipped": 0,
+        "successful": true
+      }
+    },
+    "mutant_tests": {
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-tests\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"e92addbf079f5abfa6881284fc25b7eb60b1ef6292a921c3fc5ddc14884d37d6\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBIND more_itertools <WORKSPACE>/.con-artist-2zqsm5a_/mutant-tests/more_itertools/__init__.py\nBIND more_itertools.more <WORKSPACE>/.con-artist-2zqsm5a_/mutant-tests/more_itertools/more.py\nBIND tests.test_more <WORKSPACE>/.con-artist-2zqsm5a_/mutant-tests/tests/test_more.py\nBINDINGS VERIFIED: public exports, implementation and selected tests\nPrecheck completed in check process.\n----------------------------------------------------------------------\nRan 13 tests in 0.000s\n\nOK\n",
+      "output_truncated": false,
+      "command": [
+        "<TEMP>",
+        "-B",
+        "-m",
+        "unittest",
+        "-q",
+        "tests.test_more.SplitAtTests",
+        "tests.test_more.SplitBeforeTest",
+        "tests.test_more.SplitAfterTest"
+      ],
+      "invocation": "module",
+      "native_exit_code": 0,
+      "suite_observation": {
+        "tests": 13,
+        "skipped": 0,
+        "successful": true
+      }
+    },
+    "correct_probe": {
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-2zqsm5a_/correct-probe\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"98d3ca2aee5423b9512f8eb4be09b441309616218c542328b123f15527626e8b\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBIND more_itertools <WORKSPACE>/.con-artist-2zqsm5a_/correct-probe/more_itertools/__init__.py\nBIND more_itertools.more <WORKSPACE>/.con-artist-2zqsm5a_/correct-probe/more_itertools/more.py\nBIND tests.test_more <WORKSPACE>/.con-artist-2zqsm5a_/correct-probe/tests/test_more.py\nBIND test_consumer_audit <WORKSPACE>/.con-artist-2zqsm5a_/correct-probe/test_consumer_audit.py\nBINDINGS VERIFIED: public exports, implementation and selected tests\nPrecheck completed in check process.\n----------------------------------------------------------------------\nRan 19 tests in 0.000s\n\nOK\n",
+      "output_truncated": false,
+      "command": [
+        "<TEMP>",
+        "-B",
+        "-m",
+        "unittest",
+        "-q",
+        "tests.test_more.SplitAtTests",
+        "tests.test_more.SplitBeforeTest",
+        "tests.test_more.SplitAfterTest",
+        "test_consumer_audit.ZeroSplitContract"
+      ],
+      "invocation": "module",
+      "native_exit_code": 0,
+      "suite_observation": {
+        "tests": 19,
+        "skipped": 0,
+        "successful": true
+      }
+    },
+    "mutant_probe": {
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"e92addbf079f5abfa6881284fc25b7eb60b1ef6292a921c3fc5ddc14884d37d6\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBIND more_itertools <WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/more_itertools/__init__.py\nBIND more_itertools.more <WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/more_itertools/more.py\nBIND tests.test_more <WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/tests/test_more.py\nBIND test_consumer_audit <WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/test_consumer_audit.py\nBINDINGS VERIFIED: public exports, implementation and selected tests\nPrecheck completed in check process.\n======================================================================\nFAIL: test_split_at_effects (test_consumer_audit.ZeroSplitContract.test_split_at_effects) (function='split_at', options={'keep_separator': False}, values=[1, 0, 2])\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/test_consumer_audit.py\", line 18, in check_effect\n    self.assertEqual(calls, [], 'maxsplit=0 must not invoke predicate')\nAssertionError: Lists differ: [1, 0, 2] != []\n\nFirst list contains 3 additional elements.\nFirst extra element 0:\n1\n\n- [1, 0, 2]\n+ [] : maxsplit=0 must not invoke predicate\n\n======================================================================\nFAIL: test_split_at_effects (test_consumer_audit.ZeroSplitContract.test_split_at_effects) (function='split_at', options={'keep_separator': True}, values=[1, 0, 2])\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/test_consumer_audit.py\", line 18, in check_effect\n    self.assertEqual(calls, [], 'maxsplit=0 must not invoke predicate')\nAssertionError: Lists differ: [1, 0, 2] != []\n\nFirst list contains 3 additional elements.\nFirst extra element 0:\n1\n\n- [1, 0, 2]\n+ [] : maxsplit=0 must not invoke predicate\n\n======================================================================\nFAIL: test_split_at_raising (test_consumer_audit.ZeroSplitContract.test_split_at_raising) (function='split_at', options={'keep_separator': False})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/test_consumer_audit.py\", line 27, in check_raising\n    actual = list(getattr(mi, name)((x for x in [1, 0, 2]), pred, maxsplit=0, **kwargs))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/more_itertools/more.py\", line 1537, in split_at\n    pred(value)\n  File \"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/test_consumer_audit.py\", line 25, in pred\n    raise RuntimeError('local predicate witness')\nRuntimeError: local predicate witness\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/test_consumer_audit.py\", line 29, in check_raising\n    self.fail('maxsplit=0 invoked raising predicate: ' + str(error))\nAssertionError: maxsplit=0 invoked raising predicate: local predicate witness\n\n======================================================================\nFAIL: test_split_at_raising (test_consumer_audit.ZeroSplitContract.test_split_at_raising) (function='split_at', options={'keep_separator': True})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/test_consumer_audit.py\", line 27, in check_raising\n    actual = list(getattr(mi, name)((x for x in [1, 0, 2]), pred, maxsplit=0, **kwargs))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/more_itertools/more.py\", line 1537, in split_at\n    pred(value)\n  File \"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/test_consumer_audit.py\", line 25, in pred\n    raise RuntimeError('local predicate witness')\nRuntimeError: local predicate witness\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-2zqsm5a_/mutant-probe/test_consumer_audit.py\", line 29, in check_raising\n    self.fail('maxsplit=0 invoked raising predicate: ' + str(error))\nAssertionError: maxsplit=0 invoked raising predicate: local predicate witness\n\n----------------------------------------------------------------------\nRan 19 tests in 0.001s\n\nFAILED (failures=4)\n",
+      "output_truncated": false,
+      "command": [
+        "<TEMP>",
+        "-B",
+        "-m",
+        "unittest",
+        "-q",
+        "tests.test_more.SplitAtTests",
+        "tests.test_more.SplitBeforeTest",
+        "tests.test_more.SplitAfterTest",
+        "test_consumer_audit.ZeroSplitContract"
+      ],
+      "invocation": "module",
+      "native_exit_code": 1,
+      "suite_observation": {
+        "tests": 19,
+        "skipped": 0,
+        "successful": false
+      }
+    }
+  },
+  "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+  "integrity": {
+    "selected_files": 6,
+    "selected_original_bytes_and_modes_unchanged": true,
+    "owned_scratch_removed": true,
+    "project_guard": {
+      "unchanged": true,
+      "entries": 66,
+      "file_bytes": 653261,
+      "scope": "source root including Git metadata; symlink targets not read"
+    }
+  }
+}
+FAULT split_before
+{
+  "status": "observed",
+  "checks": {
+    "correct_tests": {
+      "exit_code": 0,
+      "timed_out": false,
+      "observation_ref": "#/audits/0/checks/correct_tests"
+    },
+    "mutant_tests": {
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-aus3gll_/mutant-tests\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"fdb46ce2b63efbd3bbb3638ad133e2b6d16f1ea29cfd9bd6ae24af5707400468\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBIND more_itertools <WORKSPACE>/.con-artist-aus3gll_/mutant-tests/more_itertools/__init__.py\nBIND more_itertools.more <WORKSPACE>/.con-artist-aus3gll_/mutant-tests/more_itertools/more.py\nBIND tests.test_more <WORKSPACE>/.con-artist-aus3gll_/mutant-tests/tests/test_more.py\nBINDINGS VERIFIED: public exports, implementation and selected tests\nPrecheck completed in check process.\n----------------------------------------------------------------------\nRan 13 tests in 0.000s\n\nOK\n",
+      "output_truncated": false,
+      "command": [
+        "<TEMP>",
+        "-B",
+        "-m",
+        "unittest",
+        "-q",
+        "tests.test_more.SplitAtTests",
+        "tests.test_more.SplitBeforeTest",
+        "tests.test_more.SplitAfterTest"
+      ],
+      "invocation": "module",
+      "native_exit_code": 0,
+      "suite_observation": {
+        "tests": 13,
+        "skipped": 0,
+        "successful": true
+      }
+    },
+    "correct_probe": {
+      "exit_code": 0,
+      "timed_out": false,
+      "observation_ref": "#/audits/0/checks/correct_probe"
+    },
+    "mutant_probe": {
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-aus3gll_/mutant-probe\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"fdb46ce2b63efbd3bbb3638ad133e2b6d16f1ea29cfd9bd6ae24af5707400468\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBIND more_itertools <WORKSPACE>/.con-artist-aus3gll_/mutant-probe/more_itertools/__init__.py\nBIND more_itertools.more <WORKSPACE>/.con-artist-aus3gll_/mutant-probe/more_itertools/more.py\nBIND tests.test_more <WORKSPACE>/.con-artist-aus3gll_/mutant-probe/tests/test_more.py\nBIND test_consumer_audit <WORKSPACE>/.con-artist-aus3gll_/mutant-probe/test_consumer_audit.py\nBINDINGS VERIFIED: public exports, implementation and selected tests\nPrecheck completed in check process.\n======================================================================\nFAIL: test_split_before_effects (test_consumer_audit.ZeroSplitContract.test_split_before_effects) (function='split_before', options={}, values=[1, 0, 2])\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-aus3gll_/mutant-probe/test_consumer_audit.py\", line 18, in check_effect\n    self.assertEqual(calls, [], 'maxsplit=0 must not invoke predicate')\nAssertionError: Lists differ: [1, 0, 2] != []\n\nFirst list contains 3 additional elements.\nFirst extra element 0:\n1\n\n- [1, 0, 2]\n+ [] : maxsplit=0 must not invoke predicate\n\n======================================================================\nFAIL: test_split_before_raising (test_consumer_audit.ZeroSplitContract.test_split_before_raising) (function='split_before', options={})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-aus3gll_/mutant-probe/test_consumer_audit.py\", line 27, in check_raising\n    actual = list(getattr(mi, name)((x for x in [1, 0, 2]), pred, maxsplit=0, **kwargs))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<WORKSPACE>/.con-artist-aus3gll_/mutant-probe/more_itertools/more.py\", line 1574, in split_before\n    pred(value)\n  File \"<WORKSPACE>/.con-artist-aus3gll_/mutant-probe/test_consumer_audit.py\", line 25, in pred\n    raise RuntimeError('local predicate witness')\nRuntimeError: local predicate witness\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-aus3gll_/mutant-probe/test_consumer_audit.py\", line 29, in check_raising\n    self.fail('maxsplit=0 invoked raising predicate: ' + str(error))\nAssertionError: maxsplit=0 invoked raising predicate: local predicate witness\n\n----------------------------------------------------------------------\nRan 19 tests in 0.001s\n\nFAILED (failures=2)\n",
+      "output_truncated": false,
+      "command": [
+        "<TEMP>",
+        "-B",
+        "-m",
+        "unittest",
+        "-q",
+        "tests.test_more.SplitAtTests",
+        "tests.test_more.SplitBeforeTest",
+        "tests.test_more.SplitAfterTest",
+        "test_consumer_audit.ZeroSplitContract"
+      ],
+      "invocation": "module",
+      "native_exit_code": 1,
+      "suite_observation": {
+        "tests": 19,
+        "skipped": 0,
+        "successful": false
+      }
+    }
+  },
+  "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+  "correct_tests_reused": true,
+  "correct_probe_reused": true,
+  "integrity": {
+    "selected_files": 6,
+    "selected_original_bytes_and_modes_unchanged": true,
+    "owned_scratch_removed": true,
+    "project_guard": {
+      "unchanged": true,
+      "entries": 66,
+      "file_bytes": 653261,
+      "scope": "source root including Git metadata; symlink targets not read"
+    }
+  }
+}
+FAULT split_after
+{
+  "status": "observed",
+  "checks": {
+    "correct_tests": {
+      "exit_code": 0,
+      "timed_out": false,
+      "observation_ref": "#/audits/0/checks/correct_tests"
+    },
+    "mutant_tests": {
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-at1s_d2u/mutant-tests\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"76b838d751ab7dcff2e9ef2d6e7d8c18d2f71cd2801ef1c84e05c05e7c64ca8d\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBIND more_itertools <WORKSPACE>/.con-artist-at1s_d2u/mutant-tests/more_itertools/__init__.py\nBIND more_itertools.more <WORKSPACE>/.con-artist-at1s_d2u/mutant-tests/more_itertools/more.py\nBIND tests.test_more <WORKSPACE>/.con-artist-at1s_d2u/mutant-tests/tests/test_more.py\nBINDINGS VERIFIED: public exports, implementation and selected tests\nPrecheck completed in check process.\n----------------------------------------------------------------------\nRan 13 tests in 0.000s\n\nOK\n",
+      "output_truncated": false,
+      "command": [
+        "<TEMP>",
+        "-B",
+        "-m",
+        "unittest",
+        "-q",
+        "tests.test_more.SplitAtTests",
+        "tests.test_more.SplitBeforeTest",
+        "tests.test_more.SplitAfterTest"
+      ],
+      "invocation": "module",
+      "native_exit_code": 0,
+      "suite_observation": {
+        "tests": 13,
+        "skipped": 0,
+        "successful": true
+      }
+    },
+    "correct_probe": {
+      "exit_code": 0,
+      "timed_out": false,
+      "observation_ref": "#/audits/0/checks/correct_probe"
+    },
+    "mutant_probe": {
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-at1s_d2u/mutant-probe\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"76b838d751ab7dcff2e9ef2d6e7d8c18d2f71cd2801ef1c84e05c05e7c64ca8d\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBIND more_itertools <WORKSPACE>/.con-artist-at1s_d2u/mutant-probe/more_itertools/__init__.py\nBIND more_itertools.more <WORKSPACE>/.con-artist-at1s_d2u/mutant-probe/more_itertools/more.py\nBIND tests.test_more <WORKSPACE>/.con-artist-at1s_d2u/mutant-probe/tests/test_more.py\nBIND test_consumer_audit <WORKSPACE>/.con-artist-at1s_d2u/mutant-probe/test_consumer_audit.py\nBINDINGS VERIFIED: public exports, implementation and selected tests\nPrecheck completed in check process.\n======================================================================\nFAIL: test_split_after_effects (test_consumer_audit.ZeroSplitContract.test_split_after_effects) (function='split_after', options={}, values=[1, 0, 2])\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-at1s_d2u/mutant-probe/test_consumer_audit.py\", line 18, in check_effect\n    self.assertEqual(calls, [], 'maxsplit=0 must not invoke predicate')\nAssertionError: Lists differ: [1, 0, 2] != []\n\nFirst list contains 3 additional elements.\nFirst extra element 0:\n1\n\n- [1, 0, 2]\n+ [] : maxsplit=0 must not invoke predicate\n\n======================================================================\nFAIL: test_split_after_raising (test_consumer_audit.ZeroSplitContract.test_split_after_raising) (function='split_after', options={})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-at1s_d2u/mutant-probe/test_consumer_audit.py\", line 27, in check_raising\n    actual = list(getattr(mi, name)((x for x in [1, 0, 2]), pred, maxsplit=0, **kwargs))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<WORKSPACE>/.con-artist-at1s_d2u/mutant-probe/more_itertools/more.py\", line 1610, in split_after\n    pred(value)\n  File \"<WORKSPACE>/.con-artist-at1s_d2u/mutant-probe/test_consumer_audit.py\", line 25, in pred\n    raise RuntimeError('local predicate witness')\nRuntimeError: local predicate witness\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-at1s_d2u/mutant-probe/test_consumer_audit.py\", line 29, in check_raising\n    self.fail('maxsplit=0 invoked raising predicate: ' + str(error))\nAssertionError: maxsplit=0 invoked raising predicate: local predicate witness\n\n----------------------------------------------------------------------\nRan 19 tests in 0.001s\n\nFAILED (failures=2)\n",
+      "output_truncated": false,
+      "command": [
+        "<TEMP>",
+        "-B",
+        "-m",
+        "unittest",
+        "-q",
+        "tests.test_more.SplitAtTests",
+        "tests.test_more.SplitBeforeTest",
+        "tests.test_more.SplitAfterTest",
+        "test_consumer_audit.ZeroSplitContract"
+      ],
+      "invocation": "module",
+      "native_exit_code": 1,
+      "suite_observation": {
+        "tests": 19,
+        "skipped": 0,
+        "successful": false
+      }
+    }
+  },
+  "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+  "correct_tests_reused": true,
+  "correct_probe_reused": true,
+  "integrity": {
+    "selected_files": 6,
+    "selected_original_bytes_and_modes_unchanged": true,
+    "owned_scratch_removed": true,
+    "project_guard": {
+      "unchanged": true,
+      "entries": 66,
+      "file_bytes": 653261,
+      "scope": "source root including Git metadata; symlink targets not read"
+    }
+  }
+}
+BATCH observed Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled.

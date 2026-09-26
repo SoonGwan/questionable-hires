@@ -51,3 +51,7 @@ included in its result.
 실행해 임시 보관하고 검사별로 읽는 경로를 보강했으며, 누락 증거를 재실행으로
 대체하지 않는다. 가이드4개 검사와 이전 후보의 실제 설치21개 명령 검증은
 통과했지만 전체 품질·토큰·시간 개선 및 원격 배포 검증을 뜻하지 않는다.
+
+Subsequent [scoped original review](NATIVE-SPLIT-02-REVIEW.md) now inspects
+all six outcomes and final artifacts. This earlier partial checkpoint remains
+historical; its391-token capture gap is not repaired or erased.

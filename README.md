@@ -137,7 +137,8 @@ and 12.01% less time than no skill; no joint efficiency gain is established.
 The later [native single-module route](benchmarks/NATIVE-SINGLE-MODULE-ROUTE-02.md)
 is locally verified guidance. Its [native-split02 cost checkpoint](benchmarks/NATIVE-SPLIT-02-COSTS.json)
 (2026-09-27, `6c099d68`) uses 43.05% more summed tokens than no skill and
-9.35% fewer than its predecessor; native quality review remains incomplete.
+9.35% fewer than its predecessor; the [scoped original review](benchmarks/NATIVE-SPLIT-02-REVIEW.md)
+retains binding-capture, criterion and preservation limits.
 
 Con Artist also accepts [exact test-file edits](skills/con-artist/references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)
 instead of resending a whole file; original/correct/faulty checks stay intact. For large native batch reports,
