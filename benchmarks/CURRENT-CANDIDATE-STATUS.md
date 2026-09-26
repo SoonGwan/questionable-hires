@@ -53,6 +53,14 @@ whole-task tokens and faster completion. No completed update or broad saving.
 addresses repeated unavailable-executable launches and masked probe exits in
 Necromancer. Metadata/catalog checks pass; model token/time effects are unmeasured.
 Integration05 still belongs to `75183f2f`, not this candidate.
+The [frozen interpreter comparison](INTERPRETER-ROUTE-01-PROTOCOL.md) specifies
+six serial cells against predecessor/no-skill, with documented and unspecified
+interpreters. Source and cancellation controls are exposed development material;
+preparation and authored control passes are not measured model savings.
+
+한국어: 실행기 비교 6회는 이전 후보·미적용과 비교하도록 사전 고정했다.
+기존에 사용한 코드와 취소 회귀를 재사용하므로 독립 검증이 아니며,
+준비·작성자 테스트 통과를 모델 비용 개선으로 계산하지 않는다.
 
 
 Review all16 original assertions/bindings, scope, required coverage, artifacts,
