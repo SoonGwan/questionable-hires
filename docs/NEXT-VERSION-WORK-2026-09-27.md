@@ -63,8 +63,10 @@ Exposed correlated controls are not independent all-eight validation.
 now covers checkout/archive full discovered suites and cached CLI installed
 behavior. Both discovered1,250 tests, with17/47 skipped respectively and zero
 failures; installed8 skills/51 files/25 command exits match expected behavior.
-These local checks do not satisfy model efficiency, hosted/platform or final
-release requirements. Older dated validations remain at their actual sources.
+These local checks do not satisfy model efficiency or broader platform claims.
+Older dated validations remain at their actual sources. [Public launch approval](PUBLIC-LAUNCH.md)
+removed CI; historical hosted failures are not current release gates. No CI
+reactivation or account change is authorized or required by this work plan.
 
 [Current deployed browser checks](LANDING-BROWSER-2026-09-27.md), source
 `ba2713d5`, now pass14 bilingual responsive layouts and production local/public
@@ -104,7 +106,9 @@ mechanism; no optimization adopted, independent external or all-eight result.
    for the efficiency claim. Helper/process microbenchmarks are insufficient.
    Mixed/adverse outcomes require continued diagnosis, not cherry-picking.
 5. Validate full local and source-archive functionality and actual installation
-   for the final candidate. Keep hosted CI/account limitations separate. Update
+   for actual changed resources. Current skill/installer files match the validated
+   `ba2713d5` source; later benchmark/website edits require their affected checks.
+   Respect the approved CI removal; keep historical hosted limitations separate. Update
    the dated candidate index with historical snapshots and both README languages.
 6. Update and verify the bilingual public landing against those measured limits,
    responsive interactions and metadata. Featured evidence remains frozen unless

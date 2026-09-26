@@ -119,8 +119,10 @@ forced-helper and generic discovery rewrites are historical attempts, not new id
 Use the existing response-cost analyzer; no duplicate profiler. Its native
 `case_id` manifest compatibility fix is after model timing and changes no recorded
 counts. Require lower tokens AND faster time alongside the required outcomes
-before an efficiency claim. Remaining final-candidate platform, installation,
-public-history, responsive landing and release checks remain distinct gates.
+before an efficiency claim. Revalidate affected functionality, installation and
+delivery when relevant inputs change; unchanged resources keep their dated evidence.
+[Approved CI removal](../docs/PUBLIC-LAUNCH.md) leaves historical hosted failures
+outside current release gates. Broader platform claims still need actual evidence.
 
 Keep [featured.json](featured.json) and frozen charts unchanged. Representative
 claim changes synchronize both README languages with the existing sync script.
