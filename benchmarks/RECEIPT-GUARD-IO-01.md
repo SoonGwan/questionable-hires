@@ -2,8 +2,9 @@
 
 Author prototype against repository **`d4bacdf6`**, unchanged measured Receipt
 resource **`6701069f`**. No model calls or whole-task efficiency comparison.
-[Rejected patch](results/receipt-guard-io-01/rejected-prototype.patch),
+[Rejected patch](results/receipt-guard-io-01/rejected-prototype.patch.gz),
 [source hashes](results/receipt-guard-io-01/source-sha256.json).
+The patch is stored as gzip; decompression preserves the exact reviewed bytes.
 
 The guarded comparison checks selected originals and then inventories the whole
 project. The prototype integrated exact selected-byte/mode comparisons into the
