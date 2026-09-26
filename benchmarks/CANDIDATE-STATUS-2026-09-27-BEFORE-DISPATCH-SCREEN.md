@@ -1,6 +1,6 @@
 # Current candidate: whole-task performance remains unproven
 
-Decision checkpoint **2026-09-27, assertion-contract01 partial screen; comparison incomplete**.
+Decision checkpoint **2026-09-26, assertion-contract instruction candidate; no new model measurement**.
 This index is not a new measurement. Each result below belongs to its named
 resource, not automatically to this working version.
 
@@ -64,26 +64,6 @@ or recoverable savings.
 
 한국어: 전체 비교의 토큰 증가, 단일/다중 과제의 혼재된 결과, 스킬의 재사용 보고
 오류를 모두 유지한다. 유리한 한 쌍이나 프로세스 감소를 전체 개선율로 확대하지 않는다.
-
-## Active partial screen — not an efficiency result
-
-[Assertion-contract01 protocol](ASSERTION-CONTRACT-01-PROTOCOL.md), inputs
-`f241f94d`, compares pinned candidate `33530f98`, predecessor `5f94777a` and
-no-skill on two new correlated authored dispatch audits. Six serial cells are
-scheduled. The first no-skill/single cell completed: 64,401 total tokens,
-83.273 seconds. Original native tests miss swallowed errors; identical added
-assertions pass correct code and reject missing type/message/stop behavior.
-Copy-local binding, unchanged snapshot/resources and initial/final index bytes
-were checked in retained original output. Other scheduled cells remain underway;
-there is no paired saving or full candidate-quality conclusion.
-Private originals are retained locally, pending reviewed redacted export. This
-partial note is not independent generalization, all-eight evidence or release
-completion. [Full remaining gates](../docs/NEXT-VERSION-WORK-2026-09-27.md).
-[Prior index](CANDIDATE-STATUS-2026-09-27-BEFORE-DISPATCH-SCREEN.md) preserves the
-unmeasured instruction checkpoint.
-
-한국어: 새6회 비교의 첫 무스킬 실행만 검토됐다. 스킬 조건 비교가 진행 중이므로
-토큰·시간 절감이나 다음 버전 완료를 주장하지 않는다. 전체8개 역할 목표는 유지한다.
 
 ## Unmeasured instruction candidate
 
