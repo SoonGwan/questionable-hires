@@ -121,20 +121,20 @@ Different costs by task.</h3>
 <p class="experiment-intro">Five new tasks, two arms, one fresh session per cell. See the gains and the increased costs together.</p>
 <p class="experiment-source"><code>mother-in-law-confirmation-2026-09-12</code><span>2026-09-12 / e76efcf</span></p>
 <div class="metric-grid">
-<div class="metric"><span>Total tokens</span><strong>-6.8<small>%</small></strong><p>With skill 93.2% / Without skill 100%</p></div>
+<div class="metric"><span>Whole-task cumulative tokens</span><strong>-6.8<small>%</small></strong><p>With skill 93.2% / Without skill 100%</p></div>
 <div class="metric"><span>Elapsed time</span><strong>-28.7<small>%</small></strong><p>With skill 71.3% / Without skill 100%</p></div>
 <div class="metric metric-quality"><span>Reviewed targets met</span><strong>5/5<small> → </small>5/5</strong><p>Without skill → With skill · False positives 0 → 0</p></div></div>
 <p class="normalized-note">Equal-weight mean of per-task skill/no-skill ratios. This is neither a reduction in summed tokens nor a billing saving.</p>
-<p class="token-meaning">Total tokens = input + output. Cached input is included once in input; accumulated context across model responses is summed. This measures neither billing nor answer length.</p>
+<p class="token-meaning">Sum of input + output across every model response. Example: 10,000 tokens on the first response + 12,000 on the next = 22,000 for the task. Conversation and tool results sent again count in the next input. Cached input is included once; this is neither billing nor final-answer length.</p>
 <p class="cost-summary">Tokens decreased on 3, increased on 2 / 5 tasks</p>
 <div class="chart-top">
 <h4>Look at every task</h4>
 <div class="chart-controls" role="group" hidden>
-<button type="button" data-metric="total_tokens" aria-pressed="true">Total tokens</button>
+<button type="button" data-metric="total_tokens" aria-pressed="true">Whole-task cumulative tokens</button>
 <button type="button" data-metric="elapsed_seconds" aria-pressed="false">Elapsed time</button></div></div>
 <p class="chart-description" id="chart-description">100% is the no-skill usage for that task. A longer bar means more resource use. Read the actual usage and increase or decrease alongside each task.</p>
 <div class="chart-legend" aria-label="Legend"><span class="baseline-key">Without skill</span><span class="skill-key">With skill</span></div>
-<figure class="task-chart" data-chart="total_tokens" aria-describedby="chart-description"><figcaption>Total token ratio by task</figcaption>
+<figure class="task-chart" data-chart="total_tokens" aria-describedby="chart-description"><figcaption>Whole-task cumulative token ratio</figcaption>
 <div class="chart-row"><span class="chart-case">Clear address<small>29.8% more</small></span><div class="chart-bars" style="--baseline-width:66.6667%"><div class="bar baseline" style="--bar-width:66.6667%"><span class="sr-only">Without skill </span><span class="bar-value">100%</span></div><div class="bar skill" style="--bar-width:86.5558%"><span class="sr-only">With skill </span><span class="bar-value">129.8%</span></div><p class="chart-usage">Without 64,055 → with 83,165</p></div></div>
 <div class="chart-row"><span class="chart-case">Guarded search<small>17.6% less</small></span><div class="chart-bars" style="--baseline-width:66.6667%"><div class="bar baseline" style="--bar-width:66.6667%"><span class="sr-only">Without skill </span><span class="bar-value">100%</span></div><div class="bar skill" style="--bar-width:54.9636%"><span class="sr-only">With skill </span><span class="bar-value">82.4%</span></div><p class="chart-usage">Without 80,127 → with 66,061</p></div></div>
 <div class="chart-row"><span class="chart-case">Double submit<small>31.6% less</small></span><div class="chart-bars" style="--baseline-width:66.6667%"><div class="bar baseline" style="--bar-width:66.6667%"><span class="sr-only">Without skill </span><span class="bar-value">100%</span></div><div class="bar skill" style="--bar-width:45.6292%"><span class="sr-only">With skill </span><span class="bar-value">68.4%</span></div><p class="chart-usage">Without 99,730 → with 68,259</p></div></div>
@@ -153,7 +153,7 @@ Different costs by task.</h3>
 <div class="table-scroll" role="region" tabindex="0" aria-label="Raw usage by task and arm"><table><caption>Raw usage by task and arm</caption><thead><tr>
 <th scope="col">Task</th>
 <th scope="col">Arm</th>
-<th scope="col">Total tokens</th>
+<th scope="col">Cumulative tokens</th>
 <th scope="col">Time (s)</th>
 <th scope="col">Target</th>
 </tr></thead><tbody>
