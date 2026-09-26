@@ -98,6 +98,39 @@ class LandingTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'quality differs'):
                 landing.featured()
 
+    def test_integration_comparison_and_downloads_retain_every_attempt(self):
+        original = ROOT / 'benchmarks/results/all-eight-current-05/comparison.json'
+        self.assertEqual(self.files['evidence/integration05/comparison.json'], original.read_bytes())
+        for name in ('ALL-EIGHT-CURRENT-05-COSTS.md', 'ALL-EIGHT-CURRENT-05-REVIEW.md'):
+            self.assertEqual(self.files['evidence/integration05/' + name], (ROOT / 'benchmarks' / name).read_bytes())
+        rows = json.loads(original.read_text())['rows']
+        for language in ('ko', 'en'):
+            source = self.files[language + '/index.html'].decode()
+            for row in rows:
+                self.assertIn(f'{row["total_tokens"]:,}', source)
+                self.assertIn(f'{row["elapsed_seconds"]:.3f}', source)
+            self.assertIn('606,355', source)
+            self.assertIn('718,747', source)
+            self.assertIn('data-evidence-file="evidence/integration05/comparison.json"', source)
+            self.assertNotIn('github.com/SoonGwan/questionable-hires/blob/main/benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md', source)
+
+    def test_integration_rejects_missing_duplicate_and_inconsistent_attempts(self):
+        original = landing.read_json
+        for fault in ('missing', 'duplicate', 'counter'):
+            def changed(path):
+                value = original(path)
+                if str(path).endswith('all-eight-current-05/comparison.json'):
+                    if fault == 'missing':
+                        value['rows'].pop()
+                    elif fault == 'duplicate':
+                        value['rows'][-1] = copy.deepcopy(value['rows'][0])
+                    else:
+                        value['rows'][0]['total_tokens'] += 1
+                return value
+            with self.subTest(fault=fault), patch.object(landing, 'read_json', side_effect=changed):
+                with self.assertRaises(ValueError):
+                    landing.integration05()
+
     def test_each_locale_has_static_metadata_and_copy_without_javascript(self):
         for language in ('ko', 'en'):
             source = self.files[language + '/index.html'].decode()

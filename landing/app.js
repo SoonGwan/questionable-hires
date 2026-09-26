@@ -121,17 +121,23 @@ async function setLanguage(next, persist = false) {
   }
   if (request !== languageRequest) return;
   const detailsOpen = document.querySelector('.raw-details').open;
+  const checkpointOpen = document.querySelector('.checkpoint-details')?.open;
   language = next;
   const content = COPY[language];
   document.documentElement.lang = language;
   document.querySelector('.experiment').outerHTML = experiment;
   document.querySelector('.raw-details').open = detailsOpen;
+  if (document.querySelector('.checkpoint-details')) document.querySelector('.checkpoint-details').open = checkpointOpen;
+  document.querySelectorAll('[data-evidence-file]').forEach(link => {
+    link.href = new URL(link.dataset.evidenceFile, runtimeRoot);
+  });
   updateChart();
   updateMetadata(content);
   document.querySelectorAll('[data-i18n]').forEach(element => { element.textContent = content[element.dataset.i18n]; });
   document.querySelectorAll('[data-i18n-alt]').forEach(element => { element.alt = content[element.dataset.i18nAlt]; });
   document.querySelectorAll('[data-i18n-aria]').forEach(element => { element.setAttribute('aria-label', content[element.dataset.i18nAria]); });
   languageLinks.forEach(link => {
+    link.href = new URL(`${link.dataset.language}/`, runtimeRoot);
     if (link.dataset.language === language) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   });

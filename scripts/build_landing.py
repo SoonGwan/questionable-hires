@@ -26,6 +26,56 @@ def read_json(path):
     return json.loads(path.read_text(encoding='utf-8'))
 
 
+def integration05():
+    directory = ROOT / 'benchmarks/results/all-eight-current-05'
+    rows = read_json(directory / 'comparison.json')['rows']
+    records = {(row['case'], row['condition']): row for row in rows}
+    cases = sorted({row['case'] for row in rows})
+    if len(rows) != 16 or len(records) != 16 or len(cases) != 8:
+        raise ValueError('integration05 must retain all16 unique attempts')
+    for case in cases:
+        for condition in ('baseline', 'current'):
+            row = records.get((case, condition))
+            if (row is None or not row['completed'] or row['total_tokens'] <= 0
+                    or row['elapsed_seconds'] <= 0
+                    or row['total_tokens'] != row['input_tokens'] + row['output_tokens']):
+                raise ValueError('integration05 comparison is incomplete or inconsistent')
+    sums = {condition: {metric: sum(records[(case, condition)][metric] for case in cases)
+                       for metric in ('total_tokens', 'elapsed_seconds')}
+            for condition in ('baseline', 'current')}
+    return dict(records=records, cases=cases, sums=sums)
+
+
+def integration_table(checkpoint, copy, prefix):
+    e = html.escape
+    parts = [f'<details class="checkpoint-details"><summary>{e(copy["checkpointTable"])}</summary>',
+             f'<p class="checkpoint-scroll-hint raw-note">{e(copy["checkpointScrollHint"])}</p>',
+             f'<div class="table-scroll" tabindex="0" role="region" aria-label="{e(copy["checkpointTable"])}">',
+             '<table><caption>integration05 · 2026-09-27 · 75183f2f</caption><thead><tr>',
+             f'<th scope="col">{e(copy["rawCase"])}</th>']
+    for condition in ('conditionBaseline', 'conditionSkill'):
+        for metric in ('rawTokens', 'rawElapsed'):
+            parts.append(f'<th scope="col">{e(copy[condition])} · {e(copy[metric])}</th>')
+    parts.append('</tr></thead><tbody>')
+    for case in checkpoint['cases']:
+        parts.append(f'<tr><th scope="row">{e(copy["checkpoint-" + case])}<code>{e(case)}</code></th>')
+        for condition in ('baseline', 'current'):
+            row = checkpoint['records'][(case, condition)]
+            parts.append(f'<td>{row["total_tokens"]:,}</td><td>{row["elapsed_seconds"]:.3f}</td>')
+        parts.append('</tr>')
+    parts.append(f'</tbody><tfoot><tr><th scope="row">{e(copy["rawTotal"])}</th>')
+    for condition in ('baseline', 'current'):
+        row = checkpoint['sums'][condition]
+        parts.append(f'<td>{row["total_tokens"]:,}</td><td>{row["elapsed_seconds"]:.3f}</td>')
+    parts.append('</tr></tfoot></table></div></details>')
+    for name, label in (('ALL-EIGHT-CURRENT-05-COSTS.md', 'costAnalysis'),
+                        ('ALL-EIGHT-CURRENT-05-REVIEW.md', 'checkpointReview'),
+                        ('comparison.json', 'checkpointJson')):
+        path = 'evidence/integration05/' + name
+        parts.append(f'<a data-evidence-file="{path}" href="{e(prefix + path)}" download>{e(copy[label])} ↓</a>')
+    return '\n'.join(parts)
+
+
 def featured():
     pointer = read_json(ROOT / 'benchmarks/featured.json')
     directory = (ROOT / pointer['result_directory']).resolve()
@@ -134,12 +184,17 @@ def metadata(copy, language, base, preview):
     return '\n  '.join(tags)
 
 
-def experiment(evidence, copy):
+def experiment(evidence, copy, checkpoint=None, prefix='../'):
+    checkpoint = checkpoint or integration05()
     data, cells, summary = evidence['data'], evidence['cells'], evidence['summary']
     records = {(cell['case'], cell['arm']): cell for cell in cells}
     cases = sorted({cell['case'] for cell in cells})
     e = html.escape
     report = GITHUB + '/blob/main/' + evidence['pointer']['result_directory']
+    totals = checkpoint['sums']
+    performance_detail = copy['performanceDetail'].format(
+        tokenChange=f"{100 * (totals['current']['total_tokens'] / totals['baseline']['total_tokens'] - 1):.2f}",
+        timeChange=f"{100 * (totals['current']['elapsed_seconds'] / totals['baseline']['elapsed_seconds'] - 1):.2f}")
     parts = ['<article class="experiment" aria-labelledby="experiment-heading">',
              f'<div class="experiment-label">{e(copy["experimentLabel"])}</div>',
              f'<h3 id="experiment-heading">{e(copy["experimentTitle"])}</h3>',
@@ -200,7 +255,7 @@ def experiment(evidence, copy):
         parts.append(f'<tr><th scope="row">{e(copy["rawTotal"])}</th><td>{e(copy[label])}</td><td>{sums["total_tokens"]:,}</td><td>{sums["elapsed_seconds"]:.3f}</td><td>{data["quality"][arm]}/{data["cases"]}</td></tr>')
     parts.extend(['</tfoot></table></div>', f'<p class="raw-note">{e(copy["rawNote"])}</p></details>',
                   f'<aside class="experiment-limit"><h4>{e(copy["limitationTitle"])}</h4><p>{e(copy["limitation"])}</p></aside>',
-                  f'<aside class="experiment-limit"><h4>{e(copy["performanceStatus"])}</h4><p>{e(copy["performanceDetail"])}</p><a href="{GITHUB}/blob/main/benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md">{e(copy["costAnalysis"])} ↗</a></aside>',
+                  f'<aside class="experiment-limit"><h4>{e(copy["performanceStatus"])}</h4><p>{e(performance_detail)}</p>{integration_table(checkpoint, copy, prefix)}</aside>',
                   f'<div class="experiment-links"><a href="{report}/README.md">{e(copy["fullReport"])} ↗</a><a href="{report}/cells.json">{e(copy["rawRecords"])} ↗</a></div></article>'])
     return '\n'.join(parts)
 
@@ -246,6 +301,7 @@ def build(base=None):
         raise ValueError('A production site_url must use public HTTPS')
     base = base.rstrip('/') + '/'
     evidence = featured()
+    checkpoint = integration05()
     template = (LANDING / 'templates/page.html').read_text()
     files = {}
     for route, language in (('', 'ko'), ('ko/', 'ko'), ('en/', 'en')):
@@ -255,7 +311,7 @@ def build(base=None):
         replacements = {
             '{{HEAD}}': metadata(copy, language, base, preview), '{{ASSET_BASE}}': prefix,
             '{{KO_URL}}': prefix + 'ko/', '{{EN_URL}}': prefix + 'en/',
-            '{{EXPERIMENT}}': experiment(evidence, copy), '{{ROSTER}}': roster(content['hires'], language),
+            '{{EXPERIMENT}}': experiment(evidence, copy, checkpoint, prefix), '{{ROSTER}}': roster(content['hires'], language),
             '{{PROFILE_NAME}}': html.escape(first['name']), '{{PROFILE_QUOTE}}': html.escape(first['quote']),
             '{{PROFILE_DESCRIPTION}}': html.escape(first['description']),
             '{{PROFILE_PROMPT}}': html.escape('$necromancer\n' + first['prompt'])
@@ -282,7 +338,11 @@ def build(base=None):
     files['assets/favicon.svg'] = b'<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><rect width="180" height="180" rx="32" fill="#0066FF"/><text x="28" y="122" font-family="Helvetica Neue,Arial,sans-serif" font-size="100" font-weight="700" letter-spacing="-8" fill="#F7F7F8">qh.</text></svg>\n'
     files['assets/team-characters.png'] = (ROOT / 'assets/team-characters.png').read_bytes()
     for language in ('ko', 'en'):
-        files[f'experiments/{language}.html'] = experiment(evidence, content['copy'][language]).encode()
+        files[f'experiments/{language}.html'] = experiment(evidence, content['copy'][language], checkpoint).encode()
+    for name, source in (('comparison.json', 'benchmarks/results/all-eight-current-05/comparison.json'),
+                         ('ALL-EIGHT-CURRENT-05-COSTS.md', 'benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md'),
+                         ('ALL-EIGHT-CURRENT-05-REVIEW.md', 'benchmarks/ALL-EIGHT-CURRENT-05-REVIEW.md')):
+        files['evidence/integration05/' + name] = (ROOT / source).read_bytes()
     if preview:
         robots = 'User-agent: *\nDisallow: /\n'
     else:
