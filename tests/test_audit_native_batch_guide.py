@@ -10,6 +10,48 @@ from test_build import builder
 
 
 class NativeBatchGuideTests(unittest.TestCase):
+    def test_packaged_single_recipe_runs_native_four_checks_and_rejects_wrong_binding(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            bundle = builder.build(root / 'bundle with spaces')
+            guide = (bundle / 'skills/con-artist/references/existing-tests.md').read_text()
+            recipe = json.loads(guide.split("<<'JSON'\n", 1)[1].split('\nJSON', 1)[0])
+            project = root / 'project'
+            project.mkdir()
+            (project / 'service.py').write_text('def save(values, value):\n    values.append(value)\n    return True\n')
+            (project / 'test_service.py').write_text(
+                'import unittest\nfrom service import save\nclass SaveTests(unittest.TestCase):\n'
+                '    def test_acknowledges(self):\n        self.assertTrue(save([], "item"))\n')
+            recipe.update(invocation='module', imports=['service', 'test_service'], guard_project=True,
+                          precheck='import service, test_service\nassert test_service.save is service.save\n')
+            before = {p.name: (p.read_bytes(), p.stat().st_mode) for p in project.iterdir()}
+            command = [sys.executable, '-I', '-B', str(bundle / 'skills/con-artist/scripts/audit.py'),
+                       '--source', str(project), '--spec', '-']
+            result = subprocess.run(command, input=json.dumps(recipe), text=True, capture_output=True, timeout=20)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            report = json.loads(result.stdout)
+            self.assertEqual(report['status'], 'observed')
+            for phase, expected in [('correct_tests', 0), ('mutant_tests', 0), ('correct_probe', 0), ('mutant_probe', 1)]:
+                check = report['checks'][phase]
+                self.assertEqual(check['command'][1:4], ['-B', '-m', 'unittest'])
+                self.assertEqual(check['exit_code'], expected)
+                self.assertEqual(check['suite_observation']['tests'], 1)
+                self.assertFalse(check['timed_out'])
+                self.assertFalse(check['output_truncated'])
+            self.assertIn('AssertionError: Lists differ:', report['checks']['mutant_probe']['output'])
+            self.assertTrue(report['integrity']['project_guard']['unchanged'])
+            self.assertTrue(report['integrity']['owned_scratch_removed'])
+            self.assertEqual(before, {p.name: (p.read_bytes(), p.stat().st_mode) for p in project.iterdir()})
+            wrong = dict(recipe, precheck='import service, test_service\nassert test_service.save is not service.save\n')
+            rejected = subprocess.run(command, input=json.dumps(wrong), text=True, capture_output=True, timeout=20)
+            self.assertEqual(rejected.returncode, 2)
+            incomplete = json.loads(rejected.stdout)
+            self.assertEqual(incomplete['status'], 'incomplete')
+            self.assertEqual(incomplete['checks']['correct_tests']['exit_code'], 7)
+            self.assertIn('AssertionError', incomplete['checks']['correct_tests']['output'])
+            self.assertNotIn('mutant_tests', incomplete['checks'])
+            self.assertEqual(before, {p.name: (p.read_bytes(), p.stat().st_mode) for p in project.iterdir()})
+
     def test_packaged_batch_and_native_probe_compose_at_mutation_boundary(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

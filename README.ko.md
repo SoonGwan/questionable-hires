@@ -178,6 +178,8 @@ $friday 이 배포 롤백 가능한지 봐줘.
 요구가 있을 때 검사하도록 보완했습니다. [Assertion-contract01](benchmarks/ASSERTION-CONTRACT-01-REVIEW.md)
 (2026-09-27, `33530f98`)은 품질을 지켰지만 무스킬 대비 **합계 토큰36.43% 증가**,
 시간12.01% 감소였습니다. 토큰·시간 동시 개선은 입증되지 않았습니다.
+이후 [네이티브 단일 비교 안내](benchmarks/NATIVE-SINGLE-MODULE-ROUTE-02.md)는 로컬에서
+검증됐으며 모델 비용 효과는 아직 미측정입니다.
 
 테스트 사기 감별사는 파일 전체를 다시 보내는 대신 [정확히 일치하는 부분 수정](skills/con-artist/references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)도
 받습니다. 기존 테스트와 강화한 테스트의 정상·결함 코드 검사는 그대로 유지합니다.

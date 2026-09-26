@@ -134,6 +134,8 @@ Con Artist ties new assertions to the required observable contract; object ident
 requires an explicit requirement. [Assertion-contract01](benchmarks/ASSERTION-CONTRACT-01-REVIEW.md)
 (2026-09-27, `33530f98`) retains quality but uses **36.43% more summed tokens**
 and 12.01% less time than no skill; no joint efficiency gain is established.
+The later [native single-module route](benchmarks/NATIVE-SINGLE-MODULE-ROUTE-02.md)
+is locally verified guidance; its model-cost effect is unmeasured.
 
 Con Artist also accepts [exact test-file edits](skills/con-artist/references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)
 instead of resending a whole file; original/correct/faulty checks stay intact.

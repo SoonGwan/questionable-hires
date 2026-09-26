@@ -82,19 +82,6 @@ n=1, fixed order/shared cache, unblinded review; not independent generalization.
 [이전 부분 검토](CANDIDATE-STATUS-2026-09-27-BEFORE-DISPATCH-REVIEW.md)와
 [전체 남은 조건](../docs/NEXT-VERSION-WORK-2026-09-27.md)을 함께 보존한다.
 
-## Unmeasured native single-module route02
-
-[Route02](NATIVE-SINGLE-MODULE-ROUTE-02.md), 2026-09-27, parent `d18f2109`:
-existing four-check guidance now exposes native module invocation and its ordinary
-startup/probe/binding limits without making the full advanced page prerequisite.
-Actual packaged normal/faulty assertions and wrong-binding rejection pass;
-packaged-guide4/4, native-module17/17. No helper/default change or model run,
-no measured efficiency. Dispatch results above do not measure this candidate.
-[Prior index](CANDIDATE-STATUS-2026-09-27-BEFORE-NATIVE-SINGLE-ROUTE.md).
-
-한국어: 기존 네 단계 비교 안내의 네이티브 단일 경로를 보완했다. 도구 예제 검증과
-모델 성능 검증은 별개이며, 토큰·시간 효과는 새 비교가 필요하다.
-
 ## Assertion-contract instruction and its measurement limits
 
 Con Artist now requires an observable contract before adding object-identity
