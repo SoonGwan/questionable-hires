@@ -1,0 +1,249 @@
+{
+  "session_id": "01a0dfb0-9170-7d00-bbfc-a5b01ae6b78c",
+  "source_bytes": 115957,
+  "source_sha256": "2c1e8131cb8b9579d18bbc425f986a5d366d27146b1893b383fd8eee93906310",
+  "source_lines": 56,
+  "records": [
+    {
+      "line": 16,
+      "line_sha256": "587b2a4b1f35da1530d1e4c42a98cc888b99dacb3bd6f2dcb2510467c5f962d2",
+      "record": {
+        "timestamp": "2026-09-26T21:48:14.073Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0bb0da117c3eb5e5016ab83d9c6de887d0b7c2c2a6b5b55d88",
+          "status": "completed",
+          "call_id": "call_3egtvbgnmVCEm2CR8g2vcmfa",
+          "name": "exec",
+          "input": "const r = await Promise.allSettled([\n  tools.exec_command({cmd:\"pwd; rg --files -g '!*.pyc' -g '!__pycache__/**'\",\"max_output_tokens\":3000}),\n  tools.exec_command({cmd:\"cat .agents/skills/exorcist/SKILL.md\",\"max_output_tokens\":3000})\n]); r.forEach((x,i)=>text({i,result:x}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfb0-91b7-7ab0-afae-704097ff8b61",
+            "create_time": 1790459288.502812
+          }
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "e7430e93d1eb31a47682195b529908f5fc5dff6fcbba6a175f5640b1c18856b1",
+      "record": {
+        "timestamp": "2026-09-26T21:48:14.216Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dfb0-b208-7d12-824c-b6e172755703",
+          "call_id": "call_3egtvbgnmVCEm2CR8g2vcmfa",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":0,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"f060e3\",\"wall_time_seconds\":0.000001375,\"exit_code\":0,\"original_token_count\":37,\"output\":\"<WORKSPACE>\\nincident.md\\ntest_worker.py\\nworker.py\\n\"}}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":1,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"eaead8\",\"wall_time_seconds\":0.00000575,\"exit_code\":0,\"original_token_count\":928,\"output\":\"---\\nname: exorcist\\ndescription: Diagnose an uncertain bug by designing experiments that distinguish competing causes, especially speculative cache, timing, environment, or concurrency explanations.\\n---\\n\\n# Exorcist\\n\\n> You keep saying cache. Let's test that belief.\\n\\n## Find the decision-changing observation\\n\\nStart at the reported failure using supplied paths or the repository file list. Reuse existing reproduction evidence; trace only until plausible causes diverge. Don't manufacture hypotheses for an established mechanism.\\n\\nObserve that boundary in the actual implementation: submission versus persistence, dispatch versus completion, configuration versus effective state. Prefer existing observations or a recording dependency. Another layer recording the same value adds nothing unless its provenance is unresolved. A rewritten simulation or repeated success flag cannot establish an unobserved effect.\\n\\nChoose the runner before inspecting setup: use existing tests when they exercise the distinction, otherwise one small probe with comparable inputs and controlled timing. Inspect fixtures/configuration if that path uses them or they could explain the symptom. Retain normal controls; repeat only for unresolved intermittency or a required check.\\n\\nBefore another experiment, ask which possible result changes the diagnosis or next action. If none, stop. A symptom without a suspected dependency shows that dependency is unnecessary for this reproduction, not every production incident. Explain why the existing safeguard does or doesn't address the observed mechanism.\\n\\n## Match containment to the exercised path\\n\\nRun a bounded local computation with the chosen interpreter or existing test runner. The optional helper is not the default probe command: use it for an identified hang risk that the runner's existing process deadline does not contain. Synchronous code can also block; choose from the actual operations, not the presence of `async` alone.\\n\\nFor asynchronous probes, bound signals that may never arrive and clean up owned tasks. Asyncio timeouts can wait indefinitely for suppressed cancellation. When an additional process deadline is needed, the installed POSIX helper supplies one (replace paths/interpreter):\\n\\n```sh\\npython3 /path/to/exorcist/scripts/run_probe.py --timeout 10 -- python3 -B experiments/probe.py\\n```\\n\\nTrusted local foreground commands only: this kills remaining process-group members even after normal completion; it is not a sandbox. JSON retains child status, timeout and bounded output. Timeout or truncated decisive output means incomplete evidence, not causal proof. See [runner details](references/bounded-probe.md) for exit mapping, limits or adaptation; routine invocation doesn't require source inspection.\\n\\n## Finish at the evidence boundary\\n\\nChoose one destination for detailed evidence. If a trace file is requested or needed for later analysis, write it and print its path plus distinguishing inputs/outcomes and failures; don't also print the entire trace unless needed to resolve the diagnosis. Otherwise use captured command output directly instead of a file round trip. Preserve necessary ordering/provenance and keep the reproduction rerunnable.\\n\\nReport the supported mechanism, decisive command/result, safeguard and uncertainty. Name the missing observation if blocked, rather than expanding simulations. Link the reproduction instead of repeating it. A restart alone isn't causal proof; preserve evidence and user state before an authorized reset.\\n\\nDiagnosis leaves production code unchanged. A requested fix stays scoped and reruns the original reproduction plus relevant checks. Preserve user changes and explicit requirements. Keep humor optional.\\n\"}}}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfb0-91b7-7ab0-afae-704097ff8b61",
+            "create_time": 1790459294.216137
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 24,
+      "line_sha256": "359d264e606c0fcbd040b48900753ee100d5d9895139acb21634016f220a49cc",
+      "record": {
+        "timestamp": "2026-09-26T21:48:18.884Z",
+        "ordinal": 23,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0bb0da117c3eb5e5016ab83da0b14c87d0aa86d55cfb14746f",
+          "status": "completed",
+          "call_id": "call_Fm7Rx7gGgo3uBk4CVy5YsKMX",
+          "name": "exec",
+          "input": "const r = await Promise.allSettled([\n  tools.exec_command({cmd:\"cat incident.md\",\"max_output_tokens\":3000}),\n  tools.exec_command({cmd:\"cat worker.py\",\"max_output_tokens\":3000}),\n  tools.exec_command({cmd:\"cat test_worker.py\",\"max_output_tokens\":3000}),\n  tools.exec_command({cmd:\"rg --files --hidden -g 'AGENTS.md' -g '! .git/**'; git status --short\",\"max_output_tokens\":1000})\n]); r.forEach((x,i)=>text({i,result:x}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfb0-91b7-7ab0-afae-704097ff8b61",
+            "create_time": 1790459294.567324
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "cea2b7bc3751f866b1ed72a3939b16b1b21dc20b1c7277ca6a1ea64ae67e9556",
+      "record": {
+        "timestamp": "2026-09-26T21:48:19.001Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dfb0-c4b9-76f3-8f14-7c3516dbd260",
+          "call_id": "call_Fm7Rx7gGgo3uBk4CVy5YsKMX",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":0,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"82251c\",\"wall_time_seconds\":0.000001,\"exit_code\":0,\"original_token_count\":123,\"output\":\"No external mail provider is used in this reproduction. Run the test from a fresh process with REQUEST_RETRIES absent: python3 -m unittest -v test_worker. The contrasting standalone process sets REQUEST_RETRIES=0 before importing worker, then invokes deliver with a callback that records calls and raises RuntimeError. Its callback runs once. The application currently reads deployment environment at process startup; whether live configuration changes should be supported is not specified.\\n\"}}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":1,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"113a0a\",\"wall_time_seconds\":7.5e-7,\"exit_code\":0,\"original_token_count\":63,\"output\":\"import os\\n\\nRETRIES = int(os.environ.get('REQUEST_RETRIES', '2'))\\n\\ndef deliver(send):\\n    for attempt in range(RETRIES + 1):\\n        try:\\n            return send()\\n        except RuntimeError:\\n            if attempt == RETRIES:\\n                raise\\n\"}}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":2,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"048616\",\"wall_time_seconds\":0.000004292,\"exit_code\":0,\"original_token_count\":143,\"output\":\"import os\\nimport unittest\\nfrom unittest.mock import patch\\nimport worker\\n\\nclass DeliveryTests(unittest.TestCase):\\n    def setUp(self):\\n        self.environment = patch.dict(os.environ, {'REQUEST_RETRIES': '0'})\\n        self.environment.start()\\n        self.addCleanup(self.environment.stop)\\n\\n    def test_disabled_retries(self):\\n        calls = []\\n        def send():\\n            calls.append('attempt')\\n            raise RuntimeError('offline failure')\\n        with self.assertRaises(RuntimeError):\\n            worker.deliver(send)\\n        self.assertEqual(len(calls), 1)\\n\"}}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":3,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"2cb2fc\",\"wall_time_seconds\":0.000001042,\"exit_code\":0,\"original_token_count\":3,\"output\":\"?? .agents/\\n\"}}}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfb0-91b7-7ab0-afae-704097ff8b61",
+            "create_time": 1790459299.001722
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 36,
+      "line_sha256": "49aa45910d2667ec6f26008c165f559cdf76292929a6e1112905324e86f6634b",
+      "record": {
+        "timestamp": "2026-09-26T21:48:35.162Z",
+        "ordinal": 35,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0bb0da117c3eb5e5016ab83dac386087d0bcd39bcc69ea8313",
+          "status": "completed",
+          "call_id": "call_Z98ozlwNHqpVEbMVITZFoUeb",
+          "name": "exec",
+          "input": "const r = await Promise.allSettled([\n  tools.exec_command({cmd:\"env -u REQUEST_RETRIES python3 -B -m unittest -v test_worker\",\"max_output_tokens\":2500}),\n  tools.exec_command({cmd:\"env -u REQUEST_RETRIES python3 -B - <<'PY'\\nimport os\\nimport test_worker\\n\\nprint('after test module import:', 'REQUEST_RETRIES' in os.environ, 'worker.RETRIES =', test_worker.worker.RETRIES)\\ncase = test_worker.DeliveryTests('test_disabled_retries')\\ncase.setUp()\\ntry:\\n    print('after actual setUp:', 'REQUEST_RETRIES =', os.environ.get('REQUEST_RETRIES'), 'worker.RETRIES =', test_worker.worker.RETRIES)\\n    calls = []\\n    def send():\\n        calls.append('attempt')\\n        raise RuntimeError('offline failure')\\n    try:\\n        test_worker.worker.deliver(send)\\n    except RuntimeError:\\n        pass\\n    print('actual worker callback calls:', len(calls))\\nfinally:\\n    case.doCleanups()\\nPY\",\"max_output_tokens\":1000}),\n  tools.exec_command({cmd:\"REQUEST_RETRIES=0 python3 -B - <<'PY'\\nimport os\\nimport worker\\ncalls = []\\ndef send():\\n    calls.append('attempt')\\n    raise RuntimeError('offline failure')\\ntry:\\n    worker.deliver(send)\\nexcept RuntimeError:\\n    pass\\nprint('before import REQUEST_RETRIES =', os.environ['REQUEST_RETRIES'], 'worker.RETRIES =', worker.RETRIES, 'actual worker callback calls =', len(calls))\\nPY\",\"max_output_tokens\":1000})\n]); r.forEach((x,i)=>text({i,result:x}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfb0-91b7-7ab0-afae-704097ff8b61",
+            "create_time": 1790459299.318982
+          }
+        }
+      }
+    },
+    {
+      "line": 41,
+      "line_sha256": "b945c0257c4de9e6bdd941123a1a6ebcb664cadafb54281ec29bf9066e9c7f2f",
+      "record": {
+        "timestamp": "2026-09-26T21:48:35.326Z",
+        "ordinal": 40,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dfb1-047e-7c40-a8d8-97176fd3f160",
+          "call_id": "call_Z98ozlwNHqpVEbMVITZFoUeb",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":0,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"9c34f1\",\"wall_time_seconds\":8.75e-7,\"exit_code\":1,\"original_token_count\":170,\"output\":\"test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... FAIL\\n\\n======================================================================\\nFAIL: test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_worker.py\\\", line 19, in test_disabled_retries\\n    self.assertEqual(len(calls), 1)\\nAssertionError: 3 != 1\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\n\"}}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":1,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"c74a00\",\"wall_time_seconds\":0.000002542,\"exit_code\":0,\"original_token_count\":36,\"output\":\"after test module import: False worker.RETRIES = 2\\nafter actual setUp: REQUEST_RETRIES = 0 worker.RETRIES = 2\\nactual worker callback calls: 3\\n\"}}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":2,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"b223dc\",\"wall_time_seconds\":0.000004083,\"exit_code\":0,\"original_token_count\":22,\"output\":\"before import REQUEST_RETRIES = 0 worker.RETRIES = 0 actual worker callback calls = 1\\n\"}}}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfb0-91b7-7ab0-afae-704097ff8b61",
+            "create_time": 1790459315.326798
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 45,
+      "line_sha256": "e30ed30ef1e1876e125df293086733aafe0d2dd0539c866cf2fd25839c1b3dd0",
+      "record": {
+        "timestamp": "2026-09-26T21:48:39.451Z",
+        "ordinal": 44,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0bb0da117c3eb5e5016ab83db6dcac87d09df63f87c52d4dbb",
+          "status": "completed",
+          "call_id": "call_HFdOxaZL9HtW8bHyZ0MILOWw",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"git status --short\",\"max_output_tokens\":1000}); text(r);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfb0-91b7-7ab0-afae-704097ff8b61",
+            "create_time": 1790459315.650295
+          }
+        }
+      }
+    },
+    {
+      "line": 48,
+      "line_sha256": "8f6fcf42877e2efc93020cda5b844cd0bb13fcbc152ffe8234d7590b5fc05b89",
+      "record": {
+        "timestamp": "2026-09-26T21:48:39.553Z",
+        "ordinal": 47,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dfb1-1501-74f2-9cb5-0b4deb094b10",
+          "call_id": "call_HFdOxaZL9HtW8bHyZ0MILOWw",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"73a065\",\"wall_time_seconds\":0.000003334,\"exit_code\":0,\"original_token_count\":3,\"output\":\"?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dfb0-91b7-7ab0-afae-704097ff8b61",
+            "create_time": 1790459319.553644
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

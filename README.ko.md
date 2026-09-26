@@ -196,9 +196,9 @@ $friday 이 배포 롤백 가능한지 봐줘.
 [실행기 선택 후보](benchmarks/NATIVE-INTERPRETER-ROUTE-01.md)(2026-09-27, `e918d02d`)는
 측정한 대조에서 실패한 실행 재시도를 피했지만6회 비용은 혼재하며 합계 토큰·시간
 동시 절감은 없습니다.
-[날짜별 근거와 한계](benchmarks/CURRENT-CANDIDATE-STATUS.md)에는 경로 선택01
-(2026-09-27, 변경 없는 자원`9fdee801`)도 보존합니다. 두 조건 모두 원인을 찾았지만
-토큰·시간 동시 절감은 없습니다.
+[날짜별 근거와 한계](benchmarks/CURRENT-CANDIDATE-STATUS.md)에 불리한 개발·모델 설정
+비교도 보존합니다. model-choice01(2026-09-27, `6701069f`) 설정은 채택하지 않으며
+토큰·시간 동시 절감의 근거가 아닙니다.
 
 [도구별 개발 이력과 불리한 결과](docs/DEVELOPMENT-NOTES.ko.md)
 (2026-09-14, `17ede49` 기록)를 별도로 모았습니다. Hostage의 토큰 증가·원본 테스트

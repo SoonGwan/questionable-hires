@@ -1,12 +1,9 @@
+# Historical index before model-choice01 — 2026-09-27
+
 # Current candidate: whole-task improvement remains unproven
 
-Decision checkpoint **2026-09-27, model-choice01 matching-skill bundle `6701069f`**.
-[Same-task Astra/Sol comparison](ALL-EIGHT-MODEL-CHOICE-01-REVIEW.md) is declined:
-Sol tokens+39.23%,time−0.61%,no pair improves both; two scope violations and
-protocol/exposure limitations retained. This is model configuration evidence,
-not a skill change, no-skill control or completed update.
-
-Integration05 bundle `75183f2f` costs are reconciled; [scoped all16 native review](ALL-EIGHT-CURRENT-05-REVIEW.md)
+Decision checkpoint **2026-09-27, integration05 bundle `75183f2f`**.
+Recorded costs are reconciled; [scoped all16 native review](ALL-EIGHT-CURRENT-05-REVIEW.md)
 is complete with scope, criterion and artifact evidence limitations. [Original-evidence follow-up](INTEGRATION05-QUALITY-FOLLOWUP.md)
 verifies scoped final-state preservation and retains test-plumbing/capture limitations. This index does not turn older measurements into evidence for new files.
 Separate author Editor controls now confirm both delivered suites execute required
@@ -23,7 +20,6 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
-| [Model-choice01](ALL-EIGHT-MODEL-CHOICE-01-REVIEW.md),2026-09-27,`6701069f` |16 same matching-skill Astra/Sol cells; Sol tokens+39.23%,time−0.61%; all8 higher tokens,0 joint gains. | Configuration declined; Sol scope violations, unequal host catalogs, matching-skill-only protocol correction and exposed n=1 development tasks retained. |
 | [Path-selection transfer01](PATH-SELECTION-01-REVIEW.md),2026-09-27,unchanged resource`9fdee801`,inputs`3ff3fa85` |4 scoped diagnostic outcomes supported; tokens+5.40%,time−18.75%; no pair improves both. Direct initial/final supplied-file modes match. | No optimization adopted or quality advantage; related authored fixtures,n=1,grouped order/shared cache and unequal optional work. |
 | [Interpreter route01 review](INTERPRETER-ROUTE-01-REVIEW.md),2026-09-27,`e918d02d` |6 scoped tasks supported; versus no skill tokens+0.67%,time−8.39%; versus predecessor tokens−4.75%,time+1.73%. Unequal extra work and coordinator exit-vector limits retained. | Neither aggregate improves both; correlated exposed development/control pair. |
 | [Integration05 review](ALL-EIGHT-CURRENT-05-REVIEW.md),2026-09-27,`75183f2f` |16 scoped outcomes reviewed; tokens+18.54%,time+9.06%; no pair improves both. Baseline SQLite outside scope, criterion mismatch and initial untracked-mode gaps retained. | Adverse cost result; exposed integration controls, not independent validation or unqualified quality score. |
@@ -33,11 +29,7 @@ whole-task tokens and faster completion. No completed update or broad saving.
 | [External SWE-Lite pilot01](SWE-LITE-PILOT-01-REVIEW.md),2026-09-22,`8ee6c56` |4 cells; required Requests141/141 and pytest78/78 pass; tokens−0.71%,time+2.43%. Broader pytest check has fixture confound. | Public external authorship, not proven uncontaminated holdout; no general saving. |
 | [All-eight regression04](ALL-EIGHT-CURRENT-04-REVIEW.md),2026-09-21,`0d12dd9` |16 cells; tokens+20.39%,time−5.17%; scope-inclusive7/8 baseline and8/8 current. | Historical resource; exposed tasks, not general quality advantage. |
 
-한국어: model-choice01(2026-09-27,`6701069f`)에서 Sol은 합계 토큰39.23% 증가,
-시간0.61% 감소이며 동시 절감0개다. 범위 위반·초기 카탈로그 차이·과제별 스킬
-하나 설치라는 프로토콜 정정을 유지하고 설정을 채택하지 않는다.
-
-integration05(2026-09-27,`75183f2f`)의16회 원본 토큰은 일치하지만
+한국어: integration05(2026-09-27,`75183f2f`)의16회 원본 토큰은 일치하지만
 합계 토큰18.54%, 시간9.06% 증가다. 두 지표가 함께 줄어든 과제는 없고,
 명시된 과제의 원본 검토는 완료했지만 범위·평가·초기 미추적 모드의 증거 한계가
 남는다. 미적용 SQLite의 범위 위반도 보존하며
