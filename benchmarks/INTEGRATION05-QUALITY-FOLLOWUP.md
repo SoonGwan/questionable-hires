@@ -5,6 +5,8 @@ Measured bundle remains `75183f2f`, launch `f2b83b17`.
 No better efficiency claim, changed task criteria or repaired original transcript.
 The16-cell capture-stage quality labels remain pending; this partial follow-up
 records what was inspected and what cannot yet support a complete-release claim.
+Subsequent [all16 scoped review](ALL-EIGHT-CURRENT-05-REVIEW.md) covers the explicit
+native task outcomes while retaining this follow-up's adverse findings and limits.
 
 ## Original observations and artifact checks
 

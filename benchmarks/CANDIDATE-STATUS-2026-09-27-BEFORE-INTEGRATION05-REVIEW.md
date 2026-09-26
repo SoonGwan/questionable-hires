@@ -1,16 +1,19 @@
+# Historical index before integration05 scoped review
+
+Preserved 2026-09-27 from `091a46ad`; superseded by CURRENT-CANDIDATE-STATUS.md.
+Not a current-candidate claim. Relative evidence links remain in this directory.
+
 # Current candidate: whole-task improvement remains unproven
 
 Decision checkpoint **2026-09-27, integration05 bundle `75183f2f`**.
-Recorded costs are reconciled; [scoped all16 native review](ALL-EIGHT-CURRENT-05-REVIEW.md)
-is complete with scope, criterion and artifact evidence limitations. [Original-evidence follow-up](INTEGRATION05-QUALITY-FOLLOWUP.md)
+Recorded costs are reconciled; native quality review remains incomplete. [Original-evidence follow-up](INTEGRATION05-QUALITY-FOLLOWUP.md)
 verifies scoped final-state preservation and retains test-plumbing/capture limitations. This index does not turn older measurements into evidence for new files.
 Separate author Editor controls now confirm both delivered suites execute required
 completion checkpoints on conforming copies and reject three contract faults;
 these post-timing controls are not original model work or comparative gains.
 The original follow-up now details Store, Exorcist, Receipt and Necromancer task
 outcomes, retaining the Exorcist criterion-visibility mismatch and native/coordinator
-exit distinctions. The scoped review also covers Friday, Con Artist and Hostage;
-unqualified quality/release clearance remains unproven.
+exit distinctions. Complete all-role review remains unfinished.
 The owner objective remains better developer work across all eight roles, fewer
 whole-task tokens and faster completion. No completed update or broad saving.
 
@@ -19,7 +22,7 @@ whole-task tokens and faster completion. No completed update or broad saving.
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
 | [Interpreter route01 review](INTERPRETER-ROUTE-01-REVIEW.md),2026-09-27,`e918d02d` |6 scoped tasks supported; versus no skill tokens+0.67%,time−8.39%; versus predecessor tokens−4.75%,time+1.73%. Unequal extra work and coordinator exit-vector limits retained. | Neither aggregate improves both; correlated exposed development/control pair. |
-| [Integration05 review](ALL-EIGHT-CURRENT-05-REVIEW.md),2026-09-27,`75183f2f` |16 scoped outcomes reviewed; tokens+18.54%,time+9.06%; no pair improves both. Baseline SQLite outside scope, criterion mismatch and initial untracked-mode gaps retained. | Adverse cost result; exposed integration controls, not independent validation or unqualified quality score. |
+| [Integration05 costs](ALL-EIGHT-CURRENT-05-COSTS.md),2026-09-27,`75183f2f` |16 completed cells; tokens+18.54%,time+9.06%; no pair improves both. Scoped artifact checks hold; native review incomplete, baseline SQLite outside scope. | Adverse cost result; exposed integration controls, not independent validation. |
 | [Native-split02 costs](NATIVE-SPLIT-02-COSTS.json),2026-09-27,`6c099d68` |6 cells; summed tokens+43.05% versus no skill,−9.35% versus predecessor. [Original output follow-up](NATIVE-SPLIT-02-OUTPUT-REVIEW.md) retains391-token predecessor truncation. | Native review incomplete; no efficiency promotion. |
 | [Assertion-contract01](ASSERTION-CONTRACT-01-REVIEW.md),2026-09-27,`33530f98` |6 reviewed cells meet scoped contracts; tokens+36.43%,time−12.01% versus no skill. | No joint saving; retain correctness boundary. |
 | [Receipt versions01](RECEIPT-VERSIONS-01-REVIEW.md),2026-09-22,`e075bdb` |6 cells; tokens+0.31%,time−13.77%; multi-version helper adopted. | Adoption without broad cost gain; [original response-cost review](RECEIPT-VERSIONS-01-INPUT-COSTS.md). |
@@ -28,8 +31,7 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 한국어: integration05(2026-09-27,`75183f2f`)의16회 원본 토큰은 일치하지만
 합계 토큰18.54%, 시간9.06% 증가다. 두 지표가 함께 줄어든 과제는 없고,
-명시된 과제의 원본 검토는 완료했지만 범위·평가·초기 미추적 모드의 증거 한계가
-남는다. 미적용 SQLite의 범위 위반도 보존하며
+품질·파일 보존 상세 검토는 미완료다. 미적용 SQLite의 범위 위반도 보존하며
 이를 일반적인 스킬 우월성으로 해석하지 않는다. 8개 역할 전체의 목표는 미달이다.
 
 ## Local functionality and delivery evidence
@@ -81,8 +83,9 @@ model attempts now have reconciled original counters, without an efficiency prom
 과제를 뒷받침하며 전체8개 역할의 품질·비용 목표는 계속 미달이다.
 
 
-Retain all16 reviewed observations and unresolved preservation/criterion limits;
-author replay cannot replace original evidence. Target a concrete avoidable
+Review all16 original assertions/bindings, scope, required coverage, artifacts,
+original bytes/modes, index state and cleanup. Missing output remains incomplete;
+author replay cannot replace original evidence. Then target a concrete avoidable
 operation with its required controls preserved, and validate on distinct relevant
 workflows alongside simple controls. Reused development cases are not independent
 validation; don't repeat exposed experiments until favorable. Existing compression,
@@ -98,9 +101,6 @@ Keep [featured.json](featured.json) and frozen charts unchanged. Representative
 claim changes synchronize both README languages with the existing sync script.
 
 ## Preserved dated history
-
-[Index before scoped integration05 review](CANDIDATE-STATUS-2026-09-27-BEFORE-INTEGRATION05-REVIEW.md)
-preserves preceding pending labels and unqualified-release limits as historical.
 
 [Full preceding dated index](CANDIDATE-STATUS-2026-09-27-BEFORE-INTEGRATION05-COSTS.md)
 preserves every earlier positive/mixed/adverse result, preparation note and release

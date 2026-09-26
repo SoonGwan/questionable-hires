@@ -190,9 +190,11 @@ $friday 이 배포 롤백 가능한지 봐줘.
 
 **전체 작업의 비용 개선은 아직 입증되지 않았습니다.** [integration05](benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md)
 (2026-09-27, `75183f2f`)의 노출된 개발 과제8개 비교는 합계 토큰18.54%, 시간9.06%
-증가였습니다. 명시한 파일 보존 대조는 일치하며 네이티브 검토는 미완료입니다.
+증가였습니다. [원본의 명시된 과제 검토](benchmarks/ALL-EIGHT-CURRENT-05-REVIEW.md)는
+범위·평가 조건·보존 증거의 한계를 유지합니다.
 [실행기 선택 후보](benchmarks/NATIVE-INTERPRETER-ROUTE-01.md)(2026-09-27, `e918d02d`)는
-실패한 검증 실행을 줄이기 위한 지침이며 모델 비용 효과는 미측정입니다.
+측정한 대조에서 실패한 실행 재시도를 피했지만6회 비용은 혼재하며 합계 토큰·시간
+동시 절감은 없습니다.
 [날짜별 근거와 한계](benchmarks/CURRENT-CANDIDATE-STATUS.md).
 
 [도구별 개발 이력과 불리한 결과](docs/DEVELOPMENT-NOTES.ko.md)

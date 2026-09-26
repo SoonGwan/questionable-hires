@@ -146,9 +146,11 @@ to preserve original evidence without rerunning checks.
 
 **Whole-task cost improvement remains unproven.** [Integration05](benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md)
 (2026-09-27, `75183f2f`) used 18.54% more summed tokens and 9.06% more time
-across eight exposed development tasks; scoped artifact checks hold and native review remains incomplete.
+across eight exposed development tasks; [scoped original review](benchmarks/ALL-EIGHT-CURRENT-05-REVIEW.md)
+retains scope, criterion and preservation-evidence limitations.
 The [interpreter route candidate](benchmarks/NATIVE-INTERPRETER-ROUTE-01.md)
-(2026-09-27, `e918d02d`) addresses failed probe launches; its cost effect is unmeasured.
+(2026-09-27, `e918d02d`) avoids failed probe launches in its measured control, but
+its six-cell costs are mixed with no joint aggregate token/time saving.
 [Current dated evidence and limitations](benchmarks/CURRENT-CANDIDATE-STATUS.md).
 
 [Detailed development history and adverse results](docs/DEVELOPMENT-NOTES.md)

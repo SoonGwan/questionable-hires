@@ -7,7 +7,10 @@ Original turn contexts confirm GPT-6 Astra medium; original per-response counter
 reconcile with each final CLI total. Whole-task tokens=input+output; cached input
 is included once. No dollar, causal or latency attribution follows.
 
-**Costs are reviewed; quality/artifact review is pending.** A completed session
+**Costs are reviewed; original capture-stage quality labels were pending.**
+[Subsequent scoped all16 review](ALL-EIGHT-CURRENT-05-REVIEW.md) now retains the
+native outcomes, scope violation, criterion mismatch and artifact evidence gaps.
+A completed session
 is not a passing task. This is an exposed integration regression, n=1 per arm,
 fixed alternating order/shared cache and host, not independent validation.
 
@@ -30,8 +33,9 @@ are not quality scores. Unequal extra work remains included in every cell.
 Baseline SQLite runs `find .. -name AGENTS.md -print`, outside its explicit
 project-only boundary. Preserve that scope violation; it does not establish a
 general current-quality advantage. Missing `python` recovery and masked shell
-status in history work also remain included. Actual native assertions, bindings,
-preservation, cleanup and other scope behavior require complete review.
+status in history work also remain included. The linked scoped review now covers
+native assertions, bindings, preservation, cleanup and scope, retaining unverified
+initial untracked modes and other limits without an unqualified score.
 
 The existing all-condition analyzer initially rejected the native scheduler’s
 `case_id` manifest key. A real-data reproduction fails before the fix; afterward
@@ -41,10 +45,11 @@ are unchanged. The analyzer fix is after timing, not a skill efficiency result.
 
 Keep this adverse result, no favorable rerun or featured promotion. All-eight
 developer-outcome and lower-token/faster-time goals remain unfinished. The next
-action is complete original evidence review, then a concrete evidenced mechanism
+action is a concrete evidenced mechanism
 and distinct workflows, rather than another generic compression instruction.
 
 한국어: 16회 원본 토큰을 검산했지만 적용 합계는 토큰18.54%, 시간9.06% 증가했다.
-두 지표가 함께 좋아진 과제는 없었다. 품질·보존·범위 상세 검토는 미완료이며,
+두 지표가 함께 좋아진 과제는 없었다. 원본 과제 검토는 마쳤지만 범위·평가·보존
+증거의 한계가 남으며,
 미적용 SQLite의 범위 위반과 Python 실행 복구도 그대로 보존한다. 노출된 기존
 개발 과제이므로 독립 검증이나 전체 절감 근거로 승격하지 않는다.
