@@ -46,6 +46,9 @@ native author controls pass. The original scheduler and separately imported new
 adapter each pass the same9 scheduling/resource/stop tests. No model call was
 made during preparation. Exclusive run storage: `/tmp/qh-all-eight-current-05`.
 Retain every result and poll the actual execution handle without restarting.
+All16 sessions are now terminal. [Recorded cost checkpoint](../benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md)
+reconciles all responses: tokens+18.54%,time+9.06%, no joint pair improvement.
+Native/artifact review remains unfinished; no relaunch or favorable replacement.
 
 ## Required remaining work
 

@@ -188,8 +188,10 @@ $friday 이 배포 롤백 가능한지 봐줘.
 큰 네이티브 배치 출력은 [보관한 검사별 기록을 나눠 검토](skills/con-artist/references/native-unittest-batch.md)해
 출력 복구를 위한 재실행 없이 원본 증거를 유지합니다.
 
-**효과는 아직 혼재합니다.** 최근 상태 내용 비교 보강은 놓치던 결함을 잡았지만,
-도구 설치가 모델 비용 절감을 보장하지는 않습니다. [현재 검토 결과](benchmarks/CURRENT-CANDIDATE-STATUS.md).
+**전체 작업의 비용 개선은 아직 입증되지 않았습니다.** [integration05](benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md)
+(2026-09-27, `75183f2f`)의 노출된 개발 과제8개 비교는 합계 토큰18.54%, 시간9.06%
+증가였습니다. 네이티브 품질·보존 상세 검토는 미완료입니다.
+[날짜별 근거와 한계](benchmarks/CURRENT-CANDIDATE-STATUS.md).
 
 [도구별 개발 이력과 불리한 결과](docs/DEVELOPMENT-NOTES.ko.md)
 (2026-09-14, `17ede49` 기록)를 별도로 모았습니다. Hostage의 토큰 증가·원본 테스트

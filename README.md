@@ -144,10 +144,10 @@ instead of resending a whole file; original/correct/faulty checks stay intact. F
 [inspect captured checks separately](skills/con-artist/references/native-unittest-batch.md)
 to preserve original evidence without rerunning checks.
 
-**Evidence is mixed.** Some tools are demonstrably useful, but installing them
-does not establish lower model cost. The state-content correction catches
-a previously missed fault; broad all-eight efficiency remains unproven.
-[Current reviewed status](benchmarks/CURRENT-CANDIDATE-STATUS.md).
+**Whole-task cost improvement remains unproven.** [Integration05](benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md)
+(2026-09-27, `75183f2f`) used 18.54% more summed tokens and 9.06% more time
+across eight exposed development tasks; native quality/artifact review is pending.
+[Current dated evidence and limitations](benchmarks/CURRENT-CANDIDATE-STATUS.md).
 
 [Detailed development history and adverse results](docs/DEVELOPMENT-NOTES.md)
 (snapshot: 2026-09-14, source `17ede49`). Examples include Hostage's higher token

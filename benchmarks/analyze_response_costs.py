@@ -50,7 +50,12 @@ def analyze(directory, all_conditions=False):
         completed = manifest.get('completed_cells')
         if not isinstance(completed, list) or not completed:
             raise ValueError('Completed-cell manifest required for all-condition coverage')
-        expected = [(row['case'], row['condition']) for row in completed]
+        expected = []
+        for row in completed:
+            if 'case' in row and 'case_id' in row and row['case'] != row['case_id']:
+                raise ValueError('Conflicting completed-cell case identities')
+            case = row['case'] if 'case' in row else row['case_id']
+            expected.append((case, row['condition']))
         observed = [(row['case'], row['condition']) for row in comparison['rows']]
         if len(set(expected)) != len(expected) or sorted(expected) != sorted(observed):
             raise ValueError('Comparison does not cover every recorded attempt exactly once')

@@ -1,0 +1,72 @@
+diff --git a/test_editor.py b/test_editor.py
+index 4c28512..1da9003 100644
+--- a/test_editor.py
++++ b/test_editor.py
+@@ -1,5 +1,7 @@
+ import unittest
+ from editor import Editor
++import asyncio
++from test_support import writes
+ 
+ 
+ class EditorTests(unittest.IsolatedAsyncioTestCase):
+@@ -10,3 +12,59 @@ class EditorTests(unittest.IsolatedAsyncioTestCase):
+         self.assertFalse(editor.dirty)
+         editor.set_theme('dark')
+         self.assertEqual(settings['display']['theme'], 'light')
++
++    async def test_save_without_intervening_edit_marks_clean(self):
++        async with writes() as (persist, start, next_write, stored):
++            editor = Editor(
++                {'display': {'theme': 'light'}, 'alerts': ['mentions']},
++                persist,
++            )
++            editor.set_theme('dark')
++            self.assertTrue(editor.dirty)
++            saving = start(editor.save())
++            payload, acknowledge = await next_write()
++            self.assertFalse(saving.done())
++            self.assertEqual(
++                payload, {'display': {'theme': 'dark'}, 'alerts': ['mentions']}
++            )
++            self.assertEqual(stored, [])
++            acknowledge.set_result(None)
++            await asyncio.wait_for(saving, 1)
++            self.assertEqual(
++                stored, [{'display': {'theme': 'dark'}, 'alerts': ['mentions']}]
++            )
++            self.assertEqual(
++                editor.settings,
++                {'display': {'theme': 'dark'}, 'alerts': ['mentions']},
++            )
++            self.assertFalse(editor.dirty)
++
++    async def test_save_snapshot_survives_intervening_theme_edit(self):
++        async with writes() as (persist, start, next_write, stored):
++            editor = Editor(
++                {'display': {'theme': 'light'}, 'alerts': ['mentions']},
++                persist,
++            )
++            editor.set_theme('dark')
++            saving = start(editor.save())
++            payload, acknowledge = await next_write()
++            self.assertEqual(
++                payload, {'display': {'theme': 'dark'}, 'alerts': ['mentions']}
++            )
++            editor.set_theme('solarized')
++            self.assertFalse(saving.done())
++            self.assertFalse(acknowledge.done())
++            self.assertEqual(stored, [])
++            self.assertEqual(
++                payload, {'display': {'theme': 'dark'}, 'alerts': ['mentions']}
++            )
++            acknowledge.set_result(None)
++            await asyncio.wait_for(saving, 1)
++            self.assertEqual(
++                stored, [{'display': {'theme': 'dark'}, 'alerts': ['mentions']}]
++            )
++            self.assertEqual(
++                editor.settings,
++                {'display': {'theme': 'solarized'}, 'alerts': ['mentions']},
++            )
++            self.assertTrue(editor.dirty)
