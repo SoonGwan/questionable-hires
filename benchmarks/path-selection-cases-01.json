@@ -1,0 +1,42 @@
+[
+  {
+    "id": "path-selection-relative-cache",
+    "skill": "exorcist",
+    "task": "A client keeps returning the first project's settings after select_root;\na teammate suspects a cache. Diagnose the actual supplied client and loader,\nwithout modifying any supplied file. Run all supplied native tests with\npython3 -B -m unittest -v test_paths. Reproduce the incorrect result and retain\nnormal single-root/other-filename controls. Use a rerunnable local probe and JSON\ntrace to connect each requested root/filename, actual loader input, physical file\nread (or absence of a read), and returned value. Cover alpha\u2192beta\u2192alpha with one\nclient and a fresh beta client; do not replace the application with a simulation.\nIdentify a discriminating observation and explain the supported mechanism and\nsmallest corrective direction; diagnosis does not authorize implementation.\nDistinguish local evidence from unknown production behavior. Python 3 standard\nlibrary only; no installs, network, threads or external services. New probe/trace\nfiles are permitted inside this project. Keep all original files unchanged.",
+    "files": {
+      "loader.py": "from functools import lru_cache\nfrom pathlib import Path\n\n@lru_cache(maxsize=8)\ndef read_limit(filename):\n    return int(Path(filename).read_text())\n",
+      "client.py": "import os\nfrom pathlib import Path\nimport loader\n\nclass Client:\n    def __init__(self, root):\n        self.root = Path(root).resolve()\n\n    def select_root(self, root):\n        self.root = Path(root).resolve()\n\n    def load(self, filename=\"settings.txt\"):\n        previous = Path.cwd()\n        try:\n            os.chdir(self.root)\n            return loader.read_limit(filename)\n        finally:\n            os.chdir(previous)\n",
+      "test_paths.py": "from pathlib import Path\nimport unittest\nfrom client import Client\n\nBASE = Path(__file__).resolve().parent\n\nclass PathTests(unittest.TestCase):\n    def test_single_root(self):\n        self.assertEqual(Client(BASE / \"alpha\").load(), 111)\n\n    def test_other_filename(self):\n        self.assertEqual(Client(BASE / \"alpha\").load(\"other.txt\"), 333)\n\n    def test_switch_root(self):\n        client = Client(BASE / \"alpha\")\n        self.assertEqual(client.load(), 111)\n        client.select_root(BASE / \"beta\")\n        self.assertEqual(client.load(), 222)\n        client.select_root(BASE / \"alpha\")\n        self.assertEqual(client.load(), 111)\n",
+      "alpha/settings.txt": "111\n",
+      "beta/settings.txt": "222\n",
+      "alpha/other.txt": "333\n",
+      "beta/other.txt": "444\n",
+      "requirements.md": "Every load selects its filename under the currently selected root. Root changes take effect on the next load. This is a sequential local reproduction, not a thread-safety or live-edit contract. New clients are independent.\n"
+    },
+    "criteria": [
+      "All three supplied native tests run; the root-switch assertion fails with actual111 versus expected222, while normal controls pass.",
+      "Actual client/loader probe records alpha-beta-alpha and fresh beta client, loader inputs, physical reads or cache hits and returned values in rerunnable JSON evidence.",
+      "Diagnosis distinguishes the supported path/cache or retained-binding mechanism, gives a corrective direction without editing supplied files, and retains production uncertainty."
+    ]
+  },
+  {
+    "id": "path-selection-retained-binding",
+    "skill": "exorcist",
+    "task": "A client keeps returning the first project's settings after select_root;\na teammate suspects a cache. Diagnose the actual supplied client and loader,\nwithout modifying any supplied file. Run all supplied native tests with\npython3 -B -m unittest -v test_paths. Reproduce the incorrect result and retain\nnormal single-root/other-filename controls. Use a rerunnable local probe and JSON\ntrace to connect each requested root/filename, actual loader input, physical file\nread (or absence of a read), and returned value. Cover alpha\u2192beta\u2192alpha with one\nclient and a fresh beta client; do not replace the application with a simulation.\nIdentify a discriminating observation and explain the supported mechanism and\nsmallest corrective direction; diagnosis does not authorize implementation.\nDistinguish local evidence from unknown production behavior. Python 3 standard\nlibrary only; no installs, network, threads or external services. New probe/trace\nfiles are permitted inside this project. Keep all original files unchanged.",
+    "files": {
+      "loader.py": "from pathlib import Path\n\ndef read_limit(filename):\n    return int(Path(filename).read_text())\n",
+      "client.py": "from pathlib import Path\nimport loader\n\nclass Client:\n    def __init__(self, root):\n        self.root = Path(root).resolve()\n        self._read_root = self.root\n\n    def select_root(self, root):\n        self.root = Path(root).resolve()\n\n    def load(self, filename=\"settings.txt\"):\n        return loader.read_limit(self._read_root / filename)\n",
+      "test_paths.py": "from pathlib import Path\nimport unittest\nfrom client import Client\n\nBASE = Path(__file__).resolve().parent\n\nclass PathTests(unittest.TestCase):\n    def test_single_root(self):\n        self.assertEqual(Client(BASE / \"alpha\").load(), 111)\n\n    def test_other_filename(self):\n        self.assertEqual(Client(BASE / \"alpha\").load(\"other.txt\"), 333)\n\n    def test_switch_root(self):\n        client = Client(BASE / \"alpha\")\n        self.assertEqual(client.load(), 111)\n        client.select_root(BASE / \"beta\")\n        self.assertEqual(client.load(), 222)\n        client.select_root(BASE / \"alpha\")\n        self.assertEqual(client.load(), 111)\n",
+      "alpha/settings.txt": "111\n",
+      "beta/settings.txt": "222\n",
+      "alpha/other.txt": "333\n",
+      "beta/other.txt": "444\n",
+      "requirements.md": "Every load selects its filename under the currently selected root. Root changes take effect on the next load. This is a sequential local reproduction, not a thread-safety or live-edit contract. New clients are independent.\n"
+    },
+    "criteria": [
+      "All three supplied native tests run; the root-switch assertion fails with actual111 versus expected222, while normal controls pass.",
+      "Actual client/loader probe records alpha-beta-alpha and fresh beta client, loader inputs, physical reads or cache hits and returned values in rerunnable JSON evidence.",
+      "Diagnosis distinguishes the supported path/cache or retained-binding mechanism, gives a corrective direction without editing supplied files, and retains production uncertainty."
+    ]
+  }
+]
