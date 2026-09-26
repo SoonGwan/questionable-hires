@@ -1,0 +1,1 @@
+Author preparation controls,2026-09-27. Checkout14 and Git-free7 pass. Initial checkout13 has one stale condition-name path error; retained, corrected before any model call. Native preflight is separate from model measurements. Local paths are redacted; no original private instructions exported.
