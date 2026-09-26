@@ -214,20 +214,6 @@ Do not rerun a completed experiment until it becomes favorable.
 
 ## Release and publication boundary
 
-[Local candidate validation](RELEASE-VALIDATION-6C099D68.md), source `6c099d68`,
-2026-09-27: macOS/Python3.11.6 checkout1,239 discovered/17 skipped and source
-archive1,227 discovered/51 skipped,zero failures,exit0. Actual local installer
-copies8 skills/51 resources matching pinned bytes/modes. Dedicated native guide4
-and module17 checks pass without skips. Not hosted/matrix or model-efficiency
-evidence; installed behavior checks remain separate. New [native-split02 protocol](NATIVE-SPLIT-02-PROTOCOL.md),
-inputs `77b8af9e`, measures candidate `6c099d68` versus `33530f98` and no skill
-on fresh real-source/author-consumer tasks; six cells underway, no reviewed result.
-[Prior index](CANDIDATE-STATUS-2026-09-27-BEFORE-LOCAL-6C099D68.md) preserved.
-
-한국어: 로컬 검사·설치 일치는 확인했다. 진행 중인 새 모델 비교나 전체8개 역할의
-토큰·시간 개선을 완료했다고 주장하지 않는다.
-
-
 [Public-history review01](PUBLIC-HISTORY-REVIEW-01.md), source`4174c18`:
 bounded scan finds a test-only key-header marker and284 path-shaped lines.
 Future scratch-path export gap repaired; past artifacts/history remain unchanged.

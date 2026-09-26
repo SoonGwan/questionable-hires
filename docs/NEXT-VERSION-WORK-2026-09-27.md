@@ -19,6 +19,19 @@ Codex CLI observed at launch: 0.157.1. Private run storage:
 Do not restart the execution or replace a bad outcome. Poll its actual running
 handle/process; timeout of an observation does not mean execution has stopped.
 
+## Native-split02 and local validation
+
+[New frozen protocol](../benchmarks/NATIVE-SPLIT-02-PROTOCOL.md), inputs
+`77b8af9e`: licensed more-itertools10.8.0 source, explicit consumer no-split
+contract, single and repeated independent-fault controls. Six fresh serial model
+cells are underway in `/tmp/qh-native-split-02-frozen`; initial preparation
+`/tmp/qh-native-split-02` remains unexecuted. Never restart either to select a
+favorable outcome. Candidate is `6c099d68`, predecessor `33530f98`.
+
+[Local validation](../benchmarks/RELEASE-VALIDATION-6C099D68.md) records complete
+checkout/archive discovered suites and exact actual installer copy. This does
+not establish model costs, the hosted matrix or installed behavioral checks.
+
 ## Required remaining work
 
 1. Review all six scheduled attempts against original native assertions, imports,
