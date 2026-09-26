@@ -10,6 +10,7 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
+| [Interpreter route01 costs](INTERPRETER-ROUTE-01-COSTS.md),2026-09-27,`e918d02d` |6 cells; versus no skill tokens+0.67%,time−8.39%; versus predecessor tokens−4.75%,time+1.73%. Native/artifact review pending. | Neither aggregate improves both; correlated exposed development/control pair. |
 | [Integration05 costs](ALL-EIGHT-CURRENT-05-COSTS.md),2026-09-27,`75183f2f` |16 completed cells; tokens+18.54%,time+9.06%; no pair improves both. Scoped artifact checks hold; native review incomplete, baseline SQLite outside scope. | Adverse cost result; exposed integration controls, not independent validation. |
 | [Native-split02 costs](NATIVE-SPLIT-02-COSTS.json),2026-09-27,`6c099d68` |6 cells; summed tokens+43.05% versus no skill,−9.35% versus predecessor. [Original output follow-up](NATIVE-SPLIT-02-OUTPUT-REVIEW.md) retains391-token predecessor truncation. | Native review incomplete; no efficiency promotion. |
 | [Assertion-contract01](ASSERTION-CONTRACT-01-REVIEW.md),2026-09-27,`33530f98` |6 reviewed cells meet scoped contracts; tokens+36.43%,time−12.01% versus no skill. | No joint saving; retain correctness boundary. |
@@ -47,20 +48,23 @@ whole-task tokens and faster completion. No completed update or broad saving.
 서로 다른 증거다. 건너뛴 검사를 통과로 세지 않으며 이전 커밋의 검증을 현재
 파일에 소급하지 않는다. 공개 이력 검토와 최종 릴리스 준비도 미완료다.
 
-## Unmeasured candidate and next required work
+## Scoped candidate and next required work
 
 [Native interpreter route01](NATIVE-INTERPRETER-ROUTE-01.md),2026-09-27,`e918d02d`,
 addresses repeated unavailable-executable launches and masked probe exits in
-Necromancer. Metadata/catalog checks pass; model token/time effects are unmeasured.
+Necromancer. Metadata/catalog checks pass; [six-cell costs](INTERPRETER-ROUTE-01-COSTS.md)
+are mixed, with no aggregate joint saving and native quality review pending.
 Integration05 still belongs to `75183f2f`, not this candidate.
 The [frozen interpreter comparison](INTERPRETER-ROUTE-01-PROTOCOL.md) specifies
 six serial cells against predecessor/no-skill, with documented and unspecified
 interpreters. Source and cancellation controls are exposed development material;
-preparation and authored control passes are not measured model savings.
+preparation and authored control passes are not measured model savings. All six
+model attempts now have reconciled original counters, without an efficiency promotion.
 
 한국어: 실행기 비교 6회는 이전 후보·미적용과 비교하도록 사전 고정했다.
 기존에 사용한 코드와 취소 회귀를 재사용하므로 독립 검증이 아니며,
-준비·작성자 테스트 통과를 모델 비용 개선으로 계산하지 않는다.
+준비·작성자 테스트 통과를 모델 비용 개선으로 계산하지 않는다. 6회 원본
+토큰은 일치하지만 합계 두 비용의 동시 개선은 없고 품질 상세 검토는 미완료다.
 
 
 Review all16 original assertions/bindings, scope, required coverage, artifacts,

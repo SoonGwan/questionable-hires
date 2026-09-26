@@ -21,12 +21,14 @@ known documented command; this route additionally addresses an unspecified
 executable and masked review-probe exit. No generic compression, discovery sweep,
 mandatory helper, new dependency or removed verification is introduced.
 
-Skill Creator metadata and catalog/link checks pass. This instruction-only change
-has **no new model-cost measurement**. Do not relabel integration05, rerun its
-exposed invoice task until favorable or claim the all-eight goal complete. A
-subsequent frozen distinct workflow plus a documented-runner control is needed.
+Skill Creator metadata and catalog/link checks pass. Subsequent
+[route01 measurement](INTERPRETER-ROUTE-01-COSTS.md) records six completed cells:
+tokens+0.67%/time−8.39% versus no skill, tokens−4.75%/time+1.73% versus predecessor.
+Neither aggregate improves both costs; native quality review remains pending.
+The original motivation above precedes this measurement. Integration05 remains
+at its original resource; exposed cases are not independent validation.
 
 한국어: 없는 Python 명령 실행·복구와 후속 Git 명령의 종료 코드 가림을 직접
 대응했다. 프로젝트가 지정한 실행기를 우선하고 미지정 시 호환 실행 파일을
-확인하며 검증 종료 코드를 따로 유지한다. 지침 검사는 통과했지만 실제 모델의
-토큰·시간 절감은 미측정이며 이전 비교를 새 버전 결과로 소급하지 않는다.
+확인하며 검증 종료 코드를 따로 유지한다. 후속 6회 측정은 두 비용이 함께
+줄지 않았으며 상세 품질 검토는 미완료다. 이전 비교를 새 버전으로 소급하지 않는다.
