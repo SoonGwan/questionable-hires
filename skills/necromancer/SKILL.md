@@ -16,6 +16,8 @@ Separate two questions:
 - **Needed now?** Establish a required current caller/contract or reproducible failure. A concrete break can settle a removal-only decision; preserving behavior need not preserve its mechanism. Comments alone and absent local callers cannot settle supported public contracts.
 - **Why introduced?** Inspect history when requested or when an unresolved compatibility, regression or replacement decision needs it. Current necessity does not establish origin, and a commit message does not establish current necessity.
 
+Use the documented project interpreter for behavioral probes. If none is specified, identify an available compatible executable alongside initial source reads rather than trial-running a guessed name. Retain the probe's own exit; later diff/status commands do not replace it.
+
 When a behavioral probe recompiles extracted Python, preserve the original module's `__future__` settings rather than inheriting the probe's; annotations can otherwise fail or change meaning. Keep required bindings intact.
 
 For AST-based substitutions, match node fields or compare parsed trees with `ast.dump(..., include_attributes=False)`, not `ast.unparse` against handwritten formatting. Verify the intended match count before substitution; a structural match still needs behavioral checks.
