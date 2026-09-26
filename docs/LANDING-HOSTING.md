@@ -30,7 +30,8 @@ The command:
 4. Verifies the app identity and source revision at `/_health`.
 5. Creates or reuses the dedicated `questionable-hires` tunnel and validates ingress.
 6. Adds the subdomain DNS route without overwriting an existing record.
-7. Starts the tunnel LaunchAgent and verifies the same revision over public HTTPS.
+7. Starts the tunnel LaunchAgent and verifies the same revision over public HTTPS
+   using Cloudflare DNS-over-HTTPS, avoiding stale local negative DNS responses.
 
 Cloudflare credentials stay outside the repository in `~/.cloudflared/`.
 Only the generated `site/` directory is served; directory listings, hidden files

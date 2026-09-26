@@ -52,7 +52,12 @@ def agent(label, args):
 
 def health(url, revision, attempts=20):
     for _ in range(attempts):
-        result = run('curl', '--fail', '--silent', '--show-error', '--max-time', '4', url + '_health', check=False)
+        arguments = ['curl', '--fail', '--silent', '--show-error', '--max-time', '4']
+        if url.startswith('https://'):
+            # New hostnames can be negatively cached by the Mac's local DNS resolver.
+            # Resolve the public name through Cloudflare DNS while retaining HTTPS verification.
+            arguments.extend(['--doh-url', 'https://cloudflare-dns.com/dns-query'])
+        result = run(*arguments, url + '_health', check=False)
         try:
             value = json.loads(result.stdout)
             if not result.returncode and value.get('app') == APP and value.get('revision') == revision:
