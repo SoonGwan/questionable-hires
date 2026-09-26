@@ -39,3 +39,6 @@ unproven. Current integration05 costs remain adverse and visible.
 대체했다. 루트에서 언어를 바꾼 후 새 탭을 열 때 잘못된 경로로 가는 문제도
 실제 브라우저에서 수정 전 재현·수정 후 검증했다. 공개 배포와14개 펼친 표 화면,
 자료3개, 아카이브16개 검사가 통과했다. 스킬의 토큰·시간 절감 성과는 아니다.
+
+Follow-up: [cumulative token breakdown](LANDING-TOKEN-BREAKDOWN-2026-09-27.md)
+is deployed separately at `1acaf4a4`; this original delivery checkpoint stays historical.
