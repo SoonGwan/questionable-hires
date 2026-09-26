@@ -1,23 +1,28 @@
-const languageButtons = document.querySelectorAll('[data-language]');
+const runtimeRoot = new URL('.', document.currentScript.src);
+const languageLinks = document.querySelectorAll('[data-language]');
 const roster = document.querySelector('.roster');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-// Bounds in the approved 1536 × 1024 cast artwork; keep props inside each portrait.
 const portraitBounds = [
   [60, 170, 360], [420, 260, 320], [735, 190, 350], [1120, 190, 380],
   [45, 570, 430], [495, 640, 300], [825, 615, 300], [1150, 595, 380]
 ];
 const validLanguage = value => Object.hasOwn(COPY, value);
 let selectedHire = 0;
-let language = 'ko';
+let language = document.documentElement.lang;
 let copyState = null;
+let selectedMetric = 'total_tokens';
+let languageRequest = 0;
+const experimentCache = new Map([[language, Promise.resolve(document.querySelector('.experiment').outerHTML)]]);
 
 function initialLanguage() {
   const requested = new URL(location.href).searchParams.get('lang');
   if (validLanguage(requested)) return requested;
+  const route = location.pathname.slice(runtimeRoot.pathname.length).split('/')[0];
+  if (validLanguage(route)) return route;
   try {
     const saved = localStorage.getItem('qh-language');
     if (validLanguage(saved)) return saved;
-  } catch { /* Language selection works even when storage is unavailable. */ }
+  } catch { /* Preference storage is optional. */ }
   return navigator.language.toLowerCase().startsWith('ko') ? 'ko' : 'en';
 }
 
@@ -45,30 +50,91 @@ function updateProfile(animate = false) {
   }
 }
 
-HIRES.forEach((hire, index) => {
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = 'hire';
-  button.innerHTML = `<span class="number">${String(index + 1).padStart(2, '0')}</span><span><strong></strong><span class="codename">${hire.id}</span></span><span class="arrow" aria-hidden="true">↗</span>`;
+roster.querySelectorAll('[data-hire]').forEach(button => {
   button.addEventListener('click', () => {
-    selectedHire = index;
-    roster.querySelectorAll('button').forEach((item, i) => item.setAttribute('aria-pressed', String(i === index)));
+    selectedHire = Number(button.dataset.hire);
+    roster.querySelectorAll('button').forEach((item, i) => item.setAttribute('aria-pressed', String(i === selectedHire)));
     updateProfile(true);
   });
-  roster.append(button);
 });
 
-function setLanguage(next, persist = false) {
+function updateChart() {
+  document.querySelector('.chart-controls').hidden = false;
+  document.querySelectorAll('[data-metric]').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.metric === selectedMetric));
+  });
+  document.querySelectorAll('[data-chart]').forEach(chart => { chart.hidden = chart.dataset.chart !== selectedMetric; });
+}
+
+document.querySelector('#evidence').addEventListener('click', event => {
+  const button = event.target.closest('[data-metric]');
+  if (button) {
+    selectedMetric = button.dataset.metric;
+    updateChart();
+  }
+});
+
+function updateMetadata(content) {
+  const url = `${SITE.baseUrl}${language}/`;
+  const image = `${SITE.baseUrl}assets/og-${language}.png`;
+  document.title = content.title;
+  document.querySelector('meta[name="description"]').content = content.description;
+  const properties = {
+    'og:title': content.title, 'og:description': content.description, 'og:url': url,
+    'og:locale': language === 'ko' ? 'ko_KR' : 'en_US',
+    'og:locale:alternate': language === 'ko' ? 'en_US' : 'ko_KR',
+    'og:image': image, 'og:image:secure_url': image, 'og:image:alt': content.ogAlt
+  };
+  for (const [key, value] of Object.entries(properties)) {
+    const meta = document.querySelector(`meta[property="${key}"]`);
+    if (meta) meta.content = value;
+  }
+  for (const [key, value] of Object.entries({
+    'twitter:title': content.title, 'twitter:description': content.description,
+    'twitter:image': image, 'twitter:image:alt': content.ogAlt
+  })) document.querySelector(`meta[name="${key}"]`).content = value;
+  document.querySelector('link[rel="canonical"]').href = url;
+  const structured = document.querySelector('script[type="application/ld+json"]');
+  const graph = JSON.parse(structured.textContent);
+  Object.assign(graph['@graph'][1], {
+    '@id': `${url}#page`, url, name: content.title, description: content.description, inLanguage: language
+  });
+  structured.textContent = JSON.stringify(graph);
+}
+
+async function setLanguage(next, persist = false) {
   if (!validLanguage(next)) return;
+  const request = ++languageRequest;
+  if (!experimentCache.has(next)) {
+    experimentCache.set(next, fetch(new URL(`experiments/${next}.html`, runtimeRoot)).then(response => {
+      if (!response.ok) throw new Error('Experiment translation unavailable');
+      return response.text();
+    }));
+  }
+  let experiment;
+  try {
+    experiment = await experimentCache.get(next);
+  } catch {
+    experimentCache.delete(next);
+    if (request === languageRequest) location.assign(new URL(`${next}/${location.hash}`, runtimeRoot));
+    return;
+  }
+  if (request !== languageRequest) return;
+  const detailsOpen = document.querySelector('.raw-details').open;
   language = next;
   const content = COPY[language];
   document.documentElement.lang = language;
-  document.title = content.title;
-  document.querySelector('meta[name="description"]').content = content.description;
+  document.querySelector('.experiment').outerHTML = experiment;
+  document.querySelector('.raw-details').open = detailsOpen;
+  updateChart();
+  updateMetadata(content);
   document.querySelectorAll('[data-i18n]').forEach(element => { element.textContent = content[element.dataset.i18n]; });
   document.querySelectorAll('[data-i18n-alt]').forEach(element => { element.alt = content[element.dataset.i18nAlt]; });
   document.querySelectorAll('[data-i18n-aria]').forEach(element => { element.setAttribute('aria-label', content[element.dataset.i18nAria]); });
-  languageButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === language)));
+  languageLinks.forEach(link => {
+    if (link.dataset.language === language) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
   roster.querySelectorAll('button').forEach((button, index) => {
     button.querySelector('strong').textContent = HIRES[index][language].name;
     button.setAttribute('aria-pressed', String(index === selectedHire));
@@ -77,14 +143,21 @@ function setLanguage(next, persist = false) {
   document.querySelector('#copy-status').textContent = copyState ? content[copyState] : '';
   if (persist) {
     try { localStorage.setItem('qh-language', language); } catch { /* Optional preference storage. */ }
-    const url = new URL(location.href);
-    url.searchParams.set('lang', language);
-    history.replaceState(null, '', url);
   }
+  const url = new URL(`${language}/`, runtimeRoot);
+  url.search = location.search;
+  url.searchParams.delete('lang');
+  url.hash = location.hash;
+  history.replaceState(null, '', url);
 }
 
-languageButtons.forEach(button => button.addEventListener('click', () => setLanguage(button.dataset.language, true)));
+languageLinks.forEach(link => link.addEventListener('click', event => {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  setLanguage(link.dataset.language, true);
+}));
 window.addEventListener('popstate', () => setLanguage(initialLanguage()));
+updateChart();
 setLanguage(initialLanguage());
 
 document.querySelector('#copy').addEventListener('click', async () => {
