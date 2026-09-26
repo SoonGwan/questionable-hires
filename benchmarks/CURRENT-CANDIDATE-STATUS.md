@@ -14,6 +14,13 @@ suite also runs guarded/unguarded/setup-failing Mother-in-law sequences. These
 are local integration controls, not fresh independent developer/model evidence;
 the whole-token/time objective remains unfinished.
 
+[All-eight integration05 protocol](ALL-EIGHT-CURRENT-05-PROTOCOL.md),
+**2026-09-27, resource `75183f2f`**, freezes one16-cell complete-bundle regression
+after four roles/14 files changed. Existing exposed tasks/scheduler are reused;
+no independent validation or efficiency claim. Author native controls and the
+adapter's9 existing scheduling/resource/stop checks pass before model execution.
+Results require original native/artifact review, not just session completion.
+
 ## Objective and unfinished requirements
 
 All eight skills should improve real developer outcomes at similar or lower

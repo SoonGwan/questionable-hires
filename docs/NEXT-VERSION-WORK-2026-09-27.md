@@ -36,6 +36,17 @@ now verifies the cached local CLI installation and actual selected behaviors.
 [Cost reconciliation and original output limits](../benchmarks/NATIVE-SPLIT-02-OUTPUT-REVIEW.md)
 retain all six results; whole-task improvement is still absent.
 
+## Complete-bundle integration05
+
+[Protocol](../benchmarks/ALL-EIGHT-CURRENT-05-PROTOCOL.md) pins `75183f2f` after
+four roles/14 resource files changed since the preceding complete-bundle screen.
+Existing exposed eight-role cases and the exclusive16-cell scheduler are reused;
+this is integration regression, not independent developer validation. All eight
+native author controls pass. The original scheduler and separately imported new
+adapter each pass the same9 scheduling/resource/stop tests. No model call was
+made during preparation. Exclusive run storage: `/tmp/qh-all-eight-current-05`.
+Retain every result and poll the actual execution handle without restarting.
+
 ## Required remaining work
 
 1. Review all six scheduled attempts against original native assertions, imports,
