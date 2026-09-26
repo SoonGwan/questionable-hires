@@ -10,7 +10,7 @@
 의문인데 맡기는 일은 분명한 개발자 스킬 8개입니다. GPT-6 Astra를
 염두에 두고 만들었습니다.
 
-[English](README.md) · [실제 실행 예시](examples/README.md) · [현재 비교 근거](benchmarks/CURRENT-CANDIDATE-STATUS.md) · [설치 가이드](docs/INSTALL.md)
+[웹사이트](https://hires.no-money-do-you-have-money.com/ko/) · [English](README.md) · [실제 실행 예시](examples/README.md) · [현재 비교 근거](benchmarks/CURRENT-CANDIDATE-STATUS.md) · [설치 가이드](docs/INSTALL.md)
 
 `0ca24f2` 기준 공개 프리뷰(2026-09-22 한국 시간): [로컬 테스트1,224개 통과·Git 인증 없이8개 스킬 설치를 확인했습니다](docs/PUBLIC-LAUNCH.md). 테스트 개수는 모델 성능 점수가 아닙니다. [질문·사용 후기](https://github.com/SoonGwan/questionable-hires/discussions) · [모델 사용량 없이 데모 실행](docs/SHARE.md#a-real-demo-without-model-usage).
 

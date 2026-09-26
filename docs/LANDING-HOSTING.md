@@ -43,6 +43,8 @@ logs stay in the user's Library directories. Deployment phase is retained in
 도메인 레코드가 이미 있으면 강제로 덮어쓰지 않습니다. 인증 파일은 Git에 넣지
 않습니다. 중간 상태를 보존하여 배포가 중단되어도 재시도할 수 있습니다.
 
+[Dated hosting verification / 날짜별 호스팅 확인](LANDING-HOSTING-2026-09-26.md)
+
 ## URLs and checks / 주소와 확인
 
 - 한국어: `https://hires.no-money-do-you-have-money.com/ko/`
