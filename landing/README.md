@@ -66,6 +66,8 @@ python3 -B scripts/build_landing.py \
   --output dist/landing
 ```
 
+For the existing Mac/Cloudflare setup, use [the hosting guide](../docs/LANDING-HOSTING.md).
+
 Serve **only** the generated directory. It includes all runtime files and assets;
 repository files and benchmark logs are not needed by the public server. On a
 subdirectory deployment, place `robots.txt` at the host root if you want crawlers
