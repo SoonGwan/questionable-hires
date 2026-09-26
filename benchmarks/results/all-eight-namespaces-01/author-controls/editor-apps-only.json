@@ -1,0 +1,52 @@
+{
+  "results": [
+    {
+      "case": "editor-snapshot-present",
+      "arm": "skill",
+      "checks": {
+        "three_methods": true,
+        "initial_test_unchanged": true,
+        "other_originals_unchanged": true,
+        "installed_resources_unchanged": true,
+        "usage_matches": true,
+        "allowed_file_inventory": true,
+        "author_original_assertion_failure": true,
+        "author_deep_snapshot_three_passes": true
+      },
+      "total_tokens": 63784,
+      "elapsed_seconds": 57.613,
+      "shell_commands": 4,
+      "completed": true,
+      "timed_out": false,
+      "inventory": [
+        "AGENTS.md",
+        "editor.py",
+        "test_editor.py",
+        "test_support.py"
+      ],
+      "test_methods": [
+        "test_initial_state",
+        "test_save_without_intervening_edit_marks_clean",
+        "test_save_snapshot_survives_intervening_edit"
+      ],
+      "test_sha256": "e3340ae4364d97893c126bb45ee9826ffeca4130da76cb0147eddff0ab6d344d",
+      "replays": [
+        {
+          "variant": "original",
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "test_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) ... FAIL\ntest_save_without_intervening_edit_marks_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_clean) ... ok\n\n======================================================================\nFAIL: test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<AUTHOR-COPY>/test_editor.py\", line 59, in test_save_snapshot_survives_intervening_edit\n    self.assertEqual(payload, expected_saved)\nAssertionError: {'display': {'theme': 'solarized'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}\n- {'alerts': ['mentions'], 'display': {'theme': 'solarized'}}\n?                                                ^^^  ^^^^\n\n+ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}\n?                                                ^  ^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.008s\n\nFAILED (failures=1)\n"
+        },
+        {
+          "variant": "deep-snapshot",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) ... ok\ntest_save_without_intervening_edit_marks_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_clean) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.005s\n\nOK\n"
+        }
+      ],
+      "transport_errors": []
+    }
+  ],
+  "python": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+  "limitation": "Separate author evidence, not original model execution. Inspect assertion paths, support and original tool responses before interpreting quality or cost. Bytecode directories are excluded from source inventory, not certified absent."
+}

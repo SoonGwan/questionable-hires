@@ -1,6 +1,6 @@
 # Current candidate: whole-task improvement remains unproven
 
-Decision checkpoint **2026-09-27**, namespaces01 execution `a69b63c1`, skill bundle `0333a084`.
+Decision checkpoint **2026-09-27**, apps01 execution `5cf3504b`, skill bundle `6701069f`.
 The owner objective is better developer work across **all eight roles**, fewer
 **whole-task input+output tokens**, and faster completion. It remains unmet.
 No complete update or general efficiency claim is supported.
@@ -22,7 +22,6 @@ integration05(`75183f2f`)의 불리한 결과와 범위·평가·보존 한계�
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
-| [Namespaces01](ALL-EIGHT-NAMESPACES-01-REVIEW.md),2026-09-27,`0333a084`,execution `a69b63c1` |16 matching-skill apps-only/namespace-excluded cells; tokens−12.73%,time−2.73%;5/8 joint reductions. | No general adoption/all8 gain: Necromancer both worse,Receipt/Exorcist slower; repeated exposed n=1 tasks,shared host/cache,unequal tracing/coverage. Original native capture gap retained; author replay separate. |
 | [Apps01](ALL-EIGHT-APPS-01-REVIEW.md),2026-09-27,`6701069f`,execution `5cf3504b` |16 matching-skill default/apps-off cells; tokens−9.49%,time+0.52%;4/8 joint reductions. | No adoption; exposed n=1 tasks,shared host/cache and unequal optional work. Scoped native outcomes and original preservation reviewed; no general quality or skill-version gain. |
 | [Model-choice01](ALL-EIGHT-MODEL-CHOICE-01-REVIEW.md),2026-09-27,`6701069f` |16 same matching-skill Astra/Sol cells; Sol tokens+39.23%,time−0.61%; all8 higher tokens,0 joint gains. | Configuration declined; Sol scope violations, unequal host catalogs, matching-skill-only protocol correction and exposed n=1 development tasks retained. |
 | [Path-selection transfer01](PATH-SELECTION-01-REVIEW.md),2026-09-27,unchanged resource`9fdee801`,inputs`3ff3fa85` |4 scoped diagnostic outcomes supported; tokens+5.40%,time−18.75%; no pair improves both. Direct initial/final supplied-file modes match. | No optimization adopted or quality advantage; related authored fixtures,n=1,grouped order/shared cache and unequal optional work. |
@@ -40,10 +39,8 @@ fixtures, n=1, shared host/cache, unequal verification and exposure limits preve
 independent generalization. Cached input is included once; reasoning is not added
 again. The [featured pointer](featured.json) and frozen charts remain separate.
 
-한국어: namespaces01(2026-09-27,`0333a084`)은 합계 토큰12.73%·시간2.73% 감소지만
-동시 절감5/8이며 이력 추적은 두 지표 모두 악화됐다. 전체 목표 미달로 기본 설정을
-채택하지 않는다. [이전 판단 기록](CANDIDATE-HISTORY-2026-09-27-BEFORE-NAMESPACE-TRANSFER.md)에
-apps01의 시간 증가와 이전 불리한 결과를 보존한다.
+한국어: apps01(2026-09-27,`6701069f`)은 토큰9.49% 감소지만 시간0.52% 증가이며
+동시 절감4/8이다. 전체 목표 미달로 설정을 채택하지 않는다. [이전 판단 기록](CANDIDATE-HISTORY-2026-09-27-BEFORE-APPS-COMPARISON.md)을 보존한다.
 
 ## Functionality and delivery, not model savings
 

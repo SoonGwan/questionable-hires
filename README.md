@@ -155,8 +155,11 @@ its six-cell costs are mixed with no joint aggregate token/time saving.
 [Current dated evidence and limitations](benchmarks/CURRENT-CANDIDATE-STATUS.md)
 retain adverse development and model-configuration comparisons. Model-choice01
 (2026-09-27, `6701069f`) is declined; it does not establish joint token/time saving.
-[Apps01](benchmarks/ALL-EIGHT-APPS-01-REVIEW.md) (2026-09-27, `6701069f`) also remains
-unadopted: tokens−9.49%, time+0.52% across eight exposed tasks;4/8 joint reductions.
+Configuration checks remain mixed: [apps01](benchmarks/ALL-EIGHT-APPS-01-REVIEW.md)
+(2026-09-27, `6701069f`) tokens−9.49%/time+0.52%;
+[namespaces01](benchmarks/ALL-EIGHT-NAMESPACES-01-REVIEW.md) (2026-09-27, `0333a084`)
+tokens−12.73%/time−2.73%, but only5/8 joint reductions with unequal optional checks.
+Neither is adopted or establishes improvement across all eight roles.
 
 [Detailed development history and adverse results](docs/DEVELOPMENT-NOTES.md)
 (snapshot: 2026-09-14, source `17ede49`). Examples include Hostage's higher token
