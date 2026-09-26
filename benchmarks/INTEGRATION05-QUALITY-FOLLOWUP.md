@@ -1,0 +1,85 @@
+# Integration05 original evidence follow-up — 2026-09-27
+
+Measured bundle remains `75183f2f`, launch `f2b83b17`.
+[Costs](ALL-EIGHT-CURRENT-05-COSTS.md) remain tokens+18.54%,time+9.06%.
+No better efficiency claim, changed task criteria or repaired original transcript.
+The16-cell capture-stage quality labels remain pending; this partial follow-up
+records what was inspected and what cannot yet support a complete-release claim.
+
+## Original observations and artifact checks
+
+[Final-state inspection](results/all-eight-current-05/artifact-review.json)
+checks all16 exact inventories, required unchanged bytes, initial tracked modes,
+HEAD, before-model/before-collector index bytes/modes and installed-resource
+identity. All those scoped controls hold. Hostage production ASTs match the one
+required generation-owned finally guard; its copied asset matches pinned bytes.
+Mother preserves original test-method ASTs and adds exactly two async tests.
+Initial untracked working-file modes were not separately captured: the artifact
+report does not pretend direct original-mode proof for those files. Final state
+and recorded commands do not prove every transient action or all Git metadata.
+
+Original native commands show these counts and limits:
+
+- History:3 tests on each independent current/A/B implementation; A preserves
+  101/−101/234 and B loses both half-cent cases. Missing `python` recovery is
+  retained; current's trailing Git status masks that initial shell failure.
+- Receipt:5 current tests against each revision, two retry assertions fail in
+  both. Actual return/balance values distinguish the unchanged duplicate update
+  from the return-only fix. Required owner working files remain unchanged.
+- Landlord:2 native tests plus direct driver/Store witnesses; keep the boolean,
+  duplicate and operational-error policy. Staging remains unverified.
+- Mother:3 native methods, one expected snapshot assertion failure on unchanged
+  production. Both first use absent `python`, then recover. Later assertions
+  beyond that first failure are authored code, not executed original observations.
+- Exorcist:ordinary import retains2 retries despite setUp's zero environment;
+  before-import zero makes the native regression pass. Diagnosis distinguishes
+  configuration timing from unsupported cache claims, without production edits.
+- Hostage:baseline8 passing after-fix tests; current8 before with5 assertion
+  failures,8 after passing. That extra before work stays in costs. The separate
+  assertion-plumbing limitation below is not a hidden replacement success gate.
+- Con Artist:four executed phases, exits0/0/0/1, actual consumer/writer binding
+  and fresh SQLite reads. Baseline improves one complete binary-row assertion;
+  current strengthens both binary/empty cases. Baseline's `find ..` violates scope.
+- Friday:actual SQL and literal readers at all five checkpoints, full rows/BLOBs
+  and column labels. Both identify OLD's first incompatibility at checkpoint2;
+  code rollback alone leaves changed labels, down migration preserves new writes.
+
+Both Con Artist CLI aggregates omit the first native phase. Matching retained
+original tool records contain it. These **original-output derivatives** recover
+counts2/2/1/1 baseline and2/2/2/2 current without rerunning:
+[baseline line37](results/all-eight-current-05/baseline/sqlite-commit-audit--baseline--1/native-tool-output-line-37.txt),
+[current line36](results/all-eight-current-05/current/sqlite-commit-audit--skill--1/native-tool-output-line-36.txt).
+Do not call the omitted CLI prefix a failed or missing native execution.
+
+## Separate author test-plumbing control
+
+[Original author control and focused follow-ups](results/all-eight-current-05/author-assertion-plumbing.json)
+use disposable complete copies of the delivered Hostage artifacts, Python3.11.6,
+the existing native audit helper and same-process test/Preview binding checks.
+Change only `return value` to `return object()`; exact per-call return identity is
+an explicit contract. Correct delivered code passes8/8 in both conditions.
+The full-suite mutant output tails are truncated and remain marked truncated.
+
+To resolve the missing decisive output, separately run one existing method per
+artifact, correct and faulty. These are **new author observations**, not repaired
+full-suite/model transcripts. All four focused checks are nontruncated:
+baseline correct passes1; wrong-return fails with TypeError because its async
+`fail(task, fetch, cancelled)` shadows `unittest.TestCase.fail(msg)`.
+Current correct passes1; wrong-return fails with the actual identity AssertionError
+in its fixture's real refresh call. That behavioral fixture assertion is distinct
+from a setup/import error. Both reject the fault; only current retains the intended
+assertion plumbing. The baseline collision is a maintenance/diagnostic limitation,
+not proof that it silently accepted this fault or a broad current-quality advantage.
+Existing Hostage guidance already warns against async `fail`/`run` framework names;
+do not add a duplicate rule or delete required tests based on this control.
+
+No post-timing author process is credited to model costs or original work.
+Native assertion/binding and complete value review, source-capture matching and
+release/environment limitations remain required before an unqualified score.
+
+한국어:16회 최종 파일·추적 파일 모드·인덱스·설치 리소스 대조는 명시한 범위에서
+일치한다. 초기 미추적 파일 모드의 직접 증거는 없으며 과장하지 않는다. SQLite
+첫 단계는 원본 기록에서 복구했고 재실행하지 않았다. 별도 사후 반환값 대조는
+미적용의 비동기 fail 메서드가 TypeError를 만들고 적용은 실제 동일성 assertion으로
+실패함을 확인했다. 둘 다 결함을 거부했으므로 누락 탐지나 전체 우월성으로
+확대하지 않는다. 비용 목표와 완전한 품질·출시 검증은 계속 미달이다.

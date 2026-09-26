@@ -1,0 +1,260 @@
+{
+  "source": "75183f2f integration05 delivered artifacts",
+  "kind": "Separate author control after timing, not model work or a changed success criterion",
+  "mutation": "Return a fresh object instead of the exact fetched object; preserve actual callbacks and publication",
+  "rows": [
+    {
+      "condition": "baseline",
+      "report": {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: preview {\"path\":\"preview.py\",\"sha256\":\"5f726b99d55848543c74a3613d7152c201a0e3537eb3e0921f9331070b84a411\"}\nVerified copied import: test_preview {\"path\":\"test_preview.py\",\"sha256\":\"3ceab68dea91cfce09d873ed4482149d179c321dfa1289d6a33fa7a501e2191c\"}\nVerified test Preview binding\nPrecheck completed in check process.\ntest_earlier_cancellation_while_latest_pending (test_preview.PreviewTests.test_earlier_cancellation_while_latest_pending) ... ok\ntest_earlier_failure_while_latest_pending (test_preview.PreviewTests.test_earlier_failure_while_latest_pending) ... ok\ntest_instances_are_independent (test_preview.PreviewTests.test_instances_are_independent) ... ok\ntest_latest_cancellation_and_retry (test_preview.PreviewTests.test_latest_cancellation_and_retry) ... ok\ntest_latest_failure_and_retry (test_preview.PreviewTests.test_latest_failure_and_retry) ... ok\ntest_latest_success_then_older_success (test_preview.PreviewTests.test_latest_success_then_older_success) ... ok\ntest_older_success_then_latest_success (test_preview.PreviewTests.test_older_success_then_latest_success) ... ok\ntest_synchronous_callback_failure_and_retry (test_preview.PreviewTests.test_synchronous_callback_failure_and_retry) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.029s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "/opt/homebrew/opt/python@3.11/bin/python3.11",
+              "-B",
+              "-m",
+              "unittest",
+              "discover",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 8,
+              "skipped": 0,
+              "successful": true
+            }
+          },
+          "mutant_tests": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": ": test_latest_cancellation_and_retry (test_preview.PreviewTests.test_latest_cancellation_and_retry)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 162, in test_latest_cancellation_and_retry\n    await self.latest_failure_or_cancellation_and_retry(True)\n  File \"<TEMP>\", line 140, in latest_failure_or_cancellation_and_retry\n    preview, prior, older, first, latest, second = await self.pair()\n                                                   ^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 69, in pair\n    preview, prior = await self.seeded()\n                     ^^^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 63, in seeded\n    self.assertIs(await self.bounded(task), prior)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 1154, in assertIs\n    self.fail(self._formatMessage(msg, standardMsg))\nTypeError: PreviewTests.fail() missing 2 required positional arguments: 'fetch' and 'cancelled'\n\n======================================================================\nERROR: test_latest_failure_and_retry (test_preview.PreviewTests.test_latest_failure_and_retry)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 159, in test_latest_failure_and_retry\n    await self.latest_failure_or_cancellation_and_retry(False)\n  File \"<TEMP>\", line 140, in latest_failure_or_cancellation_and_retry\n    preview, prior, older, first, latest, second = await self.pair()\n                                                   ^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 69, in pair\n    preview, prior = await self.seeded()\n                     ^^^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 63, in seeded\n    self.assertIs(await self.bounded(task), prior)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 1154, in assertIs\n    self.fail(self._formatMessage(msg, standardMsg))\nTypeError: PreviewTests.fail() missing 2 required positional arguments: 'fetch' and 'cancelled'\n\n======================================================================\nERROR: test_latest_success_then_older_success (test_preview.PreviewTests.test_latest_success_then_older_success)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 109, in test_latest_success_then_older_success\n    preview, prior, older, first, latest, second = await self.pair()\n                                                   ^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 69, in pair\n    preview, prior = await self.seeded()\n                     ^^^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 63, in seeded\n    self.assertIs(await self.bounded(task), prior)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 1154, in assertIs\n    self.fail(self._formatMessage(msg, standardMsg))\nTypeError: PreviewTests.fail() missing 2 required positional arguments: 'fetch' and 'cancelled'\n\n======================================================================\nERROR: test_older_success_then_latest_success (test_preview.PreviewTests.test_older_success_then_latest_success)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 96, in test_older_success_then_latest_success\n    preview, prior, older, first, latest, second = await self.pair()\n                                                   ^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 69, in pair\n    preview, prior = await self.seeded()\n                     ^^^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 63, in seeded\n    self.assertIs(await self.bounded(task), prior)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 1154, in assertIs\n    self.fail(self._formatMessage(msg, standardMsg))\nTypeError: PreviewTests.fail() missing 2 required positional arguments: 'fetch' and 'cancelled'\n\n======================================================================\nERROR: test_synchronous_callback_failure_and_retry (test_preview.PreviewTests.test_synchronous_callback_failure_and_retry)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 165, in test_synchronous_callback_failure_and_retry\n    preview, prior = await self.seeded()\n                     ^^^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 63, in seeded\n    self.assertIs(await self.bounded(task), prior)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 1154, in assertIs\n    self.fail(self._formatMessage(msg, standardMsg))\nTypeError: PreviewTests.fail() missing 2 required positional arguments: 'fetch' and 'cancelled'\n\n----------------------------------------------------------------------\nRan 8 tests in 0.016s\n\nFAILED (errors=8)\n",
+            "output_truncated": true,
+            "command": [
+              "/opt/homebrew/opt/python@3.11/bin/python3.11",
+              "-B",
+              "-m",
+              "unittest",
+              "discover",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 8,
+              "skipped": 0,
+              "successful": false
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 2,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true,
+          "project_guard": {
+            "unchanged": true,
+            "entries": 5,
+            "file_bytes": 10098,
+            "scope": "source root including Git metadata; symlink targets not read"
+          }
+        }
+      }
+    },
+    {
+      "condition": "current",
+      "report": {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: preview {\"path\":\"preview.py\",\"sha256\":\"5f726b99d55848543c74a3613d7152c201a0e3537eb3e0921f9331070b84a411\"}\nVerified copied import: test_preview {\"path\":\"test_preview.py\",\"sha256\":\"3c9e3ffed5a0df1704c59039254ccac15e2e73a8131c3d44290b17478b06bcf6\"}\nVerified test Preview binding\nPrecheck completed in check process.\ntest_earlier_cancellation_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_cancellation_while_latest_pending) ... ok\ntest_earlier_failure_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_failure_while_latest_pending) ... ok\ntest_earlier_success_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending) ... ok\ntest_instance_isolation (test_preview.PreviewRefreshTests.test_instance_isolation) ... ok\ntest_latest_cancellation_and_retry (test_preview.PreviewRefreshTests.test_latest_cancellation_and_retry) ... ok\ntest_latest_failure_and_retry (test_preview.PreviewRefreshTests.test_latest_failure_and_retry) ... ok\ntest_latest_success_before_earlier_success (test_preview.PreviewRefreshTests.test_latest_success_before_earlier_success) ... ok\ntest_synchronous_callback_failure_and_retry (test_preview.PreviewRefreshTests.test_synchronous_callback_failure_and_retry) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.029s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "/opt/homebrew/opt/python@3.11/bin/python3.11",
+              "-B",
+              "-m",
+              "unittest",
+              "discover",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 8,
+              "skipped": 0,
+              "successful": true
+            }
+          },
+          "mutant_tests": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "t_earlier_cancellation_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_cancellation_while_latest_pending)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 87, in _callSetUp\n    self._callAsync(self.asyncSetUp)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 104, in _callAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 16, in asyncSetUp\n    self.assertIs(await self.tasks.wait(task), self.prior)\nAssertionError: <object object at 0x100c989d0> is not <object object at 0x100c989e0>\n\n======================================================================\nFAIL: test_earlier_failure_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_failure_while_latest_pending)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 87, in _callSetUp\n    self._callAsync(self.asyncSetUp)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 104, in _callAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 16, in asyncSetUp\n    self.assertIs(await self.tasks.wait(task), self.prior)\nAssertionError: <object object at 0x100c989c0> is not <object object at 0x100c989f0>\n\n======================================================================\nFAIL: test_earlier_success_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 87, in _callSetUp\n    self._callAsync(self.asyncSetUp)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 104, in _callAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 16, in asyncSetUp\n    self.assertIs(await self.tasks.wait(task), self.prior)\nAssertionError: <object object at 0x100c989b0> is not <object object at 0x100c98a10>\n\n======================================================================\nFAIL: test_instance_isolation (test_preview.PreviewRefreshTests.test_instance_isolation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 87, in _callSetUp\n    self._callAsync(self.asyncSetUp)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 104, in _callAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 16, in asyncSetUp\n    self.assertIs(await self.tasks.wait(task), self.prior)\nAssertionError: <object object at 0x100c98a00> is not <object object at 0x100c98a30>\n\n======================================================================\nFAIL: test_latest_cancellation_and_retry (test_preview.PreviewRefreshTests.test_latest_cancellation_and_retry)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 87, in _callSetUp\n    self._callAsync(self.asyncSetUp)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 104, in _callAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 16, in asyncSetUp\n    self.assertIs(await self.tasks.wait(task), self.prior)\nAssertionError: <object object at 0x100c98a20> is not <object object at 0x100c98a50>\n\n======================================================================\nFAIL: test_latest_failure_and_retry (test_preview.PreviewRefreshTests.test_latest_failure_and_retry)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 87, in _callSetUp\n    self._callAsync(self.asyncSetUp)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 104, in _callAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 16, in asyncSetUp\n    self.assertIs(await self.tasks.wait(task), self.prior)\nAssertionError: <object object at 0x100c98a40> is not <object object at 0x100c98a70>\n\n======================================================================\nFAIL: test_latest_success_before_earlier_success (test_preview.PreviewRefreshTests.test_latest_success_before_earlier_success)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 87, in _callSetUp\n    self._callAsync(self.asyncSetUp)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 104, in _callAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 16, in asyncSetUp\n    self.assertIs(await self.tasks.wait(task), self.prior)\nAssertionError: <object object at 0x100c98a60> is not <object object at 0x100c98a90>\n\n======================================================================\nFAIL: test_synchronous_callback_failure_and_retry (test_preview.PreviewRefreshTests.test_synchronous_callback_failure_and_retry)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 87, in _callSetUp\n    self._callAsync(self.asyncSetUp)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 104, in _callAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 16, in asyncSetUp\n    self.assertIs(await self.tasks.wait(task), self.prior)\nAssertionError: <object object at 0x100c98a80> is not <object object at 0x100c98ab0>\n\n----------------------------------------------------------------------\nRan 8 tests in 0.015s\n\nFAILED (failures=8)\n",
+            "output_truncated": true,
+            "command": [
+              "/opt/homebrew/opt/python@3.11/bin/python3.11",
+              "-B",
+              "-m",
+              "unittest",
+              "discover",
+              "-v"
+            ],
+            "invocation": "module",
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 8,
+              "skipped": 0,
+              "successful": false
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 3,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true,
+          "project_guard": {
+            "unchanged": true,
+            "entries": 6,
+            "file_bytes": 17532,
+            "scope": "source root including Git metadata; symlink targets not read"
+          }
+        }
+      }
+    }
+  ],
+  "focused_followup": [
+    {
+      "condition": "baseline",
+      "selection": "test_preview.PreviewTests.test_older_success_then_latest_success",
+      "report": {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: preview {\"path\":\"preview.py\",\"sha256\":\"5f726b99d55848543c74a3613d7152c201a0e3537eb3e0921f9331070b84a411\"}\nVerified copied import: test_preview {\"path\":\"test_preview.py\",\"sha256\":\"3ceab68dea91cfce09d873ed4482149d179c321dfa1289d6a33fa7a501e2191c\"}\nPrecheck completed in check process.\ntest_older_success_then_latest_success (test_preview.PreviewTests.test_older_success_then_latest_success) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.006s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "/opt/homebrew/opt/python@3.11/bin/python3.11",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_preview.PreviewTests.test_older_success_then_latest_success"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          },
+          "mutant_tests": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: preview {\"path\":\"preview.py\",\"sha256\":\"cb5f8672891493757c64b2ed4e26a50428bc4ddebfedaba686cc7adebfb935e7\"}\nVerified copied import: test_preview {\"path\":\"test_preview.py\",\"sha256\":\"3ceab68dea91cfce09d873ed4482149d179c321dfa1289d6a33fa7a501e2191c\"}\nPrecheck completed in check process.\ntest_older_success_then_latest_success (test_preview.PreviewTests.test_older_success_then_latest_success) ... ERROR\n\n======================================================================\nERROR: test_older_success_then_latest_success (test_preview.PreviewTests.test_older_success_then_latest_success)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 96, in test_older_success_then_latest_success\n    preview, prior, older, first, latest, second = await self.pair()\n                                                   ^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 69, in pair\n    preview, prior = await self.seeded()\n                     ^^^^^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 63, in seeded\n    self.assertIs(await self.bounded(task), prior)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/case.py\", line 1154, in assertIs\n    self.fail(self._formatMessage(msg, standardMsg))\nTypeError: PreviewTests.fail() missing 2 required positional arguments: 'fetch' and 'cancelled'\n\n----------------------------------------------------------------------\nRan 1 test in 0.003s\n\nFAILED (errors=1)\n",
+            "output_truncated": false,
+            "command": [
+              "/opt/homebrew/opt/python@3.11/bin/python3.11",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_preview.PreviewTests.test_older_success_then_latest_success"
+            ],
+            "invocation": "module",
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": false
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 2,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true,
+          "project_guard": {
+            "unchanged": true,
+            "entries": 5,
+            "file_bytes": 10098,
+            "scope": "source root including Git metadata; symlink targets not read"
+          }
+        }
+      }
+    },
+    {
+      "condition": "current",
+      "selection": "test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending",
+      "report": {
+        "status": "observed",
+        "checks": {
+          "correct_tests": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: preview {\"path\":\"preview.py\",\"sha256\":\"5f726b99d55848543c74a3613d7152c201a0e3537eb3e0921f9331070b84a411\"}\nVerified copied import: test_preview {\"path\":\"test_preview.py\",\"sha256\":\"3c9e3ffed5a0df1704c59039254ccac15e2e73a8131c3d44290b17478b06bcf6\"}\nPrecheck completed in check process.\ntest_earlier_success_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nOK\n",
+            "output_truncated": false,
+            "command": [
+              "/opt/homebrew/opt/python@3.11/bin/python3.11",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending"
+            ],
+            "invocation": "module",
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": true
+            }
+          },
+          "mutant_tests": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: preview {\"path\":\"preview.py\",\"sha256\":\"cb5f8672891493757c64b2ed4e26a50428bc4ddebfedaba686cc7adebfb935e7\"}\nVerified copied import: test_preview {\"path\":\"test_preview.py\",\"sha256\":\"3c9e3ffed5a0df1704c59039254ccac15e2e73a8131c3d44290b17478b06bcf6\"}\nPrecheck completed in check process.\ntest_earlier_success_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending) ... FAIL\n\n======================================================================\nFAIL: test_earlier_success_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 87, in _callSetUp\n    self._callAsync(self.asyncSetUp)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 104, in _callAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 16, in asyncSetUp\n    self.assertIs(await self.tasks.wait(task), self.prior)\nAssertionError: <object object at 0x102ea49d0> is not <object object at 0x102ea49e0>\n\n----------------------------------------------------------------------\nRan 1 test in 0.003s\n\nFAILED (failures=1)\n",
+            "output_truncated": false,
+            "command": [
+              "/opt/homebrew/opt/python@3.11/bin/python3.11",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending"
+            ],
+            "invocation": "module",
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 1,
+              "skipped": 0,
+              "successful": false
+            }
+          }
+        },
+        "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+        "integrity": {
+          "selected_files": 3,
+          "selected_original_bytes_and_modes_unchanged": true,
+          "owned_scratch_removed": true,
+          "project_guard": {
+            "unchanged": true,
+            "entries": 6,
+            "file_bytes": 17532,
+            "scope": "source root including Git metadata; symlink targets not read"
+          }
+        }
+      }
+    }
+  ],
+  "limitation": "First full-suite mutant outputs retain their original truncated tails; separately selected one-method follow-ups are new author evidence, never repaired original/model transcripts."
+}

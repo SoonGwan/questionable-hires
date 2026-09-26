@@ -1,8 +1,10 @@
+> Historical checkpoint before integration05 original-evidence follow-up.
+
 # Current candidate: whole-task improvement remains unproven
 
 Decision checkpoint **2026-09-27, integration05 bundle `75183f2f`**.
-Recorded costs are reconciled; native quality review remains incomplete. [Original-evidence follow-up](INTEGRATION05-QUALITY-FOLLOWUP.md)
-verifies scoped final-state preservation and retains test-plumbing/capture limitations. This index does not turn older measurements into evidence for new files.
+Recorded costs are reconciled; complete native quality/artifact review remains
+pending. This index does not turn older measurements into evidence for new files.
 The owner objective remains better developer work across all eight roles, fewer
 whole-task tokens and faster completion. No completed update or broad saving.
 
@@ -10,7 +12,7 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
-| [Integration05 costs](ALL-EIGHT-CURRENT-05-COSTS.md),2026-09-27,`75183f2f` |16 completed cells; tokens+18.54%,time+9.06%; no pair improves both. Scoped artifact checks hold; native review incomplete, baseline SQLite outside scope. | Adverse cost result; exposed integration controls, not independent validation. |
+| [Integration05 costs](ALL-EIGHT-CURRENT-05-COSTS.md),2026-09-27,`75183f2f` |16 completed cells; tokens+18.54%,time+9.06%; no pair improves both. Quality/artifact review pending; baseline SQLite searches outside scope. | Adverse cost result; exposed integration controls, not independent validation. |
 | [Native-split02 costs](NATIVE-SPLIT-02-COSTS.json),2026-09-27,`6c099d68` |6 cells; summed tokens+43.05% versus no skill,−9.35% versus predecessor. [Original output follow-up](NATIVE-SPLIT-02-OUTPUT-REVIEW.md) retains391-token predecessor truncation. | Native review incomplete; no efficiency promotion. |
 | [Assertion-contract01](ASSERTION-CONTRACT-01-REVIEW.md),2026-09-27,`33530f98` |6 reviewed cells meet scoped contracts; tokens+36.43%,time−12.01% versus no skill. | No joint saving; retain correctness boundary. |
 | [Receipt versions01](RECEIPT-VERSIONS-01-REVIEW.md),2026-09-22,`e075bdb` |6 cells; tokens+0.31%,time−13.77%; multi-version helper adopted. | Adoption without broad cost gain; [original response-cost review](RECEIPT-VERSIONS-01-INPUT-COSTS.md). |
@@ -47,13 +49,7 @@ whole-task tokens and faster completion. No completed update or broad saving.
 서로 다른 증거다. 건너뛴 검사를 통과로 세지 않으며 이전 커밋의 검증을 현재
 파일에 소급하지 않는다. 공개 이력 검토와 최종 릴리스 준비도 미완료다.
 
-## Unmeasured candidate and next required work
-
-[Native interpreter route01](NATIVE-INTERPRETER-ROUTE-01.md),2026-09-27,`e918d02d`,
-addresses repeated unavailable-executable launches and masked probe exits in
-Necromancer. Metadata/catalog checks pass; model token/time effects are unmeasured.
-Integration05 still belongs to `75183f2f`, not this candidate.
-
+## Next required work
 
 Review all16 original assertions/bindings, scope, required coverage, artifacts,
 original bytes/modes, index state and cleanup. Missing output remains incomplete;

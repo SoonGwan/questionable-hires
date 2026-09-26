@@ -1,0 +1,81 @@
+FAULT: only ledger connection.commit() replaced by pass; close and acknowledgment unchanged.
+
+COMMAND: python3 -B -c <same-process unittest checks> existing correct
+cwd: <WORKSPACE>
+VERIFIED same-process bindings:
+  <WORKSPACE>/test_receipts.py accept is endpoint.handle_upload
+  <WORKSPACE>/ingest/endpoint.py _record is ledger.write_event
+  <WORKSPACE>/ingest/ledger.py
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+OK
+REACHABILITY: ledger commit line executed 2 time(s)
+EXIT: 0
+
+COMMAND: python3 -B -c <same-process unittest checks> existing faulty
+cwd: <WORKSPACE>/.commit-audit-jz955ly7/faulty
+VERIFIED same-process bindings:
+  <WORKSPACE>/.commit-audit-jz955ly7/faulty/test_receipts.py accept is endpoint.handle_upload
+  <WORKSPACE>/.commit-audit-jz955ly7/faulty/ingest/endpoint.py _record is ledger.write_event
+  <WORKSPACE>/.commit-audit-jz955ly7/faulty/ingest/ledger.py
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+OK
+REACHABILITY: ledger omitted-commit line executed 2 time(s)
+EXIT: 0
+
+COMMAND: python3 -B -c <same-process unittest checks> stronger correct
+cwd: <WORKSPACE>
+VERIFIED same-process bindings:
+  <WORKSPACE>/test_receipts.py accept is endpoint.handle_upload
+  <WORKSPACE>/ingest/endpoint.py _record is ledger.write_event
+  <WORKSPACE>/ingest/ledger.py
+test_complete_committed_binary_rows (__main__.PersistenceTests.test_complete_committed_binary_rows) ... fresh connection rows: [(10, b'previous'), (20, b'\x00\xffnew')]
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+REACHABILITY: ledger commit line executed 1 time(s)
+EXIT: 0
+
+COMMAND: python3 -B -c <same-process unittest checks> stronger faulty
+cwd: <WORKSPACE>/.commit-audit-jz955ly7/faulty
+VERIFIED same-process bindings:
+  <WORKSPACE>/.commit-audit-jz955ly7/faulty/test_receipts.py accept is endpoint.handle_upload
+  <WORKSPACE>/.commit-audit-jz955ly7/faulty/ingest/endpoint.py _record is ledger.write_event
+  <WORKSPACE>/.commit-audit-jz955ly7/faulty/ingest/ledger.py
+test_complete_committed_binary_rows (__main__.PersistenceTests.test_complete_committed_binary_rows) ... fresh connection rows: [(10, b'previous')]
+FAIL
+
+======================================================================
+FAIL: test_complete_committed_binary_rows (__main__.PersistenceTests.test_complete_committed_binary_rows)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 42, in test_complete_committed_binary_rows
+AssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (20, b'\x00\xffnew')]
+
+Second list contains 1 additional elements.
+First extra element 1:
+(20, b'\x00\xffnew')
+
+- [(10, b'previous')]
++ [(10, b'previous'), (20, b'\x00\xffnew')]
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)
+REACHABILITY: ledger omitted-commit line executed 1 time(s)
+EXIT: 1
+
+VERIFIED: original file bytes/modes preserved; owned disposable copy removed.

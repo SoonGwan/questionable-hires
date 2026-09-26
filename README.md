@@ -146,7 +146,9 @@ to preserve original evidence without rerunning checks.
 
 **Whole-task cost improvement remains unproven.** [Integration05](benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md)
 (2026-09-27, `75183f2f`) used 18.54% more summed tokens and 9.06% more time
-across eight exposed development tasks; native quality/artifact review is pending.
+across eight exposed development tasks; scoped artifact checks hold and native review remains incomplete.
+The [interpreter route candidate](benchmarks/NATIVE-INTERPRETER-ROUTE-01.md)
+(2026-09-27, `e918d02d`) addresses failed probe launches; its cost effect is unmeasured.
 [Current dated evidence and limitations](benchmarks/CURRENT-CANDIDATE-STATUS.md).
 
 [Detailed development history and adverse results](docs/DEVELOPMENT-NOTES.md)
