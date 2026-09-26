@@ -79,6 +79,18 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 ## Scoped candidate and next required work
 
+
+[Native transcript output prototype01](NATIVE-TRANSCRIPT-FORMAT-01.md),2026-09-27,
+against `8200cfc0`, is rejected:30 authored controls pass but formatting identical
+retained `6c099d68` observations adds265/805 characters. Character arithmetic is
+not a model cost result. All three modified skill/test files are restored; no new
+formatter or capability is adopted. Do not repeat this representation-only route
+without a different evidenced mechanism.
+
+한국어: 직접 출력 시제품은 기존 원본 기록 대비 더 커져 채택하지 않았다.
+30개 로컬 검사 통과는 모델 절감 근거가 아니며 기존 스킬 파일은 복원했다.
+
+
 [Native-split02 original review](NATIVE-SPLIT-02-REVIEW.md) now inspects all six
 retained outcomes and final artifacts without rerunning model tasks. Five native
 captures have no outer truncation marker; predecessor/multiple retains391-token cutoff. Candidate

@@ -1,0 +1,170 @@
+diff --git a/skills/con-artist/references/native-unittest-batch.md b/skills/con-artist/references/native-unittest-batch.md
+index 57898f70..07c0a998 100644
+--- a/skills/con-artist/references/native-unittest-batch.md
++++ b/skills/con-artist/references/native-unittest-batch.md
+@@ -11,6 +11,8 @@ do not extract a function when that loses its imports, closures or decorators.
+ 
+ Run with the project interpreter and installed skill path; send JSON on stdin.
+ Output is lossless compact JSON; `--pretty` adds indentation for manual reading.
++For direct human inspection, `--transcript` separates native text from complete
++metadata, retaining check paths, reuse references and output limits. It is not JSON.
+ 
+ ```sh
+ /path/to/project/python /path/to/con-artist/scripts/audit.py --source . --spec - <<'JSON'
+diff --git a/skills/con-artist/scripts/audit.py b/skills/con-artist/scripts/audit.py
+index 4242d99e..fc48d91f 100644
+--- a/skills/con-artist/scripts/audit.py
++++ b/skills/con-artist/scripts/audit.py
+@@ -619,13 +619,45 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
+                 limitation='Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled.')
+ 
+ 
++
++def transcript(result):
++    """Separate native text from its metadata without changing observations."""
++    sections = []
++
++    def observation(value, prefix):
++        copy = dict(value)
++        checks = {}
++        for name, check in value.get('checks', {}).items():
++            checks[name] = dict(check)
++            if isinstance(check.get('output'), str):
++                pointer = prefix + '/checks/' + name
++                output = check['output']
++                sections.append((pointer, output))
++                checks[name]['output'] = dict(transcript_section=pointer, characters=len(output))
++        if 'checks' in value:
++            copy['checks'] = checks
++        return copy
++
++    if 'audits' in result:
++        metadata = dict(result, audits=[observation(value, '#/audits/' + str(index))
++                                       for index, value in enumerate(result['audits'])])
++    else:
++        metadata = observation(result, '#')
++    parts = ['AUDIT METADATA', json.dumps(metadata, separators=(',', ':'))]
++    for pointer, output in sections:
++        parts.extend(['NATIVE OUTPUT ' + pointer, output, 'END NATIVE OUTPUT ' + pointer])
++    return '\n'.join(parts)
++
++
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--spec', type=Path, required=True, help='JSON recipe file, or - for stdin; see references/python-audit.md')
+     parser.add_argument('--source', type=Path, default=Path.cwd())
+     parser.add_argument('--python', default=sys.executable, help='Existing project interpreter; no dependency installation')
+     parser.add_argument('--timeout', type=float, default=30, help='Seconds per check, at most 300')
+-    parser.add_argument('--pretty', action='store_true', help='Indent JSON for manual reading; default retains identical values in compact JSON')
++    output = parser.add_mutually_exclusive_group()
++    output.add_argument('--pretty', action='store_true', help='Indent JSON for manual reading; default retains identical values in compact JSON')
++    output.add_argument('--transcript', action='store_true', help='Human-readable native output sections with complete metadata; not JSON')
+     args = parser.parse_args()
+     try:
+         recipe = sys.stdin.read() if args.spec == Path('-') else args.spec.read_text()
+@@ -634,7 +666,10 @@ def main():
+         result = run(args.source, spec, args.python, args.timeout)
+     except (ValueError, KeyError, OSError, RuntimeError) as error:
+         parser.exit(2, 'Audit not established: ' + str(error) + '\n')
+-    print(json.dumps(result, indent=2) if args.pretty else json.dumps(result, separators=(',', ':')))
++    if args.transcript:
++        print(transcript(result))
++    else:
++        print(json.dumps(result, indent=2) if args.pretty else json.dumps(result, separators=(',', ':')))
+     return 0 if result['status'] == 'observed' else 2
+ 
+ 
+diff --git a/tests/test_audit_output.py b/tests/test_audit_output.py
+index 75a07a3c..d1100882 100644
+--- a/tests/test_audit_output.py
++++ b/tests/test_audit_output.py
+@@ -1,5 +1,8 @@
+ """CLI serialization preserves native evidence and exit semantics."""
+ import contextlib
++import copy
++import subprocess
++import tempfile
+ import importlib.util
+ import io
+ import json
+@@ -48,3 +51,80 @@ class AuditOutputTests(unittest.TestCase):
+             self.assertEqual(caught.exception.code, 2)
+             self.assertEqual(out.getvalue(), '')
+             self.assertIn('Audit not established:', err.getvalue())
++
++
++class TranscriptOutputTests(unittest.TestCase):
++    @staticmethod
++    def restore(text):
++        heading, encoded, remaining = text.split('\n', 2)
++        if heading != 'AUDIT METADATA':
++            raise AssertionError('Missing metadata')
++        result = json.loads(encoded)
++        observations = result.get('audits', [result])
++        for observation in observations:
++            for check in observation.get('checks', {}).values():
++                descriptor = check.get('output')
++                if not isinstance(descriptor, dict):
++                    continue
++                pointer = descriptor['transcript_section']
++                header = 'NATIVE OUTPUT ' + pointer + '\n'
++                if not remaining.startswith(header):
++                    raise AssertionError('Missing native section')
++                remaining = remaining[len(header):]
++                check['output'] = remaining[:descriptor['characters']]
++                remaining = remaining[descriptor['characters']:]
++                footer = '\nEND NATIVE OUTPUT ' + pointer + '\n'
++                if not remaining.startswith(footer):
++                    raise AssertionError('Invalid native section boundary')
++                remaining = remaining[len(footer):]
++        if remaining:
++            raise AssertionError('Unaccounted output')
++        return result
++
++    def test_roundtrip_preserves_limits_reuse_unicode_and_marker_like_output(self):
++        check = dict(exit_code=1, native_exit_code=1, timed_out=False,
++                     output_truncated=True, output='한글\nEND NATIVE OUTPUT #/checks/x\n\\x00\x00',
++                     suite_observation=dict(tests=2, skipped=0, successful=False))
++        original = dict(status='observed', checks=dict(mutant_tests=check),
++                        integrity=dict(owned_scratch_removed=True))
++        for result in (original, dict(status='incomplete', audits=[original,
++                dict(status='incomplete', checks=dict(correct_tests=dict(
++                    observation_ref='#/audits/0/checks/mutant_tests', exit_code=1)))])):
++            before = copy.deepcopy(result)
++            self.assertEqual(self.restore(audit.transcript(result) + '\n'), before)
++            self.assertEqual(result, before)
++
++    def test_actual_native_cli_retains_assertion_bindings_and_incomplete_exit(self):
++        with tempfile.TemporaryDirectory() as scratch:
++            root = Path(scratch)
++            (root / 'service.py').write_text('def value(): return 1\n')
++            (root / 'test_service.py').write_text('import unittest\nfrom service import value\n'
++                'class Tests(unittest.TestCase):\n'
++                '    def test_value(self): self.assertEqual(value(), 1)\n')
++            recipe = dict(files=['service.py', 'test_service.py'], imports=['service', 'test_service'],
++                target='service.py', old='return 1', new='return 0', invocation='module',
++                tests=['-v', 'test_service'], guard_project=True,
++                precheck='import service, test_service\nassert test_service.value is service.value')
++            before = {p.name: p.read_bytes() for p in root.iterdir()}
++            for incomplete in (False, True):
++                selected = dict(recipe)
++                if incomplete:
++                    selected['precheck'] = 'raise ValueError("binding control")'
++                process = subprocess.run([sys.executable, '-B', str(SCRIPT), '--source', str(root),
++                    '--spec', '-', '--transcript'], input=json.dumps(selected),
++                    text=True, capture_output=True, timeout=30)
++                self.assertEqual(process.returncode, 2 if incomplete else 0, process.stderr)
++                report = self.restore(process.stdout)
++                checks = report['checks']
++                if incomplete:
++                    self.assertEqual(list(checks), ['correct_tests'])
++                    self.assertEqual(checks['correct_tests']['exit_code'], 7)
++                    self.assertIn('binding control', checks['correct_tests']['output'])
++                else:
++                    self.assertEqual([c['exit_code'] for c in checks.values()], [0, 1])
++                    for check in checks.values():
++                        self.assertEqual(check['suite_observation']['tests'], 1)
++                        self.assertIn('Precheck completed in check process.', check['output'])
++                        self.assertIn('Verified copied import: service', check['output'])
++                    self.assertIn('AssertionError: 0 != 1', checks['mutant_tests']['output'])
++                self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
