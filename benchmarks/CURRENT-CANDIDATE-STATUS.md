@@ -34,6 +34,10 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 ## Local functionality and delivery evidence
 
+- [Production browser checks](../docs/LANDING-BROWSER-2026-09-27.md),2026-09-27,
+  deployed `ba2713d5`:14 bilingual responsive layouts and local/public browser
+  interactions pass. Website evidence only; no model efficiency claim.
+
 - [Initial project-file capture](INITIAL-PROJECT-FILES-CAPTURE-01.md),2026-09-27,
   parent `ca71b596`: future measurements retain pre-model untracked/ignored file
   digests and permission bits locally.45 focused local tests pass; historical

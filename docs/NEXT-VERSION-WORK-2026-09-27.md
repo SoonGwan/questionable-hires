@@ -66,6 +66,12 @@ failures; installed8 skills/51 files/25 command exits match expected behavior.
 These local checks do not satisfy model efficiency, hosted/platform or final
 release requirements. Older dated validations remain at their actual sources.
 
+[Current deployed browser checks](LANDING-BROWSER-2026-09-27.md), source
+`ba2713d5`, now pass14 bilingual responsive layouts and production local/public
+interactions, including graphs, mobile raw data, language and copy recovery.
+This closes the missing current website interaction observation; final candidate
+changes still require checks against the actual deployed source.
+
 ## Required remaining work
 
 1. Use completed scoped original reviews and existing counter reconciliations;
