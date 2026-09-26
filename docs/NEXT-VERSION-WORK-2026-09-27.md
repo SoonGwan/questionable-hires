@@ -74,6 +74,15 @@ changes still require checks against the actual deployed source.
 
 ## Required remaining work
 
+[Path-selection transfer01](../benchmarks/PATH-SELECTION-01-PROTOCOL.md), frozen
+inputs/launch `3ff3fa85`, tests unchanged Exorcist source `9fdee801` against no
+skill on two new authored diagnostic fixtures. Native defective and healthy
+controls are complete; four serial model sessions started in
+`/tmp/qh-path-selection-01-frozen`, original exec handle72611. Poll that handle
+and actual processes, never restart because an observation expires. This is
+new one-role transfer evidence pending review, not an adopted optimization,
+independent external validation or all-eight result.
+
 1. Use completed scoped original reviews and existing counter reconciliations;
    retain missing/incomplete evidence rather than repairing past transcripts.
    In particular, direct initial untracked-file modes were not captured in
