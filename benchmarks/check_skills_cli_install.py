@@ -131,7 +131,10 @@ def check(source, cli):
     assert len(names) == 8
     # The catalog README at skills/ is not part of an installable skill.
     source_before = inventory(source / 'skills')
-    expected = {path: value for path, value in source_before.items() if path.split('/')[0] in names}
+    # The CLI excludes cache directories; still retain them in source_before
+    # so the final integrity check detects changes to the owner's local cache.
+    expected = {path: value for path, value in source_before.items()
+                if path.split('/')[0] in names and '__pycache__' not in Path(path).parts[:-1]}
     commands = []
     with tempfile.TemporaryDirectory(prefix='skills-install-check-') as folder:
         project = Path(folder)
