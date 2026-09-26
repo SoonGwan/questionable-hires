@@ -71,8 +71,9 @@ release requirements. Older dated validations remain at their actual sources.
 1. Use completed scoped original reviews and existing counter reconciliations;
    retain missing/incomplete evidence rather than repairing past transcripts.
    In particular, direct initial untracked-file modes were not captured in
-   integration05. Future measured fixtures need direct pre-model preservation
-   evidence; a replay cannot establish those historical initial modes. Identify
+   integration05. [Future pre-model file capture](../benchmarks/INITIAL-PROJECT-FILES-CAPTURE-01.md)
+   now records actual byte digests and permission bits; a replay cannot establish
+   those historical initial modes. Identify
    unnecessary repairs, duplicate setup or unresolved coverage before skill edits.
 2. Investigate all eight roles with distinct relevant developer workflows and a
    simple control alongside repeated work. Search historical tasks before choosing

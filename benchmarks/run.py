@@ -207,19 +207,21 @@ def prepare_repository(source, workspace):
     return command(['git', 'rev-parse', 'HEAD'], workspace)
 
 
-def resource_manifest(root):
-    """Inventory installed bytes/modes without following symlink targets."""
+def resource_manifest(root, *, exclude=()):
+    """Inventory regular-file bytes/modes and links without reading link targets."""
     for candidate in (root.parent, root):
         if candidate.is_symlink():
             return {'.': dict(kind='symlink-root', target=os.readlink(candidate))}
     manifest = {}
     for path in sorted(root.rglob('*')):
         name = path.relative_to(root).as_posix()
+        if any(name == prefix or name.startswith(prefix + '/') for prefix in exclude):
+            continue
         if path.is_symlink():
             manifest[name] = dict(kind='symlink', target=os.readlink(path))
         elif path.is_file():
             manifest[name] = dict(kind='file', sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
-                                  mode=path.stat().st_mode & 0o777)
+                                  mode=path.stat().st_mode & 0o7777)
     return manifest
 
 
@@ -292,6 +294,9 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
         execution = 'external-container'
     initial_index = preserve_collector_index(workspace, cell, 'before-model')
     (cell / 'git-index.before-model.json').write_text(json.dumps(initial_index, indent=2) + '\n')
+    initial_files = json.dumps(resource_manifest(workspace, exclude=('.git', '.agents/skills')),
+                              indent=2, sort_keys=True) + '\n'
+    (cell / 'project-files.before-model.json').write_text(initial_files)
     started = time.monotonic()
     process = subprocess.Popen(args, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
     timed_out = False
@@ -359,6 +364,11 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
             "resource_diagnostics": resource_diagnostics}
     meta['pre_collection_index'] = collector_index
     meta['pre_model_index'] = initial_index
+    meta['pre_model_project_files'] = dict(
+        local_artifact='project-files.before-model.json',
+        sha256=hashlib.sha256(initial_files.encode()).hexdigest(),
+        excluded_prefixes=['.git', '.agents/skills'],
+        limitation='Local regular-file bytes/modes and symlink targets before model execution; not directory metadata, an atomic snapshot, transient-change evidence, or an automatic preservation verdict. Raw inventory is not exported.')
     comparable = initial_index['status'] == collector_index['status'] == 'retained'
     meta['index_comparison'] = dict(
         status='observed' if comparable else 'unknown',

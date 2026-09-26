@@ -34,6 +34,11 @@ whole-task tokens and faster completion. No completed update or broad saving.
 
 ## Local functionality and delivery evidence
 
+- [Initial project-file capture](INITIAL-PROJECT-FILES-CAPTURE-01.md),2026-09-27,
+  parent `ca71b596`: future measurements retain pre-model untracked/ignored file
+  digests and permission bits locally.45 focused local tests pass; historical
+  integration05 modes remain unknown. No skill/model efficiency claim.
+
 - [Local validation](RELEASE-VALIDATION-BA2713D5.md),2026-09-27,`ba2713d5`:
   macOS/Python3.11.6 checkout1,250 discovered/17 skipped; Git-free archive1,250/47
   skipped,zero failures. Cached CLI install8 skills/51 files/25 command exits and
