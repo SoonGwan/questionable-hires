@@ -77,6 +77,47 @@ No post-timing author process is credited to model costs or original work.
 Native assertion/binding and complete value review, source-capture matching and
 release/environment limitations remain required before an unqualified score.
 
+## Separate author Editor completion controls
+
+[Recorded controls](results/all-eight-current-05/author-editor-checkpoints.json)
+verify the explicit task requirement that dependent checkpoints execute on
+conforming production. Complete disposable modules retain each delivered test
+suite and supplied support unchanged. Only shallow dict(self.settings) becomes
+deepcopy(self.settings) in the authored conforming copy; original model workspaces
+and original production remain unchanged. This is not a repair of the original
+one-failure regression run or an efficiency measurement.
+
+On Python3.11.6, actual native module-mode unittest executes3/3 passing methods in
+both arms. Same-process prechecks verify test_editor.Editor is editor.Editor and
+test_editor.writes is test_support.writes. Independent faults then produce the
+intended behavioral assertions in each delivered suite:
+
+| Fault in complete conforming copy | Baseline assertion | Current assertion |
+| --- | --- | --- |
+| Restore shallow pending snapshot | Full payload dark versus blue | Full payload dark versus solarized |
+| Save current revision instead of save-entry revision | assertTrue(dirty): False | assertTrue(dirty): False |
+| Never mark saved revision | assertFalse(dirty): True | assertFalse(dirty): True |
+
+All six mutants exit1 with an AssertionError, not setup/import/timeout errors.
+The full delayed stored payload/current settings and dirty checkpoints execute
+on conforming code. Original shallow code still fails before acknowledgment;
+these new controls do not retroactively mark its later assertions as observed.
+Both delivered suites detect all three faults, without a comparative quality gain.
+
+The existing Con Artist audit helper is byte-identical to measured `75183f2f`.
+Two native normal executions and six mutant executions are retained; shared normal
+observations referenced within each batch are not additional executions. Every
+executed check is nontruncated and not timed out. Per-audit selected bytes/modes,
+guarded authored-copy inventory and owned scratch removal hold. The navigation
+tool transcript was truncated; the saved complete report is the assertion evidence,
+distinct from a helper-level truncation. Private originals stay local; published
+paths are redacted. No model invocation, production change or new harness is added.
+
+한국어: 첫 snapshot 실패 뒤 실행되지 않은 검사가 올바른 구현에서는 실제
+실행되는지 별도 작성자 복사본으로 확인했다. 두 전달 테스트 모두3개 통과하며
+snapshot·새 편집 dirty·편집 없는 clean의 독립 결함3개를 실제 assertion으로
+거부한다. 원래 모델 실행이나 비용을 수정하지 않고 비교 우월성도 주장하지 않는다.
+
 한국어:16회 최종 파일·추적 파일 모드·인덱스·설치 리소스 대조는 명시한 범위에서
 일치한다. 초기 미추적 파일 모드의 직접 증거는 없으며 과장하지 않는다. SQLite
 첫 단계는 원본 기록에서 복구했고 재실행하지 않았다. 별도 사후 반환값 대조는

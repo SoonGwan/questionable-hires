@@ -3,6 +3,9 @@
 Decision checkpoint **2026-09-27, integration05 bundle `75183f2f`**.
 Recorded costs are reconciled; native quality review remains incomplete. [Original-evidence follow-up](INTEGRATION05-QUALITY-FOLLOWUP.md)
 verifies scoped final-state preservation and retains test-plumbing/capture limitations. This index does not turn older measurements into evidence for new files.
+Separate author Editor controls now confirm both delivered suites execute required
+completion checkpoints on conforming copies and reject three contract faults;
+these post-timing controls are not original model work or comparative gains.
 The owner objective remains better developer work across all eight roles, fewer
 whole-task tokens and faster completion. No completed update or broad saving.
 
