@@ -198,6 +198,53 @@ owner objective remain unfinished.
 복구했다. 평가 기준의 수정 제안은 모델에게 명시적으로 요청되지 않았으므로
 미제안을 숨은 실패 조건으로 쓰지 않는다. 원래 기준·답변·비용은 그대로 보존한다.
 
+## Receipt original revision comparison
+
+Both ledger-delivery-b results support the explicit verification task: the committed
+return-only change is incomplete, not repaired or reported as fixed. Actual compared
+revisions are721139585aea166e10dd4e06fd6f35152e7fdc61 and
+562854580f33f36e06a2ee05755eb8d7737608d8. Both run identical current five-method
+tests and schema against separate complete revision copies inside the project.
+Native tests perform real SQLite writes and use a new connection for each balance
+read. Both runs have2 retry AssertionErrors and3 passing controls, native exit1.
+
+| Retry tuple | Before | After | Required |
+| --- | --- | --- | --- |
+| Credit |(True,250) |(False,250) |(False,125) |
+| Debit |(True,−100) |(False,−100) |(False,−50) |
+
+Complete original tool-output derivatives retain both five-method suites:
+[baseline line31](results/all-eight-current-05/baseline/ledger-delivery-b--baseline--1/native-tool-output-line-31.txt),
+[current line32](results/all-eight-current-05/current/ledger-delivery-b--skill--1/native-tool-output-line-32.txt).
+[Parsed original helper observation](results/all-eight-current-05/current/ledger-delivery-b--skill--1/native-comparison-observation.json)
+is extracted from that current tool output, not a new helper execution. Both native
+checks are nontruncated and not timed out; fixed test/schema hashes, full revisions,
+copy-local import observations and individual native exits remain accessible.
+
+Provenance differs: baseline verifies imported implementation/test paths, actual
+apply_event identity and five collected tests in a separate process, then launches
+the native suite from the same copy root with PYTHONPATH removed/no user site.
+Current's module-mode helper verifies copy-local imports inside each native check.
+Do not describe baseline's import-only check as same-process native provenance.
+The task requires copy-local import evidence, without imposing the stronger
+same-process requirement used by the separate Con Artist task. This difference
+does not justify silently adding a new failure criterion or broad quality advantage.
+
+Current helper CLI0 reports collected observations; before/after native exits1
+are recorded separately. It does not certify a completed fix. Both final answers
+preserve actual remaining wrong balances, controls, original working changes and
+scope. Baseline retains its own original byte/mode/mtime inventory; current retains
+the whole-tree guard and selected bytes/modes. Both report project-local test and
+comparison-copy cleanup; scoped final artifacts agree. No author replay, production
+repair or extra delivered harness was needed. Integration05 costs and the remaining
+all-role review are unchanged.
+
+한국어:Receipt 양쪽은 같은5개 테스트·스키마로 실제 SQLite를 실행하고 새 연결로
+잔액을 읽었다. 전후 모두 재시도2개 실패·대조3개 통과이며 반환만 바뀐 미완성
+수정을 정확히 보고했다. 미적용 import 확인은 별도 프로세스, 적용은 실제
+테스트 프로세스 내부라는 차이를 보존한다. helper의0 종료를 수정 완료로
+해석하지 않으며 원본 실행·비용·작업 파일을 고치지 않는다.
+
 한국어:16회 최종 파일·추적 파일 모드·인덱스·설치 리소스 대조는 명시한 범위에서
 일치한다. 초기 미추적 파일 모드의 직접 증거는 없으며 과장하지 않는다. SQLite
 첫 단계는 원본 기록에서 복구했고 재실행하지 않았다. 별도 사후 반환값 대조는
