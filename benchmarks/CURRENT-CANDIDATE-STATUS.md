@@ -1,25 +1,24 @@
 # Current candidate: whole-task improvement remains unproven
 
-Decision checkpoint **2026-09-27, model-choice01 matching-skill bundle `6701069f`**.
-[Same-task Astra/Sol comparison](ALL-EIGHT-MODEL-CHOICE-01-REVIEW.md) is declined:
-Sol tokens+39.23%,time−0.61%,no pair improves both; two scope violations and
-protocol/exposure limitations retained. This is model configuration evidence,
-not a skill change, no-skill control or completed update.
+Decision checkpoint **2026-09-27**, on repository `ba1c5d82`.
+The owner objective is better developer work across **all eight roles**, fewer
+**whole-task input+output tokens**, and faster completion. It remains unmet.
+No complete update or general efficiency claim is supported.
 
-Integration05 bundle `75183f2f` costs are reconciled; [scoped all16 native review](ALL-EIGHT-CURRENT-05-REVIEW.md)
-is complete with scope, criterion and artifact evidence limitations. [Original-evidence follow-up](INTEGRATION05-QUALITY-FOLLOWUP.md)
-verifies scoped final-state preservation and retains test-plumbing/capture limitations. This index does not turn older measurements into evidence for new files.
-Separate author Editor controls now confirm both delivered suites execute required
-completion checkpoints on conforming copies and reject three contract faults;
-these post-timing controls are not original model work or comparative gains.
-The original follow-up now details Store, Exorcist, Receipt and Necromancer task
-outcomes, retaining the Exorcist criterion-visibility mismatch and native/coordinator
-exit distinctions. The scoped review also covers Friday, Con Artist and Hostage;
-unqualified quality/release clearance remains unproven.
-The owner objective remains better developer work across all eight roles, fewer
-whole-task tokens and faster completion. No completed update or broad saving.
+The [model-choice01 comparison](ALL-EIGHT-MODEL-CHOICE-01-REVIEW.md) measured
+matching skills from `6701069f`, one per task: Sol tokens+39.23%, time−0.61%,
+zero pairs improving both. The configuration is declined. The original
+[integration05 review](ALL-EIGHT-CURRENT-05-REVIEW.md), resource `75183f2f`,
+retains all16 attempts, unequal work, scope/criterion and preservation limitations.
+Its [follow-up](INTEGRATION05-QUALITY-FOLLOWUP.md) separates original model
+outcomes from later author controls. None measures subsequent skill changes.
 
-## Evidence that governs claims
+한국어: 2026-09-27 판단에서 전체8개 역할의 품질·전체 토큰·시간 목표는 미달이다.
+model-choice01(`6701069f`)은 토큰39.23% 증가·시간0.61% 감소로 채택하지 않는다.
+integration05(`75183f2f`)의 불리한 결과와 범위·평가·보존 한계를 유지하며,
+이전 측정이나 작성자 재검사를 현재 스킬의 성능으로 바꾸지 않는다.
+
+## Model evidence and decisions
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
@@ -33,190 +32,52 @@ whole-task tokens and faster completion. No completed update or broad saving.
 | [External SWE-Lite pilot01](SWE-LITE-PILOT-01-REVIEW.md),2026-09-22,`8ee6c56` |4 cells; required Requests141/141 and pytest78/78 pass; tokens−0.71%,time+2.43%. Broader pytest check has fixture confound. | Public external authorship, not proven uncontaminated holdout; no general saving. |
 | [All-eight regression04](ALL-EIGHT-CURRENT-04-REVIEW.md),2026-09-21,`0d12dd9` |16 cells; tokens+20.39%,time−5.17%; scope-inclusive7/8 baseline and8/8 current. | Historical resource; exposed tasks, not general quality advantage. |
 
-한국어: model-choice01(2026-09-27,`6701069f`)에서 Sol은 합계 토큰39.23% 증가,
-시간0.61% 감소이며 동시 절감0개다. 범위 위반·초기 카탈로그 차이·과제별 스킬
-하나 설치라는 프로토콜 정정을 유지하고 설정을 채택하지 않는다.
 
-integration05(2026-09-27,`75183f2f`)의16회 원본 토큰은 일치하지만
-합계 토큰18.54%, 시간9.06% 증가다. 두 지표가 함께 줄어든 과제는 없고,
-명시된 과제의 원본 검토는 완료했지만 범위·평가·초기 미추적 모드의 증거 한계가
-남는다. 미적용 SQLite의 범위 위반도 보존하며
-이를 일반적인 스킬 우월성으로 해석하지 않는다. 8개 역할 전체의 목표는 미달이다.
+All observations are dated, resource-specific development evidence. Reused
+fixtures, n=1, shared host/cache, unequal verification and exposure limits prevent
+independent generalization. Cached input is included once; reasoning is not added
+again. The [featured pointer](featured.json) and frozen charts remain separate.
 
-## Local functionality and delivery evidence
+## Functionality and delivery, not model savings
 
-- [Tool-surface01 probe and collector correction](TOOL-SURFACE-01-REVIEW.md),
-  2026-09-27,execution sources`e70238f6`,CLI0.157.1,no installed skills:
-  apps_off first input−8.77% but whole tokens+21.06%,time+1.29%; host_off
-  cannot execute required work. No configuration adoption or all-eight claim.
-  Post-timing collector now flags item-level errors without automatically
-  rescoring tasks; actual failing-before regression,36 checkout/Git-free controls.
-  한국어: 앱 제외의 첫 입력 감소는 전체 절감이 아니고 실행 호스트 제외는 작업 실패다.
-  오류 진단만 보완했으며 모델 성능·출시 검증으로 확대하지 않는다.
+| Checkpoint / date / resource | Evidence and limit |
+| --- | --- |
+| [Tool-surface01](TOOL-SURFACE-01-REVIEW.md),2026-09-27,execution `e70238f6` | No installed skills. Apps-off first input−8.77%, whole tokens+21.06%, time+1.29%; host-off cannot execute. Neither adopted. Post-timing item-error diagnostics:36 checkout/Git-free controls; no automatic task rescoring. |
+| [Receipt completion02](RECEIPT-UNITTEST-COMPLETION-02.md),2026-09-27,`6701069f` | Both unittest modes reject missing/contradictory completion.198 Receipt tests,17 Git-free controls and isolated all8 install resource checks. No model gain or remote/platform release claim. [Module-only predecessor](RECEIPT-NATIVE-COMPLETION-01.md) remains historical. |
+| [Receipt guard I/O01](RECEIPT-GUARD-IO-01.md),2026-09-27,parent `d4bacdf6`,skill `6701069f` | Single-pass prototype misses a watched-file mutation; rejected and helper restored.15 native checkout/Git-free controls. Under1ms author savings are not model gains. |
+| [Native transcript prototype01](NATIVE-TRANSCRIPT-FORMAT-01.md),2026-09-27,parent `8200cfc0` | Rejected:30 controls pass but retained observations grow265/805 characters. Original skill files restored; no token claim. |
+| [Local release validation](RELEASE-VALIDATION-BA2713D5.md),2026-09-27,`ba2713d5` | Historical checkout1,250/17 skipped,archive1,250/47 skipped,zero failures; cached local install. Does not cover later changes. [Earlier platform checkpoint](RELEASE-VALIDATION-2C7E036.md) is resource-specific; no current hosted matrix success. |
+| [Installed behavior](INSTALLED-BEHAVIOR-75183F2F.json),2026-09-27,`75183f2f` | Historical8 skills/51 files,9 entrypoints/25 exits and scoped async/native checks. Not current remote installation. |
+| [Landing token breakdown](../docs/LANDING-TOKEN-BREAKDOWN-2026-09-27.md),2026-09-27,deployed `1acaf4a4` | Bilingual whole-task cost display and website evidence. [Browser](../docs/LANDING-BROWSER-2026-09-27.md) and [evidence-delivery](../docs/LANDING-EVIDENCE-DELIVERY-2026-09-27.md) checks have their own older deployed resources; no skill-efficiency implication. |
+| [Initial project capture](INITIAL-PROJECT-FILES-CAPTURE-01.md),2026-09-27,parent `ca71b596` |45 local controls; future initial byte/mode inventories. Historical untracked-mode gaps remain unknown. |
+| [Remote install01](REMOTE-INSTALL-01.md),2026-09-22,`5e6beab` | Existing-authentication/cached CLI evidence, not anonymous or current remote release. [Public-history review](PUBLIC-HISTORY-REVIEW-01.md),`4174c18`,remains incomplete; [reading derivatives](results/public-path-derivatives-01/README.md) preserve originals. |
 
-- [Receipt guard I/O01 rejection](RECEIPT-GUARD-IO-01.md),2026-09-27,
-  repository`d4bacdf6`,unchanged skill resource`6701069f`: single-pass prototype
-  misses a watched-file mutation that the original detects. Helper restored;
-  new native regression passes with15 checkout/Git-free controls and fails on
-  the rejected helper. Under1ms author pass savings are not whole-task/token gains.
-  한국어: 보존 검사 약화를 실제 반례로 확인해 시제품을 폐기했다. 도구 변경 없이
-  회귀 검사만 보완했으며 전체 성능 개선이나 출시 검증은 아니다.
+한국어: 로컬 기능 검사·설치·모델 측정·웹사이트 검증은 별개다. 도구가 막혀
+작업하지 못한 실행은 절감이 아니다. 건너뛴 검사를 통과로 세지 않으며 과거
+커밋의 검증을 현재 파일에 소급하지 않는다. 공개 이력·최종 출시 검증은 미완료다.
 
-- [Evidence delivery and language links](../docs/LANDING-EVIDENCE-DELIVERY-2026-09-27.md),
-  2026-09-27,deployed`0c6223d3`:16 archive tests;14 public open-table layouts,
-  new-tab root language navigation and3 byte-identical evidence downloads pass.
-  Dated integration05 costs are now viewable on-site. No model-efficiency gain.
+## Remaining work
 
-- [Production browser checks](../docs/LANDING-BROWSER-2026-09-27.md),2026-09-27,
-  deployed `ba2713d5`:14 bilingual responsive layouts and local/public browser
-  interactions pass. Website evidence only; no model efficiency claim.
+Target an evidenced avoidable operation while preserving required native checks,
+assertions, scope and artifact integrity. Search the linked reports and histories
+before repeating an approach; compression, forced-helper, generic discovery,
+model/effort switches and mutable-file guard merging have already been tested.
+Do not repeat exposed tasks until favorable or duplicate the response-cost analyzer.
 
-- [Initial project-file capture](INITIAL-PROJECT-FILES-CAPTURE-01.md),2026-09-27,
-  parent `ca71b596`: future measurements retain pre-model untracked/ignored file
-  digests and permission bits locally.45 focused local tests pass; historical
-  integration05 modes remain unknown. No skill/model efficiency claim.
+Freeze a distinct mechanism and representative workflows before measurement.
+Inspect original contexts, actual tool outputs, required outcomes and every attempt;
+prove lower whole-task tokens **and** faster time without losing developer quality
+across all8 before claiming the requested update. Later author replay cannot repair
+original evidence. Revalidate affected installation/platform/site behavior when
+its inputs change. [Approved CI removal](../docs/PUBLIC-LAUNCH.md) does not imply
+current hosted success. Synchronize both README languages for capability/claim
+changes and use the existing featured sync script for featured evidence changes.
 
-- [Local validation](RELEASE-VALIDATION-BA2713D5.md),2026-09-27,`ba2713d5`:
-  macOS/Python3.11.6 checkout1,250 discovered/17 skipped; Git-free archive1,250/47
-  skipped,zero failures. Cached CLI install8 skills/51 files/25 command exits and
-  selected installed behavior verified. No model gain, remote or hosted matrix claim.
+## Preserved chronology
 
-- [Installed behavior](INSTALLED-BEHAVIOR-75183F2F.json),2026-09-27,`75183f2f`:
-  cached local CLI copies8 skills/51 files exactly,9 entrypoints and25 command
-  exits match expectations. Actual native audit phases0/0/0/1, wrong binding
-  incomplete7, child failure17 and timeout/cleanup124. Installed-helper tests
-  separately exercise guarded/unguarded/setup-failing async sequences. These are
-  authored local integration controls, not model performance or remote installation.
-- [Full local validation](RELEASE-VALIDATION-6C099D68.md),2026-09-27,`6c099d68`:
-  macOS/Python3.11.6 checkout1,239 discovered/17 skipped and archive1,227/51
-  skipped,zero failures. This earlier resource does not cover later reference edits.
-- [Earlier platform checkpoint](RELEASE-VALIDATION-2C7E036.md),2026-09-22,`2c7e036`:
-  macOS/Python3.11 and Linux/Python3.12 local checks pass at that pinned resource.
-  Its historical hosted run35630364251 failed before steps. No current successful
-  hosted version matrix is captured; do not infer a current billing/account state.
-- [Authenticated remote install01](REMOTE-INSTALL-01.md),2026-09-22,`5e6beab`, uses existing
-  credentials/cached CLI. Not anonymous access or a current remote release check.
-- [Public-history review01](PUBLIC-HISTORY-REVIEW-01.md),2026-09-22,`4174c18`, remains incomplete.
-  [Labeled reading derivatives](results/public-path-derivatives-01/README.md) retain
-  originals/history and source hashes; no history rewrite or release clearance.
-
-한국어: 로컬 테스트, 실제 설치, 모델 작업 성능, 다른 플랫폼·호스팅 검증은
-서로 다른 증거다. 건너뛴 검사를 통과로 세지 않으며 이전 커밋의 검증을 현재
-파일에 소급하지 않는다. 공개 이력 검토와 최종 릴리스 준비도 미완료다.
-
-## Scoped candidate and next required work
-
-
-[Receipt unittest completion02](RECEIPT-UNITTEST-COMPLETION-02.md),2026-09-27,
-candidate on parent`3dac549a`, extends the correction to the default bootstrap:
-both unittest modes stop after missing/contradictory completion. Final Receipt198
-tests and Git-free17 controls pass. All8 resources match an isolated repository
-installer copy; installed Receipt ordinary/interrupted default CLI paths behave
-as required. No fresh model cost, remote-install or broader platform claim.
-The prior module-only checkpoint below is historical and the preceding index is
-retained in [dated history](CANDIDATE-HISTORY-2026-09-27-BEFORE-RECEIPT-BOOTSTRAP-COMPLETION.md).
-
-한국어: 기본 경로까지 완료 결과 확인을 보강했고 로컬 검사·설치 동작을 확인했다.
-실제 모델의 전체8개 역할 품질·토큰·시간 목표는 계속 미달이다.
-
-
-[Receipt module completion01](RECEIPT-NATIVE-COMPLETION-01.md),2026-09-27,
-candidate on parent`96d43558`, corrects native body early-exit and shutdown/status
-contradictions:missing completed unittest results stop later comparisons. Final16
-native controls and Git-free source-copy controls pass; draft196 Receipt tests
-precede the final empty-exit compatibility adjustment. Exact source hashes and
-original/separate author evidence remain linked. No new model saving or full
-release claim; integration05 still measures`75183f2f`. Previous index is preserved
-in [dated history](CANDIDATE-HISTORY-2026-09-27-BEFORE-RECEIPT-COMPLETION.md).
-
-한국어: Receipt의 검사 중 종료·결과 불일치 처리를 보강했다. 최종 네이티브16개
-검사는 통과했지만 모델 토큰·시간 비교는 없으며 전체8개 역할 목표는 미달이다.
-
-
-
-[Native transcript output prototype01](NATIVE-TRANSCRIPT-FORMAT-01.md),2026-09-27,
-against `8200cfc0`, is rejected:30 authored controls pass but formatting identical
-retained `6c099d68` observations adds265/805 characters. Character arithmetic is
-not a model cost result. All three modified skill/test files are restored; no new
-formatter or capability is adopted. Do not repeat this representation-only route
-without a different evidenced mechanism.
-
-한국어: 직접 출력 시제품은 기존 원본 기록 대비 더 커져 채택하지 않았다.
-30개 로컬 검사 통과는 모델 절감 근거가 아니며 기존 스킬 파일은 복원했다.
-
-
-[Native-split02 original review](NATIVE-SPLIT-02-REVIEW.md) now inspects all six
-retained outcomes and final artifacts without rerunning model tasks. Five native
-captures have no outer truncation marker; predecessor/multiple retains391-token cutoff. Candidate
-versus predecessor sums tokens−9.35%,time−2.32%, but versus no skill tokens+43.05%.
-No broad quality/efficiency gain. Shared-support criterion wording and historical
-initial-mode/current-index limits stay explicit.
-The previous index is preserved in [dated history](CANDIDATE-HISTORY-2026-09-27-BEFORE-NATIVE-SPLIT-REVIEW.md).
-
-한국어: 네이티브 비교6회의 원본 검토와 최종 파일 확인을 완료했지만 출력 누락·
-평가 문구·인덱스 한계를 유지한다. 이전 버전 대비 합계 비용 감소는 전체 스킬
-미적용 대비 개선이 아니며 전체8개 역할 목표는 미달이다.
-
-[Path-selection transfer01](PATH-SELECTION-01-REVIEW.md) completes the four frozen
-Exorcist sessions on new authored fixtures with unchanged resource`9fdee801`.
-Both conditions identify the actual cache/path or retained-binding mechanism;
-all six-response counters reconcile. Both skill cells are faster but use more
-tokens. Exact entry bodies are initially injected and later reread; existing
-context-exposure limits prohibit treating every reread as removable overhead.
-No new skill change or general savings follows. The prior decision index is
-preserved in [dated history](CANDIDATE-HISTORY-2026-09-27-BEFORE-PATH-SELECTION.md).
-
-한국어: 경로 선택 진단4회(2026-09-27,스킬 자원`9fdee801`,입력`3ff3fa85`)는
-원본 과제를 뒷받침하지만 합계 토큰5.40% 증가·시간18.75% 감소다. 두 조건 모두
-원인을 찾았고 동시 절감 과제는 없다. 전체8개 역할의 목표는 계속 미달이다.
-
-[Native interpreter route01](NATIVE-INTERPRETER-ROUTE-01.md),2026-09-27,`e918d02d`,
-addresses repeated unavailable-executable launches and masked probe exits in
-Necromancer. Metadata/catalog checks pass; [six-cell costs](INTERPRETER-ROUTE-01-COSTS.md)
-are mixed, with no aggregate joint saving. [Complete scoped review](INTERPRETER-ROUTE-01-REVIEW.md)
-supports all six explicit tasks without a comparative quality advantage.
-[Original-evidence follow-up](INTERPRETER-ROUTE-01-FOLLOWUP.md) confirms scoped
-six-cell artifact preservation and recovers two omitted native prefixes, retaining
-unequal extra coverage and the candidate coordinator's unasserted exit-vector limit.
-Integration05 still belongs to `75183f2f`, not this candidate.
-The [frozen interpreter comparison](INTERPRETER-ROUTE-01-PROTOCOL.md) specifies
-six serial cells against predecessor/no-skill, with documented and unspecified
-interpreters. Source and cancellation controls are exposed development material;
-preparation and authored control passes are not measured model savings. All six
-model attempts now have reconciled original counters, without an efficiency promotion.
-
-한국어: 실행기 비교 6회는 이전 후보·미적용과 비교하도록 사전 고정했다.
-기존에 사용한 코드와 취소 회귀를 재사용하므로 독립 검증이 아니며,
-준비·작성자 테스트 통과를 모델 비용 개선으로 계산하지 않는다. 6회 원본
-토큰은 일치하지만 합계 두 비용의 동시 개선은 없다. 후속 검토는 명시된6회
-과제를 뒷받침하며 전체8개 역할의 품질·비용 목표는 계속 미달이다.
-
-
-Retain all16 reviewed observations and unresolved preservation/criterion limits;
-author replay cannot replace original evidence. Target a concrete avoidable
-operation with its required controls preserved, and validate on distinct relevant
-workflows alongside simple controls. Reused development cases are not independent
-validation; don't repeat exposed experiments until favorable. Existing compression,
-forced-helper and generic discovery rewrites are historical attempts, not new ideas.
-
-Use the existing response-cost analyzer; no duplicate profiler. Its native
-`case_id` manifest compatibility fix is after model timing and changes no recorded
-counts. Require lower tokens AND faster time alongside the required outcomes
-before an efficiency claim. Revalidate affected functionality, installation and
-delivery when relevant inputs change; unchanged resources keep their dated evidence.
-[Approved CI removal](../docs/PUBLIC-LAUNCH.md) leaves historical hosted failures
-outside current release gates. Broader platform claims still need actual evidence.
-
-Keep [featured.json](featured.json) and frozen charts unchanged. Representative
-claim changes synchronize both README languages with the existing sync script.
-
-## Preserved dated history
-
-[Index before scoped integration05 review](CANDIDATE-STATUS-2026-09-27-BEFORE-INTEGRATION05-REVIEW.md)
-preserves preceding pending labels and unqualified-release limits as historical.
-
-[Full preceding dated index](CANDIDATE-STATUS-2026-09-27-BEFORE-INTEGRATION05-COSTS.md)
-preserves every earlier positive/mixed/adverse result, preparation note and release
-limitation with same-directory evidence links. It is explicitly historical.
+The [complete pre-consolidation index](CANDIDATE-HISTORY-2026-09-27-BEFORE-INDEX-CONSOLIDATION.md)
+preserves every preceding link, mixed/adverse observation and limitation unchanged.
+Its same-directory links retain the per-tool chronology and preceding snapshots.
+[Integration05 pre-cost index](CANDIDATE-STATUS-2026-09-27-BEFORE-INTEGRATION05-COSTS.md),
 [2026-09-21 snapshot B](CANDIDATE-HISTORY-2026-09-21-B.md) and
-[earlier chronological history](CANDIDATE-HISTORY-2026-09-21.md) remain intact.
+[earlier chronological history](CANDIDATE-HISTORY-2026-09-21.md) remain historical.
