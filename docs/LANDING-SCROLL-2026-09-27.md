@@ -28,7 +28,21 @@ All12 existing landing tests,15 generated-file check and featured synchronizatio
 check pass. This is local failing-before/passing-after behavior, not a model cost
 comparison or hosted release assertion. Public delivery is recorded separately.
 
+## Hosted delivery
+
+Release `cd9de7ce` is live on the dedicated Mac/Cloudflare origin. The same held
+translation/cached-return fixture passes against ordinary public URLs at390px.
+[Public outcome](../benchmarks/results/landing-scroll-public-cd9de7ce/result.json)
+retains both table positions in both directions, no page errors and the original
+neighboring assertions. [Release/source audit](../benchmarks/results/landing-scroll-public-cd9de7ce/audit.json)
+records public health and byte-for-byte matching of the served app.js to the fix.
+The original failing/local passing observations remain unchanged; hosted checks
+do not relabel them or alter any graph measurement.
+
 한국어: 언어 전환으로 표 HTML이 교체되면서 두 표의 가로 위치가0으로 돌아갔다.
 실제 브라우저의 동일한 검사에서 수정 전 실패·수정 후 통과를 확인했다. 번역
 대기 중 이동과 캐시된 언어로 복귀할 때 열린 표의 위치·그래프·펼침 상태를
 유지한다. 기록의0.4·1은 UI 스크롤 비율이며 실험 성능 수치가 아니다.
+
+공개 릴리스cd9de7ce에서도 동일한 검사가 통과했고 실제 제공된 JS가 수정본과
+일치한다. 원래 실패 기록과 로컬 통과 기록은 그대로 보존했다.
