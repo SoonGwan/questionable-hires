@@ -109,3 +109,20 @@ Historical model evidence is unchanged; these are local delivery checks.
 한국어: 소스`0c4d261e`을 개인 설치와 다운로드에 반영했다. 설치본9개 검사와
 전체8개 파일·권한 일치를 확인했다. 독립 패키지 검사에서 발견한 과거의 빈 출력
 기대값은 현재 실패 근거 보존 계약으로 수정했으며, 첫 실패 기록도 남겼다.
+
+## Public delivery
+
+Hosted release **`1f81be81393b4485d3d98eb10c83fc8d14045f7b`** is live at
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+[Seven public HTTPS observations](results/receipt-execution-evidence-01/public.json)
+verify health revision, both locale pages and canonical URLs, absence of noindex,
+robots, download/checksum identity and the unchanged integration07 evidence ZIP.
+All nine Receipt resources inside the fetched archive match current source bytes
+and modes. The page still identifies integration07's measured resource `1be35120`;
+this newer download is not relabeled as that experiment. No layout change or fresh
+browser interaction matrix is claimed. Four final standalone-package tests pass.
+
+한국어: 공개 배포`1f81be81`의 한영 페이지·주소·다운로드 해시와 Receipt9개
+파일·권한 일치를 확인했다. 기존 실험의 측정 자원과 수치는 유지한다. 전체8개
+품질·토큰·시간 동시 개선 목표는 여전히 미달이며 이번 배포는 오류 근거 보존 수정이다.
