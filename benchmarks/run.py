@@ -239,7 +239,7 @@ def resource_digest(root):
 
 def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
              skills_root=None, project_source=None, launcher=None,
-             workspace_root=None, persist_session=False):
+             workspace_root=None, persist_session=False, launcher_execution='external-container'):
     if project_source and case.get('working_files'):
         raise ValueError('working_files is only supported for authored fixtures')
     skills_root = skills_root or ROOT / "skills"
@@ -296,7 +296,7 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
     execution = 'host-workspace-write'
     if launcher:
         args = launcher(workspace, args)
-        execution = 'external-container'
+        execution = launcher_execution
     initial_index = preserve_collector_index(workspace, cell, 'before-model')
     (cell / 'git-index.before-model.json').write_text(json.dumps(initial_index, indent=2) + '\n')
     initial_files = json.dumps(resource_manifest(workspace, exclude=('.git', '.agents/skills')),
