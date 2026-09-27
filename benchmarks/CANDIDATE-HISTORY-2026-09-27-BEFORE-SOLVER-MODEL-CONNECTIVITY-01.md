@@ -93,16 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver model connectivity01,2026-09-27,parent`0d8ce3d4`:
-[first actual model attempt](SOLVER-MODEL-CONNECTIVITY-01.md) terminates with
-22,574 input+output tokens and zero tool calls. Guest readiness observed; model
-reports tool unavailable. Actual catalog exposure/cause unknown, no connectivity
-success, native grading or efficiency evidence. Scoped shell flag false but
-unified_exec remains true; no host-tool exclusion claim. Failure retained, no retry.
-한국어: 최초 모델 연결 확인은 도구 호출0회로 실패했다. 입력·출력22,574토큰을
-보존하며, 게스트 준비만 확인했다. 도구 노출 원인·호스트 도구 제외는 미검증이다.
-
-
 Solver MCP lifecycle01,2026-09-27,parent`e41e9e98`:
 [failed-before/repaired process controls](SOLVER-MCP-LIFECYCLE-01.md) stop startup/
 response failures and reject next requests; normal/repeated close and Git-free

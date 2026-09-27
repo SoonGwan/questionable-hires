@@ -1,0 +1,27 @@
+{
+  "cli_version": "codex-cli 0.157.1",
+  "observations": [
+    {
+      "command": "codex --strict-config ... features list",
+      "result": "Rejected; no model or VM launched"
+    },
+    {
+      "command": "codex --disable shell_tool --disable unified_exec --disable apps --disable multi_agent --disable plugins features list",
+      "observed": {
+        "shell_tool": false,
+        "unified_exec": true,
+        "apps": false,
+        "multi_agent": false,
+        "plugins": false
+      }
+    },
+    {
+      "command": "codex -c features.unified_exec=false -c features.shell_tool=false features list",
+      "observed": {
+        "shell_tool": false,
+        "unified_exec": true
+      }
+    }
+  ],
+  "author_assertion": "All-five-disabled assumption failed; discarded before launching. Connectivity-only launch retained unresolved tool exclusion explicitly."
+}
