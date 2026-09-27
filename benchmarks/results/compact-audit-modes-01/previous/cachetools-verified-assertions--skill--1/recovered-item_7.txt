@@ -1,0 +1,250 @@
+
+CASE correct COMMAND python3 -B -m unittest tests.test_lru.LRUCacheTest.test_lru tests.test_lru.LRUCacheTest.test_lru_getsizeof -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/correct
+VERIFIED tests.test_lru.LRUCacheTest.test_lru cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/tests/test_lru.py
+test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok
+VERIFIED tests.test_lru.LRUCacheTest.test_lru_getsizeof cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/tests/test_lru.py
+test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+OK
+EXIT 0
+
+CASE read COMMAND python3 -B -m unittest tests.test_lru.LRUCacheTest.test_lru tests.test_lru.LRUCacheTest.test_lru_getsizeof -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/read
+VERIFIED tests.test_lru.LRUCacheTest.test_lru cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/read/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/read/tests/test_lru.py
+test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ERROR
+VERIFIED tests.test_lru.LRUCacheTest.test_lru_getsizeof cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/read/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/read/tests/test_lru.py
+test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok
+
+======================================================================
+ERROR: test_lru (tests.test_lru.LRUCacheTest.test_lru)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/read/cachetools/__init__.py", line 68, in __getitem__
+    return self.__data[key]
+           ~~~~~~~~~~~^^^^^
+KeyError: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/read/tests/test_lru.py", line 26, in test_lru
+    self.assertEqual(cache[2], 2)
+                     ~~~~~^^^
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/read/cachetools/__init__.py", line 211, in __getitem__
+    value = cache_getitem(self, key)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/read/cachetools/__init__.py", line 70, in __getitem__
+    return self.__missing__(key)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/read/cachetools/__init__.py", line 97, in __missing__
+    raise KeyError(key)
+KeyError: 2
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+FAILED (errors=1)
+EXIT 1
+
+CASE overwrite COMMAND python3 -B -m unittest tests.test_lru.LRUCacheTest.test_lru tests.test_lru.LRUCacheTest.test_lru_getsizeof -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/overwrite
+VERIFIED tests.test_lru.LRUCacheTest.test_lru cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/overwrite/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/overwrite/tests/test_lru.py
+test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok
+VERIFIED tests.test_lru.LRUCacheTest.test_lru_getsizeof cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/overwrite/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/overwrite/tests/test_lru.py
+test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+OK
+EXIT 0
+
+CASE mru COMMAND python3 -B -m unittest tests.test_lru.LRUCacheTest.test_lru tests.test_lru.LRUCacheTest.test_lru_getsizeof -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/mru
+VERIFIED tests.test_lru.LRUCacheTest.test_lru cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/mru/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/mru/tests/test_lru.py
+test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ERROR
+VERIFIED tests.test_lru.LRUCacheTest.test_lru_getsizeof cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/mru/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/mru/tests/test_lru.py
+test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok
+
+======================================================================
+ERROR: test_lru (tests.test_lru.LRUCacheTest.test_lru)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/mru/cachetools/__init__.py", line 68, in __getitem__
+    return self.__data[key]
+           ~~~~~~~~~~~^^^^^
+KeyError: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/mru/tests/test_lru.py", line 19, in test_lru
+    self.assertEqual(cache[2], 2)
+                     ~~~~~^^^
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/mru/cachetools/__init__.py", line 211, in __getitem__
+    value = cache_getitem(self, key)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/mru/cachetools/__init__.py", line 70, in __getitem__
+    return self.__missing__(key)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/mru/cachetools/__init__.py", line 97, in __missing__
+    raise KeyError(key)
+KeyError: 2
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+FAILED (errors=1)
+EXIT 1
+
+CASE size COMMAND python3 -B -m unittest tests.test_lru.LRUCacheTest.test_lru tests.test_lru.LRUCacheTest.test_lru_getsizeof -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/size
+VERIFIED tests.test_lru.LRUCacheTest.test_lru cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/size/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/size/tests/test_lru.py
+test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok
+VERIFIED tests.test_lru.LRUCacheTest.test_lru_getsizeof cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/size/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/size/tests/test_lru.py
+test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... FAIL
+
+======================================================================
+FAIL: test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/size/tests/test_lru.py", line 48, in test_lru_getsizeof
+    self.assertEqual(len(cache), 1)
+AssertionError: 3 != 1
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+FAILED (failures=1)
+EXIT 1
+
+CASE correct COMMAND python3 -B -m unittest test_audit_stronger.Stronger.test_read -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/correct
+VERIFIED test_audit_stronger.Stronger.test_read cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/test_audit_stronger.py
+test_read (test_audit_stronger.Stronger.test_read) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+EXIT 0
+
+CASE read COMMAND python3 -B -m unittest test_audit_stronger.Stronger.test_read -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/read
+VERIFIED test_audit_stronger.Stronger.test_read cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/read/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/read/test_audit_stronger.py
+test_read (test_audit_stronger.Stronger.test_read) ... FAIL
+
+======================================================================
+FAIL: test_read (test_audit_stronger.Stronger.test_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/read/test_audit_stronger.py", line 11, in test_read
+    self.assertEqual(set(c), {1, 3})
+AssertionError: Items in the second set but not the first:
+1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)
+EXIT 1
+
+CASE correct COMMAND python3 -B -m unittest test_audit_stronger.Stronger.test_overwrite -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/correct
+VERIFIED test_audit_stronger.Stronger.test_overwrite cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/test_audit_stronger.py
+test_overwrite (test_audit_stronger.Stronger.test_overwrite) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+EXIT 0
+
+CASE overwrite COMMAND python3 -B -m unittest test_audit_stronger.Stronger.test_overwrite -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/overwrite
+VERIFIED test_audit_stronger.Stronger.test_overwrite cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/overwrite/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/overwrite/test_audit_stronger.py
+test_overwrite (test_audit_stronger.Stronger.test_overwrite) ... 
+  test_overwrite (test_audit_stronger.Stronger.test_overwrite) (weighted=False) ... FAIL
+  test_overwrite (test_audit_stronger.Stronger.test_overwrite) (weighted=True) ... FAIL
+
+======================================================================
+FAIL: test_overwrite (test_audit_stronger.Stronger.test_overwrite) (weighted=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/overwrite/test_audit_stronger.py", line 21, in test_overwrite
+    self.assertEqual(set(c), {1, 3})
+AssertionError: Items in the first set but not the second:
+2
+Items in the second set but not the first:
+1
+
+======================================================================
+FAIL: test_overwrite (test_audit_stronger.Stronger.test_overwrite) (weighted=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/overwrite/test_audit_stronger.py", line 21, in test_overwrite
+    self.assertEqual(set(c), {1, 3})
+AssertionError: Items in the second set but not the first:
+1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=2)
+EXIT 1
+
+CASE correct COMMAND python3 -B -m unittest test_audit_stronger.Stronger.test_mru -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/correct
+VERIFIED test_audit_stronger.Stronger.test_mru cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/test_audit_stronger.py
+test_mru (test_audit_stronger.Stronger.test_mru) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+EXIT 0
+
+CASE mru COMMAND python3 -B -m unittest test_audit_stronger.Stronger.test_mru -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/mru
+VERIFIED test_audit_stronger.Stronger.test_mru cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/mru/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/mru/test_audit_stronger.py
+test_mru (test_audit_stronger.Stronger.test_mru) ... FAIL
+
+======================================================================
+FAIL: test_mru (test_audit_stronger.Stronger.test_mru)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/mru/test_audit_stronger.py", line 28, in test_mru
+    self.assertEqual(set(c), {2, 3})
+AssertionError: Items in the first set but not the second:
+1
+Items in the second set but not the first:
+2
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)
+EXIT 1
+
+CASE correct COMMAND python3 -B -m unittest test_audit_stronger.Stronger.test_size -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/correct
+VERIFIED test_audit_stronger.Stronger.test_size cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/correct/test_audit_stronger.py
+test_size (test_audit_stronger.Stronger.test_size) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+EXIT 0
+
+CASE size COMMAND python3 -B -m unittest test_audit_stronger.Stronger.test_size -v CWD <WORKSPACE>/.lru-audit-pgw1rjpv/size
+VERIFIED test_audit_stronger.Stronger.test_size cachetools=<WORKSPACE>/.lru-audit-pgw1rjpv/size/cachetools/__init__.py test=<WORKSPACE>/.lru-audit-pgw1rjpv/size/test_audit_stronger.py
+test_size (test_audit_stronger.Stronger.test_size) ... FAIL
+
+======================================================================
+FAIL: test_size (test_audit_stronger.Stronger.test_size)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-pgw1rjpv/size/test_audit_stronger.py", line 34, in test_size
+    self.assertEqual(c.currsize, 3)
+AssertionError: 2 != 3
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)
+EXIT 1
+
+INTEGRITY: all original paths, file hashes and modes unchanged; owned copies removed
