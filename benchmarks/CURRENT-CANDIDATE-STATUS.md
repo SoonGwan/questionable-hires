@@ -95,7 +95,9 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 Solver model connectivity01,2026-09-27,parent`0d8ce3d4`:
 [first actual model attempt](SOLVER-MODEL-CONNECTIVITY-01.md) terminates with
-22,574 input+output tokens and zero tool calls. Guest readiness observed; model
+22,574 input+output tokens and zero guest command calls. Original rollout review
+recovers one CLI-omitted exec catalog lookup; native inventory registers the owned
+guest tool, but model catalog names/exclusion remain unknown. Guest readiness observed; model
 reports tool unavailable. Actual catalog exposure/cause unknown, no connectivity
 success, native grading or efficiency evidence. Scoped shell flag false but
 unified_exec remains true; no host-tool exclusion claim. Failure retained, no retry.
