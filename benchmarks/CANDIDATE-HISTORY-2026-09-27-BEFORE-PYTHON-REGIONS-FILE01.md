@@ -211,11 +211,3 @@ capability controls, not measured model savings. Original adverse evidence retai
 한국어: 실제 모델 비교는 토큰28.33%·시간4.20% 증가로 채택하지 않는다.
 후보 API는 사용되지 않았고 양쪽15개 직접 호출에 중복은 없었다. 작성자 기능
 검사를 모델 절감으로 바꾸지 않으며 전체 목표는 미달이다.
-
-[Python regions file01](PYTHON-REGIONS-FILE-01.md),2026-09-27,parent `cb896543`:
-ordinary static excerpt helper gains bounded `--path` input with unchanged stdin
-schema. Actual upstream5-definition file/stdin parity and23 affected tests pass
-in checkout/Git-free archive;source preserved. Zero models, not whole-task savings
-or a complete caller/contract review. English/Korean capabilities synchronized.
-한국어: 로컬 파일 직접 발췌 기능을 추가하고 실제 소스 일치·관련23개 검사를
-확인했다. 모델 비용·전체8개 성과는 미입증이며 기존 불리한 결과를 유지한다.

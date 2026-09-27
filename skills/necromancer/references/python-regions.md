@@ -1,8 +1,18 @@
 # Named Python excerpts
 
-Use only when the historical revision, path and relevant function names are
-already known. A short native source read needs no helper. To select functions
-from a large Python module without executing its code:
+Use when the current or historical source path and relevant function names are
+already known. A short native source read needs no helper. For a current file:
+
+```sh
+python3 /actual/skill/path/scripts/python_regions.py --path src/module.py --name Class.method --name other_function
+```
+
+`--path` reads at most2,000,001 bytes from the supplied file and does not execute
+its code. The original2MB limit still applies. `input_path` records the supplied
+path; hashes identify the bytes read, not Git identity, runtime binding or an
+atomic filesystem snapshot. File access/encoding/syntax errors exit2. The caller
+owns permitted paths and a process deadline; file access can block. Without
+`--path`, stdin behavior and report schema remain unchanged. For history:
 
 ```sh
 set -o pipefail

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Select named Python function regions from UTF-8 stdin without executing it."""
+"""Select named Python function regions from UTF-8 source without executing it."""
 import argparse
 import ast
 import bisect
 import hashlib
 import io
 import json
+from pathlib import Path
 import re
 import sys
 import tokenize
@@ -112,10 +113,20 @@ def select_regions(raw, names):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--name', action='append', required=True, help='Repeat; bare name matches all scopes, dotted name selects a scope')
+    parser.add_argument('--path', type=Path, help='Read a local source file instead of stdin; source code is not executed')
     args = parser.parse_args()
     try:
-        result = select_regions(sys.stdin.buffer.read(2_000_001), args.name)
-    except (ValueError, RecursionError) as error:
+        if args.path is None:
+            raw = sys.stdin.buffer.read(2_000_001)
+        else:
+            with args.path.open('rb') as stream:
+                raw = stream.read(2_000_001)
+        result = select_regions(raw, args.name)
+        if args.path is not None:
+            result['input_path'] = str(args.path)
+            result['limitation'] = result['limitation'].replace('Hash identifies stdin, not a Git revision.',
+                'Hash identifies bytes read from input_path, not a Git revision or atomic snapshot.')
+    except (OSError, ValueError, RecursionError) as error:
         parser.exit(2, 'Source regions unavailable: ' + str(error) + '\n')
     print(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
     return 0 if result['complete'] else 1
