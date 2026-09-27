@@ -189,7 +189,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 큰 네이티브 배치 출력은 [보관한 검사별 기록을 나눠 검토](skills/con-artist/references/native-unittest-batch.md)해
 출력 복구를 위한 재실행 없이 원본 증거를 유지합니다.
 
-**전체 작업의 비용 개선은 아직 입증되지 않았습니다.** [integration06 비용](benchmarks/ALL-EIGHT-CURRENT-06-COSTS.md)(2026-09-27, `1d0e92ac`)은 합계 토큰+16.95%, 실행 시간−10.00%이며 [원본의 한정된 검토](benchmarks/ALL-EIGHT-CURRENT-06-REVIEW.md)에 범위 위반·출력 복구·검사 차이를 보존합니다. 노출된8개 개발 과제의 결과로 독립 검증이 아닙니다.
+**전체 작업의 비용 개선은 아직 입증되지 않았습니다.** [integration07 비용](benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md)(2026-09-28, `1be35120`)은 합계 토큰+1.67%, 실행 시간−9.63%이며 동시 감소는2/8입니다. [원본 검토](benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md)에 검사량 차이와 출력 복구를 남겼으며, 한정된 결과는 유지됐지만 품질 우위는 입증되지 않았습니다. 노출된 개발 과제로 독립 검증이 아닙니다. 불리한 [과거 integration06](benchmarks/ALL-EIGHT-CURRENT-06-REVIEW.md)도 보존합니다.
 
 [integration05](benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md)
 (2026-09-27, `75183f2f`)의 노출된 개발 과제8개 비교는 합계 토큰18.54%, 시간9.06%

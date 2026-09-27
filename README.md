@@ -145,7 +145,7 @@ instead of resending a whole file; original/correct/faulty checks stay intact. F
 [inspect captured checks separately](skills/con-artist/references/native-unittest-batch.md)
 to preserve original evidence without rerunning checks.
 
-**Whole-task cost improvement remains unproven.** [Integration06 costs](benchmarks/ALL-EIGHT-CURRENT-06-COSTS.md) (2026-09-27, `1d0e92ac`): summed tokens +16.95%, CLI elapsed −10.00%; [scoped original review](benchmarks/ALL-EIGHT-CURRENT-06-REVIEW.md) retains scope violations, capture recovery and unequal work. This exposed eight-task screen is not independent validation.
+**Whole-task cost improvement remains unproven.** [Integration07 costs](benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md) (2026-09-28, `1be35120`): summed tokens +1.67%, CLI elapsed −9.63%; only 2/8 roles decrease both. [Original review](benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md) retains unequal checks and recovered output; bounded outcomes are preserved without showing quality superiority. These exposed development tasks are not independent validation. [Historical integration06](benchmarks/ALL-EIGHT-CURRENT-06-REVIEW.md) remains adverse and accessible.
 
 [Integration05](benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md)
 (2026-09-27, `75183f2f`) used 18.54% more summed tokens and 9.06% more time

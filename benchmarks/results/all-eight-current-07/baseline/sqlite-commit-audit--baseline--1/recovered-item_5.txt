@@ -1,0 +1,84 @@
+
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <same inline unittest runner> correct 
+CWD: <WORKSPACE>/.commit-audit-226_8t4h/correct
+BINDINGS VERIFIED in test process: <WORKSPACE>/.commit-audit-226_8t4h/correct
+test_receipts.accept is endpoint.handle_upload; endpoint._record is ledger.write_event
+
+EXISTING NATIVE RECEIPT TESTS
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.004s
+
+OK
+REACHABLE LEDGER CALLS: ['write_event', 'commit', 'close', 'write_event', 'commit', 'close']
+BINDINGS VERIFIED in test process: <WORKSPACE>/.commit-audit-226_8t4h/correct
+test_receipts.accept is endpoint.handle_upload; endpoint._record is ledger.write_event
+
+SAME STRONGER NATIVE ASSERTION
+test_acknowledges_binary_upload (__main__.DurableReceiptTests.test_acknowledges_binary_upload) ... NEW CONNECTION rows: [(10, b'previous'), (20, b'\x00\xffnew')] expected: [(10, b'previous'), (20, b'\x00\xffnew')]
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+REACHABLE LEDGER CALLS: ['write_event', 'commit', 'close']
+PROCESS EXIT: 0
+ONLY FAULT INJECTED:
+--- correct/ingest/ledger.py
++++ faulty/ingest/ledger.py
+@@ -6,7 +6,6 @@
+     try:
+         connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',
+                            (event_id, payload))
+-        connection.commit()
+     finally:
+         connection.close()
+     return {'accepted': event_id}
+
+
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <same inline unittest runner> faulty 
+CWD: <WORKSPACE>/.commit-audit-226_8t4h/faulty
+BINDINGS VERIFIED in test process: <WORKSPACE>/.commit-audit-226_8t4h/faulty
+test_receipts.accept is endpoint.handle_upload; endpoint._record is ledger.write_event
+
+EXISTING NATIVE RECEIPT TESTS
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+OK
+REACHABLE LEDGER CALLS: ['write_event', 'close', 'write_event', 'close']
+BINDINGS VERIFIED in test process: <WORKSPACE>/.commit-audit-226_8t4h/faulty
+test_receipts.accept is endpoint.handle_upload; endpoint._record is ledger.write_event
+
+SAME STRONGER NATIVE ASSERTION
+test_acknowledges_binary_upload (__main__.DurableReceiptTests.test_acknowledges_binary_upload) ... NEW CONNECTION rows: [(10, b'previous')] expected: [(10, b'previous'), (20, b'\x00\xffnew')]
+FAIL
+
+======================================================================
+FAIL: test_acknowledges_binary_upload (__main__.DurableReceiptTests.test_acknowledges_binary_upload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 59, in test_acknowledges_binary_upload
+AssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (20, b'\x00\xffnew')]
+
+Second list contains 1 additional elements.
+First extra element 1:
+(20, b'\x00\xffnew')
+
+- [(10, b'previous')]
++ [(10, b'previous'), (20, b'\x00\xffnew')] : missing committed data after successful upload
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)
+REACHABLE LEDGER CALLS: ['write_event', 'close']
+PROCESS EXIT: 1
+
+Original bytes and modes preserved; owned disposable copies removed: True
