@@ -38,7 +38,6 @@ was already qualified in the original September21 report, not a new discovery.
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
-| [urllib3 inline transfer02](URLLIB3-INLINE-TRANSFER-02-REVIEW.md),2026-09-27,execution`d8c894d2`,candidate`80c06e2e` | Two original real-source cells;tokens+23.22%,time+12.76%;0/1 joint. Both15 values/caller/contracts/ancestor history/preservation reviewed;partial CLI output recovered from original sessions. | Declined;candidate reads but does not invoke observer. Exposed n=1/fixed order/shared host/unequal optional work;no all8 gain. |
 | [Necromancer inline matrix01](NECROMANCER-INLINE-MATRIX-01-REVIEW.md),2026-09-27,execution`bf4d19ca`,candidate`80c06e2e` | Four original cells;tokens−3.82%,time−13.50%;1/2 joint reductions,invoice both worse. Both candidates actually call observer;required behavior/history/tests/preservation and response sums reviewed. | No general adoption;ordinary skills unchanged. Exposed n=1/unequal optional work/error recovery/shared host limits retained;no all8 gain. |
 | [Necromancer call matrix01](NECROMANCER-CALL-MATRIX-01-REVIEW.md),2026-09-27,execution`71798c5f`,candidate`c889175e` | Four original cells;tokens+2.24%,time−14.65%;0/2 joint reductions. Required caller/history/tests and source preservation reviewed;both render authoring errors/recovery charged. | Declined;neither candidate invokes helper,so no tool efficacy/all8 adoption. Per-response sums reconcile;ordinary skills unchanged. |
 | [Necromancer decision checks01](NECROMANCER-DECISION-CHECKS-01-REVIEW.md),2026-09-27,execution`1178cd88`,candidate`e5061da5` | Four original matching-skill cells; tokens+18.42%,time+3.04%;0/2 joint reductions. Required native behavior/history/source preservation reviewed; candidate probe error/recovery retained. Original per-response sums reconcile:invoice5/5 responses,render5/6; count alone is not savings. | Declined; ordinary skills unchanged. Exposed n=1/unequal optional work/shared host; no all8 saving. |
@@ -194,9 +193,3 @@ Its same-directory links retain the per-tool chronology and preceding snapshots.
 [Integration05 pre-cost index](CANDIDATE-STATUS-2026-09-27-BEFORE-INTEGRATION05-COSTS.md),
 [2026-09-21 snapshot B](CANDIDATE-HISTORY-2026-09-21-B.md) and
 [earlier chronological history](CANDIDATE-HISTORY-2026-09-21.md) remain historical.
-
-[urllib3 inline transfer02 review](URLLIB3-INLINE-TRANSFER-02-REVIEW.md),2026-09-27,
-`d8c894d2`:tokens156,290→192,583,time112.359→126.700s. Candidate does not invoke
-observer despite reading its interface/code. Keep ordinary skills unchanged.
-한국어: urllib3 실제 비교는 토큰23.22%·시간12.76% 증가로 채택하지 않는다.
-필수 작업과 원본 보존을 검토했지만 관찰기 사용은 없으며 전체 목표는 미달이다.
