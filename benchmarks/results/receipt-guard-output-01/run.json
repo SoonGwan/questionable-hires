@@ -1,0 +1,211 @@
+{
+  "identities": {
+    "fixture_sources": {
+      "history-invoice-01-cases.json": "6669c0e61c88c33c3a95d014916362eafbf511fa82dfd658b3386fd75306bebc",
+      "receipt-ledger-cases.json": "5aeac6200940dc4d29898920429aae684712afea753df12e7985862f5016b742",
+      "landlord-check-scope-cases.json": "b255651b7cc425bda2791c7cd5b0151a96b41666915451566208c30af1fe87ee",
+      "editor-snapshot-01-cases.json": "909b36893325124e315d0803deeacb9f937df255de891d120429949a2af40b7b",
+      "exorcist-runtime-cases.json": "2cb25eeb821a2952683d4933d1fabc23b9fdcccc65ad44cb25fdbd5ece49beeb",
+      "hostage-refresh-cases.json": "7b0bc8120865802a29dd97b6fedb9863bdbe19742ce68bb93307588b55a04c21",
+      "con-artist-sqlite-cases.json": "c5a3b37e70613ed8eb657db25aa043772a0056692b207ff1d29c1e91bbce4c3f",
+      "cases_view_contract.py": "e3000694ff000352d8b081e858c04e720a3d8952b87be998652070920827b3a8",
+      "lean_screen_cases.py": "dec85f04d2888a86b321394f7d811000c9add4c3e545e13093e54abc5ff13b1e"
+    },
+    "execution_sources": {
+      "benchmarks/run_all_eight_current_04.py": "bc5fe6ddd8096bcf61c4e840c25f1196c5bf01a5952704bc9e01de529c71c8bf",
+      "benchmarks/ALL-EIGHT-CURRENT-04-PROTOCOL.md": "d722264e637e8a25ed3d42a046ef0e0b588b5ea74251f875214df623d7c1213e",
+      "benchmarks/preflight_lean_screen.py": "c1d92fdf33d7902e5d58d98a1a9b49fc98a7661b5131dce363d57d67b44acb72",
+      "benchmarks/run.py": "60120a1fec9c610784cc2d2d649edcee41eb46550baec7031a37bbcfc91a0c03",
+      "benchmarks/editor_snapshot_cases.py": "32ff0da0fa2d136f1cbc818eb8fa8bad0e469ba319d2cdef4a69fd10e40414db",
+      "benchmarks/preflight_view_contract.py": "03568c0e927005bd90854a76aabf2ad6492c84ee86034b366da037c55bc89870",
+      "tests/test_all_eight_current_04.py": "a7b0c59a5349ea5eff0c25d4bb5bb92e83e9db8f101ef9c19f37bc8cbd0fd833",
+      "tests/test_history_invoice_fixture.py": "6ee331ea44a6be47a945d402857b06acb8cc7fa7659abded2f55fb03a7c963fd",
+      "tests/test_receipt_ledger_fixture.py": "ff24b0d708d5991345df7d3df7ed4151762e4cc1c840b5d08e82213720cb5407",
+      "tests/test_landlord_check_scope_fixture.py": "9370cf5691ae09bc6fefc4cd6054b235f088699c51599f120cd738ae8be78711",
+      "tests/test_exorcist_runtime_fixture.py": "74bcbc5d3187a4934904a9dfb2384cfe2cd5b3fda482a39d09110b6d7c2d8465",
+      "tests/test_hostage_refresh_fixture.py": "63ee9392f57e0b70113d0214e5a1d92ab3fea35e4ae16379a845ac8b4daa366a",
+      "tests/test_sqlite_audit_fixture.py": "490b736d6ca7551691188455fe6082e2cfec72fb115c91b1f0433bfbc3d03e4d",
+      "benchmarks/run_all_eight_apps_01.py": "0e1a02f1e0f3eb1f9a843068ce6780e784137e77f477d366b884780ee39e570a",
+      "benchmarks/ALL-EIGHT-APPS-01-PROTOCOL.md": "c79a093f1063ae2e7159b7afe27a88f036765b131941889aa77abc0fc94adfb9",
+      "tests/test_all_eight_apps_01.py": "8cf9d6930f49d8e3543ce726f8af4b4c74d5134987cdfd2449167f6470ae6d93",
+      "benchmarks/run_tool_surface_01.py": "7765a8400ab2dee61283ce00cb82050c99a79735b4b146f4074de2345e5572ec",
+      "benchmarks/run_receipt_guard_output_01.py": "69d1ed704ec2283b1dd92e6c57152202809eca614ab05a25be70bf05c343803d",
+      "benchmarks/RECEIPT-GUARD-OUTPUT-01-PROTOCOL.md": "bcb85b3ef858debebe2f85b526d7735234f160e093033705c080bd760cf18337",
+      "benchmarks/run_all_eight_current_06.py": "d885944e8dc42a666dcad138bdab6a8f53ae720216dae6cbd999a0ea767a1313",
+      "benchmarks/receipt_guard_model_cases.py": "3d31a64057e34b7c0c3e67112b64b1e147f520ddc1a8584d555adaa1e33dd728",
+      "tests/test_receipt_guard_output_01.py": "06914acb0acc2d64fbb93fb8299fa774d121a5375c4647149fff42387da9abe4"
+    }
+  },
+  "cases": [
+    {
+      "id": "receipt-normal-output",
+      "skill": "receipt",
+      "history": [
+        {
+          "message": "Initial age rule",
+          "files": {
+            "rule.py": "def eligible(age):\n    return age > 18\n",
+            "test_rule.py": "import unittest\nfrom pathlib import Path\nfrom rule import eligible\n\nMUTATE_NOTE = False\n\ndef setUpModule():\n    here = Path(__file__).resolve().parent\n    if MUTATE_NOTE and here.parent.name.startswith('.receipt-'):\n        (here.parent.parent / 'notes.txt').write_text('changed!\\n')\n\nclass Boundary(unittest.TestCase):\n    def test_boundary(self): self.assertEqual(eligible(18), True)\n    def test_below(self): self.assertEqual(eligible(17), False)\n    def test_above(self): self.assertEqual(eligible(19), True)\n",
+            "notes.txt": "original\n",
+            "recipe.json": "{\"fixed\": [\"test_rule.py\"], \"vary\": [\"rule.py\"], \"before\": \"HEAD^\", \"after\": \"HEAD\", \"imports\": [\"rule\"], \"runner\": \"unittest\", \"tests\": [\"-v\", \"test_rule\"], \"invocation\": \"module\", \"watch\": [\"notes.txt\"], \"guard_tree\": true, \"observe_assertions\": true}\n",
+            "AGENTS.md": "This is a controlled helper-output review, not an implementation task.\nWork only inside this project and its installed Receipt resources. Use the specified\nexisting Python interpreter; no installation, network, ancestor discovery, commits,\nMCP/configuration changes or external service. Run the installed Receipt compare.py\nCLI exactly once with unchanged recipe.json. Do not replace it with another harness,\nchange the recipe/tests/production, run tests separately or repeat a comparison to\nrecover missing evidence. The test fixture alone is authorized to rewrite notes.txt\nwhen MUTATE_NOTE is true; preserve every other original byte/mode and Git state.\nDo not restore that controlled note or repair any implementation. The helper owns\nits project-local copies. Inspect results, exits, actual assertion values, import\nprovenance, source protection and cleanup. Unavailable observations must remain\nunavailable, not inferred from test source or a displayed revision alone. Keep no\nadditional report/harness. Review only; do not claim a repair or global efficiency.\n",
+            "README.md": "# Controlled Receipt comparison\n\nThe rule accepts ages18 and above. The three tests cover17,18,19. Current tests remain identical for both historical implementations. MUTATE_NOTE is a declared author-owned fault control; it is not application behavior.\n"
+          }
+        },
+        {
+          "message": "Include exact age boundary",
+          "files": {
+            "rule.py": "def eligible(age):\n    return age >= 18\n"
+          }
+        }
+      ],
+      "task": "Review the supplied comparison with the installed Receipt CLI and unchanged recipe.json, using <TEMP> Follow AGENTS.md: exactly one helper invocation, no alternate test execution, repair or restoration. This is a helper-interface review, and the fixture's declared note side effect is authorized.\nReport the actual returned before/after observations, native exits, assertion values and imported code identity when available; explicitly identify any missing evidence. State whether the comparison establishes preservation, which original state changed if reported, and whether owned copies were removed. Native test results alone cannot override a preservation failure. Do not claim an execution merely from source code. Keep the result concise and leave no new report or harness.",
+      "criteria": [
+        "Exactly one requested CLI comparison using unchanged inputs and specified interpreter.",
+        "Actual returned native observations distinguished from unavailable evidence; no inferred pass/failure.",
+        "Preservation failure/unknown states and cleanup correctly interpreted, no successful-repair claim.",
+        "Only the declared test-owned note effect allowed; other sources/resources/Git state unchanged and scratch removed."
+      ]
+    },
+    {
+      "id": "receipt-guard-output",
+      "skill": "receipt",
+      "history": [
+        {
+          "message": "Initial age rule",
+          "files": {
+            "rule.py": "def eligible(age):\n    return age > 18\n",
+            "test_rule.py": "import unittest\nfrom pathlib import Path\nfrom rule import eligible\n\nMUTATE_NOTE = True\n\ndef setUpModule():\n    here = Path(__file__).resolve().parent\n    if MUTATE_NOTE and here.parent.name.startswith('.receipt-'):\n        (here.parent.parent / 'notes.txt').write_text('changed!\\n')\n\nclass Boundary(unittest.TestCase):\n    def test_boundary(self): self.assertEqual(eligible(18), True)\n    def test_below(self): self.assertEqual(eligible(17), False)\n    def test_above(self): self.assertEqual(eligible(19), True)\n",
+            "notes.txt": "original\n",
+            "recipe.json": "{\"fixed\": [\"test_rule.py\"], \"vary\": [\"rule.py\"], \"before\": \"HEAD^\", \"after\": \"HEAD\", \"imports\": [\"rule\"], \"runner\": \"unittest\", \"tests\": [\"-v\", \"test_rule\"], \"invocation\": \"module\", \"watch\": [\"notes.txt\"], \"guard_tree\": true, \"observe_assertions\": true}\n",
+            "AGENTS.md": "This is a controlled helper-output review, not an implementation task.\nWork only inside this project and its installed Receipt resources. Use the specified\nexisting Python interpreter; no installation, network, ancestor discovery, commits,\nMCP/configuration changes or external service. Run the installed Receipt compare.py\nCLI exactly once with unchanged recipe.json. Do not replace it with another harness,\nchange the recipe/tests/production, run tests separately or repeat a comparison to\nrecover missing evidence. The test fixture alone is authorized to rewrite notes.txt\nwhen MUTATE_NOTE is true; preserve every other original byte/mode and Git state.\nDo not restore that controlled note or repair any implementation. The helper owns\nits project-local copies. Inspect results, exits, actual assertion values, import\nprovenance, source protection and cleanup. Unavailable observations must remain\nunavailable, not inferred from test source or a displayed revision alone. Keep no\nadditional report/harness. Review only; do not claim a repair or global efficiency.\n",
+            "README.md": "# Controlled Receipt comparison\n\nThe rule accepts ages18 and above. The three tests cover17,18,19. Current tests remain identical for both historical implementations. MUTATE_NOTE is a declared author-owned fault control; it is not application behavior.\n"
+          }
+        },
+        {
+          "message": "Include exact age boundary",
+          "files": {
+            "rule.py": "def eligible(age):\n    return age >= 18\n"
+          }
+        }
+      ],
+      "task": "Review the supplied comparison with the installed Receipt CLI and unchanged recipe.json, using <TEMP> Follow AGENTS.md: exactly one helper invocation, no alternate test execution, repair or restoration. This is a helper-interface review, and the fixture's declared note side effect is authorized.\nReport the actual returned before/after observations, native exits, assertion values and imported code identity when available; explicitly identify any missing evidence. State whether the comparison establishes preservation, which original state changed if reported, and whether owned copies were removed. Native test results alone cannot override a preservation failure. Do not claim an execution merely from source code. Keep the result concise and leave no new report or harness.",
+      "criteria": [
+        "Exactly one requested CLI comparison using unchanged inputs and specified interpreter.",
+        "Actual returned native observations distinguished from unavailable evidence; no inferred pass/failure.",
+        "Preservation failure/unknown states and cleanup correctly interpreted, no successful-repair claim.",
+        "Only the declared test-owned note effect allowed; other sources/resources/Git state unchanged and scratch removed."
+      ]
+    }
+  ],
+  "schedule": [
+    [
+      0,
+      "previous"
+    ],
+    [
+      0,
+      "candidate"
+    ],
+    [
+      1,
+      "candidate"
+    ],
+    [
+      1,
+      "previous"
+    ]
+  ],
+  "settings": {
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "jobs": 1,
+    "repeats": 1
+  },
+  "python": "/opt/homebrew/opt/python@3.11/bin/python3.11",
+  "python_version": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+  "resource_digests": {
+    "previous": "310726146578dbf45044dada6e83d16cc9897699ddb7ca6d3006886b8880cc8d",
+    "candidate": "a57e25a84ae1d47e4048cc62acd45ea9d30ddf8ec591626ff9ba3ea2873fd953"
+  },
+  "condition_models": {
+    "previous": "gpt-6-astra",
+    "candidate": "gpt-6-astra"
+  },
+  "condition_flags": {
+    "previous": [],
+    "candidate": []
+  },
+  "cli_version": "codex-cli 0.157.1",
+  "execpolicy_rules": "retained",
+  "resource_revisions": {
+    "previous": "1b6ae5f56b3af637852ad737c8957f2116be9f02",
+    "candidate": "a77e4d93c5a46acab01418587969ce46d7ed4ed4"
+  },
+  "completed_cells": [
+    {
+      "case_id": "receipt-normal-output",
+      "condition": "previous",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 81026,
+        "cached_input_tokens": 66560,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 595,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 30.76
+    },
+    {
+      "case_id": "receipt-normal-output",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 73176,
+        "cached_input_tokens": 62720,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 542,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 23.889
+    },
+    {
+      "case_id": "receipt-guard-output",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 81484,
+        "cached_input_tokens": 63616,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 670,
+        "reasoning_output_tokens": 10
+      },
+      "elapsed_seconds": 32.841
+    },
+    {
+      "case_id": "receipt-guard-output",
+      "condition": "previous",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 132226,
+        "cached_input_tokens": 117248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 793,
+        "reasoning_output_tokens": 49
+      },
+      "elapsed_seconds": 38.645
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-27T19:45:21.209880+00:00",
+  "stopped_after_uncompleted": false,
+  "finished_at": "2026-09-27T19:48:10.426391+00:00"
+}

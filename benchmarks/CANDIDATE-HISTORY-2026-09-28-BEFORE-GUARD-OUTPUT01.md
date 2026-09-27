@@ -6,7 +6,6 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [Receipt guard output01](RECEIPT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,previous`1b6ae5f5`,candidate`a77e4d93`,execution`31101dea` | Four explicit-CLI interface cells: tokens−27.38%,CLI−18.26%; both task pairs lower both. Guard candidate retains native results with failure, responses6→4. | Limited interface gate passes; forced use/n=1/unequal extra reads, not causal/general/all8 savings. Large source-read truncation retained. No new instruction or featured promotion. |
 | [Receipt guard evidence01](RECEIPT-GUARD-EVIDENCE-01.md),2026-09-28,parent`1b6ae5f5`,source`11c9b0a7` | Six failing-before controls repaired; completed native observations survive final preservation failure with CLI2/incomplete status and original API exception types. | Adopt diagnostic correctness; not model efficiency. Initial compatibility failures retained. Personal install6 controls/all8 resources match; public`79834265` download bytes verified separately. |
 | [Bridge cancellation errors01/02](TOOL-BRIDGE-CANCEL-ERRORS-02.md),2026-09-28,failed control`07ca4ddb`,changed adapter/control`d0cefc47` | Original canceled guard error crashes the session; changed error checkpoint passes timeout/canceled-guard/ordinary-guard controls, same-session recovery6 native processes/42 arguments. | Isolated native repair; original failure retained. Author resets intentionally changed source before recovery. No model approval or efficiency gain; not installed. |
 | [Bridge phase cancellation01](TOOL-BRIDGE-PHASE-CANCEL-01.md),2026-09-28,source/execution`915d7f81`,helper`026a8312` | SDK active cancellation: first request phases2→1; four same-session recoveries retain8 native processes/56 actual arguments and source cleanup. Queued cancellation launches none. | Isolated native candidate only. Controlled delay/n=1; later guard-error failure and timeout controls above narrow this result; abrupt loss unverified; model approval gate and all8 goal remain open. |
@@ -22,7 +21,7 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 | [Con Artist recipe keys01](AUDIT-RECIPE-KEYS-01.md),2026-09-28,source`829a2b02` | Duplicate JSON keys rejected before execution;5 failing regressions repaired,127 native archive methods pass. | Adopt input correctness; no model-cost measurement. [Mac/public delivery](AUDIT-RECIPE-KEYS-01.md#public-delivery),hosted`1781c1ce`,verified separately. |
 | [Receipt recipe errors01](RECEIPT-RECIPE-ERRORS-01.md),2026-09-28,source`9db5a8ec` | Explicit input errors/duplicate-key rejection:7 failing regressions repaired,79 native archive methods pass. | Adopt input correctness; no model-cost measurement. Personal copy and public download delivery verified. |
 
-The [preceding dated index](CANDIDATE-HISTORY-2026-09-28-BEFORE-GUARD-OUTPUT01.md)
+The [preceding dated index](CANDIDATE-HISTORY-2026-09-28-BEFORE-GUARD-EVIDENCE01.md)
 preserves the full experiment and delivery chronology, earlier history links and
 all adverse decisions. In particular, [Landlord grouping](LANDLORD-CHECK-GROUP-01-REVIEW.md)
 did not establish its proposed mechanism, [traceback display](TRACEBACK-DISPLAY-MODEL-01-REVIEW.md)
@@ -50,6 +49,4 @@ Git 출력 임시 파일 시제품도 메모리는 줄었지만 더 느리고 �
 3개 검사가 통과했다. 의도적 원본 변경은 작성자가 원복했으며 자동 복구·모델 절감 증거가 아니다.
 일반 Receipt 도우미는 최종 보존 실패 시 완료된 실행 근거를 불완전 결과로 남기도록
 수정했다. 원래 API 예외 종류와 CLI 실패를 유지하며 토큰 절감으로 계산하지 않는다.
-후속 명시적 CLI 비교4회에서는 토큰27.38%·시간18.26% 감소했고 보호 오류의 실제 근거도
-유지했다. 강제 도구 사용·조건별1회·추가 읽기 차이가 있어 전체8개 성과로 확대하지 않는다.
 이전 모든 실패·혼재 결과와 상세 이력은 날짜가 있는 이전 판단 목록에 보존했다.

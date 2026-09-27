@@ -122,3 +122,16 @@ performance or a repeated visual/interaction review of unchanged pages.
 `79834265`의 파일105,553바이트·해시·소스 일치를 확인했다. 첫 공개 확인기의
 robots 문자열 비교 오류도 보존했으며 실제 검색 허용 지시자는 정상이다.
 토큰·시간이나 기존 실험 수치는 바꾸지 않았다.
+
+## Subsequent scoped model checkpoint
+
+[Guard output01](RECEIPT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,execution`31101dea`,
+compares previous`1b6ae5f5` and candidate`a77e4d93` in four explicit-CLI interface
+cells. Both task pairs use fewer tokens/time; sum−27.38%/−18.26%, with richer
+candidate guard-failure evidence. Forced helper use, n=1 and unequal optional reads
+limit this to that checkpoint; it does not relabel the native tests above as model
+savings or demonstrate the all-eight goal.
+
+한국어: 후속 guard-output01의 제한된 모델 비교에서는 두 과제 모두 비용이 낮았지만,
+명시적 도구 사용·단일 표본·다른 추가 확인량의 한계가 있다. 위 네이티브 검사나
+일반적인 전체8개 성능의 절감률로 해석하지 않는다.

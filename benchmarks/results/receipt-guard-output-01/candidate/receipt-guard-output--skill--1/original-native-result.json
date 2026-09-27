@@ -1,0 +1,138 @@
+{
+  "status": "incomplete",
+  "revisions": {
+    "before": "f1f14030baded339863f92bbe9d4520c10315ada",
+    "after": "e2835b5b02365357d4a2eec80505f73a65db651e"
+  },
+  "checks": {
+    "before": {
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "Verified copied import: rule {\"path\": \"<WORKSPACE>/.receipt-f_ecyv_3/before/rule.py\", \"pid\": 21829}\ntest_above (test_rule.Boundary.test_above) ... ok\ntest_below (test_rule.Boundary.test_below) ... ok\ntest_boundary (test_rule.Boundary.test_boundary) ... FAIL\n\n======================================================================\nFAIL: test_boundary (test_rule.Boundary.test_boundary)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.receipt-f_ecyv_3/before/test_rule.py\", line 13, in test_boundary\n    def test_boundary(self): self.assertEqual(eligible(18), True)\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: False != True\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=1)\n",
+      "output_truncated": false,
+      "native_exit_code": 1,
+      "suite_observation": {
+        "tests": 3,
+        "skipped": 0,
+        "successful": false
+      },
+      "command": [
+        "<TEMP>",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_rule"
+      ],
+      "invocation": "module",
+      "provenance_ready": true,
+      "assertion_observation": {
+        "v": 3,
+        "scope": "assertEqual/assertIsNot current-thread calls",
+        "observations": [
+          {
+            "method": "assertEqual",
+            "actual": true,
+            "expected": true,
+            "same_object": true
+          },
+          {
+            "method": "assertEqual",
+            "actual": false,
+            "expected": false,
+            "same_object": true
+          },
+          {
+            "method": "assertEqual",
+            "actual": false,
+            "expected": true,
+            "same_object": false
+          }
+        ],
+        "complete": true,
+        "reason": null
+      }
+    },
+    "after": {
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "Verified copied import: rule {\"path\": \"<WORKSPACE>/.receipt-f_ecyv_3/after/rule.py\", \"pid\": 21830}\ntest_above (test_rule.Boundary.test_above) ... ok\ntest_below (test_rule.Boundary.test_below) ... ok\ntest_boundary (test_rule.Boundary.test_boundary) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+      "output_truncated": false,
+      "native_exit_code": 0,
+      "suite_observation": {
+        "tests": 3,
+        "skipped": 0,
+        "successful": true
+      },
+      "command": [
+        "<TEMP>",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_rule"
+      ],
+      "invocation": "module",
+      "provenance_ready": true,
+      "assertion_observation": {
+        "v": 3,
+        "scope": "assertEqual/assertIsNot current-thread calls",
+        "observations": [
+          {
+            "method": "assertEqual",
+            "actual": true,
+            "expected": true,
+            "same_object": true
+          },
+          {
+            "method": "assertEqual",
+            "actual": false,
+            "expected": false,
+            "same_object": true
+          },
+          {
+            "method": "assertEqual",
+            "actual": true,
+            "expected": true,
+            "same_object": true
+          }
+        ],
+        "complete": true,
+        "reason": null
+      }
+    }
+  },
+  "import_roots": [],
+  "fixed_sha256": {
+    "test_rule.py": "8763942a690c41d4ea861ddb1e3e5ae065dd11acedcbb23976299f27ea8204cd"
+  },
+  "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+  "originals": {
+    "unchanged": false,
+    "sha256": {
+      "test_rule.py": "8763942a690c41d4ea861ddb1e3e5ae065dd11acedcbb23976299f27ea8204cd",
+      "rule.py": "22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f",
+      "notes.txt": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218"
+    },
+    "modes": {
+      "test_rule.py": 420,
+      "rule.py": 420,
+      "notes.txt": 420
+    },
+    "watch_only": [
+      "notes.txt"
+    ],
+    "changed": [
+      "notes.txt"
+    ]
+  },
+  "tree_guard": {
+    "unchanged": null
+  },
+  "preservation_error": {
+    "stage": "originals",
+    "type": "RuntimeError",
+    "message": "Selected originals changed; not restored: notes.txt"
+  },
+  "comparison_copies_removed": true
+}
