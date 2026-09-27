@@ -23,3 +23,15 @@ Retain original failed controller/runtime attempts and changed hypotheses.
 Same180s guest/200s independent parent watchdog with owned process-group cleanup;
 each native pytest subprocess timeout30s. Require guest stop and detach after
 collection. No token/time saving or all8 update adoption follows from this gate.
+
+## Device-mount intervention addendum — before the next execution
+
+The first driver aborted on a missing observer report before exporting native
+stderr; preserve this capture gap and original source/result/log. A second,
+missing-report-tolerant collector exposed both native startup failures at pytest's
+capture initialization: `/dev/null` absent, nativeexit1, no call-phase reports.
+This is not the intended answer assertion failure. Keep both original outcomes.
+Next add guest-only devtmpfs at the existing chroot `/dev` mountpoint, leaving
+root readonly and tests/native commands unchanged. No `-s`, capture disabling,
+package/test alteration or host device access. VM device inventory remains unchanged;
+only guest virtual devices are visible. Record device mount exit and require0.
