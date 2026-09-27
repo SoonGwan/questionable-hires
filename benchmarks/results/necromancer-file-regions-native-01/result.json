@@ -1,0 +1,53 @@
+{
+  "date": "2026-09-27",
+  "parent": "f5a8b0e6",
+  "model_calls": 0,
+  "exit_code": 0,
+  "actual": {
+    "complete": true,
+    "source_sha256": "6e3fb6614a9b9712e5bfc4c78397f1c30f83339e1709b8e0657210ef55e2a026",
+    "source_bytes": 18459,
+    "module_future_features": [
+      "annotations"
+    ],
+    "regions": [
+      {
+        "name": "Retry._is_method_retryable",
+        "selected_by": [
+          "Retry._is_method_retryable"
+        ],
+        "start_line": 379,
+        "end_line": 385,
+        "text": "    def _is_method_retryable(self, method: str) -> bool:\n        \"\"\"Checks if a given HTTP method should be retried upon, depending if\n        it is included in the allowed_methods\n        \"\"\"\n        if self.allowed_methods and method.upper() not in self.allowed_methods:\n            return False\n        return True\n",
+        "truncated": false
+      },
+      {
+        "name": "Retry.is_retry",
+        "selected_by": [
+          "Retry.is_retry"
+        ],
+        "start_line": 387,
+        "end_line": 407,
+        "text": "    def is_retry(\n        self, method: str, status_code: int, has_retry_after: bool = False\n    ) -> bool:\n        \"\"\"Is this method/status code retryable? (Based on allowlists and control\n        variables such as the number of total retries to allow, whether to\n        respect the Retry-After header, whether this header is present, and\n        whether the returned status code is on the list of status codes to\n        be retried upon on the presence of the aforementioned header)\n        \"\"\"\n        if not self._is_method_retryable(method):\n            return False\n\n        if self.status_forcelist and status_code in self.status_forcelist:\n            return True\n\n        return bool(\n            self.total\n            and self.respect_retry_after_header\n            and has_retry_after\n            and (status_code in self.RETRY_AFTER_STATUS_CODES)\n        )\n",
+        "truncated": false
+      }
+    ],
+    "missing_names": [],
+    "limitation": "Static excerpts, not executable replacements or proof of runtime binding, origin, or absence of relevant surrounding code. Hash identifies bytes read from input_path, not a Git revision or atomic snapshot.",
+    "input_path": "<owned-upstream>/src/urllib3/util/retry.py"
+  },
+  "source_preserved": true,
+  "helper_matches_ordinary": true,
+  "candidate_files": {
+    "SKILL.md": "dda9f3cec27075ef154bfbfee7c64c43cc6f9e6952e3883c067b0089ec1517f0",
+    "references/python-regions.md": "1246a4099e2b1abf550162613ecfd18b7fadaac2ee8acc21ef17d485501ed1fb",
+    "references/focused-history-details.md": "cc7e450044b07cbd738e3ca711b2d51ae7ec6baaf252e813d4f5bfb819fdc221",
+    "references/focused-history.md": "5f2241bd80910943f98d3b22f65eb5c1823297902d108734a2a38005204a5bfa",
+    "agents/openai.yaml": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+    "scripts/trace.py": "df20a5292c8caa5e40395d595fc4244b6adadacb0136842c32a72dd4c7487cac",
+    "scripts/python_regions.py": "a358af96d191b7b1a93e1d6ef1e06178bc8c25d22e91511b36093afbd31b9910"
+  },
+  "limitation": "Actual candidate static CLI; no package execution, full contract context or model efficiency proof.",
+  "git_free_archive_candidate_exit": 0,
+  "git_free_archive": true
+}

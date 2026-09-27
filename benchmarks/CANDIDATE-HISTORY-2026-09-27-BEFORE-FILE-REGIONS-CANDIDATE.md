@@ -227,11 +227,3 @@ and installer check pass. Zero models, no personal installation or hosted releas
 Archive SHA/member identities retained; no efficiency or all8-quality claim.
 한국어: 실제 설치본 두 경로에서 8개 스킬·52개 파일과 새 CLI의 동작·원본 보존을
 확인했다. 모델 절감·전체 품질·공개 배포 성과로 승격하지 않는다.
-
-[Necromancer file regions01 native gate](NECROMANCER-FILE-REGIONS-NATIVE-01.md),
-2026-09-27,parent `f5a8b0e6`: separate unadopted inline `--path` CLI routing;
-ordinary parser bytes unchanged. Candidate2-definition actual source selection/
-preservation passes checkout and Git-free archive;previous23 tests/installed
-checks reused explicitly. Zero models;not all8 quality/cost or adoption evidence.
-한국어: 별도 발췌 CLI 안내 후보의 실제 두 함수 선택·원본 보존을 확인했다.
-모델 비용·전체8개 성과·기본 채택 증거는 아직 없고 기존 결과를 보존한다.
