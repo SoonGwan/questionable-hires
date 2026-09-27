@@ -153,7 +153,9 @@ The [interpreter route candidate](benchmarks/NATIVE-INTERPRETER-ROUTE-01.md)
 (2026-09-27, `e918d02d`) avoids failed probe launches in its measured control, but
 its six-cell costs are mixed with no joint aggregate token/time saving.
 [Current dated evidence and limitations](benchmarks/CURRENT-CANDIDATE-STATUS.md)
-retain adverse development and model-configuration comparisons. Model-choice01
+retain adverse development and model-configuration comparisons. The Receipt direct-tool
+availability01 pilot (2026-09-27, `b081240e`) is also declined: both models kept
+using the CLI and neither task reduced both costs. Model-choice01
 (2026-09-27, `6701069f`) is declined; it does not establish joint token/time saving.
 Configuration checks remain mixed: [apps01](benchmarks/ALL-EIGHT-APPS-01-REVIEW.md)
 (2026-09-27, `6701069f`) tokens−9.49%/time+0.52%;
