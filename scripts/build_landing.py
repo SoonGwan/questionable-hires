@@ -353,9 +353,15 @@ def build(base=None):
     checkpoint = integration06()
     template = (LANDING / 'templates/page.html').read_text()
     artwork = (ROOT / 'assets/team-characters.png').read_bytes()
+    webp = (ROOT / 'assets/team-characters.webp').read_bytes()
+    artwork_record = json.loads((ROOT / 'assets/team-characters-webp.json').read_text())
+    if (hashlib.sha256(artwork).hexdigest() != artwork_record['source_sha256']
+            or hashlib.sha256(webp).hexdigest() != artwork_record['webp_sha256']):
+        raise ValueError('Stale artwork derivative; run scripts/encode_landing_artwork.py')
     artwork_path = 'assets/team-characters.' + hashlib.sha256(artwork).hexdigest() + '.png'
+    webp_path = 'assets/team-characters.' + hashlib.sha256(webp).hexdigest() + '.webp'
     # Keep the original URL available for older pages; new pages use immutable content.
-    files = {'assets/team-characters.png': artwork, artwork_path: artwork}
+    files = {'assets/team-characters.png': artwork, artwork_path: artwork, webp_path: webp}
     for route, language in (('', 'ko'), ('ko/', 'ko'), ('en/', 'en')):
         copy = content['copy'][language]
         prefix = '../' if route else ''
@@ -363,6 +369,7 @@ def build(base=None):
         replacements = {
             '{{HEAD}}': metadata(copy, language, base, preview), '{{ASSET_BASE}}': prefix,
             '{{TEAM_IMAGE}}': prefix + artwork_path,
+            '{{TEAM_WEBP}}': prefix + webp_path,
             '{{KO_URL}}': prefix + 'ko/', '{{EN_URL}}': prefix + 'en/',
             '{{EXPERIMENT}}': experiment(evidence, copy, checkpoint, prefix), '{{ROSTER}}': roster(content['hires'], language),
             '{{PROFILE_NAME}}': html.escape(first['name']), '{{PROFILE_QUOTE}}': html.escape(first['quote']),

@@ -57,7 +57,7 @@ class LandingHandler(SimpleHTTPRequestHandler):
             self.send_error(404)
             return None
         self.immutable_artwork = bool(target.is_file() and re.fullmatch(
-            r'/assets/team-characters\.[0-9a-f]{64}\.png', path))
+            r'/assets/team-characters\.[0-9a-f]{64}\.(?:png|webp)', path))
         return super().send_head()
 
     def list_directory(self, path):

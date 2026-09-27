@@ -288,11 +288,24 @@ class LandingTests(unittest.TestCase):
         def read(path):
             return changed if path == source else read_bytes(path)
         with patch.object(Path, 'read_bytes', read):
-            files, _ = landing.build()
-        new_name = 'assets/team-characters.' + hashlib.sha256(changed).hexdigest() + '.png'
-        self.assertNotIn(name, files)
-        self.assertEqual(files[new_name], changed)
-        self.assertIn(new_name, files['en/index.html'].decode())
+            with self.assertRaisesRegex(ValueError, 'Stale artwork derivative'):
+                landing.build()
+
+    def test_webp_selection_keeps_original_fallback_and_rejects_stale_bytes(self):
+        source = ROOT / 'assets/team-characters.webp'
+        original = source.read_bytes()
+        name = 'assets/team-characters.' + hashlib.sha256(original).hexdigest() + '.webp'
+        self.assertEqual(self.files[name], original)
+        for route in ('', 'ko/', 'en/'):
+            prefix = '../' if route else ''
+            html = self.files[route + 'index.html'].decode()
+            self.assertEqual(html.count('<picture>'), 2)
+            self.assertEqual(html.count('type="image/webp" srcset="' + prefix + name + '"'), 2)
+            self.assertEqual(len(re.findall(r'<img src="[^"]+\.png" width="1536" height="1024"', html)), 2)
+        read_bytes = Path.read_bytes
+        with patch.object(Path, 'read_bytes', lambda path: b'changed' if path == source else read_bytes(path)):
+            with self.assertRaisesRegex(ValueError, 'Stale artwork derivative'):
+                landing.build()
 
     def test_preview_is_not_indexable(self):
         self.assertTrue(self.preview)

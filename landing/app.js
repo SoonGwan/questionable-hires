@@ -1,4 +1,11 @@
 const runtimeRoot = new URL('.', document.currentScript.src);
+// These picture sources each contain one URL; keep both formats stable on locale navigation.
+document.querySelectorAll('.cast img, .portrait img').forEach(img => {
+  img.src = new URL(img.getAttribute('src'), location.href).href;
+});
+document.querySelectorAll('.cast source, .portrait source').forEach(source => {
+  source.srcset = new URL(source.getAttribute('srcset'), location.href).href;
+});
 // Keep browser-requested icons stable when locale navigation changes the URL.
 document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach(link => {
   link.href = new URL(link.getAttribute('href'), location.href).href;

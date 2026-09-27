@@ -176,8 +176,17 @@ New pages use the complete SHA-256 in the artwork filename. The loopback server
 marks successful responses for that generated name `public, max-age=31536000,
 immutable`; other pages, health, downloads and error responses retain revalidation.
 Changing the artwork creates a different URL. The legacy `team-characters.png`
-URL stays available. Image bytes and the Montage artwork are unchanged.
+URL stays available. The approved PNG remains unchanged. Pages now offer a
+lossless WebP via `<picture>` with that PNG as the unsupported-format fallback.
+Both formats use their own complete content hash and immutable cache policy.
+The first artwork body is 756,050 rather than 1,330,161 bytes (43.16% less) in
+verified WebP-capable Chrome; this is not a whole-page latency or token claim.
+[Encoding and browser evidence](../docs/LANDING-WEBP-2026-09-28.md) includes exact
+pixel checks and regeneration instructions in the [asset guide](../assets/README.md).
 
 캐릭터 이미지의 SHA-256을 주소에 넣고 해당 이미지의 성공 응답만 장기 캐시합니다.
+원본 PNG와 픽셀이 같은 WebP를 지원 브라우저에 제공하고 미지원 형식에는 PNG를
+유지합니다. 첫 이미지 본문은43.16% 줄었으며 전체 페이지 시간·모델 토큰 수치와는
+별개입니다. 재생성 때만 Pillow가 필요하고 일반 빌드에는 추가 의존성이 없습니다.
 그림이 바뀌면 주소도 바뀌며 HTML·상태 확인·다운로드는 계속 재검증합니다.
 기존 이미지 주소도 유지하고 원본 그림 바이트는 바꾸지 않습니다.

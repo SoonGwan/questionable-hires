@@ -100,6 +100,22 @@ class LandingOriginTests(unittest.TestCase):
             self.assertEqual(headers['Cache-Control'], 'no-cache')
             self.assertEqual(status, 200 if path == '/_health' else 404)
 
+    def test_webp_has_native_media_type_and_immutable_conditional_response(self):
+        artwork = b'lossless webp bytes'
+        name = 'team-characters.' + hashlib.sha256(artwork).hexdigest() + '.webp'
+        status, headers, body = self.request('/assets/' + name)
+        self.assertEqual(status, 404)
+        self.assertEqual(headers['Cache-Control'], 'no-cache')
+        (self.site / 'assets' / name).write_bytes(artwork)
+        status, headers, body = self.request('/assets/' + name)
+        self.assertEqual((status, body), (200, artwork))
+        self.assertEqual({key.lower(): value for key, value in headers.items()}['content-type'], 'image/webp')
+        self.assertEqual(headers['Cache-Control'], 'public, max-age=31536000, immutable')
+        status, conditional, body = self.request('/assets/' + name, headers={
+            'If-Modified-Since': headers['Last-Modified']})
+        self.assertEqual((status, body), (304, b''))
+        self.assertEqual(conditional['Cache-Control'], headers['Cache-Control'])
+
     def test_release_switch_serves_new_files_without_exposing_parent(self):
         replacement = self.base / 'new-site'
         replacement.mkdir()
