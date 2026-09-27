@@ -7,7 +7,6 @@ It is **not achieved**. No general efficiency or complete release claim is suppo
 
 | Dated checkpoint and measured resource | Evidence | Decision / next gate |
 | --- | --- | --- |
-| [Hostage scope lean01](HOSTAGE-SCOPE-LEAN-01-REVIEW.md),2026-09-28,previous`a2173887`,candidate/execution`333df414` | Four original cells: tokens−9.25%,CLI+3.47%; correct-code task regresses on both. Defect candidate omits the before-test execution; all4 stay in observed scope and both valid implementations are preserved. | Decline; unequal verification and adverse transfer. Original missing headers recovered without rerun. No unchanged retry or ordinary adoption. |
 | [Receipt recipe errors01](RECEIPT-RECIPE-ERRORS-01.md),2026-09-28,parent`e2bed7ff`,exact source hashes in report | Native CLI:7 regression methods fail before and pass after;79 distinct archive methods pass, including existing Python/Node comparisons and preservation. | Adopt explicit input errors and duplicate-key rejection; no model-token or time improvement measured. |
 | [Receipt stream match01](RECEIPT-STREAM-MATCH-01.md),2026-09-28,parent`71cdc0ab`,source hashes in report | Native prototype only: exact separate observations retained;12 archive controls pass. 8MiB final-check additional allocation8,394,882→137,858bytes; time mixed, differences below1ms. | Keep isolated; no model calls or token benefit. No unchanged timing rerun or default adoption without a concrete memory need and remaining compatibility controls. |
 | [Landlord check grouping01](LANDLORD-CHECK-GROUP-01-REVIEW.md),2026-09-28,previous`cc7591ed`,candidate/execution`849e06dc` | Two original cells: tokens−19.85%,CLI−14.80%; both already group native checks. Candidate instead combines discovery/read; original scoped outcomes and preservation reviewed. | Do not adopt another rule: intended behavior already present in previous arm; no causal or all8 claim. No unchanged rerun. |
@@ -55,6 +54,3 @@ Native controls, model evidence and hosted release checks have different scopes.
 
 [Recipe errors01 delivery](RECEIPT-RECIPE-ERRORS-01.md#delivery),2026-09-28,source`9db5a8ec`: Receipt's personal copy updated with a verified backup; all8 installed inventories match. Eight installed checks and18 landing checks pass; hosted health/languages and exact download bytes verified. This supersedes the Receipt bytes in the earlier personal sync and the hosted downloadable snapshot, not historical model measurements.
 한국어: `9db5a8ec` 수정은 실제 Mac 설치본과 공개 다운로드에 반영했으며 백업·실제 설치 검사·공개 파일 일치를 확인했다. 과거 모델 수치의 재측정은 아니다.
-
-[Pre-Hostage-scope-lean checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-HOSTAGE-SCOPE-LEAN01.md) preserves the preceding index.
-한국어 추가: Hostage 축약 후보는 원본4회 토큰9.25% 감소·시간3.47% 증가이며 정상 과제는 모두 악화됐다. 결함 후보의 수정 전 실행도 없어 동일 검증량의 개선으로 주장하지 않고 채택하지 않는다.
