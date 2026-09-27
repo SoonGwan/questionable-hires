@@ -1,5 +1,7 @@
 # Receipt assertion observation API01
 
+Historical pre-model functionality checkpoint; subsequent [original model review](RECEIPT-ASSERTION-API-01-REVIEW.md) reports tokens+25.03%,time−5.05%,no efficiency adoption.
+
 2026-09-27; implementation parent `60ced61d`. Local opt-in candidate,
 **zero model runs**. No whole-task token/time, all-eight improvement, full release,
 remote installation or hosted delivery claim. Previous adverse

@@ -121,7 +121,7 @@ JSON
   overflow or missing/error reports mean incomplete check7/CLI2 and stop later
   versions; inspect `reason` and retained `native_exit_code`. `complete` covers
   only this observation scope, not all tests/assertions. Default off adds no field
-  and does not load the observer. Model token/time savings remain unmeasured.
+  and does not load the observer. Model comparison has not established token/time savings.
 - Optional `"import_roots":["src"]` supports regular source-layout packages.
   Select initializers/support too; each root must contain selected files.
   Ordered canonical roots precede each copy's root and appear in the result.
