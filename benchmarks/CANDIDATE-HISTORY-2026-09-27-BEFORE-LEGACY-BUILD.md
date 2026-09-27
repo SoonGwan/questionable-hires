@@ -79,10 +79,8 @@ modern pytest dependencies in a disposable Python3.11 environment; pip check pas
 its initial pytest11143 import failure is preserved. The subsequent
 [exact-base native build](EXTERNAL-BUNDLE-02-PYTEST11143-BUILD.md) generates genuine
 SCM version metadata, passes cold source import and native pass/assertion-fail controls.
-[Legacy native builds](EXTERNAL-BUNDLE-02-LEGACY-BUILD.md) now generate metadata
-and pass cold imports/native assertion controls for the other3 pytest sources,
-preserving initial dependency/build-location failures. All8 sources have import
-routes; required project-test/runtime/protocol gates remain unverified;0 model calls. Author bootstrap controls are not issue regressions.
+Other Pytest dependencies and required project-test/runtime/protocol gates remain
+unverified;0 model calls. Author bootstrap controls are not issue regressions.
 Different project versions cannot inherit old pilot readiness. Selection is not
 role-specific quality or token/time evidence.
 
