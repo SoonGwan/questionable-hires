@@ -1,0 +1,40 @@
+{
+  "files": [
+    "scripts/serve_landing.py",
+    "tests/test_landing_server.py"
+  ],
+  "imports": [
+    "test_landing_server"
+  ],
+  "import_roots": [
+    "tests"
+  ],
+  "target": "scripts/serve_landing.py",
+  "old": "[0-9a-f]{64}",
+  "new": "[0-9a-f]+",
+  "runner": "unittest",
+  "invocation": "module",
+  "tests": [
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_landing_server.py",
+    "-v"
+  ],
+  "precheck": "from pathlib import Path\nimport hashlib, test_landing_server\np = Path(test_landing_server.origin.__file__).resolve()\nassert p == Path.cwd() / 'scripts/serve_landing.py', p\nprint('Actual test origin binding:', p, hashlib.sha256(p.read_bytes()).hexdigest(), flush=True)\n",
+  "probe_edits": {
+    "tests/test_landing_server.py": {
+      "old": "    def test_missing_or_escaped_fingerprint_never_caches_an_error(self):\n",
+      "new": "    def test_near_length_fingerprints_are_revalidated_for_both_formats(self):\n        artwork = b'not a full SHA-256 filename'\n        for extension in ('png', 'webp'):\n            for length in (63, 65):\n                with self.subTest(extension=extension, length=length):\n                    name = 'team-characters.' + 'a' * length + '.' + extension\n                    (self.site / 'assets' / name).write_bytes(artwork)\n                    path = '/assets/' + name\n                    status, headers, body = self.request(path)\n                    self.assertEqual((status, body), (200, artwork))\n                    self.assertEqual(headers['Cache-Control'], 'no-cache')\n                    status, conditional, body = self.request(path, headers={\n                        'If-Modified-Since': headers['Last-Modified']})\n                    self.assertEqual((status, body), (304, b''))\n                    self.assertEqual(conditional['Cache-Control'], 'no-cache')\n                    status, head, body = self.request(path, method='HEAD')\n                    self.assertEqual((status, body), (200, b''))\n                    self.assertEqual(head['Content-Length'], str(len(artwork)))\n                    self.assertEqual(head['Cache-Control'], 'no-cache')\n\n    def test_missing_or_escaped_fingerprint_never_caches_an_error(self):\n"
+    }
+  },
+  "probe_tests": [
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_landing_server.py",
+    "-v"
+  ]
+}

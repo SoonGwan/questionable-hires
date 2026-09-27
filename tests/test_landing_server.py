@@ -93,6 +93,26 @@ class LandingOriginTests(unittest.TestCase):
         (self.site / 'assets/team-characters.png').write_bytes(artwork)
         self.assertEqual(self.request('/assets/team-characters.png')[1]['Cache-Control'], 'no-cache')
 
+    def test_near_length_fingerprints_are_revalidated_for_both_formats(self):
+        artwork = b'not a full SHA-256 filename'
+        for extension in ('png', 'webp'):
+            for length in (63, 65):
+                with self.subTest(extension=extension, length=length):
+                    name = 'team-characters.' + 'a' * length + '.' + extension
+                    (self.site / 'assets' / name).write_bytes(artwork)
+                    path = '/assets/' + name
+                    status, headers, body = self.request(path)
+                    self.assertEqual((status, body), (200, artwork))
+                    self.assertEqual(headers['Cache-Control'], 'no-cache')
+                    status, conditional, body = self.request(path, headers={
+                        'If-Modified-Since': headers['Last-Modified']})
+                    self.assertEqual((status, body), (304, b''))
+                    self.assertEqual(conditional['Cache-Control'], 'no-cache')
+                    status, head, body = self.request(path, method='HEAD')
+                    self.assertEqual((status, body), (200, b''))
+                    self.assertEqual(head['Content-Length'], str(len(artwork)))
+                    self.assertEqual(head['Cache-Control'], 'no-cache')
+
     def test_missing_or_escaped_fingerprint_never_caches_an_error(self):
         name = 'team-characters.' + 'a' * 64 + '.png'
         for path in ('/assets/' + name, '/assets/%2e%2e/.private', '/_health'):
