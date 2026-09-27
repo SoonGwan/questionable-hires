@@ -31,13 +31,13 @@ def read_json(path):
     return json.loads(path.read_text(encoding='utf-8'))
 
 
-def integration05():
-    directory = ROOT / 'benchmarks/results/all-eight-current-05'
+def integration06():
+    directory = ROOT / 'benchmarks/results/all-eight-current-06'
     rows = read_json(directory / 'comparison.json')['rows']
     records = {(row['case'], row['condition']): row for row in rows}
     cases = sorted({row['case'] for row in rows})
     if len(rows) != 16 or len(records) != 16 or len(cases) != 8:
-        raise ValueError('integration05 must retain all16 unique attempts')
+        raise ValueError('integration06 must retain all16 unique attempts')
     for case in cases:
         for condition in ('baseline', 'current'):
             row = records.get((case, condition))
@@ -46,7 +46,7 @@ def integration05():
                     or not 0 <= row['cached_input_tokens'] <= row['input_tokens']
                     or row['output_tokens'] < 0 or row['recorded_responses'] < 1
                     or row['total_tokens'] != row['input_tokens'] + row['output_tokens']):
-                raise ValueError('integration05 comparison is incomplete or inconsistent')
+                raise ValueError('integration06 comparison is incomplete or inconsistent')
     sums = {condition: {metric: sum(records[(case, condition)][metric] for case in cases)
                        for metric in ('total_tokens', 'input_tokens', 'cached_input_tokens',
                                       'output_tokens', 'recorded_responses', 'elapsed_seconds')}
@@ -54,21 +54,25 @@ def integration05():
     return dict(records=records, cases=cases, sums=sums)
 
 
-def integration_evidence_files():
-    benchmark_root = ROOT / 'benchmarks'
-    names = read_json(LANDING / 'evidence-manifest.json')['integration05']
+def integration_evidence_files(checkpoint='integration06'):
+    # Keep historical URLs while preserving each report's original relative links.
+    roots = {'integration05': ROOT / 'benchmarks', 'integration06': ROOT}
+    evidence_root = roots[checkpoint]
+    number = checkpoint.removeprefix('integration')
+    report_prefix = 'benchmarks/' if checkpoint == 'integration06' else ''
+    names = read_json(LANDING / 'evidence-manifest.json')[checkpoint]
     if len(names) != len(set(names)):
         raise ValueError('duplicate reviewed evidence path')
     approved = {}
     for name in names:
-        source = benchmark_root / name
+        source = evidence_root / name
         if (Path(name).is_absolute() or '..' in Path(name).parts
-                or not source.resolve().is_relative_to(benchmark_root.resolve())
-                or source.is_symlink() or source.suffix not in {'.md', '.json', '.txt'}):
+                or not source.resolve().is_relative_to(evidence_root.resolve())
+                or source.is_symlink() or source.suffix not in {'.md', '.json', '.txt', '.py'}):
             raise ValueError('invalid reviewed evidence path: ' + name)
         approved[source.resolve()] = source.read_bytes()
-    for name in ('ALL-EIGHT-CURRENT-05-COSTS.md', 'ALL-EIGHT-CURRENT-05-REVIEW.md'):
-        if (benchmark_root / name).resolve() not in approved:
+    for name in (f'ALL-EIGHT-CURRENT-{number}-COSTS.md', f'ALL-EIGHT-CURRENT-{number}-REVIEW.md'):
+        if (evidence_root / report_prefix / name).resolve() not in approved:
             raise ValueError('missing reviewed report: ' + name)
     for source, content in approved.items():
         if source.suffix != '.md':
@@ -78,7 +82,7 @@ def integration_evidence_files():
             if not link.scheme and not link.netloc and link.path:
                 if (source.parent / link.path).resolve() not in approved:
                     raise ValueError('unreviewed evidence link: ' + href)
-    return {'evidence/integration05/' + source.relative_to(benchmark_root.resolve()).as_posix(): content
+    return {'evidence/' + checkpoint + '/' + source.relative_to(evidence_root.resolve()).as_posix(): content
             for source, content in approved.items()}
 
 
@@ -87,7 +91,7 @@ def integration_table(checkpoint, copy, prefix):
     parts = [f'<details class="checkpoint-details"><summary>{e(copy["checkpointTable"])}</summary>',
              f'<p class="checkpoint-scroll-hint raw-note">{e(copy["checkpointScrollHint"])}</p>',
              f'<div class="table-scroll" tabindex="0" role="region" aria-label="{e(copy["checkpointTable"])}">',
-             '<table><caption>integration05 · 2026-09-27 · 75183f2f</caption><thead><tr>',
+             '<table><caption>integration06 · 2026-09-27 · 1d0e92ac</caption><thead><tr>',
              f'<th scope="col">{e(copy["rawCase"])}</th>']
     breakdown = []
     for condition, label in (('baseline', 'conditionBaseline'), ('current', 'conditionSkill')):
@@ -110,11 +114,11 @@ def integration_table(checkpoint, copy, prefix):
         row = checkpoint['sums'][condition]
         parts.append(f'<td>{row["total_tokens"]:,}</td><td>{row["elapsed_seconds"]:.3f}</td>')
     parts.append('</tr></tfoot></table></div></details>')
-    for name, label in (('ALL-EIGHT-CURRENT-05-COSTS.md', 'costAnalysis'),
-                        ('ALL-EIGHT-CURRENT-05-REVIEW.md', 'checkpointReview'),
+    for name, label in (('benchmarks/ALL-EIGHT-CURRENT-06-COSTS.md', 'costAnalysis'),
+                        ('benchmarks/ALL-EIGHT-CURRENT-06-REVIEW.md', 'checkpointReview'),
                         ('comparison.json', 'checkpointJson'),
                         ('reports.zip', 'checkpointBundle')):
-        path = 'evidence/integration05/' + name
+        path = 'evidence/integration06/' + name
         parts.append(f'<a data-evidence-file="{path}" href="{e(prefix + path)}" download>{e(copy[label])} ↓</a>')
     return '\n'.join(parts)
 
@@ -228,16 +232,18 @@ def metadata(copy, language, base, preview):
 
 
 def experiment(evidence, copy, checkpoint=None, prefix='../'):
-    checkpoint = checkpoint or integration05()
+    checkpoint = checkpoint or integration06()
     data, cells, summary = evidence['data'], evidence['cells'], evidence['summary']
     records = {(cell['case'], cell['arm']): cell for cell in cells}
     cases = sorted({cell['case'] for cell in cells})
     e = html.escape
     report = GITHUB + '/blob/main/' + evidence['pointer']['result_directory']
     totals = checkpoint['sums']
+    def change(metric):
+        delta = 100 * (totals['current'][metric] / totals['baseline'][metric] - 1)
+        return copy['changeLess' if delta < 0 else 'changeMore' if delta > 0 else 'changeEqual'].format(value=f'{abs(delta):.2f}')
     performance_detail = copy['performanceDetail'].format(
-        tokenChange=f"{100 * (totals['current']['total_tokens'] / totals['baseline']['total_tokens'] - 1):.2f}",
-        timeChange=f"{100 * (totals['current']['elapsed_seconds'] / totals['baseline']['elapsed_seconds'] - 1):.2f}")
+        tokenChange=change('total_tokens'), timeChange=change('elapsed_seconds'))
     parts = ['<article class="experiment" aria-labelledby="experiment-heading">',
              f'<div class="experiment-label">{e(copy["experimentLabel"])}</div>',
              f'<h3 id="experiment-heading">{e(copy["experimentTitle"])}</h3>',
@@ -344,7 +350,7 @@ def build(base=None):
         raise ValueError('A production site_url must use public HTTPS')
     base = base.rstrip('/') + '/'
     evidence = featured()
-    checkpoint = integration05()
+    checkpoint = integration06()
     template = (LANDING / 'templates/page.html').read_text()
     files = {}
     for route, language in (('', 'ko'), ('ko/', 'ko'), ('en/', 'en')):
@@ -382,18 +388,21 @@ def build(base=None):
     files['assets/team-characters.png'] = (ROOT / 'assets/team-characters.png').read_bytes()
     for language in ('ko', 'en'):
         files[f'experiments/{language}.html'] = experiment(evidence, content['copy'][language], checkpoint).encode()
-    files.update(integration_evidence_files())
-    files['evidence/integration05/comparison.json'] = (
-        ROOT / 'benchmarks/results/all-eight-current-05/comparison.json').read_bytes()
-    bundle = io.BytesIO()
-    with zipfile.ZipFile(bundle, 'w') as archive:
-        for path in sorted(files):
-            if path.startswith('evidence/integration05/'):
-                entry = zipfile.ZipInfo(path.removeprefix('evidence/integration05/'))
-                entry.compress_type = zipfile.ZIP_DEFLATED
-                entry.external_attr = 0o100644 << 16
-                archive.writestr(entry, files[path])
-    files['evidence/integration05/reports.zip'] = bundle.getvalue()
+    for checkpoint_id in ('integration05', 'integration06'):
+        files.update(integration_evidence_files(checkpoint_id))
+        number = checkpoint_id.removeprefix('integration')
+        prefix = 'evidence/' + checkpoint_id + '/'
+        files[prefix + 'comparison.json'] = (
+            ROOT / f'benchmarks/results/all-eight-current-{number}/comparison.json').read_bytes()
+        bundle = io.BytesIO()
+        with zipfile.ZipFile(bundle, 'w') as archive:
+            for path in sorted(files):
+                if path.startswith(prefix):
+                    entry = zipfile.ZipInfo(path.removeprefix(prefix))
+                    entry.compress_type = zipfile.ZIP_DEFLATED
+                    entry.external_attr = 0o100644 << 16
+                    archive.writestr(entry, files[path])
+        files[prefix + 'reports.zip'] = bundle.getvalue()
     # Reuse the standalone packager: only skill resources and installation files.
     with tempfile.TemporaryDirectory(prefix='qh-landing-package-') as directory:
         archive = Path(directory) / 'skills.tar.gz'

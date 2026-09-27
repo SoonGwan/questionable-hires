@@ -1,0 +1,55 @@
+
+=== original unittest, variable absent ===
+test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... FAIL
+
+======================================================================
+FAIL: test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/test_worker.py", line 19, in test_disabled_retries
+    self.assertEqual(len(calls), 1)
+AssertionError: 3 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (failures=1)
+exit=1 (expected 1)
+
+=== observed actual unittest, variable absent ===
+after test import: env=None worker.RETRIES=2
+test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... after actual setUp: env='0' worker.RETRIES=2
+actual deliver callback calls=3
+FAIL
+
+======================================================================
+FAIL: test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/test_worker.py", line 19, in test_disabled_retries
+    self.assertEqual(len(calls), 1)
+AssertionError: 3 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (failures=1)
+after actual cleanup: env=None worker.RETRIES=2
+exit=1 (expected 1)
+
+=== observed actual unittest, variable 0 before import ===
+after test import: env='0' worker.RETRIES=0
+test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... after actual setUp: env='0' worker.RETRIES=0
+actual deliver callback calls=1
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+after actual cleanup: env='0' worker.RETRIES=0
+exit=0 (expected 0)
+
+=== incident standalone control ===
+standalone: env='0' worker.RETRIES=0 callback calls=1
+exit=0 (expected 0)
