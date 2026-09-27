@@ -6,7 +6,6 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [Con Artist guard evidence01](AUDIT-GUARD-EVIDENCE-01.md),2026-09-28,parent`1b497a05` | Seven reproduced evidence-loss failures repaired; final integrity failures retain completed native checks, batch references and original API exception types. | Native diagnostic correctness only; no model token/time claim. Subsequent mutations stop, unknown guards remain unknown. |
 | [Receipt native split01](RECEIPT-NATIVE-SPLIT-01.md),2026-09-28,parent`1b85702c`,candidate/execution`f80c1448` | Unchanged native suite: previous126 pass, candidate124 pass/2 fail; single-file CLI relocation cannot find new companion. Driver bytes−36.14%,combined bytes+3.07%. | Decline before model timing; preserve existing callers. Zero models, no ordinary install/deployment or token-saving claim. |
 | [Receipt guard output01](RECEIPT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,previous`1b6ae5f5`,candidate`a77e4d93`,execution`31101dea` | Four explicit-CLI interface cells: tokens−27.38%,CLI−18.26%; both task pairs lower both. Guard candidate retains native results with failure, responses6→4. | Limited interface gate passes; forced use/n=1/unequal extra reads, not causal/general/all8 savings. Large source-read truncation retained. No new instruction or featured promotion. |
 | [Receipt guard evidence01](RECEIPT-GUARD-EVIDENCE-01.md),2026-09-28,parent`1b6ae5f5`,source`11c9b0a7` | Six failing-before controls repaired; completed native observations survive final preservation failure with CLI2/incomplete status and original API exception types. | Adopt diagnostic correctness; not model efficiency. Initial compatibility failures retained. Personal install6 controls/all8 resources match; public`79834265` download bytes verified separately. |
@@ -57,6 +56,3 @@ Git 출력 임시 파일 시제품도 메모리는 줄었지만 더 느리고 �
 후속 실행 코드 분리 후보는 기존 단일 파일 CLI 경로2개를 깨뜨려 모델 측정 전에
 채택하지 않았다. 진입 파일 크기 감소를 절감으로 계산하거나 기존 검사를 제외하지 않는다.
 이전 모든 실패·혼재 결과와 상세 이력은 날짜가 있는 이전 판단 목록에 보존했다.
-
-Con Artist도 최종 보호 검사 실패 시 실행된 근거와 배치의 이전 결과를 남기도록 수정했다.
-API 예외와 CLI 실패를 유지하며, 후속 변형을 중단한다. 모델 비용 절감은 아직 측정하지 않았다.

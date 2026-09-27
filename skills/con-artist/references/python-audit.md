@@ -108,6 +108,13 @@ an earlier observation, not another execution.
 
 Correct-code failure/timeout stops as incomplete. CLI 0 means observations collected,
 not protection proved; CLI 2 means invalid/incomplete (possibly stderr only).
+If a final integrity check fails after checks were collected, CLI 2 also emits
+incomplete JSON retaining those checks and `integrity_error`. Unreached guard
+fields are `null`, not passes. The Python API still raises the original exception,
+with partial evidence in `error.audit_result`. Batch failures retain prior audits
+and baseline references, report `unrun_mutations`, and stop later mutations.
+Existing later-batch input/I/O errors still return incomplete results. Inspect
+the failure and process state before retrying; nothing is restored automatically.
 Each check retains a 12,000-character output tail, replacing invalid UTF-8;
 provenance can also be truncated. Timeout defaults to 30 seconds/check, max 300.
 

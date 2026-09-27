@@ -1,0 +1,93 @@
+test_api_preserves_runtime_error_type_and_attaches_checks (test_audit_guard_evidence.AuditGuardEvidenceTests.test_api_preserves_runtime_error_type_and_attaches_checks) ... FAIL
+test_batch_inventory_error_keeps_existing_return_semantics (test_audit_guard_evidence.AuditGuardEvidenceTests.test_batch_inventory_error_keeps_existing_return_semantics) ... FAIL
+test_batch_retains_prior_checks_and_references_stops_later_mutations (test_audit_guard_evidence.AuditGuardEvidenceTests.test_batch_retains_prior_checks_and_references_stops_later_mutations) ... FAIL
+test_cli_project_change_retains_native_checks (test_audit_guard_evidence.AuditGuardEvidenceTests.test_cli_project_change_retains_native_checks) ... FAIL
+test_cli_selected_change_retains_native_checks_without_restoration (test_audit_guard_evidence.AuditGuardEvidenceTests.test_cli_selected_change_retains_native_checks_without_restoration) ... FAIL
+test_inventory_error_remains_oserror_with_unknown_guard (test_audit_guard_evidence.AuditGuardEvidenceTests.test_inventory_error_remains_oserror_with_unknown_guard) ... FAIL
+test_timeout_then_guard_retains_only_executed_phase (test_audit_guard_evidence.AuditGuardEvidenceTests.test_timeout_then_guard_retains_only_executed_phase) ... FAIL
+test_batch_guard_retains_baseline_reuse_and_native_fault_results (test_audit_project_guard.AuditProjectGuardTests.test_batch_guard_retains_baseline_reuse_and_native_fault_results) ... ok
+test_early_incomplete_and_interruption_still_verify_guard (test_audit_project_guard.AuditProjectGuardTests.test_early_incomplete_and_interruption_still_verify_guard) ... ok
+test_file_replaced_by_fifo_is_rejected_without_read (test_audit_project_guard.AuditProjectGuardTests.test_file_replaced_by_fifo_is_rejected_without_read) ... ok
+test_invalid_flag_and_inventory_budgets_refuse_before_execution (test_audit_project_guard.AuditProjectGuardTests.test_invalid_flag_and_inventory_budgets_refuse_before_execution) ... ok
+test_link_target_is_not_read_and_special_file_is_refused (test_audit_project_guard.AuditProjectGuardTests.test_link_target_is_not_read_and_special_file_is_refused) ... ok
+test_native_checks_preserve_real_git_notes_modes_and_cleanup (test_audit_project_guard.AuditProjectGuardTests.test_native_checks_preserve_real_git_notes_modes_and_cleanup) ... ok
+test_opt_out_does_not_inventory_unselected_tree (test_audit_project_guard.AuditProjectGuardTests.test_opt_out_does_not_inventory_unselected_tree) ... ok
+test_real_cli_stdin_reports_guard_and_does_not_hide_mutant_failure (test_audit_project_guard.AuditProjectGuardTests.test_real_cli_stdin_reports_guard_and_does_not_hide_mutant_failure) ... ok
+test_unselected_edits_additions_deletions_modes_and_git_are_detected_not_restored (test_audit_project_guard.AuditProjectGuardTests.test_unselected_edits_additions_deletions_modes_and_git_are_detected_not_restored) ... ok
+
+======================================================================
+FAIL: test_api_preserves_runtime_error_type_and_attaches_checks (test_audit_guard_evidence.AuditGuardEvidenceTests.test_api_preserves_runtime_error_type_and_attaches_checks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_guard_evidence.py", line 76, in test_api_preserves_runtime_error_type_and_attaches_checks
+    self.assertIsNotNone(result, 'Completed checks were discarded')
+AssertionError: unexpectedly None : Completed checks were discarded
+
+======================================================================
+FAIL: test_batch_inventory_error_keeps_existing_return_semantics (test_audit_guard_evidence.AuditGuardEvidenceTests.test_batch_inventory_error_keeps_existing_return_semantics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_guard_evidence.py", line 122, in test_batch_inventory_error_keeps_existing_return_semantics
+    self.checks(result['audits'][1], 3)
+  File "<repository>/tests/test_audit_guard_evidence.py", line 32, in checks
+    self.assertEqual({key: check['exit_code'] for key, check in result['checks'].items()},
+AssertionError: {} != {'correct_tests': 0, 'correct_probe': 0, 'mutant_tests': 0, 'mutant_probe': 1}
+- {}
++ {'correct_probe': 0, 'correct_tests': 0, 'mutant_probe': 1, 'mutant_tests': 0}
+
+======================================================================
+FAIL: test_batch_retains_prior_checks_and_references_stops_later_mutations (test_audit_guard_evidence.AuditGuardEvidenceTests.test_batch_retains_prior_checks_and_references_stops_later_mutations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_guard_evidence.py", line 82, in test_batch_retains_prior_checks_and_references_stops_later_mutations
+    result = self.cli(self.batch())
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "<repository>/tests/test_audit_guard_evidence.py", line 27, in cli
+    self.assertTrue(process.stdout.strip(), 'Completed checks were discarded')
+AssertionError: '' is not true : Completed checks were discarded
+
+======================================================================
+FAIL: test_cli_project_change_retains_native_checks (test_audit_guard_evidence.AuditGuardEvidenceTests.test_cli_project_change_retains_native_checks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_guard_evidence.py", line 55, in test_cli_project_change_retains_native_checks
+    result = self.cli()
+             ^^^^^^^^^^
+  File "<repository>/tests/test_audit_guard_evidence.py", line 27, in cli
+    self.assertTrue(process.stdout.strip(), 'Completed checks were discarded')
+AssertionError: '' is not true : Completed checks were discarded
+
+======================================================================
+FAIL: test_cli_selected_change_retains_native_checks_without_restoration (test_audit_guard_evidence.AuditGuardEvidenceTests.test_cli_selected_change_retains_native_checks_without_restoration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_guard_evidence.py", line 47, in test_cli_selected_change_retains_native_checks_without_restoration
+    result = self.cli()
+             ^^^^^^^^^^
+  File "<repository>/tests/test_audit_guard_evidence.py", line 27, in cli
+    self.assertTrue(process.stdout.strip(), 'Completed checks were discarded')
+AssertionError: '' is not true : Completed checks were discarded
+
+======================================================================
+FAIL: test_inventory_error_remains_oserror_with_unknown_guard (test_audit_guard_evidence.AuditGuardEvidenceTests.test_inventory_error_remains_oserror_with_unknown_guard)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_guard_evidence.py", line 107, in test_inventory_error_remains_oserror_with_unknown_guard
+    self.assertIsNotNone(result, 'Completed checks were discarded')
+AssertionError: unexpectedly None : Completed checks were discarded
+
+======================================================================
+FAIL: test_timeout_then_guard_retains_only_executed_phase (test_audit_guard_evidence.AuditGuardEvidenceTests.test_timeout_then_guard_retains_only_executed_phase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_guard_evidence.py", line 63, in test_timeout_then_guard_retains_only_executed_phase
+    result = self.cli(timeout=0.3)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "<repository>/tests/test_audit_guard_evidence.py", line 27, in cli
+    self.assertTrue(process.stdout.strip(), 'Completed checks were discarded')
+AssertionError: '' is not true : Completed checks were discarded
+
+----------------------------------------------------------------------
+Ran 16 tests in 2.186s
+
+FAILED (failures=7)
