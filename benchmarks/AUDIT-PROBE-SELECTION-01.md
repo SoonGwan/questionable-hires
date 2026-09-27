@@ -128,3 +128,20 @@ checks exclude only those existing transcript spaces, not edited source/document
 한국어: 소스625a0440를 개인 설치와 배포 패키지에 반영했다. 이전 설치본은 별도
 백업하고 전체8개 자원 일치·설치본6개·패키지4개·랜딩/서버27개 검사를 통과했다.
 다운로드 자원은 소스와 파일·권한이 같으며 기존 웹 실험 수치와 화면은 유지한다.
+
+## Public delivery
+
+Release **`32a2c4b6c967164ea90d4f218a3e4a512778976e`** is live on the existing
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/) addresses.
+[Six HTTPS checks](results/audit-probe-selection01/public.json) verify actual release
+identity, exact locale pages/JavaScript, canonical/indexable metadata and checksum.
+All52 skill resource bytes/modes inside the public archive match source. Archive
+SHA-256 is `a03f45fee906b87abed1c4fb88bc0d224b31630834e53f729d261d577c0e5753`.
+Existing integration07 values and measured resource `1be35120` are unchanged.
+These HTTP/source checks do not establish browser interaction or model efficiency;
+no GitHub push is implied.
+
+한국어: 배포32a2c4b6의 실제 HTTPS 다운로드에서52개 스킬 자원의 파일·권한
+일치를 확인했다. 한영 페이지와 체크섬을 포함한6개 경로가 통과했으며, 기존
+실험 수치의 측정 대상과 날짜는 바꾸지 않았다.
