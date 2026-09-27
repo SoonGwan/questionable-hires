@@ -1,0 +1,71 @@
+[    0.053703] hv_vmbus: registering driver hyperv_keyboard
+[    0.054549] rtc-pl031 20050000.pl031: registered as rtc0
+[    0.054596] rtc-pl031 20050000.pl031: setting system clock to 2026-09-27T09:19:26 UTC (1790500766)
+[    0.054776] NET: Registered PF_INET6 protocol family
+[    0.055025] Segment Routing with IPv6
+[    0.055076] In-situ OAM (IOAM) with IPv6
+[    0.058496] registered taskstats version 1
+[    0.058583] Loading compiled-in X.509 certificates
+[    0.965920] Freeing initrd memory: 98876K
+[    0.976681] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    0.977821] Demotion targets for Node 0: null
+[    0.977949] Key type .fscrypt registered
+[    0.977986] Key type fscrypt-provisioning registered
+[    0.980692] clk: Disabling unused clocks
+[    0.980746] PM: genpd: Disabling unused power domains
+[    0.981287] Freeing unused kernel memory: 1920K
+[    0.981394] Run /bin/sh as init process
+/bin/sh: can't access tty; job control turned off
+~ # [6n/bin/busybox sh /check.sh
+psf__requests-3362.tar: OK
+psf__requests-863.tar: OK
+psf__requests-1963.tar: OK
+psf__requests-2674.tar: OK
+pytest-dev__pytest-5221.tar: OK
+pytest-dev__pytest-5103.tar: OK
+pytest-dev__pytest-6116.tar: OK
+pytest-dev__pytest-11143.tar: OK
+QH_SOURCE_READY_psf__requests-3362
+QH_SOURCE_READY_psf__requests-863
+QH_SOURCE_READY_psf__requests-1963
+QH_SOURCE_READY_psf__requests-2674
+QH_SOURCE_READY_pytest-dev__pytest-5221
+QH_SOURCE_READY_pytest-dev__pytest-5103
+QH_SOURCE_READY_pytest-dev__pytest-6116
+QH_SOURCE_READY_pytest-dev__pytest-11143
+QH_NO_HOST_GRADER_PATH
+QH_SOLVER_RAM_PROOF
+~ # /bin/busybox df -k /
+Filesystem           1K-blocks      Used Available Use% Mounted on
+df: /: can't find mount point
+~ # /bin/busybox sh /python-check.sh
+[    3.404923] fuse: init (API version 7.41)
+/runtime.tar: OK
+[    6.380473] random: crng init done
+{"python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]", "pytest": "7.4.4", "ssl": "OpenSSL 3.0.15 3 Sep 2024", "sqlite": "3.45.3", "prefix": "/runtime/env"}
+QH_SOLVER_PYTHON_RAM_PROOF
+QH_PYTHON_NO_HOST_GRADER
+~ # /bin/busybox sh /issue-check-compat2.sh
+{"issue": "psf__requests-3362", "module": "requests", "path": "/solver/psf__requests-3362/requests/__init__.py", "version": "2.10.0"}
+QH_IMPORT_PASS_psf__requests-3362
+/solver/psf__requests-863/requests/models.py:793: SyntaxWarning: "is" with a literal. Did you mean "=="?
+  if self.status_code is 0:
+{"issue": "psf__requests-863", "module": "requests", "path": "/solver/psf__requests-863/requests/__init__.py", "version": "0.14.0"}
+QH_IMPORT_PASS_psf__requests-863
+{"issue": "psf__requests-1963", "module": "requests", "path": "/solver/psf__requests-1963/requests/__init__.py", "version": "2.3.0"}
+QH_IMPORT_PASS_psf__requests-1963
+{"issue": "psf__requests-2674", "module": "requests", "path": "/solver/psf__requests-2674/requests/__init__.py", "version": "2.7.0"}
+QH_IMPORT_PASS_psf__requests-2674
+{"issue": "pytest-dev__pytest-5221", "module": "pytest", "path": "/solver/pytest-dev__pytest-5221/src/pytest.py", "version": "4.4.2.dev174+g4a2fdce6"}
+QH_IMPORT_PASS_pytest-dev__pytest-5221
+{"issue": "pytest-dev__pytest-5103", "module": "pytest", "path": "/solver/pytest-dev__pytest-5103/src/pytest.py", "version": "4.5.1.dev40+g10ca84ff"}
+QH_IMPORT_PASS_pytest-dev__pytest-5103
+{"issue": "pytest-dev__pytest-6116", "module": "pytest", "path": "/solver/pytest-dev__pytest-6116/src/pytest.py", "version": "5.2.3.dev198+ge670ff76"}
+QH_IMPORT_PASS_pytest-dev__pytest-6116
+{"issue": "pytest-dev__pytest-11143", "module": "pytest", "path": "/solver/pytest-dev__pytest-11143/src/pytest/__init__.py", "version": "8.0.0.dev53+g6995257c"}
+QH_IMPORT_PASS_pytest-dev__pytest-11143
+QH_ISSUE_IMPORTS_COMPLETE
+~ # /bin/busybox poweroff -f
+[    9.737669] reboot: Power down
+QH_VM_STARTED
+QH_VM_GUEST_STOPPED

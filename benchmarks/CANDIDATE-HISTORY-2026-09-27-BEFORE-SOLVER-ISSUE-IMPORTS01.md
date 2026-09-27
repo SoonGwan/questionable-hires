@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver issue imports01,2026-09-27,parent`2510829d`:
-[actual guest fresh imports](SOLVER-ISSUE-IMPORTS-01.md) retain three5/8 bootstrap
-failures; declared legacy pure-Python dependencies yield8/8 on the fourth runtime
-input, all VMs stopped. No issue tests/models; native grading/tool bridge and all8
-quality/whole-task token/time goals remain incomplete.
-한국어: 실제 게스트에서8개 새 import를 확인했고 앞선 실패도 보존했다.
-모델·이슈 검사·전체 효율 비교 결과로 승격하지 않는다.
-
 Solver Python RAM01,2026-09-27,parent`307a2d25`:
 [actual RAM-native Python](SOLVER-PYTHON-RAM-01.md) imports Python3.9.20/pytest/SSL/
 SQLite and verifies SQLite write/read with all8 source proofs. Initial1GiB extraction
