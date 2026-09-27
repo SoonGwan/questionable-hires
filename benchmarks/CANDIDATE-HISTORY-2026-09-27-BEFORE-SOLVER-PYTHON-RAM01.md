@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver Python RAM01,2026-09-27,parent`307a2d25`:
-[actual RAM-native Python](SOLVER-PYTHON-RAM-01.md) imports Python3.9.20/pytest/SSL/
-SQLite and verifies SQLite write/read with all8 source proofs. Initial1GiB extraction
-failure/second df failure retained;1.5GiB success. One Rosetta share,no host data
-shares/network/disks; zero models/issue tests,tool bridge/cohort readiness outstanding.
-한국어: 실제 RAM Python 실행을 확인했고 첫 실패를 보존했다. 이슈 실행·모델
-연결·전체8개 효율·품질 개선을 검증한 결과는 아니다.
-
 Solver RAM isolation01,2026-09-27,parent`ec04c803`:
 [actual no-share Linux guest](SOLVER-RAM-ISOLATION-01.md) verifies/extracts all8
 pristine source archives in RAM; no host shares/disks/network, grader path absent,
