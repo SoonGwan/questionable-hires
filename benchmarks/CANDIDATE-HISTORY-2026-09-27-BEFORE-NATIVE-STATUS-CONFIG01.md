@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Native status config01,2026-09-27,parent`f3abda01`:
-[actual compatibility regression](NATIVE-STATUS-CONFIG-01.md) reproduces modern
-config-consuming hook failure; corrected call passes actual2.8.7/4.0.2/8-dev runtimes
-and Git-free copies. Original failure retained; separate next private driver only.
-Cohort unexecuted,zero models; no all8 quality/cost/time claim.
-한국어: 현대 훅의 config 누락 실패를 재현하고 세 런타임에서 수정 후 통과를
-확인했다. 전체 과제·모델 비교 결과로 승격하지 않는다.
-
 Native completion01,2026-09-27,parent`0024be51`:
 [execution gate controls](NATIVE-COMPLETION-01.md) accept actual pytest0/1 completion,
 reject collection errors/wrong runtime and synthetic incomplete/timeout/exit
