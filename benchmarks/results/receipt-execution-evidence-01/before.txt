@@ -1,0 +1,80 @@
+test_cleanup_error_retains_both_results_and_remaining_copy (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_cleanup_error_retains_both_results_and_remaining_copy) ... FAIL
+test_cli_main_emits_partial_json_and_failure_diagnostic (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_cli_main_emits_partial_json_and_failure_diagnostic) ... FAIL
+test_copy_error_retains_completed_before_without_starting_after (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_copy_error_retains_completed_before_without_starting_after) ... FAIL
+test_first_error_and_interrupt_keep_original_no_result_behavior (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_first_error_and_interrupt_keep_original_no_result_behavior) ... ok
+test_later_guard_keeps_execution_error_and_original_exception_precedence (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_later_guard_keeps_execution_error_and_original_exception_precedence) ... FAIL
+test_multiple_versions_stop_with_prior_returned_results (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_multiple_versions_stop_with_prior_returned_results) ... FAIL
+test_runner_error_retains_only_checks_returned_to_comparison (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_runner_error_retains_only_checks_returned_to_comparison) ... FAIL
+test_node_error_retains_actual_before_result (test_receipt_execution_evidence.ReceiptNodeExecutionEvidenceTests.test_node_error_retains_actual_before_result) ... FAIL
+
+======================================================================
+FAIL: test_cleanup_error_retains_both_results_and_remaining_copy (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_cleanup_error_retains_both_results_and_remaining_copy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 95, in test_cleanup_error_retains_both_results_and_remaining_copy
+    result = self.partial(caught.exception, ['before', 'after'], removed=False)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 24, in partial
+    self.assertIsNotNone(result, 'Previously returned native evidence was discarded')
+AssertionError: unexpectedly None : Previously returned native evidence was discarded
+
+======================================================================
+FAIL: test_cli_main_emits_partial_json_and_failure_diagnostic (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_cli_main_emits_partial_json_and_failure_diagnostic)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 141, in test_cli_main_emits_partial_json_and_failure_diagnostic
+    self.assertTrue(stdout.getvalue(), 'CLI discarded the completed native result')
+AssertionError: '' is not true : CLI discarded the completed native result
+
+======================================================================
+FAIL: test_copy_error_retains_completed_before_without_starting_after (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_copy_error_retains_completed_before_without_starting_after)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 88, in test_copy_error_retains_completed_before_without_starting_after
+    self.partial(error, ['before'])
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 24, in partial
+    self.assertIsNotNone(result, 'Previously returned native evidence was discarded')
+AssertionError: unexpectedly None : Previously returned native evidence was discarded
+
+======================================================================
+FAIL: test_later_guard_keeps_execution_error_and_original_exception_precedence (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_later_guard_keeps_execution_error_and_original_exception_precedence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 104, in test_later_guard_keeps_execution_error_and_original_exception_precedence
+    self.assertIn('execution_error', result, 'Cleanup diagnostic was discarded by final guard')
+AssertionError: 'execution_error' not found in {'status': 'incomplete', 'revisions': {'before': '5df6d8d8527c1ba8ee8c9bd8b7a0710733db3345', 'after': '171d7125eb3f83d095d34bc444f21995db5f6b68'}, 'checks': {'before': {'exit_code': 1, 'timed_out': False, 'output': 'Verified copied import: rule {"path": "<TEMP>", "pid": 73557}\ntest_boundary (test_rule.Boundary.test_boundary) ... FAIL\n\n======================================================================\nFAIL: test_boundary (test_rule.Boundary.test_boundary)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File "<TEMP>", line 4, in test_boundary\n    def test_boundary(self): self.assertTrue(eligible(18))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n', 'output_truncated': False, 'native_exit_code': 1, 'suite_observation': {'tests': 1, 'skipped': 0, 'successful': False}}, 'after': {'exit_code': 0, 'timed_out': False, 'output': 'Verified copied import: rule {"path": "<TEMP>", "pid": 73558}\ntest_boundary (test_rule.Boundary.test_boundary) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n', 'output_truncated': False, 'native_exit_code': 0, 'suite_observation': {'tests': 1, 'skipped': 0, 'successful': True}}}, 'import_roots': [], 'fixed_sha256': {'test_rule.py': 'e255a7a686959cce3f2e7cef5b5615c40dbaad134e37e577d131d2b27c492d3d'}, 'limitation': 'Inspect assertion failures and import provenance; exit codes alone do not prove the fix.', 'originals': {'unchanged': True, 'sha256': {'test_rule.py': 'e255a7a686959cce3f2e7cef5b5615c40dbaad134e37e577d131d2b27c492d3d', 'rule.py': 'e8243b5712d7618f4ea93f838c76cdce5dcab69a4309e27a158b4a39565f407a'}, 'modes': {'test_rule.py': 420, 'rule.py': 420}, 'watch_only': []}, 'tree_guard': {'unchanged': False, 'changed': ['.receipt-ngfc2xyq', '.receipt-ngfc2xyq/after', '.receipt-ngfc2xyq/after/.receipt-result-a6uqg_da', '.receipt-ngfc2xyq/after/.receipt-result-a6uqg_da/suite.json', '.receipt-ngfc2xyq/after/rule.py', '.receipt-ngfc2xyq/after/test_rule.py', '.receipt-ngfc2xyq/before', '.receipt-ngfc2xyq/before/.receipt-result-vwvo01wq', '.receipt-ngfc2xyq/before/.receipt-result-vwvo01wq/suite.json', '.receipt-ngfc2xyq/before/rule.py', '.receipt-ngfc2xyq/before/test_rule.py']}, 'preservation_error': {'stage': 'tree_guard', 'type': 'RuntimeError', 'message': 'Project tree changed; not restored (11 paths): .receipt-ngfc2xyq, .receipt-ngfc2xyq/after, .receipt-ngfc2xyq/after/.receipt-result-a6uqg_da, .receipt-ngfc2xyq/after/.receipt-result-a6uqg_da/suite.json, .receipt-ngfc2xyq/after/rule.py, .receipt-ngfc2xyq/after/test_rule.py, .receipt-ngfc2xyq/before, .receipt-ngfc2xyq/before/.receipt-result-vwvo01wq, .receipt-ngfc2xyq/before/.receipt-result-vwvo01wq/suite.json, .receipt-ngfc2xyq/before/rule.py, .receipt-ngfc2xyq/before/test_rule.py'}, 'comparison_copies_removed': False} : Cleanup diagnostic was discarded by final guard
+
+======================================================================
+FAIL: test_multiple_versions_stop_with_prior_returned_results (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_multiple_versions_stop_with_prior_returned_results)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 121, in test_multiple_versions_stop_with_prior_returned_results
+    result = self.partial(error, ['before', 'before_2'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 24, in partial
+    self.assertIsNotNone(result, 'Previously returned native evidence was discarded')
+AssertionError: unexpectedly None : Previously returned native evidence was discarded
+
+======================================================================
+FAIL: test_runner_error_retains_only_checks_returned_to_comparison (test_receipt_execution_evidence.ReceiptExecutionEvidenceTests.test_runner_error_retains_only_checks_returned_to_comparison)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 71, in test_runner_error_retains_only_checks_returned_to_comparison
+    result = self.partial(error, ['before'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 24, in partial
+    self.assertIsNotNone(result, 'Previously returned native evidence was discarded')
+AssertionError: unexpectedly None : Previously returned native evidence was discarded
+
+======================================================================
+FAIL: test_node_error_retains_actual_before_result (test_receipt_execution_evidence.ReceiptNodeExecutionEvidenceTests.test_node_error_retains_actual_before_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_receipt_execution_evidence.py", line 183, in test_node_error_retains_actual_before_result
+    self.assertIsNotNone(result, 'Actual native Node evidence was discarded')
+AssertionError: unexpectedly None : Actual native Node evidence was discarded
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.917s
+
+FAILED (failures=7)

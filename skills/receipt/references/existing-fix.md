@@ -143,9 +143,10 @@ JSON
 Use default compact JSON for agent execution; it retains every field and native
 output. Reserve `--pretty` for a human-readable JSON request, not extra evidence.
 
-A preservation failure after a completed check retains partial JSON with
-`status:"incomplete"` and `preservation_error`, still exiting 2; see
-[preservation details](comparison-details.md#preservation-guards).
+After a returned check, ordinary copy/runner/cleanup errors retain partial JSON
+with `status:"incomplete"` and `execution_error`; final preservation failures use
+`preservation_error`. CLI still exits 2. Missing results remain unknown, and copy
+removal can be null when unverified; see [failure details](comparison-details.md#preservation-guards).
 
 CLI 0 means observations collected, **not proof**. Inspect each actual assertion,
 requested test identity, before failure/after pass, copied-import evidence,

@@ -77,9 +77,15 @@ as JSON with `status:"incomplete"`, alongside the stderr diagnostic and exit 2.
 `preservation_error` identifies the failed stage/type/message. An `unchanged` value
 of `false` means a detected change; `null` means the check was unavailable or not
 reached. `changed` lists observed differing paths when available.
-`comparison_copies_removed` records actual owned-path absence on this error path;
-a false value is unresolved cleanup. No originals are restored. Native before/after
+`comparison_copies_removed` records owned-path absence on these error paths:
+true means absent, false means present, and null means unavailable/unverified. No originals are restored. Native before/after
 success cannot override failed preservation, and unexecuted phases have no check.
+Ordinary copy, runner or cleanup exceptions after a returned check also retain
+partial results with `execution_error` (type/message). Only returned checks are
+included: a missing phase may have started without returning evidence. Later
+versions stop. If a final guard then fails, both error fields remain and the
+existing final-guard exception precedence is preserved. Do not rerun merely to
+recover known observations; first resolve the error and process state.
 The Python API preserves the original exception type/message;
 its `comparison_result` attribute carries the same partial evidence. Errors before collected observations
 keep the ordinary exception/CLI diagnostic behavior. This does not recover results

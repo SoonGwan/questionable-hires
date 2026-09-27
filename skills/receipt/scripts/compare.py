@@ -484,6 +484,18 @@ def tree_inventory(root):
     return inventory, total
 
 
+def _copies_removed(scratch):
+    if scratch is None:
+        return None
+    try:
+        os.lstat(scratch)
+    except FileNotFoundError:
+        return True
+    except OSError:
+        return None
+    return False
+
+
 def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
     root = Path(root).resolve(strict=True)
     if os.name != 'posix' or not 0 < timeout <= 300:
@@ -684,6 +696,16 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
                 if check['timed_out'] or check['exit_code'] == 7:
                     result['status'] = 'incomplete'
                     break
+    except (ValueError, OSError, RuntimeError, subprocess.TimeoutExpired) as error:
+        if result['checks']:
+            result['status'] = 'incomplete'
+            result['execution_error'] = dict(type=type(error).__name__, message=str(error))
+            result['limitation'] = ('Only returned checks are retained; a missing check may have '
+                                    'started without returning evidence. Do not retry until the '
+                                    'error and process state are understood.')
+            result['comparison_copies_removed'] = _copies_removed(scratch)
+            error.comparison_result = result
+        raise
     finally:
         stage = 'originals'
         result['originals'] = dict(unchanged=None, sha256=original_hashes,
@@ -718,7 +740,7 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
             result['status'] = 'incomplete'
             result['preservation_error'] = dict(stage=stage, type=type(error).__name__,
                                                 message=str(error))
-            result['comparison_copies_removed'] = scratch is not None and not os.path.lexists(scratch)
+            result['comparison_copies_removed'] = _copies_removed(scratch)
             # Preserve exception type/message for existing direct API callers.
             error.comparison_result = result
             raise
@@ -786,9 +808,11 @@ No root, symlink, Git-internal, empty-directory or overlapping selections.
 Limits: Python 3.9+/POSIX, 20 MB snapshot, 10000 entries, 12000 output characters.
 Exit 0 means observations collected, not a verified fix: inspect each check's
 assertion output, exit_code, timed_out, output_truncated and import provenance.
-Exit 2 means comparison not established. Final preservation failures after a
-collected check retain partial JSON with status=incomplete and preservation_error.
-Inspect unchanged (false=changed, null=unverified) and comparison_copies_removed;
+Exit 2 means comparison not established. After a returned check, ordinary copy,
+runner or cleanup errors retain incomplete JSON with execution_error. Final
+preservation failures use preservation_error; both may be present. Missing checks
+remain unknown. Inspect unchanged (false=changed, null=unverified) and
+comparison_copies_removed (true=absent, false=present, null=unverified);
 partial native results never override failed preservation. Selected originals
 are checked, not restored. No sandbox or complete side-effect containment.
 Check exit 7 reserves incomplete import/setup evidence; no next comparison runs.
