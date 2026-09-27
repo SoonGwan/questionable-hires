@@ -64,3 +64,17 @@ invalid work after a required guard failure, not a general speed/token saving.
 후속 실행 중단을 유지한다. 첫 경로 오류가 있는 재현은 무효로 별도 보존했고,
 교정한 동일 검사에서 수정 전7개 실패→수정 후6개 메서드 통과를 확인했다.
 Git 없는 사본162개 검사도 통과했지만 모델 토큰·시간 개선 수치로 계산하지 않는다.
+
+## Installed and packaged source
+
+Source **`a7828248`** is installed after prior Con Artist resources matched parent
+`e9ee3bce` bytes and Git modes; the previous directory is backed up outside discovery.
+[All eight installed skills match](results/audit-cleanup-lookup01/installation.json),
+and [six controls using the installed helper](results/audit-cleanup-lookup01/installed.txt)
+pass. [Standalone package checks](results/audit-cleanup-lookup01/package.txt):4 pass.
+The151-file build changes only archive/checksum; [all52 packaged resource bytes/modes](results/audit-cleanup-lookup01/download.json)
+match source. No layout, OG, frozen model metric or browser interaction change is claimed.
+
+한국어: 소스a7828248를 개인 설치와 다운로드에 반영했다. 기존 자원을 확인·백업한 뒤
+설치본6개·패키지4개 검사 및 전체8개 자원 일치를 확인했다. 실행 오류를 바로잡은
+수정이며 기존 모델 비용 결과를 새 버전의 성과로 바꾸지 않는다.
