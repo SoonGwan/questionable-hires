@@ -100,3 +100,25 @@ The landing download is rebuilt from the new source;
 All63 generated files pass builder consistency. Only download bytes/checksum change;
 no featured benchmark, artwork, page layout or numerical claim changes. These are
 local installation/package checks; public delivery remains a separate check.
+
+## Public delivery
+
+Hosted release **`7983426564fbe9dc4b4a85d9c04aec1d4c68e3bc`** is live at the
+[English](https://hires.no-money-do-you-have-money.com/en/) and
+[Korean](https://hires.no-money-do-you-have-money.com/ko/) URLs.
+[Public observations](results/receipt-guard-evidence-01/public.json) confirm health
+revision, exact105,553-byte archive identity, adjacent checksum, packaged Receipt
+helper bytes, both canonical URLs, index/follow directives and download links.
+Archive SHA-256:`681dd052f43f2271838ce8d698eec24038775a2e3fb5976ce21036be3431c67b`.
+
+The [first public checker](results/receipt-guard-evidence-01/public-check-initial.txt)
+incorrectly required the exact robots string `index, follow`; production also has
+`max-image-preview:large`. Its assertion failure is retained. Parsing directive
+membership confirms the intended metadata; no site code change or redeployment
+was needed. These HTTPS checks prove delivery of the tested bytes, not new model
+performance or a repeated visual/interaction review of unchanged pages.
+
+한국어: 소스`11c9b0a7`을 개인 설치와 공개 다운로드에 반영했고, 공개 배포
+`79834265`의 파일105,553바이트·해시·소스 일치를 확인했다. 첫 공개 확인기의
+robots 문자열 비교 오류도 보존했으며 실제 검색 허용 지시자는 정상이다.
+토큰·시간이나 기존 실험 수치는 바꾸지 않았다.
