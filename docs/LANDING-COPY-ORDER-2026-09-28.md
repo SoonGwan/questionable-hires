@@ -46,3 +46,21 @@ these are standalone Chrome observations, not in-app browser coverage.
 수정했고, 동일한 실제 브라우저 검사12개가 모두 통과했다(수정 전4실패).
 정상 복사·재시도·처리 중 언어 전환을 유지한다. 클립보드 응답은 통제했으며
 실제 OS 클립보드는 바꾸지 않았다. 모델 토큰 절감이나 전체 목표 완료는 아니다.
+
+## Hosted verification
+
+Release **`9a49f1ab4ec886c506e4b0d82d62d5d4fef10169`** is live at
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+[The same12 browser cases on public HTTPS](../benchmarks/results/landing-copy-order01/public-browser.txt)
+all pass with exit0 and closed contexts/browser. Clipboard responses remain controlled;
+these are hosted UI observations, not actual OS clipboard delivery guarantees.
+[Six HTTP identity checks](../benchmarks/results/landing-copy-order01/public.json)
+verify health revision, exact fixed app.js, both canonical/indexable pages and
+unchanged skill archive/checksum. Integration07 remains tied to `1be35120`.
+The owned local preview server was stopped. No model-cost measurement, deployment
+of a skill candidate or GitHub push is part of this UI fix.
+
+한국어: 공개 배포9a49f1ab에서도 동일12개 브라우저 검사가 모두 통과했다.
+배포된 코드·한영 페이지·다운로드6개 경로의 동일성을 별도로 확인했다.
+실험 수치와 스킬 파일은 유지했다.
