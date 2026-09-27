@@ -49,7 +49,6 @@ apps01의 시간 증가와 이전 불리한 결과를 보존한다.
 
 | Checkpoint / date / resource | Evidence and limit |
 | --- | --- |
-| [Audit import hash01](AUDIT-IMPORT-HASH-01.md),2026-09-27,`ff0fbd2a` | Complete source hashes/output preserved with64KiB reads; authored4MB hash-loop peak−96.57%,time difference<0.04ms. Native regression fails before;130 checkout/Git-free controls and installed8skills/51files/25commands pass. No model/total-RSS or all8 gain. |
 | [Same-revision hunks01](SAME-REVISION-HUNKS-01.md),2026-09-27,candidate`c5121130`;original resource`0333a084` | Original namespace-cell4 identical hunks/1,326 repeated bytes; clarify unchanged-revision reuse and missing-context rereads. Metadata/owned all8 install parity pass. Unmeasured routing; no token/time/quality gain or relabeling old evidence. |
 | [History body offset01](HISTORY-BODY-OFFSET-01.md),2026-09-27,candidate on `d8e39d5f` | Removes whole patch-body copy; identical excerpts and invalid-tail rejection. Author peak−90.45%,time difference<0.3ms;49 checkout/Git-free checks,8-skill/51-file local install. No model/remote release gain; original archive setup failure retained. |
 | [Fast-surface01](FAST-SURFACE-01-REVIEW.md),2026-09-27,execution `150116f1` | Two no-skill native fixes:Fast-requested tokens+0.21%,time−29.50%. No returned-tier evidence or causal claim; higher advertised credit use. No adoption/larger Fast trial/all8 claim. |
