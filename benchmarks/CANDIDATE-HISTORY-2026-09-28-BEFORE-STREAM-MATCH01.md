@@ -7,7 +7,6 @@ It is **not achieved**. No general efficiency or complete release claim is suppo
 
 | Dated checkpoint and measured resource | Evidence | Decision / next gate |
 | --- | --- | --- |
-| [Receipt stream match01](RECEIPT-STREAM-MATCH-01.md),2026-09-28,parent`71cdc0ab`,source hashes in report | Native prototype only: exact separate observations retained;12 archive controls pass. 8MiB final-check additional allocation8,394,882→137,858bytes; time mixed, differences below1ms. | Keep isolated; no model calls or token benefit. No unchanged timing rerun or default adoption without a concrete memory need and remaining compatibility controls. |
 | [Landlord check grouping01](LANDLORD-CHECK-GROUP-01-REVIEW.md),2026-09-28,previous`cc7591ed`,candidate/execution`849e06dc` | Two original cells: tokens−19.85%,CLI−14.80%; both already group native checks. Candidate instead combines discovery/read; original scoped outcomes and preservation reviewed. | Do not adopt another rule: intended behavior already present in previous arm; no causal or all8 claim. No unchanged rerun. |
 | [Traceback display model01](TRACEBACK-DISPLAY-MODEL-01-REVIEW.md), 2026-09-28, previous `d3e7d5b6`, candidate/execution `f6bc7b63` | Two original cells: tokens +20.31%, CLI −5.12%; no renderer adoption. Native before/after, original output recovery and preservation reviewed. | Declined; new subtest logs also have zero separate display-byte reduction. Keep prototype isolated; no unchanged rerun or all8 gain. |
 | [Integration06 costs](ALL-EIGHT-CURRENT-06-COSTS.md), 2026-09-27, `1d0e92ac` | All16 sessions completed; original per-response sums verified. Tokens +16.95%, CLI elapsed −10.00%; 1/8 pairs decreases both, by only150 tokens in that pair. | Adverse token result. [Scoped original review](ALL-EIGHT-CURRENT-06-REVIEW.md) covers all16; two baseline scope violations, recovered output and unequal work retained. Exposed n=1/shared host/cache. No featured promotion. |
@@ -44,6 +43,3 @@ Native controls, model evidence and hosted release checks have different scopes.
 
 [Pre-grouping checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-CHECK-GROUP01.md) preserves the preceding index.
 한국어 추가: Landlord 검사 묶기 후보는 한 쌍의 토큰19.85%·시간14.80% 감소에도 기존 버전이 이미 같은 검사 묶기를 수행하므로 기본 채택하지 않는다.
-
-[Pre-streaming checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-STREAM-MATCH01.md) preserves the preceding index.
-한국어 추가: 블록 단위 원본 비교 시제품은12개 검사에서 보존 관측을 유지하고 큰 파일의 임시 메모리를 줄였지만 시간은 혼재한다. 모델 토큰 절감과 기본 반영은 하지 않는다.
