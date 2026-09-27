@@ -51,3 +51,19 @@ evidence stay unchanged; no browser-layout or model-efficiency result follows.
 한국어: 수정 문서를 개인 설치와 다운로드 패키지에 반영했다. 기존 설치본을
 확인·백업한 뒤 전체8개 자원 일치, 패키지4개 검사와 압축 파일의52개 자원 일치를
 검증했다. 설치된 실행 코드는 이전과 같으며 새로운 모델 절감 측정은 아니다.
+
+## Public delivery
+
+Release **`49c67e0a6d0af6cbf6ea5be25490f2b35bb5c3da`** is live at the existing
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/) addresses.
+[Six HTTPS checks](../benchmarks/results/audit-error-guidance01/public.json) verify
+release identity, exact locale pages/JavaScript, canonical/indexable metadata and
+archive/checksum. All52 packaged resource bytes/modes match source, including both
+corrected references. The107,392-byte archive has SHA-256
+`c713dcbf37f7ee56a04d699f784f3ff7a1f3df903daefaf179e7b8902ef7a293`.
+Existing integration07 counts and measured resource `1be35120` are unchanged.
+No new browser interaction, model-cost result or GitHub push is implied.
+
+한국어: 배포49c67e0a의 HTTPS6개 경로와 실제 압축 파일 안52개 자원을 확인했다.
+공개 다운로드에 수정 문서가 들어 있으며 기존 측정 수치와 실행 코드는 유지한다.
