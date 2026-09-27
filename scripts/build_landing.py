@@ -3,6 +3,7 @@
 import argparse
 import html
 import hashlib
+import io
 from html.parser import HTMLParser
 import json
 from pathlib import Path
@@ -10,6 +11,7 @@ import re
 import shutil
 import struct
 import sys
+import zipfile
 from urllib.parse import urlsplit
 from xml.sax.saxutils import escape as xml_escape
 
@@ -107,7 +109,8 @@ def integration_table(checkpoint, copy, prefix):
     parts.append('</tr></tfoot></table></div></details>')
     for name, label in (('ALL-EIGHT-CURRENT-05-COSTS.md', 'costAnalysis'),
                         ('ALL-EIGHT-CURRENT-05-REVIEW.md', 'checkpointReview'),
-                        ('comparison.json', 'checkpointJson')):
+                        ('comparison.json', 'checkpointJson'),
+                        ('reports.zip', 'checkpointBundle')):
         path = 'evidence/integration05/' + name
         parts.append(f'<a data-evidence-file="{path}" href="{e(prefix + path)}" download>{e(copy[label])} ↓</a>')
     return '\n'.join(parts)
@@ -379,6 +382,15 @@ def build(base=None):
     files.update(integration_evidence_files())
     files['evidence/integration05/comparison.json'] = (
         ROOT / 'benchmarks/results/all-eight-current-05/comparison.json').read_bytes()
+    bundle = io.BytesIO()
+    with zipfile.ZipFile(bundle, 'w') as archive:
+        for path in sorted(files):
+            if path.startswith('evidence/integration05/'):
+                entry = zipfile.ZipInfo(path.removeprefix('evidence/integration05/'))
+                entry.compress_type = zipfile.ZIP_DEFLATED
+                entry.external_attr = 0o100644 << 16
+                archive.writestr(entry, files[path])
+    files['evidence/integration05/reports.zip'] = bundle.getvalue()
     if preview:
         robots = 'User-agent: *\nDisallow: /\n'
     else:

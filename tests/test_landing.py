@@ -1,5 +1,6 @@
 """Static landing checks: original evidence, locale metadata and raster integrity."""
 import copy
+import io
 from html.parser import HTMLParser
 import importlib.util
 import json
@@ -8,6 +9,7 @@ import re
 from pathlib import Path
 import tempfile
 import unittest
+import zipfile
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -126,6 +128,22 @@ class LandingTests(unittest.TestCase):
                     continue
                 target = posixpath.normpath(posixpath.join(posixpath.dirname(path), link.path))
                 self.assertTrue(target in self.files, f'{path} links to unserved {href}')
+
+    def test_evidence_bundle_keeps_report_links_and_original_bytes(self):
+        prefix = 'evidence/integration05/'
+        with zipfile.ZipFile(io.BytesIO(self.files[prefix + 'reports.zip'])) as archive:
+            names = set(archive.namelist())
+            for name in names:
+                self.assertFalse(name.startswith('/') or '..' in Path(name).parts)
+                content = archive.read(name)
+                self.assertEqual(content, self.files[prefix + name])
+                if not name.endswith('.md'):
+                    continue
+                for href in re.findall(r'\]\(([^)]+)\)', content.decode()):
+                    link = landing.urlsplit(href)
+                    if not link.scheme and link.path:
+                        target = posixpath.normpath(posixpath.join(posixpath.dirname(name), link.path))
+                        self.assertTrue(target in names, f'{name} links to absent ZIP member {href}')
 
     def test_integration_rejects_missing_duplicate_and_inconsistent_attempts(self):
         original = landing.read_json
