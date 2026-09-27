@@ -76,3 +76,17 @@ and generated download bytes only.
 한국어: `829a2b02`를 Mac 실제 설치본에 반영했고 기존 폴더를 백업했다. 전체8개
 리소스가 소스와 일치하고 실제 설치 CLI6개·랜딩19개 검사가 통과했다. 초기 권한
 대조 오류는 변경 전에 중단됐으며 Git의 실제 권한과 내용으로 재확인했다.
+
+## Public delivery
+
+Hosted release `1781c1ce` passes origin and public HTTPS identity checks. The
+[public retrieval](results/audit-recipe-keys-01/public-delivery.json) matches the
+complete archive and checksum file byte-for-byte against the generated download;
+the packaged audit helper matches source `829a2b02`. Both static language pages
+serve their expected language and download link. Existing design and historical
+model evidence are unchanged; this delivery does not imply new browser QA or
+model-efficiency measurements.
+
+한국어: 공개 배포 `1781c1ce`의 HTTPS 상태와 한영 페이지를 확인했다. 공개 주소에서
+다시 받은 다운로드·체크섬·내부 감사 코드가 수정 소스와 일치한다. 실제 설치본과
+공개 다운로드 반영까지 완료했으며 모델 토큰 절감이나 새 화면 검증 주장은 아니다.

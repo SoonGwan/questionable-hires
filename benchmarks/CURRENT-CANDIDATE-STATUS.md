@@ -69,3 +69,6 @@ Native controls, model evidence and hosted release checks have different scopes.
 
 [Pre-audit-recipe-keys checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-AUDIT-RECIPE-KEYS01.md) preserves the preceding index.
 한국어 추가: Con Artist의 중복 JSON 키를 실행 전에 거부한다. 이전 실패5개를 포함한127개 네이티브 검사가 통과했으며 모델 비용 절감은 측정하지 않았다.
+
+[Con Artist recipe keys01 delivery](AUDIT-RECIPE-KEYS-01.md#public-delivery),2026-09-28,source`829a2b02`,hosted`1781c1ce`: backed-up personal update, all8 inventories matching,6 installed CLI checks and19 landing checks pass. Public archive/checksum/helper bytes and KO/EN static routes match. This supersedes the Con Artist copy in earlier personal/download delivery, not historical model measurements.
+한국어: Con Artist 수정은 실제 Mac 설치본과 공개 다운로드까지 반영했다. 백업과 설치 CLI·공개 파일 일치를 검증했으며 전체 작업 비용 목표는 계속 미달이다.
