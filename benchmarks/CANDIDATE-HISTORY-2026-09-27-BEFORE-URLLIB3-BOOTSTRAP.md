@@ -18,14 +18,6 @@ model-choice01(`6701069f`)은 토큰39.23% 증가·시간0.61% 감소로 채택�
 integration05(`75183f2f`)의 불리한 결과와 범위·평가·보존 한계를 유지하며,
 이전 측정이나 작성자 재검사를 현재 스킬의 성능으로 바꾸지 않는다.
 
-[urllib3 transfer01 bootstrap correction](URLLIB3-INLINE-TRANSFER-01-PREPARATION.md#bootstrap-correction--2026-09-27-parent-baa7d088),
-2026-09-27, parent `baa7d088`: fresh public and test-module imports fail for
-missing generated version metadata although a unittest selector passes. Original
-15 assertions remain recorded; no clean-bootstrap/helper-transfer claim and no
-new model calls. A corrected future resource needs a supported build/import gate.
-한국어: urllib3 전달 실험 준비에서 버전 파일 누락을 확인했다. 테스트 선택 실행
-통과는 정상 import 증거가 아니며 기존 결과를 보존한다. 새 모델 호출은0회다.
-
 ## Model evidence and decisions
 
 | Checkpoint / date / resource | Observed result | Decision |
