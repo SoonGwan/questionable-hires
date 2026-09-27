@@ -20,6 +20,7 @@ base = driver.base
 base.CONDITIONS = ('cli', 'bridge')
 base.RESOURCES = {condition: 'b081240e' for condition in base.CONDITIONS}
 base.SCHEDULE = [(0,'cli'),(0,'bridge'),(1,'bridge'),(1,'cli')]
+BRIDGE_CONDITIONS = ('bridge',)
 SDK_PYTHON = Path('/tmp/qh-tool-bridge-env-01/bin/python')
 SERVER = ROOT/'benchmarks/results/tool-bridge-http-exit-01/server.py'
 original_cases = base.cases
@@ -41,6 +42,7 @@ def frozen(output):
     result = original_frozen(output)
     result.update(condition_models={c:'gpt-6-astra' for c in base.CONDITIONS},
         condition_flags={c:['--disable','apps','-c','features.code_mode.excluded_tool_namespaces=["web","imagegen","clock"]'] for c in base.CONDITIONS},
+        bridge_conditions=list(BRIDGE_CONDITIONS),
         sdk_runtime=str(SDK_PYTHON), sdk_version=subprocess.check_output([str(SDK_PYTHON),'-c','import importlib.metadata;print(importlib.metadata.version("mcp"))'],text=True).strip())
     return result
 base.identities, base.frozen = identities, frozen
@@ -66,7 +68,7 @@ def execute(output, manifest):
             flags = frozen(output)['condition_flags'][condition]
             # Both arms replace scoped MCP configuration. Only bridge adds a target.
             table = 'mcp_servers={}'
-            if condition=='bridge':
+            if condition in BRIDGE_CONDITIONS:
                 started = time.monotonic()
                 with socket.socket() as sock:
                     sock.bind(('127.0.0.1',0)); port=sock.getsockname()[1]
