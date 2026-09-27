@@ -91,12 +91,8 @@ collects the fourth source with valid assertion controls. Existing local checks
 report60 passes. [Native HTTP/TLS fixture](EXTERNAL-BUNDLE-02-HTTPBIN-NATIVE.md)
 retains duplicate-plugin and expired-certificate failures; owned certificate refresh
 passes4 trust/hostname/service controls and3 unchanged Requests3362 network tests.
-[Full Requests3362 core module](EXTERNAL-BUNDLE-02-REQUESTS3362-CORE.md) preserves
-a server JSON failure under newer Flask; original Flask/Werkzeug pins then yield
-183 passes,2 xpasses,zero failures,including mock usage,plus4 trust controls. This
-is one module,not selected issue grading. Short-lived certificates need revalidation;
-remaining suites/services and selected issue-test/solver-isolation/protocol gates
-remain unverified;0 model calls. Author bootstrap controls are not issue regressions.
+Short-lived certificates need revalidation; complete suites/mock and selected
+issue-test/solver-isolation/protocol gates remain unverified;0 model calls. Author bootstrap controls are not issue regressions.
 Different project versions cannot inherit old pilot readiness. Selection is not
 role-specific quality or token/time evidence.
 
