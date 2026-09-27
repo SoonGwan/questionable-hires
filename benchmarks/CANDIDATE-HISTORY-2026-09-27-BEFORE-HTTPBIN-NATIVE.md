@@ -88,11 +88,8 @@ and4 xfails. Initial dependency/compatibility failures remain preserved. These
 modules are not selected issue regressions. [Requests native preparation](EXTERNAL-BUNDLE-02-REQUESTS-TESTS.md)
 retains two runner-compatibility failures; a provisional plain-assert pytest2.8 route
 collects the fourth source with valid assertion controls. Existing local checks
-report60 passes. [Native HTTP/TLS fixture](EXTERNAL-BUNDLE-02-HTTPBIN-NATIVE.md)
-retains duplicate-plugin and expired-certificate failures; owned certificate refresh
-passes4 trust/hostname/service controls and3 unchanged Requests3362 network tests.
-Short-lived certificates need revalidation; complete suites/mock and selected
-issue-test/solver-isolation/protocol gates remain unverified;0 model calls. Author bootstrap controls are not issue regressions.
+report60 passes; complete HTTP/TLS/mock and selected issue-test/solver-isolation/
+protocol gates remain unverified;0 model calls. Author bootstrap controls are not issue regressions.
 Different project versions cannot inherit old pilot readiness. Selection is not
 role-specific quality or token/time evidence.
 
