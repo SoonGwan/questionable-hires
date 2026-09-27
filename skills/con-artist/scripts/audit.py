@@ -546,6 +546,17 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
         if probe_reused:
             output['correct_probe_reused'] = True
         return output
+    except (ValueError, KeyError, OSError, RuntimeError) as error:
+        if results:
+            output = dict(status='incomplete', checks=results,
+                          execution_error=dict(type=type(error).__name__, message=str(error)),
+                          limitation='Only returned checks are retained; a missing check may have started without returning evidence. Do not retry until the error and process state are understood.')
+            if reused:
+                output['correct_tests_reused'] = True
+            if probe_reused:
+                output['correct_probe_reused'] = True
+            error.audit_result = output
+        raise
     finally:
         integrity = dict(selected_files=len(files),
                          selected_original_bytes_and_modes_unchanged=None,
@@ -575,8 +586,12 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
             stage = 'scratch_removal'
             if output is not None:
                 # Verify actual removal after leaving the context manager.
-                integrity['owned_scratch_removed'] = not (Path(scratch).exists() or Path(scratch).is_symlink())
-                if not integrity['owned_scratch_removed']:
+                try:
+                    integrity['owned_scratch_removed'] = not (Path(scratch).exists() or Path(scratch).is_symlink())
+                except OSError:
+                    if 'execution_error' not in output:
+                        raise
+                if integrity['owned_scratch_removed'] is False and 'execution_error' not in output:
                     raise RuntimeError('Owned audit scratch removal unconfirmed: ' + scratch)
                 output['integrity'] = integrity
         except (ValueError, OSError, RuntimeError) as error:

@@ -1,0 +1,76 @@
+test_batch_keeps_prior_audit_and_references_then_stops (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_batch_keeps_prior_audit_and_references_then_stops) ... FAIL
+test_cleanup_exception_preserves_type_and_reports_remaining_copy (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_cleanup_exception_preserves_type_and_reports_remaining_copy) ... FAIL
+test_cleanup_plus_guard_failure_keeps_both_errors (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_cleanup_plus_guard_failure_keeps_both_errors) ... FAIL
+test_cli_returns_incomplete_json_and_existing_exit_two (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_cli_returns_incomplete_json_and_existing_exit_two) ... FAIL
+test_copy_exception_keeps_both_returned_baselines (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_copy_exception_keeps_both_returned_baselines) ... FAIL
+test_no_observations_and_interruptions_preserve_existing_behavior (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_no_observations_and_interruptions_preserve_existing_behavior) ... ok
+test_runner_exception_retains_only_returned_checks (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_runner_exception_retains_only_returned_checks) ... FAIL
+
+======================================================================
+FAIL: test_batch_keeps_prior_audit_and_references_then_stops (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_batch_keeps_prior_audit_and_references_then_stops)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_execution_evidence.py", line 116, in test_batch_keeps_prior_audit_and_references_then_stops
+    self.assertEqual(list(second['checks']), ['correct_tests', 'correct_probe'])
+AssertionError: Lists differ: [] != ['correct_tests', 'correct_probe']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'correct_tests'
+
+- []
++ ['correct_tests', 'correct_probe']
+
+======================================================================
+FAIL: test_cleanup_exception_preserves_type_and_reports_remaining_copy (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_cleanup_exception_preserves_type_and_reports_remaining_copy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_execution_evidence.py", line 85, in test_cleanup_exception_preserves_type_and_reports_remaining_copy
+    result = self.partial(caught.exception, ['correct_tests', 'correct_probe', 'mutant_tests', 'mutant_probe'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repository>/tests/test_audit_execution_evidence.py", line 20, in partial
+    self.assertIsNotNone(result, 'Previously returned native checks were discarded')
+AssertionError: unexpectedly None : Previously returned native checks were discarded
+
+======================================================================
+FAIL: test_cleanup_plus_guard_failure_keeps_both_errors (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_cleanup_plus_guard_failure_keeps_both_errors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_execution_evidence.py", line 98, in test_cleanup_plus_guard_failure_keeps_both_errors
+    self.assertIn('execution_error', result, 'Cleanup failure was discarded')
+AssertionError: 'execution_error' not found in {'checks': {'correct_tests': {'exit_code': 0, 'timed_out': False, 'output': 'Copied process: {"python":"/opt/homebrew/opt/python@3.11/bin/python3.11","cwd":"/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpt2wv5vnz/.con-artist-h1b7fer9/correct-tests"}\nVerified copied import: service {"path":"service.py","sha256":"5d080563b57287276f589c2b2714ef499269efe7405a288b3c1474f5a92bf271"}\ntest_value (test_service.Test.test_value) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n', 'output_truncated': False}, 'correct_probe': {'exit_code': 0, 'timed_out': False, 'output': 'Copied process: {"python":"/opt/homebrew/opt/python@3.11/bin/python3.11","cwd":"/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpt2wv5vnz/.con-artist-h1b7fer9/correct-probe"}\nVerified copied import: service {"path":"service.py","sha256":"5d080563b57287276f589c2b2714ef499269efe7405a288b3c1474f5a92bf271"}\n', 'output_truncated': False}, 'mutant_tests': {'exit_code': 0, 'timed_out': False, 'output': 'Copied process: {"python":"/opt/homebrew/opt/python@3.11/bin/python3.11","cwd":"/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpt2wv5vnz/.con-artist-h1b7fer9/mutant-tests"}\nVerified copied import: service {"path":"service.py","sha256":"d3fe37235936f63ebabd6ba2bb8d3cf67404555d856dc63b0611fe9b6231ec13"}\ntest_value (test_service.Test.test_value) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n', 'output_truncated': False}, 'mutant_probe': {'exit_code': 1, 'timed_out': False, 'output': 'Copied process: {"python":"/opt/homebrew/opt/python@3.11/bin/python3.11","cwd":"/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpt2wv5vnz/.con-artist-h1b7fer9/mutant-probe"}\nVerified copied import: service {"path":"service.py","sha256":"d3fe37235936f63ebabd6ba2bb8d3cf67404555d856dc63b0611fe9b6231ec13"}\nTraceback (most recent call last):\n  File "<string>", line 61, in <module>\n  File "<audit-probe>", line 2, in <module>\nAssertionError: 2\n', 'output_truncated': False}}, 'status': 'incomplete', 'integrity': {'selected_files': 2, 'selected_original_bytes_and_modes_unchanged': True, 'owned_scratch_removed': False, 'project_guard': {'unchanged': False}}, 'integrity_error': {'stage': 'project_guard', 'type': 'RuntimeError', 'message': 'Project tree changed during audit; not restored (13 paths): .con-artist-h1b7fer9, .con-artist-h1b7fer9/correct-probe, .con-artist-h1b7fer9/correct-probe/service.py, .con-artist-h1b7fer9/correct-probe/test_service.py, .con-artist-h1b7fer9/correct-tests, .con-artist-h1b7fer9/correct-tests/service.py, .con-artist-h1b7fer9/correct-tests/test_service.py, .con-artist-h1b7fer9/mutant-probe, .con-artist-h1b7fer9/mutant-probe/service.py, .con-artist-h1b7fer9/mutant-probe/test_service.py, .con-artist-h1b7fer9/mutant-tests, .con-artist-h1b7fer9/mutant-tests/service.py, .con-artist-h1b7fer9/mutant-tests/test_service.py'}} : Cleanup failure was discarded
+
+======================================================================
+FAIL: test_cli_returns_incomplete_json_and_existing_exit_two (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_cli_returns_incomplete_json_and_existing_exit_two)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_execution_evidence.py", line 135, in test_cli_returns_incomplete_json_and_existing_exit_two
+    self.assertTrue(stdout.getvalue(), 'CLI discarded returned evidence')
+AssertionError: '' is not true : CLI discarded returned evidence
+
+======================================================================
+FAIL: test_copy_exception_keeps_both_returned_baselines (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_copy_exception_keeps_both_returned_baselines)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_execution_evidence.py", line 77, in test_copy_exception_keeps_both_returned_baselines
+    result = self.partial(error, ['correct_tests', 'correct_probe'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repository>/tests/test_audit_execution_evidence.py", line 20, in partial
+    self.assertIsNotNone(result, 'Previously returned native checks were discarded')
+AssertionError: unexpectedly None : Previously returned native checks were discarded
+
+======================================================================
+FAIL: test_runner_exception_retains_only_returned_checks (test_audit_execution_evidence.AuditExecutionEvidenceTests.test_runner_exception_retains_only_returned_checks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_audit_execution_evidence.py", line 60, in test_runner_exception_retains_only_returned_checks
+    result = self.partial(error, ['correct_tests'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repository>/tests/test_audit_execution_evidence.py", line 20, in partial
+    self.assertIsNotNone(result, 'Previously returned native checks were discarded')
+AssertionError: unexpectedly None : Previously returned native checks were discarded
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.675s
+
+FAILED (failures=6)
