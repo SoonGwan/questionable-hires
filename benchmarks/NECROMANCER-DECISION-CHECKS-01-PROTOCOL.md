@@ -35,3 +35,12 @@ landing performance claim or goal completion from preparation or this screen.
 반복하는 비용을 줄이는 후보다. 요청된 대안별 실제 호출·값과 프로젝트 필수
 검사는 유지한다. 기본 스킬에는 채택하지 않았고 기존 노출 과제 두 개의 비교
 준비이며 모델 실행은0회다. 검사 누락을 절감으로 인정하지 않는다.
+
+Execution driver: `run_necromancer_decision_checks_01.py`; previous `ecef2516`,
+candidate `e5061da5`. Scoped apps-off/web-imagegen-clock exclusion is identical
+in every cell. Snapshots contain exactly the matching skill, not all eight.
+Native preflight imports the public caller, runs supplied tests, then checks a
+real rounding/negative-guard mutation causes assertion failures and restores the
+source. Scheduling tests use synthetic results without model calls or Git history.
+The first preparation was superseded before any model execution after adding
+execution tests to the frozen source identities; retain its private directory.
