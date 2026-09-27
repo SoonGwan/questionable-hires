@@ -61,8 +61,10 @@ Current Receipt guide-first change`f91d8ef0` is not measured by this comparison.
 Its [four-cell protocol](RECEIPT-GUIDE-FIRST-01-PROTOCOL.md) and
 [zero-model preparation](results/receipt-guide-first-01-preparation/summary.json)
 freeze previous`e6d5e663` versus candidate`f91d8ef0`. Receipt resource manifests
-differ only at SKILL.md; native complete/partial SQLite controls pass. Scheduler
-wiring/control validation remains before model execution; no savings claim.
+differ only at SKILL.md; native complete/partial SQLite controls pass. [Execution preflight](results/receipt-guide-first-01-preparation/execution-preflight.json)
+records native fixture controls and six scheduler controls in checkout/Git-free
+copies. Four-cell serial execution has started at scheduler`96780deb`; no result
+or saving is established by this preparation.
 
 한국어: effort01(2026-09-27,후보`7172b50c`) 원본16개 과제의 네이티브 결과·범위·
 보존을 검토했다. low 합계 토큰5.91%·시간17.20% 감소지만 이력 추적은 모두
