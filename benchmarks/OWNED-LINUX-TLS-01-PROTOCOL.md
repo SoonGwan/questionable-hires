@@ -24,3 +24,15 @@ TERM/KILL; guest180s/independent parent200s watchdog. Retain first failures and
 changed hypotheses, detach after collection. Original Mac controls are historical,
 not rescored; successful Linux controls are not official script/FAIL-PASS grading,
 default trust readiness for selected tests, all8 quality or token/time savings.
+
+## Prospective WSGI scheme intervention
+
+First native TLS observation passes HTTP/trusted HTTPS/untrusted CA/hostname
+controls, but HTTPS response's echoed URL incorrectly has http scheme. Preserve
+first result/source/log; transport trust success is not echoed-protocol parity.
+The reused dual server wraps accepted sockets but default WSGI environ still
+reports plain HTTP. Next subclass the existing Handler only to set HTTPS on/off
+from the actual accepted ssl.SSLSocket in get_environ, preserving HTTP behavior,
+app/client/tests/certificate bytes. Require both HTTP and HTTPS full echoed URLs
+match actual request scheme as well as unchanged four trust/control outcomes.
+This is a prospective service-fixture correction, no selected-case rerun/rescore.
