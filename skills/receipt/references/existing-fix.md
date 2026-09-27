@@ -114,7 +114,9 @@ JSON
   required, for unittest in either invocation mode. Adds `assertion_observation`
   for current-thread standard `assertEqual`/`assertIsNot` calls, without replacing
   assertions. `actual`/`expected` mean first/second arguments, not inferred roles.
-  Primitive builtins only; lists/tuples carry kind tags and bytes use hex. Limits:
+  Format `v:2`: primitive builtins only; lists are JSON arrays, tuples use
+  `{"tuple":[...]}`, bytes use `{"bytes_hex":"..."}`. Older stored reports without
+  `v` use kind/items containers; do not interpret them as v2. Limits:
   4,096 report bytes, 64 records, 32 value nodes per argument pair, container depth
   three and length sixteen. No arbitrary object representation or thread coverage.
   Existing/replaced profile hooks, unsupported values, empty observation, limit

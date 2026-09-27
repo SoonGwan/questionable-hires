@@ -20,8 +20,8 @@ def encode(value, nodes, depth=0):
     if kind is bytes and len(value) <= 128:
         return {'bytes_hex': value.hex()}
     if depth < 3 and (kind is list or kind is tuple) and len(value) <= 16:
-        return {'kind': 'list' if kind is list else 'tuple',
-                'items': [encode(v, nodes, depth+1) for v in value]}
+        items = [encode(v, nodes, depth+1) for v in value]
+        return items if kind is list else {'tuple': items}
     raise UnavailableValue('unsupported or bounded value')
 
 def compact(value):
@@ -36,7 +36,7 @@ def observe(max_bytes=4096, max_records=64):
         raise RuntimeError('Existing profile hook: do not replace it')
     scope = 'assertEqual/assertIsNot current-thread calls'
     rows, state = [], {'reason': None, 'used': 0, 'stopped': False, 'closed': False}
-    reserve = len(compact({'scope': scope, 'observations': [], 'complete': False, 'reason': 'unavailable_value'}))
+    reserve = len(compact({'v': 2, 'scope': scope, 'observations': [], 'complete': False, 'reason': 'unavailable_value'}))
     methods = {unittest.TestCase.assertEqual.__code__: ('assertEqual', 'first', 'second'),
                unittest.TestCase.assertIsNot.__code__: ('assertIsNot', 'expr1', 'expr2')}
     def profile(frame, event, arg):
@@ -65,7 +65,7 @@ def observe(max_bytes=4096, max_records=64):
             state.update(reason=state['reason'] or 'observer_error', stopped=True)
     def report():
         reason = state['reason'] or ('no_observations' if not rows else None)
-        result = compact({'scope': scope, 'observations': [json.loads(row) for row in rows],
+        result = compact({'v': 2, 'scope': scope, 'observations': [json.loads(row) for row in rows],
                           'complete': reason is None, 'reason': reason})
         assert len(result.encode('ascii')) <= max_bytes
         return result

@@ -35,8 +35,9 @@ class AssertionObservationTests(unittest.TestCase):
                 self.assertEqual(check['native_exit_code'],expected)
                 self.assertEqual(check['suite_observation']['tests'],6)
                 report=check['assertion_observation'];self.assertTrue(report['complete'])
+                self.assertEqual(report['v'],2)
                 self.assertEqual(len(report['observations']),7)
-                self.assertTrue(any(row['actual']=={'kind':'list','items':[{'kind':'tuple','items':[1,3 if expected else 10]}]} for row in report['observations']))
+                self.assertTrue(any(row['actual']==[{'tuple':[1,3 if expected else 10]}] for row in report['observations']))
                 self.assertLessEqual(len(json.dumps(report,separators=(',',':'),ensure_ascii=True).encode('ascii')),4096)
             self.assertTrue(result['comparison_copies_removed'])
             self.assertEqual(helper.tree_inventory(self.root),before)
@@ -85,4 +86,21 @@ class AssertionObservationTests(unittest.TestCase):
         check=result['checks']['before'];self.assertEqual(check['native_exit_code'],1)
         self.assertEqual(check['exit_code'],7)
         self.assertEqual(check['assertion_observation']['reason'],'missing_or_invalid_report')
+        self.assertTrue(result['comparison_copies_removed'])
+
+    def test_old_unversioned_sidecar_is_incomplete_not_misinterpreted(self):
+        capture=helper.capture_check
+        def stale(*args):
+            result=capture(*args)
+            path=next(args[1].rglob('assertions.json'))
+            value=json.loads(path.read_text());value.pop('v')
+            path.write_text(json.dumps(value))
+            return result
+        with patch.object(helper,'capture_check',side_effect=stale):
+            result=helper.compare(self.root,dict(self.recipe,observe_assertions=True))
+        self.assertEqual(result['status'],'incomplete')
+        self.assertEqual(list(result['checks']),['before'])
+        self.assertEqual(result['checks']['before']['native_exit_code'],1)
+        self.assertEqual(result['checks']['before']['exit_code'],7)
+        self.assertEqual(result['checks']['before']['assertion_observation']['reason'],'missing_or_invalid_report')
         self.assertTrue(result['comparison_copies_removed'])
