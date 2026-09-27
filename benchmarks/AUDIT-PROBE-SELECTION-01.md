@@ -104,3 +104,27 @@ release checks are separate delivery evidence; no new model result follows.
 검사는 모두 유지했다. 강화 검사나 입력이 달라지면 새로 실행하고, 실패·조건부
 생략·원본 보존도 확인했다. 실행 횟수18.18% 감소는 해당 예제의 네이티브 수치이며
 모델 토큰·시간 또는 전체8개 개선율이 아니다. 이전 축약 후보의 실패도 그대로 유지한다.
+
+## Installed and packaged source
+
+Source **`625a0440`** is installed after every prior Con Artist resource matched
+parent `4dac0d2b` bytes and Git modes. The old directory is backed up outside skill
+discovery. [All eight installations](results/audit-probe-selection01/installation.json)
+match current resources; [six installed-helper controls](results/audit-probe-selection01/installed.txt)
+pass with the actual installed helper, including pytest.
+
+[Standalone archive checks](results/audit-probe-selection01/package.txt):4 pass.
+[Landing/server checks](results/audit-probe-selection01/landing.txt):27 pass.
+The151-file build changes only the download archive and checksum. [Download identity](results/audit-probe-selection01/download.json)
+verifies all52 packaged skill resources' bytes/modes against source; the archive is
+107,239 bytes. The first inventory query incorrectly included the parent directory's
+README, which is not an installable skill; the corrected comparison selects the eight
+SKILL.md directories used by packaging. Layout, bilingual landing copy, OG and frozen
+measurements are unchanged, so no new browser-layout or model-performance result follows.
+
+Original unittest failure logs retain their trailing progress-line spaces; whitespace
+checks exclude only those existing transcript spaces, not edited source/documents.
+
+한국어: 소스625a0440를 개인 설치와 배포 패키지에 반영했다. 이전 설치본은 별도
+백업하고 전체8개 자원 일치·설치본6개·패키지4개·랜딩/서버27개 검사를 통과했다.
+다운로드 자원은 소스와 파일·권한이 같으며 기존 웹 실험 수치와 화면은 유지한다.
