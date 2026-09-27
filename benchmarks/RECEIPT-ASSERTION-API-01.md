@@ -1,6 +1,6 @@
 # Receipt assertion observation API01
 
-2026-09-27; implementation parent `f862be36`. Local opt-in candidate,
+2026-09-27; implementation parent `60ced61d`. Local opt-in candidate,
 **zero model runs**. No whole-task token/time, all-eight improvement, full release,
 remote installation or hosted delivery claim. Previous adverse
 [optional-detail01](RECEIPT-OPTIONAL-DETAIL-01-REVIEW.md) remains declined;

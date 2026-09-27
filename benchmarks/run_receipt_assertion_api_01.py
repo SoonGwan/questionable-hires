@@ -12,7 +12,7 @@ spec = importlib.util.spec_from_file_location('_optional_detail_base', ROOT/'ben
 base = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(base)
 driver = base.driver
-driver.base.RESOURCES = {'previous': 'f862be36', 'candidate': '4b09097e'}
+driver.base.RESOURCES = {'previous': '60ced61d', 'candidate': '4b09097e'}
 driver.base.cases = lambda: fixture.cases(sys.executable)
 old_identities = driver.base.identities
 

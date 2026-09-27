@@ -1,6 +1,6 @@
 # Receipt assertion API01 model protocol — 2026-09-27
 
-Freeze previous `f862be36` versus candidate `4b09097e` before model calls.
+Freeze previous `60ced61d` versus candidate `4b09097e` before model calls.
 Only Receipt resources are supplied; candidate introduces optional bounded
 primitive argument observation and its guide/help contract. Entry unchanged.
 Old resource lacks the API; native source/versions/assertions/tasks stay identical.
@@ -37,3 +37,10 @@ repeat of guide length/effort tuning. Reused authored cases, n=1, shared host/ca
 and possible unequal work limit evidence to mechanism exploration. Even a favorable
 pair cannot prove independent validation, broad adoption or all-eight improvement.
 No featured benchmark/landing chart promotion or hosted release claim.
+
+Preparation note: the first pre-model preparation referenced nonexistent
+`f862be36` from a carried context note and stopped at Git snapshot lookup before
+any model call or run manifest. Authoritative Git identifies implementation
+parent as `60ced61d425c1f67cc840ba3a1f4042443dd2405`. That partial owned directory
+is retained at `/tmp/qh-receipt-assertion-api-01`; corrected preparation uses
+`/tmp/qh-receipt-assertion-api-01-corrected`. No model retry/replacement occurred.
