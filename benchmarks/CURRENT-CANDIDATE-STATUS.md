@@ -51,3 +51,6 @@ Native controls, model evidence and hosted release checks have different scopes.
 
 [Pre-recipe-error checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-RECIPE-ERRORS01.md) preserves the preceding index.
 한국어 추가: Receipt 입력의 중복 키를 거부하고 누락·오타를 명시한다. 이전 실패7개가 통과하고 기존 검사를 포함한79개 네이티브 검사가 통과했다. 모델 토큰·시간 절감은 측정하지 않았다.
+
+[Recipe errors01 delivery](RECEIPT-RECIPE-ERRORS-01.md#delivery),2026-09-28,source`9db5a8ec`: Receipt's personal copy updated with a verified backup; all8 installed inventories match. Eight installed checks and18 landing checks pass; hosted health/languages and exact download bytes verified. This supersedes the Receipt bytes in the earlier personal sync and the hosted downloadable snapshot, not historical model measurements.
+한국어: `9db5a8ec` 수정은 실제 Mac 설치본과 공개 다운로드에 반영했으며 백업·실제 설치 검사·공개 파일 일치를 확인했다. 과거 모델 수치의 재측정은 아니다.

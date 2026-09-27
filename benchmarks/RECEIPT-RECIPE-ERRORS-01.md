@@ -51,8 +51,34 @@ The all-eight whole-task objective remains unmet; earlier mixed/adverse results
 remain in the dated decision index. Both README capability descriptions and both
 runtime-specific recipe guides describe the changed contract.
 
+## Delivery
+
+Source **`9db5a8ec`** is installed on the owner's Mac and served by the public
+landing. The old Receipt resource inventory exactly matched parent `e2bed7ff`
+before replacement; its complete directory is retained outside skill discovery
+under `~/.agents/skill-backups/questionable-hires/20260928-recipe-errors-9db5a8ec/receipt`.
+The staged replacement and the old backup were checked by bytes/modes. All eight
+installed skills now match the source; the other seven were not replaced.
+[Delivery inventories](results/receipt-recipe-errors-01/personal-delivery.json)
+and [eight actual installed checks](results/receipt-recipe-errors-01/installed-checks.txt)
+cover the seven invalid-input methods and one real native before-fail/after-pass
+comparison with both output formats. These repeat native methods, not additional
+independent model evidence. The recorded successful replacement did not exercise
+the rollback path.
+
+Eighteen landing checks passed, including generated snapshot packaging. Public
+HTTPS [health, both languages and both download files](results/receipt-recipe-errors-01/hosted-delivery.json)
+were fetched after deployment. Health identifies `9db5a8ec`; the downloaded
+archive/checksum match the generated files exactly. Archive SHA-256:
+`572f1daa90f910b0502606175ebe09ffe81fdacf36863585db2bb73e8caf3b2f`.
+The featured chart, model metrics and page design did not change in this release.
+These are release checks, not a new responsive-browser or efficiency measurement.
+
 한국어: 잘못된 옵션을 알려주지 않던 오류와 JSON 중복 키가 앞의 비교 조건을
 조용히 덮어쓰던 동작을 고쳤다. 중첩·이스케이프된 중복 키도 실행 전에 거부하며,
 누락·알 수 없는 키를 함께 알려준다. 같은 회귀 검사7개가 수정 전 실패하고 수정
 후 통과했다. 기존 Python·Node 비교와 원본 보존을 포함한79개 검사도 통과했다.
 실제 모델 토큰·시간을 새로 측정하지 않았으며 전체8개 성능 목표 달성은 아니다.
+수정은 Mac 설치본과 공개 다운로드에 반영했고 이전 Receipt 폴더를 백업했다.
+전체8개 설치본이 소스와 일치하며 실제 설치 경로의8개 검사, 랜딩18개 검사,
+공개 양언어·배포 식별·다운로드 바이트 일치를 확인했다.
