@@ -39,3 +39,18 @@ changes. Rejecting ambiguous input prevents lost work; it is not token savings.
 수정했다. 실행 전 중복을 거부하되 정상 중복 값·결과 열·BLOB은 유지한다.
 수정 전14개 하위 사례 실패, 수정 후8개 메서드 및 Git 없는 사본58개 검사가
 통과했다. 한영 설명을 동기화했으며 모델 비용 절감으로 주장하지 않는다.
+
+## Installed and packaged source
+
+Source **`926b698d`** is installed after existing Friday bytes/modes matched parent
+`e77372b4`; its previous directory is backed up outside discovery.
+[All eight installations match](results/friday-recipe-keys01/installation.json),
+[eight controls against the installed CLI/helper](results/friday-recipe-keys01/installed.txt)
+and [four standalone package tests](results/friday-recipe-keys01/package.txt) pass.
+The build changes archive/checksum only; [52 packaged resources](results/friday-recipe-keys01/download.json)
+match source bytes/modes. Layout and frozen measurements remain unchanged.
+An initial evidence-export command referenced the wrong temporary log filename
+and stopped before writing; export used the actual completed eight-test transcript.
+
+한국어: 소스926b698d를 기존 설치 자원 확인·백업 후 설치했다. 설치본8개·패키지4개
+검사와 전체8개 자원 일치를 확인했으며 다운로드52개 자원도 소스와 일치한다.
