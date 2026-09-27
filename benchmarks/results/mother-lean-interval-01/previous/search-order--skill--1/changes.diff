@@ -1,0 +1,107 @@
+diff --git a/test_search.py b/test_search.py
+new file mode 100644
+index 0000000..91bc05f
+--- /dev/null
++++ b/test_search.py
+@@ -0,0 +1,101 @@
++"""Deterministic component QA: python3 -B -m unittest -v test_search."""
++
++import asyncio
++import unittest
++
++from search import Search
++
++
++TIMEOUT = 1.0
++
++
++class ControlledFetch:
++    """Local response gates; each queue entry identifies one actual fetch call."""
++
++    def __init__(self):
++        self.calls = asyncio.Queue()
++
++    async def __call__(self, query):
++        response = asyncio.get_running_loop().create_future()
++        self.calls.put_nowait((query, response))
++        return await response
++
++
++class SearchOverlapTests(unittest.IsolatedAsyncioTestCase):
++    async def asyncSetUp(self):
++        self.search = Search()
++        self.fetch = ControlledFetch()
++        self.owned = []
++
++    async def asyncTearDown(self):
++        for task in self.owned:
++            if not task.done():
++                task.cancel()
++        if self.owned:
++            done, pending = await asyncio.wait(self.owned, timeout=TIMEOUT)
++            for task in done:
++                if not task.cancelled():
++                    task.exception()
++            self.assertFalse(pending, "Owned Search tasks did not drain within 1s")
++        print("  cleanup: all owned Search tasks drained", flush=True)
++
++    async def start_request(self, query):
++        task = asyncio.create_task(self.search.run(query, self.fetch))
++        self.owned.append(task)
++        actual_query, response = await asyncio.wait_for(
++            self.fetch.calls.get(), timeout=TIMEOUT
++        )
++        self.assertEqual(actual_query, query, "Actual Search fetch query")
++        self.assertFalse(task.done(), "Search must be waiting for controlled response")
++        self.assertFalse(response.done(), "Response gate must still be pending")
++        print(f"  control: Search entered fetch({actual_query!r}); response held", flush=True)
++        return task, response
++
++    async def finish_request(self, request, payload):
++        task, response = request
++        self.assertFalse(response.done(), "Complete each response gate exactly once")
++        response.set_result(payload)
++        done, _ = await asyncio.wait((task,), timeout=TIMEOUT)
++        self.assertIn(task, done, "Search did not finish within 1s of response release")
++        task.result()  # Surface application errors, rather than just task completion.
++        print(f"  control: released {payload!r}; Search task completed", flush=True)
++
++    async def overlap(self):
++        older = await self.start_request("ca")
++        newer = await self.start_request("cat")
++        self.assertFalse(older[0].done(), "Older request must overlap newer request")
++        self.assertFalse(newer[0].done(), "Newer request must still be pending")
++        print("  assertion passed: both actual Search requests overlap", flush=True)
++        return older, newer
++
++    async def test_normal_completion_latest_result_after_both_finish(self):
++        older, newer = await self.overlap()
++        await self.finish_request(older, "results for ca")
++        self.assertFalse(newer[0].done(), "Newer response remains held")
++        print(
++            f"  observation only: newer pending, display={self.search.result!r}; "
++            "no intermediate display requirement",
++            flush=True,
++        )
++        await self.finish_request(newer, "results for cat")
++        self.assertEqual(
++            self.search.result, "results for cat",
++            "Normal order: latest result must be visible after both requests finish",
++        )
++        print("  assertion passed: final display == 'results for cat'", flush=True)
++
++    async def test_reversed_completion_older_cannot_overwrite_latest(self):
++        older, newer = await self.overlap()
++        await self.finish_request(newer, "results for cat")
++        self.assertFalse(older[0].done(), "Older response remains held")
++        self.assertEqual(self.search.result, "results for cat", "Latest request completed")
++        print("  assertion passed: latest completed, display == 'results for cat'", flush=True)
++        await self.finish_request(older, "results for ca")
++        self.assertEqual(
++            self.search.result, "results for cat",
++            "Reversed order: older completion must not overwrite completed latest result",
++        )
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)

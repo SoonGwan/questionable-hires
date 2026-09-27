@@ -1,0 +1,355 @@
+{
+  "session_id": "01a0e4d7-4d99-7b33-bc29-12386b16cb87",
+  "source_bytes": 129761,
+  "source_sha256": "2b86868201645e11b405794063915b5fd1aa339873600018151a27365fe04f85",
+  "cli_events_sha256": "c15c0f77299e1ab09472858f9b24919bb249c1c9c813674673cafd1cdca845bc",
+  "source_lines": 49,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "3f96450f0b519f1f23405dfd6e570e3ed8b156c879d1d6ae4176ab16df2ca92a",
+      "record": {
+        "timestamp": "2026-09-27T21:48:38.642Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010b49884933e947016ab98f32899487d0ad563cfe78c5cdc7",
+          "status": "completed",
+          "call_id": "call_6KWj9Ae34OFSCszkNZFFUHVV",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'SKILL.md' -g 'package.json' -g '*Search*' -g '*search*' -g '*test*' -g '*spec*' -g '*lock*' -g 'README*' -g 'tsconfig*' -g 'vite*' -g 'vitest*' -g 'jest*' -g '!node_modules' -g '!.git'; git status --short; cat .agents/skills/mother-in-law/SKILL.md\",\"max_output_tokens\":6500}));",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4d7-4de9-7ad3-bf82-3e978dd03af1",
+            "create_time": 1790545712.261102
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "63da1e9dc27e5b3575ca9b490fb0d39d79bf0fdb156845bfd7cc8675aef71540",
+      "record": {
+        "timestamp": "2026-09-27T21:48:38.812Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4d7-6e1c-7151-9b27-38f001b90276",
+          "call_id": "call_6KWj9Ae34OFSCszkNZFFUHVV",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"0276d0\",\"wall_time_seconds\":0.000004833,\"exit_code\":0,\"original_token_count\":742,\"output\":\"<WORKSPACE>\\nsearch.py\\n?? .agents/\\n---\\nname: mother-in-law\\ndescription: Test a changed user interaction for realistic sequence failures such as double submission, stale responses, navigation, and recovery; use for interaction QA rather than general code review.\\n---\\n\\n# Mother-in-law\\n\\n> And what happens if I click it twice?\\n\\nRead supplied requirements, interaction code, native tests, existing test support\\nand applicable project instructions together when practical. Discover missing\\npaths, not another inventory before known-file reads.\\nUse controlled responses/clocks, isolated cases, bounded waits, and owned-operation\\ncleanup\u2014never sleeps or production actions. Preserve user files and scope.\\n\\nDerive expected states from the product contract, not today's implementation.\\nSeparate final ownership from interval requirements. \u201cRetain while loading\u201d or\\n\u201cuntil the latest completes\u201d applies throughout that interval: assert the retained\\nvalue after relevant intervening completions while the latest remains pending,\\nnot only at request entry. Printing an observation is not a regression assertion.\\nIf only final ownership is required, leave unspecified intermediate display as\\nobservation; seeing an older response does not require a valid fix to display it.\\nA regression must reject the fault without rejecting another permitted path.\\n\\nChoose the requested deliverable; load only its relevant support:\\n\\n- **Project regression:** extend and run the native test directly, not a disposable\\n  probe first. Reuse adequate project fixtures and covered cases; skip transport\\n  and probe references when that support is already present. Only when additional\\n  Python request-control support is needed, read the [native-test interface](references/native-tests.md)\\n  and [copiable transport](assets/controlled_fetch.py) together. An installed-helper\\n  command or saved JSON is not a standalone project regression.\\n\\n- **Captured observations without a project-test deliverable:** the optional\\n  [component probe](references/component-probe.md) fits a zero-argument constructor,\\n  async `run(query, fetch)` and direct payload state. An opt-in mode checks required\\n  display retention through normal/reversed overlap; repeated identical overlapping\\n  queries still require project checks. Existing adequate runners take precedence.\\n  Never change production to fit a helper. Native-project delivery does not need\\n  this reference.\\n\\n- **Rendered UI:** read [references/browser.md](references/browser.md).\\n\\nReturn the tested sequence, expected/observed state, tested layer, and complete\\nbounded command. Stop after the nearest normal and targeted adversarial cases.\\nDo not add separate evidence files when captured check output already proves them.\\nBrowser unavailability leaves browser QA incomplete. QA does not authorize a fix.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4d7-4de9-7ad3-bf82-3e978dd03af1",
+            "create_time": 1790545718.812057
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "7be568dfcf35ae975c32c4ca3125f0ce7e66351ef1f2bef20feeba859c60cc9b",
+      "record": {
+        "timestamp": "2026-09-27T21:48:41.467Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010b49884933e947016ab98f38291887d0bdb678a17289c0d0",
+          "status": "completed",
+          "call_id": "call_gRhRJBU2UlKf5YcvCHA89lYN",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"rg --files --hidden -g '!node_modules' -g '!.git'; cat search.py; git ls-files\",\"max_output_tokens\":5000}));",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4d7-4de9-7ad3-bf82-3e978dd03af1",
+            "create_time": 1790545719.226245
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "fe51e368051eb9949835aec2e0569e8bed6c6a68797fefd613c4b705b7c47f46",
+      "record": {
+        "timestamp": "2026-09-27T21:48:41.578Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4d7-78ea-7d01-b540-e2b4b2bf1231",
+          "call_id": "call_gRhRJBU2UlKf5YcvCHA89lYN",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"f71fce\",\"wall_time_seconds\":0.000004958,\"exit_code\":0,\"original_token_count\":140,\"output\":\"search.py\\n.agents/skills/mother-in-law/assets/controlled_fetch.py\\n.agents/skills/mother-in-law/SKILL.md\\n.agents/skills/mother-in-law/scripts/sequence_probe.py\\n.agents/skills/mother-in-law/agents/openai.yaml\\n.agents/skills/mother-in-law/references/native-tests.md\\n.agents/skills/mother-in-law/references/component-probe.md\\n.agents/skills/mother-in-law/references/browser.md\\nrequirements.md\\nclass Search:\\n    def __init__(self):\\n        self.result = None\\n    async def run(self, query, fetch):\\n        self.result = await fetch(query)\\nrequirements.md\\nsearch.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4d7-4de9-7ad3-bf82-3e978dd03af1",
+            "create_time": 1790545721.578931
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "f286bc033d0fafb33c4273df7c9ff4fe867469a5e65a27fb12cb8d55919c987f",
+      "record": {
+        "timestamp": "2026-09-27T21:48:44.925Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010b49884933e947016ab98f3b7b2087d085478b259b11d89f",
+          "status": "completed",
+          "call_id": "call_8wbxARUGcJ7I2fWFnScvwNen",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat requirements.md .agents/skills/mother-in-law/references/native-tests.md .agents/skills/mother-in-law/assets/controlled_fetch.py\",\"max_output_tokens\":5500}));",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4d7-4de9-7ad3-bf82-3e978dd03af1",
+            "create_time": 1790545722.048027
+          }
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "c06b7d3ba5e090493c05a06ba770deeb17994766f67e6e10b788ea0886da4102",
+      "record": {
+        "timestamp": "2026-09-27T21:48:45.012Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4d7-8654-7960-beed-1a16366a40fd",
+          "call_id": "call_8wbxARUGcJ7I2fWFnScvwNen",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"358dbb\",\"wall_time_seconds\":0.00000375,\"exit_code\":0,\"original_token_count\":1056,\"output\":\"The screen calls Search.run for each query as the user types. Search.result is displayed directly. The latest query's result must remain visible.\\nFor normal overlapping completion, require the latest result after both requests finish. While the newer request is pending, no particular intermediate display is required: retaining the previously displayed result is allowed. Do not make an older response appearing during that interval a required behavior. The reversed-completion test must still detect an older response overwriting the completed latest result.\\n# Native Python request control\\n\\nAdapt [controlled_fetch.py](../assets/controlled_fetch.py) only when equivalent\\nproject support is absent. The copy needs no installed skill.\\n\\n`await fetch.started(key)` checks actual entry/key and returns a unique handle,\\neven for repeated keys. Call `request.complete(payload)` or\\n`request.fail_request(error)` directly, without TestCase wrappers.\\nCancelling or timing out the entry wait leaves unconsumed requests and application\\ntasks untouched; a later waiter can observe the pending request. A returned handle\\nis already consumed. These are cooperative same-loop waits, not process deadlines.\\n\\nTests own component assertions and bounded task cancellation/draining, including\\nafter failed entry checks; the asset does neither. Do not shadow runner methods:\\ntransport failure is `fail_request`, not `unittest.TestCase.fail`.\\n\\nFor custom assertion plumbing you introduce, exercise an isolated deliberate\\nmismatch and confirm actual/expected evidence, not a support exception. Ordinary\\nunmodified framework assertions do not need a separate test of the assertion\\nlibrary. Add repeated-key cases when identity/reuse is relevant to the contract or\\nimplementation, not merely because the transport supports them. Keep all distinct\\nrequired state transitions, including intervening retention checkpoints.\\n\\\"\\\"\\\"Copy into permitted project test support only when no equivalent exists.\\n\\nEach received Request identifies one call, even when keys repeat. The test owns\\ncomponent tasks: cancel and await them in cleanup. This controls fetch responses,\\nnot component state or browser rendering. No real network or sleeps.\\n\\\"\\\"\\\"\\nimport asyncio\\nfrom dataclasses import dataclass\\nfrom typing import Any\\n\\n\\n@dataclass(frozen=True)\\nclass Request:\\n    key: Any\\n    response: asyncio.Future\\n\\n    def complete(self, value):\\n        self.response.set_result(value)\\n\\n    def fail_request(self, error):\\n        self.response.set_exception(error)\\n\\n\\nclass ControlledFetch:\\n    def __init__(self):\\n        self.calls = asyncio.Queue()\\n        self._entry_changed = asyncio.Event()\\n\\n    async def __call__(self, key):\\n        request = Request(key, asyncio.get_running_loop().create_future())\\n        self.calls.put_nowait(request)\\n        self._entry_changed.set()\\n        return await request.response\\n\\n    async def started(self, expected, timeout=1):\\n        \\\"\\\"\\\"Wait for actual fetch entry, assert its key, return a unique handle.\\n\\n        Timeout/cancellation leaves component tasks and unconsumed requests alone.\\n        The caller owns tasks and must clean them even when this assertion fails.\\n        \\\"\\\"\\\"\\n        if not 0 < timeout <= 30:\\n            raise ValueError('timeout must be in (0, 30]')\\n        loop = asyncio.get_running_loop()\\n        deadline = loop.time() + timeout\\n        while self.calls.empty():\\n            self._entry_changed.clear()\\n            # Wait for availability, not a child queue getter that can consume\\n            # the request while cancellation is being delivered to this waiter.\\n            notice = asyncio.create_task(self._entry_changed.wait())\\n            try:\\n                done, _ = await asyncio.wait((notice,), timeout=max(0, deadline - loop.time()))\\n                if not done:\\n                    raise asyncio.TimeoutError('Timed out waiting for request entry')\\n            finally:\\n                notice.cancel()\\n                await asyncio.gather(notice, return_exceptions=True)\\n        request = self.calls.get_nowait()\\n        if request.key != expected:\\n            raise AssertionError(\\n                f'request key: expected {expected!r}, observed {request.key!r}')\\n        return request\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4d7-4de9-7ad3-bf82-3e978dd03af1",
+            "create_time": 1790545725.012889
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "1dcc576c039a3c4752cbb285a67ba4f5df329dbb690f14ad21e2da542728a580",
+      "record": {
+        "timestamp": "2026-09-27T21:49:29.582Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010b49884933e947016ab98f460f3487d08a6a63158f1910e3",
+          "status": "completed",
+          "call_id": "call_XfRiUuFo0ziXBfMzYEwUokf5",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Add File: test_search.py\\n+\\\"\\\"\\\"Deterministic component QA: python3 -B -m unittest -v test_search.\\\"\\\"\\\"\\n+\\n+import asyncio\\n+import unittest\\n+\\n+from search import Search\\n+\\n+\\n+TIMEOUT = 1.0\\n+\\n+\\n+class ControlledFetch:\\n+    \\\"\\\"\\\"Local response gates; each queue entry identifies one actual fetch call.\\\"\\\"\\\"\\n+\\n+    def __init__(self):\\n+        self.calls = asyncio.Queue()\\n+\\n+    async def __call__(self, query):\\n+        response = asyncio.get_running_loop().create_future()\\n+        self.calls.put_nowait((query, response))\\n+        return await response\\n+\\n+\\n+class SearchOverlapTests(unittest.IsolatedAsyncioTestCase):\\n+    async def asyncSetUp(self):\\n+        self.search = Search()\\n+        self.fetch = ControlledFetch()\\n+        self.owned = []\\n+\\n+    async def asyncTearDown(self):\\n+        for task in self.owned:\\n+            if not task.done():\\n+                task.cancel()\\n+        if self.owned:\\n+            done, pending = await asyncio.wait(self.owned, timeout=TIMEOUT)\\n+            for task in done:\\n+                if not task.cancelled():\\n+                    task.exception()\\n+            self.assertFalse(pending, \\\"Owned Search tasks did not drain within 1s\\\")\\n+        print(\\\"  cleanup: all owned Search tasks drained\\\", flush=True)\\n+\\n+    async def start_request(self, query):\\n+        task = asyncio.create_task(self.search.run(query, self.fetch))\\n+        self.owned.append(task)\\n+        actual_query, response = await asyncio.wait_for(\\n+            self.fetch.calls.get(), timeout=TIMEOUT\\n+        )\\n+        self.assertEqual(actual_query, query, \\\"Actual Search fetch query\\\")\\n+        self.assertFalse(task.done(), \\\"Search must be waiting for controlled response\\\")\\n+        self.assertFalse(response.done(), \\\"Response gate must still be pending\\\")\\n+        print(f\\\"  control: Search entered fetch({actual_query!r}); response held\\\", flush=True)\\n+        return task, response\\n+\\n+    async def finish_request(self, request, payload):\\n+        task, response = request\\n+        self.assertFalse(response.done(), \\\"Complete each response gate exactly once\\\")\\n+        response.set_result(payload)\\n+        done, _ = await asyncio.wait((task,), timeout=TIMEOUT)\\n+        self.assertIn(task, done, \\\"Search did not finish within 1s of response release\\\")\\n+        task.result()  # Surface application errors, rather than just task completion.\\n+        print(f\\\"  control: released {payload!r}; Search task completed\\\", flush=True)\\n+\\n+    async def overlap(self):\\n+        older = await self.start_request(\\\"ca\\\")\\n+        newer = await self.start_request(\\\"cat\\\")\\n+        self.assertFalse(older[0].done(), \\\"Older request must overlap newer request\\\")\\n+        self.assertFalse(newer[0].done(), \\\"Newer request must still be pending\\\")\\n+        print(\\\"  assertion passed: both actual Search requests overlap\\\", flush=True)\\n+        return older, newer\\n+\\n+    async def test_normal_completion_latest_result_after_both_finish(self):\\n+        older, newer = await self.overlap()\\n+        await self.finish_request(older, \\\"results for ca\\\")\\n+        self.assertFalse(newer[0].done(), \\\"Newer response remains held\\\")\\n+        print(\\n+            f\\\"  observation only: newer pending, display={self.search.result!r}; \\\"\\n+            \\\"no intermediate display requirement\\\",\\n+            flush=True,\\n+        )\\n+        await self.finish_request(newer, \\\"results for cat\\\")\\n+        self.assertEqual(\\n+            self.search.result, \\\"results for cat\\\",\\n+            \\\"Normal order: latest result must be visible after both requests finish\\\",\\n+        )\\n+        print(\\\"  assertion passed: final display == 'results for cat'\\\", flush=True)\\n+\\n+    async def test_reversed_completion_older_cannot_overwrite_latest(self):\\n+        older, newer = await self.overlap()\\n+        await self.finish_request(newer, \\\"results for cat\\\")\\n+        self.assertFalse(older[0].done(), \\\"Older response remains held\\\")\\n+        self.assertEqual(self.search.result, \\\"results for cat\\\", \\\"Latest request completed\\\")\\n+        print(\\\"  assertion passed: latest completed, display == 'results for cat'\\\", flush=True)\\n+        await self.finish_request(older, \\\"results for ca\\\")\\n+        self.assertEqual(\\n+            self.search.result, \\\"results for cat\\\",\\n+            \\\"Reversed order: older completion must not overwrite completed latest result\\\",\\n+        )\\n+\\n+\\n+if __name__ == \\\"__main__\\\":\\n+    unittest.main(verbosity=2)\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest -v test_search\",\"max_output_tokens\":4000,\"yield_time_ms\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4d7-4de9-7ad3-bf82-3e978dd03af1",
+            "create_time": 1790545725.364188
+          }
+        }
+      }
+    },
+    {
+      "line": 36,
+      "line_sha256": "c72c49e6d147601818d113c5e7d50dedc0fb5db542175a54518a93be71e278ce",
+      "record": {
+        "timestamp": "2026-09-27T21:49:29.783Z",
+        "ordinal": 35,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4d8-3537-7540-8080-cfe28a80a382",
+          "call_id": "call_XfRiUuFo0ziXBfMzYEwUokf5",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"7f4b8b\",\"wall_time_seconds\":0.000003417,\"exit_code\":1,\"original_token_count\":751,\"output\":\"test_normal_completion_latest_result_after_both_finish (test_search.SearchOverlapTests.test_normal_completion_latest_result_after_both_finish) ...   control: Search entered fetch('ca'); response held\\n  control: Search entered fetch('cat'); response held\\n  assertion passed: both actual Search requests overlap\\n  control: released 'results for ca'; Search task completed\\n  observation only: newer pending, display='results for ca'; no intermediate display requirement\\n  control: released 'results for cat'; Search task completed\\n  assertion passed: final display == 'results for cat'\\n  cleanup: all owned Search tasks drained\\nok\\ntest_reversed_completion_older_cannot_overwrite_latest (test_search.SearchOverlapTests.test_reversed_completion_older_cannot_overwrite_latest) ...   control: Search entered fetch('ca'); response held\\n  control: Search entered fetch('cat'); response held\\n  assertion passed: both actual Search requests overlap\\n  control: released 'results for cat'; Search task completed\\n  assertion passed: latest completed, display == 'results for cat'\\n  control: released 'results for ca'; Search task completed\\nFAIL\\n  cleanup: all owned Search tasks drained\\n\\n======================================================================\\nFAIL: test_reversed_completion_older_cannot_overwrite_latest (test_search.SearchOverlapTests.test_reversed_completion_older_cannot_overwrite_latest)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 90, in _callTestMethod\\n    if self._callMaybeAsync(method) is not None:\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 112, in _callMaybeAsync\\n    return self._asyncioRunner.run(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 118, in run\\n    return self._loop.run_until_complete(task)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\\\", line 653, in run_until_complete\\n    return future.result()\\n           ^^^^^^^^^^^^^^^\\n  File \\\"<WORKSPACE>/test_search.py\\\", line 94, in test_reversed_completion_older_cannot_overwrite_latest\\n    self.assertEqual(\\nAssertionError: 'results for ca' != 'results for cat'\\n- results for ca\\n+ results for cat\\n?               +\\n : Reversed order: older completion must not overwrite completed latest result\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.009s\\n\\nFAILED (failures=1)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4d7-4de9-7ad3-bf82-3e978dd03af1",
+            "create_time": 1790545769.783312
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 40,
+      "line_sha256": "c8724c2fc9d718f5466bf319e6e2bbe3d57c54855e78ffc0e2b74e6a748a4703",
+      "record": {
+        "timestamp": "2026-09-27T21:49:33.242Z",
+        "ordinal": 39,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010b49884933e947016ab98f6c3b8c87d0ade60cab3e491411",
+          "status": "completed",
+          "call_id": "call_9J1ESFjh3uJpNYoQFzS3yeP5",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff --exit-code -- search.py requirements.md; git status --short\",\"max_output_tokens\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4d7-4de9-7ad3-bf82-3e978dd03af1",
+            "create_time": 1790545770.232463
+          }
+        }
+      }
+    },
+    {
+      "line": 43,
+      "line_sha256": "380af3435eacbcbeab748ae4008c74d022cd073e50025ffbd201df1a2dedbb06",
+      "record": {
+        "timestamp": "2026-09-27T21:49:33.358Z",
+        "ordinal": 42,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4d8-432e-7551-af84-846b7123cb9b",
+          "call_id": "call_9J1ESFjh3uJpNYoQFzS3yeP5",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a2ad0b\",\"wall_time_seconds\":0.000003791,\"exit_code\":0,\"original_token_count\":8,\"output\":\"?? .agents/\\n?? test_search.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4d7-4de9-7ad3-bf82-3e978dd03af1",
+            "create_time": 1790545773.358751
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "command_output_candidates": [
+    {
+      "command_id": "item_1",
+      "cli_event_line": 5,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_2",
+      "cli_event_line": 7,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_gRhRJBU2UlKf5YcvCHA89lYN",
+          "call_line": 18,
+          "call_line_sha256": "7be568dfcf35ae975c32c4ca3125f0ce7e66351ef1f2bef20feeba859c60cc9b",
+          "output_line": 21,
+          "output_line_sha256": "fe51e368051eb9949835aec2e0569e8bed6c6a68797fefd613c4b705b7c47f46",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "03ea46d9c7a1f5113fd38dfdafa40931bd30c07d04a756a578dc9af733a22e4d",
+          "output_chars": 560,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_3",
+      "cli_event_line": 9,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_8wbxARUGcJ7I2fWFnScvwNen",
+          "call_line": 23,
+          "call_line_sha256": "f286bc033d0fafb33c4273df7c9ff4fe867469a5e65a27fb12cb8d55919c987f",
+          "output_line": 26,
+          "output_line_sha256": "c06b7d3ba5e090493c05a06ba770deeb17994766f67e6e10b788ea0886da4102",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "fe34ee201ad9772e882ff4ab5fe08661a53fa5ecd4bb2fda5b532b865d9c4387",
+          "output_chars": 4222,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_6",
+      "cli_event_line": 14,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_7",
+      "cli_event_line": 16,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_9J1ESFjh3uJpNYoQFzS3yeP5",
+          "call_line": 40,
+          "call_line_sha256": "c8724c2fc9d718f5466bf319e6e2bbe3d57c54855e78ffc0e2b74e6a748a4703",
+          "output_line": 43,
+          "output_line_sha256": "380af3435eacbcbeab748ae4008c74d022cd073e50025ffbd201df1a2dedbb06",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "5b761670845265d15826f82bb88647676e58117fdb651f6dd281995a180d8da2",
+          "output_chars": 30,
+          "relation": "equal"
+        }
+      ]
+    }
+  ],
+  "command_output_candidate_limitation": "Candidates match unredacted output suffix and exit only, not command identity or complete stdout. Review the paired call input, order and any earlier chunks. Empty CLI output is never matched; ambiguous matches are never selected automatically.",
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
