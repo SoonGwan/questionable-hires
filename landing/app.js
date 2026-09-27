@@ -122,6 +122,8 @@ async function setLanguage(next, persist = false) {
   if (request !== languageRequest) return;
   const detailsOpen = document.querySelector('.raw-details').open;
   const checkpointOpen = document.querySelector('.checkpoint-details')?.open;
+  const tableScroll = Array.from(document.querySelectorAll('.experiment .table-scroll'), table =>
+    table.scrollLeft / Math.max(1, table.scrollWidth - table.clientWidth));
   language = next;
   const content = COPY[language];
   document.documentElement.lang = language;
@@ -146,6 +148,9 @@ async function setLanguage(next, persist = false) {
     button.setAttribute('aria-pressed', String(index === selectedHire));
   });
   updateProfile();
+  document.querySelectorAll('.experiment .table-scroll').forEach((table, index) => {
+    table.scrollLeft = (tableScroll[index] || 0) * Math.max(0, table.scrollWidth - table.clientWidth);
+  });
   document.querySelector('#copy-status').textContent = copyState ? content[copyState] : '';
   if (persist) {
     try { localStorage.setItem('qh-language', language); } catch { /* Optional preference storage. */ }
