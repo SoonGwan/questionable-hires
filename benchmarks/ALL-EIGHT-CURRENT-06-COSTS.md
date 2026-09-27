@@ -6,7 +6,7 @@ All 16 scheduled fresh serial sessions completed without timeout, account limit 
 and [actual model/resource audit](results/all-eight-current-06/capture-and-resource-audit.json) retain their measured identities.
 Original response counters reconcile with final CLI usage in every cell. Cached input is counted once; reasoning is not added again.
 
-**Cost arithmetic is reviewed; original outcome/scope/preservation review remains pending.**
+**Cost arithmetic was reviewed at this checkpoint; the subsequent [scoped original review](ALL-EIGHT-CURRENT-06-REVIEW.md) now covers all16 outcomes and preservation, retaining scope and evidence limitations.**
 A completed CLI turn is not a passing task. These are reused exposed development
 controls, n=1 per arm, fixed alternating order, shared host/cache and unequal extra work.
 The host execution retains normal rules; it does not resolve the separate guest MCP authorization boundary.
@@ -44,6 +44,6 @@ benchmark, historical plot or hosted metric is relabeled by this checkpoint.
 
 한국어: 현재 리소스1d0e92ac의16회 원본을 대조한 합계는 토큰581,325→679,858
 (+16.95%), 실행 시간571.169→514.063초(−10.00%)다. 토큰 감소2개, 시간 감소4개,
-동시 감소1개이며 그 토큰 차이는150뿐이다. 원본 품질·범위·보존 검토는 진행 전이므로
+동시 감소1개이며 그 토큰 차이는150뿐이다. 이후 원본 결과·범위·보존 검토를 완료했지만 한계를 보존하며
 전체 통과나 일반 효율 개선으로 주장하지 않는다. Path 기록 실패 후 재실행을 포함한
 모든 비용을 보존한다. 후보 네이티브 검사는 별도이며 랜딩의 과거 수치를 덮어쓰지 않는다.
