@@ -205,7 +205,10 @@ class ReceiptTreeGuardTests(unittest.TestCase):
                                 input=json.dumps(dict(self.recipe, guard_tree=True)),
                                 capture_output=True, text=True, timeout=20)
         self.assertEqual(result.returncode, 2)
-        self.assertEqual(result.stdout, '')
+        evidence = json.loads(result.stdout)
+        self.assertEqual(evidence['status'], 'incomplete')
+        self.assertFalse(evidence['tree_guard']['unchanged'])
+        self.assertTrue(evidence['comparison_copies_removed'])
         self.assertIn('Project tree changed; not restored', result.stderr)
         self.assertEqual((self.root / 'extra').read_text(), 'changed')
         self.assertFalse(list(self.root.glob('.receipt-*')))

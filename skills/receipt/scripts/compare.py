@@ -667,6 +667,7 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
             sha256={name: original_hashes[name] for name in recipe['vary']},
             modes={name: modes[name] for name in recipe['vary']})
     guarded = tree_inventory(root) if recipe.get('guard_tree', False) else None
+    scratch = None
     try:
         with tempfile.TemporaryDirectory(prefix='.receipt-', dir=root) as scratch:
             for label, (files, file_modes) in variants.items():
@@ -684,26 +685,43 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
                     result['status'] = 'incomplete'
                     break
     finally:
-        changed = [name for name, content in originals.items() if (root/name).is_symlink()
-                   or not (root/name).is_file() or read_limited(root/name, len(content)) != content
-                   or (root/name).stat().st_mode & 0o777 != modes[name]]
-        if changed:
-            raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))
+        stage = 'originals'
+        result['originals'] = dict(unchanged=None, sha256=original_hashes,
+                                   modes=modes, watch_only=watched)
         if guarded is not None:
-            current, _ = tree_inventory(root)
-            previous, byte_count = guarded
-            differences = sorted(name for name in previous.keys() | current.keys()
-                                 if previous.get(name) != current.get(name))
-            if differences:
-                raise RuntimeError('Project tree changed; not restored (' + str(len(differences))
-                                   + ' paths): ' + ', '.join(differences[:20]))
-            encoded = json.dumps(previous, sort_keys=True, separators=(',', ':')).encode()
-            result['tree_guard'] = dict(unchanged=True, entries=len(previous),
-                file_bytes=byte_count, inventory_sha256=hashlib.sha256(encoded).hexdigest(),
-                scope='source root including Git metadata; symlink targets not read')
-    result['originals'] = dict(unchanged=True,
-        sha256=original_hashes,
-        modes=modes, watch_only=watched)
+            result['tree_guard'] = dict(unchanged=None)
+        try:
+            changed = [name for name, content in originals.items() if (root/name).is_symlink()
+                       or not (root/name).is_file() or read_limited(root/name, len(content)) != content
+                       or (root/name).stat().st_mode & 0o777 != modes[name]]
+            if changed:
+                result['originals'].update(unchanged=False, changed=changed)
+                raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))
+            result['originals']['unchanged'] = True
+            if guarded is not None:
+                stage = 'tree_guard'
+                current, _ = tree_inventory(root)
+                previous, byte_count = guarded
+                differences = sorted(name for name in previous.keys() | current.keys()
+                                     if previous.get(name) != current.get(name))
+                if differences:
+                    result['tree_guard'].update(unchanged=False, changed=differences)
+                    raise RuntimeError('Project tree changed; not restored (' + str(len(differences))
+                                       + ' paths): ' + ', '.join(differences[:20]))
+                encoded = json.dumps(previous, sort_keys=True, separators=(',', ':')).encode()
+                result['tree_guard'] = dict(unchanged=True, entries=len(previous),
+                    file_bytes=byte_count, inventory_sha256=hashlib.sha256(encoded).hexdigest(),
+                    scope='source root including Git metadata; symlink targets not read')
+        except (ValueError, OSError, RuntimeError) as error:
+            if not result['checks']:
+                raise
+            result['status'] = 'incomplete'
+            result['preservation_error'] = dict(stage=stage, type=type(error).__name__,
+                                                message=str(error))
+            result['comparison_copies_removed'] = scratch is not None and not os.path.lexists(scratch)
+            # Preserve exception type/message for existing direct API callers.
+            error.comparison_result = result
+            raise
     result['comparison_copies_removed'] = True
     return result
 
@@ -768,7 +786,10 @@ No root, symlink, Git-internal, empty-directory or overlapping selections.
 Limits: Python 3.9+/POSIX, 20 MB snapshot, 10000 entries, 12000 output characters.
 Exit 0 means observations collected, not a verified fix: inspect each check's
 assertion output, exit_code, timed_out, output_truncated and import provenance.
-Exit 2 means comparison not established. Copies are cleaned; selected originals
+Exit 2 means comparison not established. Final preservation failures after a
+collected check retain partial JSON with status=incomplete and preservation_error.
+Inspect unchanged (false=changed, null=unverified) and comparison_copies_removed;
+partial native results never override failed preservation. Selected originals
 are checked, not restored. No sandbox or complete side-effect containment.
 Check exit 7 reserves incomplete import/setup evidence; no next comparison runs.
 Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
@@ -793,7 +814,10 @@ Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
         recipe = json.loads(raw, object_pairs_hook=_unique_recipe_object)
         result = compare(args.source, recipe, args.python, args.timeout, node=args.node)
     except (ValueError, OSError, RuntimeError, subprocess.TimeoutExpired) as error:
-        parser.exit(2, 'Comparison not established: ' + str(error) + '\n')
+        if not hasattr(error, 'comparison_result'):
+            parser.exit(2, 'Comparison not established: ' + str(error) + '\n')
+        result = error.comparison_result
+        print('Comparison not established: ' + str(error), file=sys.stderr)
     print(json.dumps(result, indent=2) if args.pretty else json.dumps(result, separators=(',', ':')))
     return 0 if result['status'] == 'observed' else 2
 

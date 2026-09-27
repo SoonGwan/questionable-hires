@@ -71,6 +71,20 @@ Added/removed/changed entries abort without restoration. There are no exclusions
 special files and oversize fail closed: 10,000 entries including root, 20 MB streamed
 per inventory, separate from copying. Larger projects need another native method.
 
+If a final preservation check fails after at least one native observation was
+collected, CLI output retains those `checks`, revision identities and source hashes
+as JSON with `status:"incomplete"`, alongside the stderr diagnostic and exit 2.
+`preservation_error` identifies the failed stage/type/message. An `unchanged` value
+of `false` means a detected change; `null` means the check was unavailable or not
+reached. `changed` lists observed differing paths when available.
+`comparison_copies_removed` records actual owned-path absence on this error path;
+a false value is unresolved cleanup. No originals are restored. Native before/after
+success cannot override failed preservation, and unexecuted phases have no check.
+The Python API preserves the original exception type/message;
+its `comparison_result` attribute carries the same partial evidence. Errors before collected observations
+keep the ordinary exception/CLI diagnostic behavior. This does not recover results
+that a runner never returned, repair cleanup or establish model-cost savings.
+
 This is not a sandbox. Test paths/subprocesses can escape; snapshots are not atomic.
 Tree guards exclude link targets, ownership, timestamps, ACLs/xattrs, concurrent
 writes, changes restored between observations and operations outside their interval.

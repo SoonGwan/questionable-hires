@@ -45,6 +45,8 @@ failure before, success after. CLI 0 only means observations collected.
 Missing/mismatched/malformed/truncated provenance or timeout is incomplete; check
 7 (CLI 2) or timeout stops further comparison. Setup errors and skipped tests are not proof.
 Inspect `originals`, optional `tree_guard` and `comparison_copies_removed` too.
+Final preservation failure retains completed native evidence as incomplete JSON
+with CLI exit 2; see [failure fields](comparison-details.md#preservation-guards).
 
 Native execution adds `--test-reporter=tap --import <observer>` to `node --test`.
 `copied_loads` retains URL/PID/source hashes without pre-importing the application.
