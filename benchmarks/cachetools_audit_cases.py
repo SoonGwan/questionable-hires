@@ -77,10 +77,10 @@ def cases():
             'Original bytes/modes preserved, scope respected, owned project-local scratch removed; no production fix or permanent artifact.'])]
 
 
-def preflight():
+def preflight(scratch_parent=None):
     original = source_files()
     rows = []
-    with tempfile.TemporaryDirectory(prefix='cachetools-author-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='cachetools-author-', dir=scratch_parent) as temporary:
         for variant in ['correct', 'equivalent', *FAULTS]:
             copy = Path(temporary) / variant
             for name, text in original.items():
