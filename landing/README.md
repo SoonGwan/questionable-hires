@@ -105,10 +105,13 @@ preview files and featured synchronization match their sources. This is a local
 source check; the separate [September27 hosted delivery record](../docs/LANDING-UNITS-2026-09-27.md)
 identifies the deployed release, public graph interactions and mobile/OG checks.
 It does not establish new model performance or a new responsive width sweep.
+The [current metrics audit](../docs/LANDING-METRICS-AUDIT-2026-09-27.md) recomputes
+both whole-cohort totals and records a subsequent public byte/browser check.
 
 현재 소스 검사는 랜딩12개·서버4개를 통과했습니다. 생성 파일15개와 대표
 데이터 동기화도 일치합니다. 공개 배포·모바일·OG 검증은 위의 별도 기록에서
 확인하며, 아래의9개 검사는9월26일 당시 기록으로 보존합니다.
+현재 수치 검산과 후속 공개 파일·브라우저 검증은 위의 metrics audit에 기록합니다.
 
 ## Historical local verification / 이전 로컬 검증 — 2026-09-26
 
