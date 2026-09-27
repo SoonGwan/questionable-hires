@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver MCP channel01,2026-09-27,parent`2fa70d44`:
-[actual SDK tool round trips](SOLVER-MCP-CHANNEL-01.md) verify initialize/list/schema
-and4 guest calls with honest mutating/destructive annotations,exit7/cwd error/
-recovery; guest stopped/process absent. Models/selected tests0,not model tool approval/
-host-tool isolation/full grading or all8 quality/token/time improvement evidence.
-한국어: 실제 MCP 통신과 정확한 도구 메타데이터를 확인했다. 모델 승인·전체
-격리·이슈 평가·효율 개선 결과로 승격하지 않는다.
-
 Solver serial channel01,2026-09-27,parent`ab80dbe8`:
 [actual interactive guest channel](SOLVER-SERIAL-CHANNEL-01.md) validates6 requests:
 Linux stdout,exit7/binary output,cwd error,timeout−9,truncation counters,recovery;

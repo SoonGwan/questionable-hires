@@ -1,0 +1,125 @@
+{
+  "result": "PASS",
+  "tool": {
+    "name": "guest_command",
+    "title": null,
+    "description": "Execute an authorized shell command inside the disposable Linux guest only.\n\n        Commands can mutate/delete guest files. No host shell fallback. Results\n        preserve exit/timeout and binary output as base64; each stream retains its\n        first4096 bytes with bytes-read/truncation flags. A returned exit1 is not\n        success evidence; inspect the command outcome. No network or host data share.\n        ",
+    "inputSchema": {
+      "properties": {
+        "command": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Command",
+          "type": "string"
+        },
+        "cwd": {
+          "default": "/solver",
+          "maxLength": 1024,
+          "title": "Cwd",
+          "type": "string"
+        },
+        "timeout": {
+          "default": 5,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Timeout",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "command"
+      ],
+      "title": "guest_commandArguments",
+      "type": "object"
+    },
+    "outputSchema": null,
+    "icons": null,
+    "annotations": {
+      "title": null,
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "meta": null,
+    "execution": null
+  },
+  "responses": [
+    {
+      "isError": false,
+      "response": {
+        "id": 1,
+        "result": {
+          "exit_code": 0,
+          "output": {
+            "stderr": {
+              "base64": "",
+              "bytes_read": 0,
+              "truncated": false
+            },
+            "stdout": {
+              "base64": "TGludXgK",
+              "bytes_read": 6,
+              "truncated": false
+            }
+          },
+          "timed_out": false
+        }
+      }
+    },
+    {
+      "isError": false,
+      "response": {
+        "id": 2,
+        "result": {
+          "exit_code": 7,
+          "output": {
+            "stderr": {
+              "base64": "",
+              "bytes_read": 0,
+              "truncated": false
+            },
+            "stdout": {
+              "base64": "ZmFpbGVk",
+              "bytes_read": 6,
+              "truncated": false
+            }
+          },
+          "timed_out": false
+        }
+      }
+    },
+    {
+      "isError": true,
+      "response": {
+        "error": "FileNotFoundError",
+        "id": 3,
+        "message": "[Errno 2] No such file or directory: '/Users'"
+      }
+    },
+    {
+      "isError": false,
+      "response": {
+        "id": 4,
+        "result": {
+          "exit_code": 0,
+          "output": {
+            "stderr": {
+              "base64": "",
+              "bytes_read": 0,
+              "truncated": false
+            },
+            "stdout": {
+              "base64": "cmVjb3ZlcmVk",
+              "bytes_read": 9,
+              "truncated": false
+            }
+          },
+          "timed_out": false
+        }
+      }
+    }
+  ],
+  "models": 0,
+  "selected_issue_tests": 0
+}
