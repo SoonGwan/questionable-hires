@@ -26,3 +26,19 @@ separate earlier source checkpoint, not a model experiment or this hosted releas
 링크된 문서에 적힌 버전의 근거이며 현재 다운로드와 다를 수 있음을 표시한다.
 수치·자료·다운로드는 그대로다. 기존 웹 검사19개와 화면8개 조건·언어 전환이
 통과했으며, 모델 절감 성과로 계산하지 않는다.
+
+## Public delivery
+
+Source **`70f97fea2a6e309a0d1c7ff61e9d699aa09fbc09`** is hosted.
+[Six HTTPS observations](../benchmarks/results/landing-evidence-versions01/public.json)
+verify its health revision, exact KO/EN pages and generated JavaScript, canonical
+URLs/indexability, and unchanged skill download/checksum. Both pages contain the
+new version wording while retaining integration07 and measured source `1be35120`.
+The archive stays106,932 bytes, SHA-256
+`7c6470b3c69fd75f96fcc3b14654c0234d0f1a9039393e604c1f788220739d96`.
+[Local browser observations](../benchmarks/results/landing-evidence-versions01/local-browser.json)
+remain separate from these public HTTP checks. The owned local preview server was
+stopped after checks. No new model cost observation or GitHub push is claimed.
+
+한국어: 배포70f97fea의 실제 한영 문구와 메타데이터·파일 동일성을 HTTPS6개
+경로에서 확인했다. 공개 스킬 파일과 기존 실험 수치는 그대로 유지됐다.
