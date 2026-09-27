@@ -42,7 +42,7 @@ def exercise_recent_helpers(installed, project, run):
         (root / 'rule.py').write_text('def eligible(age): return age > 18\n')
         (root / 'test_rule.py').write_text('import unittest\nfrom rule import eligible\n'
             'class Boundary(unittest.TestCase):\n'
-            '    def test_inclusive_age(self): self.assertTrue(eligible(18))\n')
+            '    def test_inclusive_age(self): self.assertEqual(eligible(18), True)\n')
         git('add', 'rule.py', 'test_rule.py')
         git('commit', '-qm', 'before')
         (root / 'rule.py').write_text('def eligible(age): return age >= 18\n')
@@ -61,10 +61,23 @@ def exercise_recent_helpers(installed, project, run):
             assert check['exit_code'] == check['native_exit_code'] == expected, check
             assert check['provenance_ready'] and not check['timed_out'] and not check['output_truncated']
             assert 'test_inclusive_age' in check['output'] and 'Ran 1 test' in check['output']
-        assert 'AssertionError: False is not true' in observed['checks']['before']['output']
+        assert 'AssertionError: False != True' in observed['checks']['before']['output']
         assert observed['comparison_copies_removed'] and observed['tree_guard']['unchanged']
         assert inventory(root) == original
-    return dict(named_regions_complete=True, missing_region_exit=1,
+        arguments = json.loads(run([sys.executable, '-I', '-B',
+                                    str(installed / 'receipt/scripts/compare.py'),
+                                    '--source', str(root), '--spec', '-'],
+                                   input=json.dumps(dict(recipe, observe_assertions=True))))
+        for phase, expected in [('before', 1), ('after', 0)]:
+            check = arguments['checks'][phase]
+            assert check['native_exit_code'] == check['exit_code'] == expected
+            report = check['assertion_observation']
+            assert report['v'] == 2 and report['complete'] and report['reason'] is None
+            assert report['observations'] == [dict(method='assertEqual', actual=phase=='after',
+                                                   expected=True, same_object=phase=='after')]
+        assert arguments['comparison_copies_removed'] and arguments['tree_guard']['unchanged']
+        assert inventory(root) == original
+    return dict(receipt_assertion_format=2, receipt_actual_arguments_verified=True, named_regions_complete=True, missing_region_exit=1,
                 receipt_native_before_exit=1, receipt_native_after_exit=0,
                 receipt_original_tree_unchanged=True)
 
@@ -156,9 +169,13 @@ def check(source, cli):
         assert actual == expected, dict(missing=sorted(expected.keys() - actual.keys()),
             extra=sorted(actual.keys() - expected.keys()),
             changed=sorted(path for path in expected.keys() & actual.keys() if expected[path] != actual[path]))
-        scripts = sorted(installed.glob('*/scripts/*.py'))
+        # Receipt observer/preservation modules are APIs, not CLI entrypoints.
+        scripts = sorted(p for p in installed.glob('*/scripts/*.py')
+                         if p not in {installed / 'receipt/scripts/assertions.py',
+                                      installed / 'receipt/scripts/preserve.py'})
         for script in scripts:
-            run([sys.executable, '-I', '-B', str(script), '--help'])
+            help_text = run([sys.executable, '-I', '-B', str(script), '--help'])
+            assert 'usage:' in help_text, 'No CLI help: ' + str(script)
         run([sys.executable, '-I', '-B', '-c', '''
 import asyncio, runpy
 api = runpy.run_path('.agents/skills/hostage-negotiator/assets/controlled_call.py')
@@ -190,6 +207,25 @@ await withControlledCalls(async scope => {
 });
 console.log('installed JavaScript task-aware callback passed');
 '''])
+        run([sys.executable, '-I', '-B', '-c', """
+import pathlib, runpy, tempfile
+api = runpy.run_path('.agents/skills/receipt/scripts/preserve.py')
+with tempfile.TemporaryDirectory(dir='.') as temporary:
+    root = pathlib.Path(temporary)
+    source = root / 'owned.txt'
+    source.write_text('before')
+    with api['preserved_tree'](root) as report:
+        assert source.read_text() == 'before'
+    assert report['unchanged'] and report['file_bytes'] == len('before')
+    try:
+        with api['preserved_tree'](root):
+            source.write_text('changed')
+    except RuntimeError:
+        assert source.read_text() == 'changed'
+    else:
+        raise AssertionError('mutation not detected')
+print('installed preservation API unchanged/mutation controls passed')
+"""])
         recent = exercise_recent_helpers(installed, project, run)
         audit_and_deadline = exercise_audit_and_deadline(installed, project, run)
         assert inventory(installed) == expected

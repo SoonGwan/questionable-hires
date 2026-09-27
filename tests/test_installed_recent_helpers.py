@@ -83,6 +83,8 @@ class BrokenSetup:
             self.assertEqual(report['missing_region_exit'], 1)
             self.assertEqual((report['receipt_native_before_exit'], report['receipt_native_after_exit']), (1, 0))
             self.assertTrue(report['receipt_original_tree_unchanged'])
+            self.assertEqual(report['receipt_assertion_format'],2)
+            self.assertTrue(report['receipt_actual_arguments_verified'])
             audit = checker.exercise_audit_and_deadline(installed, project, run)
             self.assertEqual(audit['audit_native_exits']['mutant_probe'], 1)
             self.assertEqual(audit['wrong_binding_incomplete_exit'], 7)
