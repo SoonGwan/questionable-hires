@@ -70,14 +70,35 @@ apps01의 시간 증가와 이전 불리한 결과를 보존한다.
 
 ## Remaining work
 
-Fresh [external-bundle02 author grade01](EXTERNAL-BUNDLE-02-NATIVE-GRADE-01.md),
-2026-09-27,skills`7172b50c`,protocol`5623ca1a`,retains all16 base/gold cells.
-Only1/8 pairs meets the frozen native contract; others have missing selectors,
-preexisting passes or remaining gold failures. Three service teardown errors are
-preserved; a separate corrected native cleanup control passes. Zero model calls.
-The linked report preserves all bootstrap chronology; these are author checks,
-not issue-solving/model savings or all8 role-quality evidence. Repair and freeze
-future grading/runtime/isolation before comparisons; do not replace selected cases.
+Fresh [external-bundle02 selection](EXTERNAL-BUNDLE-02-PREPARATION.md),2026-09-27,
+resource`7172b50c`,freezes8 new issue identities before solution inspection. [Python3.11 cold imports](EXTERNAL-BUNDLE-02-NATIVE-IMPORTS.md) all8 fail;
+[existing Python3.9 route](EXTERNAL-BUNDLE-02-PYTHON39.md) loads4 Requests sources and
+validates native HTTP assertion controls,retaining two initial author setup errors.
+[Owned dependency preparation](EXTERNAL-BUNDLE-02-OWNED-ENV.md) installs pinned
+modern pytest dependencies in a disposable Python3.11 environment; pip check passes,
+its initial pytest11143 import failure is preserved. The subsequent
+[exact-base native build](EXTERNAL-BUNDLE-02-PYTEST11143-BUILD.md) generates genuine
+SCM version metadata, passes cold source import and native pass/assertion-fail controls.
+[Legacy native builds](EXTERNAL-BUNDLE-02-LEGACY-BUILD.md) now generate metadata
+and pass cold imports/native assertion controls for the other3 pytest sources,
+preserving initial dependency/build-location failures. All8 sources have import
+routes. [Existing pytest test preparation](EXTERNAL-BUNDLE-02-PROJECT-TESTS.md)
+collects all4 native suites without errors; unchanged mark modules report311 passes
+and4 xfails. Initial dependency/compatibility failures remain preserved. These
+modules are not selected issue regressions. [Requests native preparation](EXTERNAL-BUNDLE-02-REQUESTS-TESTS.md)
+retains two runner-compatibility failures; a provisional plain-assert pytest2.8 route
+collects the fourth source with valid assertion controls. Existing local checks
+report60 passes. [Native HTTP/TLS fixture](EXTERNAL-BUNDLE-02-HTTPBIN-NATIVE.md)
+retains duplicate-plugin and expired-certificate failures; owned certificate refresh
+passes4 trust/hostname/service controls and3 unchanged Requests3362 network tests.
+[Full Requests3362 core module](EXTERNAL-BUNDLE-02-REQUESTS3362-CORE.md) preserves
+a server JSON failure under newer Flask; original Flask/Werkzeug pins then yield
+183 passes,2 xpasses,zero failures,including mock usage,plus4 trust controls. This
+is one module,not selected issue grading. Short-lived certificates need revalidation;
+remaining suites/services and selected issue-test/solver-isolation/protocol gates
+remain unverified;0 model calls. Author bootstrap controls are not issue regressions.
+Different project versions cannot inherit old pilot readiness. Selection is not
+role-specific quality or token/time evidence.
 
 Target an evidenced avoidable operation while preserving required native checks,
 assertions, scope and artifact integrity. Search the linked reports and histories
