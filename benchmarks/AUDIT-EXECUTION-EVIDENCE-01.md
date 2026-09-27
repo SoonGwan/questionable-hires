@@ -93,3 +93,17 @@ The63-file landing build passes consistency; only archive/checksum bytes change.
 106,466 bytes, SHA-256`19be55fca19c1f6e6be294c0631aef3c05b0e5f6ae18720489d10d508967567e`, and exact packaged helper bytes.
 [Three packaging controls](results/audit-execution-evidence-01/package.txt) pass.
 These local checks do not yet establish public delivery or model efficiency.
+
+## Public delivery
+
+Hosted release **`486453a690fc0cb63d369dcdbe3c176c508afe18`** is live at
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+[Public HTTPS observations](results/audit-execution-evidence-01/public.json) confirm
+health revision, exact106,466-byte download, checksum and packaged helper source,
+plus both canonical URLs, index/follow directives and download links. Mac origin
+and Cloudflare delivery are verified separately from native behavior. No layout,
+featured benchmark or numerical efficiency claim changed.
+
+한국어: 소스`db46dcdc`을 개인 설치와 공개 다운로드에 반영했다. 배포`486453a6`의
+공개 파일·해시·소스 일치와 한영 메타데이터를 확인했으며 모델 절감은 주장하지 않는다.
