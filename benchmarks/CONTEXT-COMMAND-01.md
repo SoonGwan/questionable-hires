@@ -48,3 +48,19 @@ for unchanged page layout/copy. These are local delivery observations, not model
 한국어: 소스d98b4469를 개인 설치와 다운로드에 반영했다. 이전 설치본을 확인해
 보관한 뒤 전체8개 파일·권한 일치와 설치 문서 예제2개를 검증했다. 웹·패키지
 검사19개가 통과했으며 화면과 실험 수치는 바꾸지 않았다.
+
+## Public delivery
+
+Hosted release **`85e92311549f1498d7bd69d3e32f08261c979664`** is live at
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+[Six HTTPS observations](results/context-command01/public.json) verify revision,
+exact locale pages/JavaScript, canonical URLs/indexability and archive/checksum
+identity. The guide extracted from the public archive matches current source bytes.
+Existing integration07 counts and measured resource `1be35120` remain unchanged;
+the newer guide is not retroactively included in that experiment. No browser,
+model-efficiency or GitHub-push result is inferred from HTTP checks.
+
+한국어: 배포85e92311에서 실제 공개 압축 파일 안의 수정 문서와 소스 일치를
+확인했다. 한영 페이지·메타데이터·다운로드6개 경로가 일치하며 기존 실험 수치는
+유지했다. 실제 전체 작업 토큰 절감은 아직 입증되지 않았다.
