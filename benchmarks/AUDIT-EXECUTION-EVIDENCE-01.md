@@ -77,3 +77,19 @@ all-eight improvement is not established by these native checks.
 않는다. 원래 예외·CLI 실패·잔존 폴더·기존 최종 보호 실패를 유지한다. 새 검사7개와
 Git 이력 없는 관련 검사188개가 통과했다. 모델 절감은 미측정이며 이전 정상 배치
 토큰 증가를 새 수정의 성과로 덮거나 전체8개 목표 달성으로 주장하지 않는다.
+
+## Installation and prepared download
+
+Source **`db46dcdc`** is personally installed. Every previous Con Artist resource
+matched parent`be5a8780` bytes and Git file modes; the complete old folder is
+preserved outside discovery. [Installation identity](results/audit-execution-evidence-01/personal-install.json),
+[all-eight resource comparison](results/audit-execution-evidence-01/all-installed.json)
+and [seven controls using the installed helper](results/audit-execution-evidence-01/installed-tests.txt)
+pass. Tests import the installed source; the CLI control invokes its real main
+function in-process with injected runner failure, not a separate shell process.
+
+The63-file landing build passes consistency; only archive/checksum bytes change.
+[Download identity](results/audit-execution-evidence-01/download.json) records
+106,466 bytes, SHA-256`19be55fca19c1f6e6be294c0631aef3c05b0e5f6ae18720489d10d508967567e`, and exact packaged helper bytes.
+[Three packaging controls](results/audit-execution-evidence-01/package.txt) pass.
+These local checks do not yet establish public delivery or model efficiency.
