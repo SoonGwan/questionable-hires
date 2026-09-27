@@ -31,8 +31,10 @@ landing evidence; their new outputs and the scoped public output are retained he
 
 These are hosted delivery checks, not new model performance measurements or a new
 14-layout responsive sweep. The eight-role integration05 result remains adverse:
-606,355 → 718,747 total input/output tokens (+18.54%), with mean elapsed time also
-increased (+9.06%). Cached input is a subset of input and must not be added again.
+606,355 → 718,747 total input/output tokens (+18.54%), with summed CLI elapsed
+time also increased (+9.06%). This is the ratio of whole-cohort sums, not the
+equal-weight mean of per-task time ratios used by the featured chart.
+Cached input is a subset of input and must not be added again.
 No optimization success or benefit across all eight roles is claimed.
 
 한국어: 공개 한·영 랜딩에 과제별 평균 토큰·시간 변화라는 단위 표기를

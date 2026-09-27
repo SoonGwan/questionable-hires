@@ -91,7 +91,26 @@ node scripts/render_landing_assets.cjs
 `--check` verifies source/raster hashes and PNG dimensions, so stale social images
 cannot silently be exported.
 
-## Local verification / 로컬 검증 — 2026-09-26
+## Current source verification / 현재 소스 검증 — 2026-09-27
+
+```sh
+python3 -B -m unittest discover -s tests -p test_landing.py -v
+python3 -B -m unittest discover -s tests -p test_landing_server.py -v
+python3 -B scripts/build_landing.py --check
+python3 -B scripts/sync_featured_benchmark.py --check
+```
+
+The source checks pass: 12 landing tests and 4 server tests. All 15 generated
+preview files and featured synchronization match their sources. This is a local
+source check; the separate [September27 hosted delivery record](../docs/LANDING-UNITS-2026-09-27.md)
+identifies the deployed release, public graph interactions and mobile/OG checks.
+It does not establish new model performance or a new responsive width sweep.
+
+현재 소스 검사는 랜딩12개·서버4개를 통과했습니다. 생성 파일15개와 대표
+데이터 동기화도 일치합니다. 공개 배포·모바일·OG 검증은 위의 별도 기록에서
+확인하며, 아래의9개 검사는9월26일 당시 기록으로 보존합니다.
+
+## Historical local verification / 이전 로컬 검증 — 2026-09-26
 
 ```sh
 python3 -B -m unittest discover -s tests -p test_landing.py -v
