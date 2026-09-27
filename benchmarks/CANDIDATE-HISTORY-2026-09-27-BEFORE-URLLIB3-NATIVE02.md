@@ -26,14 +26,6 @@ new model calls. A corrected future resource needs a supported build/import gate
 한국어: urllib3 전달 실험 준비에서 버전 파일 누락을 확인했다. 테스트 선택 실행
 통과는 정상 import 증거가 아니며 기존 결과를 보존한다. 새 모델 호출은0회다.
 
-[urllib3 transfer02 native build gate](URLLIB3-INLINE-TRANSFER-02-NATIVE.md),
-2026-09-27,parent `ae2b681b`,candidate `80c06e2e`: separate supported backend
-build yields genuine version metadata; fresh public import and15 observer calls
-pass with preservation. Zero models; no cost/adoption claim. Missing metadata
-was already qualified in the original September21 report, not a new discovery.
-한국어: 별도 공식 빌드 자원에서 정상 import·15개 호출을 확인했다. 모델0회로
-비용 절감이나 채택 증거는 아니며 과거에 확인된 결함 기록도 유지한다.
-
 ## Model evidence and decisions
 
 | Checkpoint / date / resource | Observed result | Decision |
