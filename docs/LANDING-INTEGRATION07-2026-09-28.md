@@ -45,3 +45,23 @@ were visually inspected. These checks change neither product code nor model evid
 반영했다. 토큰1.67% 증가·시간9.63% 감소와 동시 감소2/8, 반복 노출·검사 차이의
 한계를 표시한다. 로컬 검사19개와 브라우저16조건을 확인했고 이전 ZIP·대표 차트·
 스킬 묶음은 유지했다. 원본 실험 개선이나 전체 목표 완료로 해석하지 않는다.
+
+## Hosted verification
+
+Deployed source **`6def2fdccd6942822401c5cf2840b85fb2a38f16`** to the existing
+Cloudflare/Mac domain. Public health identifies that exact revision. Twelve HTTPS
+routes pass: health, KO/EN pages, robots, integration07 ZIP/JSON/review/recovered
+native output, integration05/06 historical ZIPs, and skill archive/checksum.
+Served bytes match the production build; both canonical pages identify integration07,
+its measured resource and exact totals, with indexable production metadata.
+
+A separate public DOM-readiness browser check passes both KO/EN at390px, including
+eight original rows, exact footer, no document overflow/page errors and preserved
+expansion/scroll when switching language. This is two hosted mobile conditions;
+the full16-condition matrix above is local. No model or skill-install change is
+claimed from website delivery. The previous successful release remains available
+to the existing rollback command.
+
+한국어 공개 검증: 소스 `6def2fdc`를 배포하고 HTTPS12경로의 배포 리비전·원본
+바이트·한영 합계·다운로드 일치를 확인했다. 공개 모바일 한영2조건에서도 표8행,
+합계, 화면 넘침, 언어 전환 상태 보존을 확인했다. 로컬16조건과 공개2조건은 구분한다.

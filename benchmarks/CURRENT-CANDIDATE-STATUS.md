@@ -25,7 +25,8 @@ do not repeat unchanged approaches as new evidence.
 [Integration06 publication](../docs/LANDING-INTEGRATION06-2026-09-28.md),
 [lossless artwork delivery](../docs/LANDING-WEBP-2026-09-28.md) and the dated
 Con Artist download delivery are hosted checks, not new model measurements.
-Integration07 review makes no new deployment claim. Local native controls,
+[Integration07 publication](../docs/LANDING-INTEGRATION07-2026-09-28.md) separately verifies
+public source `6def2fdc`,12 HTTPS routes and two mobile locale checks. Local native controls,
 original model evidence, independent validation and hosted checks have different scopes.
 
 한국어: 전체8개 품질·토큰·시간 목표는 미달이다. integration07(2026-09-28,
