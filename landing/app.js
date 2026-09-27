@@ -21,6 +21,7 @@ const validLanguage = value => Object.hasOwn(COPY, value);
 let selectedHire = 0;
 let language = document.documentElement.lang;
 let copyState = null;
+let copyRequest = 0;
 let selectedMetric = 'total_tokens';
 let languageRequest = 0;
 const experimentCache = new Map([[language, Promise.resolve(document.querySelector('.experiment').outerHTML)]]);
@@ -186,12 +187,16 @@ updateChart();
 setLanguage(initialLanguage());
 
 document.querySelector('#copy').addEventListener('click', async () => {
+  const request = ++copyRequest;
+  let outcome;
   try {
     await navigator.clipboard.writeText('npx skills add SoonGwan/questionable-hires');
-    copyState = 'copied';
+    outcome = 'copied';
   } catch {
-    copyState = 'copyFailed';
+    outcome = 'copyFailed';
   }
+  if (request !== copyRequest) return;
+  copyState = outcome;
   document.querySelector('#copy-status').textContent = COPY[language][copyState];
 });
 
