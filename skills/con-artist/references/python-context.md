@@ -6,8 +6,10 @@ A suite selected for execution is not automatically a whole-file reading list.
 For known assertions, select their definitions; use a targeted project search to
 locate unknown ones. For a file whose whole assertion context is needed:
 
+Examples use `python3`; substitute your project's Python 3.9+ executable if needed.
+
 ```sh
-python -B /path/to/con-artist/scripts/context.py --root /permitted/project --full \
+python3 -B /path/to/con-artist/scripts/context.py --root /permitted/project --full \
   tests/test_service.py service.py:Store.save
 ```
 
@@ -43,7 +45,7 @@ To read all definitions sharing a known leaf name (such as overload declarations
 and their implementation), add `--all-matches`:
 
 ```sh
-python -B /path/to/con-artist/scripts/context.py --root /permitted/project \
+python3 -B /path/to/con-artist/scripts/context.py --root /permitted/project \
   --all-matches service.py:Store.save
 ```
 
