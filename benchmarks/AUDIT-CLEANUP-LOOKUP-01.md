@@ -78,3 +78,18 @@ match source. No layout, OG, frozen model metric or browser interaction change i
 한국어: 소스a7828248를 개인 설치와 다운로드에 반영했다. 기존 자원을 확인·백업한 뒤
 설치본6개·패키지4개 검사 및 전체8개 자원 일치를 확인했다. 실행 오류를 바로잡은
 수정이며 기존 모델 비용 결과를 새 버전의 성과로 바꾸지 않는다.
+
+## Public delivery
+
+Hosted release **`ea9c9dd253ba2dc325ff9848849c7dcf931a8f0b`** is live on the existing
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/) addresses.
+[Six HTTPS observations](results/audit-cleanup-lookup01/public.json) verify revision,
+exact locale pages/JavaScript, canonical/indexable metadata and archive/checksum.
+All52 public archive resource bytes/modes match current source. Download:107,508
+bytes, SHA-256 `45090c01c009041bd8d7b5ffa8ac14b951e83903a2c6f3c02375c2868e35d26a`.
+Existing integration07 values still measure `1be35120`. No browser interaction,
+new model-efficiency result or GitHub push is inferred from these HTTP checks.
+
+한국어: 배포ea9c9dd2의 실제 HTTPS 다운로드에서52개 자원·권한 일치를 확인했고
+한영 페이지와 체크섬을 포함한6개 경로가 통과했다. 기존 실험 수치는 유지한다.
