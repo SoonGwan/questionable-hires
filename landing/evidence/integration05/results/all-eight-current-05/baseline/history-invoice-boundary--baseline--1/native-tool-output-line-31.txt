@@ -1,0 +1,56 @@
+
+current
+invoice.invoice_total('1.005'): actual=101, required=101, PASS
+invoice.invoice_total('-1.005'): actual=-101, required=-101, PASS
+invoice.invoice_total('2.34'): actual=234, required=234, PASS
+test_exact_cents (test_invoice.InvoiceTests.test_exact_cents) ... ok
+test_negative_half_cent (test_invoice.InvoiceTests.test_negative_half_cent) ... ok
+test_positive_half_cent (test_invoice.InvoiceTests.test_positive_half_cent) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+
+A-only
+invoice.invoice_total('1.005'): actual=101, required=101, PASS
+invoice.invoice_total('-1.005'): actual=-101, required=-101, PASS
+invoice.invoice_total('2.34'): actual=234, required=234, PASS
+test_exact_cents (test_invoice.InvoiceTests.test_exact_cents) ... ok
+test_negative_half_cent (test_invoice.InvoiceTests.test_negative_half_cent) ... ok
+test_positive_half_cent (test_invoice.InvoiceTests.test_positive_half_cent) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+
+B-only
+invoice.invoice_total('1.005'): actual=100, required=101, FAIL
+invoice.invoice_total('-1.005'): actual=-100, required=-101, FAIL
+invoice.invoice_total('2.34'): actual=234, required=234, PASS
+test_exact_cents (test_invoice.InvoiceTests.test_exact_cents) ... ok
+test_negative_half_cent (test_invoice.InvoiceTests.test_negative_half_cent) ... FAIL
+test_positive_half_cent (test_invoice.InvoiceTests.test_positive_half_cent) ... FAIL
+
+======================================================================
+FAIL: test_negative_half_cent (test_invoice.InvoiceTests.test_negative_half_cent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/test_invoice.py", line 10, in test_negative_half_cent
+    self.assertEqual(invoice_total("-1.005"), -101)
+AssertionError: -100 != -101
+
+======================================================================
+FAIL: test_positive_half_cent (test_invoice.InvoiceTests.test_positive_half_cent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/test_invoice.py", line 7, in test_positive_half_cent
+    self.assertEqual(invoice_total("1.005"), 101)
+AssertionError: 100 != 101
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+FAILED (failures=2)
+

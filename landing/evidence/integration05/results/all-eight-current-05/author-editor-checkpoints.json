@@ -1,0 +1,412 @@
+{
+  "kind": "Separate post-timing author controls, not original model observations or performance",
+  "date": "2026-09-27",
+  "python": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+  "measured_bundle": "75183f2f",
+  "reports": [
+    {
+      "condition": "baseline",
+      "helper_sha256": "ddd7a5fc0afc2128b4419107928331dac4c5b45ae1707cfc0f9be2c87df4ce3a",
+      "original_source_sha256": {
+        "editor.py": "44d6e71ac1236d7317e3f5f579daa2304da6039f3cb29d6b5aa0f003187e0604",
+        "test_editor.py": "75909f32b50e7ddf07cd0ccff6771b832efafa56682eb9e590fa43a672b709f9",
+        "test_support.py": "180a56bfda3056b7d36ea30bf20902d537a0bd545efa0e6eb493839cef9bbeab"
+      },
+      "author_conforming_edit": "Only dict(self.settings) -> deepcopy(self.settings) in disposable complete module",
+      "spec": {
+        "files": [
+          "editor.py",
+          "test_editor.py",
+          "test_support.py"
+        ],
+        "imports": [
+          "editor",
+          "test_editor",
+          "test_support"
+        ],
+        "runner": "unittest",
+        "invocation": "module",
+        "tests": [
+          "-v",
+          "test_editor"
+        ],
+        "guard_project": true,
+        "precheck": "import editor, test_editor, test_support\nassert test_editor.Editor is editor.Editor\nassert test_editor.writes is test_support.writes\nprint('Actual Editor and writes bindings verified', flush=True)\n",
+        "mutations": [
+          {
+            "target": "editor.py",
+            "old": "payload = deepcopy(self.settings)",
+            "new": "payload = dict(self.settings)"
+          },
+          {
+            "target": "editor.py",
+            "old": "self.saved_revision = revision",
+            "new": "self.saved_revision = self.revision"
+          },
+          {
+            "target": "editor.py",
+            "old": "self.saved_revision = revision",
+            "new": "self.saved_revision = self.saved_revision"
+          }
+        ]
+      },
+      "cli_exit": 0,
+      "stderr": "",
+      "report": {
+        "status": "observed",
+        "audits": [
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: editor {\"path\":\"editor.py\",\"sha256\":\"75a49fb22b6e57ad736907c7f552b65adad06a4759d32f0d602f282e5f0e1992\"}\nVerified copied import: test_editor {\"path\":\"test_editor.py\",\"sha256\":\"75909f32b50e7ddf07cd0ccff6771b832efafa56682eb9e590fa43a672b709f9\"}\nVerified copied import: test_support {\"path\":\"test_support.py\",\"sha256\":\"180a56bfda3056b7d36ea30bf20902d537a0bd545efa0e6eb493839cef9bbeab\"}\nActual Editor and writes bindings verified\nPrecheck completed in check process.\ntest_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests.test_save_preserves_snapshot_and_keeps_newer_edit_dirty) ... ok\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_settings_clean) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.008s\n\nOK\n",
+                "output_truncated": false,
+                "command": [
+                  "/opt/homebrew/opt/python@3.11/bin/python3.11",
+                  "-B",
+                  "-m",
+                  "unittest",
+                  "-v",
+                  "test_editor"
+                ],
+                "invocation": "module",
+                "native_exit_code": 0,
+                "suite_observation": {
+                  "tests": 3,
+                  "skipped": 0,
+                  "successful": true
+                }
+              },
+              "mutant_tests": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: editor {\"path\":\"editor.py\",\"sha256\":\"44d6e71ac1236d7317e3f5f579daa2304da6039f3cb29d6b5aa0f003187e0604\"}\nVerified copied import: test_editor {\"path\":\"test_editor.py\",\"sha256\":\"75909f32b50e7ddf07cd0ccff6771b832efafa56682eb9e590fa43a672b709f9\"}\nVerified copied import: test_support {\"path\":\"test_support.py\",\"sha256\":\"180a56bfda3056b7d36ea30bf20902d537a0bd545efa0e6eb493839cef9bbeab\"}\nActual Editor and writes bindings verified\nPrecheck completed in check process.\ntest_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests.test_save_preserves_snapshot_and_keeps_newer_edit_dirty) ... FAIL\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_settings_clean) ... ok\n\n======================================================================\nFAIL: test_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests.test_save_preserves_snapshot_and_keeps_newer_edit_dirty)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 54, in test_save_preserves_snapshot_and_keeps_newer_edit_dirty\n    self.assertEqual(payload, expected_saved)\nAssertionError: {'display': {'theme': 'blue'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}\n- {'alerts': ['mentions'], 'display': {'theme': 'blue'}}\n?                                                ^^^^\n\n+ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}\n?                                                ^^^^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.006s\n\nFAILED (failures=1)\n",
+                "output_truncated": false,
+                "command": [
+                  "/opt/homebrew/opt/python@3.11/bin/python3.11",
+                  "-B",
+                  "-m",
+                  "unittest",
+                  "-v",
+                  "test_editor"
+                ],
+                "invocation": "module",
+                "native_exit_code": 1,
+                "suite_observation": {
+                  "tests": 3,
+                  "skipped": 0,
+                  "successful": false
+                }
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "integrity": {
+              "selected_files": 3,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true,
+              "project_guard": {
+                "unchanged": true,
+                "entries": 4,
+                "file_bytes": 4021,
+                "scope": "source root including Git metadata; symlink targets not read"
+              }
+            }
+          },
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "observation_ref": "#/audits/0/checks/correct_tests"
+              },
+              "mutant_tests": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: editor {\"path\":\"editor.py\",\"sha256\":\"fd868289155a1ae3a58e8d15bf9b36b4b1b7a3713c466878940e9b33ef3a1595\"}\nVerified copied import: test_editor {\"path\":\"test_editor.py\",\"sha256\":\"75909f32b50e7ddf07cd0ccff6771b832efafa56682eb9e590fa43a672b709f9\"}\nVerified copied import: test_support {\"path\":\"test_support.py\",\"sha256\":\"180a56bfda3056b7d36ea30bf20902d537a0bd545efa0e6eb493839cef9bbeab\"}\nActual Editor and writes bindings verified\nPrecheck completed in check process.\ntest_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests.test_save_preserves_snapshot_and_keeps_newer_edit_dirty) ... FAIL\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_settings_clean) ... ok\n\n======================================================================\nFAIL: test_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests.test_save_preserves_snapshot_and_keeps_newer_edit_dirty)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 60, in test_save_preserves_snapshot_and_keeps_newer_edit_dirty\n    self.assertTrue(editor.dirty)\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 3 tests in 0.006s\n\nFAILED (failures=1)\n",
+                "output_truncated": false,
+                "command": [
+                  "/opt/homebrew/opt/python@3.11/bin/python3.11",
+                  "-B",
+                  "-m",
+                  "unittest",
+                  "-v",
+                  "test_editor"
+                ],
+                "invocation": "module",
+                "native_exit_code": 1,
+                "suite_observation": {
+                  "tests": 3,
+                  "skipped": 0,
+                  "successful": false
+                }
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "correct_tests_reused": true,
+            "integrity": {
+              "selected_files": 3,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true,
+              "project_guard": {
+                "unchanged": true,
+                "entries": 4,
+                "file_bytes": 4021,
+                "scope": "source root including Git metadata; symlink targets not read"
+              }
+            }
+          },
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "observation_ref": "#/audits/0/checks/correct_tests"
+              },
+              "mutant_tests": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: editor {\"path\":\"editor.py\",\"sha256\":\"6d07bbc98e788a10b28206edde476a7e6150929a62a4c7ae2467cb7267c23771\"}\nVerified copied import: test_editor {\"path\":\"test_editor.py\",\"sha256\":\"75909f32b50e7ddf07cd0ccff6771b832efafa56682eb9e590fa43a672b709f9\"}\nVerified copied import: test_support {\"path\":\"test_support.py\",\"sha256\":\"180a56bfda3056b7d36ea30bf20902d537a0bd545efa0e6eb493839cef9bbeab\"}\nActual Editor and writes bindings verified\nPrecheck completed in check process.\ntest_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_save_preserves_snapshot_and_keeps_newer_edit_dirty (test_editor.EditorTests.test_save_preserves_snapshot_and_keeps_newer_edit_dirty) ... ok\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_settings_clean) ... FAIL\n\n======================================================================\nFAIL: test_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_settings_clean)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 35, in test_save_without_intervening_edit_marks_settings_clean\n    self.assertFalse(editor.dirty)\nAssertionError: True is not false\n\n----------------------------------------------------------------------\nRan 3 tests in 0.006s\n\nFAILED (failures=1)\n",
+                "output_truncated": false,
+                "command": [
+                  "/opt/homebrew/opt/python@3.11/bin/python3.11",
+                  "-B",
+                  "-m",
+                  "unittest",
+                  "-v",
+                  "test_editor"
+                ],
+                "invocation": "module",
+                "native_exit_code": 1,
+                "suite_observation": {
+                  "tests": 3,
+                  "skipped": 0,
+                  "successful": false
+                }
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "correct_tests_reused": true,
+            "integrity": {
+              "selected_files": 3,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true,
+              "project_guard": {
+                "unchanged": true,
+                "entries": 4,
+                "file_bytes": 4021,
+                "scope": "source root including Git metadata; symlink targets not read"
+              }
+            }
+          }
+        ],
+        "limitation": "Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled."
+      }
+    },
+    {
+      "condition": "current",
+      "helper_sha256": "ddd7a5fc0afc2128b4419107928331dac4c5b45ae1707cfc0f9be2c87df4ce3a",
+      "original_source_sha256": {
+        "editor.py": "44d6e71ac1236d7317e3f5f579daa2304da6039f3cb29d6b5aa0f003187e0604",
+        "test_editor.py": "55973ad673cb0ced28235f41c267188a48cedb955112e5e52848aaab0043bc20",
+        "test_support.py": "180a56bfda3056b7d36ea30bf20902d537a0bd545efa0e6eb493839cef9bbeab"
+      },
+      "author_conforming_edit": "Only dict(self.settings) -> deepcopy(self.settings) in disposable complete module",
+      "spec": {
+        "files": [
+          "editor.py",
+          "test_editor.py",
+          "test_support.py"
+        ],
+        "imports": [
+          "editor",
+          "test_editor",
+          "test_support"
+        ],
+        "runner": "unittest",
+        "invocation": "module",
+        "tests": [
+          "-v",
+          "test_editor"
+        ],
+        "guard_project": true,
+        "precheck": "import editor, test_editor, test_support\nassert test_editor.Editor is editor.Editor\nassert test_editor.writes is test_support.writes\nprint('Actual Editor and writes bindings verified', flush=True)\n",
+        "mutations": [
+          {
+            "target": "editor.py",
+            "old": "payload = deepcopy(self.settings)",
+            "new": "payload = dict(self.settings)"
+          },
+          {
+            "target": "editor.py",
+            "old": "self.saved_revision = revision",
+            "new": "self.saved_revision = self.revision"
+          },
+          {
+            "target": "editor.py",
+            "old": "self.saved_revision = revision",
+            "new": "self.saved_revision = self.saved_revision"
+          }
+        ]
+      },
+      "cli_exit": 0,
+      "stderr": "",
+      "report": {
+        "status": "observed",
+        "audits": [
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: editor {\"path\":\"editor.py\",\"sha256\":\"75a49fb22b6e57ad736907c7f552b65adad06a4759d32f0d602f282e5f0e1992\"}\nVerified copied import: test_editor {\"path\":\"test_editor.py\",\"sha256\":\"55973ad673cb0ced28235f41c267188a48cedb955112e5e52848aaab0043bc20\"}\nVerified copied import: test_support {\"path\":\"test_support.py\",\"sha256\":\"180a56bfda3056b7d36ea30bf20902d537a0bd545efa0e6eb493839cef9bbeab\"}\nActual Editor and writes bindings verified\nPrecheck completed in check process.\ntest_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_save_snapshot_survives_intervening_theme_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_theme_edit) ... ok\ntest_save_without_intervening_edit_marks_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_clean) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.006s\n\nOK\n",
+                "output_truncated": false,
+                "command": [
+                  "/opt/homebrew/opt/python@3.11/bin/python3.11",
+                  "-B",
+                  "-m",
+                  "unittest",
+                  "-v",
+                  "test_editor"
+                ],
+                "invocation": "module",
+                "native_exit_code": 0,
+                "suite_observation": {
+                  "tests": 3,
+                  "skipped": 0,
+                  "successful": true
+                }
+              },
+              "mutant_tests": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: editor {\"path\":\"editor.py\",\"sha256\":\"44d6e71ac1236d7317e3f5f579daa2304da6039f3cb29d6b5aa0f003187e0604\"}\nVerified copied import: test_editor {\"path\":\"test_editor.py\",\"sha256\":\"55973ad673cb0ced28235f41c267188a48cedb955112e5e52848aaab0043bc20\"}\nVerified copied import: test_support {\"path\":\"test_support.py\",\"sha256\":\"180a56bfda3056b7d36ea30bf20902d537a0bd545efa0e6eb493839cef9bbeab\"}\nActual Editor and writes bindings verified\nPrecheck completed in check process.\ntest_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_save_snapshot_survives_intervening_theme_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_theme_edit) ... FAIL\ntest_save_without_intervening_edit_marks_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_clean) ... ok\n\n======================================================================\nFAIL: test_save_snapshot_survives_intervening_theme_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_theme_edit)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 58, in test_save_snapshot_survives_intervening_theme_edit\n    self.assertEqual(\nAssertionError: {'display': {'theme': 'solarized'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}\n- {'alerts': ['mentions'], 'display': {'theme': 'solarized'}}\n?                                                ^^^  ^^^^\n\n+ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}\n?                                                ^  ^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.006s\n\nFAILED (failures=1)\n",
+                "output_truncated": false,
+                "command": [
+                  "/opt/homebrew/opt/python@3.11/bin/python3.11",
+                  "-B",
+                  "-m",
+                  "unittest",
+                  "-v",
+                  "test_editor"
+                ],
+                "invocation": "module",
+                "native_exit_code": 1,
+                "suite_observation": {
+                  "tests": 3,
+                  "skipped": 0,
+                  "successful": false
+                }
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "integrity": {
+              "selected_files": 3,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true,
+              "project_guard": {
+                "unchanged": true,
+                "entries": 4,
+                "file_bytes": 4307,
+                "scope": "source root including Git metadata; symlink targets not read"
+              }
+            }
+          },
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "observation_ref": "#/audits/0/checks/correct_tests"
+              },
+              "mutant_tests": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: editor {\"path\":\"editor.py\",\"sha256\":\"fd868289155a1ae3a58e8d15bf9b36b4b1b7a3713c466878940e9b33ef3a1595\"}\nVerified copied import: test_editor {\"path\":\"test_editor.py\",\"sha256\":\"55973ad673cb0ced28235f41c267188a48cedb955112e5e52848aaab0043bc20\"}\nVerified copied import: test_support {\"path\":\"test_support.py\",\"sha256\":\"180a56bfda3056b7d36ea30bf20902d537a0bd545efa0e6eb493839cef9bbeab\"}\nActual Editor and writes bindings verified\nPrecheck completed in check process.\ntest_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_save_snapshot_survives_intervening_theme_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_theme_edit) ... FAIL\ntest_save_without_intervening_edit_marks_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_clean) ... ok\n\n======================================================================\nFAIL: test_save_snapshot_survives_intervening_theme_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_theme_edit)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 70, in test_save_snapshot_survives_intervening_theme_edit\n    self.assertTrue(editor.dirty)\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 3 tests in 0.006s\n\nFAILED (failures=1)\n",
+                "output_truncated": false,
+                "command": [
+                  "/opt/homebrew/opt/python@3.11/bin/python3.11",
+                  "-B",
+                  "-m",
+                  "unittest",
+                  "-v",
+                  "test_editor"
+                ],
+                "invocation": "module",
+                "native_exit_code": 1,
+                "suite_observation": {
+                  "tests": 3,
+                  "skipped": 0,
+                  "successful": false
+                }
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "correct_tests_reused": true,
+            "integrity": {
+              "selected_files": 3,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true,
+              "project_guard": {
+                "unchanged": true,
+                "entries": 4,
+                "file_bytes": 4307,
+                "scope": "source root including Git metadata; symlink targets not read"
+              }
+            }
+          },
+          {
+            "status": "observed",
+            "checks": {
+              "correct_tests": {
+                "exit_code": 0,
+                "timed_out": false,
+                "observation_ref": "#/audits/0/checks/correct_tests"
+              },
+              "mutant_tests": {
+                "exit_code": 1,
+                "timed_out": false,
+                "output": "Copied process: {\"python\":\"/opt/homebrew/opt/python@3.11/bin/python3.11\",\"cwd\":\"<TEMP>\"}\nVerified copied import: editor {\"path\":\"editor.py\",\"sha256\":\"6d07bbc98e788a10b28206edde476a7e6150929a62a4c7ae2467cb7267c23771\"}\nVerified copied import: test_editor {\"path\":\"test_editor.py\",\"sha256\":\"55973ad673cb0ced28235f41c267188a48cedb955112e5e52848aaab0043bc20\"}\nVerified copied import: test_support {\"path\":\"test_support.py\",\"sha256\":\"180a56bfda3056b7d36ea30bf20902d537a0bd545efa0e6eb493839cef9bbeab\"}\nActual Editor and writes bindings verified\nPrecheck completed in check process.\ntest_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_save_snapshot_survives_intervening_theme_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_theme_edit) ... ok\ntest_save_without_intervening_edit_marks_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_clean) ... FAIL\n\n======================================================================\nFAIL: test_save_without_intervening_edit_marks_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_clean)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<TEMP>\", line 40, in test_save_without_intervening_edit_marks_clean\n    self.assertFalse(editor.dirty)\nAssertionError: True is not false\n\n----------------------------------------------------------------------\nRan 3 tests in 0.006s\n\nFAILED (failures=1)\n",
+                "output_truncated": false,
+                "command": [
+                  "/opt/homebrew/opt/python@3.11/bin/python3.11",
+                  "-B",
+                  "-m",
+                  "unittest",
+                  "-v",
+                  "test_editor"
+                ],
+                "invocation": "module",
+                "native_exit_code": 1,
+                "suite_observation": {
+                  "tests": 3,
+                  "skipped": 0,
+                  "successful": false
+                }
+              }
+            },
+            "limitation": "Nonzero mutant exit is not automatically a killed behavioral fault; inspect the failure.",
+            "correct_tests_reused": true,
+            "integrity": {
+              "selected_files": 3,
+              "selected_original_bytes_and_modes_unchanged": true,
+              "owned_scratch_removed": true,
+              "project_guard": {
+                "unchanged": true,
+                "entries": 4,
+                "file_bytes": 4307,
+                "scope": "source root including Git metadata; symlink targets not read"
+              }
+            }
+          }
+        ],
+        "limitation": "Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled."
+      }
+    }
+  ]
+}

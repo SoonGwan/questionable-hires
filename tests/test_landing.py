@@ -3,6 +3,8 @@ import copy
 from html.parser import HTMLParser
 import importlib.util
 import json
+import posixpath
+import re
 from pathlib import Path
 import tempfile
 import unittest
@@ -113,6 +115,17 @@ class LandingTests(unittest.TestCase):
             self.assertIn('718,747', source)
             self.assertIn('data-evidence-file="evidence/integration05/comparison.json"', source)
             self.assertNotIn('github.com/SoonGwan/questionable-hires/blob/main/benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md', source)
+
+    def test_downloaded_report_relative_evidence_links_are_served(self):
+        for path, content in self.files.items():
+            if not path.startswith('evidence/integration05/') or not path.endswith('.md'):
+                continue
+            for href in re.findall(r'\]\(([^)]+)\)', content.decode()):
+                link = landing.urlsplit(href)
+                if link.scheme or not link.path:
+                    continue
+                target = posixpath.normpath(posixpath.join(posixpath.dirname(path), link.path))
+                self.assertTrue(target in self.files, f'{path} links to unserved {href}')
 
     def test_integration_rejects_missing_duplicate_and_inconsistent_attempts(self):
         original = landing.read_json

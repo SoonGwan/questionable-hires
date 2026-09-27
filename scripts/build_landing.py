@@ -49,6 +49,34 @@ def integration05():
     return dict(records=records, cases=cases, sums=sums)
 
 
+def integration_evidence_files():
+    benchmark_root = ROOT / 'benchmarks'
+    names = read_json(LANDING / 'evidence-manifest.json')['integration05']
+    if len(names) != len(set(names)):
+        raise ValueError('duplicate reviewed evidence path')
+    approved = {}
+    for name in names:
+        source = benchmark_root / name
+        if (Path(name).is_absolute() or '..' in Path(name).parts
+                or not source.resolve().is_relative_to(benchmark_root.resolve())
+                or source.is_symlink() or source.suffix not in {'.md', '.json', '.txt'}):
+            raise ValueError('invalid reviewed evidence path: ' + name)
+        approved[source.resolve()] = source.read_bytes()
+    for name in ('ALL-EIGHT-CURRENT-05-COSTS.md', 'ALL-EIGHT-CURRENT-05-REVIEW.md'):
+        if (benchmark_root / name).resolve() not in approved:
+            raise ValueError('missing reviewed report: ' + name)
+    for source, content in approved.items():
+        if source.suffix != '.md':
+            continue
+        for href in re.findall(r'\]\(([^)]+)\)', content.decode()):
+            link = urlsplit(href)
+            if not link.scheme and not link.netloc and link.path:
+                if (source.parent / link.path).resolve() not in approved:
+                    raise ValueError('unreviewed evidence link: ' + href)
+    return {'evidence/integration05/' + source.relative_to(benchmark_root.resolve()).as_posix(): content
+            for source, content in approved.items()}
+
+
 def integration_table(checkpoint, copy, prefix):
     e = html.escape
     parts = [f'<details class="checkpoint-details"><summary>{e(copy["checkpointTable"])}</summary>',
@@ -348,10 +376,9 @@ def build(base=None):
     files['assets/team-characters.png'] = (ROOT / 'assets/team-characters.png').read_bytes()
     for language in ('ko', 'en'):
         files[f'experiments/{language}.html'] = experiment(evidence, content['copy'][language], checkpoint).encode()
-    for name, source in (('comparison.json', 'benchmarks/results/all-eight-current-05/comparison.json'),
-                         ('ALL-EIGHT-CURRENT-05-COSTS.md', 'benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md'),
-                         ('ALL-EIGHT-CURRENT-05-REVIEW.md', 'benchmarks/ALL-EIGHT-CURRENT-05-REVIEW.md')):
-        files['evidence/integration05/' + name] = (ROOT / source).read_bytes()
+    files.update(integration_evidence_files())
+    files['evidence/integration05/comparison.json'] = (
+        ROOT / 'benchmarks/results/all-eight-current-05/comparison.json').read_bytes()
     if preview:
         robots = 'User-agent: *\nDisallow: /\n'
     else:
