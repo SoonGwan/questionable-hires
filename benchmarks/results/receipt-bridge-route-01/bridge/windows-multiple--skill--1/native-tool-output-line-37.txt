@@ -1,0 +1,164 @@
+
+REVISION HEAD~2 c4a41f0c97d598fb902f24be2b09ed8ddc602450 
+COMMAND ['/opt/homebrew/opt/python@3.11/bin/python3.11', '-B', '<WORKSPACE>/.receipt-owned-67vejkxc/before/run_native.py'] 
+SOURCE
+def merge_windows(windows):
+    """Coalesce overlapping or touching half-open integer windows; preserve input."""
+    ordered = sorted(windows)
+    result = []
+    for start, end in ordered:
+        if result and start < result[-1][1]:
+            result[-1] = (result[-1][0], end)
+        else:
+            result.append((start, end))
+    return result
+
+PROVENANCE {'pid': 3376, 'executable': '/opt/homebrew/opt/python@3.11/bin/python3.11', 'module': '<WORKSPACE>/.receipt-owned-67vejkxc/before/windows.py', 'module_sha256': 'b49f03f9c3fce5958876efe2b46d83545c88966b29684448560d9eab449e8f51', 'test_module': '<WORKSPACE>/.receipt-owned-67vejkxc/before/test_windows.py', 'test_sha256': '48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e'}
+test_chain (test_windows.WindowsTests.test_chain) ... ASSERTION {'test': 'test_windows.WindowsTests.test_chain', 'assertion': 'assertEqual', 'actual': [(1, 9)], 'expected': [(1, 9)]}
+ok
+test_disjoint (test_windows.WindowsTests.test_disjoint) ... ASSERTION {'test': 'test_windows.WindowsTests.test_disjoint', 'assertion': 'assertEqual', 'actual': [(1, 3), (5, 7)], 'expected': [(1, 3), (5, 7)]}
+ok
+test_empty (test_windows.WindowsTests.test_empty) ... ASSERTION {'test': 'test_windows.WindowsTests.test_empty', 'assertion': 'assertEqual', 'actual': [], 'expected': []}
+ok
+test_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ASSERTION {'test': 'test_windows.WindowsTests.test_input_preserved', 'assertion': 'assertEqual', 'actual': [(5, 7), (1, 3)], 'expected': [(5, 7), (1, 3)]}
+ASSERTION {'test': 'test_windows.WindowsTests.test_input_preserved', 'assertion': 'assertIsNot', 'actual': [(1, 3), (5, 7)], 'expected': [(5, 7), (1, 3)], 'same_object': False}
+ok
+test_nested (test_windows.WindowsTests.test_nested) ... ASSERTION {'test': 'test_windows.WindowsTests.test_nested', 'assertion': 'assertEqual', 'actual': [(1, 3)], 'expected': [(1, 10)]}
+FAIL
+test_touching (test_windows.WindowsTests.test_touching) ... ASSERTION {'test': 'test_windows.WindowsTests.test_touching', 'assertion': 'assertEqual', 'actual': [(1, 3), (3, 5)], 'expected': [(1, 5)]}
+FAIL
+
+======================================================================
+FAIL: test_nested (test_windows.WindowsTests.test_nested)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.receipt-owned-67vejkxc/before/test_windows.py", line 9, in test_nested
+    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])
+AssertionError: Lists differ: [(1, 3)] != [(1, 10)]
+
+First differing element 0:
+(1, 3)
+(1, 10)
+
+- [(1, 3)]
+?      ^
+
++ [(1, 10)]
+?      ^^
+
+
+======================================================================
+FAIL: test_touching (test_windows.WindowsTests.test_touching)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.receipt-owned-67vejkxc/before/test_windows.py", line 6, in test_touching
+    self.assertEqual(merge_windows([(1, 3), (3, 5)]), [(1, 5)])
+AssertionError: Lists differ: [(1, 3), (3, 5)] != [(1, 5)]
+
+First differing element 0:
+(1, 3)
+(1, 5)
+
+First list contains 1 additional elements.
+First extra element 1:
+(3, 5)
+
+- [(1, 3), (3, 5)]
++ [(1, 5)]
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+FAILED (failures=2)
+NATIVE_PROCESS_EXIT 1
+
+REVISION HEAD^ 9910b517fbdf67e0335ae7e92967de94be62d62a 
+COMMAND ['/opt/homebrew/opt/python@3.11/bin/python3.11', '-B', '<WORKSPACE>/.receipt-owned-67vejkxc/middle/run_native.py'] 
+SOURCE
+def merge_windows(windows):
+    """Coalesce overlapping or touching half-open integer windows; preserve input."""
+    ordered = sorted(windows)
+    result = []
+    for start, end in ordered:
+        if result and start <= result[-1][1]:
+            result[-1] = (result[-1][0], end)
+        else:
+            result.append((start, end))
+    return result
+
+PROVENANCE {'pid': 3379, 'executable': '/opt/homebrew/opt/python@3.11/bin/python3.11', 'module': '<WORKSPACE>/.receipt-owned-67vejkxc/middle/windows.py', 'module_sha256': '591c87bd2b3c850384453e6acde2f319b6dc7463c7ab9468a20eabf8844bada8', 'test_module': '<WORKSPACE>/.receipt-owned-67vejkxc/middle/test_windows.py', 'test_sha256': '48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e'}
+test_chain (test_windows.WindowsTests.test_chain) ... ASSERTION {'test': 'test_windows.WindowsTests.test_chain', 'assertion': 'assertEqual', 'actual': [(1, 9)], 'expected': [(1, 9)]}
+ok
+test_disjoint (test_windows.WindowsTests.test_disjoint) ... ASSERTION {'test': 'test_windows.WindowsTests.test_disjoint', 'assertion': 'assertEqual', 'actual': [(1, 3), (5, 7)], 'expected': [(1, 3), (5, 7)]}
+ok
+test_empty (test_windows.WindowsTests.test_empty) ... ASSERTION {'test': 'test_windows.WindowsTests.test_empty', 'assertion': 'assertEqual', 'actual': [], 'expected': []}
+ok
+test_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ASSERTION {'test': 'test_windows.WindowsTests.test_input_preserved', 'assertion': 'assertEqual', 'actual': [(5, 7), (1, 3)], 'expected': [(5, 7), (1, 3)]}
+ASSERTION {'test': 'test_windows.WindowsTests.test_input_preserved', 'assertion': 'assertIsNot', 'actual': [(1, 3), (5, 7)], 'expected': [(5, 7), (1, 3)], 'same_object': False}
+ok
+test_nested (test_windows.WindowsTests.test_nested) ... ASSERTION {'test': 'test_windows.WindowsTests.test_nested', 'assertion': 'assertEqual', 'actual': [(1, 3)], 'expected': [(1, 10)]}
+FAIL
+test_touching (test_windows.WindowsTests.test_touching) ... ASSERTION {'test': 'test_windows.WindowsTests.test_touching', 'assertion': 'assertEqual', 'actual': [(1, 5)], 'expected': [(1, 5)]}
+ok
+
+======================================================================
+FAIL: test_nested (test_windows.WindowsTests.test_nested)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.receipt-owned-67vejkxc/middle/test_windows.py", line 9, in test_nested
+    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])
+AssertionError: Lists differ: [(1, 3)] != [(1, 10)]
+
+First differing element 0:
+(1, 3)
+(1, 10)
+
+- [(1, 3)]
+?      ^
+
++ [(1, 10)]
+?      ^^
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+FAILED (failures=1)
+NATIVE_PROCESS_EXIT 1
+
+REVISION HEAD 1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24 
+COMMAND ['/opt/homebrew/opt/python@3.11/bin/python3.11', '-B', '<WORKSPACE>/.receipt-owned-67vejkxc/after/run_native.py'] 
+SOURCE
+def merge_windows(windows):
+    """Coalesce overlapping or touching half-open integer windows; preserve input."""
+    ordered = sorted(windows)
+    result = []
+    for start, end in ordered:
+        if result and start <= result[-1][1]:
+            result[-1] = (result[-1][0], max(result[-1][1], end))
+        else:
+            result.append((start, end))
+    return result
+
+PROVENANCE {'pid': 3382, 'executable': '/opt/homebrew/opt/python@3.11/bin/python3.11', 'module': '<WORKSPACE>/.receipt-owned-67vejkxc/after/windows.py', 'module_sha256': 'dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e', 'test_module': '<WORKSPACE>/.receipt-owned-67vejkxc/after/test_windows.py', 'test_sha256': '48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e'}
+test_chain (test_windows.WindowsTests.test_chain) ... ASSERTION {'test': 'test_windows.WindowsTests.test_chain', 'assertion': 'assertEqual', 'actual': [(1, 9)], 'expected': [(1, 9)]}
+ok
+test_disjoint (test_windows.WindowsTests.test_disjoint) ... ASSERTION {'test': 'test_windows.WindowsTests.test_disjoint', 'assertion': 'assertEqual', 'actual': [(1, 3), (5, 7)], 'expected': [(1, 3), (5, 7)]}
+ok
+test_empty (test_windows.WindowsTests.test_empty) ... ASSERTION {'test': 'test_windows.WindowsTests.test_empty', 'assertion': 'assertEqual', 'actual': [], 'expected': []}
+ok
+test_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ASSERTION {'test': 'test_windows.WindowsTests.test_input_preserved', 'assertion': 'assertEqual', 'actual': [(5, 7), (1, 3)], 'expected': [(5, 7), (1, 3)]}
+ASSERTION {'test': 'test_windows.WindowsTests.test_input_preserved', 'assertion': 'assertIsNot', 'actual': [(1, 3), (5, 7)], 'expected': [(5, 7), (1, 3)], 'same_object': False}
+ok
+test_nested (test_windows.WindowsTests.test_nested) ... ASSERTION {'test': 'test_windows.WindowsTests.test_nested', 'assertion': 'assertEqual', 'actual': [(1, 10)], 'expected': [(1, 10)]}
+ok
+test_touching (test_windows.WindowsTests.test_touching) ... ASSERTION {'test': 'test_windows.WindowsTests.test_touching', 'assertion': 'assertEqual', 'actual': [(1, 5)], 'expected': [(1, 5)]}
+ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.000s
+
+OK
+NATIVE_PROCESS_EXIT 0
+SCRATCH_REMOVED True
+ORIGINAL_TREE_BYTES_MODES_UNCHANGED True
