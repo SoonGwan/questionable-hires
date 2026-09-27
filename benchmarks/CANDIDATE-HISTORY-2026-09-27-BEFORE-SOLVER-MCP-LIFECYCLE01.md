@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver MCP lifecycle01,2026-09-27,parent`e41e9e98`:
-[failed-before/repaired process controls](SOLVER-MCP-LIFECYCLE-01.md) stop startup/
-response failures and reject next requests; normal/repeated close and Git-free
-controls pass. Initial short author budget failure retained. Separate real SDK4
-calls/VM cleanup pass; models/selected tests0,no model approval/all8 efficiency claim.
-한국어: 실패 후 정리·후속 요청 차단을 검증했다. 실제 모델·전체 이슈 평가·
-품질·토큰·시간 개선 결과로 승격하지 않는다.
-
 Solver MCP channel01,2026-09-27,parent`2fa70d44`:
 [actual SDK tool round trips](SOLVER-MCP-CHANNEL-01.md) verify initialize/list/schema
 and4 guest calls with honest mutating/destructive annotations,exit7/cwd error/
