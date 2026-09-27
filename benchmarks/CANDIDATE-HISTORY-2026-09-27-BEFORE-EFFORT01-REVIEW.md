@@ -45,24 +45,24 @@ again. The [featured pointer](featured.json) and frozen charts remain separate.
 채택하지 않는다. [이전 판단 기록](CANDIDATE-HISTORY-2026-09-27-BEFORE-NAMESPACE-TRANSFER.md)에
 apps01의 시간 증가와 이전 불리한 결과를 보존한다.
 
-[Effort01 original review](ALL-EIGHT-EFFORT-01-REVIEW.md),2026-09-27,
-protocol`72f67ad6`,same candidate`7172b50c`:all16 original CLI outcomes reviewed
-with required native assertions, scope, source/index guards and cleanup. Low
-sums tokens−5.91%,time−17.20%;7/8 joint reductions, but Necromancer
- tokens+24.30%,time+20.71%. Both conditions support the scoped supplied outcomes;
-unequal work, exposed n=1 tasks and shared host/cache preclude generalization.
-Two omitted CLI native outputs were recovered from their exact original stored
-tool responses; [four separate Editor author replays](ALL-EIGHT-EFFORT-01-EDITOR-REVIEW.md)
-remain separate. No general low-effort adoption or all8 completion. Historical
-[terminal16 checkpoint](ALL-EIGHT-EFFORT-01-TERMINAL16.md),
-[in-flight8 snapshot](ALL-EIGHT-EFFORT-01-INFLIGHT8.md) and
-[older adverse effort evidence](ALL-EIGHT-EFFORT-01-HISTORY-NOTE.md) remain.
-Current Receipt guide-first change`f91d8ef0` is not measured by this comparison.
+[Effort01 terminal16 checkpoint](ALL-EIGHT-EFFORT-01-TERMINAL16.md),2026-09-27,
+protocol`72f67ad6`,same candidate`7172b50c`:all16 CLI cells completed without
+limits/timeouts. Actual Astra/effort contexts, cumulative/per-response counters,
+and installed resources were verified. Low sums tokens−5.91%,time−17.20%;7/8
+joint reductions, but Necromancer tokens+24.30%,time+20.71%. **Full original
+quality review remains pending**; this is not a quality score or all8 gain.
+The [Editor follow-up](ALL-EIGHT-EFFORT-01-EDITOR-REVIEW.md) supports both scoped
+regression outcomes; four separate author replays verify conforming-production
+checkpoints without altering original results. Other-role review remains open.
+The historical [in-flight8 snapshot](ALL-EIGHT-EFFORT-01-INFLIGHT8.md) and
+[earlier adverse two-role effort evidence](ALL-EIGHT-EFFORT-01-HISTORY-NOTE.md)
+remain explicit. Exposed n=1 development tasks, shared host/cache and unequal
+coverage prevent independent generalization. No configuration adoption.
 
-한국어: effort01(2026-09-27,후보`7172b50c`) 원본16개 과제의 네이티브 결과·범위·
-보존을 검토했다. low 합계 토큰5.91%·시간17.20% 감소지만 이력 추적은 모두
-증가하고 실제 작업량도 달랐다. 원본 세션 출력 복구와 별도 작성자 재검사를
-구분하며 일반 low 기본 설정이나 전체8개 개선으로 승격하지 않는다.
+한국어: effort01(2026-09-27,후보`7172b50c`)의16개 CLI 실행을 모두 마쳤고
+실제 모델·추론 설정과 누적/응답별 토큰을 대조했다. low 합계는 토큰5.91%·시간
+17.20% 감소지만 이력 추적은 두 지표 모두 증가했다. 전체 원본 품질 검토가 남아
+성공 점수나 전체8개 개선으로 승격하지 않으며 설정을 채택하지 않는다.
 
 ## Functionality and delivery, not model savings
 
