@@ -122,6 +122,16 @@ both whole-cohort totals and records a subsequent public byte/browser check.
 확인하며, 아래의9개 검사는9월26일 당시 기록으로 보존합니다.
 현재 수치 검산과 후속 공개 파일·브라우저 검증은 위의 metrics audit에 기록합니다.
 
+The [September27 maintenance sweep](../docs/LANDING-MAINTENANCE-CHECK-2026-09-27.md)
+records public KO/EN checks at seven widths, actual ZIP downloads and source-matched
+OG PNGs. The [profile/static-delivery audit](../docs/LANDING-PROFILES-2026-09-27.md)
+checks all eight selections and example links, reduced motion and JavaScript-disabled
+charts/metadata. Each report defines its scope; these are frontend checks, not model evidence.
+
+9월27일 공개 한·영 7개 너비·ZIP·OG 확인은 maintenance sweep에 기록합니다.
+직원8명의 선택·예시 링크와 동작 줄이기·JavaScript 없는 본문 검증은
+profile/static-delivery audit에서 확인합니다. 모델 성능 검증과 구분합니다.
+
 ## Historical local verification / 이전 로컬 검증 — 2026-09-26
 
 ```sh
