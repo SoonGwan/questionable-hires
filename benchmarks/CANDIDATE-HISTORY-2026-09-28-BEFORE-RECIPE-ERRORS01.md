@@ -7,7 +7,6 @@ It is **not achieved**. No general efficiency or complete release claim is suppo
 
 | Dated checkpoint and measured resource | Evidence | Decision / next gate |
 | --- | --- | --- |
-| [Receipt recipe errors01](RECEIPT-RECIPE-ERRORS-01.md),2026-09-28,parent`e2bed7ff`,exact source hashes in report | Native CLI:7 regression methods fail before and pass after;79 distinct archive methods pass, including existing Python/Node comparisons and preservation. | Adopt explicit input errors and duplicate-key rejection; no model-token or time improvement measured. |
 | [Receipt stream match01](RECEIPT-STREAM-MATCH-01.md),2026-09-28,parent`71cdc0ab`,source hashes in report | Native prototype only: exact separate observations retained;12 archive controls pass. 8MiB final-check additional allocation8,394,882→137,858bytes; time mixed, differences below1ms. | Keep isolated; no model calls or token benefit. No unchanged timing rerun or default adoption without a concrete memory need and remaining compatibility controls. |
 | [Landlord check grouping01](LANDLORD-CHECK-GROUP-01-REVIEW.md),2026-09-28,previous`cc7591ed`,candidate/execution`849e06dc` | Two original cells: tokens−19.85%,CLI−14.80%; both already group native checks. Candidate instead combines discovery/read; original scoped outcomes and preservation reviewed. | Do not adopt another rule: intended behavior already present in previous arm; no causal or all8 claim. No unchanged rerun. |
 | [Traceback display model01](TRACEBACK-DISPLAY-MODEL-01-REVIEW.md), 2026-09-28, previous `d3e7d5b6`, candidate/execution `f6bc7b63` | Two original cells: tokens +20.31%, CLI −5.12%; no renderer adoption. Native before/after, original output recovery and preservation reviewed. | Declined; new subtest logs also have zero separate display-byte reduction. Keep prototype isolated; no unchanged rerun or all8 gain. |
@@ -48,6 +47,3 @@ Native controls, model evidence and hosted release checks have different scopes.
 
 [Pre-streaming checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-STREAM-MATCH01.md) preserves the preceding index.
 한국어 추가: 블록 단위 원본 비교 시제품은12개 검사에서 보존 관측을 유지하고 큰 파일의 임시 메모리를 줄였지만 시간은 혼재한다. 모델 토큰 절감과 기본 반영은 하지 않는다.
-
-[Pre-recipe-error checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-RECIPE-ERRORS01.md) preserves the preceding index.
-한국어 추가: Receipt 입력의 중복 키를 거부하고 누락·오타를 명시한다. 이전 실패7개가 통과하고 기존 검사를 포함한79개 네이티브 검사가 통과했다. 모델 토큰·시간 절감은 측정하지 않았다.

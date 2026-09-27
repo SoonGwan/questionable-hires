@@ -39,6 +39,9 @@ it does not make mutating commands read-only or change persistent Git settings.
 
 Adapt **one** example's paths/tests/revisions; HEAD/HEAD^ are placeholders.
 Neither writes a recipe, commits, stashes nor reverses user patches.
+Recipe keys must be unique, including nested objects. Invalid input reports
+duplicate, missing or unknown keys before running a comparison; correct those keys
+instead of dropping a requested check.
 
 Committed fix:
 

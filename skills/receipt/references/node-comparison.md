@@ -10,6 +10,8 @@ requirements; do not remove configuration, upgrade or install merely to fit this
 ## Execute and reuse the evidence
 
 Adapt paths/revisions and the project Node executable (default: node on PATH):
+Recipe keys must be unique, including nested objects. Correct reported duplicate,
+missing or unknown keys before retrying; preserve all requested checks.
 
 ```sh
 python3 /path/to/receipt/scripts/compare.py --source . --node /path/to/node --spec - <<'JSON'

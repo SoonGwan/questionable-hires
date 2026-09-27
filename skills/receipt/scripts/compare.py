@@ -489,8 +489,20 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
     if os.name != 'posix' or not 0 < timeout <= 300:
         raise ValueError('Requires POSIX and a timeout in (0, 300]')
     required = {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}
-    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings', 'additional_before', 'observe_assertions'}:
-        raise ValueError('Recipe requires fixed, vary, before, after, imports, runner and tests')
+    if not isinstance(recipe, dict):
+        raise ValueError('Recipe must be a JSON object')
+    if not all(isinstance(key, str) for key in recipe):
+        raise ValueError('Recipe keys must be strings')
+    optional = {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings',
+                'additional_before', 'observe_assertions'}
+    faults = []
+    for label, keys in (('missing', required - set(recipe)),
+                        ('unknown', set(recipe) - required - optional)):
+        if keys:
+            names = json.dumps(sorted(keys))
+            faults.append(label + ' keys: ' + (names[:240] + '...' if len(names) > 240 else names))
+    if faults:
+        raise ValueError('Invalid recipe: ' + '; '.join(faults))
     if type(recipe.get('observe_assertions', False)) is not bool:
         raise ValueError('observe_assertions must be a boolean')
     if recipe.get('observe_assertions', False) and recipe['runner'] != 'unittest':
@@ -696,6 +708,16 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
     return result
 
 
+def _unique_recipe_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            name = json.dumps(key)
+            raise ValueError('Duplicate recipe key: ' + (name[:240] + '...' if len(name) > 240 else name))
+        result[key] = value
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -768,7 +790,8 @@ Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
                 raw = stream.read(1_000_001)
         if len(raw.encode('utf-8')) > 1_000_000:
             raise ValueError('Recipe exceeds 1 MB')
-        result = compare(args.source, json.loads(raw), args.python, args.timeout, node=args.node)
+        recipe = json.loads(raw, object_pairs_hook=_unique_recipe_object)
+        result = compare(args.source, recipe, args.python, args.timeout, node=args.node)
     except (ValueError, OSError, RuntimeError, subprocess.TimeoutExpired) as error:
         parser.exit(2, 'Comparison not established: ' + str(error) + '\n')
     print(json.dumps(result, indent=2) if args.pretty else json.dumps(result, separators=(',', ':')))
