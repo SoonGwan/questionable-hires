@@ -67,15 +67,7 @@ JSON
 - Optional `"watch":["notes.txt"]`: existing files/directories checked, **not
   copied/executed**. `originals` gives selected hashes/modes/unchanged status;
   `comparison_copies_removed` gives cleanup. Reuse those selected-file checks.
-- For a requested comparison of several past versions against the same current
-  tests, unittest supports `"additional_before":["release-a","release-b"]`.
-  Distinct commits run as `before`, `before_2`, `before_3`, then `after` **once**;
-  `checks` and `revisions` use those labels. Inputs are frozen once, all versions
-  are prepared before execution, and one shared snapshot budget still applies.
-  At most seven extras; per-check timeout and incomplete-evidence stopping remain.
-  Inspect each actual failure, not just the shared after pass. This replaces
-  repeated pairwise helper calls, not an adequate native multi-version runner;
-  it is not independent confirmation or appropriate for different tests/runtimes.
+- For several past versions, use the [multi-version options](comparison-details.md#multiple-past-versions); this runs the shared after once.
 - Optional `"guard_tree":true`: only for requested whole-project preservation
   with all reads authorized. Checks Git/ignored entries, bytes/modes and link text
   around comparison; changes abort without restoration. It excludes link targets,
@@ -91,15 +83,7 @@ JSON
   before test bodies, preserving configuration and assertion rewriting.
   Child temp defaults are inside each copy: do not
   redirect global TMPDIR merely to localize checks or other launchers may pollute it.
-- For a dynamically loaded module held by a declared import, optional
-  `"module_bindings":{"test_loader:component":"plugin.py"}` checks that module's
-  `__file__` against the selected fixed/varying file in the same native process.
-  `test_loader` must also be in `imports`. Dotted attributes traverse module
-  dictionaries only: no expressions, properties, arbitrary objects or function
-  identity checks. Missing/wrong bindings produce incomplete evidence before
-  tests, not regression failures. Checks occur before unittest execution or after
-  pytest collection; fixtures/later reassignment and actual dispatch require
-  project-native assertions. Plain `imports` verifies modules, not their attributes.
+- For dynamically held modules, read [binding checks](comparison-details.md#dynamic-module-bindings); plain imports do not verify attributes or dispatch.
 - Optional `"invocation":"module"`: for required `python -B -m unittest ...`,
   with `runner: "unittest"` and existing `tests`; no internal adapter needed.
   Default is `bootstrap`. Copy-local startup checks imports in the native test
@@ -110,13 +94,7 @@ JSON
   Conventional existing system/user hooks are preserved. Project-local or unusual
   startup customization needs native project setup, not a bypass; read
   [startup compatibility](comparison-details.md#native-module-startup) when applicable.
-- Optional `"import_roots":["src"]` supports regular source-layout packages.
-  Select initializers/support too; each root must contain selected files.
-  Ordered canonical roots precede each copy's root and appear in the result.
-  No inherited PYTHONPATH, editable install, build hook or installed metadata;
-  use native project setup when required. Only when that native workflow lacks
-  preservation, [preservation-only support](native-preservation.md) supplies the
-  bounded guard without replacing the runner; it does not copy or execute tests.
+- For `src` layouts or project-native setup, read [source-layout options](comparison-details.md#source-layout-and-native-setup); no implicit install or inherited PYTHONPATH.
 
 ## Read the evidence, not just the exit code
 
