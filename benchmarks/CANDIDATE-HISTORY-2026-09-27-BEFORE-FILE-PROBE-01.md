@@ -76,13 +76,8 @@ Only1/8 pairs meets the frozen native contract; others have missing selectors,
 preexisting passes or remaining gold failures. Three service teardown errors are
 preserved; a separate corrected native cleanup control passes. Zero model calls.
 The linked report preserves all bootstrap chronology; these are author checks,
-not issue-solving/model savings or all8 role-quality evidence. [Selector diagnosis
-and six-cell file probe](EXTERNAL-BUNDLE-02-FILE-PROBE-01.md),protocol`4f3e0c2c`,
-resolves literal/native checks for two pytest pairs,including an ambiguous label.
-Requests reporting identities remain incompatible; original XPASS/cache-accounting
-limits are preserved with separate derivations. This does not replace grade01 or
-establish full-cohort readiness. Repair and freeze future grading/runtime/isolation
-before comparisons; do not replace selected cases.
+not issue-solving/model savings or all8 role-quality evidence. Repair and freeze
+future grading/runtime/isolation before comparisons; do not replace selected cases.
 
 Target an evidenced avoidable operation while preserving required native checks,
 assertions, scope and artifact integrity. Search the linked reports and histories
