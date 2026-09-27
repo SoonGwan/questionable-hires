@@ -1,5 +1,8 @@
 # Receipt guide-first candidate — 2026-09-27
 
+Historical pre-measurement design: [four-cell review](RECEIPT-GUIDE-FIRST-01-REVIEW.md)
+declined candidate`f91d8ef0` (tokens−2.17%,time+9.74%); prior entry restored.
+
 Parent `e6d5e663`; changes only `skills/receipt/SKILL.md`. The same helper
 implementation and evidence/preservation requirements remain. This is **not yet
 model-measured** and must not inherit effort01's costs measured on `7172b50c`.

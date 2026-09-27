@@ -13,12 +13,6 @@ For a current bug, select a regression on the actual affected path using the doc
 
 For an already-present fix, compare isolated versions with the same current assertions/inputs and compatible runtime; identify the code loaded by the test process. Reuse an adequate project-native comparison instead of rebuilding it. Optional support for [Python](references/existing-fix.md) or [native Node tests](references/node-comparison.md) supplies copying, source checks and cleanup when those are missing. Choose by the required evidence and setup work, not merely by language support. Don't reverse patches in the user's working tree.
 
-When using the supplied comparison CLI, start with the matching guide above; it
-contains recipes, options and result interpretation. Execute the helper without
-loading its implementation for routine supported use. Inspect the relevant source
-when a concrete trust, adaptation or unexpected-result question remains; preserve
-that inspection when the task requires it. Source-reading volume is not verification.
-
 A required suite running that regression with matching inputs/runtime supplies after evidence; don't repeat it separately. Skipped, undiscovered or differently configured tests don't qualify. Changed relevant inputs invalidate reused results.
 
 Batch final checks in one shell call, adapting the runner and paths:

@@ -57,12 +57,14 @@ remain separate. No general low-effort adoption or all8 completion. Historical
 [terminal16 checkpoint](ALL-EIGHT-EFFORT-01-TERMINAL16.md),
 [in-flight8 snapshot](ALL-EIGHT-EFFORT-01-INFLIGHT8.md) and
 [older adverse effort evidence](ALL-EIGHT-EFFORT-01-HISTORY-NOTE.md) remain.
-[Receipt guide-first01 review](RECEIPT-GUIDE-FIRST-01-REVIEW.md),2026-09-27,
-previous`e6d5e663`,candidate`f91d8ef0`,execution`96780deb`:four original outcomes
-supported; tokens−2.17%,time+9.74%,zero joint reductions. Both candidate tasks
-slower despite avoiding helper-source reads. **Declined; previous Receipt entry
-and synchronized README guidance restored.** All native before/after failures,
-source/context/counter guards and exposure/shared-host/unequal-work limits retained.
+Current Receipt guide-first change`f91d8ef0` is not measured by this comparison.
+Its [four-cell protocol](RECEIPT-GUIDE-FIRST-01-PROTOCOL.md) and
+[zero-model preparation](results/receipt-guide-first-01-preparation/summary.json)
+freeze previous`e6d5e663` versus candidate`f91d8ef0`. Receipt resource manifests
+differ only at SKILL.md; native complete/partial SQLite controls pass. [Execution preflight](results/receipt-guide-first-01-preparation/execution-preflight.json)
+records native fixture controls and six scheduler controls in checkout/Git-free
+copies. Four-cell serial execution has started at scheduler`96780deb`; no result
+or saving is established by this preparation.
 
 한국어: effort01(2026-09-27,후보`7172b50c`) 원본16개 과제의 네이티브 결과·범위·
 보존을 검토했다. low 합계 토큰5.91%·시간17.20% 감소지만 이력 추적은 모두
@@ -73,7 +75,7 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 | Checkpoint / date / resource | Evidence and limit |
 | --- | --- |
-| [Receipt guide-first candidate](RECEIPT-GUIDE-FIRST-CANDIDATE-2026-09-27.md),2026-09-27,parent`e6d5e663` | Entry guidance routes routine supported CLI use to its existing guide before implementation reads. Native preservation9/native-invocation17 controls pass; no runtime changes. | Measured candidate declined: tokens−2.17%,time+9.74%,both tasks slower; previous guidance restored. Older read-order adverse costs retained. |
+| [Receipt guide-first candidate](RECEIPT-GUIDE-FIRST-CANDIDATE-2026-09-27.md),2026-09-27,parent`e6d5e663` | Entry guidance routes routine supported CLI use to its existing guide before implementation reads. Native preservation9/native-invocation17 controls pass; no runtime changes. | Unmeasured candidate, not an efficiency gain. Older read-order candidate increased both costs; preserve concrete trust/adaptation inspection and full evidence requirements. |
 | [Official row/runtime metadata01](EXTERNAL-BUNDLE-02-OFFICIAL-ROW-RUNTIME-01.md),2026-09-27,parent`af944167`,skills`7172b50c` | Eight pinned row scripts use Conda/pytest-rA; Requests parser alias matches. One official Linux image environment-layer metadata shows Python3.9.20/pytest7.4.4, differing from native preparation. Digest-verified inspection, no container execution or models; no repair contrast/runtime parity claim. |
 | [Requests2674 default trust probe01](EXTERNAL-BUNDLE-02-REQUESTS2674-DEFAULT-TRUST-REVIEW.md),2026-09-27,protocol`2ba701dc`,skills`7172b50c` | Base/gold154PASS each, native0/0, source/runtime guards and service cleanup pass. No repair contrast: all12 designated failures already pass. Pair declined; stop same-runtime retries, retain fixed cohort and other unresolved gates. Zero models. |
 | [Default trust controls03](EXTERNAL-BUNDLE-02-TRUST-CONTROLS-03.md),2026-09-27,parent`202ee64a`,skills`7172b50c` | Same native client: environment GET pass/direct send reject; explicit CA and copied extended default CA pass; wrong hostname rejected. No Python/source/global trust changes or models; full corrected Requests pair not yet established. |

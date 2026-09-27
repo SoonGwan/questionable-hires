@@ -114,10 +114,7 @@ Normal automatic selection is enabled. No lifecycle hooks, telemetry, background
 ### Some coworkers brought tools
 
 Start with a normal skill request; helpers are optional when the project lacks
-equivalent support. For Receipt’s supported comparison CLI, use its
-[Python guide](skills/receipt/references/existing-fix.md) or
-[Node guide](skills/receipt/references/node-comparison.md); inspect implementation
-for a concrete trust, adaptation or diagnosis question. The Python helpers require **Python 3.9+**; Con Artist's
+equivalent support. The Python helpers require **Python 3.9+**; Con Artist's
 mutation runner, Receipt and Exorcist also require POSIX. Hostage's standalone
 JavaScript module needs a JavaScript runtime, **not Python**; its native tests
 use Node.js. Helpers do not install dependencies or run in the background.
