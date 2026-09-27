@@ -88,6 +88,11 @@ four-session scope observation is not a general guarantee. Future work needs a
 different concrete workflow improvement rather than another body-length claim.
 The all-eight quality/token/time objective remains unmet.
 
+[Entry exposure03](SKILL-ENTRY-EXPOSURE-03.md),2026-09-28, inspects these same four
+sessions without rerunning them. Their first exact full-body exposure is in tool
+output, with no initial exact entry or frontmatter-free body match. This does not
+support calling the first skill read redundant or subtracting its measured cost.
+
 한국어: 후보는 채택하지 않는다. 결함·정상 코드 두 과제의 원본4회에서 토큰
 합계는9.25% 줄었지만 시간은3.47% 늘었고, 정상 코드 과제는 두 지표 모두 나빠졌다.
 결함 과제의 기준 실행만 수정 전 실패를 실제로 검사했으므로 절감된 토큰을 같은
