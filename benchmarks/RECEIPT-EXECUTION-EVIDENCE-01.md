@@ -80,3 +80,32 @@ inferred; original integration07 still measures `1be35120`, not this changed hel
 후속 비교를 중단한다. 제거 여부 조회 실패는 성공 대신null로 남긴다. 최초7개 근거
 유실 실패와 추가 상태 오판을 재현했고, 최종 새 검사9개 및 Git 없는 사본의 기존
 호환성 포함135개가 통과했다. 실제 모델 절감 실험이나 전체8개 목표 달성은 아니다.
+
+## Installation and prepared download
+
+Source **`0c4d261e`** is installed personally. The previous Receipt directory matched
+parent `f7ced67d` in bytes and Git modes before being preserved outside discovery.
+[Installation identity](results/receipt-execution-evidence-01/personal-install.json),
+[all-eight comparison](results/receipt-execution-evidence-01/all-installed.json) and
+[nine controls importing the actual installed helper](results/receipt-execution-evidence-01/installed-tests.txt)
+pass; Node uses24.16.0 explicitly. The CLI control calls main in-process.
+
+The151-file landing build changes only the downloadable archive and checksum.
+[Download identity](results/receipt-execution-evidence-01/download.json) records
+106,932 bytes, SHA-256 `7c6470b3c69fd75f96fcc3b14654c0234d0f1a9039393e604c1f788220739d96`,
+and all nine Receipt resources matching source bytes and modes.
+
+A separate standalone-package check exposed an outdated Con Artist expectation:
+[the first run](results/receipt-execution-evidence-01/standalone-package-before.txt)
+expected empty stdout on a final guard failure, predating the adopted retained-evidence
+interface. The test now requires incomplete JSON, all four native exit codes,
+selected-source preservation, failed project guard and removed scratch, while
+retaining exit2, stderr, original changed notes and filesystem assertions. This
+is a test-contract correction, not a newly repaired production defect. The
+[final package run](results/receipt-execution-evidence-01/standalone-package.txt)
+checks offline installation, source/mode identity and actual extracted helpers.
+Historical model evidence is unchanged; these are local delivery checks.
+
+한국어: 소스`0c4d261e`을 개인 설치와 다운로드에 반영했다. 설치본9개 검사와
+전체8개 파일·권한 일치를 확인했다. 독립 패키지 검사에서 발견한 과거의 빈 출력
+기대값은 현재 실패 근거 보존 계약으로 수정했으며, 첫 실패 기록도 남겼다.

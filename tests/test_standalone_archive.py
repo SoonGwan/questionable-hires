@@ -118,7 +118,13 @@ class StandaloneArchiveTests(unittest.TestCase):
             rejected = subprocess.run(audit, input=json.dumps(recipe), cwd=root,
                 capture_output=True, text=True, timeout=15)
             self.assertEqual(rejected.returncode, 2, rejected.stderr)
-            self.assertEqual(rejected.stdout, '')
+            partial = json.loads(rejected.stdout)
+            self.assertEqual(partial['status'], 'incomplete')
+            self.assertEqual({k: v['exit_code'] for k, v in partial['checks'].items()},
+                dict(correct_tests=0, mutant_tests=0, correct_probe=0, mutant_probe=1))
+            self.assertTrue(partial['integrity']['selected_original_bytes_and_modes_unchanged'])
+            self.assertFalse(partial['integrity']['project_guard']['unchanged'])
+            self.assertTrue(partial['integrity']['owned_scratch_removed'])
             self.assertIn('Project tree changed during audit; not restored', rejected.stderr)
             self.assertIn('notes.txt', rejected.stderr)
             self.assertEqual((project / 'notes.txt').read_text(), 'changed')
