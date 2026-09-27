@@ -200,12 +200,3 @@ Its same-directory links retain the per-tool chronology and preceding snapshots.
 observer despite reading its interface/code. Keep ordinary skills unchanged.
 한국어: urllib3 실제 비교는 토큰23.22%·시간12.76% 증가로 채택하지 않는다.
 필수 작업과 원본 보존을 검토했지만 관찰기 사용은 없으며 전체 목표는 미달이다.
-
-[Call matrix retained01](CALL-MATRIX-RETAINED-01.md),2026-09-27,parent `a71f308a`:
-standalone optional ordered actual outcomes avoid callback replay when specific
-values are requested. Actual upstream15-call control and6 boundaries pass in
-checkout/Git-free archive; default v2 preserved. Zero models; no ordinary adoption
-or whole-task cost claim. Existing invoice duplicated calls and adverse urllib3
-nonselection remain original evidence, not retroactively repaired outcomes.
-한국어: 선택적 실제 값 보존 기능은 실제15개 호출·경계6개 검사를 통과했지만
-모델 비용 절감 증거는 없다. 기본 스킬·후보·이전 불리한 결과를 보존한다.
