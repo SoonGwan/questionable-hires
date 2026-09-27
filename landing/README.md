@@ -47,8 +47,16 @@ record in `cells.json`. Chart means use equal-weight task ratios; raw sums are
 shown separately. No new model experiment or favorable-result promotion occurs.
 Review both README languages when changing featured data or claims.
 
+`evidence-manifest.json` explicitly lists the reviewed integration05 report
+dependencies. Their relative layout and original bytes are preserved; a new local
+report link needs manifest review. Use the localized ZIP download and extract it
+before reading reports offline. [Evidence packaging verification](../docs/LANDING-EVIDENCE-2026-09-27.md).
+
 대표 데이터는 `featured.json`에서만 선택하며 기존 감사 코드로 원시 기록과 대조합니다.
 과제별 비율 평균과 원시 합계는 구분합니다. 생성 파일이나 숫자만 따로 수정하지 마세요.
+
+검토된 보고서 근거만 manifest로 지정해 원본 바이트·상대 경로를 보존합니다.
+로컬에서는 ZIP을 내려받아 압축을 푼 뒤 보고서를 읽으면 연결 근거도 열 수 있습니다.
 
 ## Sharing and production build / 공유와 공개 빌드
 
@@ -101,7 +109,7 @@ python3 -B scripts/build_landing.py --check
 python3 -B scripts/sync_featured_benchmark.py --check
 ```
 
-The source checks pass: 12 landing tests and 4 server tests. All 15 generated
+The source checks pass: 14 landing tests and 4 server tests. All 37 generated
 preview files and featured synchronization match their sources. This is a local
 source check; the separate [September27 hosted delivery record](../docs/LANDING-UNITS-2026-09-27.md)
 identifies the deployed release, public graph interactions and mobile/OG checks.
@@ -109,7 +117,7 @@ It does not establish new model performance or a new responsive width sweep.
 The [current metrics audit](../docs/LANDING-METRICS-AUDIT-2026-09-27.md) recomputes
 both whole-cohort totals and records a subsequent public byte/browser check.
 
-현재 소스 검사는 랜딩12개·서버4개를 통과했습니다. 생성 파일15개와 대표
+현재 소스 검사는 랜딩14개·서버4개를 통과했습니다. 생성 파일37개와 대표
 데이터 동기화도 일치합니다. 공개 배포·모바일·OG 검증은 위의 별도 기록에서
 확인하며, 아래의9개 검사는9월26일 당시 기록으로 보존합니다.
 현재 수치 검산과 후속 공개 파일·브라우저 검증은 위의 metrics audit에 기록합니다.
