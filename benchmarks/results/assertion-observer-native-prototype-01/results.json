@@ -1,0 +1,664 @@
+{
+  "rows": [
+    {
+      "python": "Python 3.11.6",
+      "invocation": "bootstrap",
+      "case": "windows-single",
+      "comparison": {
+        "status": "observed",
+        "revisions": {
+          "before": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+          "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19227}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19227}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=1)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            }
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19228}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19228}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... ok\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 44,
+          "file_bytes": 5325,
+          "inventory_sha256": "4018b34f0dc09f5926e46c32479fe30470d7af7c8b2b97b4af8c2170459d7d23",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e",
+            "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+          },
+          "modes": {
+            "test_windows.py": 420,
+            "windows.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      }
+    },
+    {
+      "python": "Python 3.11.6",
+      "invocation": "bootstrap",
+      "case": "windows-multiple",
+      "comparison": {
+        "status": "observed",
+        "revisions": {
+          "before": "c4a41f0c97d598fb902f24be2b09ed8ddc602450",
+          "before_2": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+          "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19254}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19254}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... FAIL\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n======================================================================\nFAIL: test_touching (test_windows.WindowsTests.test_touching)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 6, in test_touching\n    self.assertEqual(merge_windows([(1, 3), (3, 5)]), [(1, 5)])\nAssertionError: Lists differ: [(1, 3), (3, 5)] != [(1, 5)]\n\nFirst differing element 0:\n(1, 3)\n(1, 5)\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\n(3, 5)\n\n- [(1, 3), (3, 5)]\n+ [(1, 5)]\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=2)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[3,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            }
+          },
+          "before_2": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19255}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19255}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=1)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            }
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19256}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19256}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... ok\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 44,
+          "file_bytes": 5325,
+          "inventory_sha256": "5da9cb6315a5cda528480d2f76eae824b15957de3cb2e8ba63db5b5d40d0d495",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e",
+            "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+          },
+          "modes": {
+            "test_windows.py": 420,
+            "windows.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      }
+    },
+    {
+      "python": "Python 3.11.6",
+      "invocation": "module",
+      "case": "windows-single",
+      "comparison": {
+        "status": "observed",
+        "revisions": {
+          "before": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+          "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19279}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19279}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=1)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            },
+            "command": [
+              "<TEMP>",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19280}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19280}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... ok\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": true
+            },
+            "command": [
+              "<TEMP>",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 44,
+          "file_bytes": 5325,
+          "inventory_sha256": "3febf4d4533d5f0bd9224df664cb3af01c9c50fbb9ed41423b44de3f0eaf2a8d",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e",
+            "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+          },
+          "modes": {
+            "test_windows.py": 420,
+            "windows.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      }
+    },
+    {
+      "python": "Python 3.11.6",
+      "invocation": "module",
+      "case": "windows-multiple",
+      "comparison": {
+        "status": "observed",
+        "revisions": {
+          "before": "c4a41f0c97d598fb902f24be2b09ed8ddc602450",
+          "before_2": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+          "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19306}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19306}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... FAIL\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n======================================================================\nFAIL: test_touching (test_windows.WindowsTests.test_touching)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 6, in test_touching\n    self.assertEqual(merge_windows([(1, 3), (3, 5)]), [(1, 5)])\nAssertionError: Lists differ: [(1, 3), (3, 5)] != [(1, 5)]\n\nFirst differing element 0:\n(1, 3)\n(1, 5)\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\n(3, 5)\n\n- [(1, 3), (3, 5)]\n+ [(1, 5)]\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=2)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[3,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            },
+            "command": [
+              "<TEMP>",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true
+          },
+          "before_2": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19307}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19307}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=1)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            },
+            "command": [
+              "<TEMP>",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19308}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19308}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... ok\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": true
+            },
+            "command": [
+              "<TEMP>",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 44,
+          "file_bytes": 5325,
+          "inventory_sha256": "a0ebbf8ca216f7b0678e4cf14212d72b301b24dd30d070be74b7838984a54901",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e",
+            "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+          },
+          "modes": {
+            "test_windows.py": 420,
+            "windows.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      }
+    },
+    {
+      "python": "Python 3.9.6",
+      "invocation": "bootstrap",
+      "case": "windows-single",
+      "comparison": {
+        "status": "observed",
+        "revisions": {
+          "before": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+          "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19332}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19332}\ntest_chain (test_windows.WindowsTests) ... ok\ntest_disjoint (test_windows.WindowsTests) ... ok\ntest_empty (test_windows.WindowsTests) ... ok\ntest_input_preserved (test_windows.WindowsTests) ... ok\ntest_nested (test_windows.WindowsTests) ... FAIL\ntest_touching (test_windows.WindowsTests) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nFAILED (failures=1)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            }
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19333}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19333}\ntest_chain (test_windows.WindowsTests) ... ok\ntest_disjoint (test_windows.WindowsTests) ... ok\ntest_empty (test_windows.WindowsTests) ... ok\ntest_input_preserved (test_windows.WindowsTests) ... ok\ntest_nested (test_windows.WindowsTests) ... ok\ntest_touching (test_windows.WindowsTests) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nOK\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 44,
+          "file_bytes": 5325,
+          "inventory_sha256": "6f2dd68d35edc964d0806b50a5b8c4ecc1502d49057b6faf8dbe9e361738cbf7",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e",
+            "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+          },
+          "modes": {
+            "test_windows.py": 420,
+            "windows.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      }
+    },
+    {
+      "python": "Python 3.9.6",
+      "invocation": "bootstrap",
+      "case": "windows-multiple",
+      "comparison": {
+        "status": "observed",
+        "revisions": {
+          "before": "c4a41f0c97d598fb902f24be2b09ed8ddc602450",
+          "before_2": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+          "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19359}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19359}\ntest_chain (test_windows.WindowsTests) ... ok\ntest_disjoint (test_windows.WindowsTests) ... ok\ntest_empty (test_windows.WindowsTests) ... ok\ntest_input_preserved (test_windows.WindowsTests) ... ok\ntest_nested (test_windows.WindowsTests) ... FAIL\ntest_touching (test_windows.WindowsTests) ... FAIL\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n======================================================================\nFAIL: test_touching (test_windows.WindowsTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 6, in test_touching\n    self.assertEqual(merge_windows([(1, 3), (3, 5)]), [(1, 5)])\nAssertionError: Lists differ: [(1, 3), (3, 5)] != [(1, 5)]\n\nFirst differing element 0:\n(1, 3)\n(1, 5)\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\n(3, 5)\n\n- [(1, 3), (3, 5)]\n+ [(1, 5)]\n\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nFAILED (failures=2)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[3,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            }
+          },
+          "before_2": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19360}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19360}\ntest_chain (test_windows.WindowsTests) ... ok\ntest_disjoint (test_windows.WindowsTests) ... ok\ntest_empty (test_windows.WindowsTests) ... ok\ntest_input_preserved (test_windows.WindowsTests) ... ok\ntest_nested (test_windows.WindowsTests) ... FAIL\ntest_touching (test_windows.WindowsTests) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nFAILED (failures=1)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            }
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19361}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19361}\ntest_chain (test_windows.WindowsTests) ... ok\ntest_disjoint (test_windows.WindowsTests) ... ok\ntest_empty (test_windows.WindowsTests) ... ok\ntest_input_preserved (test_windows.WindowsTests) ... ok\ntest_nested (test_windows.WindowsTests) ... ok\ntest_touching (test_windows.WindowsTests) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nOK\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": true
+            }
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 44,
+          "file_bytes": 5325,
+          "inventory_sha256": "ef57bfcb3e4168f0485b5de9433039210c431f4da200cbd0f28c6b5d16e60ad7",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e",
+            "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+          },
+          "modes": {
+            "test_windows.py": 420,
+            "windows.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      }
+    },
+    {
+      "python": "Python 3.9.6",
+      "invocation": "module",
+      "case": "windows-single",
+      "comparison": {
+        "status": "observed",
+        "revisions": {
+          "before": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+          "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19384}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19384}\ntest_chain (test_windows.WindowsTests) ... ok\ntest_disjoint (test_windows.WindowsTests) ... ok\ntest_empty (test_windows.WindowsTests) ... ok\ntest_input_preserved (test_windows.WindowsTests) ... ok\ntest_nested (test_windows.WindowsTests) ... FAIL\ntest_touching (test_windows.WindowsTests) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nFAILED (failures=1)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            },
+            "command": [
+              "/Library/Developer/CommandLineTools/usr/bin/python3",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19385}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19385}\ntest_chain (test_windows.WindowsTests) ... ok\ntest_disjoint (test_windows.WindowsTests) ... ok\ntest_empty (test_windows.WindowsTests) ... ok\ntest_input_preserved (test_windows.WindowsTests) ... ok\ntest_nested (test_windows.WindowsTests) ... ok\ntest_touching (test_windows.WindowsTests) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nOK\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": true
+            },
+            "command": [
+              "/Library/Developer/CommandLineTools/usr/bin/python3",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 44,
+          "file_bytes": 5325,
+          "inventory_sha256": "8955a46d77738c64559e50a8925fb919be6583bf76702960298250fb393be222",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e",
+            "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+          },
+          "modes": {
+            "test_windows.py": 420,
+            "windows.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      }
+    },
+    {
+      "python": "Python 3.9.6",
+      "invocation": "module",
+      "case": "windows-multiple",
+      "comparison": {
+        "status": "observed",
+        "revisions": {
+          "before": "c4a41f0c97d598fb902f24be2b09ed8ddc602450",
+          "before_2": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+          "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19411}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19411}\ntest_chain (test_windows.WindowsTests) ... ok\ntest_disjoint (test_windows.WindowsTests) ... ok\ntest_empty (test_windows.WindowsTests) ... ok\ntest_input_preserved (test_windows.WindowsTests) ... ok\ntest_nested (test_windows.WindowsTests) ... FAIL\ntest_touching (test_windows.WindowsTests) ... FAIL\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n======================================================================\nFAIL: test_touching (test_windows.WindowsTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 6, in test_touching\n    self.assertEqual(merge_windows([(1, 3), (3, 5)]), [(1, 5)])\nAssertionError: Lists differ: [(1, 3), (3, 5)] != [(1, 5)]\n\nFirst differing element 0:\n(1, 3)\n(1, 5)\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\n(3, 5)\n\n- [(1, 3), (3, 5)]\n+ [(1, 5)]\n\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nFAILED (failures=2)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[3,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            },
+            "command": [
+              "/Library/Developer/CommandLineTools/usr/bin/python3",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true
+          },
+          "before_2": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19412}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19412}\ntest_chain (test_windows.WindowsTests) ... ok\ntest_disjoint (test_windows.WindowsTests) ... ok\ntest_empty (test_windows.WindowsTests) ... ok\ntest_input_preserved (test_windows.WindowsTests) ... ok\ntest_nested (test_windows.WindowsTests) ... FAIL\ntest_touching (test_windows.WindowsTests) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nFAILED (failures=1)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            },
+            "command": [
+              "/Library/Developer/CommandLineTools/usr/bin/python3",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19413}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19413}\ntest_chain (test_windows.WindowsTests) ... ok\ntest_disjoint (test_windows.WindowsTests) ... ok\ntest_empty (test_windows.WindowsTests) ... ok\ntest_input_preserved (test_windows.WindowsTests) ... ok\ntest_nested (test_windows.WindowsTests) ... ok\ntest_touching (test_windows.WindowsTests) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nOK\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,9]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[]},\"expected\":{\"kind\":\"list\",\"items\":[]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertIsNot\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,3]},{\"kind\":\"tuple\",\"items\":[5,7]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[5,7]},{\"kind\":\"tuple\",\"items\":[1,3]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,10]}]},\"same_object\":false},{\"method\":\"assertEqual\",\"actual\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"expected\":{\"kind\":\"list\",\"items\":[{\"kind\":\"tuple\",\"items\":[1,5]}]},\"same_object\":false}],\"complete\":true,\"reason\":null}\n",
+            "output_truncated": false,
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": true
+            },
+            "command": [
+              "/Library/Developer/CommandLineTools/usr/bin/python3",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 44,
+          "file_bytes": 5325,
+          "inventory_sha256": "e52df7c7bed8f551ef45b1c63d46a8890b933caac7951d0af977d359d16e32f2",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "test_windows.py": "48d015a22aed2b9d702050b119a820c7a3788385ddbff3abd05678a2ff60cf9e",
+            "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+          },
+          "modes": {
+            "test_windows.py": 420,
+            "windows.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      }
+    }
+  ],
+  "helper_source_sha256": "d89351a8581e2b8970489ae7256ec2fe926e60dddb73629de2bf2bf3e636376a",
+  "observer_sha256": "5602a9c19d885864c9cfab4c1a21e52011097f6b2aace2c1fded186566ebfe1c",
+  "wrapper": "\n_receipt_original_run = unittest.TestProgram.runTests\ndef _receipt_argument_run(program):\n    try:\n        observation = observe()\n    except RuntimeError:\n        print('Receipt assertions: ' + compact({'observations': [], 'complete': False, 'reason': 'existing_profile'}), flush=True)\n        return _receipt_original_run(program)\n    try:\n        return _receipt_original_run(program)\n    finally:\n        print('Receipt assertions: ' + observation.close(), flush=True)\nunittest.TestProgram.runTests = _receipt_argument_run\n",
+  "limitations": "In-memory local adapter only; installed helper unchanged; no model calls or efficiency claim."
+}
