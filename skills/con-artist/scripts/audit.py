@@ -80,9 +80,13 @@ def verify_setup():
             if not location or not pathlib.Path(location).resolve().is_relative_to(root):
                 raise RuntimeError('Import escaped copy: ' + name + ': ' + str(location))
             location = pathlib.Path(location).resolve()
+            digest = hashlib.sha256()
+            with location.open('rb') as stream:
+                for chunk in iter(lambda: stream.read(65536), b''):
+                    digest.update(chunk)
             print('Verified copied import:', name, json.dumps({
                 'path': str(location.relative_to(root)),
-                'sha256': hashlib.sha256(location.read_bytes()).hexdigest()
+                'sha256': digest.hexdigest()
             }, separators=(',', ':')), flush=True)
     except BaseException:
         print('Import setup failed; not mutation evidence.', flush=True)
