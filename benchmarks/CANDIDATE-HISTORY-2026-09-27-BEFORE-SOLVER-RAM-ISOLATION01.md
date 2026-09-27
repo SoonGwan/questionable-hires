@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver RAM isolation01,2026-09-27,parent`ec04c803`:
-[actual no-share Linux guest](SOLVER-RAM-ISOLATION-01.md) verifies/extracts all8
-pristine source archives in RAM; no host shares/disks/network, grader path absent,
-guest stop/executable0. No Python runtime/tool bridge/native issue tests yet;
-zero models, not complete solver readiness or all8 quality/cost improvement.
-한국어: 공유 없는 실제 게스트에서 8개 소스와 평가 경로 부재를 확인했다.
-Python·모델 도구 연결·전체 비교는 미완료이며 효율 성과로 승격하지 않는다.
-
 External bundle02 solver staging01,2026-09-27,parent`582a37b4`:
 [all8 pristine source snapshots](EXTERNAL-BUNDLE-02-SOLVER-STAGING-01.md) preserve
 base bytes/modes plus separately hashed genuine metadata; one Git commit/no remote/
