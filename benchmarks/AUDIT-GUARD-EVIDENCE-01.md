@@ -85,3 +85,18 @@ and exact packaged helper bytes. Builder consistency covers63 generated files;
 only download archive/checksum changed. [Three packaging controls](results/audit-guard-evidence-01/package.txt)
 pass. These local install/package checks do not establish public delivery or new
 model savings.
+
+## Public delivery
+
+Hosted release **`44209fe7dd1b1d1a458ae276fb0f5833ae146fb6`** is live at
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+[Public HTTPS observations](results/audit-guard-evidence-01/public.json) verify the
+health revision, exact106,272-byte archive and adjacent checksum, packaged helper
+source, both canonical URLs, index/follow directives and download links. The Mac
+origin and existing Cloudflare Tunnel serve the new download. This verifies
+delivery, not a new visual review, model efficiency or the all-eight goal.
+
+한국어: 소스`fc91d057`을 개인 설치와 다운로드에 반영했으며 배포`44209fe7`의
+공개 파일·해시·실제 도우미 소스와 한영 페이지 메타데이터를 확인했다.
+전체8개 토큰·시간 목표는 미달이며 기존 측정 수치를 바꾸지 않았다.
