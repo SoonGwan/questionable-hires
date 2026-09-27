@@ -1,0 +1,75 @@
+test_earlier_failure_or_cancellation_keeps_latest_pending (test_preview.PreviewTests.test_earlier_failure_or_cancellation_keeps_latest_pending) ... 
+  test_earlier_failure_or_cancellation_keeps_latest_pending (test_preview.PreviewTests.test_earlier_failure_or_cancellation_keeps_latest_pending) (cancelled=False) ... FAIL
+  test_earlier_failure_or_cancellation_keeps_latest_pending (test_preview.PreviewTests.test_earlier_failure_or_cancellation_keeps_latest_pending) (cancelled=True) ... FAIL
+test_instances_are_independent (test_preview.PreviewTests.test_instances_are_independent) ... ok
+test_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests.test_latest_failure_or_cancellation_and_retry) ... 
+  test_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests.test_latest_failure_or_cancellation_and_retry) (cancelled=False, older_during_retry=True) ... FAIL
+  test_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests.test_latest_failure_or_cancellation_and_retry) (cancelled=True, older_during_retry=True) ... FAIL
+test_success_in_both_completion_orders (test_preview.PreviewTests.test_success_in_both_completion_orders) ... 
+  test_success_in_both_completion_orders (test_preview.PreviewTests.test_success_in_both_completion_orders) (latest_first=False) ... FAIL
+test_synchronous_callback_failure_and_retry (test_preview.PreviewTests.test_synchronous_callback_failure_and_retry) ... FAIL
+
+======================================================================
+FAIL: test_earlier_failure_or_cancellation_keeps_latest_pending (test_preview.PreviewTests.test_earlier_failure_or_cancellation_keeps_latest_pending) (cancelled=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/test_preview.py", line 90, in test_earlier_failure_or_cancellation_keeps_latest_pending
+    self.assertTrue(preview.pending)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_earlier_failure_or_cancellation_keeps_latest_pending (test_preview.PreviewTests.test_earlier_failure_or_cancellation_keeps_latest_pending) (cancelled=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/test_preview.py", line 90, in test_earlier_failure_or_cancellation_keeps_latest_pending
+    self.assertTrue(preview.pending)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests.test_latest_failure_or_cancellation_and_retry) (cancelled=False, older_during_retry=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/test_preview.py", line 119, in test_latest_failure_or_cancellation_and_retry
+    self.assertEqual(preview.pending, older_during_retry)
+AssertionError: False != True
+
+======================================================================
+FAIL: test_latest_failure_or_cancellation_and_retry (test_preview.PreviewTests.test_latest_failure_or_cancellation_and_retry) (cancelled=True, older_during_retry=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/test_preview.py", line 119, in test_latest_failure_or_cancellation_and_retry
+    self.assertEqual(preview.pending, older_during_retry)
+AssertionError: False != True
+
+======================================================================
+FAIL: test_success_in_both_completion_orders (test_preview.PreviewTests.test_success_in_both_completion_orders) (latest_first=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/test_preview.py", line 72, in test_success_in_both_completion_orders
+    self.assertTrue(preview.pending)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_synchronous_callback_failure_and_retry (test_preview.PreviewTests.test_synchronous_callback_failure_and_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 90, in _callTestMethod
+    if self._callMaybeAsync(method) is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 112, in _callMaybeAsync
+    return self._asyncioRunner.run(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/test_preview.py", line 156, in test_synchronous_callback_failure_and_retry
+    self.assertTrue(preview.pending)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.041s
+
+FAILED (failures=6)

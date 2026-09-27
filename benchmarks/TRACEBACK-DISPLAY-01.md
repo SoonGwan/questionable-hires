@@ -37,6 +37,9 @@ capture and inspection work may exceed the reduction. No production skill,
 featured graph or hosted claim changes. The next gate is a frozen original-task
 model comparison, preserving source/outcomes and charging all capture overhead.
 No default adoption without actual use and both cost measures improving.
+The subsequent [model review](TRACEBACK-DISPLAY-MODEL-01-REVIEW.md) declines the
+optional route: no adoption, higher tokens, and zero display-byte reduction on
+the new native subtest outputs.
 
 한국어: 기존 실패 로그의 반복된 동일 프레임만 원본 줄 번호로 참조한다. 정상
 출력은 커지지 않고 모든 문자열을 정확히 복원할 수 있으며 실패 값도 그대로다.
