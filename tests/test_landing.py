@@ -138,14 +138,14 @@ class LandingTests(unittest.TestCase):
         for phrase in ('29.8% more', '6.4% more', '31.6% less',
                        'Without 64,055 → with 83,165',
                        'Tokens decreased on 3, increased on 2 / 5 tasks',
-                       '16.95% more summed tokens', '10.00% less CLI time',
-                       'integration06', '2026-09-27', '1d0e92ac',
-                       'scope violations, unequal checks and output-recovery limitations',
-                       'ALL-EIGHT-CURRENT-06-COSTS.md', 'Cached input is already included in each response'):
+                       '1.67% more summed tokens', '9.63% less CLI time',
+                       'integration07', '2026-09-28', '1be35120',
+                       'unequal checks and recovered original output',
+                       'ALL-EIGHT-CURRENT-07-COSTS.md', 'Cached input is already included in each response'):
             self.assertIn(phrase, en)
         for phrase in ('29.8% 증가', '6.4% 증가', '31.6% 감소',
-                       '토큰 감소 3개 · 증가 2개 / 5개 과제', '토큰 16.95% 증가',
-                       '시간 10.00% 감소', '범위 위반·검사 차이·출력 복구의 한계'):
+                       '토큰 감소 3개 · 증가 2개 / 5개 과제', '토큰 1.67% 증가',
+                       '시간 9.63% 감소', '검사량 차이와 원본 출력 복구의 한계'):
             self.assertIn(phrase, ko)
 
     def test_changed_source_evidence_cannot_silently_change_published_chart(self):
@@ -161,20 +161,20 @@ class LandingTests(unittest.TestCase):
                 landing.featured()
 
     def test_integration_comparison_and_downloads_retain_every_attempt(self):
-        original = ROOT / 'benchmarks/results/all-eight-current-06/comparison.json'
-        self.assertEqual(self.files['evidence/integration06/comparison.json'], original.read_bytes())
-        for name in ('ALL-EIGHT-CURRENT-06-COSTS.md', 'ALL-EIGHT-CURRENT-06-REVIEW.md'):
-            self.assertEqual(self.files['evidence/integration06/benchmarks/' + name], (ROOT / 'benchmarks' / name).read_bytes())
+        original = ROOT / 'benchmarks/results/all-eight-current-07/comparison.json'
+        self.assertEqual(self.files['evidence/integration07/comparison.json'], original.read_bytes())
+        for name in ('ALL-EIGHT-CURRENT-07-COSTS.md', 'ALL-EIGHT-CURRENT-07-REVIEW.md'):
+            self.assertEqual(self.files['evidence/integration07/benchmarks/' + name], (ROOT / 'benchmarks' / name).read_bytes())
         rows = json.loads(original.read_text())['rows']
         for language in ('ko', 'en'):
             source = self.files[language + '/index.html'].decode()
             for row in rows:
                 self.assertIn(f'{row["total_tokens"]:,}', source)
                 self.assertIn(f'{row["elapsed_seconds"]:.3f}', source)
-            self.assertIn('581,325', source)
-            self.assertIn('679,858', source)
-            self.assertIn('data-evidence-file="evidence/integration06/comparison.json"', source)
-            self.assertNotIn('github.com/SoonGwan/questionable-hires/blob/main/benchmarks/ALL-EIGHT-CURRENT-06-COSTS.md', source)
+            self.assertIn('592,783', source)
+            self.assertIn('602,679', source)
+            self.assertIn('data-evidence-file="evidence/integration07/comparison.json"', source)
+            self.assertNotIn('github.com/SoonGwan/questionable-hires/blob/main/benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md', source)
 
     def test_downloaded_report_relative_evidence_links_are_served(self):
         for path, content in self.files.items():
@@ -188,7 +188,7 @@ class LandingTests(unittest.TestCase):
                 self.assertTrue(target in self.files, f'{path} links to unserved {href}')
 
     def test_evidence_bundle_keeps_report_links_and_original_bytes(self):
-        for checkpoint in ('integration05', 'integration06'):
+        for checkpoint in ('integration05', 'integration06', 'integration07'):
             prefix = 'evidence/' + checkpoint + '/'
             with zipfile.ZipFile(io.BytesIO(self.files[prefix + 'reports.zip'])) as archive:
                 names = set(archive.namelist())
@@ -207,14 +207,16 @@ class LandingTests(unittest.TestCase):
     def test_historical_bundle_and_current_resource_boundaries_are_preserved(self):
         self.assertEqual(hashlib.sha256(self.files['evidence/integration05/reports.zip']).hexdigest(),
                          '7582f9eac11e12fffc84a3f7310d475d78b8e878a9abdd2f9b42a407958dcc4a')
+        self.assertEqual(hashlib.sha256(self.files['evidence/integration06/reports.zip']).hexdigest(),
+                         '0149f9f664fd5b32ac781dcd84b26637381b429d6912cd68a09a76cc4da7cc99')
         manifest = landing.read_json(ROOT / 'landing/evidence-manifest.json')['integration06']
         for name in manifest:
             self.assertEqual(self.files['evidence/integration06/' + name], (ROOT / name).read_bytes())
         self.assertIn('tests/test_receipt_path_observation_candidate.py', manifest)
         for lang in ('ko', 'en'):
             source = self.files[lang + '/index.html'].decode()
-            self.assertIn('571.169', source)
-            self.assertIn('514.063', source)
+            self.assertIn('494.990', source)
+            self.assertIn('447.302', source)
             self.assertNotIn('75183f2f', source)
 
     def test_integration_rejects_missing_duplicate_and_inconsistent_attempts(self):
@@ -222,7 +224,7 @@ class LandingTests(unittest.TestCase):
         for fault in ('missing', 'duplicate', 'counter', 'cached', 'responses'):
             def changed(path):
                 value = original(path)
-                if str(path).endswith('all-eight-current-06/comparison.json'):
+                if str(path).endswith('all-eight-current-07/comparison.json'):
                     if fault == 'missing':
                         value['rows'].pop()
                     elif fault == 'duplicate':
@@ -236,7 +238,7 @@ class LandingTests(unittest.TestCase):
                 return value
             with self.subTest(fault=fault), patch.object(landing, 'read_json', side_effect=changed):
                 with self.assertRaises(ValueError):
-                    landing.integration06()
+                    landing.integration07()
 
     def test_each_locale_has_static_metadata_and_copy_without_javascript(self):
         for language in ('ko', 'en'):

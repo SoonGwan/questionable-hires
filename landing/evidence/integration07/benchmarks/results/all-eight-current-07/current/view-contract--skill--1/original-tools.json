@@ -1,0 +1,220 @@
+{
+  "session_id": "01a0e4b1-441c-71a3-a01e-b14942d7c1f5",
+  "source_bytes": 120996,
+  "source_sha256": "1b0169f5b7f42b263faf81cae271c157b0b45cab636b97aa4f60e7283b541301",
+  "cli_events_sha256": "27a9a53e5122d1bac46afff1e311c43f3049a56199513694564ada38b2c7327d",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "5796355e38c62dac9c47afd43883f516bf8d2971cd1d4f50a23a9ed41ec35cce",
+      "record": {
+        "timestamp": "2026-09-27T21:07:04.256Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08c2b1aa3ebcd50a016ab98575d38087d09a7a1f51b05f3f34",
+          "status": "completed",
+          "call_id": "call_6LwfVuTxHuxlDnBTent1wd48",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'release.md' -g '*.sql' -g '*.py' -g '*contract*' -g 'SKILL.md' -g 'README*' -g '*.json'; cat .agents/skills/friday/SKILL.md\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4b1-446b-7963-8161-fafdb56ea773",
+            "create_time": 1790543219.506856
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "e5c1d00e3f1016579684f0080bd1a385af7538888e1d2cc5437e8d88948ec277",
+      "record": {
+        "timestamp": "2026-09-27T21:07:04.406Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4b1-5e56-7933-84c8-fa5b285783a0",
+          "call_id": "call_6LwfVuTxHuxlDnBTent1wd48",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"0d7fa3\",\"wall_time_seconds\":0.000004667,\"exit_code\":0,\"original_token_count\":945,\"output\":\"<WORKSPACE>\\n002_up.sql\\n002_down.sql\\nrelease.md\\n001_schema.sql\\nreaders.py\\n003_new_writes.sql\\n---\\nname: friday\\ndescription: Review a planned deployment or release diff for rollback feasibility, mixed-version compatibility, migrations, and configuration readiness without deploying it.\\n---\\n\\n# Friday\\n\\n> Can Monday-you undo this?\\n\\n## Read Monday's incident report early\\n\\nWhen discovery is needed, combine it with reading supplied release notes/contracts and available project instructions, then batch the discovered relevant inputs. Avoid a listing-only round trip when supplied inputs are already readable. Keep Git internals out of file discovery (for example, `rg --files --hidden -g '!.git'`); use Git commands for relevant history. Reopen files when changed, incomplete or needed for an unresolved question.\\n\\nUse the release diff and documented rollout/rollback order to identify reachable states, old/new artifacts, configuration and consumers. Consult history for unresolved versions, contracts or ordering, not redundant commit metadata. Do not impose rolling deployment or zero downtime on another strategy.\\n\\nFor each reachable state, check active readers/writers against data and configuration, including new-version writes before rollback. Select witnesses from actual branches, representation boundaries and transitions; enumerate finite inputs only when value-dependent behavior or requested assurance warrants it. Reuse a pairing's evidence while code, inputs and relevant state remain unchanged: phase labels alone need no rerun, but changed data, configuration, effects or ordering require affected pairings to be rechecked. Include queued/external effects when their contract changes.\\n\\nCombine compatible coverage obligations into representative sequences instead of multiplying every value by every version/operation. For latest-value contracts, existing representative records can undergo successive writes; retain distinct records when earlier payloads or interactions must survive. Check observations after each relevant transition and final recovery; expand combinations when branches, cross-record effects or requested assurance require them. Fewer witnesses must not mean reusing stale observations.\\n\\nCode rollback is not data recovery: down migrations can lose data, and backups need restore evidence. Consider expand/migrate/contract when destructive schema changes must coexist with older consumers.\\n\\nFind the first incompatible/irreversible step and last recoverable state; tie blockers to the smallest compatible ordering or prerequisite. Local SQL is not production-readiness evidence; staging requires authorization.\\n\\nChoose execution from the contract: exercise actual application writers, transactions and connections when they matter. For repeated SQL-only SQLite reader checks, use the optional [in-memory matrix](references/sqlite-matrix.md); read its guide only for that path, and implementation for trust/adaptation/troubleshooting. Use existing runners for simple checks. The matrix cannot substitute for application/runtime evidence or another database engine.\\n\\n## Deliver and stop\\n\\nLead with ready, ready with conditions, or blocked by evidence. Missing runtime/configuration evidence is unknown, not safe. Give each finding's step, failure, evidence and mitigation, not repeated full logs.\\n\\nStop when scoped compatibility and recovery paths are assessed; no generic infrastructure audit. Preserve user changes and requirements. Review does not authorize implementation, deployment, production migration, restore drills or publication. If asked to fix, verify the scoped correction without releasing it.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4b1-446b-7963-8161-fafdb56ea773",
+            "create_time": 1790543224.406039
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "da5334b6f6da36752f1d5d8ce8429f58104f9615e3894528d22c039faedcedb2",
+      "record": {
+        "timestamp": "2026-09-27T21:07:07.968Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08c2b1aa3ebcd50a016ab98579f1a487d0bd36f27fda946602",
+          "status": "completed",
+          "call_id": "call_SS9M0g4WT6LKEQsdeM7KMpdO",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"rg --files --hidden -g '!.git'; cat release.md readers.py 001_schema.sql 002_up.sql 003_new_writes.sql 002_down.sql; if [ -f AGENTS.md ]; then cat AGENTS.md; fi\",\"max_output_tokens\":9000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4b1-446b-7963-8161-fafdb56ea773",
+            "create_time": 1790543224.876351
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "04158bf4c734b5f48213f642080c8347c00e1f9d0252d82360c61313d2fb05db",
+      "record": {
+        "timestamp": "2026-09-27T21:07:08.046Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4b1-6c8e-7c03-9047-ceaf1fa78564",
+          "call_id": "call_SS9M0g4WT6LKEQsdeM7KMpdO",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"cdca3b\",\"wall_time_seconds\":0.000003,\"exit_code\":0,\"original_token_count\":503,\"output\":\"002_up.sql\\n002_down.sql\\nrelease.md\\n.agents/skills/friday/SKILL.md\\n.agents/skills/friday/scripts/sqlite_matrix.py\\n.agents/skills/friday/agents/openai.yaml\\n.agents/skills/friday/references/sqlite-matrix.md\\n.agents/skills/friday/references/sqlite-matrix-details.md\\n001_schema.sql\\nreaders.py\\n003_new_writes.sql\\n# View rollout proposal\\n\\nThis is a SQL-only authored local release-review fixture. Application writers,\\nconcurrent connections, crash recovery and other database engines are out of scope.\\nConsumers execute the literal queries in readers.py. OLD maps by returned column\\nnames and requires ordered columns [id, label, payload]. NEW requires\\n[id, title, payload]. Both require exact full ordered rows and binary payloads.\\nNo application code is supplied or needed to execute these specified SQL contracts.\\n\\nOrder: (1) apply 001_schema.sql, OLD active; (2) apply 002_up.sql with OLD still\\nactive; (3) apply 003_new_writes.sql while OLD and NEW coexist; (4) drain NEW and\\nrestart OLD without a schema change; (5) apply 002_down.sql with OLD active.\\nAll committed representative updates/inserts must remain visible after rollback.\\nNo zero-downtime promises beyond this explicit sequence, no staging authorization.\\n\\nReview this proposal as supplied; do not modify SQL or reader contracts. A missing\\ninactive reader is an observation, not by itself a blocker at that phase.\\nOLD = 'SELECT * FROM public_items ORDER BY id'\\nNEW = 'SELECT id, title, payload FROM public_items ORDER BY id'\\nCREATE TABLE items(id INTEGER PRIMARY KEY, title TEXT NOT NULL, payload BLOB NOT NULL);\\nINSERT INTO items VALUES(1, '\uccab \ud56d\ubaa9', x'00ff'), (2, 'keep', x'');\\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\\nDROP VIEW public_items;\\nCREATE VIEW public_items AS SELECT id, title, payload FROM items;\\nUPDATE items SET title='updated', payload=x'fe00' WHERE id=1;\\nINSERT INTO items VALUES(3, 'new', x'80');\\nDROP VIEW public_items;\\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4b1-446b-7963-8161-fafdb56ea773",
+            "create_time": 1790543228.046231
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "299aed40de00316b4f5a569dde3a1e00f5a9267d86d6b3c89fc3c722d6a7c0cb",
+      "record": {
+        "timestamp": "2026-09-27T21:07:45.028Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08c2b1aa3ebcd50a016ab98580f21887d0bf1a42ba6f3c2aee",
+          "status": "completed",
+          "call_id": "call_aEOglfuKxIaU6MoNjwdZjNVO",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport ast\\nimport hashlib\\nfrom pathlib import Path\\nimport sqlite3\\n\\nroot = Path('.')\\nfiles = sorted(p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts)\\nbefore = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}\\nqueries = {}\\nfor node in ast.parse(Path('readers.py').read_text()).body:\\n    if isinstance(node, ast.Assign):\\n        for target in node.targets:\\n            if isinstance(target, ast.Name) and target.id in ('OLD', 'NEW'):\\n                queries[target.id] = ast.literal_eval(node.value)\\nassert set(queries) == {'OLD', 'NEW'}\\nlabels = {'OLD': ['id', 'label', 'payload'], 'NEW': ['id', 'title', 'payload']}\\ninitial = [(1, '\uccab \ud56d\ubaa9', bytes.fromhex('00ff')), (2, 'keep', b'')]\\nwritten = [(1, 'updated', bytes.fromhex('fe00')), (2, 'keep', b''), (3, 'new', bytes.fromhex('80'))]\\nphases = [\\n    ('1 baseline', '001_schema.sql', {'OLD'}, initial),\\n    ('2 up migration', '002_up.sql', {'OLD'}, initial),\\n    ('3 new writes', '003_new_writes.sql', {'OLD', 'NEW'}, written),\\n    ('4 drain NEW/restart OLD', None, {'OLD'}, written),\\n    ('5 down migration', '002_down.sql', {'OLD'}, written),\\n]\\nprint('Python SQLite:', sqlite3.sqlite_version)\\nprint('Literal queries:', repr(queries))\\nprint('Consumer ordered columns:', repr(labels))\\nprint('Expected initial rows:', repr(initial))\\nprint('Expected rows after writes and rollback:', repr(written))\\ncon = sqlite3.connect(':memory:')\\nresults = []\\nfor number, (phase, script, active, expected_rows) in enumerate(phases, 1):\\n    print('\\\\nCHECKPOINT', phase, '| active:', ','.join(sorted(active)))\\n    if script:\\n        con.executescript(Path(script).read_text())\\n        con.commit()\\n        print('Executed supplied', script, '| committed:', not con.in_transaction)\\n    else:\\n        print('No SQL transition; drained/restarted reader roles per proposal')\\n    for reader in ('OLD', 'NEW'):\\n        try:\\n            cursor = con.execute(queries[reader])\\n            observed_labels = [column[0] for column in cursor.description]\\n            rows = cursor.fetchall()\\n            columns_ok = observed_labels == labels[reader]\\n            rows_ok = rows == expected_rows\\n            blob_ok = all(type(row[2]) is bytes for row in rows)\\n            compatible = columns_ok and rows_ok and blob_ok\\n            status = 'PASS' if compatible else ('ACTIVE INCOMPATIBILITY' if reader in active else 'INACTIVE INCOMPATIBILITY')\\n            print(reader, status, '| labels:', repr(observed_labels), '| rows:', repr(rows), '| columns_match:', columns_ok, '| full_rows_match:', rows_ok, '| BLOB_bytes:', blob_ok)\\n            assert observed_labels == (labels['OLD'] if number in (1, 5) else labels['NEW'])\\n            assert rows_ok and blob_ok\\n            results.append((number, reader, status))\\n        except sqlite3.Error as exc:\\n            status = 'ACTIVE ERROR' if reader in active else 'INACTIVE ERROR'\\n            print(reader, status, '|', type(exc).__name__ + ':', str(exc))\\n            assert reader == 'NEW' and number in (1, 5)\\n            results.append((number, reader, status))\\n    base_rows = con.execute('SELECT id, title, payload FROM items ORDER BY id').fetchall()\\n    assert base_rows == expected_rows\\n    print('Underlying write contract: PASS | rows:', repr(base_rows))\\nassert len(results) == 10\\nassert [(n, r) for n, r, s in results if s.startswith('ACTIVE')] == [(2, 'OLD'), (3, 'OLD'), (4, 'OLD')]\\nassert con.execute(queries['OLD']).fetchall() == written\\ncon.close()\\nafter_files = sorted(p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts)\\nafter = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in after_files}\\nassert before == after\\nprint('\\\\nVerified all 10 literal reader executions, full ordered rows and BLOB types, final write preservation, and unchanged project/skill files. No scratch files created.')\\nPY\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4b1-446b-7963-8161-fafdb56ea773",
+            "create_time": 1790543228.442499
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "72479d5332fffa48c2eddfb50cd646d45ce8f06acec8f439083c28c9d62ecab8",
+      "record": {
+        "timestamp": "2026-09-27T21:07:45.163Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4b1-fd8b-78f2-b0ef-56789234213f",
+          "call_id": "call_aEOglfuKxIaU6MoNjwdZjNVO",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ce7a8e\",\"wall_time_seconds\":0.000003167,\"exit_code\":0,\"original_token_count\":805,\"output\":\"Python SQLite: 3.44.0\\nLiteral queries: {'OLD': 'SELECT * FROM public_items ORDER BY id', 'NEW': 'SELECT id, title, payload FROM public_items ORDER BY id'}\\nConsumer ordered columns: {'OLD': ['id', 'label', 'payload'], 'NEW': ['id', 'title', 'payload']}\\nExpected initial rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nExpected rows after writes and rollback: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\n\\nCHECKPOINT 1 baseline | active: OLD\\nExecuted supplied 001_schema.sql | committed: True\\nOLD PASS | labels: ['id', 'label', 'payload'] | rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] | columns_match: True | full_rows_match: True | BLOB_bytes: True\\nNEW INACTIVE ERROR | OperationalError: no such column: title\\nUnderlying write contract: PASS | rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\n\\nCHECKPOINT 2 up migration | active: OLD\\nExecuted supplied 002_up.sql | committed: True\\nOLD ACTIVE INCOMPATIBILITY | labels: ['id', 'title', 'payload'] | rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] | columns_match: False | full_rows_match: True | BLOB_bytes: True\\nNEW PASS | labels: ['id', 'title', 'payload'] | rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] | columns_match: True | full_rows_match: True | BLOB_bytes: True\\nUnderlying write contract: PASS | rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\n\\nCHECKPOINT 3 new writes | active: NEW,OLD\\nExecuted supplied 003_new_writes.sql | committed: True\\nOLD ACTIVE INCOMPATIBILITY | labels: ['id', 'title', 'payload'] | rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] | columns_match: False | full_rows_match: True | BLOB_bytes: True\\nNEW PASS | labels: ['id', 'title', 'payload'] | rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] | columns_match: True | full_rows_match: True | BLOB_bytes: True\\nUnderlying write contract: PASS | rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\n\\nCHECKPOINT 4 drain NEW/restart OLD | active: OLD\\nNo SQL transition; drained/restarted reader roles per proposal\\nOLD ACTIVE INCOMPATIBILITY | labels: ['id', 'title', 'payload'] | rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] | columns_match: False | full_rows_match: True | BLOB_bytes: True\\nNEW PASS | labels: ['id', 'title', 'payload'] | rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] | columns_match: True | full_rows_match: True | BLOB_bytes: True\\nUnderlying write contract: PASS | rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\n\\nCHECKPOINT 5 down migration | active: OLD\\nExecuted supplied 002_down.sql | committed: True\\nOLD PASS | labels: ['id', 'label', 'payload'] | rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] | columns_match: True | full_rows_match: True | BLOB_bytes: True\\nNEW INACTIVE ERROR | OperationalError: no such column: title\\nUnderlying write contract: PASS | rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\n\\nVerified all 10 literal reader executions, full ordered rows and BLOB types, final write preservation, and unchanged project/skill files. No scratch files created.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4b1-446b-7963-8161-fafdb56ea773",
+            "create_time": 1790543265.16326
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "command_output_candidates": [
+    {
+      "command_id": "item_1",
+      "cli_event_line": 5,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_2",
+      "cli_event_line": 7,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_SS9M0g4WT6LKEQsdeM7KMpdO",
+          "call_line": 18,
+          "call_line_sha256": "da5334b6f6da36752f1d5d8ce8429f58104f9615e3894528d22c039faedcedb2",
+          "output_line": 21,
+          "output_line_sha256": "04158bf4c734b5f48213f642080c8347c00e1f9d0252d82360c61313d2fb05db",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "61cd7e4e9333445925589d8e6ceed8a097146e67ed59ea533a71ecf6e33cad06",
+          "output_chars": 2005,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_3",
+      "cli_event_line": 9,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_aEOglfuKxIaU6MoNjwdZjNVO",
+          "call_line": 25,
+          "call_line_sha256": "299aed40de00316b4f5a569dde3a1e00f5a9267d86d6b3c89fc3c722d6a7c0cb",
+          "output_line": 28,
+          "output_line_sha256": "72479d5332fffa48c2eddfb50cd646d45ce8f06acec8f439083c28c9d62ecab8",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "16514f572b0e15071167e836a3b6bc113877e6362999a09d1d7266cc0bf0636e",
+          "output_chars": 3182,
+          "relation": "equal"
+        }
+      ]
+    }
+  ],
+  "command_output_candidate_limitation": "Candidates match unredacted output suffix and exit only, not command identity or complete stdout. Review the paired call input, order and any earlier chunks. Empty CLI output is never matched; ambiguous matches are never selected automatically.",
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

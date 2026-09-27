@@ -31,13 +31,13 @@ def read_json(path):
     return json.loads(path.read_text(encoding='utf-8'))
 
 
-def integration06():
-    directory = ROOT / 'benchmarks/results/all-eight-current-06'
+def integration07():
+    directory = ROOT / 'benchmarks/results/all-eight-current-07'
     rows = read_json(directory / 'comparison.json')['rows']
     records = {(row['case'], row['condition']): row for row in rows}
     cases = sorted({row['case'] for row in rows})
     if len(rows) != 16 or len(records) != 16 or len(cases) != 8:
-        raise ValueError('integration06 must retain all16 unique attempts')
+        raise ValueError('integration07 must retain all16 unique attempts')
     for case in cases:
         for condition in ('baseline', 'current'):
             row = records.get((case, condition))
@@ -46,7 +46,7 @@ def integration06():
                     or not 0 <= row['cached_input_tokens'] <= row['input_tokens']
                     or row['output_tokens'] < 0 or row['recorded_responses'] < 1
                     or row['total_tokens'] != row['input_tokens'] + row['output_tokens']):
-                raise ValueError('integration06 comparison is incomplete or inconsistent')
+                raise ValueError('integration07 comparison is incomplete or inconsistent')
     sums = {condition: {metric: sum(records[(case, condition)][metric] for case in cases)
                        for metric in ('total_tokens', 'input_tokens', 'cached_input_tokens',
                                       'output_tokens', 'recorded_responses', 'elapsed_seconds')}
@@ -54,12 +54,12 @@ def integration06():
     return dict(records=records, cases=cases, sums=sums)
 
 
-def integration_evidence_files(checkpoint='integration06'):
+def integration_evidence_files(checkpoint='integration07'):
     # Keep historical URLs while preserving each report's original relative links.
-    roots = {'integration05': ROOT / 'benchmarks', 'integration06': ROOT}
+    roots = {'integration05': ROOT / 'benchmarks', 'integration06': ROOT, 'integration07': ROOT}
     evidence_root = roots[checkpoint]
     number = checkpoint.removeprefix('integration')
-    report_prefix = 'benchmarks/' if checkpoint == 'integration06' else ''
+    report_prefix = 'benchmarks/' if checkpoint != 'integration05' else ''
     names = read_json(LANDING / 'evidence-manifest.json')[checkpoint]
     if len(names) != len(set(names)):
         raise ValueError('duplicate reviewed evidence path')
@@ -91,7 +91,7 @@ def integration_table(checkpoint, copy, prefix):
     parts = [f'<details class="checkpoint-details"><summary>{e(copy["checkpointTable"])}</summary>',
              f'<p class="checkpoint-scroll-hint raw-note">{e(copy["checkpointScrollHint"])}</p>',
              f'<div class="table-scroll" tabindex="0" role="region" aria-label="{e(copy["checkpointTable"])}">',
-             '<table><caption>integration06 · 2026-09-27 · 1d0e92ac</caption><thead><tr>',
+             '<table><caption>integration07 · 2026-09-28 · 1be35120</caption><thead><tr>',
              f'<th scope="col">{e(copy["rawCase"])}</th>']
     breakdown = []
     for condition, label in (('baseline', 'conditionBaseline'), ('current', 'conditionSkill')):
@@ -114,11 +114,11 @@ def integration_table(checkpoint, copy, prefix):
         row = checkpoint['sums'][condition]
         parts.append(f'<td>{row["total_tokens"]:,}</td><td>{row["elapsed_seconds"]:.3f}</td>')
     parts.append('</tr></tfoot></table></div></details>')
-    for name, label in (('benchmarks/ALL-EIGHT-CURRENT-06-COSTS.md', 'costAnalysis'),
-                        ('benchmarks/ALL-EIGHT-CURRENT-06-REVIEW.md', 'checkpointReview'),
+    for name, label in (('benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md', 'costAnalysis'),
+                        ('benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md', 'checkpointReview'),
                         ('comparison.json', 'checkpointJson'),
                         ('reports.zip', 'checkpointBundle')):
-        path = 'evidence/integration06/' + name
+        path = 'evidence/integration07/' + name
         parts.append(f'<a data-evidence-file="{path}" href="{e(prefix + path)}" download>{e(copy[label])} ↓</a>')
     return '\n'.join(parts)
 
@@ -232,7 +232,7 @@ def metadata(copy, language, base, preview):
 
 
 def experiment(evidence, copy, checkpoint=None, prefix='../'):
-    checkpoint = checkpoint or integration06()
+    checkpoint = checkpoint or integration07()
     data, cells, summary = evidence['data'], evidence['cells'], evidence['summary']
     records = {(cell['case'], cell['arm']): cell for cell in cells}
     cases = sorted({cell['case'] for cell in cells})
@@ -350,7 +350,7 @@ def build(base=None):
         raise ValueError('A production site_url must use public HTTPS')
     base = base.rstrip('/') + '/'
     evidence = featured()
-    checkpoint = integration06()
+    checkpoint = integration07()
     template = (LANDING / 'templates/page.html').read_text()
     artwork = (ROOT / 'assets/team-characters.png').read_bytes()
     webp = (ROOT / 'assets/team-characters.webp').read_bytes()
@@ -398,7 +398,7 @@ def build(base=None):
     files['assets/favicon.svg'] = b'<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><rect width="180" height="180" rx="32" fill="#0066FF"/><text x="28" y="122" font-family="Helvetica Neue,Arial,sans-serif" font-size="100" font-weight="700" letter-spacing="-8" fill="#F7F7F8">qh.</text></svg>\n'
     for language in ('ko', 'en'):
         files[f'experiments/{language}.html'] = experiment(evidence, content['copy'][language], checkpoint).encode()
-    for checkpoint_id in ('integration05', 'integration06'):
+    for checkpoint_id in ('integration05', 'integration06', 'integration07'):
         files.update(integration_evidence_files(checkpoint_id))
         number = checkpoint_id.removeprefix('integration')
         prefix = 'evidence/' + checkpoint_id + '/'
