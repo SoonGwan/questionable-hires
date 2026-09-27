@@ -93,16 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver native status01,2026-09-27,parent`01073474`:
-[Linux four-project pytest category controls](SOLVER-NATIVE-STATUS-01.md) preserve
-the exact prior Capture/seven-state fixture. All four require native1 and correct
-PASS/FAIL/skip/XFAIL/XPASS/setup/teardown classification; controls pass, guest stops.
-Models/selected tests0; independent author compatibility, not replacement for the
-pending HTTP model authorization or all8 efficiency evidence. Prior index preserved.
-한국어: 실제 Linux의 네 프로젝트 pytest에서 같은 상태 수집·7상태 fixture를
-검증했다. 의도적인 종료코드1을 보존하며 모델 승인·전체 성능 증거와 구분한다.
-
-
 Solver model HTTP01,2026-09-27,parent`ec78d371`:
 [actual HTTP catalog and command attempt](SOLVER-MODEL-HTTP-01.md) includes the
 guest tool in14 entries (stdio13/no match), but first actual call is rejected:
