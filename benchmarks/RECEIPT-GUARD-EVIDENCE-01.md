@@ -83,3 +83,20 @@ The existing Node24.16.0 comparison suite separately passes
 [Source and evidence identity](results/receipt-guard-evidence-01/identity.json)
 pins both the old helper and changed sources. Metadata/link validation, Receipt
 skill validation, featured synchronization check and whitespace checks pass.
+
+## Personal installation and prepared download
+
+Source **`11c9b0a7`**. Before replacement, every installed Receipt resource byte/mode
+matches parent`1b6ae5f5`; the complete old directory is preserved outside discovery.
+[Installation identity](results/receipt-guard-evidence-01/personal-install.json),
+[all-eight resource comparison](results/receipt-guard-evidence-01/all-installed.json)
+and [six actual installed-helper controls](results/receipt-guard-evidence-01/installed-tests.txt)
+pass. These controls import and execute the installed helper, not the checkout copy.
+The other seven installations are unchanged.
+
+The landing download is rebuilt from the new source;
+[byte/hash identity](results/receipt-guard-evidence-01/download.json) and
+[three packaging checks](results/receipt-guard-evidence-01/package.txt) are retained.
+All63 generated files pass builder consistency. Only download bytes/checksum change;
+no featured benchmark, artwork, page layout or numerical claim changes. These are
+local installation/package checks; public delivery remains a separate check.
