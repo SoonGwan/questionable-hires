@@ -110,6 +110,18 @@ JSON
   Conventional existing system/user hooks are preserved. Project-local or unusual
   startup customization needs native project setup, not a bypass; read
   [startup compatibility](comparison-details.md#native-module-startup) when applicable.
+- Optional `"observe_assertions":true`: only when actual argument values are
+  required, for unittest in either invocation mode. Adds `assertion_observation`
+  for current-thread standard `assertEqual`/`assertIsNot` calls, without replacing
+  assertions. `actual`/`expected` mean first/second arguments, not inferred roles.
+  Primitive builtins only; lists/tuples carry kind tags and bytes use hex. Limits:
+  4,096 report bytes, 64 records, 32 value nodes per argument pair, container depth
+  three and length sixteen. No arbitrary object representation or thread coverage.
+  Existing/replaced profile hooks, unsupported values, empty observation, limit
+  overflow or missing/error reports mean incomplete check7/CLI2 and stop later
+  versions; inspect `reason` and retained `native_exit_code`. `complete` covers
+  only this observation scope, not all tests/assertions. Default off adds no field
+  and does not load the observer. Model token/time savings remain unmeasured.
 - Optional `"import_roots":["src"]` supports regular source-layout packages.
   Select initializers/support too; each root must contain selected files.
   Ordered canonical roots precede each copy's root and appear in the result.

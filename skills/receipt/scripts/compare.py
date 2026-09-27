@@ -173,6 +173,29 @@ _receipt_startup()
 '''
 
 
+ASSERTION_WRAPPER = r"""
+_receipt_original_run = unittest.TestProgram.runTests
+def _receipt_argument_run(program):
+    try:
+        observation = observe()
+    except RuntimeError:
+        value = compact({'scope': 'assertEqual/assertIsNot current-thread calls',
+                         'observations': [], 'complete': False, 'reason': 'existing_profile'})
+        assertions_path.write_text(value)
+        return _receipt_original_run(program)
+    try:
+        return _receipt_original_run(program)
+    finally:
+        assertions_path.write_text(observation.close())
+unittest.TestProgram.runTests = _receipt_argument_run
+"""
+
+
+def assertion_startup():
+    source = read_limited(Path(__file__).with_name('assertions.py'), 16384).decode('utf-8')
+    return source + '\n' + ASSERTION_WRAPPER
+
+
 def checked_path(name):
     if not isinstance(name, str):
         raise ValueError('Expected a project-relative file')
@@ -238,7 +261,12 @@ def run_check(python, root, recipe, timeout):
                TMP=str(root), TEMP=str(root))
     env.pop('PYTHONPATH', None)
     env.pop('PYTHONOPTIMIZE', None)
-    args = [str(python), '-B', '-c', BOOTSTRAP, json.dumps(recipe)]
+    startup = assertion_startup() if recipe.get('observe_assertions', False) else None
+    bootstrap = BOOTSTRAP
+    if startup:
+        anchor = "if recipe['runner'] == 'unittest':\n    import unittest\n    result ="
+        bootstrap = bootstrap.replace(anchor, "assertions_path = pathlib.Path(suite_path).with_name('assertions.json')\n" + startup + '\n' + anchor)
+    args = [str(python), '-B', '-c', bootstrap, json.dumps(recipe)]
     marker = None
     observer = None
     if recipe.get('invocation', 'bootstrap') == 'module':
@@ -248,7 +276,10 @@ def run_check(python, root, recipe, timeout):
                     'usercustomize', 'usercustomize.py', 'usercustomize.pyc')):
                 raise ValueError('Native invocation does not replace project startup customization')
         probe = Path(tempfile.mkdtemp(prefix='.receipt-startup-', dir=root))
-        (probe / 'sitecustomize.py').write_text('recipe = ' + repr(recipe) + '\n' + NATIVE_STARTUP)
+        native_startup = NATIVE_STARTUP
+        if startup:
+            native_startup += "\nassertions_path = probe / 'assertions.json'\n" + startup
+        (probe / 'sitecustomize.py').write_text('recipe = ' + repr(recipe) + '\n' + native_startup)
         marker = probe / 'ready'
         observer = probe
         env['PYTHONPATH'] = os.pathsep.join([str(probe), *(str(root / name) for name in recipe.get('import_roots', [])), str(root)])
@@ -279,6 +310,30 @@ def run_check(python, root, recipe, timeout):
                 and result['exit_code'] == 5))
         if (not ready or not agrees) and not result['timed_out']:
             result['exit_code'] = 7
+    if startup:
+        assertion_report = dict(scope='assertEqual/assertIsNot current-thread calls',
+                                observations=[], complete=False, reason='missing_or_invalid_report')
+        try:
+            value = json.loads(read_limited(observer / 'assertions.json', 4096))
+            if (isinstance(value, dict) and set(value) == {'scope', 'observations', 'complete', 'reason'}
+                    and value['scope'] == assertion_report['scope']
+                    and type(value['complete']) is bool
+                    and (value['reason'] is None or isinstance(value['reason'], str))
+                    and isinstance(value['observations'], list) and len(value['observations']) <= 64):
+                assertion_report = value
+        except (OSError, ValueError):
+            pass
+        ready = (assertion_report['complete'] and assertion_report['reason'] is None
+                 and bool(assertion_report['observations'])
+                 and all(isinstance(row, dict) and set(row) == {'method', 'actual', 'expected', 'same_object'}
+                         and row['method'] in ('assertEqual', 'assertIsNot')
+                         and type(row['same_object']) is bool for row in assertion_report['observations']))
+        if not ready:
+            assertion_report['complete'] = False
+            assertion_report['reason'] = assertion_report['reason'] or 'missing_or_invalid_report'
+            if not result['timed_out']:
+                result['exit_code'] = 7
+        result['assertion_observation'] = assertion_report
     return result
 
 
@@ -433,8 +488,12 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
     if os.name != 'posix' or not 0 < timeout <= 300:
         raise ValueError('Requires POSIX and a timeout in (0, 300]')
     required = {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}
-    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings', 'additional_before'}:
+    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings', 'additional_before', 'observe_assertions'}:
         raise ValueError('Recipe requires fixed, vary, before, after, imports, runner and tests')
+    if type(recipe.get('observe_assertions', False)) is not bool:
+        raise ValueError('observe_assertions must be a boolean')
+    if recipe.get('observe_assertions', False) and recipe['runner'] != 'unittest':
+        raise ValueError('observe_assertions requires unittest')
     if type(recipe.get('guard_tree', False)) is not bool:
         raise ValueError('guard_tree must be a boolean')
     if 'watch' in recipe and (not isinstance(recipe['watch'], list)
@@ -649,6 +708,11 @@ guard_tree (optional boolean): inventory all source entries including Git around
 the comparison; no link traversal. 10000 entries/20 MB read per inventory. Opt in
 only when whole-project preservation is requested and all source reads are allowed.
 before: commit expression. after: commit expression or {"working_tree":true}.
+observe_assertions (optional boolean, default false): unittest only. Capture
+current-thread standard assertEqual/assertIsNot primitive arguments, bounded to
+4096 report bytes/64 records. Unsupported/missing/incomplete observation maps to
+check7 and stops comparison; native_exit_code retains the runner result.
+Observation completeness is not full assertion coverage or regression proof.
 additional_before (optional): up to seven extra distinct commits, unittest only.
 Runs before, before_2, ... then after once, using identical frozen current tests.
 One shared 20 MB snapshot budget; timeout remains per check. Inspect every check.
