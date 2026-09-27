@@ -87,3 +87,29 @@ pytest 종료1이었다. 스크립트 종료0은 성공이 아니다. 지정 실
 11개가 이미 통과했고 정답에서도 필수6개가 실패해 준비 기준 미달로 유지한다.
 파서161개와 실제162개 차이, 작성자 파서 호출 오류도 보존하며 모델 실행은0회다.
 전체 스킬 품질·토큰·시간 개선이나 이전 불리한 결과를 성공으로 바꾸지 않는다.
+
+## Original-log identifier audit — 2026-09-27
+
+[Scalar audit](results/owned-official-grade-01/original-audit.json), original
+protocol `75e46735`, original execution/report `10d2f222`. Zero models and zero
+native replays; retained stdout identities match the original grade. Each stdout
+has **153 PASSED,1 XPASS,8 FAILED** summary lines. The observer counts the XPASS
+call as passed, hence its154 passed call reports. That one identifier is outside
+both required sets. The unchanged official parser does not recognize XPASS;
+its161 keys therefore cover153 ordinary passes and8 failures. No canonical-key
+collisions were found among matched original lines, and their statuses agree
+with native reports. This explains the count gap without remapping required
+labels, changing parser behavior or rescoring the original pair.
+
+The script has two explicit Git checkout operations, neither a whole-tree
+checkout nor directly overlapping the single gold-changed path. This excludes
+that narrow overwrite explanation only; it does not prove the bytes of every
+gold-touched module at execution time. The required adverse grades, native1/1
+and no same-resource retry decision remain unchanged. The underlying observer
+schema lacks a wasxfail field; XPASS classification comes from original stdout.
+
+한국어: 원본 로그는 두 조건 모두 일반 통과153개·XPASS1개·실패8개다.
+XPASS는 필수 채점 대상 밖이며 네이티브 관찰자의 통과154개에 포함됐지만
+공식 파서는 읽지 않아161개가 됐다. 식별자 충돌은 없었고 필수 결과는 그대로다.
+스크립트의 두 checkout은 정답 변경 경로와 직접 겹치지 않았으나 실행 시 모든
+모듈의 정답 바이트를 보장하지는 않는다. 모델·네이티브 재실행 없이 확인했다.
