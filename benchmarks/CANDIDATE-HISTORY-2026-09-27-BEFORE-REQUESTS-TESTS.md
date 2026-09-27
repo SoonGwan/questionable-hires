@@ -85,11 +85,8 @@ preserving initial dependency/build-location failures. All8 sources have import
 routes. [Existing pytest test preparation](EXTERNAL-BUNDLE-02-PROJECT-TESTS.md)
 collects all4 native suites without errors; unchanged mark modules report311 passes
 and4 xfails. Initial dependency/compatibility failures remain preserved. These
-modules are not selected issue regressions. [Requests native preparation](EXTERNAL-BUNDLE-02-REQUESTS-TESTS.md)
-retains two runner-compatibility failures; a provisional plain-assert pytest2.8 route
-collects the fourth source with valid assertion controls. Existing local checks
-report60 passes; complete HTTP/TLS/mock and selected issue-test/solver-isolation/
-protocol gates remain unverified;0 model calls. Author bootstrap controls are not issue regressions.
+modules are not selected issue regressions; required issue-test/Requests-service/
+solver-isolation/protocol gates remain unverified;0 model calls. Author bootstrap controls are not issue regressions.
 Different project versions cannot inherit old pilot readiness. Selection is not
 role-specific quality or token/time evidence.
 
