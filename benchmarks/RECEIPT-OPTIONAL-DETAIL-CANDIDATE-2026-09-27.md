@@ -1,5 +1,8 @@
 # Receipt optional-detail candidate — 2026-09-27
 
+Historical pre-measurement candidate. [Four-cell review](RECEIPT-OPTIONAL-DETAIL-01-REVIEW.md)
+declined resource9b6d3295:tokens+34.61%,time+84.67%; prior reference content restored.
+
 Parent `73b83d9d`. Only two reference documents change; entry/runtime scripts
 unchanged. Move existing additional_before, module_bindings and import_roots
 contracts intact to named comparison-details sections, with task-specific links
