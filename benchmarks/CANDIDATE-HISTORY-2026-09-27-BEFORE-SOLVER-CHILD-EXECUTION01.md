@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver child execution01,2026-09-27,parent`5b6f16b8`:
-[actual guest subprocess control](SOLVER-CHILD-EXECUTION-01.md) reuses prior binfmt
-repair; x86 Python normal0/exact stdout and failure7/binary stdout/stderr preserved,
-ARM child0,host grader absent,VM stopped. Models/selected issue tests0; command
-bridge/output delivery/full grading and all8 efficiency goals remain unverified.
-한국어: 실제 게스트 자식 실행의 성공·실패·출력을 검증했다. 모델 도구 연결과
-전체 품질·토큰·시간 비교 결과로 승격하지 않는다.
-
 Solver native controls01,2026-09-27,parent`dc3f3b02`:
 [all8 native pass/fail controls](SOLVER-NATIVE-CONTROLS-01.md) retain initial16
 invalid starts(missing guest/dev/null); guest devtmpfs yields16 valid outcomes,
