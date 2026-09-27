@@ -70,12 +70,6 @@ apps01의 시간 증가와 이전 불리한 결과를 보존한다.
 
 ## Remaining work
 
-Fresh [external-bundle02 selection](EXTERNAL-BUNDLE-02-PREPARATION.md),2026-09-27,
-resource`7172b50c`,freezes8 new issue identities before solution inspection. Runtime
-CLI/image/native gates and execution protocol remain unverified;0 model calls.
-Different project versions cannot inherit old pilot readiness. Selection is not
-role-specific quality or token/time evidence.
-
 Target an evidenced avoidable operation while preserving required native checks,
 assertions, scope and artifact integrity. Search the linked reports and histories
 before repeating an approach; compression, forced-helper, generic discovery,
