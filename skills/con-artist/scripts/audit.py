@@ -454,9 +454,12 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     selected_probe = None
     if _probe_baseline is not None:
         # Keep one source context, not one source snapshot per stronger probe.
-        # Normal test arguments remain part of this conservative reuse boundary.
-        if _probe_baseline.get('context') != identity:
-            _probe_baseline.update(context=identity, entries=[], payload_bytes=0)
+        # File probes replace the original tests with probe_tests before execute;
+        # their actual arguments are already in probe_identity. Inline probes
+        # retain the original payload, so keep that selector in their context.
+        probe_context = identity[:3] + (None,) + identity[4:] if file_probe else identity
+        if _probe_baseline.get('context') != probe_context:
+            _probe_baseline.update(context=probe_context, entries=[], payload_bytes=0)
         selected_probe = next((entry for entry in _probe_baseline['entries']
                                if entry['identity'] == probe_identity), None)
     probe_reused = False

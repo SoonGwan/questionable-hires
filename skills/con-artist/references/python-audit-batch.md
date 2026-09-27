@@ -32,8 +32,11 @@ This does not cache failed checks, skip mutants or change requested audit order.
 An identical stronger probe also reuses its successful correct-code observation
 under those same conditions; changing the probe, new files or replacement contents
 runs a new correct-code check.
-Returning to an earlier identical probe also reuses its original observation,
-provided the shared identity (including normal test arguments) has not changed.
+Returning to an earlier identical probe also reuses its original observation.
+Native file probes execute `probe_tests` instead of the original test arguments,
+so changing only the original selection does not invalidate that probe result.
+Its actual `probe_tests`, new/replacement bytes and all other shared inputs must
+still match. Inline probes retain the original test arguments in their context.
 Probe retention is limited to eight successful entries and20 MB of probe text/file
 contents in total; oldest entries are evicted when needed. Eviction means a fresh
 correct-code check, not missing evidence. These limits do not bound total process

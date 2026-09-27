@@ -6,7 +6,6 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [Native probe selection01](AUDIT-PROBE-SELECTION-01.md),2026-09-28,parent `4dac0d2b`,source digests in report | Native file-probe A→B→A controls reduce actual processes11→9 while retaining all mutant checks. Six new methods and137 Git-free focused methods pass, zero skips; first incomplete-copy errors retained. | Adopt scoped runtime reuse by actual probe inputs. Changed arguments/bytes/context still require fresh evidence; no model-token/time or all8 savings claim. |
 | [Compact audit modes01](COMPACT-AUDIT-MODES-01-REVIEW.md),2026-09-28,previous `145d5c3d`,candidate/execution `fa158c22` | Four original cells: proposal tokens−27.31%/time−0.48%; verified tokens+6.32%/time+54.63%. Sum−10.66%/+30.02%; originals preserved. | Decline: verified custom harness needs a provenance correction,19 native processes versus13; weighted-overwrite coverage differs. Shorter entry is not joint savings. No ordinary install or unchanged retry. |
 | [Con Artist contract read01](AUDIT-CONTRACT-READ-01-REVIEW.md),2026-09-28,previous `d025c0a1`,candidate/execution `6a0d9b3e` | Four original cells: sum tokens−8.50%/CLI−33.14%; SQLite tokens−0.48%/time+5.35%, responses5→5. Bounded outcomes and all originals preserved. | Decline: SQLite grouping shifts discovery without removing a response; the favorable response-contract pair includes previous interpreter failure and different helper/fault/check choices. No causal/all8 improvement or ordinary install. |
 | [Receipt execution evidence01](RECEIPT-EXECUTION-EVIDENCE-01.md), 2026-09-28, parent `f7ced67d`, source `0c4d261e` | Seven evidence-loss failures and an additional copy-state error reproduced; final9 new controls and135 Git-free native methods pass. | Adopt native correctness: preserve returned checks and original failures, stop later phases, keep unverified cleanup null. No new model efficiency claim. Installed9 controls/all8 resources match; standalone package4 pass. Public `1f81be81` download/source identity verified separately. |
@@ -18,7 +17,7 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 | [Receipt native split01](RECEIPT-NATIVE-SPLIT-01.md),2026-09-28,parent`1b85702c`,candidate/execution`f80c1448` | Unchanged native suite: previous126 pass, candidate124 pass/2 fail; single-file CLI relocation cannot find new companion. Driver bytes−36.14%,combined bytes+3.07%. | Decline before model timing; preserve existing callers. Zero models, no ordinary install/deployment or token-saving claim. |
 | [Receipt guard output01](RECEIPT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,previous`1b6ae5f5`,candidate`a77e4d93`,execution`31101dea` | Four explicit-CLI interface cells: tokens−27.38%,CLI−18.26%; both task pairs lower both. Guard candidate retains native results with failure, responses6→4. | Limited interface gate passes; forced use/n=1/unequal extra reads, not causal/general/all8 savings. Large source-read truncation retained. No new instruction or featured promotion. |
 
-The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-AUDIT-PROBE-SELECTION01.md)
+The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-COMPACT-AUDIT-MODES01.md)
 preserves all superseded checkpoints, adverse results and chronological history.
 In particular, [integration06](ALL-EIGHT-CURRENT-06-REVIEW.md) remains its historical
 +16.95% tokens/−10.00% CLI measurement at `1d0e92ac`; differences between cohorts
@@ -62,7 +61,3 @@ Con Artist의 계약/소스 읽기 후보도 합계 절감만으로 채택하지
 Con Artist 축약 후보도 제안 과제의 절감만으로 채택하지 않는다. 필수 검증에서
 토큰6.32%·시간54.63% 증가했으며 경로 확인 실패와 추가 실행을 모두 비용에 남겼다.
 가중 덮어쓰기 검사량도 달라 같은 품질·작업량의 개선으로 보지 않는다.
-
-네이티브 강화 검사의 실제 입력이 같은 경우에 한해 정상 실행을 재사용하도록 수정했다.
-작성한 A→B→A 예제는11회→9회이며 결함 검사는 유지된다. 새6개·Git 없는 사본137개
-검사가 통과했지만 모델 토큰·시간 절감이나 전체8개 개선으로 계산하지 않는다.

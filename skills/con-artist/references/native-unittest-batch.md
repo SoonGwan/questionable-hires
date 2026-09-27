@@ -85,7 +85,10 @@ binding precheck. The same observation/reuse rules apply. Only when adding or
 changing assertions, put `probe_files`/`probe_replacements`, `probe_tests` and any
 `probe_when` inside the relevant `mutations[]` entry, alongside `target`/`old`/`new`,
 not at the batch root. See [native probe details](python-audit-probes.md) for their
-contents; this recipe already supplies the shared CLI contract. Module mode does not support
+contents; this recipe already supplies the shared CLI contract. Identical native
+stronger checks may reuse one correct observation across different original test
+selections: their actual `probe_tests`, probe bytes and other execution inputs must
+match. Each required mutant probe still executes. Module mode does not support
 inline `probe` or pytest. Never call an unexecuted proposal verified.
 
 `integrity` confirms selected original bytes/modes and owned-scratch removal.
