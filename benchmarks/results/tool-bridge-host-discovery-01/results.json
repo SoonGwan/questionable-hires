@@ -1,0 +1,202 @@
+{
+  "checkpoint": "tool-bridge-host-discovery-01",
+  "date": "2026-09-27",
+  "models": 0,
+  "server_sha256": "e9264fdae78db5edd4e5edeed6a13f3c0bea210e0e0bb511ee0db280df6f45c5",
+  "actual_host_initialize": true,
+  "actual_host_tool_discovery": true,
+  "target": {
+    "name": "qh_receipt_host_discovery_01",
+    "runtimeStatus": null,
+    "pluginId": null,
+    "httpOrigin": "http://127.0.0.1:51566",
+    "serverInfo": {
+      "name": "questionable-hires-receipt-prototype",
+      "title": null,
+      "version": "1.30.0",
+      "description": null,
+      "icons": null,
+      "websiteUrl": null
+    },
+    "serverCapabilities": {
+      "experimental": {},
+      "prompts": {
+        "listChanged": false
+      },
+      "resources": {
+        "subscribe": false,
+        "listChanged": false
+      },
+      "tools": {
+        "listChanged": false
+      }
+    },
+    "tools": {
+      "receipt_compare": {
+        "name": "receipt_compare",
+        "description": "Compare selected historical implementations with identical current native unittest tests. Paths are relative to the launch-authorized project. Native exit1 is valid before-failure evidence; inspect assertions/imports/guards/cleanup. CLI-style incomplete observations are tool errors, not repair proof. Trusted tests only; not a sandbox.",
+        "inputSchema": {
+          "$defs": {
+            "Recipe": {
+              "additionalProperties": false,
+              "properties": {
+                "fixed": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "title": "Fixed",
+                  "type": "array"
+                },
+                "vary": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "title": "Vary",
+                  "type": "array"
+                },
+                "before": {
+                  "title": "Before",
+                  "type": "string"
+                },
+                "after": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "$ref": "#/$defs/WorkingTree"
+                    }
+                  ],
+                  "title": "After"
+                },
+                "imports": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "title": "Imports",
+                  "type": "array"
+                },
+                "tests": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "title": "Tests",
+                  "type": "array"
+                },
+                "runner": {
+                  "const": "unittest",
+                  "default": "unittest",
+                  "title": "Runner",
+                  "type": "string"
+                },
+                "invocation": {
+                  "default": "bootstrap",
+                  "enum": [
+                    "bootstrap",
+                    "module"
+                  ],
+                  "title": "Invocation",
+                  "type": "string"
+                },
+                "additional_before": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Additional Before",
+                  "type": "array"
+                },
+                "observe_assertions": {
+                  "default": false,
+                  "title": "Observe Assertions",
+                  "type": "boolean"
+                },
+                "guard_tree": {
+                  "default": false,
+                  "title": "Guard Tree",
+                  "type": "boolean"
+                },
+                "import_roots": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Import Roots",
+                  "type": "array"
+                },
+                "watch": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Watch",
+                  "type": "array"
+                },
+                "module_bindings": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Module Bindings",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "fixed",
+                "vary",
+                "before",
+                "after",
+                "imports",
+                "tests"
+              ],
+              "title": "Recipe",
+              "type": "object"
+            },
+            "WorkingTree": {
+              "additionalProperties": false,
+              "properties": {
+                "working_tree": {
+                  "const": true,
+                  "title": "Working Tree",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "working_tree"
+              ],
+              "title": "WorkingTree",
+              "type": "object"
+            }
+          },
+          "properties": {
+            "recipe": {
+              "$ref": "#/$defs/Recipe"
+            },
+            "timeout": {
+              "default": 30,
+              "maximum": 300,
+              "minimum": 1,
+              "title": "Timeout",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "recipe"
+          ],
+          "title": "receipt_compareArguments",
+          "type": "object"
+        }
+      }
+    },
+    "toolsError": null,
+    "resources": [],
+    "resourceTemplates": [],
+    "authStatus": "unsupported"
+  },
+  "host_user_agent": "qh-local-discovery/0.157.1 (Mac OS 26.5.2; arm64) Orca/1.4.192 (qh-local-discovery; 1)",
+  "limitations": "Discovery only: no thread/turn/model/native tool call or efficiency evidence. Other host inventory not exported.",
+  "originals_unchanged": true,
+  "config_bytes_modes_unchanged": true,
+  "host_exit_code": 0,
+  "server_exit_code": -15
+}
