@@ -38,7 +38,6 @@ was already qualified in the original September21 report, not a new discovery.
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
-| [Necromancer retained matrix01](NECROMANCER-RETAINED-MATRIX-01-REVIEW.md),2026-09-27,execution`c9d618d4`,candidate`837988d5` | Two original cells;tokens+28.33%,time+4.20%;0/1 joint. Both15 values/caller/contracts/ancestor history/preservation and response sums reviewed;original session output recovery retained. | Declined;candidate does not invoke new API. Both direct probes call15 once;exposed n=1/fixed order/shared host/unequal optional reads;no all8 gain. |
 | [urllib3 inline transfer02](URLLIB3-INLINE-TRANSFER-02-REVIEW.md),2026-09-27,execution`d8c894d2`,candidate`80c06e2e` | Two original real-source cells;tokens+23.22%,time+12.76%;0/1 joint. Both15 values/caller/contracts/ancestor history/preservation reviewed;partial CLI output recovered from original sessions. | Declined;candidate reads but does not invoke observer. Exposed n=1/fixed order/shared host/unequal optional work;no all8 gain. |
 | [Necromancer inline matrix01](NECROMANCER-INLINE-MATRIX-01-REVIEW.md),2026-09-27,execution`bf4d19ca`,candidate`80c06e2e` | Four original cells;tokens−3.82%,time−13.50%;1/2 joint reductions,invoice both worse. Both candidates actually call observer;required behavior/history/tests/preservation and response sums reviewed. | No general adoption;ordinary skills unchanged. Exposed n=1/unequal optional work/error recovery/shared host limits retained;no all8 gain. |
 | [Necromancer call matrix01](NECROMANCER-CALL-MATRIX-01-REVIEW.md),2026-09-27,execution`71798c5f`,candidate`c889175e` | Four original cells;tokens+2.24%,time−14.65%;0/2 joint reductions. Required caller/history/tests and source preservation reviewed;both render authoring errors/recovery charged. | Declined;neither candidate invokes helper,so no tool efficacy/all8 adoption. Per-response sums reconcile;ordinary skills unchanged. |
@@ -202,12 +201,20 @@ observer despite reading its interface/code. Keep ordinary skills unchanged.
 한국어: urllib3 실제 비교는 토큰23.22%·시간12.76% 증가로 채택하지 않는다.
 필수 작업과 원본 보존을 검토했지만 관찰기 사용은 없으며 전체 목표는 미달이다.
 
-[Retained matrix01 model review](NECROMANCER-RETAINED-MATRIX-01-REVIEW.md),2026-09-27,
-execution `c9d618d4`,candidate `837988d5`:tokens188,127→241,430,time122.354→127.493s.
-Candidate does not invoke new API;both direct probes observe15 calls once. Decline
-adoption;[prototype](CALL-MATRIX-RETAINED-01.md) and
-[candidate native gate](NECROMANCER-RETAINED-MATRIX-NATIVE-01.md) remain author-only
-capability controls, not measured model savings. Original adverse evidence retained.
-한국어: 실제 모델 비교는 토큰28.33%·시간4.20% 증가로 채택하지 않는다.
-후보 API는 사용되지 않았고 양쪽15개 직접 호출에 중복은 없었다. 작성자 기능
-검사를 모델 절감으로 바꾸지 않으며 전체 목표는 미달이다.
+[Call matrix retained01](CALL-MATRIX-RETAINED-01.md),2026-09-27,parent `a71f308a`:
+standalone optional ordered actual outcomes avoid callback replay when specific
+values are requested. Actual upstream15-call control and6 boundaries pass in
+checkout/Git-free archive; default v2 preserved. Zero models; no ordinary adoption
+or whole-task cost claim. Existing invoice duplicated calls and adverse urllib3
+nonselection remain original evidence, not retroactively repaired outcomes.
+한국어: 선택적 실제 값 보존 기능은 실제15개 호출·경계6개 검사를 통과했지만
+모델 비용 절감 증거는 없다. 기본 스킬·후보·이전 불리한 결과를 보존한다.
+
+[Necromancer retained matrix01 native gate](NECROMANCER-RETAINED-MATRIX-NATIVE-01.md),
+2026-09-27,parent `8da1825f`: separate unadopted candidate routes ordered actual
+outcomes from first calls. Exact candidate API15 upstream calls/6 boundaries,
+source/metadata/input/binding preservation and Git-free archive pass; zero models.
+No ordinary skill/featured change or all8 efficiency claim. Adverse prior transfer
+and invoice duplicate-call evidence remain accessible, not relabeled as new wins.
+한국어: 실제 값 보존 기능을 별도 후보에 연결하고 실제15개 호출·경계6개 검사를
+통과했다. 모델0회이며 비용 절감이나 기본 채택·전체 목표 완료 증거는 없다.
