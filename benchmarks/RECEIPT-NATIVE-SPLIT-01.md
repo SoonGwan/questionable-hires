@@ -40,3 +40,46 @@ No featured/chart/README capability/installed resource change follows preparatio
 리소스는 커지고 추가 파일을 읽을 수 있으므로 토큰 절감으로 계산하지 않는다.
 기존 파일 하나만 복사하는 CLI 검사도 그대로 유지한다. 이 호출 방식이 깨지면
 정상 설치 경로가 통과해도 채택하거나 모델 성능 실험을 진행하지 않는다.
+
+## Original native execution — decline
+
+Frozen execution **`f80c1448`**. [Both original arms](results/receipt-native-split-01/results.json)
+and [identity](results/receipt-native-split-01/identity.json) retain source and
+transform hashes. The controller terminates exit1 as required by its failed gate;
+no model call, retry or substituted case occurs.
+
+- [Previous](results/receipt-native-split-01/previous.txt):126 native test methods
+  pass, no skips, exit0.
+- [Candidate](results/receipt-native-split-01/candidate.txt):the same126 methods,
+  124 pass and2 fail, no skips, exit1.
+- All five emitted native program strings match exactly. This is identity of the
+  child source strings, not proof of general behavioral equivalence.
+
+Both failures are the unchanged one-file relocation consumers:
+`test_cli_reports_guard_and_native_results` and
+`test_cli_accepts_invocation_and_rejects_invalid_modes`. Each copied compare.py
+exits1 with FileNotFoundError loading the absent native.py, before it can return
+its required native observations. These are candidate regressions, not missing
+pytest/Node setup or a reason to edit the existing assertions. Full-package
+positive controls do not repair that standalone caller.
+
+The entry script is36.14% smaller, but the combined scripts are3.07% larger.
+Neither measure is a token saving. Do not compare the recorded suite durations:
+the failed relocation paths stop early and the work is unequal. Runtime module
+cache/thread considerations are not fully validated; this failed compatibility
+gate already prevents promotion. No paid model timing is justified.
+
+**Do not adopt this split or replace the two callers to manufacture a pass.**
+Keep the ordinary self-contained comparison entry and its deployed behavior.
+This closes this partition candidate without changing the previous
+[scoped interface cost result](RECEIPT-GUARD-OUTPUT-01-REVIEW.md), historical all-eight
+result, featured pointer, personal installation or public download. Full eight-role
+quality and joint whole-task token/time improvement remain unmet. Any future
+partition must first preserve the existing relocation contract, not silently
+exclude it or repeat this unchanged candidate for a favorable outcome.
+
+한국어: 기존 버전126개 통과, 분리 후보는 같은126개 중124개 통과·2개 실패다.
+실패는 파일 하나만 복사하는 기존 CLI 경로이며 새 native.py가 없어 네이티브
+검사 전에 종료됐다. 진입 파일36.14% 감소는 토큰 절감이 아니고 전체 코드는
+3.07% 늘었다. 기존 검사를 바꿔 통과시키지 않고 후보를 폐기하며 모델 실험0회,
+설치·공개 배포 변경0회로 마친다. 이전 제한된 절감 결과와 전체8개 미달은 유지한다.

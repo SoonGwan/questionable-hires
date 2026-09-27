@@ -6,7 +6,6 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [Receipt native split01](RECEIPT-NATIVE-SPLIT-01.md),2026-09-28,parent`1b85702c`,candidate/execution`f80c1448` | Unchanged native suite: previous126 pass, candidate124 pass/2 fail; single-file CLI relocation cannot find new companion. Driver bytes−36.14%,combined bytes+3.07%. | Decline before model timing; preserve existing callers. Zero models, no ordinary install/deployment or token-saving claim. |
 | [Receipt guard output01](RECEIPT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,previous`1b6ae5f5`,candidate`a77e4d93`,execution`31101dea` | Four explicit-CLI interface cells: tokens−27.38%,CLI−18.26%; both task pairs lower both. Guard candidate retains native results with failure, responses6→4. | Limited interface gate passes; forced use/n=1/unequal extra reads, not causal/general/all8 savings. Large source-read truncation retained. No new instruction or featured promotion. |
 | [Receipt guard evidence01](RECEIPT-GUARD-EVIDENCE-01.md),2026-09-28,parent`1b6ae5f5`,source`11c9b0a7` | Six failing-before controls repaired; completed native observations survive final preservation failure with CLI2/incomplete status and original API exception types. | Adopt diagnostic correctness; not model efficiency. Initial compatibility failures retained. Personal install6 controls/all8 resources match; public`79834265` download bytes verified separately. |
 | [Bridge cancellation errors01/02](TOOL-BRIDGE-CANCEL-ERRORS-02.md),2026-09-28,failed control`07ca4ddb`,changed adapter/control`d0cefc47` | Original canceled guard error crashes the session; changed error checkpoint passes timeout/canceled-guard/ordinary-guard controls, same-session recovery6 native processes/42 arguments. | Isolated native repair; original failure retained. Author resets intentionally changed source before recovery. No model approval or efficiency gain; not installed. |
@@ -23,7 +22,7 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 | [Con Artist recipe keys01](AUDIT-RECIPE-KEYS-01.md),2026-09-28,source`829a2b02` | Duplicate JSON keys rejected before execution;5 failing regressions repaired,127 native archive methods pass. | Adopt input correctness; no model-cost measurement. [Mac/public delivery](AUDIT-RECIPE-KEYS-01.md#public-delivery),hosted`1781c1ce`,verified separately. |
 | [Receipt recipe errors01](RECEIPT-RECIPE-ERRORS-01.md),2026-09-28,source`9db5a8ec` | Explicit input errors/duplicate-key rejection:7 failing regressions repaired,79 native archive methods pass. | Adopt input correctness; no model-cost measurement. Personal copy and public download delivery verified. |
 
-The [preceding dated index](CANDIDATE-HISTORY-2026-09-28-BEFORE-RECEIPT-NATIVE-SPLIT01.md)
+The [preceding dated index](CANDIDATE-HISTORY-2026-09-28-BEFORE-GUARD-OUTPUT01.md)
 preserves the full experiment and delivery chronology, earlier history links and
 all adverse decisions. In particular, [Landlord grouping](LANDLORD-CHECK-GROUP-01-REVIEW.md)
 did not establish its proposed mechanism, [traceback display](TRACEBACK-DISPLAY-MODEL-01-REVIEW.md)
@@ -53,6 +52,4 @@ Git 출력 임시 파일 시제품도 메모리는 줄었지만 더 느리고 �
 수정했다. 원래 API 예외 종류와 CLI 실패를 유지하며 토큰 절감으로 계산하지 않는다.
 후속 명시적 CLI 비교4회에서는 토큰27.38%·시간18.26% 감소했고 보호 오류의 실제 근거도
 유지했다. 강제 도구 사용·조건별1회·추가 읽기 차이가 있어 전체8개 성과로 확대하지 않는다.
-후속 실행 코드 분리 후보는 기존 단일 파일 CLI 경로2개를 깨뜨려 모델 측정 전에
-채택하지 않았다. 진입 파일 크기 감소를 절감으로 계산하거나 기존 검사를 제외하지 않는다.
 이전 모든 실패·혼재 결과와 상세 이력은 날짜가 있는 이전 판단 목록에 보존했다.
