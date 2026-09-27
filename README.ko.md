@@ -92,6 +92,11 @@
 
 예를 들어 `con-artist`는 저장을 제거한 복사본에서도 기존 테스트가 통과하는 것을 확인하고, 저장된 데이터 자체를 검사하면 실패한다는 것을 보여줬습니다. 기본 모델도 이 문제를 찾았습니다. [세 조건을 직접 비교하기 →](examples/con-artist.md)
 
+Receipt의 비교 CLI는 [Python 사용 가이드](skills/receipt/references/existing-fix.md)나
+[Node 사용 가이드](skills/receipt/references/node-comparison.md)에서 시작합니다.
+구체적인 신뢰·수정·진단 의문이 있을 때 구현을 검토합니다. 이 안내는 토큰 절감의
+측정 결과를 뜻하지 않습니다.
+
 ## 설치
 
 누구에게 요청할지 헷갈리면 [진단·수정 검증·테스트 품질·검토별 선택 가이드](docs/CHOOSE-A-HIRE.ko.md)를 먼저 확인하세요.
