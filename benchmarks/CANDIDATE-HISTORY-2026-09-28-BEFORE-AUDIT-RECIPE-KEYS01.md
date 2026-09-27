@@ -7,7 +7,6 @@ It is **not achieved**. No general efficiency or complete release claim is suppo
 
 | Dated checkpoint and measured resource | Evidence | Decision / next gate |
 | --- | --- | --- |
-| [Con Artist recipe keys01](AUDIT-RECIPE-KEYS-01.md),2026-09-28,parent`6f8cc35f`,exact helper hashes in report | Native CLI rejects duplicate JSON keys before execution, including nested/escaped aliases; five failing regression methods now pass.127 distinct archive methods pass. | Adopt unambiguous input parsing; no model-token/time improvement measured. |
 | [Mother interpreter01](MOTHER-INTERPRETER-01-REVIEW.md),2026-09-28,previous`6844ceb2`,candidate/execution`f28d814f` | Four original cells: tokens+11.90%,CLI−9.97%; both tasks use more tokens despite avoiding an unavailable interpreter launch. All4 retain actual three-method regression outcomes and source preservation. | Decline; no unchanged retry or ordinary adoption. Missing original output recovered; separate conforming-copy replays pass3 each, not model evidence. |
 | [Hostage scope lean01](HOSTAGE-SCOPE-LEAN-01-REVIEW.md),2026-09-28,previous`a2173887`,candidate/execution`333df414` | Four original cells: tokens−9.25%,CLI+3.47%; correct-code task regresses on both. Defect candidate omits the before-test execution; all4 stay in observed scope and both valid implementations are preserved. | Decline; unequal verification and adverse transfer. Original missing headers recovered without rerun. [Entry exposure03](SKILL-ENTRY-EXPOSURE-03.md) finds no initial full-body match in these4 sessions; first read is not established as redundant. No unchanged retry or ordinary adoption. |
 | [Receipt recipe errors01](RECEIPT-RECIPE-ERRORS-01.md),2026-09-28,parent`e2bed7ff`,exact source hashes in report | Native CLI:7 regression methods fail before and pass after;79 distinct archive methods pass, including existing Python/Node comparisons and preservation. | Adopt explicit input errors and duplicate-key rejection; no model-token or time improvement measured. |
@@ -66,6 +65,3 @@ Native controls, model evidence and hosted release checks have different scopes.
 
 [Pre-Mother-interpreter checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-MOTHER-INTERPRETER01.md) preserves the preceding index.
 한국어 추가: Mother 실행기 선택 후보는 원본4회 토큰11.90% 증가·시간9.97% 감소로 채택하지 않는다. 실제 회귀 발견과 보존을 검토했으며 별도 정상 사본 검사와 원본 모델 근거를 구분한다.
-
-[Pre-audit-recipe-keys checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-AUDIT-RECIPE-KEYS01.md) preserves the preceding index.
-한국어 추가: Con Artist의 중복 JSON 키를 실행 전에 거부한다. 이전 실패5개를 포함한127개 네이티브 검사가 통과했으며 모델 비용 절감은 측정하지 않았다.

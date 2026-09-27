@@ -623,6 +623,16 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
                 limitation='Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled.')
 
 
+def _unique_recipe_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            name = json.dumps(key)
+            raise ValueError('Duplicate recipe key: ' + (name[:240] + '...' if len(name) > 240 else name))
+        result[key] = value
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--spec', type=Path, required=True, help='JSON recipe file, or - for stdin; see references/python-audit.md')
@@ -633,7 +643,7 @@ def main():
     args = parser.parse_args()
     try:
         recipe = sys.stdin.read() if args.spec == Path('-') else args.spec.read_text()
-        spec = json.loads(recipe)
+        spec = json.loads(recipe, object_pairs_hook=_unique_recipe_object)
         run = audit_batch if isinstance(spec, dict) and 'mutations' in spec else audit
         result = run(args.source, spec, args.python, args.timeout)
     except (ValueError, KeyError, OSError, RuntimeError) as error:

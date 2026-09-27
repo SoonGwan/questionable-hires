@@ -6,6 +6,9 @@ supported audits. Inspect source for a concrete trust, adaptation or troubleshoo
 question. Adapt the files, binding and behavioral fault to the actual project:
 
 Output is lossless compact JSON; `--pretty` adds indentation for manual reading.
+Recipe objects must have unique keys, including nested mutations/probes and
+escaped spellings of the same key. File and stdin input reject duplicates before
+native execution; the diagnostic names the key without printing its values.
 
 Use complete module/package copies when extraction would lose future flags,
 closures or decorators. A shorter extracted function is not an equivalent runtime.
