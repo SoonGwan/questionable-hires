@@ -71,11 +71,9 @@ apps01의 시간 증가와 이전 불리한 결과를 보존한다.
 ## Remaining work
 
 Fresh [external-bundle02 selection](EXTERNAL-BUNDLE-02-PREPARATION.md),2026-09-27,
-resource`7172b50c`,freezes8 new issue identities before solution inspection. [Python3.11 cold imports](EXTERNAL-BUNDLE-02-NATIVE-IMPORTS.md) all8 fail;
-[existing Python3.9 route](EXTERNAL-BUNDLE-02-PYTHON39.md) loads4 Requests sources and
-validates native HTTP assertion controls,retaining two initial author setup errors.
-Pytest4 dependencies/metadata and required project-test/runtime/protocol gates remain
-unverified;0 model calls. Author bootstrap controls are not issue regressions.
+resource`7172b50c`,freezes8 new issue identities before solution inspection. [Native source imports](EXTERNAL-BUNDLE-02-NATIVE-IMPORTS.md)
+all8 fail in the existing Python environment:legacy APIs,missing dependencies/version
+metadata. CLI/image/test gates and execution protocol remain unverified;0 model calls.
 Different project versions cannot inherit old pilot readiness. Selection is not
 role-specific quality or token/time evidence.
 

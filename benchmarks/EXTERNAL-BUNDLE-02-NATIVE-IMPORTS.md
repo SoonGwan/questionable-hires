@@ -57,3 +57,11 @@ This evaluation route remains gated; the overall goal stays active and unmet.
 환경 실패이며 스킬·이슈 해결 성능 실패나 정상/결함 assertion 대조 검사가 아니다.
 필수 프로젝트 테스트와 모델 호출은0회다. 원본 해시·경로를 가린 로그를 보존하고,
 호환되는 기존 런타임 정보와 나머지 native 환경 검증이 필요하다.
+
+## Later existing-interpreter check
+
+[Python3.9 follow-up](EXTERNAL-BUNDLE-02-PYTHON39.md) finds an existing Apple runtime
+and imports the same4 Requests sources,with real author HTTP assertions. Earlier
+Python3.11 failures remain unchanged. Requests3362's missing-global-urllib3 error
+follows a bundled collections.Mapping failure in the original traceback; the final
+exception alone is not its full cause. Pytest and required-test gates remain unresolved.
