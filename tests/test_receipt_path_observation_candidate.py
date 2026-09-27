@@ -1,6 +1,7 @@
-"""Native controls for a candidate, not model-efficiency evidence."""
+"""Production controls for the adopted Path observer; not model-efficiency evidence."""
 import importlib.util
 import json
+import shutil
 from pathlib import Path, PurePosixPath, PureWindowsPath
 import sys
 import tempfile
@@ -8,7 +9,6 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'benchmarks'))
-from receipt_path_observation_candidate import write
 from receipt_ledger_cases import cases
 import run
 
@@ -18,7 +18,9 @@ class PathObservationCandidateTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.directory = Path(temporary.name) / 'scripts'
-        write(ROOT / 'skills/receipt/scripts', self.directory)
+        self.directory.mkdir()
+        for name in ('assertions.py', 'compare.py'):
+            shutil.copy2(ROOT / 'skills/receipt/scripts' / name, self.directory / name)
         spec = importlib.util.spec_from_file_location(
             '_candidate_path_observer', self.directory / 'assertions.py')
         self.observer = importlib.util.module_from_spec(spec)
@@ -31,7 +33,6 @@ class PathObservationCandidateTests(unittest.TestCase):
         return helper
 
     def test_same_sqlite_comparison_completes_without_disabling_observation(self):
-        original = self.helper(ROOT / 'skills/receipt/scripts', '_path_original_comparison')
         candidate = self.helper(self.directory, '_path_candidate_comparison')
         for index, after_exit in ((0, 0), (1, 1)):
             project = self.directory.parent / ('project-' + str(index))
@@ -42,12 +43,6 @@ class PathObservationCandidateTests(unittest.TestCase):
                           imports=['ledger.delivery', 'checks.test_delivery'],
                           runner='unittest', tests=['-v', 'checks.test_delivery'],
                           guard_tree=True, observe_assertions=True)
-            before = original.compare(project, recipe)
-            self.assertEqual(before['status'], 'incomplete')
-            self.assertEqual(list(before['checks']), ['before'])
-            self.assertEqual(before['checks']['before']['native_exit_code'], 1)
-            self.assertEqual(before['checks']['before']['assertion_observation']['reason'],
-                             'unavailable_value')
             for mode in ('bootstrap', 'module'):
                 with self.subTest(case=index, mode=mode):
                     result = candidate.compare(project, dict(recipe, invocation=mode))

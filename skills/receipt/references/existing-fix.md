@@ -114,16 +114,19 @@ JSON
   required, for unittest in either invocation mode. Adds `assertion_observation`
   for current-thread standard `assertEqual`/`assertIsNot` calls, without replacing
   assertions. `actual`/`expected` mean first/second arguments, not inferred roles.
-  Format `v:2`: primitive builtins only; lists are JSON arrays, tuples use
+  Format `v:3`: primitive builtins and exact standard pathlib types. Paths use
+  `{"PosixPath":"..."}` (or `WindowsPath`, `PurePosixPath`, `PureWindowsPath`);
+  lexical text is limited to 256 characters, with no resolving or subclass
+  conversion. Lists are JSON arrays, tuples use
   `{"tuple":[...]}`, bytes use `{"bytes_hex":"..."}`. Older stored reports without
-  `v` use kind/items containers; do not interpret them as v2. Limits:
+  `v` use kind/items containers; v2 lacks Path encoding. Do not relabel either as v3. Limits:
   4,096 report bytes, 64 records, 32 value nodes per argument pair, container depth
   three and length sixteen. No arbitrary object representation or thread coverage.
   Existing/replaced profile hooks, unsupported values, empty observation, limit
   overflow or missing/error reports mean incomplete check7/CLI2 and stop later
   versions; inspect `reason` and retained `native_exit_code`. `complete` covers
   only this observation scope, not all tests/assertions. Default off adds no field
-  and does not load the observer. Model comparison has not established token/time savings.
+  and does not load the observer. General model-token/time savings remain unproven.
 - Optional `"import_roots":["src"]` supports regular source-layout packages.
   Select initializers/support too; each root must contain selected files.
   Ordered canonical roots precede each copy's root and appear in the result.

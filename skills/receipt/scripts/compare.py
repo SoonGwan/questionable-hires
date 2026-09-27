@@ -179,7 +179,7 @@ def _receipt_argument_run(program):
     try:
         observation = observe()
     except RuntimeError:
-        value = compact({'v': 2, 'scope': 'assertEqual/assertIsNot current-thread calls',
+        value = compact({'v': 3, 'scope': 'assertEqual/assertIsNot current-thread calls',
                          'observations': [], 'complete': False, 'reason': 'existing_profile'})
         assertions_path.write_text(value)
         return _receipt_original_run(program)
@@ -316,7 +316,7 @@ def run_check(python, root, recipe, timeout):
         try:
             value = json.loads(read_limited(observer / 'assertions.json', 4096))
             if (isinstance(value, dict) and set(value) == {'v', 'scope', 'observations', 'complete', 'reason'}
-                    and type(value['v']) is int and value['v'] == 2
+                    and type(value['v']) is int and value['v'] == 3
                     and value['scope'] == assertion_report['scope']
                     and type(value['complete']) is bool
                     and (value['reason'] is None or isinstance(value['reason'], str))
@@ -710,9 +710,11 @@ the comparison; no link traversal. 10000 entries/20 MB read per inventory. Opt i
 only when whole-project preservation is requested and all source reads are allowed.
 before: commit expression. after: commit expression or {"working_tree":true}.
 observe_assertions (optional boolean, default false): unittest only. Capture
-current-thread standard assertEqual/assertIsNot primitive arguments, bounded to
-4096 report bytes/64 records. Format v:2: lists are arrays, tuples {"tuple":[...]},
-bytes {"bytes_hex":"..."}; older unversioned reports use kind/items containers.
+current-thread standard assertEqual/assertIsNot builtin/pathlib arguments, bounded to
+4096 report bytes/64 records. Format v:3: lists are arrays, tuples {"tuple":[...]},
+bytes {"bytes_hex":"..."}; exact standard pathlib types use {"PosixPath":"..."}
+(or WindowsPath/PurePosixPath/PureWindowsPath), text <=256 chars, no resolving
+or subclass conversion. v2 has no Path encoding; unversioned reports use kind/items.
 Unsupported/missing/incomplete observation maps to
 check7 and stops comparison; native_exit_code retains the runner result.
 Observation completeness is not full assertion coverage or regression proof.
