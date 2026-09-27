@@ -45,21 +45,13 @@ again. The [featured pointer](featured.json) and frozen charts remain separate.
 채택하지 않는다. [이전 판단 기록](CANDIDATE-HISTORY-2026-09-27-BEFORE-NAMESPACE-TRANSFER.md)에
 apps01의 시간 증가와 이전 불리한 결과를 보존한다.
 
-[Effort01 terminal16 checkpoint](ALL-EIGHT-EFFORT-01-TERMINAL16.md),2026-09-27,
-protocol`72f67ad6`,same candidate`7172b50c`:all16 CLI cells completed without
-limits/timeouts. Actual Astra/effort contexts, cumulative/per-response counters,
-and installed resources were verified. Low sums tokens−5.91%,time−17.20%;7/8
-joint reductions, but Necromancer tokens+24.30%,time+20.71%. **Full original
-quality review remains pending**; this is not a quality score or all8 gain.
-The historical [in-flight8 snapshot](ALL-EIGHT-EFFORT-01-INFLIGHT8.md) and
-[earlier adverse two-role effort evidence](ALL-EIGHT-EFFORT-01-HISTORY-NOTE.md)
-remain explicit. Exposed n=1 development tasks, shared host/cache and unequal
-coverage prevent independent generalization. No configuration adoption.
-
-한국어: effort01(2026-09-27,후보`7172b50c`)의16개 CLI 실행을 모두 마쳤고
-실제 모델·추론 설정과 누적/응답별 토큰을 대조했다. low 합계는 토큰5.91%·시간
-17.20% 감소지만 이력 추적은 두 지표 모두 증가했다. 전체 원본 품질 검토가 남아
-성공 점수나 전체8개 개선으로 승격하지 않으며 설정을 채택하지 않는다.
+[Effort01 in-flight8 checkpoint](ALL-EIGHT-EFFORT-01-INFLIGHT8.md),2026-09-27,
+protocol`72f67ad6`,same candidate`7172b50c`:8/16 CLI cells completed at the dated
+snapshot, actual model/effort and counter reconciliation verified, original
+quality review pending. Partial costs are mixed; no adoption or savings claim.
+[Earlier adverse two-role effort evidence](ALL-EIGHT-EFFORT-01-HISTORY-NOTE.md)
+remains explicit. Exposed development tasks are separate from unresolved external
+cohort gates and independent validation. Original preparation is historical.
 
 ## Functionality and delivery, not model savings
 
