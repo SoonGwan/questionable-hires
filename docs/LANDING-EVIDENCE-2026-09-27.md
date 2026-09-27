@@ -37,8 +37,26 @@ not hosted verification, new model measurements or a fourteen-layout sweep.
 [Audit](../benchmarks/results/landing-evidence-e42e149c/audit.json) retains hashes,
 counts and limitations. Original model/native evidence is not relabeled.
 
+## Hosted and archive verification
+
+Release `916b00f5` is live. [Public resource checks](../benchmarks/results/landing-evidence-public-916b00f5/bytes.json)
+verify all25 ordinary report/evidence/ZIP URLs byte-for-byte against the generated
+files. [Actual browser](../benchmarks/results/landing-evidence-public-916b00f5/browser.json)
+passes the same six locale/width cases, unchanged cohort totals and time charts.
+Both public ZIP downloads match the generated archive, with24 members and valid
+integrity; [release audit](../benchmarks/results/landing-evidence-public-916b00f5/audit.json)
+records health and hashes. Original sources and graph values remain unchanged.
+
+A fresh Git-free archive of the tracked build/test dependencies also passes all18
+checks. [Native archive output](../benchmarks/results/landing-evidence-public-916b00f5/source-archive-tests.txt)
+is retained; it does not rely on repository history or local experiment folders.
+This tests the landing/origin subset, not the whole skill project.
+
 한국어: 원본 보고서의 상대 경로를 유지하며 검토된23개 근거 파일만 함께 제공한다.
 원본 바이트·수치·그래프는 그대로다. 한·영 ZIP은24개 구성원과47,030바이트이며
 압축을 풀면 로컬에서도 연결 근거를 읽을 수 있다. 상대 링크의 수정 전 실패·
 수정 후 통과, 두 언어 실제 다운로드,320·390·1440px 표·그래프를 확인했다.
 현재 검사18개·생성 파일37개이며 모델 성능이나 공개 배포 검증은 별도다.
+
+공개 릴리스916b00f5에서25개 근거 경로의 원본 일치와 한·영 실제 ZIP 다운로드를
+확인했다. Git 이력·로컬 실행 폴더가 없는 빌드/검사 소스 묶음에서도18개가 통과했다.
