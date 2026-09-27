@@ -318,6 +318,16 @@ def execute(python, directory, spec, probe, timeout):
     return result
 
 
+def _scratch_removed(scratch):
+    # Presence checks can hide lookup errors as absence. Only a missing entry
+    # confirms removal; lstat also treats a dangling owned symlink as present.
+    try:
+        Path(scratch).lstat()
+    except FileNotFoundError:
+        return True
+    return False
+
+
 def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _probe_baseline=None,
           _selection_baselines=None):
     root = Path(root).resolve()
@@ -590,7 +600,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
             if output is not None:
                 # Verify actual removal after leaving the context manager.
                 try:
-                    integrity['owned_scratch_removed'] = not (Path(scratch).exists() or Path(scratch).is_symlink())
+                    integrity['owned_scratch_removed'] = _scratch_removed(scratch)
                 except OSError:
                     if 'execution_error' not in output:
                         raise
@@ -610,7 +620,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
                     partial['correct_probe_reused'] = True
                 if scratch is not None and integrity['owned_scratch_removed'] is None:
                     try:
-                        integrity['owned_scratch_removed'] = not (Path(scratch).exists() or Path(scratch).is_symlink())
+                        integrity['owned_scratch_removed'] = _scratch_removed(scratch)
                     except OSError:
                         pass
                 error.audit_result = partial

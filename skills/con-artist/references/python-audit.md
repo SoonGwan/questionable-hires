@@ -111,7 +111,8 @@ not protection proved; CLI 2 means invalid/incomplete (possibly stderr only).
 If copy, runner, cleanup or final integrity checks fail after results were collected,
 CLI 2 also emits incomplete JSON retaining returned checks and `execution_error`
 and/or `integrity_error`. A missing check may have started without returning evidence.
-Unreached guard fields are `null`, not passes. The Python API still raises the original exception,
+Unreached guards and unavailable scratch-removal lookups are `null`, not passes;
+only a confirmed missing entry establishes removal. The Python API still raises the original exception,
 with partial evidence in `error.audit_result`. Batch failures retain prior audits
 and baseline references, report `unrun_mutations`, and stop later mutations.
 Existing later-batch input/I/O errors still return incomplete results. Inspect
