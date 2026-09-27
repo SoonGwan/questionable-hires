@@ -22,7 +22,7 @@ Use it for per-tool chronology; do not repeat unchanged approaches as new eviden
 
 The [featured pointer](featured.json) still identifies the frozen Mother-in-law
 confirmation resource. The hosted landing is separately verified in
-[the maintenance report](../docs/LANDING-MAINTENANCE-CHECK-2026-09-27.md).
+[integration06 publication](../docs/LANDING-INTEGRATION06-2026-09-28.md).
 Native controls, model evidence and hosted release checks have different scopes.
 [Personal Mac sync](../docs/PERSONAL-INSTALL-SYNC-2026-09-28.md),2026-09-28,source`2db6852c`: three copies updated with backups; all8/52 resource bytes/modes match and installed Receipt v3 controls pass. This delivers adopted code locally, not a new model gain or hosted release.
 [Source release check](../docs/RELEASE-SOURCE-CHECK-2026-09-28.md),2026-09-28,parent`53129f98`: stale v2 installer expectation repaired;1,365 distinct methods covered across initial/follow-up processes. [Export path correction](PUBLIC-PATH-REDACTION-2026-09-28.md) preserves originals; public history/hosted delivery and model goals remain separate.
