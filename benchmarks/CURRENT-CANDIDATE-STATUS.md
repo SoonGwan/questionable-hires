@@ -58,6 +58,11 @@ remain separate. No general low-effort adoption or all8 completion. Historical
 [in-flight8 snapshot](ALL-EIGHT-EFFORT-01-INFLIGHT8.md) and
 [older adverse effort evidence](ALL-EIGHT-EFFORT-01-HISTORY-NOTE.md) remain.
 Current Receipt guide-first change`f91d8ef0` is not measured by this comparison.
+Its [four-cell protocol](RECEIPT-GUIDE-FIRST-01-PROTOCOL.md) and
+[zero-model preparation](results/receipt-guide-first-01-preparation/summary.json)
+freeze previous`e6d5e663` versus candidate`f91d8ef0`. Receipt resource manifests
+differ only at SKILL.md; native complete/partial SQLite controls pass. Scheduler
+wiring/control validation remains before model execution; no savings claim.
 
 한국어: effort01(2026-09-27,후보`7172b50c`) 원본16개 과제의 네이티브 결과·범위·
 보존을 검토했다. low 합계 토큰5.91%·시간17.20% 감소지만 이력 추적은 모두
