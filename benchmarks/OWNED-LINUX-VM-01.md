@@ -1,5 +1,9 @@
 # Owned Linux VM01 — 2026-09-27
 
+Subsequent [x86 control01](OWNED-LINUX-X86-01.md) verifies static guest translation
+and a paired shared-directory write boundary. The unverified next-gate statements
+below describe this original boot checkpoint; official image/grading remains pending.
+
 Parent `55c97a7d`; unchanged eight skill resources, **zero models or external case
 reruns**. [Boot outcomes/artifact hashes](results/owned-linux-vm-01/result.json),
 [identities](results/owned-linux-vm-01/identity.json) and original failure remain.
