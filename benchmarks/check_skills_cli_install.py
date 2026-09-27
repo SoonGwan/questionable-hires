@@ -40,9 +40,11 @@ def exercise_recent_helpers(installed, project, run):
                         '-c', 'core.hooksPath=/dev/null', *args])
         git('init', '-q')
         (root / 'rule.py').write_text('def eligible(age): return age > 18\n')
-        (root / 'test_rule.py').write_text('import unittest\nfrom rule import eligible\n'
+        (root / 'test_rule.py').write_text('import unittest\nfrom pathlib import Path\nfrom rule import eligible\n'
             'class Boundary(unittest.TestCase):\n'
-            '    def test_inclusive_age(self): self.assertEqual(eligible(18), True)\n')
+            '    def test_inclusive_age(self):\n'
+            '        self.assertEqual(Path("pending"), Path("pending"))\n'
+            '        self.assertEqual(eligible(18), True)\n')
         git('add', 'rule.py', 'test_rule.py')
         git('commit', '-qm', 'before')
         (root / 'rule.py').write_text('def eligible(age): return age >= 18\n')
@@ -72,12 +74,15 @@ def exercise_recent_helpers(installed, project, run):
             check = arguments['checks'][phase]
             assert check['native_exit_code'] == check['exit_code'] == expected
             report = check['assertion_observation']
-            assert report['v'] == 2 and report['complete'] and report['reason'] is None
-            assert report['observations'] == [dict(method='assertEqual', actual=phase=='after',
-                                                   expected=True, same_object=phase=='after')]
+            assert report['v'] == 3 and report['complete'] and report['reason'] is None
+            path_value = {type(Path()).__name__: 'pending'}
+            assert report['observations'] == [
+                dict(method='assertEqual', actual=path_value, expected=path_value, same_object=False),
+                dict(method='assertEqual', actual=phase=='after', expected=True, same_object=phase=='after')]
         assert arguments['comparison_copies_removed'] and arguments['tree_guard']['unchanged']
         assert inventory(root) == original
-    return dict(receipt_assertion_format=2, receipt_actual_arguments_verified=True, named_regions_complete=True, missing_region_exit=1,
+    return dict(receipt_assertion_format=3, receipt_actual_arguments_verified=True,
+                receipt_path_arguments_verified=True, named_regions_complete=True, missing_region_exit=1,
                 receipt_native_before_exit=1, receipt_native_after_exit=0,
                 receipt_original_tree_unchanged=True)
 
