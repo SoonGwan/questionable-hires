@@ -1,0 +1,789 @@
+[    0.054115] hv_vmbus: registering driver hyperv_keyboard
+[    0.054329] rtc-pl031 20050000.pl031: registered as rtc0
+[    0.054375] rtc-pl031 20050000.pl031: setting system clock to 2026-09-27T09:22:29 UTC (1790500949)
+[    0.054552] NET: Registered PF_INET6 protocol family
+[    0.055113] Segment Routing with IPv6
+[    0.055150] In-situ OAM (IOAM) with IPv6
+[    0.058150] registered taskstats version 1
+[    0.058235] Loading compiled-in X.509 certificates
+[    0.843348] Freeing initrd memory: 98876K
+[    0.848770] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    0.849709] Demotion targets for Node 0: null
+[    0.849813] Key type .fscrypt registered
+[    0.849848] Key type fscrypt-provisioning registered
+[    0.851894] clk: Disabling unused clocks
+[    0.851927] PM: genpd: Disabling unused power domains
+[    0.852150] Freeing unused kernel memory: 1920K
+[    0.852243] Run /bin/sh as init process
+/bin/sh: can't access tty; job control turned off
+~ # [6n/bin/busybox sh /check.sh
+psf__requests-3362.tar: OK
+psf__requests-863.tar: OK
+psf__requests-1963.tar: OK
+psf__requests-2674.tar: OK
+pytest-dev__pytest-5221.tar: OK
+pytest-dev__pytest-5103.tar: OK
+pytest-dev__pytest-6116.tar: OK
+pytest-dev__pytest-11143.tar: OK
+QH_SOURCE_READY_psf__requests-3362
+QH_SOURCE_READY_psf__requests-863
+QH_SOURCE_READY_psf__requests-1963
+QH_SOURCE_READY_psf__requests-2674
+QH_SOURCE_READY_pytest-dev__pytest-5221
+QH_SOURCE_READY_pytest-dev__pytest-5103
+QH_SOURCE_READY_pytest-dev__pytest-6116
+QH_SOURCE_READY_pytest-dev__pytest-11143
+QH_NO_HOST_GRADER_PATH
+QH_SOLVER_RAM_PROOF
+~ # /bin/busybox df -k /
+Filesystem           1K-blocks      Used Available Use% Mounted on
+df: /: can't find mount point
+~ # /bin/busybox sh /python-check.sh
+[    3.394598] fuse: init (API version 7.41)
+/runtime.tar: OK
+[    6.332983] random: crng init done
+{"python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]", "pytest": "7.4.4", "ssl": "OpenSSL 3.0.15 3 Sep 2024", "sqlite": "3.45.3", "prefix": "/runtime/env"}
+QH_SOLVER_PYTHON_RAM_PROOF
+QH_PYTHON_NO_HOST_GRADER
+~ # /bin/busybox sh /native-check.sh
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 150, in main
+    config = _prepareconfig(args, plugins)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 331, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/helpconfig.py", line 104, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1075, in pytest_cmdline_parse
+    self.parse(args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1425, in parse
+    self._preparse(args, addopts=addopts)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1327, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 149, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 750, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 692, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 462, in __init__
+    self.tmpfile = open(os.devnull, encoding="utf-8")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_psf__requests-3362_pass
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 150, in main
+    config = _prepareconfig(args, plugins)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 331, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/helpconfig.py", line 104, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1075, in pytest_cmdline_parse
+    self.parse(args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1425, in parse
+    self._preparse(args, addopts=addopts)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1327, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 149, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 750, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 692, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 462, in __init__
+    self.tmpfile = open(os.devnull, encoding="utf-8")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_psf__requests-3362_fail
+/solver/psf__requests-863/requests/models.py:793: SyntaxWarning: "is" with a literal. Did you mean "=="?
+  if self.status_code is 0:
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 150, in main
+    config = _prepareconfig(args, plugins)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 331, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/helpconfig.py", line 104, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1075, in pytest_cmdline_parse
+    self.parse(args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1425, in parse
+    self._preparse(args, addopts=addopts)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1327, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 149, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 750, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 692, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 462, in __init__
+    self.tmpfile = open(os.devnull, encoding="utf-8")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_psf__requests-863_pass
+/solver/psf__requests-863/requests/models.py:793: SyntaxWarning: "is" with a literal. Did you mean "=="?
+  if self.status_code is 0:
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 150, in main
+    config = _prepareconfig(args, plugins)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 331, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/helpconfig.py", line 104, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1075, in pytest_cmdline_parse
+    self.parse(args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1425, in parse
+    self._preparse(args, addopts=addopts)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1327, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 149, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 750, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 692, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 462, in __init__
+    self.tmpfile = open(os.devnull, encoding="utf-8")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_psf__requests-863_fail
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 150, in main
+    config = _prepareconfig(args, plugins)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 331, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/helpconfig.py", line 104, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1075, in pytest_cmdline_parse
+    self.parse(args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1425, in parse
+    self._preparse(args, addopts=addopts)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1327, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 149, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 750, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 692, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 462, in __init__
+    self.tmpfile = open(os.devnull, encoding="utf-8")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_psf__requests-1963_pass
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 150, in main
+    config = _prepareconfig(args, plugins)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 331, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/helpconfig.py", line 104, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1075, in pytest_cmdline_parse
+    self.parse(args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1425, in parse
+    self._preparse(args, addopts=addopts)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1327, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 149, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 750, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 692, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 462, in __init__
+    self.tmpfile = open(os.devnull, encoding="utf-8")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_psf__requests-1963_fail
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 150, in main
+    config = _prepareconfig(args, plugins)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 331, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/helpconfig.py", line 104, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1075, in pytest_cmdline_parse
+    self.parse(args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1425, in parse
+    self._preparse(args, addopts=addopts)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1327, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 149, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 750, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 692, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 462, in __init__
+    self.tmpfile = open(os.devnull, encoding="utf-8")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_psf__requests-2674_pass
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 150, in main
+    config = _prepareconfig(args, plugins)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 331, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/helpconfig.py", line 104, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1075, in pytest_cmdline_parse
+    self.parse(args)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1425, in parse
+    self._preparse(args, addopts=addopts)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/config/__init__.py", line 1327, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 149, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 750, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 692, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/runtime/env/lib/python3.9/site-packages/_pytest/capture.py", line 462, in __init__
+    self.tmpfile = open(os.devnull, encoding="utf-8")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_psf__requests-2674_fail
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/config/__init__.py", line 60, in main
+    config = _prepareconfig(args, plugins)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/config/__init__.py", line 203, in _prepareconfig
+    return pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/helpconfig.py", line 93, in pytest_cmdline_parse
+    config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/config/__init__.py", line 684, in pytest_cmdline_parse
+    self.parse(args)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/config/__init__.py", line 901, in parse
+    self._preparse(args, addopts=addopts)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/config/__init__.py", line 855, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/capture.py", line 60, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/capture.py", line 120, in start_global_capturing
+    self._global_capturing = self._getcapture(self._method)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/capture.py", line 96, in _getcapture
+    return MultiCapture(out=True, err=True, Capture=FDCapture)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/capture.py", line 463, in __init__
+    self.in_ = Capture(0)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/capture.py", line 560, in __init__
+    tmpfile = open(os.devnull, "r")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_pytest-dev__pytest-5221_pass
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/config/__init__.py", line 60, in main
+    config = _prepareconfig(args, plugins)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/config/__init__.py", line 203, in _prepareconfig
+    return pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/helpconfig.py", line 93, in pytest_cmdline_parse
+    config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/config/__init__.py", line 684, in pytest_cmdline_parse
+    self.parse(args)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/config/__init__.py", line 901, in parse
+    self._preparse(args, addopts=addopts)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/config/__init__.py", line 855, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/capture.py", line 60, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/capture.py", line 120, in start_global_capturing
+    self._global_capturing = self._getcapture(self._method)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/capture.py", line 96, in _getcapture
+    return MultiCapture(out=True, err=True, Capture=FDCapture)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/capture.py", line 463, in __init__
+    self.in_ = Capture(0)
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/capture.py", line 560, in __init__
+    tmpfile = open(os.devnull, "r")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_pytest-dev__pytest-5221_fail
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/config/__init__.py", line 60, in main
+    config = _prepareconfig(args, plugins)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/config/__init__.py", line 203, in _prepareconfig
+    return pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/helpconfig.py", line 93, in pytest_cmdline_parse
+    config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/config/__init__.py", line 684, in pytest_cmdline_parse
+    self.parse(args)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/config/__init__.py", line 901, in parse
+    self._preparse(args, addopts=addopts)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/config/__init__.py", line 855, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/capture.py", line 60, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/capture.py", line 120, in start_global_capturing
+    self._global_capturing = self._getcapture(self._method)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/capture.py", line 96, in _getcapture
+    return MultiCapture(out=True, err=True, Capture=FDCapture)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/capture.py", line 467, in __init__
+    self.in_ = Capture(0)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/capture.py", line 564, in __init__
+    tmpfile = open(os.devnull, "r")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_pytest-dev__pytest-5103_pass
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/config/__init__.py", line 60, in main
+    config = _prepareconfig(args, plugins)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/config/__init__.py", line 203, in _prepareconfig
+    return pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/helpconfig.py", line 93, in pytest_cmdline_parse
+    config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/config/__init__.py", line 684, in pytest_cmdline_parse
+    self.parse(args)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/config/__init__.py", line 901, in parse
+    self._preparse(args, addopts=addopts)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/config/__init__.py", line 855, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/capture.py", line 60, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/capture.py", line 120, in start_global_capturing
+    self._global_capturing = self._getcapture(self._method)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/capture.py", line 96, in _getcapture
+    return MultiCapture(out=True, err=True, Capture=FDCapture)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/capture.py", line 467, in __init__
+    self.in_ = Capture(0)
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/capture.py", line 564, in __init__
+    tmpfile = open(os.devnull, "r")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_pytest-dev__pytest-5103_fail
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/config/__init__.py", line 72, in main
+    config = _prepareconfig(args, plugins)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/config/__init__.py", line 223, in _prepareconfig
+    return pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/helpconfig.py", line 89, in pytest_cmdline_parse
+    config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/config/__init__.py", line 743, in pytest_cmdline_parse
+    self.parse(args)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/config/__init__.py", line 949, in parse
+    self._preparse(args, addopts=addopts)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/config/__init__.py", line 906, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/capture.py", line 54, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/capture.py", line 112, in start_global_capturing
+    self._global_capturing = self._getcapture(self._method)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/capture.py", line 88, in _getcapture
+    return MultiCapture(out=True, err=True, Capture=FDCapture)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/capture.py", line 455, in __init__
+    self.in_ = Capture(0)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/capture.py", line 554, in __init__
+    tmpfile = open(os.devnull, "r")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_pytest-dev__pytest-6116_pass
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/config/__init__.py", line 72, in main
+    config = _prepareconfig(args, plugins)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/config/__init__.py", line 223, in _prepareconfig
+    return pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/helpconfig.py", line 89, in pytest_cmdline_parse
+    config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/config/__init__.py", line 743, in pytest_cmdline_parse
+    self.parse(args)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/config/__init__.py", line 949, in parse
+    self._preparse(args, addopts=addopts)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/config/__init__.py", line 906, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/capture.py", line 54, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/capture.py", line 112, in start_global_capturing
+    self._global_capturing = self._getcapture(self._method)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/capture.py", line 88, in _getcapture
+    return MultiCapture(out=True, err=True, Capture=FDCapture)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/capture.py", line 455, in __init__
+    self.in_ = Capture(0)
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/capture.py", line 554, in __init__
+    tmpfile = open(os.devnull, "r")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_pytest-dev__pytest-6116_fail
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/config/__init__.py", line 147, in main
+    config = _prepareconfig(args, plugins)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/config/__init__.py", line 329, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/helpconfig.py", line 103, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/config/__init__.py", line 1076, in pytest_cmdline_parse
+    self.parse(args)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/config/__init__.py", line 1426, in parse
+    self._preparse(args, addopts=addopts)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/config/__init__.py", line 1328, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/capture.py", line 147, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/capture.py", line 748, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/capture.py", line 690, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/capture.py", line 460, in __init__
+    self.tmpfile = open(os.devnull, encoding="utf-8")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_pytest-dev__pytest-11143_pass
+Traceback (most recent call last):
+  File "/native-run.py", line 16, in <module>
+    result=int(pytest.main(['--assert=plain','-p','no:cacheprovider','-c','/native-controls/empty.ini','--confcutdir=/native-controls','--tb=short','/native-controls/test_control.py::test_'+mode],plugins=[cap]))
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/config/__init__.py", line 147, in main
+    config = _prepareconfig(args, plugins)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/config/__init__.py", line 329, in _prepareconfig
+    config = pluginmanager.hook.pytest_cmdline_parse(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 55, in _multicall
+    gen.send(outcome)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/helpconfig.py", line 103, in pytest_cmdline_parse
+    config: Config = outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 39, in _multicall
+    res = hook_impl.function(*args)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/config/__init__.py", line 1076, in pytest_cmdline_parse
+    self.parse(args)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/config/__init__.py", line 1426, in parse
+    self._preparse(args, addopts=addopts)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/config/__init__.py", line 1328, in _preparse
+    self.hook.pytest_load_initial_conftests(
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_hooks.py", line 265, in __call__
+    return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_manager.py", line 80, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 60, in _multicall
+    return outcome.get_result()
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_result.py", line 60, in get_result
+    raise ex[1].with_traceback(ex[2])
+  File "/runtime/env/lib/python3.9/site-packages/pluggy/_callers.py", line 34, in _multicall
+    next(gen)  # first yield
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/capture.py", line 147, in pytest_load_initial_conftests
+    capman.start_global_capturing()
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/capture.py", line 748, in start_global_capturing
+    self._global_capturing = _get_multicapture(self._method)
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/capture.py", line 690, in _get_multicapture
+    return MultiCapture(in_=FDCapture(0), out=FDCapture(1), err=FDCapture(2))
+  File "/solver/pytest-dev__pytest-11143/src/_pytest/capture.py", line 460, in __init__
+    self.tmpfile = open(os.devnull, encoding="utf-8")
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/null'
+QH_NATIVE_INVALID_pytest-dev__pytest-11143_fail
+QH_NATIVE_CONTROLS_COMPLETE
+~ # /bin/busybox poweroff -f
+[   15.417848] reboot: Power down
+QH_VM_STARTED
+QH_VM_GUEST_STOPPED

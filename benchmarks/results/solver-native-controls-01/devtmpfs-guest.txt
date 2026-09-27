@@ -1,0 +1,295 @@
+[    0.053625] hv_vmbus: registering driver hyperv_keyboard
+[    0.054586] rtc-pl031 20050000.pl031: registered as rtc0
+[    0.054640] rtc-pl031 20050000.pl031: setting system clock to 2026-09-27T09:23:52 UTC (1790501032)
+[    0.054832] NET: Registered PF_INET6 protocol family
+[    0.055094] Segment Routing with IPv6
+[    0.055132] In-situ OAM (IOAM) with IPv6
+[    0.058719] registered taskstats version 1
+[    0.058842] Loading compiled-in X.509 certificates
+[    0.855944] Freeing initrd memory: 98876K
+[    0.860877] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    0.861764] Demotion targets for Node 0: null
+[    0.861870] Key type .fscrypt registered
+[    0.861905] Key type fscrypt-provisioning registered
+[    0.863971] clk: Disabling unused clocks
+[    0.864012] PM: genpd: Disabling unused power domains
+[    0.864243] Freeing unused kernel memory: 1920K
+[    0.864350] Run /bin/sh as init process
+/bin/sh: can't access tty; job control turned off
+~ # [6n/bin/busybox sh /check.sh
+psf__requests-3362.tar: OK
+psf__requests-863.tar: OK
+psf__requests-1963.tar: OK
+psf__requests-2674.tar: OK
+pytest-dev__pytest-5221.tar: OK
+pytest-dev__pytest-5103.tar: OK
+pytest-dev__pytest-6116.tar: OK
+pytest-dev__pytest-11143.tar: OK
+QH_SOURCE_READY_psf__requests-3362
+QH_SOURCE_READY_psf__requests-863
+QH_SOURCE_READY_psf__requests-1963
+QH_SOURCE_READY_psf__requests-2674
+QH_SOURCE_READY_pytest-dev__pytest-5221
+QH_SOURCE_READY_pytest-dev__pytest-5103
+QH_SOURCE_READY_pytest-dev__pytest-6116
+QH_SOURCE_READY_pytest-dev__pytest-11143
+QH_NO_HOST_GRADER_PATH
+QH_SOLVER_RAM_PROOF
+~ # /bin/busybox df -k /
+Filesystem           1K-blocks      Used Available Use% Mounted on
+df: /: can't find mount point
+~ # /bin/busybox sh /python-check.sh
+[    3.405475] fuse: init (API version 7.41)
+/runtime.tar: OK
+[    6.346469] random: crng init done
+{"python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]", "pytest": "7.4.4", "ssl": "OpenSSL 3.0.15 3 Sep 2024", "sqlite": "3.45.3", "prefix": "/runtime/env"}
+QH_SOLVER_PYTHON_RAM_PROOF
+QH_PYTHON_NO_HOST_GRADER
+~ # /bin/busybox mount -t devtmpfs devtmpfs /dev
+~ # /bin/busybox test -c /dev/null
+~ # /bin/busybox sh /native-check.sh
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.0.0
+rootdir: /native-controls
+configfile: empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [32m.[0m[32m                                  [100%][0m
+
+[32m============================== [32m[1m1 passed[0m[32m in 0.00s[0m[32m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_pass", "outcome": "passed", "text": "None"}], "issue": "psf__requests-3362", "mode": "pass", "native_exit": 0, "pytest_path": "/runtime/env/lib/python3.9/site-packages/pytest/__init__.py", "pytest_version": "7.4.4", "valid_control": true}
+QH_NATIVE_VALID_psf__requests-3362_pass
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.0.0
+rootdir: /native-controls
+configfile: empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [31mF[0m[31m                                  [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m__________________________________ test_fail ___________________________________[0m
+[1m[31m/native-controls/test_control.py[0m:5: in test_fail
+    assert "observed" == "expected", "observed != expected"
+[1m[31mE   AssertionError: observed != expected[0m
+[36m[1m=========================== short test summary info ============================[0m
+[31mFAILED[0m ../../native-controls/test_control.py::[1mtest_fail[0m - AssertionError: observed != expected
+[31m============================== [31m[1m1 failed[0m[31m in 0.01s[0m[31m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_fail", "outcome": "failed", "text": "/native-controls/test_control.py:5: in test_fail\n    assert \"observed\" == \"expected\", \"observed != expected\"\nE   AssertionError: observed != expected"}], "issue": "psf__requests-3362", "mode": "fail", "native_exit": 1, "pytest_path": "/runtime/env/lib/python3.9/site-packages/pytest/__init__.py", "pytest_version": "7.4.4", "valid_control": true}
+QH_NATIVE_VALID_psf__requests-3362_fail
+/solver/psf__requests-863/requests/models.py:793: SyntaxWarning: "is" with a literal. Did you mean "=="?
+  if self.status_code is 0:
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.0.0
+rootdir: /native-controls
+configfile: empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [32m.[0m[32m                                  [100%][0m
+
+[32m============================== [32m[1m1 passed[0m[32m in 0.00s[0m[32m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_pass", "outcome": "passed", "text": "None"}], "issue": "psf__requests-863", "mode": "pass", "native_exit": 0, "pytest_path": "/runtime/env/lib/python3.9/site-packages/pytest/__init__.py", "pytest_version": "7.4.4", "valid_control": true}
+QH_NATIVE_VALID_psf__requests-863_pass
+/solver/psf__requests-863/requests/models.py:793: SyntaxWarning: "is" with a literal. Did you mean "=="?
+  if self.status_code is 0:
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.0.0
+rootdir: /native-controls
+configfile: empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [31mF[0m[31m                                  [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m__________________________________ test_fail ___________________________________[0m
+[1m[31m/native-controls/test_control.py[0m:5: in test_fail
+    assert "observed" == "expected", "observed != expected"
+[1m[31mE   AssertionError: observed != expected[0m
+[36m[1m=========================== short test summary info ============================[0m
+[31mFAILED[0m ../../native-controls/test_control.py::[1mtest_fail[0m - AssertionError: observed != expected
+[31m============================== [31m[1m1 failed[0m[31m in 0.01s[0m[31m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_fail", "outcome": "failed", "text": "/native-controls/test_control.py:5: in test_fail\n    assert \"observed\" == \"expected\", \"observed != expected\"\nE   AssertionError: observed != expected"}], "issue": "psf__requests-863", "mode": "fail", "native_exit": 1, "pytest_path": "/runtime/env/lib/python3.9/site-packages/pytest/__init__.py", "pytest_version": "7.4.4", "valid_control": true}
+QH_NATIVE_VALID_psf__requests-863_fail
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.0.0
+rootdir: /native-controls
+configfile: empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [32m.[0m[32m                                  [100%][0m
+
+[32m============================== [32m[1m1 passed[0m[32m in 0.00s[0m[32m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_pass", "outcome": "passed", "text": "None"}], "issue": "psf__requests-1963", "mode": "pass", "native_exit": 0, "pytest_path": "/runtime/env/lib/python3.9/site-packages/pytest/__init__.py", "pytest_version": "7.4.4", "valid_control": true}
+QH_NATIVE_VALID_psf__requests-1963_pass
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.0.0
+rootdir: /native-controls
+configfile: empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [31mF[0m[31m                                  [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m__________________________________ test_fail ___________________________________[0m
+[1m[31m/native-controls/test_control.py[0m:5: in test_fail
+    assert "observed" == "expected", "observed != expected"
+[1m[31mE   AssertionError: observed != expected[0m
+[36m[1m=========================== short test summary info ============================[0m
+[31mFAILED[0m ../../native-controls/test_control.py::[1mtest_fail[0m - AssertionError: observed != expected
+[31m============================== [31m[1m1 failed[0m[31m in 0.01s[0m[31m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_fail", "outcome": "failed", "text": "/native-controls/test_control.py:5: in test_fail\n    assert \"observed\" == \"expected\", \"observed != expected\"\nE   AssertionError: observed != expected"}], "issue": "psf__requests-1963", "mode": "fail", "native_exit": 1, "pytest_path": "/runtime/env/lib/python3.9/site-packages/pytest/__init__.py", "pytest_version": "7.4.4", "valid_control": true}
+QH_NATIVE_VALID_psf__requests-1963_fail
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.0.0
+rootdir: /native-controls
+configfile: empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [32m.[0m[32m                                  [100%][0m
+
+[32m============================== [32m[1m1 passed[0m[32m in 0.00s[0m[32m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_pass", "outcome": "passed", "text": "None"}], "issue": "psf__requests-2674", "mode": "pass", "native_exit": 0, "pytest_path": "/runtime/env/lib/python3.9/site-packages/pytest/__init__.py", "pytest_version": "7.4.4", "valid_control": true}
+QH_NATIVE_VALID_psf__requests-2674_pass
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.0.0
+rootdir: /native-controls
+configfile: empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [31mF[0m[31m                                  [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m__________________________________ test_fail ___________________________________[0m
+[1m[31m/native-controls/test_control.py[0m:5: in test_fail
+    assert "observed" == "expected", "observed != expected"
+[1m[31mE   AssertionError: observed != expected[0m
+[36m[1m=========================== short test summary info ============================[0m
+[31mFAILED[0m ../../native-controls/test_control.py::[1mtest_fail[0m - AssertionError: observed != expected
+[31m============================== [31m[1m1 failed[0m[31m in 0.01s[0m[31m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_fail", "outcome": "failed", "text": "/native-controls/test_control.py:5: in test_fail\n    assert \"observed\" == \"expected\", \"observed != expected\"\nE   AssertionError: observed != expected"}], "issue": "psf__requests-2674", "mode": "fail", "native_exit": 1, "pytest_path": "/runtime/env/lib/python3.9/site-packages/pytest/__init__.py", "pytest_version": "7.4.4", "valid_control": true}
+QH_NATIVE_VALID_psf__requests-2674_fail
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-4.4.2.dev174+g4a2fdce6, py-1.11.0, pluggy-1.0.0
+rootdir: /native-controls, inifile: /native-controls/empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [32m.[0m[36m                                  [100%][0m
+
+[32m[1m=========================== 1 passed in 0.01 seconds ===========================[0m
+{"calls": [{"nodeid": "test_control.py::test_pass", "outcome": "passed", "text": "None"}], "issue": "pytest-dev__pytest-5221", "mode": "pass", "native_exit": 0, "pytest_path": "/solver/pytest-dev__pytest-5221/src/pytest.py", "pytest_version": "4.4.2.dev174+g4a2fdce6", "valid_control": true}
+QH_NATIVE_VALID_pytest-dev__pytest-5221_pass
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-4.4.2.dev174+g4a2fdce6, py-1.11.0, pluggy-1.0.0
+rootdir: /native-controls, inifile: /native-controls/empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [31mF[0m[36m                                  [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m__________________________________ test_fail ___________________________________[0m
+[1m[31m/native-controls/test_control.py[0m:5: in test_fail
+[1m    assert "observed" == "expected", "observed != expected"[0m
+[1m[31mE   AssertionError: observed != expected[0m
+[31m[1m=========================== 1 failed in 0.01 seconds ===========================[0m
+{"calls": [{"nodeid": "test_control.py::test_fail", "outcome": "failed", "text": "/native-controls/test_control.py:5: in test_fail\n    assert \"observed\" == \"expected\", \"observed != expected\"\nE   AssertionError: observed != expected"}], "issue": "pytest-dev__pytest-5221", "mode": "fail", "native_exit": 1, "pytest_path": "/solver/pytest-dev__pytest-5221/src/pytest.py", "pytest_version": "4.4.2.dev174+g4a2fdce6", "valid_control": true}
+QH_NATIVE_VALID_pytest-dev__pytest-5221_fail
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-4.5.1.dev40+g10ca84ff, py-1.11.0, pluggy-1.0.0
+rootdir: /native-controls, inifile: /native-controls/empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [32m.[0m[36m                                  [100%][0m
+
+[32m[1m=========================== 1 passed in 0.00 seconds ===========================[0m
+{"calls": [{"nodeid": "test_control.py::test_pass", "outcome": "passed", "text": "None"}], "issue": "pytest-dev__pytest-5103", "mode": "pass", "native_exit": 0, "pytest_path": "/solver/pytest-dev__pytest-5103/src/pytest.py", "pytest_version": "4.5.1.dev40+g10ca84ff", "valid_control": true}
+QH_NATIVE_VALID_pytest-dev__pytest-5103_pass
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-4.5.1.dev40+g10ca84ff, py-1.11.0, pluggy-1.0.0
+rootdir: /native-controls, inifile: /native-controls/empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [31mF[0m[36m                                  [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m__________________________________ test_fail ___________________________________[0m
+[1m[31m/native-controls/test_control.py[0m:5: in test_fail
+[1m    assert "observed" == "expected", "observed != expected"[0m
+[1m[31mE   AssertionError: observed != expected[0m
+[31m[1m=========================== 1 failed in 0.01 seconds ===========================[0m
+{"calls": [{"nodeid": "test_control.py::test_fail", "outcome": "failed", "text": "/native-controls/test_control.py:5: in test_fail\n    assert \"observed\" == \"expected\", \"observed != expected\"\nE   AssertionError: observed != expected"}], "issue": "pytest-dev__pytest-5103", "mode": "fail", "native_exit": 1, "pytest_path": "/solver/pytest-dev__pytest-5103/src/pytest.py", "pytest_version": "4.5.1.dev40+g10ca84ff", "valid_control": true}
+QH_NATIVE_VALID_pytest-dev__pytest-5103_fail
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-5.2.3.dev198+ge670ff76, py-1.11.0, pluggy-1.0.0
+rootdir: /native-controls, inifile: /native-controls/empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [32m.[0m[32m                                  [100%][0m
+
+[32m============================== [32m[1m1 passed[0m[32m in 0.00s[0m[32m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_pass", "outcome": "passed", "text": "None"}], "issue": "pytest-dev__pytest-6116", "mode": "pass", "native_exit": 0, "pytest_path": "/solver/pytest-dev__pytest-6116/src/pytest.py", "pytest_version": "5.2.3.dev198+ge670ff76", "valid_control": true}
+QH_NATIVE_VALID_pytest-dev__pytest-6116_pass
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-5.2.3.dev198+ge670ff76, py-1.11.0, pluggy-1.0.0
+rootdir: /native-controls, inifile: /native-controls/empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [31mF[0m[31m                                  [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m__________________________________ test_fail ___________________________________[0m
+[1m[31m/native-controls/test_control.py[0m:5: in test_fail
+[1m    assert "observed" == "expected", "observed != expected"[0m
+[1m[31mE   AssertionError: observed != expected[0m
+[31m============================== [31m[1m1 failed[0m[31m in 0.01s[0m[31m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_fail", "outcome": "failed", "text": "/native-controls/test_control.py:5: in test_fail\n    assert \"observed\" == \"expected\", \"observed != expected\"\nE   AssertionError: observed != expected"}], "issue": "pytest-dev__pytest-6116", "mode": "fail", "native_exit": 1, "pytest_path": "/solver/pytest-dev__pytest-6116/src/pytest.py", "pytest_version": "5.2.3.dev198+ge670ff76", "valid_control": true}
+QH_NATIVE_VALID_pytest-dev__pytest-6116_fail
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-8.0.0.dev53+g6995257c, pluggy-1.0.0
+rootdir: /native-controls
+configfile: empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [32m.[0m[32m                                  [100%][0m
+
+[32m============================== [32m[1m1 passed[0m[32m in 0.00s[0m[32m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_pass", "outcome": "passed", "text": "None"}], "issue": "pytest-dev__pytest-11143", "mode": "pass", "native_exit": 0, "pytest_path": "/solver/pytest-dev__pytest-11143/src/pytest/__init__.py", "pytest_version": "8.0.0.dev53+g6995257c", "valid_control": true}
+QH_NATIVE_VALID_pytest-dev__pytest-11143_pass
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.9.20, pytest-8.0.0.dev53+g6995257c, pluggy-1.0.0
+rootdir: /native-controls
+configfile: empty.ini
+[1mcollecting ... [0m[1m
+collected 1 item                                                               [0m
+
+../../native-controls/test_control.py [31mF[0m[31m                                  [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m__________________________________ test_fail ___________________________________[0m
+[1m[31m/native-controls/test_control.py[0m:5: in test_fail
+    assert "observed" == "expected", "observed != expected"
+[1m[31mE   AssertionError: observed != expected[0m
+[36m[1m=========================== short test summary info ============================[0m
+[31mFAILED[0m ../../native-controls/test_control.py::[1mtest_fail[0m - AssertionError: observed != expected
+[31m============================== [31m[1m1 failed[0m[31m in 0.01s[0m[31m ===============================[0m
+{"calls": [{"nodeid": "test_control.py::test_fail", "outcome": "failed", "text": "/native-controls/test_control.py:5: in test_fail\n    assert \"observed\" == \"expected\", \"observed != expected\"\nE   AssertionError: observed != expected"}], "issue": "pytest-dev__pytest-11143", "mode": "fail", "native_exit": 1, "pytest_path": "/solver/pytest-dev__pytest-11143/src/pytest/__init__.py", "pytest_version": "8.0.0.dev53+g6995257c", "valid_control": true}
+QH_NATIVE_VALID_pytest-dev__pytest-11143_fail
+QH_NATIVE_CONTROLS_COMPLETE
+~ # /bin/busybox poweroff -f
+[   15.675824] reboot: Power down
+QH_VM_STARTED
+QH_VM_GUEST_STOPPED

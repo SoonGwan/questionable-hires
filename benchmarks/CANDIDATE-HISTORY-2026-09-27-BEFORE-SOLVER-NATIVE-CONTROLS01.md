@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver native controls01,2026-09-27,parent`dc3f3b02`:
-[all8 native pass/fail controls](SOLVER-NATIVE-CONTROLS-01.md) retain initial16
-invalid starts(missing guest/dev/null); guest devtmpfs yields16 valid outcomes,
-including8 deliberate assertion failures with actual evidence. Both VMs stopped;
-models/selected issue tests0,no project-config/grading/efficiency readiness claim.
-한국어: 8개 정상/의도한 실패 판정을 검증하고 최초 환경 실패도 보존했다.
-이슈 검사·모델 비교·전체 품질·토큰·속도 개선은 아직 미완료다.
-
 Solver issue imports01,2026-09-27,parent`2510829d`:
 [actual guest fresh imports](SOLVER-ISSUE-IMPORTS-01.md) retain three5/8 bootstrap
 failures; declared legacy pure-Python dependencies yield8/8 on the fourth runtime
