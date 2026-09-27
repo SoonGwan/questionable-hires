@@ -4,6 +4,7 @@ import codecs
 import gc
 import hashlib
 import importlib.util
+import itertools
 import json
 import mmap
 from pathlib import Path
@@ -44,6 +45,21 @@ def observation(call):
                     start=error.start, end=error.end, reason=error.reason)
 
 
+def stdout_spooled_git(repo, *args):
+    """Keep stderr's pipe/EOF wakeup; only stdout uses temporary mapped storage."""
+    command = ['git', '--no-pager', '--no-optional-locks', '--literal-pathspecs',
+               '-c', 'core.fsmonitor=false', '-c', 'core.quotePath=false', *args]
+    with tempfile.TemporaryFile(dir=repo) as stdout:
+        result = subprocess.run(command, cwd=repo, stdout=stdout, stderr=subprocess.PIPE, timeout=20)
+        if stdout.tell():
+            with mmap.mmap(stdout.fileno(), 0, access=mmap.ACCESS_READ) as mapped:
+                result.stdout = codecs.decode(mapped, 'utf-8')
+        else:
+            result.stdout = ''
+        result.stderr = result.stderr.decode('utf-8')
+        return result
+
+
 def measure():
     result = dict(python=sys.version, git_version=subprocess.check_output(['git', '--version'], text=True).strip(),
                   source_revision=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
@@ -72,18 +88,20 @@ def measure():
                  'invalid_utf8_history': (*show, initial, '--', 'invalid.py'),
                  'missing_revision': ('show', '--no-ext-diff', '--no-textconv', 'no-such-revision', '--', 'small.py')}
         for label, args in cases.items():
-            functions = {'current': lambda: helper.git(repo, *args), 'spooled': lambda: spooled_git(repo, *args)}
+            functions = {'current': lambda: helper.git(repo, *args),
+                         'spooled': lambda: spooled_git(repo, *args),
+                         'stdout_spooled': lambda: stdout_spooled_git(repo, *args)}
             samples = {name: [] for name in functions}
             observations = {}
-            for index in range(4):
-                for name in (('current', 'spooled') if index % 2 == 0 else ('spooled', 'current')):
+            for order in itertools.permutations(functions):
+                for name in order:
                     start = time.perf_counter()
                     value = observation(functions[name])
                     samples[name].append(time.perf_counter()-start)
                     if name in observations and observations[name] != value:
                         raise AssertionError('Native output changed across observations')
                     observations[name] = value
-            if observations['current'] != observations['spooled']:
+            if any(value != observations['current'] for value in observations.values()):
                 raise AssertionError('Decoded evidence or error differs')
             observed = observations['current']
             peaks = {}
@@ -101,9 +119,10 @@ def measure():
                 samples_seconds=samples, median_seconds={k:statistics.median(v) for k,v in samples.items()},
                 peak_traced_bytes=peaks)
         result['owned_fixture_removed_after_return'] = True
-    result['limitation'] = ('Author-owned native Git fixture; four alternating timing pairs plus one separately traced call per arm/case. '
+    result['limitation'] = ('Reused author-owned native Git fixture; six timing permutations plus one separately traced call per arm/case. '
         'Shared host/cache, no RSS/child/disk/model-token measure. Full decoded strings remain allocated. '
-        'Prototype writes two temporary files and memory maps them; not a read-only-workspace-compatible drop-in. '
+        'Prototypes write one/two temporary files and memory map stdout/both; stdout-only retains stderr in memory. '
+        'Neither is a read-only-workspace-compatible drop-in. '
         'No timeout/concurrent-child or whole-collector equivalence validation; not adopted.')
     return result
 
