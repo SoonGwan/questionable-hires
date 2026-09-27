@@ -6,7 +6,6 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [Con Artist contract read01](AUDIT-CONTRACT-READ-01-REVIEW.md),2026-09-28,previous `d025c0a1`,candidate/execution `6a0d9b3e` | Four original cells: sum tokens−8.50%/CLI−33.14%; SQLite tokens−0.48%/time+5.35%, responses5→5. Bounded outcomes and all originals preserved. | Decline: SQLite grouping shifts discovery without removing a response; the favorable response-contract pair includes previous interpreter failure and different helper/fault/check choices. No causal/all8 improvement or ordinary install. |
 | [Receipt execution evidence01](RECEIPT-EXECUTION-EVIDENCE-01.md), 2026-09-28, parent `f7ced67d`, source `0c4d261e` | Seven evidence-loss failures and an additional copy-state error reproduced; final9 new controls and135 Git-free native methods pass. | Adopt native correctness: preserve returned checks and original failures, stop later phases, keep unverified cleanup null. No new model efficiency claim. Installed9 controls/all8 resources match; standalone package4 pass. Public `1f81be81` download/source identity verified separately. |
 | [Retained lean Mother interval01](MOTHER-LEAN-INTERVAL-01-REVIEW.md), 2026-09-28, previous `482e17f1`, candidate/execution `aa41f848` | Four original cells on different exposed contracts: tokens +9.62%, CLI +53.27%; bounded outcomes retained and all8 separate fault/valid-control checks match. | Decline promotion of old lean entry. Fewer instruction bytes and one avoided asset read did not reduce joint cost; extra sampling/native run retained. No unchanged retry or install. |
 | [Mother final review01](MOTHER-FINAL-REVIEW-01-REVIEW.md), 2026-09-28, previous `c2193b3d`, isolated candidate/execution `07486f8f` | Four original cells: tokens +24.60%, CLI +3.62%. Native/review grouping observed, responses3→5 and5→5; required bounded outcomes retained. | Decline; each pair fails joint resource gate. Unequal extra review/read grouping, one recovered original output; separate conforming-copy checks pass. No normal install or unchanged retry. |
@@ -16,7 +15,7 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 | [Receipt native split01](RECEIPT-NATIVE-SPLIT-01.md),2026-09-28,parent`1b85702c`,candidate/execution`f80c1448` | Unchanged native suite: previous126 pass, candidate124 pass/2 fail; single-file CLI relocation cannot find new companion. Driver bytes−36.14%,combined bytes+3.07%. | Decline before model timing; preserve existing callers. Zero models, no ordinary install/deployment or token-saving claim. |
 | [Receipt guard output01](RECEIPT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,previous`1b6ae5f5`,candidate`a77e4d93`,execution`31101dea` | Four explicit-CLI interface cells: tokens−27.38%,CLI−18.26%; both task pairs lower both. Guard candidate retains native results with failure, responses6→4. | Limited interface gate passes; forced use/n=1/unequal extra reads, not causal/general/all8 savings. Large source-read truncation retained. No new instruction or featured promotion. |
 
-The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-AUDIT-CONTRACT-READ01.md)
+The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-RECEIPT-EXECUTION-EVIDENCE01.md)
 preserves all superseded checkpoints, adverse results and chronological history.
 In particular, [integration06](ALL-EIGHT-CURRENT-06-REVIEW.md) remains its historical
 +16.95% tokens/−10.00% CLI measurement at `1d0e92ac`; differences between cohorts
@@ -50,7 +49,3 @@ Mother의 종료 검토 묶기 후보도 실제 묶기는 관찰됐지만 응답
 
 Receipt의 복사·실행·정리 예외에서도 반환된 결과를 보존하고 제거 확인 불가를null로
 남기도록 수정했다. 새9개·Git 없는 사본135개 검사가 통과했으며 모델 절감으로 계산하지 않는다.
-
-Con Artist의 계약/소스 읽기 후보도 합계 절감만으로 채택하지 않는다. SQLite는
-응답 수가 그대로이며 더 느렸고, 다른 과제의 이득에는 기존의 인터프리터 오류와
-서로 다른 검증 방식이 포함된다. 전체8개 개선 근거는 아니며 설치본은 유지한다.

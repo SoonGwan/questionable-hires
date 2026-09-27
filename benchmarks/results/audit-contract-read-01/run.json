@@ -1,0 +1,193 @@
+{
+  "identities": {
+    "fixture_sources": {
+      "history-invoice-01-cases.json": "6669c0e61c88c33c3a95d014916362eafbf511fa82dfd658b3386fd75306bebc",
+      "receipt-ledger-cases.json": "5aeac6200940dc4d29898920429aae684712afea753df12e7985862f5016b742",
+      "landlord-check-scope-cases.json": "b255651b7cc425bda2791c7cd5b0151a96b41666915451566208c30af1fe87ee",
+      "editor-snapshot-01-cases.json": "909b36893325124e315d0803deeacb9f937df255de891d120429949a2af40b7b",
+      "exorcist-runtime-cases.json": "2cb25eeb821a2952683d4933d1fabc23b9fdcccc65ad44cb25fdbd5ece49beeb",
+      "hostage-refresh-cases.json": "7b0bc8120865802a29dd97b6fedb9863bdbe19742ce68bb93307588b55a04c21",
+      "con-artist-sqlite-cases.json": "c5a3b37e70613ed8eb657db25aa043772a0056692b207ff1d29c1e91bbce4c3f",
+      "cases_view_contract.py": "e3000694ff000352d8b081e858c04e720a3d8952b87be998652070920827b3a8",
+      "lean_screen_cases.py": "dec85f04d2888a86b321394f7d811000c9add4c3e545e13093e54abc5ff13b1e"
+    },
+    "execution_sources": {
+      "benchmarks/run_all_eight_current_04.py": "bc5fe6ddd8096bcf61c4e840c25f1196c5bf01a5952704bc9e01de529c71c8bf",
+      "benchmarks/ALL-EIGHT-CURRENT-04-PROTOCOL.md": "d722264e637e8a25ed3d42a046ef0e0b588b5ea74251f875214df623d7c1213e",
+      "benchmarks/preflight_lean_screen.py": "c1d92fdf33d7902e5d58d98a1a9b49fc98a7661b5131dce363d57d67b44acb72",
+      "benchmarks/run.py": "60120a1fec9c610784cc2d2d649edcee41eb46550baec7031a37bbcfc91a0c03",
+      "benchmarks/editor_snapshot_cases.py": "32ff0da0fa2d136f1cbc818eb8fa8bad0e469ba319d2cdef4a69fd10e40414db",
+      "benchmarks/preflight_view_contract.py": "03568c0e927005bd90854a76aabf2ad6492c84ee86034b366da037c55bc89870",
+      "tests/test_all_eight_current_04.py": "a7b0c59a5349ea5eff0c25d4bb5bb92e83e9db8f101ef9c19f37bc8cbd0fd833",
+      "tests/test_history_invoice_fixture.py": "6ee331ea44a6be47a945d402857b06acb8cc7fa7659abded2f55fb03a7c963fd",
+      "tests/test_receipt_ledger_fixture.py": "ff24b0d708d5991345df7d3df7ed4151762e4cc1c840b5d08e82213720cb5407",
+      "tests/test_landlord_check_scope_fixture.py": "9370cf5691ae09bc6fefc4cd6054b235f088699c51599f120cd738ae8be78711",
+      "tests/test_exorcist_runtime_fixture.py": "74bcbc5d3187a4934904a9dfb2384cfe2cd5b3fda482a39d09110b6d7c2d8465",
+      "tests/test_hostage_refresh_fixture.py": "63ee9392f57e0b70113d0214e5a1d92ab3fea35e4ae16379a845ac8b4daa366a",
+      "tests/test_sqlite_audit_fixture.py": "490b736d6ca7551691188455fe6082e2cfec72fb115c91b1f0433bfbc3d03e4d",
+      "benchmarks/run_all_eight_apps_01.py": "0e1a02f1e0f3eb1f9a843068ce6780e784137e77f477d366b884780ee39e570a",
+      "benchmarks/ALL-EIGHT-APPS-01-PROTOCOL.md": "c79a093f1063ae2e7159b7afe27a88f036765b131941889aa77abc0fc94adfb9",
+      "tests/test_all_eight_apps_01.py": "8cf9d6930f49d8e3543ce726f8af4b4c74d5134987cdfd2449167f6470ae6d93",
+      "benchmarks/run_tool_surface_01.py": "7765a8400ab2dee61283ce00cb82050c99a79735b4b146f4074de2345e5572ec",
+      "benchmarks/run_audit_contract_read_01.py": "3fc8d2e6c4f6ecbb3714b1083c267c4034bd86e994a53458dd90dfd6736a3968",
+      "benchmarks/AUDIT-CONTRACT-READ-01-PROTOCOL.md": "207466f0c69684f1728df15142e18ef9e126a3a6f1fd97aa206bddeebd731c92",
+      "benchmarks/con_artist_sqlite_cases.py": "2bec026bdff1d4a8636e909915559724ba67ae0d7afc2c08ce69007968f78f7e",
+      "benchmarks/con-artist-sqlite-cases.json": "c5a3b37e70613ed8eb657db25aa043772a0056692b207ff1d29c1e91bbce4c3f",
+      "benchmarks/contract_audit_cases.py": "7286f23e6dba5bc45137ef2e302864c0346ae6f65cef0040cce752f9cacfbb63",
+      "benchmarks/run_all_eight_current_06.py": "d885944e8dc42a666dcad138bdab6a8f53ae720216dae6cbd999a0ea767a1313",
+      "tests/test_audit_contract_read_01.py": "9583a1a42315cad9f6e24be8e35e0077d7d1bc0a061475c6d30bcf67d6c86307"
+    }
+  },
+  "cases": [
+    {
+      "id": "sqlite-commit-audit",
+      "skill": "con-artist",
+      "task": "Audit whether the existing receipt tests detect a lost commit in this upload\npath. Inspect the actual test, endpoint binding and ledger implementation. Execute\nthe existing native tests on correct code and an isolated reachable fault omitting\nthe ledger commit (keep acknowledgment and connection closing unchanged). Verify\nthe actual test's imported endpoint and that endpoint's writer binding in the same\nprocess as the checks, not just in a separate import-only process.\nIf the tests survive, execute the same stronger native assertion on both versions:\nread through a new SQLite connection after the actual upload call and compare the\ncomplete ordered rows, retaining the pre-existing row and exact new binary payload.\nShow correct code passing and the faulty code failing for missing committed data,\nnot setup/import failures. Preserve originals and remove owned disposable copies.\nCaptured commands/results are sufficient; no permanent harness/report is required.\nWork only inside this project: no services, dependencies, other skills, delegation,\npublishing or production repair.",
+      "files": {
+        "ingest/__init__.py": "",
+        "ingest/ledger.py": "import sqlite3\n\n\ndef write_event(database, event_id, payload):\n    connection = sqlite3.connect(database)\n    try:\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\n                           (event_id, payload))\n        connection.commit()\n    finally:\n        connection.close()\n    return {'accepted': event_id}\n",
+        "ingest/endpoint.py": "from ingest.ledger import write_event as _record\n\n\ndef handle_upload(database, event_id, payload):\n    return _record(database, event_id, payload)\n",
+        "test_receipts.py": "import sqlite3\nimport tempfile\nfrom pathlib import Path\nimport unittest\nfrom ingest.endpoint import handle_upload as accept\n\n\nclass LedgerFixture(unittest.TestCase):\n    def setUp(self):\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-',\n                                                  dir=Path(__file__).resolve().parent)\n        self.addCleanup(self.scratch.cleanup)\n        self.database = Path(self.scratch.name) / 'events.sqlite'\n        connection = sqlite3.connect(self.database)\n        try:\n            connection.execute('CREATE TABLE events (id INTEGER PRIMARY KEY, payload BLOB NOT NULL)')\n            connection.execute('INSERT INTO events VALUES (?, ?)', (10, b'previous'))\n            connection.commit()\n        finally:\n            connection.close()\n\n\nclass ReceiptTests(LedgerFixture):\n    def test_acknowledges_binary_upload(self):\n        self.assertEqual(accept(self.database, 20, b'\\x00\\xffnew'), {'accepted': 20})\n\n    def test_acknowledges_empty_upload(self):\n        self.assertEqual(accept(self.database, 30, b''), {'accepted': 30})\n",
+        "requirements.md": "Python 3.9+ standard library; python3 -B -m unittest -v test_receipts.\nSuccessful handle_upload must preserve the integer ID and exact bytes payload in\nthe disk SQLite database, visible from a newly opened connection after it returns.\nPreviously committed events must survive. The acknowledgment is not durability proof.\nIDs are distinct positive integers and payloads are bytes, including empty/binary bytes.\nNo networking or concurrent writers are in scope. Existing production/test files are\nimmutable for this audit. Use disposable project-local copies, clean owned scratch,\nand preserve all original bytes/modes. Do not install packages or change warnings.\n"
+      },
+      "criteria": [
+        "Actual source inspection and same-process test-to-endpoint-to-ledger binding evidence.",
+        "Correct and missing-commit native tests execute; syntax/setup failures are not sensitivity.",
+        "Same stronger native row assertion passes correct code and rejects lost binary row through a fresh connection.",
+        "Pre-existing row and originals preserved; owned project-local scratch removed."
+      ]
+    },
+    {
+      "id": "response-contract",
+      "skill": "con-artist",
+      "files": {
+        "AGENTS.md": "Use Python's native unittest runner with -B, without installing packages.\nAudit only: preserve all original files/modes, Git HEAD/index and installed skill\nresources. Work in project-local disposable copies; remove all owned scratch,\nincluding after failure. No permanent edits, network, commits, stashes or resets.\nConfirm actual copy-local implementation binding in each native test process.\nReport original and stronger-test identities, native counts/exits and decisive\nassertions. Run unchanged existing tests against correct and one narrowly faulty\nimplementation, then, if needed, the identical stronger tests against both.\nDo not use a rewritten simulation or setup failure as a detected behavior fault.\n",
+        "CONTRACT.md": "render(items) accepts a list of nonnegative integer IDs. It returns\na JSON string decoding to exactly {\"ids\": items, \"count\": len(items)}, preserving\nID order and duplicates. Whitespace and mapping key order are unspecified.\nEmpty and nonempty lists are supported; other inputs are outside this contract.\n",
+        "service.py": "import json\ndef render(items):\n    return json.dumps({\"ids\": list(items), \"count\": len(items)}, indent=2)\n",
+        "test_service.py": "import json\nimport unittest\nimport service\nclass Existing(unittest.TestCase):\n    def test_nonempty(self):\n        self.assertEqual(set(json.loads(service.render([4, 4, 2]))), {\"ids\", \"count\"})\n    def test_empty(self):\n        self.assertEqual(json.loads(service.render([])), {\"ids\": [], \"count\": 0})\n",
+        "notes.txt": "Owner notes: preserve me.\n"
+      },
+      "task": "Audit whether test_service.py protects the complete supported contract in CONTRACT.md. Follow AGENTS.md. Where coverage is missing, demonstrate a meaningful behavioral fault and verify focused stronger assertions in disposable copies, without changing the originals.",
+      "criteria": [
+        "Existing unchanged native tests run against correct and narrowly faulty actual implementations with copy-local binding.",
+        "Coverage diagnosis identifies the concrete contract obligation and actual existing assertions; setup errors are not detections.",
+        "Identical stronger assertions pass correct code and fail faulty code for a required behavior; mandatory identity/order preserved and unspecified representation not imposed.",
+        "Native neighboring empty/missing and nonempty/known controls execute; no unsupported input contract invented.",
+        "Original bytes/modes, owner notes, Git HEAD/index and resources preserved; project-local scratch removed and scope obeyed."
+      ],
+      "provenance": {
+        "kind": "Authored contract-transfer fixture, not a real production issue or independent holdout"
+      }
+    }
+  ],
+  "schedule": [
+    [
+      0,
+      "previous"
+    ],
+    [
+      0,
+      "candidate"
+    ],
+    [
+      1,
+      "candidate"
+    ],
+    [
+      1,
+      "previous"
+    ]
+  ],
+  "settings": {
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "jobs": 1,
+    "repeats": 1
+  },
+  "python": "<TEMP>",
+  "python_version": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+  "resource_digests": {
+    "previous": "6d3774b718b8f24badbf0c0a21dff2c79643237ae5d217578cfcfddb593cb736",
+    "candidate": "daf659c5bb50438adfa810e56036b48ae8923d57c595c94d09c2eb69fd35083f"
+  },
+  "condition_models": {
+    "previous": "gpt-6-astra",
+    "candidate": "gpt-6-astra"
+  },
+  "condition_flags": {
+    "previous": [],
+    "candidate": []
+  },
+  "cli_version": "codex-cli 0.157.1",
+  "execpolicy_rules": "retained",
+  "resource_revisions": {
+    "previous": "d025c0a1129e84729ca33d50b004c1e2a5691c77",
+    "candidate": "d025c0a1129e84729ca33d50b004c1e2a5691c77"
+  },
+  "completed_cells": [
+    {
+      "case_id": "sqlite-commit-audit",
+      "condition": "previous",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 84268,
+        "cached_input_tokens": 75648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2040,
+        "reasoning_output_tokens": 210
+      },
+      "elapsed_seconds": 70.81
+    },
+    {
+      "case_id": "sqlite-commit-audit",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 83730,
+        "cached_input_tokens": 69888,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2168,
+        "reasoning_output_tokens": 262
+      },
+      "elapsed_seconds": 74.599
+    },
+    {
+      "case_id": "response-contract",
+      "condition": "candidate",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 73830,
+        "cached_input_tokens": 62208,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1225,
+        "reasoning_output_tokens": 147
+      },
+      "elapsed_seconds": 44.141
+    },
+    {
+      "case_id": "response-contract",
+      "condition": "previous",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 86384,
+        "cached_input_tokens": 76544,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3215,
+        "reasoning_output_tokens": 449
+      },
+      "elapsed_seconds": 106.783
+    }
+  ],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-27T22:24:50.473067+00:00",
+  "stopped_after_uncompleted": false,
+  "finished_at": "2026-09-27T22:30:01.066298+00:00"
+}

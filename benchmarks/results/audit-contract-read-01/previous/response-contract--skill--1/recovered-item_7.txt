@@ -1,0 +1,102 @@
+
+PHASE: original-correct 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_service
+BINDING: <WORKSPACE>/.contract-audit-pefjrzze/original-correct/service.py sha256=c2a124ed25de8e1a207c3dbe82b50a17ec196e862ce65963ed6d857469902f33
+OBSERVATION [4,4,2]: '{\n  "ids": [\n    4,\n    4,\n    2\n  ],\n  "count": 3\n}'
+test_empty (test_service.Existing.test_empty) ... ok
+test_nonempty (test_service.Existing.test_nonempty) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+NATIVE EXIT: 0
+
+PHASE: original-faulty 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_service
+BINDING: <WORKSPACE>/.contract-audit-pefjrzze/original-faulty/service.py sha256=5a877f25eb0fa4ffc20d187828f36a1f4496ad34d86f36b519c0bffc370ac86f
+OBSERVATION [4,4,2]: '{\n  "ids": [\n    2,\n    4\n  ],\n  "count": 2\n}'
+test_empty (test_service.Existing.test_empty) ... ok
+test_nonempty (test_service.Existing.test_nonempty) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+NATIVE EXIT: 0
+
+PHASE: stronger-correct 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_service test_contract_stronger
+BINDING: <WORKSPACE>/.contract-audit-pefjrzze/stronger-correct/service.py sha256=c2a124ed25de8e1a207c3dbe82b50a17ec196e862ce65963ed6d857469902f33
+OBSERVATION [4,4,2]: '{\n  "ids": [\n    4,\n    4,\n    2\n  ],\n  "count": 3\n}'
+test_empty (test_service.Existing.test_empty) ... ok
+test_nonempty (test_service.Existing.test_nonempty) ... ok
+test_supported_lists (test_contract_stronger.Contract.test_supported_lists) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+NATIVE EXIT: 0
+
+PHASE: stronger-faulty 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_service test_contract_stronger
+BINDING: <WORKSPACE>/.contract-audit-pefjrzze/stronger-faulty/service.py sha256=5a877f25eb0fa4ffc20d187828f36a1f4496ad34d86f36b519c0bffc370ac86f
+OBSERVATION [4,4,2]: '{\n  "ids": [\n    2,\n    4\n  ],\n  "count": 2\n}'
+test_empty (test_service.Existing.test_empty) ... ok
+test_nonempty (test_service.Existing.test_nonempty) ... ok
+test_supported_lists (test_contract_stronger.Contract.test_supported_lists) ... 
+  test_supported_lists (test_contract_stronger.Contract.test_supported_lists) (items=[2, 1]) ... FAIL
+  test_supported_lists (test_contract_stronger.Contract.test_supported_lists) (items=[4, 4, 2]) ... FAIL
+  test_supported_lists (test_contract_stronger.Contract.test_supported_lists) (items=[0, 1000000000000000000000000000000, 0]) ... FAIL
+
+======================================================================
+FAIL: test_supported_lists (test_contract_stronger.Contract.test_supported_lists) (items=[2, 1])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.contract-audit-pefjrzze/stronger-faulty/test_contract_stronger.py", line 11, in test_supported_lists
+    self.assertEqual(json.loads(result), {"ids": items, "count": len(items)})
+AssertionError: {'ids': [1, 2], 'count': 2} != {'ids': [2, 1], 'count': 2}
+- {'count': 2, 'ids': [1, 2]}
+?                       ---
+
++ {'count': 2, 'ids': [2, 1]}
+?                      +++
+
+
+======================================================================
+FAIL: test_supported_lists (test_contract_stronger.Contract.test_supported_lists) (items=[4, 4, 2])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.contract-audit-pefjrzze/stronger-faulty/test_contract_stronger.py", line 11, in test_supported_lists
+    self.assertEqual(json.loads(result), {"ids": items, "count": len(items)})
+AssertionError: {'ids': [2, 4], 'count': 2} != {'ids': [4, 4, 2], 'count': 3}
+- {'count': 2, 'ids': [2, 4]}
+?           ^           ---
+
++ {'count': 3, 'ids': [4, 4, 2]}
+?           ^          ++++++
+
+
+======================================================================
+FAIL: test_supported_lists (test_contract_stronger.Contract.test_supported_lists) (items=[0, 1000000000000000000000000000000, 0])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.contract-audit-pefjrzze/stronger-faulty/test_contract_stronger.py", line 11, in test_supported_lists
+    self.assertEqual(json.loads(result), {"ids": items, "count": len(items)})
+AssertionError: {'ids': [0, 1000000000000000000000000000000], 'count': 2} != {'ids': [0, 1000000000000000000000000000000, 0], 'count': 3}
+- {'count': 2, 'ids': [0, 1000000000000000000000000000000]}
+?           ^
+
++ {'count': 3, 'ids': [0, 1000000000000000000000000000000, 0]}
+?           ^                                            +++
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+FAILED (failures=3)
+NATIVE EXIT: 1
+UNCHANGED TEST SHA256: 94213c274a97f8aa1261f63b26a941118bd94ecfd7bf95b9606c45bc1ea5457c
+IDENTICAL STRONGER TEST SHA256: 8e778b8c9936b9c7437ce89f8c61dca4a6b5744116e234a3b1fc1ca48525b550
+PRESERVATION: all original file contents, modes, directory entries and Git metadata unchanged; scratch removed.
