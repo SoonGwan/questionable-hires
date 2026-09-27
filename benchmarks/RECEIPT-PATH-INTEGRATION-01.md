@@ -12,7 +12,7 @@ assertions, unsupported-value incompleteness and default-off behavior remain.
 Stale unversioned/v2 sidecars are rejected by the current v3 consumer, retaining
 the real native exit. Historical stored results keep their original format.
 
-The ordinary production controls now exercise the installed source directly.
+The ordinary production controls now exercise the repository source directly.
 The historical candidate-named test file is retained for links; its preceding
 failing-before/candidate controls and source hashes remain in the dated native
 report and Git history. Initial collector/author-test mistakes remain recorded.
@@ -28,6 +28,9 @@ covered across two interpreter environments, not one no-skip process.
 A seven-file Git-free source archive separately passes all11 affected observer
 checks: [native output](results/receipt-path-integration-01/archive-tests.txt),
 [archive hashes](results/receipt-path-integration-01/archive-sources.json).
+A separate fresh installation into an owned temporary destination also passes
+`install.py --check` (all bytes/modes match), and its comparison CLI starts with
+v3 help. This does not update or verify an existing personal installation.
 No model artifacts or repository history are inputs; authored fixtures create
 their own local Git histories. This is scoped native validation, not independent
 real-project/model efficiency evidence or native Windows execution.
