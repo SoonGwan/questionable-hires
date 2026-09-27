@@ -93,15 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-External bundle02 solver staging01,2026-09-27,parent`582a37b4`:
-[all8 pristine source snapshots](EXTERNAL-BUNDLE-02-SOLVER-STAGING-01.md) preserve
-base bytes/modes plus separately hashed genuine metadata; one Git commit/no remote/
-no upstream object each, actual fresh public imports8/8. Initial path-alias guard
-failure retained. Host-only staging is not OS isolation or native grading readiness;
-zero models/issue tests, no all8 efficiency claim.
-한국어: 평가 패치 없는 8개 원본 소스의 import·보존을 확인했다. 같은 Mac의
-별도 폴더로 격리 완료가 아니며 전체 평가·품질·비용 비교는 아직 미완료다.
-
 Native status config01,2026-09-27,parent`f3abda01`:
 [actual compatibility regression](NATIVE-STATUS-CONFIG-01.md) reproduces modern
 config-consuming hook failure; corrected call passes actual2.8.7/4.0.2/8-dev runtimes
