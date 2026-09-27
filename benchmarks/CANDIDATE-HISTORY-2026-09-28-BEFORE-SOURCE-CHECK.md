@@ -24,7 +24,6 @@ confirmation resource. The hosted landing is separately verified in
 [the maintenance report](../docs/LANDING-MAINTENANCE-CHECK-2026-09-27.md).
 Native controls, model evidence and hosted release checks have different scopes.
 [Personal Mac sync](../docs/PERSONAL-INSTALL-SYNC-2026-09-28.md),2026-09-28,source`2db6852c`: three copies updated with backups; all8/52 resource bytes/modes match and installed Receipt v3 controls pass. This delivers adopted code locally, not a new model gain or hosted release.
-[Source release check](../docs/RELEASE-SOURCE-CHECK-2026-09-28.md),2026-09-28,parent`53129f98`: stale v2 installer expectation repaired;1,365 distinct methods covered across initial/follow-up processes. [Export path correction](PUBLIC-PATH-REDACTION-2026-09-28.md) preserves originals; public history/hosted delivery and model goals remain separate.
 
 한국어: integration06(2026-09-27,1d0e92ac)은16회 원본 합계에서 토큰16.95% 증가,
 시간10.00% 감소다. 16회 원본 결과·범위·보존 검토는 완료했고 범위 위반과 검사 차이를 보존한다. 전체8개 목표는
@@ -36,5 +35,3 @@ Native controls, model evidence and hosted release checks have different scopes.
 한국어 추가: 출력 축약 후보는 실제 채택0회·토큰20.31% 증가로 기본 반영하지 않는다.
 
 [Pre-install decision checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-PERSONAL-SYNC.md) preserves the preceding index.
-
-[Pre-source-check checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-SOURCE-CHECK.md) preserves the preceding index.

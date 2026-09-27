@@ -17,7 +17,7 @@
     "-c",
     "web_search=\"disabled\"",
     "-c",
-    "mcp_servers={qh_guest={command=\"/tmp/qh-tool-bridge-env-01/bin/python\",args=[\"-B\",\"/Users/gwonsungwan/Documents/GitHub/questionable-hires/benchmarks/results/solver-mcp-lifecycle-01/server.py\",\"--vm\",\"/tmp/qh-solver-serial-channel-02\",\"--log\",\"/tmp/qh-solver-model-catalog-01/guest.log\"],enabled_tools=[\"guest_command\"],startup_timeout_sec=25,tool_timeout_sec=20}}",
+    "mcp_servers={qh_guest={command=\"<TEMP>\",args=[\"-B\",\"<WORKSPACE>/benchmarks/results/solver-mcp-lifecycle-01/server.py\",\"--vm\",\"<TEMP>\",\"--log\",\"<TEMP>\"],enabled_tools=[\"guest_command\"],startup_timeout_sec=25,tool_timeout_sec=20}}",
     "--model",
     "gpt-6-astra",
     "--sandbox",
@@ -27,7 +27,7 @@
     "--skip-git-repo-check",
     "--json",
     "-C",
-    "/tmp/qh-solver-model-catalog-01/project"
+    "<TEMP>"
   ],
   "prompt": "Authorized metadata-only diagnostic, not an issue-solving task. Invoke functions exec exactly once with this JavaScript: const matches = ALL_TOOLS.filter(t => /qh_guest|guest_command|disposable Linux guest/i.test(t.name + \" \" + t.description)); text({catalog_count: ALL_TOOLS.length, matches: matches.map(t => ({name:t.name, owned_guest_description_match:t.description.includes(\"Execute an authorized shell command inside the disposable Linux guest only.\")}))}); Then report only the observed catalog count and matching tool names. Do not call any matched tool, host shell, patch, file, network, or other tools. Do not repeat the lookup. If exec or ALL_TOOLS is unavailable, report that without fallback. No private instruction text or descriptions should be printed.",
   "scheduled_cells": 1,
