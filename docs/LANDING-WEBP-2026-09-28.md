@@ -41,9 +41,29 @@ latency improvement is claimed from their network durations.
 No whole-task model tokens, native skill efficiency, all-eight outcomes or featured
 benchmark numbers change. The owner's complete efficiency objective remains unmet.
 
+## Hosted release
+
+Source **`d4916dfd`** was deployed with the existing Mac/Cloudflare release switch.
+Both loopback and public health checks identify this source. The
+[public HTTP check](../benchmarks/results/landing-webp-20260928/public-origin.json)
+retrieved exactly756,050 WebP bytes with the expected SHA-256, `image/webp` media
+type and one-year immutable cache header. That request was a Cloudflare MISS;
+do not describe it as an observed edge HIT.
+
+The complete [public browser check](../benchmarks/results/landing-webp-20260928/public-browser.json)
+then passed all16 responsive/language/JS conditions, all8 JavaScript profile
+selections, root locale navigation, PNG format fallback and zero-difference canvas
+comparison. First artwork transfer was756,350 bytes; the next two page visits
+reported0. The old/new encoded-body difference is43.16%; it is not a controlled
+measurement of full-page elapsed time, and this release does not establish the
+cause of an earlier unrelated hosted navigation timeout.
+
 한국어: 승인된 그림의 픽셀·크기·팔레트를 유지하면서 WebP 전송 파일을 만들었다.
 첫 그림 본문이1,330,161→756,050바이트로43.16% 줄었다. PNG 대체 표시와 장기
 캐시를 유지하고, 브라우저의6,291,456개 RGBA 값 비교에서도 차이가0이다.
 양언어·4개 폭·JS 켜짐/꺼짐16개 조건과8개 캐릭터, 루트 주소의 언어 전환을
 확인했다. 최초 헤더 검사 코드 오류를 고친 뒤 정적19개·서버7개 검사가 통과했다.
 전체 페이지 지연이나 스킬 토큰 절감으로 바꾸어 주장하지 않는다.
+`d4916dfd`를 실제 공개 주소에 배포했고 같은16개 브라우저 조건·PNG 대체 표시·
+픽셀 일치·재방문 전송0바이트를 확인했다. 공개 응답의 형식·캐시·실제 파일
+해시도 일치한다. 확인한 HTTP 요청은Cloudflare MISS였다.
