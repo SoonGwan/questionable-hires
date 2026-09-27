@@ -56,3 +56,23 @@ declined; this fix does not reverse their measured decisions.
 전 실패·수정 후 통과했으며 Git 없는 아카이브에서 기존 검사를 포함한127개가
 모두 통과했다. 오류는 키만 표시하고 값을 출력하지 않는다. 모델 토큰·시간
 절감 실험은 아니며 이전 불리한 측정이나 대표 수치는 바꾸지 않는다.
+
+## Local delivery
+
+Source `829a2b02` is installed on the owner's Mac with the previous Con Artist
+folder backed up outside skill discovery. [Installed inventories](results/audit-recipe-keys-01/installed.json)
+match the source for all8 hires; [six actual installed-CLI checks](results/audit-recipe-keys-01/installed-checks.txt)
+pass. The initial precheck stopped before mutation because extracted Git archive
+modes were0664 while Git/live modes were0644. Exact parent bytes and `git ls-tree`
+modes resolved this author check mismatch; no owner changes were overwritten.
+
+The regenerated downloadable archive is104,809bytes, SHA-256
+`b4bc524b78aec2c780112c8df4c12dd7695490132e79b7fcacf6d1d0e3635812`.
+All19 landing checks pass, including installation of exact packaged resources,
+static KO/EN metadata and preservation of every historical benchmark cell.
+Public delivery is a separate check; this section establishes local installation
+and generated download bytes only.
+
+한국어: `829a2b02`를 Mac 실제 설치본에 반영했고 기존 폴더를 백업했다. 전체8개
+리소스가 소스와 일치하고 실제 설치 CLI6개·랜딩19개 검사가 통과했다. 초기 권한
+대조 오류는 변경 전에 중단됐으며 Git의 실제 권한과 내용으로 재확인했다.
