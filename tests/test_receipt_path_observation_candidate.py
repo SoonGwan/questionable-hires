@@ -58,7 +58,10 @@ class PathObservationCandidateTests(unittest.TestCase):
                         self.assertEqual(check['suite_observation']['tests'], 5)
                         self.assertEqual(check['suite_observation']['skipped'], 0)
                         self.assertFalse(check['output_truncated'])
-                        self.assertTrue(check['provenance_ready'])
+                        if mode == 'module':
+                            self.assertTrue(check['provenance_ready'])
+                        for module in recipe['imports']:
+                            self.assertIn('Verified copied import: ' + module, check['output'])
                         observation = check['assertion_observation']
                         self.assertTrue(observation['complete'])
                         self.assertEqual(observation['v'], 3)
