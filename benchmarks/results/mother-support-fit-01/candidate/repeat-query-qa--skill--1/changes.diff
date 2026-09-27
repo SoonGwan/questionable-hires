@@ -1,0 +1,94 @@
+diff --git a/test_search.py b/test_search.py
+index 5bb95fc..57c3f1a 100644
+--- a/test_search.py
++++ b/test_search.py
+@@ -1,7 +1,89 @@
++import asyncio
+ import unittest
+ from search import Search
+ 
+ 
++class ControlledFetch:
++    """One independently settled successful response per actual fetch call."""
++
++    def __init__(self):
++        self.calls = asyncio.Queue()
++
++    async def __call__(self, key):
++        response = asyncio.get_running_loop().create_future()
++        self.calls.put_nowait((key, response))
++        return await response
++
++
+ class SearchTests(unittest.IsolatedAsyncioTestCase):
+     async def test_initial(self):
+         self.assertIsNone(Search(None).result)
++
++    async def test_identical_queries_complete_newest_first(self):
++        await self.check_overlap("repeat", "repeat", newest_first=True)
++
++    async def test_different_queries_complete_newest_first(self):
++        await self.check_overlap("older query", "newer query", newest_first=True)
++
++    async def test_identical_queries_retain_payload_until_newest_completes(self):
++        await self.check_overlap("repeat", "repeat", newest_first=False)
++
++    async def check_overlap(self, older_query, newer_query, *, newest_first):
++        fetch = ControlledFetch()
++        search = Search(fetch)
++        previous = {
++            "items": [{"id": "previous", "details": {"title": "Displayed"}}],
++            "metadata": {"total": 7, "cursor": "previous-page"},
++        }
++        older_payload = {
++            "items": [{"id": "older", "details": {"title": "Older response"}}],
++            "metadata": {"total": 2, "cursor": "older-page"},
++        }
++        newest_payload = {
++            "items": [{"id": "newest", "details": {"title": "Newest response"}}],
++            "metadata": {"total": 3, "cursor": None},
++        }
++        search.result = previous
++        tasks = []
++        try:
++            older_task = asyncio.create_task(search.submit(older_query))
++            tasks.append(older_task)
++            older_key, older_response = await asyncio.wait_for(fetch.calls.get(), 1)
++            self.assertEqual(older_key, older_query, "first actual fetch key")
++            self.assertEqual(search.result, previous, "payload after first submission")
++
++            newest_task = asyncio.create_task(search.submit(newer_query))
++            tasks.append(newest_task)
++            newest_key, newest_response = await asyncio.wait_for(fetch.calls.get(), 1)
++            self.assertEqual(newest_key, newer_query, "second actual fetch key")
++            self.assertIsNot(older_response, newest_response)
++            self.assertFalse(older_response.done())
++            self.assertFalse(newest_response.done())
++            self.assertEqual(search.result, previous, "payload after second submission")
++
++            if newest_first:
++                newest_response.set_result(newest_payload)
++                await asyncio.wait_for(newest_task, 1)
++                self.assertEqual(search.result, newest_payload, "payload after newest completion")
++                self.assertFalse(older_response.done())
++
++                older_response.set_result(older_payload)
++                await asyncio.wait_for(older_task, 1)
++                self.assertEqual(search.result, newest_payload, "payload after older completion")
++            else:
++                older_response.set_result(older_payload)
++                await asyncio.wait_for(older_task, 1)
++                self.assertFalse(newest_response.done())
++                self.assertEqual(
++                    search.result, previous,
++                    "retain displayed payload after older completion while newest is pending",
++                )
++
++                newest_response.set_result(newest_payload)
++                await asyncio.wait_for(newest_task, 1)
++                self.assertEqual(search.result, newest_payload, "payload after newest completion")
++            self.assertTrue(fetch.calls.empty(), "unexpected extra fetch calls")
++        finally:
++            for task in tasks:
++                task.cancel()
++            await asyncio.wait_for(asyncio.gather(*tasks, return_exceptions=True), 1)

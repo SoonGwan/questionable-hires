@@ -1,0 +1,341 @@
+{
+  "session_id": "01a0e412-9e1a-7ff3-892c-519a9592f778",
+  "source_bytes": 129113,
+  "source_sha256": "9cadf90e6b2e8c2295e363fc528d7ffbbdf75eedfd4ca513e0903425abf2f338",
+  "cli_events_sha256": "43bc54c935a20cf3aaf551db5170886868e09fa3da30b0b731ef2419194d0668",
+  "source_lines": 46,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "7e4835aa9bdf7f9c5d47182c6e07fea5e84a80c47dda425c0178abc7661c40d5",
+      "record": {
+        "timestamp": "2026-09-27T18:13:47.915Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0540b05303880fe9016ab95cd8d4c487d0a4122ed0d4c1dd90",
+          "status": "completed",
+          "call_id": "call_hmWYGeGLmBQW8Y9Bm0wGbK59",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files -g 'AGENTS.md' -g 'SKILL.md' -g 'search.py' -g 'requirements.md' -g 'test_search.py' -g '!**/.git/**'\",\"max_output_tokens\":3000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/mother-in-law/SKILL.md AGENTS.md requirements.md search.py test_search.py\",\"max_output_tokens\":9000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e412-9e6e-7003-bf4b-701c6921bbe2",
+            "create_time": 1790532822.609973
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "f77923d72e3cb88b0410125228089478828f98def03232d3b94abb458eab48d1",
+      "record": {
+        "timestamp": "2026-09-27T18:13:48.120Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e412-bbd8-7531-93bc-5850aa2ae1fd",
+          "call_id": "call_hmWYGeGLmBQW8Y9Bm0wGbK59",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"da897a\",\"wall_time_seconds\":0.000004,\"exit_code\":0,\"original_token_count\":51,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nsearch.py\\ntest_search.py\\nrequirements.md\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"04b577\",\"wall_time_seconds\":0.000002791,\"exit_code\":0,\"original_token_count\":980,\"output\":\"---\\nname: mother-in-law\\ndescription: Test a changed user interaction for realistic sequence failures such as double submission, stale responses, navigation, and recovery; use for interaction QA rather than general code review.\\n---\\n\\n# Mother-in-law\\n\\n> And what happens if I click it twice?\\n\\nRead supplied requirements, interaction code, native tests, existing test support\\nand applicable project instructions together when practical. Discover missing\\npaths, not another inventory before known-file reads.\\nUse controlled responses/clocks, isolated cases, bounded waits, and owned-operation\\ncleanup\u2014never sleeps or production actions. Preserve user files and scope.\\n\\nDerive expected states from the product contract, not today's implementation.\\nSeparate final ownership from interval requirements. \u201cRetain while loading\u201d or\\n\u201cuntil the latest completes\u201d applies throughout that interval: assert the retained\\nvalue after relevant intervening completions while the latest remains pending,\\nnot only at request entry. Printing an observation is not a regression assertion.\\nIf only final ownership is required, leave unspecified intermediate display as\\nobservation; seeing an older response does not require a valid fix to display it.\\nA regression must reject the fault without rejecting another permitted path.\\n\\nChoose the requested deliverable; load only its relevant support:\\n\\n- **Project regression:** extend and run the native test directly, not a disposable\\n  probe first. Reuse adequate project fixtures and covered cases; skip transport\\n  and probe references when that support is already present. Only when additional\\n  Python request-control support is needed, read the [native-test interface](references/native-tests.md)\\n  and [copiable transport](assets/controlled_fetch.py) together. An installed-helper\\n  command or saved JSON is not a standalone project regression.\\n\\n- **Captured observations without a project-test deliverable:** the optional\\n  [component probe](references/component-probe.md) fits a zero-argument constructor,\\n  async `run(query, fetch)` and direct payload state. An opt-in mode checks required\\n  display retention through normal/reversed overlap; repeated identical overlapping\\n  queries still require project checks. Existing adequate runners take precedence.\\n  Never change production to fit a helper. Native-project delivery does not need\\n  this reference.\\n\\n- **Rendered UI:** read [references/browser.md](references/browser.md).\\n\\nReturn the tested sequence, expected/observed state, tested layer, and complete\\nbounded command. Stop after the nearest normal and targeted adversarial cases.\\nDo not add separate evidence files when captured check output already proves them.\\nBrowser unavailability leaves browser QA incomplete. QA does not authorize a fix.\\nQA only. Preserve search.py, requirements.md and this file. Extend test_search.py; optional new standalone standard-library test support is allowed. No external services, installs, sleeps, production fixes or delegation. Keep any scratch below this project and remove it.\\nEvery submission is a new request, even if its query equals a pending request. Only the newest request may replace the displayed complete payload. Preserve the last displayed payload while any newer request is pending. This audit covers successful responses and request order only; error display, cancellation semantics, payload validation and rendered UI are not specified.\\nclass Search:\\n    def __init__(self, fetch):\\n        self.fetch = fetch\\n        self.result = None\\n        self.latest = None\\n\\n    async def submit(self, query):\\n        self.latest = query\\n        payload = await self.fetch(query)\\n        if self.latest == query:\\n            self.result = payload\\nimport unittest\\nfrom search import Search\\n\\n\\nclass SearchTests(unittest.IsolatedAsyncioTestCase):\\n    async def test_initial(self):\\n        self.assertIsNone(Search(None).result)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e412-9e6e-7003-bf4b-701c6921bbe2",
+            "create_time": 1790532828.1204
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "c6207cd1981927beb8732728ce5df45f5947ff7c5b8808930423a3739350012e",
+      "record": {
+        "timestamp": "2026-09-27T18:13:51.724Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0540b05303880fe9016ab95cddca0487d08262627021e56d32",
+          "status": "completed",
+          "call_id": "call_5i9w410qmAV5S23kMqkTsqX5",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat .agents/skills/mother-in-law/references/native-tests.md .agents/skills/mother-in-law/assets/controlled_fetch.py\",\"max_output_tokens\":7000}));\ntext(await tools.exec_command({cmd:\"git status --short\",\"max_output_tokens\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e412-9e6e-7003-bf4b-701c6921bbe2",
+            "create_time": 1790532828.551653
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "5425ed89650a6b9c79c901db776579850bd60f44854b3e83c3e24fec9efabea2",
+      "record": {
+        "timestamp": "2026-09-27T18:13:51.880Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e412-ca88-7c40-a303-a15c8d662e43",
+          "call_id": "call_5i9w410qmAV5S23kMqkTsqX5",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"9149e9\",\"wall_time_seconds\":0.00000375,\"exit_code\":0,\"original_token_count\":916,\"output\":\"# Native Python request control\\n\\nAdapt [controlled_fetch.py](../assets/controlled_fetch.py) only when equivalent\\nproject support is absent. The copy needs no installed skill.\\n\\n`await fetch.started(key)` checks actual entry/key and returns a unique handle,\\neven for repeated keys. Call `request.complete(payload)` or\\n`request.fail_request(error)` directly, without TestCase wrappers.\\nCancelling or timing out the entry wait leaves unconsumed requests and application\\ntasks untouched; a later waiter can observe the pending request. A returned handle\\nis already consumed. These are cooperative same-loop waits, not process deadlines.\\n\\nTests own component assertions and bounded task cancellation/draining, including\\nafter failed entry checks; the asset does neither. Do not shadow runner methods:\\ntransport failure is `fail_request`, not `unittest.TestCase.fail`.\\n\\nFor custom assertion plumbing you introduce, exercise an isolated deliberate\\nmismatch and confirm actual/expected evidence, not a support exception. Ordinary\\nunmodified framework assertions do not need a separate test of the assertion\\nlibrary. Add repeated-key cases when identity/reuse is relevant to the contract or\\nimplementation, not merely because the transport supports them. Keep all distinct\\nrequired state transitions, including intervening retention checkpoints.\\n\\\"\\\"\\\"Copy into permitted project test support only when no equivalent exists.\\n\\nEach received Request identifies one call, even when keys repeat. The test owns\\ncomponent tasks: cancel and await them in cleanup. This controls fetch responses,\\nnot component state or browser rendering. No real network or sleeps.\\n\\\"\\\"\\\"\\nimport asyncio\\nfrom dataclasses import dataclass\\nfrom typing import Any\\n\\n\\n@dataclass(frozen=True)\\nclass Request:\\n    key: Any\\n    response: asyncio.Future\\n\\n    def complete(self, value):\\n        self.response.set_result(value)\\n\\n    def fail_request(self, error):\\n        self.response.set_exception(error)\\n\\n\\nclass ControlledFetch:\\n    def __init__(self):\\n        self.calls = asyncio.Queue()\\n        self._entry_changed = asyncio.Event()\\n\\n    async def __call__(self, key):\\n        request = Request(key, asyncio.get_running_loop().create_future())\\n        self.calls.put_nowait(request)\\n        self._entry_changed.set()\\n        return await request.response\\n\\n    async def started(self, expected, timeout=1):\\n        \\\"\\\"\\\"Wait for actual fetch entry, assert its key, return a unique handle.\\n\\n        Timeout/cancellation leaves component tasks and unconsumed requests alone.\\n        The caller owns tasks and must clean them even when this assertion fails.\\n        \\\"\\\"\\\"\\n        if not 0 < timeout <= 30:\\n            raise ValueError('timeout must be in (0, 30]')\\n        loop = asyncio.get_running_loop()\\n        deadline = loop.time() + timeout\\n        while self.calls.empty():\\n            self._entry_changed.clear()\\n            # Wait for availability, not a child queue getter that can consume\\n            # the request while cancellation is being delivered to this waiter.\\n            notice = asyncio.create_task(self._entry_changed.wait())\\n            try:\\n                done, _ = await asyncio.wait((notice,), timeout=max(0, deadline - loop.time()))\\n                if not done:\\n                    raise asyncio.TimeoutError('Timed out waiting for request entry')\\n            finally:\\n                notice.cancel()\\n                await asyncio.gather(notice, return_exceptions=True)\\n        request = self.calls.get_nowait()\\n        if request.key != expected:\\n            raise AssertionError(\\n                f'request key: expected {expected!r}, observed {request.key!r}')\\n        return request\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"5ebede\",\"wall_time_seconds\":0.000003584,\"exit_code\":0,\"original_token_count\":3,\"output\":\"?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e412-9e6e-7003-bf4b-701c6921bbe2",
+            "create_time": 1790532831.880008
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "1b7c1a54f7bb3883153bf366c6f41b54ed839ec72aa9a95bed1b12eae8dec5b2",
+      "record": {
+        "timestamp": "2026-09-27T18:14:33.003Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0540b05303880fe9016ab95ceb702c87d0adc876a5c713a448",
+          "status": "completed",
+          "call_id": "call_dKLjqBS3pr8gOxgI7nSOfKjT",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/test_search.py\\n@@\\n-import unittest\\n+import asyncio\\n+import unittest\\n@@\\n     async def test_initial(self):\\n         self.assertIsNone(Search(None).result)\\n+\\n+    async def test_identical_queries_complete_in_reverse_order(self):\\n+        await self._assert_reverse_completion(\\\"repeat\\\", \\\"repeat\\\")\\n+\\n+    async def test_different_queries_complete_in_reverse_order(self):\\n+        await self._assert_reverse_completion(\\\"older\\\", \\\"newer\\\")\\n+\\n+    async def _assert_reverse_completion(self, older_query, newer_query):\\n+        # Each actual fetch call receives its own response, including equal keys.\\n+        requests = asyncio.Queue()\\n+        fetch_keys = []\\n+        owned_tasks = []\\n+\\n+        async def fetch(key):\\n+            response = asyncio.get_running_loop().create_future()\\n+            fetch_keys.append(key)\\n+            requests.put_nowait((key, response))\\n+            return await response\\n+\\n+        search = Search(fetch)\\n+        displayed = {\\n+            \\\"items\\\": [{\\\"id\\\": \\\"seed\\\", \\\"details\\\": {\\\"label\\\": \\\"Previously shown\\\"}}],\\n+            \\\"total\\\": 1,\\n+            \\\"metadata\\\": {\\\"request\\\": \\\"seed\\\", \\\"cursor\\\": None},\\n+        }\\n+        older_payload = {\\n+            \\\"items\\\": [{\\\"id\\\": \\\"old\\\", \\\"details\\\": {\\\"label\\\": \\\"Older response\\\"}}],\\n+            \\\"total\\\": 7,\\n+            \\\"metadata\\\": {\\\"request\\\": \\\"older\\\", \\\"cursor\\\": \\\"old-page\\\"},\\n+        }\\n+        newest_payload = {\\n+            \\\"items\\\": [{\\\"id\\\": \\\"new\\\", \\\"details\\\": {\\\"label\\\": \\\"Newest response\\\"}}],\\n+            \\\"total\\\": 12,\\n+            \\\"metadata\\\": {\\\"request\\\": \\\"newest\\\", \\\"cursor\\\": \\\"new-page\\\"},\\n+        }\\n+\\n+        async def start(query):\\n+            task = asyncio.create_task(search.submit(query))\\n+            owned_tasks.append(task)\\n+            actual_key, response = await asyncio.wait_for(requests.get(), timeout=1)\\n+            self.assertEqual(actual_key, query)\\n+            self.assertFalse(task.done(), \\\"Submission must await its own response\\\")\\n+            return task, response\\n+\\n+        async def complete(task, response, payload):\\n+            response.set_result(payload)\\n+            await asyncio.wait_for(asyncio.shield(task), timeout=1)\\n+\\n+        try:\\n+            seed_task, seed_response = await start(\\\"seed\\\")\\n+            await complete(seed_task, seed_response, displayed)\\n+            self.assertEqual(search.result, displayed, \\\"Seed complete payload\\\")\\n+\\n+            older_task, older_response = await start(older_query)\\n+            self.assertEqual(search.result, displayed, \\\"Retain payload after older submission\\\")\\n+\\n+            newest_task, newest_response = await start(newer_query)\\n+            self.assertIsNot(older_response, newest_response)\\n+            self.assertEqual(fetch_keys, [\\\"seed\\\", older_query, newer_query])\\n+            self.assertEqual(search.result, displayed, \\\"Retain payload after newest submission\\\")\\n+            self.assertFalse(older_response.done())\\n+\\n+            await complete(newest_task, newest_response, newest_payload)\\n+            self.assertFalse(older_task.done(), \\\"Older request must still be pending\\\")\\n+            self.assertEqual(search.result, newest_payload, \\\"Newest completion owns complete payload\\\")\\n+\\n+            await complete(older_task, older_response, older_payload)\\n+            self.assertEqual(search.result, newest_payload, \\\"Older completion must not replace newest payload\\\")\\n+        finally:\\n+            # Register ownership before any assertion; failures also drain tasks.\\n+            for task in owned_tasks:\\n+                task.cancel()\\n+            await asyncio.wait_for(\\n+                asyncio.gather(*owned_tasks, return_exceptions=True), timeout=1\\n+            )\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest -v test_search\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e412-9e6e-7003-bf4b-701c6921bbe2",
+            "create_time": 1790532832.285744
+          }
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "0b35f2f76124c28464cbe506a5c851670e60a74b225076554f623f464e9375fd",
+      "record": {
+        "timestamp": "2026-09-27T18:14:33.205Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e413-6bf5-7a53-b309-c6e2e0ac2cc9",
+          "call_id": "call_dKLjqBS3pr8gOxgI7nSOfKjT",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"1c030a\",\"wall_time_seconds\":0.000003,\"exit_code\":1,\"original_token_count\":774,\"output\":\"test_different_queries_complete_in_reverse_order (test_search.SearchTests.test_different_queries_complete_in_reverse_order) ... ok\\ntest_identical_queries_complete_in_reverse_order (test_search.SearchTests.test_identical_queries_complete_in_reverse_order) ... FAIL\\ntest_initial (test_search.SearchTests.test_initial) ... ok\\n\\n======================================================================\\nFAIL: test_identical_queries_complete_in_reverse_order (test_search.SearchTests.test_identical_queries_complete_in_reverse_order)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 90, in _callTestMethod\\n    if self._callMaybeAsync(method) is not None:\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 112, in _callMaybeAsync\\n    return self._asyncioRunner.run(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 118, in run\\n    return self._loop.run_until_complete(task)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\\\", line 653, in run_until_complete\\n    return future.result()\\n           ^^^^^^^^^^^^^^^\\n  File \\\"<WORKSPACE>/test_search.py\\\", line 11, in test_identical_queries_complete_in_reverse_order\\n    await self._assert_reverse_completion(\\\"repeat\\\", \\\"repeat\\\")\\n  File \\\"<WORKSPACE>/test_search.py\\\", line 76, in _assert_reverse_completion\\n    self.assertEqual(search.result, newest_payload, \\\"Older completion must not replace newest payload\\\")\\nAssertionError: {'items': [{'id': 'old', 'details': {'label': 'Older respons[69 chars]ge'}} != {'items': [{'id': 'new', 'details': {'label': 'Newest respon[72 chars]ge'}}\\n- {'items': [{'details': {'label': 'Older response'}, 'id': 'old'}],\\n?                                   ^^^ ^                    ^^^\\n\\n+ {'items': [{'details': {'label': 'Newest response'}, 'id': 'new'}],\\n?                                   ^ ^^^^                    ^^^\\n\\n-  'metadata': {'cursor': 'old-page', 'request': 'older'},\\n?                          ^^^                    ^^^ ^\\n\\n+  'metadata': {'cursor': 'new-page', 'request': 'newest'},\\n?                          ^^^                    ^ ^^^^\\n\\n-  'total': 7}\\n?           ^\\n\\n+  'total': 12}\\n?           ^^\\n : Older completion must not replace newest payload\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.013s\\n\\nFAILED (failures=1)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e412-9e6e-7003-bf4b-701c6921bbe2",
+            "create_time": 1790532873.205749
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 37,
+      "line_sha256": "c6d7b7333121a8fb9bf7d03de1c5fe1149d363781c02fc50b859e6d02ccbb912",
+      "record": {
+        "timestamp": "2026-09-27T18:14:36.309Z",
+        "ordinal": 36,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0540b05303880fe9016ab95d0b5ba887d0b64dc8bb769245f9",
+          "status": "completed",
+          "call_id": "call_XFg1VrY8M6HWj0qREACF9khc",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff --check && git diff --stat && git status --short\",\"max_output_tokens\":1500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e412-9e6e-7003-bf4b-701c6921bbe2",
+            "create_time": 1790532873.677121
+          }
+        }
+      }
+    },
+    {
+      "line": 40,
+      "line_sha256": "7ba8505cda354ddf07104b105e9106fcf81ff452fa8e69990cd3a3446debb077",
+      "record": {
+        "timestamp": "2026-09-27T18:14:36.439Z",
+        "ordinal": 39,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e413-7897-70b0-9dc6-aa68f4528817",
+          "call_id": "call_XFg1VrY8M6HWj0qREACF9khc",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"ee1f75\",\"wall_time_seconds\":0.0000035,\"exit_code\":0,\"original_token_count\":36,\"output\":\" test_search.py | 76 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\\n 1 file changed, 76 insertions(+)\\n M test_search.py\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e412-9e6e-7003-bf4b-701c6921bbe2",
+            "create_time": 1790532876.439652
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "command_output_candidates": [
+    {
+      "command_id": "item_1",
+      "cli_event_line": 5,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_2",
+      "cli_event_line": 7,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_hmWYGeGLmBQW8Y9Bm0wGbK59",
+          "call_line": 13,
+          "call_line_sha256": "7e4835aa9bdf7f9c5d47182c6e07fea5e84a80c47dda425c0178abc7661c40d5",
+          "output_line": 17,
+          "output_line_sha256": "f77923d72e3cb88b0410125228089478828f98def03232d3b94abb458eab48d1",
+          "output_block_index": 2,
+          "exit_code": 0,
+          "output_sha256": "58b26a875b649e9bbb9f137670633f57e481f2b4e34a122ea1bdc1122423adfd",
+          "output_chars": 3908,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_3",
+      "cli_event_line": 9,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_5i9w410qmAV5S23kMqkTsqX5",
+          "call_line": 19,
+          "call_line_sha256": "c6207cd1981927beb8732728ce5df45f5947ff7c5b8808930423a3739350012e",
+          "output_line": 23,
+          "output_line_sha256": "5425ed89650a6b9c79c901db776579850bd60f44854b3e83c3e24fec9efabea2",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "e7a0d17a566c648dba7dc6be010dc79841968ab3b5d2c1cc720067a083098519",
+          "output_chars": 3661,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_4",
+      "cli_event_line": 11,
+      "status": "ambiguous",
+      "candidates": [
+        {
+          "call_id": "call_5i9w410qmAV5S23kMqkTsqX5",
+          "call_line": 19,
+          "call_line_sha256": "c6207cd1981927beb8732728ce5df45f5947ff7c5b8808930423a3739350012e",
+          "output_line": 23,
+          "output_line_sha256": "5425ed89650a6b9c79c901db776579850bd60f44854b3e83c3e24fec9efabea2",
+          "output_block_index": 2,
+          "exit_code": 0,
+          "output_sha256": "322bb461650434c84a6225f7f5a45012c17c4f93b8ac83867fa36e9c903371eb",
+          "output_chars": 12,
+          "relation": "equal"
+        },
+        {
+          "call_id": "call_XFg1VrY8M6HWj0qREACF9khc",
+          "call_line": 37,
+          "call_line_sha256": "c6d7b7333121a8fb9bf7d03de1c5fe1149d363781c02fc50b859e6d02ccbb912",
+          "output_line": 40,
+          "output_line_sha256": "7ba8505cda354ddf07104b105e9106fcf81ff452fa8e69990cd3a3446debb077",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "387e65b74ff4131bf3f3cc2e3d2f1b93fa48bc59dcdb05c52879eb122d70ab75",
+          "output_chars": 144,
+          "relation": "longer_suffix_match"
+        }
+      ]
+    },
+    {
+      "command_id": "item_7",
+      "cli_event_line": 16,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_8",
+      "cli_event_line": 18,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_XFg1VrY8M6HWj0qREACF9khc",
+          "call_line": 37,
+          "call_line_sha256": "c6d7b7333121a8fb9bf7d03de1c5fe1149d363781c02fc50b859e6d02ccbb912",
+          "output_line": 40,
+          "output_line_sha256": "7ba8505cda354ddf07104b105e9106fcf81ff452fa8e69990cd3a3446debb077",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "387e65b74ff4131bf3f3cc2e3d2f1b93fa48bc59dcdb05c52879eb122d70ab75",
+          "output_chars": 144,
+          "relation": "equal"
+        }
+      ]
+    }
+  ],
+  "command_output_candidate_limitation": "Candidates match unredacted output suffix and exit only, not command identity or complete stdout. Review the paired call input, order and any earlier chunks. Empty CLI output is never matched; ambiguous matches are never selected automatically.",
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
