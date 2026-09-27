@@ -68,3 +68,20 @@ download delivery are separate from these source checks.
 수정 전 재현7개가 통과했고 Git 이력 없는 소스의 관련 검사180개도 통과했다.
 추가 임시 폴더 잔존 검사까지 새 검사10개가 통과했다. 네이티브 정확성 개선이며
 모델 토큰·시간 절감이나 전체8개 목표 달성으로 해석하지 않는다.
+
+## Installation and prepared download
+
+Source **`fc91d057`** is installed personally. Every previous Con Artist resource
+matched parent`1b497a05` in bytes and Git file mode before replacement; its complete
+directory was preserved outside skill discovery. [Installation identity](results/audit-guard-evidence-01/personal-install.json),
+[all-eight resource comparison](results/audit-guard-evidence-01/all-installed.json)
+and [ten controls using the installed helper](results/audit-guard-evidence-01/installed-tests.txt)
+pass. The tests import and execute the installed file, including its real CLI.
+
+The landing download is rebuilt: [archive identity](results/audit-guard-evidence-01/download.json)
+records106,272 bytes, SHA-256
+`708eae4e50d48e902e614457ba1af53e8223136beaf9c4f23fc71809fccd8db5`,
+and exact packaged helper bytes. Builder consistency covers63 generated files;
+only download archive/checksum changed. [Three packaging controls](results/audit-guard-evidence-01/package.txt)
+pass. These local install/package checks do not establish public delivery or new
+model savings.
