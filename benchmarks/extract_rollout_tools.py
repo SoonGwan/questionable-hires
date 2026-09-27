@@ -14,13 +14,68 @@ TOOL_TYPES = {'function_call', 'function_call_output',
 LIMIT = 50_000_000
 
 
+def command_output_candidates(selected, events):
+    """Index possible stored stdout by text/exit; never infer command identity."""
+    calls, outputs = {}, {}
+    for record in selected:
+        payload = record['record']['payload']
+        call_id = payload.get('call_id')
+        if isinstance(call_id, str) and call_id:
+            group = outputs if payload['type'].endswith('_output') else calls
+            group.setdefault(call_id, []).append(record)
+    envelopes = []
+    for call_id, records in outputs.items():
+        parents = calls.get(call_id, [])
+        if len(parents) != 1 or len(records) != 1 or parents[0]['line'] >= records[0]['line']:
+            continue
+        record, parent = records[0], parents[0]
+        value = record['record']['payload'].get('output')
+        blocks = [(None, value)] if isinstance(value, str) else [
+            (index, block.get('text')) for index, block in enumerate(value if isinstance(value, list) else [])
+            if isinstance(block, dict) and block.get('type') in ('input_text', 'text')]
+        for index, text in blocks:
+            try:
+                envelope = json.loads(text) if isinstance(text, str) else None
+            except ValueError:
+                continue
+            if (not isinstance(envelope, dict) or not isinstance(envelope.get('output'), str)
+                    or type(envelope.get('exit_code')) is not int):
+                continue
+            output = envelope['output']
+            identity = dict(call_id=call_id, call_line=parent['line'],
+                            call_line_sha256=parent['line_sha256'],
+                            output_line=record['line'], output_line_sha256=record['line_sha256'],
+                            output_block_index=index, exit_code=envelope['exit_code'],
+                            output_sha256=hashlib.sha256(output.encode()).hexdigest(),
+                            output_chars=len(output))
+            envelopes.append((output, identity))
+    result = []
+    for event_line, event in enumerate(events, 1):
+        command = event.get('item', {})
+        if event.get('type') != 'item.completed' or command.get('type') != 'command_execution':
+            continue
+        captured, exit_code = command.get('aggregated_output'), command.get('exit_code')
+        matches = []
+        if isinstance(captured, str) and captured and type(exit_code) is int:
+            for output, identity in envelopes:
+                if identity['exit_code'] == exit_code and output.endswith(captured):
+                    matches.append(dict(identity, relation='equal' if output == captured else 'longer_suffix_match'))
+        status = ('empty_cli_output' if captured == '' else
+                  'single_candidate' if len(matches) == 1 else
+                  'ambiguous' if len(matches) > 1 else 'unmatched')
+        result.append(dict(command_id=command.get('id'), cli_event_line=event_line,
+                           status=status, candidates=matches))
+    return result
+
+
 def extract(source, cli_events):
     if source.is_symlink() or not source.is_file() or source.stat().st_size > LIMIT:
         raise ValueError('Expected a regular rollout of at most 50 MB')
     raw = source.read_bytes()
     if len(raw) > LIMIT:
         raise ValueError('Rollout exceeded size limit while reading')
-    events = [json.loads(line) for line in cli_events.read_text().splitlines()]
+    event_raw = cli_events.read_bytes()
+    events = [json.loads(line) for line in event_raw.splitlines()]
     ids = {event['thread_id'] for event in events if event.get('type') == 'thread.started'}
     if len(ids) != 1:
         raise ValueError('CLI events must identify exactly one thread')
@@ -38,7 +93,10 @@ def extract(source, cli_events):
                if r['record']['payload']['type'].endswith('_output')]
     summary = dict(session_id=identities[0], source_bytes=len(raw),
                    source_sha256=hashlib.sha256(raw).hexdigest(),
+                   cli_events_sha256=hashlib.sha256(event_raw).hexdigest(),
                    source_lines=len(records), records=selected,
+                   command_output_candidates=command_output_candidates(selected, events),
+                   command_output_candidate_limitation='Candidates match unredacted output suffix and exit only, not command identity or complete stdout. Review the paired call input, order and any earlier chunks. Empty CLI output is never matched; ambiguous matches are never selected automatically.',
                    missing_output_call_ids=sorted(set(calls)-set(outputs)),
                    unmatched_output_call_ids=sorted(set(outputs)-set(calls)),
                    duplicate_call_ids=len(calls) != len(set(calls)),
