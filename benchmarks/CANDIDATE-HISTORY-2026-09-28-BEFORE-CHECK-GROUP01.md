@@ -7,7 +7,6 @@ It is **not achieved**. No general efficiency or complete release claim is suppo
 
 | Dated checkpoint and measured resource | Evidence | Decision / next gate |
 | --- | --- | --- |
-| [Landlord check grouping01](LANDLORD-CHECK-GROUP-01-REVIEW.md),2026-09-28,previous`cc7591ed`,candidate/execution`849e06dc` | Two original cells: tokens−19.85%,CLI−14.80%; both already group native checks. Candidate instead combines discovery/read; original scoped outcomes and preservation reviewed. | Do not adopt another rule: intended behavior already present in previous arm; no causal or all8 claim. No unchanged rerun. |
 | [Traceback display model01](TRACEBACK-DISPLAY-MODEL-01-REVIEW.md), 2026-09-28, previous `d3e7d5b6`, candidate/execution `f6bc7b63` | Two original cells: tokens +20.31%, CLI −5.12%; no renderer adoption. Native before/after, original output recovery and preservation reviewed. | Declined; new subtest logs also have zero separate display-byte reduction. Keep prototype isolated; no unchanged rerun or all8 gain. |
 | [Integration06 costs](ALL-EIGHT-CURRENT-06-COSTS.md), 2026-09-27, `1d0e92ac` | All16 sessions completed; original per-response sums verified. Tokens +16.95%, CLI elapsed −10.00%; 1/8 pairs decreases both, by only150 tokens in that pair. | Adverse token result. [Scoped original review](ALL-EIGHT-CURRENT-06-REVIEW.md) covers all16; two baseline scope violations, recovered output and unequal work retained. Exposed n=1/shared host/cache. No featured promotion. |
 | [Receipt Path model01](RECEIPT-PATH-OBSERVATION-01-REVIEW.md), 2026-09-27, previous `1d0e92ac`, candidate/execution `8dbbb08a` | Four original cells: tokens −2.16%, CLI −18.23%; 2/2 joint decreases with required SQLite outcomes and source preservation. Candidate a actually uses complete v3 Path observation; candidate b omits the option. Separate native controls pass. | [Ordinary integration01](RECEIPT-PATH-INTEGRATION-01.md): v3 adopted;228 distinct Receipt checks and Git-free observer controls pass. Exposed n=1/related tasks/shared host, only one actual v3 adoption; no no-skill or all8 gain. Initial author audit assumption retained. |
@@ -39,6 +38,3 @@ Native controls, model evidence and hosted release checks have different scopes.
 [Pre-install decision checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-PERSONAL-SYNC.md) preserves the preceding index.
 
 [Pre-source-check checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-SOURCE-CHECK.md) preserves the preceding index.
-
-[Pre-grouping checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-CHECK-GROUP01.md) preserves the preceding index.
-한국어 추가: Landlord 검사 묶기 후보는 한 쌍의 토큰19.85%·시간14.80% 감소에도 기존 버전이 이미 같은 검사 묶기를 수행하므로 기본 채택하지 않는다.

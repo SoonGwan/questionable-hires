@@ -1,0 +1,58 @@
+[
+  {
+    "condition": "previous",
+    "calls": [
+      {
+        "line": 13,
+        "line_sha256": "d3532f0bac33e5a9c09b10588847c1cc62ef0dceabb3e77ed4c820c7ca5614c0",
+        "tool": "exec",
+        "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'SKILL.md' -g '!node_modules' -g '!vendor' -g '!package-lock.json' -g '!yarn.lock'\",\"max_output_tokens\":4000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/landlord/SKILL.md\",\"max_output_tokens\":6000}));\n"
+      },
+      {
+        "line": 19,
+        "line_sha256": "833112c47994248f0b8664ff576481ab779bd03936f9bde00e49850091fce748",
+        "tool": "exec",
+        "input": "text(await tools.exec_command({cmd:\"rg --files --hidden -g '!.git/**' -g '!node_modules/**'\",\"max_output_tokens\":5000}));\n"
+      },
+      {
+        "line": 24,
+        "line_sha256": "e624ea045aba7ca2f2450f37ba6c743cb978d372e3289ff758c281fec339a3fe",
+        "tool": "exec",
+        "input": "text(await tools.exec_command({cmd:\"nl -ba README.md; nl -ba backend.py; nl -ba service.py; nl -ba store.py; nl -ba test_contract.py; nl -ba test_staging.py\",\"max_output_tokens\":12000}));\n"
+      },
+      {
+        "line": 33,
+        "line_sha256": "3f9fdf9d30cc029c3279a3661582f1718fd3176846fc45be62908a45ce53ae42",
+        "tool": "exec",
+        "input": "const results = await Promise.allSettled([\ntools.exec_command({cmd:\"python3 -B -m unittest -v test_contract\",\"max_output_tokens\":4000}),\ntools.exec_command({cmd:\"python3 -B - <<'PY'\\nfrom backend import Backend, Duplicate\\nfrom service import save\\n\\nbackend = Backend()\\nresult = save(backend, 'key', 'original')\\nassert result == {'created': None}\\nprint('Direct Backend creation:', repr(result))\\ntry:\\n    save(backend, 'key', 'replacement')\\nexcept Duplicate:\\n    print('Direct Backend duplicate: Duplicate propagated')\\nelse:\\n    raise AssertionError('Expected Duplicate')\\nassert backend.rows['key'] == 'original'\\nprint('Original value preserved:', repr(backend.rows['key']))\\n\\nclass Offline:\\n    def put(self, key, value):\\n        raise OSError('offline')\\ntry:\\n    save(Offline(), 'key', 'value')\\nexcept OSError as exc:\\n    assert str(exc) == 'offline'\\n    print('Direct Backend operational failure: OSError propagated')\\nelse:\\n    raise AssertionError('Expected OSError')\\nPY\",\"max_output_tokens\":4000})\n]); results.forEach(text);\n"
+      }
+    ],
+    "native_checks_grouped": true,
+    "interpretation": "Both arms already group native checks. Candidate instead combines the second discovery and source read; this does not isolate the added execution instruction."
+  },
+  {
+    "condition": "candidate",
+    "calls": [
+      {
+        "line": 13,
+        "line_sha256": "e4f3dd202b400864c2461bb1bb158835080e109c682c96b7569d8005674f4d65",
+        "tool": "exec",
+        "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'SKILL.md' -g '*.py' -g '*test*' -g '*.md' -g 'pyproject.toml' -g 'package.json'\",max_output_tokens:5000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/landlord/SKILL.md\",max_output_tokens:5000}));\n"
+      },
+      {
+        "line": 19,
+        "line_sha256": "df25a753ca974fcbbba869e5059802b638f4089f60877aaa11027a33f788ee12",
+        "tool": "exec",
+        "input": "text(await tools.exec_command({cmd:\"rg --files --hidden -g '!.git/**';\",max_output_tokens:4000}));\ntext(await tools.exec_command({cmd:\"for f in README.md backend.py store.py service.py test_contract.py test_staging.py; do nl -ba \\\"$f\\\"; done\",max_output_tokens:10000}));\n"
+      },
+      {
+        "line": 27,
+        "line_sha256": "3cd4aa5f64f27a6679f3bcf76597e1bfad01280f01d70592c8e2dac28305b80b",
+        "tool": "exec",
+        "input": "const results = await Promise.allSettled([\ntools.exec_command({cmd:\"python3 -B -m unittest -v test_contract\",max_output_tokens:3000}),\ntools.exec_command({cmd:\"python3 -B - <<'PY'\\nfrom backend import Backend, Duplicate\\nfrom service import save\\n\\nbackend = Backend()\\nresult = save(backend, 'key', 'original')\\nassert result == {'created': None}, result\\nprint('Direct Backend creation:', result)\\ntry:\\n    save(backend, 'key', 'replacement')\\nexcept Duplicate:\\n    print('Direct Backend duplicate: Duplicate propagates')\\nelse:\\n    raise AssertionError('Expected Duplicate')\\nassert backend.rows['key'] == 'original'\\nprint('Original value preserved:', backend.rows['key'])\\nclass Offline:\\n    def put(self, key, value):\\n        raise OSError('offline')\\ntry:\\n    save(Offline(), 'key', 'value')\\nexcept OSError as error:\\n    assert str(error) == 'offline'\\n    print('Direct Backend operational failure: OSError propagates')\\nelse:\\n    raise AssertionError('Expected OSError')\\nPY\",max_output_tokens:3000})\n]);\nresults.forEach((result,i)=>text({check:i+1,...result}));\n"
+      }
+    ],
+    "native_checks_grouped": true,
+    "interpretation": "Both arms already group native checks. Candidate instead combines the second discovery and source read; this does not isolate the added execution instruction."
+  }
+]
