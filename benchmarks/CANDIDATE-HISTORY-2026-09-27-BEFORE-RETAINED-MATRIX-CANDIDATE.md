@@ -209,12 +209,3 @@ or whole-task cost claim. Existing invoice duplicated calls and adverse urllib3
 nonselection remain original evidence, not retroactively repaired outcomes.
 한국어: 선택적 실제 값 보존 기능은 실제15개 호출·경계6개 검사를 통과했지만
 모델 비용 절감 증거는 없다. 기본 스킬·후보·이전 불리한 결과를 보존한다.
-
-[Necromancer retained matrix01 native gate](NECROMANCER-RETAINED-MATRIX-NATIVE-01.md),
-2026-09-27,parent `8da1825f`: separate unadopted candidate routes ordered actual
-outcomes from first calls. Exact candidate API15 upstream calls/6 boundaries,
-source/metadata/input/binding preservation and Git-free archive pass; zero models.
-No ordinary skill/featured change or all8 efficiency claim. Adverse prior transfer
-and invoice duplicate-call evidence remain accessible, not relabeled as new wins.
-한국어: 실제 값 보존 기능을 별도 후보에 연결하고 실제15개 호출·경계6개 검사를
-통과했다. 모델0회이며 비용 절감이나 기본 채택·전체 목표 완료 증거는 없다.
