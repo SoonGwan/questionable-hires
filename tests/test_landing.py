@@ -269,10 +269,30 @@ class LandingTests(unittest.TestCase):
             self.assertEqual(head.meta['og:image:secure_url'], f'https://hires.example.org/project/assets/og-{language}.png')
             self.assertEqual(head.meta['robots'], 'index, follow, max-image-preview:large')
             self.assertIn('href="../ko/"', source)
-            self.assertIn('src="../assets/team-characters.png"', source)
+            self.assertRegex(source, r'src="../assets/team-characters\.[0-9a-f]{64}\.png"')
             self.assertNotIn('localhost', source)
         self.assertIn('https://hires.example.org/project/sitemap.xml', files['robots.txt'].decode())
         self.assertIn('https://hires.example.org/project/en/', files['sitemap.xml'].decode())
+
+    def test_artwork_identity_changes_url_without_changing_source_bytes(self):
+        source = ROOT / 'assets/team-characters.png'
+        original = source.read_bytes()
+        name = 'assets/team-characters.' + hashlib.sha256(original).hexdigest() + '.png'
+        self.assertEqual(self.files[name], original)
+        self.assertEqual(self.files['assets/team-characters.png'], original)
+        for route in ('', 'ko/', 'en/'):
+            prefix = '../' if route else ''
+            self.assertEqual(self.files[route + 'index.html'].decode().count('src="' + prefix + name + '"'), 2)
+        read_bytes = Path.read_bytes
+        changed = original + b'changed release identity'
+        def read(path):
+            return changed if path == source else read_bytes(path)
+        with patch.object(Path, 'read_bytes', read):
+            files, _ = landing.build()
+        new_name = 'assets/team-characters.' + hashlib.sha256(changed).hexdigest() + '.png'
+        self.assertNotIn(name, files)
+        self.assertEqual(files[new_name], changed)
+        self.assertIn(new_name, files['en/index.html'].decode())
 
     def test_preview_is_not_indexable(self):
         self.assertTrue(self.preview)

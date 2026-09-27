@@ -1,5 +1,6 @@
 """Exercise the actual loopback origin handler before public deployment."""
 import functools
+import hashlib
 from http.client import HTTPConnection
 from http.server import ThreadingHTTPServer
 import importlib.util
@@ -40,9 +41,9 @@ class LandingOriginTests(unittest.TestCase):
         self.thread.join()
         self.temporary.cleanup()
 
-    def request(self, path, method='GET'):
+    def request(self, path, method='GET', headers=None):
         connection = HTTPConnection('127.0.0.1', self.server.server_port, timeout=5)
-        connection.request(method, path)
+        connection.request(method, path, headers=headers or {})
         response = connection.getresponse()
         result = response.status, dict(response.getheaders()), response.read()
         connection.close()
@@ -74,6 +75,30 @@ class LandingOriginTests(unittest.TestCase):
     def test_unknown_app_identity_is_not_a_healthy_landing(self):
         (self.site / 'release.json').write_text('{"app":"another-app"}')
         self.assertEqual(self.request('/_health')[0], 503)
+
+    def test_only_existing_fingerprinted_artwork_is_immutable(self):
+        artwork = b'unchanged image bytes'
+        name = 'team-characters.' + hashlib.sha256(artwork).hexdigest() + '.png'
+        (self.site / 'assets' / name).write_bytes(artwork)
+        status, headers, body = self.request('/assets/' + name)
+        self.assertEqual((status, body), (200, artwork))
+        self.assertEqual(headers['Cache-Control'], 'public, max-age=31536000, immutable')
+        status, conditional, body = self.request('/assets/' + name, headers={
+            'If-Modified-Since': headers['Last-Modified']})
+        self.assertEqual((status, body), (304, b''))
+        self.assertEqual(conditional['Cache-Control'], headers['Cache-Control'])
+        status, head, body = self.request('/assets/' + name, method='HEAD')
+        self.assertEqual((status, body), (200, b''))
+        self.assertEqual(head['Content-Length'], str(len(artwork)))
+        (self.site / 'assets/team-characters.png').write_bytes(artwork)
+        self.assertEqual(self.request('/assets/team-characters.png')[1]['Cache-Control'], 'no-cache')
+
+    def test_missing_or_escaped_fingerprint_never_caches_an_error(self):
+        name = 'team-characters.' + 'a' * 64 + '.png'
+        for path in ('/assets/' + name, '/assets/%2e%2e/.private', '/_health'):
+            status, headers, _ = self.request(path)
+            self.assertEqual(headers['Cache-Control'], 'no-cache')
+            self.assertEqual(status, 200 if path == '/_health' else 404)
 
     def test_release_switch_serves_new_files_without_exposing_parent(self):
         replacement = self.base / 'new-site'

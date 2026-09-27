@@ -5,6 +5,7 @@ import functools
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
+import re
 from urllib.parse import unquote, urlsplit
 
 
@@ -14,14 +15,20 @@ class LandingHandler(SimpleHTTPRequestHandler):
         self.root = Path(directory).resolve()
         super().__init__(*args, directory=str(self.root), **kwargs)
 
+    def send_response(self, code, message=None):
+        self.response_status = code
+        super().send_response(code, message)
+
     def end_headers(self):
         self.send_header('X-Content-Type-Options', 'nosniff')
         self.send_header('Referrer-Policy', 'strict-origin-when-cross-origin')
         self.send_header('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'")
-        self.send_header('Cache-Control', 'no-cache')
+        immutable = getattr(self, 'immutable_artwork', False) and self.response_status in (200, 304)
+        self.send_header('Cache-Control', 'public, max-age=31536000, immutable' if immutable else 'no-cache')
         super().end_headers()
 
     def send_head(self):
+        self.immutable_artwork = False
         path = unquote(urlsplit(self.path).path)
         if path == '/_health':
             try:
@@ -49,6 +56,8 @@ class LandingHandler(SimpleHTTPRequestHandler):
         if target.is_dir() and not (target / 'index.html').is_file():
             self.send_error(404)
             return None
+        self.immutable_artwork = bool(target.is_file() and re.fullmatch(
+            r'/assets/team-characters\.[0-9a-f]{64}\.png', path))
         return super().send_head()
 
     def list_directory(self, path):

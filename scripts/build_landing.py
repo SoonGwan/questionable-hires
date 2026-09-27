@@ -352,13 +352,17 @@ def build(base=None):
     evidence = featured()
     checkpoint = integration06()
     template = (LANDING / 'templates/page.html').read_text()
-    files = {}
+    artwork = (ROOT / 'assets/team-characters.png').read_bytes()
+    artwork_path = 'assets/team-characters.' + hashlib.sha256(artwork).hexdigest() + '.png'
+    # Keep the original URL available for older pages; new pages use immutable content.
+    files = {'assets/team-characters.png': artwork, artwork_path: artwork}
     for route, language in (('', 'ko'), ('ko/', 'ko'), ('en/', 'en')):
         copy = content['copy'][language]
         prefix = '../' if route else ''
         first = content['hires'][0][language]
         replacements = {
             '{{HEAD}}': metadata(copy, language, base, preview), '{{ASSET_BASE}}': prefix,
+            '{{TEAM_IMAGE}}': prefix + artwork_path,
             '{{KO_URL}}': prefix + 'ko/', '{{EN_URL}}': prefix + 'en/',
             '{{EXPERIMENT}}': experiment(evidence, copy, checkpoint, prefix), '{{ROSTER}}': roster(content['hires'], language),
             '{{PROFILE_NAME}}': html.escape(first['name']), '{{PROFILE_QUOTE}}': html.escape(first['quote']),
@@ -385,7 +389,6 @@ def build(base=None):
     for language in ('ko', 'en'):
         files[f'assets/og-{language}.svg'] = svg_card(content['copy'][language], language).encode()
     files['assets/favicon.svg'] = b'<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><rect width="180" height="180" rx="32" fill="#0066FF"/><text x="28" y="122" font-family="Helvetica Neue,Arial,sans-serif" font-size="100" font-weight="700" letter-spacing="-8" fill="#F7F7F8">qh.</text></svg>\n'
-    files['assets/team-characters.png'] = (ROOT / 'assets/team-characters.png').read_bytes()
     for language in ('ko', 'en'):
         files[f'experiments/{language}.html'] = experiment(evidence, content['copy'][language], checkpoint).encode()
     for checkpoint_id in ('integration05', 'integration06'):

@@ -169,3 +169,15 @@ actual clipboard success/failure, keyboard focus and reduced motion.
 9개 정적 검사와 두 언어 × 7개 너비에서 검증했습니다. JavaScript를 끈 상태에서도
 언어별 OG·그래프·원시 기록을 확인했고, 느린 언어 요청과 실패 시 복구도 검사했습니다.
 이는 로컬 UI 검증이며 모델 성능 근거나 공개 배포의 검증을 대신하지 않습니다.
+
+## Artwork delivery / 캐릭터 이미지 전송
+
+New pages use the complete SHA-256 in the artwork filename. The loopback server
+marks successful responses for that generated name `public, max-age=31536000,
+immutable`; other pages, health, downloads and error responses retain revalidation.
+Changing the artwork creates a different URL. The legacy `team-characters.png`
+URL stays available. Image bytes and the Montage artwork are unchanged.
+
+캐릭터 이미지의 SHA-256을 주소에 넣고 해당 이미지의 성공 응답만 장기 캐시합니다.
+그림이 바뀌면 주소도 바뀌며 HTML·상태 확인·다운로드는 계속 재검증합니다.
+기존 이미지 주소도 유지하고 원본 그림 바이트는 바꾸지 않습니다.
