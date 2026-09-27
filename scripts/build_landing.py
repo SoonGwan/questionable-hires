@@ -210,7 +210,7 @@ def experiment(evidence, copy, checkpoint=None, prefix='../'):
              f'<p class="experiment-intro">{e(copy["experimentIntro"])}</p>',
              f'<p class="experiment-source"><code>{e(evidence["checkpoint"])}</code><span>{evidence["date"]} / {evidence["revision"]}</span></p>',
              '<div class="metric-grid">']
-    for key, label in (('total_tokens', 'tokens'), ('elapsed_seconds', 'elapsed')):
+    for key, label in (('total_tokens', 'meanTokens'), ('elapsed_seconds', 'meanElapsed')):
         value = data['resource_ratios'][key]['skill']
         parts.append(f'<div class="metric"><span>{e(copy[label])}</span><strong>{value-100:+.1f}<small>%</small></strong>'
                      f'<p>{e(copy["conditionSkill"])} {value:.1f}% / {e(copy["conditionBaseline"])} 100%</p></div>')
