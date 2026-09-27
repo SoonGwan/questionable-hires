@@ -58,10 +58,16 @@ Incomplete evidence stops the
 batch; unrun entries are not passes. This saves repeated baseline execution,
 not the reasoning needed to select faults or interpret failures.
 
-If a later audit raises an input/file error after earlier audits returned, CLI
-exit 2 includes those earlier observations and a final `incomplete` entry with
-`error` and empty `checks`. That entry has no usable checks; it does not prove
-that nothing executed before the error. Remaining mutations are unrun. Inspect
-the error and process state before retrying; do not discard completed evidence.
-Errors before any returned audit, original-integrity/cleanup `RuntimeError`s and
-interruptions still propagate without a collected batch report.
+On an ordinary input, execution or integrity failure, CLI exit 2 retains earlier
+audits and any checks already returned by the failing audit, including baseline
+references. Its incomplete entry may contain `execution_error` and/or
+`integrity_error`. If that audit returned no checks, a later-audit failure instead
+has `error` and empty `checks`; this does not prove nothing executed. With no
+returned evidence anywhere, the CLI may emit only stderr.
+
+The Python API keeps its existing distinction: later input/I/O failures return
+an incomplete batch; `RuntimeError` and first-audit errors raise, attaching any
+available partial batch as `error.audit_result`. Interruptions are not converted
+to ordinary incomplete results. Remaining mutations are unrun. Inspect the error
+and process state before retrying; do not discard returned evidence or infer
+missing checks. See the [common result contract](python-audit.md) for guard fields.

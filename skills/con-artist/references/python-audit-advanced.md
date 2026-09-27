@@ -136,8 +136,12 @@ contained. Tests still own assertions and orderly cleanup.
 
 Child-exit confirmation has a separate five-second cleanup wait. An unconfirmed
 exit stops the audit/batch with CLI exit 2 and an audit-not-established error,
-not collected evidence. Existing interruptions/errors propagate. This is not an
+without a completed observation for that child. Earlier returned checks remain
+available as incomplete evidence under the [common result contract](python-audit.md);
+do not infer the missing child's outcome. Interruptions are not converted to
+ordinary incomplete results. This is not an
 OS termination or descendant-containment guarantee; do not automatically retry
 while the previous process may remain. Selected original bytes/modes are checked;
-changes are reported, never silently restored. Files outside selection are not
-integrity-checked or restored.
+changes are reported, never silently restored. Files outside selection are checked
+only when the authorized `guard_project` inventory is enabled; originals are never
+automatically restored.

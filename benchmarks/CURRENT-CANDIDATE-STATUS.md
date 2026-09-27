@@ -36,8 +36,10 @@ Con Artist download delivery are hosted checks, not new model measurements.
 public source `6def2fdc`,12 HTTPS routes and two mobile locale checks. The [execution01 native checkpoint](RELEASE-VALIDATION-EXECUTION01.md) at `e1f10b7c`
 passes1,473 checkout tests with zero skips. The [context command checkpoint](CONTEXT-COMMAND-01.md)
 (2026-09-28, `d98b4469`) corrects two unavailable-alias examples; local/installed
-commands pass with no model-cost claim. Local native controls, original model
-evidence, independent validation and hosted checks have different scopes.
+commands pass with no model-cost claim. The [failure-guidance correction](../docs/AUDIT-ERROR-GUIDANCE-2026-09-28.md)
+(2026-09-28,parent `ca033bac`) aligns two references with already-retained partial
+evidence;19 existing controls pass, with no runtime/model change. Local native controls,
+original model evidence, independent validation and hosted checks have different scopes.
 
 한국어: 전체8개 품질·토큰·시간 목표는 미달이다. integration07(2026-09-28,
 측정 자원 `1be35120`)은 합계 토큰1.67% 증가·시간9.63% 감소이며 동시 감소는2/8이다.
