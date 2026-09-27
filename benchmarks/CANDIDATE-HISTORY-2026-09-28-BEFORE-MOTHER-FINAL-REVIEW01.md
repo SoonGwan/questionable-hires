@@ -6,14 +6,13 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [Mother final review01](MOTHER-FINAL-REVIEW-01-REVIEW.md), 2026-09-28, previous `c2193b3d`, isolated candidate/execution `07486f8f` | Four original cells: tokens +24.60%, CLI +3.62%. Native/review grouping observed, responses3→5 and5→5; required bounded outcomes retained. | Decline; each pair fails joint resource gate. Unequal extra review/read grouping, one recovered original output; separate conforming-copy checks pass. No normal install or unchanged retry. |
 | [Integration07](ALL-EIGHT-CURRENT-07-REVIEW.md), 2026-09-28, measured `1be35120`, execution `47a00692` | All16 original sessions reviewed: tokens +1.67%, CLI −9.63%; only 2/8 pairs lower both. Bounded task outcomes preserved, with unequal work and two recovered original output prefixes. | All-eight gate unmet. Repeatedly exposed n=1 tasks, shared host/cache and context variation; no quality superiority, causal optimization or independent-validation claim. [All costs](ALL-EIGHT-CURRENT-07-COSTS.md). |
 | [Con Artist execution evidence01](AUDIT-EXECUTION-EVIDENCE-01.md),2026-09-28,parent`be5a8780`,source`db46dcdc` | Six additional evidence-loss failures repaired: copy/runner/cleanup exceptions retain returned checks, earlier batch audits and reuse references; missing results remain unknown. | Native correctness only, no new model cost claim. Keep original API failures, remaining-scratch state and subsequent-mutation stop. Prior mixed interface costs remain historical. Installed7 controls/all8 resources match; public`486453a6` download identity verified separately. |
 | [Con Artist guard output01](AUDIT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,previous`1b497a05`,candidate`96ac17f4`,execution`a45d4802` | Four explicit-CLI cells: normal tokens+23.07%/time−46.68%; guard tokens−22.80%/time−31.40%. Sum−5.03%/−37.70%, all attempts retained. | Joint efficiency gate fails because normal tokens rise. Keep diagnostic fix, no general savings claim; one extra normal response and optional pretty output/read differences are observed, not causal proof. |
 | [Receipt native split01](RECEIPT-NATIVE-SPLIT-01.md),2026-09-28,parent`1b85702c`,candidate/execution`f80c1448` | Unchanged native suite: previous126 pass, candidate124 pass/2 fail; single-file CLI relocation cannot find new companion. Driver bytes−36.14%,combined bytes+3.07%. | Decline before model timing; preserve existing callers. Zero models, no ordinary install/deployment or token-saving claim. |
 | [Receipt guard output01](RECEIPT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,previous`1b6ae5f5`,candidate`a77e4d93`,execution`31101dea` | Four explicit-CLI interface cells: tokens−27.38%,CLI−18.26%; both task pairs lower both. Guard candidate retains native results with failure, responses6→4. | Limited interface gate passes; forced use/n=1/unequal extra reads, not causal/general/all8 savings. Large source-read truncation retained. No new instruction or featured promotion. |
 
-The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-MOTHER-FINAL-REVIEW01.md)
+The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-INTEGRATION07-REVIEW.md)
 preserves all superseded checkpoints, adverse results and chronological history.
 In particular, [integration06](ALL-EIGHT-CURRENT-06-REVIEW.md) remains its historical
 +16.95% tokens/−10.00% CLI measurement at `1d0e92ac`; differences between cohorts
@@ -37,6 +36,3 @@ original model evidence, independent validation and hosted checks have different
 integration06은 과거 자원에 연결된 결과로 유지하며 두 실험 차이를 인과적 개선으로 보지 않는다.
 Con Artist 정상 배치의 토큰 증가와 Receipt 코드 분리의 호환성 실패도 그대로 공개한다.
 네이티브 수정·모델 비용·독립 검증·공개 배포는 별도 근거이며 모든 이전 실패와 이력은 위 날짜별 목록에 보존한다.
-
-Mother의 종료 검토 묶기 후보도 실제 묶기는 관찰됐지만 응답 수가 줄지 않고
-합계 토큰24.60%·시간3.62% 증가해 채택하지 않는다. 기존 설치본과 공개 배포를 유지한다.
