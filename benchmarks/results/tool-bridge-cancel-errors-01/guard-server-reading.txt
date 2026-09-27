@@ -1,0 +1,67 @@
+INFO:     Started server process [7744]
+INFO:     Waiting for application startup.
+StreamableHTTP session manager started
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:60492 (Press CTRL+C to quit)
+Created new transport with session ID: dcd2d33169a842928e23a79d757c2ae7
+INFO:     127.0.0.1:60506 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60507 - "POST /mcp HTTP/1.1" 202 Accepted
+INFO:     127.0.0.1:60508 - "GET /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60509 - "POST /mcp HTTP/1.1" 200 OK
+Processing request of type CallToolRequest
+NATIVE_PHASE {"event": "start", "copy": ".receipt-_vmh0ejp", "phase": "before"}
+INFO:     127.0.0.1:60510 - "POST /mcp HTTP/1.1" 202 Accepted
+NATIVE_PHASE {"event": "end", "copy": ".receipt-_vmh0ejp", "phase": "before", "native_exit": 1, "timed_out": false}
+Session dcd2d33169a842928e23a79d757c2ae7 crashed
+  + Exception Group Traceback (most recent call last):
+  |   File "<TEMP>", line 351, in run_server
+  |     async with anyio.create_task_group() as session_tg:
+  |   File "<TEMP>", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Exception Group Traceback (most recent call last):
+    |   File "<TEMP>", line 367, in run_server
+    |     await self.app.run(
+    |   File "<TEMP>", line 662, in run
+    |     async with AsyncExitStack() as stack:
+    |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py", line 733, in __aexit__
+    |     raise exc_details[1]
+    |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py", line 716, in __aexit__
+    |     cb_suppress = await cb(*exc_details)
+    |                   ^^^^^^^^^^^^^^^^^^^^^^
+    |   File "<TEMP>", line 238, in __aexit__
+    |     return await self._task_group.__aexit__(exc_type, exc_val, exc_tb)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "<TEMP>", line 847, in __aexit__
+    |     raise BaseExceptionGroup(
+    | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+    +-+---------------- 1 ----------------
+      | Exception Group Traceback (most recent call last):
+      |   File "<TEMP>", line 679, in run
+      |     async with anyio.create_task_group() as tg:
+      |   File "<TEMP>", line 847, in __aexit__
+      |     raise BaseExceptionGroup(
+      | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+      +-+---------------- 1 ----------------
+        | Traceback (most recent call last):
+        |   File "<TEMP>", line 327, in _run_coro
+        |     retval = await self._coro
+        |              ^^^^^^^^^^^^^^^^
+        |   File "<TEMP>", line 709, in _handle_message
+        |     await self._handle_request(message, req, session, lifespan_context, raise_exceptions)
+        |   File "<TEMP>", line 806, in _handle_request
+        |     await message.respond(response)
+        |   File "<TEMP>", line 129, in respond
+        |     assert not self._completed, "Request already responded to"
+        | AssertionError: Request already responded to
+        +------------------------------------
+Terminating session: dcd2d33169a842928e23a79d757c2ae7
+INFO:     127.0.0.1:60508 - "GET /mcp HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60512 - "GET /mcp HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60513 - "DELETE /mcp HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+StreamableHTTP session manager shutting down
+INFO:     Application shutdown complete.
+INFO:     Finished server process [7744]
