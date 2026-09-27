@@ -49,7 +49,6 @@ apps01의 시간 증가와 이전 불리한 결과를 보존한다.
 
 | Checkpoint / date / resource | Evidence and limit |
 | --- | --- |
-| [Default trust controls03](EXTERNAL-BUNDLE-02-TRUST-CONTROLS-03.md),2026-09-27,parent`202ee64a`,skills`7172b50c` | Same native client: environment GET pass/direct send reject; explicit CA and copied extended default CA pass; wrong hostname rejected. No Python/source/global trust changes or models; full corrected Requests pair not yet established. |
 | [Requests2674 TLS probe01](EXTERNAL-BUNDLE-02-REQUESTS2674-TLS-REVIEW.md),2026-09-27,protocol`77f669b0`,skills`7172b50c` | Native base/gold each11F2P PASS+1FAIL and142P2P PASS; both exit1, source unchanged, service cleanup0. Port mismatch removed but certificate error remains in direct Session.send; not accepted, zero models. |
 | [pytest5103 cache probe01](EXTERNAL-BUNDLE-02-PYTEST5103-CACHE-REVIEW.md),2026-09-27,protocol`0ed7b8b6`,skills`7172b50c` | Original unpatched test fails with Apple default and passes with native empty cache prefix. Fresh base1FAIL/64PASS and gold65PASS, native1/0, inventories unchanged. Author runtime compatibility; zero models, original grade01 retained, other gates unresolved. |
 | [Runtime distinctions02](EXTERNAL-BUNDLE-02-RUNTIME-CONTROLS-02.md),2026-09-27,parent`e1a34d5c`,skills`7172b50c` | Native controls distinguish HTTP-only/TLS endpoint mismatch and Apple bytecode-cache location. No case rescoring or models; [prospective pytest5103 cache protocol](EXTERNAL-BUNDLE-02-PYTEST5103-CACHE-PROTOCOL.md) freezes original-test control and fresh required pair. |
