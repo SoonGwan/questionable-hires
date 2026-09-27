@@ -45,12 +45,6 @@ again. The [featured pointer](featured.json) and frozen charts remain separate.
 채택하지 않는다. [이전 판단 기록](CANDIDATE-HISTORY-2026-09-27-BEFORE-NAMESPACE-TRANSFER.md)에
 apps01의 시간 증가와 이전 불리한 결과를 보존한다.
 
-Prepared [effort01 development comparison](ALL-EIGHT-EFFORT-01-PREPARATION.md),
-2026-09-27,protocol`72f67ad6`,same candidate`7172b50c`:16 serial medium/low
-matching-skill cells, native author preflight and scheduler controls pass, **zero
-model calls**. These are exposed development tasks, separate from unresolved
-external-bundle02 gates; preparation is not quality, cost or speed improvement.
-
 ## Functionality and delivery, not model savings
 
 | Checkpoint / date / resource | Evidence and limit |
