@@ -1,0 +1,857 @@
+{
+  "checkpoint": "tool-bridge-cancellation-01",
+  "date": "2026-09-27",
+  "server_sha256": "0104df32333ea7281d8e1d42e045cda74965b871feb144fabd3a2e90ef5be1d0",
+  "models": 0,
+  "evidence": [
+    {
+      "position": "active",
+      "cancellation": "Request cancelled",
+      "recovery": {
+        "status": "observed",
+        "revisions": {
+          "before": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+          "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 53931}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 53931}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.412s\n\nFAILED (failures=1)\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            },
+            "command": [
+              "<TEMP>",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true,
+            "assertion_observation": {
+              "v": 2,
+              "scope": "assertEqual/assertIsNot current-thread calls",
+              "observations": [
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        9
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        9
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [],
+                  "expected": [],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertIsNot",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        10
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        5
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        5
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                }
+              ],
+              "complete": true,
+              "reason": null
+            }
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 53932}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 53932}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... ok\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.408s\n\nOK\n",
+            "output_truncated": false,
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": true
+            },
+            "command": [
+              "<TEMP>",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true,
+            "assertion_observation": {
+              "v": 2,
+              "scope": "assertEqual/assertIsNot current-thread calls",
+              "observations": [
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        9
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        9
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [],
+                  "expected": [],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertIsNot",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        10
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        10
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        5
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        5
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                }
+              ],
+              "complete": true,
+              "reason": null
+            }
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "test_windows.py": "456a4da420bb2aa33c587da6a7aaddb79d34c03dc01670aaf6848510e18e0a06"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 44,
+          "file_bytes": 5464,
+          "inventory_sha256": "8cb88c41c86f0f75609d2a1d6ce09bcc622426aa86f61ae7772b2f8cd90c13aa",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "test_windows.py": "456a4da420bb2aa33c587da6a7aaddb79d34c03dc01670aaf6848510e18e0a06",
+            "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+          },
+          "modes": {
+            "test_windows.py": 420,
+            "windows.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      },
+      "originals_unchanged": true,
+      "scratch_removed": true
+    },
+    {
+      "position": "queued",
+      "cancellation": "Request cancelled",
+      "recovery": {
+        "status": "observed",
+        "revisions": {
+          "before": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+          "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+        },
+        "checks": {
+          "before": {
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 53965}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 53965}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.413s\n\nFAILED (failures=1)\n",
+            "output_truncated": false,
+            "native_exit_code": 1,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": false
+            },
+            "command": [
+              "<TEMP>",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true,
+            "assertion_observation": {
+              "v": 2,
+              "scope": "assertEqual/assertIsNot current-thread calls",
+              "observations": [
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        9
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        9
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [],
+                  "expected": [],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertIsNot",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        10
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        5
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        5
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                }
+              ],
+              "complete": true,
+              "reason": null
+            }
+          },
+          "after": {
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 53966}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 53966}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... ok\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.412s\n\nOK\n",
+            "output_truncated": false,
+            "native_exit_code": 0,
+            "suite_observation": {
+              "tests": 6,
+              "skipped": 0,
+              "successful": true
+            },
+            "command": [
+              "<TEMP>",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_windows"
+            ],
+            "invocation": "module",
+            "provenance_ready": true,
+            "assertion_observation": {
+              "v": 2,
+              "scope": "assertEqual/assertIsNot current-thread calls",
+              "observations": [
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        9
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        9
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [],
+                  "expected": [],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertIsNot",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        5,
+                        7
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        1,
+                        3
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        10
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        10
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                },
+                {
+                  "method": "assertEqual",
+                  "actual": [
+                    {
+                      "tuple": [
+                        1,
+                        5
+                      ]
+                    }
+                  ],
+                  "expected": [
+                    {
+                      "tuple": [
+                        1,
+                        5
+                      ]
+                    }
+                  ],
+                  "same_object": false
+                }
+              ],
+              "complete": true,
+              "reason": null
+            }
+          }
+        },
+        "import_roots": [],
+        "fixed_sha256": {
+          "test_windows.py": "456a4da420bb2aa33c587da6a7aaddb79d34c03dc01670aaf6848510e18e0a06"
+        },
+        "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+        "tree_guard": {
+          "unchanged": true,
+          "entries": 44,
+          "file_bytes": 5464,
+          "inventory_sha256": "955fe48207372bb7666fea657e5ad02f6a43f460ea88ee576d44177753a007d8",
+          "scope": "source root including Git metadata; symlink targets not read"
+        },
+        "originals": {
+          "unchanged": true,
+          "sha256": {
+            "test_windows.py": "456a4da420bb2aa33c587da6a7aaddb79d34c03dc01670aaf6848510e18e0a06",
+            "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+          },
+          "modes": {
+            "test_windows.py": 420,
+            "windows.py": 420
+          },
+          "watch_only": []
+        },
+        "comparison_copies_removed": true
+      },
+      "originals_unchanged": true,
+      "scratch_removed": true
+    }
+  ],
+  "limitation": "SDK cancellation/after-recovery proof only. Cancellation acknowledgement is not immediate native interruption or cleanup. Active helper may finish before gate release. Disconnect/shutdown/cross-instance/host/all8 efficiency unverified."
+}

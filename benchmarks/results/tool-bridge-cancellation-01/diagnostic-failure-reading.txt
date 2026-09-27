@@ -1,0 +1,157 @@
+STAGE begin active
+Processing request of type CallToolRequest
+STAGE native started active
+STAGE cancellation sent active
+STAGE cancellation error received active
+Processing request of type CallToolRequest
+  + Exception Group Traceback (most recent call last):
+  |   File "<HOME>/Documents/GitHub/questionable-hires/benchmarks/results/tool-bridge-concurrency-01/server.py", line 57, in <module>
+  |     server.run(transport='stdio')
+  |   File "<TEMP>", line 312, in run
+  |     anyio.run(self.run_stdio_async)
+  |   File "<TEMP>", line 83, in run
+  |     return async_backend.run(func, args, {}, backend_options)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "<TEMP>", line 2548, in run
+  |     return runner.run(wrapper())
+  |            ^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+  |     return self._loop.run_until_complete(task)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+  |     return future.result()
+  |            ^^^^^^^^^^^^^^^
+  |   File "<TEMP>", line 2531, in wrapper
+  |     return await func(*args)
+  |            ^^^^^^^^^^^^^^^^^
+  |   File "<TEMP>", line 771, in run_stdio_async
+  |     async with stdio_server() as (read_stream, write_stream):
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py", line 222, in __aexit__
+  |     await self.gen.athrow(typ, value, traceback)
+  |   File "<TEMP>", line 85, in stdio_server
+  |     async with anyio.create_task_group() as tg:
+  |   File "<TEMP>", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Exception Group Traceback (most recent call last):
+    |   File "<TEMP>", line 88, in stdio_server
+    |     yield read_stream, write_stream
+    |   File "<TEMP>", line 772, in run_stdio_async
+    |     await self._mcp_server.run(
+    |   File "<TEMP>", line 662, in run
+    |     async with AsyncExitStack() as stack:
+    |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py", line 733, in __aexit__
+    |     raise exc_details[1]
+    |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py", line 716, in __aexit__
+    |     cb_suppress = await cb(*exc_details)
+    |                   ^^^^^^^^^^^^^^^^^^^^^^
+    |   File "<TEMP>", line 238, in __aexit__
+    |     return await self._task_group.__aexit__(exc_type, exc_val, exc_tb)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "<TEMP>", line 847, in __aexit__
+    |     raise BaseExceptionGroup(
+    | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+    +-+---------------- 1 ----------------
+      | Exception Group Traceback (most recent call last):
+      |   File "<TEMP>", line 679, in run
+      |     async with anyio.create_task_group() as tg:
+      |   File "<TEMP>", line 847, in __aexit__
+      |     raise BaseExceptionGroup(
+      | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+      +-+---------------- 1 ----------------
+        | Traceback (most recent call last):
+        |   File "<TEMP>", line 327, in _run_coro
+        |     retval = await self._coro
+        |              ^^^^^^^^^^^^^^^^
+        |   File "<TEMP>", line 709, in _handle_message
+        |     await self._handle_request(message, req, session, lifespan_context, raise_exceptions)
+        |   File "<TEMP>", line 806, in _handle_request
+        |     await message.respond(response)
+        |   File "<TEMP>", line 129, in respond
+        |     assert not self._completed, "Request already responded to"
+        | AssertionError: Request already responded to
+        +------------------------------------
+  + Exception Group Traceback (most recent call last):
+  |   File "<HOME>/Documents/GitHub/questionable-hires/benchmarks/results/tool-bridge-cancellation-01/control.py", line 82, in <module>
+  |     asyncio.run(check())
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 190, in run
+  |     return runner.run(main)
+  |            ^^^^^^^^^^^^^^^^
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+  |     return self._loop.run_until_complete(task)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+  |     return future.result()
+  |            ^^^^^^^^^^^^^^^
+  |   File "<HOME>/Documents/GitHub/questionable-hires/benchmarks/results/tool-bridge-cancellation-01/control.py", line 38, in check
+  |     async with stdio_client(params) as (read,write):
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py", line 222, in __aexit__
+  |     await self.gen.athrow(typ, value, traceback)
+  |   File "<TEMP>", line 182, in stdio_client
+  |     async with (
+  |   File "<TEMP>", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Exception Group Traceback (most recent call last):
+    |   File "<TEMP>", line 189, in stdio_client
+    |     yield read_stream, write_stream
+    |   File "<HOME>/Documents/GitHub/questionable-hires/benchmarks/results/tool-bridge-cancellation-01/control.py", line 39, in check
+    |     async with ClientSession(read,write,read_timeout_seconds=timedelta(seconds=5)) as session:
+    |   File "<TEMP>", line 847, in __aexit__
+    |     raise BaseExceptionGroup(
+    | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+    +-+---------------- 1 ----------------
+      | Traceback (most recent call last):
+      |   File "<TEMP>", line 118, in receive
+      |     return self.receive_nowait()
+      |            ^^^^^^^^^^^^^^^^^^^^^
+      |   File "<TEMP>", line 113, in receive_nowait
+      |     raise WouldBlock
+      | anyio._core._exceptions.WouldBlock
+      | 
+      | During handling of the above exception, another exception occurred:
+      | 
+      | Traceback (most recent call last):
+      |   File "<TEMP>", line 152, in fail_at
+      |     yield cancel_scope
+      |   File "<TEMP>", line 179, in fail_after
+      |     yield scope
+      |   File "<TEMP>", line 292, in send_request
+      |     response_or_error = await response_stream_reader.receive()
+      |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      |   File "<TEMP>", line 126, in receive
+      |     await receive_event.wait()
+      |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/locks.py", line 213, in wait
+      |     await fut
+      | asyncio.exceptions.CancelledError: Cancelled via cancel scope 107d232e0; reason: deadline exceeded
+      | 
+      | During handling of the above exception, another exception occurred:
+      | 
+      | Traceback (most recent call last):
+      |   File "<TEMP>", line 291, in send_request
+      |     with anyio.fail_after(timeout):
+      |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py", line 155, in __exit__
+      |     self.gen.throw(typ, value, traceback)
+      |   File "<TEMP>", line 178, in fail_after
+      |     with fail_at(deadline, shield=shield, reason=reason) as scope:
+      |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py", line 155, in __exit__
+      |     self.gen.throw(typ, value, traceback)
+      |   File "<TEMP>", line 155, in fail_at
+      |     raise TimeoutError(reason) if reason else TimeoutError
+      | TimeoutError
+      | 
+      | During handling of the above exception, another exception occurred:
+      | 
+      | Traceback (most recent call last):
+      |   File "<HOME>/Documents/GitHub/questionable-hires/benchmarks/results/tool-bridge-cancellation-01/control.py", line 67, in check
+      |     recovery=await session.call_tool('receipt_compare',{'recipe':recipe})
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      |   File "<TEMP>", line 401, in call_tool
+      |     result = await self.send_request(
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^
+      |   File "<TEMP>", line 294, in send_request
+      |     raise McpError(
+      | mcp.shared.exceptions.McpError: Timed out while waiting for response to ClientRequest. Waited 5.0 seconds.
+      +------------------------------------
