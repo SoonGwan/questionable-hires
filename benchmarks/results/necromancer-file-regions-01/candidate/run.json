@@ -1,0 +1,868 @@
+{
+  "case": {
+    "id": "urllib3-retry-history",
+    "skill": "necromancer",
+    "task": "Review two proposed behavior-preserving cleanups in src/urllib3/util/retry.py:Retry.is_retry.\nA: move the method-allowlist rejection below the status_forcelist early return.\nB: remove only self.total from the Retry-After fallback condition.\nEvaluate independently, not combined, and leave every other operation unchanged.\nThis is a review, not authorization to fix production code.\n\nObserve actual Retry.is_retry results for current, A-only and B-only using these\nfive configurations/calls (15 observations total). In every case allowed_methods=['GET'];\nunspecified constructor/call arguments use defaults:\n1. total=3, status_forcelist=[500]; is_retry('POST', 500).\n2. total=0, no forced statuses; is_retry('GET', 429, True).\n3. total=3, status_forcelist=[500]; is_retry('GET', 500).\n4. total=3, no forced statuses; is_retry('GET', 429, True).\n5. total=0, status_forcelist=[500]; is_retry('GET', 500).\nRetain every actual value or exception. Explain separate compatibility decisions\nand the relevant existing test/doc contract. Inspect the current connection-pool\ncaller and explain whether these predicate results alone establish an actual\nnetwork retry, including case5. No HTTP requests or full integration run is needed.\n\nUse local ancestor history to establish when the Retry-After fallback was added:\ninspect the relevant parent/child implementation and accompanying tests/docs.\nAlso inspect the change attributing the method check to _is_method_retryable and\nan earlier operational implementation. Distinguish helper extraction/renaming from\nintroduction of the method restriction; first-ever origin is not required.\nCite the relevant commits. Separate observed current behavior from historical\nrationale; do not invent author intent. Use only ancestors of pinned HEAD.\n\nUse /opt/homebrew/opt/python@3.11/bin/python3.11 with -B and this checkout's src directory on the import path.\nVerify the imported implementation is local, not an installed urllib3 package.\nIn-memory variants or project-local disposable copies are allowed; no tool is\nrequired. Preserve every original file byte/mode, HEAD and installed resource.\nRemove all owned scratch before finishing; no lasting harness, report or code edit.\nNo network/HTTP requests, installations, fetching, commits or publication.\nThe specified interpreter/dependencies may be read/executed, not modified.",
+    "criteria": [
+      "All15 actual outputs/errors observed with local binding and independent specified changes.",
+      "Separate compatibility decisions correctly explain the observations and existing test/doc contract.",
+      "Current connection-pool caller inspected; predicate results distinguished from actual network retry, including zero-budget forced status.",
+      "Retry-After fallback introduction and method-helper extraction established with relevant ancestor parent/child evidence, without invented origin or intent.",
+      "Original bytes/modes, HEAD and installed resources preserved; scratch removed; no out-of-scope actions."
+    ]
+  },
+  "schedule": [
+    "previous",
+    "candidate"
+  ],
+  "flags": [
+    "--disable",
+    "apps",
+    "-c",
+    "features.code_mode.excluded_tool_namespaces=[\"web\",\"imagegen\",\"clock\"]"
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout": 360
+  },
+  "source_identity": {
+    "revision": "2458bfcd3dacdf6c196e98d077fc6bb02a5fc1df",
+    "tree": "bae5d4c3c61d78c04fe2675825d84dc2e9f6b30d",
+    "ancestors_sha256": "aaf0932e3d11570d75c0f087103103fc08199a4cb367b6760c40e6aa6b6f7989",
+    "files": {
+      ".coveragerc": {
+        "kind": "file",
+        "sha256": "e636445b4a81cbf915f67751303d8c83a6607bfc9a356c12b30d6219408b9465",
+        "mode": 420
+      },
+      ".eslintrc.yml": {
+        "kind": "file",
+        "sha256": "0838f09af4b89a15f661eb314cca07ff9ca15ff546e6854bb94189cd882e3bf6",
+        "mode": 420
+      },
+      ".github/CODEOWNERS": {
+        "kind": "file",
+        "sha256": "69d338a3782b66d20f4932a6a3a639c53f8bcb5fb49c65a0b1fdff9180c28c96",
+        "mode": 420
+      },
+      ".github/FUNDING.yml": {
+        "kind": "file",
+        "sha256": "cabf180226d0903d8bd16a1c7e52b2fedf77919028c180d0968e7205e8e7ef61",
+        "mode": 420
+      },
+      ".github/ISSUE_TEMPLATE/01_feature_request.md": {
+        "kind": "file",
+        "sha256": "65946a2204bb44ce9550043339a750d8e73ac5fb5bc31f925e0cb842d9583a20",
+        "mode": 420
+      },
+      ".github/ISSUE_TEMPLATE/02_bug_report.md": {
+        "kind": "file",
+        "sha256": "6a9355778c9f2d2d681981d78da30b264c0e4e5049661ad8bf8ec64ecc9c939d",
+        "mode": 420
+      },
+      ".github/ISSUE_TEMPLATE/config.yml": {
+        "kind": "file",
+        "sha256": "ebbe074169ca7bb2a69446913a43f7fcc1f61da3a8f5a8c28bf3bb2ecf9154dc",
+        "mode": 420
+      },
+      ".github/PULL_REQUEST_TEMPLATE/release.md": {
+        "kind": "file",
+        "sha256": "b5e107aad6068f7f6d0353d108e8d1a49913ff9646c5b5c612f3b3961e58e640",
+        "mode": 420
+      },
+      ".github/PULL_REQUEST_TEMPLATE.md": {
+        "kind": "file",
+        "sha256": "8a31d489453fbef270917cc09287a5cfa5c4144b2b026e308a3c5ba4fdd1b12a",
+        "mode": 420
+      },
+      ".github/SECURITY.md": {
+        "kind": "file",
+        "sha256": "04bdddcf7d52b34ec2823c7235c500be10fea9f02092b5aee40d5705aabaec72",
+        "mode": 420
+      },
+      ".github/codeql.yml": {
+        "kind": "file",
+        "sha256": "b73a74a808d6b7b08ef152cca2ee031d43782dfec77eba938810d92dd29065f7",
+        "mode": 420
+      },
+      ".github/dependabot.yml": {
+        "kind": "file",
+        "sha256": "6146c4135227a592e860f132408ddf1fa12021b2584030ef5f0f2b47c11d8217",
+        "mode": 420
+      },
+      ".github/workflows/changelog.yml": {
+        "kind": "file",
+        "sha256": "9195c20fa965f67b5c0a7070cb10e552b6345fe200f0d05a2b964cd56ec7b1d8",
+        "mode": 420
+      },
+      ".github/workflows/ci.yml": {
+        "kind": "file",
+        "sha256": "5546ded12383196caae840150f82b272d9112f508eb6c50ace208d5ada7ebd52",
+        "mode": 420
+      },
+      ".github/workflows/codeql.yml": {
+        "kind": "file",
+        "sha256": "6375a1944a1d04b17b48e3af85ec62ef8fcfe67e5f810ff7039b29471f749b5d",
+        "mode": 420
+      },
+      ".github/workflows/downstream.yml": {
+        "kind": "file",
+        "sha256": "b9d6b5238f7ee0abe25ca83555cffa20cafc1b2dba150c6f769a2587e9e19493",
+        "mode": 420
+      },
+      ".github/workflows/lint.yml": {
+        "kind": "file",
+        "sha256": "b3ba9355c49aaa3cece2c3cf151f23eeaf413bf349b9545d2e920c57136d0633",
+        "mode": 420
+      },
+      ".github/workflows/publish.yml": {
+        "kind": "file",
+        "sha256": "c83105e1f81710498b04e8fde511f34738da23efd8fa93b2937101f480c0d106",
+        "mode": 420
+      },
+      ".github/workflows/scorecards.yml": {
+        "kind": "file",
+        "sha256": "198cd0ac16bc0382a473539aa4e57d180f9cd938a1e7c7dc0cae13af94c4c8bc",
+        "mode": 420
+      },
+      ".gitignore": {
+        "kind": "file",
+        "sha256": "602536c50c152ef7a874cf7a9031ef9af63572c505d84bd164f68b2d493c26d9",
+        "mode": 420
+      },
+      ".pre-commit-config.yaml": {
+        "kind": "file",
+        "sha256": "fe4486888c1fc2691dac5efdb8567b9d1846041b70a29a9c8fc17c6c5f733777",
+        "mode": 420
+      },
+      ".readthedocs.yml": {
+        "kind": "file",
+        "sha256": "5b8535ee5c133cd7ff372b43f83d5856c43188042bc40454932406c51cfe18bf",
+        "mode": 420
+      },
+      "CHANGES.rst": {
+        "kind": "file",
+        "sha256": "da49622829573af6d21663ba79e837f5a46577cddce46103c9061e574d4827e9",
+        "mode": 420
+      },
+      "CODE_OF_CONDUCT.md": {
+        "kind": "file",
+        "sha256": "3e7b410146d52cba486c110dc39641751faa8183d1bcd1f002eac0e323627efa",
+        "mode": 420
+      },
+      "LICENSE.txt": {
+        "kind": "file",
+        "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686",
+        "mode": 420
+      },
+      "README.md": {
+        "kind": "file",
+        "sha256": "364e090154a96d44194f94d6453c2b1872e3b74f1c2cc388c097c8c0c1cff427",
+        "mode": 420
+      },
+      "changelog/.gitignore": {
+        "kind": "file",
+        "sha256": "902a513dd9774bf8ea61865a3ab734fb16bafa5dcaa958cd45773a8c291dffe4",
+        "mode": 420
+      },
+      "changelog/README.rst": {
+        "kind": "file",
+        "sha256": "eba7bb4414c1bd18e54b0c490d2b9e0dc24e4244d0efb1cbe63f2f77ecb6433b",
+        "mode": 420
+      },
+      "ci/deploy.sh": {
+        "kind": "file",
+        "sha256": "015b77387e628ebc240f0553a8bcc1984fac9bef62f14fb09fd2c2b1b48a8c7b",
+        "mode": 493
+      },
+      "dev-requirements.txt": {
+        "kind": "file",
+        "sha256": "b04a1ebbc5515d9bd703f4d66ea1a6971075b10fab8b2c6b602930f4a3929c5a",
+        "mode": 420
+      },
+      "docs/Makefile": {
+        "kind": "file",
+        "sha256": "db15cd913f60457f7c3af67a9b71aebfcd4481a0ac9f1823d7eb79e622479e49",
+        "mode": 420
+      },
+      "docs/_static/banner.svg": {
+        "kind": "file",
+        "sha256": "ed1cc12e2f407fb112b4f1e542bac8472870f3ed14e61a81efb2436bfd029f90",
+        "mode": 420
+      },
+      "docs/_static/banner_github.svg": {
+        "kind": "file",
+        "sha256": "bef01fbbc4d3ee130761b1440002b9a3810fed0e7f1f4a9512bc7c89b61fccf0",
+        "mode": 420
+      },
+      "docs/_static/dark-logo.svg": {
+        "kind": "file",
+        "sha256": "bed782f61fb799fe1840b023a614ce55562b76615085af0871040faf543e7738",
+        "mode": 420
+      },
+      "docs/advanced-usage.rst": {
+        "kind": "file",
+        "sha256": "68edce4e1dd5d2adcd4289d41dce3b13ea4b9f0a9b702c26e1f30bef08b27c20",
+        "mode": 420
+      },
+      "docs/changelog.rst": {
+        "kind": "file",
+        "sha256": "11fd96f321f22eaaa356b667b8c5844aec46baf3361e1373c5003a3eaca3f85b",
+        "mode": 420
+      },
+      "docs/conf.py": {
+        "kind": "file",
+        "sha256": "0fdb2aa912a039e26b4e7c9cafe802f4ac440b69202a64f107e11ccf1e3e4138",
+        "mode": 420
+      },
+      "docs/contributing.rst": {
+        "kind": "file",
+        "sha256": "8aa0a50f4d63e115a2ecd211269ce9fca67bc4895698f4e00432bcd161814959",
+        "mode": 420
+      },
+      "docs/images/demo-button.png": {
+        "kind": "file",
+        "sha256": "7a47405c70e09f7191de258f1d895e058930e5b3ace8a6b5e2cf3c5c9f27065d",
+        "mode": 420
+      },
+      "docs/images/favicon.png": {
+        "kind": "file",
+        "sha256": "2cfda32feaa9f154e5d0851c3fb97b88fa7b2619a2e096dcd86c82af7000e3a0",
+        "mode": 420
+      },
+      "docs/images/learn-more-button.png": {
+        "kind": "file",
+        "sha256": "2a5d2716ea6207280540effaecc371931a92f28c23ebe0ffda2a1762a75f070b",
+        "mode": 420
+      },
+      "docs/images/logo.png": {
+        "kind": "file",
+        "sha256": "5837a04d7b3947b232c5076e24f617299073bbdc0981b4a0ed6fcee05c185e49",
+        "mode": 420
+      },
+      "docs/images/logo.svg": {
+        "kind": "file",
+        "sha256": "48e75fbfa43946ed2eba1cc7ae90219bd7f9c9817cbdc9fd2f6dbae264a3765b",
+        "mode": 420
+      },
+      "docs/index.rst": {
+        "kind": "file",
+        "sha256": "e419b34acb70020e2e001def05b5fc927fa7d8336b5e68f9fb0d0098d1eb6cb3",
+        "mode": 420
+      },
+      "docs/make.bat": {
+        "kind": "file",
+        "sha256": "6cedefe63953f71c23f6f45cefeed4d4cf6a4bef2061b3b6c4d927f778fabc63",
+        "mode": 420
+      },
+      "docs/reference/contrib/emscripten.rst": {
+        "kind": "file",
+        "sha256": "875ff8f03e5a3595af346500918cd28d5549be4a2f70964802e6d203c0a34618",
+        "mode": 420
+      },
+      "docs/reference/contrib/index.rst": {
+        "kind": "file",
+        "sha256": "1f165ee941f804713378f6124146bcc4ebe0753da6ca28e6d8893330b233cd8c",
+        "mode": 420
+      },
+      "docs/reference/contrib/pyopenssl.rst": {
+        "kind": "file",
+        "sha256": "f989b3294ff53ac71ff44b4887bf2c15546922932140b8edc37792be70637ef7",
+        "mode": 420
+      },
+      "docs/reference/contrib/socks.rst": {
+        "kind": "file",
+        "sha256": "1bea1da04c4883425cc2dee7103176d89b5eca920db8c50558bdccb5b4f63db2",
+        "mode": 420
+      },
+      "docs/reference/index.rst": {
+        "kind": "file",
+        "sha256": "1082faeda99d057f8d1e831bad01bbf3982edfd446748fdc400fba3f127dfa96",
+        "mode": 420
+      },
+      "docs/reference/urllib3.connection.rst": {
+        "kind": "file",
+        "sha256": "aa250cb673309f7049e1fb36715a9101340f89bdf6ac90e4013915b55bec46fd",
+        "mode": 420
+      },
+      "docs/reference/urllib3.connectionpool.rst": {
+        "kind": "file",
+        "sha256": "ec4a687c53a2ec6d315b4d50704b53a8dcfbf183176872d238675a9a2bb04ca2",
+        "mode": 420
+      },
+      "docs/reference/urllib3.exceptions.rst": {
+        "kind": "file",
+        "sha256": "69d64d5a76d8056d1fa23c1a1b1148331d8bd41c1d66754e9181eef0d1837776",
+        "mode": 420
+      },
+      "docs/reference/urllib3.fields.rst": {
+        "kind": "file",
+        "sha256": "ba4327d377744f3e3e0b7e26dc902ae1df7854d99af2158cfa20bb708e712202",
+        "mode": 420
+      },
+      "docs/reference/urllib3.poolmanager.rst": {
+        "kind": "file",
+        "sha256": "72f20d72ab84c95b7acaf37c2639783b2f2ad38be05ee2f21e4aeaaa5367a482",
+        "mode": 420
+      },
+      "docs/reference/urllib3.request.rst": {
+        "kind": "file",
+        "sha256": "e3fd1ccaeef75440c9a1cf99bc340f9169c8b419d63f1e365fee741fd51e9f09",
+        "mode": 420
+      },
+      "docs/reference/urllib3.response.rst": {
+        "kind": "file",
+        "sha256": "5cafdddc1568a1f3b68aed5237a5148531dd8674f1e16d137b6fc7d38f665b77",
+        "mode": 420
+      },
+      "docs/reference/urllib3.util.rst": {
+        "kind": "file",
+        "sha256": "6b4aaa03322e46b4b37027d7c1f76238f87da142ee05f203a089025263cb4ea5",
+        "mode": 420
+      },
+      "docs/requirements.txt": {
+        "kind": "file",
+        "sha256": "78a2ecdcb7fc33829cd9fe3f3898458d9712de799297fc10713691eba11cde58",
+        "mode": 420
+      },
+      "docs/sponsors.rst": {
+        "kind": "file",
+        "sha256": "d6680b44df22dde7437015112fb4755487142e76f1025efa892a6476cfbb2b51",
+        "mode": 420
+      },
+      "docs/user-guide.rst": {
+        "kind": "file",
+        "sha256": "1db958cb138b08e2df8090f2eff2e69e32a57bc7a998a8c18d510bd8e0f2c967",
+        "mode": 420
+      },
+      "docs/v2-migration-guide.rst": {
+        "kind": "file",
+        "sha256": "13250d3e701ce961ddc39fceb96e9fedef13d5d15fd86625f6f2e6e4cc6deda7",
+        "mode": 420
+      },
+      "dummyserver/__init__.py": {
+        "kind": "file",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "dummyserver/app.py": {
+        "kind": "file",
+        "sha256": "f39eab487faa77e8a6a33d26f8de7a1883f60fed2310d8199d8c73d4b0c172bf",
+        "mode": 420
+      },
+      "dummyserver/asgi_proxy.py": {
+        "kind": "file",
+        "sha256": "86b2a716aae020da362aabc26dcff732fcba0ccd491a856e327d479d2b808e35",
+        "mode": 493
+      },
+      "dummyserver/certs/README.rst": {
+        "kind": "file",
+        "sha256": "933316fb3aa22fe916d22cec8eb4db4a41cca25be66e21f0a8de631e3d244856",
+        "mode": 420
+      },
+      "dummyserver/certs/cacert.key": {
+        "kind": "file",
+        "sha256": "c96b05fa83340e0428d44b0f4e3b2e7d1434bff0847ffdec7f8e032b2c5a7459",
+        "mode": 420
+      },
+      "dummyserver/certs/cacert.pem": {
+        "kind": "file",
+        "sha256": "7d7da6a886ab81d2be83fdb0bc9d3f785500b22e55ff66ef5171cd127fd33521",
+        "mode": 420
+      },
+      "dummyserver/certs/server.crt": {
+        "kind": "file",
+        "sha256": "021abc54bdfce65841feba5a4dc46f3082a53324e1ff6094b59bc1821c0f3480",
+        "mode": 420
+      },
+      "dummyserver/certs/server.key": {
+        "kind": "file",
+        "sha256": "c6080e37b18612986bc471411dedd1cad8d35bfbdb92782ca55989a6081a3024",
+        "mode": 420
+      },
+      "dummyserver/hypercornserver.py": {
+        "kind": "file",
+        "sha256": "6048a52182b6cf30c61d4254699a668317ed89802b34bff7989dcda965072311",
+        "mode": 420
+      },
+      "dummyserver/socketserver.py": {
+        "kind": "file",
+        "sha256": "8cfadfa59ea898bcca9f8891683392edaaa6661ec9defa78a62612c58cb30d0b",
+        "mode": 493
+      },
+      "dummyserver/testcase.py": {
+        "kind": "file",
+        "sha256": "da8ebb193d1d51daaeeb43b33d76b49e929913361b2eb353bb77afd0f021aaad",
+        "mode": 420
+      },
+      "emscripten-requirements.txt": {
+        "kind": "file",
+        "sha256": "59d5238f843bf0448712891189e506568e83526a439b5ee66fbdaa88d20787e8",
+        "mode": 420
+      },
+      "mypy-requirements.txt": {
+        "kind": "file",
+        "sha256": "d535034697886042f806a90e8a6c912ff34d3513def081e5d40fb420cbdb6a53",
+        "mode": 420
+      },
+      "notes/connection-lifecycle.md": {
+        "kind": "file",
+        "sha256": "8f4b260d0d239efd9a66b03802f6b7f09c0155b858ed89d1b546d610313c83da",
+        "mode": 420
+      },
+      "notes/public-and-private-apis.md": {
+        "kind": "file",
+        "sha256": "ddc2991d37495411d2f462bedd5960f1a9b362958d2dde719f1899cf00344763",
+        "mode": 420
+      },
+      "noxfile.py": {
+        "kind": "file",
+        "sha256": "db133c5e5ffb644cb18459a92bc7c42d96e303ffe3b56822ee0c5339476bf264",
+        "mode": 420
+      },
+      "pyproject.toml": {
+        "kind": "file",
+        "sha256": "3313d16a8dc3abb1319d895fef5f3df8939e36831115756aad047c63e6b35148",
+        "mode": 420
+      },
+      "setup.cfg": {
+        "kind": "file",
+        "sha256": "e843baab7b88dbbfefaf752d4fffc21192d1d95a9548e2bcec0891a8b0bcdf2c",
+        "mode": 420
+      },
+      "src/urllib3/__init__.py": {
+        "kind": "file",
+        "sha256": "24ca35b60d67215d40789daf10d0bf4f17e5d1ee61e86ce5f43195935ad645ba",
+        "mode": 420
+      },
+      "src/urllib3/_base_connection.py": {
+        "kind": "file",
+        "sha256": "b47d1994ec562a291af92f4d5be32e22523f3cb1505149929e813ff4c7b2c243",
+        "mode": 420
+      },
+      "src/urllib3/_collections.py": {
+        "kind": "file",
+        "sha256": "686861f7309871ede8fb9156f433d251acba3bd2e31f1f33e93ef00ed761ae46",
+        "mode": 420
+      },
+      "src/urllib3/_request_methods.py": {
+        "kind": "file",
+        "sha256": "2d30f11de9c43f95d7fad55604d904900822cc211191917424af85fb00b1ab02",
+        "mode": 420
+      },
+      "src/urllib3/_version.py": {
+        "kind": "file",
+        "sha256": "1ed8f3f987325e5a77bc75e95001ac1e3b946d188dadc10cfd19194dba681392",
+        "mode": 420
+      },
+      "src/urllib3/connection.py": {
+        "kind": "file",
+        "sha256": "400c21395e4639576c16732f5f956fe9f43c7f8ec4cdfad138002b7f145d40e6",
+        "mode": 420
+      },
+      "src/urllib3/connectionpool.py": {
+        "kind": "file",
+        "sha256": "e5f3c81f2a4fc256ca04048cb3a6c44931095441a5b23f45398f7f1865361a93",
+        "mode": 420
+      },
+      "src/urllib3/contrib/__init__.py": {
+        "kind": "file",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "src/urllib3/contrib/emscripten/__init__.py": {
+        "kind": "file",
+        "sha256": "bba28d8338e51596ee0005daff26c247b810ef55491129c5f8821d0c0ef76ebc",
+        "mode": 420
+      },
+      "src/urllib3/contrib/emscripten/connection.py": {
+        "kind": "file",
+        "sha256": "91a05edad5aded8cbdbcd50544157b092c839df8426082c6c63bbd293663f12c",
+        "mode": 420
+      },
+      "src/urllib3/contrib/emscripten/emscripten_fetch_worker.js": {
+        "kind": "file",
+        "sha256": "0837d817ff420e86edc7694689dc89d738c312fc0d4f917e75c8665565c38741",
+        "mode": 420
+      },
+      "src/urllib3/contrib/emscripten/fetch.py": {
+        "kind": "file",
+        "sha256": "ca6c09947041bb0e964e92a03c7a5d9a6acd07196cafbe47aa80f8467dbb6179",
+        "mode": 420
+      },
+      "src/urllib3/contrib/emscripten/request.py": {
+        "kind": "file",
+        "sha256": "98bdbcb33cb52af137349856a2be633666aba7c830a650d4fbb8301996398344",
+        "mode": 420
+      },
+      "src/urllib3/contrib/emscripten/response.py": {
+        "kind": "file",
+        "sha256": "c046163c708bf89b200ada42a5f9d6198035f837230c6a451aa5825d92f06c76",
+        "mode": 420
+      },
+      "src/urllib3/contrib/pyopenssl.py": {
+        "kind": "file",
+        "sha256": "f623f88fc25a7c0e21aad5fd02027dcf1aea23e89ca211aba85a8032bca835d0",
+        "mode": 420
+      },
+      "src/urllib3/contrib/socks.py": {
+        "kind": "file",
+        "sha256": "fa26ab75ceb51b2a6c2730fa5bacae452eca542c9fa30710ae5ffbd7d1fb9483",
+        "mode": 420
+      },
+      "src/urllib3/exceptions.py": {
+        "kind": "file",
+        "sha256": "4436a2b9db51eeba9b54a4caa4b4a064106dc1a22a57b799b5eaef655fe665a8",
+        "mode": 420
+      },
+      "src/urllib3/fields.py": {
+        "kind": "file",
+        "sha256": "f2f8b43de468fe91397213e6240d3b2d9b4c91596ce14ac14b5936c4ce74ea33",
+        "mode": 420
+      },
+      "src/urllib3/filepost.py": {
+        "kind": "file",
+        "sha256": "fbda894f5d5c3468cef5daa7236d3ea04ad9b93bcd68cd7cc5964f0a36526ce1",
+        "mode": 420
+      },
+      "src/urllib3/http2/__init__.py": {
+        "kind": "file",
+        "sha256": "c73ac0487ed1e4035190f24ea2de651a70133aadca2aec97cc8e36adc9f09aab",
+        "mode": 420
+      },
+      "src/urllib3/http2/connection.py": {
+        "kind": "file",
+        "sha256": "18d969f418c8dc399f48a7b55b46fd22a44178cf10d77c5dd8c03744e709ddd6",
+        "mode": 420
+      },
+      "src/urllib3/http2/probe.py": {
+        "kind": "file",
+        "sha256": "9e7024a9b8406a43a217be6bcfb5b4b9d677f047a1fee0fc7e357be0def71442",
+        "mode": 420
+      },
+      "src/urllib3/poolmanager.py": {
+        "kind": "file",
+        "sha256": "dbf2f6023543828434a819986d7f6ef50ab2535bb9277ef341bb6fffeb9e6500",
+        "mode": 420
+      },
+      "src/urllib3/py.typed": {
+        "kind": "file",
+        "sha256": "51a0ae3c56b71fc5006a46edfb91bc48f69c95d4ce1af26fd7ca4f8d42798036",
+        "mode": 420
+      },
+      "src/urllib3/response.py": {
+        "kind": "file",
+        "sha256": "352d2bab0466b705ad0bfe970ea80324dfeea3e8c4981573c7457a282b079708",
+        "mode": 420
+      },
+      "src/urllib3/util/__init__.py": {
+        "kind": "file",
+        "sha256": "faa792d1071e8af6b3bc110a0cd142008fba00271d0ce1384ccbe8ed22cd9404",
+        "mode": 420
+      },
+      "src/urllib3/util/connection.py": {
+        "kind": "file",
+        "sha256": "d28efdfb935b45fa410f2a1e8463cb982039e38b024a25efc74985f71cb7186d",
+        "mode": 420
+      },
+      "src/urllib3/util/proxy.py": {
+        "kind": "file",
+        "sha256": "b1e3fcf90e41e9b07474cb703e3f98719650df4bc7b8ba91bbeb48d096767f3b",
+        "mode": 420
+      },
+      "src/urllib3/util/request.py": {
+        "kind": "file",
+        "sha256": "52b676837cb7b2d1a91fcae6f92c7cfa896581e8a2288e3de83657442c316fda",
+        "mode": 420
+      },
+      "src/urllib3/util/response.py": {
+        "kind": "file",
+        "sha256": "bd013adfdba81218f5be98c4771bb994d22124249466477ba6a965508d0164e0",
+        "mode": 420
+      },
+      "src/urllib3/util/retry.py": {
+        "kind": "file",
+        "sha256": "6e3fb6614a9b9712e5bfc4c78397f1c30f83339e1709b8e0657210ef55e2a026",
+        "mode": 420
+      },
+      "src/urllib3/util/ssl_.py": {
+        "kind": "file",
+        "sha256": "58df1ae8a3cf72fba46d9d0c5250403a41a297c6d8298f0da0860ec3b41e38b2",
+        "mode": 420
+      },
+      "src/urllib3/util/ssl_match_hostname.py": {
+        "kind": "file",
+        "sha256": "81a5aa8b1a18b50fc628ef1f7111858f755778ca2acb1410b944cf8167a22ff3",
+        "mode": 420
+      },
+      "src/urllib3/util/ssltransport.py": {
+        "kind": "file",
+        "sha256": "c29ac1be19208dd76184cc3011b1f23f8972807a4fe924bee3912e87ba1ee3c9",
+        "mode": 420
+      },
+      "src/urllib3/util/timeout.py": {
+        "kind": "file",
+        "sha256": "e1e4f5155799654ee1ee6603d49ab639735ee1fc5e91d36f868594919bac4690",
+        "mode": 420
+      },
+      "src/urllib3/util/url.py": {
+        "kind": "file",
+        "sha256": "c07391869f344405f24e5008913a8b1734ab914ec9df8643c57fad37ae4c0599",
+        "mode": 420
+      },
+      "src/urllib3/util/util.py": {
+        "kind": "file",
+        "sha256": "8f795b64ad633f28b00f7e13f08809cdd5846554fee04fb4bd82098bd52378d0",
+        "mode": 420
+      },
+      "src/urllib3/util/wait.py": {
+        "kind": "file",
+        "sha256": "fe987c22b511deca8faa2d0ea29420254947e30ce419e3390a2c80ed7186b662",
+        "mode": 420
+      },
+      "test/__init__.py": {
+        "kind": "file",
+        "sha256": "f41bd9acbdae314004ac3e7a767bbe3a60ce4005ee0f15c5476bcc793c0dfb74",
+        "mode": 420
+      },
+      "test/conftest.py": {
+        "kind": "file",
+        "sha256": "1a7dd534162ffd4bb9a305b79e2d2bca6380c8c37dd54e9529d1374be464a5c1",
+        "mode": 420
+      },
+      "test/contrib/__init__.py": {
+        "kind": "file",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "test/contrib/duplicate_san.pem": {
+        "kind": "file",
+        "sha256": "78d047fe67835538cc9feb33a67aed171f7e74e346a0b246a785ace677da9bb4",
+        "mode": 420
+      },
+      "test/contrib/emscripten/__init__.py": {
+        "kind": "file",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "test/contrib/emscripten/conftest.py": {
+        "kind": "file",
+        "sha256": "e4e9666c0566be8d689ecb7a3fb5c459ecc1bb32e9e81cc6ac290c800ccd96b6",
+        "mode": 420
+      },
+      "test/contrib/emscripten/templates/pyodide-console.html": {
+        "kind": "file",
+        "sha256": "fd8ab2063ed970bb3b4f6d57d90dd46b07fd3c6ab8ad24e05fa51705b631da3e",
+        "mode": 420
+      },
+      "test/contrib/emscripten/test_emscripten.py": {
+        "kind": "file",
+        "sha256": "1bd6dbeb2269d8ff38d182b171ddfee2550cea11a7041d6271ad058c5016d102",
+        "mode": 420
+      },
+      "test/contrib/test_pyopenssl.py": {
+        "kind": "file",
+        "sha256": "a2ee638e3a1094a4119d550ea3ac48a8ae9441be4d5db8c95847d4e74e12af28",
+        "mode": 420
+      },
+      "test/contrib/test_pyopenssl_dependencies.py": {
+        "kind": "file",
+        "sha256": "c378dfbe789bbc1f63fae4e4d4e2b166a5d519b52fa49261e9adabe4783132c8",
+        "mode": 420
+      },
+      "test/contrib/test_socks.py": {
+        "kind": "file",
+        "sha256": "82e8c63e457237330da9994b25c10b56a73dffc7c92575984d0c2a69e679cadd",
+        "mode": 420
+      },
+      "test/port_helpers.py": {
+        "kind": "file",
+        "sha256": "ba15735fdfb8b410bb14d14d33a07e415c5e74f978684a0f4603f3ae3e343afe",
+        "mode": 420
+      },
+      "test/test_collections.py": {
+        "kind": "file",
+        "sha256": "09ff2eb920bad6eb11e4b92a7e0e44cd43e0a436df0a2f907c817a28b2bbd9be",
+        "mode": 420
+      },
+      "test/test_compatibility.py": {
+        "kind": "file",
+        "sha256": "7ab40b3fcb630a9a3f02f103afe048469d943174dfa5fc4d5d37409c243c96e7",
+        "mode": 420
+      },
+      "test/test_connection.py": {
+        "kind": "file",
+        "sha256": "c7c52e1e8454542219a35dda6152c97fed556662477c67e4beb4b370bdf02652",
+        "mode": 420
+      },
+      "test/test_connectionpool.py": {
+        "kind": "file",
+        "sha256": "5936bc3164b830a2103e6d6b57cef59bbfdb035e68264b585dd6a47e6b584f7c",
+        "mode": 420
+      },
+      "test/test_exceptions.py": {
+        "kind": "file",
+        "sha256": "f5b4d25e4f1f1baee370abf2abdfd7f936586065791916f9487c61ac58a335d9",
+        "mode": 420
+      },
+      "test/test_fields.py": {
+        "kind": "file",
+        "sha256": "2db541b7ad606c91e227e76f5a3f9f16b465dbeba8b3cee24f402c445e34a740",
+        "mode": 420
+      },
+      "test/test_filepost.py": {
+        "kind": "file",
+        "sha256": "566e3f7d2fbdceaec64c3f1565a610253b1f96105a3aa82840afee6d4da94f0c",
+        "mode": 420
+      },
+      "test/test_http2_connection.py": {
+        "kind": "file",
+        "sha256": "4e4c417e971067b745eafef4b0c1b66159b4e0c678642781e9ce8f0cc458282b",
+        "mode": 420
+      },
+      "test/test_no_ssl.py": {
+        "kind": "file",
+        "sha256": "6cc36a4a8a436128cd3cd078affd1eeb99739faebce795867c49ec205afdceef",
+        "mode": 420
+      },
+      "test/test_poolmanager.py": {
+        "kind": "file",
+        "sha256": "6a0b4a0655bf529a67f5858835dc7cf80eaf6e20706a74f1c01dc028073fa6e4",
+        "mode": 420
+      },
+      "test/test_proxymanager.py": {
+        "kind": "file",
+        "sha256": "c29f55ae8d3fbf3aefa0685440d49b878f9e2e5580b524f3479cff5fe6ae899f",
+        "mode": 420
+      },
+      "test/test_queue_monkeypatch.py": {
+        "kind": "file",
+        "sha256": "582ca1438a3405bf9a2bc8aed41e66568a612d04d05ee9e5de4236141c561e6a",
+        "mode": 420
+      },
+      "test/test_response.py": {
+        "kind": "file",
+        "sha256": "6d6dc5bf983e5318d31651b010ff24a44ed1686cf3f950e240e7ea29dc48baf1",
+        "mode": 420
+      },
+      "test/test_retry.py": {
+        "kind": "file",
+        "sha256": "0612b660caf142d9a30fbb79ef3c82b0c2b0344e3a092a42c5d961a4799b737a",
+        "mode": 420
+      },
+      "test/test_ssl.py": {
+        "kind": "file",
+        "sha256": "4734fa05efe1e7d6935f5f8a28df7a85017191e2264c7226b30ed89972366594",
+        "mode": 420
+      },
+      "test/test_ssltransport.py": {
+        "kind": "file",
+        "sha256": "2b2d29f95e44d54035d4ae25519f64bf8578b6fe1e34d8fb32c1f17b808c9b39",
+        "mode": 420
+      },
+      "test/test_util.py": {
+        "kind": "file",
+        "sha256": "d8b9125a87b56f97381ba0b6e943728cdcb7a862dbb8eaca5a83e344ea15139c",
+        "mode": 420
+      },
+      "test/test_wait.py": {
+        "kind": "file",
+        "sha256": "ae451b74a8946dc305e4f20371280ad13a18aedb2adcc4b3ddf5a9ee092027b0",
+        "mode": 420
+      },
+      "test/tz_stub.py": {
+        "kind": "file",
+        "sha256": "1d602192a041197436e263754e0f85335848b2de73d0a4496578b7b30962e8f8",
+        "mode": 420
+      },
+      "test/with_dummyserver/__init__.py": {
+        "kind": "file",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "test/with_dummyserver/test_chunked_transfer.py": {
+        "kind": "file",
+        "sha256": "187c88cf77ab3b11a8d2c0e70bdb91feec5510c3b036151d606bef2cbf76c0bb",
+        "mode": 420
+      },
+      "test/with_dummyserver/test_connection.py": {
+        "kind": "file",
+        "sha256": "3ee121f5de98e5d60dec080b773706d38782939d9256361676e1ffa6631e1b80",
+        "mode": 420
+      },
+      "test/with_dummyserver/test_connectionpool.py": {
+        "kind": "file",
+        "sha256": "3403e83a520b10e79d34e98a51f6224c1aeb7693be5c8860c732e6e2698c3c75",
+        "mode": 420
+      },
+      "test/with_dummyserver/test_https.py": {
+        "kind": "file",
+        "sha256": "7ef08fe360de52fa80cb9d8e1a51f04a6e2f7078802fbfb7e372f4bd6adf9ee2",
+        "mode": 420
+      },
+      "test/with_dummyserver/test_no_ssl.py": {
+        "kind": "file",
+        "sha256": "439507e62a578fda09b1edc5d8498d09ec9ae80c2d14969c6ab275a8299d9e33",
+        "mode": 420
+      },
+      "test/with_dummyserver/test_poolmanager.py": {
+        "kind": "file",
+        "sha256": "a722e1efcff580ff6cb1e5aa9b4f72862b8f9d02f6e5a2371d970f7b7fa9081d",
+        "mode": 420
+      },
+      "test/with_dummyserver/test_proxy_poolmanager.py": {
+        "kind": "file",
+        "sha256": "fdbeef46702d52d7f838a2e8cd07d64f23dc060c92418dea628b0859e829e8fb",
+        "mode": 420
+      },
+      "test/with_dummyserver/test_socketlevel.py": {
+        "kind": "file",
+        "sha256": "9bda2d297b0c5fc14b7fa47ed0ae7f3eec7d075988f9e27a9a99544d9521371d",
+        "mode": 420
+      },
+      "towncrier.toml": {
+        "kind": "file",
+        "sha256": "48c8b7ab8e336b2ca14aed85d5c5fe0debfa6b31153f54035f9dd05885a585c8",
+        "mode": 420
+      }
+    }
+  },
+  "source_hashes": {
+    "benchmarks/run_urllib3_inline_transfer_02.py": "6ffcaa08eac536101c1f1bf7be32a9fbd62e6192042e7a0adaa45adc2e67869e",
+    "benchmarks/run_urllib3_history_01.py": "86fa38599ac0ad0c772151f3754cf60748fe500e051c0e1af54bb2800c64e060",
+    "benchmarks/preflight_urllib3_history_01.py": "281d8dfdb95fb49bc6421acacc9068d3cc17e2cb46c28bdb334e3e776f9c6271",
+    "benchmarks/run.py": "60120a1fec9c610784cc2d2d649edcee41eb46550baec7031a37bbcfc91a0c03",
+    "benchmarks/run_necromancer_decision_checks_01.py": "8db262563d6321d1a542d95afb5be577f90eeff3ff75e3d8d52435eaf9c5ddbb",
+    "benchmarks/run_tool_surface_01.py": "7765a8400ab2dee61283ce00cb82050c99a79735b4b146f4074de2345e5572ec",
+    "benchmarks/URLLIB3-INLINE-TRANSFER-02-PROTOCOL.md": "1c4af7ce069ba72ccd84d07f9e883a314a74c9ae405cbae832ea983c7821b649",
+    "tests/test_urllib3_inline_transfer_02.py": "fe79763fb72395f66ad54fd46b8eb8eb04fb9df0ff5168ff056169b14bae4844",
+    "benchmarks/results/urllib3-inline-transfer-01-native/control.py": "728b5711f81cac63cbf58b88b58b9d442f2215a414c58909735ca6d891a0469b",
+    "benchmarks/run_necromancer_file_regions_01.py": "5bc8ce406caf5126c8efe143f702173c9bdeeac49a43b9e2f0d53dd67c96f264",
+    "benchmarks/NECROMANCER-FILE-REGIONS-01-PROTOCOL.md": "175eedfe05380c81c8ccae9f21465e845923e67a4004680b2c48d1495d640130",
+    "tests/test_necromancer_file_regions_01.py": "16392421f6685a50f9d3d0dac6e0418474e1537c5388a37a3a03350fafb35c92",
+    "benchmarks/candidates/necromancer-file-regions/skills/necromancer/scripts/python_regions.py": "a358af96d191b7b1a93e1d6ef1e06178bc8c25d22e91511b36093afbd31b9910",
+    "benchmarks/candidates/necromancer-file-regions/skills/necromancer/SKILL.md": "dda9f3cec27075ef154bfbfee7c64c43cc6f9e6952e3883c067b0089ec1517f0",
+    "benchmarks/candidates/necromancer-file-regions/skills/necromancer/references/python-regions.md": "1246a4099e2b1abf550162613ecfd18b7fadaac2ee8acc21ef17d485501ed1fb"
+  },
+  "resource_revisions": {
+    "previous": [
+      "8b1d8163",
+      "skills/necromancer"
+    ],
+    "candidate": [
+      "97c15593",
+      "benchmarks/candidates/necromancer-file-regions/skills/necromancer"
+    ]
+  },
+  "resource_digests": {
+    "previous": "4d45643928ccd67b93040239e3c950030b9bda86e948cee177c896dc783418bb",
+    "candidate": "3d8221273836807c08d540038dcad7ef31fd34eb0e88beed44e3dac8d6924d04"
+  },
+  "python": "/opt/homebrew/opt/python@3.11/bin/python3.11",
+  "python_version": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+  "cli_version": "codex-cli 0.157.1",
+  "completed_cells": [],
+  "stopped": false,
+  "prepared_at": "2026-09-27T08:31:48.927518+00:00"
+}

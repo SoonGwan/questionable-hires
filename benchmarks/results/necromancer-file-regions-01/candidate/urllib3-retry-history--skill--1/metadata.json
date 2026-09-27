@@ -1,0 +1,149 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "urllib3-retry-history",
+  "skill": "necromancer",
+  "arm": "skill",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "2458bfcd3dacdf6c196e98d077fc6bb02a5fc1df",
+  "skill_sha256": "dda9f3cec27075ef154bfbfee7c64c43cc6f9e6952e3883c067b0089ec1517f0",
+  "skill_resources_sha256": "76b93c2deaa8d3f97fe05402a39eb45bf56d2b4dce783538ea927933c98198e2",
+  "elapsed_seconds": 108.77,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 175264,
+    "cached_input_tokens": 139392,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2974,
+    "reasoning_output_tokens": 132
+  },
+  "completed": true,
+  "allocated_workspace": "<WORKSPACE>",
+  "prompt": "Use $necromancer at .agents/skills/necromancer/SKILL.md.\n\nReview two proposed behavior-preserving cleanups in src/urllib3/util/retry.py:Retry.is_retry.\nA: move the method-allowlist rejection below the status_forcelist early return.\nB: remove only self.total from the Retry-After fallback condition.\nEvaluate independently, not combined, and leave every other operation unchanged.\nThis is a review, not authorization to fix production code.\n\nObserve actual Retry.is_retry results for current, A-only and B-only using these\nfive configurations/calls (15 observations total). In every case allowed_methods=['GET'];\nunspecified constructor/call arguments use defaults:\n1. total=3, status_forcelist=[500]; is_retry('POST', 500).\n2. total=0, no forced statuses; is_retry('GET', 429, True).\n3. total=3, status_forcelist=[500]; is_retry('GET', 500).\n4. total=3, no forced statuses; is_retry('GET', 429, True).\n5. total=0, status_forcelist=[500]; is_retry('GET', 500).\nRetain every actual value or exception. Explain separate compatibility decisions\nand the relevant existing test/doc contract. Inspect the current connection-pool\ncaller and explain whether these predicate results alone establish an actual\nnetwork retry, including case5. No HTTP requests or full integration run is needed.\n\nUse local ancestor history to establish when the Retry-After fallback was added:\ninspect the relevant parent/child implementation and accompanying tests/docs.\nAlso inspect the change attributing the method check to _is_method_retryable and\nan earlier operational implementation. Distinguish helper extraction/renaming from\nintroduction of the method restriction; first-ever origin is not required.\nCite the relevant commits. Separate observed current behavior from historical\nrationale; do not invent author intent. Use only ancestors of pinned HEAD.\n\nUse /opt/homebrew/opt/python@3.11/bin/python3.11 with -B and this checkout's src directory on the import path.\nVerify the imported implementation is local, not an installed urllib3 package.\nIn-memory variants or project-local disposable copies are allowed; no tool is\nrequired. Preserve every original file byte/mode, HEAD and installed resource.\nRemove all owned scratch before finishing; no lasting harness, report or code edit.\nNo network/HTTP requests, installations, fetching, commits or publication.\nThe specified interpreter/dependencies may be read/executed, not modified.\n\nWork only inside this local repository. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 15,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "item_error_review_candidates": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. Item errors may be recoverable; review actual execution. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {
+    "necromancer/SKILL.md": {
+      "kind": "file",
+      "sha256": "dda9f3cec27075ef154bfbfee7c64c43cc6f9e6952e3883c067b0089ec1517f0",
+      "mode": 420
+    },
+    "necromancer/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+      "mode": 420
+    },
+    "necromancer/references/focused-history-details.md": {
+      "kind": "file",
+      "sha256": "cc7e450044b07cbd738e3ca711b2d51ae7ec6baaf252e813d4f5bfb819fdc221",
+      "mode": 420
+    },
+    "necromancer/references/focused-history.md": {
+      "kind": "file",
+      "sha256": "5f2241bd80910943f98d3b22f65eb5c1823297902d108734a2a38005204a5bfa",
+      "mode": 420
+    },
+    "necromancer/references/python-regions.md": {
+      "kind": "file",
+      "sha256": "1246a4099e2b1abf550162613ecfd18b7fadaac2ee8acc21ef17d485501ed1fb",
+      "mode": 420
+    },
+    "necromancer/scripts/python_regions.py": {
+      "kind": "file",
+      "sha256": "a358af96d191b7b1a93e1d6ef1e06178bc8c25d22e91511b36093afbd31b9910",
+      "mode": 420
+    },
+    "necromancer/scripts/trace.py": {
+      "kind": "file",
+      "sha256": "df20a5292c8caa5e40395d595fc4244b6adadacb0136842c32a72dd4c7487cac",
+      "mode": 420
+    }
+  },
+  "installed_resources_after": {
+    "necromancer/SKILL.md": {
+      "kind": "file",
+      "sha256": "dda9f3cec27075ef154bfbfee7c64c43cc6f9e6952e3883c067b0089ec1517f0",
+      "mode": 420
+    },
+    "necromancer/agents/openai.yaml": {
+      "kind": "file",
+      "sha256": "f7982e6e490f93813056fa3019bda92d92d3a006f9b443c53720d5ef49b8fed7",
+      "mode": 420
+    },
+    "necromancer/references/focused-history-details.md": {
+      "kind": "file",
+      "sha256": "cc7e450044b07cbd738e3ca711b2d51ae7ec6baaf252e813d4f5bfb819fdc221",
+      "mode": 420
+    },
+    "necromancer/references/focused-history.md": {
+      "kind": "file",
+      "sha256": "5f2241bd80910943f98d3b22f65eb5c1823297902d108734a2a38005204a5bfa",
+      "mode": 420
+    },
+    "necromancer/references/python-regions.md": {
+      "kind": "file",
+      "sha256": "1246a4099e2b1abf550162613ecfd18b7fadaac2ee8acc21ef17d485501ed1fb",
+      "mode": 420
+    },
+    "necromancer/scripts/python_regions.py": {
+      "kind": "file",
+      "sha256": "a358af96d191b7b1a93e1d6ef1e06178bc8c25d22e91511b36093afbd31b9910",
+      "mode": 420
+    },
+    "necromancer/scripts/trace.py": {
+      "kind": "file",
+      "sha256": "df20a5292c8caa5e40395d595fc4244b6adadacb0136842c32a72dd4c7487cac",
+      "mode": 420
+    }
+  },
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 15618,
+    "mode": 420,
+    "sha256": "76f962002859f9bed5ca0d571d2c9dd79950cec44cea251db42821f9022d82d9",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "pre_model_index": {
+    "status": "retained",
+    "file": "git-index.before-model.bin",
+    "bytes": 15618,
+    "mode": 420,
+    "sha256": "76f962002859f9bed5ca0d571d2c9dd79950cec44cea251db42821f9022d82d9",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "pre_model_project_files": {
+    "local_artifact": "project-files.before-model.json",
+    "sha256": "af6a50f68929ece7bdea15e24ba20eccc416a9f16caf26020c6f27279c76180a",
+    "excluded_prefixes": [
+      ".git",
+      ".agents/skills"
+    ],
+    "limitation": "Local regular-file bytes/modes and symlink targets before model execution; not directory metadata, an atomic snapshot, transient-change evidence, or an automatic preservation verdict. Raw inventory is not exported."
+  },
+  "index_comparison": {
+    "status": "observed",
+    "bytes_and_mode_unchanged": true,
+    "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+  }
+}

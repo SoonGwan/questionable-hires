@@ -38,7 +38,6 @@ was already qualified in the original September21 report, not a new discovery.
 
 | Checkpoint / date / resource | Observed result | Decision |
 | --- | --- | --- |
-| [Necromancer file regions01](NECROMANCER-FILE-REGIONS-01-REVIEW.md),2026-09-27,execution`b7f6a761`,candidate`97c15593` | Tokens−7.76%,time−0.096%(0.105s),one numerical joint pair;both complete15 values/caller/contracts/history/preservation and response sums. | No adoption;neither invokes parser despite recorded exact initial skill exposure. Speed delta lacks variance evidence;exposed n=1/fixed order/shared host/unequal optional work;no all8 gain. |
 | [Necromancer retained matrix01](NECROMANCER-RETAINED-MATRIX-01-REVIEW.md),2026-09-27,execution`c9d618d4`,candidate`837988d5` | Two original cells;tokens+28.33%,time+4.20%;0/1 joint. Both15 values/caller/contracts/ancestor history/preservation and response sums reviewed;original session output recovery retained. | Declined;candidate does not invoke new API. Both direct probes call15 once;exposed n=1/fixed order/shared host/unequal optional reads;no all8 gain. |
 | [urllib3 inline transfer02](URLLIB3-INLINE-TRANSFER-02-REVIEW.md),2026-09-27,execution`d8c894d2`,candidate`80c06e2e` | Two original real-source cells;tokens+23.22%,time+12.76%;0/1 joint. Both15 values/caller/contracts/ancestor history/preservation reviewed;partial CLI output recovered from original sessions. | Declined;candidate reads but does not invoke observer. Exposed n=1/fixed order/shared host/unequal optional work;no all8 gain. |
 | [Necromancer inline matrix01](NECROMANCER-INLINE-MATRIX-01-REVIEW.md),2026-09-27,execution`bf4d19ca`,candidate`80c06e2e` | Four original cells;tokens−3.82%,time−13.50%;1/2 joint reductions,invoice both worse. Both candidates actually call observer;required behavior/history/tests/preservation and response sums reviewed. | No general adoption;ordinary skills unchanged. Exposed n=1/unequal optional work/error recovery/shared host limits retained;no all8 gain. |
@@ -236,11 +235,3 @@ preservation passes checkout and Git-free archive;previous23 tests/installed
 checks reused explicitly. Zero models;not all8 quality/cost or adoption evidence.
 한국어: 별도 발췌 CLI 안내 후보의 실제 두 함수 선택·원본 보존을 확인했다.
 모델 비용·전체8개 성과·기본 채택 증거는 아직 없고 기존 결과를 보존한다.
-
-[File regions01 model review](NECROMANCER-FILE-REGIONS-01-REVIEW.md),2026-09-27,
-`b7f6a761`:tokens193,225→178,238,time108.875→108.770s. Neither invokes excerpt
-parser;0.105s time difference does not prove reliable speed gain. Prepared resources
-differ only in entrypoint;initial body exposure confirmed without publishing private
-text. Keep ordinary routing unchanged;native file/installation checks remain separate.
-한국어: 원본 한 쌍의 토큰7.76% 감소를 관찰했지만 시간 차이0.105초와 도구 미사용으로
-신뢰할 속도 개선·전체8개 효능·기본 채택을 주장하지 않는다.
