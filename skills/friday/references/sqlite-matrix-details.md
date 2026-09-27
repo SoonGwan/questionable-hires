@@ -9,6 +9,12 @@ are unchanged. Compare parsed observations, not whitespace in serialized output.
 
 ## Input shape and failure details
 
+CLI JSON objects reject repeated decoded keys at every depth, including escaped
+equivalents, before source reads or database creation. Errors identify the key
+(with bounded length), without printing its values. Repeated values, phase names
+and SQL result column labels remain allowed. The dict API cannot detect keys
+already overwritten by its caller's JSON parser.
+
 The top-level recipe accepts exactly `phases` and `checks`; phase keys are `name`,
 optional `files`, `sql` and `checks`. Phase `checks` selects a nonempty list of
 unique declared names in execution order; absent means all checks. Unknown names,

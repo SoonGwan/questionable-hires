@@ -6,7 +6,8 @@ application writers, transactions or multiple connections—not this matrix.
 
 For printed observations, run
 `python3 <skill-dir>/scripts/sqlite_matrix.py --source <project> --spec -`
-with recipe JSON on stdin (or a recipe path instead of `-`). For value assertions,
+with recipe JSON on stdin (or a recipe path instead of `-`). Duplicate JSON object
+keys reject before source reads or SQL, with incomplete JSON and exit 2. For value assertions,
 use the same recipe through the API and reuse its result:
 
 ```python

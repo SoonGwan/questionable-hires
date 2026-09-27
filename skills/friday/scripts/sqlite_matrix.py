@@ -278,6 +278,18 @@ def format_result(result):
     return json.dumps(result, ensure_ascii=True, default=encode, separators=(',', ':'))
 
 
+def _unique_recipe_object(pairs):
+    """Reject ambiguous JSON before validating or executing any declared work."""
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            name = json.dumps(key)
+            raise ValueError('Duplicate recipe key: ' +
+                             (name[:240] + '...' if len(name) > 240 else name))
+        result[key] = value
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--spec", required=True, help="JSON recipe path, or - for stdin")
@@ -292,7 +304,8 @@ def main():
                 raw = stream.read(2_000_001)
         if len(raw.encode("utf-8")) > 2_000_000:
             raise ValueError("recipe exceeds 2 MB")
-        result = matrix(json.loads(raw), args.source, args.timeout)
+        result = matrix(json.loads(raw, object_pairs_hook=_unique_recipe_object),
+                        args.source, args.timeout)
         print(format_result(result))
         return 0 if result["complete"] else 1
     except (ValueError, OSError, TypeError) as error:
