@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Native cache inventory01,2026-09-27,parent`68570943`:
-[prospective guard controls](NATIVE-CACHE-INVENTORY-01.md) distinguish actual native
-cache writes from source changes, retaining both maps/full equality. Byte/mode/
-deletion/link faults detected in checkout and Git-free controls; separate next
-private driver syntax checked, cohort unexecuted. Zero models; original flags kept.
-한국어: 실제 cache 쓰기와 소스 변경 검출을 분리 검증했다. 전체 비교·효율·품질
-증거는 아니며 원본 검사 결과를 유지한다.
-
 Native status capture01,2026-09-27,parent`8588e20b`:
 [native hook controls](NATIVE-STATUS-CAPTURE-01.md) pass on actual pytest2.8.7/4.0.2
 and Git-free copies. XPASS is natively `failed` versus `passed`, category `xpassed`
