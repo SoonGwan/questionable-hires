@@ -52,8 +52,26 @@ passes20 native processes but retains only argument reports. A separate final
 output. Total44 local native processes including failed-control attempt, no models.
 Reused fixtures are development checks, not independent validation/all8 readiness.
 
-Next gate: explicit API migration/consumer compatibility and meaningful native
-budget/ownership controls for the candidate before any model efficiency claim.
+## Candidate boundary follow-up
+
+[Boundary runner](results/assertion-value-codec-prototype-01/boundaries.py) reuses
+prototype02's exact existing native control source, rather than duplicating tests.
+[Original outcomes](results/assertion-value-codec-prototype-01/boundaries.json):22
+native controls across actual Python3.9.6/3.11.6 pass. Observer off/on,128-byte cap,
+one-record cap and forced encoder error each retain real three-test PASS versus
+one native assertion FAIL; existing-profile controls preserve hook ownership.
+Reports explicitly unavailable, byte_limit, record_limit or observer_error;
+full ASCII reports remain within each requested budget. Replacement profile is
+preserved after close, repeated close idempotent; five invalid budgets reject
+without installing a hook. No native test/source assertions altered. Boundaries
+use the same candidate observer hash as the value-roundtrip experiment.
+
+Temporary native paths in retained outputs are redacted after capture; original
+native outcomes and byte counts remain unchanged. This is separate local boundary
+evidence, not new original API01 model results or a release/install claim.
+
+Next gate: explicit API migration/consumer compatibility before any model
+comparison. Candidate native budget/ownership controls now pass locally.
 Do not promote report byte reduction into landing charts or featured benchmark.
 
 한국어: 리스트·튜플의 반복 표식을 줄인 로컬 시제품은 실제 값70개를 동일하게
