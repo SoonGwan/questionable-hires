@@ -33,3 +33,65 @@ Record every failure without overwriting prior results. No claim about arbitrary
 thread interruption, larger batches, host deadlines, abrupt loss, SIGKILL or all8
 performance. Inspect exception cleanup and incomplete-result handling before any
 future adoption. The model approval gate remains a separate prerequisite.
+
+## Executed contrast
+
+Frozen source/execution **`915d7f81`**; current native helper from`026a8312`.
+[Results](results/tool-bridge-phase-cancel-01/results.json),
+[identities and runtime](results/tool-bridge-phase-cancel-01/identity.json), and
+[control log](results/tool-bridge-phase-cancel-01/control-reading.txt).
+Python3.11.6, MCP1.30.0 and AnyIO4.15.1. All four scheduled native cells finish;
+no model calls, unplanned native reruns or source changes during this contrast.
+
+| Arm / cancellation point | First request phases | Recovery phases | Cancel→recovery seconds |
+| --- | --- | --- | ---: |
+| Baseline / active | before, after | before, after | 1.988 |
+| Candidate / active | before | before, after | 1.504 |
+| Candidate / queued | before, after | before, after | 1.972 |
+| Baseline / queued | before, after | before, after | 1.934 |
+
+For queued cancellation, the first request is **not canceled**. The canceled
+second request starts no phase; the table's final pair belongs to recovery.
+Active candidate executes one fewer native process than active baseline: the
+already-running before process finishes, cancellation is detected, original guards
+and temporary-copy cleanup unwind, and after never starts. Both arms acknowledge
+cancellation with a cancellation error, not a native verification result. Neither
+promises immediate interruption or returns a synthetic successful comparison.
+
+All four same-session recoveries return actual before1/after0 observations. Their
+**eight reviewed native processes** each run the unchanged six tests with zero
+skips and seven complete v3 argument records (**56 records**). Nested behavior is
+actually `[(1,3)]` against `[(1,10)]` before and matching after; distinct input/result
+identity is observed. Source guards and owned-copy cleanup pass. Actual starts and
+ends match;15 native phase starts occur across first/recovery requests. The seven
+non-recovery phases are retained lifecycle observations, not seven extra reviewed
+repair outcomes. No double-response error, traceback or server-error line appears
+in these four retained server logs. Session closure and awaited listener
+termination finish; a separate numeric listener exit status was not retained.
+
+The active recovery interval is lower in this one controlled comparison. Queued
+candidate is slightly slower; do not average it away. Both timings include the
+intentional0.4-second setup delay per phase and the entire subsequent recovery.
+This establishes avoided work after cancellation, not normal-task latency, a
+representative speed percentage, model tokens or an all-eight result.
+
+## Decision and remaining work
+
+Retain the phase-check mechanism as a supported **isolated native candidate**.
+It is not installed, registered or promoted to ordinary skills. The model approval
+failure remains unchanged, so no new model bridge trial follows. Cancellation
+while Git/source preparation is running is only noticed at the next native phase;
+an executing native process still uses its existing timeout/cleanup. This is not
+an overall RPC deadline. Abrupt client loss, guard-error precedence during
+cancellation, native timeout during cancellation, longer batches, cross-instance
+concurrency and hard kills remain unverified for this candidate. A changed native
+mechanism needs those relevant lifecycle checks before broader use; prior normal
+controls must not be relabeled as complete lifecycle safety.
+
+한국어: 실행 중 취소된 요청의 네이티브 비교를 기존2회에서 후보1회로 줄였다.
+이미 실행 중인 프로세스의 정리를 기다린 뒤 다음 버전을 시작하지 않는다.
+대기 중 취소에서는 두 방식 모두 취소된 요청을 실행하지 않았고, 같은 세션의
+후속 비교4쌍·네이티브8회·실제 인자56개와 원본 보존·정리를 확인했다.
+측정 시간에는 의도적인0.4초 지연과 후속 비교가 포함되며 대기 취소 후보는
+조금 더 느렸다. 정상 작업의 토큰·시간 개선이나 전체8개 목표 달성으로 보지
+않는다. 시제품으로만 보존하고 모델 승인 문제와 남은 종료 조건을 구분한다.

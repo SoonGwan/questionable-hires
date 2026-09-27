@@ -6,7 +6,6 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [Bridge phase cancellation01](TOOL-BRIDGE-PHASE-CANCEL-01.md),2026-09-28,source/execution`915d7f81`,helper`026a8312` | SDK active cancellation: first request phases2→1; four same-session recoveries retain8 native processes/56 actual arguments and source cleanup. Queued cancellation launches none. | Isolated native candidate only. Controlled delay/n=1, guard-error/timeout/abrupt-loss cases unverified; model approval gate and all8 goal remain open. |
 | [Receipt bridge route01](RECEIPT-BRIDGE-ROUTE-01-REVIEW.md),2026-09-28,source`d5643767`,execution`2708692d` | Both model tool attempts blocked by approval-required/never before server execution. Fallback verifies10 native processes/70 arguments; tokens+24.07%,lifecycle-inclusive time+21.05%. | Decline; no tool execution or efficiency win. Do not repeat unchanged approval settings; host API preflight did not exercise model policy. |
 | [Git capture memory01](HISTORY-CAPTURE-MEMORY-01.md),2026-09-28,helper`cfa7e920`,prototype`33a27e75` and pinned second-source hash | Native large-patch comparison: stdout-spooled Python allocation peak−50.17%,time+10.01%; smaller inputs slower, temporary writes required. | Neither prototype adopted. No RSS/whole-collector/model-cost gain; existing full-output capture limit remains. |
 | [Hostage focused before01](HOSTAGE-FOCUSED-BEFORE-01-REVIEW.md),2026-09-28,previous`eef44470`,candidate/execution`73b9f4db` | Four original cells: narrower defect reproduction observed, but tokens+16.30%,CLI+0.35%; each task adds one model response. | Decline; both token pairs regress. Full after checks retained with differing scenario details. No unchanged retry or ordinary adoption. |
@@ -19,7 +18,7 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 | [Con Artist recipe keys01](AUDIT-RECIPE-KEYS-01.md),2026-09-28,source`829a2b02` | Duplicate JSON keys rejected before execution;5 failing regressions repaired,127 native archive methods pass. | Adopt input correctness; no model-cost measurement. [Mac/public delivery](AUDIT-RECIPE-KEYS-01.md#public-delivery),hosted`1781c1ce`,verified separately. |
 | [Receipt recipe errors01](RECEIPT-RECIPE-ERRORS-01.md),2026-09-28,source`9db5a8ec` | Explicit input errors/duplicate-key rejection:7 failing regressions repaired,79 native archive methods pass. | Adopt input correctness; no model-cost measurement. Personal copy and public download delivery verified. |
 
-The [preceding dated index](CANDIDATE-HISTORY-2026-09-28-BEFORE-PHASE-CANCEL01.md)
+The [preceding dated index](CANDIDATE-HISTORY-2026-09-28-BEFORE-RECEIPT-BRIDGE-ROUTE01.md)
 preserves the full experiment and delivery chronology, earlier history links and
 all adverse decisions. In particular, [Landlord grouping](LANDLORD-CHECK-GROUP-01-REVIEW.md)
 did not establish its proposed mechanism, [traceback display](TRACEBACK-DISPLAY-MODEL-01-REVIEW.md)
@@ -41,6 +40,4 @@ Native controls, original model evidence and hosted checks have different scopes
 Receipt v3와 입력 오류 수정의 한계, Mac/공개 배포 검증은 위 근거로 구분한다.
 Git 출력 임시 파일 시제품도 메모리는 줄었지만 더 느리고 쓰기가 필요해 반영하지 않았다.
 직접 도구 경로 후보는 실제 호출 시도가 승인 정책에 막혀 채택하지 않았으며
-같은 설정으로 재실험하지 않는다. 취소 후 남은 네이티브 단계를 생략하는 후보는
-별도 SDK 검사에서 작동했지만 모델 절감·전체 종료 안전성·배포를 입증하지 않았다.
-이전 모든 실패·혼재 결과와 상세 이력은 날짜가 있는 이전 판단 목록에 보존했다.
+같은 설정으로 재실험하지 않는다. 이전 모든 실패·혼재 결과와 상세 이력은 날짜가 있는 이전 판단 목록에 보존했다.
