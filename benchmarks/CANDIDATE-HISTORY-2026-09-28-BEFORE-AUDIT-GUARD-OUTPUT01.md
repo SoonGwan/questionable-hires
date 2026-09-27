@@ -6,7 +6,6 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [Con Artist guard output01](AUDIT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,previous`1b497a05`,candidate`96ac17f4`,execution`a45d4802` | Four explicit-CLI cells: normal tokens+23.07%/time−46.68%; guard tokens−22.80%/time−31.40%. Sum−5.03%/−37.70%, all attempts retained. | Joint efficiency gate fails because normal tokens rise. Keep diagnostic fix, no general savings claim; one extra normal response and optional pretty output/read differences are observed, not causal proof. |
 | [Con Artist guard evidence01](AUDIT-GUARD-EVIDENCE-01.md),2026-09-28,parent`1b497a05`,source`fc91d057` | Seven reproduced evidence-loss failures repaired; final integrity failures retain completed native checks, batch references and original API exception types. | Native diagnostic correctness only; no model token/time claim. Subsequent mutations stop, unknown guards remain unknown. Installed10 controls/all8 resources match; public`44209fe7` download identity verified separately. |
 | [Receipt native split01](RECEIPT-NATIVE-SPLIT-01.md),2026-09-28,parent`1b85702c`,candidate/execution`f80c1448` | Unchanged native suite: previous126 pass, candidate124 pass/2 fail; single-file CLI relocation cannot find new companion. Driver bytes−36.14%,combined bytes+3.07%. | Decline before model timing; preserve existing callers. Zero models, no ordinary install/deployment or token-saving claim. |
 | [Receipt guard output01](RECEIPT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,previous`1b6ae5f5`,candidate`a77e4d93`,execution`31101dea` | Four explicit-CLI interface cells: tokens−27.38%,CLI−18.26%; both task pairs lower both. Guard candidate retains native results with failure, responses6→4. | Limited interface gate passes; forced use/n=1/unequal extra reads, not causal/general/all8 savings. Large source-read truncation retained. No new instruction or featured promotion. |
@@ -61,6 +60,3 @@ Git 출력 임시 파일 시제품도 메모리는 줄었지만 더 느리고 �
 
 Con Artist도 최종 보호 검사 실패 시 실행된 근거와 배치의 이전 결과를 남기도록 수정했다.
 API 예외와 CLI 실패를 유지하며, 후속 변형을 중단한다. 모델 비용 절감은 아직 측정하지 않았다.
-
-Con Artist 후속 명시적 CLI4회 비교는 오류 배치 비용이 줄었지만 정상 배치 토큰이23.07%
-늘어 사전 동시 개선 기준을 통과하지 못했다. 합계 감소만으로 효율 개선을 주장하지 않는다.

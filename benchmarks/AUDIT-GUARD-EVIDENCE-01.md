@@ -100,3 +100,16 @@ delivery, not a new visual review, model efficiency or the all-eight goal.
 한국어: 소스`fc91d057`을 개인 설치와 다운로드에 반영했으며 배포`44209fe7`의
 공개 파일·해시·실제 도우미 소스와 한영 페이지 메타데이터를 확인했다.
 전체8개 토큰·시간 목표는 미달이며 기존 측정 수치를 바꾸지 않았다.
+
+## Subsequent original model comparison
+
+[Guard output01](AUDIT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,execution`a45d4802`,
+compares previous`1b497a05` with candidate`96ac17f4` in four fixed explicit-CLI
+sessions. The joint efficiency gate fails: normal tokens+23.07% despite lower
+time; guard tokens−22.80%/time−31.40%. Both guard answers are honest, but only
+candidate returns native observations. Sum−5.03% tokens/−37.70% time is not a
+general win and does not override the normal regression. The correctness repair
+remains adopted; these exposed forced-use cells are not independent all8 evidence.
+
+한국어: 후속 모델4회 비교에서 오류 배치 비용은 줄었지만 정상 토큰이 늘어
+사전 효율 기준을 통과하지 못했다. 위 네이티브 정확성·배포 검증과 구분한다.
