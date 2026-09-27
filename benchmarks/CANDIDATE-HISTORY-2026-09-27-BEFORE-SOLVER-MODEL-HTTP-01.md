@@ -93,16 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver model HTTP01,2026-09-27,parent`ec78d371`:
-[actual HTTP catalog and command attempt](SOLVER-MODEL-HTTP-01.md) includes the
-guest tool in14 entries (stdio13/no match), but first actual call is rejected:
-requires approval while policy never. Zero guest responses; no approval/annotation
-bypass or retry. Original costs22,704/22,637 input+output tokens retained; catalog
-inclusion only, no model execution/quality/savings claim. Dated prior index preserved.
-한국어: HTTP의 실제 모델 도구 노출은 확인했으나 최초 명령은 승인 정책으로
-거절됐다. 원본 실패·비용을 보존하며 승인 우회나 전체 개선으로 바꾸지 않는다.
-
-
 Solver model catalog01,2026-09-27,parent`7225e0f8`:
 [actual metadata-only model inventory](SOLVER-MODEL-CATALOG-01.md) returns13 tools
 and no guest-name/owned-description matches, despite native MCP registration.
