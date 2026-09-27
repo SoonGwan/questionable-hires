@@ -1,0 +1,41 @@
+[
+  {
+    "args": [],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_equal (__main__.Contract.test_equal) ... ok\ntest_identity (__main__.Contract.test_identity) ... ok\ntest_regression (__main__.Contract.test_regression) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+  },
+  {
+    "args": [
+      "observe"
+    ],
+    "exit": 0,
+    "stdout": "{\"observations\": [{\"method\": \"assertEqual\", \"actual\": {\"kind\": \"list\", \"items\": [1, {\"bytes_hex\": \"00ff\"}]}, \"expected\": {\"kind\": \"list\", \"items\": [1, {\"bytes_hex\": \"00ff\"}]}, \"same_object\": false}, {\"method\": \"assertIsNot\", \"actual\": {\"omitted\": \"unsupported or bounded value\"}, \"expected\": {\"omitted\": \"unsupported or bounded value\"}, \"same_object\": false}, {\"method\": \"assertEqual\", \"actual\": 1, \"expected\": 1, \"same_object\": true}], \"errors\": []}\n",
+    "stderr": "test_equal (__main__.Contract.test_equal) ... ok\ntest_identity (__main__.Contract.test_identity) ... ok\ntest_regression (__main__.Contract.test_regression) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+  },
+  {
+    "args": [
+      "broken"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "test_equal (__main__.Contract.test_equal) ... ok\ntest_identity (__main__.Contract.test_identity) ... ok\ntest_regression (__main__.Contract.test_regression) ... FAIL\n\n======================================================================\nFAIL: test_regression (__main__.Contract.test_regression)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 12, in test_regression\n    def test_regression(self): self.assertEqual(1, 2 if 'broken' in sys.argv else 1)\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 1 != 2\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "args": [
+      "observe",
+      "broken"
+    ],
+    "exit": 1,
+    "stdout": "{\"observations\": [{\"method\": \"assertEqual\", \"actual\": {\"kind\": \"list\", \"items\": [1, {\"bytes_hex\": \"00ff\"}]}, \"expected\": {\"kind\": \"list\", \"items\": [1, {\"bytes_hex\": \"00ff\"}]}, \"same_object\": false}, {\"method\": \"assertIsNot\", \"actual\": {\"omitted\": \"unsupported or bounded value\"}, \"expected\": {\"omitted\": \"unsupported or bounded value\"}, \"same_object\": false}, {\"method\": \"assertEqual\", \"actual\": 1, \"expected\": 2, \"same_object\": false}], \"errors\": []}\n",
+    "stderr": "test_equal (__main__.Contract.test_equal) ... ok\ntest_identity (__main__.Contract.test_identity) ... ok\ntest_regression (__main__.Contract.test_regression) ... FAIL\n\n======================================================================\nFAIL: test_regression (__main__.Contract.test_regression)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 12, in test_regression\n    def test_regression(self): self.assertEqual(1, 2 if 'broken' in sys.argv else 1)\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 1 != 2\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "args": [
+      "existing-profile"
+    ],
+    "exit": 0,
+    "stdout": "existing profile preserved\n",
+    "stderr": ""
+  }
+]
