@@ -76,9 +76,7 @@ resource`7172b50c`,freezes8 new issue identities before solution inspection. [Py
 validates native HTTP assertion controls,retaining two initial author setup errors.
 [Owned dependency preparation](EXTERNAL-BUNDLE-02-OWNED-ENV.md) installs pinned
 modern pytest dependencies in a disposable Python3.11 environment; pip check passes,
-its initial pytest11143 import failure is preserved. The subsequent
-[exact-base native build](EXTERNAL-BUNDLE-02-PYTEST11143-BUILD.md) generates genuine
-SCM version metadata, passes cold source import and native pass/assertion-fail controls.
+but the selected pytest11143 cold import still fails on generated version metadata.
 Other Pytest dependencies and required project-test/runtime/protocol gates remain
 unverified;0 model calls. Author bootstrap controls are not issue regressions.
 Different project versions cannot inherit old pilot readiness. Selection is not
