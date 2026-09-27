@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Native status capture01,2026-09-27,parent`8588e20b`:
-[native hook controls](NATIVE-STATUS-CAPTURE-01.md) pass on actual pytest2.8.7/4.0.2
-and Git-free copies. XPASS is natively `failed` versus `passed`, category `xpassed`
-in both. Separate next private driver updated but not executed; original driver and
-grades preserved. Zero models; cache guard/cohort/isolation remain incomplete.
-한국어: 실제 두 pytest 버전의 XPASS 판정 수집을 검증했다. 다음 드라이버는
-미실행이며 원래 결과를 보존한다. 전체8개 효율·품질 개선 증거는 아니다.
-
 | Checkpoint / date / resource | Evidence and limit |
 | --- | --- |
 | [Necromancer inline matrix API01](NECROMANCER-INLINE-MATRIX-NATIVE-01.md),2026-09-27,parent`e109ae4a`,candidate identities JSON | Actual inline run_path loader/caller matrices reproduce0/15/0/9;required4tests/9boundaries pass under native parent deadline. | Zero models; unmeasured candidate only. Prior unused helper adverse results retained;ordinary skills and all8 efficiency claim unchanged. |
