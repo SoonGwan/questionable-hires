@@ -1,0 +1,36 @@
+{
+  "source": "Actual original rollout; private instruction and metadata omitted",
+  "custom_tool_calls": [
+    {
+      "name": "exec",
+      "input": "const matches = ALL_TOOLS.filter(t => /qh_guest|guest_command|disposable Linux guest/i.test(t.name + \" \" + t.description)); text({catalog_count: ALL_TOOLS.length, matches: matches.map(t => ({name:t.name, owned_guest_description_match:t.description.includes(\"Execute an authorized shell command inside the disposable Linux guest only.\")}))});\n"
+    }
+  ],
+  "custom_tool_outputs": [
+    "Script completed\nWall time 0.0 seconds\nOutput:\n",
+    "{\"catalog_count\":13,\"matches\":[]}"
+  ],
+  "observed_catalog": {
+    "catalog_count": 13,
+    "matches": []
+  },
+  "usage": {
+    "input_tokens": 22543,
+    "cached_input_tokens": 11008,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 115,
+    "reasoning_output_tokens": 0
+  },
+  "total_input_output_tokens": 22658,
+  "guest_command_calls": 0,
+  "guest_ready": true,
+  "guest_responses": 0,
+  "graceful_stop_observed": false,
+  "exact_probe_absent": true,
+  "guest_log_sha256": "6f135f46fba7512bb9c555949958f9a13bcf053304ce618bcc130a6c259dca90",
+  "limitations": [
+    "Metadata-only model task; not solver quality or efficiency",
+    "Names/owned description matching identifies no guest tool; complete catalog identifiers not exported",
+    "No actual host-tool exclusion guarantee"
+  ]
+}

@@ -93,16 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver model catalog01,2026-09-27,parent`7225e0f8`:
-[actual metadata-only model inventory](SOLVER-MODEL-CATALOG-01.md) returns13 tools
-and no guest-name/owned-description matches, despite native MCP registration.
-One original exec lookup,22,658 input+output tokens,zero guest commands. Exposure
-between native registration/model pool is unresolved; no issue/quality/savings
-claim or unchanged retry. Prior index preserved in the dated same-directory history.
-한국어: 실제 모델 목록13개에 게스트 도구의 이름·고유 설명이 없다. 네이티브
-등록 이후 노출 문제가 미해결이며 모델 비용22,658토큰을 절감 증거로 삼지 않는다.
-
-
 Solver model connectivity01,2026-09-27,parent`0d8ce3d4`:
 [first actual model attempt](SOLVER-MODEL-CONNECTIVITY-01.md) terminates with
 22,574 input+output tokens and zero guest command calls. Original rollout review
