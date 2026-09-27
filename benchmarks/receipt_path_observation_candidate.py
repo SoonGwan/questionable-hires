@@ -28,6 +28,15 @@ def comparison(source):
     return replace_once(source, "value['v'] == 2", "value['v'] == 3")
 
 
+def guide(source):
+    return replace_once(source,
+        'Format `v:2`: primitive builtins only; lists are JSON arrays, tuples use',
+        'Format `v:3`: primitive builtins and exact standard pathlib types. Paths use\n'
+        '  `{"PosixPath":"..."}` (or `WindowsPath`, `PurePosixPath`, `PureWindowsPath`);\n'
+        '  lexical text is limited to 256 characters, with no resolving or subclass\n'
+        '  conversion. Lists are JSON arrays, tuples use')
+
+
 def write(source_directory, destination):
     """Create a candidate from explicit source files; no Git or model dependency."""
     source_directory, destination = Path(source_directory), Path(destination)
