@@ -219,11 +219,3 @@ in checkout/Git-free archive;source preserved. Zero models, not whole-task savin
 or a complete caller/contract review. English/Korean capabilities synchronized.
 한국어: 로컬 파일 직접 발췌 기능을 추가하고 실제 소스 일치·관련23개 검사를
 확인했다. 모델 비용·전체8개 성과는 미입증이며 기존 불리한 결과를 유지한다.
-
-[Python regions file01 installed check](PYTHON-REGIONS-FILE-01-INSTALL.md),2026-09-27,
-parent `8b1d8163`: actual checkout and Git-free standalone installs each8 skills/
-52 resources;installed isolated CLI normal0/missing1,source/resource preservation
-and installer check pass. Zero models, no personal installation or hosted release.
-Archive SHA/member identities retained; no efficiency or all8-quality claim.
-한국어: 실제 설치본 두 경로에서 8개 스킬·52개 파일과 새 CLI의 동작·원본 보존을
-확인했다. 모델 절감·전체 품질·공개 배포 성과로 승격하지 않는다.
