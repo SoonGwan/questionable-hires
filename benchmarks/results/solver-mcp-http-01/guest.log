@@ -1,0 +1,76 @@
+[    0.066383] hv_vmbus: registering driver hyperv_keyboard
+[    0.066575] rtc-pl031 20050000.pl031: registered as rtc0
+[    0.066611] rtc-pl031 20050000.pl031: setting system clock to 2026-09-27T10:06:00 UTC (1790503560)
+[    0.066823] NET: Registered PF_INET6 protocol family
+[    0.068181] Segment Routing with IPv6
+[    0.068224] In-situ OAM (IOAM) with IPv6
+[    0.071185] registered taskstats version 1
+[    0.071287] Loading compiled-in X.509 certificates
+[    1.002389] Freeing initrd memory: 114848K
+[    1.011664] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    1.012522] Demotion targets for Node 0: null
+[    1.012625] Key type .fscrypt registered
+[    1.012657] Key type fscrypt-provisioning registered
+[    1.014766] clk: Disabling unused clocks
+[    1.014812] PM: genpd: Disabling unused power domains
+[    1.015083] Freeing unused kernel memory: 1920K
+[    1.015187] Run /bin/sh as init process
+/bin/sh: can't access tty; job control turned off
+~ # [6n/bin/busybox sh /check.sh
+psf__requests-3362.tar: OK
+psf__requests-863.tar: OK
+psf__requests-1963.tar: OK
+psf__requests-2674.tar: OK
+pytest-dev__pytest-5221.tar: OK
+pytest-dev__pytest-5103.tar: OK
+pytest-dev__pytest-6116.tar: OK
+pytest-dev__pytest-11143.tar: OK
+QH_SOURCE_READY_psf__requests-3362
+QH_SOURCE_READY_psf__requests-863
+QH_SOURCE_READY_psf__requests-1963
+QH_SOURCE_READY_psf__requests-2674
+QH_SOURCE_READY_pytest-dev__pytest-5221
+QH_SOURCE_READY_pytest-dev__pytest-5103
+QH_SOURCE_READY_pytest-dev__pytest-6116
+QH_SOURCE_READY_pytest-dev__pytest-11143
+QH_NO_HOST_GRADER_PATH
+QH_SOLVER_RAM_PROOF
+~ # /bin/busybox df -k /
+Filesystem           1K-blocks      Used Available Use% Mounted on
+df: /: can't find mount point
+~ # /bin/busybox sh /python-check.sh
+[    3.390956] fuse: init (API version 7.41)
+/runtime.tar: OK
+[    6.337061] random: crng init done
+{"python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]", "pytest": "7.4.4", "ssl": "OpenSSL 3.0.15 3 Sep 2024", "sqlite": "3.45.3", "prefix": "/runtime/env"}
+QH_SOLVER_PYTHON_RAM_PROOF
+QH_PYTHON_NO_HOST_GRADER
+~ # /bin/busybox mount -t devtmpfs devtmpfs /dev
+~ # /bin/busybox test -c /dev/null
+~ # /bin/busybox sh /child-check.sh
+/modloop-virt: OK
+[    6.893967] loop: module loaded
+[    6.895287] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    6.895700] loop0: detected capacity change from 0 to 31928
+QH_BINFMT_REGISTERED
+enabled
+interpreter /rosetta/rosetta
+flags: POCF
+offset 0
+magic 7f454c4602010100000000000000000002003e00
+mask fffffffffffefe00fffffffffffffffffeffffff
+
+{"arm_exit": 0, "executable": "/runtime/env/bin/python3.9", "failure_exit": 7, "failure_stderr": "expected failure", "failure_stdout_base64": "AP8=", "host_grader_absent": true, "normal_exit": 0, "normal_stdout": "42\n"}
+QH_SOLVER_CHILD_EXECUTION_PROOF
+~ # /bin/busybox stty raw -echo
+~ # LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /runtime/env/bin/python3.9 -
+I -B /agent2.py
+QH_AGENT_READY
+QH_RESPONSE {"id": 1, "result": {"exit_code": 0, "output": {"stderr": {"base64": "", "bytes_read": 0, "truncated": false}, "stdout": {"base64": "TGludXgK", "bytes_read": 6, "truncated": false}}, "timed_out": false}}
+QH_RESPONSE {"id": 2, "result": {"exit_code": 7, "output": {"stderr": {"base64": "", "bytes_read": 0, "truncated": false}, "stdout": {"base64": "ZmFpbGVk", "bytes_read": 6, "truncated": false}}, "timed_out": false}}
+QH_RESPONSE {"error": "FileNotFoundError", "id": 3, "message": "[Errno 2] No such file or directory: '/Users'"}
+QH_RESPONSE {"id": 4, "result": {"exit_code": 0, "output": {"stderr": {"base64": "", "bytes_read": 0, "truncated": false}, "stdout": {"base64": "cmVjb3ZlcmVk", "bytes_read": 9, "truncated": false}}, "timed_out": false}}
+QH_AGENT_STOPPED
+[    8.195441] reboot: Power down
+QH_VM_STARTED
+QH_VM_GUEST_STOPPED

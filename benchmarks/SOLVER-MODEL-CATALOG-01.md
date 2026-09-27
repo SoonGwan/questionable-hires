@@ -39,6 +39,10 @@ catalog observation. The earlier host-workspace approval rejection remains a
 separate adverse result; guest transport does not authorize an approval bypass.
 Ordinary skills, README onboarding, featured benchmark and live site unchanged.
 
+[Subsequent HTTP01 native control](SOLVER-MCP-HTTP-01.md) preserves the original
+guest class and verifies the same four command outcomes over HTTP, including
+cleanup. This later zero-model control does not change the original catalog result.
+
 한국어: 네이티브 등록은 됐지만 모델의 실제 ALL_TOOLS13개에서는 게스트 도구의
 이름·고유 설명이 모두 검색되지 않았다. 원본 실행의 exec1회와22,658토큰을
 보존한다. 서버 등록과 모델 노출 사이 문제로 범위를 좁혔으며, 구체 원인은
