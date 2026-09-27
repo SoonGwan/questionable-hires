@@ -23,7 +23,6 @@ The [featured pointer](featured.json) still identifies the frozen Mother-in-law
 confirmation resource. The hosted landing is separately verified in
 [the maintenance report](../docs/LANDING-MAINTENANCE-CHECK-2026-09-27.md).
 Native controls, model evidence and hosted release checks have different scopes.
-[Personal Mac sync](../docs/PERSONAL-INSTALL-SYNC-2026-09-28.md),2026-09-28,source`2db6852c`: three copies updated with backups; all8/52 resource bytes/modes match and installed Receipt v3 controls pass. This delivers adopted code locally, not a new model gain or hosted release.
 
 한국어: integration06(2026-09-27,1d0e92ac)은16회 원본 합계에서 토큰16.95% 증가,
 시간10.00% 감소다. 16회 원본 결과·범위·보존 검토는 완료했고 범위 위반과 검사 차이를 보존한다. 전체8개 목표는
@@ -33,5 +32,3 @@ Native controls, model evidence and hosted release checks have different scopes.
 
 [Pre-display decision checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-TRACEBACK-DISPLAY01.md) preserves the preceding index.
 한국어 추가: 출력 축약 후보는 실제 채택0회·토큰20.31% 증가로 기본 반영하지 않는다.
-
-[Pre-install decision checkpoint](CANDIDATE-HISTORY-2026-09-28-BEFORE-PERSONAL-SYNC.md) preserves the preceding index.
