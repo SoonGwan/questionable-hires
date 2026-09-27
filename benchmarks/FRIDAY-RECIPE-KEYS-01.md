@@ -54,3 +54,18 @@ and stopped before writing; export used the actual completed eight-test transcri
 
 한국어: 소스926b698d를 기존 설치 자원 확인·백업 후 설치했다. 설치본8개·패키지4개
 검사와 전체8개 자원 일치를 확인했으며 다운로드52개 자원도 소스와 일치한다.
+
+## Public delivery
+
+Hosted release **`97fbc6597d9127ee0297b49d4007992e4f6edd76`** is live on
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+[Six HTTPS observations](results/friday-recipe-keys01/public.json) verify revision,
+exact locale pages/JavaScript, canonical/indexable metadata and archive/checksum.
+All52 public archive resources match source bytes/modes. Download:107,937 bytes,
+SHA-256 `9cd51e802be14e03429ff3134e19739ad7f4bc279ee712409f426fc34f287ae6`.
+Integration07 still measures `1be35120`; HTTP identity checks are not new browser
+interaction or model-efficiency evidence. GitHub was not pushed.
+
+한국어: 배포97fbc659의 공개 HTTPS6개 경로와 다운로드52개 자원 일치를 확인했다.
+기존 실험 수치를 유지하며 전체8개 토큰·시간 개선 완료로 보고하지 않는다.
