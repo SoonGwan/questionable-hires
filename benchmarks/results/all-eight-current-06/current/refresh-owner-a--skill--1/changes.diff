@@ -1,0 +1,384 @@
+diff --git a/controlled_call.py b/controlled_call.py
+new file mode 100644
+index 0000000..1f4c5f8
+--- /dev/null
++++ b/controlled_call.py
+@@ -0,0 +1,190 @@
++"""Controlled asyncio callbacks; copy into permitted test support only if needed.
++
++Prefer equivalent project fixtures. Use the real application owner and runner;
++the copied module needs no installed skill. No application implementation here.
++
++save = ControlledCall() accepts any positional/keyword arguments, including none.
++Start the application task with owned cleanup registered BEFORE waiting. Await
++save.started(timeout=1) for actual callback entry; it returns a unique Call.
++Cancelling an entry wait propagates cancellation and leaves unconsumed entries
++available; it does not cancel application work.
++call.args/call.kwargs hold argument references, not deep snapshots. save.calls
++records every entry, even identical arguments, for call-count assertions.
++
++If entry must happen before a particular application task finishes, await
++save.started_before(task, timeout=1). Pass an already-owned asyncio Task/Future
++on this loop, not a coroutine. Missing entry raises EntryNotObserved early with
++an outcome containing status and the exact value/error (or cancelled status).
++Queued entry wins; this does not establish which task caused it. Tests still
++assert arguments, state and task outcomes. Timeout/cancelling the waiter leaves
++the application task and unconsumed entries untouched.
++
++call.complete(value) delivers that exact object (default None); call.fail(error)
++raises that exact exception. Each call has its own response future. Sibling
++completion/cancellation is independent. Completing a finished/cancelled handle
++raises asyncio.InvalidStateError, exposing accidental double completion.
++
++Assert required pending state, duplicate suppression, instance isolation and
++recovery through the application; entry alone proves none of them. Cancel the
++application task to test cancellation, not just its response future. Test
++synchronous callback failure with an ordinary raising function, not this double.
++
++Use unittest subtests for independent scenarios, not dependent phases of one
++call: a failed fetch-phase assertion must unwind to owned cleanup, not continue
++into a persist phase whose entry/handle was never established.
++
++Optional task ownership: in asyncSetUp, create tasks = OwnedTasks(timeout=1)
++and register self.addAsyncCleanup(tasks.close) BEFORE tasks.start(coroutine).
++Await tasks.wait(task) for its result/error (no cancellation-identity promise).
++Timeout or cancelling this wait leaves the task alive for assertions/cleanup.
++close cancels/drains only registered tasks, retrieves their exceptions, and
++rejects new starts. Assert expected outcomes before cleanup: close is not a
++test of application success. A cleanup timeout reports unfinished tasks; it
++does not claim they stopped. Retrying/concurrent close drains the same owner
++without sending another cancellation into an in-progress async cleanup. External
++cancellation or application cleanup failures remain the caller's responsibility.
++
++Otherwise tests own cancellation/drain even if entry/assertions fail; started's
++timeout does not clean application tasks. Bound application waits too. Async
++timeouts cannot interrupt blocking code or guarantee termination of tasks that
++resist cancellation; use process bounds when needed. This supplies no network,
++thread, browser, transaction or production-runtime evidence.
++"""
++import asyncio
++
++
++class OwnedTasks:
++    """Optional same-loop task support; no application assertions or global sweep."""
++    def __init__(self, timeout=1):
++        if not 0 < timeout <= 30:
++            raise ValueError('timeout must be in (0, 30]')
++        self.timeout = timeout
++        self._loop = asyncio.get_running_loop()
++        self._tasks = set()
++        self._closed = False
++
++    def _check_loop(self):
++        if asyncio.get_running_loop() is not self._loop:
++            raise RuntimeError('OwnedTasks must stay on its creating loop')
++
++    def start(self, coroutine):
++        self._check_loop()
++        if self._closed:
++            raise RuntimeError('OwnedTasks is closed; coroutine remains caller-owned')
++        task = asyncio.create_task(coroutine)
++        self._tasks.add(task)
++        return task
++
++    async def wait(self, task):
++        self._check_loop()
++        if task not in self._tasks:
++            raise ValueError('Task is not owned here')
++        done, _ = await asyncio.wait((task,), timeout=self.timeout)
++        if not done:
++            raise asyncio.TimeoutError('Owned task did not settle; still owned')
++        return task.result()
++
++    async def close(self):
++        self._check_loop()
++        if not self._closed:
++            self._closed = True
++            for task in self._tasks:
++                if not task.done():
++                    task.cancel()
++        if not self._tasks:
++            return
++        done, pending = await asyncio.wait(self._tasks, timeout=self.timeout)
++        for task in done:
++            if not task.cancelled():
++                task.exception()  # Drain, not a substitute for test assertions.
++        if pending:
++            raise asyncio.TimeoutError('Owned task cleanup incomplete: %d pending' % len(pending))
++
++
++class EntryNotObserved(AssertionError):
++    def __init__(self, outcome):
++        self.outcome = outcome
++        super().__init__('Application task ' + outcome['status'] +
++                         ' before expected callback entry')
++
++
++class Call:
++    def __init__(self, args, kwargs):
++        self.args, self.kwargs = args, kwargs
++        self.response = asyncio.get_running_loop().create_future()
++
++    def complete(self, value=None):
++        self.response.set_result(value)
++
++    def fail(self, error):
++        self.response.set_exception(error)
++
++
++class ControlledCall:
++    def __init__(self):
++        self.calls = []
++        self._entered = asyncio.Queue()
++        self._entry_changed = asyncio.Event()
++
++    async def __call__(self, *args, **kwargs):
++        call = Call(args, kwargs)
++        self.calls.append(call)
++        self._entered.put_nowait(call)
++        self._entry_changed.set()
++        return await call.response
++
++    async def started(self, timeout=1):
++        """Return the next actual callback entry, not merely a scheduled task.
++
++        Timeout leaves application tasks untouched; their cleanup is test-owned.
++        """
++        if not 0 < timeout <= 30:
++            raise ValueError('timeout must be in (0, 30]')
++        deadline = asyncio.get_running_loop().time() + timeout
++        while True:
++            if not self._entered.empty():
++                return self._entered.get_nowait()
++            self._entry_changed.clear()
++            # Observe availability, not a child task that consumes the entry.
++            # Cancellation must not be swallowed by a completed queue getter.
++            notice = asyncio.create_task(self._entry_changed.wait())
++            try:
++                done, _ = await asyncio.wait((notice,), timeout=max(
++                    0, deadline - asyncio.get_running_loop().time()))
++                if not done:
++                    raise asyncio.TimeoutError('Timed out waiting for callback entry')
++            finally:
++                notice.cancel()
++                await asyncio.gather(notice, return_exceptions=True)
++
++    async def started_before(self, task, timeout=1):
++        """Observe entry or task settlement without owning/cancelling that task."""
++        if not 0 < timeout <= 30:
++            raise ValueError('timeout must be in (0, 30]')
++        loop = asyncio.get_running_loop()
++        if not isinstance(task, asyncio.Future) or task.get_loop() is not loop:
++            raise TypeError('task must be an owned asyncio Task/Future on this loop')
++        deadline = loop.time() + timeout
++        while True:
++            if not self._entered.empty():
++                return self._entered.get_nowait()
++            if task.done():
++                if task.cancelled():
++                    outcome = dict(status='cancelled')
++                elif task.exception() is not None:
++                    outcome = dict(status='failed', error=task.exception())
++                else:
++                    outcome = dict(status='completed', value=task.result())
++                raise EntryNotObserved(outcome)
++            self._entry_changed.clear()
++            # Wait for notification, never dequeue in a cancellable child task.
++            # Otherwise cancellation could lose an entry already taken by it.
++            notice = asyncio.create_task(self._entry_changed.wait())
++            try:
++                done, _ = await asyncio.wait((notice, task), timeout=max(0, deadline - loop.time()),
++                                             return_when=asyncio.FIRST_COMPLETED)
++                if not done:
++                    raise asyncio.TimeoutError('Timed out waiting for callback entry')
++            finally:
++                notice.cancel()
++                await asyncio.gather(notice, return_exceptions=True)
+diff --git a/preview.py b/preview.py
+index f56b4ff..2ce0584 100644
+--- a/preview.py
++++ b/preview.py
+@@ -14,4 +14,5 @@ class Preview:
+                 self.value = value
+             return value
+         finally:
+-            self.pending = False
++            if generation == self.generation:
++                self.pending = False
+diff --git a/test_preview.py b/test_preview.py
+new file mode 100644
+index 0000000..d36ec1e
+--- /dev/null
++++ b/test_preview.py
+@@ -0,0 +1,171 @@
++import asyncio
++import unittest
++
++from controlled_call import ControlledCall, OwnedTasks
++from preview import Preview
++
++
++class PreviewRefreshTests(unittest.IsolatedAsyncioTestCase):
++    async def asyncSetUp(self):
++        self.tasks = OwnedTasks(timeout=1)
++        self.addAsyncCleanup(self.tasks.close)
++        self.preview = Preview()
++        self.fetch = ControlledCall()
++        self.assertIsNone(self.preview.value)
++        self.assertIs(self.preview.pending, False)
++        self.prior = await self.seed(self.preview)
++
++    async def start_call(self, preview, fetch, key):
++        task = self.tasks.start(preview.refresh(key, fetch))
++        call = await fetch.started_before(task, timeout=1)
++        self.assertEqual(call.args, (key,))
++        self.assertEqual(call.kwargs, {})
++        self.assertFalse(task.done())
++        return task, call
++
++    async def seed(self, preview):
++        fetch = ControlledCall()
++        value = object()
++        task, call = await self.start_call(preview, fetch, 'seed')
++        call.complete(value)
++        self.assertIs(await self.tasks.wait(task), value)
++        self.assert_state(preview, False, value)
++        return value
++
++    def assert_state(self, preview, pending, value):
++        self.assertIs(preview.pending, pending)
++        self.assertIs(preview.value, value)
++
++    async def settle(self, task, call, outcome):
++        if outcome == 'success':
++            value = object()
++            call.complete(value)
++            self.assertIs(await self.tasks.wait(task), value)
++            return value
++        if outcome == 'failure':
++            error = RuntimeError('controlled failure')
++            call.fail(error)
++            with self.assertRaises(RuntimeError) as raised:
++                await self.tasks.wait(task)
++            self.assertIs(raised.exception, error)
++        else:
++            task.cancel()
++            with self.assertRaises(asyncio.CancelledError):
++                await self.tasks.wait(task)
++            self.assertTrue(task.cancelled())
++
++    async def check_order(self, latest_first, earlier_outcome):
++        # Identical keys must still enter two independent callback invocations.
++        earlier, first_call = await self.start_call(self.preview, self.fetch, 'same')
++        self.assert_state(self.preview, True, self.prior)
++        latest, last_call = await self.start_call(self.preview, self.fetch, 'same')
++        self.assertEqual(len(self.fetch.calls), 2)
++        self.assertFalse(earlier.done())
++        self.assert_state(self.preview, True, self.prior)
++        if latest_first:
++            value = await self.settle(latest, last_call, 'success')
++            self.assertFalse(earlier.done())
++            self.assert_state(self.preview, False, value)
++            pending_before, value_before = self.preview.pending, self.preview.value
++            await self.settle(earlier, first_call, earlier_outcome)
++            self.assert_state(self.preview, pending_before, value_before)
++        else:
++            pending_before, value_before = self.preview.pending, self.preview.value
++            await self.settle(earlier, first_call, earlier_outcome)
++            self.assertFalse(latest.done())
++            self.assert_state(self.preview, pending_before, value_before)
++            value = await self.settle(latest, last_call, 'success')
++            self.assert_state(self.preview, False, value)
++
++    async def test_earlier_success_while_latest_pending(self):
++        await self.check_order(False, 'success')
++
++    async def test_earlier_failure_while_latest_pending(self):
++        await self.check_order(False, 'failure')
++
++    async def test_earlier_cancellation_while_latest_pending(self):
++        await self.check_order(False, 'cancellation')
++
++    async def test_latest_success_before_earlier_success(self):
++        await self.check_order(True, 'success')
++
++    async def test_latest_success_before_earlier_failure(self):
++        await self.check_order(True, 'failure')
++
++    async def test_latest_success_before_earlier_cancellation(self):
++        await self.check_order(True, 'cancellation')
++
++    async def check_latest_failure_and_retry(self, outcome):
++        earlier, first_call = await self.start_call(self.preview, self.fetch, 'old')
++        latest, last_call = await self.start_call(self.preview, self.fetch, 'latest')
++        self.assert_state(self.preview, True, self.prior)
++        await self.settle(latest, last_call, outcome)
++        self.assert_state(self.preview, False, self.prior)
++        self.assertFalse(earlier.done())
++        retry, retry_call = await self.start_call(self.preview, self.fetch, 'latest')
++        self.assertEqual(len(self.fetch.calls), 3)
++        self.assert_state(self.preview, True, self.prior)
++        pending_before, value_before = self.preview.pending, self.preview.value
++        await self.settle(earlier, first_call, 'success')
++        self.assertFalse(retry.done())
++        self.assert_state(self.preview, pending_before, value_before)
++        value = await self.settle(retry, retry_call, 'success')
++        self.assert_state(self.preview, False, value)
++
++    async def test_latest_failure_and_retry(self):
++        await self.check_latest_failure_and_retry('failure')
++
++    async def test_latest_cancellation_and_retry(self):
++        await self.check_latest_failure_and_retry('cancellation')
++
++    async def test_synchronous_callback_failure_and_retry(self):
++        earlier, first_call = await self.start_call(self.preview, self.fetch, 'old')
++        error = ValueError('synchronous failure')
++        keys = []
++
++        def failing_fetch(key):
++            keys.append(key)
++            self.assert_state(self.preview, True, self.prior)
++            raise error
++
++        failed = self.tasks.start(self.preview.refresh('sync', failing_fetch))
++        with self.assertRaises(ValueError) as raised:
++            await self.tasks.wait(failed)
++        self.assertIs(raised.exception, error)
++        self.assertEqual(keys, ['sync'])
++        self.assert_state(self.preview, False, self.prior)
++        self.assertFalse(earlier.done())
++        retry, retry_call = await self.start_call(self.preview, self.fetch, 'retry')
++        self.assert_state(self.preview, True, self.prior)
++        value = await self.settle(retry, retry_call, 'success')
++        self.assert_state(self.preview, False, value)
++        pending_before, value_before = self.preview.pending, self.preview.value
++        await self.settle(earlier, first_call, 'success')
++        self.assert_state(self.preview, pending_before, value_before)
++
++    async def test_instance_isolation(self):
++        other = Preview()
++        other_prior = await self.seed(other)
++        first, first_call = await self.start_call(self.preview, self.fetch, 'same')
++        second, second_call = await self.start_call(other, self.fetch, 'same')
++        self.assert_state(self.preview, True, self.prior)
++        self.assert_state(other, True, other_prior)
++        other_pending, other_value = other.pending, other.value
++        value = await self.settle(first, first_call, 'success')
++        self.assert_state(self.preview, False, value)
++        self.assertFalse(second.done())
++        self.assert_state(other, other_pending, other_value)
++        pending_before, value_before = self.preview.pending, self.preview.value
++        await self.settle(second, second_call, 'failure')
++        self.assert_state(other, False, other_prior)
++        self.assert_state(self.preview, pending_before, value_before)
++        retry, retry_call = await self.start_call(other, self.fetch, 'retry')
++        self.assert_state(other, True, other_prior)
++        self.assert_state(self.preview, pending_before, value_before)
++        other_value = await self.settle(retry, retry_call, 'success')
++        self.assert_state(other, False, other_value)
++        self.assert_state(self.preview, pending_before, value_before)
++
++
++if __name__ == '__main__':
++    unittest.main()
