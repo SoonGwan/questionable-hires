@@ -18,7 +18,7 @@ def package(destination):
     skills = ROOT / 'skills'
     if skills.is_symlink():
         raise ValueError('Linked skill root is unsupported')
-    paths = [ROOT / 'LICENSE', ROOT / 'scripts/install.py']
+    paths = [ROOT / 'LICENSE', ROOT / 'scripts/install.py', ROOT / 'docs/INSTALL-SNAPSHOT.md']
     for folder in sorted(skills.iterdir()):
         if folder.is_symlink():
             raise ValueError('Linked skill directory is unsupported: ' + folder.name)
@@ -32,7 +32,7 @@ def package(destination):
                 raise ValueError('Linked or special resource is unsupported: ' + str(relative))
             if path.is_file():
                 paths.append(path)
-    if len(paths) == 2:
+    if len(paths) == 3:
         raise ValueError('No skills found')
     if skills.resolve() in destination.resolve().parents or (ROOT / 'scripts').resolve() in destination.resolve().parents:
         raise ValueError('Archive output must be outside source skills/scripts')

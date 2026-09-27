@@ -11,6 +11,7 @@ import re
 import shutil
 import struct
 import sys
+import tempfile
 import zipfile
 from urllib.parse import urlsplit
 from xml.sax.saxutils import escape as xml_escape
@@ -19,6 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 LANDING = ROOT / 'landing'
 sys.path.insert(0, str(ROOT / 'benchmarks'))
 from audit_mother_in_law_checkpoint import summarize  # Reuse the existing evidence audit.
+sys.path.insert(0, str(ROOT / 'scripts'))
+from package_skills import package
 
 GITHUB = 'https://github.com/SoonGwan/questionable-hires'
 VOID = {'meta', 'link', 'img', 'br', 'input', 'hr', 'source', 'wbr'}
@@ -391,6 +394,13 @@ def build(base=None):
                 entry.external_attr = 0o100644 << 16
                 archive.writestr(entry, files[path])
     files['evidence/integration05/reports.zip'] = bundle.getvalue()
+    # Reuse the standalone packager: only skill resources and installation files.
+    with tempfile.TemporaryDirectory(prefix='qh-landing-package-') as directory:
+        archive = Path(directory) / 'skills.tar.gz'
+        identity = package(archive)
+        files['downloads/skills.tar.gz'] = archive.read_bytes()
+    files['downloads/skills.sha256'] = (identity['sha256'] + '  skills.tar.gz\n').encode()
+    files['downloads/INSTALL.md'] = (ROOT / 'docs/INSTALL-SNAPSHOT.md').read_bytes()
     if preview:
         robots = 'User-agent: *\nDisallow: /\n'
     else:

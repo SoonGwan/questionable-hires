@@ -1,11 +1,15 @@
 """Static landing checks: original evidence, locale metadata and raster integrity."""
 import copy
+import hashlib
 import io
 from html.parser import HTMLParser
 import importlib.util
 import json
 import posixpath
 import re
+import subprocess
+import sys
+import tarfile
 from pathlib import Path
 import tempfile
 import unittest
@@ -42,6 +46,60 @@ class LandingTests(unittest.TestCase):
         cls.files, cls.preview = landing.build()
         cls.evidence = landing.featured()
         cls.content = landing.read_json(ROOT / 'landing/content.json')
+
+    def test_download_installs_exact_resources_and_preserves_existing_install(self):
+        payload = self.files['downloads/skills.tar.gz']
+        self.assertEqual(self.files['downloads/skills.sha256'].decode(),
+                         hashlib.sha256(payload).hexdigest() + '  skills.tar.gz\n')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with tarfile.open(fileobj=io.BytesIO(payload)) as archive:
+                names = archive.getnames()
+                self.assertEqual(len(names), len(set(names)))
+                for member in archive.getmembers():
+                    parts = Path(member.name).parts
+                    self.assertTrue(member.isfile())
+                    self.assertEqual(parts[0], 'questionable-hires')
+                    self.assertNotIn('..', parts)
+                    target = root / member.name
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(archive.extractfile(member).read())
+                    target.chmod(member.mode)
+            unpacked = root / 'questionable-hires'
+            manifest = json.loads((unpacked / 'CONTENTS.json').read_bytes())
+            for name, identity in manifest.items():
+                self.assertTrue(name.startswith('skills/') or name in
+                                ('scripts/install.py', 'LICENSE', 'docs/INSTALL-SNAPSHOT.md'))
+                self.assertEqual((unpacked / name).read_bytes(), (ROOT / name).read_bytes())
+                self.assertEqual(hashlib.sha256((unpacked / name).read_bytes()).hexdigest(), identity['sha256'])
+                self.assertEqual((unpacked / name).stat().st_mode & 0o777, identity['mode'])
+            self.assertEqual(self.files['downloads/INSTALL.md'], (unpacked / 'docs/INSTALL-SNAPSHOT.md').read_bytes())
+            command = [sys.executable, '-I', '-B', str(unpacked / 'scripts/install.py'),
+                       '--dest', str(root / 'installed')]
+            def run(*args):
+                return subprocess.run(command + list(args), cwd=root, capture_output=True,
+                                      text=True, timeout=15)
+            installed = run()
+            self.assertEqual(installed.returncode, 0, installed.stderr)
+            self.assertEqual(len(list((root / 'installed').glob('*/SKILL.md'))), 8)
+            checked = run('--check')
+            self.assertEqual(checked.returncode, 0, checked.stderr)
+            self.assertTrue(json.loads(checked.stdout)['matches'])
+            personal = root / 'installed/receipt/SKILL.md'
+            personal.write_text('personal edit')
+            refused = run()
+            self.assertNotEqual(refused.returncode, 0)
+            self.assertIn('Existing skills left untouched', refused.stderr)
+            self.assertEqual(personal.read_text(), 'personal edit')
+
+    def test_snapshot_links_and_translations_work_from_every_route(self):
+        for route, language in (('', 'ko'), ('ko/', 'ko'), ('en/', 'en')):
+            source = self.files[route + 'index.html'].decode()
+            prefix = '../' if route else ''
+            for name in ('skills.tar.gz', 'skills.sha256', 'INSTALL.md'):
+                self.assertIn(f'href="{prefix}downloads/{name}"', source)
+            for key in ('snapshotDownload', 'snapshotNote', 'snapshotGuide'):
+                self.assertIn(self.content['copy'][language][key], source)
 
     def test_featured_pointer_and_published_values_are_the_sources(self):
         pointer = landing.read_json(ROOT / 'benchmarks/featured.json')

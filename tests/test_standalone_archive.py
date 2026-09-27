@@ -43,7 +43,7 @@ class StandaloneArchiveTests(unittest.TestCase):
                 self.assertEqual(copied.read_bytes(), source.read_bytes())
                 self.assertEqual(hashlib.sha256(copied.read_bytes()).hexdigest(), info['sha256'])
                 self.assertEqual(copied.stat().st_mode & 0o777, info['mode'])
-            self.assertEqual(set(p.name for p in package.iterdir()), {'skills', 'scripts', 'LICENSE', 'CONTENTS.json'})
+            self.assertEqual(set(p.name for p in package.iterdir()), {'skills', 'scripts', 'docs', 'LICENSE', 'CONTENTS.json'})
             install = package / 'scripts/install.py'
             destination = root / 'consumer/.agents/skills'
             command = [sys.executable, '-I', '-B', str(install), '--dest', str(destination)]

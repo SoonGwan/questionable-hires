@@ -133,6 +133,9 @@ async function setLanguage(next, persist = false) {
   document.querySelectorAll('[data-evidence-file]').forEach(link => {
     link.href = new URL(link.dataset.evidenceFile, runtimeRoot);
   });
+  document.querySelectorAll('[data-download-file]').forEach(link => {
+    link.href = new URL(`downloads/${link.dataset.downloadFile}`, runtimeRoot);
+  });
   updateChart();
   updateMetadata(content);
   document.querySelectorAll('[data-i18n]').forEach(element => { element.textContent = content[element.dataset.i18n]; });
