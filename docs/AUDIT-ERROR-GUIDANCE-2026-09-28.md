@@ -34,3 +34,20 @@ and remain accurate. Featured data and all model measurements remain historical.
 현재 동작에 맞췄다. 확인하지 못한 자식 실행은 결과를 추정하지 않지만 이전에
 반환된 검사는 불완전 근거로 남는다. 전체 프로젝트 보호 옵션도 반영했다.
 기존19개 검사가 통과했으며 실행 코드·모델 비용·대표 수치는 바꾸지 않았다.
+
+## Installed and packaged guidance
+
+Source **`5a6f6b31`** is installed after all prior Con Artist resources matched
+parent `ca033bac` bytes/modes. The old directory is backed up outside discovery;
+[all eight skills match](../benchmarks/results/audit-error-guidance01/installation.json)
+current source. The installed helper is byte-identical to its backup; no additional
+installed-runtime execution is claimed for a reference-only change.
+
+[Four standalone package checks](../benchmarks/results/audit-error-guidance01/package.txt)
+pass. The151-file build changes only the archive and checksum. [Download identity](../benchmarks/results/audit-error-guidance01/download.json)
+verifies all52 packaged resources' bytes/modes. Layout, copy, OG and frozen numerical
+evidence stay unchanged; no browser-layout or model-efficiency result follows.
+
+한국어: 수정 문서를 개인 설치와 다운로드 패키지에 반영했다. 기존 설치본을
+확인·백업한 뒤 전체8개 자원 일치, 패키지4개 검사와 압축 파일의52개 자원 일치를
+검증했다. 설치된 실행 코드는 이전과 같으며 새로운 모델 절감 측정은 아니다.

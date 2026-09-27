@@ -37,7 +37,7 @@ public source `6def2fdc`,12 HTTPS routes and two mobile locale checks. The [exec
 passes1,473 checkout tests with zero skips. The [context command checkpoint](CONTEXT-COMMAND-01.md)
 (2026-09-28, `d98b4469`) corrects two unavailable-alias examples; local/installed
 commands pass with no model-cost claim. The [failure-guidance correction](../docs/AUDIT-ERROR-GUIDANCE-2026-09-28.md)
-(2026-09-28,parent `ca033bac`) aligns two references with already-retained partial
+(2026-09-28,parent `ca033bac`,source `5a6f6b31`) aligns two references with already-retained partial
 evidence;19 existing controls pass, with no runtime/model change. Local native controls,
 original model evidence, independent validation and hosted checks have different scopes.
 
