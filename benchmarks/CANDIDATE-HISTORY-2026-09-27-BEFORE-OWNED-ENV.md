@@ -74,10 +74,7 @@ Fresh [external-bundle02 selection](EXTERNAL-BUNDLE-02-PREPARATION.md),2026-09-2
 resource`7172b50c`,freezes8 new issue identities before solution inspection. [Python3.11 cold imports](EXTERNAL-BUNDLE-02-NATIVE-IMPORTS.md) all8 fail;
 [existing Python3.9 route](EXTERNAL-BUNDLE-02-PYTHON39.md) loads4 Requests sources and
 validates native HTTP assertion controls,retaining two initial author setup errors.
-[Owned dependency preparation](EXTERNAL-BUNDLE-02-OWNED-ENV.md) installs pinned
-modern pytest dependencies in a disposable Python3.11 environment; pip check passes,
-but the selected pytest11143 cold import still fails on generated version metadata.
-Other Pytest dependencies and required project-test/runtime/protocol gates remain
+Pytest4 dependencies/metadata and required project-test/runtime/protocol gates remain
 unverified;0 model calls. Author bootstrap controls are not issue regressions.
 Different project versions cannot inherit old pilot readiness. Selection is not
 role-specific quality or token/time evidence.

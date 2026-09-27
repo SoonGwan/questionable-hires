@@ -32,8 +32,13 @@ that scope with aggregate bug-fix success.
 Before any model execution, establish actual native public-entry imports, generated
 metadata, correct/assertion-fail native controls, required tests, ownership/temp
 bounds and reproducible runtime identities for every selected issue. Use existing
-runtime tooling/caches; no account/global/dependency changes. Missing environments
-are unresolved, not passing checks. Do not launch on catalog acceptance alone.
+runtime tooling/caches where possible. Preparation amendment2026-09-27 permits
+author-owned disposable virtual environments and downloaded pinned dependencies
+under the owner’s broad improvement authorization; no account/global or existing
+environment changes. The original policy prohibited dependency changes entirely;
+this amendment precedes any model call and changes no selected identity, issue,
+source, grading obligation or skill resource. Missing environments are unresolved,
+not passing checks. Do not launch on catalog acceptance alone.
 
 Then separately freeze execution protocol, current/predecessor/baseline comparison
 scope, fixed model/effort/resources, balanced order, fresh projects/contexts, n=1,
