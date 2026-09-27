@@ -32,3 +32,20 @@ separately after deployment.
 압축 파일만으로 스킬 8개를 설치하고 기존 개인 수정 파일을 보존하는 동작을 확인했습니다.
 반응형·언어 전환·JavaScript 없는 화면도 확인했습니다. 패키징 검증이며 토큰 감소를
 입증한 실험은 아닙니다. 기존 그래프의 측정 리소스·수치는 그대로 유지합니다.
+
+## Hosted verification and root navigation follow-up
+
+Release `8482dbde` was deployed to the existing Cloudflare/Mac domain. Public
+KO/EN pages have the expected canonical URLs and snapshot links; all three
+hosted download files match local bytes. A real 390px browser download matches
+`skills.tar.gz`, and KO→EN switches without overflow or page errors. The initial
+Python urllib health request received HTTP 403; ordinary curl and browser checks
+succeeded without changing site security configuration. This is a recorded
+client discrepancy, not evidence that every client succeeds.
+
+That UI pass exposed an existing root-navigation icon bug: after entering `/`
+and switching to EN, the browser resolved the relative icon to
+`/en/assets/favicon.svg`. A separate browser assertion failed on the hosted
+pre-fix release. The fix resolves all icon links against the initial page URL
+before language navigation; the same root→EN→KO assertion then passed locally.
+Snapshot bytes and benchmark claims did not change in this follow-up.

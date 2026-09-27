@@ -1,4 +1,8 @@
 const runtimeRoot = new URL('.', document.currentScript.src);
+// Keep browser-requested icons stable when locale navigation changes the URL.
+document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach(link => {
+  link.href = new URL(link.getAttribute('href'), location.href).href;
+});
 const languageLinks = document.querySelectorAll('[data-language]');
 const roster = document.querySelector('.roster');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
