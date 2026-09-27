@@ -51,6 +51,9 @@ limits/timeouts. Actual Astra/effort contexts, cumulative/per-response counters,
 and installed resources were verified. Low sums tokens−5.91%,time−17.20%;7/8
 joint reductions, but Necromancer tokens+24.30%,time+20.71%. **Full original
 quality review remains pending**; this is not a quality score or all8 gain.
+The [Editor follow-up](ALL-EIGHT-EFFORT-01-EDITOR-REVIEW.md) supports both scoped
+regression outcomes; four separate author replays verify conforming-production
+checkpoints without altering original results. Other-role review remains open.
 The historical [in-flight8 snapshot](ALL-EIGHT-EFFORT-01-INFLIGHT8.md) and
 [earlier adverse two-role effort evidence](ALL-EIGHT-EFFORT-01-HISTORY-NOTE.md)
 remain explicit. Exposed n=1 development tasks, shared host/cache and unequal
