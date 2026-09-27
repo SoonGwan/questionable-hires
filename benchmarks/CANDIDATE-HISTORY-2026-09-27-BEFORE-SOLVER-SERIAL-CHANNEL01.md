@@ -93,14 +93,6 @@ source/context/counter guards and exposure/shared-host/unequal-work limits retai
 
 ## Functionality and delivery, not model savings
 
-Solver serial channel01,2026-09-27,parent`ab80dbe8`:
-[actual interactive guest channel](SOLVER-SERIAL-CHANNEL-01.md) validates6 requests:
-Linux stdout,exit7/binary output,cwd error,timeout−9,truncation counters,recovery;
-first startup-frame failure retained,corrected guest stops normally. Zero models/
-selected tests; prototype transport,not production model tool/all8 efficiency gain.
-한국어: 실제 게스트 요청·응답과 실패 후 복구를 검증했다. 모델 연결·전체
-이슈 평가·품질·토큰·시간 개선 결과로 승격하지 않는다.
-
 Solver child execution01,2026-09-27,parent`5b6f16b8`:
 [actual guest subprocess control](SOLVER-CHILD-EXECUTION-01.md) reuses prior binfmt
 repair; x86 Python normal0/exact stdout and failure7/binary stdout/stderr preserved,
