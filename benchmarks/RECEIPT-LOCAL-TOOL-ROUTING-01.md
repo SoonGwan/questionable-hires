@@ -1,5 +1,9 @@
 # Receipt local tool routing01 — 2026-09-27
 
+Historical local-function checkpoint: subsequent [model review](RECEIPT-TOOL-ROUTING-01-REVIEW.md)
+declines this candidate and restores the entry. The zero-model statement below
+applies only to the original instruction-edit checkpoint.
+
 Parent `08a18aed`; [candidate identity/local checks](results/receipt-local-tool-routing-01/result.json).
 **Zero models after this instruction edit**, unchanged native helpers and other
 seven skills. This is not a whole-task efficiency update or adapter release.

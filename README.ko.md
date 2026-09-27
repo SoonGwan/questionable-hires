@@ -169,7 +169,7 @@ $friday 이 배포 롤백 가능한지 봐줘.
 | 테스트 사기 감별사 | 선택 파일 교체 확인과 배치 내 반복 테스트 선택·강화 검사의 정상 결과 재사용(저장 한도 적용)을 지원하는 [Python 테스트 결함 감사](skills/con-artist/references/python-audit.md), 크기 제한이 있는 선택형 프로젝트 전체 변경 확인, 같은 이름의 정의 선택과 전체 출력 크기 제한을 지원하는 [읽기 전용 맥락 수집](skills/con-artist/references/python-context.md). 선택한 FIFO·소켓 등 특수 파일은 복사에서 조용히 제외하지 않고 거부합니다. [import 해시는 청크 단위로 계산](benchmarks/AUDIT-IMPORT-HASH-01.md)하며 로컬 할당 절감은 모델 비용 개선 근거가 아닙니다. 빈 테스트나 지정한 하위 모듈의 부모 패키지가 import 캐시에 없는 경우는 성공이 아닌 검증 불완전으로 처리합니다. 선택형 [네이티브 unittest 배치 예제](skills/con-artist/references/native-unittest-batch.md)는 실행 관찰 코드를 추가한 `python -B -m unittest`와 정상 결과 재사용을 안내하며, 기본값은 기존 내부 실행 방식입니다. 신뢰하는 테스트만 실행하며 샌드박스나 동시 변경을 격리하는 스냅샷이 아닙니다. |
 | 레거시 고고학자 | [관련 Git 이력 수집](skills/necromancer/references/focused-history.md). 다른 참조로 범위를 넓히지 않고 지정한 커밋과 조상 이력을 조회하는 명령을 안내합니다. [같은 리비전의 완전한 패치 구간은 재사용](benchmarks/SAME-REVISION-HUNKS-01.md)하며, 과거 이유가 유지·삭제 결론을 정하지는 않습니다. [작성자 제작 이력 비교](benchmarks/ANCESTRY-SCOPE-01.md)에서 범위는 지켰지만 비용 개선은 입증하지 못했습니다. [로컬 패치 선택 할당 보완](benchmarks/HISTORY-BODY-OFFSET-01.md)은 본문 전체 복사를 제거하며 모델 비용 개선의 근거는 아닙니다. |
 | 배포 생존 담당 | [SQLite 호환성 확인](skills/friday/references/sqlite-matrix.md). 실제로 연 소스 파일의 식별자를 검사해 파일 교체를 확인합니다. 파일 시스템 격리나 운영 배포·다른 DB 엔진의 안전성을 증명하지 않습니다. |
-| 수정 검증관 | [Python](skills/receipt/references/existing-fix.md) 또는 [Node 기본 테스트](skills/receipt/references/node-comparison.md)를 격리해 전후 결과·소스 출처를 확인하고, 용량 제한이 있는 프로젝트 전체 변경 감지를 선택할 수 있습니다. unittest에서는 여러 과거 버전을 비교할 때 현재 버전 검사를 한 번만 실행해 공유할 수 있습니다. 선택 파일을 여는 순간 감지한 교체는 거부하지만 원자적 스냅샷은 아닙니다. 두 unittest 실행 방식의 검사 완료와 종료값 일치를 기록하며, 결과가 없으면 비교를 중단합니다. 선택적으로 현재 스레드의 `assertEqual`/`assertIsNot` 기본 값 인자를 용량 제한과 `v:2` 형식으로 관찰하며, 관찰이 불가능하면 원래 실행 결과를 보존하고 비교를 중단합니다. 실행 시 승인된 로컬 `receipt_compare` 도구는 가이드보다 먼저 계약을 검토할 수 있으며, 실험 어댑터는 설치에 포함되지 않고 이 안내의 모델 효과는 미측정입니다. Node 로딩 기록만으로 기능 실행·테스트 범위가 입증되지는 않으며 모델 효율 향상을 입증하지 못했습니다. |
+| 수정 검증관 | [Python](skills/receipt/references/existing-fix.md) 또는 [Node 기본 테스트](skills/receipt/references/node-comparison.md)를 격리해 전후 결과·소스 출처를 확인하고, 용량 제한이 있는 프로젝트 전체 변경 감지를 선택할 수 있습니다. unittest에서는 여러 과거 버전을 비교할 때 현재 버전 검사를 한 번만 실행해 공유할 수 있습니다. 선택 파일을 여는 순간 감지한 교체는 거부하지만 원자적 스냅샷은 아닙니다. 두 unittest 실행 방식의 검사 완료와 종료값 일치를 기록하며, 결과가 없으면 비교를 중단합니다. 선택적으로 현재 스레드의 `assertEqual`/`assertIsNot` 기본 값 인자를 용량 제한과 `v:2` 형식으로 관찰하며, 관찰이 불가능하면 원래 실행 결과를 보존하고 비교를 중단합니다. Node 로딩 기록만으로 기능 실행·테스트 범위가 입증되지는 않으며 모델 효율 향상을 입증하지 못했습니다. |
 | 가설 퇴마사 | [시간·출력 제한 진단 실행](skills/exorcist/references/bounded-probe.md). 백그라운드 서비스용이 아닙니다. |
 | 클릭 꼬투리 QA | [응답 순서 제어 검증](skills/mother-in-law/SKILL.md). 네이티브 테스트용 요청 제어는 진입 대기를 취소해도 아직 전달하지 않은 요청을 보존합니다. 지원 인터페이스에 맞는 UI 없는 Python 컴포넌트용이며 기존 테스트가 우선이고 브라우저 검증은 아닙니다. |
 | 구조 관리인 | [구조 검토 지침](skills/landlord/SKILL.md). 별도 실행 도구는 포함하지 않습니다. |
@@ -199,6 +199,8 @@ $friday 이 배포 롤백 가능한지 봐줘.
 [날짜별 근거와 한계](benchmarks/CURRENT-CANDIDATE-STATUS.md)에 불리한 개발·모델 설정
 비교도 보존합니다. Receipt 직접 도구 availability01(2026-09-27, `b081240e`)도
 두 모델이 CLI를 계속 사용했고 두 비용을 함께 줄인 과제가 없어 채택하지 않습니다.
+supplied-tool routing01(2026-09-27, `44c4ff5e`)도 MCP 호출이 호스트 승인 정책에
+차단돼 CLI 복구 전 비용이 늘었으므로 채택하지 않고 안내를 복원했습니다.
 model-choice01(2026-09-27, `6701069f`) 설정은 채택하지 않으며
 토큰·시간 동시 절감의 근거가 아닙니다.
 설정 비교도 혼재합니다. [apps01](benchmarks/ALL-EIGHT-APPS-01-REVIEW.md)(2026-09-27,
