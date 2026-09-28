@@ -74,3 +74,23 @@ base manifest; actual installed pytest must import `/testbed/src/pytest/__init__
 Container removal uses finally even if result retrieval fails. One control container,
 180-second lifecycle limit, no automatic replay. The grading prohibition above
 remains: passing controls alone do not launch base/gold evaluation.
+
+## Distinct controls02 after an incomplete dependency set
+
+Original controls01 matches all578 source bytes, image Git HEAD
+`793bffd60376d576f85c3eaebaaf5f7445ecee1d`, then pip exits1 before import/tests.
+Its captured output explicitly requires typing-extensions for Python<3.10. This
+requirement was already present in the fetched setuptools-scm metadata and the
+author missed it; do not characterize it as an unknown image defect. Original
+stdout/stderr, installation logs and removal steps remain in the evidence folder.
+The driver retrieves results after success only; the failure's already-saved guest
+logs were copied separately without rerunning installation. Container removal
+completed despite failure. No positive/negative/nested-control success is claimed.
+
+Distinct controls02 retains that failure and adds only the verified universal
+typing-extensions4.12.2 wheel (37,438bytes) to the private offline dependency set.
+The six wheels total1,463,411bytes. Keep image/source/build command, protections,
+observer and actual control bodies identical. A new private directory and named
+container preserve every original artifact. [Second freeze](results/external-bundle-02-pytest11143-container01/controls02/control-freeze.json)
+is recorded before this distinct attempt. No automatic retry, issue grading, model
+call or test/source repair is authorized by this amendment.
