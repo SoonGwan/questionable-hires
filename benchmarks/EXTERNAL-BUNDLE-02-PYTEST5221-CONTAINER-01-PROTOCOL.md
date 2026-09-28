@@ -61,3 +61,19 @@ the separately documented model-tool approval blocker and is not token/time savi
 pytest5221을 공식 이미지·원본 평가 스크립트로 한 번씩 검증한다. 원본2개 실패와
 170개 기존 통과 항목을 모두 보존한다. 평가용 쓰기 가능 컨테이너 차이를 미리
 명시하며 모델 호출·토큰 절감 실적과 구분한다. 전체8개 목표는 아직 미달이다.
+
+## Preflight correction before either grading cell
+
+The original preflight imported the actual project and matched all433 selected
+source bytes (432 executable-mode differences and a synthetic image HEAD remain).
+It then raised PermissionError while saving the first child control's output into
+Docker-copied `/qh`, owned by the guest transfer user. With cap-drop ALL, container
+root cannot override that directory's write permissions. The child output was not
+recorded before this author-code exception, so no passing-control claim is made.
+No issue evaluation ran. Preserve original preflight source and stdout/stderr.
+
+A distinct preflight02 changes only output ownership: the same constrained process
+creates its own `/tmp/qh-native-controls` and records its child outputs there.
+Grading likewise writes private results into its own `/tmp/qh-pair-output`, while
+copied inputs stay unchanged. No capability, container user, mount, network or test
+change. Retain both preflights; only completed actual controls can permit grading.
