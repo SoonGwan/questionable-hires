@@ -6,7 +6,7 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [pytest5103 official pair01](EXTERNAL-BUNDLE-02-PYTEST5103-CONTAINER-01.md),2026-09-28,controls `241822e8`/pair `4f517faa`,image `d873716d` | Offline installation and pass/fail/nested controls succeed. Original base1 required failure+64 passes/gold65 required passes, but the same2 extra primary failures remain in both; native exits1/1. | Reject frozen native gate: gold must exit0. All72 items/211 reports accounted for. [Warning-policy diagnosis01–02](EXTERNAL-BUNDLE-02-PYTEST5103-REWRITE-01.md), protocols `5c9a7070`/`9dde927b`,12 authored cells: warning-as-error removes expanded messages only on two complex shapes; direct path remains expanded. No issue replay or relaxed gate; zero models/savings, VM stopped. |
+| [pytest5103 official pair01](EXTERNAL-BUNDLE-02-PYTEST5103-CONTAINER-01.md),2026-09-28,controls `241822e8`/pair `4f517faa`,image `d873716d` | Offline installation and pass/fail/nested controls succeed. Original base1 required failure+64 passes/gold65 required passes, but the same2 extra primary failures remain in both; native exits1/1. | Reject frozen native gate: gold must exit0. All72 items/211 reports accounted for, including5 setup skips. No retry or discarded extra failures; zero models/savings, VM stopped. |
 | [Matched recorded inputs01](SAME-RESOURCE-OBSERVATIONS-01.md),2026-09-28,source tree `73c54664`,protocol `81961f01` | Retrospective exact known-input/resource matching finds23 original sessions across10 anchors; all actual Astra/medium counters verified. Editor-present spans3–5 responses; absent5 ordinary sessions all have5 responses and86,355–87,437 tokens. | No new models or variance/causal claim. Preserve controlled-write decline; targeted+19.48% is not excused by these ordinary observations. Require concrete removed work before another small instruction/interface trial. |
 | [Mother controlled writes01](MOTHER-WRITES-01-REVIEW.md),2026-09-28,previous `20468dd3`/candidate `8997f97a`,execution `b64a1501` | Four original sessions: Editor tokens+19.48%/time−1.13%, Search−32.85%/−3.89%; sum−8.68%/−2.47%. Native required outcomes preserved; asset read/adaptation observed. | Decline: targeted Editor responses5→6; support rewritten rather than copied. Search never uses the added asset. Exposed n=1/unequal work; aggregate cannot override adverse task. No ordinary adoption or unchanged retry; overall gate unmet. |
 | [Context BOM01](CONTEXT-BOM-01.md),2026-09-28,parent `18e8ed31` | Valid UTF-8-signature source rejected by named/line/group/index paths now reads correctly. New5 reproduce3 failures/4 syntax errors; focused39 and Git-free71 on Python3.9/3.11 pass. | Native input compatibility only; reused Necromancer mechanism, raw hashes/limits preserved, no model calls or cost claim. Source `6208466b`: installed5/archive4/landing31 pass; all8 installations and52 packaged resources match. Public `bca0130f`:8 HTTPS routes and52 archive resources match. Initial zero-test discovery is retained, not counted. |
@@ -15,7 +15,7 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 | [Native probe model01](AUDIT-PROBE-SELECTION-MODEL01-REVIEW.md),2026-09-28,previous `4dac0d2b`,candidate `e7e1f8b2`,execution `9df733a1` | Four original cells: shared tokens+1.56%/time−2.68%, distinct−1.86%/+14.91%;6→6 responses both. Actual shared native checks11→9, all mutant checks/results and originals preserved. | Joint model-cost gate fails. Retain scoped native optimization, no model savings claim; extra source/reference reads and deliberately summarized inventories remain visible. Sum−0.20%/+6.75%, forced helper/exposed cases, no unchanged retry. |
 | [Integration07](ALL-EIGHT-CURRENT-07-REVIEW.md), 2026-09-28, measured `1be35120`, execution `47a00692` | All16 original sessions reviewed: tokens +1.67%, CLI −9.63%; only 2/8 pairs lower both. Bounded task outcomes preserved, with unequal work and two recovered original output prefixes. | All-eight gate unmet. Repeatedly exposed n=1 tasks, shared host/cache and context variation; no quality superiority, causal optimization or independent-validation claim. [All costs](ALL-EIGHT-CURRENT-07-COSTS.md). |
 
-The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-PYTEST5103-REWRITE01.md)
+The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-PYTEST5103-CONTAINER01.md)
 preserves superseded checkpoints, every adverse result and the chronological links.
 This index separates native correctness, original model evidence and hosted checks;
 it is not a replacement benchmark. In particular, integration06 remains its
@@ -124,8 +124,3 @@ pytest5103 official pair01은 설치와 대조군을 통과했지만 정답에�
 남아 실제 종료값1이다. 필수65개 통과만으로 사전 기준을 바꾸지 않으며 원본
 실험을 그대로 불합격으로 기록한다. 최상위72개·단계211개와 생략5개를 확인했고
 재실험·모델 호출·성능 주장 없이 환경 종료를 확인했다.
-
-pytest5103 warning-policy diagnosis01–02는 경고 처리만 바꾼 작성자 대조에서
-두 표현식의 상세 메시지가 사라지는 경계를 확인했다. 직접 변환은 계속 정상이며
-예측 불일치와 불완전한 표시도 보존한다. 원본 경고 정책·채점 기준을 완화하거나
-불합격을 통과로 바꾸지 않았고 모델 호출·절감 근거는 없다.
