@@ -123,6 +123,18 @@ class LandingOriginTests(unittest.TestCase):
                 else:
                     self.assertEqual(body, b'')
 
+    def test_final_file_symlink_loops_return_http_errors(self):
+        directory = self.site / 'loop'
+        directory.mkdir()
+        (directory / 'index.html').symlink_to('index.html')
+        (self.site / 'release.json').unlink()
+        (self.site / 'release.json').symlink_to('release.json')
+        for path, expected in (('/loop/', 404), ('/_health', 503)):
+            with self.subTest(path=path):
+                status, headers, _ = self.request(path)
+                self.assertEqual(status, expected)
+                self.assertEqual(headers['Cache-Control'], 'no-cache')
+
     def test_only_existing_fingerprinted_artwork_is_immutable(self):
         artwork = b'unchanged image bytes'
         name = 'team-characters.' + hashlib.sha256(artwork).hexdigest() + '.png'

@@ -37,7 +37,7 @@ class LandingHandler(SimpleHTTPRequestHandler):
                 payload = manifest.read_bytes()
                 if json.loads(payload).get('app') != 'questionable-hires':
                     raise ValueError('Unknown app identity')
-            except (OSError, ValueError):
+            except (OSError, ValueError, RuntimeError):
                 self.send_error(503)
                 return None
             from io import BytesIO
@@ -58,7 +58,7 @@ class LandingHandler(SimpleHTTPRequestHandler):
                 if not index.is_file():
                     self.send_error(404)
                     return None
-        except (ValueError, OSError):
+        except (ValueError, OSError, RuntimeError):
             self.send_error(404)
             return None
         self.immutable_artwork = bool(target.is_file() and re.fullmatch(
