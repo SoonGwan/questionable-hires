@@ -59,3 +59,13 @@ the model-tool approval blocker or prove all8/token/time/quality improvement.
 원본 설치 명령을 오프라인으로 실행한다. 관찰기는 실제 최상위 session의 항목만
 기록하며 중첩 실패 대조군으로 확인한다. 원본/정답을 각1회 검증하고 전체 설치와
 필수172개 항목을 모두 확인한다. 실행 제한·기존 실패·모델 비용 구분은 유지한다.
+
+## Input readability correction before build or issue evaluation
+
+The first preflight stops before pip because the transferred public wheel manifest
+retains restrictive author file modes and is unreadable by the capability-dropped
+container process. Preserve that PermissionError and original logs. Change only
+public wheel inputs to readable files0644/directories0755 inside the enclosing
+private author root0700; no patch/log exposure or container protection change.
+A distinct preflight02 uses the unchanged native driver in a fresh container.
+Neither installation nor any issue cell ran in the failed attempt.
