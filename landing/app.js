@@ -137,6 +137,9 @@ async function setLanguage(next, persist = false) {
     return;
   }
   if (request !== languageRequest) return;
+  // Capture where the user is now, after the asynchronous translation arrives.
+  const focused = document.activeElement;
+  const experimentFocus = focused.closest('.experiment') ? focused.dataset.focusKey : null;
   const detailsOpen = document.querySelector('.raw-details').open;
   const checkpointOpen = document.querySelector('.checkpoint-details')?.open;
   const tableScroll = Array.from(document.querySelectorAll('.experiment .table-scroll'), table =>
@@ -182,6 +185,11 @@ async function setLanguage(next, persist = false) {
   history.replaceState(null, '', url);
   main.setAttribute('aria-busy', 'false');
   languageStatus.textContent = '';
+  if (experimentFocus) {
+    const replacement = Array.from(document.querySelectorAll('.experiment [data-focus-key]'))
+      .find(element => element.dataset.focusKey === experimentFocus);
+    replacement?.focus({ preventScroll: true });
+  }
 }
 
 languageLinks.forEach(link => link.addEventListener('click', event => {

@@ -131,8 +131,8 @@
 <div class="chart-top">
 <h4>과제별로 보면</h4>
 <div class="chart-controls" role="group" hidden>
-<button type="button" data-metric="total_tokens" aria-pressed="true">작업 전체 누적 토큰</button>
-<button type="button" data-metric="elapsed_seconds" aria-pressed="false">실행 시간</button></div></div>
+<button type="button" data-focus-key="tokens" data-metric="total_tokens" aria-pressed="true">작업 전체 누적 토큰</button>
+<button type="button" data-focus-key="elapsed" data-metric="elapsed_seconds" aria-pressed="false">실행 시간</button></div></div>
 <p class="chart-description" id="chart-description">100%는 해당 과제의 스킬 미적용 사용량입니다. 오른쪽으로 길수록 더 많이 사용했습니다. 각 과제의 실제 사용량과 증가·감소를 함께 확인하세요.</p>
 <div class="chart-legend" aria-label="범례"><span class="baseline-key">스킬 미적용</span><span class="skill-key">스킬 적용</span></div>
 <figure class="task-chart" data-chart="total_tokens" aria-describedby="chart-description"><figcaption>작업 전체 누적 토큰 비율</figcaption>
@@ -149,9 +149,9 @@
 <div class="chart-row"><span class="chart-case">이전 요청 오류<small>59.9% 감소</small></span><div class="chart-bars" style="--baseline-width:66.6667%"><div class="bar baseline" style="--bar-width:66.6667%"><span class="sr-only">스킬 미적용 </span><span class="bar-value">100%</span></div><div class="bar skill" style="--bar-width:26.7361%"><span class="sr-only">스킬 적용 </span><span class="bar-value">40.1%</span></div><p class="chart-usage">미적용 91.347 s → 적용 36.634 s</p></div></div>
 <div class="chart-row"><span class="chart-case">하위 도시 검색<small>26.4% 증가</small></span><div class="chart-bars" style="--baseline-width:66.6667%"><div class="bar baseline" style="--bar-width:66.6667%"><span class="sr-only">스킬 미적용 </span><span class="bar-value">100%</span></div><div class="bar skill" style="--bar-width:84.2562%"><span class="sr-only">스킬 적용 </span><span class="bar-value">126.4%</span></div><p class="chart-usage">미적용 45.383 s → 적용 57.357 s</p></div></div>
 <div class="chart-axis" aria-hidden="true"><span></span><div><span style="left:0.0000%">0%</span><span style="left:33.3333%">50%</span><span style="left:66.6667%">100%</span><span style="left:100.0000%">150%</span></div></div></figure>
-<details class="raw-details"><summary>원시 수치와 조건 보기</summary>
+<details class="raw-details"><summary data-focus-key="raw-summary">원시 수치와 조건 보기</summary>
 <p class="method">GPT-6 Astra · medium · 새 과제 5개 × 두 조건 × 새 세션 1회</p>
-<div class="table-scroll" role="region" tabindex="0" aria-label="과제·조건별 원시 사용량"><table><caption>과제·조건별 원시 사용량</caption><thead><tr>
+<div class="table-scroll" data-focus-key="raw-table" role="region" tabindex="0" aria-label="과제·조건별 원시 사용량"><table><caption>과제·조건별 원시 사용량</caption><thead><tr>
 <th scope="col">과제</th>
 <th scope="col">조건</th>
 <th scope="col">누적 토큰</th>
@@ -174,12 +174,12 @@
 </tfoot></table></div>
 <p class="raw-note">총 토큰은 캐시를 포함한 입력 + 출력입니다. 원시 합계의 비율과 위 그래프의 과제별 비율 평균은 다릅니다.</p></details>
 <aside class="experiment-limit"><h4>이 실험이 말하지 않는 것</h4><p>과제·조건별 1회 실행한 기술적 기록입니다. 신뢰구간이나 반복 표본, 팀 전체의 일반적인 우월성을 뜻하지 않습니다. 측정 이후 수정본의 성능도 증명하지 않습니다.</p></aside>
-<aside class="experiment-limit"><h4>전체 스킬의 비용 개선은 아직 입증되지 않았습니다.</h4><p>8개 역할 비교 integration07(2026-09-28, 1be35120)은 합계 토큰 1.67% 증가, 실행 시간 9.63% 감소였습니다. 동시 감소는 8개 중 2개입니다. 한정된 과제 결과는 유지됐지만 검사량 차이와 원본 출력 복구의 한계가 있습니다. 반복 노출된 개발 과제로 품질 우위나 전체 절감을 입증하지 않습니다.</p><details class="checkpoint-details"><summary>8개 역할 · 작업별 전체 비교</summary>
+<aside class="experiment-limit"><h4>전체 스킬의 비용 개선은 아직 입증되지 않았습니다.</h4><p>8개 역할 비교 integration07(2026-09-28, 1be35120)은 합계 토큰 1.67% 증가, 실행 시간 9.63% 감소였습니다. 동시 감소는 8개 중 2개입니다. 한정된 과제 결과는 유지됐지만 검사량 차이와 원본 출력 복구의 한계가 있습니다. 반복 노출된 개발 과제로 품질 우위나 전체 절감을 입증하지 않습니다.</p><details class="checkpoint-details"><summary data-focus-key="checkpoint-summary">8개 역할 · 작업별 전체 비교</summary>
 <p class="raw-note">스킬 미적용: 입력 579,079 + 출력 13,704 = 누적 592,783토큰 · 입력 중 캐시 524,544 · 모델 응답 37회</p>
 <p class="raw-note">스킬 적용: 입력 590,229 + 출력 12,450 = 누적 602,679토큰 · 입력 중 캐시 533,376 · 모델 응답 36회</p>
 <p class="raw-note">캐시 입력은 각 응답의 입력 토큰에 이미 포함되어 있어 별도로 더하지 않습니다. 같은 대화가 다음 응답에 다시 전달되면 그 응답의 입력에도 포함됩니다. 이 누적 사용량을 청구 요금으로 환산하지 않습니다.</p>
 <p class="checkpoint-scroll-hint raw-note">표를 좌우로 움직이면 미적용·적용 수치를 모두 볼 수 있습니다.</p>
-<div class="table-scroll" tabindex="0" role="region" aria-label="8개 역할 · 작업별 전체 비교">
+<div class="table-scroll" data-focus-key="checkpoint-table" tabindex="0" role="region" aria-label="8개 역할 · 작업별 전체 비교">
 <table><caption>integration07 · 2026-09-28 · 1be35120</caption><thead><tr>
 <th scope="col">과제</th>
 <th scope="col">스킬 미적용 · 누적 토큰</th>
@@ -223,11 +223,11 @@
 <td>592,783</td><td>494.990</td>
 <td>602,679</td><td>447.302</td>
 </tr></tfoot></table></div></details>
-<a data-evidence-file="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md" href="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md" download>전체 비용 분석 (.md) ↓</a>
-<a data-evidence-file="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md" href="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md" download>원본 과제 검토 (.md) ↓</a>
-<a data-evidence-file="evidence/integration07/comparison.json" href="evidence/integration07/comparison.json" download>16회 원본 비교 (.json) ↓</a>
-<a data-evidence-file="evidence/integration07/reports.zip" href="evidence/integration07/reports.zip" download>보고서·연결된 근거 묶음 (.zip) ↓</a></aside>
-<div class="experiment-links"><a href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/results/mother-in-law-confirmation-2026-09-12/README.md">과제·방법·한계 확인 ↗</a><a href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/results/mother-in-law-confirmation-2026-09-12/cells.json">원시 기록 JSON ↗</a></div></article>
+<a data-focus-key="costAnalysis" data-evidence-file="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md" href="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md" download>전체 비용 분석 (.md) ↓</a>
+<a data-focus-key="checkpointReview" data-evidence-file="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md" href="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md" download>원본 과제 검토 (.md) ↓</a>
+<a data-focus-key="checkpointJson" data-evidence-file="evidence/integration07/comparison.json" href="evidence/integration07/comparison.json" download>16회 원본 비교 (.json) ↓</a>
+<a data-focus-key="checkpointBundle" data-evidence-file="evidence/integration07/reports.zip" href="evidence/integration07/reports.zip" download>보고서·연결된 근거 묶음 (.zip) ↓</a></aside>
+<div class="experiment-links"><a data-focus-key="full-report" href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/results/mother-in-law-confirmation-2026-09-12/README.md">과제·방법·한계 확인 ↗</a><a data-focus-key="raw-records" href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/results/mother-in-law-confirmation-2026-09-12/cells.json">원시 기록 JSON ↗</a></div></article>
         <p class="evidence-preserved" data-i18n="evidencePreserved">팀 전체의 혼재된 결과와 불리한 결과도 아래 판단 기록에 보존합니다.</p>
         <a class="evidence-link" href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/CURRENT-CANDIDATE-STATUS.md"><span><strong data-i18n="statusTitle">GitHub에 공개된 검증 기록</strong><small data-i18n="statusDescription">기록에 명시된 버전 기준 · 이 페이지의 다운로드와 다를 수 있습니다</small></span><span aria-hidden="true">↗</span></a>
         <a class="evidence-link" href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/featured.json"><span><strong data-i18n="benchmarkTitle">대표 비교 실험</strong><small data-i18n="benchmarkDescription">featured.json이 가리키는 실험과 한계</small></span><span aria-hidden="true">↗</span></a>

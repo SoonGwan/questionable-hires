@@ -212,3 +212,12 @@ the former English title collision.
 
 모바일 소개 문구는 제목 아래에 배치합니다. 양쪽 언어·JavaScript 켜짐/꺼짐·
 8개 너비에서 실제 글자 영역의 겹침을 확인하며, 가로 넘침 검사와 구분합니다.
+
+During a delayed locale change, keyboard focus on an experiment control follows
+that same control into the translated markup. Focus that has moved outside the
+experiment remains there; restoring it does not scroll the page.
+[Keyboard handoff checks](../docs/LANDING-LANGUAGE-FOCUS-2026-09-28.md) cover both
+locales, metric buttons, disclosure summaries, scroll regions and evidence links.
+
+느린 언어 전환 중 그래프·표·근거 링크로 이동했다면 번역 완료 뒤에도 같은
+컨트롤의 키보드 위치를 유지합니다. 실험 영역 밖으로 이동한 포커스는 그대로 둡니다.

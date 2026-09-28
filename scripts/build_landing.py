@@ -88,9 +88,9 @@ def integration_evidence_files(checkpoint='integration07'):
 
 def integration_table(checkpoint, copy, prefix):
     e = html.escape
-    parts = [f'<details class="checkpoint-details"><summary>{e(copy["checkpointTable"])}</summary>',
+    parts = [f'<details class="checkpoint-details"><summary data-focus-key="checkpoint-summary">{e(copy["checkpointTable"])}</summary>',
              f'<p class="checkpoint-scroll-hint raw-note">{e(copy["checkpointScrollHint"])}</p>',
-             f'<div class="table-scroll" tabindex="0" role="region" aria-label="{e(copy["checkpointTable"])}">',
+             f'<div class="table-scroll" data-focus-key="checkpoint-table" tabindex="0" role="region" aria-label="{e(copy["checkpointTable"])}">',
              '<table><caption>integration07 · 2026-09-28 · 1be35120</caption><thead><tr>',
              f'<th scope="col">{e(copy["rawCase"])}</th>']
     breakdown = []
@@ -119,7 +119,7 @@ def integration_table(checkpoint, copy, prefix):
                         ('comparison.json', 'checkpointJson'),
                         ('reports.zip', 'checkpointBundle')):
         path = 'evidence/integration07/' + name
-        parts.append(f'<a data-evidence-file="{path}" href="{e(prefix + path)}" download>{e(copy[label])} ↓</a>')
+        parts.append(f'<a data-focus-key="{label}" data-evidence-file="{path}" href="{e(prefix + path)}" download>{e(copy[label])} ↓</a>')
     return '\n'.join(parts)
 
 
@@ -267,8 +267,8 @@ def experiment(evidence, copy, checkpoint=None, prefix='../'):
                   f'<p class="cost-summary">{e(cost_summary)}</p>',
                   '<div class="chart-top">', f'<h4>{e(copy["chartHeading"])}</h4>',
                   '<div class="chart-controls" role="group" hidden>',
-                  f'<button type="button" data-metric="total_tokens" aria-pressed="true">{e(copy["tokens"])}</button>',
-                  f'<button type="button" data-metric="elapsed_seconds" aria-pressed="false">{e(copy["elapsed"])}</button></div></div>',
+                  f'<button type="button" data-focus-key="tokens" data-metric="total_tokens" aria-pressed="true">{e(copy["tokens"])}</button>',
+                  f'<button type="button" data-focus-key="elapsed" data-metric="elapsed_seconds" aria-pressed="false">{e(copy["elapsed"])}</button></div></div>',
                   f'<p class="chart-description" id="chart-description">{e(copy["chartDescription"])}</p>',
                   f'<div class="chart-legend" aria-label="{e(copy["chartLegend"])}"><span class="baseline-key">{e(copy["conditionBaseline"])}</span><span class="skill-key">{e(copy["conditionSkill"])}</span></div>'])
     for metric, label in (('total_tokens', 'chartTokensLabel'), ('elapsed_seconds', 'chartElapsedLabel')):
@@ -288,9 +288,9 @@ def experiment(evidence, copy, checkpoint=None, prefix='../'):
                          f'<div class="bar skill" style="--bar-width:{ratio/ceiling*100:.4f}%"><span class="sr-only">{e(copy["conditionSkill"])} </span><span class="bar-value">{ratio:.1f}%</span></div><p class="chart-usage">{e(usage)}</p></div></div>')
         parts.append('<div class="chart-axis" aria-hidden="true"><span></span><div>' + ''.join(
             f'<span style="left:{tick/ceiling*100:.4f}%">{tick}%</span>' for tick in range(0, ceiling + 1, 50)) + '</div></div></figure>')
-    parts.extend([f'<details class="raw-details"><summary>{e(copy["rawSummary"])}</summary>',
+    parts.extend([f'<details class="raw-details"><summary data-focus-key="raw-summary">{e(copy["rawSummary"])}</summary>',
                   f'<p class="method">{e(copy["method"].format(cases=data["cases"]))}</p>',
-                  f'<div class="table-scroll" role="region" tabindex="0" aria-label="{e(copy["rawCaption"])}"><table><caption>{e(copy["rawCaption"])}</caption><thead><tr>'])
+                  f'<div class="table-scroll" data-focus-key="raw-table" role="region" tabindex="0" aria-label="{e(copy["rawCaption"])}"><table><caption>{e(copy["rawCaption"])}</caption><thead><tr>'])
     parts.extend(f'<th scope="col">{e(copy[key])}</th>' for key in ('rawCase', 'rawArm', 'rawTokens', 'rawElapsed', 'rawQuality'))
     parts.append('</tr></thead><tbody>')
     for case in cases:
@@ -305,7 +305,7 @@ def experiment(evidence, copy, checkpoint=None, prefix='../'):
     parts.extend(['</tfoot></table></div>', f'<p class="raw-note">{e(copy["rawNote"])}</p></details>',
                   f'<aside class="experiment-limit"><h4>{e(copy["limitationTitle"])}</h4><p>{e(copy["limitation"])}</p></aside>',
                   f'<aside class="experiment-limit"><h4>{e(copy["performanceStatus"])}</h4><p>{e(performance_detail)}</p>{integration_table(checkpoint, copy, prefix)}</aside>',
-                  f'<div class="experiment-links"><a href="{report}/README.md">{e(copy["fullReport"])} ↗</a><a href="{report}/cells.json">{e(copy["rawRecords"])} ↗</a></div></article>'])
+                  f'<div class="experiment-links"><a data-focus-key="full-report" href="{report}/README.md">{e(copy["fullReport"])} ↗</a><a data-focus-key="raw-records" href="{report}/cells.json">{e(copy["rawRecords"])} ↗</a></div></article>'])
     return '\n'.join(parts)
 
 

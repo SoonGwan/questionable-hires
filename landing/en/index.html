@@ -131,8 +131,8 @@ Different costs by task.</h3>
 <div class="chart-top">
 <h4>Look at every task</h4>
 <div class="chart-controls" role="group" hidden>
-<button type="button" data-metric="total_tokens" aria-pressed="true">Whole-task cumulative tokens</button>
-<button type="button" data-metric="elapsed_seconds" aria-pressed="false">Elapsed time</button></div></div>
+<button type="button" data-focus-key="tokens" data-metric="total_tokens" aria-pressed="true">Whole-task cumulative tokens</button>
+<button type="button" data-focus-key="elapsed" data-metric="elapsed_seconds" aria-pressed="false">Elapsed time</button></div></div>
 <p class="chart-description" id="chart-description">100% is the no-skill usage for that task. A longer bar means more resource use. Read the actual usage and increase or decrease alongside each task.</p>
 <div class="chart-legend" aria-label="Legend"><span class="baseline-key">Without skill</span><span class="skill-key">With skill</span></div>
 <figure class="task-chart" data-chart="total_tokens" aria-describedby="chart-description"><figcaption>Whole-task cumulative token ratio</figcaption>
@@ -149,9 +149,9 @@ Different costs by task.</h3>
 <div class="chart-row"><span class="chart-case">Stale error<small>59.9% less</small></span><div class="chart-bars" style="--baseline-width:66.6667%"><div class="bar baseline" style="--bar-width:66.6667%"><span class="sr-only">Without skill </span><span class="bar-value">100%</span></div><div class="bar skill" style="--bar-width:26.7361%"><span class="sr-only">With skill </span><span class="bar-value">40.1%</span></div><p class="chart-usage">Without 91.347 s → with 36.634 s</p></div></div>
 <div class="chart-row"><span class="chart-case">Nested city search<small>26.4% more</small></span><div class="chart-bars" style="--baseline-width:66.6667%"><div class="bar baseline" style="--bar-width:66.6667%"><span class="sr-only">Without skill </span><span class="bar-value">100%</span></div><div class="bar skill" style="--bar-width:84.2562%"><span class="sr-only">With skill </span><span class="bar-value">126.4%</span></div><p class="chart-usage">Without 45.383 s → with 57.357 s</p></div></div>
 <div class="chart-axis" aria-hidden="true"><span></span><div><span style="left:0.0000%">0%</span><span style="left:33.3333%">50%</span><span style="left:66.6667%">100%</span><span style="left:100.0000%">150%</span></div></div></figure>
-<details class="raw-details"><summary>Inspect raw values &amp; conditions</summary>
+<details class="raw-details"><summary data-focus-key="raw-summary">Inspect raw values &amp; conditions</summary>
 <p class="method">GPT-6 Astra · medium · 5 new tasks × 2 arms × 1 fresh session</p>
-<div class="table-scroll" role="region" tabindex="0" aria-label="Raw usage by task and arm"><table><caption>Raw usage by task and arm</caption><thead><tr>
+<div class="table-scroll" data-focus-key="raw-table" role="region" tabindex="0" aria-label="Raw usage by task and arm"><table><caption>Raw usage by task and arm</caption><thead><tr>
 <th scope="col">Task</th>
 <th scope="col">Arm</th>
 <th scope="col">Cumulative tokens</th>
@@ -174,12 +174,12 @@ Different costs by task.</h3>
 </tfoot></table></div>
 <p class="raw-note">Total tokens include cached input + output. Ratios of raw sums differ from the equal-weight task means plotted above.</p></details>
 <aside class="experiment-limit"><h4>What this experiment doesn’t establish</h4><p>A descriptive record of one run per arm and task. Not a confidence interval, repeated-sample result or general whole-team superiority claim. It does not measure revisions made after this checkpoint.</p></aside>
-<aside class="experiment-limit"><h4>Lower cost across all skills remains unproven.</h4><p>The eight-role integration07 comparison (2026-09-28, 1be35120) used 1.67% more summed tokens and 9.63% less CLI time. Only 2 of 8 roles decreased both. Bounded outcomes were preserved; unequal checks and recovered original output limit interpretation. These repeatedly exposed development tasks do not establish quality superiority or whole-team savings.</p><details class="checkpoint-details"><summary>Eight roles · full task comparison</summary>
+<aside class="experiment-limit"><h4>Lower cost across all skills remains unproven.</h4><p>The eight-role integration07 comparison (2026-09-28, 1be35120) used 1.67% more summed tokens and 9.63% less CLI time. Only 2 of 8 roles decreased both. Bounded outcomes were preserved; unequal checks and recovered original output limit interpretation. These repeatedly exposed development tasks do not establish quality superiority or whole-team savings.</p><details class="checkpoint-details"><summary data-focus-key="checkpoint-summary">Eight roles · full task comparison</summary>
 <p class="raw-note">Without skill: 579,079 input + 13,704 output = 592,783 total tokens · 524,544 of the input cached · 37 model responses</p>
 <p class="raw-note">With skill: 590,229 input + 12,450 output = 602,679 total tokens · 533,376 of the input cached · 36 model responses</p>
 <p class="raw-note">Cached input is already included in each response’s input tokens; it is not added again. Conversation sent again is included in the next response’s input too. These cumulative usage counts are not converted to billing costs.</p>
 <p class="checkpoint-scroll-hint raw-note">Scroll the table sideways to compare both conditions.</p>
-<div class="table-scroll" tabindex="0" role="region" aria-label="Eight roles · full task comparison">
+<div class="table-scroll" data-focus-key="checkpoint-table" tabindex="0" role="region" aria-label="Eight roles · full task comparison">
 <table><caption>integration07 · 2026-09-28 · 1be35120</caption><thead><tr>
 <th scope="col">Task</th>
 <th scope="col">Without skill · Cumulative tokens</th>
@@ -223,11 +223,11 @@ Different costs by task.</h3>
 <td>592,783</td><td>494.990</td>
 <td>602,679</td><td>447.302</td>
 </tr></tfoot></table></div></details>
-<a data-evidence-file="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md" href="../evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md" download>Whole-team cost analysis (.md) ↓</a>
-<a data-evidence-file="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md" href="../evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md" download>Original task review (.md) ↓</a>
-<a data-evidence-file="evidence/integration07/comparison.json" href="../evidence/integration07/comparison.json" download>All16 original comparisons (.json) ↓</a>
-<a data-evidence-file="evidence/integration07/reports.zip" href="../evidence/integration07/reports.zip" download>Reports &amp; linked evidence bundle (.zip) ↓</a></aside>
-<div class="experiment-links"><a href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/results/mother-in-law-confirmation-2026-09-12/README.md">Cases, method &amp; limitations ↗</a><a href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/results/mother-in-law-confirmation-2026-09-12/cells.json">Raw records JSON ↗</a></div></article>
+<a data-focus-key="costAnalysis" data-evidence-file="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md" href="../evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md" download>Whole-team cost analysis (.md) ↓</a>
+<a data-focus-key="checkpointReview" data-evidence-file="evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md" href="../evidence/integration07/benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md" download>Original task review (.md) ↓</a>
+<a data-focus-key="checkpointJson" data-evidence-file="evidence/integration07/comparison.json" href="../evidence/integration07/comparison.json" download>All16 original comparisons (.json) ↓</a>
+<a data-focus-key="checkpointBundle" data-evidence-file="evidence/integration07/reports.zip" href="../evidence/integration07/reports.zip" download>Reports &amp; linked evidence bundle (.zip) ↓</a></aside>
+<div class="experiment-links"><a data-focus-key="full-report" href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/results/mother-in-law-confirmation-2026-09-12/README.md">Cases, method &amp; limitations ↗</a><a data-focus-key="raw-records" href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/results/mother-in-law-confirmation-2026-09-12/cells.json">Raw records JSON ↗</a></div></article>
         <p class="evidence-preserved" data-i18n="evidencePreserved">Mixed whole-team results and adverse outcomes remain available in the decision index below.</p>
         <a class="evidence-link" href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/CURRENT-CANDIDATE-STATUS.md"><span><strong data-i18n="statusTitle">Evidence published on GitHub</strong><small data-i18n="statusDescription">Applies to the versions named there · may differ from this page’s download</small></span><span aria-hidden="true">↗</span></a>
         <a class="evidence-link" href="https://github.com/SoonGwan/questionable-hires/blob/main/benchmarks/featured.json"><span><strong data-i18n="benchmarkTitle">Featured comparison</strong><small data-i18n="benchmarkDescription">The experiment and limitations linked by featured.json</small></span><span aria-hidden="true">↗</span></a>
