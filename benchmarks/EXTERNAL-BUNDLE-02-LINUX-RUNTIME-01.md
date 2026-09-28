@@ -2,8 +2,12 @@
 
 [Protocol](EXTERNAL-BUNDLE-02-LINUX-RUNTIME-01-PROTOCOL.md) `fbb44ccf`, guest pin
 `261e266c`. Existing external-bundle02 case identities and skill resource `7172b50c`
-are unchanged. This establishes an executable Linux/translated-x86 route after the
-previous missing-runtime observation; it does not repair or rescore Mac grades.
+are unchanged. This establishes a separate Lima-managed Linux/translated-x86 route. The earlier
+[owned VM](OWNED-LINUX-VM-01.md), [official Python](OWNED-OFFICIAL-PYTHON-01.md) and
+[official grade](OWNED-OFFICIAL-GRADE-01.md) had already executed Linux and the
+selected image. Treating Linux execution itself as newly unblocked was incomplete
+history review; this is an alternative runtime, not the first executable route.
+It does not repair or rescore either the Mac or earlier Linux grades.
 
 Lima2.2.0 is extracted into a new owned0700 temporary prefix after the37,586,365-byte
 [official binary hash matches](results/external-bundle-02-linux-runtime01/download.json).
@@ -65,9 +69,11 @@ retain startup/configuration/stop evidence without publishing them.
 
 ## Next gate
 
-Use this stopped author runtime for separately frozen official-image preparation
-with pinned image digest, explicit pull/disk/time limits and native base/gold
-controls. Preserve all eight tasks and prior adverse results; do not replace failed
+Use this stopped author runtime only for a distinct standard-container preparation
+with pinned image identity and explicit transfer/disk/time limits. Reuse prior layer
+acquisition. Earlier image-source mode/HEAD differences and the declined Linux
+base/gold pair remain authoritative; a new container backend does not itself
+justify another identical grade or predict that those differences disappear. Preserve all eight tasks and prior adverse results; do not replace failed
 cases. Existing exact image/runtime metadata is the starting point, not guessed
 Python versions. Solver/grader isolation and model execution protocol remain
 separate gates. No README skill capability, featured chart, website or model-cost
