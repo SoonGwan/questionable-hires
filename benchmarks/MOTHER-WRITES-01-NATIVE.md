@@ -6,6 +6,10 @@ Candidate `8997f97a`, parent `20468dd3`.
 Accept the declared native controls; keep the candidate isolated pending model
 evidence. No ordinary skill, personal installation or public package changes.
 
+Subsequent [four-cell model review](MOTHER-WRITES-01-REVIEW.md) declines adoption:
+the targeted Editor task increases tokens despite using the optional asset.
+Native acceptance above remains limited to its declared controls.
+
 The optional asset's executable AST exactly reuses the existing editor fixture.
 Five direct controls verify delayed copying of the actual argument, reverse
 completion of distinct calls, cancellation isolation, failed-assertion cleanup
