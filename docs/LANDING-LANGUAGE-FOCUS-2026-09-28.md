@@ -47,3 +47,23 @@ instruction authorizes this scoped fix.
 실험 영역 밖으로 이동했다면 그대로 둔다. 최초 검사 설정 오류2개도 보존했고,
 수정된 검사 기준으로 이전12실패·2통과에서 이후14개가 모두 통과했다.
 기존 언어 전환10개·랜딩27개도 통과하며 토큰 성능이나 전체 목표 달성은 아니다.
+
+## Hosted verification
+
+Release **`9632bdc98ab64db12e72eefaded4a51dc4b18298`** is live on
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+The [same14 public browser cases](../benchmarks/results/landing-language-focus01/public-browser.txt)
+pass, exit0. Translation delay is controlled using the generated fragment; public
+pages/scripts load through HTTPS. Separately, [10 HTTPS identities](../benchmarks/results/landing-language-focus01/public.json)
+verify both actual public fragments, locale pages, health, runtime assets and
+archive/checksum against that release. All52 packaged resource bytes/modes match
+source; frozen integration07602,679/current resource1be35120 and canonical/indexable
+metadata remain intact. This is not a real-network delay or model benchmark.
+
+The owned preview server was stopped and its process terminated; every browser
+context closed. Deployment retained the prior release for rollback. No GitHub push.
+
+한국어: 공개 배포9632bdc9에서도 같은14개 검사가 통과했다. 실제 공개 번역
+조각을 포함한 HTTPS10개 경로와 다운로드52개 자원 일치를 별도로 확인했다.
+실험 수치는 유지하며 미리보기 서버와 검사 브라우저를 정리했다. GitHub 푸시는 없다.
