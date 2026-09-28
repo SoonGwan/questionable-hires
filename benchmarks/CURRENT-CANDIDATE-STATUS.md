@@ -37,7 +37,9 @@ lower bound settles automatic index choice. All10 compact/pretty outputs match;
 sparse-large native time−18.64–21.58%, traced peak−13.51–13.84%, four timing rows
 regress. Git-free72 on3.9/3.11 pass after retaining an omitted-reference setup error.
 Native implementation only; integration07 did not exercise this collector, so no
-whole-screen retry or model-cost claim. Installation/public delivery is separate.
+whole-screen retry or model-cost claim. All8 installed skills match; installed5,
+archive4/landing31 pass. Public `281c3cf0`:8 HTTPS routes and52 skill resources match;
+these are delivery checks, not new model evidence.
 
 [Integration07 change reachability01](INTEGRATION07-CHANGE-REACHABILITY-01.md),2026-09-28,
 compares measured `1be35120` with `ba3a9ec4`: all8 entries are unchanged;14 support
@@ -141,4 +143,5 @@ pytest5103 warning-policy diagnosis01–02는 경고 처리만 바꾼 작성자 
 Context index allocation01은 반환할 목록이 더 작다는 확정 하한이 있을 때 버릴
 전체 소스 생성을 생략한다. 출력은 동일하며 큰 합성 사례의 네이티브 시간·추적
 메모리가 줄었다. 작은 시간 증가와 최초 누락 참조 오류도 남긴다. 모델 비용
-절감·전체8개 성과로 계산하지 않으며 설치·공개 배포 검증은 별도로 기록한다.
+절감·전체8개 성과로 계산하지 않는다. 설치본8개가 일치하며 공개 `281c3cf0`의
+8개 HTTPS 경로와 다운로드 스킬52개 자원이 일치한다. 이는 별도 배포 검증이다.

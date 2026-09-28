@@ -67,8 +67,16 @@ costs retain their original measured resources. Delivery is verified separately.
 The installed previous resource matched the pinned baseline before replacement;
 its backup remains. All eight local installations now match checkout bytes/modes,
 and five representation/budget tests run against the actual installed collector.
-The rebuilt download's52 resources match source bytes/modes; standalone archive4
+The rebuilt download's52 skill resources and three support files match source bytes/modes; standalone archive4
 and landing31 tests pass. These delivery checks are not new model measurements.
+
+Public release `281c3cf0245986e7fdc5244e5a2f8ab4f6a82e6c` is verified through
+[eight HTTPS routes](results/context-index-allocation01/hosted.json), including
+both locales and the actual archive. All55 payload files match source bytes/modes,
+including52 skill resources. The109,104-byte download SHA256 is
+`ecb7f50419d1d46c3a491c414da728b2eab281caee0141672c98cc779c2fdaee`.
+This is public delivery evidence; no new browser interaction or model result is
+claimed for unchanged page behavior and historical metrics.
 
 한국어: 짧은 정의 목록을 선택할 것이 확실한 경우 버릴 전체 소스 문자열을
 만들지 않는다. 반환 객체·문자열·해시·한도는 모두 동일하다. 큰 합성 사례는
@@ -77,3 +85,7 @@ and landing31 tests pass. These delivery checks are not new model measurements.
 Git 없는 사본72개 검사가3.9/3.11에서 통과했으며 최초 누락 파일 오류도 남긴다.
 원본 모델 경로가 이 도구를 쓰지 않았으므로 단순히 새 패키지라는 이유로 전체
 실험을 반복하지 않는다. 전체8개 품질·토큰·시간 목표는 미달이다.
+
+설치본8개·실제 설치 경로 검사5개와 공개 배포 `281c3cf0`의 HTTPS8개 경로를
+확인했다. 다운로드의 스킬52개 자원과 지원 파일3개는 소스 바이트·모드와 일치한다.
+페이지 동작이나 모델 비용을 새로 측정한 근거로 바꾸지 않는다.
