@@ -108,7 +108,10 @@ after equivalent context is already available. Then perform the actual audit
 using project facilities or [the copy helper](python-audit.md) as appropriate.
 Neither collector exit 0 nor a source hash is execution evidence.
 
-Python 3.9+, UTF-8 regular files only, no imports/subprocesses/writes. Symlinks,
+Python 3.9+, UTF-8 regular files only, no imports/subprocesses/writes. An optional
+initial UTF-8 signature is omitted from displayed/parsed text; original byte
+hashes and input limits still include it. Interior markers are not removed, and
+other source encodings are not auto-detected. Symlinks,
 traversal and Git internals are refused. Maximum 256 KB per file, 2 MB total input and 100,000
 output characters, including the final newline, measured in the requested JSON
 format. Compact output may fit when `--pretty` does not; neither truncates source.

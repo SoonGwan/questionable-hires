@@ -1,0 +1,139 @@
+test_ancestor_index_uses_signature_free_unicode_columns (test_context_bom.ContextSignatureTests.test_ancestor_index_uses_signature_free_unicode_columns) ... ERROR
+test_cli_accepts_one_signature_without_executing_and_rejects_invalid_source (test_context_bom.ContextSignatureTests.test_cli_accepts_one_signature_without_executing_and_rejects_invalid_source) ... FAIL
+test_full_source_keeps_interior_signature_character_as_literal_data (test_context_bom.ContextSignatureTests.test_full_source_keeps_interior_signature_character_as_literal_data) ... FAIL
+test_named_line_and_group_keep_first_decorator_and_original_identity (test_context_bom.ContextSignatureTests.test_named_line_and_group_keep_first_decorator_and_original_identity) ... 
+  test_named_line_and_group_keep_first_decorator_and_original_identity (test_context_bom.ContextSignatureTests.test_named_line_and_group_keep_first_decorator_and_original_identity) (newline="'\\n'") ... ERROR
+  test_named_line_and_group_keep_first_decorator_and_original_identity (test_context_bom.ContextSignatureTests.test_named_line_and_group_keep_first_decorator_and_original_identity) (newline="'\\r\\n'") ... ERROR
+  test_named_line_and_group_keep_first_decorator_and_original_identity (test_context_bom.ContextSignatureTests.test_named_line_and_group_keep_first_decorator_and_original_identity) (newline="'\\r'") ... ERROR
+test_signature_counts_toward_raw_byte_limits (test_context_bom.ContextSignatureTests.test_signature_counts_toward_raw_byte_limits) ... FAIL
+
+======================================================================
+ERROR: test_ancestor_index_uses_signature_free_unicode_columns (test_context_bom.ContextSignatureTests.test_ancestor_index_uses_signature_free_unicode_columns)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_context_bom.py", line 56, in test_ancestor_index_uses_signature_free_unicode_columns
+    result = context.collect(self.root, ['module.py:target'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 291, in collect
+    record = describe(root, relative, budget, index=name == 'conftest.py', cache=cache)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 190, in describe
+    snapshot['tree'] = ast.parse(source, filename=str(path))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ast.py", line 50, in parse
+    return compile(source, filename, mode, flags,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "conftest.py", line 1
+    ﻿@fixture("한글")
+    ^
+SyntaxError: invalid non-printable character U+FEFF
+
+======================================================================
+ERROR: test_named_line_and_group_keep_first_decorator_and_original_identity (test_context_bom.ContextSignatureTests.test_named_line_and_group_keep_first_decorator_and_original_identity) (newline="'\\n'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_context_bom.py", line 39, in test_named_line_and_group_keep_first_decorator_and_original_identity
+    rows = context.collect(self.root, ['module.py:target', 'module.py:1'])['selected']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 301, in collect
+    selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache, pretty=pretty, all_matches=all_matches) for path, symbol in selected],
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 301, in <listcomp>
+    selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache, pretty=pretty, all_matches=all_matches) for path, symbol in selected],
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 190, in describe
+    snapshot['tree'] = ast.parse(source, filename=str(path))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ast.py", line 50, in parse
+    return compile(source, filename, mode, flags,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "module.py", line 1
+    ﻿@(
+    ^
+SyntaxError: invalid non-printable character U+FEFF
+
+======================================================================
+ERROR: test_named_line_and_group_keep_first_decorator_and_original_identity (test_context_bom.ContextSignatureTests.test_named_line_and_group_keep_first_decorator_and_original_identity) (newline="'\\r\\n'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_context_bom.py", line 39, in test_named_line_and_group_keep_first_decorator_and_original_identity
+    rows = context.collect(self.root, ['module.py:target', 'module.py:1'])['selected']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 301, in collect
+    selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache, pretty=pretty, all_matches=all_matches) for path, symbol in selected],
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 301, in <listcomp>
+    selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache, pretty=pretty, all_matches=all_matches) for path, symbol in selected],
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 190, in describe
+    snapshot['tree'] = ast.parse(source, filename=str(path))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ast.py", line 50, in parse
+    return compile(source, filename, mode, flags,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "module.py", line 1
+    ﻿@(
+    ^
+SyntaxError: invalid non-printable character U+FEFF
+
+======================================================================
+ERROR: test_named_line_and_group_keep_first_decorator_and_original_identity (test_context_bom.ContextSignatureTests.test_named_line_and_group_keep_first_decorator_and_original_identity) (newline="'\\r'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_context_bom.py", line 39, in test_named_line_and_group_keep_first_decorator_and_original_identity
+    rows = context.collect(self.root, ['module.py:target', 'module.py:1'])['selected']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 301, in collect
+    selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache, pretty=pretty, all_matches=all_matches) for path, symbol in selected],
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 301, in <listcomp>
+    selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache, pretty=pretty, all_matches=all_matches) for path, symbol in selected],
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/skills/con-artist/scripts/context.py", line 190, in describe
+    snapshot['tree'] = ast.parse(source, filename=str(path))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ast.py", line 50, in parse
+    return compile(source, filename, mode, flags,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "module.py", line 1
+    ﻿@(
+    ^
+SyntaxError: invalid non-printable character U+FEFF
+
+======================================================================
+FAIL: test_cli_accepts_one_signature_without_executing_and_rejects_invalid_source (test_context_bom.ContextSignatureTests.test_cli_accepts_one_signature_without_executing_and_rejects_invalid_source)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_context_bom.py", line 89, in test_cli_accepts_one_signature_without_executing_and_rejects_invalid_source
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 2 != 0 : {"status": "incomplete", "error": "invalid non-printable character U+FEFF (module.py, line 1)"}
+
+
+======================================================================
+FAIL: test_full_source_keeps_interior_signature_character_as_literal_data (test_context_bom.ContextSignatureTests.test_full_source_keeps_interior_signature_character_as_literal_data)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_context_bom.py", line 82, in test_full_source_keeps_interior_signature_character_as_literal_data
+    self.assertEqual(row['source'], '1: value = "\ufeff"\n2: def target(): return value')
+AssertionError: '1: \ufeffvalue = "\ufeff"\n2: def target(): return value' != '1: value = "\ufeff"\n2: def target(): return value'
+- 1: ﻿value = "﻿"
+?    -
++ 1: value = "﻿"
+  2: def target(): return value
+
+======================================================================
+FAIL: test_signature_counts_toward_raw_byte_limits (test_context_bom.ContextSignatureTests.test_signature_counts_toward_raw_byte_limits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_context_bom.py", line 68, in test_signature_counts_toward_raw_byte_limits
+    self.assertEqual(source, 'def target(): pass\n')
+AssertionError: '\ufeffdef target(): pass\n' != 'def target(): pass\n'
+- ﻿def target(): pass
+? -
++ def target(): pass
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.041s
+
+FAILED (failures=3, errors=4)

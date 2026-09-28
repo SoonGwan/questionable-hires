@@ -61,7 +61,9 @@ def read(root, path, budget):
     budget[0] += len(data)
     if budget[0] > MAX_INPUT:
         raise ValueError('Selected context exceeds 2000000 input bytes')
-    return data.decode('utf-8'), hashlib.sha256(data).hexdigest()
+    # An initial UTF-8 signature is encoding metadata, not an AST source column.
+    # Budgets and identity still cover every original byte, including the marker.
+    return data.decode('utf-8-sig'), hashlib.sha256(data).hexdigest()
 
 
 def span(node, source=None, cache=None):
