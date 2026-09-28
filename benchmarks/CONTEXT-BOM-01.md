@@ -50,4 +50,19 @@ install the correction. The same five new methods pass against the installed
 module/CLI, and all eight installed skills match checkout bytes/modes. The archive
 contains all52 exact skill resources. Four standalone archive checks and31
 landing/origin checks pass; the initial wrongly named package discovery runs0
-tests and is retained, not counted. Public release verification follows separately.
+tests and is retained, not counted.
+
+## Hosted verification — 2026-09-28
+
+Release `bca0130f` includes source `6208466b`. All eight checked public HTTPS
+routes match the deployed release bytes: health identity, Korean/English pages,
+three page assets and both download files. The public archive contains all52
+source resources with matching names, bytes and modes. Its108,928 bytes have
+SHA256 `9507e3a0b867cfbee7e3daad7497832735cbe2028786b24d6f76a4552374852d`.
+[Route and archive evidence](results/context-bom01/hosted.json) records each
+response identity. This verifies release delivery; no new browser interaction
+or model performance experiment was run.
+
+한국어: 공개 배포 `bca0130f`의8개 HTTPS 경로가 배포 파일과 일치하며,
+다운로드의52개 자원이 수정 소스와 이름·내용·모드까지 일치한다.
+배포 전달 확인이며 새 브라우저 검사나 모델 절감 실험은 아니다.
