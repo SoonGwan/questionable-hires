@@ -16,6 +16,34 @@ SPEC.loader.exec_module(builder)
 
 
 class StandaloneArchiveTests(unittest.TestCase):
+    def test_archive_identity_ignores_checkout_write_permissions(self):
+        with tempfile.TemporaryDirectory(prefix='standalone-modes-') as temporary:
+            root = Path(temporary)
+            project = root / 'source'
+            files = {
+                'LICENSE': 'license', 'scripts/install.py': '# installer',
+                'docs/INSTALL-SNAPSHOT.md': '# install',
+                'skills/example/SKILL.md': '# example',
+                'skills/example/run.py': '#!/usr/bin/env python3\n',
+            }
+            for name, contents in files.items():
+                path = project / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(contents)
+                path.chmod(0o755 if name.endswith('run.py') else 0o644)
+            with patch.object(builder, 'ROOT', project):
+                first = root / 'checkout.tar.gz'
+                builder.package(first)
+                for name in files:
+                    path = project / name
+                    path.chmod(path.stat().st_mode | 0o020)
+                second = root / 'source-archive.tar.gz'
+                builder.package(second)
+            self.assertEqual(first.read_bytes(), second.read_bytes())
+            with tarfile.open(second) as archive:
+                for entry in archive.getmembers():
+                    self.assertEqual(entry.mode, 0o755 if entry.name.endswith('run.py') else 0o644)
+
     def test_reproducible_archive_installs_all_resources_offline(self):
         with tempfile.TemporaryDirectory(prefix='standalone-') as temporary:
             root = Path(temporary)

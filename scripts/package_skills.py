@@ -43,7 +43,11 @@ def package(destination):
         mode = path.stat().st_mode
         if not stat.S_ISREG(mode):
             raise ValueError('Expected regular source file: ' + str(path))
-        members[path.relative_to(ROOT).as_posix()] = (path.read_bytes(), stat.S_IMODE(mode))
+        # Git preserves the owner executable bit, not checkout/umask write bits.
+        # Use portable distribution permissions so source archives and clones
+        # produce identical bytes, without propagating special permission bits.
+        distribution_mode = 0o755 if mode & stat.S_IXUSR else 0o644
+        members[path.relative_to(ROOT).as_posix()] = (path.read_bytes(), distribution_mode)
     manifest = {name: {'sha256': hashlib.sha256(data).hexdigest(), 'mode': mode}
                 for name, (data, mode) in sorted(members.items())}
     members['CONTENTS.json'] = ((json.dumps(manifest, indent=2, sort_keys=True) + '\n').encode(), 0o644)
