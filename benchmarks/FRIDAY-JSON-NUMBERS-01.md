@@ -60,3 +60,20 @@ Source `c9b30fc6` is installed after all prior Friday bytes/modes match parent
 The 151-file build check passes; only archive/checksum change in landing output.
 [All52 packaged resource bytes/modes match source](results/friday-json-numbers01/download.json).
 These checks are installation/packaging evidence, not new model measurements.
+
+## Public delivery
+
+Hosted revision `b528b7853b786e2a63bf1695edbb498b986de64d` is verified on
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+[Eight HTTPS observations](results/friday-json-numbers01/public.json) match the
+release's health identity, both locale pages, JavaScript/styles/content and exact
+archive/checksum. All52 public packaged resources match source bytes/modes.
+Download108,336bytes, SHA256
+`540c5f035f4c35f008163cfcf16895872157827c6265520fd4aa99eb8e26a338`.
+Canonical/indexable metadata and frozen integration07 figures remain unchanged.
+No new browser interaction or model-cost result is claimed; GitHub was not pushed.
+
+한국어: 공개 배포b528b785의 HTTPS8개 경로와 다운로드52개 리소스 일치를 확인했다.
+설치본과 공개 다운로드에 수정이 반영됐으며 실험 수치나 전체 목표 달성으로
+바꾸지 않는다. GitHub 저장소에는 푸시하지 않았다.
