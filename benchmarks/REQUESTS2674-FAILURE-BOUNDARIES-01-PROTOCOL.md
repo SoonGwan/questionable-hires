@@ -41,3 +41,25 @@ attempts and failures; stop services/VM and verify cleanup. Zero models/token cl
 한국어: 원본 로그의8개 실패를 필수 그룹과 실행 경계별로 구분한다. 쿠키 문제만
 실제 공식 클라이언트와 두 로컬 서버로 좁혀 검증하며 기존 채점은 반복하지 않는다.
 통과해도 이전 실패나 원본에서 이미 통과한11개를 성공적인 수정으로 바꾸지 않는다.
+
+## Decision-changing observation and corrective service control
+
+The first control stops at its expected HTTP200 assertion. Original service stderr
+records successful cookie set/echo but `/response-headers` HTTP500: httpbin0.4.1
+passes headers.lists() to Flask1.1.4, which rejects the generator as JSON data.
+The final comparative JSON was not emitted; do not reconstruct missing response
+headers or cookie state as recorded results. Actual service thread/socket cleanup
+succeeds. This reproduces a **known** Mac compatibility failure documented in
+EXTERNAL-BUNDLE-02-REQUESTS3362-CORE.md, not a newly discovered mechanism. Linux
+service preparation had reused superseded pre-repair versions.
+
+One distinct corrective control reuses that historical two-version repair:
+Flask0.10.1 and Werkzeug0.11.4, with the other9 dependencies unchanged. The existing
+universal Flask wheel's SHA256 matches the original frozen successful build stdout;
+its source sdist SHA and the Werkzeug wheel SHA match archived dependency evidence.
+No new download, build, source patch or host install. Freeze these exact inputs
+before executing the same native probe/service code in a fresh container under
+identical limits. Require normal cookie preservation and expired-cookie removal
+through both actual servers, correct response headers and cleanup. This is a joint
+service-stack repair, not a one-variable causal comparison. It cannot retroactively
+rescore the original grade or cure already-passing base obligations.
