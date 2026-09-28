@@ -31,6 +31,12 @@ The [loading audit](SKILL-LOADING-01.md) observes instruction timing variation
 without identifying a cause. Native test/process reductions alone are not model
 savings, and favorable individual pairs do not establish the all-eight goal.
 
+[Integration07 change reachability01](INTEGRATION07-CHANGE-REACHABILITY-01.md),2026-09-28,
+compares measured `1be35120` with `ba3a9ec4`: all8 entries are unchanged;14 support
+files differ, but the original changed-helper routes do not exercise the repaired
+failures. Zero new model calls. Do not rerun the whole screen merely for newer
+package bytes; require a concrete change to an observed expensive path first.
+
 The [model execution authorization request](SOLVER-EXECUTION-ENVIRONMENT-REQUEST-01.md)
 remains unresolved. Author-only Docker/native preparation does not authorize the
 rejected model tool, change its approval settings or prove solver isolation.
