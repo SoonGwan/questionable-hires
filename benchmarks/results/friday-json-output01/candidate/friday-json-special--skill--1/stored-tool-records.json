@@ -1,0 +1,342 @@
+{
+  "session_id": "01a0e5ab-86e1-7b60-87b2-0e89c2318e7c",
+  "source_bytes": 123626,
+  "source_sha256": "e9a57a9681e150f572f73b66502b07b622fb6c782b534cdde30f78aa967794fa",
+  "cli_events_sha256": "953f598295861806a98ca620ed4913857d5601015f70a9cfed06e007521c0217",
+  "source_lines": 42,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "a5b7019e80dd93c20283d73468045bee90459ad9d32fb6a56ec66870e4e9138b",
+      "record": {
+        "timestamp": "2026-09-28T01:40:29.358Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08dcd2a25810a350016ab9c58aaef087d09d070b9da418190b",
+          "status": "completed",
+          "call_id": "call_Gyrk1czYiGcypjCgPhaS2hYw",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat .agents/skills/friday/SKILL.md\",\"max_output_tokens\":8000}));\ntext(await tools.exec_command({cmd:\"rg --files -g '!expected.json' -g '!\\\\.git/**' -g '!*lock*' -g 'AGENTS.md' -g 'recipe.json' -g 'consumer.cjs' -g '*sqlite_matrix*' -g '*.md'\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e5ab-8732-7f43-a088-6b5b851c556f",
+            "create_time": 1790559622.776589
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "0aec3723fbc74e653c41e9ee6ec1a6c9d0876d6855dfbbcda4cff3a21e98b71e",
+      "record": {
+        "timestamp": "2026-09-28T01:40:29.556Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e5ab-b0f4-7e91-8dc8-681c143e3f9d",
+          "call_id": "call_Gyrk1czYiGcypjCgPhaS2hYw",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a8850f\",\"wall_time_seconds\":0.000003833,\"exit_code\":0,\"original_token_count\":888,\"output\":\"---\\nname: friday\\ndescription: Review a planned deployment or release diff for rollback feasibility, mixed-version compatibility, migrations, and configuration readiness without deploying it.\\n---\\n\\n# Friday\\n\\n> Can Monday-you undo this?\\n\\n## Read Monday's incident report early\\n\\nWhen discovery is needed, combine it with reading supplied release notes/contracts and available project instructions, then batch the discovered relevant inputs. Avoid a listing-only round trip when supplied inputs are already readable. Keep Git internals out of file discovery (for example, `rg --files --hidden -g '!.git'`); use Git commands for relevant history. Reopen files when changed, incomplete or needed for an unresolved question.\\n\\nUse the release diff and documented rollout/rollback order to identify reachable states, old/new artifacts, configuration and consumers. Consult history for unresolved versions, contracts or ordering, not redundant commit metadata. Do not impose rolling deployment or zero downtime on another strategy.\\n\\nFor each reachable state, check active readers/writers against data and configuration, including new-version writes before rollback. Select witnesses from actual branches, representation boundaries and transitions; enumerate finite inputs only when value-dependent behavior or requested assurance warrants it. Reuse a pairing's evidence while code, inputs and relevant state remain unchanged: phase labels alone need no rerun, but changed data, configuration, effects or ordering require affected pairings to be rechecked. Include queued/external effects when their contract changes.\\n\\nCombine compatible coverage obligations into representative sequences instead of multiplying every value by every version/operation. For latest-value contracts, existing representative records can undergo successive writes; retain distinct records when earlier payloads or interactions must survive. Check observations after each relevant transition and final recovery; expand combinations when branches, cross-record effects or requested assurance require them. Fewer witnesses must not mean reusing stale observations.\\n\\nCode rollback is not data recovery: down migrations can lose data, and backups need restore evidence. Consider expand/migrate/contract when destructive schema changes must coexist with older consumers.\\n\\nFind the first incompatible/irreversible step and last recoverable state; tie blockers to the smallest compatible ordering or prerequisite. Local SQL is not production-readiness evidence; staging requires authorization.\\n\\nChoose execution from the contract: exercise actual application writers, transactions and connections when they matter. For repeated SQL-only SQLite reader checks, use the optional [in-memory matrix](references/sqlite-matrix.md); read its guide only for that path, and implementation for trust/adaptation/troubleshooting. Use existing runners for simple checks. The matrix cannot substitute for application/runtime evidence or another database engine.\\n\\n## Deliver and stop\\n\\nLead with ready, ready with conditions, or blocked by evidence. Missing runtime/configuration evidence is unknown, not safe. Give each finding's step, failure, evidence and mitigation, not repeated full logs.\\n\\nStop when scoped compatibility and recovery paths are assessed; no generic infrastructure audit. Preserve user changes and requirements. Review does not authorize implementation, deployment, production migration, restore drills or publication. If asked to fix, verify the scoped correction without releasing it.\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2bb97b\",\"wall_time_seconds\":0.000003041,\"exit_code\":0,\"original_token_count\":9,\"output\":\"AGENTS.md\\nconsumer.cjs\\nrecipe.json\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e5ab-8732-7f43-a088-6b5b851c556f",
+            "create_time": 1790559629.55635
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "5b06e65d310122e10a68cb31f15bbe7be3b958de252642c4f42a577c14ffcebf",
+      "record": {
+        "timestamp": "2026-09-28T01:40:35.305Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08dcd2a25810a350016ab9c58fc9dc87d0916ddb13f656efe4",
+          "status": "completed",
+          "call_id": "call_FFn6Mq7iJeFn7txX2i4juFAO",
+          "name": "exec",
+          "input": "const results = await Promise.allSettled([\ntools.exec_command({cmd:\"cat AGENTS.md recipe.json consumer.cjs\",\"max_output_tokens\":10000}),\ntools.exec_command({cmd:\"cat .agents/skills/friday/references/sqlite-matrix.md\",\"max_output_tokens\":8000})\n]); for (let i=0;i<results.length;i++) text({i,result:results[i]});\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e5ab-8732-7f43-a088-6b5b851c556f",
+            "create_time": 1790559630.365919
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "11e7234a7c499272ca930cc831a2f679cf713fc0151130e8db9bdf00def0c4fa",
+      "record": {
+        "timestamp": "2026-09-28T01:40:35.432Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e5ab-c7e8-70d0-a73a-2946d007fb92",
+          "call_id": "call_FFn6Mq7iJeFn7txX2i4juFAO",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":0,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"68367f\",\"wall_time_seconds\":0.000003208,\"exit_code\":0,\"original_token_count\":665,\"output\":\"This is an explicitly requested helper-to-web JSON handoff, not a release deployment.\\nUse the installed Friday sqlite_matrix.py CLI exactly once, with unchanged recipe.json\\nand --source .; save its original stdout verbatim as native.json and observe its exit.\\nProduce report.json for the supplied consumer with all original result fields and\\nobservations preserved. Special numeric values use objects with the single key\\nfloat_special (Infinity, -Infinity or NaN). Finite values stay numbers, literal text\\nstays text, null stays null and BLOB tags stay unchanged. Errors remain errors.\\nIf native output is already valid, copying it is sufficient. If needed, a project-local\\nadapter may decode the saved output and map only non-finite numeric values into tags;\\ndo not rerun SQL or modify installed resources to repair the serializer. Do not fabricate\\nthe report from expected.json or SQL source. Consumer success cannot substitute for\\npreserving the original observations and all fields.\\nRun <TEMP> consumer.cjs report.json and report the observed helper/consumer exits,\\nany handoff repair, and the failed-reader limitation. A complete matrix is not a safe\\nrelease. Work only in this project. Preserve supplied inputs, resources and Git state.\\nYou may retain native.json, report.json and an optional adapter.py only; no other report,\\nscratch, installation, network, external service, ancestor discovery or commits.\\n{\\\"phases\\\": [{\\\"name\\\": \\\"observed\\\"}], \\\"checks\\\": {\\\"values\\\": \\\"SELECT 1e999 AS number, -1e999 AS number, 1.25 AS finite, X'00ff' AS binary, 'Infinity' AS text, NULL AS empty\\\", \\\"missing\\\": \\\"SELECT id FROM absent\\\"}}\\nconst fs = require('node:fs');\\nconst assert = require('node:assert/strict');\\nconst actual = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));\\nconst expected = JSON.parse(fs.readFileSync('expected.json', 'utf8'));\\nassert.equal(actual.complete, true, 'matrix complete');\\nassert.equal(actual.phases.length, 1, 'one phase');\\nconst phase = actual.phases[0];\\nassert.equal(phase.name, 'observed');\\nassert.deepEqual(Object.keys(phase.checks).sort(), ['missing', 'values']);\\nassert.equal(phase.checks.values.ok, true);\\nassert.equal(phase.checks.values.truncated, false);\\nassert.deepEqual(phase.checks.values.columns, ['number', 'number', 'finite', 'binary', 'text', 'empty']);\\nassert.deepEqual(phase.checks.values.rows, [expected], 'all value cells');\\nassert.equal(phase.checks.missing.ok, false, 'failed reader stays failed');\\nassert.match(phase.checks.missing.error, /no such table: absent/);\\nconsole.log('consumer assertions passed: values, duplicate columns, failed reader');\\n\"}}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"i\":1,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"5d7200\",\"wall_time_seconds\":0.000002084,\"exit_code\":0,\"original_token_count\":1426,\"output\":\"# Local SQLite transition checks\\n\\nPython 3.9+ helper for repeated SQL-only SQLite reader checks. Use existing\\nrunners for simple checks and actual runtime facilities for other engines,\\napplication writers, transactions or multiple connections\u2014not this matrix.\\n\\nFor printed observations, run\\n`python3 <skill-dir>/scripts/sqlite_matrix.py --source <project> --spec -`\\nwith recipe JSON on stdin (or a recipe path instead of `-`). Duplicate JSON object\\nkeys reject before source reads or SQL, with incomplete JSON and exit 2. For value assertions,\\nuse the same recipe through the API and reuse its result:\\n\\n```python\\nimport runpy\\nhelper = runpy.run_path('<skill-dir>/scripts/sqlite_matrix.py')\\nmatrix, format_result = helper['matrix'], helper['format_result']\\nresult = matrix(recipe, project_root, timeout=5)\\nprint(format_result(result))\\n```\\n\\nRows retain tuples/BLOB bytes; `format_result` encodes JSON without rerunning SQL\\nor changing the result. Inspect implementation only for trust/adaptation/troubleshooting.\\n\\nRecipe: `phases` and `checks`. Each named phase runs relative SQL `files` in order,\\nthen inline `sql` (defaults: `[]` and `\\\"\\\"`; name alone is a read checkpoint).\\nNamed checks run after every phase in the same in-memory database. Adapt to the\\nactual release:\\n\\n```json\\n{\\n  \\\"phases\\\": [\\n    {\\\"name\\\": \\\"before\\\", \\\"files\\\": [\\\"schema.sql\\\"], \\\"sql\\\": \\\"INSERT INTO users VALUES (1, 'old');\\\"},\\n    {\\\"name\\\": \\\"up + new data\\\", \\\"files\\\": [\\\"up.sql\\\"], \\\"sql\\\": \\\"INSERT INTO users VALUES (2, 'new');\\\"},\\n    {\\\"name\\\": \\\"down\\\", \\\"files\\\": [\\\"down.sql\\\"]}\\n  ],\\n  \\\"checks\\\": {\\n    \\\"old reader\\\": \\\"SELECT id, name FROM users ORDER BY id\\\",\\n    \\\"new reader\\\": \\\"SELECT id, display_name FROM users ORDER BY id\\\"\\n  }\\n}\\n```\\n\\nUse reachable phases and actual queries, including new-version writes before\\nrollback. Writes belong in phases, not checks. Successful SELECTs alone do not\\nprove expected values or reader/writer compatibility.\\n\\nWhen the documented rollout activates different consumers at different stages,\\na phase can set `\\\"checks\\\": [\\\"old reader\\\"]` (or both names for coexistence).\\nOmitting this field runs all declared checks, as above. Explicit selections must\\nbe nonempty, unique declared names; returned `selected_checks` records a changed\\nselection/order. Unselected checks are unrun, never passes. Select from the actual\\nrollout/rollback contract, not to suppress incompatibilities; rollback may require\\nan older consumer to read data written by the newer one.\\n\\nChecks accept SQL strings or `{\\\"python_file\\\":\\\"old_reader.py\\\",\\\"constant\\\":\\\"QUERY\\\"}`.\\nLiteral references never execute Python: only docstrings and unique simple scalar\\nliteral assignments are allowed, with a string query. Dynamic modules need their\\nactual runtime, not a fabricated simplified module.\\n\\n`reader_sources` gives file, constant, line, byte SHA-256 and query: static provenance,\\nnot runtime binding. Invalid references fail before SQL; queries remain read-only.\\n\\nRead `complete` first. Ordered `phases` contain `name` and named `checks`: success\\nhas `ok`, ordered `columns`, `rows`, `truncated`; failure has `ok:false` and `error`,\\nnot rows. Missing phases/checks are unrun. Truncated rows cannot prove full equality.\\n\\nCompare rows and column labels to the actual contract after checking completion,\\nsuccess and truncation. Reuse results for assertions/reporting; rerun only for\\nmissing observations, changed state or required independent evidence. Errors are\\nnot empty successful results; zero-row SELECTs still need interpretation.\\n\\nOptional `assert_rows(result, phase_index, check, columns=..., rows=...)` combines\\nthose guards for one selected observation (zero-based phase index). It raises with\\nthe phase/check and expected/observed values on mismatch, even under `python -O`.\\nIt rejects incomplete matrices, failed/unrun checks and truncated rows. Call it\\nonly for required value assertions; it does not assert unselected outcomes or\\ndeployment readiness. Expected SQL failures still need explicit error checks.\\nUse the native API result for BLOB bytes. Ordering is significant; the helper does\\nnot sort rows, collapse duplicate columns or infer SQLite storage types from Python\\nvalue equality. Choose actual expected values, not values copied from the result.\\n\\nFor the example's initial old-reader contract, after collecting `result` once:\\n\\n```python\\nassert_rows = helper['assert_rows']\\nassert_rows(result, 0, 'old reader', columns=['id', 'name'], rows=[(1, 'old')])\\n```\\n\\nCLI 0 means execution completed, **not** all readers pass or deployment is safe.\\nCLI 1 means incomplete migration/budget execution; 2 invalid input. Failed\\nmigrations stop; partial state is not the next successful phase.\\n\\nOnly `:memory:`; attach/detach, PRAGMA, extension loading and writes through checks\\nare denied. Files must be regular, nonsymlink, project-relative. Limits: 20 phases/\\nqueries, 20 rows/check, 1 MB/file, 2 MB input, 5-second SQL budget (`--timeout`, max 30).\\nUnsupported operations need other evidence, not rewritten migrations.\\n\\nSQL source files and literal-reader modules are checked again on the opened\\ndescriptor: type, size and identity must match the inspected regular file.\\nWhere available, nonblocking/no-follow flags reject replacement FIFOs/symlinks\\nwithout waiting for a writer. This does not prevent same-file edits, parent-path\\nraces or provide an atomic snapshot. The SQL timeout is not an input-reading\\ndeadline; recipe-file/stdin reading remains outside that timeout.\\n\\nRead [details](sqlite-matrix-details.md) for BLOB/non-finite-number JSON tags, duplicate/empty-column\\nsemantics, input rejection or budget diagnostics. This is not a sandbox: no total\\nmemory/race isolation, live locking, network or production-readiness guarantees.\\n\"}}}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e5ab-8732-7f43-a088-6b5b851c556f",
+            "create_time": 1790559635.432188
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "ea8a62320bb6357736af3b32e220f47e4a72902eaf8444c102624733ab91a733",
+      "record": {
+        "timestamp": "2026-09-28T01:40:40.425Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08dcd2a25810a350016ab9c596404887d0b2a17f62976958f7",
+          "status": "completed",
+          "call_id": "call_SWg0o7lfkbFnyQzvqbudK2al",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 .agents/skills/friday/scripts/sqlite_matrix.py --source . --spec recipe.json > native.json\",\"max_output_tokens\":2000}));\ntext(await tools.exec_command({cmd:\"cat native.json\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e5ab-8732-7f43-a088-6b5b851c556f",
+            "create_time": 1790559636.867897
+          }
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "33efa8b6a21095dca94c0246f58943460767d3776e1da32fc0b521f45570c802",
+      "record": {
+        "timestamp": "2026-09-28T01:40:40.689Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e5ab-dc70-7ab1-89bc-b532360e0025",
+          "call_id": "call_SWg0o7lfkbFnyQzvqbudK2al",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"67f410\",\"wall_time_seconds\":0.000002916,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"de9757\",\"wall_time_seconds\":0.000003,\"exit_code\":0,\"original_token_count\":89,\"output\":\"{\\\"engine\\\":\\\"sqlite-memory\\\",\\\"complete\\\":true,\\\"phases\\\":[{\\\"name\\\":\\\"observed\\\",\\\"checks\\\":{\\\"values\\\":{\\\"ok\\\":true,\\\"rows\\\":[[{\\\"float_special\\\":\\\"Infinity\\\"},{\\\"float_special\\\":\\\"-Infinity\\\"},1.25,{\\\"blob_hex\\\":\\\"00ff\\\"},\\\"Infinity\\\",null]],\\\"columns\\\":[\\\"number\\\",\\\"number\\\",\\\"finite\\\",\\\"binary\\\",\\\"text\\\",\\\"empty\\\"],\\\"truncated\\\":false},\\\"missing\\\":{\\\"ok\\\":false,\\\"error\\\":\\\"no such table: absent\\\"}}}]}\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e5ab-8732-7f43-a088-6b5b851c556f",
+            "create_time": 1790559640.688985
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "1f82d06857c5f06b81fb3ae2afedb57a1cda586730761e1cfa2f9b0b1ecede6b",
+      "record": {
+        "timestamp": "2026-09-28T01:40:50.449Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08dcd2a25810a350016ab9c59fbca087d0a0e9e1542f13abb6",
+          "status": "completed",
+          "call_id": "call_ovLVL7ekZJUUjtgbG0CMQGem",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cp native.json report.json\",\"max_output_tokens\":1000}));\ntext(await tools.exec_command({cmd:\"<TEMP> consumer.cjs report.json\",\"max_output_tokens\":2000}));\ntext(await tools.exec_command({cmd:\"cmp native.json report.json\",\"max_output_tokens\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e5ab-8732-7f43-a088-6b5b851c556f",
+            "create_time": 1790559641.720061
+          }
+        }
+      }
+    },
+    {
+      "line": 36,
+      "line_sha256": "723057e709e08e5cf46fa949c00af606ba395f92b5af66260c48e537e4025bbd",
+      "record": {
+        "timestamp": "2026-09-28T01:40:50.757Z",
+        "ordinal": 35,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e5ac-03c5-7752-9654-afed5a264da7",
+          "call_id": "call_ovLVL7ekZJUUjtgbG0CMQGem",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"de446d\",\"wall_time_seconds\":0.000003042,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"96e1ba\",\"wall_time_seconds\":0.003215,\"exit_code\":0,\"original_token_count\":18,\"output\":\"consumer assertions passed: values, duplicate columns, failed reader\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"9eccc3\",\"wall_time_seconds\":0.000003208,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e5ab-8732-7f43-a088-6b5b851c556f",
+            "create_time": 1790559650.757271
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "command_output_candidates": [
+    {
+      "command_id": "item_1",
+      "cli_event_line": 5,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_Gyrk1czYiGcypjCgPhaS2hYw",
+          "call_line": 13,
+          "call_line_sha256": "a5b7019e80dd93c20283d73468045bee90459ad9d32fb6a56ec66870e4e9138b",
+          "output_line": 17,
+          "output_line_sha256": "0aec3723fbc74e653c41e9ee6ec1a6c9d0876d6855dfbbcda4cff3a21e98b71e",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "a4d5f7ada7e2cb19bfa787c4fb60e2bf37131bbbf202202aae1b7c2b12b329df",
+          "output_chars": 3549,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_2",
+      "cli_event_line": 7,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_Gyrk1czYiGcypjCgPhaS2hYw",
+          "call_line": 13,
+          "call_line_sha256": "a5b7019e80dd93c20283d73468045bee90459ad9d32fb6a56ec66870e4e9138b",
+          "output_line": 17,
+          "output_line_sha256": "0aec3723fbc74e653c41e9ee6ec1a6c9d0876d6855dfbbcda4cff3a21e98b71e",
+          "output_block_index": 2,
+          "exit_code": 0,
+          "output_sha256": "532f97037e856b77c12f795b06a16d0cb78253d6d9104e7fedf7bae99a044ccb",
+          "output_chars": 35,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_3",
+      "cli_event_line": 9,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_4",
+      "cli_event_line": 11,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_5",
+      "cli_event_line": 13,
+      "status": "empty_cli_output",
+      "candidates": []
+    },
+    {
+      "command_id": "item_6",
+      "cli_event_line": 15,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_SWg0o7lfkbFnyQzvqbudK2al",
+          "call_line": 25,
+          "call_line_sha256": "ea8a62320bb6357736af3b32e220f47e4a72902eaf8444c102624733ab91a733",
+          "output_line": 29,
+          "output_line_sha256": "33efa8b6a21095dca94c0246f58943460767d3776e1da32fc0b521f45570c802",
+          "output_block_index": 2,
+          "exit_code": 0,
+          "output_sha256": "34985a691f47f727a72f9650e54a3990cb71dea424a4dc3915b89cd710799fac",
+          "output_chars": 353,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_7",
+      "cli_event_line": 17,
+      "status": "empty_cli_output",
+      "candidates": []
+    },
+    {
+      "command_id": "item_8",
+      "cli_event_line": 19,
+      "status": "empty_cli_output",
+      "candidates": []
+    },
+    {
+      "command_id": "item_9",
+      "cli_event_line": 21,
+      "status": "empty_cli_output",
+      "candidates": []
+    }
+  ],
+  "command_output_candidate_limitation": "Candidates match unredacted output suffix and exit only, not command identity or complete stdout. Review the paired call input, order and any earlier chunks. Empty CLI output is never matched; ambiguous matches are never selected automatically.",
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}
