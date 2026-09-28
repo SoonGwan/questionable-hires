@@ -74,3 +74,17 @@ contract and does not drop a required runtime file.
 한국어: 소스a1056d22를 기존 설치본 일치 확인·외부 백업 후 설치했다. 설치 자원8개와
 다운로드52개 리소스가 일치하고 실제 설치본5개·패키지4개·랜딩27개 검사가 통과했다.
 최초 목록 검사의 제외 대상 카탈로그 선택 오류도 기록하며 모델 절감과 구분한다.
+
+## Public verification
+
+Release **`f11d059f49fde20a274de5490b86d1415ac6ac69`** is live on
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+[Eight HTTPS observations](results/context-decorator-opening01/public.json) match
+health revision, both locale pages, runtime/style/copy assets and exact archive/
+checksum bytes. All52 public packaged resources match source bytes/modes.
+Canonical/indexable metadata and frozen integration07 counts are preserved.
+No fresh browser interaction, model-cost result or GitHub push is claimed.
+
+한국어: 공개 배포f11d059f의 HTTPS8개 경로와 다운로드52개 리소스 일치를 확인했다.
+설치본과 공개 다운로드에 수정이 반영됐으며 대표 수치·전체8개 미달 판단은 유지한다.
