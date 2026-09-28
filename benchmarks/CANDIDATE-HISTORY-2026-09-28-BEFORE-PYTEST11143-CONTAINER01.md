@@ -6,16 +6,16 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [pytest11143 official pair01](EXTERNAL-BUNDLE-02-PYTEST11143-CONTAINER-01.md),2026-09-28,controls `7d9f77da`/pair `a28db19e`,image `4cf4b5ad` | Prepared offline install succeeds; original base1 failure+114 required passes/gold115 required passes. Both ambiguous native candidates pass;116 primary items/348 phase reports, native exits1/0. | Accept one scoped author native gate only. Original dependency404 and incomplete-build failure retained. Extra parsed nested-output statuses and actual generated versions disclosed; zero models/savings, VM stopped. |
 | [Context decorator opening01](CONTEXT-DECORATOR-OPENING-01.md),2026-09-28,parent `e81cc324` | Named/line/group/index context paths now retain the actual opening of multiline decorators. New5 reproduce6 assertion failures/1 line-selection error before; focused Git-free checks pass on Python3.9/3.11. | Native correctness only; related Necromancer mechanism reused, no model calls or token/time-saving claim. Initial overly broad archive selection errors remain recorded. Source `a1056d22`: installed5/package4/landing27 pass; all8 installations and52 packaged resources match. Public `f11d059f` verified across8 HTTPS routes and52 archive resources; no new model evidence. |
 | [Friday JSON output01](FRIDAY-JSON-OUTPUT-01-REVIEW.md),2026-09-28,previous `371b4b1e`/fixed `c9b30fc6`,execution `7c714555` | Four original forced-CLI handoff sessions: both pairs lower tokens/time; sum−15.97%/−20.43%, responses11→10. Original values/errors/inputs preserved; both missing CLI consumer outputs recovered from matching stored responses. | Accept narrow interface observation only. Non-finite repair removed; finite control has no repair in either arm and optional reads differ. Authored n=1, no causal/general/all-eight saving. No retry or hosted metric change. |
 | [Friday JSON numbers01](FRIDAY-JSON-NUMBERS-01.md),2026-09-28,parent `371b4b1e` | Actual SQLite infinities previously emitted invalid JSON with CLI0; JS consumer fails before/passes after explicit special-float tags. New5 and Git-free focused63 methods pass; incomplete-copy errors retained. | Adopt native serialization correctness, preserving native API values and ordinary wire values. Zero model calls or token/time gain. Source `c9b30fc6`: installed5/package4/landing27 checks pass; all8 installed skills and52 archive resources match. Public `b528b785` verified across8 HTTPS routes and all52 archive resources; hosted checks remain separate from model evidence. |
 | [Requests2674 boundaries01](REQUESTS2674-FAILURE-BOUNDARIES-01.md),2026-09-28,protocol `cba5726f`/service freeze `f303461f`,original grade `10d2f222` unchanged | Exact original failure/group audit; actual Linux cookie control reproduces known HTTPbin500. Reusing historical Flask/Werkzeug repair makes both server controls preserve/expire cookies correctly. | Service preparation only; original grading not replayed or rescored. Eleven designated base failures already pass, other boundaries remain. Known mechanism reintroduced in Linux; missed prior-log discovery documented. Zero models/savings; VM stopped. |
 | [pytest5221 offline build02](EXTERNAL-BUNDLE-02-PYTEST5221-CONTAINER-02.md),2026-09-28,protocol `6ff5e783`/controls and drivers `d06f8e54`,image `c190b1e0` | Offline editable installation succeeds; original base2 failures+170 passes/gold172 passes, native exits1/0. Primary observer519 reports/173 items, no nested contamination; pass/fail/nested controls pass. | Accept this declared one-case native gate only. Prior rejected pair and input-readability error preserved; actual generated versions differ. Zero models or token/time gain; all containers/services/VM stopped. |
+| [Cleanup lookup01](AUDIT-CLEANUP-LOOKUP-01.md),2026-09-28,parent `e9ee3bce`,source `a7828248` | Corrected controlled reproduction:7 failures→6 methods pass;162 Git-free methods pass. Lookup errors previously became confirmed removal/CLI0 or allowed later mutations. Initial unreached-injection fixture retained as invalid evidence. | Adopt native correctness: lstat confirms missing entries, keeps unavailable cleanup null and original errors/results, stops later work. No model token/time improvement claim. Installed6 controls/all8 resources and package4 checks pass; public `ea9c9dd2` archive identity verified. |
 | [Native probe model01](AUDIT-PROBE-SELECTION-MODEL01-REVIEW.md),2026-09-28,previous `4dac0d2b`,candidate `e7e1f8b2`,execution `9df733a1` | Four original cells: shared tokens+1.56%/time−2.68%, distinct−1.86%/+14.91%;6→6 responses both. Actual shared native checks11→9, all mutant checks/results and originals preserved. | Joint model-cost gate fails. Retain scoped native optimization, no model savings claim; extra source/reference reads and deliberately summarized inventories remain visible. Sum−0.20%/+6.75%, forced helper/exposed cases, no unchanged retry. |
 | [Integration07](ALL-EIGHT-CURRENT-07-REVIEW.md), 2026-09-28, measured `1be35120`, execution `47a00692` | All16 original sessions reviewed: tokens +1.67%, CLI −9.63%; only 2/8 pairs lower both. Bounded task outcomes preserved, with unequal work and two recovered original output prefixes. | All-eight gate unmet. Repeatedly exposed n=1 tasks, shared host/cache and context variation; no quality superiority, causal optimization or independent-validation claim. [All costs](ALL-EIGHT-CURRENT-07-COSTS.md). |
 
-The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-PYTEST11143-CONTAINER01.md)
+The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-CONTEXT-DECORATOR-OPENING01.md)
 preserves superseded checkpoints, every adverse result and the chronological links.
 This index separates native correctness, original model evidence and hosted checks;
 it is not a replacement benchmark. In particular, integration06 remains its
@@ -40,8 +40,8 @@ package bytes; require a concrete change to an observed expensive path first.
 The [model execution authorization request](SOLVER-EXECUTION-ENVIRONMENT-REQUEST-01.md)
 remains unresolved. Author-only Docker/native preparation does not authorize the
 rejected model tool, change its approval settings or prove solver isolation.
-The pytest5221 and pytest11143 gates each cover a selected case in an explicitly
-prepared offline build environment; neither establishes full-cohort readiness. The [earlier adverse Requests Linux grade](OWNED-OFFICIAL-GRADE-01.md)
+The new pytest5221 gate covers one selected case in an explicitly prepared offline
+build environment. The [earlier adverse Requests Linux grade](OWNED-OFFICIAL-GRADE-01.md)
 and other selected-case failures remain; no unchanged retry or case replacement.
 
 [Featured pointer](featured.json) still identifies the frozen Mother confirmation.
@@ -80,9 +80,3 @@ Friday JSON output01(2026-09-28, `371b4b1e`→`c9b30fc6`)은 명시적 CLI 인�
 Context decorator opening01은 Con Artist의 여러 줄 데코레이터 시작 누락을
 수정한 네이티브 정확성 근거다. 기존 Necromancer 수정과 같은 원인을 다른 도구에서
 확인했으며 모델 비용·전체8개 절감으로 계산하지 않는다.
-
-pytest11143 official pair01은 원본 실패1개·기존 통과114개와 정답115개 통과를
-확인했다. 같은 이름으로 집계되는 실제2개도 모두 통과하며 최상위116개 검사는
-348개 단계 보고와 일치한다. 처음 빠뜨린 의존성으로 인한 설치 실패와404 기록을
-보존한다. 중첩 출력에서 파서가 읽은 추가 실패 표시는 최상위 검사 실패 수로
-바꾸지 않는다. 모델 호출·절감 근거는 없고 컨테이너·서비스·VM 종료를 확인했다.
