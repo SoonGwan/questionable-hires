@@ -60,3 +60,19 @@ bytes. Removing that mistaken count assumption allows the byte-identity check;
 the source and served tree are not altered to satisfy it. Preserve the original
 precheck error and the completed7d23ef44 hosted record. A follow-up deployment
 will verify the loop correction separately.
+
+## Final hosted verification
+
+Source **39fb3893** is deployed. Local deployment health and eight public HTTPS
+responses identify/match that exact release: health, KO/EN pages, app/style/content
+and the archive/checksum. [Final hosted record](../benchmarks/results/landing-index-boundary01/hosted-final.json)
+retains hashes. All157 static files match the preceding release byte-for-byte;
+only server source and generated release identity change. The installed server
+bytes match the corrected repository source. No fresh browser rendering claim
+is made for unchanged page assets; adversarial symlink checks are local controls,
+not modifications to the public release's files. The previous release remains
+available through the existing rollback mechanism.
+
+최종39fb3893을 배포했고 공개 HTTPS8개 응답의 버전·바이트를 확인했다.
+정적 파일157개와 스킬 압축은 이전 배포와 동일하다. 새 검사에서 발견한 순환
+링크 회귀도 고쳤으며 그 오류 기록을 보존했다. 토큰·시간 성과는 바꾸지 않는다.

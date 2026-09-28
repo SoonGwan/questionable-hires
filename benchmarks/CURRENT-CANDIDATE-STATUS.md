@@ -56,7 +56,14 @@ and other selected-case failures remain; no unchanged retry or case replacement.
 [responsive hero verification](../docs/LANDING-HERO-LAYOUT-2026-09-28.md) are dated
 hosted checks, not new model measurements. The [execution01 checkpoint](RELEASE-VALIDATION-EXECUTION01.md)
 at `e1f10b7c` records1,473 native tests; it is historical, not a current full-suite
-claim. Current native grading preparation leaves skills, featured charts and the
+claim.
+[Landing resolved-file boundary](../docs/LANDING-INDEX-BOUNDARY-2026-09-28.md),
+2026-09-28,deployed `39fb3893`: outside index/manifest links now receive HTTP
+errors; a newly introduced loop-error regression was reproduced and corrected.
+Native landing31/Git-free origin12 checks and8 public routes pass;157 static
+files and skill archive bytes remain unchanged. This is hosted correctness, not
+model cost or all-eight evidence.
+ Current native grading preparation leaves skills, featured charts and the
 hosted landing release unchanged.
 
 한국어: 전체8개 품질·토큰·시간 목표는 미달이다. integration07(2026-09-28,
