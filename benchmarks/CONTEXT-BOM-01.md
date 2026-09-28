@@ -41,3 +41,13 @@ task token/time reduction or the owner's complete eight-role objective.
 바이트 한도, 줄 번호와 내부 문자, 파일 모드는 보존한다. 새5개는 수정 전
 실패3건·구문 오류4건을 재현했고, 수정 후39개와 Git 없는 양 Python71개 검사가
 통과했다. 기존 방식 재사용이며 모델 절감·전체8개 성공으로 확대하지 않는다.
+
+## Installation and package checks
+
+Source6208466b: verify every existing Con Artist installation file against18e8ed31
+bytes/modes, move that exact directory to an owned backup outside discovery, then
+install the correction. The same five new methods pass against the installed
+module/CLI, and all eight installed skills match checkout bytes/modes. The archive
+contains all52 exact skill resources. Four standalone archive checks and31
+landing/origin checks pass; the initial wrongly named package discovery runs0
+tests and is retained, not counted. Public release verification follows separately.
