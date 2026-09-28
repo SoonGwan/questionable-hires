@@ -47,3 +47,14 @@ evidence, full-harness validation or a change to ordinary skills/public metrics.
 직접 AST 변환과 실제 pytest 로딩을 비교하는 간단한 작성자 대조군6개를 고정한다.
 실제 오류·로딩 상태가 원인을 구분할 때만 후속 조치를 정하며, 이 진단 자체를
 성능 개선이나 외부 사례 통과로 계산하지 않는다.
+
+## Pre-cell storage recovery
+
+The inherited start script stops before services/containers/cells because available
+guest space is7,957,454,848bytes, below the unchanged8GiB threshold. Preserve that
+startup failure. The already-loaded owned pytest5103 transport archive is redundant:
+reverify its host and guest SHA256 against the frozen transport, retain the host
+copy and remove only the guest copy (1,025,771,520bytes). Recheck the original
+threshold and loaded image identity before continuing the six never-started cells.
+This changes cache storage only, not source, environment, limits or diagnostics.
+[Recovery evidence](results/external-bundle-02-pytest5103-rewrite01/space-recovery.json).
