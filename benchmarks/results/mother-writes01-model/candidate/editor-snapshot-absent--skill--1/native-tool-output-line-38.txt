@@ -1,0 +1,35 @@
+test_initial_state (test_editor.EditorTests.test_initial_state) ... ok
+test_save_preserves_pending_snapshot_and_newer_dirty_edit (test_editor.EditorTests.test_save_preserves_pending_snapshot_and_newer_dirty_edit) ... FAIL
+test_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_settings_clean) ... ok
+
+======================================================================
+FAIL: test_save_preserves_pending_snapshot_and_newer_dirty_edit (test_editor.EditorTests.test_save_preserves_pending_snapshot_and_newer_dirty_edit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 90, in _callTestMethod
+    if self._callMaybeAsync(method) is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 112, in _callMaybeAsync
+    return self._asyncioRunner.run(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/test_editor.py", line 70, in test_save_preserves_pending_snapshot_and_newer_dirty_edit
+    self.assertEqual(payload, expected_saved)
+AssertionError: {'dis[13 chars]e': 'solarized', 'font': {'size': 14}}, 'alerts': ['mentions']} != {'dis[13 chars]e': 'dark', 'font': {'size': 14}}, 'alerts': ['mentions']}
+- {'alerts': ['mentions'],
+-  'display': {'font': {'size': 14}, 'theme': 'solarized'}}
+?                                              ^^^  ^^^^
+
++ {'alerts': ['mentions'], 'display': {'font': {'size': 14}, 'theme': 'dark'}}
+? ++++++++++++++++++++++++                                             ^  ^
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.009s
+
+FAILED (failures=1)
