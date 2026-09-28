@@ -1,0 +1,72 @@
+{
+  "python": "3.9.6 (default, Apr 30 2025, 02:07:17) \n[Clang 17.0.0 (clang-1700.0.13.5)]",
+  "tests": 7,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "observations": [
+    {
+      "kind": "artifacts",
+      "original_sha256": "f29e3c2db591802793682cc306c5baa9a9b06cf0fe6f1700b3e4da060baebdc0",
+      "candidate_sha256": "36c5a4f3bff1dd0e3c2931f86a918bd91d0d496260ffcde4f00d3198e5276f76",
+      "asset_sha256": "854ad0a68eae84371cda8815e20c465452e2577ae0f5cf46162949e73b308fce",
+      "original_bytes": 3534,
+      "candidate_bytes": 2947,
+      "copied_asset_bytes": 1953,
+      "candidate_source": "import unittest\nimport asyncio\nfrom controlled_writes import writes\nfrom editor import Editor\n\n\nclass EditorTests(unittest.IsolatedAsyncioTestCase):\n    async def test_initial_state(self):\n        settings = {'display': {'theme': 'light'}, 'alerts': ['mentions']}\n        editor = Editor(settings, None)\n        self.assertEqual(editor.settings, settings)\n        self.assertFalse(editor.dirty)\n        editor.set_theme('dark')\n        self.assertEqual(settings['display']['theme'], 'light')\n\n    async def test_save_without_intervening_edit_marks_settings_clean(self):\n        async with writes() as (persist, start, next_write, stored):\n            editor = Editor(\n                {'display': {'theme': 'light', 'font': {'size': 14}},\n                 'alerts': ['mentions']},\n                persist,\n            )\n            expected_saved = {\n                'display': {'theme': 'dark', 'font': {'size': 14}},\n                'alerts': ['mentions'],\n            }\n            editor.set_theme('dark')\n            self.assertTrue(editor.dirty)\n            task = start(editor.save())\n            payload, acknowledged = await next_write()\n            self.assertFalse(task.done())\n            self.assertEqual(stored, [])\n            self.assertEqual(payload, expected_saved)\n            acknowledged.set_result(None)\n            await asyncio.wait_for(task, timeout=2)\n            self.assertEqual(stored, [expected_saved])\n            self.assertEqual(editor.settings, expected_saved)\n            self.assertFalse(editor.dirty)\n\n    async def test_save_preserves_snapshot_and_newer_dirty_edit(self):\n        async with writes() as (persist, start, next_write, stored):\n            editor = Editor(\n                {'display': {'theme': 'light', 'font': {'size': 14}},\n                 'alerts': ['mentions']},\n                persist,\n            )\n            expected_saved = {\n                'display': {'theme': 'dark', 'font': {'size': 14}},\n                'alerts': ['mentions'],\n            }\n            expected_current = {\n                'display': {'theme': 'solarized', 'font': {'size': 14}},\n                'alerts': ['mentions'],\n            }\n            editor.set_theme('dark')\n            task = start(editor.save())\n            payload, acknowledged = await next_write()\n            self.assertEqual(payload, expected_saved)\n            editor.set_theme('solarized')\n            self.assertFalse(task.done())\n            self.assertFalse(acknowledged.done())\n            self.assertEqual(stored, [])\n            self.assertEqual(editor.settings, expected_current)\n            self.assertTrue(editor.dirty)\n            self.assertEqual(payload, expected_saved)\n            acknowledged.set_result(None)\n            await asyncio.wait_for(task, timeout=2)\n            self.assertEqual(stored, [expected_saved])\n            self.assertEqual(editor.settings, expected_current)\n            self.assertTrue(editor.dirty)\n"
+    },
+    {
+      "kind": "native",
+      "variant": "shallow",
+      "arm": "retained",
+      "import_exit": 0,
+      "import_stdout": "fresh public imports pass\n",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "test_initial_state (test_editor.EditorTests) ... ok\ntest_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests) ... FAIL\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests) ... ok\n\n======================================================================\nFAIL: test_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<PROJECT>/test_editor.py\", line 90, in test_save_preserves_snapshot_and_newer_dirty_edit\n    self.assertEqual(persist.payload, expected_saved)\nAssertionError: {'dis[13 chars]e': 'solarized', 'font': {'size': 14}}, 'alerts': ['mentions']} != {'dis[13 chars]e': 'dark', 'font': {'size': 14}}, 'alerts': ['mentions']}\n- {'alerts': ['mentions'],\n-  'display': {'font': {'size': 14}, 'theme': 'solarized'}}\n?                                              ^^^  ^^^^\n\n+ {'alerts': ['mentions'], 'display': {'font': {'size': 14}, 'theme': 'dark'}}\n? ++++++++++++++++++++++++                                             ^  ^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.009s\n\nFAILED (failures=1)\n",
+      "raw_stderr_sha256": "3dbe682933d475358f5e388af5d2bb39190f9ae12f4ebe4e991917603d26a0f2",
+      "inputs_unchanged": true,
+      "scratch_removed": true
+    },
+    {
+      "kind": "native",
+      "variant": "shallow",
+      "arm": "copied-support",
+      "import_exit": 0,
+      "import_stdout": "fresh public imports pass\n",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "test_initial_state (test_editor.EditorTests) ... ok\ntest_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests) ... FAIL\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests) ... ok\n\n======================================================================\nFAIL: test_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 65, in _callTestMethod\n    self._callMaybeAsync(method)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 88, in _callMaybeAsync\n    return self._asyncioTestLoop.run_until_complete(fut)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py\", line 642, in run_until_complete\n    return future.result()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py\", line 102, in _asyncioLoopRunner\n    ret = await awaitable\n  File \"<PROJECT>/test_editor.py\", line 65, in test_save_preserves_snapshot_and_newer_dirty_edit\n    self.assertEqual(payload, expected_saved)\nAssertionError: {'dis[13 chars]e': 'solarized', 'font': {'size': 14}}, 'alerts': ['mentions']} != {'dis[13 chars]e': 'dark', 'font': {'size': 14}}, 'alerts': ['mentions']}\n- {'alerts': ['mentions'],\n-  'display': {'font': {'size': 14}, 'theme': 'solarized'}}\n?                                              ^^^  ^^^^\n\n+ {'alerts': ['mentions'], 'display': {'font': {'size': 14}, 'theme': 'dark'}}\n? ++++++++++++++++++++++++                                             ^  ^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.010s\n\nFAILED (failures=1)\n",
+      "raw_stderr_sha256": "e270ddf502f5dc420adc0d90d3f5f73c3d9a20b1a48c0df2731bce756055f938",
+      "inputs_unchanged": true,
+      "scratch_removed": true
+    },
+    {
+      "kind": "native",
+      "variant": "deep",
+      "arm": "retained",
+      "import_exit": 0,
+      "import_stdout": "fresh public imports pass\n",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_initial_state (test_editor.EditorTests) ... ok\ntest_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests) ... ok\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.009s\n\nOK\n",
+      "raw_stderr_sha256": "bbaf6ab525dca0146119dfb14b600515acdaa789ab6fd6bf6b08c0a0792cee46",
+      "inputs_unchanged": true,
+      "scratch_removed": true
+    },
+    {
+      "kind": "native",
+      "variant": "deep",
+      "arm": "copied-support",
+      "import_exit": 0,
+      "import_stdout": "fresh public imports pass\n",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_initial_state (test_editor.EditorTests) ... ok\ntest_save_preserves_snapshot_and_newer_dirty_edit (test_editor.EditorTests) ... ok\ntest_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.010s\n\nOK\n",
+      "raw_stderr_sha256": "aa5f8634e21dc21160d9f4f9cf5e730ede17aeb9f4c6c39882a6ea9848e9a669",
+      "inputs_unchanged": true,
+      "scratch_removed": true
+    }
+  ],
+  "unittest_stderr_sha256": "8cd075d563cb0e5cb1b59552bbca8abaae26911fc24dfb35de54de896917576e"
+}
