@@ -1,47 +1,44 @@
-# Hiring plan
+# Roadmap / 앞으로 할 일
 
-## Implemented and checked
+Status date: **2026-09-29**. The repository is public. The owner authorized
+publication after the requested work is complete; GitHub Actions remains disabled
+by request. See [release readiness](RELEASE-READINESS.md) for the actual gates.
 
-- [x] Eight focused skills with Codex UI metadata.
-- [x] Local installer with overwrite refusal and failure rollback.
-- [x] Portable local marketplace bundle and validated plugin manifest.
-- [x] Actual CLI install, enabled listing, all-eight cache comparison, and removal.
-- [x] English and Korean README, original banner, and eight worked examples.
-- [x] MIT license, contribution guidance, security reporting, and issue/PR templates.
-- [x] Deterministic synthetic fixtures with real history where relevant.
-- [x] Twenty-four independent three-arm Astra comparison sessions.
-- [x] Eight additional clean, missing-evidence, or necessary-change skill sessions.
-- [x] Eight automatic-selection sessions with the whole team installed.
-- [x] Published answers, command evidence, diffs, metadata, and final snapshots.
-- [x] 203 local infrastructure, helper, packaging and fixture tests (run at `d09128c`).
-- [x] Unmodified `c2fd79e` archive on Linux/Python 3.12: 310 tests pass, two provenance-only skips (312 discovered); separate source-archive CI job added. See dated [release evidence](RELEASE-READINESS.md).
-- [x] All-eight installed resource bytes/permissions and standalone/bundle parity.
-- [x] Failed package build cleanup, retry and existing-destination preservation.
+## Delivered capabilities / 제공 중인 기능
 
-See the [evaluation report](../benchmarks/REPORT.md) and [installation record](INSTALLATION-TEST.md) for exactly what those checks establish. An earlier eligibility pilot and an excluded single-hire routing pilot are also retained. Passing these smoke checks does not make every future engineering decision correct.
+- Eight focused skills, UI metadata, Python installer and local plugin bundle.
+- English/Korean onboarding and a responsive bilingual website with interactive
+  experiments, raw evidence downloads, OG cards and search metadata.
+- Standalone skill downloads with per-file hashes and permissions; installation
+  refuses existing destinations and preserves personal changes.
+- Native helper correctness fixes and retained original model comparisons,
+  including unsuccessful optimization candidates and their limitations.
 
-The [current candidate status](../benchmarks/CURRENT-CANDIDATE-STATUS.md) tracks
-subsequent skill revisions, realistic transfers and adverse results. The original
-report is historical evidence, not the current candidate's performance score.
+한국어: 스킬8개·설치 도구·플러그인, 한영 안내·반응형 랜딩·실험과 근거 다운로드·
+공유 정보를 제공합니다. 원본 모델 비교와 불리한 결과도 보존합니다. 현재 기능과
+과거 측정값을 동일한 성능 보증으로 해석하지 않습니다.
 
-## Before a stable public release
+## Remaining release work / 남은 출시 작업
 
-- [ ] Repeat independent comparisons and add larger realistic project tasks before making performance claims.
-- [ ] Exercise broader unrelated prompts to measure automatic-selection false positives.
-  - [Two current-bundle negative requests](../benchmarks/ROUTING-NEGATIVE-01.md) showed no observed skill-body reads or scope expansion; ambiguous requests and positive recall remain unchecked by this screen.
-- [ ] Validate browser-facing skills against actual rendered interaction flows.
-- [ ] Verify remote Git marketplace distribution if it is offered as an installation path.
-- [ ] Obtain a passing hosted CI run.
-- [ ] Owner decides when to switch the repository from private to public and publish a release.
+- [ ] Demonstrate better outcomes at lower whole-task tokens and faster completion
+  across all eight roles. Integration07 still records tokens+1.67%, time−9.63%,
+  only2/8 pairs lower both; [all costs and limits](../benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md).
+- [ ] Obtain an authorized independent model execution environment and complete
+  the remaining selected-case preparation without altering frozen grades.
+- [ ] Verify the exact candidate's local tests, archive installation and bilingual
+  documentation; link the dated results instead of reusing older test totals.
+- [ ] Push the candidate, review its PR and merge only after the requested gates
+  are met; publish a versioned release and verify its actual downloadable artifacts.
+- [ ] Confirm the final hosted revision and its responsive/localized interactions.
+- [ ] Broaden automatic-selection and realistic interaction evaluation before
+  generalizing beyond the already measured tasks.
 
-The hosted run for `10d416f`, retrieved on 2026-09-13, did not start its test steps:
-GitHub reports failed account payments or an insufficient spending limit. It
-provides no executed test evidence. See the
-[release-readiness evidence](RELEASE-READINESS.md). The repository remains private;
-neither billing changes nor public visibility changes have been performed.
+한국어: 전체 품질·토큰·시간 개선은 미입증입니다. 승인 가능한 독립 검증 환경,
+남은 평가 준비, 최종 소스·설치·문서 확인 후 PR·머지·버전 릴리스·공개 배포 확인이
+필요합니다. 현재 필요한 조건에 과거 비공개 전환 승인이나 원격 CI 결제 문제를
+다시 포함하지 않습니다.
 
-## Hiring policy
-
-Keep each hire's job distinct. Add requirements only when realistic evidence shows a gap. Include clean and uncertain cases alongside bug cases. When the baseline does just as well, show that result; when a hire regresses, fix it and retain the earlier evidence.
-
-Next experiments should test difficult decisions in realistic code, not just increase the number of easy examples. Release quality comes from reproducible behavior and clear limits, not an artificially perfect score.
+[Earlier roadmap](ROADMAP-HISTORY-2026-09-29.md) preserves historical checklists,
+source revisions and counts. [Candidate decision index](../benchmarks/CURRENT-CANDIDATE-STATUS.md)
+retains both favorable and adverse evidence. More passing examples alone do not
+establish stronger real-world performance.
