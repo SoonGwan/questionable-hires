@@ -33,6 +33,9 @@ for that context. `--full` does not override explicit line selection.
 When the requested
 definition is known, select it directly (`service.py:Store.save`) rather than the
 whole implementation file. It includes decorators and original line numbers.
+Parenthesized or explicitly continued decorators include their opening `@` line;
+line selectors and index/group ranges use that same physical start. Decorator
+expressions in an index remain expressions, not executable decorator statements.
 Named selection follows static definitions through control-flow blocks without
 evaluating conditions, and respects class/function scopes. Multiple definitions
 at any selected scope are ambiguous, including an unconditional definition plus
