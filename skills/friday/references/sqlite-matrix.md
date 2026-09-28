@@ -102,6 +102,6 @@ without waiting for a writer. This does not prevent same-file edits, parent-path
 races or provide an atomic snapshot. The SQL timeout is not an input-reading
 deadline; recipe-file/stdin reading remains outside that timeout.
 
-Read [details](sqlite-matrix-details.md) for BLOB JSON, duplicate/empty-column
+Read [details](sqlite-matrix-details.md) for BLOB/non-finite-number JSON tags, duplicate/empty-column
 semantics, input rejection or budget diagnostics. This is not a sandbox: no total
 memory/race isolation, live locking, network or production-readiness guarantees.

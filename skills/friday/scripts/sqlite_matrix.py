@@ -4,6 +4,7 @@ import argparse
 import ast
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import sqlite3
@@ -267,7 +268,7 @@ def assert_rows(result, phase_index, check, *, columns, rows):
 
 
 def format_result(result):
-    """Serialize collected observations exactly as the CLI, including BLOBs.
+    """Serialize collected observations as strict JSON, including special values.
 
     Does not run SQL, change result, or establish compatibility.
     """
@@ -275,7 +276,19 @@ def format_result(result):
         if isinstance(value, bytes):
             return {"blob_hex": value.hex()}
         raise TypeError("Unsupported result value: " + type(value).__name__)
-    return json.dumps(result, ensure_ascii=True, default=encode, separators=(',', ':'))
+
+    def numbers(value):
+        if isinstance(value, float) and not math.isfinite(value):
+            label = 'NaN' if math.isnan(value) else 'Infinity' if value > 0 else '-Infinity'
+            return {'float_special': label}
+        if isinstance(value, dict):
+            return {key: numbers(item) for key, item in value.items()}
+        if isinstance(value, (list, tuple)):
+            return [numbers(item) for item in value]
+        return value
+
+    return json.dumps(numbers(result), ensure_ascii=True, allow_nan=False,
+                      default=encode, separators=(',', ':'))
 
 
 def _unique_recipe_object(pairs):
