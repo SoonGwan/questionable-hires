@@ -55,3 +55,14 @@ Future solvers must use fresh sessions with only declared answer-free inputs.
 이미 확보한10개 계층을 재사용하며 게스트에만 실행기를 설치한다. 이미지 식별자·
 계층·실제 import·정상/실패 assertion 및 분리·종료를 확인하고 이슈·모델은 실행하지
 않는다. 새 실행기가 기존 실패를 해결한다고 가정하지 않으며 전체 목표는 미달이다.
+
+## Reviewed package closure, before installation
+
+The daemon package recommends a separate CLI; include docker-cli at the same
+26.1.5+dfsg1-9+deb13u1 version. Native APT planning shows exactly5 new packages,
+zero removals/upgrades,44,067,556 download bytes and197MB installed estimate.
+Remaining versions: containerd1.7.24~ds1-6+deb13u1, runc1.1.15+ds1-2+b4,
+tini0.19.0-3+b8. First download-only, verify each retained deb's SHA256 against
+APT package metadata, then install the same version-pinned closure with no-download.
+A single600-second parent bound covers those steps. This is guest administration,
+not a host install or a benchmark/model execution.
