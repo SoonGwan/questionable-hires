@@ -6,16 +6,16 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [pytest5103 official pair01](EXTERNAL-BUNDLE-02-PYTEST5103-CONTAINER-01.md),2026-09-28,controls `241822e8`/pair `4f517faa`,image `d873716d` | Offline installation and pass/fail/nested controls succeed. Original base1 required failure+64 passes/gold65 required passes, but the same2 extra primary failures remain in both; native exits1/1. | Reject frozen native gate: gold must exit0. All72 items/211 reports accounted for, including5 setup skips. No retry or discarded extra failures; zero models/savings, VM stopped. |
 | [Matched recorded inputs01](SAME-RESOURCE-OBSERVATIONS-01.md),2026-09-28,source tree `73c54664`,protocol `81961f01` | Retrospective exact known-input/resource matching finds23 original sessions across10 anchors; all actual Astra/medium counters verified. Editor-present spans3–5 responses; absent5 ordinary sessions all have5 responses and86,355–87,437 tokens. | No new models or variance/causal claim. Preserve controlled-write decline; targeted+19.48% is not excused by these ordinary observations. Require concrete removed work before another small instruction/interface trial. |
 | [Mother controlled writes01](MOTHER-WRITES-01-REVIEW.md),2026-09-28,previous `20468dd3`/candidate `8997f97a`,execution `b64a1501` | Four original sessions: Editor tokens+19.48%/time−1.13%, Search−32.85%/−3.89%; sum−8.68%/−2.47%. Native required outcomes preserved; asset read/adaptation observed. | Decline: targeted Editor responses5→6; support rewritten rather than copied. Search never uses the added asset. Exposed n=1/unequal work; aggregate cannot override adverse task. No ordinary adoption or unchanged retry; overall gate unmet. |
 | [Context BOM01](CONTEXT-BOM-01.md),2026-09-28,parent `18e8ed31` | Valid UTF-8-signature source rejected by named/line/group/index paths now reads correctly. New5 reproduce3 failures/4 syntax errors; focused39 and Git-free71 on Python3.9/3.11 pass. | Native input compatibility only; reused Necromancer mechanism, raw hashes/limits preserved, no model calls or cost claim. Source `6208466b`: installed5/archive4/landing31 pass; all8 installations and52 packaged resources match. Public `bca0130f`:8 HTTPS routes and52 archive resources match. Initial zero-test discovery is retained, not counted. |
 | [pytest11143 official pair01](EXTERNAL-BUNDLE-02-PYTEST11143-CONTAINER-01.md),2026-09-28,controls `7d9f77da`/pair `a28db19e`,image `4cf4b5ad` | Prepared offline install succeeds; original base1 failure+114 required passes/gold115 required passes. Both ambiguous native candidates pass;116 primary items/348 phase reports, native exits1/0. | Accept one scoped author native gate only. Original dependency404 and incomplete-build failure retained. Extra parsed nested-output statuses and actual generated versions disclosed; zero models/savings, VM stopped. |
 | [Friday JSON output01](FRIDAY-JSON-OUTPUT-01-REVIEW.md),2026-09-28,previous `371b4b1e`/fixed `c9b30fc6`,execution `7c714555` | Four original forced-CLI handoff sessions: both pairs lower tokens/time; sum−15.97%/−20.43%, responses11→10. Original values/errors/inputs preserved; both missing CLI consumer outputs recovered from matching stored responses. | Accept narrow interface observation only. Non-finite repair removed; finite control has no repair in either arm and optional reads differ. Authored n=1, no causal/general/all-eight saving. No retry or hosted metric change. |
+| [pytest5221 offline build02](EXTERNAL-BUNDLE-02-PYTEST5221-CONTAINER-02.md),2026-09-28,protocol `6ff5e783`/controls and drivers `d06f8e54`,image `c190b1e0` | Offline editable installation succeeds; original base2 failures+170 passes/gold172 passes, native exits1/0. Primary observer519 reports/173 items, no nested contamination; pass/fail/nested controls pass. | Accept this declared one-case native gate only. Prior rejected pair and input-readability error preserved; actual generated versions differ. Zero models or token/time gain; all containers/services/VM stopped. |
 | [Native probe model01](AUDIT-PROBE-SELECTION-MODEL01-REVIEW.md),2026-09-28,previous `4dac0d2b`,candidate `e7e1f8b2`,execution `9df733a1` | Four original cells: shared tokens+1.56%/time−2.68%, distinct−1.86%/+14.91%;6→6 responses both. Actual shared native checks11→9, all mutant checks/results and originals preserved. | Joint model-cost gate fails. Retain scoped native optimization, no model savings claim; extra source/reference reads and deliberately summarized inventories remain visible. Sum−0.20%/+6.75%, forced helper/exposed cases, no unchanged retry. |
 | [Integration07](ALL-EIGHT-CURRENT-07-REVIEW.md), 2026-09-28, measured `1be35120`, execution `47a00692` | All16 original sessions reviewed: tokens +1.67%, CLI −9.63%; only 2/8 pairs lower both. Bounded task outcomes preserved, with unequal work and two recovered original output prefixes. | All-eight gate unmet. Repeatedly exposed n=1 tasks, shared host/cache and context variation; no quality superiority, causal optimization or independent-validation claim. [All costs](ALL-EIGHT-CURRENT-07-COSTS.md). |
 
-The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-PYTEST5103-CONTAINER01.md)
+The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-MATCHED-INPUTS01.md)
 preserves superseded checkpoints, every adverse result and the chronological links.
 This index separates native correctness, original model evidence and hosted checks;
 it is not a replacement benchmark. In particular, integration06 remains its
@@ -47,10 +47,7 @@ The [model execution authorization request](SOLVER-EXECUTION-ENVIRONMENT-REQUEST
 remains unresolved. Author-only Docker/native preparation does not authorize the
 rejected model tool, change its approval settings or prove solver isolation.
 The pytest5221 and pytest11143 gates each cover a selected case in an explicitly
-prepared offline build environment; neither establishes full-cohort readiness.
-The pytest5103 official pair01 fails its frozen native-exit gate because two extra
-primary failures remain on gold, despite all65 required labels passing. The
-[earlier adverse Requests Linux grade](OWNED-OFFICIAL-GRADE-01.md)
+prepared offline build environment; neither establishes full-cohort readiness. The [earlier adverse Requests Linux grade](OWNED-OFFICIAL-GRADE-01.md)
 and other selected-case failures remain; no unchanged retry or case replacement.
 
 [Featured pointer](featured.json) still identifies the frozen Mother confirmation.
@@ -119,8 +116,3 @@ Mother controlled writes01은 저장 지원 코드를 제공했지만 대상 과
 Matched recorded inputs01은 기존 원본23회의 기록된 입력·자원·설정을 맞춰 확인했다.
 과제별 응답·비용 변동이 달라 작은 문구 변화의 효과나 일반적인 변동 폭으로
 단정하지 않는다. 새 모델 호출 없이 기존 후보 제외와 전체8개 미달 판단을 유지한다.
-
-pytest5103 official pair01은 설치와 대조군을 통과했지만 정답에도 추가2개 실패가
-남아 실제 종료값1이다. 필수65개 통과만으로 사전 기준을 바꾸지 않으며 원본
-실험을 그대로 불합격으로 기록한다. 최상위72개·단계211개와 생략5개를 확인했고
-재실험·모델 호출·성능 주장 없이 환경 종료를 확인했다.
