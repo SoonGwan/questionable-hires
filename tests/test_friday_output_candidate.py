@@ -1,4 +1,5 @@
 import copy
+import hashlib
 from pathlib import Path
 import runpy
 import sys
@@ -12,7 +13,12 @@ import friday_output_candidate as candidate
 
 class FridayOutputCandidateTests(unittest.TestCase):
     def test_only_api_example_changes_and_wrong_input_rejects(self):
-        guide = (ROOT / 'skills/friday/references/sqlite-matrix.md').read_text()
+        # This unadopted candidate targets its frozen guide, not the evolving
+        # installed helper. Keep the input explicit so archives need no Git.
+        raw = (ROOT / 'tests/fixtures/friday-output-guide-75f6b4f.txt').read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),
+                         '71a4e46504485f486bf8fd08e8ac3f024e06fc44a39c520e963552ac3104ac84')
+        guide = raw.decode('utf-8')
         revised = candidate.revise(guide)
         self.assertEqual(revised.replace(candidate.CANDIDATE, candidate.ORIGINAL), guide)
         for invalid in ('', candidate.ORIGINAL * 2, revised):
