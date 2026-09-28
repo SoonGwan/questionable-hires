@@ -32,7 +32,9 @@ class LandingHandler(SimpleHTTPRequestHandler):
         path = unquote(urlsplit(self.path).path)
         if path == '/_health':
             try:
-                payload = (self.root / 'release.json').read_bytes()
+                manifest = (self.root / 'release.json').resolve()
+                manifest.relative_to(self.root)
+                payload = manifest.read_bytes()
                 if json.loads(payload).get('app') != 'questionable-hires':
                     raise ValueError('Unknown app identity')
             except (OSError, ValueError):
@@ -50,10 +52,13 @@ class LandingHandler(SimpleHTTPRequestHandler):
         try:
             target = (self.root / path.lstrip('/')).resolve()
             target.relative_to(self.root)
+            if target.is_dir():
+                index = (target / 'index.html').resolve()
+                index.relative_to(self.root)
+                if not index.is_file():
+                    self.send_error(404)
+                    return None
         except (ValueError, OSError):
-            self.send_error(404)
-            return None
-        if target.is_dir() and not (target / 'index.html').is_file():
             self.send_error(404)
             return None
         self.immutable_artwork = bool(target.is_file() and re.fullmatch(

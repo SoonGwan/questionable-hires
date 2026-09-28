@@ -76,6 +76,53 @@ class LandingOriginTests(unittest.TestCase):
         (self.site / 'release.json').write_text('{"app":"another-app"}')
         self.assertEqual(self.request('/_health')[0], 503)
 
+    def test_directory_indexes_cannot_serve_outside_the_release(self):
+        directory = self.site / 'linked-index'
+        directory.mkdir()
+        (directory / 'index.html').symlink_to(self.base / 'outside.txt')
+        (self.site / 'index.html').unlink()
+        (self.site / 'index.html').symlink_to(self.base / 'outside.txt')
+        for path in ('/', '/linked-index/', '/linked-index'):
+            for method in ('GET', 'HEAD'):
+                with self.subTest(path=path, method=method):
+                    status, headers, body = self.request(path, method=method)
+                    self.assertNotIn(b'must not be served', body)
+                    self.assertEqual(status, 404)
+                    self.assertEqual(headers['Cache-Control'], 'no-cache')
+
+    def test_health_cannot_identify_a_manifest_outside_the_release(self):
+        outside = self.base / 'outside-release.json'
+        outside.write_text(json.dumps(dict(app='questionable-hires', revision='outside-release')))
+        (self.site / 'release.json').unlink()
+        (self.site / 'release.json').symlink_to(outside)
+        for method in ('GET', 'HEAD'):
+            with self.subTest(method=method):
+                status, headers, body = self.request('/_health', method=method)
+                self.assertNotIn(b'outside-release', body)
+                self.assertEqual(status, 503)
+                self.assertEqual(headers['Cache-Control'], 'no-cache')
+
+    def test_contained_index_and_manifest_links_remain_available(self):
+        directory = self.site / 'contained'
+        directory.mkdir()
+        (directory / 'index.html').symlink_to(self.site / 'index.html')
+        manifest = self.site / 'manifest.json'
+        (self.site / 'release.json').rename(manifest)
+        (self.site / 'release.json').symlink_to(manifest)
+        self.assertEqual(self.request('/contained')[0], 301)
+        for method in ('GET', 'HEAD'):
+            with self.subTest(method=method):
+                status, headers, body = self.request('/contained/', method=method)
+                self.assertEqual(status, 200)
+                self.assertEqual(body, b'<h1>Questionable Hires</h1>' if method == 'GET' else b'')
+                self.assertEqual(headers['Cache-Control'], 'no-cache')
+                status, _, body = self.request('/_health', method=method)
+                self.assertEqual(status, 200)
+                if method == 'GET':
+                    self.assertEqual(json.loads(body)['revision'], 'test-resource')
+                else:
+                    self.assertEqual(body, b'')
+
     def test_only_existing_fingerprinted_artwork_is_immutable(self):
         artwork = b'unchanged image bytes'
         name = 'team-characters.' + hashlib.sha256(artwork).hexdigest() + '.png'
