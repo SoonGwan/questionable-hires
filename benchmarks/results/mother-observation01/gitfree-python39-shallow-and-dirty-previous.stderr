@@ -1,0 +1,30 @@
+test_initial_state (test_editor.EditorTests) ... ok
+test_save_snapshot_survives_intervening_edit (test_editor.EditorTests) ... FAIL
+test_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests) ... ok
+
+======================================================================
+FAIL: test_save_snapshot_survives_intervening_edit (test_editor.EditorTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 65, in _callTestMethod
+    self._callMaybeAsync(method)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 88, in _callMaybeAsync
+    return self._asyncioTestLoop.run_until_complete(fut)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/async_case.py", line 102, in _asyncioLoopRunner
+    ret = await awaitable
+  File "<CONTROL>/test_editor.py", line 59, in test_save_snapshot_survives_intervening_edit
+    self.assertEqual(payload, expected_saved)
+AssertionError: {'display': {'theme': 'solarized'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}
+- {'alerts': ['mentions'], 'display': {'theme': 'solarized'}}
+?                                                ^^^  ^^^^
+
++ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}
+?                                                ^  ^
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.009s
+
+FAILED (failures=1)

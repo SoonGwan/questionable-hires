@@ -1,0 +1,64 @@
+test_initial_state (test_editor.EditorTests.test_initial_state) ... ok
+test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) ... 
+  test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) (stage='pending snapshot') ... FAIL
+  test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) (stage='stored snapshot') ... FAIL
+test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) ... FAIL
+test_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_settings_clean) ... ok
+
+======================================================================
+FAIL: test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) (stage='pending snapshot')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CONTROL>/test_editor.py", line 60, in test_save_snapshot_survives_intervening_edit
+    self.assertEqual(payload, expected_saved)
+AssertionError: {'display': {'theme': 'solarized'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}
+- {'alerts': ['mentions'], 'display': {'theme': 'solarized'}}
+?                                                ^^^  ^^^^
+
++ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}
+?                                                ^  ^
+
+
+======================================================================
+FAIL: test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) (stage='stored snapshot')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CONTROL>/test_editor.py", line 65, in test_save_snapshot_survives_intervening_edit
+    self.assertEqual(stored, [expected_saved])
+AssertionError: Lists differ: [{'display': {'theme': 'solarized'}, 'alerts': ['mentions']}] != [{'display': {'theme': 'dark'}, 'alerts': ['mentions']}]
+
+First differing element 0:
+{'display': {'theme': 'solarized'}, 'alerts': ['mentions']}
+{'display': {'theme': 'dark'}, 'alerts': ['mentions']}
+
+- [{'alerts': ['mentions'], 'display': {'theme': 'solarized'}}]
+?                                                 ^^^  ^^^^
+
++ [{'alerts': ['mentions'], 'display': {'theme': 'dark'}}]
+?                                                 ^  ^
+
+
+======================================================================
+FAIL: test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 90, in _callTestMethod
+    if self._callMaybeAsync(method) is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 112, in _callMaybeAsync
+    return self._asyncioRunner.run(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<CONTROL>/test_editor.py", line 67, in test_save_snapshot_survives_intervening_edit
+    self.assertTrue(editor.dirty)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.006s
+
+FAILED (failures=3)

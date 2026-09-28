@@ -37,6 +37,12 @@ files differ, but the original changed-helper routes do not exercise the repaire
 failures. Zero new model calls. Do not rerun the whole screen merely for newer
 package bytes; require a concrete change to an observed expensive path first.
 
+[Mother observation01](MOTHER-OBSERVATION-01.md),2026-09-28,source `4032755a`,
+protocol `41ac0c89`: a two-subtest author derivative reaches later value failures
+while keeping lifecycle guards. Eight native controls pass on3.11 and in a Git-free
+3.9 copy. Keep isolated: guidance/code/diagnostics grow, no observed model step is
+removed, zero model calls and no performance trial or ordinary adoption follows.
+
 The [model execution authorization request](SOLVER-EXECUTION-ENVIRONMENT-REQUEST-01.md)
 remains unresolved. Author-only Docker/native preparation does not authorize the
 rejected model tool, change its approval settings or prove solver isolation.
@@ -86,3 +92,7 @@ pytest11143 official pair01은 원본 실패1개·기존 통과114개와 정답1
 348개 단계 보고와 일치한다. 처음 빠뜨린 의존성으로 인한 설치 실패와404 기록을
 보존한다. 중첩 출력에서 파서가 읽은 추가 실패 표시는 최상위 검사 실패 수로
 바꾸지 않는다. 모델 호출·절감 근거는 없고 컨테이너·서비스·VM 종료를 확인했다.
+
+Mother observation01은 값 실패 뒤 완료 관찰을 늘리는 로컬 방식을 검증했지만
+코드·출력 증가와 모델 단계 절감 근거 부재 때문에 격리 상태로 유지한다.
+과거 허용된 실패 후 정리를 재채점하지 않으며 성능 실험·기본 반영은 하지 않는다.
