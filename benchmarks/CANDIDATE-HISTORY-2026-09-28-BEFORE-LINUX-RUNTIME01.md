@@ -6,7 +6,6 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 
 | Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [Linux runtime01](EXTERNAL-BUNDLE-02-LINUX-RUNTIME-01.md),2026-09-28,protocol `fbb44ccf`/guest pin `261e266c`,external skills `7172b50c` unchanged | Verified owned Linux ARM guest, host sentinel absent, only Rosetta runtime share; actual x86 marker/exit0 and37 controls pass. VM stopped and owned processes absent. | Executable author route established. Official task images, full native grades and solver/network isolation remain unverified; zero models, no quality/token/time gain. |
 | [Friday recipe keys01](FRIDAY-RECIPE-KEYS-01.md),2026-09-28,parent `e77372b4`,source `926b698d` | Actual CLI reproduction:14 failing subcases; unchanged8 methods pass after repair. Git-free focused58 methods pass. | Reject duplicate decoded JSON object keys before source reads or SQL; preserve valid repeated values and result columns. Native correctness only, no new model-token/time evidence. Installed8/package4 pass; all8 installations and52 packaged resources match. Public `97fbc659` identity verified across6 HTTPS routes. |
 | [Cleanup lookup01](AUDIT-CLEANUP-LOOKUP-01.md),2026-09-28,parent `e9ee3bce`,source `a7828248` | Corrected controlled reproduction:7 failures→6 methods pass;162 Git-free methods pass. Lookup errors previously became confirmed removal/CLI0 or allowed later mutations. Initial unreached-injection fixture retained as invalid evidence. | Adopt native correctness: lstat confirms missing entries, keeps unavailable cleanup null and original errors/results, stops later work. No model token/time improvement claim. Installed6 controls/all8 resources and package4 checks pass; public `ea9c9dd2` archive identity verified. |
 | [Native probe model01](AUDIT-PROBE-SELECTION-MODEL01-REVIEW.md),2026-09-28,previous `4dac0d2b`,candidate `e7e1f8b2`,execution `9df733a1` | Four original cells: shared tokens+1.56%/time−2.68%, distinct−1.86%/+14.91%;6→6 responses both. Actual shared native checks11→9, all mutant checks/results and originals preserved. | Joint model-cost gate fails. Retain scoped native optimization, no model savings claim; extra source/reference reads and deliberately summarized inventories remain visible. Sum−0.20%/+6.75%, forced helper/exposed cases, no unchanged retry. |
@@ -22,7 +21,7 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 | [Receipt native split01](RECEIPT-NATIVE-SPLIT-01.md),2026-09-28,parent`1b85702c`,candidate/execution`f80c1448` | Unchanged native suite: previous126 pass, candidate124 pass/2 fail; single-file CLI relocation cannot find new companion. Driver bytes−36.14%,combined bytes+3.07%. | Decline before model timing; preserve existing callers. Zero models, no ordinary install/deployment or token-saving claim. |
 | [Receipt guard output01](RECEIPT-GUARD-OUTPUT-01-REVIEW.md),2026-09-28,previous`1b6ae5f5`,candidate`a77e4d93`,execution`31101dea` | Four explicit-CLI interface cells: tokens−27.38%,CLI−18.26%; both task pairs lower both. Guard candidate retains native results with failure, responses6→4. | Limited interface gate passes; forced use/n=1/unequal extra reads, not causal/general/all8 savings. Large source-read truncation retained. No new instruction or featured promotion. |
 
-The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-LINUX-RUNTIME01.md)
+The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-FRIDAY-RECIPE-KEYS01.md)
 preserves all superseded checkpoints, adverse results and chronological history.
 In particular, [integration06](ALL-EIGHT-CURRENT-06-REVIEW.md) remains its historical
 +16.95% tokens/−10.00% CLI measurement at `1d0e92ac`; differences between cohorts
@@ -84,6 +83,3 @@ Con Artist의 복사본 조회 실패가 삭제 성공으로 기록되던 경로
 Friday CLI의 JSON 중복 키가 앞의 검사·마이그레이션을 덮어쓰던 경로를 수정했다.
 수정 전14개 하위 사례 실패→수정 후8개 메서드 통과, Git 없는 사본58개 검사 통과다.
 정상 중복 값·결과 열은 유지하며 모델 토큰·시간 개선으로 계산하지 않는다.
-
-외부 검증용 별도 Linux 실행 환경과 x86 종료0/37 대조 검사를 확인하고 VM을 종료했다.
-공식 이미지·프로젝트 평가·모델 실행은 아직 하지 않았으며 기존8개 사례와 실패를 유지한다.
