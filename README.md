@@ -13,6 +13,7 @@ challenge weak tests, or review a release. Each hire has a specific job and stop
 condition. Built with GPT-6 Astra in mind, using portable skill files.
 
 **Development preview. Whole-team quality and cost improvement remain unproven.**
+[0.2.0 candidate and release conditions](docs/RELEASE-0.2.0.md) ·
 [Choose by the job](docs/CHOOSE-A-HIRE.md) · [Run a demo without model usage](docs/SHARE.md#a-real-demo-without-model-usage)
 
 ## Meet the team

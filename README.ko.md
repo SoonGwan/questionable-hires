@@ -11,6 +11,7 @@
 GPT-6 Astra를 염두에 두고, 다른 도구에도 전달할 수 있는 스킬 파일로 만들었습니다.
 
 **개발 프리뷰입니다. 팀 전체의 품질·비용 개선은 아직 입증되지 않았습니다.**
+[0.2.0 후보와 출시 조건](docs/RELEASE-0.2.0.md) ·
 [웹사이트](https://hires.no-money-do-you-have-money.com/ko/) · [English](README.md) ·
 [역할 선택](docs/CHOOSE-A-HIRE.ko.md) · [모델 사용량 없이 데모 실행](docs/SHARE.md#a-real-demo-without-model-usage)
 
