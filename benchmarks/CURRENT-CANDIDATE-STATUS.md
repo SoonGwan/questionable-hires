@@ -63,6 +63,13 @@ primary failures remain on gold, despite all65 required labels passing. The
 [earlier adverse Requests Linux grade](OWNED-OFFICIAL-GRADE-01.md)
 and other selected-case failures remain; no unchanged retry or case replacement.
 
+[Python37 runtime preparation01](PYTHON37-RUNTIME-01.md),2026-09-28,protocol
+`8f91ee4a`,image `47287d2f`:12 compile-only observations establish that the pinned
+3.7 runtime accepts the numeric guard rejected by3.9/error. No project installation
+or original test; conda absent, official evaluation body not ready unchanged.
+Zero models or savings; containers/services cleaned and VM stopped. This adds a
+prerequisite observation without superseding the rejected native checkpoint.
+
 [Featured pointer](featured.json) still identifies the frozen Mother confirmation.
 [Integration07 publication](../docs/LANDING-INTEGRATION07-2026-09-28.md),
 [language pending feedback](../docs/LANDING-LANGUAGE-PENDING-2026-09-28.md) and
@@ -145,3 +152,8 @@ Context index allocation01은 반환할 목록이 더 작다는 확정 하한이
 메모리가 줄었다. 작은 시간 증가와 최초 누락 참조 오류도 남긴다. 모델 비용
 절감·전체8개 성과로 계산하지 않는다. 설치본8개가 일치하며 공개 `281c3cf0`의
 8개 HTTPS 경로와 다운로드 스킬52개 자원이 일치한다. 이는 별도 배포 검증이다.
+
+Python37 runtime preparation01은 고정 이미지의 컴파일 대조12개에서 버전별 경고
+처리 차이를 확인했다. 프로젝트 설치·원본 검사는 실행하지 않았고 conda 부재로
+공식 평가 본문은 준비되지 않았다. 기존 실패를 대체하지 않으며 모델·절감 근거가
+없다. 컨테이너·서비스 정리와 VM 종료를 확인했다.
