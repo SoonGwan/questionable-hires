@@ -53,3 +53,24 @@ remain declined; this correctness fix does not justify repeating them.
 나왔고, 이후 관련34개와 Git 없는 명시적 사본66개가 Python3.9/3.11에서 통과했다.
 잘못 넓게 선택한 최초 사본의 의존성 오류3개도 보존한다. 모델 호출0회이며
 토큰·시간이나 전체8개 목표 달성으로 주장하지 않는다.
+
+## Installation and downloadable delivery
+
+Source **`a1056d22`** is installed after verifying the previous Con Artist directory
+against parent bytes/modes and moving its backup outside discovery.
+[All8 installations match](results/context-decorator-opening01/installation.json);
+[the same5 actual installed-source tests](results/context-decorator-opening01/installed.txt),
+[package4](results/context-decorator-opening01/package.txt) and
+[landing/server27](results/context-decorator-opening01/landing.txt) pass.
+The151-file build check passes; only the download archive/checksum change in
+landing output. [All52 packaged resources](results/context-decorator-opening01/download.json)
+match source bytes/modes. Archive108,792bytes, SHA256
+`59d6385f9e1a9f77ff67382ef2bfd1e84e0b39a3751c543422d1e555f050a215`.
+An initial author inventory mistakenly included root skills/README.md, which the
+standalone package intentionally excludes; that KeyError is disclosed in the
+inventory. The corrected selection follows the existing eight skill-directory
+contract and does not drop a required runtime file.
+
+한국어: 소스a1056d22를 기존 설치본 일치 확인·외부 백업 후 설치했다. 설치 자원8개와
+다운로드52개 리소스가 일치하고 실제 설치본5개·패키지4개·랜딩27개 검사가 통과했다.
+최초 목록 검사의 제외 대상 카탈로그 선택 오류도 기록하며 모델 절감과 구분한다.
