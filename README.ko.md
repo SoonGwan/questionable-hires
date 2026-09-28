@@ -6,13 +6,13 @@
 
 **이걸 뽑네. 근데 일을 하네.**
 
-레거시 고고학자, 수정 검증관, 테스트 사기 감별사까지. 채용 과정은
-의문인데 맡기는 일은 분명한 개발자 스킬 8개입니다. GPT-6 Astra를
-염두에 두고 만들었습니다.
+레거시 코드의 이유를 추적하고, 수정을 검증하고, 허술한 테스트와 배포 계획을
+점검하는 개발자 스킬 8개입니다. 각자 맡는 일과 종료 조건이 분명합니다.
+GPT-6 Astra를 염두에 두고, 다른 도구에도 전달할 수 있는 스킬 파일로 만들었습니다.
 
-[웹사이트](https://hires.no-money-do-you-have-money.com/ko/) · [English](README.md) · [실제 실행 예시](examples/README.md) · [현재 비교 근거](benchmarks/CURRENT-CANDIDATE-STATUS.md) · [설치 가이드](docs/INSTALL.md)
-
-`0ca24f2` 기준 공개 프리뷰(2026-09-22 한국 시간): [로컬 테스트1,224개 통과·Git 인증 없이8개 스킬 설치를 확인했습니다](docs/PUBLIC-LAUNCH.md). 테스트 개수는 모델 성능 점수가 아닙니다. [질문·사용 후기](https://github.com/SoonGwan/questionable-hires/discussions) · [모델 사용량 없이 데모 실행](docs/SHARE.md#a-real-demo-without-model-usage).
+**개발 프리뷰입니다. 팀 전체의 품질·비용 개선은 아직 입증되지 않았습니다.**
+[웹사이트](https://hires.no-money-do-you-have-money.com/ko/) · [English](README.md) ·
+[역할 선택](docs/CHOOSE-A-HIRE.ko.md) · [모델 사용량 없이 데모 실행](docs/SHARE.md#a-real-demo-without-model-usage)
 
 ## 이런 일을 시킵니다
 
@@ -27,10 +27,52 @@
 | 테스트 사기 감별사 · `con-artist` | 테스트가 mock한테 속고 있습니다. | 실제 동작을 망가뜨려도 통과하는 테스트 확인 |
 | 배포 생존 담당 · `friday` | 월요일의 내가 복구할 수 있음? | 배포 중 버전 호환성과 롤백 가능성 검토 |
 
+<a id="설치"></a>
+
+## 한 명 채용하기
+
+Node.js/npm과 Git이 있다면 스킬과 지원 에이전트를 선택할 수 있습니다.
+
+```sh
+npx skills add SoonGwan/questionable-hires
+```
+
+질문 없이 현재 프로젝트의 Codex에 한 명만 복사하려면:
+
+```sh
+npx skills add SoonGwan/questionable-hires --agent codex --skill mother-in-law --copy -y
+```
+
+독립적인 [skills CLI](https://github.com/vercel-labs/skills)를 사용하는 명령입니다.
+[설치·업데이트·제거와 저장소의 Python 설치기](docs/INSTALL.md) ·
+[오프라인 전달용 독립 아카이브](docs/STANDALONE-ARCHIVE.md#한국어) ·
+[날짜가 명시된 공개 설치 검증](docs/PUBLIC-LAUNCH.md).
+
+Codex CLI나 IDE의 새 대화에서:
+
+```text
+$necromancer 이 호환성 분기 지워도 됨?
+$receipt 이 수정으로 진짜 중복 저장이 막히는지 확인해줘.
+$friday 이 배포 롤백 가능한지 봐줘.
+```
+
+<a id="도구도-들고-출근합니다"></a>
+
+자동 선택을 지원하지만, 8개를 설치한다고 매 작업에 전부 투입하지는 않습니다.
+기존 프로젝트 테스트가 우선이며 [보조 도구와 적용 범위](docs/HELPERS.ko.md)는
+필요할 때 확인하세요. 상시 실행 훅·백그라운드 서비스·텔레메트리·모델 설정 변경은 없습니다.
+
 ## 진짜 작동하나요?
 
-현재는 **개발 프리뷰**입니다. 특정 도구의 동작 보강은 확인했지만,
-8개 스킬 전체가 더 적은 비용으로 좋은 결과를 낸다는 주장은 아직 입증되지 않았습니다.
+**integration07 — 2026-09-28, 측정 자원 `1be35120`: 합계 토큰 +1.67%,
+실행 시간 −9.63%, 두 비용 동시 감소는 2/8입니다.** 한정된 과제 결과는 유지됐지만
+품질 우위는 입증되지 않았습니다. 이미 노출된 개발 과제이고 조건별 한 번씩 실행했으며,
+공유 실행 환경과 검사량 차이가 있습니다.
+[전체 비용](benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md) ·
+[원본 검토와 한계](benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md) ·
+[현재 판단 목록](benchmarks/CURRENT-CANDIDATE-STATUS.md).
+
+아래 사전 고정 확인 실험은 한 역할을 별도 과제에서 측정한 결과입니다.
 
 <!-- featured-benchmark:start -->
 
@@ -45,184 +87,25 @@
 
 <!-- featured-benchmark:end -->
 
-[이전 후보 개발 결과](benchmarks/results/mother-in-law-fast-2026-09-12/README.md)
+[과거 integration06](benchmarks/ALL-EIGHT-CURRENT-06-REVIEW.md)과
+[이전 팀 비교·불리한 결과·도구별 실험](docs/ONBOARDING-HISTORY-2026-09-28.ko.md)을
+그대로 보존했습니다. 로컬 테스트·공개 배포 확인·모델 측정은 서로 다른 근거이며,
+유리한 한 사례가 팀 전체의 비용 절감을 증명하지는 않습니다.
 
-**팀 전체 통합 실험 08(2026-09-14): 일반적인 효율 향상은 아직 미입증입니다.**
-[9개 과제 검토](benchmarks/BUNDLE-CONTRACT-08-REVIEW.md)는 리소스 `ecff8a8`에서
-새 세션 18개를 실행했고 **총 토큰 0.58% 감소, 실행 시간 합계 15.08% 감소**를
-기록했습니다. 과제 3개는 두 비용이 모두 늘었고, 6개는 토큰이 늘었습니다.
-추가 작업량 차이와 원본 테스트 출력 누락 2건(스킬 미적용 검색 QA, 스킬 적용 폼)도
-공개합니다. 별도 네이티브 대조군 22개는 예상대로 동작했지만 원본 출력 누락을
-채우지는 않습니다.
-이미 사용한 작성자 제작 과제·조건별 1회·공유 실행 환경이므로 일반적인 20–30%
-개선이나 이후 수정본의 성과를 증명하지 않습니다. 합계 비율은 과거 그래프의
-과제별 비율 평균과 다릅니다. [통합 실험 07](benchmarks/BUNDLE-CONTRACT-07-REVIEW.md),
-[통합 실험 05](benchmarks/BUNDLE-CONTRACT-05-REVIEW.md),
-[통합 실험 06](benchmarks/BUNDLE-CONTRACT-06-REVIEW.md),
-[이전 불리한 결과](benchmarks/BUNDLE-CURRENT-02-REVIEW.md)도 그대로 보존합니다.
+## 실제로 하는 일
 
-<details>
-<summary>과거 팀 전체 실험 — 초기 스킬 파일로 실행한 72개 세션</summary>
-
-현재는 **개발 프리뷰**입니다. 최초 반복 실험은 GPT-6 Astra / medium으로 **72회**를 측정했습니다. 작은 synthetic 과제 8개 × 스킬 없음·일반 지침·해당 스킬 3조건 × 3반복이며, 각 실행은 새로운 프로세스·대화·Git fixture를 사용했습니다. 이전 n=1 결과는 이 반복 실험에 포함하지 않았습니다.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="benchmarks/results/astra-repeat-2026-09-11/analysis/comparison-dark.svg">
-  <img src="benchmarks/results/astra-repeat-2026-09-11/analysis/comparison-light.svg" alt="Baseline/control/skill: tokens 100/111.9/111.5%, time 100/125.1/117.6%, implementation LOC 100/100/100%. Strict success 19/24, 16/24, 18/24." width="100%">
-</picture>
-
-스킬 없음=100%일 때 일반 지침은 **토큰 111.9% / 시간 125.1%**, 해당 스킬은 **토큰 111.5% / 시간 117.6%**였습니다. 두 구현 과제의 변경 LOC는 동일했습니다. LOC가 적다고 더 좋은 것은 아니며, 이번 실험에서 자원 절감은 없었습니다.
-
-엄격한 증거·범위 기준의 성공은 **스킬 없음 19/24, 일반 지침 16/24, 스킬 18/24**였습니다. 핵심 수정·진단은 대체로 같았습니다. 일반 지침 3회는 감사 중 기존 테스트를 수정했고, 스킬 4회는 거부된 패치의 대상이 로그에 없어 범위 준수를 확인할 수 없었습니다. 타임아웃은 없었습니다. 저자가 직접 채점한 소형 synthetic 실험이며, 우월성이나 일반적인 안전성을 증명하지 않습니다. 구독 사용량을 달러 청구로 환산하지 않았습니다.
-
-[최초 반복 실험·평가기준·원시 증거](benchmarks/REPORT-2026-09-11.md) · [재현 방법](benchmarks/README.md) · [기존 n=1 결과](benchmarks/REPORT.md)
-
-</details>
-
-과거 자동 선택 시험 8회에서는 과제에 맞는 스킬 파일을 읽는 것을 확인했습니다. 당시 로컬 플러그인의 설치·캐시 비교·제거 시험도 통과했습니다. 이는 이후 모든 수정본의 검증이 아닙니다. 자세한 범위와 날짜는 [설치 검증 기록](docs/INSTALLATION-TEST.md)에 있습니다.
-
-최근 근거는 위 그래프와 별도로 봐주세요.
-
-- [최근 자동 감사의 실제 기록](benchmarks/results/probe-adoption-01/README.md): 두 조건의 명령·출력·답변·사용량을 확인할 수 있습니다. 토큰 증가와 도우미 미사용, 가린 정보와 출력 누락도 그대로 설명합니다.
-- [모델 사용량 없이 두 결함 감사 실행하기](examples/con-artist.md#try-the-helper-without-model-usage): 실제로 실행할 수 있는 도우미 예제이며, 모델의 속도 향상을 증명하는 비교는 아닙니다.
-
-- [자동 선택과 스킬 없음 비교](benchmarks/CURRENT-SELECTION-01.md): 두 과제에서 적절한 스킬을 선택했지만 둘 다 토큰이 늘었고, 시간 결과는 혼재했습니다. 실제 수행한 작업량도 다릅니다.
-- [관련 없는 요청](benchmarks/ROUTING-NEGATIVE-01.md)과 [예제 폴더의 실제 소비자](benchmarks/LANDLORD-CONFIGURED-01.md): 좁은 선택 범위 검증이며 일반적인 정확도·효율 점수가 아닙니다.
-- [이전 버전·수정본의 실제 기록 열기](benchmarks/results/landlord-compact-01/README.md): 비공개 로그 없이 명령·출력·답변·사용량을 확인할 수 있습니다. 이 비교의 불리한 결과도 그대로 남겼습니다.
-
-예를 들어 `con-artist`는 저장을 제거한 복사본에서도 기존 테스트가 통과하는 것을 확인하고, 저장된 데이터 자체를 검사하면 실패한다는 것을 보여줬습니다. 기본 모델도 이 문제를 찾았습니다. [세 조건을 직접 비교하기 →](examples/con-artist.md)
-
-## 설치
-
-누구에게 요청할지 헷갈리면 [진단·수정 검증·테스트 품질·검토별 선택 가이드](docs/CHOOSE-A-HIRE.ko.md)를 먼저 확인하세요.
-
-이미 설치했다면 현재 체크아웃과 복사본을 읽기 전용으로 비교할 수 있습니다:
-
-```sh
-python3 scripts/install.py --dest /실제/프로젝트/.agents/skills --skill con-artist --check
-```
-
-누락·내용/권한 변경·추가 파일을 JSON으로 알려주며 개인 수정은 덮어쓰지 않습니다.
-종료 코드는 일치 0, 차이/미설치 2, 비교 실패 1입니다. 원격 최신 여부나 모델에서의
-활성화 여부를 검증하는 명령은 아닙니다. [업데이트 방법](docs/INSTALL.md#updates-and-removal).
-
-오프라인 전달용으로는 벤치마크 저장소 없이 스킬과 설치기만 담는
-[작은 독립 설치 아카이브](docs/STANDALONE-ARCHIVE.md#한국어)를 만들 수 있습니다.
-기존 `npx` 다운로드 경로를 바꾸거나 릴리스를 공개하는 기능은 아닙니다.
-
-Node.js/npm과 Git이 있다면 한 명만 고르거나 8명 전부 설치할 수 있습니다.
-
-```sh
-npx skills add SoonGwan/questionable-hires
-```
-
-[공개 설치를 확인했습니다](docs/PUBLIC-LAUNCH.md). `0ca24f2`에서 빈 npm 캐시와 Git 인증을 끈 환경으로 `skills@1.5.26`을 받아8개 스킬을 설치했고, 원본 파일·권한과 일치했습니다. Node.js24.16.0에서 검증했으며 향후 변경되는 CLI까지 보장하지는 않습니다.
-
-8개 스킬을 자동으로 찾은 뒤 설치할 스킬과 지원 에이전트를 고를 수 있습니다.
-질문 없이 현재 프로젝트의 Codex에 한 명만 복사하려면:
-
-```sh
-npx skills add SoonGwan/questionable-hires --agent codex --skill mother-in-law --copy -y
-```
-
-이 명령은 이 저장소가 만든 CLI가 아니라 독립적인
-[`skills`](https://github.com/vercel-labs/skills) CLI를 실행합니다. 실행 전에
-CLI와 설치할 스킬을 확인하세요. 공개 저장소 접근에는 GitHub 인증이 필요하지
-않으며, Questionable Hires용 npm 계정을 따로 만들 필요도 없습니다.
-
-저장소에 포함된 Python 3.8 이상용 설치기를 직접 사용해도 됩니다.
-
-```sh
-git clone https://github.com/SoonGwan/questionable-hires.git
-cd questionable-hires
-python3 scripts/install.py --dest /내/프로젝트/.agents/skills --skill necromancer
-```
-
-실제 프로젝트 경로로 바꿔주세요. `--skill necromancer`를 빼면 8개 전부 설치합니다. `--dry-run`으로 미리 확인할 수 있으며 기존 스킬 폴더는 덮어쓰지 않습니다.
-
-신뢰할 수 있는 소스에서 설치하세요. 소스의 심볼릭 링크 파일·폴더는 쓰기 전에
-거부합니다. 실패하거나 취소하면 이번 실행이 만든 폴더만 정리를 시도합니다.
-정리도 실패할 수 있으므로 재시도 전에 남은 불완전한 폴더를 확인하고,
-기존 파일과 개인 수정본은 보존하세요.
-
-Codex CLI나 IDE의 새 대화에서:
-
-```text
-$necromancer 이 호환성 분기 지워도 됨?
-$receipt 이 수정으로 진짜 중복 저장이 막히는지 확인해줘.
-$friday 이 배포 롤백 가능한지 봐줘.
-```
-
-모델 선택이나 권한 설정은 변경하지 않습니다. 상시 실행 훅, 별도 백그라운드 프로세스, 텔레메트리도 없습니다. 업데이트·제거 방법은 [설치 가이드](docs/INSTALL.md)에 있습니다.
-
-### 도구도 들고 출근합니다
-
-먼저 일반 스킬 요청으로 시작하세요. 프로젝트에 동등한 도구가 없을 때만 보조
-도구를 선택하면 됩니다. Python 도구에는 **Python 3.9 이상**, 테스트 사기 감별사의
-결함 주입 실행기·수정 검증관·가설 퇴마사에는 POSIX도 필요합니다. 범위 협상가의
-독립 JavaScript 모듈은 **Python 없이** JavaScript 환경에서 사용할 수 있으며,
-네이티브 검증에는 Node.js를 사용합니다. 의존성 자동 설치나 상시 실행은 없습니다.
-
-| 스킬 | 선택형 도구와 적용 범위 |
-| --- | --- |
-| 범위 협상가 | [Python 호출 제어·선택적 작업 정리](skills/hostage-negotiator/assets/controlled_call.py)(진입 대기를 취소해도 아직 전달하지 않은 호출을 보존하며, 종료를 다시 요청해도 진행 중인 비동기 정리에 취소를 재전송하지 않음) 또는 [JavaScript 호출·정리](skills/hostage-negotiator/assets/controlled_call.mjs), 출력 누락에 대비한 선택적 [테스트 증거 보존](skills/hostage-negotiator/references/native-evidence.md). 성공한 편집과 테스트를 같은 도구 호출에서 실행하되 각각의 결과를 보존할 수 있습니다. 앱 검증은 테스트가 담당하며 증거 보존 방법은 브라우저 검증이나 실행 시간 제한을 제공하지 않습니다. |
-| 테스트 사기 감별사 | 선택 파일 교체 확인과 배치 내 반복 테스트 선택·강화 검사의 정상 결과 재사용(저장 한도 적용, 네이티브 강화 검사는 기존 선택이 달라도 자체 실행 인자가 같으면 재사용)을 지원하는 [Python 테스트 결함 감사](skills/con-artist/references/python-audit.md), 크기 제한이 있는 선택형 프로젝트 전체 변경 확인, 같은 이름의 정의 선택과 전체 출력 크기 제한을 지원하는 [읽기 전용 맥락 수집](skills/con-artist/references/python-context.md). 선택한 FIFO·소켓 등 특수 파일은 복사에서 조용히 제외하지 않고 거부합니다. 중첩 변형·검사 필드를 포함한 JSON 레시피 중복 키는 네이티브 실행 전에 거부합니다. 복사·실행·정리·최종 보호 검사 실패 시 반환된 검사와 이전 배치 근거를 불완전 결과로 보존하고 후속 변형은 중단하며, 반환되지 않은 결과나 확인하지 못한 보호 항목(임시 복사본 조회 실패 포함)은 추정하지 않습니다. [import 해시는 청크 단위로 계산](benchmarks/AUDIT-IMPORT-HASH-01.md)하며 로컬 할당 절감은 모델 비용 개선 근거가 아닙니다. 빈 테스트나 지정한 하위 모듈의 부모 패키지가 import 캐시에 없는 경우는 성공이 아닌 검증 불완전으로 처리합니다. 선택형 [네이티브 unittest 배치 예제](skills/con-artist/references/native-unittest-batch.md)는 실행 관찰 코드를 추가한 `python -B -m unittest`와 정상 결과 재사용을 안내하며, 기본값은 기존 내부 실행 방식입니다. 신뢰하는 테스트만 실행하며 샌드박스나 동시 변경을 격리하는 스냅샷이 아닙니다. |
-| 레거시 고고학자 | [이름별 Python 발췌](skills/necromancer/references/python-regions.md)는 크기 제한이 있는 로컬 파일이나 Git/stdin 소스를 실행하지 않고 읽으며 모델 비용 절감은 미입증입니다. [관련 Git 이력 수집](skills/necromancer/references/focused-history.md). 다른 참조로 범위를 넓히지 않고 지정한 커밋과 조상 이력을 조회하는 명령을 안내합니다. [같은 리비전의 완전한 패치 구간은 재사용](benchmarks/SAME-REVISION-HUNKS-01.md)하며, 과거 이유가 유지·삭제 결론을 정하지는 않습니다. [작성자 제작 이력 비교](benchmarks/ANCESTRY-SCOPE-01.md)에서 범위는 지켰지만 비용 개선은 입증하지 못했습니다. [로컬 패치 선택 할당 보완](benchmarks/HISTORY-BODY-OFFSET-01.md)은 본문 전체 복사를 제거하며 모델 비용 개선의 근거는 아닙니다. |
-| 배포 생존 담당 | [SQLite 호환성 확인](skills/friday/references/sqlite-matrix.md). 실제로 연 소스 파일의 식별자를 검사해 파일 교체를 확인합니다. CLI JSON 중복 키는 소스 읽기·SQL 실행 전에 거부합니다. 파일 시스템 격리나 운영 배포·다른 DB 엔진의 안전성을 증명하지 않습니다. |
-| 수정 검증관 | [Python](skills/receipt/references/existing-fix.md) 또는 [Node 기본 테스트](skills/receipt/references/node-comparison.md)를 격리해 전후 결과·소스 출처를 확인하고, 용량 제한이 있는 프로젝트 전체 변경 감지를 선택할 수 있습니다. unittest에서는 여러 과거 버전을 비교할 때 현재 버전 검사를 한 번만 실행해 공유할 수 있습니다. CLI 입력의 중복 키는 거부하고 누락·알 수 없는 키를 실행 전에 알려줍니다. 복사·실행·정리·최종 보존 검사 실패 시 반환된 실행 근거를 불완전 상태와 CLI 종료값 2로 남기며, 반환되지 않은 결과나 확인하지 못한 정리 상태는 추정하지 않습니다. 선택 파일을 여는 순간 감지한 교체는 거부하지만 원자적 스냅샷은 아닙니다. 두 unittest 실행 방식의 검사 완료와 종료값 일치를 기록하며, 결과가 없으면 비교를 중단합니다. 선택적으로 현재 스레드의 `assertEqual`/`assertIsNot` 기본 값·표준 pathlib 인자를 용량 제한과 `v:3` 형식으로 관찰하며, 관찰이 불가능하면 원래 실행 결과를 보존하고 비교를 중단합니다. Node 로딩 기록만으로 기능 실행·테스트 범위가 입증되지는 않으며 일반적인 모델 효율 향상은 아직 입증되지 않았습니다. |
-| 가설 퇴마사 | [시간·출력 제한 진단 실행](skills/exorcist/references/bounded-probe.md). 백그라운드 서비스용이 아닙니다. |
-| 클릭 꼬투리 QA | [응답 순서 제어 검증](skills/mother-in-law/SKILL.md). 네이티브 테스트용 요청 제어는 진입 대기를 취소해도 아직 전달하지 않은 요청을 보존합니다. 지원 인터페이스에 맞는 UI 없는 Python 컴포넌트용이며 기존 테스트가 우선이고 브라우저 검증은 아닙니다. |
-| 구조 관리인 | [구조 검토 지침](skills/landlord/SKILL.md). 별도 실행 도구는 포함하지 않습니다. |
-
-테스트 사기 감별사는 새 검사를 실제 요구 계약에 연결하고, 객체 동일성은 명시된
-요구가 있을 때 검사하도록 보완했습니다. [Assertion-contract01](benchmarks/ASSERTION-CONTRACT-01-REVIEW.md)
-(2026-09-27, `33530f98`)은 품질을 지켰지만 무스킬 대비 **합계 토큰36.43% 증가**,
-시간12.01% 감소였습니다. 토큰·시간 동시 개선은 입증되지 않았습니다.
-이후 [네이티브 단일 비교 안내](benchmarks/NATIVE-SINGLE-MODULE-ROUTE-02.md)는 로컬에서
-검증됐습니다. [native-split02 비용 기록](benchmarks/NATIVE-SPLIT-02-COSTS.json)
-(2026-09-27, `6c099d68`)은 합계 토큰이 무스킬보다43.05% 많고 이전 버전보다
-9.35% 적습니다. [원본 범위별 검토](benchmarks/NATIVE-SPLIT-02-REVIEW.md)는
-바인딩 출력 누락·평가 문구·보존 증거의 한계를 유지합니다.
-
-테스트 사기 감별사는 파일 전체를 다시 보내는 대신 [정확히 일치하는 부분 수정](skills/con-artist/references/python-audit-probes.md#improve-existing-tests-at-their-native-paths)도
-받습니다. 기존 테스트와 강화한 테스트의 정상·결함 코드 검사는 그대로 유지합니다.
-큰 네이티브 배치 출력은 [보관한 검사별 기록을 나눠 검토](skills/con-artist/references/native-unittest-batch.md)해
-출력 복구를 위한 재실행 없이 원본 증거를 유지합니다.
-
-**전체 작업의 비용 개선은 아직 입증되지 않았습니다.** [integration07 비용](benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md)(2026-09-28, `1be35120`)은 합계 토큰+1.67%, 실행 시간−9.63%이며 동시 감소는2/8입니다. [원본 검토](benchmarks/ALL-EIGHT-CURRENT-07-REVIEW.md)에 검사량 차이와 출력 복구를 남겼으며, 한정된 결과는 유지됐지만 품질 우위는 입증되지 않았습니다. 노출된 개발 과제로 독립 검증이 아닙니다. 불리한 [과거 integration06](benchmarks/ALL-EIGHT-CURRENT-06-REVIEW.md)도 보존합니다.
-
-[integration05](benchmarks/ALL-EIGHT-CURRENT-05-COSTS.md)
-(2026-09-27, `75183f2f`)의 노출된 개발 과제8개 비교는 합계 토큰18.54%, 시간9.06%
-증가였습니다. [원본의 명시된 과제 검토](benchmarks/ALL-EIGHT-CURRENT-05-REVIEW.md)는
-범위·평가 조건·보존 증거의 한계를 유지합니다.
-[실행기 선택 후보](benchmarks/NATIVE-INTERPRETER-ROUTE-01.md)(2026-09-27, `e918d02d`)는
-측정한 대조에서 실패한 실행 재시도를 피했지만6회 비용은 혼재하며 합계 토큰·시간
-동시 절감은 없습니다.
-[날짜별 근거와 한계](benchmarks/CURRENT-CANDIDATE-STATUS.md)에 불리한 개발·모델 설정
-비교도 보존합니다. Receipt 직접 도구 availability01(2026-09-27, `b081240e`)도
-두 모델이 CLI를 계속 사용했고 두 비용을 함께 줄인 과제가 없어 채택하지 않습니다.
-supplied-tool routing01(2026-09-27, `44c4ff5e`)도 MCP 호출이 호스트 승인 정책에
-차단돼 CLI 복구 전 비용이 늘었으므로 채택하지 않고 안내를 복원했습니다.
-model-choice01(2026-09-27, `6701069f`) 설정은 채택하지 않으며
-토큰·시간 동시 절감의 근거가 아닙니다.
-설정 비교도 혼재합니다. [apps01](benchmarks/ALL-EIGHT-APPS-01-REVIEW.md)(2026-09-27,
-`6701069f`)은 토큰9.49% 감소·시간0.52% 증가이며,
-[namespaces01](benchmarks/ALL-EIGHT-NAMESPACES-01-REVIEW.md)(2026-09-27, `0333a084`)은
-합계 토큰12.73%·시간2.73% 감소지만 동시 절감5/8이고 추가 검사가 불균등합니다.
-둘 다 기본 채택하지 않으며 전체8개 역할의 개선 근거가 아닙니다.
-
-[도구별 개발 이력과 불리한 결과](docs/DEVELOPMENT-NOTES.ko.md)
-(2026-09-14, `17ede49` 기록)를 별도로 모았습니다. Hostage의 토큰 증가·원본 테스트
-출력 누락, Friday의 실제 쓰기 비교에서 합계 토큰 7.01% 증가도 그대로 보존합니다.
-유용한 동작이 낮은 비용이나 완전한 증거를 뜻하지는 않습니다. 과거 결과를 현재
-스킬의 성능으로 해석하기 전에 [현재 검증 현황](benchmarks/CURRENT-CANDIDATE-STATUS.md)을 확인하세요.
-
-위의 스킬 요청을 그대로 사용하면 필요한 경우 도구를 선택할 수 있습니다. 작은 작업이나 이미 증거를 확보한 작업은 직접 처리하는 편이 더 저렴할 수 있습니다. 전원 설치가 모든 작업에 8명을 전부 투입하라는 뜻은 아닙니다.
+테스트 사기 감별사는 `save(...)["ok"]`만 검사하는 테스트가 실제 저장을 제거한
+복사본에서도 통과한다는 것을 확인했습니다. 저장된 레코드 자체를 검사하면 결함이
+드러납니다. 운영 코드는 건드리지 않았으며, 스킬 없는 기본 모델도 이 문제를 찾았습니다.
+[원본 실행 비교와 직접 실행 예제](examples/con-artist.md).
 
 ## 같이 채용하기
 
-웃긴 캐릭터마다 실제 개발 판단이 달라져야 합니다. 새로운 스킬에는 구체적인 문제, 출력할 근거, 종료 조건, 그리고 정상 코드를 건드리지 않아야 하는 사례가 필요합니다.
+새 스킬에는 구체적인 일, 실제 예제, 건드리지 않아야 하는 사례가 필요합니다.
+[기여 가이드](CONTRIBUTING.md) · [보안 제보](SECURITY.md) · [설계 의도](docs/ASTRA.md) ·
+[공개 준비 현황](docs/RELEASE-READINESS.md) · [로드맵](docs/ROADMAP.md) ·
+[변경 기록](CHANGELOG.md) · [MIT 라이선스](LICENSE).
 
-[기여 가이드](CONTRIBUTING.md) · [평가 실행 방법](benchmarks/README.md) · [공개 준비와 남은 검증](docs/RELEASE-READINESS.md) · [개발 현황](docs/ROADMAP.md) · [MIT 라이선스](LICENSE)
-
-캐릭터와 실용적인 개발 습관을 연결하는 방식은 [Ponytail](https://github.com/DietrichGebert/ponytail)에서 영감을 받았습니다.
+캐릭터와 구체적인 개발 습관을 연결하는 방식은
+[Ponytail](https://github.com/DietrichGebert/ponytail)에서 영감을 받았습니다.
+팀·지침·평가 예제는 이 프로젝트에서 만들었습니다.
