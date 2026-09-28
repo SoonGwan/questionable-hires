@@ -49,3 +49,15 @@ quality or whole-task token/time improvements.
 기존 설치·계정 자동 실행을 바꾸지 않고 임시 전용 경로,2CPU·2GiB·20GiB 한도와
 호스트 공유 없는 설정을 사용한다. 실패도 보존하며 모델·이슈 평가0회, 실제
 Linux 구동·분리 확인은 전체 품질·토큰·시간 개선과 별도 단계다.
+
+## Pinned guest image, before download/startup
+
+Lima2.2.0's bundled Debian13 template identifies the ARM genericcloud image:
+`https://cloud.debian.org/images/cloud/trixie/20260712-2537/debian-13-genericcloud-arm64-20260712-2537.qcow2`.
+HEAD returns335,413,248bytes. Required SHA-512:
+`8543d795f2fde630eb66c492f245a8c1da19dedc636e0a8e7b3d0f95920e1a05aa911ef2d82d177d41cc53ced5fccbd2a3945d07fa5e15018914c4d864bb07ed`.
+Download once into the owned root and use that verified local file; do not fall
+back to a moving daily image. Host data mounts remain empty. The VZ Rosetta option
+may expose its Apple runtime share only; it must not expose host user/project data.
+This clarifies the intended CPU-translation exception before instance creation.
+No package receipt is treated as proof of working translation.
