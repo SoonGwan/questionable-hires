@@ -107,3 +107,30 @@ no approval settings, ordinary skills, featured charts or hosted release change.
 정상 유지·만료 제거를 두 서버에서 확인했다. 최초 실패와 뒤늦은 기존 로그 확인도
 보존한다. 과제 채점은 반복하지 않았고 원본에서 이미 통과한11개는 그대로다.
 모델 호출0회, 전체 품질·토큰·시간 목표는 미달이며 컨테이너·서비스·VM을 종료했다.
+
+## Original regression membership audit — 2026-09-28
+
+`requests2674-required-membership01`, input SHA256
+`67f45674a057dd56efaf931dcd1019bc5a4cd721ece0621ee6f01ca92d3375a4`:
+the original test patch adds one complete top-level regression function, absent
+from the selected base. Its exact native node identity occurs in neither the12
+FAIL_TO_PASS nor142 PASS_TO_PASS labels. The
+[scalar membership record](results/requests2674-failure-boundaries01/required-membership.json)
+retains hashes/counts, not the private test name or patch body. This was obtained
+by parsing added patch lines as Python AST and comparing the resulting test identity
+with the unchanged groups; no source execution, new model or native replay.
+
+The earlier closed-pool failure outside the required groups is therefore not
+evidence that all intended regression behavior is covered by those groups alone.
+The existing full native-exit gate already rejects extra failures; this audit
+does not uncover a false acceptance or change any grade. Nor does static membership
+explain the historical generation of the12 labels, prove that every older runtime
+would pass them, or authorize replacing/reclassifying them. Restoring service
+compatibility supplies no evidence of the missing base-failure contrast. Keep this
+case declined and require new evidence before another environment/grade attempt.
+
+한국어: 원본 테스트 패치가 새로 추가한 회귀 검사1개는 고정된 실패12개·통과142개
+목록 어디에도 포함되지 않았다. AST와 원본 목록을 대조했으며 재실행은 없다.
+전체 네이티브 종료값 기준은 이미 추가 실패를 거부하므로 잘못된 합격을 발견한
+것은 아니다. 기존 결과·기준을 바꾸지 않고, 서비스 호환성만으로 누락된 원본 실패
+대조를 만들 수 있다고 가정하지 않는다. 새 근거 없는 평가 반복은 하지 않는다.
