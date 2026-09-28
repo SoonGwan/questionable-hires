@@ -32,3 +32,16 @@ guide correction, with no frozen chart or model measurement change.
 한국어: 영어320·390px에서 소개 문구가 제목과 겹치던 문제를 실제 글자 영역으로
 재현했다. 모바일 문구를 제목 아래로 배치해 한영8개 너비×JavaScript 켜짐/꺼짐
 32개 검사가 통과했다. 데스크톱 배치·실험 수치는 유지하며 토큰 절감으로 계산하지 않는다.
+
+## Hosted verification
+
+Release **`874944965c82e6a8fb53dedaaebd32c7af1d1bd7`** serves the repaired stylesheet.
+[All32 hosted geometry cases](../benchmarks/results/landing-hero-layout01/public-browser.txt)
+pass with separately captured native process exit0. This run uses actual public
+locale HTML/assets and no response substitutions. The [shared HTTP identity report](../benchmarks/results/landing-language-pending01/public.json)
+verifies exact stylesheet/page bytes as well as unchanged historical metrics and
+skill archive. Other-browser/font and screen-reader behavior remains unmeasured.
+
+한국어: 실제 공개 한영 페이지에서도32개 글자 겹침·가로 넘침 검사가 통과했고
+별도 실행 종료값0을 확인했다. 배포 CSS·페이지 동일성을 확인했으며 다른 브라우저
+전체나 실제 스크린리더까지 검증했다는 뜻은 아니다.

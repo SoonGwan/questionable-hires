@@ -34,3 +34,20 @@ new model-token/time result or all-eight goal completion is claimed.
 한국어: 느린 언어 전환 중 작은 진행 문구와 접근성 상태를 표시한다. 취소 후
 이전 응답·재선택·실패 시 전체 페이지 이동을 한영10개 실제 브라우저 사례로
 검증했고 기존 복사12개·랜딩/서버27개 검사도 통과했다. 토큰 절감 근거는 아니다.
+
+## Hosted verification
+
+Release **`874944965c82e6a8fb53dedaaebd32c7af1d1bd7`** is live on
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+[Same10 hosted browser cases](../benchmarks/results/landing-language-pending01/public-browser.txt)
+pass in their own command, exit0. Translation responses remain controlled; full
+locale pages, assets and fallback navigation come from public HTTPS.
+[Eight HTTP identity checks](../benchmarks/results/landing-language-pending01/public.json)
+match release revision, locale pages, JavaScript, stylesheet, copy data and unchanged
+archive/checksum; all52 skill resource bytes/modes still match source.
+The owned preview server stopped; browser contexts were closed. No GitHub push.
+
+한국어: 공개 배포87494496에서도 언어 전환10개 검사가 통과했다. 공개8개 경로·
+다운로드52개 자원 일치를 확인했다. 실제 번역 응답 지연은 통제한 검사이며
+모델 비용 측정은 추가하지 않았다.
