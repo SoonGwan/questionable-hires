@@ -47,9 +47,10 @@ record in `cells.json`. Chart means use equal-weight task ratios; raw sums are
 shown separately. No new model experiment or favorable-result promotion occurs.
 Review both README languages when changing featured data or claims.
 
-`evidence-manifest.json` explicitly lists reviewed integration05 and integration06
-report dependencies. The page shows the dated integration06 resource `1d0e92ac`;
-integration05 downloads retain their original URLs and bytes. Integration06 keeps
+`evidence-manifest.json` explicitly lists reviewed integration05, integration06 and
+integration07 report dependencies. The page shows the dated integration07 resource
+`1be35120`; integration05/06 downloads retain their original URLs and bytes.
+Integration06 keeps
 repository-relative layout (including two explicitly linked Python source files)
 so downloaded report links work without changing historical text. A new local
 report link needs manifest review. Use the localized ZIP download and extract it
@@ -58,8 +59,8 @@ before reading reports offline. [Evidence packaging verification](../docs/LANDIN
 대표 데이터는 `featured.json`에서만 선택하며 기존 감사 코드로 원시 기록과 대조합니다.
 과제별 비율 평균과 원시 합계는 구분합니다. 생성 파일이나 숫자만 따로 수정하지 마세요.
 
-화면에는 integration06의 날짜·측정 리소스를 표시하고 integration05 다운로드 주소도
-보존합니다. 검토된 보고서 근거만 manifest로 지정해 원본 바이트·상대 경로를 보존합니다.
+화면에는 integration07의 날짜·측정 리소스 `1be35120`을 표시하고
+integration05/06 다운로드 주소와 바이트도 보존합니다. 검토된 보고서 근거만 manifest로 지정해 원본 바이트·상대 경로를 보존합니다.
 integration06은 연결된 Python 소스 2개를 포함해 저장소 상대 경로를 유지합니다.
 로컬에서는 ZIP을 내려받아 압축을 푼 뒤 보고서를 읽으면 연결 근거도 열 수 있습니다.
 
@@ -190,3 +191,24 @@ pixel checks and regeneration instructions in the [asset guide](../assets/README
 별개입니다. 재생성 때만 Pillow가 필요하고 일반 빌드에는 추가 의존성이 없습니다.
 그림이 바뀌면 주소도 바뀌며 HTML·상태 확인·다운로드는 계속 재검증합니다.
 기존 이미지 주소도 유지하고 원본 그림 바이트는 바꾸지 않습니다.
+
+## Locale request feedback / 언어 전환 상태
+
+A pending language change shows a localized status below the navigation without
+shifting it. Main content is marked busy until that request commits. Selecting
+the current language cancels the pending UI intent; late responses cannot replace
+it. Failed current requests retain the full-page navigation fallback.
+[Browser evidence](../docs/LANDING-LANGUAGE-PENDING-2026-09-28.md) separates controlled
+network scenarios from performance measurements.
+
+언어 전환 중에는 내비게이션 아래에 작은 진행 문구를 표시합니다. 현재 언어를
+다시 선택하면 대기 표시가 사라지고 늦은 응답은 화면을 바꾸지 않습니다.
+실패 시 전체 언어 페이지로 이동하는 기존 복구 흐름을 유지합니다.
+
+The mobile tagline follows the title in normal flow;
+[rendered text-range checks](../docs/LANDING-HERO-LAYOUT-2026-09-28.md) cover both
+locales with/without JavaScript at eight widths. Page overflow alone did not detect
+the former English title collision.
+
+모바일 소개 문구는 제목 아래에 배치합니다. 양쪽 언어·JavaScript 켜짐/꺼짐·
+8개 너비에서 실제 글자 영역의 겹침을 확인하며, 가로 넘침 검사와 구분합니다.
