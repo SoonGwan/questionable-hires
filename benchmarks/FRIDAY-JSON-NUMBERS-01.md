@@ -48,3 +48,15 @@ JSON으로 읽지 못하던 문제를 수정했다. 비유한 float는 명시적
 새5개 검사가 통과했고 실제 JS 파서도 실패→통과했다. 누락 fixture가 있던 최초
 복사 검사2개 오류도 보존하며 완전한 Git 없는 사본에서는63개가 통과했다.
 모델 호출0회이며 전체8개 토큰·시간 개선으로 주장하지 않는다.
+
+## Installed and packaged delivery
+
+Source `c9b30fc6` is installed after all prior Friday bytes/modes match parent
+`371b4b1e`, with the previous directory backed up outside skill discovery.
+[All eight installed skills match](results/friday-json-numbers01/installation.json);
+[the same five installed-source tests](results/friday-json-numbers01/installed.txt),
+[four package tests](results/friday-json-numbers01/package.txt) and
+[27 landing/server tests](results/friday-json-numbers01/landing.txt) pass.
+The 151-file build check passes; only archive/checksum change in landing output.
+[All52 packaged resource bytes/modes match source](results/friday-json-numbers01/download.json).
+These checks are installation/packaging evidence, not new model measurements.
