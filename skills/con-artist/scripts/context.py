@@ -239,13 +239,19 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
                           limitation='Static index only; definition/class bodies are omitted, not reviewed. Inspect relevant definitions, fixtures, hooks and plugins before execution. Module-level conditional definitions remain in top_level; conditions inside class bodies are omitted. Runtime bindings are unresolved.')
             if large_selected:
                 result['reason'] = 'Selected Python file exceeds 200 lines; use file:qualified.definition or --full to read bodies. No behavioral conclusion is established by this index.'
+                index_size = len(encode({'selected': [result]}, pretty))
+                # Full numbered source cannot be shorter than its bare line
+                # contents. Avoid constructing it when the index already wins;
+                # prefixes, separators and JSON escaping only add characters.
+                if index_size < sum(map(len, lines)):
+                    return result
                 full_result = dict(path=str(path), sha256=digest, representation='full_source',
                                    source=excerpt(lines, 1, len(lines)))
                 # Compare at the actual selected-record nesting depth: pretty
                 # indentation adds more bytes to a multi-record index than to
                 # the single escaped source string. Ancestor context is common
                 # to both choices and does not affect this difference.
-                if len(encode({'selected': [result]}, pretty)) >= len(encode({'selected': [full_result]}, pretty)):
+                if index_size >= len(encode({'selected': [full_result]}, pretty)):
                     return full_result
     else:
         result['representation'] = 'full_source'
