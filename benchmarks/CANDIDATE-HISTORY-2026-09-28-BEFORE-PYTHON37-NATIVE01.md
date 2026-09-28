@@ -15,7 +15,7 @@ This is **not achieved**. No general efficiency or complete release claim is sup
 | [Native probe model01](AUDIT-PROBE-SELECTION-MODEL01-REVIEW.md),2026-09-28,previous `4dac0d2b`,candidate `e7e1f8b2`,execution `9df733a1` | Four original cells: shared tokens+1.56%/time−2.68%, distinct−1.86%/+14.91%;6→6 responses both. Actual shared native checks11→9, all mutant checks/results and originals preserved. | Joint model-cost gate fails. Retain scoped native optimization, no model savings claim; extra source/reference reads and deliberately summarized inventories remain visible. Sum−0.20%/+6.75%, forced helper/exposed cases, no unchanged retry. |
 | [Integration07](ALL-EIGHT-CURRENT-07-REVIEW.md), 2026-09-28, measured `1be35120`, execution `47a00692` | All16 original sessions reviewed: tokens +1.67%, CLI −9.63%; only 2/8 pairs lower both. Bounded task outcomes preserved, with unequal work and two recovered original output prefixes. | All-eight gate unmet. Repeatedly exposed n=1 tasks, shared host/cache and context variation; no quality superiority, causal optimization or independent-validation claim. [All costs](ALL-EIGHT-CURRENT-07-COSTS.md). |
 
-The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-PYTHON37-NATIVE01.md)
+The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-CONTEXT-INDEX01.md)
 preserves superseded checkpoints, every adverse result and the chronological links.
 This index separates native correctness, original model evidence and hosted checks;
 it is not a replacement benchmark. In particular, integration06 remains its
@@ -63,14 +63,12 @@ primary failures remain on gold, despite all65 required labels passing. The
 [earlier adverse Requests Linux grade](OWNED-OFFICIAL-GRADE-01.md)
 and other selected-case failures remain; no unchanged retry or case replacement.
 
-[pytest5103 prepared Python37 native gate01](PYTEST5103-PYTHON37-NATIVE-01.md),
-2026-09-28,controls `f51f73c9`/pair `8f5e5b67`,image `47287d2f`: original base1
-required failure+64 passes/gold65 required passes, actual native exits1/0.
-All primary outcomes base64pass/3fail, gold67pass;5 skips each,72 items/211 reports.
-Accept this prepared case only: four conda activation lines removed, image and
-dependencies differ, original tests/warnings/labels unchanged. Retain initial
-directory-mode setup failure and rejected official3.9 gate. Zero models/savings;
-containers/services cleaned and VM stopped. No unchanged retry needed.
+[Python37 runtime preparation01](PYTHON37-RUNTIME-01.md),2026-09-28,protocol
+`8f91ee4a`,image `47287d2f`:12 compile-only observations establish that the pinned
+3.7 runtime accepts the numeric guard rejected by3.9/error. No project installation
+or original test; conda absent, official evaluation body not ready unchanged.
+Zero models or savings; containers/services cleaned and VM stopped. This adds a
+prerequisite observation without superseding the rejected native checkpoint.
 
 [Featured pointer](featured.json) still identifies the frozen Mother confirmation.
 [Integration07 publication](../docs/LANDING-INTEGRATION07-2026-09-28.md),
@@ -155,8 +153,7 @@ Context index allocation01은 반환할 목록이 더 작다는 확정 하한이
 절감·전체8개 성과로 계산하지 않는다. 설치본8개가 일치하며 공개 `281c3cf0`의
 8개 HTTPS 경로와 다운로드 스킬52개 자원이 일치한다. 이는 별도 배포 검증이다.
 
-pytest5103 prepared Python37 native gate01은 별도 환경에서 원본 필수 실패1개·
-통과64개, 정답65개 통과와 실제 종료값1/0을 확인했다. 전체72개·211단계 보고와
-5개 건너뛰기를 검산했다. conda 활성화4줄을 제거한 별도 평가이며 기존 공식3.9
-실패·최초 권한 오류를 유지한다. 모델·절감 근거는 없고 전체 목표도 미달이다.
-모든 컨테이너·서비스 정리와 VM 종료를 확인했으며 같은 평가를 반복하지 않는다.
+Python37 runtime preparation01은 고정 이미지의 컴파일 대조12개에서 버전별 경고
+처리 차이를 확인했다. 프로젝트 설치·원본 검사는 실행하지 않았고 conda 부재로
+공식 평가 본문은 준비되지 않았다. 기존 실패를 대체하지 않으며 모델·절감 근거가
+없다. 컨테이너·서비스 정리와 VM 종료를 확인했다.
