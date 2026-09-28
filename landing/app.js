@@ -117,6 +117,11 @@ function updateMetadata(content) {
 async function setLanguage(next, persist = false) {
   if (!validLanguage(next)) return;
   const request = ++languageRequest;
+  const pending = next !== language;
+  const languageStatus = document.querySelector('#language-status');
+  const main = document.querySelector('#main');
+  main.setAttribute('aria-busy', String(pending));
+  languageStatus.textContent = pending ? COPY[language][`languageLoading${next.toUpperCase()}`] : '';
   if (!experimentCache.has(next)) {
     experimentCache.set(next, fetch(new URL(`experiments/${next}.html`, runtimeRoot)).then(response => {
       if (!response.ok) throw new Error('Experiment translation unavailable');
@@ -175,6 +180,8 @@ async function setLanguage(next, persist = false) {
   url.searchParams.delete('lang');
   url.hash = location.hash;
   history.replaceState(null, '', url);
+  main.setAttribute('aria-busy', 'false');
+  languageStatus.textContent = '';
 }
 
 languageLinks.forEach(link => link.addEventListener('click', event => {
