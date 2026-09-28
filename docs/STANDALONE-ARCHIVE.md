@@ -19,6 +19,13 @@ caches. It is a standalone installation bundle, not the full source/test archive
 or a Codex plugin marketplace. Keep the complete repository available for evidence
 and development. The content manifest is for consistency, **not authenticity**.
 
+Distribution permissions are normalized to `0644`, or `0755` when the source
+owner-executable bit is set. Checkout group-write bits and special permissions
+are not propagated. This keeps clones and Git source archives consistent.
+
+한국어: 배포 파일 권한은 기본 `0644`, 소유자 실행 비트가 있으면 `0755`로
+통일합니다. 체크아웃의 그룹 쓰기 권한이나 특수 권한은 복사하지 않습니다.
+
 Extract a trusted archive into a new empty directory with your archive tool. From
 the extracted `questionable-hires` directory:
 

@@ -17,13 +17,16 @@ remaining conditions in [release readiness](docs/RELEASE-READINESS.md).
   cleanup. Helpers remain optional and do not replace application assertions.
 - Friday emits valid JSON for non-finite SQLite values. Installer/build/archive
   handling rejects linked inputs and preserves existing destinations on failure.
+- Normalized standalone archive permissions so Git source exports and clones
+  generate identical downloads for identical contents/executable flags.
 - Reorganized bilingual onboarding and retained adverse model results. Integration07
   (2026-09-28, resource `1be35120`) uses **1.67% more total tokens** and **9.63% less
   CLI time**; only **2/8** pairs reduce both. No general savings claim is supported.
 
 한국어: 한영 반응형 랜딩·실험 그래프·근거와 스킬 다운로드·공유 메타데이터를
 추가했습니다. 실제 테스트 근거 보존, 소스 발췌, 비동기 작업 정리, JSON 출력과
-설치 안전성을 개선했습니다. 전체8개 품질·비용 목표는 미달이며 integration07은
+설치 안전성을 개선했습니다. 소스 압축본과 체크아웃의 권한 차이가 다운로드
+해시를 바꾸지 않도록 배포 권한을 통일했습니다. 전체8개 품질·비용 목표는 미달이며 integration07은
 합계 토큰1.67% 증가·시간9.63% 감소, 두 비용 동시 감소2/8입니다. 아직 정식
 릴리스를 게시한 상태가 아니며 버전 변경만으로 목표 달성을 주장하지 않습니다.
 

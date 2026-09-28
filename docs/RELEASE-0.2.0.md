@@ -19,11 +19,13 @@ a development preview; the whole-team performance objective is not achieved.
   documented limits. Optional controlled callbacks support realistic async sequences.
 - Installation and downloadable archives include all 8 skills and 52 skill resources.
   Existing destinations are not overwritten; personal changes require a backup.
+  Distribution modes are normalized to 0644/0755, preserving the owner-executable
+  flag while removing checkout write-permission differences.
 
 한국어: 언어 전환 상태 유지, 반응형 그래프·근거 표, 언어별 공유·검색 정보를
 제공합니다. 지원하는 UTF-8 소스 발췌와 실패 시 테스트 근거 보존을 개선했으며,
 선택형 비동기 호출 제어를 지원합니다. 스킬8개·리소스52개를 제공하고 기존 설치를
-덮어쓰지 않습니다. 자세한 조건은 [한국어 도구 안내](HELPERS.ko.md)를 따릅니다.
+덮어쓰지 않습니다. 배포 권한은 실행 비트에 따라0644/0755로 통일합니다. 자세한 조건은 [한국어 도구 안내](HELPERS.ko.md)를 따릅니다.
 
 ## Evidence and release conditions / 검증과 출시 조건
 
@@ -45,5 +47,10 @@ role on different cases; these percentages must not replace integration07.
 [Release gates](RELEASE-READINESS.md) · [Full cost table](../benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md) ·
 [Decision index](../benchmarks/CURRENT-CANDIDATE-STATUS.md) · [Install](INSTALL.md).
 
-No stable-release claim, tag, merge or publication is implied by these candidate
-notes. Record exact validation/artifact/source identities before completing delivery.
+[PR #2](https://github.com/SoonGwan/questionable-hires/pull/2) and the0.2.0 release
+are drafts. [Dated validation](../benchmarks/RELEASE-020-CANDIDATE-20260929.md)
+records exact tested sources, retained failures and four verified uploaded assets.
+No version tag, merge or published-release claim is implied.
+
+한국어: PR #2와0.2.0 릴리스는 초안입니다. 날짜별 검증 문서에 실제 소스·실패 기록·
+업로드 후 재다운로드까지 확인한4개 파일을 남겼습니다. 머지·정식 게시는 미완료입니다.
