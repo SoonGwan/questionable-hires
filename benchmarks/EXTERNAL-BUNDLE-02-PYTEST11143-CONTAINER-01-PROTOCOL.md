@@ -53,3 +53,24 @@ unchanged during this preparation.
 검증한다. 기존 Mac 결과를 재분류하거나 모델 절감으로 계산하지 않는다.
 원본 소스578개와 런타임·의존성을 확인하고 정상/실패/중첩 대조군을 통과한 뒤
 별도 채점 계획을 고정해야 한다. 이 단계에서는 이슈 채점·모델 호출을 하지 않는다.
+
+## Frozen control inputs before execution
+
+The selected source requires setuptools>=45 and setuptools-scm[toml]>=6.2.3.
+An author metadata request for exactly6.2.3 returned HTTP404 before any control.
+The first two wheel files were already verified; retain that acquisition failure
+in a reconstructed scalar record (not a saved raw HTTP traceback). No runtime or
+issue test ran during that attempt. Distinct wheelhouse02 pins setuptools75.1.0,
+wheel0.44.0, setuptools-scm8.1.0, packaging24.1 and tomli2.0.1, all universal
+wheels verified against the publisher's SHA256. The latter three are new downloads;
+setuptools/wheel reuse verified prior bytes. This is an explicitly prepared build
+environment, not the default image dependency set.
+
+[Control freeze](results/external-bundle-02-pytest11143-container01/control-freeze.json),
+[wheel identities](results/external-bundle-02-pytest11143-container01/wheels02.json)
+and authored drivers are fixed before native controls. The primary observer is
+byte-identical to pytest5221 pair02. All578 source hashes reuse the existing exact
+base manifest; actual installed pytest must import `/testbed/src/pytest/__init__.py`.
+Container removal uses finally even if result retrieval fails. One control container,
+180-second lifecycle limit, no automatic replay. The grading prohibition above
+remains: passing controls alone do not launch base/gold evaluation.
