@@ -1,0 +1,96 @@
+FFFFFFFFF
+======================================================================
+FAIL: test_diagnostic_escapes_and_bounds_unknown_names (test_receipt_recipe_errors.ReceiptRecipeErrorTests.test_diagnostic_escapes_and_bounds_unknown_names)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 71, in test_diagnostic_escapes_and_bounds_unknown_names
+    stderr = self.reject(json.dumps(dict(RECIPE, **{'\n' + 'x' * 5000: True})),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 32, in reject
+    self.assertIn(message, process.stderr)
+AssertionError: 'unknown keys: ["\\n' not found in 'Comparison not established: Recipe requires fixed, vary, before, after, imports, runner and tests\n'
+
+======================================================================
+FAIL: test_duplicate_top_level_rejected_from_stdin_and_file (test_receipt_recipe_errors.ReceiptRecipeErrorTests.test_duplicate_top_level_rejected_from_stdin_and_file) (from_file=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 59, in test_duplicate_top_level_rejected_from_stdin_and_file
+    self.reject(raw, 'Duplicate recipe key: "tests"', from_file=from_file)
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 32, in reject
+    self.assertIn(message, process.stderr)
+AssertionError: 'Duplicate recipe key: "tests"' not found in "Comparison not established: [Errno 2] No such file or directory: '/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpqdcvf7zj/test_rule.py'\n"
+
+======================================================================
+FAIL: test_duplicate_top_level_rejected_from_stdin_and_file (test_receipt_recipe_errors.ReceiptRecipeErrorTests.test_duplicate_top_level_rejected_from_stdin_and_file) (from_file=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 59, in test_duplicate_top_level_rejected_from_stdin_and_file
+    self.reject(raw, 'Duplicate recipe key: "tests"', from_file=from_file)
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 32, in reject
+    self.assertIn(message, process.stderr)
+AssertionError: 'Duplicate recipe key: "tests"' not found in "Comparison not established: [Errno 2] No such file or directory: '/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpif02odo0/test_rule.py'\n"
+
+======================================================================
+FAIL: test_missing_and_unknown_reported_together (test_receipt_recipe_errors.ReceiptRecipeErrorTests.test_missing_and_unknown_reported_together)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 49, in test_missing_and_unknown_reported_together
+    self.reject(json.dumps(recipe), 'missing keys: ["tests"]',
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 32, in reject
+    self.assertIn(message, process.stderr)
+AssertionError: 'missing keys: ["tests"]' not found in 'Comparison not established: Recipe requires fixed, vary, before, after, imports, runner and tests\n'
+
+======================================================================
+FAIL: test_missing_option_identified (test_receipt_recipe_errors.ReceiptRecipeErrorTests.test_missing_option_identified)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 44, in test_missing_option_identified
+    self.reject(json.dumps(recipe), 'missing keys: ["tests"]')
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 32, in reject
+    self.assertIn(message, process.stderr)
+AssertionError: 'missing keys: ["tests"]' not found in 'Comparison not established: Recipe requires fixed, vary, before, after, imports, runner and tests\n'
+
+======================================================================
+FAIL: test_nested_and_escaped_duplicates_rejected (test_receipt_recipe_errors.ReceiptRecipeErrorTests.test_nested_and_escaped_duplicates_rejected) (key='working_tree')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 68, in test_nested_and_escaped_duplicates_rejected
+    self.reject(raw, 'Duplicate recipe key: ' + json.dumps(key))
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 32, in reject
+    self.assertIn(message, process.stderr)
+AssertionError: 'Duplicate recipe key: "working_tree"' not found in "Comparison not established: [Errno 2] No such file or directory: '/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpcn4w059c/test_rule.py'\n"
+
+======================================================================
+FAIL: test_nested_and_escaped_duplicates_rejected (test_receipt_recipe_errors.ReceiptRecipeErrorTests.test_nested_and_escaped_duplicates_rejected) (key='runner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 68, in test_nested_and_escaped_duplicates_rejected
+    self.reject(raw, 'Duplicate recipe key: ' + json.dumps(key))
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 32, in reject
+    self.assertIn(message, process.stderr)
+AssertionError: 'Duplicate recipe key: "runner"' not found in "Comparison not established: [Errno 2] No such file or directory: '/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpf1g09pyd/test_rule.py'\n"
+
+======================================================================
+FAIL: test_non_object_has_specific_diagnostic (test_receipt_recipe_errors.ReceiptRecipeErrorTests.test_non_object_has_specific_diagnostic)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 53, in test_non_object_has_specific_diagnostic
+    self.reject('[]', 'Recipe must be a JSON object')
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 32, in reject
+    self.assertIn(message, process.stderr)
+AssertionError: 'Recipe must be a JSON object' not found in 'Comparison not established: Recipe requires fixed, vary, before, after, imports, runner and tests\n'
+
+======================================================================
+FAIL: test_unknown_option_identified (test_receipt_recipe_errors.ReceiptRecipeErrorTests.test_unknown_option_identified)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 38, in test_unknown_option_identified
+    self.reject(json.dumps(dict(RECIPE, guard_trees=True)),
+  File "/private<archive>/tests/test_receipt_recipe_errors.py", line 32, in reject
+    self.assertIn(message, process.stderr)
+AssertionError: 'unknown keys: ["guard_trees"]' not found in 'Comparison not established: Recipe requires fixed, vary, before, after, imports, runner and tests\n'
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.342s
+
+FAILED (failures=9)

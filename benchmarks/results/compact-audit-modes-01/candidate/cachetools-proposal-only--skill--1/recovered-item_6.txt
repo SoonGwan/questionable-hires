@@ -1,0 +1,168 @@
+
+RUN correct tests.test_lru.LRUCacheTest.test_lru exit= 0
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/correct/tests/test_lru.py
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/correct/cachetools/__init__.py
+test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+
+RUN correct tests.test_lru.LRUCacheTest.test_lru_getsizeof exit= 0
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/correct/tests/test_lru.py
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/correct/cachetools/__init__.py
+test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+
+MUTATION no_read_refresh '            self.__update(key)\n' => '            pass\n'
+
+RUN no_read_refresh tests.test_lru.LRUCacheTest.test_lru exit= 1
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/no_read_refresh/tests/test_lru.py
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/no_read_refresh/cachetools/__init__.py
+test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ERROR
+
+======================================================================
+ERROR: test_lru (tests.test_lru.LRUCacheTest.test_lru)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/no_read_refresh/cachetools/__init__.py", line 68, in __getitem__
+    return self.__data[key]
+           ~~~~~~~~~~~^^^^^
+KeyError: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/no_read_refresh/tests/test_lru.py", line 26, in test_lru
+    self.assertEqual(cache[2], 2)
+                     ~~~~~^^^
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/no_read_refresh/cachetools/__init__.py", line 211, in __getitem__
+    value = cache_getitem(self, key)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/no_read_refresh/cachetools/__init__.py", line 70, in __getitem__
+    return self.__missing__(key)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/no_read_refresh/cachetools/__init__.py", line 97, in __missing__
+    raise KeyError(key)
+KeyError: 2
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+
+RUN no_read_refresh tests.test_lru.LRUCacheTest.test_lru_getsizeof exit= 0
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/no_read_refresh/tests/test_lru.py
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/no_read_refresh/cachetools/__init__.py
+test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+
+MUTATION no_overwrite_refresh '        cache_setitem(self, key, value)\n        self.__update(key)\n' => '        cache_setitem(self, key, value)\n        if key not in self.__order:\n            self.__update(key)\n'
+
+RUN no_overwrite_refresh tests.test_lru.LRUCacheTest.test_lru exit= 0
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/no_overwrite_refresh/tests/test_lru.py
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/no_overwrite_refresh/cachetools/__init__.py
+test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+
+RUN no_overwrite_refresh tests.test_lru.LRUCacheTest.test_lru_getsizeof exit= 0
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/no_overwrite_refresh/tests/test_lru.py
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/no_overwrite_refresh/cachetools/__init__.py
+test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+
+MUTATION evict_mru 'key = next(iter(self.__order))' => 'key = next(reversed(self.__order))'
+
+RUN evict_mru tests.test_lru.LRUCacheTest.test_lru exit= 1
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/evict_mru/tests/test_lru.py
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/evict_mru/cachetools/__init__.py
+test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ERROR
+
+======================================================================
+ERROR: test_lru (tests.test_lru.LRUCacheTest.test_lru)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/evict_mru/cachetools/__init__.py", line 68, in __getitem__
+    return self.__data[key]
+           ~~~~~~~~~~~^^^^^
+KeyError: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/evict_mru/tests/test_lru.py", line 19, in test_lru
+    self.assertEqual(cache[2], 2)
+                     ~~~~~^^^
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/evict_mru/cachetools/__init__.py", line 211, in __getitem__
+    value = cache_getitem(self, key)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/evict_mru/cachetools/__init__.py", line 70, in __getitem__
+    return self.__missing__(key)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/evict_mru/cachetools/__init__.py", line 97, in __missing__
+    raise KeyError(key)
+KeyError: 2
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+
+RUN evict_mru tests.test_lru.LRUCacheTest.test_lru_getsizeof exit= 0
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/evict_mru/tests/test_lru.py
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/evict_mru/cachetools/__init__.py
+test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+
+MUTATION ignore_getsizeof 'Cache.__init__(self, maxsize, getsizeof)' => 'Cache.__init__(self, maxsize)'
+
+RUN ignore_getsizeof tests.test_lru.LRUCacheTest.test_lru exit= 0
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/ignore_getsizeof/tests/test_lru.py
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/ignore_getsizeof/cachetools/__init__.py
+test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+
+RUN ignore_getsizeof tests.test_lru.LRUCacheTest.test_lru_getsizeof exit= 1
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/ignore_getsizeof/tests/test_lru.py
+# code object from <WORKSPACE>/.lru-audit-hrst0uqr/ignore_getsizeof/cachetools/__init__.py
+test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... FAIL
+
+======================================================================
+FAIL: test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.lru-audit-hrst0uqr/ignore_getsizeof/tests/test_lru.py", line 48, in test_lru_getsizeof
+    self.assertEqual(len(cache), 1)
+AssertionError: 3 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (failures=1)
+
+CLEANUP: removed own disposable copies; original path/content/mode snapshot identical.

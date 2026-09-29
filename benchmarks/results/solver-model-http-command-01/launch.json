@@ -1,0 +1,57 @@
+{
+  "parent": "ec78d371262c45700d08747057558c7f816e37df",
+  "server_argv": [
+    "<TEMP>",
+    "-B",
+    "<WORKSPACE>/benchmarks/results/solver-mcp-http-01/server.py",
+    "--vm",
+    "<TEMP>",
+    "--log",
+    "<TEMP>",
+    "--transport",
+    "streamable-http",
+    "--port",
+    "61499"
+  ],
+  "argv_without_prompt": [
+    "codex",
+    "exec",
+    "--strict-config",
+    "--disable",
+    "shell_tool",
+    "--disable",
+    "unified_exec",
+    "--disable",
+    "apps",
+    "--disable",
+    "multi_agent",
+    "--disable",
+    "plugins",
+    "-c",
+    "web_search=\"disabled\"",
+    "-c",
+    "mcp_servers={qh_guest={url=\"http://127.0.0.1:61499/mcp\",enabled_tools=[\"guest_command\"],startup_timeout_sec=25,tool_timeout_sec=20}}",
+    "--model",
+    "gpt-6-astra",
+    "--sandbox",
+    "read-only",
+    "-c",
+    "model_reasoning_effort=\"medium\"",
+    "--skip-git-repo-check",
+    "--json",
+    "-C",
+    "<TEMP>"
+  ],
+  "prompt": "Authorized connectivity check for a disposable Linux guest, not an issue-solving or performance task. Use functions exec to call tools.mcp__qh_guest__guest_command exactly once with {command:\"/bin/busybox uname -s\",cwd:\"/solver\",timeout:5}, and output its returned result. Inspect the returned base64 stdout and actual exit code, then report the observed OS and exit code. Do not use host shell, patch, file, network or other tools, modify files, or repeat the call. If unavailable or rejected, report that without fallback. The tool honestly allows guest mutations; this particular command only reads the guest OS name.",
+  "server_sha256": "e7f737533c2d83e071a0513968dec52fcfdf69daf3262dcef3028276b9483f89",
+  "scheduled_cells": 1,
+  "limits": {
+    "readiness_seconds": 20,
+    "model_seconds": 90,
+    "server_cleanup_seconds": 10
+  },
+  "purpose": "First actual HTTP guest command after recorded catalog inclusion",
+  "limitations": [
+    "No solver, performance or host-exclusion proof"
+  ]
+}

@@ -1,0 +1,127 @@
+"""Deterministic interaction QA. Run: python3 -m unittest -v test_search_qa"""
+import asyncio
+from copy import deepcopy
+import unittest
+
+from search import Search
+
+
+class SearchSequenceTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.search = Search()
+        self.owned = []
+        self.samples = []
+        self.phase = 'initial'
+        self.allowed = (None,)
+
+    def own(self, coroutine):
+        task = asyncio.create_task(coroutine)
+        self.owned.append(task)
+        return task
+
+    async def bounded(self, awaitable):
+        return await asyncio.wait_for(awaitable, timeout=1.0)
+
+    async def asyncTearDown(self):
+        # Only operations created by this test are cancelled/drained.
+        for task in self.owned:
+            if not task.done():
+                task.cancel()
+        await self.bounded(asyncio.gather(*self.owned, return_exceptions=True))
+
+    def checkpoint(self):
+        value = deepcopy(self.search.result)
+        self.samples.append((self.phase, value, deepcopy(self.allowed)))
+
+    async def observe(self):
+        while True:
+            self.checkpoint()
+            # Cooperative sampling, not an elapsed-time delay or completion guess.
+            await asyncio.sleep(0)
+
+    async def start(self, query):
+        response = asyncio.get_running_loop().create_future()
+        entered = asyncio.Event()
+
+        async def fetch(actual_query):
+            self.assertEqual(actual_query, query)
+            entered.set()
+            return await response
+
+        task = self.own(self.search.run(query, fetch))
+        await self.bounded(entered.wait())
+        self.assertFalse(task.done())
+        self.assertFalse(response.done())
+        self.checkpoint()
+        return response, task
+
+    async def finish(self, response, task, value):
+        response.set_result(value)
+        await self.bounded(asyncio.shield(task))
+        self.checkpoint()
+
+    async def scenario(self, older_first, existing):
+        if existing:
+            self.allowed = (None, 'existing result')
+            response, task = await self.start('initial query')
+            await self.finish(response, task, 'existing result')
+            self.assertEqual(self.search.result, 'existing result')
+        baseline = 'existing result' if existing else None
+        self.allowed = (baseline,)
+        self.phase = 'loading older'
+        observer = self.own(self.observe())
+        older_response, older_task = await self.start('older query')
+        self.phase = 'loading both'
+        newer_response, newer_task = await self.start('newer query')
+        self.assertEqual(self.search.result, baseline)
+
+        if older_first:
+            self.phase = 'older completes while newer pending'
+            await self.finish(older_response, older_task, 'older result')
+            self.assertFalse(newer_response.done())
+            self.assertFalse(newer_task.done())
+            self.assertEqual(self.search.result, baseline)
+            # The observer checks every scheduling turn through older completion;
+            # retention is required until the newer response is released below.
+            self.phase = 'newer completes'
+            self.allowed = (baseline, 'newer result')
+            await self.finish(newer_response, newer_task, 'newer result')
+        else:
+            self.phase = 'newer completes while older pending'
+            self.allowed = (baseline, 'newer result')
+            await self.finish(newer_response, newer_task, 'newer result')
+            self.assertEqual(self.search.result, 'newer result')
+            self.assertFalse(older_response.done())
+            self.assertFalse(older_task.done())
+            self.phase = 'older completes after newer'
+            self.allowed = ('newer result',)
+            await self.finish(older_response, older_task, 'older result')
+
+        self.assertEqual(self.search.result, 'newer result')
+        observer.cancel()
+        await self.bounded(asyncio.gather(observer, return_exceptions=True))
+        for phase, actual, allowed in self.samples:
+            with self.subTest(phase=phase):
+                self.assertIn(actual, allowed)
+
+    async def test_older_finishes_first_empty_display(self):
+        await self.scenario(older_first=True, existing=False)
+
+    async def test_newer_finishes_first_empty_display(self):
+        await self.scenario(older_first=False, existing=False)
+
+    async def test_older_finishes_first_retains_existing_result(self):
+        await self.scenario(older_first=True, existing=True)
+
+    async def test_newer_finishes_first_retains_existing_result(self):
+        await self.scenario(older_first=False, existing=True)
+
+    async def test_single_request(self):
+        response, task = await self.start('single query')
+        self.assertIsNone(self.search.result)
+        await self.finish(response, task, 'single result')
+        self.assertEqual(self.search.result, 'single result')
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

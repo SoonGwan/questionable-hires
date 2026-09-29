@@ -3,13 +3,16 @@
 
 import argparse
 import ast
+import bisect
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
 import re
 import stat
 import sys
+import tokenize
 
 
 MAX_FILE = 256_000
@@ -58,12 +61,37 @@ def read(root, path, budget):
     budget[0] += len(data)
     if budget[0] > MAX_INPUT:
         raise ValueError('Selected context exceeds 2000000 input bytes')
-    return data.decode('utf-8'), hashlib.sha256(data).hexdigest()
+    # An initial UTF-8 signature is encoding metadata, not an AST source column.
+    # Budgets and identity still cover every original byte, including the marker.
+    return data.decode('utf-8-sig'), hashlib.sha256(data).hexdigest()
 
 
-def span(node):
+def span(node, source=None, cache=None):
     decorators = getattr(node, 'decorator_list', [])
-    return min([node.lineno] + [d.lineno for d in decorators]), node.end_lineno
+    first = min([node.lineno] + [d.lineno for d in decorators])
+    if decorators and source is not None:
+        # AST decorator positions start at the expression, potentially after @(
+        # or an explicit continuation. Reuse one logical-token scan per snapshot.
+        if cache is None:
+            cache = {}
+        if 'decorator_openings' not in cache:
+            openings, statement_start = [], True
+            with io.StringIO(source, newline=None) as stream:
+                for token in tokenize.generate_tokens(stream.readline):
+                    if token.type == tokenize.NEWLINE:
+                        statement_start = True
+                    elif token.type not in (tokenize.NL, tokenize.COMMENT,
+                                            tokenize.INDENT, tokenize.DEDENT):
+                        if statement_start and token.string == '@':
+                            openings.append(token.start[0])
+                        statement_start = False
+            cache['decorator_openings'] = openings
+        openings = cache['decorator_openings']
+        index = bisect.bisect_right(openings, first) - 1
+        if index < 0:
+            raise ValueError('Cannot locate the opening decorator token')
+        first = openings[index]
+    return first, node.end_lineno
 
 
 def excerpt(lines, first, last):
@@ -79,12 +107,14 @@ def physical_lines(source):
     return lines
 
 
-def definition_spans(tree):
+def definition_spans(tree, source=None, cache=None):
+    if cache is None:
+        cache = {}
     records = []
     def visit(node, prefix=''):
         if isinstance(node, DEFINITIONS):
             name = prefix + node.name
-            first, last = span(node)
+            first, last = span(node, source, cache)
             records.append((first, last, name, node))
             prefix = name + '.'
         for child in ast.iter_child_nodes(node):
@@ -109,7 +139,9 @@ def definition_at_line(tree, line, spans=None):
     return matches[0][1:]
 
 
-def definition_index(body, source, prefix='', segments=None):
+def definition_index(body, source, prefix='', segments=None, cache=None):
+    if cache is None:
+        cache = {}
     # AST columns are UTF-8 byte offsets. Split Python physical lines once,
     # retaining original terminators; str.splitlines also splits literal data.
     if segments is None:
@@ -124,13 +156,13 @@ def definition_index(body, source, prefix='', segments=None):
     for node in body:
         if not isinstance(node, DEFINITIONS):
             continue
-        first, last = span(node)
+        first, last = span(node, source, cache)
         name = prefix + node.name
         records.append(dict(name=name, kind=type(node).__name__, first_line=first,
                             last_line=last, decorators=[decorator_source(d)
                                                         for d in node.decorator_list]))
         if isinstance(node, ast.ClassDef):
-            records.extend(definition_index(node.body, source, name + '.', segments))
+            records.extend(definition_index(node.body, source, name + '.', segments, cache))
     return records
 
 
@@ -165,7 +197,7 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
                     raise ValueError('Selected line exceeds file length: ' + str(path))
                 result['requested_line'] = symbol
                 if 'definition_spans' not in snapshot:
-                    snapshot['definition_spans'] = definition_spans(tree)
+                    snapshot['definition_spans'] = definition_spans(tree, source, snapshot)
                 symbol, node = definition_at_line(tree, symbol, snapshot['definition_spans'])
             else:
                 body = tree.body
@@ -182,7 +214,7 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
                     if all_matches and position == len(parts) - 1 and matches:
                         definitions = []
                         for match in sorted(matches, key=span):
-                            first, last = span(match)
+                            first, last = span(match, source, snapshot)
                             definitions.append(dict(kind=type(match).__name__, first_line=first,
                                 last_line=last, source=excerpt(lines, first, last)))
                         result.update(representation='definition_group', symbol=symbol,
@@ -193,11 +225,11 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
                         raise ValueError('Missing or ambiguous definition: ' + str(path) + ':' + symbol)
                     node = matches[0]
                     body = node.body
-            first, last = span(node)
+            first, last = span(node, source, snapshot)
             result.update(representation='definition', symbol=symbol, source=excerpt(lines, first, last))
             result['limitation'] = 'Definition excerpt only; imports, globals, bases and runtime bindings are not resolved.'
         else:
-            definitions, top_level = definition_index(tree.body, source), []
+            definitions, top_level = definition_index(tree.body, source, cache=snapshot), []
             for node in tree.body:
                 first, last = span(node)
                 if not isinstance(node, DEFINITIONS):
@@ -207,13 +239,19 @@ def describe(root, path, budget, symbol=None, index=False, auto_index=False, cac
                           limitation='Static index only; definition/class bodies are omitted, not reviewed. Inspect relevant definitions, fixtures, hooks and plugins before execution. Module-level conditional definitions remain in top_level; conditions inside class bodies are omitted. Runtime bindings are unresolved.')
             if large_selected:
                 result['reason'] = 'Selected Python file exceeds 200 lines; use file:qualified.definition or --full to read bodies. No behavioral conclusion is established by this index.'
+                index_size = len(encode({'selected': [result]}, pretty))
+                # Full numbered source cannot be shorter than its bare line
+                # contents. Avoid constructing it when the index already wins;
+                # prefixes, separators and JSON escaping only add characters.
+                if index_size < sum(map(len, lines)):
+                    return result
                 full_result = dict(path=str(path), sha256=digest, representation='full_source',
                                    source=excerpt(lines, 1, len(lines)))
                 # Compare at the actual selected-record nesting depth: pretty
                 # indentation adds more bytes to a multi-record index than to
                 # the single escaped source string. Ancestor context is common
                 # to both choices and does not affect this difference.
-                if len(encode({'selected': [result]}, pretty)) >= len(encode({'selected': [full_result]}, pretty)):
+                if index_size >= len(encode({'selected': [full_result]}, pretty)):
                     return full_result
     else:
         result['representation'] = 'full_source'

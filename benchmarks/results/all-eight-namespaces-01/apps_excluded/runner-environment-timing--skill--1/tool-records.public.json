@@ -1,0 +1,176 @@
+{
+  "session_id": "01a0e00f-86ac-7dc2-a2ad-efba893375ac",
+  "source_bytes": 101104,
+  "source_sha256": "35240d86885ed182e776fa6cf8b1f42f54d21d3a4d1759e3759322c5ae876397",
+  "source_lines": 38,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "94209e730b76ddced8bd6c4290b9334e3080757cba481a1101513d639c69ba6c",
+      "record": {
+        "timestamp": "2026-09-26T23:31:59.908Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_089b431801e379c8016ab855f0ea0487d09463e466cae68478",
+          "status": "completed",
+          "call_id": "call_rok35Pvi6FvtCDiOxuNssPWJ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '! .git' -g 'AGENTS.md' -g 'incident.md' -g '*.py' -g 'SKILL.md' -g '*test*' -g '*config*'\",\"max_output_tokens\":4000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/exorcist/SKILL.md\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e00f-86f7-7960-9875-481a1a7b3abd",
+            "create_time": 1790465513.576375
+          }
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "29a2d1d7df0b623188bb540651f88a7ba9461333e18694379e5241728c41fc02",
+      "record": {
+        "timestamp": "2026-09-26T23:32:00.115Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e00f-b1f3-7a72-b5f2-6f725fa105f0",
+          "call_id": "call_rok35Pvi6FvtCDiOxuNssPWJ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b2284e\",\"wall_time_seconds\":0.000005791,\"exit_code\":0,\"original_token_count\":39,\"output\":\"<WORKSPACE>\\nincident.md\\ntest_worker.py\\nworker.py\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6c80bf\",\"wall_time_seconds\":0.000003125,\"exit_code\":0,\"original_token_count\":928,\"output\":\"---\\nname: exorcist\\ndescription: Diagnose an uncertain bug by designing experiments that distinguish competing causes, especially speculative cache, timing, environment, or concurrency explanations.\\n---\\n\\n# Exorcist\\n\\n> You keep saying cache. Let's test that belief.\\n\\n## Find the decision-changing observation\\n\\nStart at the reported failure using supplied paths or the repository file list. Reuse existing reproduction evidence; trace only until plausible causes diverge. Don't manufacture hypotheses for an established mechanism.\\n\\nObserve that boundary in the actual implementation: submission versus persistence, dispatch versus completion, configuration versus effective state. Prefer existing observations or a recording dependency. Another layer recording the same value adds nothing unless its provenance is unresolved. A rewritten simulation or repeated success flag cannot establish an unobserved effect.\\n\\nChoose the runner before inspecting setup: use existing tests when they exercise the distinction, otherwise one small probe with comparable inputs and controlled timing. Inspect fixtures/configuration if that path uses them or they could explain the symptom. Retain normal controls; repeat only for unresolved intermittency or a required check.\\n\\nBefore another experiment, ask which possible result changes the diagnosis or next action. If none, stop. A symptom without a suspected dependency shows that dependency is unnecessary for this reproduction, not every production incident. Explain why the existing safeguard does or doesn't address the observed mechanism.\\n\\n## Match containment to the exercised path\\n\\nRun a bounded local computation with the chosen interpreter or existing test runner. The optional helper is not the default probe command: use it for an identified hang risk that the runner's existing process deadline does not contain. Synchronous code can also block; choose from the actual operations, not the presence of `async` alone.\\n\\nFor asynchronous probes, bound signals that may never arrive and clean up owned tasks. Asyncio timeouts can wait indefinitely for suppressed cancellation. When an additional process deadline is needed, the installed POSIX helper supplies one (replace paths/interpreter):\\n\\n```sh\\npython3 /path/to/exorcist/scripts/run_probe.py --timeout 10 -- python3 -B experiments/probe.py\\n```\\n\\nTrusted local foreground commands only: this kills remaining process-group members even after normal completion; it is not a sandbox. JSON retains child status, timeout and bounded output. Timeout or truncated decisive output means incomplete evidence, not causal proof. See [runner details](references/bounded-probe.md) for exit mapping, limits or adaptation; routine invocation doesn't require source inspection.\\n\\n## Finish at the evidence boundary\\n\\nChoose one destination for detailed evidence. If a trace file is requested or needed for later analysis, write it and print its path plus distinguishing inputs/outcomes and failures; don't also print the entire trace unless needed to resolve the diagnosis. Otherwise use captured command output directly instead of a file round trip. Preserve necessary ordering/provenance and keep the reproduction rerunnable.\\n\\nReport the supported mechanism, decisive command/result, safeguard and uncertainty. Name the missing observation if blocked, rather than expanding simulations. Link the reproduction instead of repeating it. A restart alone isn't causal proof; preserve evidence and user state before an authorized reset.\\n\\nDiagnosis leaves production code unchanged. A requested fix stays scoped and reruns the original reproduction plus relevant checks. Preserve user changes and explicit requirements. Keep humor optional.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e00f-86f7-7960-9875-481a1a7b3abd",
+            "create_time": 1790465520.115462
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 20,
+      "line_sha256": "a1ecc1c917975a01bef196d13f4d5710c7618adc67d59c62c02d0ad57fe194de",
+      "record": {
+        "timestamp": "2026-09-26T23:32:07.123Z",
+        "ordinal": 19,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_089b431801e379c8016ab855f7eab487d0b7dabf5337166149",
+          "status": "completed",
+          "call_id": "call_r6fIxVmUGndR4pcaEfC8VdJI",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; cat incident.md; cat worker.py; cat test_worker.py\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e00f-86f7-7960-9875-481a1a7b3abd",
+            "create_time": 1790465523.088505
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "f257d5442216698d6e0f95fafac3e6b5e1b35b50349d55c962af2293c73f42eb",
+      "record": {
+        "timestamp": "2026-09-26T23:32:07.224Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e00f-cdb8-72d3-a933-50be453eb078",
+          "call_id": "call_r6fIxVmUGndR4pcaEfC8VdJI",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"9ff9c7\",\"wall_time_seconds\":0.000003334,\"exit_code\":0,\"original_token_count\":435,\"output\":\"total 24\\ndrwxr-xr-x@  7 gwonsungwan  wheel  224 Sep 27 08:31 .\\ndrwxr-xr-x@  3 gwonsungwan  wheel   96 Sep 27 08:31 ..\\ndrwxr-xr-x@  3 gwonsungwan  wheel   96 Sep 27 08:31 .agents\\ndrwxr-xr-x@ 10 gwonsungwan  wheel  320 Sep 27 08:31 .git\\n-rw-r--r--@  1 gwonsungwan  wheel  491 Sep 27 08:31 incident.md\\n-rw-r--r--@  1 gwonsungwan  wheel  572 Sep 27 08:31 test_worker.py\\n-rw-r--r--@  1 gwonsungwan  wheel  249 Sep 27 08:31 worker.py\\nNo external mail provider is used in this reproduction. Run the test from a fresh process with REQUEST_RETRIES absent: python3 -m unittest -v test_worker. The contrasting standalone process sets REQUEST_RETRIES=0 before importing worker, then invokes deliver with a callback that records calls and raises RuntimeError. Its callback runs once. The application currently reads deployment environment at process startup; whether live configuration changes should be supported is not specified.\\nimport os\\n\\nRETRIES = int(os.environ.get('REQUEST_RETRIES', '2'))\\n\\ndef deliver(send):\\n    for attempt in range(RETRIES + 1):\\n        try:\\n            return send()\\n        except RuntimeError:\\n            if attempt == RETRIES:\\n                raise\\nimport os\\nimport unittest\\nfrom unittest.mock import patch\\nimport worker\\n\\nclass DeliveryTests(unittest.TestCase):\\n    def setUp(self):\\n        self.environment = patch.dict(os.environ, {'REQUEST_RETRIES': '0'})\\n        self.environment.start()\\n        self.addCleanup(self.environment.stop)\\n\\n    def test_disabled_retries(self):\\n        calls = []\\n        def send():\\n            calls.append('attempt')\\n            raise RuntimeError('offline failure')\\n        with self.assertRaises(RuntimeError):\\n            worker.deliver(send)\\n        self.assertEqual(len(calls), 1)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e00f-86f7-7960-9875-481a1a7b3abd",
+            "create_time": 1790465527.224599
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "b76f4f0d426651c46743a16fbb4d1b079f7c07d3348d2609cdad94f698c63a39",
+      "record": {
+        "timestamp": "2026-09-26T23:32:38.884Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_089b431801e379c8016ab85606509487d085cd3df24b5f03de",
+          "status": "completed",
+          "call_id": "call_2lLkLVhDt2HHrOZWJ2euRybB",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport os\\nimport subprocess\\nimport sys\\n\\nprobe = r'''\\nimport os\\nimport unittest\\nprint('before test import: REQUEST_RETRIES=' + repr(os.environ.get('REQUEST_RETRIES')), flush=True)\\nimport test_worker\\nworker = test_worker.worker\\nprint('after test import: worker.RETRIES=' + repr(worker.RETRIES), flush=True)\\noriginal_deliver = worker.deliver\\n\\ndef observed_deliver(send):\\n    calls = []\\n    print('during actual test, after setUp: REQUEST_RETRIES=%r, worker.RETRIES=%r' %\\n          (os.environ.get('REQUEST_RETRIES'), worker.RETRIES), flush=True)\\n    def recorded_send():\\n        calls.append(len(calls) + 1)\\n        return send()\\n    try:\\n        return original_deliver(recorded_send)\\n    finally:\\n        print('actual callback attempts: %r' % calls, flush=True)\\n\\nworker.deliver = observed_deliver\\nsuite = unittest.defaultTestLoader.loadTestsFromModule(test_worker)\\nresult = unittest.TextTestRunner(verbosity=2).run(suite)\\nraise SystemExit(0 if result.wasSuccessful() else 1)\\n'''\\nfor setting, expected_status in [(None, 1), ('0', 0)]:\\n    child_env = os.environ.copy()\\n    child_env.pop('REQUEST_RETRIES', None)\\n    if setting is not None:\\n        child_env['REQUEST_RETRIES'] = setting\\n    print('\\\\n=== Fresh process: initial REQUEST_RETRIES=%r ===' % setting, flush=True)\\n    result = subprocess.run([sys.executable, '-B', '-c', probe], env=child_env,\\n                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,\\n                            text=True, timeout=10)\\n    print(result.stdout, end='', flush=True)\\n    print('exit status:', result.returncode, flush=True)\\n    assert result.returncode == expected_status\\n\\nstandalone = r'''\\nimport os\\nos.environ['REQUEST_RETRIES'] = '0'\\nimport worker\\ncalls = []\\ndef send():\\n    calls.append('attempt')\\n    raise RuntimeError('offline failure')\\ntry:\\n    worker.deliver(send)\\nexcept RuntimeError:\\n    pass\\nprint('standalone: worker.RETRIES=%r, callback attempts=%r' % (worker.RETRIES, len(calls)))\\nassert len(calls) == 1\\n'''\\nresult = subprocess.run([sys.executable, '-B', '-c', standalone],\\n                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,\\n                        text=True, timeout=10)\\nprint(result.stdout, end='')\\nassert result.returncode == 0\\nPY\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e00f-86f7-7960-9875-481a1a7b3abd",
+            "create_time": 1790465529.788345
+          }
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "0f3cb7ef09605846ab1ee1938a21f7e205535eb0b01803efb9661367459b54ba",
+      "record": {
+        "timestamp": "2026-09-26T23:32:39.121Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e010-4a51-7ce2-817e-0a81cce1e560",
+          "call_id": "call_2lLkLVhDt2HHrOZWJ2euRybB",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b04776\",\"wall_time_seconds\":0.055772708,\"exit_code\":0,\"original_token_count\":352,\"output\":\"\\n=== Fresh process: initial REQUEST_RETRIES=None ===\\nbefore test import: REQUEST_RETRIES=None\\nafter test import: worker.RETRIES=2\\ntest_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... during actual test, after setUp: REQUEST_RETRIES='0', worker.RETRIES=2\\nactual callback attempts: [1, 2, 3]\\nFAIL\\n\\n======================================================================\\nFAIL: test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_worker.py\\\", line 19, in test_disabled_retries\\n    self.assertEqual(len(calls), 1)\\nAssertionError: 3 != 1\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\nexit status: 1\\n\\n=== Fresh process: initial REQUEST_RETRIES='0' ===\\nbefore test import: REQUEST_RETRIES='0'\\nafter test import: worker.RETRIES=0\\ntest_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... during actual test, after setUp: REQUEST_RETRIES='0', worker.RETRIES=0\\nactual callback attempts: [1]\\nok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\nexit status: 0\\nstandalone: worker.RETRIES=0, callback attempts=1\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e00f-86f7-7960-9875-481a1a7b3abd",
+            "create_time": 1790465559.121143
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

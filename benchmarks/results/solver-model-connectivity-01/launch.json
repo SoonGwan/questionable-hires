@@ -1,0 +1,47 @@
+{
+  "parent": "0d8ce3d4292541a098e4b8910bc46e29e068b682",
+  "argv_without_prompt": [
+    "codex",
+    "exec",
+    "--strict-config",
+    "--disable",
+    "shell_tool",
+    "--disable",
+    "unified_exec",
+    "--disable",
+    "apps",
+    "--disable",
+    "multi_agent",
+    "--disable",
+    "plugins",
+    "-c",
+    "web_search=\"disabled\"",
+    "-c",
+    "mcp_servers={qh_guest={command=\"<TEMP>\",args=[\"-B\",\"<WORKSPACE>/benchmarks/results/solver-mcp-lifecycle-01/server.py\",\"--vm\",\"<TEMP>\",\"--log\",\"<TEMP>\"],enabled_tools=[\"guest_command\"],startup_timeout_sec=25,tool_timeout_sec=20}}",
+    "--model",
+    "gpt-6-astra",
+    "--sandbox",
+    "read-only",
+    "-c",
+    "model_reasoning_effort=\"medium\"",
+    "--skip-git-repo-check",
+    "--json",
+    "-C",
+    "<TEMP>"
+  ],
+  "prompt": "This is an authorized connectivity check for a disposable Linux guest. Use only the launched qh_guest guest_command tool to run /bin/busybox uname -s once, with cwd /solver and timeout 5. Inspect the returned base64 stdout and actual exit code. Report the observed OS and exit code. Do not use host shell, patch, file, network or other tools. Do not modify any file or repeat the call. If the tool is unavailable or rejected, report that without fallback. This is not an issue-solving or performance task.",
+  "server_sha256": "bafaf77b9d1b98e42237eff8f4727da28d12a3c66c3f7807e871e6775b7da25d",
+  "observed_features": {
+    "shell_tool": false,
+    "unified_exec": true,
+    "apps": false,
+    "multi_agent": false,
+    "plugins": false
+  },
+  "scheduled_cells": 1,
+  "limits": [
+    "Connectivity only; host tool exclusion NOT established",
+    "No grading inputs or performance task"
+  ],
+  "parent_timeout_seconds": 90
+}

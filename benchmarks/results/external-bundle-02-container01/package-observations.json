@@ -1,0 +1,125 @@
+{
+  "steps": [
+    {
+      "stage": "install",
+      "command": [
+        "apt-get",
+        "--yes",
+        "--download-only",
+        "--no-install-recommends",
+        "install",
+        "docker.io=26.1.5+dfsg1-9+deb13u1",
+        "docker-cli=26.1.5+dfsg1-9+deb13u1",
+        "containerd=1.7.24~ds1-6+deb13u1",
+        "runc=1.1.15+ds1-2+b4",
+        "tini=0.19.0-3+b8"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "eedd7664359bbc0429ac6890e2907fd13142101ad7b533e0aa3778457c5653d0",
+      "stderr": ""
+    },
+    {
+      "stage": "install-cached",
+      "command": [
+        "apt-get",
+        "--simulate",
+        "--no-install-recommends",
+        "install",
+        "docker.io=26.1.5+dfsg1-9+deb13u1",
+        "docker-cli=26.1.5+dfsg1-9+deb13u1",
+        "containerd=1.7.24~ds1-6+deb13u1",
+        "runc=1.1.15+ds1-2+b4",
+        "tini=0.19.0-3+b8"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "a77fd79e381cba5c22accfbc4867543fbb54789a40dbcab7fcad9290e2c953f6",
+      "stderr": ""
+    },
+    {
+      "stage": "install-cached",
+      "command": [
+        "apt-get",
+        "--yes",
+        "--no-download",
+        "--no-install-recommends",
+        "install",
+        "docker.io=26.1.5+dfsg1-9+deb13u1",
+        "docker-cli=26.1.5+dfsg1-9+deb13u1",
+        "containerd=1.7.24~ds1-6+deb13u1",
+        "runc=1.1.15+ds1-2+b4",
+        "tini=0.19.0-3+b8"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "0152c358eaecd3cd5a30840229ee268de9b28e39b9900f36456db0a7f97ebca4",
+      "stderr": "debconf: unable to initialize frontend: Dialog\ndebconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)\ndebconf: falling back to frontend: Readline\ndebconf: unable to initialize frontend: Readline\ndebconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/aarch64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/aarch64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/aarch64-linux-gnu/perl-base /usr/lib/aarch64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8, <STDIN> line 5.)\ndebconf: falling back to frontend: Teletype\ndebconf: unable to initialize frontend: Teletype\ndebconf: (This frontend requires a controlling tty.)\ndebconf: falling back to frontend: Noninteractive\n"
+    },
+    {
+      "stage": "install-cached",
+      "command": [
+        "systemctl",
+        "disable",
+        "docker.service",
+        "docker.socket",
+        "containerd.service"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "Synchronizing state of docker.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.\nExecuting: /usr/lib/systemd/systemd-sysv-install disable docker\nRemoved '/etc/systemd/system/sockets.target.wants/docker.socket'.\nRemoved '/etc/systemd/system/multi-user.target.wants/containerd.service'.\nRemoved '/etc/systemd/system/multi-user.target.wants/docker.service'.\nDisabling 'docker.service', but its triggering units are still active:\ndocker.socket\n"
+    },
+    {
+      "stage": "install-cached",
+      "command": [
+        "systemctl",
+        "start",
+        "docker.service"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": ""
+    },
+    {
+      "stage": "install-cached",
+      "command": [
+        "docker",
+        "version",
+        "--format",
+        "{{json .}}"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "85bca99b08031025922ccd79840d127f3773752581760b03b719cab5728e57d9",
+      "stderr": ""
+    }
+  ],
+  "packages": [
+    {
+      "package": "containerd",
+      "version": "1.7.24~ds1-6+deb13u1",
+      "bytes": 19686644,
+      "sha256": "4af6b5a85498cc590eaf48d34c5c6c952ddabadae0afd6a9d2931d6a05782bc9"
+    },
+    {
+      "package": "docker-cli",
+      "version": "26.1.5+dfsg1-9+deb13u1",
+      "bytes": 6316696,
+      "sha256": "d9dbab1a7cae040aa617ab509067b4d070dc1dde190851e5b629150705da55fd"
+    },
+    {
+      "package": "docker.io",
+      "version": "26.1.5+dfsg1-9+deb13u1",
+      "bytes": 15066596,
+      "sha256": "e1fe5c5599e1ab91e305cc82ff215240401ff0c755c00e5a9307f78577eebcc9"
+    },
+    {
+      "package": "runc",
+      "version": "1.1.15+ds1-2+b4",
+      "bytes": 2763660,
+      "sha256": "be066fd107eceb72459aef9285299f979d7b0c25f947aec6f9a59eac05be135c"
+    },
+    {
+      "package": "tini",
+      "version": "0.19.0-3+b8",
+      "bytes": 233960,
+      "sha256": "442405a197deb2471fc881ef3ee66c399dab2a766280e9b935197f1d18d8d6e8"
+    }
+  ]
+}

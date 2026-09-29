@@ -1,231 +1,162 @@
-# Current candidate: whole-task performance remains unproven
+# Current candidate: whole-task improvement remains unproven
 
-Decision checkpoint **2026-09-22, SWE-Lite pilot01 resource`8ee6c56` / runner`796926e`**.
-This index is not a new measurement. Each result below belongs to its named
-resource, not automatically to this working version.
+Decision checkpoint **2026-09-28**. The owner requires better developer outcomes
+across all eight roles, fewer whole-task input+output tokens and faster completion.
+This is **not achieved**. No general efficiency or complete release claim is supported.
 
-## Objective and unfinished requirements
-
-All eight skills should improve real developer outcomes at similar or lower
-token/time cost. The broad20–30%+ goal is **not established**. Passing helper
-tests does not establish model efficiency, independent generalization or release
-readiness. No public-release approval or successful hosted matrix is claimed.
-
-한국어:8개 스킬 전체의 실제 개발 성능·비용 개선 목표는 아직 미달이다.
-도구 테스트 통과, 모델 성능 실증, 공개 배포 준비는 서로 다른 조건이다.
-
-## Model evidence that governs claims
-
-[Receipt versions01](RECEIPT-VERSIONS-01-REVIEW.md), current`e075bdb`, completed
-six authored single/multiple-version cells. Current versus baseline summed
-tokens+0.31%,time−13.77%; each task trades one metric against the other. The
-multi-version helper is used in current/multiple, but all conditions already
-execute each requested revision once. Actual adoption, not a broad cost win;
-no featured promotion or favorable rerun. All native contracts and final-state
-preservation checks pass; original tool output resolves CLI prefix omissions.
-[Response-cost review](RECEIPT-VERSIONS-01-INPUT-COSTS.md) reconciles all six:
-single responses5/6/4, multiple5/5/5 (baseline/predecessor/current). No redundant
-native execution or new generic compression/forced-helper rule is supported.
-
-한국어: 새 다중 버전 기능의 실제 사용은 확인했지만 합계 토큰 절감은 없었다.
-시간 감소만으로 전체 개선을 주장하지 않으며 불리한 결과도 함께 보존한다.
-
-[SWE-Lite pilot01](SWE-LITE-PILOT-01-REVIEW.md) completed its four frozen
-external-issue cells. Both conditions pass the required native contracts, but
-summed cost is essentially unchanged and broader pytest validation reveals a
-fixture-induced path problem. These public tasks are not proven uncontaminated
-holdouts and are now exposed development cases. Do not promote the favorable
-Requests pair or rerun the pair as independent validation. Preparation/failure
-history remains in the [dated checkpoint](CANDIDATE-STATUS-2026-09-22-BEFORE-SWE-RESULTS.md).
-
-[Original response-cost review](SWE-LITE-PILOT-01-INPUT-COSTS.md) reconciles all
-four sessions: Requests responses9→7, pytest10→11. It does not identify causal
-savings or justify mandatory helper use; repair a new fixture's neighboring-test
-behavior before further timing. Skill instructions remain unchanged by this review.
-
-한국어: 외부 과제4회 실행·기준 채점까지 완료했지만 큰 비용 개선은 없었다. pytest의
-추가 검사에 영향을 준 실험 환경 문제도 남긴다. 유리한 한 쌍만 홍보하지 않는다.
-원본 비용 분석도 완료했으나, 불필요한 도구 강제나 지침 변경의 근거는 아니다.
-
-| Reviewed checkpoint / measured resource | Observed result | Decision |
+| Dated checkpoint and measured resource | Evidence | Decision |
 | --- | --- | --- |
-| [SWE-Lite pilot01](SWE-LITE-PILOT-01-REVIEW.md), `8ee6c56` |4cells; both conditions pass Requests141/141 and pytest78/78 required checks. Sum tokens−0.71%, time+2.43%. Both current sessions read Receipt; no helper execution. | No broad gain. Broader pytest validation is fixture-confounded; baseline Requests also searches `/run`. Preserve all cells, no featured promotion. |
-| [Probe-edit transfer01](PROBE-EDIT-TRANSFER-01-REVIEW.md), current`aed8a27` |6cells; current vs baseline full tokens−7.87%/time+67.29%, prefix+10.43%/+0.74%. Current costs more tokens/time than predecessor on both. All scoped native checks succeed; helper unused. | No API adoption or efficiency benefit; no promotion. |
-| [All-eight regression04](ALL-EIGHT-CURRENT-04-REVIEW.md), `0d12dd9` |16cells; summed tokens+20.39%, time−5.17%. Scope included: baseline7/8,current8/8 because baseline SQLite searches outside the project. | Cost goal unmet; not a general quality advantage. This predates subsequent changes. |
-| [Configuration audit01](CONFIG-LAYERS-01-REVIEW.md), `e1e1ef8` |4cells; single tokens+4.65%/time+2.26%, multiple+0.38%/−1.28%. Helper unused in both current sessions. Multiple/current incorrectly denies baseline reuse. | No efficiency promotion or unqualified task pass. Native checks/preservation hold; reporting defect retained. |
-| [Packaging specifier01](PACKAGING-SPECIFIER-01-REVIEW.md), `c8fd471` |4cells; single tokens−18.53%/time−5.06%, multiple+5.39%/+13.84%. Helper unused; original806-test suite and requested faults run. | Mixed correlated pair, not a broad saving. Original initial-index identity is unproven. |
+| [pytest5103 official pair01](EXTERNAL-BUNDLE-02-PYTEST5103-CONTAINER-01.md),2026-09-28,controls `241822e8`/pair `4f517faa`,image `d873716d` | Offline installation and pass/fail/nested controls succeed. Original base1 required failure+64 passes/gold65 required passes, but the same2 extra primary failures remain in both; native exits1/1. | Reject frozen native gate: gold must exit0. All72 items/211 reports accounted for. [Warning-policy diagnosis01–02](EXTERNAL-BUNDLE-02-PYTEST5103-REWRITE-01.md), protocols `5c9a7070`/`9dde927b`,12 authored cells: warning-as-error removes expanded messages only on two complex shapes; direct path remains expanded. No issue replay or relaxed gate; zero models/savings, VM stopped. |
+| [Matched recorded inputs01](SAME-RESOURCE-OBSERVATIONS-01.md),2026-09-28,source tree `73c54664`,protocol `81961f01` | Retrospective exact known-input/resource matching finds23 original sessions across10 anchors; all actual Astra/medium counters verified. Editor-present spans3–5 responses; absent5 ordinary sessions all have5 responses and86,355–87,437 tokens. | No new models or variance/causal claim. Preserve controlled-write decline; targeted+19.48% is not excused by these ordinary observations. Require concrete removed work before another small instruction/interface trial. |
+| [Mother controlled writes01](MOTHER-WRITES-01-REVIEW.md),2026-09-28,previous `20468dd3`/candidate `8997f97a`,execution `b64a1501` | Four original sessions: Editor tokens+19.48%/time−1.13%, Search−32.85%/−3.89%; sum−8.68%/−2.47%. Native required outcomes preserved; asset read/adaptation observed. | Decline: targeted Editor responses5→6; support rewritten rather than copied. Search never uses the added asset. Exposed n=1/unequal work; aggregate cannot override adverse task. No ordinary adoption or unchanged retry; overall gate unmet. |
+| [Context BOM01](CONTEXT-BOM-01.md),2026-09-28,parent `18e8ed31` | Valid UTF-8-signature source rejected by named/line/group/index paths now reads correctly. New5 reproduce3 failures/4 syntax errors; focused39 and Git-free71 on Python3.9/3.11 pass. | Native input compatibility only; reused Necromancer mechanism, raw hashes/limits preserved, no model calls or cost claim. Source `6208466b`: installed5/archive4/landing31 pass; all8 installations and52 packaged resources match. Public `bca0130f`:8 HTTPS routes and52 archive resources match. Initial zero-test discovery is retained, not counted. |
+| [pytest11143 official pair01](EXTERNAL-BUNDLE-02-PYTEST11143-CONTAINER-01.md),2026-09-28,controls `7d9f77da`/pair `a28db19e`,image `4cf4b5ad` | Prepared offline install succeeds; original base1 failure+114 required passes/gold115 required passes. Both ambiguous native candidates pass;116 primary items/348 phase reports, native exits1/0. | Accept one scoped author native gate only. Original dependency404 and incomplete-build failure retained. Extra parsed nested-output statuses and actual generated versions disclosed; zero models/savings, VM stopped. |
+| [Friday JSON output01](FRIDAY-JSON-OUTPUT-01-REVIEW.md),2026-09-28,previous `371b4b1e`/fixed `c9b30fc6`,execution `7c714555` | Four original forced-CLI handoff sessions: both pairs lower tokens/time; sum−15.97%/−20.43%, responses11→10. Original values/errors/inputs preserved; both missing CLI consumer outputs recovered from matching stored responses. | Accept narrow interface observation only. Non-finite repair removed; finite control has no repair in either arm and optional reads differ. Authored n=1, no causal/general/all-eight saving. No retry or hosted metric change. |
+| [Native probe model01](AUDIT-PROBE-SELECTION-MODEL01-REVIEW.md),2026-09-28,previous `4dac0d2b`,candidate `e7e1f8b2`,execution `9df733a1` | Four original cells: shared tokens+1.56%/time−2.68%, distinct−1.86%/+14.91%;6→6 responses both. Actual shared native checks11→9, all mutant checks/results and originals preserved. | Joint model-cost gate fails. Retain scoped native optimization, no model savings claim; extra source/reference reads and deliberately summarized inventories remain visible. Sum−0.20%/+6.75%, forced helper/exposed cases, no unchanged retry. |
+| [Integration07](ALL-EIGHT-CURRENT-07-REVIEW.md), 2026-09-28, measured `1be35120`, execution `47a00692` | All16 original sessions reviewed: tokens +1.67%, CLI −9.63%; only 2/8 pairs lower both. Bounded task outcomes preserved, with unequal work and two recovered original output prefixes. | All-eight gate unmet. Repeatedly exposed n=1 tasks, shared host/cache and context variation; no quality superiority, causal optimization or independent-validation claim. [All costs](ALL-EIGHT-CURRENT-07-COSTS.md). |
 
-These are small author-selected/development experiments, not independent
-generalization evidence. All attempts, adverse outcomes, original output gaps and
-reviewed reconciliations remain in the linked reports. No replay substitutes for
-original model evidence. The [regression04 cost analysis](ALL-EIGHT-04-INPUT-COSTS.md)
-separates extra reads and legitimate verification; its arithmetic is not causal
-or recoverable savings.
+The [preceding dated decision index](CANDIDATE-HISTORY-2026-09-28-BEFORE-PYTHON37-NATIVE01.md)
+preserves superseded checkpoints, every adverse result and the chronological links.
+This index separates native correctness, original model evidence and hosted checks;
+it is not a replacement benchmark. In particular, integration06 remains its
+historical +16.95% tokens/−10.00% CLI result at `1d0e92ac`; differences between
+cohorts are not a controlled improvement. Do not repeat unchanged declined
+instruction-shortening, grouping, model-choice or routing candidates as new evidence.
 
-한국어: 전체 비교의 토큰 증가, 단일/다중 과제의 혼재된 결과, 스킬의 재사용 보고
-오류를 모두 유지한다. 유리한 한 쌍이나 프로세스 감소를 전체 개선율로 확대하지 않는다.
+[Integration07 costs](ALL-EIGHT-CURRENT-07-COSTS.md) retain all eight original pairs:
+592,783→602,679 input+output tokens,494.990→447.302 CLI seconds, only2/8 lower both.
+These repeatedly exposed n=1 tasks have unequal work and shared host/cache/context
+limits. Bounded outcomes were preserved; quality superiority was not established.
+The [loading audit](SKILL-LOADING-01.md) observes instruction timing variation
+without identifying a cause. Native test/process reductions alone are not model
+savings, and favorable individual pairs do not establish the all-eight goal.
 
-## Implemented capabilities and local validation
+[Context index allocation01](CONTEXT-INDEX-ALLOCATION-01.md),2026-09-28,
+`65cd6556`→`f416c8d9`: skip constructing discarded full source when a strict size
+lower bound settles automatic index choice. All10 compact/pretty outputs match;
+sparse-large native time−18.64–21.58%, traced peak−13.51–13.84%, four timing rows
+regress. Git-free72 on3.9/3.11 pass after retaining an omitted-reference setup error.
+Native implementation only; integration07 did not exercise this collector, so no
+whole-screen retry or model-cost claim. All8 installed skills match; installed5,
+archive4/landing31 pass. Public `281c3cf0`:8 HTTPS routes and52 skill resources match;
+these are delivery checks, not new model evidence.
 
-These changes are implemented; their model-cost effect is not established:
+[Integration07 change reachability01](INTEGRATION07-CHANGE-REACHABILITY-01.md),2026-09-28,
+compares measured `1be35120` with `ba3a9ec4`: all8 entries are unchanged;14 support
+files differ, but the original changed-helper routes do not exercise the repaired
+failures. Zero new model calls. Do not rerun the whole screen merely for newer
+package bytes; require a concrete change to an observed expensive path first.
 
-- [Python excerpt BOM compatibility](PYTHON-REGIONS-BOM-01.md), parent`f91b652`:
-  native-valid UTF-8 signature files no longer fail selection. Original byte
-  hashes/budgets and physical lines remain;20 region tests pass in checkout/archive.
-  한국어: UTF-8 BOM 입력 거부 수정이며 모델 비용 절감 실측은 아니다.
+[Mother observation01](MOTHER-OBSERVATION-01.md),2026-09-28,source `4032755a`,
+protocol `41ac0c89`: a two-subtest author derivative reaches later value failures
+while keeping lifecycle guards. Eight native controls pass on3.11 and in a Git-free
+3.9 copy. Keep isolated: guidance/code/diagnostics grow, no observed model step is
+removed, zero model calls and no performance trial or ordinary adoption follows.
 
-- [Receipt multiple-before](RECEIPT-MULTIPLE-BEFORE-01.md), parent`efc1439`:
-  optional unittest multi-version comparison executes current once, preserving
-  each historical result and shared snapshot limits. Author native control4→3
-  checks, single pair2→2;7 new controls pass in checkout/archive. No model gain.
-- [Receipt original-hash reuse](RECEIPT-ORIGINAL-HASH-REUSE-01.md), parent`20380c9`:
-  result fields reuse digests of already captured bytes; mutable-file rereads,
-  guards and native comparisons remain. Two-file working-tree control4→2 digest
-  calls is not a whole-helper or model saving.50 helper/8 guard tests pass.
-- [Isolated scratch02](SWE-LITE-SCRATCH-02.md), parent`551dce3`: optional
-  container-private scratch avoids the pytest ancestor-config rootdir defect.
-  Native base replay184pass versus legacy181pass/3fail;23 runner checks pass
-  in checkout/archive. Old scheduler unchanged; future task scope must explicitly
-  permit scratch. This is environment validation, not a new model efficiency result.
-  [Mounted-source follow-up](SWE-LITE-SCRATCH-ADAPTER-02.md) at`0858a26` also
-  verifies194 source bindings, the same native outcomes, intentional failure
-  output, unchanged project and actual adapter cleanup without a model call.
-- [Complete decorator excerpts](PYTHON-REGIONS-DECORATORS-01.md), parent`7d67eff`:
-  multiline decorator openings no longer disappear from supposedly complete
-  regions. Four new regression tests fail before repair; all18 region tests pass
-  on3.11 afterward. This repairs source evidence, not model efficiency.
-- Con Artist entrypoint now mentions localized exact edits in its existing
-  optional four-check recipe route. In transfer01, predecessor/current entrypoints
-  were identical and all four skill sessions stopped at that body without reading
-  the supporting guide. This makes the capability visible earlier, not mandatory;
-  it does not establish why models chose custom harnesses or that routing is fixed.
-  The new wording is unmeasured; frozen results/charts remain unchanged.
-- [Exact native probe edits](AUDIT-PROBE-EDITS-01.md), parent`23f06d2`:
-  localized test changes need not resend unchanged file contents; four native
-  checks and full materialized-byte budget/cache identity remain.128 audit controls
-  pass on3.11; full checkout1,162/1,162 and archive new group7/7.
-  No measured model adoption or efficiency effect.
-- [Audit special-input rejection](AUDIT-SPECIAL-INPUTS-01.md), parent`74b674a`:
-  initially selected FIFO/socket entries no longer disappear silently from copies;
-  rejected before execution.121 audit and80 mutation-helper controls pass on3.11.
-  Fresh source archive121/121 as well; correctness repair, not model-efficiency evidence.
-- [Local CLI installation03](SKILLS-CLI-INSTALL-03.md), resource`8114957`:
-  eight skills/51 resources match after actual local CLI copy; nine Python
-  entrypoints and selected installed behaviors pass. Initial mount error retained;
-  no remote-install, hosted-CI or model-efficiency claim.
-- [Focused history hunk selection](HISTORY-HUNK-SELECTION-01.md), parent`c96730d`:
-  slices retained hunks instead of copying every omitted body; exact evidence
-  matches the old selector. Large sparse input reduces intermediate allocations,
-  tiny-input memory increases;56 history controls pass. Not a model-cost result.
-- [Mother request-entry cancellation](MOTHER-ENTRY-CANCEL-01.md), code`c00276d`:
-  reproduced on Python3.9/3.11, then repaired without consuming pending requests.
-  Native asset8/8 on both versions,38 Mother controls on3.11; source archive8/8.
-- Con Artist reporting clarification at`eed4ff7`: a correct run used against
-  several faults is reused evidence even in a custom harness, counted once.
-  Addresses the configuration report defect; no favorable rerun or extra check.
-- [Returning stronger-probe cache](AUDIT-PROBE-CACHE-02.md), code`b6df5f6`:
-  bounded batch-local retention; authored alternating example25→19 native
-  processes, adjacent control9→9. All mutant checks remain. Archive audit118/118.
-  **24% fewer processes in that example is not24% fewer model tokens or seconds.**
-- [Pytest batch routing](AUDIT-PYTEST-BATCH-ROUTE-01.md), code`22c0300`:
-  existing pytest support distinguished from unittest-only module mode.
-- [Initial index capture](INITIAL-INDEX-CAPTURE-01.md), code`6db0788`:
-  before-model/pre-collector identity now recorded; missing capture stays unknown,
-  byte changes alone are not automatic scope failures. No historical rescore.
+The [model execution authorization request](SOLVER-EXECUTION-ENVIRONMENT-REQUEST-01.md)
+remains unresolved. Author-only Docker/native preparation does not authorize the
+rejected model tool, change its approval settings or prove solver isolation.
+The pytest5221 and pytest11143 gates each cover a selected case in an explicitly
+prepared offline build environment; neither establishes full-cohort readiness.
+The pytest5103 official pair01 fails its frozen native-exit gate because two extra
+primary failures remain on gold, despite all65 required labels passing. The
+[earlier adverse Requests Linux grade](OWNED-OFFICIAL-GRADE-01.md)
+and other selected-case failures remain; no unchanged retry or case replacement.
 
-한국어: 위 항목은 도구·안내·측정의 구체적 수정이다. 각각의 로컬 검증 범위와
-커밋을 구분하며, 아직 측정하지 않은 모델 성능 효과를 주장하지 않는다.
+[pytest5103 prepared Python37 native gate01](PYTEST5103-PYTHON37-NATIVE-01.md),
+2026-09-28,controls `f51f73c9`/pair `8f5e5b67`,image `47287d2f`: original base1
+required failure+64 passes/gold65 required passes, actual native exits1/0.
+All primary outcomes base64pass/3fail, gold67pass;5 skips each,72 items/211 reports.
+Accept this prepared case only: four conda activation lines removed, image and
+dependencies differ, original tests/warnings/labels unchanged. Retain initial
+directory-mode setup failure and rejected official3.9 gate. Zero models/savings;
+containers/services cleaned and VM stopped. No unchanged retry needed.
 
-## Avoid repeating rejected approaches
+[Featured pointer](featured.json) still identifies the frozen Mother confirmation.
+[Integration07 publication](../docs/LANDING-INTEGRATION07-2026-09-28.md),
+[language pending feedback](../docs/LANDING-LANGUAGE-PENDING-2026-09-28.md) and
+[responsive hero verification](../docs/LANDING-HERO-LAYOUT-2026-09-28.md) are dated
+hosted checks, not new model measurements. The [execution01 checkpoint](RELEASE-VALIDATION-EXECUTION01.md)
+at `e1f10b7c` records1,473 native tests; it is historical, not a current full-suite
+claim.
+[Landing resolved-file boundary](../docs/LANDING-INDEX-BOUNDARY-2026-09-28.md),
+2026-09-28,deployed `39fb3893`: outside index/manifest links now receive HTTP
+errors; a newly introduced loop-error regression was reproduced and corrected.
+Native landing31/Git-free origin12 checks and8 public routes pass;157 static
+files and skill archive bytes remain unchanged. This is hosted correctness, not
+model cost or all-eight evidence.
+ Current native grading preparation leaves skills, featured charts and the
+hosted landing release unchanged.
 
-Reviewed [existing-file probe transfer01](PROBE-EDIT-TRANSFER-01-REVIEW.md):
-all six use custom harnesses; the optional exact-edit API is not adopted.
-Author preflight's smaller serialized requests are not model savings. Do not
-force helper usage or rerun the same full/prefix tasks for a favorable outcome.
+한국어: 전체8개 품질·토큰·시간 목표는 미달이다. integration07(2026-09-28,
+측정 자원 `1be35120`)은 합계 토큰1.67% 증가·시간9.63% 감소이며 동시 감소는2/8이다.
+반복 노출·조건별1회·검사량 차이를 유지하고 이전 실험과의 차이를 인과적 개선으로
+보지 않는다. 네이티브 수정·모델 비용·공개 배포는 각각 다른 근거다.
 
-Reviewed [natural routing-boundary screen02](ROUTING-BOUNDARY-02-REVIEW.md):
-three ordinary requests, unchanged bundle`ba477ae`, auto-only. All satisfy the
-requested outcome without observed body reads or extra audit work; all eight
-descriptions are present in initial context. No routing defect supports a change.
-No baseline comparison, population-rate estimate or efficiency gain follows.
+pytest5221 offline build02는 고정 의존성으로 설치와 원본2개 실패/정답172개
+통과를 확인했고, 중첩 보고를 섞지 않는 관찰기 대조군도 통과했다. 선언된1개 사례의
+네이티브 평가 조건만 채택하며 이전 설치 실패·권한 오류·실제 생성 버전 차이를
+보존한다. 모델 호출0회이고 승인 문제와 다른 사례 실패는 미해결이다. 모든 이전
+불리한 결과와 자세한 개발 이력은 위 날짜별 보존 목록에서 확인할 수 있다.
 
-Before another edit, inspect the mechanism and prior outcomes:
+Requests2674는 기존8개 실패의 실행 경계를 구분했고, 과거 호환성 수정이 누락된
+Linux 서비스의 쿠키500을 별도 대조군으로 재현·해결했다. 원본 채점은 반복하거나
+재분류하지 않았으며 이미 통과한11개와 다른 실패는 남는다. 모델 절감 근거는 아니다.
 
-- [Global lean rewrite](results/lean-screen-01/README.md): lean7/8 versus current8/8;
-  still costs more than baseline. Do not repeat broad compression without new evidence.
-- Receipt read-order/support-routing and repeated ledger tuning did not consistently
-  lower cost. [History](CANDIDATE-HISTORY-2026-09-21.md) retains these attempts.
-- [ZIP](ZIP-AUDIT-01-INPUT-COSTS.md), [slugify](SLUGIFY-NATIVE-01-INPUT-COSTS.md),
-  and configuration audits do not justify forced helper adoption or another generic
-  “read less/group more” rule. Native execution counts are not end-to-end costs.
-- [EventEmitter](EVENTEMITTER-BOUNDARY-01-REVIEW.md) and
-  [Hostage conditional](HOSTAGE-CONDITIONAL-01-REVIEW.md) candidates were not promoted.
-  Required coverage must survive any reduction in output or test count.
+Friday의 무한대 결과가 성공 종료하면서도 잘못된 JSON을 내보내던 경로를 수정했다.
+실제 JavaScript 파서는 실패→통과했고 새5개·Git 없는 사본63개 검사가 통과했다.
+네이티브 값은 유지하며 모델 토큰·시간 절감 근거로 계산하지 않는다.
 
-Use existing `analyze_response_costs.py`, not another profiler. New performance
-experiments need a distinct relevant workflow, frozen criteria, a simple control
-and every scheduled attempt retained; exposed cases are not held-out validation.
-Do not rerun a completed experiment until it becomes favorable.
+Friday JSON output01(2026-09-28, `371b4b1e`→`c9b30fc6`)은 명시적 CLI 인계2개
+과제에서 합계 토큰15.97%·시간20.43% 감소를 관찰했다. 무한대 복구 작업은
+사라졌지만 읽기량·묶음 차이가 있고 조건별1회다. 전체8개 성과나 일반 절감률로
+바꾸지 않으며 대표·공개 수치와 위 목표 미달 판단은 유지한다.
 
-## Release and publication boundary
+Context decorator opening01은 Con Artist의 여러 줄 데코레이터 시작 누락을
+수정한 네이티브 정확성 근거다. 기존 Necromancer 수정과 같은 원인을 다른 도구에서
+확인했으며 모델 비용·전체8개 절감으로 계산하지 않는다.
 
-[Public-history review01](PUBLIC-HISTORY-REVIEW-01.md), source`4174c18`:
-bounded scan finds a test-only key-header marker and284 path-shaped lines.
-Future scratch-path export gap repaired; past artifacts/history remain unchanged.
-Public artifact review is not complete and no history rewrite is authorized.
-[Eight labeled reading derivatives](results/public-path-derivatives-01/README.md)
-now redact the identified owner/account paths with source and derivative hashes;
-original observations and reachable history remain unchanged. Not release clearance.
+pytest11143 official pair01은 원본 실패1개·기존 통과114개와 정답115개 통과를
+확인했다. 같은 이름으로 집계되는 실제2개도 모두 통과하며 최상위116개 검사는
+348개 단계 보고와 일치한다. 처음 빠뜨린 의존성으로 인한 설치 실패와404 기록을
+보존한다. 중첩 출력에서 파서가 읽은 추가 실패 표시는 최상위 검사 실패 수로
+바꾸지 않는다. 모델 호출·절감 근거는 없고 컨테이너·서비스·VM 종료를 확인했다.
 
-[Authenticated remote installation01](REMOTE-INSTALL-01.md), source`5e6beab`:
-GitHub helper and npx remote clone produce matching8 skills/51 resources;
-nine installed entrypoints and selected native checks pass. Cached CLI package
-and existing credentials; not anonymous/public access or model performance.
+Mother observation01은 값 실패 뒤 완료 관찰을 늘리는 로컬 방식을 검증했지만
+코드·출력 증가와 모델 단계 절감 근거 부재 때문에 격리 상태로 유지한다.
+과거 허용된 실패 후 정리를 재채점하지 않으며 성능 실험·기본 반영은 하지 않는다.
 
-[Current local checkpoint](RELEASE-VALIDATION-2C7E036.md), source`2c7e036`:
-macOS/Python3.11 checkout1,225passes; Linux/Python3.12 archive1,195passes,
-30history/checkout skips, zero failures. Includes multi-version comparison and
-BOM repair. Both exit0; hosted run35630364251 fails before steps with the same
-payment/spending-limit alternatives. No model gain or publication claim.
+Context BOM01은 Python이 받아들이는 UTF-8 BOM 소스를 맥락 수집기가 거부하던
+경로를 수정했다. 원본 해시·바이트 한도는 그대로이며 최초 표시·파싱 마커만
+제거한다. 기존 Necromancer 방식 재사용이며 모델 비용 절감으로 계산하지 않는다.
+공개 배포 `bca0130f`의8개 HTTPS 경로와 다운로드52개 자원도 일치한다.
 
-[Prior local checkpoint](RELEASE-VALIDATION-AD72A3F.md), source`ad72a3f`:
-macOS/Python3.11 checkout1,203passes; Linux/Python3.12 archive1,174passes,
-29history/checkout skips, zero failures. Both exit0. Hosted main run35625416269
-failed before all four jobs' steps; Python3.11 cites payments/spending limit.
-No new model result, remote installation or publication approval is implied.
+Mother controlled writes01은 저장 지원 코드를 제공했지만 대상 과제의 토큰이19.48%
+늘어 채택하지 않는다. 검색 과제 감소로 합계가 줄어도 전체 기준을 바꾸지 않는다.
+원본4회 결과와 별도 정상 사본12개 통과를 구분하며 같은 후보를 재실험하지 않는다.
 
-[Prior local checkpoint](RELEASE-VALIDATION-04741D7.md), source`04741d7`:
-macOS/Python3.11 checkout1,179passes; Linux/Python3.12 archive1,150passes,
-29historical skips, zero failures. Both exit0; overlapping durations are not
-speed comparisons. Hosted main run35610526288 failed before all four jobs'
-steps; Python3.11 again reports account payment/spending-limit alternatives.
+Matched recorded inputs01은 기존 원본23회의 기록된 입력·자원·설정을 맞춰 확인했다.
+과제별 응답·비용 변동이 달라 작은 문구 변화의 효과나 일반적인 변동 폭으로
+단정하지 않는다. 새 모델 호출 없이 기존 후보 제외와 전체8개 미달 판단을 유지한다.
 
-[Combined local checkpoint](RELEASE-VALIDATION-9A84635.md), source`9a84635`:
-1,155checkout passes on macOS/Python3.11.16; Linux/Python3.12.3 archive
-1,127passes/28historical skips/0failures. Logs retained; overlapping durations
-are not speed comparisons. This is not the complete hosted version matrix.
-The newer [probe-edit resource](AUDIT-PROBE-EDITS-01.md),`37e62d2`, passes
-all1,162 checkout checks on macOS/Python3.11.16 and its seven new archive checks;
-the earlier Linux whole-suite result does not cover that new input form.
-Earlier [macOS](RELEASE-VALIDATION-D97E971.md) and
-[Linux](AUDIT-EMPTY-NATIVE-01.md) checkpoints retain their original revisions.
+pytest5103 official pair01은 설치와 대조군을 통과했지만 정답에도 추가2개 실패가
+남아 실제 종료값1이다. 필수65개 통과만으로 사전 기준을 바꾸지 않으며 원본
+실험을 그대로 불합격으로 기록한다. 최상위72개·단계211개와 생략5개를 확인했고
+재실험·모델 호출·성능 주장 없이 환경 종료를 확인했다.
 
-Hosted [run35604299489](https://github.com/SoonGwan/questionable-hires/actions/runs/35604299489)
-at`9a84635`, rechecked2026-09-21, has four terminal failures with no executed
-steps; its Python3.11 annotation cites payments/spending limit alternatives.
-Do not change billing or visibility without owner direction.
+pytest5103 warning-policy diagnosis01–02는 경고 처리만 바꾼 작성자 대조에서
+두 표현식의 상세 메시지가 사라지는 경계를 확인했다. 직접 변환은 계속 정상이며
+예측 불일치와 불완전한 표시도 보존한다. 원본 경고 정책·채점 기준을 완화하거나
+불합격을 통과로 바꾸지 않았고 모델 호출·절감 근거는 없다.
 
-Keep [featured.json](featured.json) tied to its frozen evidence. No result here
-justifies replacing its graphs. Representative updates must synchronize both
-README languages and generated charts using the existing synchronization script.
+Context index allocation01은 반환할 목록이 더 작다는 확정 하한이 있을 때 버릴
+전체 소스 생성을 생략한다. 출력은 동일하며 큰 합성 사례의 네이티브 시간·추적
+메모리가 줄었다. 작은 시간 증가와 최초 누락 참조 오류도 남긴다. 모델 비용
+절감·전체8개 성과로 계산하지 않는다. 설치본8개가 일치하며 공개 `281c3cf0`의
+8개 HTTPS 경로와 다운로드 스킬52개 자원이 일치한다. 이는 별도 배포 검증이다.
 
-한국어: 전체 로컬 검사 결과는 명시한 이전 커밋의 결과다. 현재 전체 매트릭스,
-원격 CI 성공, 공개 배포 승인은 별도 미완료 조건이다. 대표 그래프는 동결된
-근거를 유지하며 수치만 독립적으로 바꾸지 않는다.
-
-## Preserved history
-
-[Full pre-reorganization status at bfcaae9](CANDIDATE-HISTORY-2026-09-21-B.md)
-retains every former paragraph, including older positive, mixed and adverse
-checkpoints, preparation notes and links.
-[Earlier chronological history](CANDIDATE-HISTORY-2026-09-21.md) remains intact.
+pytest5103 prepared Python37 native gate01은 별도 환경에서 원본 필수 실패1개·
+통과64개, 정답65개 통과와 실제 종료값1/0을 확인했다. 전체72개·211단계 보고와
+5개 건너뛰기를 검산했다. conda 활성화4줄을 제거한 별도 평가이며 기존 공식3.9
+실패·최초 권한 오류를 유지한다. 모델·절감 근거는 없고 전체 목표도 미달이다.
+모든 컨테이너·서비스 정리와 VM 종료를 확인했으며 같은 평가를 반복하지 않는다.

@@ -1,0 +1,27 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-2.8.7, py-1.4.31, pluggy-0.3.1
+rootdir: <TEMP> inifile:
+plugins: httpbin-0.2.0, mock-0.11.0
+collected 7 items
+
+../../../../../../..<TEMP> .F.xXE.E
+
+==================================== ERRORS ====================================
+______________________ ERROR at setup of test_setup_error ______________________
+<TEMP> in setup_error
+    raise RuntimeError('setup control')
+E   RuntimeError: setup control
+___________________ ERROR at teardown of test_teardown_error ___________________
+<TEMP> in fail
+    raise RuntimeError('teardown control')
+E   RuntimeError: teardown control
+=================================== FAILURES ===================================
+__________________________________ test_fail ___________________________________
+<TEMP> in test_fail
+    assert 'observed' == 'expected'
+E   AssertionError
+====== 1 failed, 3 passed, 1 xfailed, 1 xpassed, 2 error in 0.02 seconds =======
+Traceback (most recent call last):
+  File "<WORKSPACE>/benchmarks/results/native-status-capture-01/control.py", line 34, in <module>
+    assert {name: calls[name]['category'] for name in expected} == expected
+AssertionError

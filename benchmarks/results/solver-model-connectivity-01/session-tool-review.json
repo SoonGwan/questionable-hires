@@ -1,0 +1,17 @@
+{
+  "source": "Exact original rollout, matching original CLI thread ID; private metadata omitted",
+  "custom_tool_calls": [
+    {
+      "name": "exec",
+      "input": "const t = ALL_TOOLS.find(t => /qh_guest.*guest_command$/.test(t.name) || (/qh_guest/.test(t.name) && /guest_command/.test(t.name)));\nif (!t) { text(\"qh_guest guest_command tool unavailable.\"); } else { text({name:t.name,description:t.description}); }\n"
+    }
+  ],
+  "custom_tool_outputs": [
+    "Script completed\nWall time 0.0 seconds\nOutput:\n",
+    "qh_guest guest_command tool unavailable."
+  ],
+  "total_recorded_custom_tool_calls": 1,
+  "guest_command_calls": 0,
+  "cli_json_omitted_custom_tool_call": true,
+  "limitation": "Regex lookup failure is not a full catalog listing; server-name mismatch and catalog exclusion remain distinguishable causes."
+}

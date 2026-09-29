@@ -1,0 +1,124 @@
+test_earlier_cancellation_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_cancellation_while_latest_pending) ... FAIL
+test_earlier_failure_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_failure_while_latest_pending) ... FAIL
+test_earlier_success_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending) ... FAIL
+test_instance_isolation (test_preview.PreviewRefreshTests.test_instance_isolation) ... ok
+test_latest_cancellation_and_retry (test_preview.PreviewRefreshTests.test_latest_cancellation_and_retry) ... FAIL
+test_latest_failure_and_retry (test_preview.PreviewRefreshTests.test_latest_failure_and_retry) ... FAIL
+test_latest_success_before_earlier_success (test_preview.PreviewRefreshTests.test_latest_success_before_earlier_success) ... ok
+test_synchronous_callback_failure_and_retry (test_preview.PreviewRefreshTests.test_synchronous_callback_failure_and_retry) ... ok
+
+======================================================================
+FAIL: test_earlier_cancellation_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_cancellation_while_latest_pending)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 90, in _callTestMethod
+    if self._callMaybeAsync(method) is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 112, in _callMaybeAsync
+    return self._asyncioRunner.run(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/test_preview.py", line 72, in test_earlier_cancellation_while_latest_pending
+    await self.earlier_settles_first('cancellation')
+  File "<WORKSPACE>/test_preview.py", line 57, in earlier_settles_first
+    self.assertEqual(self.preview.pending, pending_before)
+AssertionError: False != True
+
+======================================================================
+FAIL: test_earlier_failure_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_failure_while_latest_pending)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 90, in _callTestMethod
+    if self._callMaybeAsync(method) is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 112, in _callMaybeAsync
+    return self._asyncioRunner.run(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/test_preview.py", line 69, in test_earlier_failure_while_latest_pending
+    await self.earlier_settles_first('failure')
+  File "<WORKSPACE>/test_preview.py", line 57, in earlier_settles_first
+    self.assertEqual(self.preview.pending, pending_before)
+AssertionError: False != True
+
+======================================================================
+FAIL: test_earlier_success_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 90, in _callTestMethod
+    if self._callMaybeAsync(method) is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 112, in _callMaybeAsync
+    return self._asyncioRunner.run(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/test_preview.py", line 66, in test_earlier_success_while_latest_pending
+    await self.earlier_settles_first('success')
+  File "<WORKSPACE>/test_preview.py", line 57, in earlier_settles_first
+    self.assertEqual(self.preview.pending, pending_before)
+AssertionError: False != True
+
+======================================================================
+FAIL: test_latest_cancellation_and_retry (test_preview.PreviewRefreshTests.test_latest_cancellation_and_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 90, in _callTestMethod
+    if self._callMaybeAsync(method) is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 112, in _callMaybeAsync
+    return self._asyncioRunner.run(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/test_preview.py", line 108, in test_latest_cancellation_and_retry
+    await self.latest_unsuccessful_then_retry('cancellation')
+  File "<WORKSPACE>/test_preview.py", line 96, in latest_unsuccessful_then_retry
+    self.assertEqual(self.preview.pending, pending_before)
+AssertionError: False != True
+
+======================================================================
+FAIL: test_latest_failure_and_retry (test_preview.PreviewRefreshTests.test_latest_failure_and_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 90, in _callTestMethod
+    if self._callMaybeAsync(method) is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 112, in _callMaybeAsync
+    return self._asyncioRunner.run(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/test_preview.py", line 105, in test_latest_failure_and_retry
+    await self.latest_unsuccessful_then_retry('failure')
+  File "<WORKSPACE>/test_preview.py", line 96, in latest_unsuccessful_then_retry
+    self.assertEqual(self.preview.pending, pending_before)
+AssertionError: False != True
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.035s
+
+FAILED (failures=5)
+

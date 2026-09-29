@@ -1,0 +1,113 @@
+test_index_and_definition_group_keep_openings_and_expression_segments (test_context_decorator_opening.DecoratorOpeningTests.test_index_and_definition_group_keep_openings_and_expression_segments) ... FAIL
+test_named_excerpt_includes_opening_across_physical_newlines (test_context_decorator_opening.DecoratorOpeningTests.test_named_excerpt_includes_opening_across_physical_newlines) ... 
+  test_named_excerpt_includes_opening_across_physical_newlines (test_context_decorator_opening.DecoratorOpeningTests.test_named_excerpt_includes_opening_across_physical_newlines) (newline="'\\n'") ... FAIL
+  test_named_excerpt_includes_opening_across_physical_newlines (test_context_decorator_opening.DecoratorOpeningTests.test_named_excerpt_includes_opening_across_physical_newlines) (newline="'\\r\\n'") ... FAIL
+  test_named_excerpt_includes_opening_across_physical_newlines (test_context_decorator_opening.DecoratorOpeningTests.test_named_excerpt_includes_opening_across_physical_newlines) (newline="'\\r'") ... FAIL
+test_opening_line_and_named_selector_select_same_definition (test_context_decorator_opening.DecoratorOpeningTests.test_opening_line_and_named_selector_select_same_definition) ... ERROR
+test_real_cli_output_preserves_opening_without_execution_or_extra_files (test_context_decorator_opening.DecoratorOpeningTests.test_real_cli_output_preserves_opening_without_execution_or_extra_files) ... FAIL
+test_strings_matrix_operators_nested_async_and_stacked_decorators (test_context_decorator_opening.DecoratorOpeningTests.test_strings_matrix_operators_nested_async_and_stacked_decorators) ... FAIL
+
+======================================================================
+ERROR: test_opening_line_and_named_selector_select_same_definition (test_context_decorator_opening.DecoratorOpeningTests.test_opening_line_and_named_selector_select_same_definition)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_context_decorator_opening.py", line 46, in test_opening_line_and_named_selector_select_same_definition
+    result = context.collect(self.root, ['module.py:1', 'module.py:2', 'module.py:target'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<HOME>/Documents/GitHub/questionable-hires/skills/con-artist/scripts/context.py", line 271, in collect
+    selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache, pretty=pretty, all_matches=all_matches) for path, symbol in selected],
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<HOME>/Documents/GitHub/questionable-hires/skills/con-artist/scripts/context.py", line 271, in <listcomp>
+    selected=[describe(root, path, budget, symbol, auto_index=not full, cache=cache, pretty=pretty, all_matches=all_matches) for path, symbol in selected],
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<HOME>/Documents/GitHub/questionable-hires/skills/con-artist/scripts/context.py", line 169, in describe
+    symbol, node = definition_at_line(tree, symbol, snapshot['definition_spans'])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<HOME>/Documents/GitHub/questionable-hires/skills/con-artist/scripts/context.py", line 105, in definition_at_line
+    raise ValueError('Line is outside a Python definition; select the full file for module context')
+ValueError: Line is outside a Python definition; select the full file for module context
+
+======================================================================
+FAIL: test_index_and_definition_group_keep_openings_and_expression_segments (test_context_decorator_opening.DecoratorOpeningTests.test_index_and_definition_group_keep_openings_and_expression_segments)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_context_decorator_opening.py", line 55, in test_index_and_definition_group_keep_openings_and_expression_segments
+    self.assertEqual([r['first_line'] for r in rows], [1, 5])
+AssertionError: Lists differ: [2, 6] != [1, 5]
+
+First differing element 0:
+2
+1
+
+- [2, 6]
++ [1, 5]
+
+======================================================================
+FAIL: test_named_excerpt_includes_opening_across_physical_newlines (test_context_decorator_opening.DecoratorOpeningTests.test_named_excerpt_includes_opening_across_physical_newlines) (newline="'\\n'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_context_decorator_opening.py", line 37, in test_named_excerpt_includes_opening_across_physical_newlines
+    self.assertEqual(row['source'], expected)
+AssertionError: '4:     decorate\n5: )\n6: def target():\n7:     return "값"' != '2: @(\n3:     # 설명\n4:     decorate\n5: )\n6: def target():\n7:     return "값"'
++ 2: @(
++ 3:     # 설명
+  4:     decorate
+  5: )
+  6: def target():
+  7:     return "값"
+
+======================================================================
+FAIL: test_named_excerpt_includes_opening_across_physical_newlines (test_context_decorator_opening.DecoratorOpeningTests.test_named_excerpt_includes_opening_across_physical_newlines) (newline="'\\r\\n'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_context_decorator_opening.py", line 37, in test_named_excerpt_includes_opening_across_physical_newlines
+    self.assertEqual(row['source'], expected)
+AssertionError: '4:     decorate\n5: )\n6: def target():\n7:     return "값"' != '2: @(\n3:     # 설명\n4:     decorate\n5: )\n6: def target():\n7:     return "값"'
++ 2: @(
++ 3:     # 설명
+  4:     decorate
+  5: )
+  6: def target():
+  7:     return "값"
+
+======================================================================
+FAIL: test_named_excerpt_includes_opening_across_physical_newlines (test_context_decorator_opening.DecoratorOpeningTests.test_named_excerpt_includes_opening_across_physical_newlines) (newline="'\\r'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_context_decorator_opening.py", line 37, in test_named_excerpt_includes_opening_across_physical_newlines
+    self.assertEqual(row['source'], expected)
+AssertionError: '4:     decorate\n5: )\n6: def target():\n7:     return "값"' != '2: @(\n3:     # 설명\n4:     decorate\n5: )\n6: def target():\n7:     return "값"'
++ 2: @(
++ 3:     # 설명
+  4:     decorate
+  5: )
+  6: def target():
+  7:     return "값"
+
+======================================================================
+FAIL: test_real_cli_output_preserves_opening_without_execution_or_extra_files (test_context_decorator_opening.DecoratorOpeningTests.test_real_cli_output_preserves_opening_without_execution_or_extra_files)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_context_decorator_opening.py", line 79, in test_real_cli_output_preserves_opening_without_execution_or_extra_files
+    self.assertTrue(row['source'].startswith('2: @('), row['source'])
+AssertionError: False is not true : 3:     decorate
+4: )
+5: def target(): pass
+
+======================================================================
+FAIL: test_strings_matrix_operators_nested_async_and_stacked_decorators (test_context_decorator_opening.DecoratorOpeningTests.test_strings_matrix_operators_nested_async_and_stacked_decorators)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_context_decorator_opening.py", line 68, in test_strings_matrix_operators_nested_async_and_stacked_decorators
+    self.assertTrue(row['source'].startswith('5:     @('), row['source'])
+AssertionError: False is not true : 6:         left
+7:         @ right
+8:     )
+9:     @other
+10:     async def target(self):
+11:         pass
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.038s
+
+FAILED (failures=6, errors=1)

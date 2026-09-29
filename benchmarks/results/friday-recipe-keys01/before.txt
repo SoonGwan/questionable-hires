@@ -1,0 +1,162 @@
+test_duplicate_check_label_cannot_hide_a_failing_native_reader (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_check_label_cannot_hide_a_failing_native_reader) ... FAIL
+test_duplicate_literal_reader_reference_fields_are_rejected (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_literal_reader_reference_fields_are_rejected) ... 
+  test_duplicate_literal_reader_reference_fields_are_rejected (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_literal_reader_reference_fields_are_rejected) (key='python_file') ... FAIL
+  test_duplicate_literal_reader_reference_fields_are_rejected (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_literal_reader_reference_fields_are_rejected) (key='constant') ... FAIL
+test_duplicate_phase_fields_are_rejected_at_their_own_object (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_phase_fields_are_rejected_at_their_own_object) ... 
+  test_duplicate_phase_fields_are_rejected_at_their_own_object (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_phase_fields_are_rejected_at_their_own_object) (key='sql') ... FAIL
+  test_duplicate_phase_fields_are_rejected_at_their_own_object (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_phase_fields_are_rejected_at_their_own_object) (key='files') ... FAIL
+  test_duplicate_phase_fields_are_rejected_at_their_own_object (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_phase_fields_are_rejected_at_their_own_object) (key='checks') ... FAIL
+  test_duplicate_phase_fields_are_rejected_at_their_own_object (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_phase_fields_are_rejected_at_their_own_object) (key='name') ... FAIL
+test_duplicate_rejection_precedes_matrix_input_reads_and_sql_connection (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_rejection_precedes_matrix_input_reads_and_sql_connection) ... FAIL
+test_duplicate_root_fields_cannot_replace_phases_or_checks (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_root_fields_cannot_replace_phases_or_checks) ... 
+  test_duplicate_root_fields_cannot_replace_phases_or_checks (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_root_fields_cannot_replace_phases_or_checks) (key='phases', from_file=False) ... FAIL
+  test_duplicate_root_fields_cannot_replace_phases_or_checks (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_root_fields_cannot_replace_phases_or_checks) (key='phases', from_file=True) ... FAIL
+  test_duplicate_root_fields_cannot_replace_phases_or_checks (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_root_fields_cannot_replace_phases_or_checks) (key='checks', from_file=False) ... FAIL
+  test_duplicate_root_fields_cannot_replace_phases_or_checks (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_root_fields_cannot_replace_phases_or_checks) (key='checks', from_file=True) ... FAIL
+test_escaped_duplicate_names_compare_decoded_keys_without_printing_values (test_friday_recipe_keys.FridayRecipeKeysTests.test_escaped_duplicate_names_compare_decoded_keys_without_printing_values) ... FAIL
+test_long_duplicate_key_has_bounded_error_and_no_values (test_friday_recipe_keys.FridayRecipeKeysTests.test_long_duplicate_key_has_bounded_error_and_no_values) ... FAIL
+test_valid_repeated_phase_labels_and_query_values_preserve_native_observations (test_friday_recipe_keys.FridayRecipeKeysTests.test_valid_repeated_phase_labels_and_query_values_preserve_native_observations) ... ok
+
+======================================================================
+FAIL: test_duplicate_check_label_cannot_hide_a_failing_native_reader (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_check_label_cannot_hide_a_failing_native_reader)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 58, in test_duplicate_check_label_cannot_hide_a_failing_native_reader
+    self.reject(raw,'consumer')
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"consumer":{"ok":true,"rows":[[1]],"columns":["value"],"truncated":false}}}]}\n', '')
+
+======================================================================
+FAIL: test_duplicate_literal_reader_reference_fields_are_rejected (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_literal_reader_reference_fields_are_rejected) (key='python_file')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 74, in test_duplicate_literal_reader_reference_fields_are_rejected
+    self.reject('{"phases":[{"name":"initial"}],"checks":{"reader":{'+reference+'}}}',key)
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"reader":{"ok":true,"rows":[[1]],"columns":["value"],"truncated":false}}}],"reader_sources":{"reader":{"python_file":"readers.py","constant":"QUERY","line":1,"sha256":"60dd274b039cda528bdc26cf68380a6d445bc720947144f599e83be80d8dacb9","query":"SELECT 1 AS value","kind":"static literal, not runtime binding evidence"}}}\n', '')
+
+======================================================================
+FAIL: test_duplicate_literal_reader_reference_fields_are_rejected (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_literal_reader_reference_fields_are_rejected) (key='constant')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 74, in test_duplicate_literal_reader_reference_fields_are_rejected
+    self.reject('{"phases":[{"name":"initial"}],"checks":{"reader":{'+reference+'}}}',key)
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"reader":{"ok":true,"rows":[[1]],"columns":["value"],"truncated":false}}}],"reader_sources":{"reader":{"python_file":"readers.py","constant":"QUERY","line":1,"sha256":"60dd274b039cda528bdc26cf68380a6d445bc720947144f599e83be80d8dacb9","query":"SELECT 1 AS value","kind":"static literal, not runtime binding evidence"}}}\n', '')
+
+======================================================================
+FAIL: test_duplicate_phase_fields_are_rejected_at_their_own_object (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_phase_fields_are_rejected_at_their_own_object) (key='sql')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 67, in test_duplicate_phase_fields_are_rejected_at_their_own_object
+    self.reject('{"phases":[{'+fragment+'}],"checks":{"reader":"SELECT 1"}}',key)
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"reader":{"ok":true,"rows":[[1]],"columns":["1"],"truncated":false}}}]}\n', '')
+
+======================================================================
+FAIL: test_duplicate_phase_fields_are_rejected_at_their_own_object (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_phase_fields_are_rejected_at_their_own_object) (key='files')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 67, in test_duplicate_phase_fields_are_rejected_at_their_own_object
+    self.reject('{"phases":[{'+fragment+'}],"checks":{"reader":"SELECT 1"}}',key)
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"reader":{"ok":true,"rows":[[1]],"columns":["1"],"truncated":false}}}]}\n', '')
+
+======================================================================
+FAIL: test_duplicate_phase_fields_are_rejected_at_their_own_object (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_phase_fields_are_rejected_at_their_own_object) (key='checks')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 67, in test_duplicate_phase_fields_are_rejected_at_their_own_object
+    self.reject('{"phases":[{'+fragment+'}],"checks":{"reader":"SELECT 1"}}',key)
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"reader":{"ok":true,"rows":[[1]],"columns":["1"],"truncated":false}}}]}\n', '')
+
+======================================================================
+FAIL: test_duplicate_phase_fields_are_rejected_at_their_own_object (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_phase_fields_are_rejected_at_their_own_object) (key='name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 67, in test_duplicate_phase_fields_are_rejected_at_their_own_object
+    self.reject('{"phases":[{'+fragment+'}],"checks":{"reader":"SELECT 1"}}',key)
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"kept","checks":{"reader":{"ok":true,"rows":[[1]],"columns":["1"],"truncated":false}}}]}\n', '')
+
+======================================================================
+FAIL: test_duplicate_rejection_precedes_matrix_input_reads_and_sql_connection (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_rejection_precedes_matrix_input_reads_and_sql_connection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 89, in test_duplicate_rejection_precedes_matrix_input_reads_and_sql_connection
+    self.assertEqual(code,2,output.getvalue())
+AssertionError: 0 != 2 : {"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"reader":{"ok":true,"rows":[[2]],"columns":["2"],"truncated":false}}}]}
+
+
+======================================================================
+FAIL: test_duplicate_root_fields_cannot_replace_phases_or_checks (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_root_fields_cannot_replace_phases_or_checks) (key='phases', from_file=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 54, in test_duplicate_root_fields_cannot_replace_phases_or_checks
+    self.reject(raw,key,from_file)
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"kept","checks":{"reader":{"ok":true,"rows":[[1]],"columns":["1"],"truncated":false}}}]}\n', '')
+
+======================================================================
+FAIL: test_duplicate_root_fields_cannot_replace_phases_or_checks (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_root_fields_cannot_replace_phases_or_checks) (key='phases', from_file=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 54, in test_duplicate_root_fields_cannot_replace_phases_or_checks
+    self.reject(raw,key,from_file)
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"kept","checks":{"reader":{"ok":true,"rows":[[1]],"columns":["1"],"truncated":false}}}]}\n', '')
+
+======================================================================
+FAIL: test_duplicate_root_fields_cannot_replace_phases_or_checks (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_root_fields_cannot_replace_phases_or_checks) (key='checks', from_file=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 54, in test_duplicate_root_fields_cannot_replace_phases_or_checks
+    self.reject(raw,key,from_file)
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"kept":{"ok":true,"rows":[[1]],"columns":["1"],"truncated":false}}}]}\n', '')
+
+======================================================================
+FAIL: test_duplicate_root_fields_cannot_replace_phases_or_checks (test_friday_recipe_keys.FridayRecipeKeysTests.test_duplicate_root_fields_cannot_replace_phases_or_checks) (key='checks', from_file=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 54, in test_duplicate_root_fields_cannot_replace_phases_or_checks
+    self.reject(raw,key,from_file)
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"kept":{"ok":true,"rows":[[1]],"columns":["1"],"truncated":false}}}]}\n', '')
+
+======================================================================
+FAIL: test_escaped_duplicate_names_compare_decoded_keys_without_printing_values (test_friday_recipe_keys.FridayRecipeKeysTests.test_escaped_duplicate_names_compare_decoded_keys_without_printing_values)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 78, in test_escaped_duplicate_names_compare_decoded_keys_without_printing_values
+    result=self.reject(raw,'reader')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repository>/tests/test_friday_recipe_keys.py", line 40, in reject
+    self.assertEqual(result.returncode,2,(result.stdout,result.stderr))
+AssertionError: 0 != 2 : ('{"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"reader":{"ok":false,"error":"near \\"SECRET_SECOND\\": syntax error"}}}]}\n', '')
+
+======================================================================
+FAIL: test_long_duplicate_key_has_bounded_error_and_no_values (test_friday_recipe_keys.FridayRecipeKeysTests.test_long_duplicate_key_has_bounded_error_and_no_values)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repository>/tests/test_friday_recipe_keys.py", line 113, in test_long_duplicate_key_has_bounded_error_and_no_values
+    self.assertEqual(result.returncode,2,result.stdout)
+AssertionError: 0 != 2 : {"engine":"sqlite-memory","complete":true,"phases":[{"name":"initial","checks":{"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx":{"ok":false,"error":"near \"SECRET_B\": syntax error"}}}]}
+
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.565s
+
+FAILED (failures=14)

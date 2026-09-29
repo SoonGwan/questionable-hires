@@ -23,9 +23,9 @@ Record: date, skill revision, fixture revision, model and reasoning setting, hos
 
 Score correctness and scope separately. A correct diagnosis accompanied by unauthorized modifications is not a successful run. A clean review with evidence is a success; manufacturing a defect is a failure.
 
-## Current evidence
+## Evidence / 검증 근거
 
-The automated suite checks installation, bundle construction, catalog structure, and fixture behavior. Actual independent Astra sessions have also been run: 24 three-arm comparisons, eight additional skill-only cases, and a separate three-run pilot. See the [report and execution evidence](../benchmarks/REPORT.md). These are small synthetic smoke tests, not a demonstration of broad superiority. Repeated trials and larger real-project tasks remain necessary before making performance claims.
+The automated suite checks installation, bundle construction, catalog structure, and fixture behavior. The original historical smoke checkpoint recorded: 24 three-arm comparisons, eight additional skill-only cases, and a separate three-run pilot. See the [report and execution evidence](../benchmarks/REPORT.md). These are small synthetic smoke tests, not a demonstration of broad superiority. Repeated trials and larger real-project tasks remain necessary before making performance claims.
 
 A separately preregistered 72-session, three-repeat comparison completed on September 11. See the [historical report](../benchmarks/REPORT-2026-09-11.md), including strict criterion/scope failures, unknowns, resource increases and independent checks. Earlier smoke runs are excluded.
 
@@ -35,3 +35,7 @@ source-layout verification, not only the original synthetic smoke tasks. See the
 favorable and adverse results, measured revisions and outstanding all-eight goals.
 Real source does not make an author-selected task an organic issue or independent
 holdout. Broad real-developer effectiveness at lower cost remains unproven.
+
+한국어: 메타데이터·설치 검사와 모델 성능 검증은 서로 다릅니다. 위 초기 실행
+횟수는 과거 실험에 해당합니다. 현재 판단은 날짜·측정 리소스가 붙은 후보 목록을
+따르며, 전체8개 품질·토큰·시간 개선은 아직 입증되지 않았습니다.

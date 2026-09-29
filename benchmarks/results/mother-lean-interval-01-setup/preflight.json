@@ -1,0 +1,30 @@
+[
+  {
+    "case": "search-protected",
+    "variant": "original",
+    "exit_code": 0,
+    "public_import_exit": 0,
+    "output": "test_normal (test_orders.Orders.test_normal) ... ok\ntest_reversed (test_orders.Orders.test_reversed) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.008s\n\nOK\n"
+  },
+  {
+    "case": "search-protected",
+    "variant": "transient",
+    "exit_code": 1,
+    "public_import_exit": 0,
+    "output": "test_normal (test_orders.Orders.test_normal) ... FAIL\ntest_reversed (test_orders.Orders.test_reversed) ... ok\n\n======================================================================\nFAIL: test_normal (test_orders.Orders.test_normal)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"/private<PREFLIGHT>/test_orders.py\", line 33, in test_normal\n    await self.scenario(('old', 'new'))\n  File \"/private<PREFLIGHT>/test_orders.py\", line 23, in scenario\n    self.assertEqual(target.result, 'existing')\nAssertionError: 'old' != 'existing'\n- old\n+ existing\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.006s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "case": "search-order",
+    "variant": "original",
+    "exit_code": 1,
+    "public_import_exit": 0,
+    "output": "test_normal (test_orders.Orders.test_normal) ... ok\ntest_reversed (test_orders.Orders.test_reversed) ... FAIL\n\n======================================================================\nFAIL: test_reversed (test_orders.Orders.test_reversed)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"/private<PREFLIGHT>/test_orders.py\", line 35, in test_reversed\n    await self.scenario(('new', 'old'))\n  File \"/private<PREFLIGHT>/test_orders.py\", line 26, in scenario\n    self.assertEqual(target.result, 'new')\nAssertionError: 'old' != 'new'\n- old\n+ new\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.006s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "case": "search-order",
+    "variant": "guarded",
+    "exit_code": 0,
+    "public_import_exit": 0,
+    "output": "test_normal (test_orders.Orders.test_normal) ... ok\ntest_reversed (test_orders.Orders.test_reversed) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.005s\n\nOK\n"
+  }
+]

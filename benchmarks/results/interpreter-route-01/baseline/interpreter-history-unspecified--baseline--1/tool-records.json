@@ -1,0 +1,278 @@
+{
+  "session_id": "01a0df25-7682-72a1-bff6-681b807040bb",
+  "source_bytes": 197198,
+  "source_sha256": "560cfd0e9470dd23681bdce29c13e7fa67f06a7978e411e87aab93a816a99102",
+  "source_lines": 52,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "90dde41f68472e4de91fd3a4e1f6cf497d1bb4c3e82e01deb2b0bf2f318aeccb",
+      "record": {
+        "timestamp": "2026-09-26T19:16:16.842Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0e7b249a9fc1aa4c016ab819fea55887d0a6bba16f3a0ea45e",
+          "status": "completed",
+          "call_id": "call_Rj1h7nQCIkqOiyACGYXEehqZ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'requirements.md' -g '*controlled*' -g '*.py' -g 'README*' -g '*LICENSE*'; git status --short; git log --oneline --all --decorate\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df25-7717-7070-ade3-6d5894eb3d31",
+            "create_time": 1790450171.899143
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "630ffa7fec1a7226a4dfb248de6a7854acb47f1f0fe48697c4d5eb2c3eaf6594",
+      "record": {
+        "timestamp": "2026-09-26T19:16:17.247Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df25-94df-78c0-82ce-b01ca815f489",
+          "call_id": "call_Rj1h7nQCIkqOiyACGYXEehqZ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"141202\",\"wall_time_seconds\":0.000171917,\"exit_code\":0,\"original_token_count\":101,\"output\":\"<WORKSPACE>\\ncontrolled_fetch.py\\nLICENSE\\nrequirements.md\\n7172f6c (HEAD -> main) Document the bounded review scope and source snapshot provenance\\n5cb5d78 fix: preserve controlled fetch requests on waiter cancellation\\n6b682e0 feat(mother-in-law): add standalone per-request controlled transport asset\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df25-7717-7070-ade3-6d5894eb3d31",
+            "create_time": 1790450177.247854
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "4a01a8b4aca190745cee3e473d18f12adf6b610c5d60f9b5d65da26af353206d",
+      "record": {
+        "timestamp": "2026-09-26T19:16:21.017Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0e7b249a9fc1aa4c016ab81a02b28c87d08a71a8bc350c6c55",
+          "status": "completed",
+          "call_id": "call_bzX6QbSmnL2A2Ys52cjx7aNF",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; cat controlled_fetch.py; cat requirements.md; git show --format=fuller --stat 6b682e0; git show 5cb5d78 --; git show 7172f6c --; git ls-files; git status --porcelain=v1\",\"max_output_tokens\":13000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df25-7717-7070-ade3-6d5894eb3d31",
+            "create_time": 1790450177.620643
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "29cd82acaeb08c8e6890d120fef4d33354d864df6571aa8f7613b77345763453",
+      "record": {
+        "timestamp": "2026-09-26T19:16:21.174Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df25-a436-74e0-ae03-c0febd54ffee",
+          "call_id": "call_bzX6QbSmnL2A2Ys52cjx7aNF",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"bc77a4\",\"wall_time_seconds\":0.00000325,\"exit_code\":0,\"original_token_count\":1816,\"output\":\"total 32\\ndrwxr-xr-x@  7 gwonsungwan  wheel   224 Sep 27 04:16 .\\ndrwxr-xr-x@  3 gwonsungwan  wheel    96 Sep 27 04:16 ..\\ndrwxr-xr-x@ 10 gwonsungwan  wheel   320 Sep 27 04:16 .git\\n-rw-r--r--@  1 gwonsungwan  wheel  1065 Sep 27 04:16 LICENSE\\n-rw-r--r--@  1 gwonsungwan  wheel  2325 Sep 27 04:16 controlled_fetch.py\\n-rw-r--r--@  1 gwonsungwan  wheel   523 Sep 27 04:16 requirements.md\\n-rw-r--r--@  1 gwonsungwan  wheel   700 Sep 27 04:16 source-origin.json\\n\\\"\\\"\\\"Copy into permitted project test support only when no equivalent exists.\\n\\nEach received Request identifies one call, even when keys repeat. The test owns\\ncomponent tasks: cancel and await them in cleanup. This controls fetch responses,\\nnot component state or browser rendering. No real network or sleeps.\\n\\\"\\\"\\\"\\nimport asyncio\\nfrom dataclasses import dataclass\\nfrom typing import Any\\n\\n\\n@dataclass(frozen=True)\\nclass Request:\\n    key: Any\\n    response: asyncio.Future\\n\\n    def complete(self, value):\\n        self.response.set_result(value)\\n\\n    def fail_request(self, error):\\n        self.response.set_exception(error)\\n\\n\\nclass ControlledFetch:\\n    def __init__(self):\\n        self.calls = asyncio.Queue()\\n        self._entry_changed = asyncio.Event()\\n\\n    async def __call__(self, key):\\n        request = Request(key, asyncio.get_running_loop().create_future())\\n        self.calls.put_nowait(request)\\n        self._entry_changed.set()\\n        return await request.response\\n\\n    async def started(self, expected, timeout=1):\\n        \\\"\\\"\\\"Wait for actual fetch entry, assert its key, return a unique handle.\\n\\n        Timeout/cancellation leaves component tasks and unconsumed requests alone.\\n        The caller owns tasks and must clean them even when this assertion fails.\\n        \\\"\\\"\\\"\\n        if not 0 < timeout <= 30:\\n            raise ValueError('timeout must be in (0, 30]')\\n        loop = asyncio.get_running_loop()\\n        deadline = loop.time() + timeout\\n        while self.calls.empty():\\n            self._entry_changed.clear()\\n            # Wait for availability, not a child queue getter that can consume\\n            # the request while cancellation is being delivered to this waiter.\\n            notice = asyncio.create_task(self._entry_changed.wait())\\n            try:\\n                done, _ = await asyncio.wait((notice,), timeout=max(0, deadline - loop.time()))\\n                if not done:\\n                    raise asyncio.TimeoutError('Timed out waiting for request entry')\\n            finally:\\n                notice.cancel()\\n                await asyncio.gather(notice, return_exceptions=True)\\n        request = self.calls.get_nowait()\\n        if request.key != expected:\\n            raise AssertionError(\\n                f'request key: expected {expected!r}, observed {request.key!r}')\\n        return request\\nPython 3.9+ standard library, cooperative asyncio in one loop.\\nEach fetch call creates its own Request, even with repeated keys. Its application\\ntask returns the exact object chosen through that Request.complete. The test owns\\napplication tasks. Cancelling a pending started waiter must reach that waiter and\\nmust not consume an undelivered request or cancel its application task. Already\\ndelivered handles are consumed; later cancellation does not undo delivery.\\nNo network, threads, browser or blocking code is in scope.\\ncommit 6b682e0f229176b1d6dc7d1c308909d0b17c219d\\nAuthor:     Fixture Author <fixture@example.invalid>\\nAuthorDate: Thu Jan 1 12:00:00 2026 +0000\\nCommit:     Fixture Author <fixture@example.invalid>\\nCommitDate: Thu Jan 1 12:00:00 2026 +0000\\n\\n    feat(mother-in-law): add standalone per-request controlled transport asset\\n\\n LICENSE             | 21 +++++++++++++++++++++\\n controlled_fetch.py | 45 +++++++++++++++++++++++++++++++++++++++++++++\\n requirements.md     |  7 +++++++\\n 3 files changed, 73 insertions(+)\\ncommit 5cb5d783822530cb2dac826e72e82ef669922fb3\\nAuthor: Fixture Author <fixture@example.invalid>\\nDate:   Fri Jan 2 12:00:00 2026 +0000\\n\\n    fix: preserve controlled fetch requests on waiter cancellation\\n\\ndiff --git a/controlled_fetch.py b/controlled_fetch.py\\nindex abee0c4..ec94a6e 100644\\n--- a/controlled_fetch.py\\n+++ b/controlled_fetch.py\\n@@ -24,21 +24,37 @@ class Request:\\n class ControlledFetch:\\n     def __init__(self):\\n         self.calls = asyncio.Queue()\\n+        self._entry_changed = asyncio.Event()\\n \\n     async def __call__(self, key):\\n         request = Request(key, asyncio.get_running_loop().create_future())\\n         self.calls.put_nowait(request)\\n+        self._entry_changed.set()\\n         return await request.response\\n \\n     async def started(self, expected, timeout=1):\\n         \\\"\\\"\\\"Wait for actual fetch entry, assert its key, return a unique handle.\\n \\n-        A timed-out queue wait does not cancel component tasks. The caller owns\\n-        those tasks and must clean them even when this assertion fails.\\n+        Timeout/cancellation leaves component tasks and unconsumed requests alone.\\n+        The caller owns tasks and must clean them even when this assertion fails.\\n         \\\"\\\"\\\"\\n         if not 0 < timeout <= 30:\\n             raise ValueError('timeout must be in (0, 30]')\\n-        request = await asyncio.wait_for(self.calls.get(), timeout)\\n+        loop = asyncio.get_running_loop()\\n+        deadline = loop.time() + timeout\\n+        while self.calls.empty():\\n+            self._entry_changed.clear()\\n+            # Wait for availability, not a child queue getter that can consume\\n+            # the request while cancellation is being delivered to this waiter.\\n+            notice = asyncio.create_task(self._entry_changed.wait())\\n+            try:\\n+                done, _ = await asyncio.wait((notice,), timeout=max(0, deadline - loop.time()))\\n+                if not done:\\n+                    raise asyncio.TimeoutError('Timed out waiting for request entry')\\n+            finally:\\n+                notice.cancel()\\n+                await asyncio.gather(notice, return_exceptions=True)\\n+        request = self.calls.get_nowait()\\n         if request.key != expected:\\n             raise AssertionError(\\n                 f'request key: expected {expected!r}, observed {request.key!r}')\\ncommit 7172f6c95035a51d0f73b5bdaf6d060c9de1601d\\nAuthor: Fixture Author <fixture@example.invalid>\\nDate:   Sat Jan 3 12:00:00 2026 +0000\\n\\n    Document the bounded review scope and source snapshot provenance\\n\\ndiff --git a/source-origin.json b/source-origin.json\\nnew file mode 100644\\nindex 0000000..7146ad1\\n--- /dev/null\\n+++ b/source-origin.json\\n@@ -0,0 +1,15 @@\\n+{\\n+  \\\"upstream_snapshots\\\": [\\n+    {\\n+      \\\"upstream_commit\\\": \\\"c6589ee6f1fe67af626e97e21914229fd7043d6b\\\",\\n+      \\\"path\\\": \\\"skills/mother-in-law/assets/controlled_fetch.py\\\",\\n+      \\\"sha256\\\": \\\"d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c\\\"\\n+    },\\n+    {\\n+      \\\"upstream_commit\\\": \\\"c00276dde0e7a9d65b3721c18c938c4b1ef487b7\\\",\\n+      \\\"path\\\": \\\"skills/mother-in-law/assets/controlled_fetch.py\\\",\\n+      \\\"sha256\\\": \\\"48567a44a073b8b7574e5d2f4542501fd491b9003a320d80602c7cb2b8bb3a81\\\"\\n+    }\\n+  ],\\n+  \\\"limitations\\\": \\\"Owner repository source snapshots; local fixture history is reconstructed, not complete original ancestry. Asset and native cancellation controls previously exposed as development cases.\\\"\\n+}\\nLICENSE\\ncontrolled_fetch.py\\nrequirements.md\\nsource-origin.json\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df25-7717-7070-ade3-6d5894eb3d31",
+            "create_time": 1790450181.17413
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "83260827b9f2b6fa3469089f9620c8ae2f47c031a0fe34d04b3b1038c5c88207",
+      "record": {
+        "timestamp": "2026-09-26T19:16:25.483Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0e7b249a9fc1aa4c016ab81a075ff487d0a1a13df4de315dd1",
+          "status": "completed",
+          "call_id": "call_567lC52Wi9w0dF9mZM5r2EE6",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python -B --version; git show 6b682e0:controlled_fetch.py; cat source-origin.json; cat LICENSE; git log --format='%H %P %s' --all; nl -ba controlled_fetch.py; nl -ba requirements.md\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df25-7717-7070-ade3-6d5894eb3d31",
+            "create_time": 1790450181.581611
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "c85a6d6f7952c15259982ffef415dbce8338461a47094145998c6ee45651512f",
+      "record": {
+        "timestamp": "2026-09-26T19:16:25.612Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df25-b58c-7712-94d2-c9ab143c254b",
+          "call_id": "call_567lC52Wi9w0dF9mZM5r2EE6",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"752af5\",\"wall_time_seconds\":0.000003209,\"exit_code\":0,\"original_token_count\":1764,\"output\":\"zsh:1: command not found: python\\n\\\"\\\"\\\"Copy into permitted project test support only when no equivalent exists.\\n\\nEach received Request identifies one call, even when keys repeat. The test owns\\ncomponent tasks: cancel and await them in cleanup. This controls fetch responses,\\nnot component state or browser rendering. No real network or sleeps.\\n\\\"\\\"\\\"\\nimport asyncio\\nfrom dataclasses import dataclass\\nfrom typing import Any\\n\\n\\n@dataclass(frozen=True)\\nclass Request:\\n    key: Any\\n    response: asyncio.Future\\n\\n    def complete(self, value):\\n        self.response.set_result(value)\\n\\n    def fail_request(self, error):\\n        self.response.set_exception(error)\\n\\n\\nclass ControlledFetch:\\n    def __init__(self):\\n        self.calls = asyncio.Queue()\\n\\n    async def __call__(self, key):\\n        request = Request(key, asyncio.get_running_loop().create_future())\\n        self.calls.put_nowait(request)\\n        return await request.response\\n\\n    async def started(self, expected, timeout=1):\\n        \\\"\\\"\\\"Wait for actual fetch entry, assert its key, return a unique handle.\\n\\n        A timed-out queue wait does not cancel component tasks. The caller owns\\n        those tasks and must clean them even when this assertion fails.\\n        \\\"\\\"\\\"\\n        if not 0 < timeout <= 30:\\n            raise ValueError('timeout must be in (0, 30]')\\n        request = await asyncio.wait_for(self.calls.get(), timeout)\\n        if request.key != expected:\\n            raise AssertionError(\\n                f'request key: expected {expected!r}, observed {request.key!r}')\\n        return request\\n{\\n  \\\"upstream_snapshots\\\": [\\n    {\\n      \\\"upstream_commit\\\": \\\"c6589ee6f1fe67af626e97e21914229fd7043d6b\\\",\\n      \\\"path\\\": \\\"skills/mother-in-law/assets/controlled_fetch.py\\\",\\n      \\\"sha256\\\": \\\"d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c\\\"\\n    },\\n    {\\n      \\\"upstream_commit\\\": \\\"c00276dde0e7a9d65b3721c18c938c4b1ef487b7\\\",\\n      \\\"path\\\": \\\"skills/mother-in-law/assets/controlled_fetch.py\\\",\\n      \\\"sha256\\\": \\\"48567a44a073b8b7574e5d2f4542501fd491b9003a320d80602c7cb2b8bb3a81\\\"\\n    }\\n  ],\\n  \\\"limitations\\\": \\\"Owner repository source snapshots; local fixture history is reconstructed, not complete original ancestry. Asset and native cancellation controls previously exposed as development cases.\\\"\\n}\\nMIT License\\n\\nCopyright (c) 2026 SoonGwan\\n\\nPermission is hereby granted, free of charge, to any person obtaining a copy\\nof this software and associated documentation files (the \\\"Software\\\"), to deal\\nin the Software without restriction, including without limitation the rights\\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\\ncopies of the Software, and to permit persons to whom the Software is\\nfurnished to do so, subject to the following conditions:\\n\\nThe above copyright notice and this permission notice shall be included in all\\ncopies or substantial portions of the Software.\\n\\nTHE SOFTWARE IS PROVIDED \\\"AS IS\\\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\\nSOFTWARE.\\n7172f6c95035a51d0f73b5bdaf6d060c9de1601d 5cb5d783822530cb2dac826e72e82ef669922fb3 Document the bounded review scope and source snapshot provenance\\n5cb5d783822530cb2dac826e72e82ef669922fb3 6b682e0f229176b1d6dc7d1c308909d0b17c219d fix: preserve controlled fetch requests on waiter cancellation\\n6b682e0f229176b1d6dc7d1c308909d0b17c219d  feat(mother-in-law): add standalone per-request controlled transport asset\\n     1\\t\\\"\\\"\\\"Copy into permitted project test support only when no equivalent exists.\\n     2\\t\\n     3\\tEach received Request identifies one call, even when keys repeat. The test owns\\n     4\\tcomponent tasks: cancel and await them in cleanup. This controls fetch responses,\\n     5\\tnot component state or browser rendering. No real network or sleeps.\\n     6\\t\\\"\\\"\\\"\\n     7\\timport asyncio\\n     8\\tfrom dataclasses import dataclass\\n     9\\tfrom typing import Any\\n    10\\t\\n    11\\t\\n    12\\t@dataclass(frozen=True)\\n    13\\tclass Request:\\n    14\\t    key: Any\\n    15\\t    response: asyncio.Future\\n    16\\t\\n    17\\t    def complete(self, value):\\n    18\\t        self.response.set_result(value)\\n    19\\t\\n    20\\t    def fail_request(self, error):\\n    21\\t        self.response.set_exception(error)\\n    22\\t\\n    23\\t\\n    24\\tclass ControlledFetch:\\n    25\\t    def __init__(self):\\n    26\\t        self.calls = asyncio.Queue()\\n    27\\t        self._entry_changed = asyncio.Event()\\n    28\\t\\n    29\\t    async def __call__(self, key):\\n    30\\t        request = Request(key, asyncio.get_running_loop().create_future())\\n    31\\t        self.calls.put_nowait(request)\\n    32\\t        self._entry_changed.set()\\n    33\\t        return await request.response\\n    34\\t\\n    35\\t    async def started(self, expected, timeout=1):\\n    36\\t        \\\"\\\"\\\"Wait for actual fetch entry, assert its key, return a unique handle.\\n    37\\t\\n    38\\t        Timeout/cancellation leaves component tasks and unconsumed requests alone.\\n    39\\t        The caller owns tasks and must clean them even when this assertion fails.\\n    40\\t        \\\"\\\"\\\"\\n    41\\t        if not 0 < timeout <= 30:\\n    42\\t            raise ValueError('timeout must be in (0, 30]')\\n    43\\t        loop = asyncio.get_running_loop()\\n    44\\t        deadline = loop.time() + timeout\\n    45\\t        while self.calls.empty():\\n    46\\t            self._entry_changed.clear()\\n    47\\t            # Wait for availability, not a child queue getter that can consume\\n    48\\t            # the request while cancellation is being delivered to this waiter.\\n    49\\t            notice = asyncio.create_task(self._entry_changed.wait())\\n    50\\t            try:\\n    51\\t                done, _ = await asyncio.wait((notice,), timeout=max(0, deadline - loop.time()))\\n    52\\t                if not done:\\n    53\\t                    raise asyncio.TimeoutError('Timed out waiting for request entry')\\n    54\\t            finally:\\n    55\\t                notice.cancel()\\n    56\\t                await asyncio.gather(notice, return_exceptions=True)\\n    57\\t        request = self.calls.get_nowait()\\n    58\\t        if request.key != expected:\\n    59\\t            raise AssertionError(\\n    60\\t                f'request key: expected {expected!r}, observed {request.key!r}')\\n    61\\t        return request\\n     1\\tPython 3.9+ standard library, cooperative asyncio in one loop.\\n     2\\tEach fetch call creates its own Request, even with repeated keys. Its application\\n     3\\ttask returns the exact object chosen through that Request.complete. The test owns\\n     4\\tapplication tasks. Cancelling a pending started waiter must reach that waiter and\\n     5\\tmust not consume an undelivered request or cancel its application task. Already\\n     6\\tdelivered handles are consumed; later cancellation does not undo delivery.\\n     7\\tNo network, threads, browser or blocking code is in scope.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df25-7717-7070-ade3-6d5894eb3d31",
+            "create_time": 1790450185.612455
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "68401bd8a4bc7c12f0f852cb92d3b90e64b79494a9bc68e97a932319a8770fb8",
+      "record": {
+        "timestamp": "2026-09-26T19:16:28.458Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0e7b249a9fc1aa4c016ab81a0bc20087d0994599af858763c7",
+          "status": "completed",
+          "call_id": "call_kpC15yJZZBPiqa0ilcDJf99W",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B --version\",\"max_output_tokens\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df25-7717-7070-ade3-6d5894eb3d31",
+            "create_time": 1790450185.977967
+          }
+        }
+      }
+    },
+    {
+      "line": 35,
+      "line_sha256": "1d191605bcc2db8a43f1ded53ea280a0d1ade3a4d72ce06fb348d2ea8d7d1216",
+      "record": {
+        "timestamp": "2026-09-26T19:16:28.554Z",
+        "ordinal": 34,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df25-c10a-7922-81c6-e88e10b3e103",
+          "call_id": "call_kpC15yJZZBPiqa0ilcDJf99W",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"be41e0\",\"wall_time_seconds\":0.000004166,\"exit_code\":0,\"original_token_count\":4,\"output\":\"Python 3.11.6\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df25-7717-7070-ade3-6d5894eb3d31",
+            "create_time": 1790450188.554453
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 41,
+      "line_sha256": "dc58cc33b55ecee074b8440f0eb16932ea5106241cc1249c70ef05a90863bab8",
+      "record": {
+        "timestamp": "2026-09-26T19:18:00.104Z",
+        "ordinal": 40,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0e7b249a9fc1aa4c016ab81a20663087d0a80a6a2a8908075c",
+          "status": "completed",
+          "call_id": "call_aHMKddmY6XLF2cJqO5AyU2a6",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport ast\\nimport hashlib\\nimport json\\nimport os\\nfrom pathlib import Path\\nimport subprocess\\nimport sys\\nimport tempfile\\n\\nroot = Path.cwd()\\ndef snapshot():\\n    return {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()\\n            for p in root.rglob('*') if p.is_file()}\\nbefore = snapshot()\\nsource = (root / 'controlled_fetch.py').read_text()\\nearlier = subprocess.run(['git', 'show', '6b682e0:controlled_fetch.py'], check=True, capture_output=True, text=True).stdout\\n\\ndef span(src):\\n    cls = next(n for n in ast.parse(src).body if isinstance(n, ast.ClassDef) and n.name == 'ControlledFetch')\\n    fn = next(n for n in cls.body if isinstance(n, ast.AsyncFunctionDef) and n.name == 'started')\\n    lines = src.splitlines(keepends=True)\\n    return ''.join(lines[:fn.lineno-1]), ''.join(lines[fn.lineno-1:fn.end_lineno]), ''.join(lines[fn.end_lineno:])\\nprefix, _, suffix = span(source)\\nproposal = prefix + span(earlier)[1] + suffix\\nassert span(proposal)[0] == prefix and span(proposal)[2] == suffix\\nprovenance = json.loads((root / 'source-origin.json').read_text())\\nfor label, src, record in zip(('earlier', 'current'), (earlier, source), provenance['upstream_snapshots']):\\n    actual = hashlib.sha256(src.encode()).hexdigest()\\n    assert actual == record['sha256']\\n    print(f'SNAPSHOT {label}: sha256={actual}, matches local provenance', flush=True)\\n\\nharness = r'''\\nimport asyncio\\nimport importlib.util\\nimport sys\\nfrom pathlib import Path\\n\\npath, variant, case = sys.argv[1:]\\nname = 'review_controlled_fetch_' + variant\\nspec = importlib.util.spec_from_file_location(name, path)\\nmodule = importlib.util.module_from_spec(spec)\\nsys.modules[name] = module\\nspec.loader.exec_module(module)\\nassert module.ControlledFetch.__call__.__globals__ is module.__dict__\\nassert module.ControlledFetch.started.__globals__ is module.__dict__\\nassert module.Request.__module__ == name\\n\\nasync def tick():\\n    f = asyncio.get_running_loop().create_future()\\n    asyncio.get_running_loop().call_soon(f.set_result, None)\\n    await f\\n\\nasync def until(predicate):\\n    for _ in range(40):\\n        if predicate():\\n            return\\n        await tick()\\n    raise AssertionError('cooperative scheduling bound exceeded (40 ticks)')\\n\\nasync def result(task):\\n    await until(task.done)\\n    return task.result()\\n\\nasync def main():\\n    fetch = module.ControlledFetch()\\n    tasks = []\\n    def task(coro):\\n        t = asyncio.create_task(coro)\\n        tasks.append(t)\\n        return t\\n    async def handle(key):\\n        return await result(task(fetch.started(key, timeout=30)))\\n    try:\\n        if case == 'ordinary':\\n            waiter = task(fetch.started('normal', timeout=30))\\n            await tick()\\n            app = task(fetch('normal'))\\n            request = await result(waiter)\\n            value = object()\\n            request.complete(value)\\n            assert await result(app) is value\\n            assert fetch.calls.empty()\\n            # Exercise the retained Request.fail_request implementation too.\\n            app2 = task(fetch('failure'))\\n            request2 = await handle('failure')\\n            error = RuntimeError('chosen failure')\\n            request2.fail_request(error)\\n            await until(app2.done)\\n            assert app2.exception() is error\\n            for invalid in (0, -1, 31):\\n                try:\\n                    await fetch.started('unused', timeout=invalid)\\n                except ValueError as exc:\\n                    assert str(exc) == 'timeout must be in (0, 30]'\\n                else:\\n                    raise AssertionError('invalid timeout accepted')\\n            app3 = task(fetch('observed'))\\n            bad = task(fetch.started('expected', timeout=30))\\n            await until(bad.done)\\n            assert isinstance(bad.exception(), AssertionError)\\n            assert str(bad.exception()) == \\\"request key: expected 'expected', observed 'observed'\\\"\\n            assert not app3.done() and fetch.calls.empty()\\n            print('ordinary: exact result identity=True; exact error identity=True; invalid 0/-1/31 rejected; key mismatch asserted; mismatch app pending=True', flush=True)\\n        elif case == 'repeated':\\n            a = task(fetch('same'))\\n            b = task(fetch('same'))\\n            first = await handle('same')\\n            second = await handle('same')\\n            assert first is not second and first.response is not second.response\\n            assert first.key == second.key == 'same'\\n            v1, v2 = object(), object()\\n            second.complete(v2)\\n            assert await result(b) is v2\\n            assert not a.done() and not first.response.done()\\n            first.complete(v1)\\n            assert await result(a) is v1\\n            assert fetch.calls.empty()\\n            print('repeated: distinct handles=True; distinct futures=True; second result is v2=True; first pending until own completion=True; first result is v1=True', flush=True)\\n        elif case == 'wakeup_cancel':\\n            waiter = task(fetch.started('race', timeout=30))\\n            # Read private wait queues solely to establish the scheduling barrier.\\n            await until(lambda: bool(fetch.calls._getters) or bool(fetch._entry_changed._waiters))\\n            app = task(fetch('race'))\\n            state = {}\\n            def cancel_during_wakeup():\\n                state['waiter_pending_at_cancel'] = not waiter.done()\\n                state['queued_at_cancel'] = fetch.calls.qsize()\\n                state['app_pending_at_cancel'] = not app.done()\\n                state['cancel_accepted'] = waiter.cancel()\\n            # App executes __call__, queues the request and schedules the native\\n            # getter/event wakeup. This callback precedes that wakeup; its\\n            # cancellation delivery follows the already-ready child wakeup.\\n            asyncio.get_running_loop().call_soon(cancel_during_wakeup)\\n            await until(waiter.done)\\n            state['waiter_cancelled'] = waiter.cancelled()\\n            state['queued_after'] = fetch.calls.qsize()\\n            state['app_pending_after'] = not app.done()\\n            state['handle_returned'] = not waiter.cancelled() and waiter.exception() is None\\n            assert state['waiter_pending_at_cancel'] and state['queued_at_cancel'] == 1\\n            assert state['app_pending_at_cancel'] and state['cancel_accepted']\\n            preserved = state['waiter_cancelled'] and state['queued_after'] == 1 and state['app_pending_after']\\n            # Recover any surviving/returned handle to check the app is intact\\n            # and clean up even when the cancellation contract fails.\\n            if state['queued_after']:\\n                request = await handle('race')\\n            elif state['handle_returned']:\\n                request = waiter.result()\\n            else:\\n                request = None\\n            state['response_uncancelled'] = request is not None and not request.response.cancelled()\\n            if request is not None:\\n                value = object()\\n                request.complete(value)\\n                state['app_exact_result'] = await result(app) is value\\n            print('wakeup_cancel: ' + repr(state), flush=True)\\n            assert preserved, 'pending started cancellation must propagate and preserve the undelivered request and application task'\\n        elif case == 'delivered_cancel':\\n            app = task(fetch('delivered'))\\n            received = []\\n            gate = asyncio.get_running_loop().create_future()\\n            async def owner():\\n                received.append(await fetch.started('delivered', timeout=30))\\n                await gate\\n            waiter = task(owner())\\n            await until(lambda: bool(received))\\n            assert not waiter.done() and fetch.calls.empty()\\n            assert waiter.cancel()\\n            await until(waiter.done)\\n            assert waiter.cancelled() and fetch.calls.empty() and not app.done()\\n            value = object()\\n            received[0].complete(value)\\n            assert await result(app) is value\\n            print('delivered_cancel: owner cancelled=True; queue size=0; delivered handle remains valid=True; app exact result=True', flush=True)\\n        else:\\n            raise AssertionError(case)\\n    finally:\\n        for t in tasks:\\n            if not t.done():\\n                t.cancel()\\n        await until(lambda: all(t.done() for t in tasks))\\n        await asyncio.gather(*tasks, return_exceptions=True)\\n        leftovers = [t for t in asyncio.all_tasks() if t is not asyncio.current_task() and not t.done()]\\n        assert not leftovers, f'leaked tasks: {leftovers}'\\n\\nasyncio.run(main())\\n'''\\ntry:\\n    with tempfile.TemporaryDirectory(prefix='.controlled-fetch-review-', dir=root) as scratch:\\n        scratch = Path(scratch)\\n        (scratch / 'LICENSE').write_bytes((root / 'LICENSE').read_bytes())\\n        candidate = scratch / 'controlled_fetch_proposal.py'\\n        candidate.write_text(proposal)\\n        assert candidate.read_text() == prefix + span(earlier)[1] + suffix\\n        for variant, path in (('current', root / 'controlled_fetch.py'), ('proposal', candidate)):\\n            for case in ('ordinary', 'repeated', 'wakeup_cancel', 'delivered_cancel'):\\n                print(f'COMMAND: {sys.executable} -B -c <inline harness> {path.relative_to(root)} {variant} {case}', flush=True)\\n                child = subprocess.run([sys.executable, '-B', '-c', harness, str(path), variant, case], capture_output=True, text=True)\\n                print(child.stdout, end='', flush=True)\\n                if child.stderr:\\n                    print(child.stderr, end='', flush=True)\\n                print(f'PROCESS EXIT: {child.returncode}', flush=True)\\n                expected = 1 if (variant, case) == ('proposal', 'wakeup_cancel') else 0\\n                assert child.returncode == expected, (variant, case, child.returncode)\\nfinally:\\n    after = snapshot()\\n    assert after == before, 'original files or Git metadata changed, or scratch remains'\\n    print('INTEGRITY: all project and .git file hashes unchanged; owned scratch removed; no bytecode written', flush=True)\\nPY\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df25-7717-7070-ade3-6d5894eb3d31",
+            "create_time": 1790450188.927973
+          }
+        }
+      }
+    },
+    {
+      "line": 44,
+      "line_sha256": "2893b1b6fb3d4f5f9852ec820a45483cce604261eb2e36fe732b269f2c192eb2",
+      "record": {
+        "timestamp": "2026-09-26T19:18:00.668Z",
+        "ordinal": 43,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df27-28da-7ae3-b51f-345e8c7a627f",
+          "call_id": "call_aHMKddmY6XLF2cJqO5AyU2a6",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.6 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"c41756\",\"wall_time_seconds\":0.381224292,\"exit_code\":0,\"original_token_count\":957,\"output\":\"SNAPSHOT earlier: sha256=d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c, matches local provenance\\nSNAPSHOT current: sha256=48567a44a073b8b7574e5d2f4542501fd491b9003a320d80602c7cb2b8bb3a81, matches local provenance\\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> controlled_fetch.py current ordinary\\nordinary: exact result identity=True; exact error identity=True; invalid 0/-1/31 rejected; key mismatch asserted; mismatch app pending=True\\nPROCESS EXIT: 0\\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> controlled_fetch.py current repeated\\nrepeated: distinct handles=True; distinct futures=True; second result is v2=True; first pending until own completion=True; first result is v1=True\\nPROCESS EXIT: 0\\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> controlled_fetch.py current wakeup_cancel\\nwakeup_cancel: {'waiter_pending_at_cancel': True, 'queued_at_cancel': 1, 'app_pending_at_cancel': True, 'cancel_accepted': True, 'waiter_cancelled': True, 'queued_after': 1, 'app_pending_after': True, 'handle_returned': False, 'response_uncancelled': True, 'app_exact_result': True}\\nPROCESS EXIT: 0\\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> controlled_fetch.py current delivered_cancel\\ndelivered_cancel: owner cancelled=True; queue size=0; delivered handle remains valid=True; app exact result=True\\nPROCESS EXIT: 0\\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> .controlled-fetch-review-h8ormg_h/controlled_fetch_proposal.py proposal ordinary\\nordinary: exact result identity=True; exact error identity=True; invalid 0/-1/31 rejected; key mismatch asserted; mismatch app pending=True\\nPROCESS EXIT: 0\\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> .controlled-fetch-review-h8ormg_h/controlled_fetch_proposal.py proposal repeated\\nrepeated: distinct handles=True; distinct futures=True; second result is v2=True; first pending until own completion=True; first result is v1=True\\nPROCESS EXIT: 0\\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> .controlled-fetch-review-h8ormg_h/controlled_fetch_proposal.py proposal wakeup_cancel\\nwakeup_cancel: {'waiter_pending_at_cancel': True, 'queued_at_cancel': 1, 'app_pending_at_cancel': True, 'cancel_accepted': True, 'waiter_cancelled': False, 'queued_after': 0, 'app_pending_after': True, 'handle_returned': True, 'response_uncancelled': True, 'app_exact_result': True}\\nTraceback (most recent call last):\\n  File \\\"<string>\\\", line 154, in <module>\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 190, in run\\n    return runner.run(main)\\n           ^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 118, in run\\n    return self._loop.run_until_complete(task)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\\\", line 653, in run_until_complete\\n    return future.result()\\n           ^^^^^^^^^^^^^^^\\n  File \\\"<string>\\\", line 125, in main\\nAssertionError: pending started cancellation must propagate and preserve the undelivered request and application task\\nPROCESS EXIT: 1\\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -c <inline harness> .controlled-fetch-review-h8ormg_h/controlled_fetch_proposal.py proposal delivered_cancel\\ndelivered_cancel: owner cancelled=True; queue size=0; delivered handle remains valid=True; app exact result=True\\nPROCESS EXIT: 0\\nINTEGRITY: all project and .git file hashes unchanged; owned scratch removed; no bytecode written\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df25-7717-7070-ade3-6d5894eb3d31",
+            "create_time": 1790450280.666618
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

@@ -1,0 +1,298 @@
+{
+  "session_id": "01a0e010-713e-72a3-bd99-907bb01cd942",
+  "source_bytes": 201229,
+  "source_sha256": "57c4b8e9286182d8a88eeffedd7a3ca6d5157bea38627701bba933851744dbd0",
+  "source_lines": 52,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "f04f46b388033cf23639e6e4fc3bbcf6ab2045ad5c1a3da9744402ad0ced6c8f",
+      "record": {
+        "timestamp": "2026-09-26T23:32:56.991Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0750454bb26cf790016ab856280d0087d0803d380cb7aecc65",
+          "status": "completed",
+          "call_id": "call_L0sHfh6ppV1tCzttYa4sRT5v",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; cat .agents/skills/hostage-negotiator/SKILL.md requirements.md preview.py; git status --short; rg --files --hidden -g '!.git' -g 'AGENTS.md' -g '*test*' -g 'pyproject.toml' -g 'setup.cfg' -g 'controlled_call.py' -g 'native-evidence.md'\",\"max_output_tokens\":8000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e010-7188-7f72-8e17-4f04240f7e7d",
+            "create_time": 1790465572.903843
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "b0cc1b5abaac03d3ab70ceaffe983cf9e86f415fabdafe845088606513e58aac",
+      "record": {
+        "timestamp": "2026-09-26T23:32:57.157Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e010-90c5-7212-95e7-cb41c665c263",
+          "call_id": "call_L0sHfh6ppV1tCzttYa4sRT5v",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6ee646\",\"wall_time_seconds\":0.000004542,\"exit_code\":0,\"original_token_count\":1622,\"output\":\"<WORKSPACE>\\n---\\nname: hostage-negotiator\\ndescription: Keep a small requested change focused when optional refactors, architectural redesign, or unrelated cleanup threaten to expand its scope.\\n---\\n\\n# Hostage Negotiator\\n\\n> Release the button. The architecture stays.\\n\\n## Establish the terms\\n\\nRead supplied files, applicable project instructions and working-tree status together. Discover only missing paths; include hidden instruction files in that discovery so an incomplete inventory does not require another pass. Do not precede known-file reads with a separate directory listing. Search again for an unresolved dependency or instruction boundary. Use the project's runner.\\n\\nFor each supporting change, ask which acceptance condition fails without it. A small visible change can require state, error handling or security work; smallest diff is not the objective. Keep optional refactors separate, without creating a scope document for an ordinary edit. Ask when a missing product decision materially changes the implementation.\\n\\nFor stateful behavior, follow entry, completion and recovery through the existing owner. Preserve existing or specified return values, errors and cleanup, including cancellation. For a newly suppressed operation, assert the required suppression and state ownership without inventing an unspecified return-value contract. Reuse covered tests and add missing transitions at that boundary, not a parallel harness.\\n\\nAssert observable contracts, not incidental counter increments or token values. For stale or failed work, capture contractual field values before release and compare afterward; retaining the owner object can alias in-place mutations. Preserve payload/error identity and snapshot mutable contents only when contractual. Do not invent exception-identity requirements for task cancellation.\\n\\nAsync regression checks must terminate even when the guarded behavior is broken: bound behavior-dependent waits and release or cancel controlled tasks in cleanup. Keep callback helpers separate from framework methods: an async `fail` or `run` on a unittest TestCase can break assertions or execution; use distinct names or composed support.\\n\\nWithout equivalent project support, optionally copy the [Python asyncio asset](assets/controlled_call.py) or [JavaScript Promise asset](assets/controlled_call.mjs) for the actual runtime into permitted test support. Read its complete usage block alongside application files: `sed -n '1,/^\\\"\\\"\\\"$/p' <python-asset>` or `sed -n '1,/^ \\\\*\\\\//p' <js-asset>`. These include limits and optional task lifecycle ownership to replace custom start/wait/drain plumbing; inspect implementation for trust, adaptation or unclear behavior. Assets do not replace application assertions or external-resource cleanup; no separate reference is needed.\\n\\n## Deliver and stop\\n\\nRun native tests in a dedicated shell command with its own results and process exit. A dedicated command need not be a separate model turn: when an edit succeeds, run the relevant test command immediately in the same tool interaction if sequencing is supported. Wait for the edit result first; do not test a failed or pending edit, run edits and tests concurrently, or replace a test exit with a later command exit. Inspect a failing test before choosing a fix. Keep before/after evidence separate; batching changes transport, not the checks or their order. Then combine remaining copy integrity (`cmp <asset> <copy>`), diff checks and scope status in one non-test call, preserving each needed exit. Inspect new code not already visible in your edit output; do not reprint a whole generated suite merely to confirm it exists. A later successful command is not test evidence; never recopy a helper to make its integrity check pass.\\n\\nReview the diff against acceptance conditions, removing only your own unjustified additions. Reuse valid evidence; rerun only for changed relevant inputs, unresolved uncertainty or an explicit requirement.\\n\\nBefore claiming tests passed, locate their native identities/count and results, not just the shell exit or trailing diff/status. Missing evidence: first inspect an existing report tied to that command and inputs; observe a still-running process instead of restarting it. Otherwise rerun only the missing, safely repeatable check in scope, capturing its result and own exit. Never replay a deployment or side-effectful workflow merely to recover output. If evidence remains unavailable, say unverified. A later run is new evidence, not a repaired transcript; missing, undiscovered or skipped tests cannot support a pass.\\n\\nWhen terminal capture is unreliable and local evidence files are permitted, use the [single-run native capture fallback](references/native-evidence.md); read retained results instead of rerunning solely for output.\\n\\nReport decisive observations and limits, then stop when the requested behavior and checks are verified.\\n\\nPreserve user changes and explicit requirements. Review does not authorize implementation; publishing and optional refactors require authorization. Keep humor optional.\\nEvery refresh must invoke its supplied fetch(key), even while another\\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\\nEach call returns its own exact fetched object or propagates its own exception.\\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\\nfailure or cancellation cannot clear pending while the latest is unresolved.\\nLatest settlement clears pending even if older calls remain running. Keep the prior\\nvalue during loading and on failure/cancellation. Instances are independent.\\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\\nclass Preview:\\n    def __init__(self):\\n        self.pending = False\\n        self.value = None\\n        self.generation = 0\\n\\n    async def refresh(self, key, fetch):\\n        self.generation += 1\\n        generation = self.generation\\n        self.pending = True\\n        try:\\n            value = await fetch(key)\\n            if generation == self.generation:\\n                self.value = value\\n            return value\\n        finally:\\n            self.pending = False\\n?? .agents/\\n.agents/skills/hostage-negotiator/assets/controlled_call.py\\n.agents/skills/hostage-negotiator/references/native-evidence.md\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e010-7188-7f72-8e17-4f04240f7e7d",
+            "create_time": 1790465577.157292
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "0ffaa91da77975cf0c43ebbe02c4d64230707a33063677566097494920eec263",
+      "record": {
+        "timestamp": "2026-09-26T23:33:00.155Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0750454bb26cf790016ab8562c876c87d09947d76815d04f12",
+          "status": "completed",
+          "call_id": "call_uMOVQ8aoQM1FcNVbbf7VeVCr",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat .agents/skills/hostage-negotiator/assets/controlled_call.py; rg --files --hidden -g '!.git' -g '!.agents/**'\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e010-7188-7f72-8e17-4f04240f7e7d",
+            "create_time": 1790465579.559075
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "fd59877a329f02068120399bf63c7ad44c0196a1e2b7543af5d72d04ec0e4322",
+      "record": {
+        "timestamp": "2026-09-26T23:33:00.245Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e010-9cd5-7851-843e-e1e92b0113ed",
+          "call_id": "call_uMOVQ8aoQM1FcNVbbf7VeVCr",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"5f9827\",\"wall_time_seconds\":0.000004333,\"exit_code\":0,\"original_token_count\":2215,\"output\":\"\\\"\\\"\\\"Controlled asyncio callbacks; copy into permitted test support only if needed.\\n\\nPrefer equivalent project fixtures. Use the real application owner and runner;\\nthe copied module needs no installed skill. No application implementation here.\\n\\nsave = ControlledCall() accepts any positional/keyword arguments, including none.\\nStart the application task with owned cleanup registered BEFORE waiting. Await\\nsave.started(timeout=1) for actual callback entry; it returns a unique Call.\\nCancelling an entry wait propagates cancellation and leaves unconsumed entries\\navailable; it does not cancel application work.\\ncall.args/call.kwargs hold argument references, not deep snapshots. save.calls\\nrecords every entry, even identical arguments, for call-count assertions.\\n\\nIf entry must happen before a particular application task finishes, await\\nsave.started_before(task, timeout=1). Pass an already-owned asyncio Task/Future\\non this loop, not a coroutine. Missing entry raises EntryNotObserved early with\\nan outcome containing status and the exact value/error (or cancelled status).\\nQueued entry wins; this does not establish which task caused it. Tests still\\nassert arguments, state and task outcomes. Timeout/cancelling the waiter leaves\\nthe application task and unconsumed entries untouched.\\n\\ncall.complete(value) delivers that exact object (default None); call.fail(error)\\nraises that exact exception. Each call has its own response future. Sibling\\ncompletion/cancellation is independent. Completing a finished/cancelled handle\\nraises asyncio.InvalidStateError, exposing accidental double completion.\\n\\nAssert required pending state, duplicate suppression, instance isolation and\\nrecovery through the application; entry alone proves none of them. Cancel the\\napplication task to test cancellation, not just its response future. Test\\nsynchronous callback failure with an ordinary raising function, not this double.\\n\\nUse unittest subtests for independent scenarios, not dependent phases of one\\ncall: a failed fetch-phase assertion must unwind to owned cleanup, not continue\\ninto a persist phase whose entry/handle was never established.\\n\\nOptional task ownership: in asyncSetUp, create tasks = OwnedTasks(timeout=1)\\nand register self.addAsyncCleanup(tasks.close) BEFORE tasks.start(coroutine).\\nAwait tasks.wait(task) for its result/error (no cancellation-identity promise).\\nTimeout or cancelling this wait leaves the task alive for assertions/cleanup.\\nclose cancels/drains only registered tasks, retrieves their exceptions, and\\nrejects new starts. Assert expected outcomes before cleanup: close is not a\\ntest of application success. A cleanup timeout reports unfinished tasks; it\\ndoes not claim they stopped. Retrying/concurrent close drains the same owner\\nwithout sending another cancellation into an in-progress async cleanup. External\\ncancellation or application cleanup failures remain the caller's responsibility.\\n\\nOtherwise tests own cancellation/drain even if entry/assertions fail; started's\\ntimeout does not clean application tasks. Bound application waits too. Async\\ntimeouts cannot interrupt blocking code or guarantee termination of tasks that\\nresist cancellation; use process bounds when needed. This supplies no network,\\nthread, browser, transaction or production-runtime evidence.\\n\\\"\\\"\\\"\\nimport asyncio\\n\\n\\nclass OwnedTasks:\\n    \\\"\\\"\\\"Optional same-loop task support; no application assertions or global sweep.\\\"\\\"\\\"\\n    def __init__(self, timeout=1):\\n        if not 0 < timeout <= 30:\\n            raise ValueError('timeout must be in (0, 30]')\\n        self.timeout = timeout\\n        self._loop = asyncio.get_running_loop()\\n        self._tasks = set()\\n        self._closed = False\\n\\n    def _check_loop(self):\\n        if asyncio.get_running_loop() is not self._loop:\\n            raise RuntimeError('OwnedTasks must stay on its creating loop')\\n\\n    def start(self, coroutine):\\n        self._check_loop()\\n        if self._closed:\\n            raise RuntimeError('OwnedTasks is closed; coroutine remains caller-owned')\\n        task = asyncio.create_task(coroutine)\\n        self._tasks.add(task)\\n        return task\\n\\n    async def wait(self, task):\\n        self._check_loop()\\n        if task not in self._tasks:\\n            raise ValueError('Task is not owned here')\\n        done, _ = await asyncio.wait((task,), timeout=self.timeout)\\n        if not done:\\n            raise asyncio.TimeoutError('Owned task did not settle; still owned')\\n        return task.result()\\n\\n    async def close(self):\\n        self._check_loop()\\n        if not self._closed:\\n            self._closed = True\\n            for task in self._tasks:\\n                if not task.done():\\n                    task.cancel()\\n        if not self._tasks:\\n            return\\n        done, pending = await asyncio.wait(self._tasks, timeout=self.timeout)\\n        for task in done:\\n            if not task.cancelled():\\n                task.exception()  # Drain, not a substitute for test assertions.\\n        if pending:\\n            raise asyncio.TimeoutError('Owned task cleanup incomplete: %d pending' % len(pending))\\n\\n\\nclass EntryNotObserved(AssertionError):\\n    def __init__(self, outcome):\\n        self.outcome = outcome\\n        super().__init__('Application task ' + outcome['status'] +\\n                         ' before expected callback entry')\\n\\n\\nclass Call:\\n    def __init__(self, args, kwargs):\\n        self.args, self.kwargs = args, kwargs\\n        self.response = asyncio.get_running_loop().create_future()\\n\\n    def complete(self, value=None):\\n        self.response.set_result(value)\\n\\n    def fail(self, error):\\n        self.response.set_exception(error)\\n\\n\\nclass ControlledCall:\\n    def __init__(self):\\n        self.calls = []\\n        self._entered = asyncio.Queue()\\n        self._entry_changed = asyncio.Event()\\n\\n    async def __call__(self, *args, **kwargs):\\n        call = Call(args, kwargs)\\n        self.calls.append(call)\\n        self._entered.put_nowait(call)\\n        self._entry_changed.set()\\n        return await call.response\\n\\n    async def started(self, timeout=1):\\n        \\\"\\\"\\\"Return the next actual callback entry, not merely a scheduled task.\\n\\n        Timeout leaves application tasks untouched; their cleanup is test-owned.\\n        \\\"\\\"\\\"\\n        if not 0 < timeout <= 30:\\n            raise ValueError('timeout must be in (0, 30]')\\n        deadline = asyncio.get_running_loop().time() + timeout\\n        while True:\\n            if not self._entered.empty():\\n                return self._entered.get_nowait()\\n            self._entry_changed.clear()\\n            # Observe availability, not a child task that consumes the entry.\\n            # Cancellation must not be swallowed by a completed queue getter.\\n            notice = asyncio.create_task(self._entry_changed.wait())\\n            try:\\n                done, _ = await asyncio.wait((notice,), timeout=max(\\n                    0, deadline - asyncio.get_running_loop().time()))\\n                if not done:\\n                    raise asyncio.TimeoutError('Timed out waiting for callback entry')\\n            finally:\\n                notice.cancel()\\n                await asyncio.gather(notice, return_exceptions=True)\\n\\n    async def started_before(self, task, timeout=1):\\n        \\\"\\\"\\\"Observe entry or task settlement without owning/cancelling that task.\\\"\\\"\\\"\\n        if not 0 < timeout <= 30:\\n            raise ValueError('timeout must be in (0, 30]')\\n        loop = asyncio.get_running_loop()\\n        if not isinstance(task, asyncio.Future) or task.get_loop() is not loop:\\n            raise TypeError('task must be an owned asyncio Task/Future on this loop')\\n        deadline = loop.time() + timeout\\n        while True:\\n            if not self._entered.empty():\\n                return self._entered.get_nowait()\\n            if task.done():\\n                if task.cancelled():\\n                    outcome = dict(status='cancelled')\\n                elif task.exception() is not None:\\n                    outcome = dict(status='failed', error=task.exception())\\n                else:\\n                    outcome = dict(status='completed', value=task.result())\\n                raise EntryNotObserved(outcome)\\n            self._entry_changed.clear()\\n            # Wait for notification, never dequeue in a cancellable child task.\\n            # Otherwise cancellation could lose an entry already taken by it.\\n            notice = asyncio.create_task(self._entry_changed.wait())\\n            try:\\n                done, _ = await asyncio.wait((notice, task), timeout=max(0, deadline - loop.time()),\\n                                             return_when=asyncio.FIRST_COMPLETED)\\n                if not done:\\n                    raise asyncio.TimeoutError('Timed out waiting for callback entry')\\n            finally:\\n                notice.cancel()\\n                await asyncio.gather(notice, return_exceptions=True)\\nnotes.txt\\nrequirements.md\\npreview.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e010-7188-7f72-8e17-4f04240f7e7d",
+            "create_time": 1790465580.245892
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "edf8900e3b93d4e88d62e66b9054c21d52d440f92eb8827864fd976d7cd8ffe3",
+      "record": {
+        "timestamp": "2026-09-26T23:34:04.828Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0750454bb26cf790016ab85630d98087d0827f40c9c9410bef",
+          "status": "completed",
+          "call_id": "call_MhDAAc8TLS803PLo1G4pPZeU",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat notes.txt; git ls-files; cp .agents/skills/hostage-negotiator/assets/controlled_call.py controlled_call.py\",\"max_output_tokens\":1000}));\ntext(await tools.apply_patch(\"*** Begin Patch\\n*** Add File: <WORKSPACE>/test_preview.py\\n+import asyncio\\n+import unittest\\n+\\n+from controlled_call import ControlledCall, OwnedTasks\\n+from preview import Preview\\n+\\n+\\n+class PreviewTests(unittest.IsolatedAsyncioTestCase):\\n+    async def asyncSetUp(self):\\n+        self.tasks = OwnedTasks(timeout=1)\\n+        self.addAsyncCleanup(self.tasks.close)\\n+\\n+    async def begin(self, preview, fetch, key=\\\"same-key\\\"):\\n+        task = self.tasks.start(preview.refresh(key, fetch))\\n+        call = await fetch.started_before(task, timeout=1)\\n+        self.assertEqual(call.args, (key,))\\n+        self.assertEqual(call.kwargs, {})\\n+        self.assertTrue(preview.pending)\\n+        return task, call\\n+\\n+    async def seeded(self):\\n+        preview = Preview()\\n+        self.assertFalse(preview.pending)\\n+        self.assertIsNone(preview.value)\\n+        fetch = ControlledCall()\\n+        task, call = await self.begin(preview, fetch)\\n+        prior = object()\\n+        call.complete(prior)\\n+        self.assertIs(await self.tasks.wait(task), prior)\\n+        self.assertIs(preview.value, prior)\\n+        self.assertFalse(preview.pending)\\n+        return preview, prior\\n+\\n+    async def settle(self, task, call, outcome):\\n+        if outcome == \\\"cancel\\\":\\n+            task.cancel()\\n+            with self.assertRaises(asyncio.CancelledError):\\n+                await self.tasks.wait(task)\\n+        elif outcome == \\\"failure\\\":\\n+            error = RuntimeError(\\\"fetch failed\\\")\\n+            call.fail(error)\\n+            with self.assertRaises(RuntimeError) as caught:\\n+                await self.tasks.wait(task)\\n+            self.assertIs(caught.exception, error)\\n+        else:\\n+            result = object()\\n+            call.complete(result)\\n+            self.assertIs(await self.tasks.wait(task), result)\\n+            return result\\n+\\n+    async def earlier_settles_first(self, outcome):\\n+        preview, prior = await self.seeded()\\n+        fetch = ControlledCall()\\n+        older, old_call = await self.begin(preview, fetch)\\n+        latest, new_call = await self.begin(preview, fetch)\\n+        self.assertEqual(len(fetch.calls), 2)\\n+        self.assertFalse(older.done())\\n+        self.assertIs(preview.value, prior)\\n+        before_pending, before_value = preview.pending, preview.value\\n+        await self.settle(older, old_call, outcome)\\n+        self.assertFalse(latest.done())\\n+        self.assertEqual(preview.pending, before_pending)\\n+        self.assertIs(preview.value, before_value)\\n+        result = await self.settle(latest, new_call, \\\"success\\\")\\n+        self.assertFalse(preview.pending)\\n+        self.assertIs(preview.value, result)\\n+\\n+    async def test_earlier_success_while_latest_pending(self):\\n+        await self.earlier_settles_first(\\\"success\\\")\\n+\\n+    async def test_earlier_failure_while_latest_pending(self):\\n+        await self.earlier_settles_first(\\\"failure\\\")\\n+\\n+    async def test_earlier_cancellation_while_latest_pending(self):\\n+        await self.earlier_settles_first(\\\"cancel\\\")\\n+\\n+    async def test_latest_success_before_earlier_settlement(self):\\n+        for outcome in (\\\"success\\\", \\\"failure\\\", \\\"cancel\\\"):\\n+            with self.subTest(earlier_outcome=outcome):\\n+                preview, prior = await self.seeded()\\n+                fetch = ControlledCall()\\n+                older, old_call = await self.begin(preview, fetch, \\\"old\\\")\\n+                latest, new_call = await self.begin(preview, fetch, \\\"new\\\")\\n+                self.assertIs(preview.value, prior)\\n+                result = await self.settle(latest, new_call, \\\"success\\\")\\n+                self.assertFalse(older.done())\\n+                self.assertFalse(preview.pending)\\n+                self.assertIs(preview.value, result)\\n+                before_pending, before_value = preview.pending, preview.value\\n+                await self.settle(older, old_call, outcome)\\n+                self.assertEqual(preview.pending, before_pending)\\n+                self.assertIs(preview.value, before_value)\\n+\\n+    async def latest_unsuccessful_and_retry(self, outcome):\\n+        preview, prior = await self.seeded()\\n+        fetch = ControlledCall()\\n+        older, old_call = await self.begin(preview, fetch)\\n+        latest, new_call = await self.begin(preview, fetch)\\n+        await self.settle(latest, new_call, outcome)\\n+        self.assertFalse(older.done())\\n+        self.assertFalse(preview.pending)\\n+        self.assertIs(preview.value, prior)\\n+        retry, retry_call = await self.begin(preview, fetch)\\n+        self.assertEqual(len(fetch.calls), 3)\\n+        self.assertIs(preview.value, prior)\\n+        before_pending, before_value = preview.pending, preview.value\\n+        await self.settle(older, old_call, \\\"success\\\")\\n+        self.assertFalse(retry.done())\\n+        self.assertEqual(preview.pending, before_pending)\\n+        self.assertIs(preview.value, before_value)\\n+        result = await self.settle(retry, retry_call, \\\"success\\\")\\n+        self.assertFalse(preview.pending)\\n+        self.assertIs(preview.value, result)\\n+\\n+    async def test_latest_failure_and_retry(self):\\n+        await self.latest_unsuccessful_and_retry(\\\"failure\\\")\\n+\\n+    async def test_latest_cancellation_and_retry(self):\\n+        await self.latest_unsuccessful_and_retry(\\\"cancel\\\")\\n+\\n+    async def test_synchronous_callback_failure_and_retry(self):\\n+        preview, prior = await self.seeded()\\n+        fetch = ControlledCall()\\n+        older, old_call = await self.begin(preview, fetch)\\n+        error = ValueError(\\\"synchronous failure\\\")\\n+        keys = []\\n+\\n+        def raise_synchronously(key):\\n+            keys.append(key)\\n+            self.assertTrue(preview.pending)\\n+            self.assertIs(preview.value, prior)\\n+            raise error\\n+\\n+        latest = self.tasks.start(preview.refresh(\\\"sync\\\", raise_synchronously))\\n+        with self.assertRaises(ValueError) as caught:\\n+            await self.tasks.wait(latest)\\n+        self.assertIs(caught.exception, error)\\n+        self.assertEqual(keys, [\\\"sync\\\"])\\n+        self.assertFalse(preview.pending)\\n+        self.assertIs(preview.value, prior)\\n+        self.assertFalse(older.done())\\n+        before_pending, before_value = preview.pending, preview.value\\n+        await self.settle(older, old_call, \\\"success\\\")\\n+        self.assertEqual(preview.pending, before_pending)\\n+        self.assertIs(preview.value, before_value)\\n+        retry, retry_call = await self.begin(preview, fetch)\\n+        result = await self.settle(retry, retry_call, \\\"success\\\")\\n+        self.assertIs(preview.value, result)\\n+        self.assertFalse(preview.pending)\\n+\\n+    async def test_instance_isolation(self):\\n+        left, left_prior = await self.seeded()\\n+        right, right_prior = await self.seeded()\\n+        left_fetch, right_fetch = ControlledCall(), ControlledCall()\\n+        left_task, left_call = await self.begin(left, left_fetch)\\n+        right_task, right_call = await self.begin(right, right_fetch)\\n+        self.assertIs(left.value, left_prior)\\n+        self.assertIs(right.value, right_prior)\\n+        right_pending, right_value = right.pending, right.value\\n+        left_result = await self.settle(left_task, left_call, \\\"success\\\")\\n+        self.assertFalse(left.pending)\\n+        self.assertIs(left.value, left_result)\\n+        self.assertFalse(right_task.done())\\n+        self.assertEqual(right.pending, right_pending)\\n+        self.assertIs(right.value, right_value)\\n+        left_pending, left_value = left.pending, left.value\\n+        right_result = await self.settle(right_task, right_call, \\\"success\\\")\\n+        self.assertFalse(right.pending)\\n+        self.assertIs(right.value, right_result)\\n+        self.assertEqual(left.pending, left_pending)\\n+        self.assertIs(left.value, left_value)\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e010-7188-7f72-8e17-4f04240f7e7d",
+            "create_time": 1790465582.866094
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "7f8ab08c3e06f43db3429eaae99c0f899bf83ffe5227a02120497dd849e14869",
+      "record": {
+        "timestamp": "2026-09-26T23:34:05.149Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e011-9a5d-7a21-8734-3110cd5dac22",
+          "call_id": "call_MhDAAc8TLS803PLo1G4pPZeU",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6df6d9\",\"wall_time_seconds\":0.000003834,\"exit_code\":0,\"original_token_count\":20,\"output\":\"Owner draft: preserve this unrelated note.\\nnotes.txt\\npreview.py\\nrequirements.md\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"7015b0\",\"wall_time_seconds\":0.000003291,\"exit_code\":1,\"original_token_count\":2398,\"output\":\"test_earlier_cancellation_while_latest_pending (test_preview.PreviewTests.test_earlier_cancellation_while_latest_pending) ... FAIL\\ntest_earlier_failure_while_latest_pending (test_preview.PreviewTests.test_earlier_failure_while_latest_pending) ... FAIL\\ntest_earlier_success_while_latest_pending (test_preview.PreviewTests.test_earlier_success_while_latest_pending) ... FAIL\\ntest_instance_isolation (test_preview.PreviewTests.test_instance_isolation) ... ok\\ntest_latest_cancellation_and_retry (test_preview.PreviewTests.test_latest_cancellation_and_retry) ... FAIL\\ntest_latest_failure_and_retry (test_preview.PreviewTests.test_latest_failure_and_retry) ... FAIL\\ntest_latest_success_before_earlier_settlement (test_preview.PreviewTests.test_latest_success_before_earlier_settlement) ... ok\\ntest_synchronous_callback_failure_and_retry (test_preview.PreviewTests.test_synchronous_callback_failure_and_retry) ... ok\\n\\n======================================================================\\nFAIL: test_earlier_cancellation_while_latest_pending (test_preview.PreviewTests.test_earlier_cancellation_while_latest_pending)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 90, in _callTestMethod\\n    if self._callMaybeAsync(method) is not None:\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 112, in _callMaybeAsync\\n    return self._asyncioRunner.run(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 118, in run\\n    return self._loop.run_until_complete(task)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\\\", line 653, in run_until_complete\\n    return future.result()\\n           ^^^^^^^^^^^^^^^\\n  File \\\"<WORKSPACE>/test_preview.py\\\", line 75, in test_earlier_cancellation_while_latest_pending\\n    await self.earlier_settles_first(\\\"cancel\\\")\\n  File \\\"<WORKSPACE>/test_preview.py\\\", line 62, in earlier_settles_first\\n    self.assertEqual(preview.pending, before_pending)\\nAssertionError: False != True\\n\\n======================================================================\\nFAIL: test_earlier_failure_while_latest_pending (test_preview.PreviewTests.test_earlier_failure_while_latest_pending)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 90, in _callTestMethod\\n    if self._callMaybeAsync(method) is not None:\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 112, in _callMaybeAsync\\n    return self._asyncioRunner.run(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 118, in run\\n    return self._loop.run_until_complete(task)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\\\", line 653, in run_until_complete\\n    return future.result()\\n           ^^^^^^^^^^^^^^^\\n  File \\\"<WORKSPACE>/test_preview.py\\\", line 72, in test_earlier_failure_while_latest_pending\\n    await self.earlier_settles_first(\\\"failure\\\")\\n  File \\\"<WORKSPACE>/test_preview.py\\\", line 62, in earlier_settles_first\\n    self.assertEqual(preview.pending, before_pending)\\nAssertionError: False != True\\n\\n======================================================================\\nFAIL: test_earlier_success_while_latest_pending (test_preview.PreviewTests.test_earlier_success_while_latest_pending)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 90, in _callTestMethod\\n    if self._callMaybeAsync(method) is not None:\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 112, in _callMaybeAsync\\n    return self._asyncioRunner.run(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 118, in run\\n    return self._loop.run_until_complete(task)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\\\", line 653, in run_until_complete\\n    return future.result()\\n           ^^^^^^^^^^^^^^^\\n  File \\\"<WORKSPACE>/test_preview.py\\\", line 69, in test_earlier_success_while_latest_pending\\n    await self.earlier_settles_first(\\\"success\\\")\\n  File \\\"<WORKSPACE>/test_preview.py\\\", line 62, in earlier_settles_first\\n    self.assertEqual(preview.pending, before_pending)\\nAssertionError: False != True\\n\\n======================================================================\\nFAIL: test_latest_cancellation_and_retry (test_preview.PreviewTests.test_latest_cancellation_and_retry)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 90, in _callTestMethod\\n    if self._callMaybeAsync(method) is not None:\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 112, in _callMaybeAsync\\n    return self._asyncioRunner.run(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 118, in run\\n    return self._loop.run_until_complete(task)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\\\", line 653, in run_until_complete\\n    return future.result()\\n           ^^^^^^^^^^^^^^^\\n  File \\\"<WORKSPACE>/test_preview.py\\\", line 119, in test_latest_cancellation_and_retry\\n    await self.latest_unsuccessful_and_retry(\\\"cancel\\\")\\n  File \\\"<WORKSPACE>/test_preview.py\\\", line 109, in latest_unsuccessful_and_retry\\n    self.assertEqual(preview.pending, before_pending)\\nAssertionError: False != True\\n\\n======================================================================\\nFAIL: test_latest_failure_and_retry (test_preview.PreviewTests.test_latest_failure_and_retry)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 90, in _callTestMethod\\n    if self._callMaybeAsync(method) is not None:\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 112, in _callMaybeAsync\\n    return self._asyncioRunner.run(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 118, in run\\n    return self._loop.run_until_complete(task)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\\\", line 653, in run_until_complete\\n    return future.result()\\n           ^^^^^^^^^^^^^^^\\n  File \\\"<WORKSPACE>/test_preview.py\\\", line 116, in test_latest_failure_and_retry\\n    await self.latest_unsuccessful_and_retry(\\\"failure\\\")\\n  File \\\"<WORKSPACE>/test_preview.py\\\", line 109, in latest_unsuccessful_and_retry\\n    self.assertEqual(preview.pending, before_pending)\\nAssertionError: False != True\\n\\n----------------------------------------------------------------------\\nRan 8 tests in 0.042s\\n\\nFAILED (failures=5)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e010-7188-7f72-8e17-4f04240f7e7d",
+            "create_time": 1790465645.149047
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 35,
+      "line_sha256": "c95d99885e0922af0d038627949b02472a22927ff1d0992386c138d7fd888d13",
+      "record": {
+        "timestamp": "2026-09-26T23:34:11.525Z",
+        "ordinal": 34,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0750454bb26cf790016ab85672423487d09a33cc9e2ae9eefe",
+          "status": "completed",
+          "call_id": "call_cDZSyFPgGCYlsgy2NEBYDWYd",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/preview.py\\n@@\\n         finally:\\n-            self.pending = False\\n+            if generation == self.generation:\\n+                self.pending = False\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e010-7188-7f72-8e17-4f04240f7e7d",
+            "create_time": 1790465647.549705
+          }
+        }
+      }
+    },
+    {
+      "line": 39,
+      "line_sha256": "96320d4c89caf32ed3be6e7fd1ea8304fab01a1dd16b5e378d902e0a96528678",
+      "record": {
+        "timestamp": "2026-09-26T23:34:11.733Z",
+        "ordinal": 38,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e011-b415-7320-9b64-51218254552c",
+          "call_id": "call_cDZSyFPgGCYlsgy2NEBYDWYd",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"f1d0db\",\"wall_time_seconds\":0.00558425,\"exit_code\":0,\"original_token_count\":250,\"output\":\"test_earlier_cancellation_while_latest_pending (test_preview.PreviewTests.test_earlier_cancellation_while_latest_pending) ... ok\\ntest_earlier_failure_while_latest_pending (test_preview.PreviewTests.test_earlier_failure_while_latest_pending) ... ok\\ntest_earlier_success_while_latest_pending (test_preview.PreviewTests.test_earlier_success_while_latest_pending) ... ok\\ntest_instance_isolation (test_preview.PreviewTests.test_instance_isolation) ... ok\\ntest_latest_cancellation_and_retry (test_preview.PreviewTests.test_latest_cancellation_and_retry) ... ok\\ntest_latest_failure_and_retry (test_preview.PreviewTests.test_latest_failure_and_retry) ... ok\\ntest_latest_success_before_earlier_settlement (test_preview.PreviewTests.test_latest_success_before_earlier_settlement) ... ok\\ntest_synchronous_callback_failure_and_retry (test_preview.PreviewTests.test_synchronous_callback_failure_and_retry) ... ok\\n\\n----------------------------------------------------------------------\\nRan 8 tests in 0.041s\\n\\nOK\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e010-7188-7f72-8e17-4f04240f7e7d",
+            "create_time": 1790465651.73334
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 41,
+      "line_sha256": "97f651fb4cae86847d82d68c476e27aa4b85c24ac23651f2fff246330a37105b",
+      "record": {
+        "timestamp": "2026-09-26T23:34:18.073Z",
+        "ordinal": 40,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0750454bb26cf790016ab856792b9c87d093347b38a82c76e5",
+          "status": "completed",
+          "call_id": "call_Rb77tLWRZneMHCaACOIWLlDH",
+          "name": "exec",
+          "input": "const results = await Promise.allSettled([\ntools.exec_command({cmd:\"cmp .agents/skills/hostage-negotiator/assets/controlled_call.py controlled_call.py\",\"max_output_tokens\":1000}),\ntools.exec_command({cmd:\"git diff --check\",\"max_output_tokens\":1000}),\ntools.exec_command({cmd:\"git diff -- preview.py requirements.md notes.txt; git status --short\",\"max_output_tokens\":2000})\n]); results.forEach(text);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e010-7188-7f72-8e17-4f04240f7e7d",
+            "create_time": 1790465654.142947
+          }
+        }
+      }
+    },
+    {
+      "line": 46,
+      "line_sha256": "5ae9e6e448681c9d99025cbdd4dc6e63fc9dace5e998a6ed7629430aaa4f0136",
+      "record": {
+        "timestamp": "2026-09-26T23:34:18.195Z",
+        "ordinal": 45,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e011-cd53-7113-b822-030a300d8110",
+          "call_id": "call_Rb77tLWRZneMHCaACOIWLlDH",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"019a31\",\"wall_time_seconds\":0.000002958,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"2aef39\",\"wall_time_seconds\":0.000001708,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"ef7dfe\",\"wall_time_seconds\":0.0000015,\"exit_code\":0,\"original_token_count\":100,\"output\":\"diff --git a/preview.py b/preview.py\\nindex f56b4ff..2ce0584 100644\\n--- a/preview.py\\n+++ b/preview.py\\n@@ -14,4 +14,5 @@ class Preview:\\n                 self.value = value\\n             return value\\n         finally:\\n-            self.pending = False\\n+            if generation == self.generation:\\n+                self.pending = False\\n M preview.py\\n?? .agents/\\n?? controlled_call.py\\n?? test_preview.py\\n\"}}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e010-7188-7f72-8e17-4f04240f7e7d",
+            "create_time": 1790465658.195844
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

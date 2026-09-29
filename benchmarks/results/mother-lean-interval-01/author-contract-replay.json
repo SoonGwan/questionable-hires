@@ -1,0 +1,160 @@
+{
+  "kind": "separate post-timing author replay",
+  "checks": [
+    {
+      "case": "search-protected",
+      "arm": "baseline",
+      "variant": "original",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "output": "test_newer_finishes_first_late_older_cannot_replace_it (test_search.SearchSequenceTests.test_newer_finishes_first_late_older_cannot_replace_it) ... ok\ntest_older_finishes_first_retains_display_until_newer_finishes (test_search.SearchSequenceTests.test_older_finishes_first_retains_display_until_newer_finishes) ... ok\ntest_single_request_displays_completed_result (test_search.SearchSequenceTests.test_single_request_displays_completed_result) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.012s\n\nOK\n",
+      "condition": "previous"
+    },
+    {
+      "case": "search-protected",
+      "arm": "baseline",
+      "variant": "transient",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n        self.completed_generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n            self.completed_generation = generation\n        if generation < self.generation and self.completed_generation < self.generation:\n            self.result = result\n",
+      "output": "test_newer_finishes_first_late_older_cannot_replace_it (test_search.SearchSequenceTests.test_newer_finishes_first_late_older_cannot_replace_it) ... ok\ntest_older_finishes_first_retains_display_until_newer_finishes (test_search.SearchSequenceTests.test_older_finishes_first_retains_display_until_newer_finishes) ... FAIL\ntest_single_request_displays_completed_result (test_search.SearchSequenceTests.test_single_request_displays_completed_result) ... ok\n\n======================================================================\nFAIL: test_older_finishes_first_retains_display_until_newer_finishes (test_search.SearchSequenceTests.test_older_finishes_first_retains_display_until_newer_finishes)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<HOME>/Documents/GitHub/questionable-hires/<REPLAY>/test_search.py\", line 80, in test_older_finishes_first_retains_display_until_newer_finishes\n    self.assertEqual(self.search.result, \"existing result\")\nAssertionError: 'older result' != 'existing result'\n- older result\n+ existing result\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.009s\n\nFAILED (failures=1)\n",
+      "condition": "previous"
+    },
+    {
+      "case": "search-protected",
+      "arm": "skill",
+      "variant": "original",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "output": "test_newer_finishes_first_empty_display (test_search_qa.SearchSequenceTests.test_newer_finishes_first_empty_display) ... ok\ntest_newer_finishes_first_retains_existing_result (test_search_qa.SearchSequenceTests.test_newer_finishes_first_retains_existing_result) ... ok\ntest_older_finishes_first_empty_display (test_search_qa.SearchSequenceTests.test_older_finishes_first_empty_display) ... ok\ntest_older_finishes_first_retains_existing_result (test_search_qa.SearchSequenceTests.test_older_finishes_first_retains_existing_result) ... ok\ntest_single_request (test_search_qa.SearchSequenceTests.test_single_request) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.016s\n\nOK\n",
+      "condition": "candidate"
+    },
+    {
+      "case": "search-protected",
+      "arm": "skill",
+      "variant": "transient",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n        self.completed_generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n            self.completed_generation = generation\n        if generation < self.generation and self.completed_generation < self.generation:\n            self.result = result\n",
+      "output": "test_newer_finishes_first_empty_display (test_search_qa.SearchSequenceTests.test_newer_finishes_first_empty_display) ... ok\ntest_newer_finishes_first_retains_existing_result (test_search_qa.SearchSequenceTests.test_newer_finishes_first_retains_existing_result) ... ok\ntest_older_finishes_first_empty_display (test_search_qa.SearchSequenceTests.test_older_finishes_first_empty_display) ... FAIL\ntest_older_finishes_first_retains_existing_result (test_search_qa.SearchSequenceTests.test_older_finishes_first_retains_existing_result) ... FAIL\ntest_single_request (test_search_qa.SearchSequenceTests.test_single_request) ... ok\n\n======================================================================\nFAIL: test_older_finishes_first_empty_display (test_search_qa.SearchSequenceTests.test_older_finishes_first_empty_display)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<HOME>/Documents/GitHub/questionable-hires/<REPLAY>/test_search_qa.py\", line 108, in test_older_finishes_first_empty_display\n    await self.scenario(older_first=True, existing=False)\n  File \"<HOME>/Documents/GitHub/questionable-hires/<REPLAY>/test_search_qa.py\", line 83, in scenario\n    self.assertEqual(self.search.result, baseline)\nAssertionError: 'older result' != None\n\n======================================================================\nFAIL: test_older_finishes_first_retains_existing_result (test_search_qa.SearchSequenceTests.test_older_finishes_first_retains_existing_result)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<HOME>/Documents/GitHub/questionable-hires/<REPLAY>/test_search_qa.py\", line 114, in test_older_finishes_first_retains_existing_result\n    await self.scenario(older_first=True, existing=True)\n  File \"<HOME>/Documents/GitHub/questionable-hires/<REPLAY>/test_search_qa.py\", line 83, in scenario\n    self.assertEqual(self.search.result, baseline)\nAssertionError: 'older result' != 'existing result'\n- older result\n+ existing result\n\n\n----------------------------------------------------------------------\nRan 5 tests in 0.016s\n\nFAILED (failures=2)\n",
+      "condition": "candidate"
+    },
+    {
+      "case": "search-order",
+      "arm": "baseline",
+      "variant": "original",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+      "output": "  control: Search entered fetch('ca'); response held\n  control: Search entered fetch('cat'); response held\n  assertion passed: both actual Search requests overlap\n  control: released 'results for ca'; Search task completed\n  observation only: newer pending, display='results for ca'; no intermediate display requirement\n  control: released 'results for cat'; Search task completed\n  assertion passed: final display == 'results for cat'\n  cleanup: all owned Search tasks drained\n  control: Search entered fetch('ca'); response held\n  control: Search entered fetch('cat'); response held\n  assertion passed: both actual Search requests overlap\n  control: released 'results for cat'; Search task completed\n  assertion passed: latest completed, display == 'results for cat'\n  control: released 'results for ca'; Search task completed\n  cleanup: all owned Search tasks drained\ntest_normal_completion_latest_result_after_both_finish (test_search.SearchOverlapTests.test_normal_completion_latest_result_after_both_finish) ... ok\ntest_reversed_completion_older_cannot_overwrite_latest (test_search.SearchOverlapTests.test_reversed_completion_older_cannot_overwrite_latest) ... FAIL\n\n======================================================================\nFAIL: test_reversed_completion_older_cannot_overwrite_latest (test_search.SearchOverlapTests.test_reversed_completion_older_cannot_overwrite_latest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<HOME>/Documents/GitHub/questionable-hires/<REPLAY>/test_search.py\", line 94, in test_reversed_completion_older_cannot_overwrite_latest\n    self.assertEqual(\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : Reversed order: older completion must not overwrite completed latest result\n\n----------------------------------------------------------------------\nRan 2 tests in 0.005s\n\nFAILED (failures=1)\n",
+      "condition": "previous"
+    },
+    {
+      "case": "search-order",
+      "arm": "baseline",
+      "variant": "guarded",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "output": "  control: Search entered fetch('ca'); response held\n  control: Search entered fetch('cat'); response held\n  assertion passed: both actual Search requests overlap\n  control: released 'results for ca'; Search task completed\n  observation only: newer pending, display=None; no intermediate display requirement\n  control: released 'results for cat'; Search task completed\n  assertion passed: final display == 'results for cat'\n  cleanup: all owned Search tasks drained\n  control: Search entered fetch('ca'); response held\n  control: Search entered fetch('cat'); response held\n  assertion passed: both actual Search requests overlap\n  control: released 'results for cat'; Search task completed\n  assertion passed: latest completed, display == 'results for cat'\n  control: released 'results for ca'; Search task completed\n  cleanup: all owned Search tasks drained\ntest_normal_completion_latest_result_after_both_finish (test_search.SearchOverlapTests.test_normal_completion_latest_result_after_both_finish) ... ok\ntest_reversed_completion_older_cannot_overwrite_latest (test_search.SearchOverlapTests.test_reversed_completion_older_cannot_overwrite_latest) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.006s\n\nOK\n",
+      "condition": "previous"
+    },
+    {
+      "case": "search-order",
+      "arm": "skill",
+      "variant": "original",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n    async def run(self, query, fetch):\n        self.result = await fetch(query)\n",
+      "output": "CONTROL: entered query='ca'; response held\nCONTROL: entered query='cat'; response held\nCONTROL: completed payload='results for ca'\nCONTROL: completed payload='results for cat'\nASSERT normal final: actual='results for cat', expected='results for cat'\nCONTROL: entered query='ca'; response held\nCONTROL: entered query='cat'; response held\nCONTROL: completed payload='results for cat'\nASSERT reversed latest completed: actual='results for cat', expected='results for cat'\nCONTROL: completed payload='results for ca'\nASSERT reversed final: actual='results for ca', expected='results for cat'\ntest_normal_completion_latest_after_both_finish (test_search.SearchInteractionTests.test_normal_completion_latest_after_both_finish) ... ok\ntest_reversed_completion_preserves_latest (test_search.SearchInteractionTests.test_reversed_completion_preserves_latest) ... FAIL\n\n======================================================================\nFAIL: test_reversed_completion_preserves_latest (test_search.SearchInteractionTests.test_reversed_completion_preserves_latest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 90, in _callTestMethod\n    if self._callMaybeAsync(method) is not None:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\", line 112, in _callMaybeAsync\n    return self._asyncioRunner.run(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<HOME>/Documents/GitHub/questionable-hires/<REPLAY>/test_search.py\", line 87, in test_reversed_completion_preserves_latest\n    self.assertEqual(actual, \"results for cat\", \"reversed: both requests finished\")\nAssertionError: 'results for ca' != 'results for cat'\n- results for ca\n+ results for cat\n?               +\n : reversed: both requests finished\n\n----------------------------------------------------------------------\nRan 2 tests in 0.006s\n\nFAILED (failures=1)\n",
+      "condition": "candidate"
+    },
+    {
+      "case": "search-order",
+      "arm": "skill",
+      "variant": "guarded",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "production_source": "class Search:\n    def __init__(self):\n        self.result = None\n        self.generation = 0\n    async def run(self, query, fetch):\n        self.generation += 1\n        generation = self.generation\n        result = await fetch(query)\n        if generation == self.generation:\n            self.result = result\n",
+      "output": "CONTROL: entered query='ca'; response held\nCONTROL: entered query='cat'; response held\nCONTROL: completed payload='results for ca'\nCONTROL: completed payload='results for cat'\nASSERT normal final: actual='results for cat', expected='results for cat'\nCONTROL: entered query='ca'; response held\nCONTROL: entered query='cat'; response held\nCONTROL: completed payload='results for cat'\nASSERT reversed latest completed: actual='results for cat', expected='results for cat'\nCONTROL: completed payload='results for ca'\nASSERT reversed final: actual='results for cat', expected='results for cat'\ntest_normal_completion_latest_after_both_finish (test_search.SearchInteractionTests.test_normal_completion_latest_after_both_finish) ... ok\ntest_reversed_completion_preserves_latest (test_search.SearchInteractionTests.test_reversed_completion_preserves_latest) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.006s\n\nOK\n",
+      "condition": "candidate"
+    }
+  ],
+  "original_projects_unchanged": true,
+  "all_matched": true,
+  "limitation": "Existing replay tool on copies of the four final projects. Baseline/skill are staging aliases for previous/candidate, not new model arms. Native author evidence only; not capture repair or model cost."
+}

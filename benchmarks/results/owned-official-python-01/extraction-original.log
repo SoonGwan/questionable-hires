@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/qh-owned-official-python-01/extract_runtime.py", line 56, in <module>
+    result=dict(environment=copy_layer(sys.argv[1],(ENV,),root/'env',True),os_libraries=copy_layer(sys.argv[2],OS,root/'glibc'),elapsed_seconds=round(time.monotonic()-started,3),models=0,project_or_gold_extracted=False,limitation='Selected runtime subtree, not full OCI filesystem/layer application. External links skipped; absolute internal links relocated; no environment parity claim.')
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/qh-owned-official-python-01/extract_runtime.py", line 49, in copy_layer
+    with target.open('xb') as out:out.write(data)
+         ^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: '/tmp/qh-owned-official-python-01/runtime/env/share/terminfo/e/eterm'

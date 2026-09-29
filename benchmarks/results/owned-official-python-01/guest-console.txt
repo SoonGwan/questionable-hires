@@ -1,0 +1,50 @@
+[    0.054442] hv_vmbus: registering driver hyperv_keyboard
+[    0.055207] rtc-pl031 20050000.pl031: registered as rtc0
+[    0.055266] rtc-pl031 20050000.pl031: setting system clock to 2026-09-27T05:42:36 UTC (1790487756)
+[    0.055481] NET: Registered PF_INET6 protocol family
+[    0.056340] Segment Routing with IPv6
+[    0.056385] In-situ OAM (IOAM) with IPv6
+[    0.060214] registered taskstats version 1
+[    0.060338] Loading compiled-in X.509 certificates
+[    0.108125] Freeing initrd memory: 8708K
+[    0.112791] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    0.113738] Demotion targets for Node 0: null
+[    0.113846] Key type .fscrypt registered
+[    0.113877] Key type fscrypt-provisioning registered
+[    0.115848] clk: Disabling unused clocks
+[    0.115884] PM: genpd: Disabling unused power domains
+[    0.116155] Freeing unused kernel memory: 1920K
+[    0.116268] Run /bin/sh as init process
+/bin/sh: can't access tty; job control turned off
+~ # [6n/bin/busybox mount -t proc proc /proc
+~ # /bin/busybox mount -t sysfs sysfs /sys
+~ # /bin/busybox modprobe virtiofs
+[    3.134614] fuse: init (API version 7.41)
+~ # /bin/busybox mkdir -p /rosetta /runtime /lib64
+~ # /bin/busybox mount -t virtiofs rosetta /rosetta
+~ # /bin/busybox mount -t virtiofs runtime /runtime
+~ # /bin/busybox ln -s /runtime/glibc/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-6
+
+4.so.2
+~ # /bin/busybox uname -m
+aarch64
+~ # LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /rosetta/rosetta /runtime/en
+
+v/bin/python3.9 -I -B -c 'import sys,ssl,pytest,pluggy,platform,json; print("QH_
+
+PYTHON_IMPORT_OK"); print(json.dumps(dict(version=sys.version,executable=sys.exe
+
+cutable,prefix=sys.prefix,machine=platform.machine(),openssl=ssl.OPENSSL_VERSION
+
+,pytest=pytest.__version__,pluggy=pluggy.__version__,paths={m.__name__:m.__file_
+
+_ for m in (ssl,pytest,pluggy)}),sort_keys=True))'
+[    3.934173] random: crng init done
+QH_PYTHON_IMPORT_OK
+{"executable": "/runtime/env/bin/python3.9", "machine": "x86_64", "openssl": "OpenSSL 3.0.15 3 Sep 2024", "paths": {"pluggy": "/runtime/env/lib/python3.9/site-packages/pluggy/__init__.py", "pytest": "/runtime/env/lib/python3.9/site-packages/pytest/__init__.py", "ssl": "/runtime/env/lib/python3.9/ssl.py"}, "pluggy": "1.0.0", "prefix": "/runtime/env", "pytest": "7.4.4", "version": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]"}
+~ # echo QH_PYTHON_EXIT=$?
+QH_PYTHON_EXIT=0
+~ # /bin/busybox poweroff -f
+[    4.533540] reboot: Power down
+QH_VM_STARTED
+QH_VM_GUEST_STOPPED

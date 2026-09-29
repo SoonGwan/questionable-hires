@@ -1,0 +1,233 @@
+{
+  "session_id": "01a0def9-d7a7-7382-9ddd-29d60ced5061",
+  "source_bytes": 86386,
+  "source_sha256": "f459a98e0304423a692e58dc6249f1a02f46e50478c6ca8719ed33032acb5c44",
+  "source_lines": 41,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "680e56bda16067bc012b8976edbbea9c32b089943b8de721c04fb4897e1e0236",
+      "record": {
+        "timestamp": "2026-09-26T18:28:35.980Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08ccea3cfd5f8bfd016ab80ed28fa487d0b4a3f89c457ab5c6",
+          "status": "completed",
+          "call_id": "call_IxhxslcKSmxyhcNy7WPSIDbm",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!__pycache__/**' -g '!*.pyc' -g '!*lock*'\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0def9-d7f5-7833-b34d-162b846b44c9",
+            "create_time": 1790447312.538469
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "799be415505f2cec9bb08acf9a0f361205ecbd195c45ba87e598dc3f1a5f3d95",
+      "record": {
+        "timestamp": "2026-09-26T18:28:36.113Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0def9-ec91-7991-9e30-646d8d056fdd",
+          "call_id": "call_IxhxslcKSmxyhcNy7WPSIDbm",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"443005\",\"wall_time_seconds\":0.000004458,\"exit_code\":0,\"original_token_count\":36,\"output\":\"<WORKSPACE>\\nincident.md\\ntest_worker.py\\nworker.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0def9-d7f5-7833-b34d-162b846b44c9",
+            "create_time": 1790447316.113402
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "a7634d5df7054efa3dcbcde010f7f943aa260609087c2f102c5af3c37290fad9",
+      "record": {
+        "timestamp": "2026-09-26T18:28:38.567Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08ccea3cfd5f8bfd016ab80ed5a7c487d08d2580f8e6b70d47",
+          "status": "completed",
+          "call_id": "call_BTJFJazgvvsw1L2CyrDDMrAu",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; cat incident.md worker.py test_worker.py\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0def9-d7f5-7833-b34d-162b846b44c9",
+            "create_time": 1790447316.443137
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "2468d4d7cec498dd43e5fafc57d7a8dee2f6804908238926372e72ca680fa92c",
+      "record": {
+        "timestamp": "2026-09-26T18:28:38.661Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0def9-f685-7ac1-9a6e-7a63af969277",
+          "call_id": "call_BTJFJazgvvsw1L2CyrDDMrAu",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"d1fe34\",\"wall_time_seconds\":0.000003167,\"exit_code\":0,\"original_token_count\":420,\"output\":\"total 24\\ndrwxr-xr-x@  6 gwonsungwan  wheel  192 Sep 27 03:28 .\\ndrwxr-xr-x@  3 gwonsungwan  wheel   96 Sep 27 03:28 ..\\ndrwxr-xr-x@ 10 gwonsungwan  wheel  320 Sep 27 03:28 .git\\n-rw-r--r--@  1 gwonsungwan  wheel  491 Sep 27 03:28 incident.md\\n-rw-r--r--@  1 gwonsungwan  wheel  572 Sep 27 03:28 test_worker.py\\n-rw-r--r--@  1 gwonsungwan  wheel  249 Sep 27 03:28 worker.py\\nNo external mail provider is used in this reproduction. Run the test from a fresh process with REQUEST_RETRIES absent: python3 -m unittest -v test_worker. The contrasting standalone process sets REQUEST_RETRIES=0 before importing worker, then invokes deliver with a callback that records calls and raises RuntimeError. Its callback runs once. The application currently reads deployment environment at process startup; whether live configuration changes should be supported is not specified.\\nimport os\\n\\nRETRIES = int(os.environ.get('REQUEST_RETRIES', '2'))\\n\\ndef deliver(send):\\n    for attempt in range(RETRIES + 1):\\n        try:\\n            return send()\\n        except RuntimeError:\\n            if attempt == RETRIES:\\n                raise\\nimport os\\nimport unittest\\nfrom unittest.mock import patch\\nimport worker\\n\\nclass DeliveryTests(unittest.TestCase):\\n    def setUp(self):\\n        self.environment = patch.dict(os.environ, {'REQUEST_RETRIES': '0'})\\n        self.environment.start()\\n        self.addCleanup(self.environment.stop)\\n\\n    def test_disabled_retries(self):\\n        calls = []\\n        def send():\\n            calls.append('attempt')\\n            raise RuntimeError('offline failure')\\n        with self.assertRaises(RuntimeError):\\n            worker.deliver(send)\\n        self.assertEqual(len(calls), 1)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0def9-d7f5-7833-b34d-162b846b44c9",
+            "create_time": 1790447318.661435
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "dc7fd71ffeb4378faaa5f81525e9d0344f68757e4557a213b44e4ebaf91965e3",
+      "record": {
+        "timestamp": "2026-09-26T18:28:49.144Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08ccea3cfd5f8bfd016ab80edb41f887d0beded205b2873050",
+          "status": "completed",
+          "call_id": "call_zDJyniPd1eV0Q467YFuQ9ott",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"env -u REQUEST_RETRIES python3 -B -m unittest -v test_worker\",\"max_output_tokens\":3000}));\ntext(await tools.exec_command({cmd:\"env REQUEST_RETRIES=0 python3 -B -m unittest -v test_worker\",\"max_output_tokens\":3000}));\ntext(await tools.exec_command({cmd:\"env REQUEST_RETRIES=0 python3 -B - <<'PY'\\nimport os\\nimport worker\\ncalls = []\\ndef send():\\n    calls.append('attempt')\\n    raise RuntimeError('offline failure')\\ntry:\\n    worker.deliver(send)\\nexcept RuntimeError:\\n    pass\\nprint(f'standalone: env={os.environ[\\\"REQUEST_RETRIES\\\"]}, worker.RETRIES={worker.RETRIES}, calls={len(calls)}')\\nassert len(calls) == 1\\nPY\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0def9-d7f5-7833-b34d-162b846b44c9",
+            "create_time": 1790447319.015164
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "75ac0af721be7b54a365386522430546626c44b4ac66d1e4fd9ffe97788bbccf",
+      "record": {
+        "timestamp": "2026-09-26T18:28:49.507Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0defa-20e3-74e0-91f1-5937e172bcbd",
+          "call_id": "call_zDJyniPd1eV0Q467YFuQ9ott",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6ce934\",\"wall_time_seconds\":0.000002209,\"exit_code\":1,\"original_token_count\":169,\"output\":\"test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... FAIL\\n\\n======================================================================\\nFAIL: test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_worker.py\\\", line 19, in test_disabled_retries\\n    self.assertEqual(len(calls), 1)\\nAssertionError: 3 != 1\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"43b385\",\"wall_time_seconds\":0.000003375,\"exit_code\":0,\"original_token_count\":44,\"output\":\"test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... ok\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nOK\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"da39af\",\"wall_time_seconds\":0.000003542,\"exit_code\":0,\"original_token_count\":12,\"output\":\"standalone: env=0, worker.RETRIES=0, calls=1\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0def9-d7f5-7833-b34d-162b846b44c9",
+            "create_time": 1790447329.507091
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "d7ec7f8961204695cde44b93cc86fe25ef2a37e5befca4bf7b9628d1b26f7ad2",
+      "record": {
+        "timestamp": "2026-09-26T18:29:02.041Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_08ccea3cfd5f8bfd016ab80ee32d6487d0bfaddc2335b92370",
+          "status": "completed",
+          "call_id": "call_lJZgH2z5q4Otj6xiJP2COyDU",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"env -u REQUEST_RETRIES python3 -B - <<'PY'\\nimport os\\nimport sys\\nimport unittest\\n\\nassert 'worker' not in sys.modules\\nprint('Before test import: worker loaded=False, REQUEST_RETRIES absent', flush=True)\\nimport test_worker\\nworker = test_worker.worker\\nprint(f'After test import: REQUEST_RETRIES={os.environ.get(\\\"REQUEST_RETRIES\\\")!r}, worker.RETRIES={worker.RETRIES}', flush=True)\\noriginal_setup = test_worker.DeliveryTests.setUp\\noriginal_deliver = worker.deliver\\n\\ndef traced_setup(self):\\n    original_setup(self)\\n    print(f'After actual setUp: REQUEST_RETRIES={os.environ.get(\\\"REQUEST_RETRIES\\\")!r}, worker.RETRIES={worker.RETRIES}', flush=True)\\n\\ndef traced_deliver(send):\\n    calls = 0\\n    def counted_send():\\n        nonlocal calls\\n        calls += 1\\n        return send()\\n    try:\\n        return original_deliver(counted_send)\\n    finally:\\n        print(f'Actual worker.deliver callback calls={calls}', flush=True)\\n\\ntest_worker.DeliveryTests.setUp = traced_setup\\nworker.deliver = traced_deliver\\nsuite = unittest.defaultTestLoader.loadTestsFromModule(test_worker)\\nresult = unittest.TextTestRunner(stream=sys.stdout, verbosity=2).run(suite)\\nassert len(result.failures) == 1 and not result.errors\\nassert 'REQUEST_RETRIES' not in os.environ\\nprint('After actual cleanup: REQUEST_RETRIES absent; worker.RETRIES=' + str(worker.RETRIES))\\nPY\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0def9-d7f5-7833-b34d-162b846b44c9",
+            "create_time": 1790447329.847002
+          }
+        }
+      }
+    },
+    {
+      "line": 35,
+      "line_sha256": "7e165c4431a1ca918cb5587a40f8636187ebbc4b8945e9cba29d79773f14dc45",
+      "record": {
+        "timestamp": "2026-09-26T18:29:02.210Z",
+        "ordinal": 34,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0defa-5282-79d0-a72f-c3a31a9a4350",
+          "call_id": "call_lJZgH2z5q4Otj6xiJP2COyDU",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"9258fd\",\"wall_time_seconds\":0.000003208,\"exit_code\":0,\"original_token_count\":239,\"output\":\"Before test import: worker loaded=False, REQUEST_RETRIES absent\\nAfter test import: REQUEST_RETRIES=None, worker.RETRIES=2\\ntest_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... After actual setUp: REQUEST_RETRIES='0', worker.RETRIES=2\\nActual worker.deliver callback calls=3\\nFAIL\\n\\n======================================================================\\nFAIL: test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/test_worker.py\\\", line 19, in test_disabled_retries\\n    self.assertEqual(len(calls), 1)\\nAssertionError: 3 != 1\\n\\n----------------------------------------------------------------------\\nRan 1 test in 0.000s\\n\\nFAILED (failures=1)\\nAfter actual cleanup: REQUEST_RETRIES absent; worker.RETRIES=2\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0def9-d7f5-7833-b34d-162b846b44c9",
+            "create_time": 1790447342.210627
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

@@ -1,0 +1,119 @@
+
+REVISION HEAD^ 721139585aea166e10dd4e06fd6f35152e7fdc61 
+COPY <WORKSPACE>/.delivery-comparison-wg5xou71
+SHA256 ledger/delivery.py d270fd369205129bd51716d0f6e3aa2b77f0cc7ff1242a2c2779348a214e0898
+SHA256 checks/__init__.py e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+SHA256 checks/test_delivery.py 4571e36668f830a1b7f80d00eedd7f0452909774d68962efe84e35eafb693021
+SHA256 ledger/schema.sql ede9ae52f39bc1e75538cfc6d702132c967dc19305d4cff0e3f2db72cc7f81f9
+IMPORT checks.test_delivery <WORKSPACE>/.delivery-comparison-wg5xou71/checks/test_delivery.py
+IMPORT ledger <WORKSPACE>/.delivery-comparison-wg5xou71/ledger/__init__.py
+IMPORT ledger.delivery <WORKSPACE>/.delivery-comparison-wg5xou71/ledger/delivery.py
+Confirmed five tests and actual copy-local apply_event
+COMMAND python3 -B -m unittest -v checks.test_delivery
+test_distinct_events_same_amount (checks.test_delivery.DeliveryTests.test_distinct_events_same_amount) ... ok
+test_retry_credit (checks.test_delivery.DeliveryTests.test_retry_credit) ... FAIL
+test_retry_debit (checks.test_delivery.DeliveryTests.test_retry_debit) ... FAIL
+test_same_event_different_accounts (checks.test_delivery.DeliveryTests.test_same_event_different_accounts) ... ok
+test_zero_delta_is_accepted (checks.test_delivery.DeliveryTests.test_zero_delta_is_accepted) ... ok
+
+======================================================================
+FAIL: test_retry_credit (checks.test_delivery.DeliveryTests.test_retry_credit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.delivery-comparison-wg5xou71/checks/test_delivery.py", line 28, in test_retry_credit
+    self.assertEqual((accepted, self.balance()), (False, 125))
+AssertionError: Tuples differ: (True, 250) != (False, 125)
+
+First differing element 0:
+True
+False
+
+- (True, 250)
++ (False, 125)
+
+======================================================================
+FAIL: test_retry_debit (checks.test_delivery.DeliveryTests.test_retry_debit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.delivery-comparison-wg5xou71/checks/test_delivery.py", line 34, in test_retry_debit
+    self.assertEqual((accepted, self.balance()), (False, -50))
+AssertionError: Tuples differ: (True, -100) != (False, -50)
+
+First differing element 0:
+True
+False
+
+- (True, -100)
++ (False, -50)
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.012s
+
+FAILED (failures=2)
+EXIT 1
+Normal test cleanup confirmed: no test directories or SQLite databases remain.
+
+REVISION HEAD 562854580f33f36e06a2ee05755eb8d7737608d8 
+COPY <WORKSPACE>/.delivery-comparison-nakimzi3
+SHA256 ledger/delivery.py d7314da2a01f1a4775af141872601c235b298196320abe4e9a34f047dd3729e5
+SHA256 checks/__init__.py e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+SHA256 checks/test_delivery.py 4571e36668f830a1b7f80d00eedd7f0452909774d68962efe84e35eafb693021
+SHA256 ledger/schema.sql ede9ae52f39bc1e75538cfc6d702132c967dc19305d4cff0e3f2db72cc7f81f9
+IMPORT checks.test_delivery <WORKSPACE>/.delivery-comparison-nakimzi3/checks/test_delivery.py
+IMPORT ledger <WORKSPACE>/.delivery-comparison-nakimzi3/ledger/__init__.py
+IMPORT ledger.delivery <WORKSPACE>/.delivery-comparison-nakimzi3/ledger/delivery.py
+Confirmed five tests and actual copy-local apply_event
+COMMAND python3 -B -m unittest -v checks.test_delivery
+test_distinct_events_same_amount (checks.test_delivery.DeliveryTests.test_distinct_events_same_amount) ... ok
+test_retry_credit (checks.test_delivery.DeliveryTests.test_retry_credit) ... FAIL
+test_retry_debit (checks.test_delivery.DeliveryTests.test_retry_debit) ... FAIL
+test_same_event_different_accounts (checks.test_delivery.DeliveryTests.test_same_event_different_accounts) ... ok
+test_zero_delta_is_accepted (checks.test_delivery.DeliveryTests.test_zero_delta_is_accepted) ... ok
+
+======================================================================
+FAIL: test_retry_credit (checks.test_delivery.DeliveryTests.test_retry_credit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.delivery-comparison-nakimzi3/checks/test_delivery.py", line 28, in test_retry_credit
+    self.assertEqual((accepted, self.balance()), (False, 125))
+AssertionError: Tuples differ: (False, 250) != (False, 125)
+
+First differing element 1:
+250
+125
+
+- (False, 250)
+?           -
+
++ (False, 125)
+?         +
+
+
+======================================================================
+FAIL: test_retry_debit (checks.test_delivery.DeliveryTests.test_retry_debit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.delivery-comparison-nakimzi3/checks/test_delivery.py", line 34, in test_retry_debit
+    self.assertEqual((accepted, self.balance()), (False, -50))
+AssertionError: Tuples differ: (False, -100) != (False, -50)
+
+First differing element 1:
+-100
+-50
+
+- (False, -100)
+?          ^^
+
++ (False, -50)
+?          ^
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.012s
+
+FAILED (failures=2)
+EXIT 1
+Normal test cleanup confirmed: no test directories or SQLite databases remain.
+
+Owned copies removed; all original files, including ignored files, unchanged (contents, modes, modification times).
+

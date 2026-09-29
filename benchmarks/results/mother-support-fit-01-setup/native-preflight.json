@@ -1,0 +1,31 @@
+{
+  "editor": {
+    "python": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+    "results": [
+      {
+        "variant": "original",
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "test_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_nested_edit_during_save (test_editor.EditorTests.test_nested_edit_during_save) ... \n  test_nested_edit_during_save (test_editor.EditorTests.test_nested_edit_during_save) (stage='pending snapshot') ... FAIL\n  test_nested_edit_during_save (test_editor.EditorTests.test_nested_edit_during_save) (stage='stored snapshot') ... FAIL\ntest_save_without_intervening_edit (test_editor.EditorTests.test_save_without_intervening_edit) ... ok\n\n======================================================================\nFAIL: test_nested_edit_during_save (test_editor.EditorTests.test_nested_edit_during_save) (stage='pending snapshot')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_editor.py\", line 45, in test_nested_edit_during_save\n    self.assertEqual(payload, expected)\nAssertionError: {'display': {'theme': 'contrast'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}\n- {'alerts': ['mentions'], 'display': {'theme': 'contrast'}}\n?                                                ^^^^ ^^^\n\n+ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}\n?                                                ^^ ^\n\n\n======================================================================\nFAIL: test_nested_edit_during_save (test_editor.EditorTests.test_nested_edit_during_save) (stage='stored snapshot')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<PREFLIGHT>/test_editor.py\", line 49, in test_nested_edit_during_save\n    self.assertEqual(stored, [expected])\nAssertionError: Lists differ: [{'display': {'theme': 'contrast'}, 'alerts': ['mentions']}] != [{'display': {'theme': 'dark'}, 'alerts': ['mentions']}]\n\nFirst differing element 0:\n{'display': {'theme': 'contrast'}, 'alerts': ['mentions']}\n{'display': {'theme': 'dark'}, 'alerts': ['mentions']}\n\n- [{'alerts': ['mentions'], 'display': {'theme': 'contrast'}}]\n?                                                 ^^^^ ^^^\n\n+ [{'alerts': ['mentions'], 'display': {'theme': 'dark'}}]\n?                                                 ^^ ^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.009s\n\nFAILED (failures=2)\n"
+      },
+      {
+        "variant": "deep-snapshot",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "test_initial_state (test_editor.EditorTests.test_initial_state) ... ok\ntest_nested_edit_during_save (test_editor.EditorTests.test_nested_edit_during_save) ... ok\ntest_save_without_intervening_edit (test_editor.EditorTests.test_save_without_intervening_edit) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.005s\n\nOK\n"
+      }
+    ],
+    "limitation": "Author assertion/support preflight only. Oracle and conforming code are not provided to model arms. The absent-support condition requires model-authored support."
+  },
+  "repeated_query_witness": {
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "test_distinct_query_normal_control_passes (test_mother_repeat_fixture.RepeatFixtureTests.test_distinct_query_normal_control_passes) ... ok\ntest_original_repeat_fails_on_payload_not_support (test_mother_repeat_fixture.RepeatFixtureTests.test_original_repeat_fails_on_payload_not_support) ... ok\ntest_request_identity_counterfactual_passes_both (test_mother_repeat_fixture.RepeatFixtureTests.test_request_identity_counterfactual_passes_both) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.009s\n\nOK\n"
+  },
+  "repeated_query_native": {
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "test_initial (test_search.SearchTests.test_initial) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nOK\n"
+  },
+  "limitation": "Author preflight only, not model or efficiency evidence."
+}

@@ -1,0 +1,53 @@
+Python sqlite3 runtime: 3.44.0
+Database: one sqlite3.connect(":memory:") connection; all five checkpoints in sequence
+Literal reader queries: {'OLD': 'SELECT * FROM public_items ORDER BY id', 'NEW': 'SELECT id, title, payload FROM public_items ORDER BY id'}
+Expected ordered columns: {'OLD': ['id', 'label', 'payload'], 'NEW': ['id', 'title', 'payload']}
+
+CHECKPOINT 1 script= 001_schema.sql active= ('OLD',)
+Supplied script executed and committed; in_transaction= False
+Expected full ordered rows: [(1, '첫 항목', b'\x00\xff'), (2, 'keep', b'')]
+Observed base rows: [(1, '첫 항목', b'\x00\xff'), (2, 'keep', b'')]
+Observed BLOB hex: [(1, '00ff'), (2, '')]
+View SQL: CREATE VIEW public_items AS SELECT id, title AS label, payload FROM items
+OLD ACTIVE COMPATIBLE observed_columns= ['id', 'label', 'payload'] observed_rows= [(1, '첫 항목', b'\x00\xff'), (2, 'keep', b'')] columns_match= True rows_match= True binary_types_match= True
+NEW INACTIVE SQL_ERROR OperationalError: no such column: title
+
+CHECKPOINT 2 script= 002_up.sql active= ('OLD',)
+Supplied script executed and committed; in_transaction= False
+Expected full ordered rows: [(1, '첫 항목', b'\x00\xff'), (2, 'keep', b'')]
+Observed base rows: [(1, '첫 항목', b'\x00\xff'), (2, 'keep', b'')]
+Observed BLOB hex: [(1, '00ff'), (2, '')]
+View SQL: CREATE VIEW public_items AS SELECT id, title, payload FROM items
+OLD ACTIVE INCOMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, '첫 항목', b'\x00\xff'), (2, 'keep', b'')] columns_match= False rows_match= True binary_types_match= True
+NEW INACTIVE COMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, '첫 항목', b'\x00\xff'), (2, 'keep', b'')] columns_match= True rows_match= True binary_types_match= True
+
+CHECKPOINT 3 script= 003_new_writes.sql active= ('OLD', 'NEW')
+Supplied script executed and committed; in_transaction= False
+Expected full ordered rows: [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')]
+Observed base rows: [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')]
+Observed BLOB hex: [(1, 'fe00'), (2, ''), (3, '80')]
+View SQL: CREATE VIEW public_items AS SELECT id, title, payload FROM items
+OLD ACTIVE INCOMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')] columns_match= False rows_match= True binary_types_match= True
+NEW ACTIVE COMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')] columns_match= True rows_match= True binary_types_match= True
+
+CHECKPOINT 4 script= None active= ('OLD',)
+No schema change; drain/restart represented by active-reader set only
+Expected full ordered rows: [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')]
+Observed base rows: [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')]
+Observed BLOB hex: [(1, 'fe00'), (2, ''), (3, '80')]
+View SQL: CREATE VIEW public_items AS SELECT id, title, payload FROM items
+OLD ACTIVE INCOMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')] columns_match= False rows_match= True binary_types_match= True
+NEW INACTIVE COMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')] columns_match= True rows_match= True binary_types_match= True
+
+CHECKPOINT 5 script= 002_down.sql active= ('OLD',)
+Supplied script executed and committed; in_transaction= False
+Expected full ordered rows: [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')]
+Observed base rows: [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')]
+Observed BLOB hex: [(1, 'fe00'), (2, ''), (3, '80')]
+View SQL: CREATE VIEW public_items AS SELECT id, title AS label, payload FROM items
+OLD ACTIVE COMPATIBLE observed_columns= ['id', 'label', 'payload'] observed_rows= [(1, 'updated', b'\xfe\x00'), (2, 'keep', b''), (3, 'new', b'\x80')] columns_match= True rows_match= True binary_types_match= True
+NEW INACTIVE SQL_ERROR OperationalError: no such column: title
+
+PASS: rollback preserves representative update, insert, untouched row and exact BLOB bytes.
+PASS: supplied file hashes unchanged; no scratch files created.
+

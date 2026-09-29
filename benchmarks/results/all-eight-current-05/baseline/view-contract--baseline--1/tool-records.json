@@ -1,0 +1,172 @@
+{
+  "session_id": "01a0df02-ba18-71c1-b635-28c6fd349d8e",
+  "source_bytes": 110638,
+  "source_sha256": "d708fdc2a29d099a61dcf6143b48157b3e04a1c0da212937397af37f21c9b4e3",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "4fee3613c82dffb498f7ab84ac7b52470e251021ce9b864c9a60ef9f864603ad",
+      "record": {
+        "timestamp": "2026-09-26T18:38:18.822Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0548f3151e89259a016ab81119169887d0a2c41d8fe77bbcb2",
+          "status": "completed",
+          "call_id": "call_uJrw0t17G783P7U4ek7RmIzX",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '!\\\\.git' -g 'AGENTS.md' -g '*.md' -g '*.sql' -g '*.py' -g '*.json'\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df02-ba6e-7af0-8ebc-d69299777f77",
+            "create_time": 1790447894.761422
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "95ac7607e78d412859db64a6c800ab2cc1dd881fc6d302ab51b6df3239f5a1b0",
+      "record": {
+        "timestamp": "2026-09-26T18:38:18.969Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df02-d159-7a71-bb5b-bd15ad225b19",
+          "call_id": "call_uJrw0t17G783P7U4ek7RmIzX",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"c059dc\",\"wall_time_seconds\":0.000007792,\"exit_code\":0,\"original_token_count\":43,\"output\":\"<WORKSPACE>\\n002_up.sql\\n002_down.sql\\nrelease.md\\n001_schema.sql\\nreaders.py\\n003_new_writes.sql\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df02-ba6e-7af0-8ebc-d69299777f77",
+            "create_time": 1790447898.969642
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "21b145a35327810a58d47c9f9ee3874e9d67247cbcd1406c5c001dc7c54837a4",
+      "record": {
+        "timestamp": "2026-09-26T18:38:22.786Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0548f3151e89259a016ab8111c513487d080c96140cf8b9c81",
+          "status": "completed",
+          "call_id": "call_KAwLVzi6Xf2LaTs0PcLIWjgM",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; for f in AGENTS.md release.md 001_schema.sql 002_up.sql 003_new_writes.sql 002_down.sql readers.py; do if [ -f \\\"$f\\\" ]; then printf '\\\\n%s\\\\n' \\\"$f\\\"; cat \\\"$f\\\"; fi; done\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df02-ba6e-7af0-8ebc-d69299777f77",
+            "create_time": 1790447899.365807
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "44680e1eebe0df71af31de1afc7d82ff66ec163b0711aa30d58c6c9d560c874d",
+      "record": {
+        "timestamp": "2026-09-26T18:38:22.889Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df02-e0a9-7f80-b989-cfa72b0b5598",
+          "call_id": "call_KAwLVzi6Xf2LaTs0PcLIWjgM",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"b62fbb\",\"wall_time_seconds\":0.000002334,\"exit_code\":0,\"original_token_count\":592,\"output\":\"total 48\\ndrwxr-xr-x@  9 gwonsungwan  wheel   288 Sep 27 03:38 .\\ndrwxr-xr-x@  3 gwonsungwan  wheel    96 Sep 27 03:38 ..\\ndrwxr-xr-x@ 10 gwonsungwan  wheel   320 Sep 27 03:38 .git\\n-rw-r--r--@  1 gwonsungwan  wheel   233 Sep 27 03:38 001_schema.sql\\n-rw-r--r--@  1 gwonsungwan  wheel    99 Sep 27 03:38 002_down.sql\\n-rw-r--r--@  1 gwonsungwan  wheel    90 Sep 27 03:38 002_up.sql\\n-rw-r--r--@  1 gwonsungwan  wheel   105 Sep 27 03:38 003_new_writes.sql\\n-rw-r--r--@  1 gwonsungwan  wheel   111 Sep 27 03:38 readers.py\\n-rw-r--r--@  1 gwonsungwan  wheel  1066 Sep 27 03:38 release.md\\n\\nrelease.md\\n# View rollout proposal\\n\\nThis is a SQL-only authored local release-review fixture. Application writers,\\nconcurrent connections, crash recovery and other database engines are out of scope.\\nConsumers execute the literal queries in readers.py. OLD maps by returned column\\nnames and requires ordered columns [id, label, payload]. NEW requires\\n[id, title, payload]. Both require exact full ordered rows and binary payloads.\\nNo application code is supplied or needed to execute these specified SQL contracts.\\n\\nOrder: (1) apply 001_schema.sql, OLD active; (2) apply 002_up.sql with OLD still\\nactive; (3) apply 003_new_writes.sql while OLD and NEW coexist; (4) drain NEW and\\nrestart OLD without a schema change; (5) apply 002_down.sql with OLD active.\\nAll committed representative updates/inserts must remain visible after rollback.\\nNo zero-downtime promises beyond this explicit sequence, no staging authorization.\\n\\nReview this proposal as supplied; do not modify SQL or reader contracts. A missing\\ninactive reader is an observation, not by itself a blocker at that phase.\\n\\n001_schema.sql\\nCREATE TABLE items(id INTEGER PRIMARY KEY, title TEXT NOT NULL, payload BLOB NOT NULL);\\nINSERT INTO items VALUES(1, '\uccab \ud56d\ubaa9', x'00ff'), (2, 'keep', x'');\\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\\n\\n002_up.sql\\nDROP VIEW public_items;\\nCREATE VIEW public_items AS SELECT id, title, payload FROM items;\\n\\n003_new_writes.sql\\nUPDATE items SET title='updated', payload=x'fe00' WHERE id=1;\\nINSERT INTO items VALUES(3, 'new', x'80');\\n\\n002_down.sql\\nDROP VIEW public_items;\\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\\n\\nreaders.py\\nOLD = 'SELECT * FROM public_items ORDER BY id'\\nNEW = 'SELECT id, title, payload FROM public_items ORDER BY id'\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df02-ba6e-7af0-8ebc-d69299777f77",
+            "create_time": 1790447902.889639
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 25,
+      "line_sha256": "e5f9a2aef22edaba9de9c2d046ebd34b554cd4045d9bc72be1ba4f1fbdbe08a5",
+      "record": {
+        "timestamp": "2026-09-26T18:39:00.958Z",
+        "ordinal": 24,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0548f3151e89259a016ab81123a5ac87d0b83cfd7d7203082d",
+          "status": "completed",
+          "call_id": "call_n0RwPPbZvTGMxvyJYbzDtrhe",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport ast\\nimport hashlib\\nfrom pathlib import Path\\nimport sqlite3\\n\\npaths = sorted(p for p in Path('.').iterdir() if p.is_file())\\nbefore = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}\\nreader_tree = ast.parse(Path('readers.py').read_text())\\nqueries = {node.targets[0].id: ast.literal_eval(node.value)\\n           for node in reader_tree.body if isinstance(node, ast.Assign)}\\nexpected_columns = {'OLD': ['id', 'label', 'payload'], 'NEW': ['id', 'title', 'payload']}\\ninitial = [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nwritten = [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\ncheckpoints = [\\n    (1, '001_schema.sql', ('OLD',), initial),\\n    (2, '002_up.sql', ('OLD',), initial),\\n    (3, '003_new_writes.sql', ('OLD', 'NEW'), written),\\n    (4, None, ('OLD',), written),\\n    (5, '002_down.sql', ('OLD',), written),\\n]\\nexpected_status = {\\n    1: {'OLD': 'COMPATIBLE', 'NEW': 'SQL_ERROR'},\\n    2: {'OLD': 'INCOMPATIBLE', 'NEW': 'COMPATIBLE'},\\n    3: {'OLD': 'INCOMPATIBLE', 'NEW': 'COMPATIBLE'},\\n    4: {'OLD': 'INCOMPATIBLE', 'NEW': 'COMPATIBLE'},\\n    5: {'OLD': 'COMPATIBLE', 'NEW': 'SQL_ERROR'},\\n}\\nprint('Python sqlite3 runtime:', sqlite3.sqlite_version)\\nprint('Database: one sqlite3.connect(\\\":memory:\\\") connection; all five checkpoints in sequence')\\nprint('Literal reader queries:', queries)\\nprint('Expected ordered columns:', expected_columns)\\ndb = sqlite3.connect(':memory:')\\ntry:\\n    for checkpoint, script, active, expected_rows in checkpoints:\\n        print('\\\\nCHECKPOINT', checkpoint, 'script=', script, 'active=', active)\\n        if script:\\n            db.executescript(Path(script).read_text())\\n            db.commit()\\n            print('Supplied script executed and committed; in_transaction=', db.in_transaction)\\n        else:\\n            print('No schema change; drain/restart represented by active-reader set only')\\n        print('Expected full ordered rows:', repr(expected_rows))\\n        base_rows = db.execute('SELECT id, title, payload FROM items ORDER BY id').fetchall()\\n        print('Observed base rows:', repr(base_rows))\\n        assert base_rows == expected_rows\\n        assert all(type(row[2]) is bytes for row in base_rows)\\n        print('Observed BLOB hex:', [(row[0], row[2].hex()) for row in base_rows])\\n        print('View SQL:', db.execute(\\\"SELECT sql FROM sqlite_master WHERE type='view' AND name='public_items'\\\").fetchone()[0])\\n        for reader in ('OLD', 'NEW'):\\n            activity = 'ACTIVE' if reader in active else 'INACTIVE'\\n            try:\\n                cursor = db.execute(queries[reader])\\n                columns = [entry[0] for entry in cursor.description]\\n                rows = cursor.fetchall()\\n                columns_ok = columns == expected_columns[reader]\\n                rows_ok = rows == expected_rows\\n                blobs_ok = all(type(row[2]) is bytes for row in rows)\\n                status = 'COMPATIBLE' if columns_ok and rows_ok and blobs_ok else 'INCOMPATIBLE'\\n                print(reader, activity, status, 'observed_columns=', columns,\\n                      'observed_rows=', repr(rows), 'columns_match=', columns_ok,\\n                      'rows_match=', rows_ok, 'binary_types_match=', blobs_ok)\\n                assert rows_ok and blobs_ok\\n            except sqlite3.Error as error:\\n                status = 'SQL_ERROR'\\n                print(reader, activity, status, type(error).__name__ + ':', str(error))\\n                assert str(error) == 'no such column: title'\\n            assert status == expected_status[checkpoint][reader]\\n    assert db.execute(queries['OLD']).fetchall() == written\\n    print('\\\\nPASS: rollback preserves representative update, insert, untouched row and exact BLOB bytes.')\\nfinally:\\n    db.close()\\nafter = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}\\nassert before == after\\nassert paths == sorted(p for p in Path('.').iterdir() if p.is_file())\\nprint('PASS: supplied file hashes unchanged; no scratch files created.')\\nPY\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df02-ba6e-7af0-8ebc-d69299777f77",
+            "create_time": 1790447903.36121
+          }
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "15253bcf06c5713367aadb335c20114d8917aa369bac06c1ea654bb79caeeeed",
+      "record": {
+        "timestamp": "2026-09-26T18:39:01.097Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df03-75e9-7080-bf1b-ac190de2ffe2",
+          "call_id": "call_n0RwPPbZvTGMxvyJYbzDtrhe",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"070f44\",\"wall_time_seconds\":0.000003333,\"exit_code\":0,\"original_token_count\":1095,\"output\":\"Python sqlite3 runtime: 3.44.0\\nDatabase: one sqlite3.connect(\\\":memory:\\\") connection; all five checkpoints in sequence\\nLiteral reader queries: {'OLD': 'SELECT * FROM public_items ORDER BY id', 'NEW': 'SELECT id, title, payload FROM public_items ORDER BY id'}\\nExpected ordered columns: {'OLD': ['id', 'label', 'payload'], 'NEW': ['id', 'title', 'payload']}\\n\\nCHECKPOINT 1 script= 001_schema.sql active= ('OLD',)\\nSupplied script executed and committed; in_transaction= False\\nExpected full ordered rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nObserved base rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nObserved BLOB hex: [(1, '00ff'), (2, '')]\\nView SQL: CREATE VIEW public_items AS SELECT id, title AS label, payload FROM items\\nOLD ACTIVE COMPATIBLE observed_columns= ['id', 'label', 'payload'] observed_rows= [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] columns_match= True rows_match= True binary_types_match= True\\nNEW INACTIVE SQL_ERROR OperationalError: no such column: title\\n\\nCHECKPOINT 2 script= 002_up.sql active= ('OLD',)\\nSupplied script executed and committed; in_transaction= False\\nExpected full ordered rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nObserved base rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nObserved BLOB hex: [(1, '00ff'), (2, '')]\\nView SQL: CREATE VIEW public_items AS SELECT id, title, payload FROM items\\nOLD ACTIVE INCOMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] columns_match= False rows_match= True binary_types_match= True\\nNEW INACTIVE COMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] columns_match= True rows_match= True binary_types_match= True\\n\\nCHECKPOINT 3 script= 003_new_writes.sql active= ('OLD', 'NEW')\\nSupplied script executed and committed; in_transaction= False\\nExpected full ordered rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nObserved base rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nObserved BLOB hex: [(1, 'fe00'), (2, ''), (3, '80')]\\nView SQL: CREATE VIEW public_items AS SELECT id, title, payload FROM items\\nOLD ACTIVE INCOMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] columns_match= False rows_match= True binary_types_match= True\\nNEW ACTIVE COMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] columns_match= True rows_match= True binary_types_match= True\\n\\nCHECKPOINT 4 script= None active= ('OLD',)\\nNo schema change; drain/restart represented by active-reader set only\\nExpected full ordered rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nObserved base rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nObserved BLOB hex: [(1, 'fe00'), (2, ''), (3, '80')]\\nView SQL: CREATE VIEW public_items AS SELECT id, title, payload FROM items\\nOLD ACTIVE INCOMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] columns_match= False rows_match= True binary_types_match= True\\nNEW INACTIVE COMPATIBLE observed_columns= ['id', 'title', 'payload'] observed_rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] columns_match= True rows_match= True binary_types_match= True\\n\\nCHECKPOINT 5 script= 002_down.sql active= ('OLD',)\\nSupplied script executed and committed; in_transaction= False\\nExpected full ordered rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nObserved base rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nObserved BLOB hex: [(1, 'fe00'), (2, ''), (3, '80')]\\nView SQL: CREATE VIEW public_items AS SELECT id, title AS label, payload FROM items\\nOLD ACTIVE COMPATIBLE observed_columns= ['id', 'label', 'payload'] observed_rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] columns_match= True rows_match= True binary_types_match= True\\nNEW INACTIVE SQL_ERROR OperationalError: no such column: title\\n\\nPASS: rollback preserves representative update, insert, untouched row and exact BLOB bytes.\\nPASS: supplied file hashes unchanged; no scratch files created.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df02-ba6e-7af0-8ebc-d69299777f77",
+            "create_time": 1790447941.097393
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

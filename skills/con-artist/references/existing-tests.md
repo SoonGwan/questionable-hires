@@ -37,9 +37,18 @@ For installed pytest, use `runner: "pytest"` and its native test arguments in bo
 test lists. Configuration/collection precede copy-import verification; fixtures run
 normally afterward. No automatic package installation or custom plugin is required.
 
-For exact `python -B -m unittest` checks, add `"invocation": "module"` and read
-the [instrumentation and startup limits](python-audit-advanced.md#native-unittest-module-invocation).
-The default uses `unittest.main` in a bootstrap, not module invocation.
+For exact `python -B -m unittest` checks, add `"invocation": "module"` to this
+same single-audit recipe. The helper instruments the real native runner and
+executes the binding `precheck` below inside each test process; no custom startup
+wrapper or batch recipe is needed. Default invocation uses `unittest.main` in a
+bootstrap. Module mode supports file-based probes/replacements, not inline
+`probe` or pytest. Interpreter startup hooks are preserved; selected project
+startup customization is rejected rather than overwritten. Use project support
+for incompatible startup or a custom runner. Instrumented startup is not an
+untouched cold-package import; qualified copied imports must have their parent
+packages loaded. These are the ordinary module-mode limits; consult
+[advanced details](python-audit-advanced.md#native-unittest-module-invocation)
+only for a relevant startup/import issue.
 
 If the task also requires preserving unselected files, new paths and Git metadata,
 and reading the whole project is permitted, add `"guard_project": true` to the

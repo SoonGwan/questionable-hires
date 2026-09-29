@@ -1,0 +1,225 @@
+{
+  "session_id": "01a0df00-0d68-7130-a341-56b616931320",
+  "source_bytes": 146859,
+  "source_sha256": "4899c3c024c7f06b6e4a9ae6fac33cb66b3d3ecb2652cdf5f9ba84f8a94a1391",
+  "source_lines": 42,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "21dc5bf32e851b931888d568f3cba856dae4ae4156443689fbae48375fdbad3d",
+      "record": {
+        "timestamp": "2026-09-26T18:35:32.036Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_06d63c1948ea3b0f016ab81071582487d08cc430078fe49143",
+          "status": "completed",
+          "call_id": "call_3wawWLs7ShRTWP5cGrDNfdcJ",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g '*receipt*' -g '*ledger*' -g '*upload*' -g '*test*' -g 'pyproject.toml' -g 'README*' -g 'pytest.ini'; cat .agents/skills/con-artist/SKILL.md\",\"max_output_tokens\":5500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df00-0db4-7fc0-8dec-c7c7b22b3739",
+            "create_time": 1790447719.470565
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "5f9d8f7e4de3322c99ae2970a63643192f12ba64b1df5a763c0cafad619aadab",
+      "record": {
+        "timestamp": "2026-09-26T18:35:32.222Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df00-45fe-7ce2-a495-75cf78d52ba1",
+          "call_id": "call_3wawWLs7ShRTWP5cGrDNfdcJ",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"4f8a6c\",\"wall_time_seconds\":0.000003958,\"exit_code\":0,\"original_token_count\":1478,\"output\":\"<WORKSPACE>\\ntest_receipts.py\\ningest/ledger.py\\n---\\nname: con-artist\\ndescription: Audit whether tests detect broken behavior by tracing assertions and running narrow controlled mutations in an isolated workspace; use for test-quality reviews, not routine test execution.\\n---\\n\\n# Con Artist\\n\\n> Your mock is very impressed with itself.\\n\\n## Check what the test actually buys\\n\\nTrace the requested assertions far enough to establish the actual exercised effect\\nand select a reachable fault. Follow unresolved bindings, mocks and relevant setup;\\nreading every intermediate wrapper is not itself evidence. Reuse known instructions,\\nrunner and source context. Keep discovery inside the permitted project root; a\\nbroad suite need not become a reading list of unrelated tests.\\n\\nUse the evidenced runner and configuration; reuse a valid correct-code baseline.\\nChoose one meaningful fault at the requested boundary, such as acknowledging\\nwithout persisting. Preserve originals and compilation/binding context through\\nproject isolation, disposable module/package copies or a valid substitution;\\nrestore substitutions in reused processes. A wrong binding, rewritten simulation,\\nsyntax error or equivalent mutation cannot establish test sensitivity.\\n\\nBefore adding an assertion, identify the required observable contract. Object\\nidentity (including exception or traceback identity) needs an explicit identity\\nrequirement; propagation or unwinding alone does not imply it. Reuse existing\\nneighboring controls when they cover the required boundary. Check the proposed\\nassertion on correct code before interpreting its failure on faulty code.\\n\\nInspect each phase's actual assertion and exit, not just a green baseline or a\\nnonzero mutant status. Runner errors/warnings can indicate broken assertion\\nplumbing, not a detected production fault. Establish provenance through copied\\nimports, traced bindings and defect-specific observations. Add instrumentation for\\nrequired or unresolved dispatch, not duplicate evidence; a separate import-only\\nprocess does not prove what the test process loads.\\n\\n## Use support only where it helps\\n\\n- Nearby known files: read relevant source/configuration directly. For scattered\\n  Python context, [the collector](references/python-context.md) locates definitions,\\n  ancestor instructions and fixtures. Select known bodies directly; indexes are\\n  navigation, not reviewed bodies or execution. Don't recollect equivalent context.\\n- Existing Python test improvements: consider [the complete four-check recipe](references/existing-tests.md)\\n  when they remove custom copy/run/cleanup plumbing. One recipe checks original\\n  and proposed tests against correct/faulty code with the native runner and fixtures;\\n  Native `python -B -m unittest` uses the same single recipe with\\n  `\\\"invocation\\\": \\\"module\\\"`; one fault\u2019s original/stronger phases do not need\\n  the batch guide. Localized changes can use an exact edit instead of a complete\\n  replacement file.\\n  Applying the verified edit remains separate. No helper is needed for a simpler\\n  native workflow or an already-completed audit.\\n- Several independent Python faults or required test selections: choose the matching runner.\\n  For pytest, use the [common CLI contract](references/python-audit.md) with\\n  [batch fields](references/python-audit-batch.md), `\\\"runner\\\": \\\"pytest\\\"` and the default\\n  bootstrap invocation; `\\\"invocation\\\": \\\"module\\\"` is unittest-only.\\n  For required `python -B -m unittest`, the [native unittest batch recipe](references/native-unittest-batch.md)\\n  provides actual `python -B -m unittest` execution, same-process binding prechecks,\\n  copy cleanup and reusable correct observations without writing your own startup script.\\n  Consider it when those facilities remove needed orchestration. One fault's\\n  correct/mutant and stronger-assertion phases do not alone need a batch: the\\n  [single-audit contract](references/python-audit.md) supports them, as well as\\n  pytest and inline probes.\\n  Prefer existing project support or a simpler native check when sufficient;\\n  don't restart a completed audit to adopt a helper. It checks selected files by\\n  default; enable `guard_project` for required, authorized whole-project inventories.\\n  Inspect implementation for a concrete trust/adaptation question.\\n- Unexpected Python runner errors/warnings: [diagnostics](references/python-audit-advanced.md#diagnostics-and-incomplete-evidence)\\n  covers false-pass assertion helpers and incomplete checks. It is not routine setup.\\n\\nIf tests survive, distinguish demonstrating the gap from verifying a repair.\\nFor a proposal-only review, give a concrete assertion and label it unexecuted\\nunless checked; demonstrating the requested fault still requires execution.\\nFor requested test improvements or a claim that an assertion closes the gap,\\nverify it on correct and faulty code: pass the former, fail the latter for the\\nintended effect, not merely success or container size. If killed, identify the\\ndetecting assertion or warning policy; this protects that fault, not every lifecycle path.\\n\\n## Deliver and stop\\n\\nGive decisive commands/results and the gap/proposed assertion or detecting check.\\nDistinguish executions from comparisons: one correct run used against several\\nfaults is reused evidence even in a custom harness. Label that reuse and count\\nthe run once, not once per comparison.\\nKeep a harness/report only for requested reuse or delivery. Without isolated\\nexecution, label the concern static. Apply test improvements only when requested,\\nnever the deliberate fault; an audit does not authorize publication.\\n\\nStop when the scoped claim and requested improvements are verified. Add faults\\nonly for distinct material boundaries, not to fish for survivors, chase a global\\nmutation score or remove every mock. Preserve user changes and explicit requirements.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df00-0db4-7fc0-8dec-c7c7b22b3739",
+            "create_time": 1790447732.222678
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "cd1b4f751c3934e830e489f2aa9d5c985ba814d5bbab7abffba5342ce297c125",
+      "record": {
+        "timestamp": "2026-09-26T18:35:47.137Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_06d63c1948ea3b0f016ab81081b77887d0857f0a250c0d92ca",
+          "status": "completed",
+          "call_id": "call_chmLiLdJbAsF25amFa3IdGui",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; rg --files -g '! .git' -g '! .agents'; cat test_receipts.py ingest/ledger.py\",\"max_output_tokens\":4500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df00-0db4-7fc0-8dec-c7c7b22b3739",
+            "create_time": 1790447732.611507
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "7cfa984693511c99da5eaf8951e96c0469a1dce7ab8bb8cf27cf8343b0a26b02",
+      "record": {
+        "timestamp": "2026-09-26T18:35:47.240Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df00-80a8-7241-964f-d2325a60a670",
+          "call_id": "call_chmLiLdJbAsF25amFa3IdGui",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"064e79\",\"wall_time_seconds\":0.000002083,\"exit_code\":0,\"original_token_count\":489,\"output\":\"total 16\\ndrwxr-xr-x@  7 gwonsungwan  wheel   224 Sep 27 03:35 .\\ndrwxr-xr-x@  3 gwonsungwan  wheel    96 Sep 27 03:35 ..\\ndrwxr-xr-x@  3 gwonsungwan  wheel    96 Sep 27 03:35 .agents\\ndrwxr-xr-x@ 10 gwonsungwan  wheel   320 Sep 27 03:35 .git\\ndrwxr-xr-x@  5 gwonsungwan  wheel   160 Sep 27 03:35 ingest\\n-rw-r--r--@  1 gwonsungwan  wheel   662 Sep 27 03:35 requirements.md\\n-rw-r--r--@  1 gwonsungwan  wheel  1086 Sep 27 03:35 test_receipts.py\\ntest_receipts.py\\ningest/endpoint.py\\ningest/__init__.py\\ningest/ledger.py\\nrequirements.md\\nimport sqlite3\\nimport tempfile\\nfrom pathlib import Path\\nimport unittest\\nfrom ingest.endpoint import handle_upload as accept\\n\\n\\nclass LedgerFixture(unittest.TestCase):\\n    def setUp(self):\\n        self.scratch = tempfile.TemporaryDirectory(prefix='.ledger-test-',\\n                                                  dir=Path(__file__).resolve().parent)\\n        self.addCleanup(self.scratch.cleanup)\\n        self.database = Path(self.scratch.name) / 'events.sqlite'\\n        connection = sqlite3.connect(self.database)\\n        try:\\n            connection.execute('CREATE TABLE events (id INTEGER PRIMARY KEY, payload BLOB NOT NULL)')\\n            connection.execute('INSERT INTO events VALUES (?, ?)', (10, b'previous'))\\n            connection.commit()\\n        finally:\\n            connection.close()\\n\\n\\nclass ReceiptTests(LedgerFixture):\\n    def test_acknowledges_binary_upload(self):\\n        self.assertEqual(accept(self.database, 20, b'\\\\x00\\\\xffnew'), {'accepted': 20})\\n\\n    def test_acknowledges_empty_upload(self):\\n        self.assertEqual(accept(self.database, 30, b''), {'accepted': 30})\\nimport sqlite3\\n\\n\\ndef write_event(database, event_id, payload):\\n    connection = sqlite3.connect(database)\\n    try:\\n        connection.execute('INSERT INTO events (id, payload) VALUES (?, ?)',\\n                           (event_id, payload))\\n        connection.commit()\\n    finally:\\n        connection.close()\\n    return {'accepted': event_id}\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df00-0db4-7fc0-8dec-c7c7b22b3739",
+            "create_time": 1790447747.240468
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 24,
+      "line_sha256": "675cda8bf181ff65683af51503b2aba3bf167a2211bbcc935e92b3f70c9ad872",
+      "record": {
+        "timestamp": "2026-09-26T18:35:57.751Z",
+        "ordinal": 23,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_06d63c1948ea3b0f016ab8108c25d487d09d072cf3c2f0c069",
+          "status": "completed",
+          "call_id": "call_9VuHZkSoF7V61htWOb9o5hmL",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat requirements.md ingest/endpoint.py ingest/__init__.py; git status --short; rg --files --hidden -g AGENTS.md -g '! .git'\",\"max_output_tokens\":2500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df00-0db4-7fc0-8dec-c7c7b22b3739",
+            "create_time": 1790447747.615198
+          }
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "2515b6f768e0c89009b43cd75f77c663ec4fb5d563760f52449cca3bda508067",
+      "record": {
+        "timestamp": "2026-09-26T18:35:57.863Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df00-aa27-7101-9280-fd4f76da2507",
+          "call_id": "call_9VuHZkSoF7V61htWOb9o5hmL",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"578240\",\"wall_time_seconds\":0.000002167,\"exit_code\":1,\"original_token_count\":206,\"output\":\"Python 3.9+ standard library; python3 -B -m unittest -v test_receipts.\\nSuccessful handle_upload must preserve the integer ID and exact bytes payload in\\nthe disk SQLite database, visible from a newly opened connection after it returns.\\nPreviously committed events must survive. The acknowledgment is not durability proof.\\nIDs are distinct positive integers and payloads are bytes, including empty/binary bytes.\\nNo networking or concurrent writers are in scope. Existing production/test files are\\nimmutable for this audit. Use disposable project-local copies, clean owned scratch,\\nand preserve all original bytes/modes. Do not install packages or change warnings.\\nfrom ingest.ledger import write_event as _record\\n\\n\\ndef handle_upload(database, event_id, payload):\\n    return _record(database, event_id, payload)\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df00-0db4-7fc0-8dec-c7c7b22b3739",
+            "create_time": 1790447757.863205
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 33,
+      "line_sha256": "0c5b4bbe868288947a861b6ae1b932c687e55f145ae7f47082dd133ecd2544d0",
+      "record": {
+        "timestamp": "2026-09-26T18:36:50.850Z",
+        "ordinal": 32,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_06d63c1948ea3b0f016ab8109de13087d084d645e80f4b7873",
+          "status": "completed",
+          "call_id": "call_T6noYpbt4jQJJyqWA0gaotwh",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport hashlib\\nimport os\\nfrom pathlib import Path\\nimport shutil\\nimport subprocess\\nimport tempfile\\n\\nroot = Path.cwd().resolve()\\ndef snapshot():\\n    return {str(p.relative_to(root)): (hashlib.sha256(p.read_bytes()).hexdigest(), p.stat().st_mode)\\n            for p in root.rglob('*') if p.is_file() and '.git' not in p.relative_to(root).parts}\\nbefore = snapshot()\\nprovenance = '''\\n\\n# Disposable audit instrumentation: verify the actual test globals and dispatch.\\nimport sys as _sys\\nimport ingest.endpoint as _endpoint\\nimport ingest.ledger as _ledger\\n_audit_root = Path(__file__).resolve().parent\\nassert accept is _endpoint.handle_upload\\nfor _name in ('test_acknowledges_binary_upload', 'test_acknowledges_empty_upload'):\\n    assert getattr(ReceiptTests, _name).__globals__['accept'] is _endpoint.handle_upload\\nassert accept.__globals__['_record'] is _ledger.write_event\\nassert Path(_endpoint.__file__).resolve() == _audit_root / 'ingest/endpoint.py'\\nassert Path(_ledger.__file__).resolve() == _audit_root / 'ingest/ledger.py'\\nassert Path(accept.__code__.co_filename).resolve() == _audit_root / 'ingest/endpoint.py'\\nassert Path(_ledger.write_event.__code__.co_filename).resolve() == _audit_root / 'ingest/ledger.py'\\nprint('BINDINGS:', __file__, 'accept ->', _endpoint.__file__, '_record ->', _ledger.__file__, flush=True)\\n_seen = {'endpoint': 0, 'writer': 0}\\n_old_profile = _sys.getprofile()\\ndef _audit_profile(frame, event, arg):\\n    if event == 'call':\\n        if frame.f_code is accept.__code__:\\n            _seen['endpoint'] += 1\\n        if frame.f_code is _ledger.write_event.__code__:\\n            _seen['writer'] += 1\\n_sys.setprofile(_audit_profile)\\ndef tearDownModule():\\n    _sys.setprofile(_old_profile)\\n    assert _seen == {'endpoint': 2, 'writer': 2}, _seen\\n    print('ACTUAL DISPATCH:', _seen, flush=True)\\n'''\\noriginal_test = (root / 'test_receipts.py').read_text()\\nstrong_test = original_test\\nfor event_id, literal in [(20, \\\"b'\\\\\\\\x00\\\\\\\\xffnew'\\\"), (30, \\\"b''\\\")]:\\n    anchor = f\\\"        self.assertEqual(accept(self.database, {event_id}, {literal}), {{'accepted': {event_id}}})\\\"\\n    assert strong_test.count(anchor) == 1\\n    addition = f'''\\n        connection = sqlite3.connect(self.database)\\n        try:\\n            rows = connection.execute('SELECT id, payload FROM events ORDER BY id').fetchall()\\n        finally:\\n            connection.close()\\n        print('FRESH CONNECTION ROWS:', rows, flush=True)\\n        self.assertEqual(rows, [(10, b'previous'), ({event_id}, {literal})])'''\\n    strong_test = strong_test.replace(anchor, anchor + addition)\\nledger = (root / 'ingest/ledger.py').read_text()\\nassert ledger.count('        connection.commit()\\\\n') == 1\\nfault = ledger.replace('        connection.commit()\\\\n', '        # Audit fault: omit commit.\\\\n')\\nresults = []\\ntry:\\n    with tempfile.TemporaryDirectory(prefix='.commit-audit-', dir=root) as tmp:\\n        for phase, test_source, ledger_source, expected in [\\n            ('existing-correct', original_test, ledger, 0),\\n            ('existing-no-commit', original_test, fault, 0),\\n            ('stronger-correct', strong_test, ledger, 0),\\n            ('stronger-no-commit', strong_test, fault, 1),\\n        ]:\\n            copy = Path(tmp) / phase\\n            copy.mkdir()\\n            shutil.copytree(root / 'ingest', copy / 'ingest', ignore=shutil.ignore_patterns('__pycache__'))\\n            (copy / 'ingest/ledger.py').write_text(ledger_source)\\n            (copy / 'test_receipts.py').write_text(test_source + provenance)\\n            command = ['python3', '-B', '-m', 'unittest', '-v', 'test_receipts']\\n            print('\\\\nPHASE:', phase, '\\\\nCWD:', copy, '\\\\nCOMMAND:', ' '.join(command), flush=True)\\n            run = subprocess.run(command, cwd=copy, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\\n            print(run.stdout, end='')\\n            print('EXIT:', run.returncode, flush=True)\\n            assert run.returncode == expected, (phase, run.returncode)\\n            assert 'ACTUAL DISPATCH:' in run.stdout\\n            if phase == 'stronger-no-commit':\\n                assert 'FAILED (failures=2)' in run.stdout\\n                assert 'ERROR' not in run.stdout\\n                assert \\\"FRESH CONNECTION ROWS: [(10, b'previous')]\\\" in run.stdout\\n            results.append((phase, run.returncode))\\nfinally:\\n    assert snapshot() == before, 'Original project bytes/modes changed or scratch remains'\\n    print('\\\\nCLEANUP: owned copies removed; original project file bytes and modes unchanged.', flush=True)\\nprint('RESULTS:', results)\\nPY\",\"max_output_tokens\":5500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df00-0db4-7fc0-8dec-c7c7b22b3739",
+            "create_time": 1790447758.212256
+          }
+        }
+      }
+    },
+    {
+      "line": 36,
+      "line_sha256": "8f865c5c8708f1ddff652839b27714cc15e08ff3da2e7d6d558617146f915ad2",
+      "record": {
+        "timestamp": "2026-09-26T18:36:51.164Z",
+        "ordinal": 35,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df01-7a5c-7862-a9f8-9d9f3be6964e",
+          "call_id": "call_T6noYpbt4jQJJyqWA0gaotwh",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"1cf8b8\",\"wall_time_seconds\":0.134286458,\"exit_code\":0,\"original_token_count\":1561,\"output\":\"\\nPHASE: existing-correct \\nCWD: <WORKSPACE>/.commit-audit-7lioxtcz/existing-correct \\nCOMMAND: python3 -B -m unittest -v test_receipts\\nBINDINGS: <WORKSPACE>/.commit-audit-7lioxtcz/existing-correct/test_receipts.py accept -> <WORKSPACE>/.commit-audit-7lioxtcz/existing-correct/ingest/endpoint.py _record -> <WORKSPACE>/.commit-audit-7lioxtcz/existing-correct/ingest/ledger.py\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok\\nACTUAL DISPATCH: {'endpoint': 2, 'writer': 2}\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.003s\\n\\nOK\\nEXIT: 0\\n\\nPHASE: existing-no-commit \\nCWD: <WORKSPACE>/.commit-audit-7lioxtcz/existing-no-commit \\nCOMMAND: python3 -B -m unittest -v test_receipts\\nBINDINGS: <WORKSPACE>/.commit-audit-7lioxtcz/existing-no-commit/test_receipts.py accept -> <WORKSPACE>/.commit-audit-7lioxtcz/existing-no-commit/ingest/endpoint.py _record -> <WORKSPACE>/.commit-audit-7lioxtcz/existing-no-commit/ingest/ledger.py\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok\\nACTUAL DISPATCH: {'endpoint': 2, 'writer': 2}\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.003s\\n\\nOK\\nEXIT: 0\\n\\nPHASE: stronger-correct \\nCWD: <WORKSPACE>/.commit-audit-7lioxtcz/stronger-correct \\nCOMMAND: python3 -B -m unittest -v test_receipts\\nBINDINGS: <WORKSPACE>/.commit-audit-7lioxtcz/stronger-correct/test_receipts.py accept -> <WORKSPACE>/.commit-audit-7lioxtcz/stronger-correct/ingest/endpoint.py _record -> <WORKSPACE>/.commit-audit-7lioxtcz/stronger-correct/ingest/ledger.py\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... FRESH CONNECTION ROWS: [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')]\\nok\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... FRESH CONNECTION ROWS: [(10, b'previous'), (30, b'')]\\nok\\nACTUAL DISPATCH: {'endpoint': 2, 'writer': 2}\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.004s\\n\\nOK\\nEXIT: 0\\n\\nPHASE: stronger-no-commit \\nCWD: <WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit \\nCOMMAND: python3 -B -m unittest -v test_receipts\\nBINDINGS: <WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit/test_receipts.py accept -> <WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit/ingest/endpoint.py _record -> <WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit/ingest/ledger.py\\ntest_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... FRESH CONNECTION ROWS: [(10, b'previous')]\\nFAIL\\ntest_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... FRESH CONNECTION ROWS: [(10, b'previous')]\\nFAIL\\nACTUAL DISPATCH: {'endpoint': 2, 'writer': 2}\\n\\n======================================================================\\nFAIL: test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit/test_receipts.py\\\", line 32, in test_acknowledges_binary_upload\\n    self.assertEqual(rows, [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')])\\nAssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')]\\n\\nSecond list contains 1 additional elements.\\nFirst extra element 1:\\n(20, b'\\\\x00\\\\xffnew')\\n\\n- [(10, b'previous')]\\n+ [(10, b'previous'), (20, b'\\\\x00\\\\xffnew')]\\n\\n======================================================================\\nFAIL: test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit/test_receipts.py\\\", line 42, in test_acknowledges_empty_upload\\n    self.assertEqual(rows, [(10, b'previous'), (30, b'')])\\nAssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (30, b'')]\\n\\nSecond list contains 1 additional elements.\\nFirst extra element 1:\\n(30, b'')\\n\\n- [(10, b'previous')]\\n+ [(10, b'previous'), (30, b'')]\\n?                   +++++++++++\\n\\n\\n----------------------------------------------------------------------\\nRan 2 tests in 0.004s\\n\\nFAILED (failures=2)\\nEXIT: 1\\n\\nCLEANUP: owned copies removed; original project file bytes and modes unchanged.\\nRESULTS: [('existing-correct', 0), ('existing-no-commit', 0), ('stronger-correct', 0), ('stronger-no-commit', 1)]\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df00-0db4-7fc0-8dec-c7c7b22b3739",
+            "create_time": 1790447811.164336
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

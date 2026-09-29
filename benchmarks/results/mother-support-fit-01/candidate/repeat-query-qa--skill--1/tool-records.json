@@ -1,0 +1,306 @@
+{
+  "session_id": "01a0e411-9ae7-7273-b1fc-6ed7b9b8a6f2",
+  "source_bytes": 142676,
+  "source_sha256": "edf056b936d5ceff271662992563b32abd2e07b88ebb2235f6f760ce21f69b83",
+  "cli_events_sha256": "4e42bb23a6daa981566e7ac032dd87baef45dcd6be1f2dc0b5b1dbd52ad36c6f",
+  "source_lines": 45,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "3e099e197516bd597fd944c300241d0bc24c798339124d15a314d93bdc822bb8",
+      "record": {
+        "timestamp": "2026-09-27T18:12:42.267Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0aec39c5cec8c9cb016ab95c96534087d0af09a29b8951b859",
+          "status": "completed",
+          "call_id": "call_HVfyfFpNM850wZXkM9PdpXgG",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files -g '!**/.git/**' -g '!**/__pycache__/**' -g 'AGENTS.md' -g 'requirements.md' -g 'search.py' -g 'test_search.py' -g 'SKILL.md' -g '*.py' -g '*.md'\",\"max_output_tokens\":3000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/mother-in-law/SKILL.md && cat AGENTS.md && cat requirements.md && cat search.py && cat test_search.py\",\"max_output_tokens\":7000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e411-9b30-7570-8a2e-c131e24d8a86",
+            "create_time": 1790532755.890779
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "5a1763b56024c926de4ee6369b863c411ef755d1ec1fc3108f801f008120b2c1",
+      "record": {
+        "timestamp": "2026-09-27T18:12:42.476Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e411-bb6c-7a22-80c2-fac655d9f469",
+          "call_id": "call_HVfyfFpNM850wZXkM9PdpXgG",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"e760e0\",\"wall_time_seconds\":0.000004291,\"exit_code\":0,\"original_token_count\":52,\"output\":\"<WORKSPACE>\\nAGENTS.md\\nsearch.py\\ntest_search.py\\nrequirements.md\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"cc2b21\",\"wall_time_seconds\":0.000002916,\"exit_code\":0,\"original_token_count\":1036,\"output\":\"---\\nname: mother-in-law\\ndescription: Test a changed user interaction for realistic sequence failures such as double submission, stale responses, navigation, and recovery; use for interaction QA rather than general code review.\\n---\\n\\n# Mother-in-law\\n\\n> And what happens if I click it twice?\\n\\nRead supplied requirements, interaction code, native tests, existing test support\\nand applicable project instructions together when practical. Discover missing\\npaths, not another inventory before known-file reads.\\nUse controlled responses/clocks, isolated cases, bounded waits, and owned-operation\\ncleanup\u2014never sleeps or production actions. Preserve user files and scope.\\n\\nDerive expected states from the product contract, not today's implementation.\\nSeparate final ownership from interval requirements. \u201cRetain while loading\u201d or\\n\u201cuntil the latest completes\u201d applies throughout that interval: assert the retained\\nvalue after relevant intervening completions while the latest remains pending,\\nnot only at request entry. Printing an observation is not a regression assertion.\\nIf only final ownership is required, leave unspecified intermediate display as\\nobservation; seeing an older response does not require a valid fix to display it.\\nA regression must reject the fault without rejecting another permitted path.\\n\\nChoose the requested deliverable; load only its relevant support:\\n\\n- **Project regression:** extend and run the native test directly, not a disposable\\n  probe first. Reuse adequate project fixtures and covered cases; skip transport\\n  and probe references when that support is already present. For missing `async fetch(key)` response control, read the\\n  [native-test interface](references/native-tests.md) and\\n  [copiable transport](assets/controlled_fetch.py) together. The asset observes entry\\n  and settles each returned value/error; it does not implement callback-side effects.\\n  If those effects need a custom fixture anyway, prefer minimal native support\\n  unless adapting the asset removes needed setup. An installed-helper\\n  command or saved JSON is not a standalone project regression.\\n\\n- **Captured observations without a project-test deliverable:** the optional\\n  [component probe](references/component-probe.md) fits a zero-argument constructor,\\n  async `run(query, fetch)` and direct payload state. An opt-in mode checks required\\n  display retention through normal/reversed overlap; repeated identical overlapping\\n  queries still require project checks. Existing adequate runners take precedence.\\n  Never change production to fit a helper. Native-project delivery does not need\\n  this reference.\\n\\n- **Rendered UI:** read [references/browser.md](references/browser.md).\\n\\nReturn the tested sequence, expected/observed state, tested layer, and complete\\nbounded command. Stop after the nearest normal and targeted adversarial cases.\\nDo not add separate evidence files when captured check output already proves them.\\nBrowser unavailability leaves browser QA incomplete. QA does not authorize a fix.\\nQA only. Preserve search.py, requirements.md and this file. Extend test_search.py; optional new standalone standard-library test support is allowed. No external services, installs, sleeps, production fixes or delegation. Keep any scratch below this project and remove it.\\nEvery submission is a new request, even if its query equals a pending request. Only the newest request may replace the displayed complete payload. Preserve the last displayed payload while any newer request is pending. This audit covers successful responses and request order only; error display, cancellation semantics, payload validation and rendered UI are not specified.\\nclass Search:\\n    def __init__(self, fetch):\\n        self.fetch = fetch\\n        self.result = None\\n        self.latest = None\\n\\n    async def submit(self, query):\\n        self.latest = query\\n        payload = await self.fetch(query)\\n        if self.latest == query:\\n            self.result = payload\\nimport unittest\\nfrom search import Search\\n\\n\\nclass SearchTests(unittest.IsolatedAsyncioTestCase):\\n    async def test_initial(self):\\n        self.assertIsNone(Search(None).result)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e411-9b30-7570-8a2e-c131e24d8a86",
+            "create_time": 1790532762.476595
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "cd7b4fa3af5946c6765035cefa8e300f60eea991402258f582863bd57d350aef",
+      "record": {
+        "timestamp": "2026-09-27T18:12:45.533Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0aec39c5cec8c9cb016ab95c9bf7f087d0acd4e5deed00d6d6",
+          "status": "completed",
+          "call_id": "call_2dCSOdNMoC80r7uHZ2FwCGDP",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat .agents/skills/mother-in-law/references/native-tests.md && cat .agents/skills/mother-in-law/assets/controlled_fetch.py && git status --short\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e411-9b30-7570-8a2e-c131e24d8a86",
+            "create_time": 1790532762.932431
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "433e10c686904d5a2ca03f51a64f4be65c555fc2338aa240ef3148bdfa204f83",
+      "record": {
+        "timestamp": "2026-09-27T18:12:45.640Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e411-c7c8-76f0-92be-3cfbd82b6035",
+          "call_id": "call_2dCSOdNMoC80r7uHZ2FwCGDP",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"35f03d\",\"wall_time_seconds\":0.000003,\"exit_code\":0,\"original_token_count\":919,\"output\":\"# Native Python request control\\n\\nAdapt [controlled_fetch.py](../assets/controlled_fetch.py) only when equivalent\\nproject support is absent. The copy needs no installed skill.\\n\\n`await fetch.started(key)` checks actual entry/key and returns a unique handle,\\neven for repeated keys. Call `request.complete(payload)` or\\n`request.fail_request(error)` directly, without TestCase wrappers.\\nCancelling or timing out the entry wait leaves unconsumed requests and application\\ntasks untouched; a later waiter can observe the pending request. A returned handle\\nis already consumed. These are cooperative same-loop waits, not process deadlines.\\n\\nTests own component assertions and bounded task cancellation/draining, including\\nafter failed entry checks; the asset does neither. Do not shadow runner methods:\\ntransport failure is `fail_request`, not `unittest.TestCase.fail`.\\n\\nFor custom assertion plumbing you introduce, exercise an isolated deliberate\\nmismatch and confirm actual/expected evidence, not a support exception. Ordinary\\nunmodified framework assertions do not need a separate test of the assertion\\nlibrary. Add repeated-key cases when identity/reuse is relevant to the contract or\\nimplementation, not merely because the transport supports them. Keep all distinct\\nrequired state transitions, including intervening retention checkpoints.\\n\\\"\\\"\\\"Copy into permitted project test support only when no equivalent exists.\\n\\nEach received Request identifies one call, even when keys repeat. The test owns\\ncomponent tasks: cancel and await them in cleanup. This controls fetch responses,\\nnot component state or browser rendering. No real network or sleeps.\\n\\\"\\\"\\\"\\nimport asyncio\\nfrom dataclasses import dataclass\\nfrom typing import Any\\n\\n\\n@dataclass(frozen=True)\\nclass Request:\\n    key: Any\\n    response: asyncio.Future\\n\\n    def complete(self, value):\\n        self.response.set_result(value)\\n\\n    def fail_request(self, error):\\n        self.response.set_exception(error)\\n\\n\\nclass ControlledFetch:\\n    def __init__(self):\\n        self.calls = asyncio.Queue()\\n        self._entry_changed = asyncio.Event()\\n\\n    async def __call__(self, key):\\n        request = Request(key, asyncio.get_running_loop().create_future())\\n        self.calls.put_nowait(request)\\n        self._entry_changed.set()\\n        return await request.response\\n\\n    async def started(self, expected, timeout=1):\\n        \\\"\\\"\\\"Wait for actual fetch entry, assert its key, return a unique handle.\\n\\n        Timeout/cancellation leaves component tasks and unconsumed requests alone.\\n        The caller owns tasks and must clean them even when this assertion fails.\\n        \\\"\\\"\\\"\\n        if not 0 < timeout <= 30:\\n            raise ValueError('timeout must be in (0, 30]')\\n        loop = asyncio.get_running_loop()\\n        deadline = loop.time() + timeout\\n        while self.calls.empty():\\n            self._entry_changed.clear()\\n            # Wait for availability, not a child queue getter that can consume\\n            # the request while cancellation is being delivered to this waiter.\\n            notice = asyncio.create_task(self._entry_changed.wait())\\n            try:\\n                done, _ = await asyncio.wait((notice,), timeout=max(0, deadline - loop.time()))\\n                if not done:\\n                    raise asyncio.TimeoutError('Timed out waiting for request entry')\\n            finally:\\n                notice.cancel()\\n                await asyncio.gather(notice, return_exceptions=True)\\n        request = self.calls.get_nowait()\\n        if request.key != expected:\\n            raise AssertionError(\\n                f'request key: expected {expected!r}, observed {request.key!r}')\\n        return request\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e411-9b30-7570-8a2e-c131e24d8a86",
+            "create_time": 1790532765.640232
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 28,
+      "line_sha256": "363bb5ee866e39cdf462c9d2928f5371cfa62f99888b24512cd733696e1dbbb5",
+      "record": {
+        "timestamp": "2026-09-27T18:13:29.551Z",
+        "ordinal": 27,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0aec39c5cec8c9cb016ab95ca8ef1487d0a2f19205c52f0127",
+          "status": "completed",
+          "call_id": "call_bsmf3ZpKATycsucXrnoImh9z",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/test_search.py\\n@@\\n-import unittest\\n+import asyncio\\n+import unittest\\n from search import Search\\n \\n \\n+class ControlledFetch:\\n+    \\\"\\\"\\\"One independently settled successful response per actual fetch call.\\\"\\\"\\\"\\n+\\n+    def __init__(self):\\n+        self.calls = asyncio.Queue()\\n+\\n+    async def __call__(self, key):\\n+        response = asyncio.get_running_loop().create_future()\\n+        self.calls.put_nowait((key, response))\\n+        return await response\\n+\\n+\\n class SearchTests(unittest.IsolatedAsyncioTestCase):\\n     async def test_initial(self):\\n         self.assertIsNone(Search(None).result)\\n+\\n+    async def test_identical_queries_complete_newest_first(self):\\n+        await self.check_overlap(\\\"repeat\\\", \\\"repeat\\\", newest_first=True)\\n+\\n+    async def test_different_queries_complete_newest_first(self):\\n+        await self.check_overlap(\\\"older query\\\", \\\"newer query\\\", newest_first=True)\\n+\\n+    async def test_identical_queries_retain_payload_until_newest_completes(self):\\n+        await self.check_overlap(\\\"repeat\\\", \\\"repeat\\\", newest_first=False)\\n+\\n+    async def check_overlap(self, older_query, newer_query, *, newest_first):\\n+        fetch = ControlledFetch()\\n+        search = Search(fetch)\\n+        previous = {\\n+            \\\"items\\\": [{\\\"id\\\": \\\"previous\\\", \\\"details\\\": {\\\"title\\\": \\\"Displayed\\\"}}],\\n+            \\\"metadata\\\": {\\\"total\\\": 7, \\\"cursor\\\": \\\"previous-page\\\"},\\n+        }\\n+        older_payload = {\\n+            \\\"items\\\": [{\\\"id\\\": \\\"older\\\", \\\"details\\\": {\\\"title\\\": \\\"Older response\\\"}}],\\n+            \\\"metadata\\\": {\\\"total\\\": 2, \\\"cursor\\\": \\\"older-page\\\"},\\n+        }\\n+        newest_payload = {\\n+            \\\"items\\\": [{\\\"id\\\": \\\"newest\\\", \\\"details\\\": {\\\"title\\\": \\\"Newest response\\\"}}],\\n+            \\\"metadata\\\": {\\\"total\\\": 3, \\\"cursor\\\": None},\\n+        }\\n+        search.result = previous\\n+        tasks = []\\n+        try:\\n+            older_task = asyncio.create_task(search.submit(older_query))\\n+            tasks.append(older_task)\\n+            older_key, older_response = await asyncio.wait_for(fetch.calls.get(), 1)\\n+            self.assertEqual(older_key, older_query, \\\"first actual fetch key\\\")\\n+            self.assertEqual(search.result, previous, \\\"payload after first submission\\\")\\n+\\n+            newest_task = asyncio.create_task(search.submit(newer_query))\\n+            tasks.append(newest_task)\\n+            newest_key, newest_response = await asyncio.wait_for(fetch.calls.get(), 1)\\n+            self.assertEqual(newest_key, newer_query, \\\"second actual fetch key\\\")\\n+            self.assertIsNot(older_response, newest_response)\\n+            self.assertFalse(older_response.done())\\n+            self.assertFalse(newest_response.done())\\n+            self.assertEqual(search.result, previous, \\\"payload after second submission\\\")\\n+\\n+            if newest_first:\\n+                newest_response.set_result(newest_payload)\\n+                await asyncio.wait_for(newest_task, 1)\\n+                self.assertEqual(search.result, newest_payload, \\\"payload after newest completion\\\")\\n+                self.assertFalse(older_response.done())\\n+\\n+                older_response.set_result(older_payload)\\n+                await asyncio.wait_for(older_task, 1)\\n+                self.assertEqual(search.result, newest_payload, \\\"payload after older completion\\\")\\n+            else:\\n+                older_response.set_result(older_payload)\\n+                await asyncio.wait_for(older_task, 1)\\n+                self.assertFalse(newest_response.done())\\n+                self.assertEqual(\\n+                    search.result, previous,\\n+                    \\\"retain displayed payload after older completion while newest is pending\\\",\\n+                )\\n+\\n+                newest_response.set_result(newest_payload)\\n+                await asyncio.wait_for(newest_task, 1)\\n+                self.assertEqual(search.result, newest_payload, \\\"payload after newest completion\\\")\\n+            self.assertTrue(fetch.calls.empty(), \\\"unexpected extra fetch calls\\\")\\n+        finally:\\n+            for task in tasks:\\n+                task.cancel()\\n+            await asyncio.wait_for(asyncio.gather(*tasks, return_exceptions=True), 1)\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest -v test_search\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e411-9b30-7570-8a2e-c131e24d8a86",
+            "create_time": 1790532766.114489
+          }
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "10c561112c7b008cf1cf45f66a13cf239849c5297ed917b7d7c8d460caf798d7",
+      "record": {
+        "timestamp": "2026-09-27T18:13:29.761Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e412-7421-71e2-b1d7-310c38a6241c",
+          "call_id": "call_bsmf3ZpKATycsucXrnoImh9z",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"db6d38\",\"wall_time_seconds\":0.00000325,\"exit_code\":1,\"original_token_count\":1410,\"output\":\"test_different_queries_complete_newest_first (test_search.SearchTests.test_different_queries_complete_newest_first) ... ok\\ntest_identical_queries_complete_newest_first (test_search.SearchTests.test_identical_queries_complete_newest_first) ... FAIL\\ntest_identical_queries_retain_payload_until_newest_completes (test_search.SearchTests.test_identical_queries_retain_payload_until_newest_completes) ... FAIL\\ntest_initial (test_search.SearchTests.test_initial) ... ok\\n\\n======================================================================\\nFAIL: test_identical_queries_complete_newest_first (test_search.SearchTests.test_identical_queries_complete_newest_first)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 90, in _callTestMethod\\n    if self._callMaybeAsync(method) is not None:\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 112, in _callMaybeAsync\\n    return self._asyncioRunner.run(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 118, in run\\n    return self._loop.run_until_complete(task)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\\\", line 653, in run_until_complete\\n    return future.result()\\n           ^^^^^^^^^^^^^^^\\n  File \\\"<WORKSPACE>/test_search.py\\\", line 23, in test_identical_queries_complete_newest_first\\n    await self.check_overlap(\\\"repeat\\\", \\\"repeat\\\", newest_first=True)\\n  File \\\"<WORKSPACE>/test_search.py\\\", line 72, in check_overlap\\n    self.assertEqual(search.result, newest_payload, \\\"payload after older completion\\\")\\nAssertionError: {'items': [{'id': 'older', 'details': {'title': 'Older respo[53 chars]ge'}} != {'items': [{'id': 'newest', 'details': {'title': 'Newest res[47 chars]one}}\\n- {'items': [{'details': {'title': 'Older response'}, 'id': 'older'}],\\n?                                   ^^^ ^                    ^^^ ^\\n\\n+ {'items': [{'details': {'title': 'Newest response'}, 'id': 'newest'}],\\n?                                   ^ ^^^^                    ^ ^^^^\\n\\n-  'metadata': {'cursor': 'older-page', 'total': 2}}\\n?                         ^ ^^ -------           ^\\n\\n+  'metadata': {'cursor': None, 'total': 3}}\\n?                         ^ ^            ^\\n : payload after older completion\\n\\n======================================================================\\nFAIL: test_identical_queries_retain_payload_until_newest_completes (test_search.SearchTests.test_identical_queries_retain_payload_until_newest_completes)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 90, in _callTestMethod\\n    if self._callMaybeAsync(method) is not None:\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py\\\", line 112, in _callMaybeAsync\\n    return self._asyncioRunner.run(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py\\\", line 118, in run\\n    return self._loop.run_until_complete(task)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py\\\", line 653, in run_until_complete\\n    return future.result()\\n           ^^^^^^^^^^^^^^^\\n  File \\\"<WORKSPACE>/test_search.py\\\", line 29, in test_identical_queries_retain_payload_until_newest_completes\\n    await self.check_overlap(\\\"repeat\\\", \\\"repeat\\\", newest_first=False)\\n  File \\\"<WORKSPACE>/test_search.py\\\", line 77, in check_overlap\\n    self.assertEqual(\\nAssertionError: {'items': [{'id': 'older', 'details': {'title': 'Older respo[53 chars]ge'}} != {'items': [{'id': 'previous', 'details': {'title': 'Displaye[54 chars]ge'}}\\n- {'items': [{'details': {'title': 'Older response'}, 'id': 'older'}],\\n?                                   ^^^^^^^^  ^^^             ^^^^\\n\\n+ {'items': [{'details': {'title': 'Displayed'}, 'id': 'previous'}],\\n?                                   ^^  ^^^ +           +++++ ^^\\n\\n-  'metadata': {'cursor': 'older-page', 'total': 2}}\\n?                           ^^^^                 ^\\n\\n+  'metadata': {'cursor': 'previous-page', 'total': 7}}\\n?                          +++++ ^^                 ^\\n : retain displayed payload after older completion while newest is pending\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.013s\\n\\nFAILED (failures=2)\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e411-9b30-7570-8a2e-c131e24d8a86",
+            "create_time": 1790532809.761577
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 36,
+      "line_sha256": "821f557a9de2c3828d59e8d2dbbb30b00e8fd9c4c0fe535ede85c1fe9ef5adc3",
+      "record": {
+        "timestamp": "2026-09-27T18:13:33.579Z",
+        "ordinal": 35,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0aec39c5cec8c9cb016ab95ccc505887d092dc9dbccd64b244",
+          "status": "completed",
+          "call_id": "call_0UrNPyeCADICeGg0htj3ch5O",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff --check && git diff --stat && git status --short && git diff -- search.py requirements.md AGENTS.md\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e411-9b30-7570-8a2e-c131e24d8a86",
+            "create_time": 1790532810.182466
+          }
+        }
+      }
+    },
+    {
+      "line": 39,
+      "line_sha256": "ae3eba47db5b1c3f831934df24d3a177282f62d4f235cb3cc82d457317a46672",
+      "record": {
+        "timestamp": "2026-09-27T18:13:33.717Z",
+        "ordinal": 38,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e412-8395-7110-9233-a26cc7323e97",
+          "call_id": "call_0UrNPyeCADICeGg0htj3ch5O",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"80550d\",\"wall_time_seconds\":0.000003375,\"exit_code\":0,\"original_token_count\":36,\"output\":\" test_search.py | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\\n 1 file changed, 82 insertions(+)\\n M test_search.py\\n?? .agents/\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e411-9b30-7570-8a2e-c131e24d8a86",
+            "create_time": 1790532813.717707
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "command_output_candidates": [
+    {
+      "command_id": "item_1",
+      "cli_event_line": 5,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_2",
+      "cli_event_line": 7,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_HVfyfFpNM850wZXkM9PdpXgG",
+          "call_line": 13,
+          "call_line_sha256": "3e099e197516bd597fd944c300241d0bc24c798339124d15a314d93bdc822bb8",
+          "output_line": 17,
+          "output_line_sha256": "5a1763b56024c926de4ee6369b863c411ef755d1ec1fc3108f801f008120b2c1",
+          "output_block_index": 2,
+          "exit_code": 0,
+          "output_sha256": "4edc6179ec55afc26e9812bd514c1d5c83c182c25b1e478a1ccdb6624a921a63",
+          "output_chars": 4134,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_3",
+      "cli_event_line": 9,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_2dCSOdNMoC80r7uHZ2FwCGDP",
+          "call_line": 19,
+          "call_line_sha256": "cd7b4fa3af5946c6765035cefa8e300f60eea991402258f582863bd57d350aef",
+          "output_line": 22,
+          "output_line_sha256": "433e10c686904d5a2ca03f51a64f4be65c555fc2338aa240ef3148bdfa204f83",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "669597ded252dd16c198d38e56c0c0800cc7b5603815323434cabd6b573841c0",
+          "output_chars": 3673,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_6",
+      "cli_event_line": 14,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_7",
+      "cli_event_line": 16,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_0UrNPyeCADICeGg0htj3ch5O",
+          "call_line": 36,
+          "call_line_sha256": "821f557a9de2c3828d59e8d2dbbb30b00e8fd9c4c0fe535ede85c1fe9ef5adc3",
+          "output_line": 39,
+          "output_line_sha256": "ae3eba47db5b1c3f831934df24d3a177282f62d4f235cb3cc82d457317a46672",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "d6d91387834743a3278c9001fc7b93404ffa16418e4a6d40524e51771871f7d5",
+          "output_chars": 144,
+          "relation": "equal"
+        }
+      ]
+    }
+  ],
+  "command_output_candidate_limitation": "Candidates match unredacted output suffix and exit only, not command identity or complete stdout. Review the paired call input, order and any earlier chunks. Empty CLI output is never matched; ambiguous matches are never selected automatically.",
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

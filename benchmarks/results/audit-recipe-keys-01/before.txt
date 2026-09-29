@@ -1,0 +1,62 @@
+test_diagnostic_escapes_and_bounds_key_without_dumping_values (test_audit_recipe_keys.AuditRecipeKeyTests.test_diagnostic_escapes_and_bounds_key_without_dumping_values) ... FAIL
+test_escaped_key_alias_is_rejected_from_file (test_audit_recipe_keys.AuditRecipeKeyTests.test_escaped_key_alias_is_rejected_from_file) ... FAIL
+test_nested_batch_mutation_duplicate_is_rejected (test_audit_recipe_keys.AuditRecipeKeyTests.test_nested_batch_mutation_duplicate_is_rejected) ... FAIL
+test_nested_probe_file_duplicate_is_rejected (test_audit_recipe_keys.AuditRecipeKeyTests.test_nested_probe_file_duplicate_is_rejected) ... FAIL
+test_same_keys_in_separate_mutations_remain_valid_native_audits (test_audit_recipe_keys.AuditRecipeKeyTests.test_same_keys_in_separate_mutations_remain_valid_native_audits) ... ok
+test_top_level_duplicate_is_rejected_before_native_execution (test_audit_recipe_keys.AuditRecipeKeyTests.test_top_level_duplicate_is_rejected_before_native_execution) ... FAIL
+
+======================================================================
+FAIL: test_diagnostic_escapes_and_bounds_key_without_dumping_values (test_audit_recipe_keys.AuditRecipeKeyTests.test_diagnostic_escapes_and_bounds_key_without_dumping_values)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/tests/test_audit_recipe_keys.py", line 75, in test_diagnostic_escapes_and_bounds_key_without_dumping_values
+    result = self.reject('{' + json.dumps(key) + ': "private value", '
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/tests/test_audit_recipe_keys.py", line 48, in reject
+    self.assertIn('Duplicate recipe key: ' + json.dumps(key), result.stderr)
+AssertionError: 'Duplicate recipe key: "unexpected\\n\\"field"' not found in 'Audit not established: Unknown audit fields: unexpected\n"field. Use CLI --timeout/--python for execution settings.\n'
+
+======================================================================
+FAIL: test_escaped_key_alias_is_rejected_from_file (test_audit_recipe_keys.AuditRecipeKeyTests.test_escaped_key_alias_is_rejected_from_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/tests/test_audit_recipe_keys.py", line 58, in test_escaped_key_alias_is_rejected_from_file
+    self.reject(raw, 'target', from_file=True)
+  File "<WORKSPACE>/tests/test_audit_recipe_keys.py", line 46, in reject
+    self.assertEqual(result.returncode, 2, result.stderr)
+AssertionError: 0 != 2 : 
+
+======================================================================
+FAIL: test_nested_batch_mutation_duplicate_is_rejected (test_audit_recipe_keys.AuditRecipeKeyTests.test_nested_batch_mutation_duplicate_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/tests/test_audit_recipe_keys.py", line 64, in test_nested_batch_mutation_duplicate_is_rejected
+    self.reject(raw, 'new')
+  File "<WORKSPACE>/tests/test_audit_recipe_keys.py", line 46, in reject
+    self.assertEqual(result.returncode, 2, result.stderr)
+AssertionError: 0 != 2 : 
+
+======================================================================
+FAIL: test_nested_probe_file_duplicate_is_rejected (test_audit_recipe_keys.AuditRecipeKeyTests.test_nested_probe_file_duplicate_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/tests/test_audit_recipe_keys.py", line 71, in test_nested_probe_file_duplicate_is_rejected
+    self.reject(raw, 'test_probe.py', from_file=True)
+  File "<WORKSPACE>/tests/test_audit_recipe_keys.py", line 46, in reject
+    self.assertEqual(result.returncode, 2, result.stderr)
+AssertionError: 0 != 2 : 
+
+======================================================================
+FAIL: test_top_level_duplicate_is_rejected_before_native_execution (test_audit_recipe_keys.AuditRecipeKeyTests.test_top_level_duplicate_is_rejected_before_native_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/tests/test_audit_recipe_keys.py", line 54, in test_top_level_duplicate_is_rejected_before_native_execution
+    self.reject(raw, 'new')
+  File "<WORKSPACE>/tests/test_audit_recipe_keys.py", line 46, in reject
+    self.assertEqual(result.returncode, 2, result.stderr)
+AssertionError: 0 != 2 : 
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.755s
+
+FAILED (failures=5)

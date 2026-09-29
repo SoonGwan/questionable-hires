@@ -1,0 +1,380 @@
+{
+  "session_id": "01a0e468-8b2d-7201-9461-12e4a117188f",
+  "source_bytes": 326272,
+  "source_sha256": "a0d987112f738700730c029b535d32e6b1881f9a13d550711a7d35dfc4dee247",
+  "cli_events_sha256": "aebfb96f72f5aa5f2331e27109b76c6ce635293318521ddb26301d3c0b8dd018",
+  "source_lines": 46,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "26ac852820aae81ecc6a81f33530c39a9b99beeed3b53a84862f75c306dd09b3",
+      "record": {
+        "timestamp": "2026-09-27T19:47:41.320Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a13a6ef53050aa1016ab972db254887d0880425f9b6d188dd",
+          "status": "completed",
+          "call_id": "call_vpiFWpy2iapdPR08woV42PGC",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files --hidden -g '!\\\\.git/**' -g '!__pycache__/**' -g '!\\\\.pytest_cache/**'\",\"max_output_tokens\":4000}));\ntext(await tools.exec_command({cmd:\"cat .agents/skills/receipt/SKILL.md\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e468-8b78-76c0-89c1-29ef18d58234",
+            "create_time": 1790538456.556416
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "7334039e1320ddf88f70b8eef84105ffb407b66a3489204f5736c837a1e616c3",
+      "record": {
+        "timestamp": "2026-09-27T19:47:41.511Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e468-b147-7b30-8794-cfc0eb24b139",
+          "call_id": "call_vpiFWpy2iapdPR08woV42PGC",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"3dcb20\",\"wall_time_seconds\":0.000004625,\"exit_code\":0,\"original_token_count\":161,\"output\":\"<WORKSPACE>\\nAGENTS.md\\ntest_rule.py\\nrule.py\\nREADME.md\\n.agents/skills/receipt/SKILL.md\\n.agents/skills/receipt/scripts/compare.py\\n.agents/skills/receipt/scripts/preserve.py\\n.agents/skills/receipt/scripts/assertions.py\\n.agents/skills/receipt/agents/openai.yaml\\n.agents/skills/receipt/references/existing-fix.md\\n.agents/skills/receipt/references/node-comparison.md\\n.agents/skills/receipt/references/native-preservation.md\\n.agents/skills/receipt/references/comparison-details.md\\nrecipe.json\\nnotes.txt\\n\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"707872\",\"wall_time_seconds\":0.000003208,\"exit_code\":0,\"original_token_count\":588,\"output\":\"---\\nname: receipt\\ndescription: Verify that a requested bug fix changes observable behavior with a failing-before, passing-after reproduction and honest execution evidence.\\n---\\n\\n# Receipt\\n\\n> You fixed it? Show me the receipt.\\n\\nReuse supplied guidance; discover missing instructions only within authorized roots, never through an out-of-scope ancestor sweep. Report inaccessible evidence instead of broadening access.\\n\\nFor a current bug, select a regression on the actual affected path using the documented runner. Reuse valid before evidence; otherwise observe the defect-specific failure, implement the requested fix, then rerun unchanged assertions/inputs. Preserve neighboring behavior and required coverage. Inspect history only for unresolved behavior or implementation.\\n\\nFor an already-present fix, compare isolated versions with the same current assertions/inputs and compatible runtime; identify the code loaded by the test process. Reuse an adequate project-native comparison instead of rebuilding it. Optional support for [Python](references/existing-fix.md) or [native Node tests](references/node-comparison.md) supplies copying, source checks and cleanup when those are missing. Choose by the required evidence and setup work, not merely by language support. Don't reverse patches in the user's working tree.\\n\\nA required suite running that regression with matching inputs/runtime supplies after evidence; don't repeat it separately. Skipped, undiscovered or differently configured tests don't qualify. Changed relevant inputs invalidate reused results.\\n\\nBatch final checks in one shell call, adapting the runner and paths:\\n\\n```sh\\npython3 -B -m unittest -v && git diff --check -- app.py test_app.py && git diff -- app.py test_app.py\\n```\\n\\n`&&` leaves later checks unrun after failure. If all must run, retain each exit explicitly, not just the shell's final status. Review untracked files separately; `git diff` omits them.\\n\\nSetup failures aren't defect reproduction; mocks don't prove unobserved effects. Preserve user changes and scope; verification alone authorizes neither implementation nor publication.\\n\\nReport the reviewed change, decisive before/after observations and commands, applicable revision identities and limits. Stop when the requested outcome and required checks are verified; no separate dossier or unrelated green checks.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e468-8b78-76c0-89c1-29ef18d58234",
+            "create_time": 1790538461.511904
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "7ffe9e5a08e4fe626778cc7993d82914466025542a8893a35fa130804e779b03",
+      "record": {
+        "timestamp": "2026-09-27T19:47:47.060Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a13a6ef53050aa1016ab972e0121887d0b4ac800cccfc7caa",
+          "status": "completed",
+          "call_id": "call_wvXvSM9cc65TkxQxfYKF9Cla",
+          "name": "exec",
+          "input": "const results = await Promise.allSettled([\ntools.exec_command({cmd:\"cat AGENTS.md README.md recipe.json .agents/skills/receipt/references/existing-fix.md .agents/skills/receipt/references/comparison-details.md\",\"max_output_tokens\":10000}),\ntools.exec_command({cmd:\"cat .agents/skills/receipt/scripts/compare.py\",\"max_output_tokens\":18000})\n]); for(let i=0;i<results.length;i++)text({i,...results[i]});\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e468-8b78-76c0-89c1-29ef18d58234",
+            "create_time": 1790538461.972421
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "line_sha256": "7278cfcba5490618934c1c790884b3a20c5c3cb9cdf2bbd890b9ecfb84e273f0",
+      "record": {
+        "timestamp": "2026-09-27T19:47:47.154Z",
+        "ordinal": 22,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e468-c752-79d0-b8e7-99e0dd5bd674",
+          "call_id": "call_wvXvSM9cc65TkxQxfYKF9Cla",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Warning: truncated output (original token count: 15786)\nTotal output lines: 2\n\n{\"i\":0,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"e75df1\",\"wall_time_seconds\":0.000003292,\"exit_code\":0,\"original_token_count\":4803,\"output\":\"This is a controlled helper-output review, not an implementation task.\\nWork only inside this project and its installed Receipt resources. Use the specified\\nexisting Python interpreter; no installation, network, ancestor discovery, commits,\\nMCP/configuration changes or external service. Run the installed Receipt compare.py\\nCLI exactly once with unchanged recipe.json. Do not replace it with another harness,\\nchange the recipe/tests/production, run tests separately or repeat a comparison to\\nrecover missing evidence. The test fixture alone is authorized to rewrite notes.txt\\nwhen MUTATE_NOTE is true; preserve every other original byte/mode and Git state.\\nDo not restore that controlled note or repair any implementation. The helper owns\\nits project-local copies. Inspect results, exits, actual assertion values, import\\nprovenance, source protection and cleanup. Unavailable observations must remain\\nunavailable, not inferred from test source or a displayed revision alone. Keep no\\nadditional report/harness. Review only; do not claim a repair or global efficiency.\\n# Controlled Receipt comparison\\n\\nThe rule accepts ages18 and above. The three tests cover17,18,19. Current tests remain identical for both historical implementations. MUTATE_NOTE is a declared author-owned fault control; it is not application behavior.\\n{\\\"fixed\\\": [\\\"test_rule.py\\\"], \\\"vary\\\": [\\\"rule.py\\\"], \\\"before\\\": \\\"HEAD^\\\", \\\"after\\\": \\\"HEAD\\\", \\\"imports\\\": [\\\"rule\\\"], \\\"runner\\\": \\\"unittest\\\", \\\"tests\\\": [\\\"-v\\\", \\\"test_rule\\\"], \\\"invocation\\\": \\\"module\\\", \\\"watch\\\": [\\\"notes.txt\\\"], \\\"guard_tree\\\": true, \\\"observe_assertions\\\": true}\\n# Receipt for an existing fix\\n\\nThis guide covers Python. For an existing `node --test` project, read only the\\n[native Node comparison guide](node-comparison.md) instead.\\n\\nCompare isolated implementations with **the same current assertions/inputs** and\\ncomparable dependencies/configuration; reuse valid evidence. Identify loaded\\nrevisions. Setup/old-interface failures are not defect reproduction. Preserve\\nentrypoint scope and stopping rules; do not install dependencies. Retrospective\\ncomparison does not satisfy a requirement to observe failure before editing.\\n\\nSelect support/configuration from actual test imports/inputs. List unresolved\\npaths only; select known directories directly. Selection size is not completeness.\\n\\n## Execute the comparison\\n\\nReuse a project-native comparison that already establishes the required isolation,\\nassertions, loaded code and preservation. The Python helper is an option when its\\ncopying, same-process import checks and cleanup replace missing setup; supporting\\nthe language alone is not a reason to replace an adequate existing runner.\\nNative isolation is also valid, and necessary for unsupported runtimes,\\nadded/deleted implementations or retained copies. Keep the same evidence requirements\\nwhichever path is chosen. Read implementation for a concrete trust, adaptation or\\ndiagnosis question; the CLI recipes below do not require importing the helper API.\\n\\nThe helper creates `.receipt-*` scratch **under `--source`**, with separate\\n`before`/`after` copies, and cleans up its owned copies on exit. Confirm\\n`comparison_copies_removed` in the result; cleanup failure is not success.\\nTests run from their respective copies; only child environments receive the\\ncopy-local import/temp setup. This does not contain trusted test side effects.\\n`guard_tree` below already covers preservation around the comparison: no separate\\npreservation wrapper is needed. The recipes and option contracts here are enough\\nfor supported use; follow detail links for an unresolved compatibility question.\\n\\nWhen verification must preserve Git metadata too, use\\n`git --no-optional-locks -c diff.autoRefreshIndex=false` for status/diff review.\\nThis suppresses optional index refresh, not other command/driver side effects;\\nit does not make mutating commands read-only or change persistent Git settings.\\n\\nAdapt **one** example's paths/tests/revisions; HEAD/HEAD^ are placeholders.\\nNeither writes a recipe, commits, stashes nor reverses user patches.\\nRecipe keys must be unique, including nested objects. Invalid input reports\\nduplicate, missing or unknown keys before running a comparison; correct those keys\\ninstead of dropping a requested check.\\n\\nCommitted fix:\\n\\n```sh\\npython3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'\\n{\\\"fixed\\\":[\\\"test_parser.py\\\"],\\\"vary\\\":[\\\"parser.py\\\"],\\\"before\\\":\\\"HEAD^\\\",\\\"after\\\":\\\"HEAD\\\",\\\"imports\\\":[\\\"parser\\\"],\\\"runner\\\":\\\"unittest\\\",\\\"tests\\\":[\\\"-v\\\",\\\"test_parser\\\"]}\\nJSON\\n```\\n\\nAlready-present uncommitted fix:\\n\\n```sh\\npython3 /path/to/receipt/scripts/compare.py --source . --spec - <<'JSON'\\n{\\\"fixed\\\":[\\\"test_parser.py\\\"],\\\"vary\\\":[\\\"parser.py\\\"],\\\"before\\\":\\\"HEAD\\\",\\\"after\\\":{\\\"working_tree\\\":true},\\\"imports\\\":[\\\"parser\\\"],\\\"runner\\\":\\\"unittest\\\",\\\"tests\\\":[\\\"-v\\\",\\\"test_parser\\\"]}\\nJSON\\n```\\n\\n- `fixed`: required, permitted current tests/data/config/dependencies, files or\\n  directories including hidden leaves. Frozen once for both copies; leaf hashes\\n  appear in `fixed_sha256`.\\n- `vary`: implementation files, required in both variants. `before`/string `after`\\n  resolve and report full commit IDs; no separate revision lookup is needed.\\n  Working-tree `after` freezes current bytes/modes, **not staged content**;\\n  `revisions.after=null`, `working_tree_after` hashes/modes identify selected files,\\n  not a commit or whole-repository snapshot.\\n- Optional `\\\"watch\\\":[\\\"notes.txt\\\"]`: existing files/directories checked, **not\\n  copied/executed**. `originals` gives selected hashes/modes/unchanged status;\\n  `comparison_copies_removed` gives cleanup. Reuse those selected-file checks.\\n- For a requested comparison of several past versions against the same current\\n  tests, unittest supports `\\\"additional_before\\\":[\\\"release-a\\\",\\\"release-b\\\"]`.\\n  Distinct commits run as `before`, `before_2`, `before_3`, then `after` **once**;\\n  `checks` and `revisions` use those labels. Inputs are frozen once, all versions\\n  are prepared before execution, and one shared snapshot budget still applies.\\n  At most seven extras; per-check timeout and incomplete-evidence stopping remain.\\n  Inspect each actual failure, not just the shared after pass. This replaces\\n  repeated pairwise helper calls, not an adequate native multi-version runner;\\n  it is not independent confirmation or appropriate for different tests/runtimes.\\n- Optional `\\\"guard_tree\\\":true`: only for requested whole-project preservation\\n  with all reads authorized. Checks Git/ignored entries, bytes/modes and link text\\n  around comparison; changes abort without restoration. It excludes link targets,\\n  timestamps/other metadata, concurrent or restored changes and other commands.\\n  `tree_guard` reports counts/digest; limits are 10,000 entries/20 MB per inventory.\\n  See [guard details](comparison-details.md#preservation-guards) for boundary questions.\\n- Selections must be canonical project-relative, unique and disjoint after\\n  expansion; no root, Git internals, symlinks, empty directories or overlap.\\n  `fixed`/`vary` must be nonempty. Directory traversal: at most 10,000 entries.\\n- `imports` must resolve inside each native test process's copy. Use the project\\n  interpreter (default: launching Python; override `--python` if needed), unittest\\n  or already-installed pytest. Pytest verifies imports after native collection,\\n  before test bodies, preserving configuration and assertion rewriting.\\n  Child temp defaults are inside each copy: do not\\n  redirect global TMPDIR merely to localize checks or other launchers may pollute it.\\n- For a dynamically loaded module held by a declared import, optional\\n  `\\\"module_bindings\\\":{\\\"test_loader:component\\\":\\\"plugin.py\\\"}` checks that module's\\n  `__file__` against the selected fixed/varying file in the same native process.\\n  `test_loader` must also be in `imports`. Dotted attributes traverse module\\n  dictionaries only: no expressions, properties, arbitrary objects or function\\n  identity checks. Missing/wrong bindings produce incomplete evidence before\\n  tests, not regression failures. Checks occur before unittest execution or after\\n  pytest collection; fixtures/later reassignment and actual dispatch require\\n  project-native assertions. Plain `imports` verifies modules, not their attributes.\\n- Optional `\\\"invocation\\\":\\\"module\\\"`: for required `python -B -m unittest ...`,\\n  with `runner: \\\"unittest\\\"` and existing `tests`; no internal adapter needed.\\n  Default is `bootstrap`. Copy-local startup checks imports in the native test\\n  process; inspect `command`, `native_exit_code`, `provenance_ready` and\\n  `suite_observation`. Both unittest modes record completion; missing results or\\n  exit disagreement map to incomplete check7 and stop later comparisons. Empty\\n  and all-skipped native results retain their exit; they are not regression proof.\\n  Conventional existing system/user hooks are preserved. Project-local or unusual\\n  startup customization needs native project setup, not a bypass; read\\n  [startup compatibility](comparison-details.md#native-module-startup) when applicable.\\n- Optional `\\\"observe_assertions\\\":true`: only when actual argument values are\\n  required, for unittest in either invocation mode. Adds `assertion_observation`\\n  for current-thread standard `assertEqual`/`assertIsNot` calls, without replacing\\n  assertions. `actual`/`expected` mean first/second arguments, not inferred roles.\\n  Format `v:3`: primitive builtins and exact standard pathlib types. Paths use\\n  `{\\\"PosixPath\\\":\\\"...\\\"}` (or `WindowsPath`, `PurePosixPath`, `PureWindowsPath`);\\n  lexical text is limited to 256 characters, with no resolving or subclass\\n  conversion. Lists are JSON arrays, tuples use\\n  `{\\\"tuple\\\":[...]}`, bytes use `{\\\"bytes_hex\\\":\\\"...\\\"}`. Older stored reports without\\n  `v` use kind/items containers; v2 lacks Path encoding. Do not relabel either as v3. Limits:\\n  4,096 report bytes, 64 records, 32 value nodes per argument pair, container depth\\n  three and length sixteen. No arbitrary object representation or thread coverage.\\n  Existing/replaced profile hooks, unsupported values, empty observation, limit\\n  overflow or missing/error reports mean incomplete check7/CLI2 and stop later\\n  versions; inspect `reason` and retained `native_exit_code`. `complete` covers\\n  only this observation scope, not all tests/assertions. Default off adds no field\\n  and does not load the observer. General model-token/time savings remain unproven.\\n- Optional `\\\"import_roots\\\":[\\\"src\\\"]` supports regular source-layout packages.\\n  Select initializers/support too; each root must contain selected files.\\n  Ordered canonical roots precede each copy's root and appear in the result.\\n  No inherited PYTHONPATH, editable install, build hook or installed metadata;\\n  use native project setup when required. Only when that native workflow lacks\\n  preservation, [preservation-only support](native-preservation.md) supplies the\\n  bounded guard without replacing the runner; it does not copy or execute tests.\\n\\n## Read the evidence, not just the exit code\\n\\nUse default compact JSON for agent execution; it retains every field and native\\noutput. Reserve `--pretty` for a human-readable JSON request, not extra evidence.\\n\\nCLI 0 means observations collected, **not proof**. Inspect each actual assertion,\\nrequested test identity, before failure/after pass, copied-import evidence,\\n`exit_code`, `timed_out` and `output_truncated`. Help/version output is not execution.\\nEach `Verified copied import:` line includes the resolved module `path` and native\\nprocess `pid`. This records import-time location, not proof against subsequent\\nmonkey-patching; a truncated line is unavailable evidence, not permission to infer it.\\nSkipped/empty checks do not establish a regression, even with native exit 0.\\nMissing import/startup provenance or check exit 7 means incomplete: CLI 2, no next\\ncomparison. Preserve native errors, not just the wrapper status. See\\n[exit interpretation](comparison-details.md#exit-interpretation) for runner-specific\\ncounts, import errors or early-exit diagnosis.\\n\\nPython 3.9+/POSIX, trusted tests only: **not a sandbox**. Copies are removed;\\n`originals` checks selected bytes/modes, not arbitrary effects or new entries.\\nTest paths/subprocesses can escape; snapshots are not atomic. Guard limitations\\nare detailed in [preservation guards](comparison-details.md#preservation-guards).\\n\\nCopying: shared 20 MB budget; overflow aborts before tests, not a partial comparison.\\nExecution: 30 seconds/check (`--timeout` up to 300), last 12,000 output characters.\\nRequired work must finish in the foreground: remaining process-group members are\\nkilled after runner exit; persistent background jobs are unsupported. Cleanup can\\nwait five more seconds; unconfirmed exit means incomplete, no next comparison.\\nDo not retry automatically while prior work may remain. For budget, output or\\ncleanup questions read [resource/process boundaries](comparison-details.md#resource-and-process-boundaries).\\n# Comparison compatibility and failure details\\n\\nUse the [routine comparison guide](existing-fix.md) for recipes and ordinary\\nresults. Read the relevant section here for startup compatibility, ambiguous\\nexits or resource/cleanup questions; this is not another required setup pass.\\n\\n## Native module startup\\n\\n`\\\"invocation\\\":\\\"module\\\"` runs Python `-B -m unittest` with the recipe's test\\narguments. Default `bootstrap` is unchanged. Temporary copy-local startup checks\\nsame-process imports; results include `command`, `native_exit_code` and\\n`provenance_ready`. Timeout/output supervision remains.\\n\\nOnly child-local lookup changes; descendants do not inherit the probe. Existing\\nsystem/user `sitecustomize` and enabled `usercustomize` run in order before\\ncopied-import verification. Their actual modules are retained, not replaced with\\nthe probe. User-site disabling remains effective. Hook errors, including early\\nexit, stop comparison with check 7 rather than continuing tests after a warning.\\n\\nConventional hooks are supported, not arbitrary startup rewrites. Project-local\\ncustomization, disabled site initialization, hooks depending on the exact startup\\nstack or replacing import machinery need native project setup. Do not remove\\nhooks or bypass provenance to make a comparison pass.\\n\\nWhen using that native setup, [preservation-only support](native-preservation.md)\\ncan replace a handwritten tree inventory without altering the startup hook.\\n\\n## Exit interpretation\\n\\nCLI 0 means observations collected, not a verified fix. Inspect actual test\\nidentities, assertions, counts/skips, copied imports and each check's own output.\\n\\n| Check mode | Observed exit behavior |\\n| --- | --- |\\n| Bootstrap unittest | Failure 1; empty/all-skipped 5; partial-skip success 0 |\\n| Module unittest | Completed native exit preserved; empty discovery may return 0 or 5 depending on Python; all-skipped checks can return 0 |\\n| Pytest | Native exits retained; otherwise-success/failure 0/1 without collection-time import verification becomes incomplete 7 |\\n| Missing unittest completion or disagreement with native exit | Check7; native exit retained separately; CLI2; no next comparison |\\n| Missing startup provenance | Check 7; native exit retained separately; CLI 2; no next comparison |\\n| Import verification exceptions, including `SystemExit(0)` | Traceback retained; check 7; CLI 2; no next comparison |\\n\\nAn independent runner exit 7 is conservatively incomplete too. No mode proves\\nrequested coverage. Both unittest modes record the completed runner result;\\nmissing completion, including `os._exit` during execution, is incomplete. Pytest\\nand Node retain their separate contracts. These trusted-test checks are not\\ngeneral early-exit or adversarial attestation; inspect\\nactual tests. A setup/import error is not the\\nrequested defect's reproduction.\\n\\nPytest owns configuration and test collection before listed imports are checked\\nin that same process, before test bodies. This preserves native assertion\\nrewriting, custom test filenames and configuration hooks. Import failures during\\nnative collection keep pytest's own failure code; they are not passing evidence.\\nCollection and plugin code can execute before verification: trusted tests only,\\nnot a sandbox. Explicit `--assert=plain` remains plain; a collect-only result or\\nall-skipped run still does not establish that the requested assertions executed.\\n\\n## Preservation guards\\n\\n`watch` checks selected existing files/directories without copying or executing\\nthem. It excludes new entries and arbitrary effects. `originals` records selected\\nhashes/modes/unchanged status; reuse those checks instead of another snapshot.\\n\\n`guard_tree` is opt-in for requested whole-project preservation, only when all\\nsource reads are authorized. It inventories Git/ignored files, directories\\n(including empty/root), bytes/modes and link text, not link targets. `tree_guard`\\nreports unchanged/counts/digest, not a full hash listing. It replaces snapshots\\naround native comparison, not diff review or later checks.\\n\\nAdded/removed/changed entries abort without restoration. There are no exclusions;\\nspecial files and oversize fail closed: 10,000 entries including root, 20 MB streamed\\nper inventory, separate from copying. Larger projects need another native method.\\n\\nThis is not a sandbox. Test paths/subprocesses can escape; snapshots are not atomic.\\nTree guards exclude link targets, ownership, timestamps, ACLs/xattrs, concurrent\\nwrites, changes restored between observations and operations outside their interval.\\n\\n## Resource and process boundaries\\n\\nCopying has a shared 20 MB budget. Known overflow rejects before reading; reads\\nstop at remaining budget + 1 byte, growth overflow aborts before tests, and final\\nintegrity reads stop at original length + 1. Total memory is not bounded by these\\nlimits. Directory expansion is limited to 10,000 entries. An optional tree guard\\nhas its own 10,000-entry/20 MB streamed inventory budget, separate from copying.\\n\\nSelected-input reads use nonblocking, no-follow descriptor opens and compare the\\nopened regular file's identity/mode with its immediately preceding observation.\\nAn observed replacement aborts instead of following a link or waiting on a FIFO,\\nincluding during final integrity reads. This is not an atomic snapshot: parent\\ndirectory races and concurrent writes to the same inode remain outside the guarantee.\\n\\nExecution defaults to 30 seconds/check (`--timeout` up to 300), retaining the last\\n12,000 output characters. `output_truncated` leaves omitted evidence unavailable.\\nChild exit has a separate five-second cleanup wait: unconfirmed exit means CLI 2,\\ncomparison not established and no next comparison. Other errors/interruptions\\npropagate. Descendant termination is not guaranteed; do not retry automatically\\nwhile a prior process may remain.\\n\\nRequired work must finish in the foreground. After direct-runner exit, remaining\\nprocess-group members are killed and buffered output drained under the original\\ndeadline; inherited pipes alone do not cause timeouts. Exit polling is 50 ms,\\nsubject to scheduling. Persistent background jobs are unsupported. Tests still\\nown assertions/cleanup and escaped groups are not contained.\\n\\nPython 3.9+/POSIX, trusted tests only. Selected-original checks and optional tree\\nguards do not restore changes or prevent test effects.\\n\"}}\n{\"i\":1,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"a9cca8\",\"wall_time_seconds\":0.000001917,\"exit_code\":0,\"original_token_count\":10576,\"output\":\"#!/usr/bin/env python3\\n\\\"\\\"\\\"Compare committed or uncommitted f\u20265786 tokens truncated\u2026r('Tree guard supports only files, directories and symlinks')\\n    return inventory, total\\n\\n\\ndef compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):\\n    root = Path(root).resolve(strict=True)\\n    if os.name != 'posix' or not 0 < timeout <= 300:\\n        raise ValueError('Requires POSIX and a timeout in (0, 300]')\\n    required = {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}\\n    if not isinstance(recipe, dict):\\n        raise ValueError('Recipe must be a JSON object')\\n    if not all(isinstance(key, str) for key in recipe):\\n        raise ValueError('Recipe keys must be strings')\\n    optional = {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings',\\n                'additional_before', 'observe_assertions'}\\n    faults = []\\n    for label, keys in (('missing', required - set(recipe)),\\n                        ('unknown', set(recipe) - required - optional)):\\n        if keys:\\n            names = json.dumps(sorted(keys))\\n            faults.append(label + ' keys: ' + (names[:240] + '...' if len(names) > 240 else names))\\n    if faults:\\n        raise ValueError('Invalid recipe: ' + '; '.join(faults))\\n    if type(recipe.get('observe_assertions', False)) is not bool:\\n        raise ValueError('observe_assertions must be a boolean')\\n    if recipe.get('observe_assertions', False) and recipe['runner'] != 'unittest':\\n        raise ValueError('observe_assertions requires unittest')\\n    if type(recipe.get('guard_tree', False)) is not bool:\\n        raise ValueError('guard_tree must be a boolean')\\n    if 'watch' in recipe and (not isinstance(recipe['watch'], list)\\n                            or not all(isinstance(v, str) and v for v in recipe['watch'])):\\n        raise ValueError('watch must be a list of project-relative selections')\\n    for key in ('fixed', 'vary', 'imports', 'tests'):\\n        if not isinstance(recipe[key], list) or not recipe[key] or not all(isinstance(v, str) and v for v in recipe[key]):\\n            raise ValueError(key + ' must be a nonempty string list')\\n    if recipe['runner'] not in ('unittest', 'pytest', 'node'):\\n        raise ValueError('Use unittest, installed pytest or native node')\\n    additional_before = recipe.get('additional_before', [])\\n    if (not isinstance(additional_before, list) or len(additional_before) > 7\\n            or not all(isinstance(ref, str) and ref and not ref.startswith('-')\\n                       and '\\\\n' not in ref for ref in additional_before)):\\n        raise ValueError('additional_before must contain at most seven commit expressions')\\n    if additional_before and recipe['runner'] != 'unittest':\\n        raise ValueError('additional_before currently requires unittest')\\n    if recipe['runner'] == 'node':\\n        if any(key in recipe for key in ('invocation', 'import_roots', 'module_bindings')):\\n            raise ValueError('Node does not support Python invocation/import options')\\n        if any(os.environ.get(key) for key in ('NODE_OPTIONS', 'NODE_PATH', 'NODE_COMPILE_CACHE')):\\n            raise ValueError('Node custom startup/search/cache settings require project-native comparison')\\n    if recipe.get('invocation', 'bootstrap') not in ('bootstrap', 'module'):\\n        raise ValueError('invocation must be bootstrap or module')\\n    if recipe.get('invocation') == 'module' and recipe['runner'] != 'unittest':\\n        raise ValueError('Native module invocation currently supports unittest only')\\n    recipe = dict(recipe, fixed=fixed_files(root, recipe['fixed']))\\n    watched = fixed_files(root, recipe.get('watch', []))\\n    names = recipe['fixed'] + recipe['vary']\\n    if recipe['runner'] == 'node':\\n        for key in ('imports', 'tests'):\\n            if len(set(recipe[key])) != len(recipe[key]):\\n                raise ValueError('Node ' + key + ' must be unique selected file paths')\\n            for name in recipe[key]:\\n                path = checked_path(name)\\n                selected = recipe['fixed'] if key == 'tests' else names\\n                if name not in selected or path.suffix not in ('.js', '.cjs', '.mjs'):\\n                    raise ValueError('Node ' + key + ' requires selected JS files, not flags/globs/module names')\\n    bindings = recipe.get('module_bindings', {})\\n    if not isinstance(bindings, dict) or len(bindings) > 100:\\n        raise ValueError('module_bindings must map at most 100 module:attribute selectors to selected paths')\\n    for selector, relative in bindings.items():\\n        if not isinstance(selector, str) or selector.count(':') != 1:\\n            raise ValueError('Expected a module:attribute binding selector')\\n        module, attribute = selector.split(':')\\n        if (module not in recipe['imports'] or not all(part.isidentifier() for part in module.split('.'))\\n                or not all(part.isidentifier() for part in attribute.split('.'))):\\n            raise ValueError('Module binding requires a declared import and dotted attribute identifiers')\\n        checked_path(relative)\\n        if relative not in names:\\n            raise ValueError('Module binding path must be a fixed or varying selected file')\\n    if len(set(names + watched)) != len(names + watched):\\n        raise ValueError('fixed, vary and watch must be unique and disjoint')\\n    import_roots = recipe.get('import_roots', [])\\n    if not isinstance(import_roots, list) or not all(isinstance(name, str) for name in import_roots):\\n        raise ValueError('import_roots must be a list of selected project-relative directories')\\n    roots = []\\n    for name in import_roots:\\n        relative = checked_path(name)\\n        if (relative in roots or not (root / relative).is_dir()\\n                or any(p.is_symlink() for p in [root / relative, *(root / relative).parents]\\n                       if root in p.parents)\\n                or not any(relative in Path(selected).parents for selected in names)):\\n            raise ValueError('Import root must be a distinct directory containing selected files: ' + name)\\n        roots.append(relative)\\n    if Path(git(root, 'rev-parse', '--show-toplevel').decode().strip()).resolve() != root:\\n        raise ValueError('source must be the repository root')\\n    originals, modes = {}, {}\\n    total = 0\\n    for name in names + watched:\\n        path = root / checked_path(name)\\n        if any(p.is_symlink() for p in [path, *path.parents] if root in p.parents):\\n            raise ValueError('Symlink inputs are unsupported')\\n        if not path.is_file():\\n            raise ValueError('Input missing or exceeds 20 MB')\\n        length = path.stat().st_size\\n        if length > 20_000_000:\\n            raise ValueError('Input missing or exceeds 20 MB')\\n        if total + length > 20_000_000:\\n            raise ValueError('Inputs exceed 20 MB')\\n        originals[name] = read_limited(path, 20_000_000 - total)\\n        total += len(originals[name])\\n        if total > 20_000_000:\\n            raise ValueError('Inputs exceed 20 MB')\\n        modes[name] = path.stat().st_mode & 0o777\\n    variants, revisions = {}, {}\\n    varying_names = set(recipe['vary'])\\n    blobs = {}  # Immutable object content; never reuse mutable working inputs.\\n    requested_versions = [('before', recipe['before'])]\\n    requested_versions.extend(('before_' + str(index + 2), ref)\\n                              for index, ref in enumerate(additional_before))\\n    requested_versions.append(('after', recipe['after']))\\n    for label, ref in requested_versions:\\n        if (label == 'after' and isinstance(ref, dict) and set(ref) == {'working_tree'}\\n                and ref['working_tree'] is True):\\n            revisions[label] = None\\n            variants[label] = ({name: originals[name] for name in names},\\n                               {name: modes[name] for name in names})\\n            continue\\n        if not isinstance(ref, str) or not ref or ref.startswith('-') or '\\\\n' in ref:\\n            raise ValueError('Invalid revision')\\n        sha = git(root, 'rev-parse', '--verify', '--end-of-options', ref + '^{commit}').decode().strip()\\n        if label != 'after' and sha in revisions.values():\\n            raise ValueError('Historical before revisions must be distinct')\\n        revisions[label] = sha\\n        files = {name: originals[name] for name in names}\\n        variant_modes = {name: modes[name] for name in names}\\n        # One literal-path tree query per revision, not one process per file.\\n        tree = git(root, 'ls-tree', '-l', '-z', sha, '--', *recipe['vary'])\\n        entries = {}\\n        for entry in tree.split(b'\\\\0'):\\n            if not entry:\\n                continue\\n            metadata, recorded_name = entry.split(b'\\\\t', 1)\\n            name = recorded_name.decode()\\n            if name in entries or name not in varying_names:\\n                raise ValueError('Ambiguous historical file selection')\\n            entries[name] = metadata.split()\\n        missing = {}\\n        for name in recipe['vary']:\\n            if name not in entries:\\n                raise ValueError('Implementation missing at requested revision')\\n            mode, kind, oid, size = entries[name]\\n            if kind != b'blob' or mode not in (b'100644', b'100755'):\\n                raise ValueError('Implementation must be a regular Git file')\\n            length = int(size)\\n            total += length\\n            if total > 20_000_000:\\n                raise ValueError('Comparison snapshots exceed 20 MB')\\n            if oid not in blobs:\\n                missing[oid] = length\\n        if missing:\\n            # Request only size-checked immutable objects, not paths or revisions.\\n            stream = io.BytesIO(git(root, 'cat-file', '--batch',\\n                                   input=b''.join(oid + b'\\\\n' for oid in missing)))\\n            for oid, length in missing.items():\\n                if stream.readline().split() != [oid, b'blob', str(length).encode()]:\\n                    raise ValueError('Unexpected historical blob header')\\n                content = stream.read(length)\\n                if len(content) != length or stream.read(1) != b'\\\\n':\\n                    raise ValueError('Incomplete historical blob')\\n                blobs[oid] = content\\n            if stream.read(1):\\n                raise ValueError('Unexpected historical blob data')\\n        for name in recipe['vary']:\\n            mode, kind, oid, size = entries[name]\\n            files[name] = blobs[oid]\\n            variant_modes[name] = 0o755 if mode == b'100755' else 0o644\\n        variants[label] = (files, variant_modes)\\n    # Reuse hashes of these immutable captured bytes, never later filesystem reads.\\n    original_hashes = {name: hashlib.sha256(content).hexdigest()\\n                       for name, content in originals.items()}\\n    result = dict(status='observed', revisions=revisions, checks={}, import_roots=list(import_roots),\\n                  fixed_sha256={name: original_hashes[name] for name in recipe['fixed']},\\n                  limitation='Inspect assertion failures and import provenance; exit codes alone do not prove the fix.')\\n    if revisions['after'] is None:\\n        result['working_tree_after'] = dict(\\n            sha256={name: original_hashes[name] for name in recipe['vary']},\\n            modes={name: modes[name] for name in recipe['vary']})\\n    guarded = tree_inventory(root) if recipe.get('guard_tree', False) else None\\n    try:\\n        with tempfile.TemporaryDirectory(prefix='.receipt-', dir=root) as scratch:\\n            for label, (files, file_modes) in variants.items():\\n                directory = Path(scratch) / label\\n                directory.mkdir()\\n                for name, content in files.items():\\n                    target = directory / name\\n                    target.parent.mkdir(parents=True, exist_ok=True)\\n                    target.write_bytes(content)\\n                    target.chmod(file_modes[name])\\n                check = (run_node_check(node, directory, recipe, timeout) if recipe['runner'] == 'node'\\n                         else run_check(python, directory, recipe, timeout))\\n                result['checks'][label] = check\\n                if check['timed_out'] or check['exit_code'] == 7:\\n                    result['status'] = 'incomplete'\\n                    break\\n    finally:\\n        changed = [name for name, content in originals.items() if (root/name).is_symlink()\\n                   or not (root/name).is_file() or read_limited(root/name, len(content)) != content\\n                   or (root/name).stat().st_mode & 0o777 != modes[name]]\\n        if changed:\\n            raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))\\n        if guarded is not None:\\n            current, _ = tree_inventory(root)\\n            previous, byte_count = guarded\\n            differences = sorted(name for name in previous.keys() | current.keys()\\n                                 if previous.get(name) != current.get(name))\\n            if differences:\\n                raise RuntimeError('Project tree changed; not restored (' + str(len(differences))\\n                                   + ' paths): ' + ', '.join(differences[:20]))\\n            encoded = json.dumps(previous, sort_keys=True, separators=(',', ':')).encode()\\n            result['tree_guard'] = dict(unchanged=True, entries=len(previous),\\n                file_bytes=byte_count, inventory_sha256=hashlib.sha256(encoded).hexdigest(),\\n                scope='source root including Git metadata; symlink targets not read')\\n    result['originals'] = dict(unchanged=True,\\n        sha256=original_hashes,\\n        modes=modes, watch_only=watched)\\n    result['comparison_copies_removed'] = True\\n    return result\\n\\n\\ndef _unique_recipe_object(pairs):\\n    result = {}\\n    for key, value in pairs:\\n        if key in result:\\n            name = json.dumps(key)\\n            raise ValueError('Duplicate recipe key: ' + (name[:240] + '...' if len(name) > 240 else name))\\n        result[key] = value\\n    return result\\n\\n\\ndef main():\\n    parser = argparse.ArgumentParser(description=__doc__,\\n        formatter_class=argparse.RawDescriptionHelpFormatter,\\n        epilog='''Recipe example (adapt paths, revisions and tests to the project):\\n{\\\"fixed\\\":[\\\"test_rule.py\\\"],\\\"vary\\\":[\\\"rule.py\\\"],\\\"before\\\":\\\"HEAD^\\\",\\\"after\\\":\\\"HEAD\\\",\\\"imports\\\":[\\\"rule\\\"],\\\"runner\\\":\\\"unittest\\\",\\\"tests\\\":[\\\"-v\\\",\\\"test_rule\\\"]}\\n\\nfixed: current tests/data/config/dependencies; files or explicit directories.\\nvary: implementation files. Paths are project-relative and disjoint.\\nwatch (optional): originals to check but not copy or execute; files/directories.\\nguard_tree (optional boolean): inventory all source entries including Git around\\nthe comparison; no link traversal. 10000 entries/20 MB read per inventory. Opt in\\nonly when whole-project preservation is requested and all source reads are allowed.\\nbefore: commit expression. after: commit expression or {\\\"working_tree\\\":true}.\\nobserve_assertions (optional boolean, default false): unittest only. Capture\\ncurrent-thread standard assertEqual/assertIsNot builtin/pathlib arguments, bounded to\\n4096 report bytes/64 records. Format v:3: lists are arrays, tuples {\\\"tuple\\\":[...]},\\nbytes {\\\"bytes_hex\\\":\\\"...\\\"}; exact standard pathlib types use {\\\"PosixPath\\\":\\\"...\\\"}\\n(or WindowsPath/PurePosixPath/PureWindowsPath), text <=256 chars, no resolving\\nor subclass conversion. v2 has no Path encoding; unversioned reports use kind/items.\\nUnsupported/missing/incomplete observation maps to\\ncheck7 and stops comparison; native_exit_code retains the runner result.\\nObservation completeness is not full assertion coverage or regression proof.\\nadditional_before (optional): up to seven extra distinct commits, unittest only.\\nRuns before, before_2, ... then after once, using identical frozen current tests.\\nOne shared 20 MB snapshot budget; timeout remains per check. Inspect every check.\\nWorking-tree after freezes current bytes/modes once, not the index or a commit.\\nimports: modules that must load inside each copy. runner: unittest, pytest or node.\\nNode mode: imports are selected .js/.cjs/.mjs paths; tests are fixed JS paths,\\nnot flags/globs. Runs node --test --test-reporter=tap with an observation preload.\\nRequires synchronous registerHooks; verified on Node 24.16.0. Custom NODE_OPTIONS,\\nNODE_PATH or NODE_COMPILE_CACHE and Python invocation/import options are rejected.\\nNode copied_loads record source hashes/PIDs, not evaluation or coverage; truncated\\nor missing provenance is incomplete. Use --node to select the project executable.\\nmodule_bindings (optional): {\\\"test_loader:component\\\":\\\"plugin.py\\\"} verifies a\\nmodule-valued attribute's exact selected path in the same test process. The base\\nmodule must be declared in imports. Not function identity or later dispatch proof.\\nVerified copied import lines include JSON path/pid from that native process at\\nimport time; they do not prove later monkey-patching cannot change behavior.\\ninvocation (optional): module runs Python -B -m unittest with these tests using\\na temporary same-process startup probe; bootstrap is the existing default.\\nModule mode keeps native unittest exits; empty discovery can return 0 or 5\\ndepending on Python, so inspect counts/skips. Missing provenance reserves check 7, CLI 2.\\nimport_roots (optional): ordered selected directories, e.g. [\\\"src\\\"], prepended\\ninside each copy before its root. No package installation or inherited PYTHONPATH.\\nUse --spec - to send JSON on stdin; no recipe file is required.\\nDirectory inputs include hidden files; select only needed, authorized support.\\nNo root, symlink, Git-internal, empty-directory or overlapping selections.\\nLimits: Python 3.9+/POSIX, 20 MB snapshot, 10000 entries, 12000 output characters.\\nExit 0 means observations collected, not a verified fix: inspect each check's\\nassertion output, exit_code, timed_out, output_truncated and import provenance.\\nExit 2 means comparison not established. Copies are cleaned; selected originals\\nare checked, not restored. No sandbox or complete side-effect containment.\\nCheck exit 7 reserves incomplete import/setup evidence; no next comparison runs.\\nChild temp defaults use each copy; do not redirect the helper's global TMPDIR.\\n''')\\n    parser.add_argument('--spec', required=True, help='JSON file or - for stdin')\\n    parser.add_argument('--source', default='.', help='Git project root (default: current directory)')\\n    parser.add_argument('--python', default=sys.executable, help='Check interpreter (default: this Python)')\\n    parser.add_argument('--node', default='node', help='Node executable for runner=node (default: node)')\\n    parser.add_argument('--pretty', action='store_true',\\n                        help='Indent JSON for human reading; default is compact lossless JSON')\\n    parser.add_argument('--timeout', type=float, default=30,\\n                        help='Seconds per check, >0 and <=300 (default: 30); cleanup may wait 5 more')\\n    args = parser.parse_args()\\n    try:\\n        if args.spec == '-':\\n            raw = sys.stdin.read(1_000_001)\\n        else:\\n            with open(args.spec, encoding='utf-8') as stream:\\n                raw = stream.read(1_000_001)\\n        if len(raw.encode('utf-8')) > 1_000_000:\\n            raise ValueError('Recipe exceeds 1 MB')\\n        recipe = json.loads(raw, object_pairs_hook=_unique_recipe_object)\\n        result = compare(args.source, recipe, args.python, args.timeout, node=args.node)\\n    except (ValueError, OSError, RuntimeError, subprocess.TimeoutExpired) as error:\\n        parser.exit(2, 'Comparison not established: ' + str(error) + '\\\\n')\\n    print(json.dumps(result, indent=2) if args.pretty else json.dumps(result, separators=(',', ':')))\\n    return 0 if result['status'] == 'observed' else 2\\n\\n\\nif __name__ == '__main__':\\n    sys.exit(main())\\n\"}}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e468-8b78-76c0-89c1-29ef18d58234",
+            "create_time": 1790538467.154147
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "4ba521a92c3bec66a6524a41d0e434759ad8a8c54112c8a5400dc1db9e148e7e",
+      "record": {
+        "timestamp": "2026-09-27T19:47:54.366Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a13a6ef53050aa1016ab972e6c5c487d0bd01b3cf0b85bc42",
+          "status": "completed",
+          "call_id": "call_g0ib0Ij0xY5pXwt1d3gpCBl8",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat test_rule.py rule.py notes.txt && git --no-optional-locks -c diff.autoRefreshIndex=false status --porcelain=v1 && shasum -a 256 AGENTS.md README.md recipe.json test_rule.py rule.py notes.txt .git/index .git/HEAD && stat -f '%Sp %N' AGENTS.md README.md recipe.json test_rule.py rule.py notes.txt .git/index .git/HEAD && find . -maxdepth 1 -name '.receipt-*' -print\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e468-8b78-76c0-89c1-29ef18d58234",
+            "create_time": 1790538467.63234
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "e05b19896757526e06f74e60160c76084477cd6ffa62874618ff7221bc6e38a8",
+      "record": {
+        "timestamp": "2026-09-27T19:47:54.507Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e468-e40b-7923-a756-6d273b69adbd",
+          "call_id": "call_g0ib0Ij0xY5pXwt1d3gpCBl8",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"7fa483\",\"wall_time_seconds\":0.00000375,\"exit_code\":0,\"original_token_count\":340,\"output\":\"import unittest\\nfrom pathlib import Path\\nfrom rule import eligible\\n\\nMUTATE_NOTE = True\\n\\ndef setUpModule():\\n    here = Path(__file__).resolve().parent\\n    if MUTATE_NOTE and here.parent.name.startswith('.receipt-'):\\n        (here.parent.parent / 'notes.txt').write_text('changed!\\\\n')\\n\\nclass Boundary(unittest.TestCase):\\n    def test_boundary(self): self.assertEqual(eligible(18), True)\\n    def test_below(self): self.assertEqual(eligible(17), False)\\n    def test_above(self): self.assertEqual(eligible(19), True)\\ndef eligible(age):\\n    return age >= 18\\noriginal\\n?? .agents/\\na6ada6b65e0436fc3f27f07a95535611d571bfadd037c2bda6de35dde08c1b3a  AGENTS.md\\n67a7e7fcb9fe07a80ca9e2a8af7a3affc9e0b0d4b102bb974886b1b2d470fe64  README.md\\nfea9bada2e5c001441c5ef28c3fba9a30917bd71b14bc54f23a0229d365b322b  recipe.json\\n8763942a690c41d4ea861ddb1e3e5ae065dd11acedcbb23976299f27ea8204cd  test_rule.py\\n22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f  rule.py\\n25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218  notes.txt\\n2bfc606bcbeeaafe9542a37290175334d0d75d465f135ba05ad8879485f9f1d8  .git/index\\n28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80  .git/HEAD\\n-rw-r--r-- AGENTS.md\\n-rw-r--r-- README.md\\n-rw-r--r-- recipe.json\\n-rw-r--r-- test_rule.py\\n-rw-r--r-- rule.py\\n-rw-r--r-- notes.txt\\n-rw-r--r-- .git/index\\n-rw-r--r-- .git/HEAD\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e468-8b78-76c0-89c1-29ef18d58234",
+            "create_time": 1790538474.507027
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 32,
+      "line_sha256": "541d7d2b61f463887d900bb8dfdb53ea5781a3d058305dc215caf27f588758b8",
+      "record": {
+        "timestamp": "2026-09-27T19:47:57.464Z",
+        "ordinal": 31,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a13a6ef53050aa1016ab972ebfcf487d0b144b55c67352ded",
+          "status": "completed",
+          "call_id": "call_QJX3q8XI31itRVFcbFjTQN5I",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"<TEMP> -B .agents/skills/receipt/scripts/compare.py --source . --spec recipe.json\",\"max_output_tokens\":10000,\"yield_time_ms\":1000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e468-8b78-76c0-89c1-29ef18d58234",
+            "create_time": 1790538474.958311
+          }
+        }
+      }
+    },
+    {
+      "line": 35,
+      "line_sha256": "a708a6e2c2da285ab0f5ae98de9d22a97928362ba075a5e687b975b9bdcd703f",
+      "record": {
+        "timestamp": "2026-09-27T19:47:57.776Z",
+        "ordinal": 34,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e468-f0d0-74e3-873d-33ce97db96e2",
+          "call_id": "call_QJX3q8XI31itRVFcbFjTQN5I",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"9d25e1\",\"wall_time_seconds\":0.133727125,\"exit_code\":2,\"original_token_count\":20,\"output\":\"Comparison not established: Selected originals changed; not restored: notes.txt\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e468-8b78-76c0-89c1-29ef18d58234",
+            "create_time": 1790538477.776914
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 37,
+      "line_sha256": "a106c366628e2b33d59f98cb8ebba888aea0f23feaaf4ad2cde8598275f9331e",
+      "record": {
+        "timestamp": "2026-09-27T19:48:02.741Z",
+        "ordinal": 36,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0a13a6ef53050aa1016ab972ef50e087d0af194a91d22bd12b",
+          "status": "completed",
+          "call_id": "call_yM1PUwlKCTqWZ4XlZaRlWiLb",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat notes.txt && git --no-optional-locks -c diff.autoRefreshIndex=false status --porcelain=v1 && shasum -a 256 AGENTS.md README.md recipe.json test_rule.py rule.py notes.txt .git/index .git/HEAD && stat -f '%Sp %N' AGENTS.md README.md recipe.json test_rule.py rule.py notes.txt .git/index .git/HEAD && find . -maxdepth 1 -name '.receipt-*' -print\",\"max_output_tokens\":3000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e468-8b78-76c0-89c1-29ef18d58234",
+            "create_time": 1790538478.228852
+          }
+        }
+      }
+    },
+    {
+      "line": 40,
+      "line_sha256": "a66a43c1ac6dbebc2995d1f2ecb912a334d1cf0d60e598bce679b66dd4c0696f",
+      "record": {
+        "timestamp": "2026-09-27T19:48:02.861Z",
+        "ordinal": 39,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e469-04ad-73d0-b051-36413957a615",
+          "call_id": "call_yM1PUwlKCTqWZ4XlZaRlWiLb",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"9959ed\",\"wall_time_seconds\":0.000003583,\"exit_code\":0,\"original_token_count\":205,\"output\":\"changed!\\n M notes.txt\\n?? .agents/\\na6ada6b65e0436fc3f27f07a95535611d571bfadd037c2bda6de35dde08c1b3a  AGENTS.md\\n67a7e7fcb9fe07a80ca9e2a8af7a3affc9e0b0d4b102bb974886b1b2d470fe64  README.md\\nfea9bada2e5c001441c5ef28c3fba9a30917bd71b14bc54f23a0229d365b322b  recipe.json\\n8763942a690c41d4ea861ddb1e3e5ae065dd11acedcbb23976299f27ea8204cd  test_rule.py\\n22d18edd9fa94f34725bc23dd3e84e00230a2f24feb4863225bc43f3015a690f  rule.py\\n313c8954548196fec1cbf6dbd2ccd8eeade9ddfebc149781620c74c9f732a5ed  notes.txt\\n2bfc606bcbeeaafe9542a37290175334d0d75d465f135ba05ad8879485f9f1d8  .git/index\\n28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80  .git/HEAD\\n-rw-r--r-- AGENTS.md\\n-rw-r--r-- README.md\\n-rw-r--r-- recipe.json\\n-rw-r--r-- test_rule.py\\n-rw-r--r-- rule.py\\n-rw-r--r-- notes.txt\\n-rw-r--r-- .git/index\\n-rw-r--r-- .git/HEAD\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e468-8b78-76c0-89c1-29ef18d58234",
+            "create_time": 1790538482.861289
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "command_output_candidates": [
+    {
+      "command_id": "item_1",
+      "cli_event_line": 5,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_2",
+      "cli_event_line": 7,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_vpiFWpy2iapdPR08woV42PGC",
+          "call_line": 13,
+          "call_line_sha256": "26ac852820aae81ecc6a81f33530c39a9b99beeed3b53a84862f75c306dd09b3",
+          "output_line": 17,
+          "output_line_sha256": "7334039e1320ddf88f70b8eef84105ffb407b66a3489204f5736c837a1e616c3",
+          "output_block_index": 2,
+          "exit_code": 0,
+          "output_sha256": "16c8d90ff0f39c6592e43283f17351f4e7eb0dbd5edd429552eea17d77d3abc1",
+          "output_chars": 2352,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_3",
+      "cli_event_line": 9,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_4",
+      "cli_event_line": 11,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_5",
+      "cli_event_line": 13,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_g0ib0Ij0xY5pXwt1d3gpCBl8",
+          "call_line": 27,
+          "call_line_sha256": "4ba521a92c3bec66a6524a41d0e434759ad8a8c54112c8a5400dc1db9e148e7e",
+          "output_line": 30,
+          "output_line_sha256": "e05b19896757526e06f74e60160c76084477cd6ffa62874618ff7221bc6e38a8",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "02203f79215ccec9674137570f4b923bb6d524ab5a6e30150751edb03b1b8da8",
+          "output_chars": 1357,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_6",
+      "cli_event_line": 15,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_QJX3q8XI31itRVFcbFjTQN5I",
+          "call_line": 32,
+          "call_line_sha256": "541d7d2b61f463887d900bb8dfdb53ea5781a3d058305dc215caf27f588758b8",
+          "output_line": 35,
+          "output_line_sha256": "a708a6e2c2da285ab0f5ae98de9d22a97928362ba075a5e687b975b9bdcd703f",
+          "output_block_index": 1,
+          "exit_code": 2,
+          "output_sha256": "ee08b159766ec0346a7cf3bca31d5c9956b281e6cd13c4473eab9f6de5339dbc",
+          "output_chars": 80,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_7",
+      "cli_event_line": 17,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_yM1PUwlKCTqWZ4XlZaRlWiLb",
+          "call_line": 37,
+          "call_line_sha256": "a106c366628e2b33d59f98cb8ebba888aea0f23feaaf4ad2cde8598275f9331e",
+          "output_line": 40,
+          "output_line_sha256": "a66a43c1ac6dbebc2995d1f2ecb912a334d1cf0d60e598bce679b66dd4c0696f",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "ab72b153789aab1b66110a60449b7c3921b1104c3965f47450d144f2070dafce",
+          "output_chars": 818,
+          "relation": "equal"
+        }
+      ]
+    }
+  ],
+  "command_output_candidate_limitation": "Candidates match unredacted output suffix and exit only, not command identity or complete stdout. Review the paired call input, order and any earlier chunks. Empty CLI output is never matched; ambiguous matches are never selected automatically.",
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

@@ -1,0 +1,138 @@
+
+RUN correct original COMMAND <TEMP> -B -m unittest -v tests.test_more.SplitAtTests tests.test_more.SplitBeforeTest tests.test_more.SplitAfterTest
+BINDINGS {"version": "10.8.0", "paths": {"more_itertools": "<WORKSPACE>/.split-audit-af4glyrq/correct/more_itertools/__init__.py", "more_itertools.more": "<WORKSPACE>/.split-audit-af4glyrq/correct/more_itertools/more.py", "tests.test_more": "<WORKSPACE>/.split-audit-af4glyrq/correct/tests/test_more.py"}, "identities_and_code_paths": "verified", "tests": 13}
+test_basic (tests.test_more.SplitAtTests.test_basic) ... ok
+test_combination (tests.test_more.SplitAtTests.test_combination) ... ok
+test_keep_separator (tests.test_more.SplitAtTests.test_keep_separator) ... ok
+test_maxsplit (tests.test_more.SplitAtTests.test_maxsplit) ... ok
+test_empty_collection (tests.test_more.SplitBeforeTest.test_empty_collection) ... ok
+test_ends_with_sep (tests.test_more.SplitBeforeTest.test_ends_with_sep) ... ok
+test_max_split (tests.test_more.SplitBeforeTest.test_max_split) ... ok
+test_no_sep (tests.test_more.SplitBeforeTest.test_no_sep) ... ok
+test_starts_with_sep (tests.test_more.SplitBeforeTest.test_starts_with_sep) ... ok
+test_ends_with_sep (tests.test_more.SplitAfterTest.test_ends_with_sep) ... ok
+test_max_split (tests.test_more.SplitAfterTest.test_max_split) ... ok
+test_no_sep (tests.test_more.SplitAfterTest.test_no_sep) ... ok
+test_starts_with_sep (tests.test_more.SplitAfterTest.test_starts_with_sep) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.000s
+
+OK
+EXIT 0
+
+RUN split_at original COMMAND <TEMP> -B -m unittest -v tests.test_more.SplitAtTests tests.test_more.SplitBeforeTest tests.test_more.SplitAfterTest
+BINDINGS {"version": "10.8.0", "paths": {"more_itertools": "<WORKSPACE>/.split-audit-af4glyrq/split_at/more_itertools/__init__.py", "more_itertools.more": "<WORKSPACE>/.split-audit-af4glyrq/split_at/more_itertools/more.py", "tests.test_more": "<WORKSPACE>/.split-audit-af4glyrq/split_at/tests/test_more.py"}, "identities_and_code_paths": "verified", "tests": 13}
+test_basic (tests.test_more.SplitAtTests.test_basic) ... ok
+test_combination (tests.test_more.SplitAtTests.test_combination) ... ok
+test_keep_separator (tests.test_more.SplitAtTests.test_keep_separator) ... ok
+test_maxsplit (tests.test_more.SplitAtTests.test_maxsplit) ... ok
+test_empty_collection (tests.test_more.SplitBeforeTest.test_empty_collection) ... ok
+test_ends_with_sep (tests.test_more.SplitBeforeTest.test_ends_with_sep) ... ok
+test_max_split (tests.test_more.SplitBeforeTest.test_max_split) ... ok
+test_no_sep (tests.test_more.SplitBeforeTest.test_no_sep) ... ok
+test_starts_with_sep (tests.test_more.SplitBeforeTest.test_starts_with_sep) ... ok
+test_ends_with_sep (tests.test_more.SplitAfterTest.test_ends_with_sep) ... ok
+test_max_split (tests.test_more.SplitAfterTest.test_max_split) ... ok
+test_no_sep (tests.test_more.SplitAfterTest.test_no_sep) ... ok
+test_starts_with_sep (tests.test_more.SplitAfterTest.test_starts_with_sep) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.000s
+
+OK
+EXIT 0
+
+RUN correct focused COMMAND <TEMP> -B -m unittest -v focused_contract.ZeroSplitContract
+BINDINGS {"version": "10.8.0", "paths": {"more_itertools": "<WORKSPACE>/.split-audit-af4glyrq/correct/more_itertools/__init__.py", "more_itertools.more": "<WORKSPACE>/.split-audit-af4glyrq/correct/more_itertools/more.py", "tests.test_more": "<WORKSPACE>/.split-audit-af4glyrq/correct/tests/test_more.py"}, "identities_and_code_paths": "verified", "tests": 5}
+test_ordinary_splits (focused_contract.ZeroSplitContract.test_ordinary_splits) ... ok
+test_zero_generator_consumption (focused_contract.ZeroSplitContract.test_zero_generator_consumption) ... ok
+test_zero_no_effects (focused_contract.ZeroSplitContract.test_zero_no_effects) ... ok
+test_zero_raising_predicate (focused_contract.ZeroSplitContract.test_zero_raising_predicate) ... ok
+test_zero_values (focused_contract.ZeroSplitContract.test_zero_values) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK
+EXIT 0
+
+RUN split_at focused COMMAND <TEMP> -B -m unittest -v focused_contract.ZeroSplitContract
+BINDINGS {"version": "10.8.0", "paths": {"more_itertools": "<WORKSPACE>/.split-audit-af4glyrq/split_at/more_itertools/__init__.py", "more_itertools.more": "<WORKSPACE>/.split-audit-af4glyrq/split_at/more_itertools/more.py", "tests.test_more": "<WORKSPACE>/.split-audit-af4glyrq/split_at/tests/test_more.py"}, "identities_and_code_paths": "verified", "tests": 5}
+test_ordinary_splits (focused_contract.ZeroSplitContract.test_ordinary_splits) ... ok
+test_zero_generator_consumption (focused_contract.ZeroSplitContract.test_zero_generator_consumption) ... ok
+test_zero_no_effects (focused_contract.ZeroSplitContract.test_zero_no_effects) ... 
+  test_zero_no_effects (focused_contract.ZeroSplitContract.test_zero_no_effects) (fn='split_at', kw={}, values=[1, 2, 3]) ... FAIL
+  test_zero_no_effects (focused_contract.ZeroSplitContract.test_zero_no_effects) (fn='split_at', kw={'keep_separator': True}, values=[1, 2, 3]) ... FAIL
+test_zero_raising_predicate (focused_contract.ZeroSplitContract.test_zero_raising_predicate) ... 
+  test_zero_raising_predicate (focused_contract.ZeroSplitContract.test_zero_raising_predicate) (fn='split_at', kw={}) ... FAIL
+  test_zero_raising_predicate (focused_contract.ZeroSplitContract.test_zero_raising_predicate) (fn='split_at', kw={'keep_separator': True}) ... FAIL
+test_zero_values (focused_contract.ZeroSplitContract.test_zero_values) ... ok
+
+======================================================================
+FAIL: test_zero_no_effects (focused_contract.ZeroSplitContract.test_zero_no_effects) (fn='split_at', kw={}, values=[1, 2, 3])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.split-audit-af4glyrq/support/focused_contract.py", line 24, in test_zero_no_effects
+    self.assertEqual(calls, [], 'maxsplit=0 must not invoke predicate')
+AssertionError: Lists differ: [1, 2, 3] != []
+
+First list contains 3 additional elements.
+First extra element 0:
+1
+
+- [1, 2, 3]
++ [] : maxsplit=0 must not invoke predicate
+
+======================================================================
+FAIL: test_zero_no_effects (focused_contract.ZeroSplitContract.test_zero_no_effects) (fn='split_at', kw={'keep_separator': True}, values=[1, 2, 3])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.split-audit-af4glyrq/support/focused_contract.py", line 24, in test_zero_no_effects
+    self.assertEqual(calls, [], 'maxsplit=0 must not invoke predicate')
+AssertionError: Lists differ: [1, 2, 3] != []
+
+First list contains 3 additional elements.
+First extra element 0:
+1
+
+- [1, 2, 3]
++ [] : maxsplit=0 must not invoke predicate
+
+======================================================================
+FAIL: test_zero_raising_predicate (focused_contract.ZeroSplitContract.test_zero_raising_predicate) (fn='split_at', kw={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.split-audit-af4glyrq/support/focused_contract.py", line 35, in test_zero_raising_predicate
+    self.assertEqual(outcome, ('returned', [[1, 2, 3]]), 'zero split must bypass raising predicate')
+AssertionError: Tuples differ: ('raised', 'local predicate witness') != ('returned', [[1, 2, 3]])
+
+First differing element 0:
+'raised'
+'returned'
+
+- ('raised', 'local predicate witness')
++ ('returned', [[1, 2, 3]]) : zero split must bypass raising predicate
+
+======================================================================
+FAIL: test_zero_raising_predicate (focused_contract.ZeroSplitContract.test_zero_raising_predicate) (fn='split_at', kw={'keep_separator': True})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.split-audit-af4glyrq/support/focused_contract.py", line 35, in test_zero_raising_predicate
+    self.assertEqual(outcome, ('returned', [[1, 2, 3]]), 'zero split must bypass raising predicate')
+AssertionError: Tuples differ: ('raised', 'local predicate witness') != ('returned', [[1, 2, 3]])
+
+First differing element 0:
+'raised'
+'returned'
+
+- ('raised', 'local predicate witness')
++ ('returned', [[1, 2, 3]]) : zero split must bypass raising predicate
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+FAILED (failures=4)
+EXIT 1
+
+PRESERVATION VERIFIED: all original file bytes/modes and tree, including Git HEAD/index/objects; scratch removed.

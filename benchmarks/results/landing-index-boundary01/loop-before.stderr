@@ -1,0 +1,124 @@
+test_final_file_symlink_loops_return_http_errors (test_landing_server.LandingOriginTests.test_final_file_symlink_loops_return_http_errors) ... ----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 60763)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 1003, in resolve
+    p.stat()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 1013, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 62] Too many levels of symbolic links: '/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpp1710d3q/site/loop/index.html'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py", line 691, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py", line 361, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "<REPOSITORY>/scripts/serve_landing.py", line 16, in __init__
+    super().__init__(*args, directory=str(self.root), **kwargs)
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/server.py", line 671, in __init__
+    super().__init__(*args, **kwargs)
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py", line 755, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/server.py", line 436, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/server.py", line 424, in handle_one_request
+    method()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/server.py", line 675, in do_GET
+    f = self.send_head()
+        ^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/scripts/serve_landing.py", line 56, in send_head
+    index = (target / 'index.html').resolve()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 1005, in resolve
+    check_eloop(e)
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 990, in check_eloop
+    raise RuntimeError("Symlink loop from %r" % e.filename)
+RuntimeError: Symlink loop from '/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpp1710d3q/site/loop/index.html'
+----------------------------------------
+
+  test_final_file_symlink_loops_return_http_errors (test_landing_server.LandingOriginTests.test_final_file_symlink_loops_return_http_errors) (path='/loop/') ... ERROR
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 60764)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 1003, in resolve
+    p.stat()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 1013, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 62] Too many levels of symbolic links: '/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpp1710d3q/site/release.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py", line 691, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py", line 361, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "<REPOSITORY>/scripts/serve_landing.py", line 16, in __init__
+    super().__init__(*args, directory=str(self.root), **kwargs)
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/server.py", line 671, in __init__
+    super().__init__(*args, **kwargs)
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py", line 755, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/server.py", line 436, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/server.py", line 424, in handle_one_request
+    method()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/server.py", line 675, in do_GET
+    f = self.send_head()
+        ^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/scripts/serve_landing.py", line 35, in send_head
+    manifest = (self.root / 'release.json').resolve()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 1005, in resolve
+    check_eloop(e)
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 990, in check_eloop
+    raise RuntimeError("Symlink loop from %r" % e.filename)
+RuntimeError: Symlink loop from '/private/var/folders/jf/nnn7hd494j17c7zkzll4fg000000gn/T/tmpp1710d3q/site/release.json'
+----------------------------------------
+  test_final_file_symlink_loops_return_http_errors (test_landing_server.LandingOriginTests.test_final_file_symlink_loops_return_http_errors) (path='/_health') ... ERROR
+
+======================================================================
+ERROR: test_final_file_symlink_loops_return_http_errors (test_landing_server.LandingOriginTests.test_final_file_symlink_loops_return_http_errors) (path='/loop/')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_landing_server.py", line 134, in test_final_file_symlink_loops_return_http_errors
+    status, headers, _ = self.request(path)
+                         ^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/tests/test_landing_server.py", line 47, in request
+    response = connection.getresponse()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py", line 1378, in getresponse
+    response.begin()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py", line 318, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py", line 287, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+======================================================================
+ERROR: test_final_file_symlink_loops_return_http_errors (test_landing_server.LandingOriginTests.test_final_file_symlink_loops_return_http_errors) (path='/_health')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_landing_server.py", line 134, in test_final_file_symlink_loops_return_http_errors
+    status, headers, _ = self.request(path)
+                         ^^^^^^^^^^^^^^^^^^
+  File "<REPOSITORY>/tests/test_landing_server.py", line 47, in request
+    response = connection.getresponse()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py", line 1378, in getresponse
+    response.begin()
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py", line 318, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py", line 287, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+----------------------------------------------------------------------
+Ran 1 test in 0.511s
+
+FAILED (errors=2)

@@ -1,0 +1,208 @@
+AUDIT CLI EXIT 0
+
+
+FAULT split_at STATUS observed
+PHASE correct_tests
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-oni_tjvy/correct-tests\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"98d3ca2aee5423b9512f8eb4be09b441309616218c542328b123f15527626e8b\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBINDING more_itertools <WORKSPACE>/.con-artist-oni_tjvy/correct-tests/more_itertools/__init__.py e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\nBINDING more_itertools.more <WORKSPACE>/.con-artist-oni_tjvy/correct-tests/more_itertools/more.py 98d3ca2aee5423b9512f8eb4be09b441309616218c542328b123f15527626e8b\nBINDING tests.test_more <WORKSPACE>/.con-artist-oni_tjvy/correct-tests/tests/test_more.py 94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\nBOUND SplitAtTests mi.split_at -> more_itertools.more.split_at\nBOUND SplitBeforeTest mi.split_before -> more_itertools.more.split_before\nBOUND SplitAfterTest mi.split_after -> more_itertools.more.split_after\nPrecheck completed in check process.\ntest_basic (tests.test_more.SplitAtTests.test_basic) ... ok\ntest_combination (tests.test_more.SplitAtTests.test_combination) ... ok\ntest_keep_separator (tests.test_more.SplitAtTests.test_keep_separator) ... ok\ntest_maxsplit (tests.test_more.SplitAtTests.test_maxsplit) ... ok\ntest_empty_collection (tests.test_more.SplitBeforeTest.test_empty_collection) ... ok\ntest_ends_with_sep (tests.test_more.SplitBeforeTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitBeforeTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitBeforeTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitBeforeTest.test_starts_with_sep) ... ok\ntest_ends_with_sep (tests.test_more.SplitAfterTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitAfterTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitAfterTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitAfterTest.test_starts_with_sep) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.000s\n\nOK\n",
+  "output_truncated": false,
+  "command": [
+    "<TEMP>",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_more.SplitAtTests",
+    "tests.test_more.SplitBeforeTest",
+    "tests.test_more.SplitAfterTest"
+  ],
+  "invocation": "module",
+  "native_exit_code": 0,
+  "suite_observation": {
+    "tests": 13,
+    "skipped": 0,
+    "successful": true
+  }
+}
+PHASE mutant_tests
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-oni_tjvy/mutant-tests\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"e92addbf079f5abfa6881284fc25b7eb60b1ef6292a921c3fc5ddc14884d37d6\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBINDING more_itertools <WORKSPACE>/.con-artist-oni_tjvy/mutant-tests/more_itertools/__init__.py e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\nBINDING more_itertools.more <WORKSPACE>/.con-artist-oni_tjvy/mutant-tests/more_itertools/more.py e92addbf079f5abfa6881284fc25b7eb60b1ef6292a921c3fc5ddc14884d37d6\nBINDING tests.test_more <WORKSPACE>/.con-artist-oni_tjvy/mutant-tests/tests/test_more.py 94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\nBOUND SplitAtTests mi.split_at -> more_itertools.more.split_at\nBOUND SplitBeforeTest mi.split_before -> more_itertools.more.split_before\nBOUND SplitAfterTest mi.split_after -> more_itertools.more.split_after\nPrecheck completed in check process.\ntest_basic (tests.test_more.SplitAtTests.test_basic) ... ok\ntest_combination (tests.test_more.SplitAtTests.test_combination) ... ok\ntest_keep_separator (tests.test_more.SplitAtTests.test_keep_separator) ... ok\ntest_maxsplit (tests.test_more.SplitAtTests.test_maxsplit) ... ok\ntest_empty_collection (tests.test_more.SplitBeforeTest.test_empty_collection) ... ok\ntest_ends_with_sep (tests.test_more.SplitBeforeTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitBeforeTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitBeforeTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitBeforeTest.test_starts_with_sep) ... ok\ntest_ends_with_sep (tests.test_more.SplitAfterTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitAfterTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitAfterTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitAfterTest.test_starts_with_sep) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.001s\n\nOK\n",
+  "output_truncated": false,
+  "command": [
+    "<TEMP>",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_more.SplitAtTests",
+    "tests.test_more.SplitBeforeTest",
+    "tests.test_more.SplitAfterTest"
+  ],
+  "invocation": "module",
+  "native_exit_code": 0,
+  "suite_observation": {
+    "tests": 13,
+    "skipped": 0,
+    "successful": true
+  }
+}
+PHASE correct_probe
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-oni_tjvy/correct-probe\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"98d3ca2aee5423b9512f8eb4be09b441309616218c542328b123f15527626e8b\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBINDING more_itertools <WORKSPACE>/.con-artist-oni_tjvy/correct-probe/more_itertools/__init__.py e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\nBINDING more_itertools.more <WORKSPACE>/.con-artist-oni_tjvy/correct-probe/more_itertools/more.py 98d3ca2aee5423b9512f8eb4be09b441309616218c542328b123f15527626e8b\nBINDING tests.test_more <WORKSPACE>/.con-artist-oni_tjvy/correct-probe/tests/test_more.py 94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\nBOUND SplitAtTests mi.split_at -> more_itertools.more.split_at\nBOUND SplitBeforeTest mi.split_before -> more_itertools.more.split_before\nBOUND SplitAfterTest mi.split_after -> more_itertools.more.split_after\nBOUND focused regressions -> copied public package\nPrecheck completed in check process.\ntest_basic (tests.test_more.SplitAtTests.test_basic) ... ok\ntest_combination (tests.test_more.SplitAtTests.test_combination) ... ok\ntest_keep_separator (tests.test_more.SplitAtTests.test_keep_separator) ... ok\ntest_maxsplit (tests.test_more.SplitAtTests.test_maxsplit) ... ok\ntest_empty_collection (tests.test_more.SplitBeforeTest.test_empty_collection) ... ok\ntest_ends_with_sep (tests.test_more.SplitBeforeTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitBeforeTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitBeforeTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitBeforeTest.test_starts_with_sep) ... ok\ntest_ends_with_sep (tests.test_more.SplitAfterTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitAfterTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitAfterTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitAfterTest.test_starts_with_sep) ... ok\ntest_split_after (test_consumer_contract.ZeroSplitContract.test_split_after) ... ok\ntest_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) ... ok\ntest_split_before (test_consumer_contract.ZeroSplitContract.test_split_before) ... ok\n\n----------------------------------------------------------------------\nRan 16 tests in 0.001s\n\nOK\n",
+  "output_truncated": false,
+  "command": [
+    "<TEMP>",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_more.SplitAtTests",
+    "tests.test_more.SplitBeforeTest",
+    "tests.test_more.SplitAfterTest",
+    "test_consumer_contract.ZeroSplitContract"
+  ],
+  "invocation": "module",
+  "native_exit_code": 0,
+  "suite_observation": {
+    "tests": 16,
+    "skipped": 0,
+    "successful": true
+  }
+}
+PHASE mutant_probe
+{
+  "exit_code": 1,
+  "timed_out": false,
+  "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"e92addbf079f5abfa6881284fc25b7eb60b1ef6292a921c3fc5ddc14884d37d6\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBINDING more_itertools <WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/more_itertools/__init__.py e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\nBINDING more_itertools.more <WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/more_itertools/more.py e92addbf079f5abfa6881284fc25b7eb60b1ef6292a921c3fc5ddc14884d37d6\nBINDING tests.test_more <WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/tests/test_more.py 94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\nBOUND SplitAtTests mi.split_at -> more_itertools.more.split_at\nBOUND SplitBeforeTest mi.split_before -> more_itertools.more.split_before\nBOUND SplitAfterTest mi.split_after -> more_itertools.more.split_after\nBOUND focused regressions -> copied public package\nPrecheck completed in check process.\ntest_basic (tests.test_more.SplitAtTests.test_basic) ... ok\ntest_combination (tests.test_more.SplitAtTests.test_combination) ... ok\ntest_keep_separator (tests.test_more.SplitAtTests.test_keep_separator) ... ok\ntest_maxsplit (tests.test_more.SplitAtTests.test_maxsplit) ... ok\ntest_empty_collection (tests.test_more.SplitBeforeTest.test_empty_collection) ... ok\ntest_ends_with_sep (tests.test_more.SplitBeforeTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitBeforeTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitBeforeTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitBeforeTest.test_starts_with_sep) ... ok\ntest_ends_with_sep (tests.test_more.SplitAfterTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitAfterTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitAfterTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitAfterTest.test_starts_with_sep) ... ok\ntest_split_after (test_consumer_contract.ZeroSplitContract.test_split_after) ... ok\ntest_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) ... \n  test_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) (function='split_at', options={'keep_separator': False}, values=[1, 0, 2], raises=False) ... FAIL\n  test_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) (function='split_at', options={'keep_separator': False}, values=[1, 0, 2], raises=True) ... FAIL\n  test_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) (function='split_at', options={'keep_separator': True}, values=[1, 0, 2], raises=False) ... FAIL\n  test_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) (function='split_at', options={'keep_separator': True}, values=[1, 0, 2], raises=True) ... FAIL\ntest_split_before (test_consumer_contract.ZeroSplitContract.test_split_before) ... ok\n\n======================================================================\nFAIL: test_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) (function='split_at', options={'keep_separator': False}, values=[1, 0, 2], raises=False)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/test_consumer_contract.py\", line 29, in check_contract\n    self.assertEqual(calls, [], 'maxsplit=0 must not invoke predicate')\nAssertionError: Lists differ: [1, 0, 2] != []\n\nFirst list contains 3 additional elements.\nFirst extra element 0:\n1\n\n- [1, 0, 2]\n+ [] : maxsplit=0 must not invoke predicate\n\n======================================================================\nFAIL: test_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) (function='split_at', options={'keep_separator': False}, values=[1, 0, 2], raises=True)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/test_consumer_contract.py\", line 24, in check_contract\n    actual = list(fn(items(), pred, maxsplit=0, **kwargs))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/more_itertools/more.py\", line 1537, in split_at\n    pred(value)\n  File \"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/test_consumer_contract.py\", line 21, in pred\n    raise RuntimeError('local predicate witness')\nRuntimeError: local predicate witness\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/test_consumer_contract.py\", line 26, in check_contract\n    self.fail('maxsplit=0 invoked raising predicate: ' + str(error))\nAssertionError: maxsplit=0 invoked raising predicate: local predicate witness\n\n======================================================================\nFAIL: test_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) (function='split_at', options={'keep_separator': True}, values=[1, 0, 2], raises=False)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/test_consumer_contract.py\", line 29, in check_contract\n    self.assertEqual(calls, [], 'maxsplit=0 must not invoke predicate')\nAssertionError: Lists differ: [1, 0, 2] != []\n\nFirst list contains 3 additional elements.\nFirst extra element 0:\n1\n\n- [1, 0, 2]\n+ [] : maxsplit=0 must not invoke predicate\n\n======================================================================\nFAIL: test_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) (function='split_at', options={'keep_separator': True}, values=[1, 0, 2], raises=True)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/test_consumer_contract.py\", line 24, in check_contract\n    actual = list(fn(items(), pred, maxsplit=0, **kwargs))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/more_itertools/more.py\", line 1537, in split_at\n    pred(value)\n  File \"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/test_consumer_contract.py\", line 21, in pred\n    raise RuntimeError('local predicate witness')\nRuntimeError: local predicate witness\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-oni_tjvy/mutant-probe/test_consumer_contract.py\", line 26, in check_contract\n    self.fail('maxsplit=0 invoked raising predicate: ' + str(error))\nAssertionError: maxsplit=0 invoked raising predicate: local predicate witness\n\n----------------------------------------------------------------------\nRan 16 tests in 0.002s\n\nFAILED (failures=4)\n",
+  "output_truncated": false,
+  "command": [
+    "<TEMP>",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_more.SplitAtTests",
+    "tests.test_more.SplitBeforeTest",
+    "tests.test_more.SplitAfterTest",
+    "test_consumer_contract.ZeroSplitContract…391 tokens truncated…cessor/native-split-multiple--skill--1/project/.con-artist-ev7fhpu5/mutant-tests/more_itertools/__init__.py e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\nBINDING more_itertools.more <WORKSPACE>/.con-artist-ev7fhpu5/mutant-tests/more_itertools/more.py fdb46ce2b63efbd3bbb3638ad133e2b6d16f1ea29cfd9bd6ae24af5707400468\nBINDING tests.test_more <WORKSPACE>/.con-artist-ev7fhpu5/mutant-tests/tests/test_more.py 94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\nBOUND SplitAtTests mi.split_at -> more_itertools.more.split_at\nBOUND SplitBeforeTest mi.split_before -> more_itertools.more.split_before\nBOUND SplitAfterTest mi.split_after -> more_itertools.more.split_after\nPrecheck completed in check process.\ntest_basic (tests.test_more.SplitAtTests.test_basic) ... ok\ntest_combination (tests.test_more.SplitAtTests.test_combination) ... ok\ntest_keep_separator (tests.test_more.SplitAtTests.test_keep_separator) ... ok\ntest_maxsplit (tests.test_more.SplitAtTests.test_maxsplit) ... ok\ntest_empty_collection (tests.test_more.SplitBeforeTest.test_empty_collection) ... ok\ntest_ends_with_sep (tests.test_more.SplitBeforeTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitBeforeTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitBeforeTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitBeforeTest.test_starts_with_sep) ... ok\ntest_ends_with_sep (tests.test_more.SplitAfterTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitAfterTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitAfterTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitAfterTest.test_starts_with_sep) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.000s\n\nOK\n",
+  "output_truncated": false,
+  "command": [
+    "<TEMP>",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_more.SplitAtTests",
+    "tests.test_more.SplitBeforeTest",
+    "tests.test_more.SplitAfterTest"
+  ],
+  "invocation": "module",
+  "native_exit_code": 0,
+  "suite_observation": {
+    "tests": 13,
+    "skipped": 0,
+    "successful": true
+  }
+}
+PHASE correct_probe
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "observation_ref": "#/audits/0/checks/correct_probe"
+}
+PHASE mutant_probe
+{
+  "exit_code": 1,
+  "timed_out": false,
+  "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-ev7fhpu5/mutant-probe\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"fdb46ce2b63efbd3bbb3638ad133e2b6d16f1ea29cfd9bd6ae24af5707400468\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBINDING more_itertools <WORKSPACE>/.con-artist-ev7fhpu5/mutant-probe/more_itertools/__init__.py e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\nBINDING more_itertools.more <WORKSPACE>/.con-artist-ev7fhpu5/mutant-probe/more_itertools/more.py fdb46ce2b63efbd3bbb3638ad133e2b6d16f1ea29cfd9bd6ae24af5707400468\nBINDING tests.test_more <WORKSPACE>/.con-artist-ev7fhpu5/mutant-probe/tests/test_more.py 94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\nBOUND SplitAtTests mi.split_at -> more_itertools.more.split_at\nBOUND SplitBeforeTest mi.split_before -> more_itertools.more.split_before\nBOUND SplitAfterTest mi.split_after -> more_itertools.more.split_after\nBOUND focused regressions -> copied public package\nPrecheck completed in check process.\ntest_basic (tests.test_more.SplitAtTests.test_basic) ... ok\ntest_combination (tests.test_more.SplitAtTests.test_combination) ... ok\ntest_keep_separator (tests.test_more.SplitAtTests.test_keep_separator) ... ok\ntest_maxsplit (tests.test_more.SplitAtTests.test_maxsplit) ... ok\ntest_empty_collection (tests.test_more.SplitBeforeTest.test_empty_collection) ... ok\ntest_ends_with_sep (tests.test_more.SplitBeforeTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitBeforeTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitBeforeTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitBeforeTest.test_starts_with_sep) ... ok\ntest_ends_with_sep (tests.test_more.SplitAfterTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitAfterTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitAfterTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitAfterTest.test_starts_with_sep) ... ok\ntest_split_after (test_consumer_contract.ZeroSplitContract.test_split_after) ... ok\ntest_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) ... ok\ntest_split_before (test_consumer_contract.ZeroSplitContract.test_split_before) ... \n  test_split_before (test_consumer_contract.ZeroSplitContract.test_split_before) (function='split_before', options={}, values=[1, 0, 2], raises=False) ... FAIL\n  test_split_before (test_consumer_contract.ZeroSplitContract.test_split_before) (function='split_before', options={}, values=[1, 0, 2], raises=True) ... FAIL\n\n======================================================================\nFAIL: test_split_before (test_consumer_contract.ZeroSplitContract.test_split_before) (function='split_before', options={}, values=[1, 0, 2], raises=False)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-ev7fhpu5/mutant-probe/test_consumer_contract.py\", line 29, in check_contract\n    self.assertEqual(calls, [], 'maxsplit=0 must not invoke predicate')\nAssertionError: Lists differ: [1, 0, 2] != []\n\nFirst list contains 3 additional elements.\nFirst extra element 0:\n1\n\n- [1, 0, 2]\n+ [] : maxsplit=0 must not invoke predicate\n\n======================================================================\nFAIL: test_split_before (test_consumer_contract.ZeroSplitContract.test_split_before) (function='split_before', options={}, values=[1, 0, 2], raises=True)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-ev7fhpu5/mutant-probe/test_consumer_contract.py\", line 24, in check_contract\n    actual = list(fn(items(), pred, maxsplit=0, **kwargs))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<WORKSPACE>/.con-artist-ev7fhpu5/mutant-probe/more_itertools/more.py\", line 1574, in split_before\n    pred(value)\n  File \"<WORKSPACE>/.con-artist-ev7fhpu5/mutant-probe/test_consumer_contract.py\", line 21, in pred\n    raise RuntimeError('local predicate witness')\nRuntimeError: local predicate witness\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-ev7fhpu5/mutant-probe/test_consumer_contract.py\", line 26, in check_contract\n    self.fail('maxsplit=0 invoked raising predicate: ' + str(error))\nAssertionError: maxsplit=0 invoked raising predicate: local predicate witness\n\n----------------------------------------------------------------------\nRan 16 tests in 0.002s\n\nFAILED (failures=2)\n",
+  "output_truncated": false,
+  "command": [
+    "<TEMP>",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_more.SplitAtTests",
+    "tests.test_more.SplitBeforeTest",
+    "tests.test_more.SplitAfterTest",
+    "test_consumer_contract.ZeroSplitContract"
+  ],
+  "invocation": "module",
+  "native_exit_code": 1,
+  "suite_observation": {
+    "tests": 16,
+    "skipped": 0,
+    "successful": false
+  }
+}
+INTEGRITY {"selected_files": 6, "selected_original_bytes_and_modes_unchanged": true, "owned_scratch_removed": true, "project_guard": {"unchanged": true, "entries": 66, "file_bytes": 652463, "scope": "source root including Git metadata; symlink targets not read"}}
+
+FAULT split_after STATUS observed
+PHASE correct_tests
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "observation_ref": "#/audits/0/checks/correct_tests"
+}
+PHASE mutant_tests
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-ts462e_p/mutant-tests\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"76b838d751ab7dcff2e9ef2d6e7d8c18d2f71cd2801ef1c84e05c05e7c64ca8d\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBINDING more_itertools <WORKSPACE>/.con-artist-ts462e_p/mutant-tests/more_itertools/__init__.py e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\nBINDING more_itertools.more <WORKSPACE>/.con-artist-ts462e_p/mutant-tests/more_itertools/more.py 76b838d751ab7dcff2e9ef2d6e7d8c18d2f71cd2801ef1c84e05c05e7c64ca8d\nBINDING tests.test_more <WORKSPACE>/.con-artist-ts462e_p/mutant-tests/tests/test_more.py 94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\nBOUND SplitAtTests mi.split_at -> more_itertools.more.split_at\nBOUND SplitBeforeTest mi.split_before -> more_itertools.more.split_before\nBOUND SplitAfterTest mi.split_after -> more_itertools.more.split_after\nPrecheck completed in check process.\ntest_basic (tests.test_more.SplitAtTests.test_basic) ... ok\ntest_combination (tests.test_more.SplitAtTests.test_combination) ... ok\ntest_keep_separator (tests.test_more.SplitAtTests.test_keep_separator) ... ok\ntest_maxsplit (tests.test_more.SplitAtTests.test_maxsplit) ... ok\ntest_empty_collection (tests.test_more.SplitBeforeTest.test_empty_collection) ... ok\ntest_ends_with_sep (tests.test_more.SplitBeforeTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitBeforeTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitBeforeTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitBeforeTest.test_starts_with_sep) ... ok\ntest_ends_with_sep (tests.test_more.SplitAfterTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitAfterTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitAfterTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitAfterTest.test_starts_with_sep) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.000s\n\nOK\n",
+  "output_truncated": false,
+  "command": [
+    "<TEMP>",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_more.SplitAtTests",
+    "tests.test_more.SplitBeforeTest",
+    "tests.test_more.SplitAfterTest"
+  ],
+  "invocation": "module",
+  "native_exit_code": 0,
+  "suite_observation": {
+    "tests": 13,
+    "skipped": 0,
+    "successful": true
+  }
+}
+PHASE correct_probe
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "observation_ref": "#/audits/0/checks/correct_probe"
+}
+PHASE mutant_probe
+{
+  "exit_code": 1,
+  "timed_out": false,
+  "output": "Copied process: {\"python\":\"<TEMP>\",\"cwd\":\"<WORKSPACE>/.con-artist-ts462e_p/mutant-probe\"}\nVerified copied import: more_itertools {\"path\":\"more_itertools/__init__.py\",\"sha256\":\"e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\"}\nVerified copied import: more_itertools.more {\"path\":\"more_itertools/more.py\",\"sha256\":\"76b838d751ab7dcff2e9ef2d6e7d8c18d2f71cd2801ef1c84e05c05e7c64ca8d\"}\nVerified copied import: tests.test_more {\"path\":\"tests/test_more.py\",\"sha256\":\"94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\"}\nBINDING more_itertools <WORKSPACE>/.con-artist-ts462e_p/mutant-probe/more_itertools/__init__.py e45ec4ff3a6819c1015bf4ffdd613459862df23fa0268748ba205c389c6b3aff\nBINDING more_itertools.more <WORKSPACE>/.con-artist-ts462e_p/mutant-probe/more_itertools/more.py 76b838d751ab7dcff2e9ef2d6e7d8c18d2f71cd2801ef1c84e05c05e7c64ca8d\nBINDING tests.test_more <WORKSPACE>/.con-artist-ts462e_p/mutant-probe/tests/test_more.py 94e6d550496b452546d5dadb520d256c51aacc98b82ff4c2461301c67bb826b9\nBOUND SplitAtTests mi.split_at -> more_itertools.more.split_at\nBOUND SplitBeforeTest mi.split_before -> more_itertools.more.split_before\nBOUND SplitAfterTest mi.split_after -> more_itertools.more.split_after\nBOUND focused regressions -> copied public package\nPrecheck completed in check process.\ntest_basic (tests.test_more.SplitAtTests.test_basic) ... ok\ntest_combination (tests.test_more.SplitAtTests.test_combination) ... ok\ntest_keep_separator (tests.test_more.SplitAtTests.test_keep_separator) ... ok\ntest_maxsplit (tests.test_more.SplitAtTests.test_maxsplit) ... ok\ntest_empty_collection (tests.test_more.SplitBeforeTest.test_empty_collection) ... ok\ntest_ends_with_sep (tests.test_more.SplitBeforeTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitBeforeTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitBeforeTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitBeforeTest.test_starts_with_sep) ... ok\ntest_ends_with_sep (tests.test_more.SplitAfterTest.test_ends_with_sep) ... ok\ntest_max_split (tests.test_more.SplitAfterTest.test_max_split) ... ok\ntest_no_sep (tests.test_more.SplitAfterTest.test_no_sep) ... ok\ntest_starts_with_sep (tests.test_more.SplitAfterTest.test_starts_with_sep) ... ok\ntest_split_after (test_consumer_contract.ZeroSplitContract.test_split_after) ... \n  test_split_after (test_consumer_contract.ZeroSplitContract.test_split_after) (function='split_after', options={}, values=[1, 0, 2], raises=False) ... FAIL\n  test_split_after (test_consumer_contract.ZeroSplitContract.test_split_after) (function='split_after', options={}, values=[1, 0, 2], raises=True) ... FAIL\ntest_split_at (test_consumer_contract.ZeroSplitContract.test_split_at) ... ok\ntest_split_before (test_consumer_contract.ZeroSplitContract.test_split_before) ... ok\n\n======================================================================\nFAIL: test_split_after (test_consumer_contract.ZeroSplitContract.test_split_after) (function='split_after', options={}, values=[1, 0, 2], raises=False)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-ts462e_p/mutant-probe/test_consumer_contract.py\", line 29, in check_contract\n    self.assertEqual(calls, [], 'maxsplit=0 must not invoke predicate')\nAssertionError: Lists differ: [1, 0, 2] != []\n\nFirst list contains 3 additional elements.\nFirst extra element 0:\n1\n\n- [1, 0, 2]\n+ [] : maxsplit=0 must not invoke predicate\n\n======================================================================\nFAIL: test_split_after (test_consumer_contract.ZeroSplitContract.test_split_after) (function='split_after', options={}, values=[1, 0, 2], raises=True)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-ts462e_p/mutant-probe/test_consumer_contract.py\", line 24, in check_contract\n    actual = list(fn(items(), pred, maxsplit=0, **kwargs))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<WORKSPACE>/.con-artist-ts462e_p/mutant-probe/more_itertools/more.py\", line 1610, in split_after\n    pred(value)\n  File \"<WORKSPACE>/.con-artist-ts462e_p/mutant-probe/test_consumer_contract.py\", line 21, in pred\n    raise RuntimeError('local predicate witness')\nRuntimeError: local predicate witness\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<WORKSPACE>/.con-artist-ts462e_p/mutant-probe/test_consumer_contract.py\", line 26, in check_contract\n    self.fail('maxsplit=0 invoked raising predicate: ' + str(error))\nAssertionError: maxsplit=0 invoked raising predicate: local predicate witness\n\n----------------------------------------------------------------------\nRan 16 tests in 0.001s\n\nFAILED (failures=2)\n",
+  "output_truncated": false,
+  "command": [
+    "<TEMP>",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_more.SplitAtTests",
+    "tests.test_more.SplitBeforeTest",
+    "tests.test_more.SplitAfterTest",
+    "test_consumer_contract.ZeroSplitContract"
+  ],
+  "invocation": "module",
+  "native_exit_code": 1,
+  "suite_observation": {
+    "tests": 16,
+    "skipped": 0,
+    "successful": false
+  }
+}
+INTEGRITY {"selected_files": 6, "selected_original_bytes_and_modes_unchanged": true, "owned_scratch_removed": true, "project_guard": {"unchanged": true, "entries": 66, "file_bytes": 652463, "scope": "source root including Git metadata; symlink targets not read"}}

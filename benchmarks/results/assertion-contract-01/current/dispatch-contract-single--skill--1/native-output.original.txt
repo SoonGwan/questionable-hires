@@ -1,0 +1,84 @@
+
+PHASE: correct original
+CWD: <WORKSPACE>/.dispatch-audit-xwynke6v/correct 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v audit_binding
+PROVENANCE: <WORKSPACE>/.dispatch-audit-xwynke6v/correct/dispatch.py sha256=49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39 bindings verified in native process
+test_order (test_dispatch.DispatchTests.test_order) ... ok
+test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+EXIT: 0
+
+PHASE: swallowed-error original
+CWD: <WORKSPACE>/.dispatch-audit-xwynke6v/swallowed-error 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v audit_binding
+PROVENANCE: <WORKSPACE>/.dispatch-audit-xwynke6v/swallowed-error/dispatch.py sha256=5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752 bindings verified in native process
+test_order (test_dispatch.DispatchTests.test_order) ... ok
+test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+EXIT: 0
+
+PHASE: correct expanded
+CWD: <WORKSPACE>/.dispatch-audit-xwynke6v/correct 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v audit_binding
+PROVENANCE: <WORKSPACE>/.dispatch-audit-xwynke6v/correct/dispatch.py sha256=49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39 bindings verified in native process
+test_order (test_dispatch.DispatchTests.test_order) ... ok
+test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok
+test_error_stops_dispatch_and_preserves_caller (test_regression.ErrorContractTests.test_error_stops_dispatch_and_preserves_caller) ... ok
+test_error_type_and_exact_message (test_regression.ErrorContractTests.test_error_type_and_exact_message) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK
+EXIT: 0
+
+PHASE: swallowed-error expanded
+CWD: <WORKSPACE>/.dispatch-audit-xwynke6v/swallowed-error 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v audit_binding
+PROVENANCE: <WORKSPACE>/.dispatch-audit-xwynke6v/swallowed-error/dispatch.py sha256=5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752 bindings verified in native process
+test_order (test_dispatch.DispatchTests.test_order) ... ok
+test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok
+test_error_stops_dispatch_and_preserves_caller (test_regression.ErrorContractTests.test_error_stops_dispatch_and_preserves_caller) ... FAIL
+test_error_type_and_exact_message (test_regression.ErrorContractTests.test_error_type_and_exact_message) ... FAIL
+
+======================================================================
+FAIL: test_error_stops_dispatch_and_preserves_caller (test_regression.ErrorContractTests.test_error_stops_dispatch_and_preserves_caller)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-xwynke6v/swallowed-error/test_regression.py", line 31, in test_error_stops_dispatch_and_preserves_caller
+    self.assertEqual(events, [("first", [1]), ("fail", [1])])
+AssertionError: Lists differ: [('first', [1]), ('fail', [1]), ('later', [1])] != [('first', [1]), ('fail', [1])]
+
+First list contains 1 additional elements.
+First extra element 2:
+('later', [1])
+
+- [('first', [1]), ('fail', [1]), ('later', [1])]
+?                           ----------------
+
++ [('first', [1]), ('fail', [1])]
+
+======================================================================
+FAIL: test_error_type_and_exact_message (test_regression.ErrorContractTests.test_error_type_and_exact_message)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-xwynke6v/swallowed-error/test_regression.py", line 8, in test_error_type_and_exact_message
+    with self.assertRaises(ValueError) as caught:
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+FAILED (failures=2)
+EXIT: 1
+
+PRESERVATION: PASS
+OWNED SCRATCH REMOVED: True

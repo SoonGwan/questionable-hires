@@ -6,6 +6,9 @@ supported audits. Inspect source for a concrete trust, adaptation or troubleshoo
 question. Adapt the files, binding and behavioral fault to the actual project:
 
 Output is lossless compact JSON; `--pretty` adds indentation for manual reading.
+Recipe objects must have unique keys, including nested mutations/probes and
+escaped spellings of the same key. File and stdin input reject duplicates before
+native execution; the diagnostic names the key without printing its values.
 
 Use complete module/package copies when extraction would lose future flags,
 closures or decorators. A shorter extracted function is not an equivalent runtime.
@@ -105,6 +108,15 @@ an earlier observation, not another execution.
 
 Correct-code failure/timeout stops as incomplete. CLI 0 means observations collected,
 not protection proved; CLI 2 means invalid/incomplete (possibly stderr only).
+If copy, runner, cleanup or final integrity checks fail after results were collected,
+CLI 2 also emits incomplete JSON retaining returned checks and `execution_error`
+and/or `integrity_error`. A missing check may have started without returning evidence.
+Unreached guards and unavailable scratch-removal lookups are `null`, not passes;
+only a confirmed missing entry establishes removal. The Python API still raises the original exception,
+with partial evidence in `error.audit_result`. Batch failures retain prior audits
+and baseline references, report `unrun_mutations`, and stop later mutations.
+Existing later-batch input/I/O errors still return incomplete results. Inspect
+the failure and process state before retrying; nothing is restored automatically.
 Each check retains a 12,000-character output tail, replacing invalid UTF-8;
 provenance can also be truncated. Timeout defaults to 30 seconds/check, max 300.
 

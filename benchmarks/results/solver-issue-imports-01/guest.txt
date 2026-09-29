@@ -1,0 +1,118 @@
+[    0.054508] hv_vmbus: registering driver hyperv_keyboard
+[    0.055342] rtc-pl031 20050000.pl031: registered as rtc0
+[    0.055387] rtc-pl031 20050000.pl031: setting system clock to 2026-09-27T09:14:56 UTC (1790500496)
+[    0.055571] NET: Registered PF_INET6 protocol family
+[    0.055829] Segment Routing with IPv6
+[    0.055854] In-situ OAM (IOAM) with IPv6
+[    0.059353] registered taskstats version 1
+[    0.059447] Loading compiled-in X.509 certificates
+[    0.833072] Freeing initrd memory: 98720K
+[    0.838497] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    0.839655] Demotion targets for Node 0: null
+[    0.839804] Key type .fscrypt registered
+[    0.839844] Key type fscrypt-provisioning registered
+[    0.842144] clk: Disabling unused clocks
+[    0.842183] PM: genpd: Disabling unused power domains
+[    0.842410] Freeing unused kernel memory: 1920K
+[    0.842505] Run /bin/sh as init process
+/bin/sh: can't access tty; job control turned off
+~ # [6n/bin/busybox sh /check.sh
+psf__requests-3362.tar: OK
+psf__requests-863.tar: OK
+psf__requests-1963.tar: OK
+psf__requests-2674.tar: OK
+pytest-dev__pytest-5221.tar: OK
+pytest-dev__pytest-5103.tar: OK
+pytest-dev__pytest-6116.tar: OK
+pytest-dev__pytest-11143.tar: OK
+QH_SOURCE_READY_psf__requests-3362
+QH_SOURCE_READY_psf__requests-863
+QH_SOURCE_READY_psf__requests-1963
+QH_SOURCE_READY_psf__requests-2674
+QH_SOURCE_READY_pytest-dev__pytest-5221
+QH_SOURCE_READY_pytest-dev__pytest-5103
+QH_SOURCE_READY_pytest-dev__pytest-6116
+QH_SOURCE_READY_pytest-dev__pytest-11143
+QH_NO_HOST_GRADER_PATH
+QH_SOLVER_RAM_PROOF
+~ # /bin/busybox df -k /
+Filesystem           1K-blocks      Used Available Use% Mounted on
+df: /: can't find mount point
+~ # /bin/busybox sh /python-check.sh
+[    3.404488] fuse: init (API version 7.41)
+/runtime.tar: OK
+[    6.356281] random: crng init done
+{"python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]", "pytest": "7.4.4", "ssl": "OpenSSL 3.0.15 3 Sep 2024", "sqlite": "3.45.3", "prefix": "/runtime/env"}
+QH_SOLVER_PYTHON_RAM_PROOF
+QH_PYTHON_NO_HOST_GRADER
+~ # /bin/busybox sh /issue-check.sh
+{"issue": "psf__requests-3362", "module": "requests", "path": "/solver/psf__requests-3362/requests/__init__.py", "version": "2.10.0"}
+QH_IMPORT_PASS_psf__requests-3362
+/solver/psf__requests-863/requests/models.py:793: SyntaxWarning: "is" with a literal. Did you mean "=="?
+  if self.status_code is 0:
+{"issue": "psf__requests-863", "module": "requests", "path": "/solver/psf__requests-863/requests/__init__.py", "version": "0.14.0"}
+QH_IMPORT_PASS_psf__requests-863
+{"issue": "psf__requests-1963", "module": "requests", "path": "/solver/psf__requests-1963/requests/__init__.py", "version": "2.3.0"}
+QH_IMPORT_PASS_psf__requests-1963
+{"issue": "psf__requests-2674", "module": "requests", "path": "/solver/psf__requests-2674/requests/__init__.py", "version": "2.7.0"}
+QH_IMPORT_PASS_psf__requests-2674
+Traceback (most recent call last):
+  File "/issue-import.py", line 5, in <module>
+    module=importlib.import_module(sys.argv[2])
+  File "/runtime/env/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/solver/pytest-dev__pytest-5221/src/pytest.py", line 7, in <module>
+    from _pytest.assertion import register_assert_rewrite
+  File "/solver/pytest-dev__pytest-5221/src/_pytest/assertion/__init__.py", line 10, in <module>
+    import six
+ModuleNotFoundError: No module named 'six'
+QH_IMPORT_FAIL_pytest-dev__pytest-5221
+Traceback (most recent call last):
+  File "/issue-import.py", line 5, in <module>
+    module=importlib.import_module(sys.argv[2])
+  File "/runtime/env/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/solver/pytest-dev__pytest-5103/src/pytest.py", line 7, in <module>
+    from _pytest.assertion import register_assert_rewrite
+  File "/solver/pytest-dev__pytest-5103/src/_pytest/assertion/__init__.py", line 10, in <module>
+    import six
+ModuleNotFoundError: No module named 'six'
+QH_IMPORT_FAIL_pytest-dev__pytest-5103
+Traceback (most recent call last):
+  File "/issue-import.py", line 5, in <module>
+    module=importlib.import_module(sys.argv[2])
+  File "/runtime/env/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/solver/pytest-dev__pytest-6116/src/pytest.py", line 6, in <module>
+    from _pytest.assertion import register_assert_rewrite
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/assertion/__init__.py", line 7, in <module>
+    from _pytest.assertion import rewrite
+  File "/solver/pytest-dev__pytest-6116/src/_pytest/assertion/rewrite.py", line 23, in <module>
+    import atomicwrites
+ModuleNotFoundError: No module named 'atomicwrites'
+QH_IMPORT_FAIL_pytest-dev__pytest-6116
+{"issue": "pytest-dev__pytest-11143", "module": "pytest", "path": "/solver/pytest-dev__pytest-11143/src/pytest/__init__.py", "version": "8.0.0.dev53+g6995257c"}
+QH_IMPORT_PASS_pytest-dev__pytest-11143
+QH_ISSUE_IMPORTS_COMPLETE
+~ # /bin/busybox poweroff -f
+[    9.015306] reboot: Power down
+QH_VM_STARTED
+QH_VM_GUEST_STOPPED

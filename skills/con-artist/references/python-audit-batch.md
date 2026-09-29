@@ -32,8 +32,11 @@ This does not cache failed checks, skip mutants or change requested audit order.
 An identical stronger probe also reuses its successful correct-code observation
 under those same conditions; changing the probe, new files or replacement contents
 runs a new correct-code check.
-Returning to an earlier identical probe also reuses its original observation,
-provided the shared identity (including normal test arguments) has not changed.
+Returning to an earlier identical probe also reuses its original observation.
+Native file probes execute `probe_tests` instead of the original test arguments,
+so changing only the original selection does not invalidate that probe result.
+Its actual `probe_tests`, new/replacement bytes and all other shared inputs must
+still match. Inline probes retain the original test arguments in their context.
 Probe retention is limited to eight successful entries and20 MB of probe text/file
 contents in total; oldest entries are evicted when needed. Eviction means a fresh
 correct-code check, not missing evidence. These limits do not bound total process
@@ -55,10 +58,16 @@ Incomplete evidence stops the
 batch; unrun entries are not passes. This saves repeated baseline execution,
 not the reasoning needed to select faults or interpret failures.
 
-If a later audit raises an input/file error after earlier audits returned, CLI
-exit 2 includes those earlier observations and a final `incomplete` entry with
-`error` and empty `checks`. That entry has no usable checks; it does not prove
-that nothing executed before the error. Remaining mutations are unrun. Inspect
-the error and process state before retrying; do not discard completed evidence.
-Errors before any returned audit, original-integrity/cleanup `RuntimeError`s and
-interruptions still propagate without a collected batch report.
+On an ordinary input, execution or integrity failure, CLI exit 2 retains earlier
+audits and any checks already returned by the failing audit, including baseline
+references. Its incomplete entry may contain `execution_error` and/or
+`integrity_error`. If that audit returned no checks, a later-audit failure instead
+has `error` and empty `checks`; this does not prove nothing executed. With no
+returned evidence anywhere, the CLI may emit only stderr.
+
+The Python API keeps its existing distinction: later input/I/O failures return
+an incomplete batch; `RuntimeError` and first-audit errors raise, attaching any
+available partial batch as `error.audit_result`. Interruptions are not converted
+to ordinary incomplete results. Remaining mutations are unrun. Inspect the error
+and process state before retrying; do not discard returned evidence or infer
+missing checks. See the [common result contract](python-audit.md) for guard fields.

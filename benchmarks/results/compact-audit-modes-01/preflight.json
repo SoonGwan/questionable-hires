@@ -1,0 +1,122 @@
+[
+  {
+    "variant": "correct",
+    "selected": [
+      {
+        "exit_code": 0,
+        "output": "test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      {
+        "exit_code": 0,
+        "output": "test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "full_suite": {
+      "exit_code": 0,
+      "output": "test_defaults (tests.test_lru.LRUCacheTest.test_defaults) ... ok\ntest_delete (tests.test_lru.LRUCacheTest.test_delete) ... ok\ntest_getsizeof_param (tests.test_lru.LRUCacheTest.test_getsizeof_param) ... ok\ntest_getsizeof_subclass (tests.test_lru.LRUCacheTest.test_getsizeof_subclass) ... ok\ntest_insert (tests.test_lru.LRUCacheTest.test_insert) ... ok\ntest_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok\ntest_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok\ntest_missing (tests.test_lru.LRUCacheTest.test_missing) ... ok\ntest_missing_getsizeof (tests.test_lru.LRUCacheTest.test_missing_getsizeof) ... ok\ntest_pickle (tests.test_lru.LRUCacheTest.test_pickle) ... ok\ntest_pickle_maxsize (tests.test_lru.LRUCacheTest.test_pickle_maxsize) ... ok\ntest_pop (tests.test_lru.LRUCacheTest.test_pop) ... ok\ntest_popitem (tests.test_lru.LRUCacheTest.test_popitem) ... ok\ntest_popitem_exception_context (tests.test_lru.LRUCacheTest.test_popitem_exception_context) ... ok\ntest_update (tests.test_lru.LRUCacheTest.test_update) ... ok\n\n----------------------------------------------------------------------\nRan 15 tests in 0.006s\n\nOK\n"
+    },
+    "behavioral_witness": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "implementation_sha256": "72eb5453a7c1d5b20c8a1d2ba3f4d508f2894cfc0cfaa3f87d2fcfc8d7d0956b"
+  },
+  {
+    "variant": "equivalent",
+    "selected": [
+      {
+        "exit_code": 0,
+        "output": "test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      {
+        "exit_code": 0,
+        "output": "test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "full_suite": {
+      "exit_code": 0,
+      "output": "test_defaults (tests.test_lru.LRUCacheTest.test_defaults) ... ok\ntest_delete (tests.test_lru.LRUCacheTest.test_delete) ... ok\ntest_getsizeof_param (tests.test_lru.LRUCacheTest.test_getsizeof_param) ... ok\ntest_getsizeof_subclass (tests.test_lru.LRUCacheTest.test_getsizeof_subclass) ... ok\ntest_insert (tests.test_lru.LRUCacheTest.test_insert) ... ok\ntest_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok\ntest_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok\ntest_missing (tests.test_lru.LRUCacheTest.test_missing) ... ok\ntest_missing_getsizeof (tests.test_lru.LRUCacheTest.test_missing_getsizeof) ... ok\ntest_pickle (tests.test_lru.LRUCacheTest.test_pickle) ... ok\ntest_pickle_maxsize (tests.test_lru.LRUCacheTest.test_pickle_maxsize) ... ok\ntest_pop (tests.test_lru.LRUCacheTest.test_pop) ... ok\ntest_popitem (tests.test_lru.LRUCacheTest.test_popitem) ... ok\ntest_popitem_exception_context (tests.test_lru.LRUCacheTest.test_popitem_exception_context) ... ok\ntest_update (tests.test_lru.LRUCacheTest.test_update) ... ok\n\n----------------------------------------------------------------------\nRan 15 tests in 0.005s\n\nOK\n"
+    },
+    "behavioral_witness": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "implementation_sha256": "a4688c25780bdfc3f7b3fedefa217e2163027f561e8e474de45083c14a71e17f"
+  },
+  {
+    "variant": "read-recency",
+    "selected": [
+      {
+        "exit_code": 1,
+        "output": "test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ERROR\n\n======================================================================\nERROR: test_lru (tests.test_lru.LRUCacheTest.test_lru)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/cachetools/__init__.py\", line 68, in __getitem__\n    return self.__data[key]\n           ~~~~~~~~~~~^^^^^\nKeyError: 2\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<COPY>/tests/test_lru.py\", line 26, in test_lru\n    self.assertEqual(cache[2], 2)\n                     ~~~~~^^^\n  File \"<COPY>/cachetools/__init__.py\", line 211, in __getitem__\n    value = cache_getitem(self, key)\n            ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<COPY>/cachetools/__init__.py\", line 70, in __getitem__\n    return self.__missing__(key)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"<COPY>/cachetools/__init__.py\", line 97, in __missing__\n    raise KeyError(key)\nKeyError: 2\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)\n"
+      },
+      {
+        "exit_code": 0,
+        "output": "test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "full_suite": null,
+    "behavioral_witness": {
+      "exit_code": 1,
+      "output": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\nAssertionError\n"
+    },
+    "implementation_sha256": "d8561fe87e547b048a1482049a85cf1d933528bead73d9a317b963753e79eb1d"
+  },
+  {
+    "variant": "overwrite-recency",
+    "selected": [
+      {
+        "exit_code": 0,
+        "output": "test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      {
+        "exit_code": 0,
+        "output": "test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "full_suite": null,
+    "behavioral_witness": {
+      "exit_code": 1,
+      "output": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\nAssertionError\n"
+    },
+    "implementation_sha256": "f3086c53c789275d12e1fa2c690aa7574d3dd1368239ec1ae819b547298611c6"
+  },
+  {
+    "variant": "newest-eviction",
+    "selected": [
+      {
+        "exit_code": 1,
+        "output": "test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ERROR\n\n======================================================================\nERROR: test_lru (tests.test_lru.LRUCacheTest.test_lru)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/cachetools/__init__.py\", line 68, in __getitem__\n    return self.__data[key]\n           ~~~~~~~~~~~^^^^^\nKeyError: 2\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<COPY>/tests/test_lru.py\", line 19, in test_lru\n    self.assertEqual(cache[2], 2)\n                     ~~~~~^^^\n  File \"<COPY>/cachetools/__init__.py\", line 211, in __getitem__\n    value = cache_getitem(self, key)\n            ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<COPY>/cachetools/__init__.py\", line 70, in __getitem__\n    return self.__missing__(key)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"<COPY>/cachetools/__init__.py\", line 97, in __missing__\n    raise KeyError(key)\nKeyError: 2\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)\n"
+      },
+      {
+        "exit_code": 0,
+        "output": "test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "full_suite": null,
+    "behavioral_witness": {
+      "exit_code": 1,
+      "output": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\nAssertionError\n"
+    },
+    "implementation_sha256": "bdb16e6d8a05227768b20a7d980899ea8ce5b4eb13a64794e62fafeff4a0cbaa"
+  },
+  {
+    "variant": "ignored-size",
+    "selected": [
+      {
+        "exit_code": 0,
+        "output": "test_lru (tests.test_lru.LRUCacheTest.test_lru) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      },
+      {
+        "exit_code": 1,
+        "output": "test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof) ... FAIL\n\n======================================================================\nFAIL: test_lru_getsizeof (tests.test_lru.LRUCacheTest.test_lru_getsizeof)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<COPY>/tests/test_lru.py\", line 48, in test_lru_getsizeof\n    self.assertEqual(len(cache), 1)\nAssertionError: 3 != 1\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n"
+      }
+    ],
+    "full_suite": null,
+    "behavioral_witness": {
+      "exit_code": 1,
+      "output": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\nAssertionError\n"
+    },
+    "implementation_sha256": "e8eab722a40648d76dd6f23f8334e33b08e3a73b5f4c5b699d92401aaa3ef4e0"
+  }
+]

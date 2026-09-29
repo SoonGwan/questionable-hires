@@ -39,6 +39,9 @@ it does not make mutating commands read-only or change persistent Git settings.
 
 Adapt **one** example's paths/tests/revisions; HEAD/HEAD^ are placeholders.
 Neither writes a recipe, commits, stashes nor reverses user patches.
+Recipe keys must be unique, including nested objects. Invalid input reports
+duplicate, missing or unknown keys before running a comparison; correct those keys
+instead of dropping a requested check.
 
 Committed fix:
 
@@ -103,10 +106,30 @@ JSON
 - Optional `"invocation":"module"`: for required `python -B -m unittest ...`,
   with `runner: "unittest"` and existing `tests`; no internal adapter needed.
   Default is `bootstrap`. Copy-local startup checks imports in the native test
-  process; inspect `command`, `native_exit_code` and `provenance_ready`.
+  process; inspect `command`, `native_exit_code`, `provenance_ready` and
+  `suite_observation`. Both unittest modes record completion; missing results or
+  exit disagreement map to incomplete check7 and stop later comparisons. Empty
+  and all-skipped native results retain their exit; they are not regression proof.
   Conventional existing system/user hooks are preserved. Project-local or unusual
   startup customization needs native project setup, not a bypass; read
   [startup compatibility](comparison-details.md#native-module-startup) when applicable.
+- Optional `"observe_assertions":true`: only when actual argument values are
+  required, for unittest in either invocation mode. Adds `assertion_observation`
+  for current-thread standard `assertEqual`/`assertIsNot` calls, without replacing
+  assertions. `actual`/`expected` mean first/second arguments, not inferred roles.
+  Format `v:3`: primitive builtins and exact standard pathlib types. Paths use
+  `{"PosixPath":"..."}` (or `WindowsPath`, `PurePosixPath`, `PureWindowsPath`);
+  lexical text is limited to 256 characters, with no resolving or subclass
+  conversion. Lists are JSON arrays, tuples use
+  `{"tuple":[...]}`, bytes use `{"bytes_hex":"..."}`. Older stored reports without
+  `v` use kind/items containers; v2 lacks Path encoding. Do not relabel either as v3. Limits:
+  4,096 report bytes, 64 records, 32 value nodes per argument pair, container depth
+  three and length sixteen. No arbitrary object representation or thread coverage.
+  Existing/replaced profile hooks, unsupported values, empty observation, limit
+  overflow or missing/error reports mean incomplete check7/CLI2 and stop later
+  versions; inspect `reason` and retained `native_exit_code`. `complete` covers
+  only this observation scope, not all tests/assertions. Default off adds no field
+  and does not load the observer. General model-token/time savings remain unproven.
 - Optional `"import_roots":["src"]` supports regular source-layout packages.
   Select initializers/support too; each root must contain selected files.
   Ordered canonical roots precede each copy's root and appear in the result.
@@ -119,6 +142,11 @@ JSON
 
 Use default compact JSON for agent execution; it retains every field and native
 output. Reserve `--pretty` for a human-readable JSON request, not extra evidence.
+
+After a returned check, ordinary copy/runner/cleanup errors retain partial JSON
+with `status:"incomplete"` and `execution_error`; final preservation failures use
+`preservation_error`. CLI still exits 2. Missing results remain unknown, and copy
+removal can be null when unverified; see [failure details](comparison-details.md#preservation-guards).
 
 CLI 0 means observations collected, **not proof**. Inspect each actual assertion,
 requested test identity, before failure/after pass, copied-import evidence,

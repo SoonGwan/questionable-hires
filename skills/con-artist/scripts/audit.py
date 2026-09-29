@@ -80,9 +80,13 @@ def verify_setup():
             if not location or not pathlib.Path(location).resolve().is_relative_to(root):
                 raise RuntimeError('Import escaped copy: ' + name + ': ' + str(location))
             location = pathlib.Path(location).resolve()
+            digest = hashlib.sha256()
+            with location.open('rb') as stream:
+                for chunk in iter(lambda: stream.read(65536), b''):
+                    digest.update(chunk)
             print('Verified copied import:', name, json.dumps({
                 'path': str(location.relative_to(root)),
-                'sha256': hashlib.sha256(location.read_bytes()).hexdigest()
+                'sha256': digest.hexdigest()
             }, separators=(',', ':')), flush=True)
     except BaseException:
         print('Import setup failed; not mutation evidence.', flush=True)
@@ -314,6 +318,16 @@ def execute(python, directory, spec, probe, timeout):
     return result
 
 
+def _scratch_removed(scratch):
+    # Presence checks can hide lookup errors as absence. Only a missing entry
+    # confirms removal; lstat also treats a dangling owned symlink as present.
+    try:
+        Path(scratch).lstat()
+    except FileNotFoundError:
+        return True
+    return False
+
+
 def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _probe_baseline=None,
           _selection_baselines=None):
     root = Path(root).resolve()
@@ -450,9 +464,12 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
     selected_probe = None
     if _probe_baseline is not None:
         # Keep one source context, not one source snapshot per stronger probe.
-        # Normal test arguments remain part of this conservative reuse boundary.
-        if _probe_baseline.get('context') != identity:
-            _probe_baseline.update(context=identity, entries=[], payload_bytes=0)
+        # File probes replace the original tests with probe_tests before execute;
+        # their actual arguments are already in probe_identity. Inline probes
+        # retain the original payload, so keep that selector in their context.
+        probe_context = identity[:3] + (None,) + identity[4:] if file_probe else identity
+        if _probe_baseline.get('context') != probe_context:
+            _probe_baseline.update(context=probe_context, entries=[], payload_bytes=0)
         selected_probe = next((entry for entry in _probe_baseline['entries']
                                if entry['identity'] == probe_identity), None)
     probe_reused = False
@@ -462,6 +479,7 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
         order = [('correct', 'tests'), ('mutant', 'tests'), ('correct', 'probe'), ('mutant', 'probe')]
     skipped = None
     output = None
+    scratch = None
     try:
         with tempfile.TemporaryDirectory(prefix='.con-artist-', dir=root) as scratch:
             for variant, check in order:
@@ -541,32 +559,72 @@ def audit(root, spec, python=sys.executable, timeout=30, *, _baseline=None, _pro
         if probe_reused:
             output['correct_probe_reused'] = True
         return output
+    except (ValueError, KeyError, OSError, RuntimeError) as error:
+        if results:
+            output = dict(status='incomplete', checks=results,
+                          execution_error=dict(type=type(error).__name__, message=str(error)),
+                          limitation='Only returned checks are retained; a missing check may have started without returning evidence. Do not retry until the error and process state are understood.')
+            if reused:
+                output['correct_tests_reused'] = True
+            if probe_reused:
+                output['correct_probe_reused'] = True
+            error.audit_result = output
+        raise
     finally:
-        changed = [name for name, content in files.items()
-                   if not original_matches(root / name, content, modes[name])]
-        if changed:
-            raise RuntimeError('Selected originals changed during audit; not restored: ' + ', '.join(changed))
+        integrity = dict(selected_files=len(files),
+                         selected_original_bytes_and_modes_unchanged=None,
+                         owned_scratch_removed=None)
         if guarded is not None:
-            current, _ = project_inventory(root)
-            previous, _ = guarded
-            differences = sorted(name for name in previous.keys() | current.keys()
-                                 if previous.get(name) != current.get(name))
-            if differences:
-                raise RuntimeError('Project tree changed during audit; not restored (' + str(len(differences))
-                                   + ' paths): ' + ', '.join(differences[:20]))
-        if output is not None:
-            # Both normal and early returns leave the context manager before
-            # reaching this finally block. Never report removal from intent alone.
-            if Path(scratch).exists() or Path(scratch).is_symlink():
-                raise RuntimeError('Owned audit scratch removal unconfirmed: ' + scratch)
-            output['integrity'] = dict(
-                selected_files=len(files),
-                selected_original_bytes_and_modes_unchanged=True,
-                owned_scratch_removed=True)
+            integrity['project_guard'] = dict(unchanged=None)
+        stage = 'selected_originals'
+        try:
+            changed = [name for name, content in files.items()
+                       if not original_matches(root / name, content, modes[name])]
+            integrity['selected_original_bytes_and_modes_unchanged'] = not changed
+            if changed:
+                raise RuntimeError('Selected originals changed during audit; not restored: ' + ', '.join(changed))
+            stage = 'project_guard'
             if guarded is not None:
-                output['integrity']['project_guard'] = dict(
+                current, _ = project_inventory(root)
+                previous, _ = guarded
+                differences = sorted(name for name in previous.keys() | current.keys()
+                                     if previous.get(name) != current.get(name))
+                integrity['project_guard']['unchanged'] = not differences
+                if differences:
+                    raise RuntimeError('Project tree changed during audit; not restored (' + str(len(differences))
+                                       + ' paths): ' + ', '.join(differences[:20]))
+                integrity['project_guard'] = dict(
                     unchanged=True, entries=len(guarded[0]), file_bytes=guarded[1],
                     scope='source root including Git metadata; symlink targets not read')
+            stage = 'scratch_removal'
+            if output is not None:
+                # Verify actual removal after leaving the context manager.
+                try:
+                    integrity['owned_scratch_removed'] = _scratch_removed(scratch)
+                except OSError:
+                    if 'execution_error' not in output:
+                        raise
+                if integrity['owned_scratch_removed'] is False and 'execution_error' not in output:
+                    raise RuntimeError('Owned audit scratch removal unconfirmed: ' + scratch)
+                output['integrity'] = integrity
+        except (ValueError, OSError, RuntimeError) as error:
+            if results:
+                # Keep the original exception type and stop. Unreached guards
+                # remain unknown; no repair, rerun or successful audit is implied.
+                partial = output if output is not None else dict(checks=results)
+                partial.update(status='incomplete', integrity=integrity,
+                               integrity_error=dict(stage=stage, type=type(error).__name__, message=str(error)))
+                if reused:
+                    partial['correct_tests_reused'] = True
+                if probe_reused:
+                    partial['correct_probe_reused'] = True
+                if scratch is not None and integrity['owned_scratch_removed'] is None:
+                    try:
+                        integrity['owned_scratch_removed'] = _scratch_removed(scratch)
+                    except OSError:
+                        pass
+                error.audit_result = partial
+            raise
 
 
 def audit_batch(root, spec, python=sys.executable, timeout=30):
@@ -585,6 +643,7 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
             raise ValueError('Each mutation requires target/old/new and optional tests/probe settings')
     common = {key: value for key, value in spec.items() if key != 'mutations'}
     selection_baselines, probe_baseline, observations = {}, {}, []
+    pending_error = None
     for fault in mutations:
         try:
             selection_baselines['index'] = len(observations)
@@ -592,13 +651,15 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
             recipe = dict(common, **fault)
             result = audit(root, recipe, python, timeout,
                            _selection_baselines=selection_baselines, _probe_baseline=probe_baseline)
-        except (ValueError, KeyError, OSError) as error:
-            if not observations:
+        except (ValueError, KeyError, OSError, RuntimeError) as error:
+            partial = getattr(error, 'audit_result', None)
+            if not observations and partial is None:
                 raise
-            # Retain earlier evidence, but never count the failed or later faults.
-            # RuntimeError (integrity/unconfirmed cleanup) and interruptions still
-            # propagate as before, rather than being treated as ordinary input errors.
-            result = dict(status='incomplete', checks={},
+            # RuntimeError and first-audit errors still propagate. Later ordinary
+            # input/I/O errors retain their existing incomplete-return contract.
+            if isinstance(error, RuntimeError) or not observations:
+                pending_error = error
+            result = partial if partial is not None else dict(status='incomplete', checks={},
                           error=type(error).__name__ + ': ' + str(error),
                           limitation='This audit did not return its checks; empty checks do not prove that no execution occurred. Earlier audit observations are retained. Do not retry until the error and any process state are understood.')
         for name in ('correct_tests', 'correct_probe'):
@@ -615,8 +676,24 @@ def audit_batch(root, spec, python=sys.executable, timeout=30):
         observations.append(result)
         if result['status'] != 'observed':
             break
-    return dict(status=observations[-1]['status'], audits=observations,
-                limitation='Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled.')
+    batch = dict(status=observations[-1]['status'], audits=observations,
+                 limitation='Shared successful baseline is one observation, not repeated evidence; external state and flakiness are not controlled.')
+    if batch['status'] != 'observed':
+        batch['unrun_mutations'] = len(mutations) - len(observations)
+    if pending_error is not None:
+        pending_error.audit_result = batch
+        raise pending_error
+    return batch
+
+
+def _unique_recipe_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            name = json.dumps(key)
+            raise ValueError('Duplicate recipe key: ' + (name[:240] + '...' if len(name) > 240 else name))
+        result[key] = value
+    return result
 
 
 def main():
@@ -629,11 +706,14 @@ def main():
     args = parser.parse_args()
     try:
         recipe = sys.stdin.read() if args.spec == Path('-') else args.spec.read_text()
-        spec = json.loads(recipe)
+        spec = json.loads(recipe, object_pairs_hook=_unique_recipe_object)
         run = audit_batch if isinstance(spec, dict) and 'mutations' in spec else audit
         result = run(args.source, spec, args.python, args.timeout)
     except (ValueError, KeyError, OSError, RuntimeError) as error:
-        parser.exit(2, 'Audit not established: ' + str(error) + '\n')
+        result = getattr(error, 'audit_result', None)
+        if result is None:
+            parser.exit(2, 'Audit not established: ' + str(error) + '\n')
+        print('Audit not established: ' + str(error), file=sys.stderr)
     print(json.dumps(result, indent=2) if args.pretty else json.dumps(result, separators=(',', ':')))
     return 0 if result['status'] == 'observed' else 2
 

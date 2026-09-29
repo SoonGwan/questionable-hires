@@ -1,0 +1,22 @@
+{
+  "source": "Original rollout; private instructions omitted",
+  "custom_tool_calls": [
+    {
+      "name": "exec",
+      "input": "const matches = ALL_TOOLS.filter(t => /qh_guest|guest_command|disposable Linux guest/i.test(t.name + \" \" + t.description)); text({catalog_count: ALL_TOOLS.length, matches: matches.map(t => ({name:t.name, owned_guest_description_match:t.description.includes(\"Execute an authorized shell command inside the disposable Linux guest only.\")}))});\n"
+    }
+  ],
+  "custom_tool_outputs": [
+    "Script completed\nWall time 0.0 seconds\nOutput:\n",
+    "{\"catalog_count\":14,\"matches\":[{\"name\":\"mcp__qh_guest__guest_command\",\"owned_guest_description_match\":true}]}"
+  ],
+  "usage": {
+    "input_tokens": 22574,
+    "cached_input_tokens": 11008,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 130,
+    "reasoning_output_tokens": 0
+  },
+  "total_input_output_tokens": 22704,
+  "guest_command_calls": 0
+}

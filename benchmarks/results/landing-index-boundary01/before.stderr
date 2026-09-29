@@ -1,0 +1,87 @@
+test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) ... 
+  test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/', method='GET') ... FAIL
+  test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/', method='HEAD') ... FAIL
+  test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/linked-index/', method='GET') ... FAIL
+  test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/linked-index/', method='HEAD') ... FAIL
+  test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/linked-index', method='GET') ... FAIL
+  test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/linked-index', method='HEAD') ... FAIL
+test_files_have_headers_and_no_listing_or_repository_escape (test_landing_server.LandingOriginTests.test_files_have_headers_and_no_listing_or_repository_escape) ... ok
+test_health_cannot_identify_a_manifest_outside_the_release (test_landing_server.LandingOriginTests.test_health_cannot_identify_a_manifest_outside_the_release) ... 
+  test_health_cannot_identify_a_manifest_outside_the_release (test_landing_server.LandingOriginTests.test_health_cannot_identify_a_manifest_outside_the_release) (method='GET') ... FAIL
+  test_health_cannot_identify_a_manifest_outside_the_release (test_landing_server.LandingOriginTests.test_health_cannot_identify_a_manifest_outside_the_release) (method='HEAD') ... FAIL
+test_health_identifies_the_served_release_and_head_has_no_body (test_landing_server.LandingOriginTests.test_health_identifies_the_served_release_and_head_has_no_body) ... ok
+test_missing_or_escaped_fingerprint_never_caches_an_error (test_landing_server.LandingOriginTests.test_missing_or_escaped_fingerprint_never_caches_an_error) ... ok
+test_near_length_fingerprints_are_revalidated_for_both_formats (test_landing_server.LandingOriginTests.test_near_length_fingerprints_are_revalidated_for_both_formats) ... ok
+test_only_existing_fingerprinted_artwork_is_immutable (test_landing_server.LandingOriginTests.test_only_existing_fingerprinted_artwork_is_immutable) ... ok
+test_release_switch_serves_new_files_without_exposing_parent (test_landing_server.LandingOriginTests.test_release_switch_serves_new_files_without_exposing_parent) ... ok
+test_unknown_app_identity_is_not_a_healthy_landing (test_landing_server.LandingOriginTests.test_unknown_app_identity_is_not_a_healthy_landing) ... ok
+test_webp_has_native_media_type_and_immutable_conditional_response (test_landing_server.LandingOriginTests.test_webp_has_native_media_type_and_immutable_conditional_response) ... ok
+
+======================================================================
+FAIL: test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/', method='GET')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_landing_server.py", line 89, in test_directory_indexes_cannot_serve_outside_the_release
+    self.assertNotIn(b'must not be served', body)
+AssertionError: b'must not be served' unexpectedly found in b'must not be served'
+
+======================================================================
+FAIL: test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/', method='HEAD')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_landing_server.py", line 90, in test_directory_indexes_cannot_serve_outside_the_release
+    self.assertEqual(status, 404)
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/linked-index/', method='GET')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_landing_server.py", line 89, in test_directory_indexes_cannot_serve_outside_the_release
+    self.assertNotIn(b'must not be served', body)
+AssertionError: b'must not be served' unexpectedly found in b'must not be served'
+
+======================================================================
+FAIL: test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/linked-index/', method='HEAD')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_landing_server.py", line 90, in test_directory_indexes_cannot_serve_outside_the_release
+    self.assertEqual(status, 404)
+AssertionError: 200 != 404
+
+======================================================================
+FAIL: test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/linked-index', method='GET')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_landing_server.py", line 90, in test_directory_indexes_cannot_serve_outside_the_release
+    self.assertEqual(status, 404)
+AssertionError: 301 != 404
+
+======================================================================
+FAIL: test_directory_indexes_cannot_serve_outside_the_release (test_landing_server.LandingOriginTests.test_directory_indexes_cannot_serve_outside_the_release) (path='/linked-index', method='HEAD')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_landing_server.py", line 90, in test_directory_indexes_cannot_serve_outside_the_release
+    self.assertEqual(status, 404)
+AssertionError: 301 != 404
+
+======================================================================
+FAIL: test_health_cannot_identify_a_manifest_outside_the_release (test_landing_server.LandingOriginTests.test_health_cannot_identify_a_manifest_outside_the_release) (method='GET')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_landing_server.py", line 101, in test_health_cannot_identify_a_manifest_outside_the_release
+    self.assertNotIn(b'outside-release', body)
+AssertionError: b'outside-release' unexpectedly found in b'{"app": "questionable-hires", "revision": "outside-release"}'
+
+======================================================================
+FAIL: test_health_cannot_identify_a_manifest_outside_the_release (test_landing_server.LandingOriginTests.test_health_cannot_identify_a_manifest_outside_the_release) (method='HEAD')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<REPOSITORY>/tests/test_landing_server.py", line 102, in test_health_cannot_identify_a_manifest_outside_the_release
+    self.assertEqual(status, 503)
+AssertionError: 200 != 503
+
+----------------------------------------------------------------------
+Ran 10 tests in 5.138s
+
+FAILED (failures=8)

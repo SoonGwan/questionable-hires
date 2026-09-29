@@ -1,0 +1,172 @@
+{
+  "session_id": "01a0dec5-84cf-7e30-be8d-b78fd5026118",
+  "source_bytes": 143506,
+  "source_sha256": "ab9f7f52fe65b11e80a2d634106bfd61d68897c005c8c58c59b7af7a624622c1",
+  "source_lines": 36,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "819b66be22bcd732873e59911a6ad54456c95993887c289909752455c863df45",
+      "record": {
+        "timestamp": "2026-09-26T17:31:27.457Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b2db29ae2f49962016ab8016dfa7c87d08ebbfaeb14a7a643",
+          "status": "completed",
+          "call_id": "call_S4Ty0ys7jtufxsQBTuceoYaw",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g '! .git' -g '!*pyc'; git status --porcelain; git rev-parse HEAD\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec5-851a-7731-a43c-2043c64ed478",
+            "create_time": 1790443883.521741
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "6ce9218fef61f453ba756a41fb17881a15983a009a55e4b5d5ca4f5fe69ef78d",
+      "record": {
+        "timestamp": "2026-09-26T17:31:27.636Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dec5-9c14-7ec1-917c-de31dc2b5b53",
+          "call_id": "call_S4Ty0ys7jtufxsQBTuceoYaw",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"98cc00\",\"wall_time_seconds\":0.000005417,\"exit_code\":0,\"original_token_count\":47,\"output\":\"<WORKSPACE>\\nAGENTS.md\\ndispatch.py\\ntest_dispatch.py\\nd524d0dd58563fbc25972883e5ba73dc480897f0\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec5-851a-7731-a43c-2043c64ed478",
+            "create_time": 1790443887.636452
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "30f1692106fa715549630a4103ad733b19584e1986f9807a8f204d3e68da5b69",
+      "record": {
+        "timestamp": "2026-09-26T17:31:30.400Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b2db29ae2f49962016ab801716b2087d08b1aab66c31a0335",
+          "status": "completed",
+          "call_id": "call_fYDLnNBYSYDc5aVuKr77Qjjm",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat AGENTS.md dispatch.py test_dispatch.py; ls -la\",\"max_output_tokens\":5000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec5-851a-7731-a43c-2043c64ed478",
+            "create_time": 1790443888.008045
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "bcd210f127a9370a8afd33770cd4d16f93322c0faeb50bb73caddf851861109f",
+      "record": {
+        "timestamp": "2026-09-26T17:31:30.495Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dec5-a73f-70b2-8671-eec988a73344",
+          "call_id": "call_fYDLnNBYSYDc5aVuKr77Qjjm",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"6b0e15\",\"wall_time_seconds\":0.000004333,\"exit_code\":0,\"original_token_count\":326,\"output\":\"Work in this project only. Preserve supplied files and Git state.\\nfrom copy import deepcopy\\n\\n\\ndef dispatch(payload, handlers):\\n    results = []\\n    for handler in handlers:\\n        try:\\n            results.append(handler(deepcopy(payload)))\\n        except ValueError as error:\\n            raise ValueError(str(error)) from error\\n    return results\\nimport unittest\\nfrom dispatch import dispatch\\n\\n\\nclass DispatchTests(unittest.TestCase):\\n    def test_order(self):\\n        self.assertEqual(dispatch({\\\"id\\\": 1}, [lambda p: \\\"first\\\", lambda p: \\\"second\\\"]), [\\\"first\\\", \\\"second\\\"])\\n\\n    def test_payload_isolation(self):\\n        payload = {\\\"items\\\": [1]}\\n        def mutate(value):\\n            value[\\\"items\\\"].append(2)\\n            return value\\n        self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{\\\"items\\\": [1, 2]}, {\\\"items\\\": [1]}])\\n        self.assertEqual(payload, {\\\"items\\\": [1]})\\n\\n\\nif __name__ == \\\"__main__\\\":\\n    unittest.main()\\ntotal 24\\ndrwxr-xr-x@  6 gwonsungwan  wheel  192 Sep 27 02:31 .\\ndrwxr-xr-x@  3 gwonsungwan  wheel   96 Sep 27 02:31 ..\\ndrwxr-xr-x@ 10 gwonsungwan  wheel  320 Sep 27 02:31 .git\\n-rw-r--r--@  1 gwonsungwan  wheel   66 Sep 27 02:31 AGENTS.md\\n-rw-r--r--@  1 gwonsungwan  wheel  282 Sep 27 02:31 dispatch.py\\n-rw-r--r--@  1 gwonsungwan  wheel  586 Sep 27 02:31 test_dispatch.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec5-851a-7731-a43c-2043c64ed478",
+            "create_time": 1790443890.495807
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "ae96477f817a18c94edda42b8db20d4eee0d0e6d551be64d2077f886354bc792",
+      "record": {
+        "timestamp": "2026-09-26T17:32:20.266Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b2db29ae2f49962016ab801812fc087d0a09ff7b9d3c21b22",
+          "status": "completed",
+          "call_id": "call_BYyNaVpFOdoaeM0z5tAqxv0L",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"/opt/homebrew/opt/python@3.11/bin/python3.11 -B - <<'PY'\\nfrom pathlib import Path\\nimport hashlib\\nimport shutil\\nimport subprocess\\nimport tempfile\\nimport textwrap\\n\\nroot = Path.cwd()\\npython = '/opt/homebrew/opt/python@3.11/bin/python3.11'\\ndef snapshot():\\n    return {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}\\nbefore = snapshot()\\nsource = (root / 'dispatch.py').read_text()\\nfaults = {\\n    'correct': None,\\n    'swallowed-error': ('            raise ValueError(str(error)) from error', '            results.append(None)'),\\n    'reversed-handlers': ('    for handler in handlers:', '    for handler in reversed(handlers):'),\\n    'shared-payload': ('handler(deepcopy(payload))', 'handler(payload)'),\\n}\\nregression = '''\\\\\\nimport unittest\\nfrom dispatch import dispatch\\n\\nclass RegressionTests(unittest.TestCase):\\n    def test_error_type_and_message(self):\\n        def fail(value):\\n            raise ValueError('dispatch failure: sentinel')\\n        with self.assertRaises(ValueError) as caught:\\n            dispatch({'items': [1]}, [fail])\\n        self.assertIs(type(caught.exception), ValueError)\\n        self.assertEqual(str(caught.exception), 'dispatch failure: sentinel')\\n\\n    def test_error_stops_later_handlers(self):\\n        calls = []\\n        def fail(value):\\n            calls.append('fail')\\n            raise ValueError('stop')\\n        def later(value):\\n            calls.append('later')\\n            return 'late result'\\n        try:\\n            dispatch({'items': [1]}, [fail, later])\\n        except ValueError:\\n            pass\\n        self.assertEqual(calls, ['fail'])\\n\\n    def test_nearby_success(self):\\n        calls = []\\n        payload = {'items': [1]}\\n        def first(value):\\n            calls.append('first')\\n            value['items'].append(2)\\n            return value\\n        def second(value):\\n            calls.append('second')\\n            return value\\n        results = dispatch(payload, [first, second])\\n        self.assertEqual(calls, ['first', 'second'])\\n        self.assertEqual(results, [{'items': [1, 2]}, {'items': [1]}])\\n        self.assertEqual(payload, {'items': [1]})\\n'''\\nscratch = Path(tempfile.mkdtemp(prefix='.dispatch-audit-', dir=root))\\ntry:\\n    for variant, replacement in faults.items():\\n        folder = scratch / variant\\n        folder.mkdir()\\n        for name in ('AGENTS.md', 'dispatch.py', 'test_dispatch.py'):\\n            shutil.copy2(root / name, folder / name)\\n        modified = source\\n        if replacement:\\n            old, new = replacement\\n            assert source.count(old) == 1, (variant, 'replacement not unique')\\n            modified = source.replace(old, new, 1)\\n            (folder / 'dispatch.py').write_text(modified)\\n        assert (folder / 'test_dispatch.py').read_bytes() == (root / 'test_dispatch.py').read_bytes()\\n        expected_hash = hashlib.sha256((folder / 'dispatch.py').read_bytes()).hexdigest()\\n        (folder / 'test_variant_origin.py').write_text(textwrap.dedent(f'''\\\\\\n            import hashlib\\n            from pathlib import Path\\n            import unittest\\n            import dispatch\\n            import test_dispatch\\n            class OriginTests(unittest.TestCase):\\n                def test_actual_variant(self):\\n                    expected = Path({str(folder / 'dispatch.py')!r})\\n                    self.assertEqual(Path(dispatch.__file__).resolve(), expected)\\n                    self.assertEqual(Path(dispatch.dispatch.__code__.co_filename).resolve(), expected)\\n                    self.assertIs(test_dispatch.dispatch, dispatch.dispatch)\\n                    self.assertEqual(hashlib.sha256(expected.read_bytes()).hexdigest(), {expected_hash!r})\\n                    print('ORIGIN VERIFIED:', expected, 'SHA256:', {expected_hash!r}, flush=True)\\n            '''))\\n        (folder / 'test_regression.py').write_text(regression)\\n        for label, module in [('original', 'test_dispatch'), ('focused', 'test_regression')]:\\n            command = [python, '-B', '-m', 'unittest', '-v', 'test_variant_origin', module]\\n            print('\\\\nRUN:', variant, label, '\\\\nCWD:', folder, '\\\\nCOMMAND:', ' '.join(command), flush=True)\\n            result = subprocess.run(command, cwd=folder, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)\\n            print(result.stdout, end='', flush=True)\\n            print('EXIT:', result.returncode, flush=True)\\nfinally:\\n    shutil.rmtree(scratch)\\n    after = snapshot()\\n    print('\\\\nSCRATCH REMOVED:', not scratch.exists(), flush=True)\\n    print('ALL ORIGINAL FILES AND GIT CONTENT UNCHANGED:', before == after, flush=True)\\n    assert before == after\\nPY\",\"max_output_tokens\":6500}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec5-851a-7731-a43c-2043c64ed478",
+            "create_time": 1790443890.949197
+          }
+        }
+      }
+    },
+    {
+      "line": 30,
+      "line_sha256": "49655d6888f3999203bc132f1a89b182a2e961161acd639f0bae3e1ef36575fb",
+      "record": {
+        "timestamp": "2026-09-26T17:32:20.766Z",
+        "ordinal": 29,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0dec6-6b9e-7863-80aa-da404390e759",
+          "call_id": "call_BYyNaVpFOdoaeM0z5tAqxv0L",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.5 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"f2404f\",\"wall_time_seconds\":0.319958916,\"exit_code\":0,\"original_token_count\":3404,\"output\":\"\\nRUN: correct original \\nCWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/correct \\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_dispatch\\ntest_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/correct/dispatch.py SHA256: 49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39\\nok\\ntest_order (test_dispatch.DispatchTests.test_order) ... ok\\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.000s\\n\\nOK\\nEXIT: 0\\n\\nRUN: correct focused \\nCWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/correct \\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_regression\\ntest_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/correct/dispatch.py SHA256: 49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39\\nok\\ntest_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers) ... ok\\ntest_error_type_and_message (test_regression.RegressionTests.test_error_type_and_message) ... ok\\ntest_nearby_success (test_regression.RegressionTests.test_nearby_success) ... ok\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.000s\\n\\nOK\\nEXIT: 0\\n\\nRUN: swallowed-error original \\nCWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error \\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_dispatch\\ntest_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error/dispatch.py SHA256: 5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752\\nok\\ntest_order (test_dispatch.DispatchTests.test_order) ... ok\\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.000s\\n\\nOK\\nEXIT: 0\\n\\nRUN: swallowed-error focused \\nCWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error \\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_regression\\ntest_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error/dispatch.py SHA256: 5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752\\nok\\ntest_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers) ... FAIL\\ntest_error_type_and_message (test_regression.RegressionTests.test_error_type_and_message) ... FAIL\\ntest_nearby_success (test_regression.RegressionTests.test_nearby_success) ... ok\\n\\n======================================================================\\nFAIL: test_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error/test_regression.py\\\", line 25, in test_error_stops_later_handlers\\n    self.assertEqual(calls, ['fail'])\\nAssertionError: Lists differ: ['fail', 'later'] != ['fail']\\n\\nFirst list contains 1 additional elements.\\nFirst extra element 1:\\n'later'\\n\\n- ['fail', 'later']\\n+ ['fail']\\n\\n======================================================================\\nFAIL: test_error_type_and_message (test_regression.RegressionTests.test_error_type_and_message)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-0u9v44u8/swallowed-error/test_regression.py\\\", line 8, in test_error_type_and_message\\n    with self.assertRaises(ValueError) as caught:\\nAssertionError: ValueError not raised\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.001s\\n\\nFAILED (failures=2)\\nEXIT: 1\\n\\nRUN: reversed-handlers original \\nCWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers \\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_dispatch\\ntest_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/dispatch.py SHA256: da5dfec26ce6bf15b6bd1fdcb58746d7f6e928b708b6c4a967d9c6fac80ae86c\\nok\\ntest_order (test_dispatch.DispatchTests.test_order) ... FAIL\\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... FAIL\\n\\n======================================================================\\nFAIL: test_order (test_dispatch.DispatchTests.test_order)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/test_dispatch.py\\\", line 7, in test_order\\n    self.assertEqual(dispatch({\\\"id\\\": 1}, [lambda p: \\\"first\\\", lambda p: \\\"second\\\"]), [\\\"first\\\", \\\"second\\\"])\\nAssertionError: Lists differ: ['second', 'first'] != ['first', 'second']\\n\\nFirst differing element 0:\\n'second'\\n'first'\\n\\n- ['second', 'first']\\n+ ['first', 'second']\\n\\n======================================================================\\nFAIL: test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/test_dispatch.py\\\", line 14, in test_payload_isolation\\n    self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{\\\"items\\\": [1, 2]}, {\\\"items\\\": [1]}])\\nAssertionError: Lists differ: [{'items': [1]}, {'items': [1, 2]}] != [{'items': [1, 2]}, {'items': [1]}]\\n\\nFirst differing element 0:\\n{'items': [1]}\\n{'items': [1, 2]}\\n\\n- [{'items': [1]}, {'items': [1, 2]}]\\n?                              ---\\n\\n+ [{'items': [1, 2]}, {'items': [1]}]\\n?              +++\\n\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.001s\\n\\nFAILED (failures=2)\\nEXIT: 1\\n\\nRUN: reversed-handlers focused \\nCWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers \\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_regression\\ntest_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/dispatch.py SHA256: da5dfec26ce6bf15b6bd1fdcb58746d7f6e928b708b6c4a967d9c6fac80ae86c\\nok\\ntest_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers) ... FAIL\\ntest_error_type_and_message (test_regression.RegressionTests.test_error_type_and_message) ... ok\\ntest_nearby_success (test_regression.RegressionTests.test_nearby_success) ... FAIL\\n\\n======================================================================\\nFAIL: test_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/test_regression.py\\\", line 25, in test_error_stops_later_handlers\\n    self.assertEqual(calls, ['fail'])\\nAssertionError: Lists differ: ['later', 'fail'] != ['fail']\\n\\nFirst differing element 0:\\n'later'\\n'fail'\\n\\nFirst list contains 1 additional elements.\\nFirst extra element 1:\\n'fail'\\n\\n- ['later', 'fail']\\n+ ['fail']\\n\\n======================================================================\\nFAIL: test_nearby_success (test_regression.RegressionTests.test_nearby_success)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-0u9v44u8/reversed-handlers/test_regression.py\\\", line 38, in test_nearby_success\\n    self.assertEqual(calls, ['first', 'second'])\\nAssertionError: Lists differ: ['second', 'first'] != ['first', 'second']\\n\\nFirst differing element 0:\\n'second'\\n'first'\\n\\n- ['second', 'first']\\n+ ['first', 'second']\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.001s\\n\\nFAILED (failures=2)\\nEXIT: 1\\n\\nRUN: shared-payload original \\nCWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload \\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_dispatch\\ntest_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload/dispatch.py SHA256: cc0b5b61415399447d97096fec867d482f73e746665ffb140d0ba560265948b4\\nok\\ntest_order (test_dispatch.DispatchTests.test_order) ... ok\\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... FAIL\\n\\n======================================================================\\nFAIL: test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload/test_dispatch.py\\\", line 14, in test_payload_isolation\\n    self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{\\\"items\\\": [1, 2]}, {\\\"items\\\": [1]}])\\nAssertionError: Lists differ: [{'items': [1, 2]}, {'items': [1, 2]}] != [{'items': [1, 2]}, {'items': [1]}]\\n\\nFirst differing element 1:\\n{'items': [1, 2]}\\n{'items': [1]}\\n\\n- [{'items': [1, 2]}, {'items': [1, 2]}]\\n?                                 ---\\n\\n+ [{'items': [1, 2]}, {'items': [1]}]\\n\\n----------------------------------------------------------------------\\nRan 3 tests in 0.001s\\n\\nFAILED (failures=1)\\nEXIT: 1\\n\\nRUN: shared-payload focused \\nCWD: <WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload \\nCOMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_variant_origin test_regression\\ntest_actual_variant (test_variant_origin.OriginTests.test_actual_variant) ... ORIGIN VERIFIED: <WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload/dispatch.py SHA256: cc0b5b61415399447d97096fec867d482f73e746665ffb140d0ba560265948b4\\nok\\ntest_error_stops_later_handlers (test_regression.RegressionTests.test_error_stops_later_handlers) ... ok\\ntest_error_type_and_message (test_regression.RegressionTests.test_error_type_and_message) ... ok\\ntest_nearby_success (test_regression.RegressionTests.test_nearby_success) ... FAIL\\n\\n======================================================================\\nFAIL: test_nearby_success (test_regression.RegressionTests.test_nearby_success)\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \\\"<WORKSPACE>/.dispatch-audit-0u9v44u8/shared-payload/test_regression.py\\\", line 39, in test_nearby_success\\n    self.assertEqual(results, [{'items': [1, 2]}, {'items': [1]}])\\nAssertionError: Lists differ: [{'items': [1, 2]}, {'items': [1, 2]}] != [{'items': [1, 2]}, {'items': [1]}]\\n\\nFirst differing element 1:\\n{'items': [1, 2]}\\n{'items': [1]}\\n\\n- [{'items': [1, 2]}, {'items': [1, 2]}]\\n?                                 ---\\n\\n+ [{'items': [1, 2]}, {'items': [1]}]\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.001s\\n\\nFAILED (failures=1)\\nEXIT: 1\\n\\nSCRATCH REMOVED: True\\nALL ORIGINAL FILES AND GIT CONTENT UNCHANGED: True\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0dec5-851a-7731-a43c-2043c64ed478",
+            "create_time": 1790443940.7665
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

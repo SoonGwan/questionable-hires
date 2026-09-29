@@ -67,3 +67,29 @@ class ContextRepresentationSizeTests(unittest.TestCase):
         instructions.write_text('x' * (remaining + 2))
         with self.assertRaisesRegex(ValueError, 'Context exceeds'):
             helper.collect(self.root, ['sample.py'], pretty=True)
+
+    def test_sparse_unicode_index_keeps_exact_budget_and_source_identity(self):
+        import hashlib
+
+        instructions = self.root / 'AGENTS.md'
+        instructions.write_text('Keep the complete caller contract.\n')
+        lines = ['def target():'] + ['    # 한글 🙂 "quoted" \\ tab\tend'] * 240 + ['    return 1']
+        for newline in ('\n', '\r\n', '\r'):
+            raw = ('\ufeff' + newline.join(lines) + newline).encode('utf-8')
+            (self.root / 'sample.py').write_bytes(raw)
+            for pretty in (False, True):
+                with self.subTest(newline=repr(newline), pretty=pretty):
+                    result = helper.collect(self.root, ['sample.py'], pretty=pretty)
+                    selected = result['selected'][0]
+                    self.assertEqual(selected['representation'], 'definition_index')
+                    self.assertEqual(selected['definitions'][0]['last_line'], len(lines))
+                    self.assertEqual(selected['sha256'], hashlib.sha256(raw).hexdigest())
+                    self.assertEqual(result['instructions'][0]['source'],
+                                     '1: Keep the complete caller contract.')
+                    size = len(helper.encode(result, pretty)) + 1
+                    self.assertEqual(helper.collect(self.root, ['sample.py'], pretty=pretty,
+                                                    max_output=size), result)
+                    with self.assertRaisesRegex(ValueError, 'Context exceeds'):
+                        helper.collect(self.root, ['sample.py'], pretty=pretty,
+                                       max_output=size - 1)
+                    self.assertEqual((self.root / 'sample.py').read_bytes(), raw)

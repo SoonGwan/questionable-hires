@@ -1,0 +1,35 @@
+
+CONTROL: startup REQUEST_RETRIES = None
+before test import: None
+after test import: worker.RETRIES = 2
+test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... deliver boundary: environment, RETRIES = ('0', 2)
+FAIL
+
+======================================================================
+FAIL: test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/test_worker.py", line 19, in test_disabled_retries
+    self.assertEqual(len(calls), 1)
+AssertionError: 3 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
+actual test callback attempts: 3
+after unittest cleanup: None
+
+CONTROL: startup REQUEST_RETRIES = '0'
+before test import: '0'
+after test import: worker.RETRIES = 0
+test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... deliver boundary: environment, RETRIES = ('0', 0)
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
+actual test callback attempts: 1
+after unittest cleanup: '0'
+

@@ -22,6 +22,12 @@ project isolation, disposable module/package copies or a valid substitution;
 restore substitutions in reused processes. A wrong binding, rewritten simulation,
 syntax error or equivalent mutation cannot establish test sensitivity.
 
+Before adding an assertion, identify the required observable contract. Object
+identity (including exception or traceback identity) needs an explicit identity
+requirement; propagation or unwinding alone does not imply it. Reuse existing
+neighboring controls when they cover the required boundary. Check the proposed
+assertion on correct code before interpreting its failure on faulty code.
+
 Inspect each phase's actual assertion and exit, not just a green baseline or a
 nonzero mutant status. Runner errors/warnings can indicate broken assertion
 plumbing, not a detected production fault. Establish provenance through copied
@@ -38,7 +44,10 @@ process does not prove what the test process loads.
 - Existing Python test improvements: consider [the complete four-check recipe](references/existing-tests.md)
   when they remove custom copy/run/cleanup plumbing. One recipe checks original
   and proposed tests against correct/faulty code with the native runner and fixtures;
-  localized changes can use an exact edit instead of a complete replacement file.
+  Native `python -B -m unittest` uses the same single recipe with
+  `"invocation": "module"`; one fault’s original/stronger phases do not need
+  the batch guide. Localized changes can use an exact edit instead of a complete
+  replacement file.
   Applying the verified edit remains separate. No helper is needed for a simpler
   native workflow or an already-completed audit.
 - Several independent Python faults or required test selections: choose the matching runner.

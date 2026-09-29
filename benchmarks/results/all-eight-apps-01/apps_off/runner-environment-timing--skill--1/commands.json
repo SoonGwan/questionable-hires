@@ -1,0 +1,50 @@
+[
+  {
+    "id": "item_1",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'incident.md' -g '*.py' -g 'SKILL.md' -g 'pyproject.toml' -g 'README*'\"",
+    "aggregated_output": "<WORKSPACE>\nincident.md\ntest_worker.py\nworker.py\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat .agents/skills/exorcist/SKILL.md'",
+    "aggregated_output": "---\nname: exorcist\ndescription: Diagnose an uncertain bug by designing experiments that distinguish competing causes, especially speculative cache, timing, environment, or concurrency explanations.\n---\n\n# Exorcist\n\n> You keep saying cache. Let's test that belief.\n\n## Find the decision-changing observation\n\nStart at the reported failure using supplied paths or the repository file list. Reuse existing reproduction evidence; trace only until plausible causes diverge. Don't manufacture hypotheses for an established mechanism.\n\nObserve that boundary in the actual implementation: submission versus persistence, dispatch versus completion, configuration versus effective state. Prefer existing observations or a recording dependency. Another layer recording the same value adds nothing unless its provenance is unresolved. A rewritten simulation or repeated success flag cannot establish an unobserved effect.\n\nChoose the runner before inspecting setup: use existing tests when they exercise the distinction, otherwise one small probe with comparable inputs and controlled timing. Inspect fixtures/configuration if that path uses them or they could explain the symptom. Retain normal controls; repeat only for unresolved intermittency or a required check.\n\nBefore another experiment, ask which possible result changes the diagnosis or next action. If none, stop. A symptom without a suspected dependency shows that dependency is unnecessary for this reproduction, not every production incident. Explain why the existing safeguard does or doesn't address the observed mechanism.\n\n## Match containment to the exercised path\n\nRun a bounded local computation with the chosen interpreter or existing test runner. The optional helper is not the default probe command: use it for an identified hang risk that the runner's existing process deadline does not contain. Synchronous code can also block; choose from the actual operations, not the presence of `async` alone.\n\nFor asynchronous probes, bound signals that may never arrive and clean up owned tasks. Asyncio timeouts can wait indefinitely for suppressed cancellation. When an additional process deadline is needed, the installed POSIX helper supplies one (replace paths/interpreter):\n\n```sh\npython3 /path/to/exorcist/scripts/run_probe.py --timeout 10 -- python3 -B experiments/probe.py\n```\n\nTrusted local foreground commands only: this kills remaining process-group members even after normal completion; it is not a sandbox. JSON retains child status, timeout and bounded output. Timeout or truncated decisive output means incomplete evidence, not causal proof. See [runner details](references/bounded-probe.md) for exit mapping, limits or adaptation; routine invocation doesn't require source inspection.\n\n## Finish at the evidence boundary\n\nChoose one destination for detailed evidence. If a trace file is requested or needed for later analysis, write it and print its path plus distinguishing inputs/outcomes and failures; don't also print the entire trace unless needed to resolve the diagnosis. Otherwise use captured command output directly instead of a file round trip. Preserve necessary ordering/provenance and keep the reproduction rerunnable.\n\nReport the supported mechanism, decisive command/result, safeguard and uncertainty. Name the missing observation if blocked, rather than expanding simulations. Link the reproduction instead of repeating it. A restart alone isn't causal proof; preserve evidence and user state before an authorized reset.\n\nDiagnosis leaves production code unchanged. A requested fix stays scoped and reruns the original reproduction plus relevant checks. Preserve user changes and explicit requirements. Keep humor optional.\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_4",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'cat incident.md worker.py test_worker.py'",
+    "aggregated_output": "No external mail provider is used in this reproduction. Run the test from a fresh process with REQUEST_RETRIES absent: python3 -m unittest -v test_worker. The contrasting standalone process sets REQUEST_RETRIES=0 before importing worker, then invokes deliver with a callback that records calls and raises RuntimeError. Its callback runs once. The application currently reads deployment environment at process startup; whether live configuration changes should be supported is not specified.\nimport os\n\nRETRIES = int(os.environ.get('REQUEST_RETRIES', '2'))\n\ndef deliver(send):\n    for attempt in range(RETRIES + 1):\n        try:\n            return send()\n        except RuntimeError:\n            if attempt == RETRIES:\n                raise\nimport os\nimport unittest\nfrom unittest.mock import patch\nimport worker\n\nclass DeliveryTests(unittest.TestCase):\n    def setUp(self):\n        self.environment = patch.dict(os.environ, {'REQUEST_RETRIES': '0'})\n        self.environment.start()\n        self.addCleanup(self.environment.stop)\n\n    def test_disabled_retries(self):\n        calls = []\n        def send():\n            calls.append('attempt')\n            raise RuntimeError('offline failure')\n        with self.assertRaises(RuntimeError):\n            worker.deliver(send)\n        self.assertEqual(len(calls), 1)\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  {
+    "id": "item_5",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"ls -a; rg --files --hidden -g 'AGENTS.md' -g '\"'!'\"\\\\.git/**'\"",
+    "aggregated_output": ".\n..\n.agents\n.git\nincident.md\ntest_worker.py\nworker.py\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_6",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc 'env -u REQUEST_RETRIES python3 -B -m unittest -v test_worker'",
+    "aggregated_output": "test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries) ... FAIL\n\n======================================================================\nFAIL: test_disabled_retries (test_worker.DeliveryTests.test_disabled_retries)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_worker.py\", line 19, in test_disabled_retries\n    self.assertEqual(len(calls), 1)\nAssertionError: 3 != 1\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+    "exit_code": 1,
+    "status": "failed"
+  },
+  {
+    "id": "item_7",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"python3 -B - <<'PY'\nimport os\nimport subprocess\nimport sys\n\nprobe = r'''\nimport os\nimport unittest\nimport test_worker\nimport worker\nprint('after test import: env=%r RETRIES=%r' % (os.environ.get('REQUEST_RETRIES'), worker.RETRIES), flush=True)\noriginal_deliver = worker.deliver\ndef observed_deliver(send):\n    calls = []\n    print('inside actual setUp patch: env=%r RETRIES=%r' % (os.environ.get('REQUEST_RETRIES'), worker.RETRIES), flush=True)\n    def recording_send():\n        calls.append('attempt')\n        return send()\n    try:\n        return original_deliver(recording_send)\n    finally:\n        print('actual callback attempts=%d' % len(calls), flush=True)\nworker.deliver = observed_deliver\nsuite = unittest.defaultTestLoader.loadTestsFromModule(test_worker)\nresult = unittest.TextTestRunner(verbosity=2).run(suite)\nprint('after cleanup: env=%r RETRIES=%r' % (os.environ.get('REQUEST_RETRIES'), worker.RETRIES), flush=True)\nraise SystemExit(not result.wasSuccessful())\n'''\nfor setting in (None, '0'):\n    env = os.environ.copy()\n    env.pop('REQUEST_RETRIES', None)\n    if setting is not None:\n        env['REQUEST_RETRIES'] = setting\n    print('\\\\n=== actual test, startup REQUEST_RETRIES=%r ===' % setting, flush=True)\n    result = subprocess.run([sys.executable, '-B', '-c', probe], env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=10)\n    print(result.stdout, end='')\n    print('exit=%d' % result.returncode, flush=True)\n\nprint('\\\\n=== standalone: set zero before importing worker ===', flush=True)\nstandalone = r'''\nimport os\nos.environ['REQUEST_RETRIES'] = '0'\nimport worker\ncalls = []\ndef send():\n    calls.append('attempt')\n    raise RuntimeError('offline failure')\ntry:\n    worker.deliver(send)\nexcept RuntimeError as exc:\n    print('env=%r RETRIES=%r attempts=%d error=%s' % (os.environ['REQUEST_RETRIES'], worker.RETRIES, len(calls), exc))\nassert len(calls) == 1\n'''\nresult = subprocess.run([sys.executable, '-B', '-c', standalone], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=10)\nprint(result.stdout, end='')\nprint('exit=%d' % result.returncode)\nPY\"",
+    "aggregated_output": "env='0' RETRIES=0 attempts=1 error=offline failure\nexit=0\n",
+    "exit_code": 0,
+    "status": "completed"
+  }
+]

@@ -10,6 +10,8 @@ requirements; do not remove configuration, upgrade or install merely to fit this
 ## Execute and reuse the evidence
 
 Adapt paths/revisions and the project Node executable (default: node on PATH):
+Recipe keys must be unique, including nested objects. Correct reported duplicate,
+missing or unknown keys before retrying; preserve all requested checks.
 
 ```sh
 python3 /path/to/receipt/scripts/compare.py --source . --node /path/to/node --spec - <<'JSON'
@@ -43,6 +45,9 @@ failure before, success after. CLI 0 only means observations collected.
 Missing/mismatched/malformed/truncated provenance or timeout is incomplete; check
 7 (CLI 2) or timeout stops further comparison. Setup errors and skipped tests are not proof.
 Inspect `originals`, optional `tree_guard` and `comparison_copies_removed` too.
+Ordinary copy/runner/cleanup errors and final preservation failures retain returned
+native evidence as incomplete JSON with CLI exit 2. Unreturned results stay unknown;
+see [failure fields](comparison-details.md#preservation-guards).
 
 Native execution adds `--test-reporter=tap --import <observer>` to `node --test`.
 `copied_loads` retains URL/PID/source hashes without pre-importing the application.

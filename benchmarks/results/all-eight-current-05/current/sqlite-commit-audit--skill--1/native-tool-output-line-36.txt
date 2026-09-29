@@ -1,0 +1,95 @@
+
+PHASE: existing-correct 
+CWD: <WORKSPACE>/.commit-audit-7lioxtcz/existing-correct 
+COMMAND: python3 -B -m unittest -v test_receipts
+BINDINGS: <WORKSPACE>/.commit-audit-7lioxtcz/existing-correct/test_receipts.py accept -> <WORKSPACE>/.commit-audit-7lioxtcz/existing-correct/ingest/endpoint.py _record -> <WORKSPACE>/.commit-audit-7lioxtcz/existing-correct/ingest/ledger.py
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok
+ACTUAL DISPATCH: {'endpoint': 2, 'writer': 2}
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+OK
+EXIT: 0
+
+PHASE: existing-no-commit 
+CWD: <WORKSPACE>/.commit-audit-7lioxtcz/existing-no-commit 
+COMMAND: python3 -B -m unittest -v test_receipts
+BINDINGS: <WORKSPACE>/.commit-audit-7lioxtcz/existing-no-commit/test_receipts.py accept -> <WORKSPACE>/.commit-audit-7lioxtcz/existing-no-commit/ingest/endpoint.py _record -> <WORKSPACE>/.commit-audit-7lioxtcz/existing-no-commit/ingest/ledger.py
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok
+ACTUAL DISPATCH: {'endpoint': 2, 'writer': 2}
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+OK
+EXIT: 0
+
+PHASE: stronger-correct 
+CWD: <WORKSPACE>/.commit-audit-7lioxtcz/stronger-correct 
+COMMAND: python3 -B -m unittest -v test_receipts
+BINDINGS: <WORKSPACE>/.commit-audit-7lioxtcz/stronger-correct/test_receipts.py accept -> <WORKSPACE>/.commit-audit-7lioxtcz/stronger-correct/ingest/endpoint.py _record -> <WORKSPACE>/.commit-audit-7lioxtcz/stronger-correct/ingest/ledger.py
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... FRESH CONNECTION ROWS: [(10, b'previous'), (20, b'\x00\xffnew')]
+ok
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... FRESH CONNECTION ROWS: [(10, b'previous'), (30, b'')]
+ok
+ACTUAL DISPATCH: {'endpoint': 2, 'writer': 2}
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.004s
+
+OK
+EXIT: 0
+
+PHASE: stronger-no-commit 
+CWD: <WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit 
+COMMAND: python3 -B -m unittest -v test_receipts
+BINDINGS: <WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit/test_receipts.py accept -> <WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit/ingest/endpoint.py _record -> <WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit/ingest/ledger.py
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... FRESH CONNECTION ROWS: [(10, b'previous')]
+FAIL
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... FRESH CONNECTION ROWS: [(10, b'previous')]
+FAIL
+ACTUAL DISPATCH: {'endpoint': 2, 'writer': 2}
+
+======================================================================
+FAIL: test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit/test_receipts.py", line 32, in test_acknowledges_binary_upload
+    self.assertEqual(rows, [(10, b'previous'), (20, b'\x00\xffnew')])
+AssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (20, b'\x00\xffnew')]
+
+Second list contains 1 additional elements.
+First extra element 1:
+(20, b'\x00\xffnew')
+
+- [(10, b'previous')]
++ [(10, b'previous'), (20, b'\x00\xffnew')]
+
+======================================================================
+FAIL: test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.commit-audit-7lioxtcz/stronger-no-commit/test_receipts.py", line 42, in test_acknowledges_empty_upload
+    self.assertEqual(rows, [(10, b'previous'), (30, b'')])
+AssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (30, b'')]
+
+Second list contains 1 additional elements.
+First extra element 1:
+(30, b'')
+
+- [(10, b'previous')]
++ [(10, b'previous'), (30, b'')]
+?                   +++++++++++
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.004s
+
+FAILED (failures=2)
+EXIT: 1
+
+CLEANUP: owned copies removed; original project file bytes and modes unchanged.
+RESULTS: [('existing-correct', 0), ('existing-no-commit', 0), ('stronger-correct', 0), ('stronger-no-commit', 1)]

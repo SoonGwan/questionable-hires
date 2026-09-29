@@ -1,0 +1,380 @@
+[
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "dispatch-contract-multiple",
+    "skill": "con-artist",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "d524d0dd58563fbc25972883e5ba73dc480897f0",
+    "skill_sha256": "ee6904b29cac9bec47287b10e9c622c3a241220b8d8f12fa56fb8ba71ccb8c06",
+    "skill_resources_sha256": "8462bf1b9381c06df90e0839e500ab54160e6a590e2f44a2ac69b330869cdd78",
+    "elapsed_seconds": 65.449,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 79327,
+      "cached_input_tokens": 65536,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1895,
+      "reasoning_output_tokens": 93
+    },
+    "completed": true,
+    "allocated_workspace": "<WORKSPACE>",
+    "prompt": "Use $con-artist at .agents/skills/con-artist/SKILL.md.\n\nAudit this application's dispatch tests for the isolated faults listed below.\nContract: handlers execute in registration order, each receives an independent\npayload value and caller state stays unchanged. Successful return values are\ncollected in order. A ValueError stops dispatch; its type and message reach the\ncaller and later handlers do not run. Review the actual implementation and tests.\nExecute the original relevant native unittest checks against correct and each\nindependent faulty implementation in disposable project-local copies. Never\ncombine faults. Identify detecting assertions or coverage gaps. If coverage is\nmissing, verify the same focused additional regression assertions against correct\nand faulty code, including nearby successful-dispatch behavior. Setup/collection\nfailures are not mutation detection. Confirm dispatch is loaded from the actual\nvariant inside the native test process. Reuse an unchanged correct result where\nvalid and label reuse. Preserve all source/tests, Git HEAD/index and installed\nresources; remove owned scratch even after failure. Deliver decisive commands,\ncounts, exits and findings without retaining a report/harness. No production fix,\nnetwork, dependency installs, Git changes or publication. Use the supplied Python\nwith -B and python -B -m unittest; do not delegate.\nPreinstalled Python: /opt/homebrew/opt/python@3.11/bin/python3.11\nFaults:\nswallowed-error: in dispatch.py replace exactly '            raise ValueError(str(error)) from error' with '            results.append(None)'.\nreversed-handlers: in dispatch.py replace exactly '    for handler in handlers:' with '    for handler in reversed(handlers):'.\nshared-payload: in dispatch.py replace exactly 'handler(deepcopy(payload))' with 'handler(payload)'.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 15,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "ee6904b29cac9bec47287b10e9c622c3a241220b8d8f12fa56fb8ba71ccb8c06",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/assets/unittest_startup.py": {
+        "kind": "file",
+        "sha256": "a1cb382500550d4ac47cbcd88936618c6bfc67fdb26b75842a8739ca47bef114",
+        "mode": 420
+      },
+      "con-artist/references/existing-tests.md": {
+        "kind": "file",
+        "sha256": "411c9386c5c1bae00dc43cb4e28d7eac07d43c2e7dfd5f9e3cb2393fdf81a852",
+        "mode": 420
+      },
+      "con-artist/references/native-unittest-batch.md": {
+        "kind": "file",
+        "sha256": "ea085f3a04f0285d9e5f00286716a60efbd81f4bda835cdf1f347a0e5daf0544",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "927c2dd7db61d7c1d1ab7350efd3d3c004bb20caaa3f3ce862556965520b69a9",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "febece2a7bfc161d8f6dcd2303d5e3d61841926ece015225ba369795fe841c6b",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "782fa8eeab58ddcb3dc0a97192eb72321ab44f599ca64ee22addaa59819532d0",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "169d5256100c205b28bbde9b6bf1e485a14275e4fd463a44d1bb091b9cddf8be",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "37a948dfb1ba1bd10335ad09671fba2e3a186b8cfde3d3a2c1d4d01712df7f68",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "ddd7a5fc0afc2128b4419107928331dac4c5b45ae1707cfc0f9be2c87df4ce3a",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "42115f9607ff9c838df3f849a1d828e333253162bc6471b195cda17b2a86f37a",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "ee6904b29cac9bec47287b10e9c622c3a241220b8d8f12fa56fb8ba71ccb8c06",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/assets/unittest_startup.py": {
+        "kind": "file",
+        "sha256": "a1cb382500550d4ac47cbcd88936618c6bfc67fdb26b75842a8739ca47bef114",
+        "mode": 420
+      },
+      "con-artist/references/existing-tests.md": {
+        "kind": "file",
+        "sha256": "411c9386c5c1bae00dc43cb4e28d7eac07d43c2e7dfd5f9e3cb2393fdf81a852",
+        "mode": 420
+      },
+      "con-artist/references/native-unittest-batch.md": {
+        "kind": "file",
+        "sha256": "ea085f3a04f0285d9e5f00286716a60efbd81f4bda835cdf1f347a0e5daf0544",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "927c2dd7db61d7c1d1ab7350efd3d3c004bb20caaa3f3ce862556965520b69a9",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "febece2a7bfc161d8f6dcd2303d5e3d61841926ece015225ba369795fe841c6b",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "782fa8eeab58ddcb3dc0a97192eb72321ab44f599ca64ee22addaa59819532d0",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "169d5256100c205b28bbde9b6bf1e485a14275e4fd463a44d1bb091b9cddf8be",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "37a948dfb1ba1bd10335ad09671fba2e3a186b8cfde3d3a2c1d4d01712df7f68",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "ddd7a5fc0afc2128b4419107928331dac4c5b45ae1707cfc0f9be2c87df4ce3a",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "42115f9607ff9c838df3f849a1d828e333253162bc6471b195cda17b2a86f37a",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 297,
+      "mode": 420,
+      "sha256": "4b5bee9f90abd02855a7ae0f0b747e95dc34a59a2ff508b0c6c2f38dfa846410",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    },
+    "pre_model_index": {
+      "status": "retained",
+      "file": "git-index.before-model.bin",
+      "bytes": 297,
+      "mode": 420,
+      "sha256": "4b5bee9f90abd02855a7ae0f0b747e95dc34a59a2ff508b0c6c2f38dfa846410",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    },
+    "index_comparison": {
+      "status": "observed",
+      "bytes_and_mode_unchanged": true,
+      "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+    }
+  },
+  {
+    "limit_detected": false,
+    "attempted": true,
+    "case": "dispatch-contract-single",
+    "skill": "con-artist",
+    "arm": "skill",
+    "repeat": 1,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "base_commit": "d524d0dd58563fbc25972883e5ba73dc480897f0",
+    "skill_sha256": "ee6904b29cac9bec47287b10e9c622c3a241220b8d8f12fa56fb8ba71ccb8c06",
+    "skill_resources_sha256": "8462bf1b9381c06df90e0839e500ab54160e6a590e2f44a2ac69b330869cdd78",
+    "elapsed_seconds": 66.155,
+    "exit_code": 0,
+    "timed_out": false,
+    "usage": {
+      "input_tokens": 101719,
+      "cached_input_tokens": 82432,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1814,
+      "reasoning_output_tokens": 137
+    },
+    "completed": true,
+    "allocated_workspace": "<WORKSPACE>",
+    "prompt": "Use $con-artist at .agents/skills/con-artist/SKILL.md.\n\nAudit this application's dispatch tests for the isolated faults listed below.\nContract: handlers execute in registration order, each receives an independent\npayload value and caller state stays unchanged. Successful return values are\ncollected in order. A ValueError stops dispatch; its type and message reach the\ncaller and later handlers do not run. Review the actual implementation and tests.\nExecute the original relevant native unittest checks against correct and each\nindependent faulty implementation in disposable project-local copies. Never\ncombine faults. Identify detecting assertions or coverage gaps. If coverage is\nmissing, verify the same focused additional regression assertions against correct\nand faulty code, including nearby successful-dispatch behavior. Setup/collection\nfailures are not mutation detection. Confirm dispatch is loaded from the actual\nvariant inside the native test process. Reuse an unchanged correct result where\nvalid and label reuse. Preserve all source/tests, Git HEAD/index and installed\nresources; remove owned scratch even after failure. Deliver decisive commands,\ncounts, exits and findings without retaining a report/harness. No production fix,\nnetwork, dependency installs, Git changes or publication. Use the supplied Python\nwith -B and python -B -m unittest; do not delegate.\nPreinstalled Python: /opt/homebrew/opt/python@3.11/bin/python3.11\nFaults:\nswallowed-error: in dispatch.py replace exactly '            raise ValueError(str(error)) from error' with '            results.append(None)'.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+    "personal_skill_disable_requests": 15,
+    "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+    "execution": "host-workspace-write",
+    "session_persistence_requested": true,
+    "capture_diagnostics": {
+      "invalid_json_lines": [],
+      "non_object_json_lines": [],
+      "empty_command_output_items": [],
+      "error_event_types": [],
+      "unittest_transcript_review_candidates": [],
+      "unittest_missing_summary_review_candidates": [],
+      "node_missing_summary_review_candidates": [],
+      "patch_rejection_count": 0,
+      "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+    },
+    "installed_resources_before": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "ee6904b29cac9bec47287b10e9c622c3a241220b8d8f12fa56fb8ba71ccb8c06",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/assets/unittest_startup.py": {
+        "kind": "file",
+        "sha256": "a1cb382500550d4ac47cbcd88936618c6bfc67fdb26b75842a8739ca47bef114",
+        "mode": 420
+      },
+      "con-artist/references/existing-tests.md": {
+        "kind": "file",
+        "sha256": "411c9386c5c1bae00dc43cb4e28d7eac07d43c2e7dfd5f9e3cb2393fdf81a852",
+        "mode": 420
+      },
+      "con-artist/references/native-unittest-batch.md": {
+        "kind": "file",
+        "sha256": "ea085f3a04f0285d9e5f00286716a60efbd81f4bda835cdf1f347a0e5daf0544",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "927c2dd7db61d7c1d1ab7350efd3d3c004bb20caaa3f3ce862556965520b69a9",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "febece2a7bfc161d8f6dcd2303d5e3d61841926ece015225ba369795fe841c6b",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "782fa8eeab58ddcb3dc0a97192eb72321ab44f599ca64ee22addaa59819532d0",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "169d5256100c205b28bbde9b6bf1e485a14275e4fd463a44d1bb091b9cddf8be",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "37a948dfb1ba1bd10335ad09671fba2e3a186b8cfde3d3a2c1d4d01712df7f68",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "ddd7a5fc0afc2128b4419107928331dac4c5b45ae1707cfc0f9be2c87df4ce3a",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "42115f9607ff9c838df3f849a1d828e333253162bc6471b195cda17b2a86f37a",
+        "mode": 420
+      }
+    },
+    "installed_resources_after": {
+      "con-artist/SKILL.md": {
+        "kind": "file",
+        "sha256": "ee6904b29cac9bec47287b10e9c622c3a241220b8d8f12fa56fb8ba71ccb8c06",
+        "mode": 420
+      },
+      "con-artist/agents/openai.yaml": {
+        "kind": "file",
+        "sha256": "269827cfb2f5e2caa6b1d06af669f0e8a7ea44af746fa6480f253b2b41b4cadc",
+        "mode": 420
+      },
+      "con-artist/assets/unittest_startup.py": {
+        "kind": "file",
+        "sha256": "a1cb382500550d4ac47cbcd88936618c6bfc67fdb26b75842a8739ca47bef114",
+        "mode": 420
+      },
+      "con-artist/references/existing-tests.md": {
+        "kind": "file",
+        "sha256": "411c9386c5c1bae00dc43cb4e28d7eac07d43c2e7dfd5f9e3cb2393fdf81a852",
+        "mode": 420
+      },
+      "con-artist/references/native-unittest-batch.md": {
+        "kind": "file",
+        "sha256": "ea085f3a04f0285d9e5f00286716a60efbd81f4bda835cdf1f347a0e5daf0544",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-advanced.md": {
+        "kind": "file",
+        "sha256": "927c2dd7db61d7c1d1ab7350efd3d3c004bb20caaa3f3ce862556965520b69a9",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-batch.md": {
+        "kind": "file",
+        "sha256": "febece2a7bfc161d8f6dcd2303d5e3d61841926ece015225ba369795fe841c6b",
+        "mode": 420
+      },
+      "con-artist/references/python-audit-probes.md": {
+        "kind": "file",
+        "sha256": "782fa8eeab58ddcb3dc0a97192eb72321ab44f599ca64ee22addaa59819532d0",
+        "mode": 420
+      },
+      "con-artist/references/python-audit.md": {
+        "kind": "file",
+        "sha256": "169d5256100c205b28bbde9b6bf1e485a14275e4fd463a44d1bb091b9cddf8be",
+        "mode": 420
+      },
+      "con-artist/references/python-context.md": {
+        "kind": "file",
+        "sha256": "37a948dfb1ba1bd10335ad09671fba2e3a186b8cfde3d3a2c1d4d01712df7f68",
+        "mode": 420
+      },
+      "con-artist/scripts/audit.py": {
+        "kind": "file",
+        "sha256": "ddd7a5fc0afc2128b4419107928331dac4c5b45ae1707cfc0f9be2c87df4ce3a",
+        "mode": 420
+      },
+      "con-artist/scripts/context.py": {
+        "kind": "file",
+        "sha256": "42115f9607ff9c838df3f849a1d828e333253162bc6471b195cda17b2a86f37a",
+        "mode": 420
+      }
+    },
+    "resource_diagnostics": {
+      "changed_paths": []
+    },
+    "pre_collection_index": {
+      "status": "retained",
+      "file": "git-index.before-collection.bin",
+      "bytes": 297,
+      "mode": 420,
+      "sha256": "f905a018c6d0946129581fb86c35212713ab2fdfda8061eb2312986c4e1e4ebc",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    },
+    "pre_model_index": {
+      "status": "retained",
+      "file": "git-index.before-model.bin",
+      "bytes": 297,
+      "mode": 420,
+      "sha256": "f905a018c6d0946129581fb86c35212713ab2fdfda8061eb2312986c4e1e4ebc",
+      "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+    },
+    "index_comparison": {
+      "status": "observed",
+      "bytes_and_mode_unchanged": true,
+      "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+    }
+  }
+]

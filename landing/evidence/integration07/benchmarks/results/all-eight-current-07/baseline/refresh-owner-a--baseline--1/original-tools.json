@@ -1,0 +1,296 @@
+{
+  "session_id": "01a0e4ad-5178-7970-bc8c-bee57f98ec8f",
+  "source_bytes": 101771,
+  "source_sha256": "a79553ed2b06f1ba82dfc5e76b4157864e7255edbb34af9066031e25d14853b4",
+  "cli_events_sha256": "9d6cf3051e029deacf7866247b117b717c42c026e7f382b4c992906dbcf01b94",
+  "source_lines": 44,
+  "records": [
+    {
+      "line": 13,
+      "line_sha256": "e8f6e2d64554eb28842959f4c5d16136d7616e14d21e4a9fc56fdcea4638fa8b",
+      "record": {
+        "timestamp": "2026-09-27T21:02:44.819Z",
+        "ordinal": 12,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_014505292257eafb016ab98472ff1087d0bdbb31db90bf49b7",
+          "status": "completed",
+          "call_id": "call_vXHi3Br3S5lXws4ExtsWilup",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd; rg --files -g 'AGENTS.md' -g 'requirements.md' -g 'preview.py' -g '*test*' -g '*notes*' -g 'README*'\",\"max_output_tokens\":4000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4ad-51c7-7051-9dc2-201e37a1508f",
+            "create_time": 1790542960.999703
+          }
+        }
+      }
+    },
+    {
+      "line": 16,
+      "line_sha256": "852f35fff59b02bf764826a20a36d8b5df1dfde32ecdf4db98e051ae277a6768",
+      "record": {
+        "timestamp": "2026-09-27T21:02:44.960Z",
+        "ordinal": 15,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4ad-68e0-7d83-a9aa-b77b94155c67",
+          "call_id": "call_vXHi3Br3S5lXws4ExtsWilup",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"dff845\",\"wall_time_seconds\":0.000004834,\"exit_code\":0,\"original_token_count\":48,\"output\":\"<WORKSPACE>\\nnotes.txt\\nrequirements.md\\npreview.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4ad-51c7-7051-9dc2-201e37a1508f",
+            "create_time": 1790542964.960227
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 18,
+      "line_sha256": "9b2c3a9ea4844f016f9521958187351f15f37d8cd84c5d54f7b2bf2ba2bad417",
+      "record": {
+        "timestamp": "2026-09-27T21:02:48.098Z",
+        "ordinal": 17,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_014505292257eafb016ab98476793887d0b306eb98e4f71c47",
+          "status": "completed",
+          "call_id": "call_sbcbR5DCfdXZtIgOeWIqRn9y",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"ls -la; cat requirements.md preview.py notes.txt; git status --short\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4ad-51c7-7051-9dc2-201e37a1508f",
+            "create_time": 1790542965.345928
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "line_sha256": "a8f34a600ed28ec8360857f408bba88080f7c2aa7ff65f112ec204f348c5c92a",
+      "record": {
+        "timestamp": "2026-09-27T21:02:48.181Z",
+        "ordinal": 20,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4ad-7575-7291-ba23-6d0c09b62310",
+          "call_id": "call_sbcbR5DCfdXZtIgOeWIqRn9y",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"a2fc53\",\"wall_time_seconds\":0.000003625,\"exit_code\":0,\"original_token_count\":399,\"output\":\"total 24\\ndrwxr-xr-x@  6 gwonsungwan  staff  192 Sep 28 06:02 .\\ndrwxr-xr-x@  3 gwonsungwan  staff   96 Sep 28 06:02 ..\\ndrwxr-xr-x@ 10 gwonsungwan  staff  320 Sep 28 06:02 .git\\n-rw-r--r--@  1 gwonsungwan  staff   43 Sep 28 06:02 notes.txt\\n-rw-r--r--@  1 gwonsungwan  staff  464 Sep 28 06:02 preview.py\\n-rw-r--r--@  1 gwonsungwan  staff  719 Sep 28 06:02 requirements.md\\nEvery refresh must invoke its supplied fetch(key), even while another\\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\\nEach call returns its own exact fetched object or propagates its own exception.\\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\\nfailure or cancellation cannot clear pending while the latest is unresolved.\\nLatest settlement clears pending even if older calls remain running. Keep the prior\\nvalue during loading and on failure/cancellation. Instances are independent.\\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\\nclass Preview:\\n    def __init__(self):\\n        self.pending = False\\n        self.value = None\\n        self.generation = 0\\n\\n    async def refresh(self, key, fetch):\\n        self.generation += 1\\n        generation = self.generation\\n        self.pending = True\\n        try:\\n            value = await fetch(key)\\n            if generation == self.generation:\\n                self.value = value\\n            return value\\n        finally:\\n            self.pending = False\\nOwner draft: preserve this unrelated note.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4ad-51c7-7051-9dc2-201e37a1508f",
+            "create_time": 1790542968.181223
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 27,
+      "line_sha256": "8843be8f5bbb5ae133240bdfcfe04b35aa6ac638b6e60a01531c04b68c467216",
+      "record": {
+        "timestamp": "2026-09-27T21:04:16.278Z",
+        "ordinal": 26,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_014505292257eafb016ab984896ff487d0b7c825ca43d1dbce",
+          "status": "completed",
+          "call_id": "call_dB56Wsj6zUlY9cCenL8zMxMW",
+          "name": "exec",
+          "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: <WORKSPACE>/preview.py\\n@@\\n         finally:\\n-            self.pending = False\\n+            if generation == self.generation:\\n+                self.pending = False\\n*** Add File: <WORKSPACE>/test_preview.py\\n+import asyncio\\n+import unittest\\n+\\n+from preview import Preview\\n+\\n+\\n+TIMEOUT = 1\\n+\\n+\\n+class ControlledFetch:\\n+    \\\"\\\"\\\"A real callback whose completion is controlled by each test.\\\"\\\"\\\"\\n+\\n+    def __init__(self):\\n+        self.entered = asyncio.Event()\\n+        self.result = asyncio.get_running_loop().create_future()\\n+        self.keys = []\\n+\\n+    def __call__(self, key):\\n+        self.keys.append(key)\\n+        self.entered.set()\\n+        return self.result\\n+\\n+\\n+class PreviewTests(unittest.IsolatedAsyncioTestCase):\\n+    async def asyncSetUp(self):\\n+        self.tasks = []\\n+\\n+    async def asyncTearDown(self):\\n+        for task in self.tasks:\\n+            if not task.done():\\n+                task.cancel()\\n+        if self.tasks:\\n+            await asyncio.wait_for(\\n+                asyncio.gather(*self.tasks, return_exceptions=True), TIMEOUT\\n+            )\\n+\\n+    async def start(self, preview, key):\\n+        fetch = ControlledFetch()\\n+        task = asyncio.create_task(preview.refresh(key, fetch))\\n+        self.tasks.append(task)\\n+        await asyncio.wait_for(fetch.entered.wait(), TIMEOUT)\\n+        self.assertEqual(len(fetch.keys), 1)\\n+        self.assertIs(fetch.keys[0], key)\\n+        self.assertFalse(task.done())\\n+        return task, fetch\\n+\\n+    async def outcome(self, task):\\n+        done, _ = await asyncio.wait({task}, timeout=TIMEOUT)\\n+        self.assertIn(task, done, \\\"refresh did not settle\\\")\\n+        return task.result()\\n+\\n+    async def succeed(self, task, fetch, value):\\n+        fetch.result.set_result(value)\\n+        self.assertIs(await self.outcome(task), value)\\n+\\n+    async def reject(self, task, fetch, cancellation):\\n+        if cancellation:\\n+            task.cancel()\\n+            with self.assertRaises(asyncio.CancelledError):\\n+                await self.outcome(task)\\n+            self.assertTrue(task.cancelled())\\n+        else:\\n+            error = RuntimeError(\\\"controlled failure\\\")\\n+            fetch.result.set_exception(error)\\n+            with self.assertRaises(RuntimeError) as caught:\\n+                await self.outcome(task)\\n+            self.assertIs(caught.exception, error)\\n+\\n+    async def seeded(self):\\n+        preview = Preview()\\n+        self.assertFalse(preview.pending)\\n+        self.assertIsNone(preview.value)\\n+        prior = object()\\n+        task, fetch = await self.start(preview, object())\\n+        self.assertTrue(preview.pending)\\n+        self.assertIsNone(preview.value)\\n+        await self.succeed(task, fetch, prior)\\n+        self.assertFalse(preview.pending)\\n+        self.assertIs(preview.value, prior)\\n+        return preview, prior\\n+\\n+    async def test_success_in_both_completion_orders(self):\\n+        for latest_first in (False, True):\\n+            with self.subTest(latest_first=latest_first):\\n+                preview, prior = await self.seeded()\\n+                # Identical keys must still invoke both supplied callbacks.\\n+                key = object()\\n+                older, older_fetch = await self.start(preview, key)\\n+                latest, latest_fetch = await self.start(preview, key)\\n+                self.assertFalse(older.done())\\n+                self.assertTrue(preview.pending)\\n+                self.assertIs(preview.value, prior)\\n+                older_value, latest_value = object(), object()\\n+                if latest_first:\\n+                    await self.succeed(latest, latest_fetch, latest_value)\\n+                    self.assertFalse(preview.pending)\\n+                    self.assertIs(preview.value, latest_value)\\n+                    self.assertFalse(older.done())\\n+                    await self.succeed(older, older_fetch, older_value)\\n+                else:\\n+                    await self.succeed(older, older_fetch, older_value)\\n+                    self.assertTrue(preview.pending)\\n+                    self.assertIs(preview.value, prior)\\n+                    self.assertFalse(latest.done())\\n+                    await self.succeed(latest, latest_fetch, latest_value)\\n+                self.assertFalse(preview.pending)\\n+                self.assertIs(preview.value, latest_value)\\n+\\n+    async def test_earlier_failure_or_cancellation_keeps_latest_pending(self):\\n+        for cancellation in (False, True):\\n+            with self.subTest(cancellation=cancellation):\\n+                preview, prior = await self.seeded()\\n+                older, older_fetch = await self.start(preview, object())\\n+                latest, latest_fetch = await self.start(preview, object())\\n+                await self.reject(older, older_fetch, cancellation)\\n+                self.assertTrue(preview.pending)\\n+                self.assertIs(preview.value, prior)\\n+                self.assertFalse(latest.done())\\n+                value = object()\\n+                await self.succeed(latest, latest_fetch, value)\\n+                self.assertFalse(preview.pending)\\n+                self.assertIs(preview.value, value)\\n+\\n+    async def test_latest_failure_or_cancellation_retains_display_and_allows_retry(self):\\n+        for cancellation in (False, True):\\n+            with self.subTest(cancellation=cancellation):\\n+                preview, prior = await self.seeded()\\n+                older, older_fetch = await self.start(preview, object())\\n+                latest, latest_fetch = await self.start(preview, object())\\n+                await self.reject(latest, latest_fetch, cancellation)\\n+                self.assertFalse(preview.pending)\\n+                self.assertIs(preview.value, prior)\\n+                self.assertFalse(older.done())\\n+                retry, retry_fetch = await self.start(preview, object())\\n+                self.assertTrue(preview.pending)\\n+                self.assertIs(preview.value, prior)\\n+                await self.succeed(older, older_fetch, object())\\n+                self.assertTrue(preview.pending)\\n+                self.assertIs(preview.value, prior)\\n+                self.assertFalse(retry.done())\\n+                value = object()\\n+                await self.succeed(retry, retry_fetch, value)\\n+                self.assertFalse(preview.pending)\\n+                self.assertIs(preview.value, value)\\n+\\n+    async def test_synchronous_callback_failure_clears_pending_and_allows_retry(self):\\n+        preview, prior = await self.seeded()\\n+        older, older_fetch = await self.start(preview, object())\\n+        error, key = ValueError(\\\"synchronous failure\\\"), object()\\n+        calls = []\\n+\\n+        def fail(received):\\n+            calls.append(received)\\n+            self.assertTrue(preview.pending)\\n+            self.assertIs(preview.value, prior)\\n+            raise error\\n+\\n+        task = asyncio.create_task(preview.refresh(key, fail))\\n+        self.tasks.append(task)\\n+        with self.assertRaises(ValueError) as caught:\\n+            await self.outcome(task)\\n+        self.assertIs(caught.exception, error)\\n+        self.assertEqual(len(calls), 1)\\n+        self.assertIs(calls[0], key)\\n+        self.assertFalse(preview.pending)\\n+        self.assertIs(preview.value, prior)\\n+        self.assertFalse(older.done())\\n+        await self.succeed(older, older_fetch, object())\\n+        self.assertFalse(preview.pending)\\n+        self.assertIs(preview.value, prior)\\n+        retry, fetch = await self.start(preview, key)\\n+        self.assertTrue(preview.pending)\\n+        self.assertIs(preview.value, prior)\\n+        value = object()\\n+        await self.succeed(retry, fetch, value)\\n+        self.assertFalse(preview.pending)\\n+        self.assertIs(preview.value, value)\\n+\\n+    async def test_instances_have_independent_ownership_and_display(self):\\n+        first, first_prior = await self.seeded()\\n+        second, second_prior = await self.seeded()\\n+        first_task, first_fetch = await self.start(first, object())\\n+        second_old, second_old_fetch = await self.start(second, object())\\n+        second_new, second_new_fetch = await self.start(second, object())\\n+        first_value = object()\\n+        await self.succeed(first_task, first_fetch, first_value)\\n+        self.assertFalse(first.pending)\\n+        self.assertIs(first.value, first_value)\\n+        self.assertTrue(second.pending)\\n+        self.assertIs(second.value, second_prior)\\n+        first_retry, first_retry_fetch = await self.start(first, object())\\n+        await self.reject(second_new, second_new_fetch, cancellation=False)\\n+        self.assertFalse(second.pending)\\n+        self.assertIs(second.value, second_prior)\\n+        self.assertTrue(first.pending)\\n+        self.assertIs(first.value, first_value)\\n+        await self.succeed(second_old, second_old_fetch, object())\\n+        self.assertFalse(second.pending)\\n+        self.assertIs(second.value, second_prior)\\n+        self.assertTrue(first.pending)\\n+        await self.succeed(first_retry, first_retry_fetch, first_prior)\\n+        self.assertFalse(first.pending)\\n+        self.assertIs(first.value, first_prior)\\n+        self.assertIs(second.value, second_prior)\\n+\\n+\\n+if __name__ == \\\"__main__\\\":\\n+    unittest.main()\\n*** End Patch\"));\ntext(await tools.exec_command({cmd:\"python3 -B -m unittest discover -v\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4ad-51c7-7051-9dc2-201e37a1508f",
+            "create_time": 1790542972.420002
+          }
+        }
+      }
+    },
+    {
+      "line": 31,
+      "line_sha256": "a8f386caea0f487c26eb8ae886ec85ffba8537b49e9cd7aceb5a9a18e2761d7e",
+      "record": {
+        "timestamp": "2026-09-27T21:04:16.527Z",
+        "ordinal": 30,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4ae-ce8f-76e1-ba00-ffba5475fff8",
+          "call_id": "call_dB56Wsj6zUlY9cCenL8zMxMW",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.2 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"323954\",\"wall_time_seconds\":0.000003917,\"exit_code\":0,\"original_token_count\":212,\"output\":\"test_earlier_failure_or_cancellation_keeps_latest_pending (test_preview.PreviewTests.test_earlier_failure_or_cancellation_keeps_latest_pending) ... ok\\ntest_instances_have_independent_ownership_and_display (test_preview.PreviewTests.test_instances_have_independent_ownership_and_display) ... ok\\ntest_latest_failure_or_cancellation_retains_display_and_allows_retry (test_preview.PreviewTests.test_latest_failure_or_cancellation_retains_display_and_allows_retry) ... ok\\ntest_success_in_both_completion_orders (test_preview.PreviewTests.test_success_in_both_completion_orders) ... ok\\ntest_synchronous_callback_failure_clears_pending_and_allows_retry (test_preview.PreviewTests.test_synchronous_callback_failure_clears_pending_and_allows_retry) ... ok\\n\\n----------------------------------------------------------------------\\nRan 5 tests in 0.030s\\n\\nOK\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4ad-51c7-7051-9dc2-201e37a1508f",
+            "create_time": 1790543056.527
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 35,
+      "line_sha256": "4e8196493b039aadb3d4a673b9a9118fb2704dac85d613e2afdff71ee1b12445",
+      "record": {
+        "timestamp": "2026-09-27T21:04:19.590Z",
+        "ordinal": 34,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_014505292257eafb016ab984d2726087d09cce62188c742977",
+          "status": "completed",
+          "call_id": "call_9U32dGZGMJeOyWf6egIzL2Ba",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"git diff --check; git diff -- preview.py requirements.md notes.txt; git status --short\",\"max_output_tokens\":2000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4ad-51c7-7051-9dc2-201e37a1508f",
+            "create_time": 1790543056.964744
+          }
+        }
+      }
+    },
+    {
+      "line": 38,
+      "line_sha256": "9967466387561f1f0bd120c111ff272c195fa17b78a39825046628db8e9c8c65",
+      "record": {
+        "timestamp": "2026-09-27T21:04:19.718Z",
+        "ordinal": 37,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0e4ae-db06-7772-954e-477ad94441aa",
+          "call_id": "call_9U32dGZGMJeOyWf6egIzL2Ba",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"dffa8a\",\"wall_time_seconds\":0.000003333,\"exit_code\":0,\"original_token_count\":92,\"output\":\"diff --git a/preview.py b/preview.py\\nindex f56b4ff..2ce0584 100644\\n--- a/preview.py\\n+++ b/preview.py\\n@@ -14,4 +14,5 @@ class Preview:\\n                 self.value = value\\n             return value\\n         finally:\\n-            self.pending = False\\n+            if generation == self.generation:\\n+                self.pending = False\\n M preview.py\\n?? test_preview.py\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0e4ad-51c7-7051-9dc2-201e37a1508f",
+            "create_time": 1790543059.718787
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "command_output_candidates": [
+    {
+      "command_id": "item_1",
+      "cli_event_line": 5,
+      "status": "unmatched",
+      "candidates": []
+    },
+    {
+      "command_id": "item_2",
+      "cli_event_line": 7,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_sbcbR5DCfdXZtIgOeWIqRn9y",
+          "call_line": 18,
+          "call_line_sha256": "9b2c3a9ea4844f016f9521958187351f15f37d8cd84c5d54f7b2bf2ba2bad417",
+          "output_line": 21,
+          "output_line_sha256": "a8f34a600ed28ec8360857f408bba88080f7c2aa7ff65f112ec204f348c5c92a",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "917235530dd7150e2fdbb27b8422f5269d66f0b8f937b15359584bd6f0a888f3",
+          "output_chars": 1594,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_5",
+      "cli_event_line": 12,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_dB56Wsj6zUlY9cCenL8zMxMW",
+          "call_line": 27,
+          "call_line_sha256": "8843be8f5bbb5ae133240bdfcfe04b35aa6ac638b6e60a01531c04b68c467216",
+          "output_line": 31,
+          "output_line_sha256": "a8f386caea0f487c26eb8ae886ec85ffba8537b49e9cd7aceb5a9a18e2761d7e",
+          "output_block_index": 2,
+          "exit_code": 0,
+          "output_sha256": "75064eb30d641c149cd500efda4ce29ac451557a2d3ca506ea13df1bf950b391",
+          "output_chars": 845,
+          "relation": "equal"
+        }
+      ]
+    },
+    {
+      "command_id": "item_6",
+      "cli_event_line": 14,
+      "status": "single_candidate",
+      "candidates": [
+        {
+          "call_id": "call_9U32dGZGMJeOyWf6egIzL2Ba",
+          "call_line": 35,
+          "call_line_sha256": "4e8196493b039aadb3d4a673b9a9118fb2704dac85d613e2afdff71ee1b12445",
+          "output_line": 38,
+          "output_line_sha256": "9967466387561f1f0bd120c111ff272c195fa17b78a39825046628db8e9c8c65",
+          "output_block_index": 1,
+          "exit_code": 0,
+          "output_sha256": "9993a7d33e60577fb4a525f4446eee5b18ef41ad8d20c641c99d42656985df49",
+          "output_chars": 366,
+          "relation": "equal"
+        }
+      ]
+    }
+  ],
+  "command_output_candidate_limitation": "Candidates match unredacted output suffix and exit only, not command identity or complete stdout. Review the paired call input, order and any earlier chunks. Empty CLI output is never matched; ambiguous matches are never selected automatically.",
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

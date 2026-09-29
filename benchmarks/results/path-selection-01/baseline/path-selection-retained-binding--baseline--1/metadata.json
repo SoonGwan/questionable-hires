@@ -1,0 +1,76 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "path-selection-retained-binding",
+  "skill": "exorcist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "25ff20b5ce0177df8e43989841337b2903cd1fdf",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 112.912,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 97249,
+    "cached_input_tokens": 63232,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3223,
+    "reasoning_output_tokens": 444
+  },
+  "completed": true,
+  "allocated_workspace": "<TEMP>",
+  "prompt": "A client keeps returning the first project's settings after select_root;\na teammate suspects a cache. Diagnose the actual supplied client and loader,\nwithout modifying any supplied file. Run all supplied native tests with\npython3 -B -m unittest -v test_paths. Reproduce the incorrect result and retain\nnormal single-root/other-filename controls. Use a rerunnable local probe and JSON\ntrace to connect each requested root/filename, actual loader input, physical file\nread (or absence of a read), and returned value. Cover alpha\u2192beta\u2192alpha with one\nclient and a fresh beta client; do not replace the application with a simulation.\nIdentify a discriminating observation and explain the supported mechanism and\nsmallest corrective direction; diagnosis does not authorize implementation.\nDistinguish local evidence from unknown production behavior. Python 3 standard\nlibrary only; no installs, network, threads or external services. New probe/trace\nfiles are permitted inside this project. Keep all original files unchanged.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 15,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 756,
+    "mode": 420,
+    "sha256": "3552a6035b3ff6b4c278ea7d153cb64b8b9779cff5998560aebe2febb5749f67",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "pre_model_index": {
+    "status": "retained",
+    "file": "git-index.before-model.bin",
+    "bytes": 756,
+    "mode": 420,
+    "sha256": "3552a6035b3ff6b4c278ea7d153cb64b8b9779cff5998560aebe2febb5749f67",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "pre_model_project_files": {
+    "local_artifact": "project-files.before-model.json",
+    "sha256": "315d7bd691445fb71a177ff5e008802b9cc58ce76c2026839cb3c0eca8c3d494",
+    "excluded_prefixes": [
+      ".git",
+      ".agents/skills"
+    ],
+    "limitation": "Local regular-file bytes/modes and symlink targets before model execution; not directory metadata, an atomic snapshot, transient-change evidence, or an automatic preservation verdict. Raw inventory is not exported."
+  },
+  "index_comparison": {
+    "status": "observed",
+    "bytes_and_mode_unchanged": true,
+    "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+  }
+}

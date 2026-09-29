@@ -74,7 +74,12 @@ prove that every command in a shell chain succeeded. Compare the original
 before blaming the report pipeline. Inspect any intermediate events for the same
 item; do not concatenate repeated snapshots as though they were distinct chunks.
 
-If decisive output is absent from the original events too, mark that check's
+If CLI events are incomplete, inspect the matching persisted session with
+`extract_rollout_tools.py`. Its [output candidate index](COMMAND-OUTPUT-CANDIDATES-01.md)
+also locates short suffixes; compare the paired call, exit and chunks before using
+a candidate. A unique text match alone does not establish command identity or
+complete stdout. Keep the full extracted rollout in local-only storage.
+If decisive output is absent from retained original evidence, mark that check's
 execution evidence unknown. A later successful assertion can prove only the
 conditions it actually checks; a final `git status` or `git diff` cannot establish
 an earlier test's exit status. Keep a missing-evidence case in the results and

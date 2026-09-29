@@ -64,11 +64,14 @@ def inspect_capture(stdout, stderr):
             continue
         events.append(event)
     empty_outputs, event_errors, transcript_candidates, missing_summaries = [], [], [], []
-    node_missing_summaries = []
+    node_missing_summaries, item_errors = [], []
     for event in events:
         if event.get('type') in ('error', 'turn.failed'):
             event_errors.append(event.get('type'))
         item = event.get('item')
+        if (event.get('type') == 'item.completed' and isinstance(item, dict)
+                and item.get('type') == 'error'):
+            item_errors.append(dict(item_id=item.get('id'), message=item.get('message')))
         if (event.get('type') == 'item.completed' and isinstance(item, dict)
                 and item.get('type') == 'command_execution'):
             if not item.get('aggregated_output'):
@@ -103,11 +106,13 @@ def inspect_capture(stdout, stderr):
     return events, dict(
         invalid_json_lines=invalid_lines, non_object_json_lines=non_objects,
         empty_command_output_items=empty_outputs, error_event_types=event_errors,
+        item_error_review_candidates=item_errors,
         unittest_transcript_review_candidates=transcript_candidates,
         unittest_missing_summary_review_candidates=missing_summaries,
         node_missing_summary_review_candidates=node_missing_summaries,
         patch_rejection_count=stderr.lower().count('patch rejected'),
         limitation='Empty command output may be legitimate. Nonempty output may still be incomplete. '
+                   'Item errors may be recoverable; review actual execution. '
                    'These diagnostics neither prove full tool-output capture nor score task success.')
 
 
@@ -207,19 +212,21 @@ def prepare_repository(source, workspace):
     return command(['git', 'rev-parse', 'HEAD'], workspace)
 
 
-def resource_manifest(root):
-    """Inventory installed bytes/modes without following symlink targets."""
+def resource_manifest(root, *, exclude=()):
+    """Inventory regular-file bytes/modes and links without reading link targets."""
     for candidate in (root.parent, root):
         if candidate.is_symlink():
             return {'.': dict(kind='symlink-root', target=os.readlink(candidate))}
     manifest = {}
     for path in sorted(root.rglob('*')):
         name = path.relative_to(root).as_posix()
+        if any(name == prefix or name.startswith(prefix + '/') for prefix in exclude):
+            continue
         if path.is_symlink():
             manifest[name] = dict(kind='symlink', target=os.readlink(path))
         elif path.is_file():
             manifest[name] = dict(kind='file', sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
-                                  mode=path.stat().st_mode & 0o777)
+                                  mode=path.stat().st_mode & 0o7777)
     return manifest
 
 
@@ -232,7 +239,7 @@ def resource_digest(root):
 
 def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
              skills_root=None, project_source=None, launcher=None,
-             workspace_root=None, persist_session=False):
+             workspace_root=None, persist_session=False, launcher_execution='external-container'):
     if project_source and case.get('working_files'):
         raise ValueError('working_files is only supported for authored fixtures')
     skills_root = skills_root or ROOT / "skills"
@@ -289,9 +296,12 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
     execution = 'host-workspace-write'
     if launcher:
         args = launcher(workspace, args)
-        execution = 'external-container'
+        execution = launcher_execution
     initial_index = preserve_collector_index(workspace, cell, 'before-model')
     (cell / 'git-index.before-model.json').write_text(json.dumps(initial_index, indent=2) + '\n')
+    initial_files = json.dumps(resource_manifest(workspace, exclude=('.git', '.agents/skills')),
+                              indent=2, sort_keys=True) + '\n'
+    (cell / 'project-files.before-model.json').write_text(initial_files)
     started = time.monotonic()
     process = subprocess.Popen(args, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
     timed_out = False
@@ -359,6 +369,11 @@ def run_cell(case, arm, repeat, output, model, effort, timeout, disabled,
             "resource_diagnostics": resource_diagnostics}
     meta['pre_collection_index'] = collector_index
     meta['pre_model_index'] = initial_index
+    meta['pre_model_project_files'] = dict(
+        local_artifact='project-files.before-model.json',
+        sha256=hashlib.sha256(initial_files.encode()).hexdigest(),
+        excluded_prefixes=['.git', '.agents/skills'],
+        limitation='Local regular-file bytes/modes and symlink targets before model execution; not directory metadata, an atomic snapshot, transient-change evidence, or an automatic preservation verdict. Raw inventory is not exported.')
     comparable = initial_index['status'] == collector_index['status'] == 'retained'
     meta['index_comparison'] = dict(
         status='observed' if comparable else 'unknown',

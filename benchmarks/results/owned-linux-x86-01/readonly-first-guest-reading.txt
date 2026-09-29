@@ -1,0 +1,49 @@
+[    0.053424] hv_vmbus: registering driver hyperv_keyboard
+[    0.054244] rtc-pl031 20050000.pl031: registered as rtc0
+[    0.054292] rtc-pl031 20050000.pl031: setting system clock to 2026-09-27T05:19:21 UTC (1790486361)
+[    0.054511] NET: Registered PF_INET6 protocol family
+[    0.054775] Segment Routing with IPv6
+[    0.054821] In-situ OAM (IOAM) with IPv6
+[    0.059313] registered taskstats version 1
+[    0.059416] Loading compiled-in X.509 certificates
+[    0.107736] Freeing initrd memory: 8708K
+[    0.112174] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    0.113178] Demotion targets for Node 0: null
+[    0.113318] Key type .fscrypt registered
+[    0.113347] Key type fscrypt-provisioning registered
+[    0.115313] clk: Disabling unused clocks
+[    0.115350] PM: genpd: Disabling unused power domains
+[    0.115582] Freeing unused kernel memory: 1920K
+[    0.115678] Run /bin/sh as init process
+/bin/sh: can't access tty; job control turned off
+~ # [6n/bin/busybox mount -t proc proc /proc
+~ # /bin/busybox mount -t sysfs sysfs /sys
+~ # /bin/busybox modprobe virtiofs
+[    3.141608] fuse: init (API version 7.41)
+~ # /bin/busybox mkdir -p /rosetta /fixture
+~ # /bin/busybox mount -t virtiofs rosetta /rosetta
+~ # /bin/busybox mount -t virtiofs fixture /fixture
+~ # /bin/busybox uname -a
+Linux (none) 6.12.110-0-virt #1-Alpine SMP PREEMPT_DYNAMIC 2026-09-14 14:01:22 aarch64 Linux
+~ # /bin/busybox uname -m
+aarch64
+~ # /rosetta/rosetta /fixture/busybox.static uname -m
+[    3.925203] random: crng init done
+x86_64
+~ # echo QH_X86_UNAME_EXIT=$?
+QH_X86_UNAME_EXIT=0
+~ # /rosetta/rosetta /fixture/busybox.static sh -c 'echo QH_X86_WORKLOAD_OK; ech
+
+o $((6 * 7))'
+QH_X86_WORKLOAD_OK
+42
+~ # echo QH_X86_WORKLOAD_EXIT=$?
+QH_X86_WORKLOAD_EXIT=0
+~ # /bin/busybox sh -c 'echo forbidden > /fixture/should-not-write'
+sh: can't create /fixture/should-not-write: Operation not permitted
+~ # echo QH_READONLY_WRITE_EXIT=$?
+QH_READONLY_WRITE_EXIT=1
+~ # /bin/busybox poweroff -f
+[    3.940525] reboot: Power down
+QH_VM_STARTED
+QH_VM_GUEST_STOPPED

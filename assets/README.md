@@ -29,3 +29,10 @@ helper demo are in [the sharing guide](../docs/SHARE.md).
 `team-characters.png` is the approved text-free, two-row doodle cast, displayed immediately below `team.svg` in both READMEs. Keep the sparse black outlines, off-white background, blue accents, deadpan faces, and simple signature props. The deliberately rough character drawing complements the restrained title banner.
 
 Generated with the built-in image-generation tool. The reusable personal skill is `lazy-doodle`; it includes the approved image as its style reference.
+
+`team-characters.webp` is a lossless delivery encoding of that PNG, not new artwork.
+Its decoded RGBA pixels, dimensions and color profile must match the original.
+`team-characters-webp.json` records source/output/pixel hashes and encoder versions.
+To regenerate or verify, use `python3 scripts/encode_landing_artwork.py` or append
+`--check` in an environment with Pillow 11.3.0 and libwebp 1.5.0. The normal static
+builder needs neither dependency and rejects mismatched source/derivative hashes.

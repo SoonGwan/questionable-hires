@@ -1,0 +1,153 @@
+{
+  "date": "2026-09-27",
+  "parent": "cb896543",
+  "model_calls": 0,
+  "selected_names": [
+    "Retry.__init__",
+    "Retry.is_retry",
+    "Retry._is_method_retryable",
+    "Retry.increment",
+    "Retry.is_exhausted"
+  ],
+  "source_sha256": "6e3fb6614a9b9712e5bfc4c78397f1c30f83339e1709b8e0657210ef55e2a026",
+  "source_bytes": 18459,
+  "source_bytes_mode_preserved": true,
+  "controls": [
+    {
+      "mode": "file",
+      "exit_code": 0,
+      "report": {
+        "complete": true,
+        "source_sha256": "6e3fb6614a9b9712e5bfc4c78397f1c30f83339e1709b8e0657210ef55e2a026",
+        "source_bytes": 18459,
+        "module_future_features": [
+          "annotations"
+        ],
+        "regions": [
+          {
+            "name": "Retry.__init__",
+            "selected_by": [
+              "Retry.__init__"
+            ],
+            "start_line": 202,
+            "end_line": 245,
+            "text": "    def __init__(\n        self,\n        total: bool | int | None = 10,\n        connect: int | None = None,\n        read: int | None = None,\n        redirect: bool | int | None = None,\n        status: int | None = None,\n        other: int | None = None,\n        allowed_methods: typing.Collection[str] | None = DEFAULT_ALLOWED_METHODS,\n        status_forcelist: typing.Collection[int] | None = None,\n        backoff_factor: float = 0,\n        backoff_max: float = DEFAULT_BACKOFF_MAX,\n        raise_on_redirect: bool = True,\n        raise_on_status: bool = True,\n        history: tuple[RequestHistory, ...] | None = None,\n        respect_retry_after_header: bool = True,\n        remove_headers_on_redirect: typing.Collection[\n            str\n        ] = DEFAULT_REMOVE_HEADERS_ON_REDIRECT,\n        backoff_jitter: float = 0.0,\n    ) -> None:\n        self.total = total\n        self.connect = connect\n        self.read = read\n        self.status = status\n        self.other = other\n\n        if redirect is False or total is False:\n            redirect = 0\n            raise_on_redirect = False\n\n        self.redirect = redirect\n        self.status_forcelist = status_forcelist or set()\n        self.allowed_methods = allowed_methods\n        self.backoff_factor = backoff_factor\n        self.backoff_max = backoff_max\n        self.raise_on_redirect = raise_on_redirect\n        self.raise_on_status = raise_on_status\n        self.history = history or ()\n        self.respect_retry_after_header = respect_retry_after_header\n        self.remove_headers_on_redirect = frozenset(\n            h.lower() for h in remove_headers_on_redirect\n        )\n        self.backoff_jitter = backoff_jitter\n",
+            "truncated": false
+          },
+          {
+            "name": "Retry._is_method_retryable",
+            "selected_by": [
+              "Retry._is_method_retryable"
+            ],
+            "start_line": 379,
+            "end_line": 385,
+            "text": "    def _is_method_retryable(self, method: str) -> bool:\n        \"\"\"Checks if a given HTTP method should be retried upon, depending if\n        it is included in the allowed_methods\n        \"\"\"\n        if self.allowed_methods and method.upper() not in self.allowed_methods:\n            return False\n        return True\n",
+            "truncated": false
+          },
+          {
+            "name": "Retry.is_retry",
+            "selected_by": [
+              "Retry.is_retry"
+            ],
+            "start_line": 387,
+            "end_line": 407,
+            "text": "    def is_retry(\n        self, method: str, status_code: int, has_retry_after: bool = False\n    ) -> bool:\n        \"\"\"Is this method/status code retryable? (Based on allowlists and control\n        variables such as the number of total retries to allow, whether to\n        respect the Retry-After header, whether this header is present, and\n        whether the returned status code is on the list of status codes to\n        be retried upon on the presence of the aforementioned header)\n        \"\"\"\n        if not self._is_method_retryable(method):\n            return False\n\n        if self.status_forcelist and status_code in self.status_forcelist:\n            return True\n\n        return bool(\n            self.total\n            and self.respect_retry_after_header\n            and has_retry_after\n            and (status_code in self.RETRY_AFTER_STATUS_CODES)\n        )\n",
+            "truncated": false
+          },
+          {
+            "name": "Retry.is_exhausted",
+            "selected_by": [
+              "Retry.is_exhausted"
+            ],
+            "start_line": 409,
+            "end_line": 426,
+            "text": "    def is_exhausted(self) -> bool:\n        \"\"\"Are we out of retries?\"\"\"\n        retry_counts = [\n            x\n            for x in (\n                self.total,\n                self.connect,\n                self.read,\n                self.redirect,\n                self.status,\n                self.other,\n            )\n            if x\n        ]\n        if not retry_counts:\n            return False\n\n        return min(retry_counts) < 0\n",
+            "truncated": false
+          },
+          {
+            "name": "Retry.increment",
+            "selected_by": [
+              "Retry.increment"
+            ],
+            "start_line": 428,
+            "end_line": 523,
+            "text": "    def increment(\n        self,\n        method: str | None = None,\n        url: str | None = None,\n        response: BaseHTTPResponse | None = None,\n        error: Exception | None = None,\n        _pool: ConnectionPool | None = None,\n        _stacktrace: TracebackType | None = None,\n    ) -> Self:\n        \"\"\"Return a new Retry object with incremented retry counters.\n\n        :param response: A response object, or None, if the server did not\n            return a response.\n        :type response: :class:`~urllib3.response.BaseHTTPResponse`\n        :param Exception error: An error encountered during the request, or\n            None if the response was received successfully.\n\n        :return: A new ``Retry`` object.\n        \"\"\"\n        if self.total is False and error:\n            # Disabled, indicate to re-raise the error.\n            raise reraise(type(error), error, _stacktrace)\n\n        total = self.total\n        if total is not None:\n            total -= 1\n\n        connect = self.connect\n        read = self.read\n        redirect = self.redirect\n        status_count = self.status\n        other = self.other\n        cause = \"unknown\"\n        status = None\n        redirect_location = None\n\n        if error and self._is_connection_error(error):\n            # Connect retry?\n            if connect is False:\n                raise reraise(type(error), error, _stacktrace)\n            elif connect is not None:\n                connect -= 1\n\n        elif error and self._is_read_error(error):\n            # Read retry?\n            if read is False or method is None or not self._is_method_retryable(method):\n                raise reraise(type(error), error, _stacktrace)\n            elif read is not None:\n                read -= 1\n\n        elif error:\n            # Other retry?\n            if other is not None:\n                other -= 1\n\n        elif response and response.get_redirect_location():\n            # Redirect retry?\n            if redirect is not None:\n                redirect -= 1\n            cause = \"too many redirects\"\n            response_redirect_location = response.get_redirect_location()\n            if response_redirect_location:\n                redirect_location = response_redirect_location\n            status = response.status\n\n        else:\n            # Incrementing because of a server error like a 500 in\n            # status_forcelist and the given method is in the allowed_methods\n            cause = ResponseError.GENERIC_ERROR\n            if response and response.status:\n                if status_count is not None:\n                    status_count -= 1\n                cause = ResponseError.SPECIFIC_ERROR.format(status_code=response.status)\n                status = response.status\n\n        history = self.history + (\n            RequestHistory(method, url, error, status, redirect_location),\n        )\n\n        new_retry = self.new(\n            total=total,\n            connect=connect,\n            read=read,\n            redirect=redirect,\n            status=status_count,\n            other=other,\n            history=history,\n        )\n\n        if new_retry.is_exhausted():\n            reason = error or ResponseError(cause)\n            raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]\n\n        log.debug(\"Incremented Retry for (url='%s'): %r\", url, new_retry)\n\n        return new_retry\n",
+            "truncated": false
+          }
+        ],
+        "missing_names": [],
+        "limitation": "Static excerpts, not executable replacements or proof of runtime binding, origin, or absence of relevant surrounding code. Hash identifies bytes read from input_path, not a Git revision or atomic snapshot.",
+        "input_path": "<owned-upstream>/src/urllib3/util/retry.py"
+      },
+      "stdout_bytes": 8031
+    },
+    {
+      "mode": "stdin",
+      "exit_code": 0,
+      "report": {
+        "complete": true,
+        "source_sha256": "6e3fb6614a9b9712e5bfc4c78397f1c30f83339e1709b8e0657210ef55e2a026",
+        "source_bytes": 18459,
+        "module_future_features": [
+          "annotations"
+        ],
+        "regions": [
+          {
+            "name": "Retry.__init__",
+            "selected_by": [
+              "Retry.__init__"
+            ],
+            "start_line": 202,
+            "end_line": 245,
+            "text": "    def __init__(\n        self,\n        total: bool | int | None = 10,\n        connect: int | None = None,\n        read: int | None = None,\n        redirect: bool | int | None = None,\n        status: int | None = None,\n        other: int | None = None,\n        allowed_methods: typing.Collection[str] | None = DEFAULT_ALLOWED_METHODS,\n        status_forcelist: typing.Collection[int] | None = None,\n        backoff_factor: float = 0,\n        backoff_max: float = DEFAULT_BACKOFF_MAX,\n        raise_on_redirect: bool = True,\n        raise_on_status: bool = True,\n        history: tuple[RequestHistory, ...] | None = None,\n        respect_retry_after_header: bool = True,\n        remove_headers_on_redirect: typing.Collection[\n            str\n        ] = DEFAULT_REMOVE_HEADERS_ON_REDIRECT,\n        backoff_jitter: float = 0.0,\n    ) -> None:\n        self.total = total\n        self.connect = connect\n        self.read = read\n        self.status = status\n        self.other = other\n\n        if redirect is False or total is False:\n            redirect = 0\n            raise_on_redirect = False\n\n        self.redirect = redirect\n        self.status_forcelist = status_forcelist or set()\n        self.allowed_methods = allowed_methods\n        self.backoff_factor = backoff_factor\n        self.backoff_max = backoff_max\n        self.raise_on_redirect = raise_on_redirect\n        self.raise_on_status = raise_on_status\n        self.history = history or ()\n        self.respect_retry_after_header = respect_retry_after_header\n        self.remove_headers_on_redirect = frozenset(\n            h.lower() for h in remove_headers_on_redirect\n        )\n        self.backoff_jitter = backoff_jitter\n",
+            "truncated": false
+          },
+          {
+            "name": "Retry._is_method_retryable",
+            "selected_by": [
+              "Retry._is_method_retryable"
+            ],
+            "start_line": 379,
+            "end_line": 385,
+            "text": "    def _is_method_retryable(self, method: str) -> bool:\n        \"\"\"Checks if a given HTTP method should be retried upon, depending if\n        it is included in the allowed_methods\n        \"\"\"\n        if self.allowed_methods and method.upper() not in self.allowed_methods:\n            return False\n        return True\n",
+            "truncated": false
+          },
+          {
+            "name": "Retry.is_retry",
+            "selected_by": [
+              "Retry.is_retry"
+            ],
+            "start_line": 387,
+            "end_line": 407,
+            "text": "    def is_retry(\n        self, method: str, status_code: int, has_retry_after: bool = False\n    ) -> bool:\n        \"\"\"Is this method/status code retryable? (Based on allowlists and control\n        variables such as the number of total retries to allow, whether to\n        respect the Retry-After header, whether this header is present, and\n        whether the returned status code is on the list of status codes to\n        be retried upon on the presence of the aforementioned header)\n        \"\"\"\n        if not self._is_method_retryable(method):\n            return False\n\n        if self.status_forcelist and status_code in self.status_forcelist:\n            return True\n\n        return bool(\n            self.total\n            and self.respect_retry_after_header\n            and has_retry_after\n            and (status_code in self.RETRY_AFTER_STATUS_CODES)\n        )\n",
+            "truncated": false
+          },
+          {
+            "name": "Retry.is_exhausted",
+            "selected_by": [
+              "Retry.is_exhausted"
+            ],
+            "start_line": 409,
+            "end_line": 426,
+            "text": "    def is_exhausted(self) -> bool:\n        \"\"\"Are we out of retries?\"\"\"\n        retry_counts = [\n            x\n            for x in (\n                self.total,\n                self.connect,\n                self.read,\n                self.redirect,\n                self.status,\n                self.other,\n            )\n            if x\n        ]\n        if not retry_counts:\n            return False\n\n        return min(retry_counts) < 0\n",
+            "truncated": false
+          },
+          {
+            "name": "Retry.increment",
+            "selected_by": [
+              "Retry.increment"
+            ],
+            "start_line": 428,
+            "end_line": 523,
+            "text": "    def increment(\n        self,\n        method: str | None = None,\n        url: str | None = None,\n        response: BaseHTTPResponse | None = None,\n        error: Exception | None = None,\n        _pool: ConnectionPool | None = None,\n        _stacktrace: TracebackType | None = None,\n    ) -> Self:\n        \"\"\"Return a new Retry object with incremented retry counters.\n\n        :param response: A response object, or None, if the server did not\n            return a response.\n        :type response: :class:`~urllib3.response.BaseHTTPResponse`\n        :param Exception error: An error encountered during the request, or\n            None if the response was received successfully.\n\n        :return: A new ``Retry`` object.\n        \"\"\"\n        if self.total is False and error:\n            # Disabled, indicate to re-raise the error.\n            raise reraise(type(error), error, _stacktrace)\n\n        total = self.total\n        if total is not None:\n            total -= 1\n\n        connect = self.connect\n        read = self.read\n        redirect = self.redirect\n        status_count = self.status\n        other = self.other\n        cause = \"unknown\"\n        status = None\n        redirect_location = None\n\n        if error and self._is_connection_error(error):\n            # Connect retry?\n            if connect is False:\n                raise reraise(type(error), error, _stacktrace)\n            elif connect is not None:\n                connect -= 1\n\n        elif error and self._is_read_error(error):\n            # Read retry?\n            if read is False or method is None or not self._is_method_retryable(method):\n                raise reraise(type(error), error, _stacktrace)\n            elif read is not None:\n                read -= 1\n\n        elif error:\n            # Other retry?\n            if other is not None:\n                other -= 1\n\n        elif response and response.get_redirect_location():\n            # Redirect retry?\n            if redirect is not None:\n                redirect -= 1\n            cause = \"too many redirects\"\n            response_redirect_location = response.get_redirect_location()\n            if response_redirect_location:\n                redirect_location = response_redirect_location\n            status = response.status\n\n        else:\n            # Incrementing because of a server error like a 500 in\n            # status_forcelist and the given method is in the allowed_methods\n            cause = ResponseError.GENERIC_ERROR\n            if response and response.status:\n                if status_count is not None:\n                    status_count -= 1\n                cause = ResponseError.SPECIFIC_ERROR.format(status_code=response.status)\n                status = response.status\n\n        history = self.history + (\n            RequestHistory(method, url, error, status, redirect_location),\n        )\n\n        new_retry = self.new(\n            total=total,\n            connect=connect,\n            read=read,\n            redirect=redirect,\n            status=status_count,\n            other=other,\n            history=history,\n        )\n\n        if new_retry.is_exhausted():\n            reason = error or ResponseError(cause)\n            raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]\n\n        log.debug(\"Incremented Retry for (url='%s'): %r\", url, new_retry)\n\n        return new_retry\n",
+            "truncated": false
+          }
+        ],
+        "missing_names": [],
+        "limitation": "Static excerpts, not executable replacements or proof of runtime binding, origin, or absence of relevant surrounding code. Hash identifies stdin, not a Git revision."
+      },
+      "stdout_bytes": 7908
+    }
+  ],
+  "limitation": "Actual bounded static excerpt CLI, not cold package execution, complete caller/contract context or measured model savings."
+}

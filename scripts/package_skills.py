@@ -18,7 +18,7 @@ def package(destination):
     skills = ROOT / 'skills'
     if skills.is_symlink():
         raise ValueError('Linked skill root is unsupported')
-    paths = [ROOT / 'LICENSE', ROOT / 'scripts/install.py']
+    paths = [ROOT / 'LICENSE', ROOT / 'scripts/install.py', ROOT / 'docs/INSTALL-SNAPSHOT.md']
     for folder in sorted(skills.iterdir()):
         if folder.is_symlink():
             raise ValueError('Linked skill directory is unsupported: ' + folder.name)
@@ -32,7 +32,7 @@ def package(destination):
                 raise ValueError('Linked or special resource is unsupported: ' + str(relative))
             if path.is_file():
                 paths.append(path)
-    if len(paths) == 2:
+    if len(paths) == 3:
         raise ValueError('No skills found')
     if skills.resolve() in destination.resolve().parents or (ROOT / 'scripts').resolve() in destination.resolve().parents:
         raise ValueError('Archive output must be outside source skills/scripts')
@@ -43,7 +43,11 @@ def package(destination):
         mode = path.stat().st_mode
         if not stat.S_ISREG(mode):
             raise ValueError('Expected regular source file: ' + str(path))
-        members[path.relative_to(ROOT).as_posix()] = (path.read_bytes(), stat.S_IMODE(mode))
+        # Git preserves the owner executable bit, not checkout/umask write bits.
+        # Use portable distribution permissions so source archives and clones
+        # produce identical bytes, without propagating special permission bits.
+        distribution_mode = 0o755 if mode & stat.S_IXUSR else 0o644
+        members[path.relative_to(ROOT).as_posix()] = (path.read_bytes(), distribution_mode)
     manifest = {name: {'sha256': hashlib.sha256(data).hexdigest(), 'mode': mode}
                 for name, (data, mode) in sorted(members.items())}
     members['CONTENTS.json'] = ((json.dumps(manifest, indent=2, sort_keys=True) + '\n').encode(), 0o644)

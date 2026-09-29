@@ -1,0 +1,67 @@
+{
+  "limit_detected": false,
+  "attempted": true,
+  "case": "dispatch-contract-multiple",
+  "skill": "con-artist",
+  "arm": "baseline",
+  "repeat": 1,
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "base_commit": "d524d0dd58563fbc25972883e5ba73dc480897f0",
+  "skill_sha256": null,
+  "skill_resources_sha256": null,
+  "elapsed_seconds": 76.586,
+  "exit_code": 0,
+  "timed_out": false,
+  "usage": {
+    "input_tokens": 64429,
+    "cached_input_tokens": 53504,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2297,
+    "reasoning_output_tokens": 384
+  },
+  "completed": true,
+  "allocated_workspace": "<WORKSPACE>",
+  "prompt": "Audit this application's dispatch tests for the isolated faults listed below.\nContract: handlers execute in registration order, each receives an independent\npayload value and caller state stays unchanged. Successful return values are\ncollected in order. A ValueError stops dispatch; its type and message reach the\ncaller and later handlers do not run. Review the actual implementation and tests.\nExecute the original relevant native unittest checks against correct and each\nindependent faulty implementation in disposable project-local copies. Never\ncombine faults. Identify detecting assertions or coverage gaps. If coverage is\nmissing, verify the same focused additional regression assertions against correct\nand faulty code, including nearby successful-dispatch behavior. Setup/collection\nfailures are not mutation detection. Confirm dispatch is loaded from the actual\nvariant inside the native test process. Reuse an unchanged correct result where\nvalid and label reuse. Preserve all source/tests, Git HEAD/index and installed\nresources; remove owned scratch even after failure. Deliver decisive commands,\ncounts, exits and findings without retaining a report/harness. No production fix,\nnetwork, dependency installs, Git changes or publication. Use the supplied Python\nwith -B and python -B -m unittest; do not delegate.\nPreinstalled Python: /opt/homebrew/opt/python@3.11/bin/python3.11\nFaults:\nswallowed-error: in dispatch.py replace exactly '            raise ValueError(str(error)) from error' with '            results.append(None)'.\nreversed-handlers: in dispatch.py replace exactly '    for handler in handlers:' with '    for handler in reversed(handlers):'.\nshared-payload: in dispatch.py replace exactly 'handler(deepcopy(payload))' with 'handler(payload)'.\n\nWork only inside this synthetic project. Do not use external services or other installed skills. Do not delegate.",
+  "personal_skill_disable_requests": 15,
+  "personal_skill_disable_verification": "not checked; inspect recorded initial context separately",
+  "execution": "host-workspace-write",
+  "session_persistence_requested": true,
+  "capture_diagnostics": {
+    "invalid_json_lines": [],
+    "non_object_json_lines": [],
+    "empty_command_output_items": [],
+    "error_event_types": [],
+    "unittest_transcript_review_candidates": [],
+    "unittest_missing_summary_review_candidates": [],
+    "node_missing_summary_review_candidates": [],
+    "patch_rejection_count": 0,
+    "limitation": "Empty command output may be legitimate. Nonempty output may still be incomplete. These diagnostics neither prove full tool-output capture nor score task success."
+  },
+  "installed_resources_before": {},
+  "installed_resources_after": {},
+  "resource_diagnostics": {
+    "changed_paths": []
+  },
+  "pre_collection_index": {
+    "status": "retained",
+    "file": "git-index.before-collection.bin",
+    "bytes": 297,
+    "mode": 420,
+    "sha256": "099c423ca820db9d7378112bb3f1b8a3c8486441f63daf265398b38510912392",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "pre_model_index": {
+    "status": "retained",
+    "file": "git-index.before-model.bin",
+    "bytes": 297,
+    "mode": 420,
+    "sha256": "099c423ca820db9d7378112bb3f1b8a3c8486441f63daf265398b38510912392",
+    "artifact_scope": "Local raw artifact; binary index is not included by exporter"
+  },
+  "index_comparison": {
+    "status": "observed",
+    "bytes_and_mode_unchanged": true,
+    "limitation": "Before-model versus before-collector byte/mode identity only; not semantic index equality, all Git metadata, or transient-change evidence. Index refresh may change bytes without changing staged content."
+  }
+}

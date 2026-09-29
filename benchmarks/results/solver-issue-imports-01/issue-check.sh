@@ -1,0 +1,11 @@
+#!/bin/sh
+set -u
+if LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /rosetta/rosetta /runtime/env/bin/python3.9 -I -B /issue-import.py /solver/psf__requests-3362 requests; then /bin/busybox echo QH_IMPORT_PASS_psf__requests-3362; else /bin/busybox echo QH_IMPORT_FAIL_psf__requests-3362; fi
+if LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /rosetta/rosetta /runtime/env/bin/python3.9 -I -B /issue-import.py /solver/psf__requests-863 requests; then /bin/busybox echo QH_IMPORT_PASS_psf__requests-863; else /bin/busybox echo QH_IMPORT_FAIL_psf__requests-863; fi
+if LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /rosetta/rosetta /runtime/env/bin/python3.9 -I -B /issue-import.py /solver/psf__requests-1963 requests; then /bin/busybox echo QH_IMPORT_PASS_psf__requests-1963; else /bin/busybox echo QH_IMPORT_FAIL_psf__requests-1963; fi
+if LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /rosetta/rosetta /runtime/env/bin/python3.9 -I -B /issue-import.py /solver/psf__requests-2674 requests; then /bin/busybox echo QH_IMPORT_PASS_psf__requests-2674; else /bin/busybox echo QH_IMPORT_FAIL_psf__requests-2674; fi
+if LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /rosetta/rosetta /runtime/env/bin/python3.9 -I -B /issue-import.py /solver/pytest-dev__pytest-5221 pytest; then /bin/busybox echo QH_IMPORT_PASS_pytest-dev__pytest-5221; else /bin/busybox echo QH_IMPORT_FAIL_pytest-dev__pytest-5221; fi
+if LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /rosetta/rosetta /runtime/env/bin/python3.9 -I -B /issue-import.py /solver/pytest-dev__pytest-5103 pytest; then /bin/busybox echo QH_IMPORT_PASS_pytest-dev__pytest-5103; else /bin/busybox echo QH_IMPORT_FAIL_pytest-dev__pytest-5103; fi
+if LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /rosetta/rosetta /runtime/env/bin/python3.9 -I -B /issue-import.py /solver/pytest-dev__pytest-6116 pytest; then /bin/busybox echo QH_IMPORT_PASS_pytest-dev__pytest-6116; else /bin/busybox echo QH_IMPORT_FAIL_pytest-dev__pytest-6116; fi
+if LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /rosetta/rosetta /runtime/env/bin/python3.9 -I -B /issue-import.py /solver/pytest-dev__pytest-11143 pytest; then /bin/busybox echo QH_IMPORT_PASS_pytest-dev__pytest-11143; else /bin/busybox echo QH_IMPORT_FAIL_pytest-dev__pytest-11143; fi
+/bin/busybox echo QH_ISSUE_IMPORTS_COMPLETE

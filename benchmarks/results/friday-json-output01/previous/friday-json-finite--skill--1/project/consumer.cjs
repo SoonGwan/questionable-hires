@@ -1,0 +1,16 @@
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const actual = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const expected = JSON.parse(fs.readFileSync('expected.json', 'utf8'));
+assert.equal(actual.complete, true, 'matrix complete');
+assert.equal(actual.phases.length, 1, 'one phase');
+const phase = actual.phases[0];
+assert.equal(phase.name, 'observed');
+assert.deepEqual(Object.keys(phase.checks).sort(), ['missing', 'values']);
+assert.equal(phase.checks.values.ok, true);
+assert.equal(phase.checks.values.truncated, false);
+assert.deepEqual(phase.checks.values.columns, ['number', 'number', 'finite', 'binary', 'text', 'empty']);
+assert.deepEqual(phase.checks.values.rows, [expected], 'all value cells');
+assert.equal(phase.checks.missing.ok, false, 'failed reader stays failed');
+assert.match(phase.checks.missing.error, /no such table: absent/);
+console.log('consumer assertions passed: values, duplicate columns, failed reader');

@@ -33,14 +33,18 @@ identities, assertions, counts/skips, copied imports and each check's own output
 | Check mode | Observed exit behavior |
 | --- | --- |
 | Bootstrap unittest | Failure 1; empty/all-skipped 5; partial-skip success 0 |
-| Module unittest | Native exit preserved; empty discovery may return 0 or 5 depending on Python; all-skipped checks can return 0 |
+| Module unittest | Completed native exit preserved; empty discovery may return 0 or 5 depending on Python; all-skipped checks can return 0 |
 | Pytest | Native exits retained; otherwise-success/failure 0/1 without collection-time import verification becomes incomplete 7 |
+| Missing unittest completion or disagreement with native exit | Check7; native exit retained separately; CLI2; no next comparison |
 | Missing startup provenance | Check 7; native exit retained separately; CLI 2; no next comparison |
 | Import verification exceptions, including `SystemExit(0)` | Traceback retained; check 7; CLI 2; no next comparison |
 
 An independent runner exit 7 is conservatively incomplete too. No mode proves
-requested coverage. These checks do not catch `os._exit`, later early exits or
-adversarial execution; inspect actual tests. A setup/import error is not the
+requested coverage. Both unittest modes record the completed runner result;
+missing completion, including `os._exit` during execution, is incomplete. Pytest
+and Node retain their separate contracts. These trusted-test checks are not
+general early-exit or adversarial attestation; inspect
+actual tests. A setup/import error is not the
 requested defect's reproduction.
 
 Pytest owns configuration and test collection before listed imports are checked
@@ -66,6 +70,26 @@ around native comparison, not diff review or later checks.
 Added/removed/changed entries abort without restoration. There are no exclusions;
 special files and oversize fail closed: 10,000 entries including root, 20 MB streamed
 per inventory, separate from copying. Larger projects need another native method.
+
+If a final preservation check fails after at least one native observation was
+collected, CLI output retains those `checks`, revision identities and source hashes
+as JSON with `status:"incomplete"`, alongside the stderr diagnostic and exit 2.
+`preservation_error` identifies the failed stage/type/message. An `unchanged` value
+of `false` means a detected change; `null` means the check was unavailable or not
+reached. `changed` lists observed differing paths when available.
+`comparison_copies_removed` records owned-path absence on these error paths:
+true means absent, false means present, and null means unavailable/unverified. No originals are restored. Native before/after
+success cannot override failed preservation, and unexecuted phases have no check.
+Ordinary copy, runner or cleanup exceptions after a returned check also retain
+partial results with `execution_error` (type/message). Only returned checks are
+included: a missing phase may have started without returning evidence. Later
+versions stop. If a final guard then fails, both error fields remain and the
+existing final-guard exception precedence is preserved. Do not rerun merely to
+recover known observations; first resolve the error and process state.
+The Python API preserves the original exception type/message;
+its `comparison_result` attribute carries the same partial evidence. Errors before collected observations
+keep the ordinary exception/CLI diagnostic behavior. This does not recover results
+that a runner never returned, repair cleanup or establish model-cost savings.
 
 This is not a sandbox. Test paths/subprocesses can escape; snapshots are not atomic.
 Tree guards exclude link targets, ownership, timestamps, ACLs/xattrs, concurrent

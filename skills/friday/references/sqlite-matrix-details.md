@@ -4,10 +4,16 @@ Use with the [core CLI/API interface](sqlite-matrix.md) when interpreting
 binary/duplicate/empty-column output or diagnosing rejected inputs and byte limits.
 
 Invalid API inputs raise exceptions; CLI invalid inputs instead produce exit 2.
-CLI and `format_result` use compact JSON separators; decoded fields and values
-are unchanged. Compare parsed observations, not whitespace in serialized output.
+CLI and `format_result` use compact JSON separators and the special-value tags
+below. Compare parsed observations, not whitespace in serialized output.
 
 ## Input shape and failure details
+
+CLI JSON objects reject repeated decoded keys at every depth, including escaped
+equivalents, before source reads or database creation. Errors identify the key
+(with bounded length), without printing its values. Repeated values, phase names
+and SQL result column labels remain allowed. The dict API cannot detect keys
+already overwritten by its caller's JSON parser.
 
 The top-level recipe accepts exactly `phases` and `checks`; phase keys are `name`,
 optional `files`, `sql` and `checks`. Phase `checks` selects a nonempty list of
@@ -21,12 +27,21 @@ fit this reader. Migration failures add `migration_error` to the phase; budget
 exhaustion can add top-level `error`. Both leave `complete` false and stop the
 remaining sequence. Inspect the actual observed prefix, not a reconstructed success.
 
-## Binary results
+## Binary and non-finite numeric results
 
 The API retains tuple rows and BLOB `bytes`; plain `json.dumps(result)` cannot
 encode those bytes. `format_result(result)` returns JSON with BLOB values encoded
 as `{"blob_hex":"..."}`, including empty bytes as `{"blob_hex":""}`. It does not
 change the result or rerun SQL. Reuse native bytes for value assertions.
+
+SQLite can return infinite REAL values, for example `SELECT 1e999`. JSON cannot
+represent infinity as a number. The CLI and formatter use
+`{"float_special":"Infinity"}` and `{"float_special":"-Infinity"}`; an API-supplied
+NaN is encoded as `{"float_special":"NaN"}`. These are typed representations,
+not null, a finite substitute or a claim that SQLite produced NaN. Finite numbers,
+ordinary text (including the string `"Infinity"`), nulls and BLOB tags are unchanged.
+The native matrix result retains its float values for `assert_rows` and other
+Python assertions; formatting neither mutates that result nor executes SQL.
 
 ## Column and empty-result contracts
 

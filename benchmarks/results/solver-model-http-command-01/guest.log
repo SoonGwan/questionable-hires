@@ -1,0 +1,72 @@
+[    0.056033] hv_vmbus: registering driver hyperv_keyboard
+[    0.056215] rtc-pl031 20050000.pl031: registered as rtc0
+[    0.056246] rtc-pl031 20050000.pl031: setting system clock to 2026-09-27T10:09:16 UTC (1790503756)
+[    0.056420] NET: Registered PF_INET6 protocol family
+[    0.057965] Segment Routing with IPv6
+[    0.058028] In-situ OAM (IOAM) with IPv6
+[    0.061948] registered taskstats version 1
+[    0.062051] Loading compiled-in X.509 certificates
+[    0.876152] Freeing initrd memory: 114848K
+[    0.882164] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    0.883084] Demotion targets for Node 0: null
+[    0.883187] Key type .fscrypt registered
+[    0.883218] Key type fscrypt-provisioning registered
+[    0.885180] clk: Disabling unused clocks
+[    0.885216] PM: genpd: Disabling unused power domains
+[    0.885404] Freeing unused kernel memory: 1920K
+[    0.885508] Run /bin/sh as init process
+/bin/sh: can't access tty; job control turned off
+~ # [6n/bin/busybox sh /check.sh
+psf__requests-3362.tar: OK
+psf__requests-863.tar: OK
+psf__requests-1963.tar: OK
+psf__requests-2674.tar: OK
+pytest-dev__pytest-5221.tar: OK
+pytest-dev__pytest-5103.tar: OK
+pytest-dev__pytest-6116.tar: OK
+pytest-dev__pytest-11143.tar: OK
+QH_SOURCE_READY_psf__requests-3362
+QH_SOURCE_READY_psf__requests-863
+QH_SOURCE_READY_psf__requests-1963
+QH_SOURCE_READY_psf__requests-2674
+QH_SOURCE_READY_pytest-dev__pytest-5221
+QH_SOURCE_READY_pytest-dev__pytest-5103
+QH_SOURCE_READY_pytest-dev__pytest-6116
+QH_SOURCE_READY_pytest-dev__pytest-11143
+QH_NO_HOST_GRADER_PATH
+QH_SOLVER_RAM_PROOF
+~ # /bin/busybox df -k /
+Filesystem           1K-blocks      Used Available Use% Mounted on
+df: /: can't find mount point
+~ # /bin/busybox sh /python-check.sh
+[    3.412554] fuse: init (API version 7.41)
+/runtime.tar: OK
+[    6.376802] random: crng init done
+{"python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]", "pytest": "7.4.4", "ssl": "OpenSSL 3.0.15 3 Sep 2024", "sqlite": "3.45.3", "prefix": "/runtime/env"}
+QH_SOLVER_PYTHON_RAM_PROOF
+QH_PYTHON_NO_HOST_GRADER
+~ # /bin/busybox mount -t devtmpfs devtmpfs /dev
+~ # /bin/busybox test -c /dev/null
+~ # /bin/busybox sh /child-check.sh
+/modloop-virt: OK
+[    6.934084] loop: module loaded
+[    6.935464] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    6.935921] loop0: detected capacity change from 0 to 31928
+QH_BINFMT_REGISTERED
+enabled
+interpreter /rosetta/rosetta
+flags: POCF
+offset 0
+magic 7f454c4602010100000000000000000002003e00
+mask fffffffffffefe00fffffffffffffffffeffffff
+
+{"arm_exit": 0, "executable": "/runtime/env/bin/python3.9", "failure_exit": 7, "failure_stderr": "expected failure", "failure_stdout_base64": "AP8=", "host_grader_absent": true, "normal_exit": 0, "normal_stdout": "42\n"}
+QH_SOLVER_CHILD_EXECUTION_PROOF
+~ # /bin/busybox stty raw -echo
+~ # LD_LIBRARY_PATH=/runtime/env/lib:/runtime/glibc /runtime/env/bin/python3.9 -
+I -B /agent2.py
+QH_AGENT_READY
+QH_AGENT_STOPPED
+[   18.241916] reboot: Power down
+QH_VM_STARTED
+QH_VM_GUEST_STOPPED

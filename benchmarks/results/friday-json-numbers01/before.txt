@@ -1,0 +1,101 @@
+test_cli_native_infinities_are_tagged_valid_json (test_friday_json_numbers.FridayJsonNumberTests.test_cli_native_infinities_are_tagged_valid_json) ... ERROR
+test_duplicate_columns_and_reader_failure_stay_separate (test_friday_json_numbers.FridayJsonNumberTests.test_duplicate_columns_and_reader_failure_stay_separate) ... ERROR
+test_finite_numbers_text_null_and_blobs_keep_their_wire_values (test_friday_json_numbers.FridayJsonNumberTests.test_finite_numbers_text_null_and_blobs_keep_their_wire_values) ... ok
+test_native_api_observations_and_assertions_are_not_rewritten (test_friday_json_numbers.FridayJsonNumberTests.test_native_api_observations_and_assertions_are_not_rewritten) ... ERROR
+test_nested_formatter_special_values_preserve_source_objects (test_friday_json_numbers.FridayJsonNumberTests.test_nested_formatter_special_values_preserve_source_objects) ... ERROR
+
+======================================================================
+ERROR: test_cli_native_infinities_are_tagged_valid_json (test_friday_json_numbers.FridayJsonNumberTests.test_cli_native_infinities_are_tagged_valid_json)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 38, in test_cli_native_infinities_are_tagged_valid_json
+    result = strict_json(process.stdout)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 20, in strict_json
+    return json.loads(text, parse_constant=reject)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py", line 359, in loads
+    return cls(**kw).decode(s)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 19, in reject
+    raise ValueError('Non-JSON numeric constant: ' + value)
+ValueError: Non-JSON numeric constant: Infinity
+
+======================================================================
+ERROR: test_duplicate_columns_and_reader_failure_stay_separate (test_friday_json_numbers.FridayJsonNumberTests.test_duplicate_columns_and_reader_failure_stay_separate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 79, in test_duplicate_columns_and_reader_failure_stay_separate
+    result = strict_json(helper.format_result(helper.matrix(recipe, self.root)))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 20, in strict_json
+    return json.loads(text, parse_constant=reject)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py", line 359, in loads
+    return cls(**kw).decode(s)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 19, in reject
+    raise ValueError('Non-JSON numeric constant: ' + value)
+ValueError: Non-JSON numeric constant: Infinity
+
+======================================================================
+ERROR: test_native_api_observations_and_assertions_are_not_rewritten (test_friday_json_numbers.FridayJsonNumberTests.test_native_api_observations_and_assertions_are_not_rewritten)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 50, in test_native_api_observations_and_assertions_are_not_rewritten
+    strict_json(helper.format_result(result))
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 20, in strict_json
+    return json.loads(text, parse_constant=reject)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py", line 359, in loads
+    return cls(**kw).decode(s)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 19, in reject
+    raise ValueError('Non-JSON numeric constant: ' + value)
+ValueError: Non-JSON numeric constant: Infinity
+
+======================================================================
+ERROR: test_nested_formatter_special_values_preserve_source_objects (test_friday_json_numbers.FridayJsonNumberTests.test_nested_formatter_special_values_preserve_source_objects)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 69, in test_nested_formatter_special_values_preserve_source_objects
+    parsed = strict_json(helper.format_result(result))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 20, in strict_json
+    return json.loads(text, parse_constant=reject)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py", line 359, in loads
+    return cls(**kw).decode(s)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gwonsungwan/Documents/GitHub/questionable-hires/tests/test_friday_json_numbers.py", line 19, in reject
+    raise ValueError('Non-JSON numeric constant: ' + value)
+ValueError: Non-JSON numeric constant: Infinity
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.040s
+
+FAILED (errors=4)

@@ -1,0 +1,92 @@
+{
+  "case": {
+    "id": "native-surface-fix",
+    "skill": "receipt",
+    "files": {
+      "app.py": "def quantity():\n    return 1\n\ndef payload():\n    return b\"\\x00\\xff\"\n",
+      "test_app.py": "import unittest\nfrom app import quantity, payload\n\nclass Tests(unittest.TestCase):\n    def test_quantity(self):\n        self.assertEqual(quantity(), 2)\n    def test_payload(self):\n        self.assertEqual(payload(), b\"\\x00\\xff\")\n",
+      "notes.txt": "original owner note\n",
+      "AGENTS.md": "Python standard-library unittest. Work only inside this project. Preserve tests and owner changes. No installs, services, delegation or commits.\n"
+    },
+    "working_files": {
+      "notes.txt": "uncommitted owner change\n"
+    },
+    "task": "Fix app.quantity to satisfy the supplied contract tests. Read app.py, test_app.py and project instructions. Execute python3 -B -m unittest -v test_app before and after the fix, retaining actual results and process exits. Change app.py only; preserve test coverage, payload behavior and all owner changes. No scratch reports, dependencies, external access or commits."
+  },
+  "flags": {
+    "default": [],
+    "apps_off": [
+      "--disable",
+      "apps"
+    ],
+    "host_off": [
+      "--disable",
+      "code_mode_host"
+    ]
+  },
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout": 120
+  },
+  "sources": {
+    "benchmarks/run_tool_surface_01.py": "7765a8400ab2dee61283ce00cb82050c99a79735b4b146f4074de2345e5572ec",
+    "benchmarks/TOOL-SURFACE-01-PROTOCOL.md": "71c4b7fda1afe84e46e73ff130a524347b850b103fdeb651f6e9f024064c6ab5",
+    "benchmarks/run.py": "472a60028dff2b7af696e7069a667d6b0bdf2ef8035a1b295e9c2991122e6714",
+    "tests/test_tool_surface_01.py": "e6bea8f16420632bf3190c5329858d250fe2c358d7703a3f402c38f4b1fb1ca2"
+  },
+  "python": "<TEMP>",
+  "python_version": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+  "cli_version": "codex-cli 0.157.1",
+  "completed": [
+    {
+      "condition": "default",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 43709,
+        "cached_input_tokens": 38784,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 424,
+        "reasoning_output_tokens": 8
+      },
+      "elapsed_seconds": 20.242
+    },
+    {
+      "condition": "apps_off",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 53044,
+        "cached_input_tokens": 49920,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 385,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_seconds": 20.503
+    },
+    {
+      "condition": "host_off",
+      "completed": true,
+      "timed_out": false,
+      "limit_detected": false,
+      "usage": {
+        "input_tokens": 42511,
+        "cached_input_tokens": 40064,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 253,
+        "reasoning_output_tokens": 48
+      },
+      "elapsed_seconds": 13.507
+    }
+  ],
+  "schedule": [
+    "default",
+    "apps_off",
+    "host_off"
+  ],
+  "prepared_at": "2026-09-26T22:23:48.812012+00:00",
+  "finished_at": "2026-09-26T22:25:14.327235+00:00"
+}

@@ -16,6 +16,34 @@ SPEC.loader.exec_module(builder)
 
 
 class StandaloneArchiveTests(unittest.TestCase):
+    def test_archive_identity_ignores_checkout_write_permissions(self):
+        with tempfile.TemporaryDirectory(prefix='standalone-modes-') as temporary:
+            root = Path(temporary)
+            project = root / 'source'
+            files = {
+                'LICENSE': 'license', 'scripts/install.py': '# installer',
+                'docs/INSTALL-SNAPSHOT.md': '# install',
+                'skills/example/SKILL.md': '# example',
+                'skills/example/run.py': '#!/usr/bin/env python3\n',
+            }
+            for name, contents in files.items():
+                path = project / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(contents)
+                path.chmod(0o755 if name.endswith('run.py') else 0o644)
+            with patch.object(builder, 'ROOT', project):
+                first = root / 'checkout.tar.gz'
+                builder.package(first)
+                for name in files:
+                    path = project / name
+                    path.chmod(path.stat().st_mode | 0o020)
+                second = root / 'source-archive.tar.gz'
+                builder.package(second)
+            self.assertEqual(first.read_bytes(), second.read_bytes())
+            with tarfile.open(second) as archive:
+                for entry in archive.getmembers():
+                    self.assertEqual(entry.mode, 0o755 if entry.name.endswith('run.py') else 0o644)
+
     def test_reproducible_archive_installs_all_resources_offline(self):
         with tempfile.TemporaryDirectory(prefix='standalone-') as temporary:
             root = Path(temporary)
@@ -43,7 +71,7 @@ class StandaloneArchiveTests(unittest.TestCase):
                 self.assertEqual(copied.read_bytes(), source.read_bytes())
                 self.assertEqual(hashlib.sha256(copied.read_bytes()).hexdigest(), info['sha256'])
                 self.assertEqual(copied.stat().st_mode & 0o777, info['mode'])
-            self.assertEqual(set(p.name for p in package.iterdir()), {'skills', 'scripts', 'LICENSE', 'CONTENTS.json'})
+            self.assertEqual(set(p.name for p in package.iterdir()), {'skills', 'scripts', 'docs', 'LICENSE', 'CONTENTS.json'})
             install = package / 'scripts/install.py'
             destination = root / 'consumer/.agents/skills'
             command = [sys.executable, '-I', '-B', str(install), '--dest', str(destination)]
@@ -118,7 +146,13 @@ class StandaloneArchiveTests(unittest.TestCase):
             rejected = subprocess.run(audit, input=json.dumps(recipe), cwd=root,
                 capture_output=True, text=True, timeout=15)
             self.assertEqual(rejected.returncode, 2, rejected.stderr)
-            self.assertEqual(rejected.stdout, '')
+            partial = json.loads(rejected.stdout)
+            self.assertEqual(partial['status'], 'incomplete')
+            self.assertEqual({k: v['exit_code'] for k, v in partial['checks'].items()},
+                dict(correct_tests=0, mutant_tests=0, correct_probe=0, mutant_probe=1))
+            self.assertTrue(partial['integrity']['selected_original_bytes_and_modes_unchanged'])
+            self.assertFalse(partial['integrity']['project_guard']['unchanged'])
+            self.assertTrue(partial['integrity']['owned_scratch_removed'])
             self.assertIn('Project tree changed during audit; not restored', rejected.stderr)
             self.assertIn('notes.txt', rejected.stderr)
             self.assertEqual((project / 'notes.txt').read_text(), 'changed')

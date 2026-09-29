@@ -1,0 +1,92 @@
+[Folded display only; complete native output: 'output.txt'; SHA-256 654a39bba48b05280f45743fb63f471337506becb5b006d37a08aa17b14359a4]
+test_earlier_cancellation_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_cancellation_while_latest_pending) ... FAIL
+test_earlier_failure_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_failure_while_latest_pending) ... FAIL
+test_earlier_success_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending) ... FAIL
+test_instance_isolation (test_preview.PreviewRefreshTests.test_instance_isolation) ... ok
+test_latest_cancellation_and_retry (test_preview.PreviewRefreshTests.test_latest_cancellation_and_retry) ... FAIL
+test_latest_failure_and_retry (test_preview.PreviewRefreshTests.test_latest_failure_and_retry) ... FAIL
+test_latest_success_before_earlier_cancellation (test_preview.PreviewRefreshTests.test_latest_success_before_earlier_cancellation) ... ok
+test_latest_success_before_earlier_failure (test_preview.PreviewRefreshTests.test_latest_success_before_earlier_failure) ... ok
+test_latest_success_before_earlier_success (test_preview.PreviewRefreshTests.test_latest_success_before_earlier_success) ... ok
+test_synchronous_callback_failure_and_retry (test_preview.PreviewRefreshTests.test_synchronous_callback_failure_and_retry) ... ok
+
+======================================================================
+FAIL: test_earlier_cancellation_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_cancellation_while_latest_pending)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 90, in _callTestMethod
+    if self._callMaybeAsync(method) is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/async_case.py", line 112, in _callMaybeAsync
+    return self._asyncioRunner.run(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/test_preview.py", line 87, in test_earlier_cancellation_while_latest_pending
+    await self.check_order(False, 'cancellation')
+  File "<WORKSPACE>/test_preview.py", line 76, in check_order
+    self.assert_state(self.preview, pending_before, value_before)
+  File "<WORKSPACE>/test_preview.py", line 36, in assert_state
+    self.assertIs(preview.pending, pending)
+AssertionError: False is not True
+
+======================================================================
+FAIL: test_earlier_failure_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_failure_while_latest_pending)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  [Repeated traceback frames: original lines 16-27]
+  File "<WORKSPACE>/test_preview.py", line 84, in test_earlier_failure_while_latest_pending
+    await self.check_order(False, 'failure')
+  File "<WORKSPACE>/test_preview.py", line 76, in check_order
+    self.assert_state(self.preview, pending_before, value_before)
+  File "<WORKSPACE>/test_preview.py", line 36, in assert_state
+    self.assertIs(preview.pending, pending)
+AssertionError: False is not True
+
+======================================================================
+FAIL: test_earlier_success_while_latest_pending (test_preview.PreviewRefreshTests.test_earlier_success_while_latest_pending)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  [Repeated traceback frames: original lines 16-27]
+  File "<WORKSPACE>/test_preview.py", line 81, in test_earlier_success_while_latest_pending
+    await self.check_order(False, 'success')
+  File "<WORKSPACE>/test_preview.py", line 76, in check_order
+    self.assert_state(self.preview, pending_before, value_before)
+  File "<WORKSPACE>/test_preview.py", line 36, in assert_state
+    self.assertIs(preview.pending, pending)
+AssertionError: False is not True
+
+======================================================================
+FAIL: test_latest_cancellation_and_retry (test_preview.PreviewRefreshTests.test_latest_cancellation_and_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  [Repeated traceback frames: original lines 16-27]
+  File "<WORKSPACE>/test_preview.py", line 119, in test_latest_cancellation_and_retry
+    await self.check_latest_failure_and_retry('cancellation')
+  File "<WORKSPACE>/test_preview.py", line 111, in check_latest_failure_and_retry
+    self.assert_state(self.preview, pending_before, value_before)
+  File "<WORKSPACE>/test_preview.py", line 36, in assert_state
+    self.assertIs(preview.pending, pending)
+AssertionError: False is not True
+
+======================================================================
+FAIL: test_latest_failure_and_retry (test_preview.PreviewRefreshTests.test_latest_failure_and_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  [Repeated traceback frames: original lines 16-27]
+  File "<WORKSPACE>/test_preview.py", line 116, in test_latest_failure_and_retry
+    await self.check_latest_failure_and_retry('failure')
+  File "<WORKSPACE>/test_preview.py", line 111, in check_latest_failure_and_retry
+    self.assert_state(self.preview, pending_before, value_before)
+  File "<WORKSPACE>/test_preview.py", line 36, in assert_state
+    self.assertIs(preview.pending, pending)
+AssertionError: False is not True
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.045s
+
+FAILED (failures=5)

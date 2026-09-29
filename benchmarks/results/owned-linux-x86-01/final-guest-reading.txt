@@ -1,0 +1,53 @@
+[    0.056435] hv_vmbus: registering driver hyperv_keyboard
+[    0.056627] rtc-pl031 20050000.pl031: registered as rtc0
+[    0.056672] rtc-pl031 20050000.pl031: setting system clock to 2026-09-27T05:24:07 UTC (1790486647)
+[    0.056843] NET: Registered PF_INET6 protocol family
+[    0.057084] Segment Routing with IPv6
+[    0.057118] In-situ OAM (IOAM) with IPv6
+[    0.061297] registered taskstats version 1
+[    0.061407] Loading compiled-in X.509 certificates
+[    0.107476] Freeing initrd memory: 8708K
+[    0.111062] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    0.112135] Demotion targets for Node 0: null
+[    0.112280] Key type .fscrypt registered
+[    0.112311] Key type fscrypt-provisioning registered
+[    0.114261] clk: Disabling unused clocks
+[    0.114294] PM: genpd: Disabling unused power domains
+[    0.114517] Freeing unused kernel memory: 1920K
+[    0.114610] Run /bin/sh as init process
+/bin/sh: can't access tty; job control turned off
+~ # [6n/bin/busybox mount -t proc proc /proc
+~ # /bin/busybox mount -t sysfs sysfs /sys
+~ # /bin/busybox modprobe virtiofs
+[    3.126236] fuse: init (API version 7.41)
+~ # /bin/busybox mkdir -p /rosetta /fixture /writable
+~ # /bin/busybox mount -t virtiofs rosetta /rosetta
+~ # /bin/busybox mount -t virtiofs fixture /fixture
+~ # /bin/busybox mount -t virtiofs writable /writable
+~ # /bin/busybox uname -a
+Linux (none) 6.12.110-0-virt #1-Alpine SMP PREEMPT_DYNAMIC 2026-09-14 14:01:22 aarch64 Linux
+~ # /bin/busybox uname -m
+aarch64
+~ # /rosetta/rosetta /fixture/busybox.static uname -m
+[    3.913149] random: crng init done
+x86_64
+~ # echo QH_X86_UNAME_EXIT=$?
+QH_X86_UNAME_EXIT=0
+~ # /rosetta/rosetta /fixture/busybox.static sh -c 'echo QH_X86_WORKLOAD_OK; ech
+
+o $((6 * 7))'
+QH_X86_WORKLOAD_OK
+42
+~ # echo QH_X86_WORKLOAD_EXIT=$?
+QH_X86_WORKLOAD_EXIT=0
+~ # /bin/busybox sh -c 'echo forbidden > /fixture/should-not-write'
+sh: can't create /fixture/should-not-write: Operation not permitted
+~ # echo QH_READONLY_WRITE_EXIT=$?
+QH_READONLY_WRITE_EXIT=1
+~ # /bin/busybox sh -c 'echo QH_EXPECTED_WRITABLE > /writable/positive-control'
+~ # echo QH_WRITABLE_WRITE_EXIT=$?
+QH_WRITABLE_WRITE_EXIT=0
+~ # /bin/busybox poweroff -f
+[    3.931152] reboot: Power down
+QH_VM_STARTED
+QH_VM_GUEST_STOPPED

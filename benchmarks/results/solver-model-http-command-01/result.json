@@ -1,0 +1,26 @@
+{
+  "source": "Original rollout; private instructions omitted",
+  "custom_tool_calls": [
+    {
+      "name": "exec",
+      "input": "const result = await tools.mcp__qh_guest__guest_command({command:\"/bin/busybox uname -s\",cwd:\"/solver\",timeout:5}); text(result);\n"
+    }
+  ],
+  "custom_tool_outputs": [
+    "Script completed\nWall time 0.1 seconds\nOutput:\n",
+    "{\"content\":[{\"type\":\"text\",\"text\":\"MCP tool call requires approval, but approval policy is never\"}],\"isError\":true}"
+  ],
+  "answers": [
+    "I\u2019ll run the guest command once, then inspect its returned stdout and exit code.",
+    "Returned result:\n```json\n{\"content\":[{\"type\":\"text\",\"text\":\"MCP tool call requires approval, but approval policy is never\"}],\"isError\":true}\n```\n\nThe call was rejected because approval is required but disabled. No base64 stdout or actual exit code was returned, so the guest OS and exit code could not be observed. No fallback or repeat call was made."
+  ],
+  "usage": {
+    "input_tokens": 22483,
+    "cached_input_tokens": 11008,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 154,
+    "reasoning_output_tokens": 0
+  },
+  "total_input_output_tokens": 22637,
+  "observed_guest_response_count": 0
+}

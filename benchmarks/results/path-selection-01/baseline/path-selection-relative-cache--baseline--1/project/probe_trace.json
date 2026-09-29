@@ -1,0 +1,766 @@
+{
+  "scope": "Supplied synthetic application, sequential local process only",
+  "native_tests": {
+    "command": "python3 -B -m unittest -v test_paths",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "test_other_filename (test_paths.PathTests.test_other_filename) ... ok\ntest_single_root (test_paths.PathTests.test_single_root) ... ok\ntest_switch_root (test_paths.PathTests.test_switch_root) ... FAIL\n\n======================================================================\nFAIL: test_switch_root (test_paths.PathTests.test_switch_root)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<WORKSPACE>/test_paths.py\", line 18, in test_switch_root\n    self.assertEqual(client.load(), 222)\nAssertionError: 111 != 222\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=1)\n"
+  },
+  "events": [
+    {
+      "action": "cache_clear",
+      "reason": "Isolated single-root and other-filename controls: alpha",
+      "cache_before": {
+        "hits": 0,
+        "misses": 0,
+        "maxsize": 8,
+        "currsize": 0
+      }
+    },
+    {
+      "action": "load",
+      "label": "alpha cold settings control",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "settings.txt",
+      "uses_default_filename": true,
+      "expected_by_contract": 111,
+      "loader_calls": [
+        {
+          "argument": "settings.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/alpha",
+          "resolved_candidate": "<WORKSPACE>/alpha/settings.txt",
+          "cache_before": {
+            "hits": 0,
+            "misses": 0,
+            "maxsize": 8,
+            "currsize": 0
+          },
+          "returned": 111,
+          "cache_after": {
+            "hits": 0,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          }
+        }
+      ],
+      "physical_opens": [
+        {
+          "open_argument": "settings.txt",
+          "resolved_path": "<WORKSPACE>/alpha/settings.txt",
+          "device": 16777231,
+          "inode": 43711508
+        }
+      ],
+      "physical_reads": [
+        {
+          "path_argument": "settings.txt",
+          "resolved_path": "<WORKSPACE>/alpha/settings.txt",
+          "text_returned": "111\n"
+        }
+      ],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 111,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "load",
+      "label": "alpha repeated settings control",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "settings.txt",
+      "uses_default_filename": true,
+      "expected_by_contract": 111,
+      "loader_calls": [
+        {
+          "argument": "settings.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/alpha",
+          "resolved_candidate": "<WORKSPACE>/alpha/settings.txt",
+          "cache_before": {
+            "hits": 0,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          },
+          "returned": 111,
+          "cache_after": {
+            "hits": 1,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          }
+        }
+      ],
+      "physical_opens": [],
+      "physical_reads": [],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 111,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "load",
+      "label": "alpha other-filename control",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "other.txt",
+      "uses_default_filename": false,
+      "expected_by_contract": 333,
+      "loader_calls": [
+        {
+          "argument": "other.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/alpha",
+          "resolved_candidate": "<WORKSPACE>/alpha/other.txt",
+          "cache_before": {
+            "hits": 1,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          },
+          "returned": 333,
+          "cache_after": {
+            "hits": 1,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          }
+        }
+      ],
+      "physical_opens": [
+        {
+          "open_argument": "other.txt",
+          "resolved_path": "<WORKSPACE>/alpha/other.txt",
+          "device": 16777231,
+          "inode": 43711511
+        }
+      ],
+      "physical_reads": [
+        {
+          "path_argument": "other.txt",
+          "resolved_path": "<WORKSPACE>/alpha/other.txt",
+          "text_returned": "333\n"
+        }
+      ],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 333,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "cache_clear",
+      "reason": "Isolated single-root and other-filename controls: beta",
+      "cache_before": {
+        "hits": 1,
+        "misses": 2,
+        "maxsize": 8,
+        "currsize": 2
+      }
+    },
+    {
+      "action": "load",
+      "label": "beta cold settings control",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "settings.txt",
+      "uses_default_filename": true,
+      "expected_by_contract": 222,
+      "loader_calls": [
+        {
+          "argument": "settings.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/beta",
+          "resolved_candidate": "<WORKSPACE>/beta/settings.txt",
+          "cache_before": {
+            "hits": 0,
+            "misses": 0,
+            "maxsize": 8,
+            "currsize": 0
+          },
+          "returned": 222,
+          "cache_after": {
+            "hits": 0,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          }
+        }
+      ],
+      "physical_opens": [
+        {
+          "open_argument": "settings.txt",
+          "resolved_path": "<WORKSPACE>/beta/settings.txt",
+          "device": 16777231,
+          "inode": 43711510
+        }
+      ],
+      "physical_reads": [
+        {
+          "path_argument": "settings.txt",
+          "resolved_path": "<WORKSPACE>/beta/settings.txt",
+          "text_returned": "222\n"
+        }
+      ],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 222,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "load",
+      "label": "beta repeated settings control",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "settings.txt",
+      "uses_default_filename": true,
+      "expected_by_contract": 222,
+      "loader_calls": [
+        {
+          "argument": "settings.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/beta",
+          "resolved_candidate": "<WORKSPACE>/beta/settings.txt",
+          "cache_before": {
+            "hits": 0,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          },
+          "returned": 222,
+          "cache_after": {
+            "hits": 1,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          }
+        }
+      ],
+      "physical_opens": [],
+      "physical_reads": [],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 222,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "load",
+      "label": "beta other-filename control",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "other.txt",
+      "uses_default_filename": false,
+      "expected_by_contract": 444,
+      "loader_calls": [
+        {
+          "argument": "other.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/beta",
+          "resolved_candidate": "<WORKSPACE>/beta/other.txt",
+          "cache_before": {
+            "hits": 1,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          },
+          "returned": 444,
+          "cache_after": {
+            "hits": 1,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          }
+        }
+      ],
+      "physical_opens": [
+        {
+          "open_argument": "other.txt",
+          "resolved_path": "<WORKSPACE>/beta/other.txt",
+          "device": 16777231,
+          "inode": 43711512
+        }
+      ],
+      "physical_reads": [
+        {
+          "path_argument": "other.txt",
+          "resolved_path": "<WORKSPACE>/beta/other.txt",
+          "text_returned": "444\n"
+        }
+      ],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 444,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "cache_clear",
+      "reason": "Begin one-client alpha -> beta -> alpha sequence",
+      "cache_before": {
+        "hits": 1,
+        "misses": 2,
+        "maxsize": 8,
+        "currsize": 2
+      }
+    },
+    {
+      "action": "load",
+      "label": "shared alpha settings",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "settings.txt",
+      "uses_default_filename": true,
+      "expected_by_contract": 111,
+      "loader_calls": [
+        {
+          "argument": "settings.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/alpha",
+          "resolved_candidate": "<WORKSPACE>/alpha/settings.txt",
+          "cache_before": {
+            "hits": 0,
+            "misses": 0,
+            "maxsize": 8,
+            "currsize": 0
+          },
+          "returned": 111,
+          "cache_after": {
+            "hits": 0,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          }
+        }
+      ],
+      "physical_opens": [
+        {
+          "open_argument": "settings.txt",
+          "resolved_path": "<WORKSPACE>/alpha/settings.txt",
+          "device": 16777231,
+          "inode": 43711508
+        }
+      ],
+      "physical_reads": [
+        {
+          "path_argument": "settings.txt",
+          "resolved_path": "<WORKSPACE>/alpha/settings.txt",
+          "text_returned": "111\n"
+        }
+      ],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 111,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "load",
+      "label": "shared alpha other",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "other.txt",
+      "uses_default_filename": false,
+      "expected_by_contract": 333,
+      "loader_calls": [
+        {
+          "argument": "other.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/alpha",
+          "resolved_candidate": "<WORKSPACE>/alpha/other.txt",
+          "cache_before": {
+            "hits": 0,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          },
+          "returned": 333,
+          "cache_after": {
+            "hits": 0,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          }
+        }
+      ],
+      "physical_opens": [
+        {
+          "open_argument": "other.txt",
+          "resolved_path": "<WORKSPACE>/alpha/other.txt",
+          "device": 16777231,
+          "inode": 43711511
+        }
+      ],
+      "physical_reads": [
+        {
+          "path_argument": "other.txt",
+          "resolved_path": "<WORKSPACE>/alpha/other.txt",
+          "text_returned": "333\n"
+        }
+      ],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 333,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "select_root",
+      "client": "shared",
+      "requested_root": "<WORKSPACE>/beta",
+      "previous_root": "<WORKSPACE>/alpha",
+      "selected_root": "<WORKSPACE>/beta"
+    },
+    {
+      "action": "load",
+      "label": "shared beta settings",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "settings.txt",
+      "uses_default_filename": true,
+      "expected_by_contract": 222,
+      "loader_calls": [
+        {
+          "argument": "settings.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/beta",
+          "resolved_candidate": "<WORKSPACE>/beta/settings.txt",
+          "cache_before": {
+            "hits": 0,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          },
+          "returned": 111,
+          "cache_after": {
+            "hits": 1,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          }
+        }
+      ],
+      "physical_opens": [],
+      "physical_reads": [],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 111,
+      "matches_contract": false,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "load",
+      "label": "shared beta other",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "other.txt",
+      "uses_default_filename": false,
+      "expected_by_contract": 444,
+      "loader_calls": [
+        {
+          "argument": "other.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/beta",
+          "resolved_candidate": "<WORKSPACE>/beta/other.txt",
+          "cache_before": {
+            "hits": 1,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          },
+          "returned": 333,
+          "cache_after": {
+            "hits": 2,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          }
+        }
+      ],
+      "physical_opens": [],
+      "physical_reads": [],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 333,
+      "matches_contract": false,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "select_root",
+      "client": "shared",
+      "requested_root": "<WORKSPACE>/alpha",
+      "previous_root": "<WORKSPACE>/beta",
+      "selected_root": "<WORKSPACE>/alpha"
+    },
+    {
+      "action": "load",
+      "label": "shared alpha return settings",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "settings.txt",
+      "uses_default_filename": true,
+      "expected_by_contract": 111,
+      "loader_calls": [
+        {
+          "argument": "settings.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/alpha",
+          "resolved_candidate": "<WORKSPACE>/alpha/settings.txt",
+          "cache_before": {
+            "hits": 2,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          },
+          "returned": 111,
+          "cache_after": {
+            "hits": 3,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          }
+        }
+      ],
+      "physical_opens": [],
+      "physical_reads": [],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 111,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "load",
+      "label": "shared alpha return other",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "other.txt",
+      "uses_default_filename": false,
+      "expected_by_contract": 333,
+      "loader_calls": [
+        {
+          "argument": "other.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/alpha",
+          "resolved_candidate": "<WORKSPACE>/alpha/other.txt",
+          "cache_before": {
+            "hits": 3,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          },
+          "returned": 333,
+          "cache_after": {
+            "hits": 4,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          }
+        }
+      ],
+      "physical_opens": [],
+      "physical_reads": [],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 333,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "load",
+      "label": "fresh beta settings with warm cache",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "settings.txt",
+      "uses_default_filename": true,
+      "expected_by_contract": 222,
+      "loader_calls": [
+        {
+          "argument": "settings.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/beta",
+          "resolved_candidate": "<WORKSPACE>/beta/settings.txt",
+          "cache_before": {
+            "hits": 4,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          },
+          "returned": 111,
+          "cache_after": {
+            "hits": 5,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          }
+        }
+      ],
+      "physical_opens": [],
+      "physical_reads": [],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 111,
+      "matches_contract": false,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "load",
+      "label": "fresh beta other with warm cache",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "other.txt",
+      "uses_default_filename": false,
+      "expected_by_contract": 444,
+      "loader_calls": [
+        {
+          "argument": "other.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/beta",
+          "resolved_candidate": "<WORKSPACE>/beta/other.txt",
+          "cache_before": {
+            "hits": 5,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          },
+          "returned": 333,
+          "cache_after": {
+            "hits": 6,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          }
+        }
+      ],
+      "physical_opens": [],
+      "physical_reads": [],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 333,
+      "matches_contract": false,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "cache_clear",
+      "reason": "Discriminating intervention: same fresh beta client and requests",
+      "cache_before": {
+        "hits": 6,
+        "misses": 2,
+        "maxsize": 8,
+        "currsize": 2
+      }
+    },
+    {
+      "action": "load",
+      "label": "same fresh beta settings after clear",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "settings.txt",
+      "uses_default_filename": true,
+      "expected_by_contract": 222,
+      "loader_calls": [
+        {
+          "argument": "settings.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/beta",
+          "resolved_candidate": "<WORKSPACE>/beta/settings.txt",
+          "cache_before": {
+            "hits": 0,
+            "misses": 0,
+            "maxsize": 8,
+            "currsize": 0
+          },
+          "returned": 222,
+          "cache_after": {
+            "hits": 0,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          }
+        }
+      ],
+      "physical_opens": [
+        {
+          "open_argument": "settings.txt",
+          "resolved_path": "<WORKSPACE>/beta/settings.txt",
+          "device": 16777231,
+          "inode": 43711510
+        }
+      ],
+      "physical_reads": [
+        {
+          "path_argument": "settings.txt",
+          "resolved_path": "<WORKSPACE>/beta/settings.txt",
+          "text_returned": "222\n"
+        }
+      ],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 222,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    },
+    {
+      "action": "load",
+      "label": "same fresh beta other after clear",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "other.txt",
+      "uses_default_filename": false,
+      "expected_by_contract": 444,
+      "loader_calls": [
+        {
+          "argument": "other.txt",
+          "argument_type": "str",
+          "cwd": "<WORKSPACE>/beta",
+          "resolved_candidate": "<WORKSPACE>/beta/other.txt",
+          "cache_before": {
+            "hits": 0,
+            "misses": 1,
+            "maxsize": 8,
+            "currsize": 1
+          },
+          "returned": 444,
+          "cache_after": {
+            "hits": 0,
+            "misses": 2,
+            "maxsize": 8,
+            "currsize": 2
+          }
+        }
+      ],
+      "physical_opens": [
+        {
+          "open_argument": "other.txt",
+          "resolved_path": "<WORKSPACE>/beta/other.txt",
+          "device": 16777231,
+          "inode": 43711512
+        }
+      ],
+      "physical_reads": [
+        {
+          "path_argument": "other.txt",
+          "resolved_path": "<WORKSPACE>/beta/other.txt",
+          "text_returned": "444\n"
+        }
+      ],
+      "cwd_before": "<WORKSPACE>",
+      "returned": 444,
+      "matches_contract": true,
+      "cwd_after": "<WORKSPACE>",
+      "cwd_restored": true
+    }
+  ],
+  "supplied_sha256_before": {
+    "client.py": "56098a072d645149ca7a2b182472d0a065fea7559f425aa26f6a2362aae97359",
+    "loader.py": "31aec5180b384012dd7be8720c78bd51d3d2e6eb4a60004d305a8032d1806cdf",
+    "test_paths.py": "d73f852e52e5a12acb5f35844a3f007dd162a69fb0f841e855e5615677da7e09",
+    "requirements.md": "6e54da242750654cb40dc14c24bd6478dbdf46d93145254f5c57e1755899eec4",
+    "alpha/settings.txt": "1fc917c7ad66487470e466c0ad40ddd45b9f7730a4b43e1b2542627f0596bbdc",
+    "alpha/other.txt": "78b9041431a47c113011bf6056a6f48baded875b6845f59bc7f110bbd02d5ba6",
+    "beta/settings.txt": "8f8eea956d0ea50d6442fdab213326f75bb6f584268b0795ad452faa85db5f9d",
+    "beta/other.txt": "07d961b4441af9213b46b56dbf0727702888a63ad1952ff3616430f09c8170be"
+  },
+  "supplied_sha256_after": {
+    "client.py": "56098a072d645149ca7a2b182472d0a065fea7559f425aa26f6a2362aae97359",
+    "loader.py": "31aec5180b384012dd7be8720c78bd51d3d2e6eb4a60004d305a8032d1806cdf",
+    "test_paths.py": "d73f852e52e5a12acb5f35844a3f007dd162a69fb0f841e855e5615677da7e09",
+    "requirements.md": "6e54da242750654cb40dc14c24bd6478dbdf46d93145254f5c57e1755899eec4",
+    "alpha/settings.txt": "1fc917c7ad66487470e466c0ad40ddd45b9f7730a4b43e1b2542627f0596bbdc",
+    "alpha/other.txt": "78b9041431a47c113011bf6056a6f48baded875b6845f59bc7f110bbd02d5ba6",
+    "beta/settings.txt": "8f8eea956d0ea50d6442fdab213326f75bb6f584268b0795ad452faa85db5f9d",
+    "beta/other.txt": "07d961b4441af9213b46b56dbf0727702888a63ad1952ff3616430f09c8170be"
+  },
+  "supplied_files_unchanged": true
+}

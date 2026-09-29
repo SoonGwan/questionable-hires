@@ -79,6 +79,12 @@ In the ChatGPT skill selector, use `@`. Discovery and invocation follow the [off
 
 ## Updates and removal
 
+[Personal Mac sync checkpoint](PERSONAL-INSTALL-SYNC-2026-09-28.md),2026-09-28,
+source`2db6852c`: three outdated local copies replaced with preserved backups;
+all8/52 resources match, and installed Receipt native v3 comparisons pass their
+expected complete/partial-fix controls. This is local delivery, not a fresh remote
+installation or model-efficiency measurement.
+
 Check an existing project installation against this local checkout without writing:
 
 ```sh

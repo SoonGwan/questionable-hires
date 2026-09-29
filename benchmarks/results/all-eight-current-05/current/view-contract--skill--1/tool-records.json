@@ -1,0 +1,172 @@
+{
+  "session_id": "01a0df01-a2ff-7741-ba38-b9363774acfe",
+  "source_bytes": 120855,
+  "source_sha256": "8d0744f57249d494b6c1888821b2d0d329cb856f9ffe89d58370beedd69e5623",
+  "source_lines": 37,
+  "records": [
+    {
+      "line": 14,
+      "line_sha256": "38052c39b8a7e8997f54605c391b5d78a7d4ad4c8e87c8e7f0ab9aad0d3c1c2f",
+      "record": {
+        "timestamp": "2026-09-26T18:37:07.315Z",
+        "ordinal": 13,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b26f44c1e523083016ab810d1ee6887d093e05908a7e56126",
+          "status": "completed",
+          "call_id": "call_U1nJVmfsDVSOEmkQTSQ2YxF3",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"pwd && rg --files --hidden -g '!.git' && cat .agents/skills/friday/SKILL.md release.md\",\"max_output_tokens\":12000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df01-a35e-7f00-8c4e-32db0275a9a4",
+            "create_time": 1790447823.483134
+          }
+        }
+      }
+    },
+    {
+      "line": 17,
+      "line_sha256": "6bd627ea05f8128a89ea2c9b685221a46c09fb1cb463bd7d901aa2688c339316",
+      "record": {
+        "timestamp": "2026-09-26T18:37:07.511Z",
+        "ordinal": 16,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df01-ba36-7b31-9d29-c02710a7603c",
+          "call_id": "call_U1nJVmfsDVSOEmkQTSQ2YxF3",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"44613c\",\"wall_time_seconds\":0.00000625,\"exit_code\":0,\"original_token_count\":1253,\"output\":\"<WORKSPACE>\\n002_up.sql\\n002_down.sql\\nrelease.md\\n.agents/skills/friday/SKILL.md\\n.agents/skills/friday/scripts/sqlite_matrix.py\\n.agents/skills/friday/agents/openai.yaml\\n.agents/skills/friday/references/sqlite-matrix.md\\n.agents/skills/friday/references/sqlite-matrix-details.md\\n001_schema.sql\\nreaders.py\\n003_new_writes.sql\\n---\\nname: friday\\ndescription: Review a planned deployment or release diff for rollback feasibility, mixed-version compatibility, migrations, and configuration readiness without deploying it.\\n---\\n\\n# Friday\\n\\n> Can Monday-you undo this?\\n\\n## Read Monday's incident report early\\n\\nWhen discovery is needed, combine it with reading supplied release notes/contracts and available project instructions, then batch the discovered relevant inputs. Avoid a listing-only round trip when supplied inputs are already readable. Keep Git internals out of file discovery (for example, `rg --files --hidden -g '!.git'`); use Git commands for relevant history. Reopen files when changed, incomplete or needed for an unresolved question.\\n\\nUse the release diff and documented rollout/rollback order to identify reachable states, old/new artifacts, configuration and consumers. Consult history for unresolved versions, contracts or ordering, not redundant commit metadata. Do not impose rolling deployment or zero downtime on another strategy.\\n\\nFor each reachable state, check active readers/writers against data and configuration, including new-version writes before rollback. Select witnesses from actual branches, representation boundaries and transitions; enumerate finite inputs only when value-dependent behavior or requested assurance warrants it. Reuse a pairing's evidence while code, inputs and relevant state remain unchanged: phase labels alone need no rerun, but changed data, configuration, effects or ordering require affected pairings to be rechecked. Include queued/external effects when their contract changes.\\n\\nCombine compatible coverage obligations into representative sequences instead of multiplying every value by every version/operation. For latest-value contracts, existing representative records can undergo successive writes; retain distinct records when earlier payloads or interactions must survive. Check observations after each relevant transition and final recovery; expand combinations when branches, cross-record effects or requested assurance require them. Fewer witnesses must not mean reusing stale observations.\\n\\nCode rollback is not data recovery: down migrations can lose data, and backups need restore evidence. Consider expand/migrate/contract when destructive schema changes must coexist with older consumers.\\n\\nFind the first incompatible/irreversible step and last recoverable state; tie blockers to the smallest compatible ordering or prerequisite. Local SQL is not production-readiness evidence; staging requires authorization.\\n\\nChoose execution from the contract: exercise actual application writers, transactions and connections when they matter. For repeated SQL-only SQLite reader checks, use the optional [in-memory matrix](references/sqlite-matrix.md); read its guide only for that path, and implementation for trust/adaptation/troubleshooting. Use existing runners for simple checks. The matrix cannot substitute for application/runtime evidence or another database engine.\\n\\n## Deliver and stop\\n\\nLead with ready, ready with conditions, or blocked by evidence. Missing runtime/configuration evidence is unknown, not safe. Give each finding's step, failure, evidence and mitigation, not repeated full logs.\\n\\nStop when scoped compatibility and recovery paths are assessed; no generic infrastructure audit. Preserve user changes and requirements. Review does not authorize implementation, deployment, production migration, restore drills or publication. If asked to fix, verify the scoped correction without releasing it.\\n# View rollout proposal\\n\\nThis is a SQL-only authored local release-review fixture. Application writers,\\nconcurrent connections, crash recovery and other database engines are out of scope.\\nConsumers execute the literal queries in readers.py. OLD maps by returned column\\nnames and requires ordered columns [id, label, payload]. NEW requires\\n[id, title, payload]. Both require exact full ordered rows and binary payloads.\\nNo application code is supplied or needed to execute these specified SQL contracts.\\n\\nOrder: (1) apply 001_schema.sql, OLD active; (2) apply 002_up.sql with OLD still\\nactive; (3) apply 003_new_writes.sql while OLD and NEW coexist; (4) drain NEW and\\nrestart OLD without a schema change; (5) apply 002_down.sql with OLD active.\\nAll committed representative updates/inserts must remain visible after rollback.\\nNo zero-downtime promises beyond this explicit sequence, no staging authorization.\\n\\nReview this proposal as supplied; do not modify SQL or reader contracts. A missing\\ninactive reader is an observation, not by itself a blocker at that phase.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df01-a35e-7f00-8c4e-32db0275a9a4",
+            "create_time": 1790447827.51099
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 19,
+      "line_sha256": "72d6156af3e58d4cd2954583548553ec4c0c01d4e8d6a904773e9376b93a9758",
+      "record": {
+        "timestamp": "2026-09-26T18:37:12.631Z",
+        "ordinal": 18,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b26f44c1e523083016ab810d6d8b487d097573a4e11dd7cc0",
+          "status": "completed",
+          "call_id": "call_owMoVGn1UFItJ7FUFtgGXuXt",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"cat 001_schema.sql 002_up.sql 003_new_writes.sql 002_down.sql readers.py; rg --files --hidden -g 'AGENTS.md' -g '!.git'\",\"max_output_tokens\":10000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df01-a35e-7f00-8c4e-32db0275a9a4",
+            "create_time": 1790447827.903916
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "line_sha256": "64cf82ace3686fb76fd33b9792885d1e3f5661ca882d3fb0e19f552d438e455f",
+      "record": {
+        "timestamp": "2026-09-26T18:37:12.713Z",
+        "ordinal": 21,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df01-ce89-7662-bb9b-fb091333148c",
+          "call_id": "call_owMoVGn1UFItJ7FUFtgGXuXt",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"2303f8\",\"wall_time_seconds\":0.000006791,\"exit_code\":1,\"original_token_count\":160,\"output\":\"CREATE TABLE items(id INTEGER PRIMARY KEY, title TEXT NOT NULL, payload BLOB NOT NULL);\\nINSERT INTO items VALUES(1, '\uccab \ud56d\ubaa9', x'00ff'), (2, 'keep', x'');\\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\\nDROP VIEW public_items;\\nCREATE VIEW public_items AS SELECT id, title, payload FROM items;\\nUPDATE items SET title='updated', payload=x'fe00' WHERE id=1;\\nINSERT INTO items VALUES(3, 'new', x'80');\\nDROP VIEW public_items;\\nCREATE VIEW public_items AS SELECT id, title AS label, payload FROM items;\\nOLD = 'SELECT * FROM public_items ORDER BY id'\\nNEW = 'SELECT id, title, payload FROM public_items ORDER BY id'\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df01-a35e-7f00-8c4e-32db0275a9a4",
+            "create_time": 1790447832.71387
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "line": 26,
+      "line_sha256": "ef8f1d5847d288d66bbe0200be21b8a9e60da471ba03f193425af2fc4cdf76fc",
+      "record": {
+        "timestamp": "2026-09-26T18:37:46.331Z",
+        "ordinal": 25,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_0b26f44c1e523083016ab810dd906087d0ae3dc2c99aa35e8d",
+          "status": "completed",
+          "call_id": "call_MwWAFrCdeueWECYWnT29XW5C",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 -B - <<'PY'\\nimport ast\\nimport hashlib\\nfrom pathlib import Path\\nimport sqlite3\\n\\nfiles = sorted(p for p in Path('.').rglob('*') if p.is_file() and '.git' not in p.parts)\\nbefore = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}\\nreaders = {n.targets[0].id: ast.literal_eval(n.value) for n in ast.parse(Path('readers.py').read_text()).body if isinstance(n, ast.Assign)}\\nassert set(readers) == {'OLD', 'NEW'}\\ncolumns = {'OLD': ['id', 'label', 'payload'], 'NEW': ['id', 'title', 'payload']}\\ninitial = [(1, '\uccab \ud56d\ubaa9', bytes.fromhex('00ff')), (2, 'keep', b'')]\\nwritten = [(1, 'updated', bytes.fromhex('fe00')), (2, 'keep', b''), (3, 'new', bytes.fromhex('80'))]\\nphases = [\\n    ('1 baseline', '001_schema.sql', {'OLD'}, initial, {'OLD': True, 'NEW': False}),\\n    ('2 up', '002_up.sql', {'OLD'}, initial, {'OLD': False, 'NEW': True}),\\n    ('3 new writes', '003_new_writes.sql', {'OLD', 'NEW'}, written, {'OLD': False, 'NEW': True}),\\n    ('4 code rollback', None, {'OLD'}, written, {'OLD': False, 'NEW': True}),\\n    ('5 down', '002_down.sql', {'OLD'}, written, {'OLD': True, 'NEW': False}),\\n]\\nprint('SQLite', sqlite3.sqlite_version, '; one :memory: connection; BLOBs displayed as exact Python bytes')\\nprint('literal queries:', readers)\\nprint('expected columns:', columns)\\nwith sqlite3.connect(':memory:') as db:\\n    for phase, script, active, expected_rows, expected_matches in phases:\\n        if script:\\n            db.executescript(Path(script).read_text())\\n            assert not db.in_transaction\\n        print('\\\\nCHECKPOINT', phase, '; active:', sorted(active))\\n        print('expected rows:', repr(expected_rows))\\n        stored = db.execute('SELECT id, title, payload FROM items ORDER BY id').fetchall()\\n        assert stored == expected_rows\\n        assert all(type(row[2]) is bytes for row in stored)\\n        print('base-table rows:', repr(stored))\\n        for name, query in readers.items():\\n            try:\\n                cursor = db.execute(query)\\n                actual_columns = [d[0] for d in cursor.description]\\n                rows = cursor.fetchall()\\n                column_match = actual_columns == columns[name]\\n                row_match = rows == expected_rows and all(type(row[2]) is bytes for row in rows)\\n                compatible = column_match and row_match\\n                print(name, 'ACTIVE' if name in active else 'inactive', 'columns=', repr(actual_columns), 'rows=', repr(rows), 'column_match=', column_match, 'row_match=', row_match, 'compatible=', compatible)\\n                assert row_match\\n            except sqlite3.OperationalError as error:\\n                print(name, 'ACTIVE' if name in active else 'inactive', 'SQL ERROR:', str(error))\\n                assert name == 'NEW' and phase in ('1 baseline', '5 down')\\n                assert str(error) == 'no such column: title'\\n                compatible = False\\n            assert compatible == expected_matches[name]\\n    assert db.execute('SELECT id, title, payload FROM items ORDER BY id').fetchall() == written\\n    assert db.execute(\\\"SELECT sql FROM sqlite_master WHERE name='public_items'\\\").fetchone()[0] == 'CREATE VIEW public_items AS SELECT id, title AS label, payload FROM items'\\nafter_files = sorted(p for p in Path('.').rglob('*') if p.is_file() and '.git' not in p.parts)\\nafter = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in after_files}\\nassert before == after\\nprint('\\\\nPASS: all 10 literal reader checks, full rows and byte types, final write survival, restored view, and unchanged project/skill file hashes.')\\nPY\",\"max_output_tokens\":6000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df01-a35e-7f00-8c4e-32db0275a9a4",
+            "create_time": 1790447833.316759
+          }
+        }
+      }
+    },
+    {
+      "line": 29,
+      "line_sha256": "a612053ffe0a421de85da8bd2181b8e0e6c4dc256f5baf2b851072c2631e0e8c",
+      "record": {
+        "timestamp": "2026-09-26T18:37:46.463Z",
+        "ordinal": 28,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a0df02-525f-7a43-8993-82f3dc9a152c",
+          "call_id": "call_MwWAFrCdeueWECYWnT29XW5C",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"1e2ee4\",\"wall_time_seconds\":0.000003333,\"exit_code\":0,\"original_token_count\":718,\"output\":\"SQLite 3.44.0 ; one :memory: connection; BLOBs displayed as exact Python bytes\\nliteral queries: {'OLD': 'SELECT * FROM public_items ORDER BY id', 'NEW': 'SELECT id, title, payload FROM public_items ORDER BY id'}\\nexpected columns: {'OLD': ['id', 'label', 'payload'], 'NEW': ['id', 'title', 'payload']}\\n\\nCHECKPOINT 1 baseline ; active: ['OLD']\\nexpected rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nbase-table rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nOLD ACTIVE columns= ['id', 'label', 'payload'] rows= [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] column_match= True row_match= True compatible= True\\nNEW inactive SQL ERROR: no such column: title\\n\\nCHECKPOINT 2 up ; active: ['OLD']\\nexpected rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nbase-table rows: [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')]\\nOLD ACTIVE columns= ['id', 'title', 'payload'] rows= [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] column_match= False row_match= True compatible= False\\nNEW inactive columns= ['id', 'title', 'payload'] rows= [(1, '\uccab \ud56d\ubaa9', b'\\\\x00\\\\xff'), (2, 'keep', b'')] column_match= True row_match= True compatible= True\\n\\nCHECKPOINT 3 new writes ; active: ['NEW', 'OLD']\\nexpected rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nbase-table rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nOLD ACTIVE columns= ['id', 'title', 'payload'] rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] column_match= False row_match= True compatible= False\\nNEW ACTIVE columns= ['id', 'title', 'payload'] rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] column_match= True row_match= True compatible= True\\n\\nCHECKPOINT 4 code rollback ; active: ['OLD']\\nexpected rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nbase-table rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nOLD ACTIVE columns= ['id', 'title', 'payload'] rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] column_match= False row_match= True compatible= False\\nNEW inactive columns= ['id', 'title', 'payload'] rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] column_match= True row_match= True compatible= True\\n\\nCHECKPOINT 5 down ; active: ['OLD']\\nexpected rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nbase-table rows: [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')]\\nOLD ACTIVE columns= ['id', 'label', 'payload'] rows= [(1, 'updated', b'\\\\xfe\\\\x00'), (2, 'keep', b''), (3, 'new', b'\\\\x80')] column_match= True row_match= True compatible= True\\nNEW inactive SQL ERROR: no such column: title\\n\\nPASS: all 10 literal reader checks, full rows and byte types, final write survival, restored view, and unchanged project/skill file hashes.\\n\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a0df01-a35e-7f00-8c4e-32db0275a9a4",
+            "create_time": 1790447866.46396
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ],
+  "missing_output_call_ids": [],
+  "unmatched_output_call_ids": [],
+  "duplicate_call_ids": false,
+  "duplicate_output_call_ids": false,
+  "limitation": "Selected stored response_item tool records only, not the full rollout or proof of complete model context. Review private content before export. Line hashes identify unredacted source lines without line terminators."
+}

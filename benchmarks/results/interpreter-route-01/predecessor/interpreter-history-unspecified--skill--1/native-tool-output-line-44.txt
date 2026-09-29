@@ -1,0 +1,51 @@
+git show 6b682e0:controlled_fetch.py exit= 0
+AST: exactly one started replaced; all other source bytes retained
+git show 6b682e0:controlled_fetch.py exit= 0
+6b682e0 sha256= d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c
+git show 5cb5d78:controlled_fetch.py exit= 0
+5cb5d78 sha256= 48567a44a073b8b7574e5d2f4542501fd491b9003a320d80602c7cb2b8bb3a81
+runtime= 3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.necromancer-review-eh996id6/probe.py <WORKSPACE>/.necromancer-review-eh996id6/current.py ordinary
+exact_result_identity=True queue=0
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.necromancer-review-eh996id6/probe.py <WORKSPACE>/.necromancer-review-eh996id6/current.py repeated
+distinct_handles=True distinct_futures=True reversed_completion=True both_exact_identities=True
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.necromancer-review-eh996id6/probe.py <WORKSPACE>/.necromancer-review-eh996id6/current.py wakeup
+at_cancel: waiter_done= False queue= 1
+after_cancel: cancelled= True queue= 1 app_done= False app_cancelled= False
+request_recovered=True exact_result_identity=True
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.necromancer-review-eh996id6/probe.py <WORKSPACE>/.necromancer-review-eh996id6/current.py delivered
+owner_cancelled=True delivered_queue=0 app_untouched=True handle_still_usable=True exact_result_identity=True
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.necromancer-review-eh996id6/probe.py <WORKSPACE>/.necromancer-review-eh996id6/proposal.py ordinary
+exact_result_identity=True queue=0
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.necromancer-review-eh996id6/probe.py <WORKSPACE>/.necromancer-review-eh996id6/proposal.py repeated
+distinct_handles=True distinct_futures=True reversed_completion=True both_exact_identities=True
+PROCESS EXIT: 0
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.necromancer-review-eh996id6/probe.py <WORKSPACE>/.necromancer-review-eh996id6/proposal.py wakeup
+at_cancel: waiter_done= False queue= 0
+after_cancel: cancelled= False queue= 0 app_done= False app_cancelled= False
+Traceback (most recent call last):
+  File "<WORKSPACE>/.necromancer-review-eh996id6/probe.py", line 83, in <module>
+    asyncio.run(main())
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.necromancer-review-eh996id6/probe.py", line 56, in main
+    assert waiter.cancelled(), 'pending waiter swallowed cancellation'
+AssertionError: pending waiter swallowed cancellation
+PROCESS EXIT: 1
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.necromancer-review-eh996id6/probe.py <WORKSPACE>/.necromancer-review-eh996id6/proposal.py delivered
+owner_cancelled=True delivered_queue=0 app_untouched=True handle_still_usable=True exact_result_identity=True
+PROCESS EXIT: 0
+scratch removed; every original file (including Git HEAD/index and skills) byte-identical
+

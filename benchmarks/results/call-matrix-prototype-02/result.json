@@ -1,0 +1,252 @@
+{
+  "date": "2026-09-27",
+  "models": 0,
+  "native_required_test_exit": 0,
+  "native_required_test_output": "test_current (test_consumer.RenderTests.test_current) ... ok\ntest_empty (test_consumer.RenderTests.test_empty) ... ok\ntest_legacy (test_consumer.RenderTests.test_legacy) ... ok\ntest_negative (test_consumer.RenderTests.test_negative) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+  "observations": {
+    "current": {
+      "version": 2,
+      "cases": 27,
+      "calls_attempted": 27,
+      "cases_evaluated": 27,
+      "unrun": 0,
+      "ungraded": 0,
+      "matches": 27,
+      "mismatches": 0,
+      "input_mutations": 0,
+      "examples": [],
+      "complete": true,
+      "omitted_mismatch_examples": 0
+    },
+    "code": {
+      "version": 2,
+      "cases": 27,
+      "calls_attempted": 27,
+      "cases_evaluated": 27,
+      "unrun": 0,
+      "ungraded": 0,
+      "matches": 12,
+      "mismatches": 15,
+      "input_mutations": 0,
+      "examples": [
+        {
+          "case": 0,
+          "input": {
+            "type": "dict",
+            "items": {
+              "name": "Ada",
+              "amount": 0
+            }
+          },
+          "expected": {
+            "return": {
+              "type": "tuple",
+              "items": [
+                "unknown",
+                "Ada",
+                0
+              ]
+            }
+          },
+          "actual": {
+            "raises": "builtins.KeyError"
+          },
+          "input_mutated": false
+        },
+        {
+          "case": 1,
+          "input": {
+            "type": "dict",
+            "items": {
+              "name": "Ada",
+              "amount": 2
+            }
+          },
+          "expected": {
+            "return": {
+              "type": "tuple",
+              "items": [
+                "unknown",
+                "Ada",
+                2
+              ]
+            }
+          },
+          "actual": {
+            "raises": "builtins.KeyError"
+          },
+          "input_mutated": false
+        },
+        {
+          "case": 2,
+          "input": {
+            "type": "dict",
+            "items": {
+              "name": "Ada",
+              "amount": -1
+            }
+          },
+          "expected": {
+            "raises": "builtins.ValueError"
+          },
+          "actual": {
+            "raises": "builtins.KeyError"
+          },
+          "input_mutated": false
+        }
+      ],
+      "complete": true,
+      "omitted_mismatch_examples": 12
+    },
+    "display": {
+      "version": 2,
+      "cases": 27,
+      "calls_attempted": 27,
+      "cases_evaluated": 27,
+      "unrun": 0,
+      "ungraded": 0,
+      "matches": 27,
+      "mismatches": 0,
+      "input_mutations": 0,
+      "examples": [],
+      "complete": true,
+      "omitted_mismatch_examples": 0
+    },
+    "guard": {
+      "version": 2,
+      "cases": 27,
+      "calls_attempted": 27,
+      "cases_evaluated": 27,
+      "unrun": 0,
+      "ungraded": 0,
+      "matches": 18,
+      "mismatches": 9,
+      "input_mutations": 0,
+      "examples": [
+        {
+          "case": 2,
+          "input": {
+            "type": "dict",
+            "items": {
+              "name": "Ada",
+              "amount": -1
+            }
+          },
+          "expected": {
+            "raises": "builtins.ValueError"
+          },
+          "actual": {
+            "return": {
+              "type": "tuple",
+              "items": [
+                "unknown",
+                "Ada",
+                -1
+              ]
+            }
+          },
+          "input_mutated": false
+        },
+        {
+          "case": 5,
+          "input": {
+            "type": "dict",
+            "items": {
+              "name": "Ada",
+              "amount": -1,
+              "display_name": ""
+            }
+          },
+          "expected": {
+            "raises": "builtins.ValueError"
+          },
+          "actual": {
+            "return": {
+              "type": "tuple",
+              "items": [
+                "unknown",
+                "Ada",
+                -1
+              ]
+            }
+          },
+          "input_mutated": false
+        },
+        {
+          "case": 8,
+          "input": {
+            "type": "dict",
+            "items": {
+              "name": "Ada",
+              "amount": -1,
+              "display_name": "A"
+            }
+          },
+          "expected": {
+            "raises": "builtins.ValueError"
+          },
+          "actual": {
+            "return": {
+              "type": "tuple",
+              "items": [
+                "unknown",
+                "A",
+                -1
+              ]
+            }
+          },
+          "input_mutated": false
+        }
+      ],
+      "complete": true,
+      "omitted_mismatch_examples": 6
+    }
+  },
+  "partial_observation": {
+    "version": 2,
+    "cases": 3,
+    "calls_attempted": 2,
+    "cases_evaluated": 1,
+    "unrun": 1,
+    "ungraded": 1,
+    "matches": 0,
+    "mismatches": 1,
+    "input_mutations": 0,
+    "examples": [
+      {
+        "case": 0,
+        "input": 0,
+        "expected": {
+          "return": 42
+        },
+        "actual": {
+          "return": 41
+        },
+        "input_mutated": false
+      }
+    ],
+    "complete": false,
+    "omitted_mismatch_examples": 0,
+    "error": {
+      "case": 1,
+      "stage": "return_encoding",
+      "type": "ValueError",
+      "message": "unsupported report value"
+    }
+  },
+  "boundaries": {
+    "wrong_return": true,
+    "wrong_exception": true,
+    "mutation": true,
+    "no_examples": true,
+    "invalid_expected": true,
+    "partial_preserved": true,
+    "unrun_not_called": true,
+    "counts_conserve": true,
+    "invalid_before_first_call": true
+  },
+  "compact_report_characters": 2041,
+  "source_preserved": true,
+  "caller_restored": true,
+  "scope": "Reused authored development control; not independent evidence or whole-task token/time measurement."
+}

@@ -6,6 +6,7 @@ import unittest
 from unittest.mock import patch
 import sys
 import shutil
+import hashlib
 
 spec = importlib.util.spec_from_file_location("runner", Path(__file__).resolve().parents[1] / "benchmarks/run.py")
 runner = importlib.util.module_from_spec(spec)
@@ -13,6 +14,28 @@ spec.loader.exec_module(runner)
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_completed_item_error_remains_visible_with_completed_cli_turn(self):
+        rows = [dict(type='item.completed', item=dict(type='error', id='unavailable',
+                    message='Code Mode is unavailable because code-mode host is disabled.')),
+                dict(type='turn.completed', usage=dict(input_tokens=42, output_tokens=2))]
+        events, diagnostic = runner.inspect_capture('\n'.join(json.dumps(row) for row in rows), '')
+        self.assertEqual(events, rows)
+        self.assertEqual(diagnostic.get('item_error_review_candidates', []), [
+            dict(item_id='unavailable', message=rows[0]['item']['message'])])
+        self.assertEqual(diagnostic['error_event_types'], [])
+        self.assertEqual(events[-1]['usage'], dict(input_tokens=42, output_tokens=2))
+
+    def test_item_warning_does_not_replace_later_native_observation(self):
+        rows = [dict(type='item.completed', item=dict(type='error', id='warning', message='Temporary tool problem')),
+                dict(type='item.completed', item=dict(type='command_execution', id='native',
+                    command='python3 -B -m unittest -v test_app', exit_code=0,
+                    aggregated_output='test_case (test_app.Tests.test_case) ... ok\nRan 1 test in 0.001s\nOK\n'))]
+        events, diagnostic = runner.inspect_capture('\n'.join(json.dumps(row) for row in rows), '')
+        self.assertEqual(events, rows)
+        self.assertEqual(diagnostic.get('item_error_review_candidates', []), [dict(item_id='warning',message='Temporary tool problem')])
+        self.assertEqual(events[-1]['item']['exit_code'],0)
+        self.assertEqual(diagnostic['unittest_missing_summary_review_candidates'],[])
+
     def test_session_persistence_is_explicit_and_does_not_drop_isolation_flags(self):
         for persist in (False, True):
             with self.subTest(persist=persist), tempfile.TemporaryDirectory(dir=runner.ROOT) as directory:
@@ -244,9 +267,27 @@ unittest.main(verbosity=2)
                 self.assertEqual(runner.command(['git', 'diff', '--cached'], project), '')
                 self.assertEqual(runner.command(['git', 'rev-list', '--count', 'HEAD'], project), '1')
                 self.assertIn('?? test_new.py', runner.command(['git', 'status', '--short'], project))
+                inventory_path = output / 'dirty--baseline--1/project-files.before-model.json'
+                inventory = json.loads(inventory_path.read_text())
+                self.assertEqual(inventory['ignored.txt']['mode'], 0o1640)
+                self.assertEqual(inventory['ignored.txt']['sha256'],
+                                 hashlib.sha256(b'initial ignored content\n').hexdigest())
+                self.assertIn('.agents/owner.md', inventory)
+                self.assertFalse(any(name == '.git' or name.startswith('.git/') or
+                                     name.startswith('.agents/skills/') for name in inventory))
+                (project / 'ignored.txt').chmod(0o600)
                 event = json.dumps(dict(type='turn.completed', usage=dict(input_tokens=1, output_tokens=1)))
                 return original_popen([sys.executable, '-c', 'print(' + repr(event) + ')'], **kwargs)
-            with patch.object(runner.subprocess, 'Popen', side_effect=dispatch):
+            original_prepare = runner.prepare
+            def prepare(*args, **kwargs):
+                result = original_prepare(*args, **kwargs)
+                (args[1] / 'ignored.txt').chmod(0o1640)
+                (args[1] / '.agents/skills').mkdir(parents=True)
+                (args[1] / '.agents/skills/private.md').write_text('separate installed resource\n')
+                (args[1] / '.agents/owner.md').write_text('owner config\n')
+                return result
+            with patch.object(runner, 'prepare', side_effect=prepare), \
+                 patch.object(runner.subprocess, 'Popen', side_effect=dispatch):
                 meta = runner.run_cell(case, 'baseline', 1, output, 'gpt-6-astra',
                                        'medium', 10, [], workspace_root=workspaces)
             cell = output / 'dirty--baseline--1'
@@ -257,6 +298,10 @@ unittest.main(verbosity=2)
             self.assertIn('+# supplied', initial)
             self.assertIn('+initial ignored content', initial)
             self.assertEqual(set(meta['initial_working_files']), set(case['working_files']))
+            inventory_path = cell / 'project-files.before-model.json'
+            self.assertEqual(meta['pre_model_project_files']['sha256'],
+                             hashlib.sha256(inventory_path.read_bytes()).hexdigest())
+            self.assertEqual((Path(meta['workspace']) / 'ignored.txt').stat().st_mode & 0o7777, 0o600)
             # Execute the actual exporter too; this initial-state evidence must
             # survive export rather than becoming a claimed model change.
             export_spec = importlib.util.spec_from_file_location('export_dirty', runner.ROOT / 'benchmarks/export.py')
@@ -264,6 +309,7 @@ unittest.main(verbosity=2)
             export_spec.loader.exec_module(exporter)
             (output / 'run.json').write_text('{}')
             exporter.export(output, root / 'export')
+            self.assertFalse((root / 'export/dirty--baseline--1/project-files.before-model.json').exists())
             self.assertEqual((root / 'export/dirty--baseline--1/initial.diff').read_text(), initial)
             self.assertEqual((root / 'export/dirty--baseline--1/changes.diff').read_text().strip(), '')
 

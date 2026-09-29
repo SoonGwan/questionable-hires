@@ -1,0 +1,45 @@
+[    0.054705] hv_vmbus: registering driver hyperv_keyboard
+[    0.055478] rtc-pl031 20050000.pl031: registered as rtc0
+[    0.055530] rtc-pl031 20050000.pl031: setting system clock to 2026-09-27T05:17:48 UTC (1790486268)
+[    0.055716] NET: Registered PF_INET6 protocol family
+[    0.055964] Segment Routing with IPv6
+[    0.056003] In-situ OAM (IOAM) with IPv6
+[    0.060526] registered taskstats version 1
+[    0.060653] Loading compiled-in X.509 certificates
+[    0.109705] Freeing initrd memory: 8708K
+[    0.114086] Loaded X.509 cert 'alpinelinux.org: Alpine Linux kernel key: 87fa969a47f3e2a6aa35859eb932a17c95abcd82'
+[    0.114979] Demotion targets for Node 0: null
+[    0.115073] Key type .fscrypt registered
+[    0.115105] Key type fscrypt-provisioning registered
+[    0.117083] clk: Disabling unused clocks
+[    0.117120] PM: genpd: Disabling unused power domains
+[    0.117340] Freeing unused kernel memory: 1920K
+[    0.117443] Run /bin/sh as init process
+/bin/sh: can't access tty; job control turned off
+~ # [6n/bin/busybox mount -t proc proc /proc
+~ # /bin/busybox mount -t sysfs sysfs /sys
+~ # /bin/busybox modprobe virtiofs
+[    3.133726] fuse: init (API version 7.41)
+~ # /bin/busybox mkdir -p /rosetta /fixture
+~ # /bin/busybox mount -t virtiofs rosetta /rosetta
+~ # /bin/busybox mount -t virtiofs fixture /fixture
+~ # /bin/busybox uname -a
+Linux (none) 6.12.110-0-virt #1-Alpine SMP PREEMPT_DYNAMIC 2026-09-14 14:01:22 aarch64 Linux
+~ # /bin/busybox uname -m
+aarch64
+~ # /rosetta/rosetta /fixture/busybox.static uname -m
+[    3.916449] random: crng init done
+x86_64
+~ # echo QH_X86_UNAME_EXIT=$?
+QH_X86_UNAME_EXIT=0
+~ # /rosetta/rosetta /fixture/busybox.static sh -c 'echo QH_X86_WORKLOAD_OK; ech
+
+o $((6 * 7))'
+QH_X86_WORKLOAD_OK
+42
+~ # echo QH_X86_WORKLOAD_EXIT=$?
+QH_X86_WORKLOAD_EXIT=0
+~ # /bin/busybox poweroff -f
+[    3.930722] reboot: Power down
+QH_VM_STARTED
+QH_VM_GUEST_STOPPED

@@ -1,0 +1,121 @@
+{
+  "identities": {
+    "fixture_sources": {
+      "history-invoice-01-cases.json": "6669c0e61c88c33c3a95d014916362eafbf511fa82dfd658b3386fd75306bebc",
+      "receipt-ledger-cases.json": "5aeac6200940dc4d29898920429aae684712afea753df12e7985862f5016b742",
+      "landlord-check-scope-cases.json": "b255651b7cc425bda2791c7cd5b0151a96b41666915451566208c30af1fe87ee",
+      "editor-snapshot-01-cases.json": "909b36893325124e315d0803deeacb9f937df255de891d120429949a2af40b7b",
+      "exorcist-runtime-cases.json": "2cb25eeb821a2952683d4933d1fabc23b9fdcccc65ad44cb25fdbd5ece49beeb",
+      "hostage-refresh-cases.json": "7b0bc8120865802a29dd97b6fedb9863bdbe19742ce68bb93307588b55a04c21",
+      "con-artist-sqlite-cases.json": "c5a3b37e70613ed8eb657db25aa043772a0056692b207ff1d29c1e91bbce4c3f",
+      "cases_view_contract.py": "e3000694ff000352d8b081e858c04e720a3d8952b87be998652070920827b3a8",
+      "lean_screen_cases.py": "dec85f04d2888a86b321394f7d811000c9add4c3e545e13093e54abc5ff13b1e"
+    },
+    "execution_sources": {
+      "benchmarks/run_all_eight_current_04.py": "bc5fe6ddd8096bcf61c4e840c25f1196c5bf01a5952704bc9e01de529c71c8bf",
+      "benchmarks/ALL-EIGHT-CURRENT-04-PROTOCOL.md": "d722264e637e8a25ed3d42a046ef0e0b588b5ea74251f875214df623d7c1213e",
+      "benchmarks/preflight_lean_screen.py": "c1d92fdf33d7902e5d58d98a1a9b49fc98a7661b5131dce363d57d67b44acb72",
+      "benchmarks/run.py": "60120a1fec9c610784cc2d2d649edcee41eb46550baec7031a37bbcfc91a0c03",
+      "benchmarks/editor_snapshot_cases.py": "32ff0da0fa2d136f1cbc818eb8fa8bad0e469ba319d2cdef4a69fd10e40414db",
+      "benchmarks/preflight_view_contract.py": "03568c0e927005bd90854a76aabf2ad6492c84ee86034b366da037c55bc89870",
+      "tests/test_all_eight_current_04.py": "a7b0c59a5349ea5eff0c25d4bb5bb92e83e9db8f101ef9c19f37bc8cbd0fd833",
+      "tests/test_history_invoice_fixture.py": "6ee331ea44a6be47a945d402857b06acb8cc7fa7659abded2f55fb03a7c963fd",
+      "tests/test_receipt_ledger_fixture.py": "ff24b0d708d5991345df7d3df7ed4151762e4cc1c840b5d08e82213720cb5407",
+      "tests/test_landlord_check_scope_fixture.py": "9370cf5691ae09bc6fefc4cd6054b235f088699c51599f120cd738ae8be78711",
+      "tests/test_exorcist_runtime_fixture.py": "74bcbc5d3187a4934904a9dfb2384cfe2cd5b3fda482a39d09110b6d7c2d8465",
+      "tests/test_hostage_refresh_fixture.py": "63ee9392f57e0b70113d0214e5a1d92ab3fea35e4ae16379a845ac8b4daa366a",
+      "tests/test_sqlite_audit_fixture.py": "490b736d6ca7551691188455fe6082e2cfec72fb115c91b1f0433bfbc3d03e4d",
+      "benchmarks/run_all_eight_apps_01.py": "0e1a02f1e0f3eb1f9a843068ce6780e784137e77f477d366b884780ee39e570a",
+      "benchmarks/ALL-EIGHT-APPS-01-PROTOCOL.md": "c79a093f1063ae2e7159b7afe27a88f036765b131941889aa77abc0fc94adfb9",
+      "tests/test_all_eight_apps_01.py": "8cf9d6930f49d8e3543ce726f8af4b4c74d5134987cdfd2449167f6470ae6d93",
+      "benchmarks/run_tool_surface_01.py": "7765a8400ab2dee61283ce00cb82050c99a79735b4b146f4074de2345e5572ec",
+      "benchmarks/run_hostage_focused_before_01.py": "b391770339d17c6a61748af95320b8addbad200390e91b106d44bf7faba24036",
+      "benchmarks/hostage_focused_before_candidate.py": "e0848198df85d647e8e50cfe68d9e0239e626004d975e749dd4a23d901f4bc1e",
+      "benchmarks/HOSTAGE-FOCUSED-BEFORE-01-PROTOCOL.md": "4e909cc99ab412ce033d69f0e48947de9276541404387f755cda1e5b280b7c6f",
+      "benchmarks/run_all_eight_current_06.py": "d885944e8dc42a666dcad138bdab6a8f53ae720216dae6cbd999a0ea767a1313",
+      "benchmarks/hostage_refresh_cases.py": "20902b8848f665a41b9f638010b4277da5ec56203f558b18b57b68b38c034c90",
+      "tests/test_hostage_focused_before_01.py": "d4c61263a329454f75bdae166f138855cbb12b94172b3788ac20b677e74cfaba"
+    }
+  },
+  "cases": [
+    {
+      "id": "refresh-owner-a",
+      "skill": "hostage-negotiator",
+      "task": "Review Preview.refresh against requirements.md and fix preview.py only if\nneeded. Add rerunnable standard-library unittest tests using actual Preview with\ncontrolled callbacks. Cover both completion orders, earlier failure/cancellation\nwhile latest remains pending, latest failure/cancellation and retry, synchronous\ncallback failure, result/error identity, prior display retention and instance isolation.\nBound behavior-dependent waits and clean up owned tasks; no timing sleeps. Use\npython3 -B -m unittest discover -v and report actual native results and the test\nprocess exit. Never infer passed tests solely from a later diff/status or prior prose.\nPreserve requirements and unrelated owner notes. Test support may be added inside\nthis project; no dependencies, network, external discovery, deployment or publishing.\nDo not serialize or suppress overlapping refresh calls to make the tests pass.\n",
+      "files": {
+        "preview.py": "class Preview:\n    def __init__(self):\n        self.pending = False\n        self.value = None\n        self.generation = 0\n\n    async def refresh(self, key, fetch):\n        self.generation += 1\n        generation = self.generation\n        self.pending = True\n        try:\n            value = await fetch(key)\n            if generation == self.generation:\n                self.value = value\n            return value\n        finally:\n            self.pending = False\n",
+        "requirements.md": "Every refresh must invoke its supplied fetch(key), even while another\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\nEach call returns its own exact fetched object or propagates its own exception.\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\nfailure or cancellation cannot clear pending while the latest is unresolved.\nLatest settlement clears pending even if older calls remain running. Keep the prior\nvalue during loading and on failure/cancellation. Instances are independent.\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\n",
+        "notes.txt": "Owner draft: preserve this unrelated note.\n"
+      },
+      "criteria": [
+        "Preserve overlapping callback invocation and exact per-call results/errors.",
+        "Latest-started request alone owns pending/value across both orders and recovery.",
+        "Keep valid original behavior; change production only if a contract defect exists.",
+        "Retain bounded native tests and report actual evidence without scope expansion."
+      ]
+    },
+    {
+      "id": "refresh-owner-b",
+      "skill": "hostage-negotiator",
+      "task": "Review Preview.refresh against requirements.md and fix preview.py only if\nneeded. Add rerunnable standard-library unittest tests using actual Preview with\ncontrolled callbacks. Cover both completion orders, earlier failure/cancellation\nwhile latest remains pending, latest failure/cancellation and retry, synchronous\ncallback failure, result/error identity, prior display retention and instance isolation.\nBound behavior-dependent waits and clean up owned tasks; no timing sleeps. Use\npython3 -B -m unittest discover -v and report actual native results and the test\nprocess exit. Never infer passed tests solely from a later diff/status or prior prose.\nPreserve requirements and unrelated owner notes. Test support may be added inside\nthis project; no dependencies, network, external discovery, deployment or publishing.\nDo not serialize or suppress overlapping refresh calls to make the tests pass.\n",
+      "files": {
+        "preview.py": "class Preview:\n    def __init__(self):\n        self.pending = False\n        self.value = None\n        self.generation = 0\n\n    async def refresh(self, key, fetch):\n        self.generation += 1\n        generation = self.generation\n        self.pending = True\n        try:\n            value = await fetch(key)\n            if generation == self.generation:\n                self.value = value\n            return value\n        finally:\n            if generation == self.generation:\n                self.pending = False\n",
+        "requirements.md": "Every refresh must invoke its supplied fetch(key), even while another\nrefresh is pending. No duplicate suppression, serialization or automatic cancellation.\nEach call returns its own exact fetched object or propagates its own exception.\nOnly the latest-started refresh owns pending and may publish value. Earlier success,\nfailure or cancellation cannot clear pending while the latest is unresolved.\nLatest settlement clears pending even if older calls remain running. Keep the prior\nvalue during loading and on failure/cancellation. Instances are independent.\nSynchronous fetch failure also clears its owning pending state. Retry is allowed.\nAll callbacks here are cooperative asyncio callbacks; no network or threads.\n",
+        "notes.txt": "Owner draft: preserve this unrelated note.\n"
+      },
+      "criteria": [
+        "Preserve overlapping callback invocation and exact per-call results/errors.",
+        "Latest-started request alone owns pending/value across both orders and recovery.",
+        "Keep valid original behavior; change production only if a contract defect exists.",
+        "Retain bounded native tests and report actual evidence without scope expansion."
+      ]
+    }
+  ],
+  "schedule": [
+    [
+      0,
+      "previous"
+    ],
+    [
+      0,
+      "candidate"
+    ],
+    [
+      1,
+      "candidate"
+    ],
+    [
+      1,
+      "previous"
+    ]
+  ],
+  "settings": {
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "jobs": 1,
+    "repeats": 1
+  },
+  "python": "/opt/homebrew/opt/python@3.11/bin/python3.11",
+  "python_version": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+  "resource_digests": {
+    "previous": "310726146578dbf45044dada6e83d16cc9897699ddb7ca6d3006886b8880cc8d",
+    "candidate": "3aaac1aae4390c5a886d6696dbd26743c02a65023f3995cb29ece264327582a4"
+  },
+  "condition_models": {
+    "previous": "gpt-6-astra",
+    "candidate": "gpt-6-astra"
+  },
+  "condition_flags": {
+    "previous": [],
+    "candidate": []
+  },
+  "cli_version": "codex-cli 0.157.1",
+  "execpolicy_rules": "retained",
+  "resource_revisions": {
+    "previous": "eef444704619a48cd3aed24f6b0ec44ac3634b76",
+    "candidate": "eef444704619a48cd3aed24f6b0ec44ac3634b76"
+  },
+  "completed_cells": [],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-27T18:34:05.578651+00:00"
+}

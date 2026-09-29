@@ -1,0 +1,71 @@
+# Friday recipe keys01 — 2026-09-28
+
+Parent **`e77372b4`**. The CLI used ordinary `json.loads`, silently retaining only
+last values for repeated object keys. A later `phases`, `checks`, SQL field or
+reader name could discard declared work before validation. A failing reader
+followed by a same-named successful reader could report a complete successful
+sequence. Native query errors also leave sequence completion true; completion
+alone has never established compatibility.
+
+The parser now rejects repeated decoded keys at every object depth before matrix
+input preparation or SQLite connection. File and stdin paths return exit2 and
+incomplete JSON. The bounded key-only diagnostic excludes field values. Escaped
+equivalent names count as duplicates. Repeated phase-name values, identical SQL
+under distinct check names, duplicate result labels and BLOB rows remain valid.
+The dict API cannot recover keys already overwritten by a caller's parser.
+
+This reuses the existing duplicate-key approach in Con Artist and Receipt for
+Friday's separate CLI boundary. Existing Friday compact-output, API-result-reuse,
+core-guide and sequence experiments were reviewed before this change; this is no
+new optimization hypothesis and uses no model calls or repeated cost experiment.
+
+[The same eight tests](../tests/test_friday_recipe_keys.py) yielded
+[14 failing subcases before](results/friday-recipe-keys01/before.txt), then
+[all eight methods passing](results/friday-recipe-keys01/after.txt), zero skips.
+They execute the actual CLI with native SQLite, check source bytes/modes unchanged,
+and retain a valid-input control. One in-process CLI test wraps matrix/connect to
+verify neither is reached after rejection; that structural observation is separate
+from subprocess outcomes. Before failures stop subsequent assertions in those cases.
+[Git-free focused validation](results/friday-recipe-keys01/gitfree.txt):58 methods
+across recipe-key, matrix and row-assertion tests pass. Required frozen fixture data
+was copied explicitly, without repository history. Existing model-output formatter
+controls exercise historical data; they are not fresh model evidence.
+
+Both README capability rows and the two Friday references describe the boundary.
+No entry, featured pointer, chart, integration07 number or whole-task savings claim
+changes. Rejecting ambiguous input prevents lost work; it is not token savings.
+
+한국어: Friday CLI가 JSON 중복 키로 앞의 검사나 마이그레이션을 버리던 문제를
+수정했다. 실행 전 중복을 거부하되 정상 중복 값·결과 열·BLOB은 유지한다.
+수정 전14개 하위 사례 실패, 수정 후8개 메서드 및 Git 없는 사본58개 검사가
+통과했다. 한영 설명을 동기화했으며 모델 비용 절감으로 주장하지 않는다.
+
+## Installed and packaged source
+
+Source **`926b698d`** is installed after existing Friday bytes/modes matched parent
+`e77372b4`; its previous directory is backed up outside discovery.
+[All eight installations match](results/friday-recipe-keys01/installation.json),
+[eight controls against the installed CLI/helper](results/friday-recipe-keys01/installed.txt)
+and [four standalone package tests](results/friday-recipe-keys01/package.txt) pass.
+The build changes archive/checksum only; [52 packaged resources](results/friday-recipe-keys01/download.json)
+match source bytes/modes. Layout and frozen measurements remain unchanged.
+An initial evidence-export command referenced the wrong temporary log filename
+and stopped before writing; export used the actual completed eight-test transcript.
+
+한국어: 소스926b698d를 기존 설치 자원 확인·백업 후 설치했다. 설치본8개·패키지4개
+검사와 전체8개 자원 일치를 확인했으며 다운로드52개 자원도 소스와 일치한다.
+
+## Public delivery
+
+Hosted release **`97fbc6597d9127ee0297b49d4007992e4f6edd76`** is live on
+[한국어](https://hires.no-money-do-you-have-money.com/ko/) and
+[English](https://hires.no-money-do-you-have-money.com/en/).
+[Six HTTPS observations](results/friday-recipe-keys01/public.json) verify revision,
+exact locale pages/JavaScript, canonical/indexable metadata and archive/checksum.
+All52 public archive resources match source bytes/modes. Download:107,937 bytes,
+SHA-256 `9cd51e802be14e03429ff3134e19739ad7f4bc279ee712409f426fc34f287ae6`.
+Integration07 still measures `1be35120`; HTTP identity checks are not new browser
+interaction or model-efficiency evidence. GitHub was not pushed.
+
+한국어: 배포97fbc659의 공개 HTTPS6개 경로와 다운로드52개 자원 일치를 확인했다.
+기존 실험 수치를 유지하며 전체8개 토큰·시간 개선 완료로 보고하지 않는다.

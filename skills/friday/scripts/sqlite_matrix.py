@@ -4,6 +4,7 @@ import argparse
 import ast
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import sqlite3
@@ -267,7 +268,7 @@ def assert_rows(result, phase_index, check, *, columns, rows):
 
 
 def format_result(result):
-    """Serialize collected observations exactly as the CLI, including BLOBs.
+    """Serialize collected observations as strict JSON, including special values.
 
     Does not run SQL, change result, or establish compatibility.
     """
@@ -275,7 +276,31 @@ def format_result(result):
         if isinstance(value, bytes):
             return {"blob_hex": value.hex()}
         raise TypeError("Unsupported result value: " + type(value).__name__)
-    return json.dumps(result, ensure_ascii=True, default=encode, separators=(',', ':'))
+
+    def numbers(value):
+        if isinstance(value, float) and not math.isfinite(value):
+            label = 'NaN' if math.isnan(value) else 'Infinity' if value > 0 else '-Infinity'
+            return {'float_special': label}
+        if isinstance(value, dict):
+            return {key: numbers(item) for key, item in value.items()}
+        if isinstance(value, (list, tuple)):
+            return [numbers(item) for item in value]
+        return value
+
+    return json.dumps(numbers(result), ensure_ascii=True, allow_nan=False,
+                      default=encode, separators=(',', ':'))
+
+
+def _unique_recipe_object(pairs):
+    """Reject ambiguous JSON before validating or executing any declared work."""
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            name = json.dumps(key)
+            raise ValueError('Duplicate recipe key: ' +
+                             (name[:240] + '...' if len(name) > 240 else name))
+        result[key] = value
+    return result
 
 
 def main():
@@ -292,7 +317,8 @@ def main():
                 raw = stream.read(2_000_001)
         if len(raw.encode("utf-8")) > 2_000_000:
             raise ValueError("recipe exceeds 2 MB")
-        result = matrix(json.loads(raw), args.source, args.timeout)
+        result = matrix(json.loads(raw, object_pairs_hook=_unique_recipe_object),
+                        args.source, args.timeout)
         print(format_result(result))
         return 0 if result["complete"] else 1
     except (ValueError, OSError, TypeError) as error:

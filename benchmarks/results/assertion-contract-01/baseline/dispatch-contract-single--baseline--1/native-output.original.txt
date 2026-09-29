@@ -1,0 +1,93 @@
+
+RUN variant=correct suite=test_dispatch
+cwd=<WORKSPACE>/.dispatch-audit-3p_i_yc8/correct
+command=/opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v variant_probe test_dispatch
+PROVENANCE OK: <WORKSPACE>/.dispatch-audit-3p_i_yc8/correct/dispatch.py sha256=49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39
+test_order (test_dispatch.DispatchTests.test_order) ... ok
+test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+EXIT=0
+
+RUN variant=swallowed-error suite=test_dispatch
+cwd=<WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error
+command=/opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v variant_probe test_dispatch
+PROVENANCE OK: <WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error/dispatch.py sha256=5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752
+test_order (test_dispatch.DispatchTests.test_order) ... ok
+test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+EXIT=0
+
+RUN variant=correct suite=test_regression
+cwd=<WORKSPACE>/.dispatch-audit-3p_i_yc8/correct
+command=/opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v variant_probe test_regression
+PROVENANCE OK: <WORKSPACE>/.dispatch-audit-3p_i_yc8/correct/dispatch.py sha256=49c72e185a91f6c513607f01aa225c9ff0c3f19a5e9c0f0116891f096c6bad39
+test_successful_dispatch_contract (test_regression.RegressionTests.test_successful_dispatch_contract) ... ok
+test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+EXIT=0
+
+RUN variant=swallowed-error suite=test_regression
+cwd=<WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error
+command=/opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v variant_probe test_regression
+PROVENANCE OK: <WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error/dispatch.py sha256=5acad8f5de60b40c41c23e7c614846ac0892731d6a60964c5379240ac7a7c752
+test_successful_dispatch_contract (test_regression.RegressionTests.test_successful_dispatch_contract) ... ok
+test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) ... 
+  test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='exception type') ... FAIL
+  test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='exception message') ... FAIL
+  test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='stop before later handler') ... FAIL
+
+======================================================================
+FAIL: test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='exception type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error/test_regression.py", line 25, in test_value_error_contract
+    self.assertIs(type(caught), ValueError)
+AssertionError: <class 'NoneType'> is not <class 'ValueError'>
+
+======================================================================
+FAIL: test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='exception message')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error/test_regression.py", line 27, in test_value_error_contract
+    self.assertEqual(str(caught), "handler rejected payload")
+AssertionError: 'None' != 'handler rejected payload'
+- None
++ handler rejected payload
+
+
+======================================================================
+FAIL: test_value_error_contract (test_regression.RegressionTests.test_value_error_contract) (contract='stop before later handler')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.dispatch-audit-3p_i_yc8/swallowed-error/test_regression.py", line 29, in test_value_error_contract
+    self.assertEqual(calls, ["first", "fail"])
+AssertionError: Lists differ: ['first', 'fail', 'later'] != ['first', 'fail']
+
+First list contains 1 additional elements.
+First extra element 2:
+'later'
+
+- ['first', 'fail', 'later']
+?                 ---------
+
++ ['first', 'fail']
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+FAILED (failures=3)
+EXIT=1
+
+CLEANUP OK; project file hashes, Git HEAD/index/status unchanged.

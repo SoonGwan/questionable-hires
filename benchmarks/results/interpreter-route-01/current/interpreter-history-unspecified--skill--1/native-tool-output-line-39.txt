@@ -1,0 +1,46 @@
+INTERPRETER /opt/homebrew/opt/python@3.11/bin/python3.11 3.11.6
+SUBSTITUTION: exactly one started; historical AST matches; all other source bytes retained
+SNAPSHOT_SHA256 earlier d7817ff36c2050bf393cee63eeb8d9acb3ecada5eaf652ddc6dd00cbe50f948c
+SNAPSHOT_SHA256 current 48567a44a073b8b7574e5d2f4542501fd491b9003a320d80602c7cb2b8bb3a81
+COMMAND /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/probe.py <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/current.py ordinary
+key=one; returned_object_is_completed_object=True; queue=0
+PROCESS_EXIT current ordinary 0
+COMMAND /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/probe.py <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/current.py repeated
+distinct_handles=True; distinct_futures=True; second_returns_v2=True; first_pending_after_second=True; first_returns_v1=True
+PROCESS_EXIT current repeated 0
+COMMAND /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/probe.py <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/current.py wakeup_cancel
+cancel_accepted=True; waiter_cancelled=True; queue=1; app_pending=True; app_cancelled=False; waiter_returned_handle=False
+subsequent_started_recovers_request=True; app_returns_exact_object=True
+PROCESS_EXIT current wakeup_cancel 0
+COMMAND /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/probe.py <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/current.py delivered_cancel
+owner_cancelled=True; delivered_handle_stays_consumed=True; app_returns_exact_object=True
+PROCESS_EXIT current delivered_cancel 0
+COMMAND /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/probe.py <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/proposal.py ordinary
+key=one; returned_object_is_completed_object=True; queue=0
+PROCESS_EXIT proposal ordinary 0
+COMMAND /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/probe.py <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/proposal.py repeated
+distinct_handles=True; distinct_futures=True; second_returns_v2=True; first_pending_after_second=True; first_returns_v1=True
+PROCESS_EXIT proposal repeated 0
+COMMAND /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/probe.py <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/proposal.py wakeup_cancel
+cancel_accepted=True; waiter_cancelled=False; queue=0; app_pending=True; app_cancelled=False; waiter_returned_handle=True
+Traceback (most recent call last):
+  File "<WORKSPACE>/.controlled-fetch-review-wnwgpm_5/probe.py", line 123, in <module>
+    asyncio.run(main())
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "<WORKSPACE>/.controlled-fetch-review-wnwgpm_5/probe.py", line 86, in main
+    assert cancelled, 'Cancellation did not reach the pending started waiter'
+AssertionError: Cancellation did not reach the pending started waiter
+PROCESS_EXIT proposal wakeup_cancel 1
+COMMAND /opt/homebrew/opt/python@3.11/bin/python3.11 -B <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/probe.py <WORKSPACE>/.controlled-fetch-review-wnwgpm_5/proposal.py delivered_cancel
+owner_cancelled=True; delivered_handle_stays_consumed=True; app_returns_exact_object=True
+PROCESS_EXIT proposal delivered_cancel 0
+CLEANUP: scratch removed; all original file hashes unchanged, including LICENSE, Git HEAD/index, and skill resources
+

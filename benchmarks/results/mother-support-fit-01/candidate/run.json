@@ -1,0 +1,122 @@
+{
+  "identities": {
+    "fixture_sources": {
+      "history-invoice-01-cases.json": "6669c0e61c88c33c3a95d014916362eafbf511fa82dfd658b3386fd75306bebc",
+      "receipt-ledger-cases.json": "5aeac6200940dc4d29898920429aae684712afea753df12e7985862f5016b742",
+      "landlord-check-scope-cases.json": "b255651b7cc425bda2791c7cd5b0151a96b41666915451566208c30af1fe87ee",
+      "editor-snapshot-01-cases.json": "909b36893325124e315d0803deeacb9f937df255de891d120429949a2af40b7b",
+      "exorcist-runtime-cases.json": "2cb25eeb821a2952683d4933d1fabc23b9fdcccc65ad44cb25fdbd5ece49beeb",
+      "hostage-refresh-cases.json": "7b0bc8120865802a29dd97b6fedb9863bdbe19742ce68bb93307588b55a04c21",
+      "con-artist-sqlite-cases.json": "c5a3b37e70613ed8eb657db25aa043772a0056692b207ff1d29c1e91bbce4c3f",
+      "cases_view_contract.py": "e3000694ff000352d8b081e858c04e720a3d8952b87be998652070920827b3a8",
+      "lean_screen_cases.py": "dec85f04d2888a86b321394f7d811000c9add4c3e545e13093e54abc5ff13b1e"
+    },
+    "execution_sources": {
+      "benchmarks/run_all_eight_current_04.py": "bc5fe6ddd8096bcf61c4e840c25f1196c5bf01a5952704bc9e01de529c71c8bf",
+      "benchmarks/ALL-EIGHT-CURRENT-04-PROTOCOL.md": "d722264e637e8a25ed3d42a046ef0e0b588b5ea74251f875214df623d7c1213e",
+      "benchmarks/preflight_lean_screen.py": "c1d92fdf33d7902e5d58d98a1a9b49fc98a7661b5131dce363d57d67b44acb72",
+      "benchmarks/run.py": "60120a1fec9c610784cc2d2d649edcee41eb46550baec7031a37bbcfc91a0c03",
+      "benchmarks/editor_snapshot_cases.py": "32ff0da0fa2d136f1cbc818eb8fa8bad0e469ba319d2cdef4a69fd10e40414db",
+      "benchmarks/preflight_view_contract.py": "03568c0e927005bd90854a76aabf2ad6492c84ee86034b366da037c55bc89870",
+      "tests/test_all_eight_current_04.py": "a7b0c59a5349ea5eff0c25d4bb5bb92e83e9db8f101ef9c19f37bc8cbd0fd833",
+      "tests/test_history_invoice_fixture.py": "6ee331ea44a6be47a945d402857b06acb8cc7fa7659abded2f55fb03a7c963fd",
+      "tests/test_receipt_ledger_fixture.py": "ff24b0d708d5991345df7d3df7ed4151762e4cc1c840b5d08e82213720cb5407",
+      "tests/test_landlord_check_scope_fixture.py": "9370cf5691ae09bc6fefc4cd6054b235f088699c51599f120cd738ae8be78711",
+      "tests/test_exorcist_runtime_fixture.py": "74bcbc5d3187a4934904a9dfb2384cfe2cd5b3fda482a39d09110b6d7c2d8465",
+      "tests/test_hostage_refresh_fixture.py": "63ee9392f57e0b70113d0214e5a1d92ab3fea35e4ae16379a845ac8b4daa366a",
+      "tests/test_sqlite_audit_fixture.py": "490b736d6ca7551691188455fe6082e2cfec72fb115c91b1f0433bfbc3d03e4d",
+      "benchmarks/run_all_eight_apps_01.py": "0e1a02f1e0f3eb1f9a843068ce6780e784137e77f477d366b884780ee39e570a",
+      "benchmarks/ALL-EIGHT-APPS-01-PROTOCOL.md": "c79a093f1063ae2e7159b7afe27a88f036765b131941889aa77abc0fc94adfb9",
+      "tests/test_all_eight_apps_01.py": "8cf9d6930f49d8e3543ce726f8af4b4c74d5134987cdfd2449167f6470ae6d93",
+      "benchmarks/run_tool_surface_01.py": "7765a8400ab2dee61283ce00cb82050c99a79735b4b146f4074de2345e5572ec",
+      "benchmarks/run_mother_support_fit_01.py": "842695ea01f02950a06c9d4ccefa619e0bb2aeb171f2f07fecfbca40df87f2fb",
+      "benchmarks/mother_support_fit_candidate.py": "d885894b0d20121f7ea08edd7b6898b8e59f1eb182bfe847a15e448453580674",
+      "benchmarks/MOTHER-SUPPORT-FIT-01-PROTOCOL.md": "8299233253ff5e2a0d04d438d6915003eec5117f3e856ff679497a1ceb6d32ba",
+      "benchmarks/run_all_eight_current_06.py": "d885944e8dc42a666dcad138bdab6a8f53ae720216dae6cbd999a0ea767a1313",
+      "benchmarks/mother_repeat_cases.py": "e8846362c1915b2224a7c3bd4018624b907620ccb6edb1bb60179ca3737ced0b",
+      "tests/test_mother_repeat_fixture.py": "5a54268adea6782af63f52de7761a4fe676617275c25d02b5eed23730f4252dc",
+      "tests/test_mother_support_fit_01.py": "ca95d73f8169c818b80dea69941adf4639a787e750f7f7a927c117ece1d8ec0c"
+    }
+  },
+  "cases": [
+    {
+      "id": "editor-snapshot-absent",
+      "skill": "mother-in-law",
+      "files": {
+        "editor.py": "from copy import deepcopy\n\n\nclass Editor:\n    def __init__(self, settings, persist):\n        self.settings = deepcopy(settings)\n        self.persist = persist\n        self.revision = 0\n        self.saved_revision = 0\n\n    @property\n    def dirty(self):\n        return self.revision != self.saved_revision\n\n    def set_theme(self, theme):\n        self.settings['display']['theme'] = theme\n        self.revision += 1\n\n    async def save(self):\n        revision = self.revision\n        payload = dict(self.settings)\n        await self.persist(payload)\n        self.saved_revision = revision\n",
+        "test_editor.py": "import unittest\nfrom editor import Editor\n\n\nclass EditorTests(unittest.IsolatedAsyncioTestCase):\n    async def test_initial_state(self):\n        settings = {'display': {'theme': 'light'}, 'alerts': ['mentions']}\n        editor = Editor(settings, None)\n        self.assertEqual(editor.settings, settings)\n        self.assertFalse(editor.dirty)\n        editor.set_theme('dark')\n        self.assertEqual(settings['display']['theme'], 'light')\n",
+        "AGENTS.md": "Native Python unittest, standard library only. QA, not a production fix. Preserve existing files except additions to test_editor.py; new test-support Python files are allowed. No network, installs, delegation or report files. Keep any scratch project-local and remove it.\n"
+      },
+      "task": "Add native regression coverage for Editor.save in editor.py.\nRead test_editor.py and applicable project instructions. No controlled async test fixture exists in this project; create only the support these tests need.\n\nContract: persist receives a per-save snapshot of the full nested settings at\nsave entry. Later set_theme calls may edit live settings but must not mutate that\npending snapshot. Once the save completes, newer edits remain visible and dirty.\nWithout an intervening edit, completion marks the saved settings clean.\n\nPreserve the existing initial-state test. Add exactly two native test methods:\n(1) set a theme, save with no intervening edit, acknowledge, then verify stored\nsettings and clean state; (2) start saving one theme, change it again while persist\nis pending, inspect the still-pending payload, acknowledge, then inspect stored\nsettings, current settings and dirty state. Use independent expected values, not\nreferences that change alongside live state. Check the full nested payload, not\njust one scalar. The persist test double must record a deep copy of its argument\nAFTER acknowledgement, not eagerly on callback entry; this models delayed\nserialization and must not itself fix the application's snapshot behavior.\n\nExercise real Editor.save through the native framework with deterministic gates,\nactual callback-entry observation, bounded waits and failure-safe task cleanup.\nRun the resulting three-method suite once after writing tests. Keep real\nregression failures: do not modify production, skip, mark expectedFailure or\nweaken expectations. If an assertion fails, later dependent steps may unwind to\ncleanup; all required checkpoints must still exist and execute on conforming\nproduction. No browser, separate disposable probe or extra report is requested.\nRepair only test-authoring errors if needed; retain all attempts as evidence.\nReport native identities/results, demonstrated behavior, tested layer and limits.\n",
+      "criteria": [
+        "Three native methods, original coverage retained",
+        "Snapshot independence and delayed serialization, current dirty state",
+        "Real original regression evidence; owned cleanup and source integrity"
+      ]
+    },
+    {
+      "id": "repeat-query-qa",
+      "skill": "mother-in-law",
+      "files": {
+        "AGENTS.md": "QA only. Preserve search.py, requirements.md and this file. Extend test_search.py; optional new standalone standard-library test support is allowed. No external services, installs, sleeps, production fixes or delegation. Keep any scratch below this project and remove it.\n",
+        "requirements.md": "Every submission is a new request, even if its query equals a pending request. Only the newest request may replace the displayed complete payload. Preserve the last displayed payload while any newer request is pending. This audit covers successful responses and request order only; error display, cancellation semantics, payload validation and rendered UI are not specified.\n",
+        "search.py": "class Search:\n    def __init__(self, fetch):\n        self.fetch = fetch\n        self.result = None\n        self.latest = None\n\n    async def submit(self, query):\n        self.latest = query\n        payload = await self.fetch(query)\n        if self.latest == query:\n            self.result = payload\n",
+        "test_search.py": "import unittest\nfrom search import Search\n\n\nclass SearchTests(unittest.IsolatedAsyncioTestCase):\n    async def test_initial(self):\n        self.assertIsNone(Search(None).result)\n"
+      },
+      "task": "Audit Search.submit against requirements.md and retain standalone unittest regressions in test_search.py, preserving its existing initial-state test. Exercise actual Search with controlled successful fetch responses, no network or sleeps. Cover two overlapping identical query submissions completing in reverse order, and a different-query reversed-order normal control. Seed a previously displayed structured payload; assert the complete payload after each submission, after newest completion and after older completion. Check actual fetch keys and control each request separately. Bound behavior-dependent waits and cancel/await owned tasks even after assertions fail. Run python3 -B -m unittest -v test_search and report its actual assertions/findings; a discovered production bug should remain a failing regression, not an expected failure, skip or changed expectation. Do not fix production. You may add standalone standard-library support if useful; retained tests must not depend on an installed skill. Keep tests/support, remove owned scratch, and do not add a separate report, commit or publish. Distinguish component QA from browser QA.",
+      "criteria": [
+        "Retained native tests call actual Search for same-query and different-query reversed overlap, with seeded full-payload checks at all requested checkpoints and actual request-key checks.",
+        "Native initial-state and new tests execute; real failure remains an ordinary AssertionError with correct actual/expected payload, not skip/expectedFailure or support exception.",
+        "Waits bounded, no sleeps/network, owned tasks cancelled and awaited after assertion failure.",
+        "Original production/requirements/instructions/initial test preserved; standalone tests/support retained, owned scratch removed; no unsupported browser or production-fix claim."
+      ]
+    }
+  ],
+  "schedule": [
+    [
+      0,
+      "previous"
+    ],
+    [
+      0,
+      "candidate"
+    ],
+    [
+      1,
+      "candidate"
+    ],
+    [
+      1,
+      "previous"
+    ]
+  ],
+  "settings": {
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "jobs": 1,
+    "repeats": 1
+  },
+  "python": "/opt/homebrew/opt/python@3.11/bin/python3.11",
+  "python_version": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+  "resource_digests": {
+    "previous": "310726146578dbf45044dada6e83d16cc9897699ddb7ca6d3006886b8880cc8d",
+    "candidate": "f386d8dee5403ac299c9d8046f68e4814d14232e17bf66436c7e95d283e4c325"
+  },
+  "condition_models": {
+    "previous": "gpt-6-astra",
+    "candidate": "gpt-6-astra"
+  },
+  "condition_flags": {
+    "previous": [],
+    "candidate": []
+  },
+  "cli_version": "codex-cli 0.157.1",
+  "execpolicy_rules": "retained",
+  "resource_revisions": {
+    "previous": "383820c809ff7122ffc4d58a89342aba7744ca57",
+    "candidate": "383820c809ff7122ffc4d58a89342aba7744ca57"
+  },
+  "completed_cells": [],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-27T18:10:10.613292+00:00"
+}

@@ -1,0 +1,200 @@
+import asyncio
+import unittest
+
+from preview import Preview
+
+
+TIMEOUT = 2
+
+
+class ControlledFetch:
+    def __init__(self):
+        self.started = asyncio.Event()
+        self.result = asyncio.get_running_loop().create_future()
+        self.keys = []
+
+    def __call__(self, key):
+        self.keys.append(key)
+        self.started.set()
+        return self.result
+
+
+class PreviewTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.tasks = []
+
+    async def asyncTearDown(self):
+        for task in self.tasks:
+            if not task.done():
+                task.cancel()
+        if self.tasks:
+            await asyncio.wait_for(
+                asyncio.gather(*self.tasks, return_exceptions=True), TIMEOUT
+            )
+
+    async def start(self, preview, key=None):
+        fetch = ControlledFetch()
+        task = asyncio.create_task(preview.refresh(key, fetch))
+        self.tasks.append(task)
+        await asyncio.wait_for(fetch.started.wait(), TIMEOUT)
+        self.assertEqual(len(fetch.keys), 1)
+        self.assertIs(fetch.keys[0], key)
+        self.assertFalse(task.done())
+        self.assertTrue(preview.pending)
+        return task, fetch
+
+    async def finish(self, task, fetch, result):
+        fetch.result.set_result(result)
+        actual = await asyncio.wait_for(asyncio.shield(task), TIMEOUT)
+        self.assertIs(actual, result)
+
+    async def reject(self, task, fetch, cancel):
+        if cancel:
+            task.cancel()
+            with self.assertRaises(asyncio.CancelledError):
+                await asyncio.wait_for(asyncio.shield(task), TIMEOUT)
+            self.assertTrue(task.cancelled())
+        else:
+            error = RuntimeError("controlled failure")
+            fetch.result.set_exception(error)
+            with self.assertRaises(RuntimeError) as caught:
+                await asyncio.wait_for(asyncio.shield(task), TIMEOUT)
+            self.assertIs(caught.exception, error)
+
+    async def seeded(self):
+        preview = Preview()
+        self.assertFalse(preview.pending)
+        self.assertIsNone(preview.value)
+        prior = object()
+        task, fetch = await self.start(preview)
+        await self.finish(task, fetch, prior)
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, prior)
+        return preview, prior
+
+    async def test_success_in_both_completion_orders(self):
+        for latest_first in (False, True):
+            with self.subTest(latest_first=latest_first):
+                preview, prior = await self.seeded()
+                key = object()
+                older, older_fetch = await self.start(preview, key)
+                latest, latest_fetch = await self.start(preview, key)
+                self.assertIs(preview.value, prior)
+                old_value, new_value = object(), object()
+                if latest_first:
+                    await self.finish(latest, latest_fetch, new_value)
+                    self.assertFalse(preview.pending)
+                    self.assertIs(preview.value, new_value)
+                    self.assertFalse(older.done())
+                    await self.finish(older, older_fetch, old_value)
+                else:
+                    await self.finish(older, older_fetch, old_value)
+                    self.assertTrue(preview.pending)
+                    self.assertIs(preview.value, prior)
+                    self.assertFalse(latest.done())
+                    await self.finish(latest, latest_fetch, new_value)
+                self.assertFalse(preview.pending)
+                self.assertIs(preview.value, new_value)
+
+    async def test_earlier_failure_or_cancellation_preserves_latest_pending(self):
+        for cancel in (False, True):
+            with self.subTest(cancel=cancel):
+                preview, prior = await self.seeded()
+                older, older_fetch = await self.start(preview)
+                latest, latest_fetch = await self.start(preview)
+                await self.reject(older, older_fetch, cancel)
+                self.assertTrue(preview.pending)
+                self.assertIs(preview.value, prior)
+                self.assertFalse(latest.done())
+                value = object()
+                await self.finish(latest, latest_fetch, value)
+                self.assertFalse(preview.pending)
+                self.assertIs(preview.value, value)
+
+    async def test_latest_failure_or_cancellation_retains_display_and_allows_retry(self):
+        for cancel in (False, True):
+            for older_during_retry in (False, True):
+                with self.subTest(cancel=cancel, older_during_retry=older_during_retry):
+                    preview, prior = await self.seeded()
+                    older, older_fetch = await self.start(preview)
+                    latest, latest_fetch = await self.start(preview)
+                    await self.reject(latest, latest_fetch, cancel)
+                    self.assertFalse(preview.pending)
+                    self.assertIs(preview.value, prior)
+                    self.assertFalse(older.done())
+                    if not older_during_retry:
+                        await self.finish(older, older_fetch, object())
+                        self.assertFalse(preview.pending)
+                        self.assertIs(preview.value, prior)
+                    retry, retry_fetch = await self.start(preview)
+                    self.assertIs(preview.value, prior)
+                    if older_during_retry:
+                        await self.finish(older, older_fetch, object())
+                        self.assertTrue(preview.pending)
+                        self.assertIs(preview.value, prior)
+                        self.assertFalse(retry.done())
+                    value = object()
+                    await self.finish(retry, retry_fetch, value)
+                    self.assertFalse(preview.pending)
+                    self.assertIs(preview.value, value)
+
+    async def test_synchronous_callback_failure_and_retry(self):
+        preview, prior = await self.seeded()
+        older, older_fetch = await self.start(preview)
+        error = RuntimeError("synchronous failure")
+        key = object()
+        keys = []
+
+        def fail(actual_key):
+            keys.append(actual_key)
+            self.assertTrue(preview.pending)
+            raise error
+
+        task = asyncio.create_task(preview.refresh(key, fail))
+        self.tasks.append(task)
+        with self.assertRaises(RuntimeError) as caught:
+            await asyncio.wait_for(asyncio.shield(task), TIMEOUT)
+        self.assertIs(caught.exception, error)
+        self.assertEqual(len(keys), 1)
+        self.assertIs(keys[0], key)
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, prior)
+        self.assertFalse(older.done())
+        retry, retry_fetch = await self.start(preview)
+        self.assertIs(preview.value, prior)
+        value = object()
+        await self.finish(retry, retry_fetch, value)
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, value)
+        await self.finish(older, older_fetch, object())
+        self.assertFalse(preview.pending)
+        self.assertIs(preview.value, value)
+
+    async def test_instances_have_independent_pending_and_display(self):
+        first, first_prior = await self.seeded()
+        second, second_prior = await self.seeded()
+        first_old, first_old_fetch = await self.start(first)
+        second_task, second_fetch = await self.start(second)
+        first_new, first_new_fetch = await self.start(first)
+        self.assertIs(first.value, first_prior)
+        self.assertIs(second.value, second_prior)
+        second_value = object()
+        await self.finish(second_task, second_fetch, second_value)
+        self.assertFalse(second.pending)
+        self.assertIs(second.value, second_value)
+        self.assertTrue(first.pending)
+        self.assertIs(first.value, first_prior)
+        await self.reject(first_old, first_old_fetch, cancel=False)
+        self.assertTrue(first.pending)
+        self.assertFalse(second.pending)
+        self.assertIs(second.value, second_value)
+        first_value = object()
+        await self.finish(first_new, first_new_fetch, first_value)
+        self.assertFalse(first.pending)
+        self.assertIs(first.value, first_value)
+        self.assertFalse(second.pending)
+        self.assertIs(second.value, second_value)
+
+
+if __name__ == "__main__":
+    unittest.main()

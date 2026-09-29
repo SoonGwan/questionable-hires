@@ -1,0 +1,83 @@
+FAULT: delete only ingest/ledger.py: connection.commit()
+STRONGER ASSERTION:
+        self.assertEqual(accept(self.database, 20, b'\x00\xffnew'), {'accepted': 20})
+        connection = sqlite3.connect(self.database)
+        try:
+            rows = connection.execute('SELECT id, payload FROM events ORDER BY id').fetchall()
+        finally:
+            connection.close()
+        self.assertEqual(rows, [(10, b'previous'), (20, b'\x00\xffnew')])
+
+
+CASE: correct-existing 
+CWD: <WORKSPACE>/.commit-audit-wrjw5w2_/correct-existing 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_receipts
+SAME-PROCESS BINDINGS VERIFIED: <WORKSPACE>/.commit-audit-wrjw5w2_/correct-existing/test_receipts.py
+test_receipts.accept is endpoint.handle_upload; accept._record is ledger.write_event; commit present: True
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.005s
+
+OK
+EXIT: 0
+
+CASE: fault-existing 
+CWD: <WORKSPACE>/.commit-audit-wrjw5w2_/fault-existing 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_receipts
+SAME-PROCESS BINDINGS VERIFIED: <WORKSPACE>/.commit-audit-wrjw5w2_/fault-existing/test_receipts.py
+test_receipts.accept is endpoint.handle_upload; accept._record is ledger.write_event; commit present: False
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.005s
+
+OK
+EXIT: 0
+
+CASE: correct-stronger 
+CWD: <WORKSPACE>/.commit-audit-wrjw5w2_/correct-stronger 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_receipts
+SAME-PROCESS BINDINGS VERIFIED: <WORKSPACE>/.commit-audit-wrjw5w2_/correct-stronger/test_receipts.py
+test_receipts.accept is endpoint.handle_upload; accept._record is ledger.write_event; commit present: True
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... ok
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.005s
+
+OK
+EXIT: 0
+
+CASE: fault-stronger 
+CWD: <WORKSPACE>/.commit-audit-wrjw5w2_/fault-stronger 
+COMMAND: /opt/homebrew/opt/python@3.11/bin/python3.11 -B -m unittest -v test_receipts
+SAME-PROCESS BINDINGS VERIFIED: <WORKSPACE>/.commit-audit-wrjw5w2_/fault-stronger/test_receipts.py
+test_receipts.accept is endpoint.handle_upload; accept._record is ledger.write_event; commit present: False
+test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload) ... FAIL
+test_acknowledges_empty_upload (test_receipts.ReceiptTests.test_acknowledges_empty_upload) ... ok
+
+======================================================================
+FAIL: test_acknowledges_binary_upload (test_receipts.ReceiptTests.test_acknowledges_binary_upload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<WORKSPACE>/.commit-audit-wrjw5w2_/fault-stronger/test_receipts.py", line 31, in test_acknowledges_binary_upload
+    self.assertEqual(rows, [(10, b'previous'), (20, b'\x00\xffnew')])
+AssertionError: Lists differ: [(10, b'previous')] != [(10, b'previous'), (20, b'\x00\xffnew')]
+
+Second list contains 1 additional elements.
+First extra element 1:
+(20, b'\x00\xffnew')
+
+- [(10, b'previous')]
++ [(10, b'previous'), (20, b'\x00\xffnew')]
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.005s
+
+FAILED (failures=1)
+EXIT: 1
+
+Original file hashes and modes unchanged; owned disposable copies removed.

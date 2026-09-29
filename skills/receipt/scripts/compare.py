@@ -59,6 +59,7 @@ BOOTSTRAP = '''import importlib, json, os, pathlib, sys, traceback, types
 ''' + MODULE_BINDINGS + '''
 recipe = json.loads(sys.argv[1])
 root = pathlib.Path.cwd().resolve()
+suite_path = os.environ.pop('RECEIPT_SUITE_RESULT', None) if recipe['runner'] == 'unittest' else None
 sys.path[:0] = [str(root / name) for name in recipe.get('import_roots', [])] + [str(root)]
 def verify_imports():
     for name in recipe['imports']:
@@ -98,6 +99,8 @@ except BaseException:
 if recipe['runner'] == 'unittest':
     import unittest
     result = unittest.main(module=None, exit=False).result
+    pathlib.Path(suite_path).write_text(json.dumps(dict(
+        tests=result.testsRun, skipped=len(result.skipped), successful=result.wasSuccessful())))
     if not result.wasSuccessful():
         raise SystemExit(1)
     if result.testsRun == len(result.skipped):
@@ -148,6 +151,18 @@ def _receipt_startup():
                 'path': str(pathlib.Path(location).resolve()), 'pid': os.getpid()
             }), flush=True)
         verify_module_bindings(recipe, root)
+        import unittest
+        original_run = unittest.TestProgram.runTests
+        def observed_run(program):
+            try:
+                return original_run(program)
+            finally:
+                result = getattr(program, 'result', None)
+                if result is not None:
+                    observation = dict(tests=result.testsRun, skipped=len(result.skipped),
+                                       successful=result.wasSuccessful())
+                    (probe / 'suite.json').write_text(json.dumps(observation))
+        unittest.TestProgram.runTests = observed_run
         (probe / 'ready').write_bytes(b'ready')
     except BaseException:
         traceback.print_exc()
@@ -156,6 +171,29 @@ def _receipt_startup():
         os._exit(7)
 _receipt_startup()
 '''
+
+
+ASSERTION_WRAPPER = r"""
+_receipt_original_run = unittest.TestProgram.runTests
+def _receipt_argument_run(program):
+    try:
+        observation = observe()
+    except RuntimeError:
+        value = compact({'v': 3, 'scope': 'assertEqual/assertIsNot current-thread calls',
+                         'observations': [], 'complete': False, 'reason': 'existing_profile'})
+        assertions_path.write_text(value)
+        return _receipt_original_run(program)
+    try:
+        return _receipt_original_run(program)
+    finally:
+        assertions_path.write_text(observation.close())
+unittest.TestProgram.runTests = _receipt_argument_run
+"""
+
+
+def assertion_startup():
+    source = read_limited(Path(__file__).with_name('assertions.py'), 16384).decode('utf-8')
+    return source + '\n' + ASSERTION_WRAPPER
 
 
 def checked_path(name):
@@ -223,8 +261,14 @@ def run_check(python, root, recipe, timeout):
                TMP=str(root), TEMP=str(root))
     env.pop('PYTHONPATH', None)
     env.pop('PYTHONOPTIMIZE', None)
-    args = [str(python), '-B', '-c', BOOTSTRAP, json.dumps(recipe)]
+    startup = assertion_startup() if recipe.get('observe_assertions', False) else None
+    bootstrap = BOOTSTRAP
+    if startup:
+        anchor = "if recipe['runner'] == 'unittest':\n    import unittest\n    result ="
+        bootstrap = bootstrap.replace(anchor, "assertions_path = pathlib.Path(suite_path).with_name('assertions.json')\n" + startup + '\n' + anchor)
+    args = [str(python), '-B', '-c', bootstrap, json.dumps(recipe)]
     marker = None
+    observer = None
     if recipe.get('invocation', 'bootstrap') == 'module':
         for directory in [root, *(root / name for name in recipe.get('import_roots', []))]:
             if any((directory / name).exists() for name in
@@ -232,17 +276,65 @@ def run_check(python, root, recipe, timeout):
                     'usercustomize', 'usercustomize.py', 'usercustomize.pyc')):
                 raise ValueError('Native invocation does not replace project startup customization')
         probe = Path(tempfile.mkdtemp(prefix='.receipt-startup-', dir=root))
-        (probe / 'sitecustomize.py').write_text('recipe = ' + repr(recipe) + '\n' + NATIVE_STARTUP)
+        native_startup = NATIVE_STARTUP
+        if startup:
+            native_startup += "\nassertions_path = probe / 'assertions.json'\n" + startup
+        (probe / 'sitecustomize.py').write_text('recipe = ' + repr(recipe) + '\n' + native_startup)
         marker = probe / 'ready'
+        observer = probe
         env['PYTHONPATH'] = os.pathsep.join([str(probe), *(str(root / name) for name in recipe.get('import_roots', [])), str(root)])
         args = [str(python), '-B', '-m', recipe['runner'], *recipe['tests']]
+    elif recipe['runner'] == 'unittest':
+        observer = Path(tempfile.mkdtemp(prefix='.receipt-result-', dir=root))
+        env['RECEIPT_SUITE_RESULT'] = str(observer / 'suite.json')
     result = capture_check(args, root, env, timeout)
-    if marker is not None:
-        ready = marker.is_file() and not marker.is_symlink() and read_limited(marker, 5) == b'ready'
-        result.update(command=args, invocation='module', provenance_ready=ready,
-                      native_exit_code=result['exit_code'])
-        if not ready and not result['timed_out']:
+    if observer is not None:
+        ready = (marker is None or (marker.is_file() and not marker.is_symlink()
+                 and read_limited(marker, 5) == b'ready'))
+        suite = None
+        try:
+            value = json.loads(read_limited(observer / 'suite.json', 4096))
+            if (isinstance(value, dict) and set(value) == {'tests', 'skipped', 'successful'}
+                    and type(value['tests']) is int and type(value['skipped']) is int
+                    and 0 <= value['skipped'] <= value['tests']
+                    and type(value['successful']) is bool):
+                suite = value
+        except (OSError, ValueError):
+            pass
+        result.update(native_exit_code=result['exit_code'], suite_observation=suite)
+        if marker is not None:
+            result.update(command=args, invocation='module', provenance_ready=ready)
+        agrees = suite is not None and (
+            result['exit_code'] == (0 if suite['successful'] else 1)
+            or (suite['successful'] and suite['tests'] == suite['skipped']
+                and result['exit_code'] == 5))
+        if (not ready or not agrees) and not result['timed_out']:
             result['exit_code'] = 7
+    if startup:
+        assertion_report = dict(v=2, scope='assertEqual/assertIsNot current-thread calls',
+                                observations=[], complete=False, reason='missing_or_invalid_report')
+        try:
+            value = json.loads(read_limited(observer / 'assertions.json', 4096))
+            if (isinstance(value, dict) and set(value) == {'v', 'scope', 'observations', 'complete', 'reason'}
+                    and type(value['v']) is int and value['v'] == 3
+                    and value['scope'] == assertion_report['scope']
+                    and type(value['complete']) is bool
+                    and (value['reason'] is None or isinstance(value['reason'], str))
+                    and isinstance(value['observations'], list) and len(value['observations']) <= 64):
+                assertion_report = value
+        except (OSError, ValueError):
+            pass
+        ready = (assertion_report['complete'] and assertion_report['reason'] is None
+                 and bool(assertion_report['observations'])
+                 and all(isinstance(row, dict) and set(row) == {'method', 'actual', 'expected', 'same_object'}
+                         and row['method'] in ('assertEqual', 'assertIsNot')
+                         and type(row['same_object']) is bool for row in assertion_report['observations']))
+        if not ready:
+            assertion_report['complete'] = False
+            assertion_report['reason'] = assertion_report['reason'] or 'missing_or_invalid_report'
+            if not result['timed_out']:
+                result['exit_code'] = 7
+        result['assertion_observation'] = assertion_report
     return result
 
 
@@ -392,13 +484,41 @@ def tree_inventory(root):
     return inventory, total
 
 
+def _copies_removed(scratch):
+    if scratch is None:
+        return None
+    try:
+        os.lstat(scratch)
+    except FileNotFoundError:
+        return True
+    except OSError:
+        return None
+    return False
+
+
 def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
     root = Path(root).resolve(strict=True)
     if os.name != 'posix' or not 0 < timeout <= 300:
         raise ValueError('Requires POSIX and a timeout in (0, 300]')
     required = {'fixed', 'vary', 'before', 'after', 'imports', 'runner', 'tests'}
-    if not isinstance(recipe, dict) or not required <= set(recipe) or set(recipe) - required - {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings', 'additional_before'}:
-        raise ValueError('Recipe requires fixed, vary, before, after, imports, runner and tests')
+    if not isinstance(recipe, dict):
+        raise ValueError('Recipe must be a JSON object')
+    if not all(isinstance(key, str) for key in recipe):
+        raise ValueError('Recipe keys must be strings')
+    optional = {'watch', 'import_roots', 'guard_tree', 'invocation', 'module_bindings',
+                'additional_before', 'observe_assertions'}
+    faults = []
+    for label, keys in (('missing', required - set(recipe)),
+                        ('unknown', set(recipe) - required - optional)):
+        if keys:
+            names = json.dumps(sorted(keys))
+            faults.append(label + ' keys: ' + (names[:240] + '...' if len(names) > 240 else names))
+    if faults:
+        raise ValueError('Invalid recipe: ' + '; '.join(faults))
+    if type(recipe.get('observe_assertions', False)) is not bool:
+        raise ValueError('observe_assertions must be a boolean')
+    if recipe.get('observe_assertions', False) and recipe['runner'] != 'unittest':
+        raise ValueError('observe_assertions requires unittest')
     if type(recipe.get('guard_tree', False)) is not bool:
         raise ValueError('guard_tree must be a boolean')
     if 'watch' in recipe and (not isinstance(recipe['watch'], list)
@@ -559,6 +679,7 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
             sha256={name: original_hashes[name] for name in recipe['vary']},
             modes={name: modes[name] for name in recipe['vary']})
     guarded = tree_inventory(root) if recipe.get('guard_tree', False) else None
+    scratch = None
     try:
         with tempfile.TemporaryDirectory(prefix='.receipt-', dir=root) as scratch:
             for label, (files, file_modes) in variants.items():
@@ -575,28 +696,65 @@ def compare(root, recipe, python=sys.executable, timeout=30, *, node='node'):
                 if check['timed_out'] or check['exit_code'] == 7:
                     result['status'] = 'incomplete'
                     break
+    except (ValueError, OSError, RuntimeError, subprocess.TimeoutExpired) as error:
+        if result['checks']:
+            result['status'] = 'incomplete'
+            result['execution_error'] = dict(type=type(error).__name__, message=str(error))
+            result['limitation'] = ('Only returned checks are retained; a missing check may have '
+                                    'started without returning evidence. Do not retry until the '
+                                    'error and process state are understood.')
+            result['comparison_copies_removed'] = _copies_removed(scratch)
+            error.comparison_result = result
+        raise
     finally:
-        changed = [name for name, content in originals.items() if (root/name).is_symlink()
-                   or not (root/name).is_file() or read_limited(root/name, len(content)) != content
-                   or (root/name).stat().st_mode & 0o777 != modes[name]]
-        if changed:
-            raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))
+        stage = 'originals'
+        result['originals'] = dict(unchanged=None, sha256=original_hashes,
+                                   modes=modes, watch_only=watched)
         if guarded is not None:
-            current, _ = tree_inventory(root)
-            previous, byte_count = guarded
-            differences = sorted(name for name in previous.keys() | current.keys()
-                                 if previous.get(name) != current.get(name))
-            if differences:
-                raise RuntimeError('Project tree changed; not restored (' + str(len(differences))
-                                   + ' paths): ' + ', '.join(differences[:20]))
-            encoded = json.dumps(previous, sort_keys=True, separators=(',', ':')).encode()
-            result['tree_guard'] = dict(unchanged=True, entries=len(previous),
-                file_bytes=byte_count, inventory_sha256=hashlib.sha256(encoded).hexdigest(),
-                scope='source root including Git metadata; symlink targets not read')
-    result['originals'] = dict(unchanged=True,
-        sha256=original_hashes,
-        modes=modes, watch_only=watched)
+            result['tree_guard'] = dict(unchanged=None)
+        try:
+            changed = [name for name, content in originals.items() if (root/name).is_symlink()
+                       or not (root/name).is_file() or read_limited(root/name, len(content)) != content
+                       or (root/name).stat().st_mode & 0o777 != modes[name]]
+            if changed:
+                result['originals'].update(unchanged=False, changed=changed)
+                raise RuntimeError('Selected originals changed; not restored: ' + ', '.join(changed))
+            result['originals']['unchanged'] = True
+            if guarded is not None:
+                stage = 'tree_guard'
+                current, _ = tree_inventory(root)
+                previous, byte_count = guarded
+                differences = sorted(name for name in previous.keys() | current.keys()
+                                     if previous.get(name) != current.get(name))
+                if differences:
+                    result['tree_guard'].update(unchanged=False, changed=differences)
+                    raise RuntimeError('Project tree changed; not restored (' + str(len(differences))
+                                       + ' paths): ' + ', '.join(differences[:20]))
+                encoded = json.dumps(previous, sort_keys=True, separators=(',', ':')).encode()
+                result['tree_guard'] = dict(unchanged=True, entries=len(previous),
+                    file_bytes=byte_count, inventory_sha256=hashlib.sha256(encoded).hexdigest(),
+                    scope='source root including Git metadata; symlink targets not read')
+        except (ValueError, OSError, RuntimeError) as error:
+            if not result['checks']:
+                raise
+            result['status'] = 'incomplete'
+            result['preservation_error'] = dict(stage=stage, type=type(error).__name__,
+                                                message=str(error))
+            result['comparison_copies_removed'] = _copies_removed(scratch)
+            # Preserve exception type/message for existing direct API callers.
+            error.comparison_result = result
+            raise
     result['comparison_copies_removed'] = True
+    return result
+
+
+def _unique_recipe_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            name = json.dumps(key)
+            raise ValueError('Duplicate recipe key: ' + (name[:240] + '...' if len(name) > 240 else name))
+        result[key] = value
     return result
 
 
@@ -613,6 +771,15 @@ guard_tree (optional boolean): inventory all source entries including Git around
 the comparison; no link traversal. 10000 entries/20 MB read per inventory. Opt in
 only when whole-project preservation is requested and all source reads are allowed.
 before: commit expression. after: commit expression or {"working_tree":true}.
+observe_assertions (optional boolean, default false): unittest only. Capture
+current-thread standard assertEqual/assertIsNot builtin/pathlib arguments, bounded to
+4096 report bytes/64 records. Format v:3: lists are arrays, tuples {"tuple":[...]},
+bytes {"bytes_hex":"..."}; exact standard pathlib types use {"PosixPath":"..."}
+(or WindowsPath/PurePosixPath/PureWindowsPath), text <=256 chars, no resolving
+or subclass conversion. v2 has no Path encoding; unversioned reports use kind/items.
+Unsupported/missing/incomplete observation maps to
+check7 and stops comparison; native_exit_code retains the runner result.
+Observation completeness is not full assertion coverage or regression proof.
 additional_before (optional): up to seven extra distinct commits, unittest only.
 Runs before, before_2, ... then after once, using identical frozen current tests.
 One shared 20 MB snapshot budget; timeout remains per check. Inspect every check.
@@ -641,7 +808,12 @@ No root, symlink, Git-internal, empty-directory or overlapping selections.
 Limits: Python 3.9+/POSIX, 20 MB snapshot, 10000 entries, 12000 output characters.
 Exit 0 means observations collected, not a verified fix: inspect each check's
 assertion output, exit_code, timed_out, output_truncated and import provenance.
-Exit 2 means comparison not established. Copies are cleaned; selected originals
+Exit 2 means comparison not established. After a returned check, ordinary copy,
+runner or cleanup errors retain incomplete JSON with execution_error. Final
+preservation failures use preservation_error; both may be present. Missing checks
+remain unknown. Inspect unchanged (false=changed, null=unverified) and
+comparison_copies_removed (true=absent, false=present, null=unverified);
+partial native results never override failed preservation. Selected originals
 are checked, not restored. No sandbox or complete side-effect containment.
 Check exit 7 reserves incomplete import/setup evidence; no next comparison runs.
 Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
@@ -663,9 +835,13 @@ Child temp defaults use each copy; do not redirect the helper's global TMPDIR.
                 raw = stream.read(1_000_001)
         if len(raw.encode('utf-8')) > 1_000_000:
             raise ValueError('Recipe exceeds 1 MB')
-        result = compare(args.source, json.loads(raw), args.python, args.timeout, node=args.node)
+        recipe = json.loads(raw, object_pairs_hook=_unique_recipe_object)
+        result = compare(args.source, recipe, args.python, args.timeout, node=args.node)
     except (ValueError, OSError, RuntimeError, subprocess.TimeoutExpired) as error:
-        parser.exit(2, 'Comparison not established: ' + str(error) + '\n')
+        if not hasattr(error, 'comparison_result'):
+            parser.exit(2, 'Comparison not established: ' + str(error) + '\n')
+        result = error.comparison_result
+        print('Comparison not established: ' + str(error), file=sys.stderr)
     print(json.dumps(result, indent=2) if args.pretty else json.dumps(result, separators=(',', ':')))
     return 0 if result['status'] == 'observed' else 2
 

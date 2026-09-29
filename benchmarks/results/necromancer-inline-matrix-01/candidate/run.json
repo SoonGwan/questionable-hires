@@ -1,0 +1,160 @@
+{
+  "cases": [
+    {
+      "id": "history-invoice-boundary",
+      "skill": "necromancer",
+      "files": {
+        "amounts.py": "from decimal import Decimal, ROUND_HALF_UP\n\n\ndef amount_cents(value):\n    if isinstance(value, int):\n        return value\n    return int((Decimal(value) * 100).quantize(Decimal(\"1\"), rounding=ROUND_HALF_UP))\n",
+        "invoice.py": "from decimal import Decimal\nfrom amounts import amount_cents\n\n\ndef invoice_total(amount):\n    if not isinstance(amount, str):\n        raise TypeError(\"invoice amounts must be decimal strings\")\n    return amount_cents(Decimal(amount))\n",
+        "test_invoice.py": "import unittest\nfrom invoice import invoice_total\n\n\nclass InvoiceTests(unittest.TestCase):\n    def test_positive_half_cent(self):\n        self.assertEqual(invoice_total(\"1.005\"), 101)\n\n    def test_negative_half_cent(self):\n        self.assertEqual(invoice_total(\"-1.005\"), -101)\n\n    def test_exact_cents(self):\n        self.assertEqual(invoice_total(\"2.34\"), 234)\n",
+        "requirements.md": "invoice.invoice_total is the only supported entrypoint. Amounts are finite\ndecimal strings in major units, including negatives and fractional cents. Return\ninteger cents by rounding half away from zero. amounts.amount_cents is private.\nThe integer-minor-unit batch importer is retired; no plugins, alternate callers\nor supported external imports of amounts exist. Preserve this contract.\n",
+        "AGENTS.md": "Read-only review. Do not edit, commit or install anything. Use Python's\nstandard library and local Git. Run Python with -B to avoid bytecode artifacts.\nIn-memory substitution for behavioral checks is allowed; preserve project files.\nDo not access external services. Temporary files, if necessary, must stay inside\nthis project and be removed when finished. Captured test output is sufficient;\ndo not create a separate evidence report unless needed for missing output.\n"
+      },
+      "history": [
+        {
+          "message": "Initial invoice formatting",
+          "files": {
+            "amounts.py": "from decimal import Decimal\n\n\ndef amount_cents(value):\n    return int(Decimal(value) * 100)\n",
+            "invoice.py": "from amounts import amount_cents\n\n\ndef invoice_total(amount):\n    return amount_cents(amount)\n"
+          }
+        },
+        {
+          "message": "Preserve half-cent invoice rounding, including credits",
+          "files": {
+            "amounts.py": "from decimal import Decimal, ROUND_HALF_UP\n\n\ndef amount_cents(value):\n    return int((Decimal(value) * 100).quantize(Decimal(\"1\"), rounding=ROUND_HALF_UP))\n"
+          }
+        },
+        {
+          "message": "Accept integer minor units from the batch importer",
+          "files": {
+            "amounts.py": "from decimal import Decimal, ROUND_HALF_UP\n\n\ndef amount_cents(value):\n    if isinstance(value, int):\n        return value\n    return int((Decimal(value) * 100).quantize(Decimal(\"1\"), rounding=ROUND_HALF_UP))\n"
+          }
+        },
+        {
+          "message": "Retire batch importer and normalize at invoice boundary",
+          "files": {
+            "invoice.py": "from decimal import Decimal\nfrom amounts import amount_cents\n\n\ndef invoice_total(amount):\n    if not isinstance(amount, str):\n        raise TypeError(\"invoice amounts must be decimal strings\")\n    return amount_cents(Decimal(amount))\n",
+            "test_invoice.py": "import unittest\nfrom invoice import invoice_total\n\n\nclass InvoiceTests(unittest.TestCase):\n    def test_positive_half_cent(self):\n        self.assertEqual(invoice_total(\"1.005\"), 101)\n\n    def test_negative_half_cent(self):\n        self.assertEqual(invoice_total(\"-1.005\"), -101)\n\n    def test_exact_cents(self):\n        self.assertEqual(invoice_total(\"2.34\"), 234)\n",
+            "requirements.md": "invoice.invoice_total is the only supported entrypoint. Amounts are finite\ndecimal strings in major units, including negatives and fractional cents. Return\ninteger cents by rounding half away from zero. amounts.amount_cents is private.\nThe integer-minor-unit batch importer is retired; no plugins, alternate callers\nor supported external imports of amounts exist. Preserve this contract.\n",
+            "AGENTS.md": "Read-only review. Do not edit, commit or install anything. Use Python's\nstandard library and local Git. Run Python with -B to avoid bytecode artifacts.\nIn-memory substitution for behavioral checks is allowed; preserve project files.\nDo not access external services. Temporary files, if necessary, must stay inside\nthis project and be removed when finished. Captured test output is sufficient;\ndo not create a separate evidence report unless needed for missing output.\n"
+          }
+        }
+      ],
+      "task": "Review two proposed independent simplifications in amounts.amount_cents:\n(A) remove the isinstance(value, int) early return;\n(B) replace the final quantized return with return int(Decimal(value) * 100),\nleaving the early return unchanged. Do not combine the proposals.\nFor each, establish why the existing behavior was introduced from the actual\nrelevant commit change, then decide whether it is necessary under the current\nsupported invoice contract and caller. Verify current, A-only and B-only behavior\nthrough invoice.invoice_total for \"1.005\", \"-1.005\" and \"2.34\", comparing with\nthe required values. Cite the introducing commits and current call path. Give\nseparate recommendations, separating historical reason from current necessity.\nThis is review, not implementation: preserve all project files; no commits,\ndependency installs, network, publishing or external history fetching. Use -B\nfor Python. In-memory substitution is permitted. If you need scratch, keep it\ninside the project and remove it before finishing; captured output is enough.",
+      "criteria": [
+        "A is removable at the supported boundary: it always passes Decimal, not int.",
+        "B is not compatible: positive/negative half cents truncate instead of rounding away from zero.",
+        "Identify distinct actual introducing changes for integer minor units and rounding, not just the current normalization commit.",
+        "Observe three specified values through the real invoice entrypoint for current and each independent proposal.",
+        "Preserve original files and scope; distinguish private helper history from supported current contracts."
+      ]
+    },
+    {
+      "id": "history-three-decisions",
+      "skill": "necromancer",
+      "files": {
+        "summary.py": "def summarize(record):\n    code = record.get('code') or 'unknown'\n    name = record.get('display_name') or record['name']\n    amount = record['amount']\n    if amount < 0:\n        raise ValueError('negative amount')\n    return code, name, amount\n",
+        "consumer.py": "from summary import summarize\n\ndef render(record):\n    normalized = dict(record)\n    normalized['display_name'] = record.get('display_name') or record['name']\n    return summarize(normalized)\n",
+        "requirements.md": "render is the sole supported entrypoint. summary.summarize is private.\nInput name is nonempty; display_name and code may be missing or empty. Missing or\nempty code must render as 'unknown'; missing or empty display_name uses name.\namount is an integer and negative values must raise ValueError. Upstream does not\nreject negatives. There are no other consumers, plugins or supported direct calls.\nUse python3 -B -m unittest -v. Review only: preserve all original files.\n",
+        "test_consumer.py": "import unittest\nfrom consumer import render\n\nclass RenderTests(unittest.TestCase):\n    def test_legacy(self):\n        self.assertEqual(render({'name': 'Ada', 'amount': 0}), ('unknown', 'Ada', 0))\n    def test_empty(self):\n        self.assertEqual(render({'name': 'Ada', 'display_name': '', 'code': '', 'amount': 2}), ('unknown', 'Ada', 2))\n    def test_current(self):\n        self.assertEqual(render({'name': 'Ada', 'display_name': 'A', 'code': 'X', 'amount': 3}), ('X', 'A', 3))\n    def test_negative(self):\n        with self.assertRaises(ValueError):\n            render({'name': 'Ada', 'amount': -1})\n"
+      },
+      "history": [
+        {
+          "message": "Initial summary implementation",
+          "files": {
+            "summary.py": "def summarize(record):\n    code = record['code']\n    name = record['display_name']\n    amount = record['amount']\n    return code, name, amount\n"
+          }
+        },
+        {
+          "message": "Support records without a populated code",
+          "files": {
+            "summary.py": "def summarize(record):\n    code = record.get('code') or 'unknown'\n    name = record['display_name']\n    amount = record['amount']\n    return code, name, amount\n"
+          }
+        },
+        {
+          "message": "Support legacy name-only display records",
+          "files": {
+            "summary.py": "def summarize(record):\n    code = record.get('code') or 'unknown'\n    name = record.get('display_name') or record['name']\n    amount = record['amount']\n    return code, name, amount\n"
+          }
+        },
+        {
+          "message": "Reject negative amounts at the summary boundary",
+          "files": {
+            "summary.py": "def summarize(record):\n    code = record.get('code') or 'unknown'\n    name = record.get('display_name') or record['name']\n    amount = record['amount']\n    if amount < 0:\n        raise ValueError('negative amount')\n    return code, name, amount\n"
+          }
+        },
+        {
+          "message": "Normalize display names at the sole public entrypoint",
+          "files": {
+            "consumer.py": "from summary import summarize\n\ndef render(record):\n    normalized = dict(record)\n    normalized['display_name'] = record.get('display_name') or record['name']\n    return summarize(normalized)\n",
+            "requirements.md": "render is the sole supported entrypoint. summary.summarize is private.\nInput name is nonempty; display_name and code may be missing or empty. Missing or\nempty code must render as 'unknown'; missing or empty display_name uses name.\namount is an integer and negative values must raise ValueError. Upstream does not\nreject negatives. There are no other consumers, plugins or supported direct calls.\nUse python3 -B -m unittest -v. Review only: preserve all original files.\n",
+            "test_consumer.py": "import unittest\nfrom consumer import render\n\nclass RenderTests(unittest.TestCase):\n    def test_legacy(self):\n        self.assertEqual(render({'name': 'Ada', 'amount': 0}), ('unknown', 'Ada', 0))\n    def test_empty(self):\n        self.assertEqual(render({'name': 'Ada', 'display_name': '', 'code': '', 'amount': 2}), ('unknown', 'Ada', 2))\n    def test_current(self):\n        self.assertEqual(render({'name': 'Ada', 'display_name': 'A', 'code': 'X', 'amount': 3}), ('X', 'A', 3))\n    def test_negative(self):\n        with self.assertRaises(ValueError):\n            render({'name': 'Ada', 'amount': -1})\n"
+          }
+        }
+      ],
+      "task": "Review whether summary.summarize can remove its code fallback, display-name fallback and negative-amount guard. For each, establish the historical reason and current necessity through the supported render path. Cite the relevant commits and verify proposed behavior. Do not implement changes or edit project files.",
+      "criteria": [
+        "Retains code fallback and negative-amount rejection; permits removing only the private display-name fallback while preserving caller normalization.",
+        "Cites each actual introducing commit and the later caller normalization, without treating historical need as current necessity.",
+        "Exercises current and proposed behavior through actual render, preserving missing/empty/current inputs and negative rejection.",
+        "Preserves project files and scope; does not infer omitted changes are absent."
+      ]
+    }
+  ],
+  "schedule": [
+    [
+      0,
+      "previous"
+    ],
+    [
+      0,
+      "candidate"
+    ],
+    [
+      1,
+      "candidate"
+    ],
+    [
+      1,
+      "previous"
+    ]
+  ],
+  "flags": [
+    "--disable",
+    "apps",
+    "-c",
+    "features.code_mode.excluded_tool_namespaces=[\"web\",\"imagegen\",\"clock\"]"
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout": 360
+  },
+  "source_hashes": {
+    "benchmarks/history-invoice-01-cases.json": "6669c0e61c88c33c3a95d014916362eafbf511fa82dfd658b3386fd75306bebc",
+    "benchmarks/necromancer-regions-cases.json": "d78934def2ca030ed9f7d329d93bd9a6a6c437c9788b821b2cab35f117141806",
+    "benchmarks/run.py": "60120a1fec9c610784cc2d2d649edcee41eb46550baec7031a37bbcfc91a0c03",
+    "benchmarks/run_tool_surface_01.py": "7765a8400ab2dee61283ce00cb82050c99a79735b4b146f4074de2345e5572ec",
+    "benchmarks/run_necromancer_decision_checks_01.py": "8db262563d6321d1a542d95afb5be577f90eeff3ff75e3d8d52435eaf9c5ddbb",
+    "benchmarks/NECROMANCER-DECISION-CHECKS-01-PROTOCOL.md": "14169eb58e877d19dea4011c26c339e0c8ce09bce741c28d5efbbd796adeb243",
+    "tests/test_necromancer_decision_checks_01.py": "2d6cac4761fae64d54e15b41a15b1bb180934e8b2c8b0e80e2436a06fa24da49",
+    "benchmarks/run_necromancer_inline_matrix_01.py": "bcf4c2960d322031679c5515cd9762992ccaa32ef70fc2a9b0e9d0494623ccf8",
+    "benchmarks/NECROMANCER-INLINE-MATRIX-01-PROTOCOL.md": "7e019167a4bbc4000328df06b9216e3354d3d76b7012872ed7d4bd94f9b9f14b",
+    "tests/test_necromancer_inline_matrix_01.py": "527831907edf1eae8873c8da27a0df9513aed5465656d29a05eda1408ca35c68",
+    "benchmarks/results/necromancer-inline-matrix-native-01/control.py": "3e45d1f458f57c616e6202ad9c07aee2167dfcdeaf400c56868f55a7340cee28"
+  },
+  "resource_digests": {
+    "previous": "7431e4c7c06b7e7642f37c31144cea78c4a40468e80a0787b352b4a6b4d61b12",
+    "candidate": "d318a2d83da9128886dc532db4628c8693b1c329b166071d9bbe9e080adbcdde"
+  },
+  "python": "<TEMP>",
+  "python_version": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+  "cli_version": "codex-cli 0.157.1",
+  "resource_revisions": {
+    "previous": "e109ae4a",
+    "candidate": "80c06e2e"
+  },
+  "completed_cells": [],
+  "stopped": false,
+  "prepared_at": "2026-09-27T07:36:40.827838+00:00"
+}

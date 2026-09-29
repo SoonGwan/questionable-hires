@@ -1,0 +1,290 @@
+[
+  {
+    "invocation": "bootstrap",
+    "mode": "existing",
+    "comparison": {
+      "status": "observed",
+      "revisions": {
+        "before": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+        "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+      },
+      "checks": {
+        "before": {
+          "exit_code": 1,
+          "timed_out": false,
+          "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19646}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19646}\nReceipt assertions: {\"observations\":[],\"complete\":false,\"reason\":\"existing_profile\"}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<string>\", line 147, in _receipt_argument_run\n  File \"<string>\", line 95, in observe\nRuntimeError: Existing profile hook: do not replace it\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=1)\n",
+          "output_truncated": false,
+          "native_exit_code": 1,
+          "suite_observation": {
+            "tests": 6,
+            "skipped": 0,
+            "successful": false
+          }
+        },
+        "after": {
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19647}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19647}\nReceipt assertions: {\"observations\":[],\"complete\":false,\"reason\":\"existing_profile\"}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... ok\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n",
+          "output_truncated": false,
+          "native_exit_code": 0,
+          "suite_observation": {
+            "tests": 6,
+            "skipped": 0,
+            "successful": true
+          }
+        }
+      },
+      "import_roots": [],
+      "fixed_sha256": {
+        "test_windows.py": "e3f025c588eed17a460a8f74446bf9e1cb21f3ff8067984bb4cefe91c7d92802"
+      },
+      "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+      "tree_guard": {
+        "unchanged": true,
+        "entries": 44,
+        "file_bytes": 5469,
+        "inventory_sha256": "b8de0e52a0f149cc1f3c8e118afbe390622079b2c655eb953d452d36ec0b1c2b",
+        "scope": "source root including Git metadata; symlink targets not read"
+      },
+      "originals": {
+        "unchanged": true,
+        "sha256": {
+          "test_windows.py": "e3f025c588eed17a460a8f74446bf9e1cb21f3ff8067984bb4cefe91c7d92802",
+          "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+        },
+        "modes": {
+          "test_windows.py": 420,
+          "windows.py": 420
+        },
+        "watch_only": []
+      },
+      "comparison_copies_removed": true
+    }
+  },
+  {
+    "invocation": "bootstrap",
+    "mode": "replacement",
+    "comparison": {
+      "status": "observed",
+      "revisions": {
+        "before": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+        "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+      },
+      "checks": {
+        "before": {
+          "exit_code": 1,
+          "timed_out": false,
+          "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19670}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19670}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=1)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[],\"complete\":false,\"reason\":\"profile_replaced\"}\n",
+          "output_truncated": false,
+          "native_exit_code": 1,
+          "suite_observation": {
+            "tests": 6,
+            "skipped": 0,
+            "successful": false
+          }
+        },
+        "after": {
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19671}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19671}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... ok\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[],\"complete\":false,\"reason\":\"profile_replaced\"}\n",
+          "output_truncated": false,
+          "native_exit_code": 0,
+          "suite_observation": {
+            "tests": 6,
+            "skipped": 0,
+            "successful": true
+          }
+        }
+      },
+      "import_roots": [],
+      "fixed_sha256": {
+        "test_windows.py": "4e51207ba09b2e54cf3422fe1c6417d64ce760cc9b2cfcb00ca39a95b9c89a91"
+      },
+      "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+      "tree_guard": {
+        "unchanged": true,
+        "entries": 44,
+        "file_bytes": 5492,
+        "inventory_sha256": "5b8082b53a86869d04c0d7734b652a1bbeda81263a0ee63de5362fe92ac9e2a6",
+        "scope": "source root including Git metadata; symlink targets not read"
+      },
+      "originals": {
+        "unchanged": true,
+        "sha256": {
+          "test_windows.py": "4e51207ba09b2e54cf3422fe1c6417d64ce760cc9b2cfcb00ca39a95b9c89a91",
+          "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+        },
+        "modes": {
+          "test_windows.py": 420,
+          "windows.py": 420
+        },
+        "watch_only": []
+      },
+      "comparison_copies_removed": true
+    }
+  },
+  {
+    "invocation": "module",
+    "mode": "existing",
+    "comparison": {
+      "status": "observed",
+      "revisions": {
+        "before": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+        "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+      },
+      "checks": {
+        "before": {
+          "exit_code": 1,
+          "timed_out": false,
+          "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19695}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19695}\nReceipt assertions: {\"observations\":[],\"complete\":false,\"reason\":\"existing_profile\"}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 168, in _receipt_argument_run\n    observation = observe()\n                  ^^^^^^^^^\n  File \"<TEMP>\", line 116, in observe\n    raise RuntimeError('Existing profile hook: do not replace it')\nRuntimeError: Existing profile hook: do not replace it\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=1)\n",
+          "output_truncated": false,
+          "native_exit_code": 1,
+          "suite_observation": {
+            "tests": 6,
+            "skipped": 0,
+            "successful": false
+          },
+          "command": [
+            "<TEMP>",
+            "-B",
+            "-m",
+            "unittest",
+            "-v",
+            "test_windows"
+          ],
+          "invocation": "module",
+          "provenance_ready": true
+        },
+        "after": {
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19696}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19696}\nReceipt assertions: {\"observations\":[],\"complete\":false,\"reason\":\"existing_profile\"}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... ok\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n",
+          "output_truncated": false,
+          "native_exit_code": 0,
+          "suite_observation": {
+            "tests": 6,
+            "skipped": 0,
+            "successful": true
+          },
+          "command": [
+            "<TEMP>",
+            "-B",
+            "-m",
+            "unittest",
+            "-v",
+            "test_windows"
+          ],
+          "invocation": "module",
+          "provenance_ready": true
+        }
+      },
+      "import_roots": [],
+      "fixed_sha256": {
+        "test_windows.py": "e3f025c588eed17a460a8f74446bf9e1cb21f3ff8067984bb4cefe91c7d92802"
+      },
+      "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+      "tree_guard": {
+        "unchanged": true,
+        "entries": 44,
+        "file_bytes": 5469,
+        "inventory_sha256": "008a08facf72a36f6aaec0ac381e07e986d77fdcef662b7498dcd6e86ec917da",
+        "scope": "source root including Git metadata; symlink targets not read"
+      },
+      "originals": {
+        "unchanged": true,
+        "sha256": {
+          "test_windows.py": "e3f025c588eed17a460a8f74446bf9e1cb21f3ff8067984bb4cefe91c7d92802",
+          "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+        },
+        "modes": {
+          "test_windows.py": 420,
+          "windows.py": 420
+        },
+        "watch_only": []
+      },
+      "comparison_copies_removed": true
+    }
+  },
+  {
+    "invocation": "module",
+    "mode": "replacement",
+    "comparison": {
+      "status": "observed",
+      "revisions": {
+        "before": "9910b517fbdf67e0335ae7e92967de94be62d62a",
+        "after": "1f8f37f823ac34a0ff36cdd2e6f8a2cc291eeb24"
+      },
+      "checks": {
+        "before": {
+          "exit_code": 1,
+          "timed_out": false,
+          "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19719}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19719}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... FAIL\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n======================================================================\nFAIL: test_nested (test_windows.WindowsTests.test_nested)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 9, in test_nested\n    self.assertEqual(merge_windows([(1, 10), (2, 3)]), [(1, 10)])\nAssertionError: Lists differ: [(1, 3)] != [(1, 10)]\n\nFirst differing element 0:\n(1, 3)\n(1, 10)\n\n- [(1, 3)]\n?      ^\n\n+ [(1, 10)]\n?      ^^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nFAILED (failures=1)\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[],\"complete\":false,\"reason\":\"profile_replaced\"}\n",
+          "output_truncated": false,
+          "native_exit_code": 1,
+          "suite_observation": {
+            "tests": 6,
+            "skipped": 0,
+            "successful": false
+          },
+          "command": [
+            "<TEMP>",
+            "-B",
+            "-m",
+            "unittest",
+            "-v",
+            "test_windows"
+          ],
+          "invocation": "module",
+          "provenance_ready": true
+        },
+        "after": {
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "Verified copied import: windows {\"path\": \"<TEMP>\", \"pid\": 19720}\nVerified copied import: test_windows {\"path\": \"<TEMP>\", \"pid\": 19720}\ntest_chain (test_windows.WindowsTests.test_chain) ... ok\ntest_disjoint (test_windows.WindowsTests.test_disjoint) ... ok\ntest_empty (test_windows.WindowsTests.test_empty) ... ok\ntest_input_preserved (test_windows.WindowsTests.test_input_preserved) ... ok\ntest_nested (test_windows.WindowsTests.test_nested) ... ok\ntest_touching (test_windows.WindowsTests.test_touching) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\nReceipt assertions: {\"scope\":\"assertEqual/assertIsNot current-thread calls\",\"observations\":[],\"complete\":false,\"reason\":\"profile_replaced\"}\n",
+          "output_truncated": false,
+          "native_exit_code": 0,
+          "suite_observation": {
+            "tests": 6,
+            "skipped": 0,
+            "successful": true
+          },
+          "command": [
+            "<TEMP>",
+            "-B",
+            "-m",
+            "unittest",
+            "-v",
+            "test_windows"
+          ],
+          "invocation": "module",
+          "provenance_ready": true
+        }
+      },
+      "import_roots": [],
+      "fixed_sha256": {
+        "test_windows.py": "4e51207ba09b2e54cf3422fe1c6417d64ce760cc9b2cfcb00ca39a95b9c89a91"
+      },
+      "limitation": "Inspect assertion failures and import provenance; exit codes alone do not prove the fix.",
+      "tree_guard": {
+        "unchanged": true,
+        "entries": 44,
+        "file_bytes": 5492,
+        "inventory_sha256": "75e499f27bb2eef7d6c7975879c1ea2152c7aa5ea8471c340b6f87ec28d71509",
+        "scope": "source root including Git metadata; symlink targets not read"
+      },
+      "originals": {
+        "unchanged": true,
+        "sha256": {
+          "test_windows.py": "4e51207ba09b2e54cf3422fe1c6417d64ce760cc9b2cfcb00ca39a95b9c89a91",
+          "windows.py": "dd94c591a1580d34eb895f15f15385369523ee67e3586a4413ee2f9c659f194e"
+        },
+        "modes": {
+          "test_windows.py": 420,
+          "windows.py": 420
+        },
+        "watch_only": []
+      },
+      "comparison_copies_removed": true
+    }
+  }
+]

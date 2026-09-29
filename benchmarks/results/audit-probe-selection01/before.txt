@@ -1,0 +1,73 @@
+test_changed_precheck_environment_modes_and_source_invalidate_file_probe (test_audit_probe_selection.AuditProbeSelectionTests.test_changed_precheck_environment_modes_and_source_invalidate_file_probe) ... ok
+test_distinct_probe_arguments_and_contents_are_not_reused (test_audit_probe_selection.AuditProbeSelectionTests.test_distinct_probe_arguments_and_contents_are_not_reused) ... 
+  test_distinct_probe_arguments_and_contents_are_not_reused (test_audit_probe_selection.AuditProbeSelectionTests.test_distinct_probe_arguments_and_contents_are_not_reused) (change='arguments') ... FAIL
+  test_distinct_probe_arguments_and_contents_are_not_reused (test_audit_probe_selection.AuditProbeSelectionTests.test_distinct_probe_arguments_and_contents_are_not_reused) (change='contents') ... FAIL
+test_inline_probe_keeps_original_selector_context (test_audit_probe_selection.AuditProbeSelectionTests.test_inline_probe_keeps_original_selector_context) ... ok
+test_native_pytest_selection_changes_keep_collection_and_assertion_evidence (test_audit_probe_selection.AuditProbeSelectionTests.test_native_pytest_selection_changes_keep_collection_and_assertion_evidence) ... FAIL
+test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes (test_audit_probe_selection.AuditProbeSelectionTests.test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes) ... 
+  test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes (test_audit_probe_selection.AuditProbeSelectionTests.test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes) (invocation='module', selections='aab') ... FAIL
+  test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes (test_audit_probe_selection.AuditProbeSelectionTests.test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes) (invocation='module', selections='aba') ... FAIL
+  test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes (test_audit_probe_selection.AuditProbeSelectionTests.test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes) (invocation='bootstrap', selections='aab') ... FAIL
+  test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes (test_audit_probe_selection.AuditProbeSelectionTests.test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes) (invocation='bootstrap', selections='aba') ... FAIL
+test_survival_gate_skips_cached_probe_and_failing_correct_probe_stops_batch (test_audit_probe_selection.AuditProbeSelectionTests.test_survival_gate_skips_cached_probe_and_failing_correct_probe_stops_batch) ... ok
+
+======================================================================
+FAIL: test_distinct_probe_arguments_and_contents_are_not_reused (test_audit_probe_selection.AuditProbeSelectionTests.test_distinct_probe_arguments_and_contents_are_not_reused) (change='arguments')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_audit_probe_selection.py", line 127, in test_distinct_probe_arguments_and_contents_are_not_reused
+    self.assertEqual(execute.call_count, 10)
+AssertionError: 11 != 10
+
+======================================================================
+FAIL: test_distinct_probe_arguments_and_contents_are_not_reused (test_audit_probe_selection.AuditProbeSelectionTests.test_distinct_probe_arguments_and_contents_are_not_reused) (change='contents')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_audit_probe_selection.py", line 127, in test_distinct_probe_arguments_and_contents_are_not_reused
+    self.assertEqual(execute.call_count, 10)
+AssertionError: 11 != 10
+
+======================================================================
+FAIL: test_native_pytest_selection_changes_keep_collection_and_assertion_evidence (test_audit_probe_selection.AuditProbeSelectionTests.test_native_pytest_selection_changes_keep_collection_and_assertion_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_audit_probe_selection.py", line 112, in test_native_pytest_selection_changes_keep_collection_and_assertion_evidence
+    self.assertEqual(execute.call_count, 9)
+AssertionError: 11 != 9
+
+======================================================================
+FAIL: test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes (test_audit_probe_selection.AuditProbeSelectionTests.test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes) (invocation='module', selections='aab')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_audit_probe_selection.py", line 102, in test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes
+    self.assertEqual(execute.call_count, 9)
+AssertionError: 10 != 9
+
+======================================================================
+FAIL: test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes (test_audit_probe_selection.AuditProbeSelectionTests.test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes) (invocation='module', selections='aba')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_audit_probe_selection.py", line 102, in test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes
+    self.assertEqual(execute.call_count, 9)
+AssertionError: 11 != 9
+
+======================================================================
+FAIL: test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes (test_audit_probe_selection.AuditProbeSelectionTests.test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes) (invocation='bootstrap', selections='aab')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_audit_probe_selection.py", line 102, in test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes
+    self.assertEqual(execute.call_count, 9)
+AssertionError: 10 != 9
+
+======================================================================
+FAIL: test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes (test_audit_probe_selection.AuditProbeSelectionTests.test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes) (invocation='bootstrap', selections='aba')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<HOME>/Documents/GitHub/questionable-hires/tests/test_audit_probe_selection.py", line 102, in test_native_selection_changes_reuse_same_file_probe_in_both_unittest_modes
+    self.assertEqual(execute.call_count, 9)
+AssertionError: 11 != 9
+
+----------------------------------------------------------------------
+Ran 6 tests in 6.107s
+
+FAILED (failures=7)

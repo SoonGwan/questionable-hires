@@ -1,0 +1,68 @@
+Session termination failed: All connection attempts failed
+  + Exception Group Traceback (most recent call last):
+  |   File "<HOME>/Documents/GitHub/questionable-hires/benchmarks/results/tool-bridge-http-exit-01/control.py", line 77, in <module>
+  |     asyncio.run(check())
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 190, in run
+  |     return runner.run(main)
+  |            ^^^^^^^^^^^^^^^^
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+  |     return self._loop.run_until_complete(task)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+  |     return future.result()
+  |            ^^^^^^^^^^^^^^^
+  |   File "<HOME>/Documents/GitHub/questionable-hires/benchmarks/results/tool-bridge-http-exit-01/control.py", line 46, in check
+  |     async with streamable_http_client(f'http://127.0.0.1:{port}/mcp') as (read,write,get_id):
+  |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py", line 222, in __aexit__
+  |     await self.gen.athrow(typ, value, traceback)
+  |   File "<TEMP>", line 672, in streamable_http_client
+  |     async with anyio.create_task_group() as tg:
+  |   File "<TEMP>", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Exception Group Traceback (most recent call last):
+    |   File "<TEMP>", line 695, in streamable_http_client
+    |     yield (
+    |   File "<HOME>/Documents/GitHub/questionable-hires/benchmarks/results/tool-bridge-http-exit-01/control.py", line 47, in check
+    |     async with ClientSession(read,write) as session:
+    |   File "<TEMP>", line 847, in __aexit__
+    |     raise BaseExceptionGroup(
+    | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+    +-+---------------- 1 ----------------
+      | Traceback (most recent call last):
+      |   File "<TEMP>", line 118, in receive
+      |     return self.receive_nowait()
+      |            ^^^^^^^^^^^^^^^^^^^^^
+      |   File "<TEMP>", line 113, in receive_nowait
+      |     raise WouldBlock
+      | anyio._core._exceptions.WouldBlock
+      |
+      | During handling of the above exception, another exception occurred:
+      |
+      | Traceback (most recent call last):
+      |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/tasks.py", line 500, in wait_for
+      |     return fut.result()
+      |            ^^^^^^^^^^^^
+      |   File "<TEMP>", line 401, in call_tool
+      |     result = await self.send_request(
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^
+      |   File "<TEMP>", line 292, in send_request
+      |     response_or_error = await response_stream_reader.receive()
+      |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      |   File "<TEMP>", line 126, in receive
+      |     await receive_event.wait()
+      |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/locks.py", line 213, in wait
+      |     await fut
+      | asyncio.exceptions.CancelledError
+      |
+      | The above exception was the direct cause of the following exception:
+      |
+      | Traceback (most recent call last):
+      |   File "<HOME>/Documents/GitHub/questionable-hires/benchmarks/results/tool-bridge-http-exit-01/control.py", line 59, in check
+      |     result=await asyncio.wait_for(call,10);value=json.loads(result.content[0].text)
+      |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      |   File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/tasks.py", line 502, in wait_for
+      |     raise exceptions.TimeoutError() from exc
+      | TimeoutError
+      +------------------------------------

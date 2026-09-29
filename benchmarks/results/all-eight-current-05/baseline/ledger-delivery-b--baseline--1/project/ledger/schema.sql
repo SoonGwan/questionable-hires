@@ -1,0 +1,2 @@
+CREATE TABLE accounts (id TEXT PRIMARY KEY, cents INTEGER NOT NULL);
+CREATE TABLE seen (account TEXT NOT NULL, event TEXT NOT NULL, PRIMARY KEY(account, event));

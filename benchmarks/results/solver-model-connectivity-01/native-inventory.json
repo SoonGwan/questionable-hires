@@ -1,0 +1,52 @@
+{
+  "execution": "Native app-server initialize -> mcpServerStatus/list -> close; no thread or model",
+  "server": "qh_guest",
+  "tools": {
+    "guest_command": {
+      "name": "guest_command",
+      "description": "Execute an authorized shell command inside the disposable Linux guest only.\n\n        Commands can mutate/delete guest files. No host shell fallback. Results\n        preserve exit/timeout and binary output as base64; each stream retains its\n        first4096 bytes with bytes-read/truncation flags. A returned exit1 is not\n        success evidence; inspect the command outcome. No network or host data share.\n        ",
+      "inputSchema": {
+        "properties": {
+          "command": {
+            "maxLength": 8192,
+            "minLength": 1,
+            "title": "Command",
+            "type": "string"
+          },
+          "cwd": {
+            "default": "/solver",
+            "maxLength": 1024,
+            "title": "Cwd",
+            "type": "string"
+          },
+          "timeout": {
+            "default": 5,
+            "maximum": 10,
+            "minimum": 1,
+            "title": "Timeout",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "command"
+        ],
+        "title": "guest_commandArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    }
+  },
+  "tools_error": null,
+  "runtime_status": null,
+  "guest_ready": true,
+  "guest_responses": 0,
+  "graceful_stop_observed": false,
+  "exact_probe_absent": true,
+  "guest_log_sha256": "b92b9a269e5e2b6cab0e5cf677bc69eaae2e738cfebee984bc3248d06bdc9881",
+  "limitation": "Native registration is not model-visible code-mode ALL_TOOLS catalog proof."
+}

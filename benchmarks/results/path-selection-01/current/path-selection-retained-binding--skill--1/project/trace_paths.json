@@ -1,0 +1,374 @@
+{
+  "command": "python3 -B probe_paths.py",
+  "scope": "Sequential supplied local implementation; no production observation",
+  "instrumentation": "Delegating loader.read_limit and Path.open wrappers; real stream.read and fstat",
+  "read_evidence_limit": "Filesystem stream reads, not proof of physical disk I/O versus OS caching",
+  "source_files": {
+    "client": "<WORKSPACE>/client.py",
+    "loader": "<WORKSPACE>/loader.py"
+  },
+  "supplied_hashes_before": {
+    "client.py": "d6e857d311c42ef9ff8898fd29589a36888ac12f59a0ead43660a9b15ed9fab6",
+    "loader.py": "38dad88acc5a972f361f6bc89b9e24949f6d1f298d0b168043037058ab59c36a",
+    "test_paths.py": "d73f852e52e5a12acb5f35844a3f007dd162a69fb0f841e855e5615677da7e09",
+    "requirements.md": "6e54da242750654cb40dc14c24bd6478dbdf46d93145254f5c57e1755899eec4",
+    "alpha/settings.txt": "1fc917c7ad66487470e466c0ad40ddd45b9f7730a4b43e1b2542627f0596bbdc",
+    "alpha/other.txt": "78b9041431a47c113011bf6056a6f48baded875b6845f59bc7f110bbd02d5ba6",
+    "beta/settings.txt": "8f8eea956d0ea50d6442fdab213326f75bb6f584268b0795ad452faa85db5f9d",
+    "beta/other.txt": "07d961b4441af9213b46b56dbf0727702888a63ad1952ff3616430f09c8170be"
+  },
+  "supplied_hashes_after": {
+    "client.py": "d6e857d311c42ef9ff8898fd29589a36888ac12f59a0ead43660a9b15ed9fab6",
+    "loader.py": "38dad88acc5a972f361f6bc89b9e24949f6d1f298d0b168043037058ab59c36a",
+    "test_paths.py": "d73f852e52e5a12acb5f35844a3f007dd162a69fb0f841e855e5615677da7e09",
+    "requirements.md": "6e54da242750654cb40dc14c24bd6478dbdf46d93145254f5c57e1755899eec4",
+    "alpha/settings.txt": "1fc917c7ad66487470e466c0ad40ddd45b9f7730a4b43e1b2542627f0596bbdc",
+    "alpha/other.txt": "78b9041431a47c113011bf6056a6f48baded875b6845f59bc7f110bbd02d5ba6",
+    "beta/settings.txt": "8f8eea956d0ea50d6442fdab213326f75bb6f584268b0795ad452faa85db5f9d",
+    "beta/other.txt": "07d961b4441af9213b46b56dbf0727702888a63ad1952ff3616430f09c8170be"
+  },
+  "supplied_files_unchanged": true,
+  "probe_failure": null,
+  "events": [
+    {
+      "sequence": 1,
+      "client_id": "single_alpha",
+      "action": "construct(alpha)",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "settings.txt",
+      "filename_argument_omitted": true,
+      "client_root": "<WORKSPACE>/alpha",
+      "client_read_root": "<WORKSPACE>/alpha",
+      "expected_value": 111,
+      "loader_calls": [
+        {
+          "input": "<WORKSPACE>/alpha/settings.txt",
+          "returned_value": 111
+        }
+      ],
+      "file_opens": [
+        {
+          "path": "<WORKSPACE>/alpha/settings.txt",
+          "resolved_path": "<WORKSPACE>/alpha/settings.txt",
+          "device": 16777231,
+          "inode": 43712225,
+          "reads": [
+            {
+              "operation": "read",
+              "text": "111\n"
+            }
+          ]
+        }
+      ],
+      "returned_value": 111,
+      "matches_requirement": true,
+      "read_observed": true
+    },
+    {
+      "sequence": 2,
+      "client_id": "single_alpha",
+      "action": "same root",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "other.txt",
+      "filename_argument_omitted": false,
+      "client_root": "<WORKSPACE>/alpha",
+      "client_read_root": "<WORKSPACE>/alpha",
+      "expected_value": 333,
+      "loader_calls": [
+        {
+          "input": "<WORKSPACE>/alpha/other.txt",
+          "returned_value": 333
+        }
+      ],
+      "file_opens": [
+        {
+          "path": "<WORKSPACE>/alpha/other.txt",
+          "resolved_path": "<WORKSPACE>/alpha/other.txt",
+          "device": 16777231,
+          "inode": 43712228,
+          "reads": [
+            {
+              "operation": "read",
+              "text": "333\n"
+            }
+          ]
+        }
+      ],
+      "returned_value": 333,
+      "matches_requirement": true,
+      "read_observed": true
+    },
+    {
+      "sequence": 3,
+      "client_id": "shared",
+      "action": "construct(alpha)",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "settings.txt",
+      "filename_argument_omitted": true,
+      "client_root": "<WORKSPACE>/alpha",
+      "client_read_root": "<WORKSPACE>/alpha",
+      "expected_value": 111,
+      "loader_calls": [
+        {
+          "input": "<WORKSPACE>/alpha/settings.txt",
+          "returned_value": 111
+        }
+      ],
+      "file_opens": [
+        {
+          "path": "<WORKSPACE>/alpha/settings.txt",
+          "resolved_path": "<WORKSPACE>/alpha/settings.txt",
+          "device": 16777231,
+          "inode": 43712225,
+          "reads": [
+            {
+              "operation": "read",
+              "text": "111\n"
+            }
+          ]
+        }
+      ],
+      "returned_value": 111,
+      "matches_requirement": true,
+      "read_observed": true
+    },
+    {
+      "sequence": 4,
+      "client_id": "shared",
+      "action": "same root",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "other.txt",
+      "filename_argument_omitted": false,
+      "client_root": "<WORKSPACE>/alpha",
+      "client_read_root": "<WORKSPACE>/alpha",
+      "expected_value": 333,
+      "loader_calls": [
+        {
+          "input": "<WORKSPACE>/alpha/other.txt",
+          "returned_value": 333
+        }
+      ],
+      "file_opens": [
+        {
+          "path": "<WORKSPACE>/alpha/other.txt",
+          "resolved_path": "<WORKSPACE>/alpha/other.txt",
+          "device": 16777231,
+          "inode": 43712228,
+          "reads": [
+            {
+              "operation": "read",
+              "text": "333\n"
+            }
+          ]
+        }
+      ],
+      "returned_value": 333,
+      "matches_requirement": true,
+      "read_observed": true
+    },
+    {
+      "sequence": 5,
+      "client_id": "shared",
+      "action": "select_root(beta)",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "settings.txt",
+      "filename_argument_omitted": true,
+      "client_root": "<WORKSPACE>/beta",
+      "client_read_root": "<WORKSPACE>/alpha",
+      "expected_value": 222,
+      "loader_calls": [
+        {
+          "input": "<WORKSPACE>/alpha/settings.txt",
+          "returned_value": 111
+        }
+      ],
+      "file_opens": [
+        {
+          "path": "<WORKSPACE>/alpha/settings.txt",
+          "resolved_path": "<WORKSPACE>/alpha/settings.txt",
+          "device": 16777231,
+          "inode": 43712225,
+          "reads": [
+            {
+              "operation": "read",
+              "text": "111\n"
+            }
+          ]
+        }
+      ],
+      "returned_value": 111,
+      "matches_requirement": false,
+      "read_observed": true
+    },
+    {
+      "sequence": 6,
+      "client_id": "shared",
+      "action": "same root",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "other.txt",
+      "filename_argument_omitted": false,
+      "client_root": "<WORKSPACE>/beta",
+      "client_read_root": "<WORKSPACE>/alpha",
+      "expected_value": 444,
+      "loader_calls": [
+        {
+          "input": "<WORKSPACE>/alpha/other.txt",
+          "returned_value": 333
+        }
+      ],
+      "file_opens": [
+        {
+          "path": "<WORKSPACE>/alpha/other.txt",
+          "resolved_path": "<WORKSPACE>/alpha/other.txt",
+          "device": 16777231,
+          "inode": 43712228,
+          "reads": [
+            {
+              "operation": "read",
+              "text": "333\n"
+            }
+          ]
+        }
+      ],
+      "returned_value": 333,
+      "matches_requirement": false,
+      "read_observed": true
+    },
+    {
+      "sequence": 7,
+      "client_id": "shared",
+      "action": "select_root(alpha)",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "settings.txt",
+      "filename_argument_omitted": true,
+      "client_root": "<WORKSPACE>/alpha",
+      "client_read_root": "<WORKSPACE>/alpha",
+      "expected_value": 111,
+      "loader_calls": [
+        {
+          "input": "<WORKSPACE>/alpha/settings.txt",
+          "returned_value": 111
+        }
+      ],
+      "file_opens": [
+        {
+          "path": "<WORKSPACE>/alpha/settings.txt",
+          "resolved_path": "<WORKSPACE>/alpha/settings.txt",
+          "device": 16777231,
+          "inode": 43712225,
+          "reads": [
+            {
+              "operation": "read",
+              "text": "111\n"
+            }
+          ]
+        }
+      ],
+      "returned_value": 111,
+      "matches_requirement": true,
+      "read_observed": true
+    },
+    {
+      "sequence": 8,
+      "client_id": "shared",
+      "action": "same root",
+      "requested_root": "<WORKSPACE>/alpha",
+      "requested_filename": "other.txt",
+      "filename_argument_omitted": false,
+      "client_root": "<WORKSPACE>/alpha",
+      "client_read_root": "<WORKSPACE>/alpha",
+      "expected_value": 333,
+      "loader_calls": [
+        {
+          "input": "<WORKSPACE>/alpha/other.txt",
+          "returned_value": 333
+        }
+      ],
+      "file_opens": [
+        {
+          "path": "<WORKSPACE>/alpha/other.txt",
+          "resolved_path": "<WORKSPACE>/alpha/other.txt",
+          "device": 16777231,
+          "inode": 43712228,
+          "reads": [
+            {
+              "operation": "read",
+              "text": "333\n"
+            }
+          ]
+        }
+      ],
+      "returned_value": 333,
+      "matches_requirement": true,
+      "read_observed": true
+    },
+    {
+      "sequence": 9,
+      "client_id": "fresh_beta",
+      "action": "construct(beta)",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "settings.txt",
+      "filename_argument_omitted": true,
+      "client_root": "<WORKSPACE>/beta",
+      "client_read_root": "<WORKSPACE>/beta",
+      "expected_value": 222,
+      "loader_calls": [
+        {
+          "input": "<WORKSPACE>/beta/settings.txt",
+          "returned_value": 222
+        }
+      ],
+      "file_opens": [
+        {
+          "path": "<WORKSPACE>/beta/settings.txt",
+          "resolved_path": "<WORKSPACE>/beta/settings.txt",
+          "device": 16777231,
+          "inode": 43712227,
+          "reads": [
+            {
+              "operation": "read",
+              "text": "222\n"
+            }
+          ]
+        }
+      ],
+      "returned_value": 222,
+      "matches_requirement": true,
+      "read_observed": true
+    },
+    {
+      "sequence": 10,
+      "client_id": "fresh_beta",
+      "action": "same root",
+      "requested_root": "<WORKSPACE>/beta",
+      "requested_filename": "other.txt",
+      "filename_argument_omitted": false,
+      "client_root": "<WORKSPACE>/beta",
+      "client_read_root": "<WORKSPACE>/beta",
+      "expected_value": 444,
+      "loader_calls": [
+        {
+          "input": "<WORKSPACE>/beta/other.txt",
+          "returned_value": 444
+        }
+      ],
+      "file_opens": [
+        {
+          "path": "<WORKSPACE>/beta/other.txt",
+          "resolved_path": "<WORKSPACE>/beta/other.txt",
+          "device": 16777231,
+          "inode": 43712229,
+          "reads": [
+            {
+              "operation": "read",
+              "text": "444\n"
+            }
+          ]
+        }
+      ],
+      "returned_value": 444,
+      "matches_requirement": true,
+      "read_observed": true
+    }
+  ]
+}

@@ -59,6 +59,16 @@ source bytes/modes, configuration and environment within this batch. Every mutan
 executes. External state/flakiness is not controlled; use fresh observations when
 the contract requires them. No cache survives another CLI invocation.
 
+When the combined report exceeds the tool's output budget, capture its JSON in
+owned temporary scratch outside the guarded project, preserving the CLI exit.
+Inspect each executed check's full output separately, resolving `observation_ref`
+against that same captured report; inspect integrity once. This avoids replaying
+native checks to recover a cut-off transcript. A compact exit/count summary is
+navigation, not an assertion or provenance review. Remove temporary evidence
+when delivery does not require it. A cut-off tool transcript and a check's own
+`output_truncated` flag are different: saving the report cannot recover output
+the helper already discarded. Keep that limitation explicit.
+
 `command`, `native_exit_code` and `suite_observation` retain module-mode evidence.
 Empty/all-skipped suites map to check exit5; missing completed-suite evidence,
 including setup failure/help-only/early zero exit, maps to7. CLI0 means observations
@@ -75,7 +85,10 @@ binding precheck. The same observation/reuse rules apply. Only when adding or
 changing assertions, put `probe_files`/`probe_replacements`, `probe_tests` and any
 `probe_when` inside the relevant `mutations[]` entry, alongside `target`/`old`/`new`,
 not at the batch root. See [native probe details](python-audit-probes.md) for their
-contents; this recipe already supplies the shared CLI contract. Module mode does not support
+contents; this recipe already supplies the shared CLI contract. Identical native
+stronger checks may reuse one correct observation across different original test
+selections: their actual `probe_tests`, probe bytes and other execution inputs must
+match. Each required mutant probe still executes. Module mode does not support
 inline `probe` or pytest. Never call an unexecuted proposal verified.
 
 `integrity` confirms selected original bytes/modes and owned-scratch removal.

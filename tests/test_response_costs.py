@@ -61,6 +61,14 @@ class ResponseCostsTests(unittest.TestCase):
         for row in result['rows']:
             self.assertEqual(set(row['profile_sha256']), {'baseline', row['condition']})
 
+    def test_native_eight_role_manifest_covers_all_recorded_profiles(self):
+        root = Path(__file__).resolve().parents[1]
+        directory = root/'benchmarks/results/all-eight-current-05'
+        result = analyze(directory, all_conditions=True)
+        self.assertEqual(len(result['rows']), 8)
+        self.assertEqual(sum(row['delta_total_tokens'] for row in result['rows']), 112392)
+        self.assertEqual({row['condition'] for row in result['rows']}, {'current'})
+
     def test_missing_arm_duplicate_and_unsafe_names_fail(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
@@ -74,6 +82,12 @@ class ResponseCostsTests(unittest.TestCase):
                     (dest/'usage-profile.json').write_text(json.dumps(data))
                     rows.append(dict(case=case, condition=condition, total_tokens=data['total_tokens']))
             manifest = root/'comparison.json'
+            (root/'run.json').write_text(json.dumps(dict(completed_cells=rows)))
+            manifest.write_text(json.dumps(dict(rows=rows)))
+            ambiguous = [dict(row, case_id='other') for row in rows]
+            (root/'run.json').write_text(json.dumps(dict(completed_cells=ambiguous)))
+            with self.assertRaises(ValueError):
+                analyze(root, all_conditions=True)
             (root/'run.json').write_text(json.dumps(dict(completed_cells=rows)))
             for changed in (rows[:-1], rows + [rows[0]],
                             [row for row in rows if row['condition'] != 'candidate'],

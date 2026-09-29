@@ -1,0 +1,46 @@
+test_failed_preflight_creates_no_run (test_all_eight_apps_01.ModelChoiceScheduleTests.test_failed_preflight_creates_no_run) ... ok
+test_interruption_marker_prevents_unreturned_cell_retry (test_all_eight_apps_01.ModelChoiceScheduleTests.test_interruption_marker_prevents_unreturned_cell_retry) ... ok
+test_mid_schedule_resource_drift_preserves_first_attempt (test_all_eight_apps_01.ModelChoiceScheduleTests.test_mid_schedule_resource_drift_preserves_first_attempt) ... ERROR
+test_missing_completion_or_limit_stops_without_retry (test_all_eight_apps_01.ModelChoiceScheduleTests.test_missing_completion_or_limit_stops_without_retry) ... ok
+test_model_and_effort_drift_rejected_before_attempt (test_all_eight_apps_01.ModelChoiceScheduleTests.test_model_and_effort_drift_rejected_before_attempt) ... ok
+test_same_resources_and_effort_balanced_models_and_no_reexecution (test_all_eight_apps_01.ModelChoiceScheduleTests.test_same_resources_and_effort_balanced_models_and_no_reexecution) ... ok
+test_execution_injects_each_condition_and_restores_process_function (test_tool_surface_01.SurfaceControls.test_execution_injects_each_condition_and_restores_process_function) ... ok
+test_frozen_flag_drift_rejected_before_attempt (test_tool_surface_01.SurfaceControls.test_frozen_flag_drift_rejected_before_attempt) ... ok
+test_interruption_cannot_restart (test_tool_surface_01.SurfaceControls.test_interruption_cannot_restart) ... ok
+test_only_codex_exec_gets_flags_without_losing_process_options (test_tool_surface_01.SurfaceControls.test_only_codex_exec_gets_flags_without_losing_process_options) ... ok
+test_preflight_failure_creates_no_output (test_tool_surface_01.SurfaceControls.test_preflight_failure_creates_no_output) ... ok
+test_three_fresh_baseline_calls_and_exclusive_marker (test_tool_surface_01.SurfaceControls.test_three_fresh_baseline_calls_and_exclusive_marker) ... ok
+test_uncompleted_or_limit_stops_and_keeps_schedule (test_tool_surface_01.SurfaceControls.test_uncompleted_or_limit_stops_and_keeps_schedule) ... ok
+
+======================================================================
+ERROR: test_mid_schedule_resource_drift_preserves_first_attempt (test_all_eight_apps_01.ModelChoiceScheduleTests.test_mid_schedule_resource_drift_preserves_first_attempt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<LOCAL-SOURCE>", line 104, in test_mid_schedule_resource_drift_preserves_first_attempt
+    runner.execute(self.output, manifest)
+  File "<LOCAL-SOURCE>", line 58, in execute
+    result = base.run.run_cell(case, 'skill', 1, output / condition,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py", line 1124, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py", line 1128, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py", line 1189, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<LOCAL-SOURCE>", line 100, in change
+    (self.output / 'sol/skills/con-artist/SKILL.md').write_text('changed')
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 1078, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '<AUTHOR-TEMP>'
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.255s
+
+FAILED (errors=1)

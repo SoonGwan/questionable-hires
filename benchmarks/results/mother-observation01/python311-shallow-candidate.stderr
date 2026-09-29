@@ -1,0 +1,43 @@
+test_initial_state (test_editor.EditorTests.test_initial_state) ... ok
+test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) ... 
+  test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) (stage='pending snapshot') ... FAIL
+  test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) (stage='stored snapshot') ... FAIL
+test_save_without_intervening_edit_marks_settings_clean (test_editor.EditorTests.test_save_without_intervening_edit_marks_settings_clean) ... ok
+
+======================================================================
+FAIL: test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) (stage='pending snapshot')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CONTROL>/test_editor.py", line 60, in test_save_snapshot_survives_intervening_edit
+    self.assertEqual(payload, expected_saved)
+AssertionError: {'display': {'theme': 'solarized'}, 'alerts': ['mentions']} != {'display': {'theme': 'dark'}, 'alerts': ['mentions']}
+- {'alerts': ['mentions'], 'display': {'theme': 'solarized'}}
+?                                                ^^^  ^^^^
+
++ {'alerts': ['mentions'], 'display': {'theme': 'dark'}}
+?                                                ^  ^
+
+
+======================================================================
+FAIL: test_save_snapshot_survives_intervening_edit (test_editor.EditorTests.test_save_snapshot_survives_intervening_edit) (stage='stored snapshot')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CONTROL>/test_editor.py", line 65, in test_save_snapshot_survives_intervening_edit
+    self.assertEqual(stored, [expected_saved])
+AssertionError: Lists differ: [{'display': {'theme': 'solarized'}, 'alerts': ['mentions']}] != [{'display': {'theme': 'dark'}, 'alerts': ['mentions']}]
+
+First differing element 0:
+{'display': {'theme': 'solarized'}, 'alerts': ['mentions']}
+{'display': {'theme': 'dark'}, 'alerts': ['mentions']}
+
+- [{'alerts': ['mentions'], 'display': {'theme': 'solarized'}}]
+?                                                 ^^^  ^^^^
+
++ [{'alerts': ['mentions'], 'display': {'theme': 'dark'}}]
+?                                                 ^  ^
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.006s
+
+FAILED (failures=2)

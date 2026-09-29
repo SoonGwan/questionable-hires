@@ -1,0 +1,120 @@
+{
+  "identities": {
+    "benchmarks/run_assertion_contract_01.py": "4e167b27c693d2c1cbd6929a4a5f3215806d38817091931e40dbe0c06082d61c",
+    "benchmarks/assertion_contract_cases.py": "7b1ea2c6275708a876f09cb04879be726f9207362c88b377f9a7cbaf18c81674",
+    "benchmarks/run_packaging_specifier_01.py": "a116f003235261980c42f84af1539303710c4111af0fdc893e772e58a0ba6aa7",
+    "benchmarks/run.py": "b743a84a720f31a412ca13b5b3a48e61566a79a148bc1f3e8dfe73bc04fed079",
+    "benchmarks/ASSERTION-CONTRACT-01-PROTOCOL.md": "d58ca69daf12500af3a610321936ad1b52065f7bbdc46989acedf4e29e761cd8"
+  },
+  "cases": [
+    {
+      "id": "dispatch-contract-single",
+      "skill": "con-artist",
+      "files": {
+        "dispatch.py": "from copy import deepcopy\n\n\ndef dispatch(payload, handlers):\n    results = []\n    for handler in handlers:\n        try:\n            results.append(handler(deepcopy(payload)))\n        except ValueError as error:\n            raise ValueError(str(error)) from error\n    return results\n",
+        "test_dispatch.py": "import unittest\nfrom dispatch import dispatch\n\n\nclass DispatchTests(unittest.TestCase):\n    def test_order(self):\n        self.assertEqual(dispatch({\"id\": 1}, [lambda p: \"first\", lambda p: \"second\"]), [\"first\", \"second\"])\n\n    def test_payload_isolation(self):\n        payload = {\"items\": [1]}\n        def mutate(value):\n            value[\"items\"].append(2)\n            return value\n        self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{\"items\": [1, 2]}, {\"items\": [1]}])\n        self.assertEqual(payload, {\"items\": [1]})\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n",
+        "AGENTS.md": "Work in this project only. Preserve supplied files and Git state.\n"
+      },
+      "task": "Audit this application's dispatch tests for the isolated faults listed below.\nContract: handlers execute in registration order, each receives an independent\npayload value and caller state stays unchanged. Successful return values are\ncollected in order. A ValueError stops dispatch; its type and message reach the\ncaller and later handlers do not run. Review the actual implementation and tests.\nExecute the original relevant native unittest checks against correct and each\nindependent faulty implementation in disposable project-local copies. Never\ncombine faults. Identify detecting assertions or coverage gaps. If coverage is\nmissing, verify the same focused additional regression assertions against correct\nand faulty code, including nearby successful-dispatch behavior. Setup/collection\nfailures are not mutation detection. Confirm dispatch is loaded from the actual\nvariant inside the native test process. Reuse an unchanged correct result where\nvalid and label reuse. Preserve all source/tests, Git HEAD/index and installed\nresources; remove owned scratch even after failure. Deliver decisive commands,\ncounts, exits and findings without retaining a report/harness. No production fix,\nnetwork, dependency installs, Git changes or publication. Use the supplied Python\nwith -B and python -B -m unittest; do not delegate.\nPreinstalled Python: /opt/homebrew/opt/python@3.11/bin/python3.11\nFaults:\nswallowed-error: in dispatch.py replace exactly '            raise ValueError(str(error)) from error' with '            results.append(None)'.",
+      "criteria": [
+        "Actual copy-local dispatch binding in each native test process; isolated specified faults, original assertions unchanged.",
+        "Original correct suite passes; every requested mutant runs and detecting assertions or survival are reported accurately.",
+        "Added regressions pass correct code and reject the surviving fault for the required behavior; order, isolation and neighboring success remain valid.",
+        "Required ValueError type/message and stop behavior verified without imposing an undocumented identity requirement.",
+        "Source bytes/modes, initial Git HEAD/index and installed resources preserved; owned scratch removed, no out-of-scope operations."
+      ]
+    },
+    {
+      "id": "dispatch-contract-multiple",
+      "skill": "con-artist",
+      "files": {
+        "dispatch.py": "from copy import deepcopy\n\n\ndef dispatch(payload, handlers):\n    results = []\n    for handler in handlers:\n        try:\n            results.append(handler(deepcopy(payload)))\n        except ValueError as error:\n            raise ValueError(str(error)) from error\n    return results\n",
+        "test_dispatch.py": "import unittest\nfrom dispatch import dispatch\n\n\nclass DispatchTests(unittest.TestCase):\n    def test_order(self):\n        self.assertEqual(dispatch({\"id\": 1}, [lambda p: \"first\", lambda p: \"second\"]), [\"first\", \"second\"])\n\n    def test_payload_isolation(self):\n        payload = {\"items\": [1]}\n        def mutate(value):\n            value[\"items\"].append(2)\n            return value\n        self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{\"items\": [1, 2]}, {\"items\": [1]}])\n        self.assertEqual(payload, {\"items\": [1]})\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n",
+        "AGENTS.md": "Work in this project only. Preserve supplied files and Git state.\n"
+      },
+      "task": "Audit this application's dispatch tests for the isolated faults listed below.\nContract: handlers execute in registration order, each receives an independent\npayload value and caller state stays unchanged. Successful return values are\ncollected in order. A ValueError stops dispatch; its type and message reach the\ncaller and later handlers do not run. Review the actual implementation and tests.\nExecute the original relevant native unittest checks against correct and each\nindependent faulty implementation in disposable project-local copies. Never\ncombine faults. Identify detecting assertions or coverage gaps. If coverage is\nmissing, verify the same focused additional regression assertions against correct\nand faulty code, including nearby successful-dispatch behavior. Setup/collection\nfailures are not mutation detection. Confirm dispatch is loaded from the actual\nvariant inside the native test process. Reuse an unchanged correct result where\nvalid and label reuse. Preserve all source/tests, Git HEAD/index and installed\nresources; remove owned scratch even after failure. Deliver decisive commands,\ncounts, exits and findings without retaining a report/harness. No production fix,\nnetwork, dependency installs, Git changes or publication. Use the supplied Python\nwith -B and python -B -m unittest; do not delegate.\nPreinstalled Python: /opt/homebrew/opt/python@3.11/bin/python3.11\nFaults:\nswallowed-error: in dispatch.py replace exactly '            raise ValueError(str(error)) from error' with '            results.append(None)'.\nreversed-handlers: in dispatch.py replace exactly '    for handler in handlers:' with '    for handler in reversed(handlers):'.\nshared-payload: in dispatch.py replace exactly 'handler(deepcopy(payload))' with 'handler(payload)'.",
+      "criteria": [
+        "Actual copy-local dispatch binding in each native test process; isolated specified faults, original assertions unchanged.",
+        "Original correct suite passes; every requested mutant runs and detecting assertions or survival are reported accurately.",
+        "Added regressions pass correct code and reject the surviving fault for the required behavior; order, isolation and neighboring success remain valid.",
+        "Required ValueError type/message and stop behavior verified without imposing an undocumented identity requirement.",
+        "Source bytes/modes, initial Git HEAD/index and installed resources preserved; owned scratch removed, no out-of-scope operations."
+      ]
+    }
+  ],
+  "settings": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "timeout_seconds": 360,
+    "jobs": 1,
+    "repeats": 1
+  },
+  "schedule": [
+    [
+      0,
+      "baseline"
+    ],
+    [
+      0,
+      "predecessor"
+    ],
+    [
+      0,
+      "current"
+    ],
+    [
+      1,
+      "current"
+    ],
+    [
+      1,
+      "predecessor"
+    ],
+    [
+      1,
+      "baseline"
+    ]
+  ],
+  "environment": {
+    "python": "/opt/homebrew/opt/python@3.11/bin/python3.11",
+    "version": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+    "dependencies": [
+      "pywatchman==1.4.1"
+    ]
+  },
+  "resource_digests": {
+    "baseline": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "predecessor": "faf86d32c1a173579f9023cf3470b6cd5bc7583f9a92f6d01edffd4e0af46cf6",
+    "current": "f7ed37e3be0adc1ca984a59c39bfaab9aa64f4cd28dd6f78878590290bc2ca8c"
+  },
+  "resource_revision": "33530f98100e0174eabe26e489c03961fc304b69",
+  "preflight_capture": {
+    "python": "3.11.6 (main, Oct  2 2023, 13:45:54) [Clang 15.0.0 (clang-1500.0.40.1)]",
+    "native_controls": [
+      {
+        "variant": "correct",
+        "exit_code": 0,
+        "output": "test_order (test_dispatch.DispatchTests.test_order) ... ok\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+      },
+      {
+        "variant": "swallowed-error",
+        "exit_code": 0,
+        "output": "test_order (test_dispatch.DispatchTests.test_order) ... ok\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+      },
+      {
+        "variant": "reversed-handlers",
+        "exit_code": 1,
+        "output": "test_order (test_dispatch.DispatchTests.test_order) ... FAIL\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... FAIL\n\n======================================================================\nFAIL: test_order (test_dispatch.DispatchTests.test_order)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 7, in test_order\n    self.assertEqual(dispatch({\"id\": 1}, [lambda p: \"first\", lambda p: \"second\"]), [\"first\", \"second\"])\nAssertionError: Lists differ: ['second', 'first'] != ['first', 'second']\n\nFirst differing element 0:\n'second'\n'first'\n\n- ['second', 'first']\n+ ['first', 'second']\n\n======================================================================\nFAIL: test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 14, in test_payload_isolation\n    self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{\"items\": [1, 2]}, {\"items\": [1]}])\nAssertionError: Lists differ: [{'items': [1]}, {'items': [1, 2]}] != [{'items': [1, 2]}, {'items': [1]}]\n\nFirst differing element 0:\n{'items': [1]}\n{'items': [1, 2]}\n\n- [{'items': [1]}, {'items': [1, 2]}]\n?                              ---\n\n+ [{'items': [1, 2]}, {'items': [1]}]\n?              +++\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nFAILED (failures=2)\n"
+      },
+      {
+        "variant": "shared-payload",
+        "exit_code": 1,
+        "output": "test_order (test_dispatch.DispatchTests.test_order) ... ok\ntest_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation) ... FAIL\n\n======================================================================\nFAIL: test_payload_isolation (test_dispatch.DispatchTests.test_payload_isolation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<TEMP>\", line 14, in test_payload_isolation\n    self.assertEqual(dispatch(payload, [mutate, lambda p: p]), [{\"items\": [1, 2]}, {\"items\": [1]}])\nAssertionError: Lists differ: [{'items': [1, 2]}, {'items': [1, 2]}] != [{'items': [1, 2]}, {'items': [1]}]\n\nFirst differing element 1:\n{'items': [1, 2]}\n{'items': [1]}\n\n- [{'items': [1, 2]}, {'items': [1, 2]}]\n?                                 ---\n\n+ [{'items': [1, 2]}, {'items': [1]}]\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nFAILED (failures=1)\n"
+      }
+    ],
+    "limitation": "Authored setup controls; not model results or efficiency evidence."
+  },
+  "completed_cells": [],
+  "stopped_after_limit": false,
+  "prepared_at": "2026-09-26T17:24:56.333653+00:00"
+}

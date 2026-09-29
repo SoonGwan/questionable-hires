@@ -6,8 +6,10 @@ A suite selected for execution is not automatically a whole-file reading list.
 For known assertions, select their definitions; use a targeted project search to
 locate unknown ones. For a file whose whole assertion context is needed:
 
+Examples use `python3`; substitute your project's Python 3.9+ executable if needed.
+
 ```sh
-python -B /path/to/con-artist/scripts/context.py --root /permitted/project --full \
+python3 -B /path/to/con-artist/scripts/context.py --root /permitted/project --full \
   tests/test_service.py service.py:Store.save
 ```
 
@@ -31,6 +33,9 @@ for that context. `--full` does not override explicit line selection.
 When the requested
 definition is known, select it directly (`service.py:Store.save`) rather than the
 whole implementation file. It includes decorators and original line numbers.
+Parenthesized or explicitly continued decorators include their opening `@` line;
+line selectors and index/group ranges use that same physical start. Decorator
+expressions in an index remain expressions, not executable decorator statements.
 Named selection follows static definitions through control-flow blocks without
 evaluating conditions, and respects class/function scopes. Multiple definitions
 at any selected scope are ambiguous, including an unconditional definition plus
@@ -43,7 +48,7 @@ To read all definitions sharing a known leaf name (such as overload declarations
 and their implementation), add `--all-matches`:
 
 ```sh
-python -B /path/to/con-artist/scripts/context.py --root /permitted/project \
+python3 -B /path/to/con-artist/scripts/context.py --root /permitted/project \
   --all-matches service.py:Store.save
 ```
 
@@ -103,7 +108,10 @@ after equivalent context is already available. Then perform the actual audit
 using project facilities or [the copy helper](python-audit.md) as appropriate.
 Neither collector exit 0 nor a source hash is execution evidence.
 
-Python 3.9+, UTF-8 regular files only, no imports/subprocesses/writes. Symlinks,
+Python 3.9+, UTF-8 regular files only, no imports/subprocesses/writes. An optional
+initial UTF-8 signature is omitted from displayed/parsed text; original byte
+hashes and input limits still include it. Interior markers are not removed, and
+other source encodings are not auto-detected. Symlinks,
 traversal and Git internals are refused. Maximum 256 KB per file, 2 MB total input and 100,000
 output characters, including the final newline, measured in the requested JSON
 format. Compact output may fit when `--pretty` does not; neither truncates source.
