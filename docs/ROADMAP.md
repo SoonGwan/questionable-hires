@@ -1,7 +1,7 @@
 # Roadmap / 앞으로 할 일
 
 Status date: **2026-09-29**. The repository is public. The owner authorized
-publication after the requested work is complete; GitHub Actions remains disabled
+publishing0.2.0 now with its documented limitations; GitHub Actions remains disabled
 by request. See [release readiness](RELEASE-READINESS.md) for the actual gates.
 
 ## Delivered capabilities / 제공 중인 기능
@@ -18,7 +18,7 @@ by request. See [release readiness](RELEASE-READINESS.md) for the actual gates.
 공유 정보를 제공합니다. 원본 모델 비교와 불리한 결과도 보존합니다. 현재 기능과
 과거 측정값을 동일한 성능 보증으로 해석하지 않습니다.
 
-## Remaining release work / 남은 출시 작업
+## Delivery and further research / 배포와 후속 연구
 
 - [ ] Demonstrate better outcomes at lower whole-task tokens and faster completion
   across all eight roles. Integration07 still records tokens+1.67%, time−9.63%,
@@ -30,8 +30,7 @@ by request. See [release readiness](RELEASE-READINESS.md) for the actual gates.
   retain initial failures and distinguish source-archive skips.
 - [x] Push candidate [PR #2](https://github.com/SoonGwan/questionable-hires/pull/2);
   prepare the0.2.0 release draft and verify all four uploaded downloads.
-- [ ] Complete review and merge once the requested gates are met; publish the
-  versioned release and verify public access.
+- [ ] Complete the authorized merge, versioned preview publication and public checks.
 - [ ] Confirm the final hosted revision and its responsive/localized interactions.
 - [ ] Broaden automatic-selection and realistic interaction evaluation before
   generalizing beyond the already measured tasks.

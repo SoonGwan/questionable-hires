@@ -1,10 +1,10 @@
 # Changelog / 변경 기록
 
-## Unreleased — 0.2.0 candidate / 미출시 후보
+## 0.2.0 — 2026-09-29 development preview / 개발 프리뷰
 
-This candidate remains a development preview. A version number is not evidence
-that all eight skills improve quality, tokens and time. Publication requires the
-remaining conditions in [release readiness](docs/RELEASE-READINESS.md).
+The owner authorized publishing this development preview with its measured
+limitations. A version number is not evidence that all eight skills improve
+quality, tokens and time. See [release status](docs/RELEASE-READINESS.md).
 
 - Added a Korean/English responsive landing page, interactive benchmark charts,
   downloadable evidence and skill archives, localized social cards and search metadata.
@@ -27,8 +27,8 @@ remaining conditions in [release readiness](docs/RELEASE-READINESS.md).
 추가했습니다. 실제 테스트 근거 보존, 소스 발췌, 비동기 작업 정리, JSON 출력과
 설치 안전성을 개선했습니다. 소스 압축본과 체크아웃의 권한 차이가 다운로드
 해시를 바꾸지 않도록 배포 권한을 통일했습니다. 전체8개 품질·비용 목표는 미달이며 integration07은
-합계 토큰1.67% 증가·시간9.63% 감소, 두 비용 동시 감소2/8입니다. 아직 정식
-릴리스를 게시한 상태가 아니며 버전 변경만으로 목표 달성을 주장하지 않습니다.
+합계 토큰1.67% 증가·시간9.63% 감소, 두 비용 동시 감소2/8입니다. 사용자가 이 한계를 유지한 개발 프리뷰 게시를 승인했습니다.
+버전 변경만으로 성능 목표 달성을 주장하지 않습니다.
 
 [Current candidate notes / 후보 설명](docs/RELEASE-0.2.0.md) ·
 [Detailed helper contracts / 보조 도구](docs/HELPERS.md) ·

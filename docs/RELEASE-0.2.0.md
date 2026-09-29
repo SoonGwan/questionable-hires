@@ -1,10 +1,10 @@
-# 0.2.0 candidate / 릴리스 후보
+# 0.2.0 development preview / 개발 프리뷰
 
-**Not released.** This candidate combines the bilingual landing page, complete
+Approved for publication on **2026-09-29**. This development preview combines the bilingual landing page, complete
 downloadable skill resources and accumulated helper correctness fixes. It remains
 a development preview; the whole-team performance objective is not achieved.
 
-한국어: **아직 출시되지 않은 후보**입니다. 한영 랜딩, 전체 스킬 다운로드와 보조
+한국어: **2026-09-29 사용자가 게시를 승인한 개발 프리뷰**입니다. 한영 랜딩, 전체 스킬 다운로드와 보조
 도구의 누적 정확성 수정을 묶었습니다. 개발 프리뷰이며 전체 성능 목표는 미달입니다.
 
 ## What changes / 변경 사항
@@ -47,10 +47,13 @@ role on different cases; these percentages must not replace integration07.
 [Release gates](RELEASE-READINESS.md) · [Full cost table](../benchmarks/ALL-EIGHT-CURRENT-07-COSTS.md) ·
 [Decision index](../benchmarks/CURRENT-CANDIDATE-STATUS.md) · [Install](INSTALL.md).
 
-[PR #2](https://github.com/SoonGwan/questionable-hires/pull/2) and the0.2.0 release
-are drafts. [Dated validation](../benchmarks/RELEASE-020-CANDIDATE-20260929.md)
-records exact tested sources, retained failures and four verified uploaded assets.
-No version tag, merge or published-release claim is implied.
+[PR #2](https://github.com/SoonGwan/questionable-hires/pull/2) ·
+[Versioned release](https://github.com/SoonGwan/questionable-hires/releases/tag/v0.2.0).
+[Dated candidate validation](../benchmarks/RELEASE-020-CANDIDATE-20260929.md)
+records exact tested sources, retained failures and four verified draft assets.
+The owner subsequently authorized merging, publishing and deploying this preview
+with the existing limitations. Publication does not establish the performance goal.
 
-한국어: PR #2와0.2.0 릴리스는 초안입니다. 날짜별 검증 문서에 실제 소스·실패 기록·
-업로드 후 재다운로드까지 확인한4개 파일을 남겼습니다. 머지·정식 게시는 미완료입니다.
+한국어: 후보 검증 문서는 당시의 초안 상태와 실제 검사 결과를 보존합니다.
+이후 사용자가 현재 한계를 유지한 머지·릴리스·랜딩 배포를 승인했습니다.
+게시 여부와 전체 성능 목표 달성 여부는 별개입니다.
