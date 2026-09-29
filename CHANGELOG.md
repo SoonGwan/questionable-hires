@@ -2,8 +2,8 @@
 
 ## 0.2.0 — 2026-09-29 development preview / 개발 프리뷰
 
-The owner authorized publishing this development preview with its measured
-limitations. A version number is not evidence that all eight skills improve
+Published as a development preview with its measured limitations.
+[Delivery checks](docs/RELEASE-DELIVERY-2026-09-29.md) record the actual public artifacts and site. A version number is not evidence that all eight skills improve
 quality, tokens and time. See [release status](docs/RELEASE-READINESS.md).
 
 - Added a Korean/English responsive landing page, interactive benchmark charts,

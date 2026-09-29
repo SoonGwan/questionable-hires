@@ -30,14 +30,17 @@ by request. See [release readiness](RELEASE-READINESS.md) for the actual gates.
   retain initial failures and distinguish source-archive skips.
 - [x] Push candidate [PR #2](https://github.com/SoonGwan/questionable-hires/pull/2);
   prepare the0.2.0 release draft and verify all four uploaded downloads.
-- [ ] Complete the authorized merge, versioned preview publication and public checks.
-- [ ] Confirm the final hosted revision and its responsive/localized interactions.
+- [x] Merge PR #2, publish v0.2.0 and verify anonymous release downloads.
+- [x] Deploy `8f3e4e44` and verify nine public site routes and downloaded resources;
+  [delivery record](RELEASE-DELIVERY-2026-09-29.md).
+- [ ] Repeat visual/mobile/interactive checks when a browser is connected; none
+  was available during this delivery.
 - [ ] Broaden automatic-selection and realistic interaction evaluation before
   generalizing beyond the already measured tasks.
 
 한국어: 전체 품질·토큰·시간 개선은 미입증입니다. 승인 가능한 독립 검증 환경,
-남은 평가 준비·머지·정식 릴리스·최종 공개 배포 확인이 필요합니다. 후보 소스 검사·
-설치·문서와 PR·릴리스 초안의 다운로드 검증은 완료했습니다. 현재 필요한 조건에 과거 비공개 전환 승인이나 원격 CI 결제 문제를
+남은 평가 준비·새 브라우저 검증은 후속 작업입니다. 후보 소스 검사·설치·문서와
+PR 머지·v0.2.0 개발 프리뷰 게시·실제 랜딩 배포·비인증 다운로드 검증은 완료했습니다. 현재 필요한 조건에 과거 비공개 전환 승인이나 원격 CI 결제 문제를
 다시 포함하지 않습니다.
 
 [Earlier roadmap](ROADMAP-HISTORY-2026-09-29.md) preserves historical checklists,

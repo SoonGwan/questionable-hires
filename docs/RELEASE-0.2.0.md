@@ -1,10 +1,10 @@
 # 0.2.0 development preview / 개발 프리뷰
 
-Approved for publication on **2026-09-29**. This development preview combines the bilingual landing page, complete
+Published on **2026-09-29**. This development preview combines the bilingual landing page, complete
 downloadable skill resources and accumulated helper correctness fixes. It remains
 a development preview; the whole-team performance objective is not achieved.
 
-한국어: **2026-09-29 사용자가 게시를 승인한 개발 프리뷰**입니다. 한영 랜딩, 전체 스킬 다운로드와 보조
+한국어: **2026-09-29 게시한 개발 프리뷰**입니다. 한영 랜딩, 전체 스킬 다운로드와 보조
 도구의 누적 정확성 수정을 묶었습니다. 개발 프리뷰이며 전체 성능 목표는 미달입니다.
 
 ## What changes / 변경 사항
@@ -57,3 +57,5 @@ with the existing limitations. Publication does not establish the performance go
 한국어: 후보 검증 문서는 당시의 초안 상태와 실제 검사 결과를 보존합니다.
 이후 사용자가 현재 한계를 유지한 머지·릴리스·랜딩 배포를 승인했습니다.
 게시 여부와 전체 성능 목표 달성 여부는 별개입니다.
+
+[Completed publication and hosted checks / 게시·배포 확인](RELEASE-DELIVERY-2026-09-29.md).
