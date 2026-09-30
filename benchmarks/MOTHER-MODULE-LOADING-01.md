@@ -51,3 +51,16 @@ validation claim. Integration07 and featured benchmark numbers remain unchanged.
 데이터 동기화도 확인했습니다. 2026-09-30 측정 당시.git 읽기 전용으로 미커밋 상태였고,
 2026-10-01 쓰기 권한을 받아 커밋·push·PR을 진행합니다. 모델 토큰·시간 개선이나
 기존 공개 릴리스 갱신을 뜻하지 않습니다.
+
+## PR validation — 2026-10-01
+
+Source `73abd45dafdb7edbf15393dc76332833e9e64169`: the full Python3.11.6 / Node24.16.0 checkout suite passes **1546 tests**, zero failures/errors/skips.
+[Execution record](results/mother-module-loading01/full-suite-20261001.json) and
+[redacted log](results/mother-module-loading01/full-suite-20261001.log.gz) retain
+the exact source and outputs. An initial preflight found missing PyYAML in the old
+temporary environment; requirements-dev.txt was installed in a new isolated venv
+before this run. No system packages were changed.
+
+한국어: 2026-10-01 커밋 `73abd45d`의 전체 로컬 검사1546개가 실패·오류·생략 없이 통과했습니다.
+기존 임시 환경의 PyYAML 누락을 확인한 뒤 별도 가상환경에 저장소 개발 의존성을
+설치해 실행했습니다. 원격 CI·새 모델 성능·공개 배포 검증은 아닙니다.
