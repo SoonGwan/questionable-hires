@@ -2,12 +2,14 @@
 """Probe latest-result behavior for a local async run(query, fetch) component."""
 import argparse
 import asyncio
+from contextlib import contextmanager
 import importlib.util
 import json
 from pathlib import Path
 import sys
 
 
+@contextmanager
 def load_class(source, class_name, root):
     root = root.resolve(strict=True)
     if source.is_symlink():
@@ -19,11 +21,22 @@ def load_class(source, class_name, root):
     if not spec or not spec.loader:
         raise ValueError('cannot load source module')
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    candidate = getattr(module, class_name, None)
-    if not isinstance(candidate, type):
-        raise ValueError('class not found')
-    return candidate
+    absent = object()
+    previous = sys.modules.get(spec.name, absent)
+    sys.modules[spec.name] = module
+    try:
+        # Dataclasses resolve string annotations while importing. Runtime type
+        # lookup also needs this module until component tasks finish cleanup.
+        spec.loader.exec_module(module)
+        candidate = getattr(module, class_name, None)
+        if not isinstance(candidate, type):
+            raise ValueError('class not found')
+        yield candidate
+    finally:
+        if previous is absent:
+            sys.modules.pop(spec.name, None)
+        else:
+            sys.modules[spec.name] = previous
 
 
 async def sequence(factory, method_name, state_name, queries, order, failure=None,
@@ -218,11 +231,11 @@ def main():
             if path.is_symlink() or args.root.resolve() not in path.resolve().parents:
                 raise ValueError('output must be a new file below --root')
             evidence = path.open('x', encoding='utf-8')
-        factory = load_class((args.root / args.source), args.class_name, args.root)
-        cases = asyncio.run(asyncio.wait_for(
-            probe(factory, args.method, args.state, args.old, args.new, args.boundary,
-                  args.error_state, args.retain_while_pending),
-            timeout=args.timeout))
+        with load_class((args.root / args.source), args.class_name, args.root) as factory:
+            cases = asyncio.run(asyncio.wait_for(
+                probe(factory, args.method, args.state, args.old, args.new, args.boundary,
+                      args.error_state, args.retain_while_pending),
+                timeout=args.timeout))
         result = {'complete': True, 'layer': 'local async component', 'cases': cases}
         status = int(any(not case['passed'] for case in cases))
     except (AttributeError, OSError, TypeError, ValueError, asyncio.TimeoutError) as error:
