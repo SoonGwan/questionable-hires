@@ -368,7 +368,8 @@ class MotherInLawSequenceProbeTests(unittest.IsolatedAsyncioTestCase):
             outside.write_text('class Search: pass')
             try:
                 with self.assertRaises(ValueError):
-                    probe.load_class(outside, 'Search', root)
+                    with probe.load_class(outside, 'Search', root):
+                        self.fail('outside source must not load')
             finally:
                 outside.unlink()
 

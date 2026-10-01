@@ -16,6 +16,11 @@ reading or duplicating its implementation:
 python3 -B SCRIPT --root . --source FILE --class-name CLASS [--boundary QUERY]
 ```
 
+The source module is registered for import and the complete async probe lifetime,
+so dataclasses with postponed annotations and runtime type-hint lookup work.
+The temporary module registration is removed afterward, restoring any prior entry;
+this does not undo arbitrary side effects from executing the source.
+
 Defaults: method `run`, state `result`, queries `old`/`new`, timeout 5 seconds.
 Use `--method`, `--state`, `--old`, `--new` for matching supported interfaces;
 old/new queries must differ. An optional `--boundary QUERY` also must differ
