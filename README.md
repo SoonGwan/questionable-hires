@@ -70,6 +70,23 @@ Automatic selection is enabled. Installing eight skills does not invoke all eigh
 on every task. Existing project tests come first; [helper tools and their limits](docs/HELPERS.md)
 are optional. No lifecycle hooks, background services, telemetry or model-setting changes.
 
+## Try a real example without a model account
+
+The Con Artist example contains a test that checks only a successful acknowledgment.
+Removing the write, or writing twice, still passes that test. Run the helper on
+trusted sample code with Python 3.9+ on POSIX:
+
+```sh
+python3 -B skills/con-artist/scripts/audit.py \
+  --source examples/con-artist-batch \
+  --spec examples/con-artist-batch/recipe.json
+```
+
+For both faults, the existing test passes; the stronger stored-record assertion
+passes on the correct code and fails on the faulty copy. The original files stay
+intact. This is an executable helper demonstration, not a new model benchmark.
+[Inspect the recipe, observations and limitations](examples/con-artist.md#try-the-helper-without-model-usage).
+
 ## Does it actually work?
 
 **Integration07 — 2026-09-28, measured resource `1be35120`: total tokens +1.67%,

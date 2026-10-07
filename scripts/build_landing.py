@@ -362,12 +362,13 @@ def build(base=None):
     webp_path = 'assets/team-characters.' + hashlib.sha256(webp).hexdigest() + '.webp'
     # Keep the original URL available for older pages; new pages use immutable content.
     files = {'assets/team-characters.png': artwork, artwork_path: artwork, webp_path: webp}
-    for route, language in (('', 'ko'), ('ko/', 'ko'), ('en/', 'en')):
+    for route, language in (('', 'en'), ('ko/', 'ko'), ('en/', 'en')):
         copy = content['copy'][language]
         prefix = '../' if route else ''
         first = content['hires'][0][language]
         replacements = {
             '{{HEAD}}': metadata(copy, language, base, preview), '{{ASSET_BASE}}': prefix,
+            '{{APP_VERSION}}': hashlib.sha256((LANDING / 'app.js').read_bytes()).hexdigest()[:16],
             '{{TEAM_IMAGE}}': prefix + artwork_path,
             '{{TEAM_WEBP}}': prefix + webp_path,
             '{{KO_URL}}': prefix + 'ko/', '{{EN_URL}}': prefix + 'en/',

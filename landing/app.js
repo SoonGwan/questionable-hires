@@ -35,7 +35,7 @@ function initialLanguage() {
     const saved = localStorage.getItem('qh-language');
     if (validLanguage(saved)) return saved;
   } catch { /* Preference storage is optional. */ }
-  return navigator.language.toLowerCase().startsWith('ko') ? 'ko' : 'en';
+  return 'en';
 }
 
 function updateProfile(animate = false) {

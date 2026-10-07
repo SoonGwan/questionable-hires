@@ -93,7 +93,7 @@ class LandingTests(unittest.TestCase):
             self.assertEqual(personal.read_text(), 'personal edit')
 
     def test_snapshot_links_and_translations_work_from_every_route(self):
-        for route, language in (('', 'ko'), ('ko/', 'ko'), ('en/', 'en')):
+        for route, language in (('', 'en'), ('ko/', 'ko'), ('en/', 'en')):
             source = self.files[route + 'index.html'].decode()
             prefix = '../' if route else ''
             for name in ('skills.tar.gz', 'skills.sha256', 'INSTALL.md'):

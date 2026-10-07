@@ -63,6 +63,23 @@ $friday 이 배포 롤백 가능한지 봐줘.
 기존 프로젝트 테스트가 우선이며 [보조 도구와 적용 범위](docs/HELPERS.ko.md)는
 필요할 때 확인하세요. 상시 실행 훅·백그라운드 서비스·텔레메트리·모델 설정 변경은 없습니다.
 
+## 모델 계정 없이 실제 예시 실행하기
+
+Con Artist 예시는 성공 응답만 확인하는 테스트를 사용합니다. 저장을 제거하거나
+두 번 저장해도 기존 테스트는 통과합니다. POSIX 환경에서 Python 3.9+로
+신뢰할 수 있는 샘플 코드를 실행하세요.
+
+```sh
+python3 -B skills/con-artist/scripts/audit.py \
+  --source examples/con-artist-batch \
+  --spec examples/con-artist-batch/recipe.json
+```
+
+두 결함 모두 기존 테스트는 통과하지만, 저장된 원본 기록을 확인하는 강화된 검사는
+정상 코드에서 통과하고 결함을 넣은 복사본에서 실패합니다. 원본 파일은 유지합니다.
+실행 가능한 보조 도구 데모이며 새로운 모델 성능 측정은 아닙니다.
+[실행 설정·관찰 결과·한계 확인](examples/con-artist.md#try-the-helper-without-model-usage).
+
 ## 진짜 작동하나요?
 
 **integration07 — 2026-09-28, 측정 자원 `1be35120`: 합계 토큰 +1.67%,

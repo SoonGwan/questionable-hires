@@ -21,7 +21,7 @@ python3 -m http.server 4173 --bind 127.0.0.1
 The language-specific URLs have complete HTML and metadata without JavaScript.
 KO / EN preserves employee selection, chart metric, expanded raw records and
 horizontal position in open evidence tables.
-The root follows the saved preference or browser language; legacy `?lang=ko|en`
+The root defaults to English and respects an explicit saved language preference; legacy `?lang=ko|en`
 links still work for human visitors. Explicit locale paths override preferences.
 
 언어별 주소에는 JavaScript 없이도 본문·그래프·OG 정보가 들어 있습니다. 언어를
