@@ -22,8 +22,11 @@ I would like feedback on whether the roles have useful, distinct triggers, and o
 
 ## Publication status — 2026-10-08
 
-Not published. An authorized submission of the owner's other project from the
-same signed-in account returned Hacker News's “Update re Show HNs” page,
-announcing temporary restrictions due to a large influx. This project is retained
-as a draft while that account is restricted. No alternate title, account or route
-was used to bypass the restriction. No reopening date was provided.
+Not published. Both project submissions were attempted on the owner's signed-in
+account. The Questionable Hires form was filled with the title, repository URL and
+introduction above, then submitted. Hacker News returned
+[“Update re Show HNs”](https://news.ycombinator.com/showlim), stating that Show HN
+submissions are temporarily restricted due to a large influx. No item URL was
+created. The earlier Open Aegis submission returned the same restriction.
+No alternate title, account or route was used to bypass it. No reopening date
+was provided.
