@@ -1,4 +1,6 @@
 [![M8ven Verified](https://m8ven.ai/badge/mcp/soongwan/questionable-hires?variant=verified)](https://m8ven.ai/mcp/soongwan/questionable-hires?s=readme)
+[![M8ven Score](https://m8ven.ai/badge/mcp/soongwan-questionable-hires-1b2lxx?v=4c18977b52a16057186916ffcf84309b)](https://m8ven.ai/mcp/soongwan-questionable-hires-1b2lxx?s=readme)
+
 
 <p align="center"><img src="assets/team.svg" alt="Questionable Hires — Weird, but employed. Unfortunately, essential." width="100%"></p>
 
