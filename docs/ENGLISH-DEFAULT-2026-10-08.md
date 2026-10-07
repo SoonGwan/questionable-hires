@@ -35,3 +35,11 @@ Show HN restriction observed on the owner's signed-in account.
 모델 호출이나 새로운 성능 측정이 아닙니다. 기존 대표·불리한 실험 수치는 그대로이며
 대표 근거 동기화·생성 파일 검사와 로컬 랜딩 검사19개가 통과했습니다.
 HN은 현재 계정에 표시된 Show HN 임시 제한 때문에 게시되지 않았습니다.
+
+## Public delivery
+
+Cloudflare deployment `51a8858a` was confirmed live. Eleven actual HTTPS routes
+matched deployed bytes, including the English root, both locale paths, runtime
+scripts, both localized OG cards and the standalone skills archive. Browser review
+confirmed the English root and preserved Con Artist selection through Korean and
+English switches. These are delivery and interface checks, not model measurements.
